@@ -88,12 +88,8 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\deflang4105\deflangfe4105{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
-        '''{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\nowidctlpar\lang2057\b\f0\fs18 EwE6\b0  was developed through funding from Lenfest Ocean Program with additional support from the Pew Charitable Trusts. We thank Margaret Bowman for support.\par
-        '''\par
-        '''\b EwE release 6.3 \b0 was funded by CSIRO, we thank Beth Fulton and Rodrigo Bustamante for support.\par
-        '''\par
-        '''\b ENA\b0  (Ecological Network Analysis [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Ro [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property acknowledgements() As String
             Get
@@ -1360,26 +1356,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("EWE_forever", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to [InternetShortcut]
-        '''URL=http://www.ecopath.org.
-        '''</summary>
-        Public ReadOnly Property ewe_home_url() As String
-            Get
-                Return ResourceManager.GetString("ewe_home_url", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to [InternetShortcut]
-        '''URL=http://wiki.ecopath.org.
-        '''</summary>
-        Public ReadOnly Property ewe_wiki_url() As String
-            Get
-                Return ResourceManager.GetString("ewe_wiki_url", resourceCulture)
             End Get
         End Property
         
@@ -2738,7 +2714,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from &apos;{0}&apos;.
+        '''  Looks up a localized string similar to This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please &lt;a href=&quot;{0}&quot;&gt;download&lt;/a&gt; and install the latest version of EwE6..
         '''</summary>
         Public ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_NEW() As String
             Get
@@ -2751,7 +2727,7 @@ Namespace My.Resources
         '''
         '''Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
         '''
-        '''Ecopath 5 can be downloaded from &apos;{0}&apos;, follow the download links..
+        '''&lt;a href=&quot;{0}&quot;&gt;Ecopath 5 can be downloaded from the archives, follow the download links&lt;/a&gt;..
         '''</summary>
         Public ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_OLD() As String
             Get
@@ -2760,7 +2736,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from &apos;{0}&apos; and try again.
+        '''  Looks up a localized string similar to This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to &lt;a href=&quot;{0}&quot;&gt;download and install a new version of EwE&lt;/a&gt;, and try again.
         '''
         '''EwE can attempt to continue and load the model in read-only mode. Be advised that important input parameters may be missing, and that you may get incomplete results. Do you wish to open the model in read-only mode?.
         '''</summary>
@@ -4091,6 +4067,24 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("urf", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to http://www.ecopath.org/downloads.
+        '''</summary>
+        Public ReadOnly Property URL_DOWNLOAD() As String
+            Get
+                Return ResourceManager.GetString("URL_DOWNLOAD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to http://ecopath.org.
+        '''</summary>
+        Public ReadOnly Property URL_HOME() As String
+            Get
+                Return ResourceManager.GetString("URL_HOME", resourceCulture)
             End Get
         End Property
         

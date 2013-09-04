@@ -24,6 +24,7 @@ Imports System
 Imports System.Windows.Forms
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -31,6 +32,7 @@ Namespace Controls
 
     Friend Class frmCustomMessageBox
         Inherits Form
+        Implements IUIElement
 
 #Region " Private vars "
 
@@ -40,6 +42,8 @@ Namespace Controls
         Private m_strCaption As String
         ''' <summary>Check box prompt, if anything.</summary>
         Private m_strCheckPrompt As String
+        ''' <summary>Hyperlink in the prompt, if any.</summary>
+        Private m_strHyperlink As String
         ''' <summary>Message box icon to show.</summary>
         Private m_mbi As MessageBoxIcon
         ''' <summary>Message box buttons to show.</summary>
@@ -72,15 +76,21 @@ Namespace Controls
             MyBase.New()
             Me.InitializeComponent()
 
+            Dim iLinkStart, iLinkEnd As Integer
+
             ' Remember this
-            Me.m_strPrompt = strPrompt
             Me.m_strCaption = strCaption
             Me.m_strCheckPrompt = strCheckboxPrompt
             Me.m_mbi = mbi
             Me.m_mbb = mbb
 
+            ' Detect hyperlink (blunt blunt blunt)
+            Me.m_strHyperlink = cStringUtils.Hyperlink(strPrompt, Me.m_strPrompt, iLinkStart, iLinkEnd)
+
             ' Config content
             Me.m_lblPrompt.Text = Me.m_strPrompt
+            Me.m_lblPrompt.LinkArea = New LinkArea(iLinkStart, iLinkEnd - iLinkStart)
+
             Me.Text = Me.m_strCaption
 
             ' Config icon
@@ -165,6 +175,9 @@ Namespace Controls
             End Get
         End Property
 
+        Public Property UIContext As cUIContext _
+            Implements IUIElement.UIContext
+
 #End Region ' Properties 
 
 #Region " Overrides "
@@ -197,6 +210,20 @@ Namespace Controls
             Me.m_bChecked = Me.m_chkOption.Checked
             ' Done
             Me.Close()
+
+        End Sub
+
+        Private Sub OnLinkClicked(sender As Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
+            Handles m_lblPrompt.LinkClicked
+
+            If String.IsNullOrWhiteSpace(Me.m_strHyperlink) Then Return
+
+            If (Me.UIContext IsNot Nothing) Then
+                Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                If (cmd IsNot Nothing) Then
+                    cmd.Invoke(Me.m_strHyperlink)
+                End If
+            End If
 
         End Sub
 
@@ -344,20 +371,21 @@ Namespace Controls
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        Private WithEvents m_btnOne As Button
-        Private WithEvents m_btnTwo As Button
-        Private WithEvents m_btnThree As Button
-        Private WithEvents m_lblPrompt As Label
-        Private WithEvents m_pbIcon As PictureBox
-        Private WithEvents m_chkOption As CheckBox
+        Private WithEvents m_btnOne As System.Windows.Forms.Button
+        Private WithEvents m_btnTwo As System.Windows.Forms.Button
+        Private WithEvents m_btnThree As System.Windows.Forms.Button
+        Private WithEvents m_pbIcon As System.Windows.Forms.PictureBox
+        Private WithEvents m_chkOption As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblPrompt As System.Windows.Forms.LinkLabel
+
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCustomMessageBox))
-            Me.m_btnOne = New System.Windows.Forms.Button
-            Me.m_btnTwo = New System.Windows.Forms.Button
-            Me.m_btnThree = New System.Windows.Forms.Button
-            Me.m_lblPrompt = New System.Windows.Forms.Label
-            Me.m_pbIcon = New System.Windows.Forms.PictureBox
-            Me.m_chkOption = New System.Windows.Forms.CheckBox
+            Me.m_btnOne = New System.Windows.Forms.Button()
+            Me.m_btnTwo = New System.Windows.Forms.Button()
+            Me.m_btnThree = New System.Windows.Forms.Button()
+            Me.m_pbIcon = New System.Windows.Forms.PictureBox()
+            Me.m_chkOption = New System.Windows.Forms.CheckBox()
+            Me.m_lblPrompt = New System.Windows.Forms.LinkLabel()
             CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -376,11 +404,6 @@ Namespace Controls
             resources.ApplyResources(Me.m_btnThree, "m_btnThree")
             Me.m_btnThree.Name = "m_btnThree"
             '
-            'm_lblPrompt
-            '
-            resources.ApplyResources(Me.m_lblPrompt, "m_lblPrompt")
-            Me.m_lblPrompt.Name = "m_lblPrompt"
-            '
             'm_pbIcon
             '
             resources.ApplyResources(Me.m_pbIcon, "m_pbIcon")
@@ -391,6 +414,11 @@ Namespace Controls
             '
             resources.ApplyResources(Me.m_chkOption, "m_chkOption")
             Me.m_chkOption.Name = "m_chkOption"
+            '
+            'm_lblPrompt
+            '
+            resources.ApplyResources(Me.m_lblPrompt, "m_lblPrompt")
+            Me.m_lblPrompt.Name = "m_lblPrompt"
             '
             'frmCustomMessageBox
             '
