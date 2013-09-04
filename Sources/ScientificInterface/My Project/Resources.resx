@@ -5257,7 +5257,7 @@ Description: {1}</value>
     <value>Size/Weight</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_NEW" xml:space="preserve">
-    <value>This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from '{0}'</value>
+    <value>This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please &lt;a href="{0}"&gt;download&lt;/a&gt; and install the latest version of EwE6.</value>
     <comment>{0}=EwE home URL</comment>
   </data>
   <data name="PROMPT_INVALIDMODEL_REMOVEMRU" xml:space="preserve">
@@ -5510,7 +5510,7 @@ Description: {1}</value>
     <value>As popup message</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_EWE6_TOO_NEW" xml:space="preserve">
-    <value>This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from '{0}' and try again.
+    <value>This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to &lt;a href="{0}"&gt;download and install a new version of EwE&lt;/a&gt;, and try again.
 
 EwE can attempt to continue and load the model in read-only mode. Be advised that important input parameters may be missing, and that you may get incomplete results. Do you wish to open the model in read-only mode?</value>
     <comment>{0}=EwE home URL</comment>
@@ -5687,7 +5687,7 @@ Location: {1}</value>
 
 Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
 
-Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
+&lt;a href="{0}"&gt;Ecopath 5 can be downloaded from the archives, follow the download links&lt;/a&gt;.</value>
     <comment>{0}=EwE home URL</comment>
   </data>
   <data name="ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED" xml:space="preserve">
@@ -6152,12 +6152,6 @@ Description: {2}</value>
   </data>
   <data name="PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT" xml:space="preserve">
     <value>Ecopath was unable launch your default email program. Please send your bug report to us at ewedevteam@gmail.com, and please state the version of the software that you are using.</value>
-  </data>
-  <data name="ewe_wiki_url" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ewe_wiki.url.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="ewe_home_url" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ewe_home.url.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="LABEL_SET" xml:space="preserve">
     <value>&amp;Set:</value>
@@ -24069,5 +24063,11 @@ Description: {2}</value>
   </data>
   <data name="CAPTION_NICHEPLOT_YAXIS_LABEL" xml:space="preserve">
     <value>Prey overlap index</value>
+  </data>
+  <data name="URL_HOME" xml:space="preserve">
+    <value>http://ecopath.org</value>
+  </data>
+  <data name="URL_DOWNLOAD" xml:space="preserve">
+    <value>http://www.ecopath.org/downloads</value>
   </data>
 </root>

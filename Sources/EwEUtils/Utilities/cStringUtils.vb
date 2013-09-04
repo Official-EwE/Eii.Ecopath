@@ -116,6 +116,53 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Returns the first &lt;a href=&quot;..&gt; hyperlink within a string.
+        ''' </summary>
+        ''' <param name="strIn">The string to scan for hyperlinks.</param>
+        ''' <param name="strOut">The input string with first hyperlink removed.</param>
+        ''' <returns>An hyperlink, or an empty string if no such link was found.</returns>
+        ''' <remarks>This code is very simple, and does not use regular expressions 
+        ''' for performance reasons. Detection is limited to the direct sequence 'a href=' only.</remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Hyperlink(ByVal strIn As String, ByRef strOut As String, ByRef iStart As Integer, ByRef iEnd As Integer) As String
+
+            Dim strLink As String = ""
+            Dim i, j As Integer
+            Dim quotes As Char() = New Char() {""""c, "'"c}
+            iStart = -1
+            iEnd = -1
+
+            i = strIn.IndexOf("<a href=", StringComparison.CurrentCultureIgnoreCase)
+            If i > -1 Then
+                Dim sbOut As New StringBuilder()
+                If (i > 0) Then sbOut.Append(strIn.Substring(0, i))
+
+                iStart = i
+                i = strIn.IndexOfAny(quotes, i + 8)
+                j = strIn.IndexOfAny(quotes, i + 1)
+                If (i > 0 And j > i) Then strLink = strIn.Substring(i + 1, j - i - 1)
+                i = strIn.IndexOf(">"c, j)
+                j = strIn.IndexOf("</a>", i + 1, StringComparison.CurrentCultureIgnoreCase)
+                If (i > 0 And j > i) Then
+                    sbOut.Append(strIn.Substring(i + 1, j - i - 1))
+                    iEnd = sbOut.Length
+                    sbOut.Append(strIn.Substring(j + 4))
+                End If
+                strOut = sbOut.ToString
+            End If
+
+            If String.IsNullOrWhiteSpace(strLink) Or (iEnd = -1) Then
+                iStart = -1
+                iEnd = -1
+                strOut = strIn
+            End If
+
+            Return strLink
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the number that exceeds the highest number in a range of 
         ''' existing autonumbered strings by one.
         ''' </summary>

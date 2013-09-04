@@ -1206,8 +1206,8 @@ Public Class AppLauncher
         Select Case comp
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
-                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, My.Resources.ewe_home_url), _
-                               strHyperlink:=My.Resources.ewe_home_url)
+                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, My.Resources.URL_HOME), _
+                               strHyperlink:=My.Resources.URL_HOME)
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
                 Me.AddRecentFilesSetting(strFileName)
@@ -1221,18 +1221,18 @@ Public Class AppLauncher
                 End If
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
-                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, My.Resources.ewe_home_url), _
-                               strHyperlink:=My.Resources.ewe_home_url)
+                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, My.Resources.URL_HOME), _
+                               strHyperlink:=My.Resources.URL_HOME)
 
             Case cEwEDatabase.eCompatibilityTypes.EwE6
                 ' Yippee
 
             Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
-                If Me.AskFeedback(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, My.Resources.ewe_home_url), _
+                If Me.AskFeedback(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, My.Resources.URL_HOME), _
                                   eMessageImportance.Question, _
                                   eCoreComponentType.DataSource, _
                                   eMessageReplyStyle.YES_NO, _
-                                  strHyperlink:=My.Resources.ewe_home_url) = eMessageReply.NO Then
+                                  strHyperlink:=My.Resources.URL_HOME) = eMessageReply.NO Then
                     comp = cEwEDatabase.eCompatibilityTypes.Unknown
                 End If
 

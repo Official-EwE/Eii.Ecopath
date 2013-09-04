@@ -35,17 +35,19 @@ Namespace Controls
 
 #Region " Public interfaces "
 
-        Public Shared Function Show(ByVal strText As String) As DialogResult
-            Return cCustomMessageBox.Show(strText, "")
+        Public Shared Function Show(ByVal uic As cUIContext, ByVal strText As String) As DialogResult
+            Return cCustomMessageBox.Show(uic, strText, "")
         End Function
 
-        Public Shared Function Show(ByVal strText As String, _
+        Public Shared Function Show(ByVal uic As cUIContext, _
+                                    ByVal strText As String, _
                                     ByVal strCaption As String) As DialogResult
-            Return cCustomMessageBox.Show(strText, strCaption, _
+            Return cCustomMessageBox.Show(uic, strText, strCaption, _
                                           MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Function
 
-        Public Shared Function Show(ByVal strText As String, _
+        Public Shared Function Show(ByVal uic As cUIContext, _
+                                    ByVal strText As String, _
                                     ByVal strCaption As String, _
                                     ByVal mbb As MessageBoxButtons, _
                                     ByVal mbi As MessageBoxIcon) As DialogResult
@@ -56,28 +58,32 @@ Namespace Controls
             If String.IsNullOrEmpty(strCaption) Then strCaption = My.Resources.HEADER_MESSAGE
 
             frm = New frmCustomMessageBox(strText, strCaption, mbb, mbi)
+            frm.UIContext = uic
             frm.ShowDialog()
 
             Return frm.Result
 
         End Function
 
-        Public Shared Function Show(ByVal strText As String, _
+        Public Shared Function Show(ByVal uic As cUIContext, _
+                                    ByVal strText As String, _
                                     ByRef bIsChecked As Boolean, _
                                     ByVal strCheckPrompt As String) As DialogResult
-            Return cCustomMessageBox.Show(strText, "", bIsChecked, strCheckPrompt)
+            Return cCustomMessageBox.Show(uic, strText, "", bIsChecked, strCheckPrompt)
         End Function
 
-        Public Shared Function Show(ByVal strText As String, _
+        Public Shared Function Show(ByVal uic As cUIContext, _
+                                    ByVal strText As String, _
                                     ByVal strCaption As String, _
                                     ByRef bIsChecked As Boolean, _
                                     ByVal strCheckPrompt As String) As DialogResult
-            Return cCustomMessageBox.Show(strText, strCaption, _
+            Return cCustomMessageBox.Show(uic, strText, strCaption, _
                                           MessageBoxButtons.OK, MessageBoxIcon.Information, _
                                           bIsChecked, strCheckPrompt)
         End Function
 
-        Public Shared Function Show(ByVal strText As String, _
+        Public Shared Function Show(ByVal uic As cUIContext, _
+                                    ByVal strText As String, _
                                     ByVal strCaption As String, _
                                     ByVal mbb As MessageBoxButtons, _
                                     ByVal mbi As MessageBoxIcon, _
@@ -90,6 +96,7 @@ Namespace Controls
             If String.IsNullOrEmpty(strCaption) Then strCaption = My.Resources.HEADER_MESSAGE
 
             frm = New frmCustomMessageBox(strText, strCaption, mbb, mbi, strCheckPrompt)
+            frm.UIContext = uic
             frm.ShowDialog()
 
             ' Transfer checked state

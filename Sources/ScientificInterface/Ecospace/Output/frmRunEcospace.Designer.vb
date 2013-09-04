@@ -151,7 +151,6 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_pbMap, "m_pbMap")
             Me.m_pbMap.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_pbMap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_pbMap.Name = "m_pbMap"
             Me.m_pbMap.TabStop = False
             '
@@ -177,7 +176,6 @@ Namespace Ecospace
             '
             'm_scMain
             '
-            Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_scMain, "m_scMain")
             Me.m_scMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel1
             Me.m_scMain.Name = "m_scMain"
@@ -417,7 +415,6 @@ Namespace Ecospace
             '
             'm_zgPlotLarge
             '
-            Me.m_zgPlotLarge.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_zgPlotLarge, "m_zgPlotLarge")
             Me.m_zgPlotLarge.Name = "m_zgPlotLarge"
             Me.m_zgPlotLarge.ScrollGrace = 0.0R

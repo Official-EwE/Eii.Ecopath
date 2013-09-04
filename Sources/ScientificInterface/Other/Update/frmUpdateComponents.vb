@@ -335,7 +335,7 @@ Public Class frmUpdateComponents
         Dim bOverwrite As Boolean = False
 
         If Not SuppressPrompt(strPlugin) Then
-            bOverwrite = cCustomMessageBox.Show(strPrompt, Me.Text, _
+            bOverwrite = cCustomMessageBox.Show(Nothing, strPrompt, Me.Text, _
                                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question, _
                                                 bCheck, My.Resources.PROMPT_UPDATE_MIGRATION_SUPPRESS) = Windows.Forms.DialogResult.Yes
             If bCheck Then SuppressPrompt(strPlugin) = True
