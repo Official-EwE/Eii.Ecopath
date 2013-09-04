@@ -237,7 +237,7 @@ Namespace Controls
                     ' Go!
                     Process.Start(Me.m_strHyperlink)
                 Catch ex As Exception
-                    cLog.Write(ex.Message, "frmCustomMessageBox::OnLinkClicked(" & Me.m_strHyperlink & ")")
+                    cLog.Write(ex, "frmCustomMessageBox::OnLinkClicked(" & Me.m_strHyperlink & ")")
                 End Try
             End If
 
