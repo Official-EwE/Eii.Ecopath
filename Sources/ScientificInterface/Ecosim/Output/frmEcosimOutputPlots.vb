@@ -707,11 +707,11 @@ Namespace Ecosim
                                          ByVal asValues() As Single)
 
             l.Populate(aiGroupIndex)
-            l.Sorted = False
             For i As Integer = 0 To aiGroupIndex.Count - 1
                 l.SortValue(aiGroupIndex(i)) = asValues(i)
             Next
-            l.Sorted = True
+            l.SortType = cGroupListBox.eSortType.ValueDesc
+            l.Refresh()
 
         End Sub
 
@@ -727,12 +727,11 @@ Namespace Ecosim
                                          ByVal asValues() As Single)
 
             l.Populate(aiFleetIndex)
-
-            l.Sorted = False
             For i As Integer = 0 To aiFleetIndex.Count - 1
                 l.SortValue(i) = asValues(i)
             Next
-            l.Sorted = True
+            l.SortType = cFleetListBox.eSortType.ValueDesc
+            l.Refresh()
 
         End Sub
 
