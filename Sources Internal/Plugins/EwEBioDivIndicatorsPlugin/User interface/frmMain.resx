@@ -126,7 +126,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tvIndicators.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 344</value>
+    <value>150, 505</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tvIndicators.TabIndex" type="System.Int32, mscorlib">
@@ -136,7 +136,7 @@
     <value>m_tvIndicators</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.3.9570.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -172,7 +172,10 @@
     <value>True</value>
   </data>
   <data name="m_lblCredits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 235</value>
+    <value>3, 396</value>
+  </data>
+  <data name="m_lblCredits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblCredits.Size" type="System.Drawing.Size, System.Drawing">
     <value>157, 13</value>
@@ -292,7 +295,7 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbICM" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbCSIC" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,44.44445,AutoSize,0,Percent,11.11111,AutoSize,0,Percent,44.44444" /&gt;&lt;Rows Styles="Percent,50,AutoSize,0,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_plCredits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 250</value>
+    <value>0, 411</value>
   </data>
   <data name="m_plCredits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -658,7 +661,7 @@
     <value>m_hdrExport</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9570.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -691,7 +694,7 @@
     <value>m_hdrExecution</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9570.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -706,7 +709,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 318</value>
+    <value>541, 479</value>
   </data>
   <data name="m_tpSettings.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -739,7 +742,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>535, 312</value>
+    <value>535, 473</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -748,7 +751,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEBioDiversityIndicatorsPlugin.gridEcopath, EwEBioDiversityIndicatorsPlugin, Version=6.3.6243.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEBioDiversityIndicatorsPlugin.gridEcopath, EwEBioDiversityIndicatorsPlugin, Version=6.3.6841.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tpEcopath</value>
@@ -763,7 +766,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpEcopath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 318</value>
+    <value>541, 479</value>
   </data>
   <data name="m_tpEcopath.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -790,7 +793,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_graphSim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>535, 312</value>
+    <value>535, 473</value>
   </data>
   <data name="m_graphSim.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -814,7 +817,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpEcosim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 318</value>
+    <value>541, 479</value>
   </data>
   <data name="m_tpEcosim.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -841,7 +844,7 @@
     <value>0, 25</value>
   </data>
   <data name="m_map.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 293</value>
+    <value>541, 454</value>
   </data>
   <data name="m_map.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -850,7 +853,7 @@
     <value>m_map</value>
   </data>
   <data name="&gt;&gt;m_map.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.3.9570.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_map.Parent" xml:space="preserve">
     <value>m_tpEcospace</value>
@@ -867,6 +870,9 @@
   <data name="m_tsMap.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="m_tsMap.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>100, 25</value>
+  </data>
   <data name="m_tsMap.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 25</value>
   </data>
@@ -877,7 +883,7 @@
     <value>m_tsMap</value>
   </data>
   <data name="&gt;&gt;m_tsMap.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.3.9570.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMap.Parent" xml:space="preserve">
     <value>m_tpEcospace</value>
@@ -889,7 +895,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tpEcospace.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 318</value>
+    <value>541, 479</value>
   </data>
   <data name="m_tpEcospace.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -916,7 +922,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_graphMC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>535, 312</value>
+    <value>535, 473</value>
   </data>
   <data name="m_graphMC.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -940,7 +946,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpMC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 318</value>
+    <value>541, 479</value>
   </data>
   <data name="m_tpMC.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -967,7 +973,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tcOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>549, 344</value>
+    <value>549, 505</value>
   </data>
   <data name="m_tcOutput.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -997,7 +1003,7 @@
     <value>1</value>
   </data>
   <data name="SplitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>703, 344</value>
+    <value>703, 505</value>
   </data>
   <data name="SplitContainer1.SplitterDistance" type="System.Int32, mscorlib">
     <value>150</value>
@@ -1015,7 +1021,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;SplitContainer1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_btnSaveToCSV.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -1024,7 +1030,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSaveToCSV.Location" type="System.Drawing.Point, System.Drawing">
-    <value>606, 362</value>
+    <value>606, 523</value>
   </data>
   <data name="m_btnSaveToCSV.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 23</value>
@@ -1045,6 +1051,57 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnSaveToCSV.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_pbStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 527</value>
+  </data>
+  <data name="m_pbStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="m_pbStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_pbStatus.Name" xml:space="preserve">
+    <value>m_pbStatus</value>
+  </data>
+  <data name="&gt;&gt;m_pbStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbStatus.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbStatus.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_llStatus.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_llStatus.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
+    <value>12, 11</value>
+  </data>
+  <data name="m_llStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>35, 527</value>
+  </data>
+  <data name="m_llStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>458, 17</value>
+  </data>
+  <data name="m_llStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_llStatus.Text" xml:space="preserve">
+    <value>You need to &lt;a href="command:EditTaxa"&gt;define taxa&lt;/a&gt; for taxonomy-based indicators.</value>
+  </data>
+  <data name="&gt;&gt;m_llStatus.Name" xml:space="preserve">
+    <value>m_llStatus</value>
+  </data>
+  <data name="&gt;&gt;m_llStatus.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.3.9570.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_llStatus.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_llStatus.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -1054,7 +1111,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>727, 397</value>
+    <value>727, 558</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -1069,6 +1126,6 @@
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9570.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

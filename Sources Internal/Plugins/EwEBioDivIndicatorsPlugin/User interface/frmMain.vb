@@ -110,6 +110,8 @@ Public Class frmMain
         Me.Text = My.Resources.CAPTION
         Me.TabText = My.Resources.CAPTION
 
+        Me.m_llStatus.UIContext = Me.UIContext
+
         Try
             ' Populate tree view from indicator settings
             Me.m_tvIndicators.Nodes.Clear()
@@ -444,6 +446,7 @@ Public Class frmMain
 
         Dim csm As cCoreStateMonitor = Nothing
         Dim bCanSave As Boolean = False
+        Dim bHasTaxa As Boolean = (Me.UIContext.Core.nTaxon > 0)
 
         csm = Me.UIContext.Core.StateMonitor
 
@@ -459,6 +462,9 @@ Public Class frmMain
         End Select
 
         Me.m_btnSaveToCSV.Enabled = bCanSave
+
+        'Me.m_lblStatus.Visible = Not bHasTaxa
+        'Me.m_pbStatus.Visible = Not bHasTaxa
 
     End Sub
 

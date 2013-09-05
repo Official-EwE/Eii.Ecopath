@@ -41,19 +41,19 @@ Namespace Controls.Map
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
-            Me.m_plZoom = New System.Windows.Forms.Panel
-            Me.m_map = New ucMap
+            Me.components = New System.ComponentModel.Container()
+            Me.m_plZoom = New System.Windows.Forms.Panel()
+            Me.m_map = New ScientificInterfaceShared.Controls.Map.ucMap()
             Me.m_cmsZoom = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.PositionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiViewCenter2 = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiViewStretch2 = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsmiZoomIn = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiZoomOut = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiZoomReset = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_sbHorz = New System.Windows.Forms.HScrollBar
-            Me.m_sbVert = New System.Windows.Forms.VScrollBar
+            Me.PositionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiViewCenter2 = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiViewStretch2 = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiZoomIn = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiZoomOut = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiZoomReset = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_sbHorz = New System.Windows.Forms.HScrollBar()
+            Me.m_sbVert = New System.Windows.Forms.VScrollBar()
             Me.m_plZoom.SuspendLayout()
             Me.m_cmsZoom.SuspendLayout()
             Me.SuspendLayout()
@@ -61,9 +61,9 @@ Namespace Controls.Map
             'm_plZoom
             '
             Me.m_plZoom.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_plZoom.BackColor = System.Drawing.SystemColors.Control
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_plZoom.BackColor = System.Drawing.SystemColors.ControlDark
             Me.m_plZoom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_plZoom.Controls.Add(Me.m_map)
             Me.m_plZoom.Location = New System.Drawing.Point(0, 0)
@@ -75,51 +75,52 @@ Namespace Controls.Map
             'm_map
             '
             Me.m_map.BackColor = System.Drawing.SystemColors.Window
-            Me.m_map.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_map.Editable = False
             Me.m_map.Location = New System.Drawing.Point(0, 0)
             Me.m_map.Margin = New System.Windows.Forms.Padding(0)
             Me.m_map.Name = "m_map"
             Me.m_map.Size = New System.Drawing.Size(200, 200)
             Me.m_map.TabIndex = 0
+            Me.m_map.Title = ""
+            Me.m_map.UIContext = Nothing
             '
             'm_cmsZoom
             '
             Me.m_cmsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PositionToolStripMenuItem, Me.ToolStripSeparator2, Me.m_tsmiZoomIn, Me.m_tsmiZoomOut, Me.m_tsmiZoomReset})
             Me.m_cmsZoom.Name = "m_cmsControl"
-            Me.m_cmsZoom.Size = New System.Drawing.Size(181, 98)
+            Me.m_cmsZoom.Size = New System.Drawing.Size(177, 98)
             '
             'PositionToolStripMenuItem
             '
             Me.PositionToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewCenter2, Me.m_tsmiViewStretch2})
             Me.PositionToolStripMenuItem.Enabled = False
             Me.PositionToolStripMenuItem.Name = "PositionToolStripMenuItem"
-            Me.PositionToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+            Me.PositionToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
             Me.PositionToolStripMenuItem.Text = "Position"
             '
             'm_tsmiViewCenter2
             '
             Me.m_tsmiViewCenter2.Name = "m_tsmiViewCenter2"
-            Me.m_tsmiViewCenter2.Size = New System.Drawing.Size(120, 22)
+            Me.m_tsmiViewCenter2.Size = New System.Drawing.Size(111, 22)
             Me.m_tsmiViewCenter2.Text = "Center"
             '
             'm_tsmiViewStretch2
             '
             Me.m_tsmiViewStretch2.Name = "m_tsmiViewStretch2"
-            Me.m_tsmiViewStretch2.Size = New System.Drawing.Size(120, 22)
+            Me.m_tsmiViewStretch2.Size = New System.Drawing.Size(111, 22)
             Me.m_tsmiViewStretch2.Text = "Stretch"
             '
             'ToolStripSeparator2
             '
             Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-            Me.ToolStripSeparator2.Size = New System.Drawing.Size(177, 6)
+            Me.ToolStripSeparator2.Size = New System.Drawing.Size(173, 6)
             '
             'm_tsmiZoomIn
             '
             Me.m_tsmiZoomIn.Enabled = False
             Me.m_tsmiZoomIn.Name = "m_tsmiZoomIn"
             Me.m_tsmiZoomIn.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-            Me.m_tsmiZoomIn.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiZoomIn.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiZoomIn.Text = "Zoom in"
             '
             'm_tsmiZoomOut
@@ -127,7 +128,7 @@ Namespace Controls.Map
             Me.m_tsmiZoomOut.Enabled = False
             Me.m_tsmiZoomOut.Name = "m_tsmiZoomOut"
             Me.m_tsmiZoomOut.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-            Me.m_tsmiZoomOut.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiZoomOut.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiZoomOut.Text = "Zoom out"
             '
             'm_tsmiZoomReset
@@ -135,13 +136,13 @@ Namespace Controls.Map
             Me.m_tsmiZoomReset.Enabled = False
             Me.m_tsmiZoomReset.Name = "m_tsmiZoomReset"
             Me.m_tsmiZoomReset.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-            Me.m_tsmiZoomReset.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiZoomReset.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiZoomReset.Text = "Reset zoom"
             '
             'm_sbHorz
             '
             Me.m_sbHorz.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_sbHorz.Location = New System.Drawing.Point(1, 345)
             Me.m_sbHorz.Name = "m_sbHorz"
             Me.m_sbHorz.Size = New System.Drawing.Size(426, 19)
@@ -150,7 +151,7 @@ Namespace Controls.Map
             'm_sbVert
             '
             Me.m_sbVert.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_sbVert.Location = New System.Drawing.Point(427, 1)
             Me.m_sbVert.Name = "m_sbVert"
             Me.m_sbVert.Size = New System.Drawing.Size(16, 344)

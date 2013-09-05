@@ -105,11 +105,11 @@ Namespace Commands
         ''' </returns>
         ''' -----------------------------------------------------------------------
         Public Function GetCommand(ByVal strName As String) As cCommand
-            Try
+            strName = strName.ToLower
+            If Me.m_dictCommands.ContainsKey(strName) Then
                 Return Me.m_dictCommands(strName.ToLower())
-            Catch ex As Exception
-                Return Nothing
-            End Try
+            End If
+            Return Nothing
         End Function
 
         Public Sub Clear()
@@ -119,7 +119,7 @@ Namespace Commands
                 For Each cmd As cCommand In lcmds : Me.Remove(cmd) : Next
                 lcmds.Clear()
             Catch ex As Exception
-
+                ' Kaploof
             End Try
             Debug.Assert(Me.m_dictCommands.Count = 0)
         End Sub

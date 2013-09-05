@@ -43,6 +43,7 @@ Partial Class frmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.m_tvIndicators = New ScientificInterfaceShared.Controls.cThemedTreeView()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
@@ -69,13 +70,15 @@ Partial Class frmMain
         Me.m_tpEcopath = New System.Windows.Forms.TabPage()
         Me.m_grid = New EwEBioDiversityIndicatorsPlugin.gridEcopath()
         Me.m_tpEcosim = New System.Windows.Forms.TabPage()
+        Me.m_graphSim = New ZedGraph.ZedGraphControl()
         Me.m_tpEcospace = New System.Windows.Forms.TabPage()
         Me.m_map = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
         Me.m_tsMap = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
-        Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_tpMC = New System.Windows.Forms.TabPage()
-        Me.m_graphSim = New ZedGraph.ZedGraphControl()
         Me.m_graphMC = New ZedGraph.ZedGraphControl()
+        Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
+        Me.m_pbStatus = New System.Windows.Forms.PictureBox()
+        Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -90,6 +93,7 @@ Partial Class frmMain
         Me.m_tpEcosim.SuspendLayout()
         Me.m_tpEcospace.SuspendLayout()
         Me.m_tpMC.SuspendLayout()
+        CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_tvIndicators
@@ -288,6 +292,7 @@ Partial Class frmMain
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -306,6 +311,18 @@ Partial Class frmMain
         Me.m_tpEcosim.Controls.Add(Me.m_graphSim)
         resources.ApplyResources(Me.m_tpEcosim, "m_tpEcosim")
         Me.m_tpEcosim.Name = "m_tpEcosim"
+        '
+        'm_graphSim
+        '
+        resources.ApplyResources(Me.m_graphSim, "m_graphSim")
+        Me.m_graphSim.Name = "m_graphSim"
+        Me.m_graphSim.ScrollGrace = 0.0R
+        Me.m_graphSim.ScrollMaxX = 0.0R
+        Me.m_graphSim.ScrollMaxY = 0.0R
+        Me.m_graphSim.ScrollMaxY2 = 0.0R
+        Me.m_graphSim.ScrollMinX = 0.0R
+        Me.m_graphSim.ScrollMinY = 0.0R
+        Me.m_graphSim.ScrollMinY2 = 0.0R
         '
         'm_tpEcospace
         '
@@ -326,16 +343,9 @@ Partial Class frmMain
         'm_tsMap
         '
         resources.ApplyResources(Me.m_tsMap, "m_tsMap")
-        Me.m_tsMap.MinimumSize = New System.Drawing.Size(100, 25)
         Me.m_tsMap.Name = "m_tsMap"
         Me.m_tsMap.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
         Me.m_tsMap.UIContext = Nothing
-        '
-        'm_btnSaveToCSV
-        '
-        resources.ApplyResources(Me.m_btnSaveToCSV, "m_btnSaveToCSV")
-        Me.m_btnSaveToCSV.Name = "m_btnSaveToCSV"
-        Me.m_btnSaveToCSV.UseVisualStyleBackColor = True
         '
         'm_tpMC
         '
@@ -343,18 +353,6 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_tpMC, "m_tpMC")
         Me.m_tpMC.Name = "m_tpMC"
         Me.m_tpMC.UseVisualStyleBackColor = True
-        '
-        'm_graphSim
-        '
-        resources.ApplyResources(Me.m_graphSim, "m_graphSim")
-        Me.m_graphSim.Name = "m_graphSim"
-        Me.m_graphSim.ScrollGrace = 0.0R
-        Me.m_graphSim.ScrollMaxX = 0.0R
-        Me.m_graphSim.ScrollMaxY = 0.0R
-        Me.m_graphSim.ScrollMaxY2 = 0.0R
-        Me.m_graphSim.ScrollMinX = 0.0R
-        Me.m_graphSim.ScrollMinY = 0.0R
-        Me.m_graphSim.ScrollMinY2 = 0.0R
         '
         'm_graphMC
         '
@@ -368,10 +366,35 @@ Partial Class frmMain
         Me.m_graphMC.ScrollMinY = 0.0R
         Me.m_graphMC.ScrollMinY2 = 0.0R
         '
+        'm_btnSaveToCSV
+        '
+        resources.ApplyResources(Me.m_btnSaveToCSV, "m_btnSaveToCSV")
+        Me.m_btnSaveToCSV.Name = "m_btnSaveToCSV"
+        Me.m_btnSaveToCSV.UseVisualStyleBackColor = True
+        '
+        'm_pbStatus
+        '
+        resources.ApplyResources(Me.m_pbStatus, "m_pbStatus")
+        Me.m_pbStatus.Name = "m_pbStatus"
+        Me.m_pbStatus.TabStop = False
+        Me.m_pbStatus.Anchor = Windows.Forms.AnchorStyles.Left Or Windows.Forms.AnchorStyles.Bottom
+        Me.m_pbStatus.Image = ScientificInterfaceShared.My.Resources.Warning
+        '
+        'm_llStatus
+        '
+        resources.ApplyResources(Me.m_llStatus, "m_llStatus")
+        Me.m_llStatus.Name = "m_llStatus"
+        Me.m_llStatus.TabStop = True
+        Me.m_llStatus.UIContext = Nothing
+        Me.m_llStatus.UseCompatibleTextRendering = True
+        Me.m_llStatus.Anchor = Windows.Forms.AnchorStyles.Left Or Windows.Forms.AnchorStyles.Bottom
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_llStatus)
+        Me.Controls.Add(Me.m_pbStatus)
         Me.Controls.Add(Me.m_btnSaveToCSV)
         Me.Controls.Add(Me.SplitContainer1)
         Me.Name = "frmMain"
@@ -394,7 +417,9 @@ Partial Class frmMain
         Me.m_tpEcospace.ResumeLayout(False)
         Me.m_tpEcospace.PerformLayout()
         Me.m_tpMC.ResumeLayout(False)
+        CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_tvIndicators As ScientificInterfaceShared.Controls.cThemedTreeView
@@ -429,4 +454,6 @@ Partial Class frmMain
     Private WithEvents m_tpMC As System.Windows.Forms.TabPage
     Private WithEvents m_graphSim As ZedGraph.ZedGraphControl
     Private WithEvents m_graphMC As ZedGraph.ZedGraphControl
+    Private WithEvents m_pbStatus As System.Windows.Forms.PictureBox
+    Private WithEvents m_llStatus As ScientificInterfaceShared.Controls.ucLinkLabel
 End Class

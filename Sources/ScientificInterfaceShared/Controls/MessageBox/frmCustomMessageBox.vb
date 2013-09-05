@@ -217,31 +217,31 @@ Namespace Controls
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler, handles a hyperlink click.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnLinkClicked(sender As Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
-               Handles m_lblPrompt.LinkClicked
+        ' ''' -------------------------------------------------------------------
+        ' ''' <summary>
+        ' ''' Event handler, handles a hyperlink click.
+        ' ''' </summary>
+        ' ''' -------------------------------------------------------------------
+        'Private Sub OnLinkClicked(sender As Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
+        '       Handles m_lblPrompt.LinkClicked
 
-            If String.IsNullOrWhiteSpace(Me.m_strHyperlink) Then Return
+        '    If String.IsNullOrWhiteSpace(Me.m_strHyperlink) Then Return
 
-            If (Me.UIContext IsNot Nothing) Then
-                Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-                If (cmd IsNot Nothing) Then
-                    cmd.Invoke(Me.m_strHyperlink)
-                End If
-            Else
-                Try
-                    ' Go!
-                    Process.Start(Me.m_strHyperlink)
-                Catch ex As Exception
-                    cLog.Write(ex, "frmCustomMessageBox::OnLinkClicked(" & Me.m_strHyperlink & ")")
-                End Try
-            End If
+        '    If (Me.UIContext IsNot Nothing) Then
+        '        Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+        '        If (cmd IsNot Nothing) Then
+        '            cmd.Invoke(Me.m_strHyperlink)
+        '        End If
+        '    Else
+        '        Try
+        '            ' Go!
+        '            Process.Start(Me.m_strHyperlink)
+        '        Catch ex As Exception
+        '            cLog.Write(ex, "frmCustomMessageBox::OnLinkClicked(" & Me.m_strHyperlink & ")")
+        '        End Try
+        '    End If
 
-        End Sub
+        'End Sub
 
 #End Region ' Events
 
@@ -392,7 +392,7 @@ Namespace Controls
         Private WithEvents m_btnThree As System.Windows.Forms.Button
         Private WithEvents m_pbIcon As System.Windows.Forms.PictureBox
         Private WithEvents m_chkOption As System.Windows.Forms.CheckBox
-        Private WithEvents m_lblPrompt As System.Windows.Forms.LinkLabel
+        Private WithEvents m_lblPrompt As ucLinkLabel
 
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCustomMessageBox))
@@ -401,7 +401,7 @@ Namespace Controls
             Me.m_btnThree = New System.Windows.Forms.Button()
             Me.m_pbIcon = New System.Windows.Forms.PictureBox()
             Me.m_chkOption = New System.Windows.Forms.CheckBox()
-            Me.m_lblPrompt = New System.Windows.Forms.LinkLabel()
+            Me.m_lblPrompt = New ucLinkLabel()
             CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
