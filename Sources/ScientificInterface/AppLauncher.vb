@@ -2918,8 +2918,9 @@ Public Class AppLauncher
         Dim bcmd As cBrowserCommand = DirectCast(cmd, cBrowserCommand)
         Dim strURL As String = bcmd.URL(New cWebLinks(Me.Core))
 
-        ' Not a hyperlink?
+        ' Is a hyperlink?
         If cStringUtils.BeginsWith(strURL, "http:", True) Then
+            ' #Yes: extract hyperlink bit, and pass it to the navigation panel
             If Not cmd.Checked Or Not String.IsNullOrEmpty(strURL) Then
                 If panel.IsDisposed() Then
                     panel = New frmStartPanel(Me.UIContext)
@@ -2932,7 +2933,16 @@ Public Class AppLauncher
                     panel.Close()
                 End If
             End If
+        ElseIf cStringUtils.BeginsWith(strURL, "command:", True) Then
+            ' #No: Is command?
+            Dim strCommand As String = strURL.Substring(8)
+            cmd = Me.m_uic.CommandHandler.GetCommand(strCommand)
+            ' Invoke command without any parameters
+            If (cmd IsNot Nothing) Then
+                cmd.Invoke()
+            End If
         Else
+            ' #No: presume we're talking files here. Let the OS deal with it
             Try
                 ' Launch folder via Explorer
                 Process.Start("explorer.exe", strURL)

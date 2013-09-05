@@ -119,12 +119,17 @@ Namespace Utilities
         ''' Returns the first &lt;a href=&quot;..&gt; hyperlink within a string.
         ''' </summary>
         ''' <param name="strIn">The string to scan for hyperlinks.</param>
-        ''' <param name="strOut">The input string with first hyperlink removed.</param>
+        ''' <param name="strOut">The input string with first hyperlink removed if
+        ''' <paramref name="bStripLink"/> is set to True.</param>
+        ''' <param name="iStart">The start position of the hyperlink in <paramref name="strOut"/>.</param>
+        ''' <param name="iEnd">The end position of the hyperlink in <paramref name="strOut"/>.</param>
         ''' <returns>An hyperlink, or an empty string if no such link was found.</returns>
         ''' <remarks>This code is very simple, and does not use regular expressions 
         ''' for performance reasons. Detection is limited to the direct sequence 'a href=' only.</remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function Hyperlink(ByVal strIn As String, ByRef strOut As String, ByRef iStart As Integer, ByRef iEnd As Integer) As String
+        Public Shared Function Hyperlink(ByVal strIn As String, _
+                                         ByRef strOut As String, ByRef iStart As Integer, ByRef iEnd As Integer, _
+                                         Optional ByVal bStripLink As Boolean = True) As String
 
             Dim strLink As String = ""
             Dim i, j As Integer
@@ -137,15 +142,17 @@ Namespace Utilities
                 Dim sbOut As New StringBuilder()
                 If (i > 0) Then sbOut.Append(strIn.Substring(0, i))
 
-                iStart = i
+                If bStripLink Then iStart = i Else iStart = j
+
                 i = strIn.IndexOfAny(quotes, i + 8)
                 j = strIn.IndexOfAny(quotes, i + 1)
                 If (i > 0 And j > i) Then strLink = strIn.Substring(i + 1, j - i - 1)
+
                 i = strIn.IndexOf(">"c, j)
                 j = strIn.IndexOf("</a>", i + 1, StringComparison.CurrentCultureIgnoreCase)
                 If (i > 0 And j > i) Then
                     sbOut.Append(strIn.Substring(i + 1, j - i - 1))
-                    iEnd = sbOut.Length
+                    If bStripLink Then iEnd = sbOut.Length Else iEnd = j + 4
                     sbOut.Append(strIn.Substring(j + 4))
                 End If
                 strOut = sbOut.ToString
@@ -154,6 +161,10 @@ Namespace Utilities
             If String.IsNullOrWhiteSpace(strLink) Or (iEnd = -1) Then
                 iStart = -1
                 iEnd = -1
+                strOut = strIn
+            End If
+
+            If Not bStripLink Then
                 strOut = strIn
             End If
 
