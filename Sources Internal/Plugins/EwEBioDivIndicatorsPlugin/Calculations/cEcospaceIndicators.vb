@@ -122,21 +122,7 @@ Public Class cEcospaceIndicators
     ''' <inheritdocs cref="cIndicators.ModelTLCatch"/>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function ModelTLCatch() As Single
-
-        Dim totalTL As Single = 0
-        Dim fCatch As Single = 0
-
-        For iGroup As Integer = 1 To Me.m_ecopathDS.NumGroups
-            fCatch += Me.m_ecospaceDS.CatchMap(Me.m_ptLocation.Y, Me.m_ptLocation.X, iGroup)
-            totalTL += Me.m_ecospaceDS.Ftot(Me.m_ptLocation.Y, Me.m_ptLocation.X, iGroup)
-        Next
-
-        If (fCatch > 0) Then
-            Return CSng(totalTL / (fCatch + 1.0E-20))
-        End If
-
-        Return 0
-
+        Return Me.m_ecospaceDS.TLc(Me.m_ptLocation.Y, Me.m_ptLocation.X)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -156,22 +142,7 @@ Public Class cEcospaceIndicators
     ''' <inheritdocs cref="cIndicators.KemptonsQ"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Function KemptonsQ() As Single
-
-        ' Recompose TLs, Biomass array
-        Dim TLs(Me.m_ecopathDS.NumGroups) As Single
-        Dim BSpace(Me.m_ecopathDS.NumGroups) As Single
-
-        For iGroup As Integer = 1 To Me.m_ecopathDS.NumGroups
-            TLs(iGroup) = Me.ModelTL(iGroup)
-            BSpace(iGroup) = Me.ModelBiomass(iGroup)
-        Next
-
-        If (Me.m_ecospaceDS.TimeStep = 0) Then
-            Return Me.Core.EcoFunction.KemptonsQ(Me.m_ecopathDS.NumLiving, Me.m_ecopathDS.TTLX, m_ecospaceDS.BBase, 0.25)
-        Else
-            Return Me.Core.EcoFunction.KemptonsQ(Me.m_ecopathDS.NumLiving, TLs, BSpace, 0.25)
-        End If
-
+        Return Me.m_ecospaceDS.KemptonsQ(Me.m_ptLocation.Y, Me.m_ptLocation.X)
     End Function
 
 #End Region ' Overrides Core data access and public bits

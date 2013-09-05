@@ -416,9 +416,10 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Grab and remember ecosim data structures when provided via the plug-in mechanism
         Me.m_ecospaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
 
-        ' Preserve old TL calc setting, and make sure TL is calculated
+        ' Preserve old TL calc setting
         Me.PreserveCalcTL = Me.m_ecospaceDS.bCalTrophicLevel
-        Me.m_ecospaceDS.bCalTrophicLevel = True
+        ' Enable trophic level calculations when plugin is configured to run with Ecospace
+        Me.m_ecospaceDS.bCalTrophicLevel = My.Settings.RunWithEcospace
 
     End Sub
 

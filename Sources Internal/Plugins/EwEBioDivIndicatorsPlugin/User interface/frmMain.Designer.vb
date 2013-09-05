@@ -44,7 +44,7 @@ Partial Class frmMain
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Me.m_tvIndicators = New System.Windows.Forms.TreeView()
+        Me.m_tvIndicators = New ScientificInterfaceShared.Controls.cThemedTreeView()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.m_tcOutput = New System.Windows.Forms.TabControl()
         Me.m_tpSettings = New System.Windows.Forms.TabPage()
@@ -397,14 +397,14 @@ Partial Class frmMain
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents m_tvIndicators As System.Windows.Forms.TreeView
+    Private WithEvents m_tvIndicators As ScientificInterfaceShared.Controls.cThemedTreeView
     Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
     Private WithEvents m_tcOutput As System.Windows.Forms.TabControl
     Private WithEvents m_tpEcopath As System.Windows.Forms.TabPage
     Private WithEvents m_tpEcosim As System.Windows.Forms.TabPage
     Private WithEvents m_grid As gridEcopath
     Private WithEvents m_tpEcospace As System.Windows.Forms.TabPage
-    Public WithEvents m_map As ScientificInterfaceShared.Controls.Map.ucMapZoom
+    Private WithEvents m_map As ScientificInterfaceShared.Controls.Map.ucMapZoom
     Private WithEvents m_tsMap As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
     Private WithEvents m_btnSaveToCSV As System.Windows.Forms.Button
     Private WithEvents m_tpSettings As System.Windows.Forms.TabPage
