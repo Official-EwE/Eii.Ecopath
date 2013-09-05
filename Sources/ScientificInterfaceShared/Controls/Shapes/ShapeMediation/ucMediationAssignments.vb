@@ -359,7 +359,7 @@ Namespace Controls
                 Dim lstPts As New PointPairList
 
                 'First point from shape at the zero X axis
-                lstPts.Add(0, resShape.ShapeData(1) * YScale)
+                lstPts.Add(Xmin, resShape.ShapeData(1) * YScale)
                 For ipt As Integer = 1 To resShape.nPoints
                     lstPts.Add(Xmin + dx * (ipt - 1), resShape.ShapeData(ipt) * YScale)
                 Next
