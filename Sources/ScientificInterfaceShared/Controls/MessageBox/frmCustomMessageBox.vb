@@ -37,14 +37,8 @@ Namespace Controls
 
 #Region " Private vars "
 
-        ''' <summary>Message box prompt.</summary>
-        Private m_strPrompt As String = ""
-        ''' <summary>Message box caption.</summary>
-        Private m_strCaption As String
         ''' <summary>Check box prompt, if anything.</summary>
         Private m_strCheckPrompt As String
-        ''' <summary>Hyperlink in the prompt, if any.</summary>
-        Private m_strHyperlink As String
         ''' <summary>Message box icon to show.</summary>
         Private m_mbi As MessageBoxIcon
         ''' <summary>Message box buttons to show.</summary>
@@ -77,22 +71,15 @@ Namespace Controls
             MyBase.New()
             Me.InitializeComponent()
 
-            Dim iLinkStart, iLinkEnd As Integer
-
             ' Remember this
-            Me.m_strCaption = strCaption
+            Me.Text = strCaption
+            Me.m_lblPrompt.Text = strPrompt
             Me.m_strCheckPrompt = strCheckboxPrompt
             Me.m_mbi = mbi
             Me.m_mbb = mbb
 
-            ' Detect hyperlink (blunt blunt blunt)
-            Me.m_strHyperlink = cStringUtils.Hyperlink(strPrompt, Me.m_strPrompt, iLinkStart, iLinkEnd)
-
             ' Config content
-            Me.m_lblPrompt.Text = Me.m_strPrompt
-            Me.m_lblPrompt.LinkArea = New LinkArea(Math.Max(0, iLinkStart), Math.Max(iLinkEnd - iLinkStart, 0))
-
-            Me.Text = Me.m_strCaption
+            Me.m_lblPrompt.Text = strPrompt
 
             ' Config icon
             Me.m_pbIcon.Visible = False
@@ -217,32 +204,6 @@ Namespace Controls
 
         End Sub
 
-        ' ''' -------------------------------------------------------------------
-        ' ''' <summary>
-        ' ''' Event handler, handles a hyperlink click.
-        ' ''' </summary>
-        ' ''' -------------------------------------------------------------------
-        'Private Sub OnLinkClicked(sender As Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
-        '       Handles m_lblPrompt.LinkClicked
-
-        '    If String.IsNullOrWhiteSpace(Me.m_strHyperlink) Then Return
-
-        '    If (Me.UIContext IsNot Nothing) Then
-        '        Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-        '        If (cmd IsNot Nothing) Then
-        '            cmd.Invoke(Me.m_strHyperlink)
-        '        End If
-        '    Else
-        '        Try
-        '            ' Go!
-        '            Process.Start(Me.m_strHyperlink)
-        '        Catch ex As Exception
-        '            cLog.Write(ex, "frmCustomMessageBox::OnLinkClicked(" & Me.m_strHyperlink & ")")
-        '        End Try
-        '    End If
-
-        'End Sub
-
 #End Region ' Events
 
 #Region " Internals "
@@ -310,10 +271,10 @@ Namespace Controls
             Dim ftPrompt As Font = Me.m_lblPrompt.Font
             Dim szPrompt As Size = Nothing
             Dim g As Graphics = Me.m_lblPrompt.CreateGraphics()
-            Dim iNumChars As Integer = Me.m_strPrompt.Length
+            Dim iNumChars As Integer = Me.m_lblPrompt.Text.Length
             Dim iNumLines As Integer = 1
 
-            szfMax = g.MeasureString(Me.m_strPrompt, ftPrompt, szfMax, _
+            szfMax = g.MeasureString(Me.m_lblPrompt.Text, ftPrompt, szfMax, _
                                      StringFormat.GenericDefault, iNumChars, iNumLines)
 
             Me.m_lblPrompt.AutoSize = False
