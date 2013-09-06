@@ -426,8 +426,8 @@ Namespace Controls
                         Me.m_asDataWork = Me.m_shape.ShapeData
 
                     Case eShapeFunctionType.Linear
-                        For i As Integer = 0 To nPoints
-                            Me.m_asDataWork(i) = sYZero + (sYEnd - sYZero) * i / nPoints
+                        For i As Integer = 1 To nPoints
+                            Me.m_asDataWork(i) = sYZero + (sYEnd - sYZero) * (i - 1) / (nPoints - 1)
                         Next i
 
                     Case eShapeFunctionType.Sigmoid, eShapeFunctionType.Hyperbolic
