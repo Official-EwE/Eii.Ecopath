@@ -111,9 +111,10 @@ Public Class cEnviroInputMap
         Dim ncells As Integer
         ReDim pts(nBins)
         Me.computeMinMax()
+        Dim range As Single = Me.Max - Me.Min
         'Make sure there is data in the map
-        If Me.Max > 0 Then
-            Me.m_binWidth = Me.Max / nBins
+        If range > 0 Then
+            Me.m_binWidth = range / nBins
         Else
             'No data in the map so just set a default binwidth 
             'this will dump all the data into the zero bin
@@ -126,7 +127,8 @@ Public Class cEnviroInputMap
                 For ic As Integer = 1 To Me.m_spaceData.InCol
                     If Me.m_spaceData.Depth(ir, ic) > 0 Then
                         Dim cell As Single = CSng(Me.m_source.Cell(ir, ic))
-                        ipt = CInt(Math.Truncate(cell / m_binWidth)) + 1
+                        'ipt = CInt(Math.Truncate(cell / m_binWidth)) + 1
+                        ipt = CInt(Math.Truncate((cell - Me.Min) / m_binWidth)) + 1
                         If ipt >= nBins Then ipt = nBins
                         If ipt <= 0 Then ipt = 1
                         pts(ipt).Y += 1
@@ -140,7 +142,7 @@ Public Class cEnviroInputMap
             'Normalize the histogram
             '29-Sept-2011 make it the percentage instead
             For i As Integer = 1 To nBins
-                pts(i).X = CSng(m_binWidth * i)
+                pts(i).X = CSng(Me.Min + m_binWidth * i)
                 'normalize the data
                 'pts(i).Y = pts(i).Y / maxPts
                 pts(i).Y = pts(i).Y / ncells
@@ -284,9 +286,11 @@ Public Class cEnviroInputMap
         Try
             For ir As Integer = 1 To Me.m_spaceData.InRow
                 For ic As Integer = 1 To Me.m_spaceData.InCol
-                    Dim sCell As Single = CSng(Me.m_source.Cell(ir, ic))
-                    Me.m_min = Math.Min(sCell, Me.m_min)
-                    Me.m_max = Math.Max(sCell, Me.m_max)
+                    If Me.m_spaceData.Depth(ir, ic) > 0 Then
+                        Dim sCell As Single = CSng(Me.m_source.Cell(ir, ic))
+                        Me.m_min = Math.Min(sCell, Me.m_min)
+                        Me.m_max = Math.Max(sCell, Me.m_max)
+                    End If
                 Next
             Next
         Catch ex As Exception
