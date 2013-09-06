@@ -94,6 +94,8 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.GetPane(1).YAxis.MajorGrid.IsVisible = True
 
             Me.m_zgh.GetPane(1).Y2Axis.IsVisible = True
+
+            ' ToDo: Globalize this
             Me.m_zgh.GetPane(1).Y2Axis.Title.Text = "Map histogram"
             Me.m_zgh.GetPane(1).Y2Axis.Title.IsVisible = True
             Me.m_zgh.GetPane(1).Y2Axis.Title.FontSpec = Me.m_zgh.GetPane(1).YAxis.Title.FontSpec
@@ -299,7 +301,7 @@ Public Class dlgDefineMapResponseAssignments
             Dim lstPts As New PointPairList
 
             'First point from shape at the zero X axis
-            lstPts.Add(0, Me.m_shape.ShapeData(1) * YScale)
+            lstPts.Add(Xmin, Me.m_shape.ShapeData(1) * YScale)
             For ipt As Integer = 1 To Me.m_shape.nPoints
                 lstPts.Add(Xmin + dx * (ipt - 1), Me.m_shape.ShapeData(ipt) * YScale)
             Next
