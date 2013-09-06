@@ -578,7 +578,7 @@ Public Class cMessageHistory
             ' Invoke message box
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
             Try
-                cCustomMessageBox.Show(Me.UIContext, strMessage, AppLauncher.GetInstance().Text, mbb, mbi)
+                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, AppLauncher.GetInstance().Text, mbb, mbi)
             Catch ex As Exception
                 cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
             End Try
