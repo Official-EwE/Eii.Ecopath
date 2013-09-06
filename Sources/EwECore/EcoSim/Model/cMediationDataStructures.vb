@@ -15,6 +15,10 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
+Option Strict On
+Option Explicit On
+
 Imports EwEUtils.Core
 
 ' ===============================================================================
@@ -183,11 +187,11 @@ Public Class cMediationDataStructures
     ''' <returns>Value(Y) on the mediation shape for the input(X)</returns>
     ''' <remarks></remarks>
     Public Function getMedValue(ByVal iMedShapeIndex As Integer, ByVal Xvalue As Single) As Single
-        Dim ip As Long
+        Dim ip As Integer
         '060328 CJW found that without the +0.01 below it could be unstable when slope
         'was large around Ecopath base point in mediation function, causing instability.
         'This solves it. VC.
-        ip = Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01)
+        ip = CInt(Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01))
 
         'if the index is out of bounds use the fist or last value
         If ip < 1 Then ip = 1
@@ -236,7 +240,7 @@ Public Class cMediationDataStructures
 
                     'Get the weighted sum of all landings for the Group/Fleets assigned to this mediation shape
                     For iGrp = 1 To Me.NMedXused(iShp)
-                        If Me.IMedUsed(iGrp, iShp) Then
+                        If Me.IMedUsed(iGrp, iShp) > 0 Then
                             'Get the Group and Fleet index
                             iMedGrp = Me.IMedUsed(iGrp, iShp)
                             iMedFlt = Me.IMedFltUsed(iGrp, iShp)
@@ -293,7 +297,7 @@ Public Class cMediationDataStructures
         If Xvalue >= Me.XAxisMax(iMedShapeIndex) Then Return Me.Medpoints(NMedPoints, iMedShapeIndex)
 
         Dim dx As Double = NMedPoints / (Me.XAxisMax(iMedShapeIndex) - Me.XAxisMin(iMedShapeIndex) + 0.00001)
-        ip = 1 + Math.Truncate((Xvalue - Me.XAxisMin(iMedShapeIndex)) * dx)
+        ip = 1 + CInt(Math.Truncate((Xvalue - Me.XAxisMin(iMedShapeIndex)) * dx))
         Return Me.Medpoints(ip, iMedShapeIndex)
 
     End Function
