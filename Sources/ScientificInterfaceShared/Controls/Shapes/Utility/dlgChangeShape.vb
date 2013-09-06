@@ -172,18 +172,18 @@ Namespace Controls
                 Case eShapeFunctionType.NotSet
                     sA = Me.m_shape.YZero : sB = Me.m_shape.YEnd : sC = Me.m_shape.YBase : sD = Me.m_shape.Steep
                 Case eShapeFunctionType.Linear
-                    sA = 1.0! : sB = 1.0!
+                    sA = 1.0 : sB = 1.0
                 Case eShapeFunctionType.Exponential
-                    sA = 1.0! : sB = 5.0! : sC = 0.2!
+                    sA = 1.0 : sB = 5.0 : sC = 0.2
                 Case eShapeFunctionType.Hyperbolic
-                    sA = 1.0! : sB = 3.0! : sC = 0.75
+                    sA = 1.0 : sB = 3.0 : sC = 0.75
                 Case eShapeFunctionType.Sigmoid
-                    sA = 0.0! : sB = 1.0! : sC = 4.0 : sD = 2.0
+                    sA = 0.0 : sB = 2.0 : sC = 0.5 : sD = 3.0
                 Case eShapeFunctionType.Betapdf
                     sA = 2.0F
                     sB = 3.0F
                 Case eShapeFunctionType.Normal
-                    sA = 1.0! : sB = 1.0! : sC = 10.0!
+                    sA = 1.0 : sB = 1.0 : sC = 10.0
             End Select
 
             Me.m_fpA.Value = sA
