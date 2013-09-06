@@ -293,7 +293,7 @@ Public Class cMediationDataStructures
         If Xvalue >= Me.XAxisMax(iMedShapeIndex) Then Return Me.Medpoints(NMedPoints, iMedShapeIndex)
 
         Dim dx As Double = NMedPoints / (Me.XAxisMax(iMedShapeIndex) - Me.XAxisMin(iMedShapeIndex) + 0.00001)
-        ip = (Xvalue - Me.XAxisMin(iMedShapeIndex)) * dx
+        ip = 1 + Math.Truncate((Xvalue - Me.XAxisMin(iMedShapeIndex)) * dx)
         Return Me.Medpoints(ip, iMedShapeIndex)
 
     End Function
