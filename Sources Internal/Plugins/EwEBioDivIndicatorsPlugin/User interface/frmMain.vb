@@ -111,6 +111,7 @@ Public Class frmMain
         Me.TabText = My.Resources.CAPTION
 
         Me.m_llStatus.UIContext = Me.UIContext
+        Me.m_pbStatus.BackgroundImage = ScientificInterfaceShared.My.Resources.Warning
 
         Try
             ' Populate tree view from indicator settings

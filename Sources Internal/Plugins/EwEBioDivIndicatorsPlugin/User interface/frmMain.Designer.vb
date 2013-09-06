@@ -112,6 +112,7 @@ Partial Class frmMain
         'SplitContainer1.Panel1
         '
         Me.SplitContainer1.Panel1.Controls.Add(Me.m_tvIndicators)
+        resources.ApplyResources(Me.SplitContainer1.Panel1, "SplitContainer1.Panel1")
         '
         'SplitContainer1.Panel2
         '
@@ -130,7 +131,6 @@ Partial Class frmMain
         '
         'm_tpSettings
         '
-        Me.m_tpSettings.BackColor = System.Drawing.SystemColors.Control
         Me.m_tpSettings.Controls.Add(Me.m_lblCredits)
         Me.m_tpSettings.Controls.Add(Me.m_plCredits)
         Me.m_tpSettings.Controls.Add(Me.m_btnChoose)
@@ -377,8 +377,6 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_pbStatus, "m_pbStatus")
         Me.m_pbStatus.Name = "m_pbStatus"
         Me.m_pbStatus.TabStop = False
-        Me.m_pbStatus.Anchor = Windows.Forms.AnchorStyles.Left Or Windows.Forms.AnchorStyles.Bottom
-        Me.m_pbStatus.Image = ScientificInterfaceShared.My.Resources.Warning
         '
         'm_llStatus
         '
@@ -387,7 +385,6 @@ Partial Class frmMain
         Me.m_llStatus.TabStop = True
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
-        Me.m_llStatus.Anchor = Windows.Forms.AnchorStyles.Left Or Windows.Forms.AnchorStyles.Bottom
         '
         'frmMain
         '
@@ -419,7 +416,6 @@ Partial Class frmMain
         Me.m_tpMC.ResumeLayout(False)
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_tvIndicators As ScientificInterfaceShared.Controls.cThemedTreeView
