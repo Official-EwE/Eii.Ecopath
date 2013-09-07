@@ -902,56 +902,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath biodiversity indicators saved to &apos;{0}&apos;.
+        '''  Looks up a localized string similar to Failed to save {0} biodiversity indicators. {1}.
         '''</summary>
-        Friend ReadOnly Property STATUS_SAVED_ECOPATH() As String
+        Friend ReadOnly Property STATUS_SAVE_FAILED() As String
             Get
-                Return ResourceManager.GetString("STATUS_SAVED_ECOPATH", resourceCulture)
+                Return ResourceManager.GetString("STATUS_SAVE_FAILED", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecosim biodiversity indicators saved to &apos;{0}&apos;.
+        '''  Looks up a localized string similar to {0} biodiversity indicators saved to &apos;{1}&apos;.
         '''</summary>
-        Friend ReadOnly Property STATUS_SAVED_ECOSIM() As String
+        Friend ReadOnly Property STATUS_SAVE_SUCCESS() As String
             Get
-                Return ResourceManager.GetString("STATUS_SAVED_ECOSIM", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecospace biodiversity indicators saved to &apos;{0}&apos;.
-        '''</summary>
-        Friend ReadOnly Property STATUS_SAVED_ECOSPACE() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SAVED_ECOSPACE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Monte Carlo biodiversity indicators saved to &apos;{0}&apos;.
-        '''</summary>
-        Friend ReadOnly Property STATUS_SAVED_MC() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SAVED_MC", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Saving Biodiversity indicators to CSV....
-        '''</summary>
-        Friend ReadOnly Property STATUS_SAVING() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SAVING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Failed to save biodiversity indicators. {0}.
-        '''</summary>
-        Friend ReadOnly Property STATUS_SAVING_FAILED() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SAVING_FAILED", resourceCulture)
+                Return ResourceManager.GetString("STATUS_SAVE_SUCCESS", resourceCulture)
             End Get
         End Property
         

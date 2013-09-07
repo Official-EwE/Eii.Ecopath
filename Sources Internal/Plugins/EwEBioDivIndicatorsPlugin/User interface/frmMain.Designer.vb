@@ -45,8 +45,8 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Me.m_tvIndicators = New ScientificInterfaceShared.Controls.cThemedTreeView()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.m_tvIndicators = New ScientificInterfaceShared.Controls.cThemedTreeView()
         Me.m_tcOutput = New System.Windows.Forms.TabControl()
         Me.m_tpSettings = New System.Windows.Forms.TabPage()
         Me.m_lblCredits = New System.Windows.Forms.Label()
@@ -54,7 +54,7 @@ Partial Class frmMain
         Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbICM = New System.Windows.Forms.PictureBox()
         Me.m_pbCSIC = New System.Windows.Forms.PictureBox()
-        Me.m_btnChoose = New System.Windows.Forms.Button()
+        Me.m_btnChooseFolder = New System.Windows.Forms.Button()
         Me.m_tbxDefaultLocation = New System.Windows.Forms.TextBox()
         Me.m_tbxOutputFolder = New System.Windows.Forms.TextBox()
         Me.m_lblSaveTo = New System.Windows.Forms.Label()
@@ -79,6 +79,7 @@ Partial Class frmMain
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
+        Me.m_btnChangeDefault = New System.Windows.Forms.Button()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -96,14 +97,6 @@ Partial Class frmMain
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'm_tvIndicators
-        '
-        resources.ApplyResources(Me.m_tvIndicators, "m_tvIndicators")
-        Me.m_tvIndicators.FullRowSelect = True
-        Me.m_tvIndicators.HideSelection = False
-        Me.m_tvIndicators.HotTracking = True
-        Me.m_tvIndicators.Name = "m_tvIndicators"
-        '
         'SplitContainer1
         '
         resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
@@ -117,6 +110,14 @@ Partial Class frmMain
         'SplitContainer1.Panel2
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.m_tcOutput)
+        '
+        'm_tvIndicators
+        '
+        resources.ApplyResources(Me.m_tvIndicators, "m_tvIndicators")
+        Me.m_tvIndicators.FullRowSelect = True
+        Me.m_tvIndicators.HideSelection = False
+        Me.m_tvIndicators.HotTracking = True
+        Me.m_tvIndicators.Name = "m_tvIndicators"
         '
         'm_tcOutput
         '
@@ -133,7 +134,8 @@ Partial Class frmMain
         '
         Me.m_tpSettings.Controls.Add(Me.m_lblCredits)
         Me.m_tpSettings.Controls.Add(Me.m_plCredits)
-        Me.m_tpSettings.Controls.Add(Me.m_btnChoose)
+        Me.m_tpSettings.Controls.Add(Me.m_btnChangeDefault)
+        Me.m_tpSettings.Controls.Add(Me.m_btnChooseFolder)
         Me.m_tpSettings.Controls.Add(Me.m_tbxDefaultLocation)
         Me.m_tpSettings.Controls.Add(Me.m_tbxOutputFolder)
         Me.m_tpSettings.Controls.Add(Me.m_lblSaveTo)
@@ -185,11 +187,11 @@ Partial Class frmMain
         Me.m_pbCSIC.Name = "m_pbCSIC"
         Me.m_pbCSIC.TabStop = False
         '
-        'm_btnChoose
+        'm_btnChooseFolder
         '
-        resources.ApplyResources(Me.m_btnChoose, "m_btnChoose")
-        Me.m_btnChoose.Name = "m_btnChoose"
-        Me.m_btnChoose.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnChooseFolder, "m_btnChooseFolder")
+        Me.m_btnChooseFolder.Name = "m_btnChooseFolder"
+        Me.m_btnChooseFolder.UseVisualStyleBackColor = True
         '
         'm_tbxDefaultLocation
         '
@@ -386,6 +388,12 @@ Partial Class frmMain
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
         '
+        'm_btnChangeDefault
+        '
+        resources.ApplyResources(Me.m_btnChangeDefault, "m_btnChangeDefault")
+        Me.m_btnChangeDefault.Name = "m_btnChangeDefault"
+        Me.m_btnChangeDefault.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -429,7 +437,7 @@ Partial Class frmMain
     Private WithEvents m_tsMap As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
     Private WithEvents m_btnSaveToCSV As System.Windows.Forms.Button
     Private WithEvents m_tpSettings As System.Windows.Forms.TabPage
-    Private WithEvents m_btnChoose As System.Windows.Forms.Button
+    Private WithEvents m_btnChooseFolder As System.Windows.Forms.Button
     Private WithEvents m_tbxDefaultLocation As System.Windows.Forms.TextBox
     Private WithEvents m_tbxOutputFolder As System.Windows.Forms.TextBox
     Private WithEvents m_lblSaveTo As System.Windows.Forms.Label
@@ -452,4 +460,5 @@ Partial Class frmMain
     Private WithEvents m_graphMC As ZedGraph.ZedGraphControl
     Private WithEvents m_pbStatus As System.Windows.Forms.PictureBox
     Private WithEvents m_llStatus As ScientificInterfaceShared.Controls.ucLinkLabel
+    Private WithEvents m_btnChangeDefault As System.Windows.Forms.Button
 End Class

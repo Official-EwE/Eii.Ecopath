@@ -399,24 +399,13 @@
     <value>Biodiversity indicators plugin cannot write to folder '{0}'</value>
     <comment>{0}: folder name</comment>
   </data>
-  <data name="STATUS_SAVED_ECOPATH" xml:space="preserve">
-    <value>Ecopath biodiversity indicators saved to '{0}'</value>
-    <comment>{0}: file name</comment>
+  <data name="STATUS_SAVE_SUCCESS" xml:space="preserve">
+    <value>{0} biodiversity indicators saved to '{1}'</value>
+    <comment>{0}: component name; {1}: file name</comment>
   </data>
-  <data name="STATUS_SAVED_ECOSIM" xml:space="preserve">
-    <value>Ecosim biodiversity indicators saved to '{0}'</value>
-    <comment>{0}: file name</comment>
-  </data>
-  <data name="STATUS_SAVED_ECOSPACE" xml:space="preserve">
-    <value>Ecospace biodiversity indicators saved to '{0}'</value>
-    <comment>{0}: file name</comment>
-  </data>
-  <data name="STATUS_SAVING" xml:space="preserve">
-    <value>Saving Biodiversity indicators to CSV...</value>
-  </data>
-  <data name="STATUS_SAVING_FAILED" xml:space="preserve">
-    <value>Failed to save biodiversity indicators. {0}</value>
-    <comment>{0}: exception message</comment>
+  <data name="STATUS_SAVE_FAILED" xml:space="preserve">
+    <value>Failed to save {0} biodiversity indicators. {1}</value>
+    <comment>{0}: component name; {1}: exception message</comment>
   </data>
   <data name="IND_KEMPTONQ_DESC" xml:space="preserve">
     <value>Kempton's biodiversity index (Q)</value>
@@ -426,10 +415,6 @@
   </data>
   <data name="HEADER_TRIAL" xml:space="preserve">
     <value>Trial</value>
-  </data>
-  <data name="STATUS_SAVED_MC" xml:space="preserve">
-    <value>Monte Carlo biodiversity indicators saved to '{0}'</value>
-    <comment>{0}: file name</comment>
   </data>
   <data name="CAPTION" xml:space="preserve">
     <value>Biodiversity indicators</value>

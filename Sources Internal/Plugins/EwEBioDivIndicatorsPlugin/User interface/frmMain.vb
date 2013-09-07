@@ -236,7 +236,7 @@ Public Class frmMain
 
     Private Sub OnSaveToCSV(sender As System.Object, e As System.EventArgs) Handles m_btnSaveToCSV.Click
         ' Save selected component (path, sim, space or ...) to CSV
-        Me.m_ppt.SaveToCSV(Me.SelectedTabComponent(), False)
+        Me.m_ppt.SaveToCSVManual(Me.SelectedTabComponent())
     End Sub
 
     Private Sub OnAutoSaveCSVCChanged(sender As Object, e As System.EventArgs) Handles m_cbAutoSaveCSV.CheckedChanged
@@ -333,7 +333,20 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnBrowseOutputFolder(sender As System.Object, e As System.EventArgs) Handles m_btnChoose.Click
+    Private Sub OnChangeDefaultFolder(sender As System.Object, e As System.EventArgs) Handles m_btnChangeDefault.Click
+
+        Try
+            Dim cmd As cShowOptionsCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
+            If cmd IsNot Nothing Then
+                cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.Autosave)
+            End If
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnChooseOutputFolder(sender As System.Object, e As System.EventArgs) Handles m_btnChooseFolder.Click
         ' User wants to browse for an output folder. Let's be nice.
         Me.PickOutputFolder()
     End Sub
@@ -374,7 +387,7 @@ Public Class frmMain
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecospace) Then
             Me.m_ecospaceWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.m_ppt.m_indEcopath)
         End If
-        If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.MC) Then
+        If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.MonteCarlo) Then
             Me.m_mcWrapper.RefreshContent(Me.GetSelectedIndicatorGroup())
         End If
 

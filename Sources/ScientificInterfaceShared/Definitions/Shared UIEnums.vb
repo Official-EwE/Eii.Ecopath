@@ -173,8 +173,10 @@ Namespace Definitions
         Plugins
         ''' <summary>Message history options.</summary>
         Messages
-        ''' <summary>File location options.</summary>
+        ''' <summary>Autosave options.</summary>
         Autosave
+        ''' <summary>File location options.</summary>
+        FileLocations = Autosave
         ''' <summary>Presentation mode options.</summary>
         PresentationMode
     End Enum

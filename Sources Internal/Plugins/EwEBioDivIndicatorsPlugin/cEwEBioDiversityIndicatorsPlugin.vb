@@ -62,7 +62,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Ecopath
         Ecosim
         Ecospace
-        MC
+        MonteCarlo
         Any
     End Enum
 
@@ -88,6 +88,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Friend m_settings As New cIndicatorSettings()
 
     Private m_frm As frmMain = Nothing
+
+    Private m_msgStatus As cMessage = Nothing
 
 #End Region ' Variables
 
@@ -248,16 +250,17 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Me.m_indEcopath = New cEcopathIndicators(Me.m_core, Me.m_ecopathDS, Me.m_stanzaDS, Me.m_taxonDS)
         Me.m_indEcopath.Compute()
 
-        ' Need to save?
-        If (My.Settings.AutoSaveCSV) Then
-            ' #Yes: Save quietly
-            Me.SaveToCSV(eComponentType.Ecopath, True)
-        End If
-
         ' Has UI?
         If (Me.HasUI) Then
             ' #Yes: Update UI
             Me.m_frm.UpdateIndicators(eComponentType.Ecopath)
+        End If
+
+        If (Me.AutoSave And My.Settings.RunWithEcopath) Then
+            If Me.BeginSave(eComponentType.Ecopath) Then
+                Me.PerformSave(eComponentType.Ecopath)
+                Me.EndSave()
+            End If
         End If
 
     End Sub
@@ -302,8 +305,11 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
         ' Need to save?
         If (My.Settings.AutoSaveCSV) Then
-            ' #Yes: Save quietly
-            Me.SaveToCSV(eComponentType.Ecosim, True)
+            ' #Yes: Save
+            If Me.BeginSave(eComponentType.Ecosim) Then
+                Me.PerformSave(eComponentType.Ecosim)
+                Me.EndSave()
+            End If
         End If
 
         ' Has UI?
@@ -373,14 +379,17 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
         ' Need to save?
         If (My.Settings.AutoSaveCSV) And (CInt(man.nTrialIterations) = man.nTrials) Then
-            ' #Yes: Save quietly
-            Me.SaveToCSV(eComponentType.MC, True)
+            ' #Yes: Save
+            If Me.BeginSave(eComponentType.MonteCarlo) Then
+                Me.PerformSave(eComponentType.MonteCarlo)
+                Me.EndSave()
+            End If
         End If
 
         ' Has UI?
         If (Me.HasUI) Then
             ' #Yes: Update UI
-            Me.m_frm.UpdateIndicators(eComponentType.MC)
+            Me.m_frm.UpdateIndicators(eComponentType.MonteCarlo)
         End If
 
     End Sub
@@ -413,6 +422,11 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
         Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
+        ' Calculate only if supposed to run with Ecospace
+        If (My.Settings.RunWithEcospace = False) Then Return
+        ' Do not calculate when Ecospace is running as part of a searches
+        If (Me.m_core.StateMonitor.IsSearching()) Then Return
+
         ' Grab and remember ecosim data structures when provided via the plug-in mechanism
         Me.m_ecospaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
 
@@ -421,19 +435,15 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Enable trophic level calculations when plugin is configured to run with Ecospace
         Me.m_ecospaceDS.bCalTrophicLevel = My.Settings.RunWithEcospace
 
-    End Sub
+        If My.Settings.AutoSaveCSV Then Me.BeginSave(eComponentType.Ecospace)
 
-    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) _
-        Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
-        ' Restore old TL calc setting
-        Me.m_ecospaceDS.bCalTrophicLevel = Me.PreserveCalcTL
     End Sub
 
     Public Sub EcospaceEndTimeStepPost(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) _
         Implements EwEPlugin.IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost
 
-        ' Do not calculate if not supposed to run with Ecospace
-        If (Not My.Settings.RunWithEcospace) Then Return
+        ' Calculate only if supposed to run with Ecospace
+        If (My.Settings.RunWithMC = False) Then Return
         ' Do not calculate when Ecospace is running as part of a searches
         If (Me.m_core.StateMonitor.IsSearching()) Then Return
 
@@ -468,12 +478,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         End Try
         cApplicationStatusNotifier.EndProgress(Me.m_core)
 
-        ' Need to save?
-        If (My.Settings.AutoSaveCSV) Then
-            ' #Yes: Save quietly
-            Me.SaveToCSV(eComponentType.Ecospace, True)
-        End If
-
+        Me.PerformSave(eComponentType.Ecospace)
         ' Has UI?
         If (Me.HasUI) Then
             ' #Yes: Update UI
@@ -482,13 +487,25 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     End Sub
 
-    Public Sub EcospaceRunInvalidated() Implements EwEPlugin.IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated
+    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) _
+        Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
 
-        ' Do not clear if not supposed to run with Ecospace
-        If (Not My.Settings.RunWithEcospace) Then Return
+        ' Calculate only if supposed to run with Ecospace
+        If (My.Settings.RunWithEcospace = False) Then Return
+        ' Do not calculate when Ecospace is running as part of a searches
+        If (Me.m_core.StateMonitor.IsSearching()) Then Return
+
+        ' Restore old TL calc setting
+        Me.m_ecospaceDS.bCalTrophicLevel = Me.PreserveCalcTL
+
+        Me.EndSave()
+
+    End Sub
+
+    Public Sub EcospaceRunInvalidated() _
+        Implements EwEPlugin.IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated
         ' Clear
         Me.ClearEcospaceIndicators()
-
     End Sub
 
 #End Region ' Ecospace
@@ -562,45 +579,38 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     ''' </summary>
     ''' <returns>The output folder that the user selected.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function OutputFolder(type As eAutosaveTypes) As String
+    Friend Function OutputFolder(component As eComponentType) As String
         If My.Settings.SaveToDefault Then
-            Return Me.m_core.DefaultOutputPath(type)
-        Else
-            Return My.Settings.CustomFolder
+            Select Case component
+                Case eComponentType.Ecopath : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecopath)
+                Case eComponentType.Ecosim : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
+                Case eComponentType.Ecospace : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps)
+                Case eComponentType.MonteCarlo : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
+            End Select
+            Debug.Assert(False)
         End If
+        Return My.Settings.CustomFolder
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Central point to save computed indicators to a CSV file.
+    ''' Central point to save computed indicators to a CSV file, as initiated 
+    ''' by the user.
     ''' </summary>
     ''' <param name="component">The <see cref="eComponentType"/> to save indicators for.</param>
-    ''' <param name="bQuiet">Flag stating whether any popup messages should be suppressed.
-    ''' This plug-in can be configured to automatically save CSV results, in which case it is
-    ''' desirable to suppress any popup messages.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SaveToCSV(component As eComponentType, bQuiet As Boolean)
+    Friend Sub SaveToCSVManual(component As eComponentType)
 
         ' Start CSV save process
-        cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_SAVING)
-
-        ' Safely encase file access logic to make sure that this method will not get interrupted
+        cApplicationStatusNotifier.StartProgress(Me.m_core)
         Try
-            Select Case component
-                Case eComponentType.Ecopath
-                    Me.SaveEcopathCSV(bQuiet)
-                Case eComponentType.Ecosim
-                    Me.SaveEcosimCSV(bQuiet)
-                Case eComponentType.Ecospace
-                    Me.SaveEcospaceCSV(bQuiet)
-                Case eComponentType.MC
-                    Me.SaveMCCSV(bQuiet)
-            End Select
+            If Me.BeginSave(component) Then
+                Me.PerformSave(component)
+                Me.EndSave()
+            End If
         Catch ex As Exception
-            ' Whoah!
-            Me.NotifyUser(String.Format(My.Resources.STATUS_SAVING_FAILED, ex.Message), bQuiet)
-        End Try
 
+        End Try
         ' End CSV save process
         cApplicationStatusNotifier.EndProgress(Me.m_core)
 
@@ -653,7 +663,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Has UI?
         If (Me.HasUI) Then
             ' #Yes: Update UI
-            Me.m_frm.UpdateIndicators(eComponentType.MC)
+            Me.m_frm.UpdateIndicators(eComponentType.MonteCarlo)
         End If
 
     End Sub
@@ -674,43 +684,45 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Return True
     End Function
 
-    Private Function FileName() As String
-        Return "biodiv_indicators.csv"
+    Private Function FileName(ByVal component As eComponentType, ByVal strStep As String) As String
+        Return cFileUtils.ToValidFileName(String.Format("biodiv_ind_{0}{1}.csv", Me.ComponentName(component), strStep), False)
+    End Function
+
+    Private Function ComponentName(component As eComponentType) As String
+        Select Case component
+            Case eComponentType.Ecopath : Return SharedResources.HEADER_ECOPATH
+            Case eComponentType.Ecosim : Return SharedResources.HEADER_ECOSIM
+            Case eComponentType.Ecospace : Return SharedResources.HEADER_ECOSPACE
+            Case eComponentType.MonteCarlo : Return SharedResources.HEADER_MONTECARLO
+        End Select
+        Return ""
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Save calculated Ecopath indicators to a CSV file.
     ''' </summary>
-    ''' <param name="bQuiet">True if popup messages should be suppressed.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub SaveEcopathCSV(bQuiet As Boolean)
+    Private Sub SaveEcopathCSV()
+
+        If (Me.m_msgStatus Is Nothing) Then Return
 
         ' Sanity check
         Debug.Assert(Me.m_indEcopath.IsComputed, "Application flow error, ecopath indicators not calculated yet")
 
-        Dim strFile As String = Path.Combine(Me.OutputFolder(eAutosaveTypes.Ecopath), Me.FileName)
-        Dim strPath As String = Path.GetDirectoryName(strFile)
-
-        ' Check if output directory is - or can be made - available 
-        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-            ' #Ouch: directory inaccessible! Notify user
-            Me.NotifyUser(String.Format(My.Resources.STATUS_INVALID_FOLDER, strPath), bQuiet)
-            ' Abort
-            Return
-        End If
-
+        Dim strPath As String = Me.OutputFolder(eComponentType.Ecopath)
+        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecopath, ""))
         Dim sw As New StreamWriter(strFile)
 
         ' Write header line
-        sw.WriteLine("{0},{1}", Me.ToCSVField(SharedResources.HEADER_INDICATOR), Me.ToCSVField(SharedResources.HEADER_VALUE))
+        sw.WriteLine("{0},{1}", cStringUtils.ToCSVField(SharedResources.HEADER_INDICATOR), cStringUtils.ToCSVField(SharedResources.HEADER_VALUE))
 
         ' Write a line for each indicator
         For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
             Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
-                sw.WriteLine("{0},{1}", Me.ToCSVField(info.Name), cStringUtils.FormatSingle(info.GetValue(Me.m_indEcopath)))
+                sw.WriteLine("{0},{1}", cStringUtils.ToCSVField(info.Name), cStringUtils.FormatSingle(info.GetValue(Me.m_indEcopath)))
             Next
         Next
 
@@ -718,24 +730,14 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         sw.Flush()
         sw.Close()
 
-        ' Notify user
-        Me.NotifyUser(String.Format(My.Resources.STATUS_SAVED_ECOPATH, strFile), False, strFile)
+        Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecopath), strFile), eStatusFlags.OK)
 
     End Sub
 
-    Private Sub SaveEcosimCSV(bQuiet As Boolean)
+    Private Sub SaveEcosimCSV()
 
-        Dim strFile As String = Path.Combine(Me.OutputFolder(eAutosaveTypes.Ecosim), Me.FileName)
-        Dim strPath As String = Path.GetDirectoryName(strFile)
-
-        ' Check if output directory is - or can be made - available 
-        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-            ' #Ouch: directory inaccessible! Notify user
-            Me.NotifyUser(String.Format(My.Resources.STATUS_INVALID_FOLDER, strPath), bQuiet)
-            ' Abort
-            Return
-        End If
-
+        Dim strPath As String = Me.OutputFolder(eComponentType.Ecosim)
+        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecosim, ""))
         Dim sw As New StreamWriter(strFile)
         Dim sb As New StringBuilder()
 
@@ -746,7 +748,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
                 sb.Append(",")
-                sb.Append(Me.ToCSVField(info.Name))
+                sb.Append(cStringUtils.ToCSVField(info.Name))
             Next
         Next
         sw.WriteLine(sb.ToString())
@@ -774,26 +776,16 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         sw.Flush()
         sw.Close()
 
-        ' Notify user
-        Me.NotifyUser(String.Format(My.Resources.STATUS_SAVED_ECOSIM, strFile), False, strFile)
+        Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecosim), strFile), eStatusFlags.OK)
 
     End Sub
 
-    Private Sub SaveMCCSV(bQuiet As Boolean)
+    Private Sub SaveMCCSV()
 
         Dim core As cCore = Me.m_uic.Core
         Dim strTS As String = core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex).Name
-        Dim strFile As String = Path.Combine(Me.OutputFolder(eAutosaveTypes.MonteCarlo), Me.FileName)
-        Dim strPath As String = Path.GetDirectoryName(strFile)
-
-        ' Check if output directory is - or can be made - available 
-        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-            ' #Ouch: directory inaccessible! Notify user
-            Me.NotifyUser(String.Format(My.Resources.STATUS_INVALID_FOLDER, strPath), bQuiet)
-            ' Abort
-            Return
-        End If
-
+        Dim strPath As String = Me.OutputFolder(eComponentType.MonteCarlo)
+        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.MonteCarlo, ""))
         Dim sw As New StreamWriter(strFile)
         Dim sb As New StringBuilder()
 
@@ -806,7 +798,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
                 sb.Append(",")
-                sb.Append(Me.ToCSVField(info.Name))
+                sb.Append(cStringUtils.ToCSVField(info.Name))
             Next
         Next
         sw.WriteLine(sb.ToString())
@@ -840,23 +832,14 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         sw.Flush()
         sw.Close()
 
-        ' Notify user
-        Me.NotifyUser(String.Format(My.Resources.STATUS_SAVED_MC, strFile), False, strFile)
+        Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.MonteCarlo), strFile), eStatusFlags.OK)
 
     End Sub
 
-    Private Sub SaveEcospaceCSV(bQuiet As Boolean)
+    Private Sub SaveEcospaceCSV()
 
-        Dim strFile As String = Path.Combine(Me.OutputFolder(eAutosaveTypes.EcospaceMaps), Me.FileName)
-        Dim strPath As String = Path.GetDirectoryName(strFile)
-
-        ' Check if output directory is - or can be made - available 
-        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-            ' #Ouch: directory inaccessible! Notify user
-            Me.NotifyUser(String.Format(My.Resources.STATUS_INVALID_FOLDER, strPath), bQuiet)
-            ' Abort
-            Return
-        End If
+        Dim strPath As String = Me.OutputFolder(eComponentType.Ecospace)
+        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecospace, CStr(Me.m_ecospaceDS.TimeNow)))
 
         Dim sw As New StreamWriter(strFile)
         Dim sb As New StringBuilder()
@@ -864,17 +847,17 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
         ' Write header line
         sb.Append(String.Format("{0},{1},{2},{3}",
-                                Me.ToCSVField(SharedResources.HEADER_ROW), _
-                                Me.ToCSVField(SharedResources.HEADER_COL), _
-                                Me.ToCSVField(SharedResources.HEADER_LATITUDE), _
-                                Me.ToCSVField(SharedResources.HEADER_LONGITUDE)))
+                                cStringUtils.ToCSVField(SharedResources.HEADER_ROW), _
+                                cStringUtils.ToCSVField(SharedResources.HEADER_COL), _
+                                cStringUtils.ToCSVField(SharedResources.HEADER_LATITUDE), _
+                                cStringUtils.ToCSVField(SharedResources.HEADER_LONGITUDE)))
 
         For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
             Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
                 sb.Append(",")
-                sb.Append(Me.ToCSVField(info.Name))
+                sb.Append(cStringUtils.ToCSVField(info.Name))
             Next
         Next
         sw.WriteLine(sb.ToString())
@@ -904,42 +887,83 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         sw.Flush()
         sw.Close()
 
-        ' Notify user
-        Me.NotifyUser(String.Format(My.Resources.STATUS_SAVED_ECOSPACE, strFile), False)
+        Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecospace), strFile), eStatusFlags.OK)
 
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Notify user by sending a message to the core.
+    ''' Append a status to the status message.
     ''' </summary>
     ''' <param name="strMessage">The message to send.</param>
-    ''' <param name="bShowAlert">Flag indicating whether the message should produce a visible error message (True)
-    ''' or whether the message should just be logged in the application flow (False). The plug-in can be set
-    ''' to automagically save CSV files in which case a proliferation of pop-up messages should be avoided.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub NotifyUser(strMessage As String, bShowAlert As Boolean, Optional strURL As String = "")
-        Dim msg As cMessage = Nothing
-        If bShowAlert Then
-            msg = New cMessage(strMessage, eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
-        Else
-            msg = New cMessage(strMessage, eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
-        End If
-        msg.Hyperlink = strURL
-        ' Write event to log
-        cLog.Write(strMessage)
-        ' Send to core
-        Me.m_core.Messages.SendMessage(msg)
+    Private Sub ReportStatus(strMessage As String, status As eStatusFlags)
+
+        If (Me.m_msgStatus Is Nothing) Then Return
+
+        Dim vs As New cVariableStatus(status, strMessage, eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+        Me.m_msgStatus.AddVariable(vs)
+
     End Sub
 
-    Private Function ToCSVField(strValue As String) As String
-        If strValue.IndexOf(Chr(34)) > 0 Then
-            strValue = strValue.Replace("""", "")
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Begin the (auto)save progress
+    ''' </summary>
+    ''' <param name="component"></param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function BeginSave(component As eComponentType) As Boolean
+
+        Dim strPath As String = Me.OutputFolder(component)
+
+        Me.m_msgStatus = Nothing
+
+        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
+            Dim msg As New cMessage(String.Format(My.Resources.STATUS_INVALID_FOLDER, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+            Me.m_core.Messages.SendMessage(msg)
+            Return False
         End If
-        If strValue.IndexOf(","c) > 0 Then
-            strValue = """"c & strValue & """"c
-        End If
-        Return strValue
+
+        Me.m_msgStatus = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.CAPTION, strPath), _
+                                        eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+        Me.m_msgStatus.Hyperlink = strPath
+
+        Return True
+
+    End Function
+
+    Private Function PerformSave(component As eComponentType) As Boolean
+
+        If (Me.m_msgStatus Is Nothing) Then Return False
+
+        ' Safely encase file access logic to make sure that this method will not get interrupted
+        Try
+            Select Case component
+                Case eComponentType.Ecopath
+                    Me.SaveEcopathCSV()
+                Case eComponentType.Ecosim
+                    Me.SaveEcosimCSV()
+                Case eComponentType.Ecospace
+                    Me.SaveEcospaceCSV()
+                Case eComponentType.MonteCarlo
+                    Me.SaveMCCSV()
+            End Select
+
+        Catch ex As Exception
+            Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_FAILED, Me.ComponentName(component), ex.Message), eStatusFlags.ErrorEncountered)
+        End Try
+
+        Return True
+
+    End Function
+
+    Private Function EndSave() As Boolean
+
+        If (Me.m_msgStatus Is Nothing) Then Return False
+        Me.m_core.Messages.SendMessage(Me.m_msgStatus)
+        Me.m_msgStatus = Nothing
+
     End Function
 
 #End Region ' Internal helpers

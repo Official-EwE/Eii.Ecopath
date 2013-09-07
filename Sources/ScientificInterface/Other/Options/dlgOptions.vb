@@ -311,7 +311,7 @@ Namespace Other
                     t = GetType(ucOptionsMap)
                     strNode = "ndMap"
 
-                Case eApplicationOptionTypes.Autosave
+                Case eApplicationOptionTypes.Autosave, eApplicationOptionTypes.FileLocations
                     t = GetType(ucOptionsFileManagement)
                     strNode = "ndAutosave"
 

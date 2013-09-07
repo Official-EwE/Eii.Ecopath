@@ -118,10 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SplitContainer1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="SplitContainer1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
   <data name="m_tvIndicators.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_tvIndicators.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -143,12 +149,6 @@
   </data>
   <data name="&gt;&gt;m_tvIndicators.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="SplitContainer1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="SplitContainer1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
   </data>
   <data name="SplitContainer1.Panel1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 1</value>
@@ -321,44 +321,74 @@
   <data name="&gt;&gt;m_plCredits.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_btnChoose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnChangeDefault.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnChoose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnChangeDefault.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnChoose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>465, 198</value>
+  <data name="m_btnChangeDefault.Location" type="System.Drawing.Point, System.Drawing">
+    <value>465, 172</value>
   </data>
-  <data name="m_btnChoose.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnChangeDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="m_btnChoose.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnChangeDefault.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="m_btnChoose.Text" xml:space="preserve">
-    <value>&amp;Choose...</value>
+  <data name="m_btnChangeDefault.Text" xml:space="preserve">
+    <value>C&amp;hange...</value>
   </data>
-  <data name="&gt;&gt;m_btnChoose.Name" xml:space="preserve">
-    <value>m_btnChoose</value>
+  <data name="&gt;&gt;m_btnChangeDefault.Name" xml:space="preserve">
+    <value>m_btnChangeDefault</value>
   </data>
-  <data name="&gt;&gt;m_btnChoose.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnChangeDefault.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnChoose.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnChangeDefault.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
   </data>
-  <data name="&gt;&gt;m_btnChoose.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnChangeDefault.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="m_btnChooseFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnChooseFolder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnChooseFolder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>465, 198</value>
+  </data>
+  <data name="m_btnChooseFolder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnChooseFolder.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_btnChooseFolder.Text" xml:space="preserve">
+    <value>&amp;Choose...</value>
+  </data>
+  <data name="&gt;&gt;m_btnChooseFolder.Name" xml:space="preserve">
+    <value>m_btnChooseFolder</value>
+  </data>
+  <data name="&gt;&gt;m_btnChooseFolder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnChooseFolder.Parent" xml:space="preserve">
+    <value>m_tpSettings</value>
+  </data>
+  <data name="&gt;&gt;m_btnChooseFolder.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="m_tbxDefaultLocation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxDefaultLocation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>125, 174</value>
+    <value>156, 174</value>
   </data>
   <data name="m_tbxDefaultLocation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>415, 20</value>
+    <value>303, 20</value>
   </data>
   <data name="m_tbxDefaultLocation.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -373,16 +403,16 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_tbxDefaultLocation.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_tbxOutputFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxOutputFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>125, 200</value>
+    <value>156, 200</value>
   </data>
   <data name="m_tbxOutputFolder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>334, 20</value>
+    <value>303, 20</value>
   </data>
   <data name="m_tbxOutputFolder.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -397,7 +427,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_tbxOutputFolder.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lblSaveTo.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -427,7 +457,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_lblSaveTo.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_rbCustom.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -457,7 +487,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_rbCustom.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_rbDefault.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -469,13 +499,13 @@
     <value>25, 175</value>
   </data>
   <data name="m_rbDefault.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 17</value>
+    <value>125, 17</value>
   </data>
   <data name="m_rbDefault.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="m_rbDefault.Text" xml:space="preserve">
-    <value>&amp;Default location</value>
+    <value>EwE &amp;default location:</value>
   </data>
   <data name="&gt;&gt;m_rbDefault.Name" xml:space="preserve">
     <value>m_rbDefault</value>
@@ -487,7 +517,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_rbDefault.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_cbAutoSaveCSV.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -517,7 +547,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_cbAutoSaveCSV.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_cbRunWithMC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -547,7 +577,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_cbRunWithMC.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_cbRunWithEcospace.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -577,7 +607,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_cbRunWithEcospace.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_cbRunWithEcosim.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -607,7 +637,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_cbRunWithEcosim.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="m_cbRunWithEcopath.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -637,7 +667,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_cbRunWithEcopath.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_hdrExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -670,7 +700,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_hdrExecution.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -703,7 +733,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="m_tpSettings.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1105,7 +1135,7 @@
     <value>4</value>
   </data>
   <data name="m_llStatus.Text" xml:space="preserve">
-    <value>You need to &lt;a href="command:EditTaxa"&gt;define taxa&lt;/a&gt; for computing derived indicators.</value>
+    <value>You need to &lt;a href="command:EditTaxa"&gt;define taxa&lt;/a&gt; for computing taxonomy based indicators.</value>
   </data>
   <data name="m_llStatus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1122,9 +1152,9 @@
   <data name="&gt;&gt;m_llStatus.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
