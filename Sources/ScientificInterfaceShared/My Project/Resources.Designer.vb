@@ -1710,7 +1710,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &apos;{0}&apos; failed to load from &apos;{1}&apos;: {2}..
+        '''  Looks up a localized string similar to {0} failed to load from &apos;{1}&apos;: {2}..
         '''</summary>
         Public ReadOnly Property GENERIC_FILELOAD_FAILURE() As String
             Get
@@ -1719,7 +1719,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &apos;{0}&apos; loaded from &apos;{1}&apos;..
+        '''  Looks up a localized string similar to {0} loaded from &apos;{1}&apos;..
         '''</summary>
         Public ReadOnly Property GENERIC_FILELOAD_SUCCES() As String
             Get
@@ -1728,7 +1728,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &apos;{0}&apos; failed to save to &apos;{1}&apos;: {2}..
+        '''  Looks up a localized string similar to {0} failed to save to &apos;{1}&apos;: {2}..
         '''</summary>
         Public ReadOnly Property GENERIC_FILESAVE_FAILURE() As String
             Get
@@ -1737,7 +1737,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &apos;{0}&apos; saved to &apos;{1}&apos;..
+        '''  Looks up a localized string similar to {0} saved to &apos;{1}&apos;..
         '''</summary>
         Public ReadOnly Property GENERIC_FILESAVE_SUCCES() As String
             Get
@@ -4693,6 +4693,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_MODEL_EWE6() As String
             Get
                 Return ResourceManager.GetString("HEADER_MODEL_EWE6", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monte Carlo.
+        '''</summary>
+        Public ReadOnly Property HEADER_MONTECARLO() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MONTECARLO", resourceCulture)
             End Get
         End Property
         

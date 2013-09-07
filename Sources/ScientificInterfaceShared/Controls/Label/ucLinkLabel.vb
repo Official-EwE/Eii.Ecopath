@@ -31,10 +31,10 @@ Namespace Controls
     ''' EwE link label, that reroutes hyperlink clicks to navigation commands.
     ''' </summary>
     ''' <remarks>
-    ''' <para>Note that hyperlinks must be provided via the <see cref="ucEwELinkLabel.Text"/>
+    ''' <para>Note that hyperlinks must be provided via the <see cref="ucLinkLabel.Text"/>
     ''' in the form of &lt;a href=".."&gt;...&lt;/a&gt;.</para>
-    ''' <para>Please refrain from setting <see cref="ucEwELinkLabel.LinkArea"/>, 
-    ''' <see cref="ucEwELinkLabel.LinkBehavior"/> or other hyperlink control options
+    ''' <para>Please refrain from setting <see cref="ucLinkLabel.LinkArea"/>, 
+    ''' <see cref="ucLinkLabel.LinkBehavior"/> or other hyperlink control options
     ''' because they will conflict with the fragile EwE behaviour within.</para>
     ''' <para>Note also that only ONE hyperlink per control is supported.</para>
     ''' </remarks>

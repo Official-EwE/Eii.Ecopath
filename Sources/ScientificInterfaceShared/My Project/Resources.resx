@@ -258,7 +258,7 @@
     <comment>Time series type</comment>
   </data>
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
-    <value>'{0}' saved to '{1}'.</value>
+    <value>{0} saved to '{1}'.</value>
     <comment>{0}: item that saved. {1}: file/folder dest</comment>
   </data>
   <data name="HEADER_YEAR" xml:space="preserve">
@@ -276,7 +276,7 @@
     <comment>{0}: value part 1, {1}: value part 2</comment>
   </data>
   <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
-    <value>'{0}' failed to save to '{1}': {2}.</value>
+    <value>{0} failed to save to '{1}': {2}.</value>
     <comment>{0}: item that saved. {1}: file/folder dest. {2}: error reason</comment>
   </data>
   <data name="GENERIC_CHAR_COLON" xml:space="preserve">
@@ -2923,11 +2923,11 @@
     <value>..\Resources\fish_dead.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_FILELOAD_FAILURE" xml:space="preserve">
-    <value>'{0}' failed to load from '{1}': {2}.</value>
+    <value>{0} failed to load from '{1}': {2}.</value>
     <comment>{0}: item that failed to load. {1}: file/folder dest. {2}: error reason</comment>
   </data>
   <data name="GENERIC_FILELOAD_SUCCES" xml:space="preserve">
-    <value>'{0}' loaded from '{1}'.</value>
+    <value>{0} loaded from '{1}'.</value>
     <comment>{0}: item that loaded. {1}: file/folder dest</comment>
   </data>
   <data name="GENERIC_VALUE_GRID_CONTENT" xml:space="preserve">
@@ -2938,5 +2938,8 @@
   </data>
   <data name="LABEL_CHOOSE_FOLDER" xml:space="preserve">
     <value>Choose folder...</value>
+  </data>
+  <data name="HEADER_MONTECARLO" xml:space="preserve">
+    <value>Monte Carlo</value>
   </data>
 </root>

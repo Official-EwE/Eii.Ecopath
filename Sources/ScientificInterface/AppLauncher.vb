@@ -4211,7 +4211,7 @@ Public Class AppLauncher
 
         If cPathUtility.ResolvePath(My.Settings.OutputPathMask, Me.Core, strPath) Then
             ' Pass actual formatted path because the core will not change this further.
-            Me.Core.OutputPath = Path.GetDirectoryName(strPath)
+            Me.Core.OutputPath = Path.GetFullPath(strPath)
 
             If (bResetUI) Then
                 ' Also reset file and directory commands to use output dir by default
