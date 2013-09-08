@@ -1944,15 +1944,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (no data).
-        '''</summary>
-        Public ReadOnly Property GENERIC_TEXT_NODATA() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_TEXT_NODATA", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to (All).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_ALL() As String
@@ -7832,6 +7823,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Author.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_AUTHOR() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_AUTHOR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to BA||Biomass accumulation.
         '''</summary>
         Public ReadOnly Property VARIABLE_BIOACCUM() As String
@@ -7873,6 +7873,24 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_CB() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_CB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Contact|||Contact information.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_CONTACT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_CONTACT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Description.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_DESCRIPTION() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DESCRIPTION", resourceCulture)
             End Get
         End Property
         
@@ -8210,7 +8228,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Variable &apos;{0}&apos;.
+        '''  Looks up a localized string similar to Parameter &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property VARIABLE_UNNAMED() As String
             Get

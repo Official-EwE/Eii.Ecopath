@@ -318,9 +318,6 @@
   <data name="UNIT_CURRENCY_WETWEIGHT" xml:space="preserve">
     <value>t/km²</value>
   </data>
-  <data name="GENERIC_TEXT_NODATA" xml:space="preserve">
-    <value>(no data)</value>
-  </data>
   <data name="TS_TYPE_CATCHES" xml:space="preserve">
     <value>Catches (reference)</value>
     <comment>Time series type</comment>
@@ -2584,8 +2581,8 @@
     <value>MSE base biomass </value>
   </data>
   <data name="VARIABLE_UNNAMED" xml:space="preserve">
-    <value>Variable '{0}'</value>
-    <comment>{0} = name of variable</comment>
+    <value>Parameter '{0}'</value>
+    <comment>{0} = name of variable (Parameter sounds better than variable)</comment>
   </data>
   <data name="VARIABLE_BIOACCUM" xml:space="preserve">
     <value>BA||Biomass accumulation</value>
@@ -2941,5 +2938,14 @@
   </data>
   <data name="HEADER_MONTECARLO" xml:space="preserve">
     <value>Monte Carlo</value>
+  </data>
+  <data name="VARIABLE_AUTHOR" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="VARIABLE_CONTACT" xml:space="preserve">
+    <value>Contact|||Contact information</value>
+  </data>
+  <data name="VARIABLE_DESCRIPTION" xml:space="preserve">
+    <value>Description</value>
   </data>
 </root>

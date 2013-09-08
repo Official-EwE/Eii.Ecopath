@@ -44,8 +44,6 @@ Namespace Controls.EwEGrid
 
         ''' <summary>Connected property.</summary>
         Private m_property As cProperty = Nothing
-        ''' <summary>Flag stating how property and cell styles should be merged.</summary>
-        Private m_bJoinStyles As Boolean = False
 
 #Region " Construction and destruction "
 
@@ -170,14 +168,7 @@ Namespace Controls.EwEGrid
         ''' present (False).
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property JoinStyles() As Boolean
-            Get
-                Return Me.m_bJoinStyles
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bJoinStyles = value
-            End Set
-        End Property
+        Public Property JoinStyles() As Boolean = False
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -196,7 +187,7 @@ Namespace Controls.EwEGrid
         Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
                 Dim s As cStyleGuide.eStyleFlags = MyBase.Style
-                If Me.m_bJoinStyles Then
+                If Me.JoinStyles Then
                     s = s Or Me.m_property.GetStyle()
                 Else
                     If s = 0 Then s = Me.m_property.GetStyle()
