@@ -20,14 +20,12 @@
 Option Strict On
 Imports System.Drawing
 Imports System.IO
-Imports System.Reflection
 Imports System.Text
 Imports EwECore
-Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -594,18 +592,10 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     ''' -----------------------------------------------------------------------
     Friend Sub SaveToCSVManual(component As eComponentType)
 
-        ' Start CSV save process
-        cApplicationStatusNotifier.StartProgress(Me.m_core)
-        Try
-            If Me.BeginSave(component) Then
-                Me.PerformSave(component)
-                Me.EndSave()
-            End If
-        Catch ex As Exception
-
-        End Try
-        ' End CSV save process
-        cApplicationStatusNotifier.EndProgress(Me.m_core)
+        If Me.BeginSave(component) Then
+            Me.PerformSave(component)
+            Me.EndSave()
+        End If
 
     End Sub
 

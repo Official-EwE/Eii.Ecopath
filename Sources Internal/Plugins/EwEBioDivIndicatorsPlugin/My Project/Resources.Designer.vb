@@ -196,16 +196,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property ind() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ind", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Commercial B.
         '''</summary>
         Friend ReadOnly Property IND_COMMB() As String
@@ -856,16 +846,6 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property logoICM_CSIC2() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("logoICM_CSIC2", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
         Friend ReadOnly Property new_head_2() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("new_head_2", resourceCulture)
@@ -889,15 +869,6 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_OUTPUTFOLDER() As String
             Get
                 Return ResourceManager.GetString("PROMPT_OUTPUTFOLDER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Computing {0} indicators....
-        '''</summary>
-        Friend ReadOnly Property STATUS_COMPUTING() As String
-            Get
-                Return ResourceManager.GetString("STATUS_COMPUTING", resourceCulture)
             End Get
         End Property
         

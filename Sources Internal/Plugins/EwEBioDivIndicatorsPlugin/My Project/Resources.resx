@@ -157,10 +157,6 @@
   <data name="GROUP_TROPHIC_DESC" xml:space="preserve">
     <value>Indicators filtered by trophic level</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ind" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ind.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="IND_MTI" xml:space="preserve">
     <value>MTI</value>
   </data>
@@ -383,9 +379,7 @@
   <data name="IND_PREDC_DESC" xml:space="preserve">
     <value>Catch (C) of predatory organisms with trophic level ≥ 4</value>
   </data>
-  <data name="logoICM_CSIC2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logoICM-CSIC2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="new_head_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\new_head_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -418,9 +412,5 @@
   </data>
   <data name="CAPTION" xml:space="preserve">
     <value>Biodiversity indicators</value>
-  </data>
-  <data name="STATUS_COMPUTING" xml:space="preserve">
-    <value>Computing {0} indicators...</value>
-    <comment>{0}: component name</comment>
   </data>
 </root>

@@ -223,31 +223,48 @@ Public Class frmMain
 
 #Region " Events "
 
-    Private Sub OnTreeNodeSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles m_tvIndicators.AfterSelect
-        cApplicationStatusNotifier.StartProgress(Me.UIContext.Core)
+    Private Sub OnTreeNodeSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+        Handles m_tvIndicators.AfterSelect
+
         Try
             ' Repopulate all indicators in response to a treenode selection change
             Me.UpdateIndicators(cEwEBioDiversityIndicatorsPlugin.eComponentType.Any)
         Catch ex As Exception
             ' Whoah
         End Try
+
+    End Sub
+
+    Private Sub OnSaveToCSV(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnSaveToCSV.Click
+
+        ' Start CSV save process
+        cApplicationStatusNotifier.StartProgress(Me.UIContext.Core)
+        Try
+            ' Save selected component (path, sim, space or ...) to CSV
+            Me.m_ppt.SaveToCSVManual(Me.SelectedTabComponent())
+        Catch ex As Exception
+
+        End Try
+
+        ' End CSV save process
         cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
+
     End Sub
 
-    Private Sub OnSaveToCSV(sender As System.Object, e As System.EventArgs) Handles m_btnSaveToCSV.Click
-        ' Save selected component (path, sim, space or ...) to CSV
-        Me.m_ppt.SaveToCSVManual(Me.SelectedTabComponent())
-    End Sub
+    Private Sub OnAutoSaveCSVCChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbAutoSaveCSV.CheckedChanged
 
-    Private Sub OnAutoSaveCSVCChanged(sender As Object, e As System.EventArgs) Handles m_cbAutoSaveCSV.CheckedChanged
         ' User toggled AutoSaveCSV checkbox; update settings
         If Me.m_bInUpdate Then Return
         My.Settings.AutoSaveCSV = Me.m_cbAutoSaveCSV.Checked
         My.Settings.Save()
         Me.Core.OnSettingsChanged()
+
     End Sub
 
-    Private Sub OnRunWithEcopathChanged(sender As Object, e As System.EventArgs) Handles m_cbRunWithEcopath.CheckedChanged
+    Private Sub OnRunWithEcopathChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbRunWithEcopath.CheckedChanged
 
         ' User toggled RunWithEcopath checkbox; update settings
         If Me.m_bInUpdate Then Return
@@ -256,6 +273,7 @@ Public Class frmMain
         Me.UpdateControls()
 
         ' No longer run with Ecopath?
+        ' - This should be handled by the plugin itself based on settings changes
         If (Not My.Settings.RunWithEcopath) Then
             ' #Yes: clear results
             Me.m_ppt.ClearEcopathIndicators()
@@ -263,7 +281,8 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnRunWithEcosimChanged(sender As Object, e As System.EventArgs) Handles m_cbRunWithEcosim.CheckedChanged
+    Private Sub OnRunWithEcosimChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbRunWithEcosim.CheckedChanged
 
         ' User toggled RunWithEcosim checkbox; update settings
         If Me.m_bInUpdate Then Return
@@ -272,6 +291,7 @@ Public Class frmMain
         Me.UpdateControls()
 
         ' No longer run with Ecosim?
+        ' - This should be handled by the plugin itself based on settings changes
         If (Not My.Settings.RunWithEcosim) Then
             ' #Yes: clear results
             Me.m_ppt.ClearEcosimIndicators()
@@ -279,7 +299,8 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnRunWithEcospaceChanged(sender As Object, e As System.EventArgs) Handles m_cbRunWithEcospace.CheckedChanged, m_cbRunWithMC.CheckedChanged
+    Private Sub OnRunWithEcospaceChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbRunWithEcospace.CheckedChanged
 
         ' User toggled RunWithEcospace checkbox; update settings
         If Me.m_bInUpdate Then Return
@@ -288,6 +309,7 @@ Public Class frmMain
         Me.UpdateControls()
 
         ' No longer run with Ecospace?
+        ' - This should be handled by the plugin itself based on settings changes
         If (Not My.Settings.RunWithEcospace) Then
             ' #Yes: clear results
             Me.m_ppt.ClearEcospaceIndicators()
@@ -295,7 +317,8 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnRunWithMCChanged(sender As Object, e As System.EventArgs) Handles m_cbRunWithMC.CheckedChanged
+    Private Sub OnRunWithMCChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbRunWithMC.CheckedChanged
 
         ' User toggled RunWithMC checkbox; update settings
         If Me.m_bInUpdate Then Return
@@ -304,6 +327,7 @@ Public Class frmMain
         Me.UpdateControls()
 
         ' No longer run with Ecosim?
+        ' - This should be handled by the plugin itself based on settings changes
         If (Not My.Settings.RunWithMC) Then
             ' #Yes: clear results
             Me.m_ppt.ClearMCIndicators()
@@ -311,10 +335,13 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnTabSelected(sender As Object, e As System.EventArgs) Handles m_tcOutput.SelectedIndexChanged
+    Private Sub OnTabSelected(sender As Object, e As System.EventArgs) _
+        Handles m_tcOutput.SelectedIndexChanged
+
         ' User selected a different tab (settings, path, sim, space, ...)
         ' Update any controls that rely on this selection
         Me.UpdateControls()
+
     End Sub
 
     Private Sub OnSaveLocationChanged(sender As System.Object, e As System.EventArgs) _
@@ -333,7 +360,8 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnChangeDefaultFolder(sender As System.Object, e As System.EventArgs) Handles m_btnChangeDefault.Click
+    Private Sub OnChangeDefaultFolder(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnChangeDefault.Click
 
         Try
             Dim cmd As cShowOptionsCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
@@ -346,23 +374,22 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnChooseOutputFolder(sender As System.Object, e As System.EventArgs) Handles m_btnChooseFolder.Click
+    Private Sub OnChooseOutputFolder(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnChooseFolder.Click
         ' User wants to browse for an output folder. Let's be nice.
         Me.PickOutputFolder()
     End Sub
 
-    Private Sub OnVisitCSIC(sender As System.Object, e As System.EventArgs) Handles m_pbCSIC.Click
+    Private Sub OnVisitCSIC(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbCSIC.Click
         ' User wants to visit CSIC
         Me.NavigateTo("http://www.csic.es/web/guest/home")
     End Sub
 
-    Private Sub OnVisitICM(sender As System.Object, e As System.EventArgs) Handles m_pbICM.Click
+    Private Sub OnVisitICM(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbICM.Click
         ' User wants to visit ICM
         Me.NavigateTo("http://www.icm.csic.es/")
-    End Sub
-
-    Private Sub OnClickDefaultLocation(sender As System.Object, e As System.EventArgs) Handles m_tbxDefaultLocation.Click
-        Me.NavigateTo("file://" & Me.m_tbxDefaultLocation.Text)
     End Sub
 
 #End Region ' Events
@@ -477,23 +504,27 @@ Public Class frmMain
 
         Me.m_btnSaveToCSV.Enabled = bCanSave
 
-        'Me.m_lblStatus.Visible = Not bHasTaxa
-        'Me.m_pbStatus.Visible = Not bHasTaxa
+        Me.m_llStatus.Visible = Not bHasTaxa
+        Me.m_pbStatus.Visible = Not bHasTaxa
 
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Show a given web page in the EwE browser window
+    ''' Navigate to an external link.
     ''' </summary>
-    ''' <param name="strURL"></param>
+    ''' <param name="strURL">The link to navigate to.</param>
     ''' -----------------------------------------------------------------------
     Private Sub NavigateTo(strURL As String)
 
-        Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-        If (cmd IsNot Nothing) Then
-            cmd.Invoke(strURL)
-        End If
+        Try
+            Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            If (cmd IsNot Nothing) Then
+                cmd.Invoke(strURL)
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "cEwEBioDivPlugin::NavigateTo(" & strURL & ")")
+        End Try
 
     End Sub
 
