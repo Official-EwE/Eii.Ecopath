@@ -33,52 +33,64 @@ Partial Class frmRemarkPanel
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmRemarkPanel))
-        Me.m_tbRemark = New System.Windows.Forms.TextBox
-        Me.m_lbVarName = New System.Windows.Forms.Label
-        Me.m_btnApply = New System.Windows.Forms.Button
+        Me.m_tsRemarks = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_lblVarName = New System.Windows.Forms.ToolStripLabel()
+        Me.m_btnApply = New System.Windows.Forms.ToolStripButton()
+        Me.m_tbxRemark = New System.Windows.Forms.TextBox()
+        Me.m_tsRemarks.SuspendLayout()
         Me.SuspendLayout()
         '
-        'm_tbRemark
+        'm_tsRemarks
         '
-        Me.m_tbRemark.AcceptsReturn = True
-        Me.m_tbRemark.AcceptsTab = True
-        resources.ApplyResources(Me.m_tbRemark, "m_tbRemark")
-        Me.m_tbRemark.Name = "m_tbRemark"
+        Me.m_tsRemarks.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsRemarks.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_lblVarName, Me.m_btnApply})
+        resources.ApplyResources(Me.m_tsRemarks, "m_tsRemarks")
+        Me.m_tsRemarks.Name = "m_tsRemarks"
+        Me.m_tsRemarks.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
-        'm_lbVarName
+        'm_lblVarName
         '
-        resources.ApplyResources(Me.m_lbVarName, "m_lbVarName")
-        Me.m_lbVarName.Name = "m_lbVarName"
+        Me.m_lblVarName.Name = "m_lblVarName"
+        resources.ApplyResources(Me.m_lblVarName, "m_lblVarName")
         '
         'm_btnApply
         '
+        Me.m_btnApply.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_btnApply.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_btnApply, "m_btnApply")
         Me.m_btnApply.Name = "m_btnApply"
-        Me.m_btnApply.UseVisualStyleBackColor = True
+        '
+        'm_tbxRemark
+        '
+        Me.m_tbxRemark.AcceptsReturn = True
+        Me.m_tbxRemark.AcceptsTab = True
+        resources.ApplyResources(Me.m_tbxRemark, "m_tbxRemark")
+        Me.m_tbxRemark.Name = "m_tbxRemark"
         '
         'frmRemarkPanel
         '
-        Me.AcceptButton = Me.m_btnApply
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CloseButtonVisible = False
-        Me.Controls.Add(Me.m_btnApply)
-        Me.Controls.Add(Me.m_lbVarName)
-        Me.Controls.Add(Me.m_tbRemark)
+        Me.Controls.Add(Me.m_tbxRemark)
+        Me.Controls.Add(Me.m_tsRemarks)
         Me.DockAreas = CType((((WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) _
-                    Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) _
-                    Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom), WeifenLuo.WinFormsUI.Docking.DockAreas)
+            Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) _
+            Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom), WeifenLuo.WinFormsUI.Docking.DockAreas)
         Me.HideOnClose = True
         Me.Name = "frmRemarkPanel"
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.TabText = "Remarks"
+        Me.m_tsRemarks.ResumeLayout(False)
+        Me.m_tsRemarks.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents m_tbRemark As System.Windows.Forms.TextBox
-    Private WithEvents m_lbVarName As System.Windows.Forms.Label
-    Private WithEvents m_btnApply As System.Windows.Forms.Button
+    Private WithEvents m_tsRemarks As cEwEToolstrip
+    Private WithEvents m_lblVarName As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_btnApply As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tbxRemark As System.Windows.Forms.TextBox
 End Class
