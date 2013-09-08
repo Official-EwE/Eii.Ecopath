@@ -83,8 +83,8 @@ Namespace Properties
 
             ' Create No Data property
             Me.m_propNoData = New cStringProperty()
-            Me.m_propNoData.SetStyle(cStyleGuide.eStyleFlags.ErrorEncountered Or cStyleGuide.eStyleFlags.NotEditable)
-            Me.m_propNoData.SetValue(My.Resources.GENERIC_TEXT_NODATA)
+            Me.m_propNoData.SetStyle(cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+            Me.m_propNoData.SetValue(String.Empty)
 
             ' Start listening to core messages
             Me.SetMessageHandlers()

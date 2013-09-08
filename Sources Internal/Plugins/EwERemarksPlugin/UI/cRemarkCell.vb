@@ -25,10 +25,12 @@ Imports SourceGrid2.VisualModels
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Cell that displays the remark text of a <see cref="cProperty"/>, and updates
-''' with any changes to this remark text.
+''' Cell that provides edit capabilities of the remark text of a <see cref="cProperty"/>, 
+''' and refreshes its content when the remark is changed externally.
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Friend Class cRemarkCell
     Inherits EwECell
 
@@ -68,7 +70,9 @@ Friend Class cRemarkCell
 
     Private Sub OnPropertyChanged(ByVal prop As cProperty, ct As cProperty.eChangeFlags)
         If Me.m_bInUpdate Then Return
+        ' Is a remark change?
         If ((ct And cProperty.eChangeFlags.Remarks) > 0) Then
+            ' #Yes: update remark
             Me.Value = prop.GetRemark()
         End If
     End Sub
@@ -84,6 +88,18 @@ Friend Class cRemarkCell
             Me.m_prop.SetRemark(CStr(Me.Value))
             Me.m_bInUpdate = False
         End If
+    End Sub
+
+    ''' <summary>
+    ''' For quick editor access
+    ''' </summary>
+    ''' <param name="p_Position"></param>
+    ''' <param name="p_Value"></param>
+    Public Overrides Sub SetValue(p_Position As SourceGrid2.Position, p_Value As Object)
+        MyBase.SetValue(p_Position, p_Value)
+        Me.m_bInUpdate = True
+        Me.m_prop.SetRemark(CStr(Me.Value))
+        Me.m_bInUpdate = False
     End Sub
 
 #End Region ' Overrides

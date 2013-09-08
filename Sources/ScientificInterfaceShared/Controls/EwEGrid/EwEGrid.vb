@@ -1377,27 +1377,27 @@ Namespace Controls.EwEGrid
 
                 If Me.TrackPropertySelection Then
 
-                    ' Clean up
-                    If (e.EventType = SelectionChangeEventType.Add) Then
+                    '' Clean up
+                    'If (e.EventType = SelectionChangeEventType.Add) Then
 
-                        ' Get properties from selected cells
-                        Me.m_lpropertySelected.Clear()
-                        For Each p As Position In Me.Selection.GetCellsPositions
-                            Try
-                                c = Me(p.Row, p.Column)
-                                If c IsNot Nothing Then
-                                    ' Is property cell?
-                                    If (TypeOf c Is IPropertyCell) Then
-                                        ' #Yes: add to list of selected cells
-                                        Me.m_lpropertySelected.Add(DirectCast(c, IPropertyCell).GetProperty())
-                                    End If
+                    ' Get properties from selected cells
+                    Me.m_lpropertySelected.Clear()
+                    For Each p As Position In Me.Selection.GetCellsPositions
+                        Try
+                            c = Me(p.Row, p.Column)
+                            If c IsNot Nothing Then
+                                ' Is property cell?
+                                If (TypeOf c Is IPropertyCell) Then
+                                    ' #Yes: add to list of selected cells
+                                    Me.m_lpropertySelected.Add(DirectCast(c, IPropertyCell).GetProperty())
                                 End If
-                            Catch ex As Exception
+                            End If
+                        Catch ex As Exception
 
-                            End Try
-                        Next
+                        End Try
+                    Next
 
-                    End If
+                    'End If
 
                     If cmd IsNot Nothing Then
                         If (TypeOf cmd Is cPropertySelectionCommand) Then

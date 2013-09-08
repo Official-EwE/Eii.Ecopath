@@ -45,6 +45,9 @@ Public Class frmRemarkPanel
     ''' <summary>Flag stating whether the user has made any textual changes.</summary>
     Private m_bHasPendingChanges As Boolean = False
 
+    ''' <summary>Properties being listened to.</summary>
+    Private m_lProps As New List(Of cProperty)
+
 #End Region ' Private vars
 
     ''' -----------------------------------------------------------------------
@@ -103,15 +106,29 @@ Public Class frmRemarkPanel
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Event handler, invoked when the <see cref="cSelectionMonitor">selection has changede</see>.
+    ''' Event handler, invoked when the <see cref="cSelectionMonitor">selection has changed</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub OnSelectionChanged(mon As cSelectionMonitor)
+
+        For Each p As cProperty In Me.m_lProps
+            RemoveHandler p.PropertyChanged, AddressOf OnPropertyChanged
+        Next
+        Me.m_lProps.Clear()
 
         ' Update panel state
         Me.UpdateControls()
         ' Update panel content
         Me.UpdateContents()
+
+        If (mon IsNot Nothing) Then
+            If (mon.Selection IsNot Nothing) Then
+                Me.m_lProps.AddRange(mon.Selection)
+                For Each p As cProperty In Me.m_lProps
+                    AddHandler p.PropertyChanged, AddressOf OnPropertyChanged
+                Next
+            End If
+        End If
 
         ' Clear any changes
         Me.HasPendingChanges = False
@@ -127,7 +144,7 @@ Public Class frmRemarkPanel
     ''' Event handler, called when remark text has been edited by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub m_tbRemark_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnRemarkTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_tbxRemark.TextChanged
         Me.HasPendingChanges = True
     End Sub
@@ -137,7 +154,7 @@ Public Class frmRemarkPanel
     ''' Event hander, called when the user applies changes.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub m_btnSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnApply.Click
         Me.Apply()
     End Sub
@@ -212,6 +229,10 @@ Public Class frmRemarkPanel
         Me.UpdateControls()
     End Sub
 
+    Private Sub OnPropertyChanged(ByVal p As cProperty, ByVal ct As cProperty.eChangeFlags)
+        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateContents))
+    End Sub
+
 #End Region ' Core state response
 
 #Region " Internal implementation "
@@ -257,9 +278,9 @@ Public Class frmRemarkPanel
                 ' Get remark text for this property
                 strRemark = props(iProp).GetRemark().Trim
                 ' Is valid remark text?
-                If (Not String.IsNullOrEmpty(strRemark)) Then
+                If (Not String.IsNullOrWhiteSpace(strRemark)) Then
                     ' No remark picked yet?
-                    If String.IsNullOrEmpty(strRemarkFinal) Then
+                    If String.IsNullOrWhiteSpace(strRemarkFinal) Then
                         ' #Yes: store remark
                         strRemarkFinal = strRemark
                     Else

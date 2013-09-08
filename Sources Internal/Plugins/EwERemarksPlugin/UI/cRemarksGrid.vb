@@ -91,6 +91,9 @@ Friend Class cRemarksGrid
         Me.FixedColumns = 0
         Me.AutoStretchColumnsToFitWidth = True
 
+        ' Make sure this grid does NOT screw up the selection of properties!
+        Me.TrackPropertySelection = False
+
     End Sub
 
     Protected Overrides Sub FillData()
@@ -101,7 +104,7 @@ Friend Class cRemarksGrid
         Dim vfm As New cVarnameTypeFormatter()
         Dim cfm As New cCoreInterfaceFormatter("")
         Dim styleRO As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
-        Dim cell As EwECell = Nothing
+        Dim cell As EwECellBase = Nothing
         Dim prop As cProperty = Nothing
 
         For i As Integer = 0 To Me.m_data.Length - 1
@@ -109,17 +112,20 @@ Friend Class cRemarksGrid
             prop = Me.m_data(i)
             Me.AddRow()
 
-            cell = New EwECell(cfm.GetDescriptor(prop.Source), GetType(String), styleRO)
+            cell = New PropertyRowHeaderCell(Me.PropertyManager, prop.Source, eVarNameFlags.Name)
+            ' Prevent 'Remarks' from popping up
+            cell.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
             Me(Me.RowsCount - 1, eColumnTypes.Source1) = cell
 
-            cell = New EwECell(vfm.GetDescriptor(prop.VarName), GetType(String), styleRO)
+            cell = New EwERowHeaderCell(vfm.GetDescriptor(prop.VarName))
             Me(Me.RowsCount - 1, eColumnTypes.Parameter) = cell
 
-            cell = New EwECell(cfm.GetDescriptor(prop.SourceSec), GetType(String), styleRO)
+            cell = New PropertyRowHeaderCell(Me.PropertyManager, prop.SourceSec, eVarNameFlags.Name)
+            ' Prevent 'Remarks' from popping up
+            cell.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
             Me(Me.RowsCount - 1, eColumnTypes.Source2) = cell
 
-            cell = New cRemarkCell(prop)
-            Me(Me.RowsCount - 1, eColumnTypes.Remark) = cell
+            Me(Me.RowsCount - 1, eColumnTypes.Remark) = New cRemarkCell(prop)
 
         Next i
 

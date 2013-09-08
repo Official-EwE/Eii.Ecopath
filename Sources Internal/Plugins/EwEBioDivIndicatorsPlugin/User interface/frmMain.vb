@@ -383,13 +383,13 @@ Public Class frmMain
     Private Sub OnVisitCSIC(sender As System.Object, e As System.EventArgs) _
         Handles m_pbCSIC.Click
         ' User wants to visit CSIC
-        Me.NavigateTo("http://www.csic.es/web/guest/home")
+        Me.OpenLink("http://www.csic.es/web/guest/home")
     End Sub
 
     Private Sub OnVisitICM(sender As System.Object, e As System.EventArgs) _
         Handles m_pbICM.Click
         ' User wants to visit ICM
-        Me.NavigateTo("http://www.icm.csic.es/")
+        Me.OpenLink("http://www.icm.csic.es/")
     End Sub
 
 #End Region ' Events
@@ -511,11 +511,11 @@ Public Class frmMain
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Navigate to an external link.
+    ''' Open an external link.
     ''' </summary>
     ''' <param name="strURL">The link to navigate to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub NavigateTo(strURL As String)
+    Private Sub OpenLink(strURL As String)
 
         Try
             Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
