@@ -87,8 +87,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     ''' <summary>Indicators grouping.</summary>
     Friend m_settings As New cIndicatorSettings()
 
+    ''' <summary>The UI.</summary>
     Private m_frm As frmMain = Nothing
-
+    ''' <summary>File save status message.</summary>
     Private m_msgStatus As cMessage = Nothing
 
 #End Region ' Variables
@@ -427,6 +428,20 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Do not calculate when Ecospace is running as part of a searches
         If (Me.m_core.StateMonitor.IsSearching()) Then Return
 
+        ' Create indicators for water cells only
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+        Dim ptCell As Point = Nothing
+
+        For iRow As Integer = 1 To bm.InRow
+            For iCol As Integer = 1 To bm.InCol
+                If (depth.IsWaterCell(iRow, iCol)) Then
+                    ptCell = New Point(iCol, iRow)
+                    Me.m_dtIndEcospace(ptCell) = New cEcospaceIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecospaceDS, New Point(iCol, iRow), Me.m_stanzaDS, Me.m_taxonDS)
+                End If
+            Next iCol
+        Next iRow
+
         ' Grab and remember ecosim data structures when provided via the plug-in mechanism
         Me.m_ecospaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
 
@@ -443,42 +458,20 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Implements EwEPlugin.IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost
 
         ' Calculate only if supposed to run with Ecospace
-        If (My.Settings.RunWithMC = False) Then Return
+        If (My.Settings.RunWithEcospace = False) Then Return
         ' Do not calculate when Ecospace is running as part of a searches
         If (Me.m_core.StateMonitor.IsSearching()) Then Return
 
-        ' Create indicators for each water cell if necessary
-        If (Me.m_dtIndEcospace.Count = 0) Then
-
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim ptCell As Point = Nothing
-
-            ' Create only indicators for water cells
-            For iRow As Integer = 1 To bm.InRow
-                For iCol As Integer = 1 To bm.InCol
-                    If (depth.IsWaterCell(iRow, iCol)) Then
-                        ptCell = New Point(iCol, iRow)
-                        Me.m_dtIndEcospace(ptCell) = New cEcospaceIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecospaceDS, New Point(iCol, iRow), Me.m_stanzaDS, Me.m_taxonDS)
-                    End If
-                Next iCol
-            Next iRow
-        End If
-
-        If (iTime <> Me.m_core.nEcospaceTimeSteps) Then Return
-
-        cApplicationStatusNotifier.StartProgress(Me.m_core, "Calculating Ecospace indicators...")
         Try
             ' Compute
             For Each ind As cIndicators In Me.m_dtIndEcospace.Values
                 ind.Compute()
             Next
+            Me.PerformSave(eComponentType.Ecospace)
         Catch ex As Exception
 
         End Try
-        cApplicationStatusNotifier.EndProgress(Me.m_core)
 
-        Me.PerformSave(eComponentType.Ecospace)
         ' Has UI?
         If (Me.HasUI) Then
             ' #Yes: Update UI
@@ -684,6 +677,86 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Return True
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Append a status to the status message.
+    ''' </summary>
+    ''' <param name="strMessage">The message to send.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub ReportStatus(strMessage As String, status As eStatusFlags)
+
+        If (Me.m_msgStatus Is Nothing) Then Return
+
+        Dim vs As New cVariableStatus(status, strMessage, eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+        Me.m_msgStatus.AddVariable(vs)
+
+    End Sub
+
+#End Region ' Internal helpers
+
+#Region " Saving "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Begin the (auto)save progress
+    ''' </summary>
+    ''' <param name="component"></param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function BeginSave(component As eComponentType) As Boolean
+
+        Dim strPath As String = Me.OutputFolder(component)
+
+        Me.m_msgStatus = Nothing
+
+        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
+            Dim msg As New cMessage(String.Format(My.Resources.STATUS_INVALID_FOLDER, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+            Me.m_core.Messages.SendMessage(msg)
+            Return False
+        End If
+
+        Me.m_msgStatus = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.CAPTION, strPath), _
+                                        eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+        Me.m_msgStatus.Hyperlink = strPath
+
+        Return True
+
+    End Function
+
+    Private Function PerformSave(component As eComponentType) As Boolean
+
+        If (Me.m_msgStatus Is Nothing) Then Return False
+
+        ' Safely encase file access logic to make sure that this method will not get interrupted
+        Try
+            Select Case component
+                Case eComponentType.Ecopath
+                    Me.SaveEcopathCSV()
+                Case eComponentType.Ecosim
+                    Me.SaveEcosimCSV()
+                Case eComponentType.Ecospace
+                    Me.SaveEcospaceCSV()
+                Case eComponentType.MonteCarlo
+                    Me.SaveMCCSV()
+            End Select
+
+        Catch ex As Exception
+            Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_FAILED, Me.ComponentName(component), ex.Message), eStatusFlags.ErrorEncountered)
+        End Try
+
+        Return True
+
+    End Function
+
+    Private Function EndSave() As Boolean
+
+        If (Me.m_msgStatus Is Nothing) Then Return False
+        Me.m_core.Messages.SendMessage(Me.m_msgStatus)
+        Me.m_msgStatus = Nothing
+
+    End Function
+
+
     Private Function FileName(ByVal component As eComponentType, ByVal strStep As String) As String
         Return cFileUtils.ToValidFileName(String.Format("biodiv_ind_{0}{1}.csv", Me.ComponentName(component), strStep), False)
     End Function
@@ -838,135 +911,42 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     Private Sub SaveEcospaceCSV()
 
+        Dim iTS As Integer = CInt(Me.m_ecospaceDS.TimeNow * 12 + 1)
         Dim strPath As String = Me.OutputFolder(eComponentType.Ecospace)
-        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecospace, CStr(Me.m_ecospaceDS.TimeNow)))
-
-        Dim sw As New StreamWriter(strFile)
-        Dim sb As New StringBuilder()
+        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecospace, CStr(iTS)))
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-
-        ' Write header line
-        sb.Append(String.Format("{0},{1},{2},{3}",
-                                cStringUtils.ToCSVField(SharedResources.HEADER_ROW), _
-                                cStringUtils.ToCSVField(SharedResources.HEADER_COL), _
-                                cStringUtils.ToCSVField(SharedResources.HEADER_LATITUDE), _
-                                cStringUtils.ToCSVField(SharedResources.HEADER_LONGITUDE)))
+        Dim astrFields As New List(Of String)
 
         For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
             Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
-                sb.Append(",")
-                sb.Append(cStringUtils.ToCSVField(info.Name))
+                astrFields.Add(info.Name)
             Next
         Next
-        sw.WriteLine(sb.ToString())
 
-        ' Write line for cell
+        Dim exp As New cEcospaceImportExportXYData(bm, astrFields.ToArray())
+          ' Write line for cell
         For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
-
-            ' Sanity check
-            Debug.Assert(ind.IsComputed, "Application flow error, ecospace indicators not calculated yet")
-
-            sb.Length = 0
-            sb.Append(String.Format("{0},{1},{2},{3}", ind.Location.Y, ind.Location.X, bm.RowToLat(ind.Location.Y), bm.ColToLon(ind.Location.X)))
-
-            For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-                Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
-                For iInfo As Integer = 0 To grp.NumIndicators - 1
-                    Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
-                    sb.Append(",")
-                    sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
-                Next iInfo
-            Next iGrp
-
-            sw.WriteLine(sb.ToString())
+            If (ind.IsComputed) Then
+                For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+                    Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                    For iInfo As Integer = 0 To grp.NumIndicators - 1
+                        Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
+                        exp.Value(ind.Location.Y, ind.Location.X, info.Name) = info.GetValue(ind)
+                    Next iInfo
+                Next iGrp
+            End If
         Next ind
 
         ' Done
-        sw.Flush()
-        sw.Close()
+        exp.WriteXYFile(strFile, SharedResources.HEADER_COL, SharedResources.HEADER_ROW)
 
         Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecospace), strFile), eStatusFlags.OK)
 
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Append a status to the status message.
-    ''' </summary>
-    ''' <param name="strMessage">The message to send.</param>
-    ''' -----------------------------------------------------------------------
-    Private Sub ReportStatus(strMessage As String, status As eStatusFlags)
-
-        If (Me.m_msgStatus Is Nothing) Then Return
-
-        Dim vs As New cVariableStatus(status, strMessage, eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
-        Me.m_msgStatus.AddVariable(vs)
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Begin the (auto)save progress
-    ''' </summary>
-    ''' <param name="component"></param>
-    ''' <returns>True if successful.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function BeginSave(component As eComponentType) As Boolean
-
-        Dim strPath As String = Me.OutputFolder(component)
-
-        Me.m_msgStatus = Nothing
-
-        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-            Dim msg As New cMessage(String.Format(My.Resources.STATUS_INVALID_FOLDER, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
-            Me.m_core.Messages.SendMessage(msg)
-            Return False
-        End If
-
-        Me.m_msgStatus = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.CAPTION, strPath), _
-                                        eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-        Me.m_msgStatus.Hyperlink = strPath
-
-        Return True
-
-    End Function
-
-    Private Function PerformSave(component As eComponentType) As Boolean
-
-        If (Me.m_msgStatus Is Nothing) Then Return False
-
-        ' Safely encase file access logic to make sure that this method will not get interrupted
-        Try
-            Select Case component
-                Case eComponentType.Ecopath
-                    Me.SaveEcopathCSV()
-                Case eComponentType.Ecosim
-                    Me.SaveEcosimCSV()
-                Case eComponentType.Ecospace
-                    Me.SaveEcospaceCSV()
-                Case eComponentType.MonteCarlo
-                    Me.SaveMCCSV()
-            End Select
-
-        Catch ex As Exception
-            Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_FAILED, Me.ComponentName(component), ex.Message), eStatusFlags.ErrorEncountered)
-        End Try
-
-        Return True
-
-    End Function
-
-    Private Function EndSave() As Boolean
-
-        If (Me.m_msgStatus Is Nothing) Then Return False
-        Me.m_core.Messages.SendMessage(Me.m_msgStatus)
-        Me.m_msgStatus = Nothing
-
-    End Function
-
-#End Region ' Internal helpers
+#End Region ' Saving
 
 #Region " Autosave "
 

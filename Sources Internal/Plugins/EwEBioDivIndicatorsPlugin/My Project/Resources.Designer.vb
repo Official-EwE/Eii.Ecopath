@@ -893,6 +893,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Computing {0} indicators....
+        '''</summary>
+        Friend ReadOnly Property STATUS_COMPUTING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_COMPUTING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biodiversity indicators plugin cannot write to folder &apos;{0}&apos;.
         '''</summary>
         Friend ReadOnly Property STATUS_INVALID_FOLDER() As String
