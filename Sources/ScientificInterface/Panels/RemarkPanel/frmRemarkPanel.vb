@@ -76,6 +76,7 @@ Public Class frmRemarkPanel
 
         ' Init panel
         Me.UpdateControls()
+        Me.UpdateContents()
 
     End Sub
 
@@ -127,7 +128,7 @@ Public Class frmRemarkPanel
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub m_tbRemark_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_tbRemark.TextChanged
+        Handles m_tbxRemark.TextChanged
         Me.HasPendingChanges = True
     End Sub
 
@@ -148,11 +149,13 @@ Public Class frmRemarkPanel
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub OnLeavePanel(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_tbRemark.Leave
+        Handles m_tbxRemark.Leave
+
         ' Could be called in response to closing app!
         If (Not Me.m_sm.HasEcopathLoaded()) Then Return
         ' Apply any pending changes
         If (Me.HasPendingChanges = True) Then Me.Apply()
+
     End Sub
 
     ''' <summary>Update feedback loop prevention flag.</summary>
@@ -165,10 +168,9 @@ Public Class frmRemarkPanel
     ''' -----------------------------------------------------------------------
     Private Sub Apply()
 
-        Dim strRemark As String = Me.m_tbRemark.Text
+        Dim strRemark As String = Me.m_tbxRemark.Text
 
         Me.HasPendingChanges = False
-
         Me.m_bInUpdate = True
         Try
             For Each p As cProperty In Me.m_mon.Selection
@@ -230,8 +232,8 @@ Public Class frmRemarkPanel
 
         Me.m_btnApply.Visible = bHasEcopath
         Me.m_btnApply.Enabled = bHasSelection
-        Me.m_tbRemark.Visible = bHasEcopath
-        Me.m_tbRemark.Enabled = bHasSelection
+        Me.m_tbxRemark.Visible = bHasEcopath
+        Me.m_tbxRemark.Enabled = bHasSelection
 
     End Sub
 
@@ -273,8 +275,8 @@ Public Class frmRemarkPanel
         End If
 
         ' Update control contents
-        Me.m_lbVarName.Text = strSelection
-        Me.m_tbRemark.Text = strRemarkFinal
+        Me.m_lblVarName.Text = strSelection
+        Me.m_tbxRemark.Text = strRemarkFinal
 
     End Sub
 
