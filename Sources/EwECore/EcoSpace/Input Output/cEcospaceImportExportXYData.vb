@@ -47,8 +47,12 @@ Public Class cEcospaceImportExportXYData
 
     Private m_bm As cEcospaceBasemap = Nothing
 
-    Private m_readbuffer As New Dictionary(Of String, Object())
+    ''' <summary>Buffer that holds the data to read or write.</summary>
+    ''' <remarks>To save on memory we allow the use of value callbacks per field as an alternative to the buffer.</remarks>
+    Private m_buffer As New Dictionary(Of String, Object())
+    ''' <summary>All defined data fieldds.</summary>
     Private m_astrFields As String() = Nothing
+
     Private m_bRowColImplicit As Boolean = False
 
 #End Region ' Private vars
@@ -78,9 +82,9 @@ Public Class cEcospaceImportExportXYData
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns all duplicate field names defined in the import/export data.
+    ''' Returns all duplicate <see cref="Fields">field names defined in the import/export data</see>.
     ''' </summary>
-    ''' <returns></returns>
+    ''' <returns>An array with duplicate <see cref="Fields">field names</see>.</returns>
     ''' -----------------------------------------------------------------------
     Public Function DuplicateFields() As String()
 
@@ -103,7 +107,19 @@ Public Class cEcospaceImportExportXYData
 
     End Function
 
-    Public Function ReadXYFile(strFile As String, Optional ByVal separator As Char = ","c) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write data to a XY text file. The format of the file is
+    ''' 'col,row[,<see cref="Fields"/>]*', with a configurable the separator character.
+    ''' Field names encountered in the file can be found in <see cref="Fields"/>.
+    ''' </summary>
+    ''' <param name="strFile">The name of the file to write.</param>
+    ''' <param name="separator">The separator character to use. By default, CSV
+    ''' values are separated by commas.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function ReadXYFile(ByVal strFile As String, _
+                               Optional ByVal separator As Char = ","c) As Boolean
 
         Dim tr As TextReader = Nothing
         Dim strLine As String = ""
@@ -153,12 +169,19 @@ Public Class cEcospaceImportExportXYData
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Write data to a XY text file..
+    ''' Write data to a XY text file. The format of the file is
+    ''' '<paramref name="strColField"/>,<paramref name="strRowField"/>[,<see cref="Fields"/>]*'
     ''' </summary>
     ''' <param name="strFile">The file to write to.</param>
+    ''' <param name="strColField">CSV header for 'col' field</param>
+    ''' <param name="strRowField">CSV header for 'row' field</param>
+    ''' <param name="bWaterCellsOnly">If true, only water cell data is written to the file.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function WriteXYFile(ByVal strFile As String, strColField As String, strRowField As String) As Boolean
+    Public Function WriteXYFile(ByVal strFile As String, _
+                                ByVal strColField As String, _
+                                ByVal strRowField As String, _
+                                Optional bWaterCellsOnly As Boolean = True) As Boolean
 
         If (Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
             Return False
@@ -166,6 +189,7 @@ Public Class cEcospaceImportExportXYData
 
         Dim strm As StreamWriter = Nothing
         Dim lstrFields As New List(Of String)
+        Dim depth As cEcospaceLayerDepth = Me.m_bm.LayerDepth
 
         Try
             strm = New StreamWriter(strFile)
@@ -178,9 +202,9 @@ Public Class cEcospaceImportExportXYData
         lstrFields.Remove(strColField)
 
         ' Write header line
-        strm.Write(strColField)
+        strm.Write(cStringUtils.ToCSVField(strColField))
         strm.Write(",")
-        strm.Write(strRowField)
+        strm.Write(cStringUtils.ToCSVField(strRowField))
         For iField As Integer = 0 To lstrFields.Count - 1
             strm.Write(",")
             strm.Write(cStringUtils.ToCSVField(Me.Fields(iField).Trim))
@@ -190,21 +214,26 @@ Public Class cEcospaceImportExportXYData
         ' Write content
         For iRow As Integer = 1 To Me.m_bm.InRow
             For iCol As Integer = 1 To Me.m_bm.InCol
-                strm.Write(iCol)
-                strm.Write(",")
-                strm.Write(iRow)
-                For iField As Integer = 0 To Me.Fields.Length - 1
+                ' Water cell filter
+                If depth.IsWaterCell(iRow, iCol) Or Not bWaterCellsOnly Then
+                    strm.Write(iCol)
                     strm.Write(",")
-                    Dim val As Object = Me.Value(iRow, iCol, Me.Fields(iField))
-                    Select Case val.GetType
-                        Case GetType(Single), GetType(Double), GetType(Integer)
-                            strm.Write(cStringUtils.FormatNumber(val))
-                        Case GetType(Boolean), GetType(String)
-                            strm.Write(CStr(val))
-                        Case Else
-                    End Select
-                Next iField
-                strm.WriteLine()
+                    strm.Write(iRow)
+                    For iField As Integer = 0 To Me.Fields.Length - 1
+                        strm.Write(",")
+                        Dim val As Object = Me.Value(iRow, iCol, Me.Fields(iField))
+                        If (val IsNot Nothing) Then
+                            Select Case val.GetType
+                                Case GetType(Single), GetType(Double), GetType(Integer)
+                                    strm.Write(cStringUtils.FormatNumber(val))
+                                Case GetType(Boolean), GetType(String)
+                                    strm.Write(cStringUtils.ToCSVField(CStr(val)))
+                                Case Else
+                            End Select
+                        End If
+                    Next iField
+                    strm.WriteLine()
+                End If
             Next iCol
         Next iRow
 
@@ -219,6 +248,7 @@ Public Class cEcospaceImportExportXYData
 
 #Region " Properties "
 
+    ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the fields that data is associated with.
     ''' </summary>
@@ -229,7 +259,7 @@ Public Class cEcospaceImportExportXYData
         End Get
         Set(ByVal value As String())
 
-            If value Is Nothing Then
+            If (value Is Nothing) Then
                 Me.m_bRowColImplicit = True
             Else
                 Me.m_bRowColImplicit = (value.Length = 0)
@@ -248,12 +278,12 @@ Public Class cEcospaceImportExportXYData
             End If
 
             ' Clear
-            Me.m_readbuffer.Clear()
+            Me.m_buffer.Clear()
 
             ' Create storage
             For Each strField As String In Me.Fields
                 Dim asCells(Me.NumCells) As Object
-                Me.m_readbuffer.Add(strField, asCells)
+                Me.m_buffer.Add(strField, asCells)
             Next
 
         End Set
@@ -270,10 +300,10 @@ Public Class cEcospaceImportExportXYData
     Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer, _
                           Optional ByVal strField As String = "") As Object
         Get
-            Return Me.Value(Me.Cell(iRow, iCol), strField)
+            Return Me.Value(Me.Seq(iRow, iCol), strField)
         End Get
         Set(ByVal value As Object)
-            Me.Value(Me.Cell(iRow, iCol), strField) = value
+            Me.Value(Me.Seq(iRow, iCol), strField) = value
         End Set
     End Property
 
@@ -281,7 +311,7 @@ Public Class cEcospaceImportExportXYData
     ''' <summary>
     ''' Get/set a value in this class.
     ''' </summary>
-    ''' <param name="iCell">The zero-based cell sequential index to access
+    ''' <param name="iCell">The one-based cell sequential index to access
     ''' a value for.</param>
     ''' <param name="strField">Optional field to access a value for.</param>
     ''' -------------------------------------------------------------------
@@ -291,27 +321,27 @@ Public Class cEcospaceImportExportXYData
             If String.IsNullOrEmpty(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If
-            Return Me.m_readbuffer(strField)(iCell)
+            Return Me.m_buffer(strField)(iCell)
         End Get
         Set(ByVal value As Object)
             If String.IsNullOrEmpty(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If
-            Me.m_readbuffer(strField)(iCell) = value
+            Me.m_buffer(strField)(iCell) = value
         End Set
     End Property
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Get a cell sequential index from a (row, col) pair.
+    ''' Get a cell sequential number from a (row, col) pair.
     ''' </summary>
     ''' <param name="iRow">One-based row index to get a cell for.</param>
     ''' <param name="iCol">One-based column index to get a cell for.</param>
-    ''' <returns></returns>
+    ''' <returns>A one-based sequence number for a cell.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Integer
+    Public Function Seq(ByVal iRow As Integer, ByVal iCol As Integer) As Integer
         If (Me.m_bm Is Nothing) Then Return 0
-        Return (iRow - 1) * Me.m_bm.InCol + (iCol - 1)
+        Return (iRow - 1) * Me.m_bm.InCol + (iCol - 1) + 1
     End Function
 
     ''' -------------------------------------------------------------------
@@ -327,9 +357,9 @@ Public Class cEcospaceImportExportXYData
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Returns true if no fields have been defined.
+    ''' Returns true if no row and column fields have been defined.
     ''' </summary>
-    ''' <returns>True if no fields have been defined.</returns>
+    ''' <returns>True if no row and column fields have been defined.</returns>
     ''' -------------------------------------------------------------------
     Public Function IsRowColImplicit() As Boolean
         Return Me.m_bRowColImplicit
