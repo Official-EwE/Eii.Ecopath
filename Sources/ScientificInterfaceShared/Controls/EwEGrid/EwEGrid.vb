@@ -600,7 +600,11 @@ Namespace Controls.EwEGrid
 
         Protected Sub RaiseSelectionChangeEvent()
             If (Me.UIContext IsNot Nothing) And (Not Me.IsLayoutSuspended) Then
-                RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
+                Try
+                    RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
+                Catch ex As Exception
+                    cLog.Write(ex, "EwEGrid::RaiseSelectionChangeEvent(" & Me.ToString & ")")
+                End Try
             End If
         End Sub
 
@@ -1405,12 +1409,7 @@ Namespace Controls.EwEGrid
                 End If
             End If
 
-            Try
-                Me.RaiseSelectionChangeEvent()
-            Catch ex As Exception
-                ' Woops
-                cLog.Write(ex, "EwEGrid::OnSelectionChange(" & Me.ToString & ")")
-            End Try
+            Me.RaiseSelectionChangeEvent()
 
         End Sub
 
