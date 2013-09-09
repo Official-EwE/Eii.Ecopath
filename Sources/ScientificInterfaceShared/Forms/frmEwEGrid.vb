@@ -176,6 +176,7 @@ Namespace Forms
 
             ' JS 05Sep09: QEbar was Input grid only. Now, CSV interaction is available for all grids
             Me.SetQuickEditHandler(True)
+            Me.Grid.DataName = Me.Text
 
             Me.CoreComponents = Me.Grid.CoreComponents
 
@@ -259,7 +260,7 @@ Namespace Forms
                     End If
 
                     Me.m_qeHandler = New cQuickEditHandler()
-                    Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts, Me.Text)
+                    Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts)
                     Me.m_qeHandler.IsOutputGrid = frmEwE.IsOutputForm(Me.CoreExecutionState)
 
                 End If

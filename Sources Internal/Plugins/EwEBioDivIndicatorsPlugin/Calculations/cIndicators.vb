@@ -149,6 +149,12 @@ Public MustInherit Class cIndicators
                    ByVal stanzaDS As cStanzaDatastructures, _
                    ByVal taxonDS As cTaxonDataStructures)
 
+        ' Sanity checks
+        Debug.Assert(core IsNot Nothing, "aargh")
+        Debug.Assert(ecopathDS IsNot Nothing, "aargh")
+        Debug.Assert(stanzaDS IsNot Nothing, "aargh")
+        Debug.Assert(taxonDS IsNot Nothing, "aargh")
+
         ' Store refs
         Me.m_core = core
         Me.m_ecopathDS = ecopathDS

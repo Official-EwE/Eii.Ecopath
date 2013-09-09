@@ -67,8 +67,6 @@ Namespace Controls.EwEGrid
         Private m_btnImport As ToolStripButton = Nothing
         Private m_btnExport As ToolStripButton = Nothing
 
-        Private m_strDataName As String = ""
-
 #End Region ' Private variables
 
 #Region " Public interfaces "
@@ -85,8 +83,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Sub Attach(ByVal grid As EwEGrid, _
                           ByVal uic As cUIContext, _
-                          ByVal ts As ToolStrip, _
-                          ByVal strDataName As String)
+                          ByVal ts As ToolStrip)
 
             ' Sanity checks
             Debug.Assert(grid IsNot Nothing)
@@ -100,7 +97,6 @@ Namespace Controls.EwEGrid
             ' Store ref to UIC
             Me.m_uic = uic
             Me.m_ts = ts
-            Me.m_strDataName = strDataName
 
             AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
@@ -445,7 +441,7 @@ Namespace Controls.EwEGrid
         End Sub
 
         Private Function GetCSVFileName() As String
-            Dim strFileName As String = Me.m_uic.Core.EwEModel.Name & "-" & Me.m_strDataName
+            Dim strFileName As String = Me.m_uic.Core.EwEModel.Name & "-" & Me.m_grid.DataName
             Return cFileUtils.ToValidFileName(strFileName, False)
         End Function
 
@@ -466,7 +462,7 @@ Namespace Controls.EwEGrid
                                     FileAccess.Read, _
                                     FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable)
             Catch ex As Exception
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.DataName, cmdOF.FileName, ex.Message), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, ex.Message), _
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End Try
 
@@ -477,7 +473,7 @@ Namespace Controls.EwEGrid
                 sr.Close()
                 fs.Close()
 
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.DataName, cmdOF.FileName), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, cmdOF.FileName), _
                     eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdOF.FileName)
 
@@ -506,7 +502,7 @@ Namespace Controls.EwEGrid
                 fs = New FileStream(cmdSF.FileName, FileMode.Create, FileAccess.Write, FileShare.None)
             Catch ex As Exception
                 ' Woops!
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.DataName, cmdSF.FileName, ex.Message), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, cmdSF.FileName, ex.Message), _
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End Try
 
@@ -516,7 +512,7 @@ Namespace Controls.EwEGrid
                 sw.Close()
                 fs.Close()
 
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.DataName, cmdSF.FileName), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, cmdSF.FileName), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdSF.FileName)
             End If
@@ -526,10 +522,6 @@ Namespace Controls.EwEGrid
 
         End Sub
 
-        Private Function DataName() As String
-            If String.IsNullOrWhiteSpace(Me.m_strDataName) Then Return My.Resources.GENERIC_VALUE_GRID_CONTENT
-            Return Me.m_strDataName
-        End Function
 
 #End Region ' Internal implementation
 

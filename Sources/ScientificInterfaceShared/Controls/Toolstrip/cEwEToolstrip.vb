@@ -82,6 +82,8 @@ Namespace Controls
 
         Private Sub ShowHideRepeatingSeparators()
 
+            If Me.DesignMode Then Return
+
             Dim tsi As ToolStripItem = Nothing
             Dim iNumVisibleControl As Integer = 0 ' Num vis controls since last separator
             Dim iLastVisibleSeparator As Integer = -1 ' Position of last visible separator

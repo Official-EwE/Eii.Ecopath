@@ -90,6 +90,12 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     ''' <summary>File save status message.</summary>
     Private m_msgStatus As cMessage = Nothing
 
+    ' Fix run states to prevent surprises when user changes settings mid-run
+    Private m_bRunWithEcopath As Boolean = False
+    Private m_bRunWithEcosim As Boolean = False
+    Private m_bRunWithEcospace As Boolean = False
+    Private m_bRunWithMonteCarlo As Boolean = False
+
 #End Region ' Variables
 
 #Region " Plug-in points "
@@ -399,9 +405,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     Public Sub LoadEcospaceScenario(ByVal dataSource As Object) _
         Implements EwEPlugin.IEcospacePlugin.LoadEcospaceScenario
-        If (My.Settings.RunWithEcospace) Then
-            Me.ClearEcospaceIndicators()
-        End If
+        Me.ClearEcospaceIndicators()
     End Sub
 
     Public Sub SaveEcospaceScenario(ByVal dataSource As Object) _
@@ -411,9 +415,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     Public Sub CloseEcospaceScenario() _
         Implements EwEPlugin.IEcospacePlugin.CloseEcospaceScenario
-        If (My.Settings.RunWithEcospace) Then
-            Me.ClearEcospaceIndicators()
-        End If
+        Me.ClearEcospaceIndicators()
     End Sub
 
     Private Property PreserveCalcTL As Boolean
@@ -421,10 +423,15 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
         Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
+        Me.m_bRunWithEcospace = My.Settings.RunWithEcospace
+
         ' Calculate only if supposed to run with Ecospace
-        If (My.Settings.RunWithEcospace = False) Then Return
+        If (Me.m_bRunWithEcospace = False) Then Return
         ' Do not calculate when Ecospace is running as part of a searches
         If (Me.m_core.StateMonitor.IsSearching()) Then Return
+
+        ' Grab and remember ecosim data structures when provided via the plug-in mechanism
+        Me.m_ecospaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
 
         ' Create indicators for water cells only
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
@@ -440,13 +447,10 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             Next iCol
         Next iRow
 
-        ' Grab and remember ecosim data structures when provided via the plug-in mechanism
-        Me.m_ecospaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
-
         ' Preserve old TL calc setting
         Me.PreserveCalcTL = Me.m_ecospaceDS.bCalTrophicLevel
         ' Enable trophic level calculations when plugin is configured to run with Ecospace
-        Me.m_ecospaceDS.bCalTrophicLevel = My.Settings.RunWithEcospace
+        Me.m_ecospaceDS.bCalTrophicLevel = True
 
         If My.Settings.AutoSaveCSV Then Me.BeginSave(eComponentType.Ecospace)
 
@@ -456,7 +460,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Implements EwEPlugin.IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost
 
         ' Calculate only if supposed to run with Ecospace
-        If (My.Settings.RunWithEcospace = False) Then Return
+        If (Me.m_bRunWithEcospace = False) Then Return
         ' Do not calculate when Ecospace is running as part of a searches
         If (Me.m_core.StateMonitor.IsSearching()) Then Return
 
@@ -482,7 +486,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
 
         ' Calculate only if supposed to run with Ecospace
-        If (My.Settings.RunWithEcospace = False) Then Return
+        If (Me.m_bRunWithEcospace = False) Then Return
         ' Do not calculate when Ecospace is running as part of a searches
         If (Me.m_core.StateMonitor.IsSearching()) Then Return
 
@@ -497,6 +501,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Implements EwEPlugin.IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated
         ' Clear
         Me.ClearEcospaceIndicators()
+        Me.m_bRunWithEcospace = False
+
     End Sub
 
 #End Region ' Ecospace

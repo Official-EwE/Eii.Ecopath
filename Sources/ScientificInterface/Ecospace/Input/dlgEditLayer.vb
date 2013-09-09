@@ -103,7 +103,8 @@ Namespace Ecospace.Basemap.Layers
             MyBase.OnLoad(e)
 
             Me.m_qehGrid = New cQuickEditHandler()
-            Me.m_qehGrid.Attach(Me.m_grid, Me.m_uic, Me.m_tsGrid, Me.m_layerOriginal.Name)
+            Me.m_grid.DataName = Me.m_layerOriginal.Name
+            Me.m_qehGrid.Attach(Me.m_grid, Me.m_uic, Me.m_tsGrid)
 
             ' Show your stuff
             Me.m_zoommap.Map.AddLayer(Me.m_layerWork)

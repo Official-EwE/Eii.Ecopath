@@ -77,49 +77,10 @@ Public Class cMCIndicators
     End Function
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cIndicators.ModelBiomass"/>
-    ''' -----------------------------------------------------------------------
-    Protected Overrides Function ModelBiomass(iGroup As Integer) As Single
-        Return Me.EcosimDS.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, Me.Time)
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cIndicators.ModelCatch"/>
-    ''' -----------------------------------------------------------------------
-    Protected Overrides Function ModelCatch(iGroup As Integer) As Single
-        Return Me.EcosimDS.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGroup, Me.Time)
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cIndicators.ModelTL"/>
-    ''' -----------------------------------------------------------------------
-    Protected Overrides Function ModelTL(iGroup As Integer) As Single
-        Return Me.EcosimDS.TLSim(iGroup)
-    End Function
-
-    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cIndicators.ModelTLCatch"/>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function ModelTLCatch() As Single
         Return Me.EcosimDS.TLC(Me.Time)
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cIndicators.ModelDiscards"/>
-    ''' -----------------------------------------------------------------------
-    Protected Overrides Function ModelDiscards(iGroup As Integer) As Single
-        Dim sLandings As Single = 0
-        For iFleet As Integer = 1 To Me.EcopathDS.NumFleet
-            sLandings += Me.EcosimDS.ResultsLandings(iGroup, iFleet)
-        Next
-        Return Me.EcosimDS.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGroup, Me.Time) - sLandings
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cIndicators.KemptonsQ"/>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Function KemptonsQ() As Single
-        Return Me.EcosimDS.Kemptons(Me.Time)
     End Function
 
 #End Region ' Core data access and public bits

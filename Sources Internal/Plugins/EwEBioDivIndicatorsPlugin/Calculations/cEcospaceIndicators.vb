@@ -59,13 +59,17 @@ Public Class cEcospaceIndicators
     ''' <param name="taxonDS">The <see cref="cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal core As cCore, _
-                    ByVal ecopathDS As cEcopathDataStructures, _
-                    ByVal ecospaceDS As cEcospaceDataStructures, _
-                    ByVal ptLocation As Point, _
-                    ByVal stanzaDS As cStanzaDatastructures, _
-                    ByVal taxonDS As cTaxonDataStructures)
+                   ByVal ecopathDS As cEcopathDataStructures, _
+                   ByVal ecospaceDS As cEcospaceDataStructures, _
+                   ByVal ptLocation As Point, _
+                   ByVal stanzaDS As cStanzaDatastructures, _
+                   ByVal taxonDS As cTaxonDataStructures)
 
         MyBase.New(core, ecopathDS, stanzaDS, taxonDS)
+
+        'Sanity check
+        Debug.Assert(ecospaceDS IsNot Nothing, "Aargh!")
+
         Me.m_ecopathDS = ecopathDS
         Me.m_ecosimDS = m_ecosimDS
         Me.m_ecospaceDS = ecospaceDS

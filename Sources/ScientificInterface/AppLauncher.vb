@@ -651,11 +651,11 @@ Public Class AppLauncher
         Me.m_styleguideupdater = New cStyleGuideUpdater(Me.UIContext)
         Me.m_styleguideupdater.Load()
 
-        Me.Core.SetMessagePumpDelegate(AddressOf Me.onPumpCoreMessages)
+        Me.Core.SetMessagePumpDelegate(AddressOf Me.OnPumpCoreMessages)
 
     End Sub
 
-    Private Sub onPumpCoreMessages()
+    Private Sub OnPumpCoreMessages()
         Try
             Windows.Forms.Application.DoEvents()
         Catch ex As Exception
