@@ -597,7 +597,7 @@ Public Class cValueChainPlugin
     ''' Plug-in point implementation, called when a search is initialized.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub SearchInitialized(SearchDatastructures As Object, EcosimDataStructures As Object) _
+    Public Sub SearchInitialized(SearchDatastructures As Object) _
         Implements EwEPlugin.ISearchPlugin.SearchInitialized
 
         Dim ds As cSearchDatastructures = DirectCast(SearchDatastructures, cSearchDatastructures)
@@ -616,9 +616,6 @@ Public Class cValueChainPlugin
         ds.profit = 0
         ds.totval = 0
         ds.Employ = 0
-        'ds.SectorTotalValue = 0
-        'ds.SectorProfit = 0
-        'ds.SectorJobs = 0
 
     End Sub
 
@@ -628,10 +625,8 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub SearchIterationsStarting() Implements _
-          EwEPlugin.ISearchPlugin.SearchIterationsStarting
-
+        EwEPlugin.ISearchPlugin.SearchIterationsStarting
         ' NOP
-
     End Sub
 
     ''' -----------------------------------------------------------------------

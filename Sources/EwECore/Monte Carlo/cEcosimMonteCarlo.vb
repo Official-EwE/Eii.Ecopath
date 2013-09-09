@@ -240,7 +240,7 @@ Friend Class cEcosimMonteCarlo
             ' Fire plug-in point
             If Me.m_pluginmanager IsNot Nothing Then
                 Me.m_core.m_SearchData.SearchMode = eSearchModes.MonteCarlo
-                Me.m_pluginmanager.SearchInitialized(Me.m_core.m_SearchData, Me.m_esdata)
+                Me.m_pluginmanager.SearchInitialized(Me.m_core.m_SearchData)
                 Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             End If
 

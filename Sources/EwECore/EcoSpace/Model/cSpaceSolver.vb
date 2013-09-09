@@ -778,7 +778,6 @@ Public Class cSpaceSolver
             Next ii
 
             Me.CalcTrophicLevel(iRow, iCol, Consumpt, Eatenby)
-            Me.CalcTrophicLevelOfCatch(iRow, iCol)
 
             'Make the detritus calculations here:
             Me.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, ToDetritus, GroupDetritus)
@@ -1066,7 +1065,6 @@ Public Class cSpaceSolver
 
     End Sub
 
-
     ''' <summary>
     ''' Calculate trophic level and populate the trophic level map in the Ecospace data structures <see cref="cEcospaceDataStructures.TL">TL</see> map array.
     ''' </summary>
@@ -1091,6 +1089,8 @@ Public Class cSpaceSolver
 
         Dim Diet(m_Data.NGroups, m_Data.NGroups) As Single
         Dim TLs(m_Data.NGroups) As Single
+        Dim totalTL As Single = 0
+        Dim fCatch As Single = 0
 
         Try
 
@@ -1110,57 +1110,46 @@ Public Class cSpaceSolver
             Next i
 
             SyncLock TLlockOb
-                'EcoFunctions.EstimateTrophicLevels() is NOT thread safe so only one thread at a time
                 EcoFunctions.EstimateTrophicLevels(m_Data.NGroups, m_Data.nLiving, m_PathData.PP, Diet, TLs)
-
             End SyncLock 'TLlockOb
 
             'populate the map for this row col
             For igrp As Integer = 1 To m_Data.NGroups
                 m_Data.TL(iRow, iCol, igrp) = TLs(igrp)
-            Next igrp
+                fCatch += Me.m_Data.CatchMap(iRow, iCol, igrp)
+                totalTL +=TLs(igrp) * Me.m_Data.CatchMap(iRow, iCol, igrp)
+            Next
+
+            If (fCatch > 0) Then
+                Me.m_Data.TLc(iRow, iCol) = CSng(totalTL / (fCatch + 1.0E-20))
+            Else
+                Me.m_Data.TLc(iRow, iCol) = 0
+            End If
+
+            If (Me.m_Data.TimeStep = 0) Then
+
+                SyncLock TLlockOb
+                    Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, Me.m_PathData.TTLX, m_Data.BBase, 0.25)
+                End SyncLock 'TLlockOb
+
+            Else
+                ' Recompose Biomass array
+                Dim BSpace(Me.m_PathData.NumGroups) As Single
+
+                For iGroup As Integer = 1 To Me.m_PathData.NumGroups
+                    BSpace(iGroup) = Me.m_Data.Bcell(iRow, iCol, iGroup)
+                Next
+
+                SyncLock TLlockOb
+                    Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, TLs, BSpace, 0.25)
+                End SyncLock 'TLlockOb
+
+            End If
 
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, Me.ToString & ".CalcTrophicLevel() Error: " & ex.Message)
         End Try
-
-    End Sub
-
-    Private Sub CalcTrophicLevelOfCatch(iRow As Integer, iCol As Integer)
-
-        If Not Me.m_Data.bCalTrophicLevel Then
-            'Nope turned Off
-            Return
-        End If
-
-        Dim totalTL As Single = 0
-        Dim fCatch As Single = 0
-
-        For iGroup As Integer = 1 To Me.m_PathData.NumGroups
-            fCatch += Me.m_Data.CatchMap(iRow, iCol, iGroup)
-            totalTL += Me.m_Data.TL(iRow, iCol, iGroup) * Me.m_Data.CatchMap(iRow, iCol, iGroup)
-        Next
-
-        If (fCatch > 0) Then
-            Me.m_Data.TLc(iRow, iCol) = CSng(totalTL / (fCatch + 1.0E-20))
-        Else
-            Me.m_Data.TLc(iRow, iCol) = 0
-        End If
-
-        If (Me.m_Data.TimeStep = 0) Then
-            Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, Me.m_PathData.TTLX, m_Data.BBase, 0.25)
-        Else
-            ' Recompose TLs, Biomass array
-            Dim TLs(Me.m_PathData.NumGroups) As Single
-            Dim BSpace(Me.m_PathData.NumGroups) As Single
-
-            For iGroup As Integer = 1 To Me.m_PathData.NumGroups
-                TLs(iGroup) = m_Data.TL(iRow, iCol, iGroup)
-                BSpace(iGroup) = Me.m_Data.Bcell(iRow, iCol, iGroup)
-            Next
-            Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, TLs, BSpace, 0.25)
-        End If
 
     End Sub
 
