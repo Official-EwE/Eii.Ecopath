@@ -16,13 +16,13 @@
 ' ===============================================================================
 '
 
-''' ===========================================================================
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Interface for a plug-in that is invoked when the Ecosim model is about to
 ''' start computing a time step, after all instances of <see cref="IEcosimBeginTimestepPlugin"/>
 ''' points have been called.
 ''' </summary>
-''' ===========================================================================
+''' ---------------------------------------------------------------------------
 Public Interface IEcosimBeginTimestepPostPlugin
     Inherits IPlugin
 

@@ -41,9 +41,10 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcopathRunCompleted2Plugin
     Implements EwEPlugin.IEcopathRunInvalidatedPlugin
+    Implements EwEPlugin.IEcosimPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
     Implements EwEPlugin.IEcosimRunInvalidatedPlugin
-    Implements EwEPlugin.IEcosimPlugin
+    Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcospacePlugin
     Implements EwEPlugin.IEcospaceEndTimestepPostPlugin
     Implements EwEPlugin.IEcospaceRunInvalidatedPlugin
@@ -95,6 +96,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Private m_bRunWithEcosim As Boolean = False
     Private m_bRunWithEcospace As Boolean = False
     Private m_bRunWithMonteCarlo As Boolean = False
+    Private m_bCalcExtrasOld As Boolean = False
 
 #End Region ' Variables
 
@@ -104,12 +106,12 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return the author of this plug-in.
+    ''' Return the author(s) of this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Marta Coll Montón, Audrey Valls, Jeroen Steenbeek"
+            Return "Marta Coll Montón, Jeroen Steenbeek"
         End Get
     End Property
 
@@ -131,7 +133,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Plug-in for EwE6 that computes additional biodiversity indocators"
+            Return Me.ControlTooltipText
         End Get
     End Property
 
@@ -285,20 +287,50 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Plug-in point that delivers ecosim data structures when Ecosim has finished a run.
+    ''' Ecosim has loaded
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub LoadEcosimScenario(dataSource As Object) _
+        Implements EwEPlugin.IEcosimPlugin.LoadEcosimScenario
+        Me.ClearEcosimIndicators()
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ecosim about to start time stepping
+    ''' </summary>
+    ''' <param name="EcosimDatastructures"></param>
+    ''' -----------------------------------------------------------------------
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+
+        ' Grab and remember ecosim data structures when provided via the plug-in mechanism
+        Me.m_ecosimDS = DirectCast(EcosimDatastructures, cEcosimDatastructures)
+
+        If (Me.m_core.StateMonitor.IsSearching()) Then
+            Me.m_bRunWithEcosim = False
+        Else
+            Me.m_bRunWithEcosim = My.Settings.RunWithEcosim
+        End If
+
+        If (Not Me.m_bRunWithEcosim) Then Return
+
+        Me.m_bCalcExtrasOld = Me.m_ecosimDS.bAlwaysCalcTLc
+        Me.m_ecosimDS.bAlwaysCalcTLc = True
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ecosim finished running. Now compute indicators.
     ''' </summary>
     ''' <param name="EcosimDatastructures">The <see cref="cEcosimDatastructures">Ecosim data</see> with results.</param>
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunCompletedPost(ByVal EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
 
-        ' Grab and remember ecosim data structures when provided via the plug-in mechanism
-        Me.m_ecosimDS = DirectCast(EcosimDatastructures, cEcosimDatastructures)
-
-        ' Do not calculate if not supposed to run with Ecosim
-        If (Not My.Settings.RunWithEcosim) Then Return
+        If (Not Me.m_bRunWithEcosim) Then Return
         ' Do not calculate when Ecosim is running as part of a searches
-        If (Me.m_core.StateMonitor.IsSearching()) Then Return
 
         ' Get ready to calculate
         Me.m_lIndEcosim.Clear()
@@ -323,29 +355,39 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             Me.m_frm.UpdateIndicators(eComponentType.Ecosim)
         End If
 
+        ' Restore preservation flag
+        Me.m_ecosimDS.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
+
     End Sub
 
-    Public Sub EcosimRunInvalidated() Implements EwEPlugin.IEcosimRunInvalidatedPlugin.EcosimRunInvalidated
-        ' Only clear when supposed to run with Ecosim
-        If (Not My.Settings.RunWithEcosim) Then Return
-        ' Clear
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ecosim data has changed. Discard any results.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub EcosimRunInvalidated() _
+        Implements EwEPlugin.IEcosimRunInvalidatedPlugin.EcosimRunInvalidated
         Me.ClearEcosimIndicators()
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ecosim is closing. Forget Sim and MC indicators.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Sub CloseEcosimScenario() Implements EwEPlugin.IEcosimPlugin.CloseEcosimScenario
-        If (My.Settings.RunWithEcosim) Then
-            Me.ClearEcosimIndicators()
-            Me.ClearMCIndicators()
-        End If
+        Me.ClearEcosimIndicators()
+        Me.ClearMCIndicators()
     End Sub
 
-    Public Sub LoadEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.LoadEcosimScenario
-        If (My.Settings.RunWithEcosim) Then
-            Me.ClearEcosimIndicators()
-        End If
-    End Sub
-
-    Public Sub SaveEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.SaveEcosimScenario
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ecosim scenario is saved. Take no action.
+    ''' </summary>
+    ''' <param name="dataSource"></param>
+    ''' -----------------------------------------------------------------------
+    Public Sub SaveEcosimScenario(dataSource As Object) _
+        Implements EwEPlugin.IEcosimPlugin.SaveEcosimScenario
         ' NOP
     End Sub
 
@@ -353,14 +395,29 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
 #Region " Monte Carlo "
 
-    Public Sub SearchInitialized(SearchDatastructures As Object) _
+    Public Sub SearchInitialized(SearchDatastructures As Object, EcosimDataStructures As Object) _
         Implements EwEPlugin.ISearchPlugin.SearchInitialized
+
         Me.m_searchDS = DirectCast(SearchDatastructures, cSearchDatastructures)
+        Me.m_ecosimDS = DirectCast(EcosimDataStructures, cEcosimDatastructures)
+
     End Sub
 
     Public Sub SearchIterationsStarting() _
         Implements EwEPlugin.ISearchPlugin.SearchIterationsStarting
         Me.ClearMCIndicators()
+
+        If (Me.m_searchDS.SearchMode = eSearchModes.MonteCarlo) Then
+            Me.m_bRunWithMonteCarlo = My.Settings.RunWithMC
+        Else
+            Me.m_bRunWithMonteCarlo = False
+        End If
+
+        If (m_bRunWithEcosim) Then
+            Me.m_bCalcExtrasOld = Me.m_ecosimDS.bAlwaysCalcTLc
+            Me.m_ecosimDS.bAlwaysCalcTLc = True
+        End If
+
     End Sub
 
     Public Sub PostRunSearchResults(SearchDatastructures As Object) _
@@ -370,9 +427,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Dim lIter As New List(Of cMCIndicators)
 
         ' Calculate only if supposed to run with MC
-        If (My.Settings.RunWithMC = False) Then Return
-        ' Calculate only if running MC
-        If (Me.m_searchDS.SearchMode <> eSearchModes.MonteCarlo) Then Return
+        If (Not Me.m_bRunWithMonteCarlo) Then Return
 
         ' Get ready to calculate
         For iTime As Integer = 1 To Me.m_ecosimDS.NTimes
@@ -399,6 +454,21 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Search is finished. Restore Sim CalcTL flag
+    ''' </summary>
+    ''' <param name="SearchDatastructures"></param>
+    ''' -----------------------------------------------------------------------
+    Public Sub SearchCompleted(SearchDatastructures As Object) _
+        Implements EwEPlugin.ISearchPlugin.SearchCompleted
+
+        If (m_bRunWithEcosim) Then
+            Me.m_ecosimDS.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
+        End If
+
+    End Sub
+
 #End Region ' Monte Carlo
 
 #Region " Ecospace "
@@ -417,8 +487,6 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Implements EwEPlugin.IEcospacePlugin.CloseEcospaceScenario
         Me.ClearEcospaceIndicators()
     End Sub
-
-    Private Property PreserveCalcTL As Boolean
 
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
         Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
@@ -448,7 +516,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Next iRow
 
         ' Preserve old TL calc setting
-        Me.PreserveCalcTL = Me.m_ecospaceDS.bCalTrophicLevel
+        Me.m_bCalcExtrasOld = Me.m_ecospaceDS.bCalTrophicLevel
         ' Enable trophic level calculations when plugin is configured to run with Ecospace
         Me.m_ecospaceDS.bCalTrophicLevel = True
 
@@ -491,7 +559,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         If (Me.m_core.StateMonitor.IsSearching()) Then Return
 
         ' Restore old TL calc setting
-        Me.m_ecospaceDS.bCalTrophicLevel = Me.PreserveCalcTL
+        Me.m_ecospaceDS.bCalTrophicLevel = Me.m_bCalcExtrasOld
 
         Me.EndSave()
 
@@ -521,13 +589,13 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Biodiversity indicators"
+            Return My.Resources.CAPTION
         End Get
     End Property
 
     Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return ControlText
+            Return My.Resources.CAPTION_INFO
         End Get
     End Property
 
@@ -922,7 +990,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Next
 
         Dim exp As New cEcospaceImportExportXYData(bm, astrFields.ToArray())
-          ' Write line for cell
+        ' Write line for cell
         For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
             If (ind.IsComputed) Then
                 For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1

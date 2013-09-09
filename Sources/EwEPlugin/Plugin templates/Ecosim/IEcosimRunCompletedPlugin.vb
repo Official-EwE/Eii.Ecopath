@@ -16,22 +16,23 @@
 ' ===============================================================================
 '
 
-'==============================================================================
-'
-' $Log: IEcosimRunCompletedPlugin.vb,v $
-' Revision 1.1  2008/09/26 07:31:07  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2007/06/20 17:45:21  sherman
-' Put CVS header
-'
-'
-'
-'==============================================================================
-
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Interface for implementing plugin points that are invoked when Ecosim finishes
+''' a run.
+''' <seealso cref="IEcosimRunCompletedPostPlugin"/>
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Interface IEcosimRunCompletedPlugin
     Inherits IPlugin
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Plug-in point that is called when Ecosim has finished running.
+    ''' <seealso cref="IEcosimRunCompletedPostPlugin"/>
+    ''' </summary>
+    ''' <param name="EcosimDatastructures">Ecosim data structires.</param>
+    ''' -----------------------------------------------------------------------
     Sub EcosimRunCompleted(ByVal EcosimDatastructures As Object)
 
 End Interface

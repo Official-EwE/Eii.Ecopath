@@ -97,6 +97,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Computes biodiversity indicators for Ecopath, Ecosim, Ecospace and Monte Carlo.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_INFO() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_INFO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass-based.
         '''</summary>
         Friend ReadOnly Property GROUP_BIOMASS() As String

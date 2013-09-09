@@ -413,4 +413,7 @@
   <data name="CAPTION" xml:space="preserve">
     <value>Biodiversity indicators</value>
   </data>
+  <data name="CAPTION_INFO" xml:space="preserve">
+    <value>Computes biodiversity indicators for Ecopath, Ecosim, Ecospace and Monte Carlo</value>
+  </data>
 </root>

@@ -16,20 +16,24 @@
 ' ===============================================================================
 '
 
-'==============================================================================
-'
-' $Log: IEcosimRunCompletedPostPlugin.vb,v $
-' Revision 1.1  2009/03/11 14:57:45  jeroens
-' Initial version
-'
-'==============================================================================
-
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Interface for implementing plugin points that are invoked when Ecosim finishes
+''' a run, and all <see cref="IEcosimRunCompletedPlugin"/> points have been called.
+''' <seealso cref="IEcosimRunCompletedPlugin"/>
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Public Interface IEcosimRunCompletedPostPlugin
     Inherits IPlugin
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Plug-in point that is called when Ecosim has finished running, and all
+    ''' <see cref="IEcosimRunCompletedPlugin"/> points have been called.
+    ''' <seealso cref="IEcosimRunCompletedPlugin"/>
+    ''' </summary>
+    ''' <param name="EcosimDatastructures">Ecosim data structires.</param>
+    ''' -----------------------------------------------------------------------
     Sub EcosimRunCompletedPost(ByVal EcosimDatastructures As Object)
 
 End Interface

@@ -157,9 +157,9 @@ Namespace FishingPolicy
             End Try
 
             ' Fire plug-in point
-            If Me.m_pluginManager IsNot Nothing Then
+            If (Me.m_pluginManager IsNot Nothing) Then
                 Me.m_core.m_SearchData.SearchMode = eSearchModes.FishingPolicy
-                Me.m_pluginManager.SearchInitialized(Me.m_searchData)
+                Me.m_pluginManager.SearchInitialized(Me.m_searchData, Me.m_core.m_EcoSimData)
                 Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             End If
 
@@ -291,6 +291,12 @@ Namespace FishingPolicy
                 Throw New ApplicationException("Error running Fishing Policy Search.", ex)
             End Try
 
+            ' Done
+            If Me.m_pluginManager IsNot Nothing Then
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.FishingPolicy
+                Me.m_pluginManager.SearchCompleted(Me.m_searchData)
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+            End If
 
         End Sub
 

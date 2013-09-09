@@ -164,6 +164,9 @@ Public Class frmMain
         Me.m_tbxDefaultLocation.Text = Me.m_ppt.DefaultFolder
         Me.m_tbxOutputFolder.Text = My.Settings.CustomFolder
 
+        ' Start listening to core run state changes
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+
         ' Start listening to Ecopath, Ecosim, Ecospace and external messages (responses are handled in OnCoreMessage)
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Core}
 
@@ -177,6 +180,9 @@ Public Class frmMain
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        ' Stop listening to core run state changes
+        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
         ' Cleanup 
         Me.m_grid.Detach()
@@ -216,6 +222,55 @@ Public Class frmMain
 
         ' Update controls to reflect any core state changes
         Me.UpdateControls()
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Overridden to prevent the form from locking up while running.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property IsRunForm As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="UpdateControls"/>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Sub UpdateControls()
+
+        Dim csm As cCoreStateMonitor = Me.UIContext.Core.StateMonitor
+        Dim bCanSave As Boolean = False
+        Dim bHasTaxa As Boolean = (Me.UIContext.Core.nTaxon > 0)
+        Dim bIsRunning As Boolean = csm.IsBusy
+
+        Select Case Me.SelectedTabComponent
+            Case cEwEBioDiversityIndicatorsPlugin.eComponentType.Any
+                bCanSave = False
+            Case cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecopath
+                bCanSave = My.Settings.RunWithEcopath And csm.HasEcopathRan
+            Case cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecosim
+                bCanSave = My.Settings.RunWithEcosim And csm.HasEcosimRan
+            Case cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecospace
+                bCanSave = My.Settings.RunWithEcospace And csm.HasEcospaceRan
+        End Select
+
+        Me.m_btnSaveToCSV.Enabled = bCanSave
+
+        Me.m_llStatus.Visible = Not bHasTaxa
+        Me.m_pbStatus.Visible = Not bHasTaxa
+
+        Me.m_cbAutoSaveCSV.Enabled = Not bIsRunning
+        Me.m_cbRunWithEcopath.Enabled = Not bIsRunning
+        Me.m_cbRunWithEcosim.Enabled = Not bIsRunning
+        Me.m_cbRunWithEcospace.Enabled = Not bIsRunning
+        Me.m_cbRunWithMC.Enabled = Not bIsRunning
+        Me.m_btnChangeDefault.Enabled = Not bIsRunning
+        Me.m_btnChooseFolder.Enabled = Not bIsRunning
+        Me.m_rbCustom.Enabled = Not bIsRunning
+        Me.m_rbDefault.Enabled = Not bIsRunning
 
     End Sub
 
@@ -392,6 +447,14 @@ Public Class frmMain
         Me.OpenLink("http://www.icm.csic.es/")
     End Sub
 
+    Private Sub OnCoreStateChanged(csm As cCoreStateMonitor)
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
 #End Region ' Events
 
 #Region " Public methods "
@@ -479,35 +542,6 @@ Public Class frmMain
         End Select
         Return cEwEBioDiversityIndicatorsPlugin.eComponentType.Any
     End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="UpdateControls"/>
-    ''' -----------------------------------------------------------------------
-    Protected Overrides Sub UpdateControls()
-
-        Dim csm As cCoreStateMonitor = Nothing
-        Dim bCanSave As Boolean = False
-        Dim bHasTaxa As Boolean = (Me.UIContext.Core.nTaxon > 0)
-
-        csm = Me.UIContext.Core.StateMonitor
-
-        Select Case Me.SelectedTabComponent
-            Case cEwEBioDiversityIndicatorsPlugin.eComponentType.Any
-                bCanSave = False
-            Case cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecopath
-                bCanSave = My.Settings.RunWithEcopath And csm.HasEcopathRan
-            Case cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecosim
-                bCanSave = My.Settings.RunWithEcosim And csm.HasEcosimRan
-            Case cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecospace
-                bCanSave = My.Settings.RunWithEcospace And csm.HasEcospaceRan
-        End Select
-
-        Me.m_btnSaveToCSV.Enabled = bCanSave
-
-        Me.m_llStatus.Visible = Not bHasTaxa
-        Me.m_pbStatus.Visible = Not bHasTaxa
-
-    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

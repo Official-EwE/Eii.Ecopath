@@ -31,8 +31,9 @@ Public Interface ISearchPlugin
     ''' Search has been initialized by the core.
     ''' </summary>
     ''' <param name="SearchDatastructures">cSearchDataStructures</param>
+    ''' <param name="EcosimDataStructures">Ecosim data structures</param>
     ''' -----------------------------------------------------------------------
-    Sub SearchInitialized(ByVal SearchDatastructures As Object)
+    Sub SearchInitialized(ByVal SearchDatastructures As Object, ByVal EcosimDataStructures As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -53,5 +54,12 @@ Public Interface ISearchPlugin
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Sub SearchIterationsStarting()
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Search is completed.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Sub SearchCompleted(ByVal SearchDatastructures As Object)
 
 End Interface

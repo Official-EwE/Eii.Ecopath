@@ -176,7 +176,10 @@ Public Class cEcosimDatastructures
     Public CapDepreciate() As Single
     Public CapBaseGrowth() As Single
 
-    ' JS 08Jan10: Moved here from Network Analysis plug-in
+    ''' <summary>Toggle to enable TL calculations during searches. Normally this 
+    ''' is not enabled because TL info is not used by searches.</summary>
+    Public bAlwaysCalcTLc As Boolean = False
+
     ''' <summary>TL of catch (x time)</summary>
     Public TLC() As Single
     ''' <summary>FIB index (x time)</summary>
@@ -184,7 +187,6 @@ Public Class cEcosimDatastructures
     ''' <summary>TL based on Ecosim diets (x group)</summary>
     Public TLSim() As Single
     ''' <summary>Total catch per timestep</summary>
-    ''' <remarks>JS: moved 08Jan10 from Network Analysis. Ecosim may already have this value, but I could not find it</remarks>
     Public CatchSim() As Single
     ''' <summary>Kemptons's Q</summary>
     Public Kemptons() As Single

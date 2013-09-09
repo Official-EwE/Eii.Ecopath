@@ -18,11 +18,11 @@
 
 Option Strict On
 
-''' ===========================================================================
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Plugin points for the initialization of Ecosim data cEcosimDataStructures 
 ''' </summary>
-''' ===========================================================================
+''' ---------------------------------------------------------------------------
 Public Interface IEcosimDataInitializedPlugin
     Inherits IPlugin
 

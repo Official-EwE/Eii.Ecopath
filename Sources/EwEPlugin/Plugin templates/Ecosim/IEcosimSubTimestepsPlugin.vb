@@ -16,6 +16,7 @@
 ' ===============================================================================
 '
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Plugin points for begin and end of Ecosim sub timesteps. 
 ''' </summary>
@@ -26,6 +27,7 @@
 ''' This funtionality is only available via code and has no user interface. 
 ''' User interface objects e.g. cCore.EcosimGroupOutputs are NOT update for sub timesteps and will not be updated until the end of the monthly timestep.
 ''' </remarks>
+''' ---------------------------------------------------------------------------
 Public Interface IEcosimSubTimestepsPlugin
     Inherits IPlugin
 

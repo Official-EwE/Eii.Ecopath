@@ -54,6 +54,7 @@ Partial Class frmMain
         Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbICM = New System.Windows.Forms.PictureBox()
         Me.m_pbCSIC = New System.Windows.Forms.PictureBox()
+        Me.m_btnChangeDefault = New System.Windows.Forms.Button()
         Me.m_btnChooseFolder = New System.Windows.Forms.Button()
         Me.m_tbxDefaultLocation = New System.Windows.Forms.TextBox()
         Me.m_tbxOutputFolder = New System.Windows.Forms.TextBox()
@@ -79,7 +80,6 @@ Partial Class frmMain
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
-        Me.m_btnChangeDefault = New System.Windows.Forms.Button()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -187,6 +187,12 @@ Partial Class frmMain
         Me.m_pbCSIC.Name = "m_pbCSIC"
         Me.m_pbCSIC.TabStop = False
         '
+        'm_btnChangeDefault
+        '
+        resources.ApplyResources(Me.m_btnChangeDefault, "m_btnChangeDefault")
+        Me.m_btnChangeDefault.Name = "m_btnChangeDefault"
+        Me.m_btnChangeDefault.UseVisualStyleBackColor = True
+        '
         'm_btnChooseFolder
         '
         resources.ApplyResources(Me.m_btnChooseFolder, "m_btnChooseFolder")
@@ -196,7 +202,6 @@ Partial Class frmMain
         'm_tbxDefaultLocation
         '
         resources.ApplyResources(Me.m_tbxDefaultLocation, "m_tbxDefaultLocation")
-        Me.m_tbxDefaultLocation.Cursor = System.Windows.Forms.Cursors.Hand
         Me.m_tbxDefaultLocation.Name = "m_tbxDefaultLocation"
         Me.m_tbxDefaultLocation.ReadOnly = True
         '
@@ -291,6 +296,7 @@ Partial Class frmMain
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
@@ -387,12 +393,6 @@ Partial Class frmMain
         Me.m_llStatus.TabStop = True
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
-        '
-        'm_btnChangeDefault
-        '
-        resources.ApplyResources(Me.m_btnChangeDefault, "m_btnChangeDefault")
-        Me.m_btnChangeDefault.Name = "m_btnChangeDefault"
-        Me.m_btnChangeDefault.UseVisualStyleBackColor = True
         '
         'frmMain
         '

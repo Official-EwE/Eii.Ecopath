@@ -16,17 +16,6 @@
 ' ===============================================================================
 '
 
-'==============================================================================
-'
-' $Log: IEcosimModifyFGearPlugin.vb,v $
-' Revision 1.2  2009/04/02 01:30:23  sherman
-' Passed BB into ModifyFGearPlugin
-'
-' Revision 1.1  2009/03/26 02:06:22  sherman
-' Added Plugin point EcosimModifyFGear
-'
-'==============================================================================
-
 ''' <summary>
 ''' Plugin Point to modify Ecosim Fishing Effort during a MSE or Fishing Policy Search.
 ''' </summary>
