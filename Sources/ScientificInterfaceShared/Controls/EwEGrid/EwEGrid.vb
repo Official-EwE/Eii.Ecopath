@@ -881,6 +881,11 @@ Namespace Controls.EwEGrid
             Return Me.GetType().ToString & "(" & Me.Name & ")"
         End Function
 
+        ''' <summary>
+        ''' Get/set the name of the data in the grid.
+        ''' </summary>
+        Overridable Property DataName As String = My.Resources.GENERIC_VALUE_GRID_CONTENT
+
 #End Region ' Appearance
 
 #Region " Data "
@@ -908,11 +913,13 @@ Namespace Controls.EwEGrid
         ''' <note_js>Method does not require UI context to be present.</note_js>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub ClearData()
-            ' Clear rows
+
+            ' Clear row content, smartly
             For iRow As Integer = 0 To Me.RowsCount - 1
                 Me.ClearRow(iRow)
             Next
-            ' Clear orphaned properties
+
+            ' Clear orphaned local properties
             If (Me.m_lpropLocal IsNot Nothing) Then
                 For Each prop As cProperty In Me.m_lpropLocal
                     prop.Dispose()
@@ -920,10 +927,12 @@ Namespace Controls.EwEGrid
                 Me.m_lpropLocal.Clear()
                 Me.m_lpropLocal = Nothing
             End If
-            If Not Me.Disposing Then
-                ' Remove all rows
+
+            ' Remove all rows
+            If Not Me.Disposing And Me.RowsCount > 0 Then
                 Me.RowsCount = 0
             End If
+
         End Sub
 
         ''' -------------------------------------------------------------------

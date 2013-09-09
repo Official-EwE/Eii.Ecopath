@@ -43,7 +43,7 @@ Friend Class ucGridView
         Dim fleet As cFleetInput = Nothing
 
         Me.m_qe = New cQuickEditHandler()
-        Me.m_qe.Attach(Me.m_grid, Me.m_grid.UIContext, Me.m_ts, "")
+        Me.m_qe.Attach(Me.m_grid, Me.m_grid.UIContext, Me.m_ts)
 
         If Me.CanFilter Then
 

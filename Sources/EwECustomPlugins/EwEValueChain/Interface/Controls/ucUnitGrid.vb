@@ -68,6 +68,7 @@ Public Class ucUnitGrid
 
         Me.m_data = data
         Me.m_unitType = unitType
+        Me.DataName = "VC_" & CStr(unitType)
 
         ' Get all defined units of this type
         Me.m_lUnits = New List(Of cUnit)

@@ -68,6 +68,7 @@ Namespace Controls
 
             '' Update separators
             'Me.ShowHideRepeatingSeparators()
+
             ' Set default display properties
             Me.GripStyle = ToolStripGripStyle.Hidden
             Me.RenderMode = ToolStripRenderMode.System
@@ -81,8 +82,10 @@ Namespace Controls
         End Sub
 
         Protected Overrides Sub OnMenuActivate(e As System.EventArgs)
+
             Me.ShowHideRepeatingSeparators()
             MyBase.OnMenuActivate(e)
+
         End Sub
 
 #End Region ' Overrides
@@ -94,6 +97,8 @@ Namespace Controls
         ''' </summary>
         ''' <param name="tsmi"></param>
         Private Sub ShowHideRepeatingSeparators(Optional tsmi As ToolStripMenuItem = Nothing)
+
+            If Me.DesignMode Then Return
 
             Dim tsi As ToolStripItem = Nothing
             Dim iNumVisibleControl As Integer = 0 ' Num vis controls since last separator

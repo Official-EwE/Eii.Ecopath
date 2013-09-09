@@ -32,9 +32,10 @@ Public Interface IAutolaunchPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Plug-in point to state whether auto-launch is active.
+    ''' Plug-in point to state whether auto-launch is active. If set to true,
+    ''' the plug-in will be launched, activating its user interface if available.
     ''' </summary>
-    ''' <remarks>True if active.</remarks>
+    ''' <returns>A plug-in should return true if it desires to be auto-lanched.</returns>
     ''' -----------------------------------------------------------------------
     Function Autolaunch() As Boolean
 

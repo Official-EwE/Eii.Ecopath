@@ -162,11 +162,22 @@ Namespace Ecosim
 
             ' Configure grids
             Me.m_gridB.UIContext = Me.UIContext
+            Me.m_gridB.DataName = "MC_B"
+
             Me.m_gridBA.UIContext = Me.UIContext
+            Me.m_gridBA.DataName = "MC_BA"
+
             Me.m_gridEE.UIContext = Me.UIContext
+            Me.m_gridEE.DataName = "MC_EE"
+
             Me.m_gridPB.UIContext = Me.UIContext
+            Me.m_gridPB.DataName = "MC_PB"
+
             Me.m_gridQB.UIContext = Me.UIContext
+            Me.m_gridQB.DataName = "MC_QB"
+
             Me.m_gridBestFit.UIContext = Me.UIContext
+            Me.m_gridBestFit.DataName = "MC_BestFit"
 
             Me.m_cmdRunMonteCarlo = New cCommand(Me.CommandHandler, "RunMonteCarlo")
             Me.m_cmdRunMonteCarlo.AddControl(Me.m_btnRunTrials)
@@ -190,11 +201,11 @@ Namespace Ecosim
 
             Me.m_tsbnShowGroups.Checked = Not Me.m_spPlot.Panel2Collapsed
 
-            Me.m_qeB.Attach(Me.m_gridB, Me.UIContext, Me.m_tsB, "MC_B")
-            Me.m_qePB.Attach(Me.m_gridPB, Me.UIContext, Me.m_tsPB, "MC_PB")
-            Me.m_qeQB.Attach(Me.m_gridQB, Me.UIContext, Me.m_tsQB, "MC_QB")
-            Me.m_qeEE.Attach(Me.m_gridEE, Me.UIContext, Me.m_tsEE, "MC_EE")
-            Me.m_qeBA.Attach(Me.m_gridBA, Me.UIContext, Me.m_tsBA, "MC_BA")
+            Me.m_qeB.Attach(Me.m_gridB, Me.UIContext, Me.m_tsB)
+            Me.m_qePB.Attach(Me.m_gridPB, Me.UIContext, Me.m_tsPB)
+            Me.m_qeQB.Attach(Me.m_gridQB, Me.UIContext, Me.m_tsQB)
+            Me.m_qeEE.Attach(Me.m_gridEE, Me.UIContext, Me.m_tsEE)
+            Me.m_qeBA.Attach(Me.m_gridBA, Me.UIContext, Me.m_tsBA)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.Core}
 
