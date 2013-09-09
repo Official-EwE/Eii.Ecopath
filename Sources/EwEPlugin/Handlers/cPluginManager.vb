@@ -1622,10 +1622,10 @@ Public Class cPluginManager
 
 #Region " Search "
 
-    Public Function SearchInitialized(ByVal SearchDS As Object, EcosimDS As Object) As Boolean
+    Public Function SearchInitialized(ByVal SearchDS As Object) As Boolean
 
         ' Invoke ISearchPlugin.SearchInitialized(SearchDS)
-        Return Me.TryInvokeMethod(GetType(ISearchPlugin), "SearchInitialized", New Object() {SearchDS, EcosimDS})
+        Return Me.TryInvokeMethod(GetType(ISearchPlugin), "SearchInitialized", New Object() {SearchDS})
 
     End Function
 

@@ -42,6 +42,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Implements EwEPlugin.IEcopathRunCompleted2Plugin
     Implements EwEPlugin.IEcopathRunInvalidatedPlugin
     Implements EwEPlugin.IEcosimPlugin
+    Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
     Implements EwEPlugin.IEcosimRunInvalidatedPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
@@ -295,6 +296,14 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Me.ClearEcosimIndicators()
     End Sub
 
+    Public Sub EcosimInitialized(EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+
+        ' Grab and remember ecosim data structures when provided via the plug-in mechanism
+        Me.m_ecosimDS = DirectCast(EcosimDatastructures, cEcosimDatastructures)
+
+    End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Ecosim about to start time stepping
@@ -303,9 +312,6 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
-
-        ' Grab and remember ecosim data structures when provided via the plug-in mechanism
-        Me.m_ecosimDS = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
         If (Me.m_core.StateMonitor.IsSearching()) Then
             Me.m_bRunWithEcosim = False
@@ -395,17 +401,19 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
 #Region " Monte Carlo "
 
-    Public Sub SearchInitialized(SearchDatastructures As Object, EcosimDataStructures As Object) _
+    Public Sub SearchInitialized(SearchDatastructures As Object) _
         Implements EwEPlugin.ISearchPlugin.SearchInitialized
-
         Me.m_searchDS = DirectCast(SearchDatastructures, cSearchDatastructures)
-        Me.m_ecosimDS = DirectCast(EcosimDataStructures, cEcosimDatastructures)
-
     End Sub
 
     Public Sub SearchIterationsStarting() _
         Implements EwEPlugin.ISearchPlugin.SearchIterationsStarting
         Me.ClearMCIndicators()
+
+        ' Sanity checks
+        Debug.Assert(Me.m_ecopathDS IsNot Nothing)
+        Debug.Assert(Me.m_ecosimDS IsNot Nothing)
+        Debug.Assert(Me.m_searchDS IsNot Nothing)
 
         If (Me.m_searchDS.SearchMode = eSearchModes.MonteCarlo) Then
             Me.m_bRunWithMonteCarlo = My.Settings.RunWithMC

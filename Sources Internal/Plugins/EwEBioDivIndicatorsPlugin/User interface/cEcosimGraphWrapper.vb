@@ -33,6 +33,8 @@ Imports System.Text
 Public Class cEcosimGraphWrapper
     Inherits cZedGraphHelper
 
+    ' ToDo_JS: attach once, not for refresh
+
 #Region " Private variables "
 
     ''' <summary>Indicator grouping etc as centrally defined in the plug-in.</summary>

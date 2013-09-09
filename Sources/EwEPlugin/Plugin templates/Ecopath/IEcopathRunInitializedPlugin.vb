@@ -17,12 +17,17 @@
 '
 
 Option Strict On
+
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Plugin point called at the start of an Ecopath run.
-''' After all the data has been loaded but before Ecopath has started to compute the missing parameters. 
+''' After all the data has been loaded but before Ecopath has started to compute 
+''' the missing parameters. 
 ''' </summary>
-''' <remarks></remarks>
+''' ---------------------------------------------------------------------------
 Public Interface IEcopathRunInitializedPlugin
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Plugin point called at the start of an Ecopath run.
     ''' After all the data has been loaded but before Ecopath has started to compute the missing parameters. 
@@ -30,7 +35,9 @@ Public Interface IEcopathRunInitializedPlugin
     ''' <param name="EcopathDataAsObject">cEcopathDataStructures as an object.</param>
     ''' <param name="TaxonDataAsObject">cTanonDataStructures as an object.</param>
     ''' <param name="StanzaDataAsObject">cStanzaDataStructures as an object.</param>
-    ''' <remarks></remarks>
-    Sub EcopathRunInitialized(ByVal EcopathDataAsObject As Object, ByVal TaxonDataAsObject As Object, ByVal StanzaDataAsObject As Object)
+    ''' -----------------------------------------------------------------------
+    Sub EcopathRunInitialized(ByVal EcopathDataAsObject As Object, _
+                              ByVal TaxonDataAsObject As Object, _
+                              ByVal StanzaDataAsObject As Object)
 
 End Interface
