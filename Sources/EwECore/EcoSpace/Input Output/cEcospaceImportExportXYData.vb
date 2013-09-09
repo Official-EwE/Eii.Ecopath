@@ -205,6 +205,7 @@ Public Class cEcospaceImportExportXYData
         strm.Write(cStringUtils.ToCSVField(strColField))
         strm.Write(",")
         strm.Write(cStringUtils.ToCSVField(strRowField))
+        strm.Write(",lon,lat")
         For iField As Integer = 0 To lstrFields.Count - 1
             strm.Write(",")
             strm.Write(cStringUtils.ToCSVField(Me.Fields(iField).Trim))
@@ -216,9 +217,13 @@ Public Class cEcospaceImportExportXYData
             For iCol As Integer = 1 To Me.m_bm.InCol
                 ' Water cell filter
                 If depth.IsWaterCell(iRow, iCol) Or Not bWaterCellsOnly Then
-                    strm.Write(iCol)
+                    strm.Write(cStringUtils.FormatNumber(iCol))
                     strm.Write(",")
-                    strm.Write(iRow)
+                    strm.Write(cStringUtils.FormatNumber(iRow))
+                    strm.Write(",")
+                    strm.Write(cStringUtils.FormatNumber(Me.m_bm.ColToLon(iCol)))
+                    strm.Write(",")
+                    strm.Write(cStringUtils.FormatNumber(Me.m_bm.RowToLat(iRow)))
                     For iField As Integer = 0 To Me.Fields.Length - 1
                         strm.Write(",")
                         Dim val As Object = Me.Value(iRow, iCol, Me.Fields(iField))
