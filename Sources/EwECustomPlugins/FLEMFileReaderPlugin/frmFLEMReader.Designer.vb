@@ -1,4 +1,21 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmFLEMReader
     Inherits ScientificInterfaceShared.Forms.frmEwE
 
@@ -22,92 +39,102 @@ Partial Class frmFLEMReader
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.chkForcePP = New System.Windows.Forms.CheckBox()
-        Me.btForcingFile = New System.Windows.Forms.Button()
-        Me.chkForceHabCap = New System.Windows.Forms.CheckBox()
-        Me.lbForceFile = New System.Windows.Forms.Label()
-        Me.cbHabCap = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFLEMReader))
+        Me.m_chkForcePP = New System.Windows.Forms.CheckBox()
+        Me.m_btnChooseFile = New System.Windows.Forms.Button()
+        Me.m_chkForceHabCap = New System.Windows.Forms.CheckBox()
+        Me.m_cmbHabCap = New System.Windows.Forms.ComboBox()
+        Me.m_lblGroup = New System.Windows.Forms.Label()
+        Me.m_lblForcingFile = New System.Windows.Forms.Label()
+        Me.m_tbxForceFile = New System.Windows.Forms.TextBox()
+        Me.m_btnOK = New System.Windows.Forms.Button()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
-        'chkForcePP
+        'm_chkForcePP
         '
-        Me.chkForcePP.AutoSize = True
-        Me.chkForcePP.Location = New System.Drawing.Point(12, 51)
-        Me.chkForcePP.Name = "chkForcePP"
-        Me.chkForcePP.Size = New System.Drawing.Size(197, 17)
-        Me.chkForcePP.TabIndex = 0
-        Me.chkForcePP.Text = "Force primary production and salinity"
-        Me.chkForcePP.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_chkForcePP, "m_chkForcePP")
+        Me.m_chkForcePP.Name = "m_chkForcePP"
+        Me.m_chkForcePP.UseVisualStyleBackColor = True
         '
-        'btForcingFile
+        'm_btnChooseFile
         '
-        Me.btForcingFile.Location = New System.Drawing.Point(12, 12)
-        Me.btForcingFile.Name = "btForcingFile"
-        Me.btForcingFile.Size = New System.Drawing.Size(116, 21)
-        Me.btForcingFile.TabIndex = 2
-        Me.btForcingFile.Text = "Select forcing file..."
-        Me.btForcingFile.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnChooseFile, "m_btnChooseFile")
+        Me.m_btnChooseFile.Name = "m_btnChooseFile"
+        Me.m_btnChooseFile.UseVisualStyleBackColor = True
         '
-        'chkForceHabCap
+        'm_chkForceHabCap
         '
-        Me.chkForceHabCap.AutoSize = True
-        Me.chkForceHabCap.Location = New System.Drawing.Point(12, 82)
-        Me.chkForceHabCap.Name = "chkForceHabCap"
-        Me.chkForceHabCap.Size = New System.Drawing.Size(135, 17)
-        Me.chkForceHabCap.TabIndex = 3
-        Me.chkForceHabCap.Text = "Modify habitat capacity"
-        Me.chkForceHabCap.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_chkForceHabCap, "m_chkForceHabCap")
+        Me.m_chkForceHabCap.Name = "m_chkForceHabCap"
+        Me.m_chkForceHabCap.UseVisualStyleBackColor = True
         '
-        'lbForceFile
+        'm_cmbHabCap
         '
-        Me.lbForceFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lbForceFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lbForceFile.Location = New System.Drawing.Point(134, 12)
-        Me.lbForceFile.Name = "lbForceFile"
-        Me.lbForceFile.Size = New System.Drawing.Size(459, 21)
-        Me.lbForceFile.TabIndex = 5
+        resources.ApplyResources(Me.m_cmbHabCap, "m_cmbHabCap")
+        Me.m_cmbHabCap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbHabCap.FormattingEnabled = True
+        Me.m_cmbHabCap.Name = "m_cmbHabCap"
         '
-        'cbHabCap
+        'm_lblGroup
         '
-        Me.cbHabCap.FormattingEnabled = True
-        Me.cbHabCap.Location = New System.Drawing.Point(215, 102)
-        Me.cbHabCap.Name = "cbHabCap"
-        Me.cbHabCap.Size = New System.Drawing.Size(225, 21)
-        Me.cbHabCap.TabIndex = 6
+        resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
+        Me.m_lblGroup.Name = "m_lblGroup"
         '
-        'Label2
+        'm_lblForcingFile
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(48, 102)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(161, 13)
-        Me.Label2.TabIndex = 9
-        Me.Label2.Text = "Group modifying habitat capacity"
+        resources.ApplyResources(Me.m_lblForcingFile, "m_lblForcingFile")
+        Me.m_lblForcingFile.Name = "m_lblForcingFile"
+        '
+        'm_tbxForceFile
+        '
+        resources.ApplyResources(Me.m_tbxForceFile, "m_tbxForceFile")
+        Me.m_tbxForceFile.Name = "m_tbxForceFile"
+        Me.m_tbxForceFile.ReadOnly = True
+        '
+        'm_btnOK
+        '
+        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+        Me.m_btnOK.Name = "m_btnOK"
+        Me.m_btnOK.UseVisualStyleBackColor = True
+        '
+        'm_btnCancel
+        '
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
         '
         'frmFLEMReader
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AcceptButton = Me.m_btnOK
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(606, 262)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.cbHabCap)
-        Me.Controls.Add(Me.lbForceFile)
-        Me.Controls.Add(Me.chkForceHabCap)
-        Me.Controls.Add(Me.btForcingFile)
-        Me.Controls.Add(Me.chkForcePP)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_btnCancel)
+        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_tbxForceFile)
+        Me.Controls.Add(Me.m_lblForcingFile)
+        Me.Controls.Add(Me.m_lblGroup)
+        Me.Controls.Add(Me.m_cmbHabCap)
+        Me.Controls.Add(Me.m_chkForceHabCap)
+        Me.Controls.Add(Me.m_btnChooseFile)
+        Me.Controls.Add(Me.m_chkForcePP)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "frmFLEMReader"
-        Me.Text = "FLEM File Reader"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents chkForcePP As System.Windows.Forms.CheckBox
-    Friend WithEvents btForcingFile As System.Windows.Forms.Button
-    Friend WithEvents chkForceHabCap As System.Windows.Forms.CheckBox
-    Friend WithEvents lbForceFile As System.Windows.Forms.Label
-    Friend WithEvents cbHabCap As System.Windows.Forms.ComboBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Private WithEvents m_chkForcePP As System.Windows.Forms.CheckBox
+    Private WithEvents m_chkForceHabCap As System.Windows.Forms.CheckBox
+    Private WithEvents m_lblGroup As System.Windows.Forms.Label
+    Private WithEvents m_lblForcingFile As System.Windows.Forms.Label
+    Private WithEvents m_tbxForceFile As System.Windows.Forms.TextBox
+    Private WithEvents m_btnOK As System.Windows.Forms.Button
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_cmbHabCap As System.Windows.Forms.ComboBox
+    Private WithEvents m_btnChooseFile As System.Windows.Forms.Button
 End Class
