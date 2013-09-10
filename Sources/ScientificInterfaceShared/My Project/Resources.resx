@@ -2948,4 +2948,31 @@
   <data name="VARIABLE_DESCRIPTION" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="VARIABLE_BIOACCUMRATE" xml:space="preserve">
+    <value>BA rate||Biomass accumulation rate</value>
+  </data>
+  <data name="VARIABLE_CPUECOST" xml:space="preserve">
+    <value>CPUE|||Cost per unit of effort; costs that are a function of effort</value>
+  </data>
+  <data name="VARIABLE_DBID" xml:space="preserve">
+    <value>ID||Unique ID</value>
+  </data>
+  <data name="VARIABLE_FIXEDCOST" xml:space="preserve">
+    <value>Fixed cost|||Fixed cost is the cost of operating a fleet unit, independent of effort, in the unit time defined in Ecopath</value>
+  </data>
+  <data name="VARIABLE_IMPDIET" xml:space="preserve">
+    <value>DCimp||Imported diet</value>
+  </data>
+  <data name="VARIABLE_INDEX" xml:space="preserve">
+    <value>#||Index</value>
+  </data>
+  <data name="VARIABLE_NUMDIGITS" xml:space="preserve">
+    <value>Number of decimal digits</value>
+  </data>
+  <data name="VARIABLE_NUTFORCEFUNCTIONNUMBER" xml:space="preserve">
+    <value>Nutrition forcing function</value>
+  </data>
+  <data name="VARIABLE_SAILCOST" xml:space="preserve">
+    <value>Sail cost</value>
+  </data>
 </root>
