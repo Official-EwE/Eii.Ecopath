@@ -117,7 +117,7 @@ Partial Class frmMSE
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(424, 100)
+        Me.Label2.Location = New System.Drawing.Point(425, 158)
         Me.Label2.MaximumSize = New System.Drawing.Size(100, 0)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(75, 26)
@@ -128,7 +128,7 @@ Partial Class frmMSE
         '
         'txtTolerance
         '
-        Me.txtTolerance.Location = New System.Drawing.Point(505, 99)
+        Me.txtTolerance.Location = New System.Drawing.Point(506, 157)
         Me.txtTolerance.Name = "txtTolerance"
         Me.txtTolerance.Size = New System.Drawing.Size(70, 20)
         Me.txtTolerance.TabIndex = 1

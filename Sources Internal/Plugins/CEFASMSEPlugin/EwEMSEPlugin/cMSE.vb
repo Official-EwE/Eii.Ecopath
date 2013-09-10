@@ -32,6 +32,22 @@ Public Class cMSE
     Private ChangeInEffortLimits() As Double
     Const NoHCR_F As Integer = -9999
 
+    Private BTemp() As Double
+    Private PBTemp() As Double
+    Private QBTemp() As Double
+    Private EETemp() As Double
+    Private BATemp() As Double
+    Private DenDepCatchabilityTemp() As Double
+    Private FeedingTimeAdjustRateTemp() As Double
+    Private MaxRelFeedingTimeTemp() As Double
+    Private OtherMortFeedingTimeTemp() As Double
+    Private PredEffectFeedingTimeTemp() As Double
+    Private QBMaxxQBioTemp() As Double
+    Private SwitchingPowerTemp() As Double
+    Private VulnerabilitiesTemp(,) As Double
+    Private DietMatrixTemp(,) As Double
+    Private DietImpTemp() As Double
+
     Public DataPath As String = "C:\Users\Mark\Desktop\GAP\Data"
     Public ChangeEffortFlag As Boolean = False
 
@@ -211,6 +227,77 @@ Public Class cMSE
 
     'End Function
 
+    Private Sub SaveOriginalParameters()
+
+        Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
+        Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
+
+        ReDim BTemp(mCore.nGroups - 1)
+        ReDim PBTemp(mCore.nGroups - 1)
+        ReDim QBTemp(mCore.nGroups - 1)
+        ReDim EETemp(mCore.nGroups - 1)
+        ReDim BATemp(mCore.nGroups - 1)
+        ReDim DenDepCatchabilityTemp(mCore.nGroups - 1)
+        ReDim FeedingTimeAdjustRateTemp(mCore.nGroups - 1)
+        ReDim MaxRelFeedingTimeTemp(mCore.nGroups - 1)
+        ReDim OtherMortFeedingTimeTemp(mCore.nGroups - 1)
+        ReDim PredEffectFeedingTimeTemp(mCore.nGroups - 1)
+        ReDim QBMaxxQBioTemp(mCore.nGroups - 1)
+        ReDim SwitchingPowerTemp(mCore.nGroups - 1)
+        ReDim VulnerabilitiesTemp(mCore.nGroups - 1, mCore.nGroups - 1)
+        ReDim DietMatrixTemp(mCore.nGroups - 1, mCore.nGroups - 1)
+        ReDim DietImpTemp(mCore.nGroups - 1)
+
+        For x = 0 To mCore.nGroups - 1
+            BTemp(x) = ecopathData.B(x + 1)
+            PBTemp(x) = ecopathData.PB(x + 1)
+            QBTemp(x) = ecopathData.QB(x + 1)
+            EETemp(x) = ecopathData.EE(x + 1)
+            BATemp(x) = ecopathData.BA(x + 1)
+            DenDepCatchabilityTemp(x) = ecosimData.QmQo(x + 1)
+            FeedingTimeAdjustRateTemp(x) = ecosimData.FtimeAdjust(x + 1)
+            MaxRelFeedingTimeTemp(x) = ecosimData.FtimeMax(x + 1)
+            OtherMortFeedingTimeTemp(x) = ecosimData.MoPred(x + 1)
+            PredEffectFeedingTimeTemp(x) = ecosimData.RiskTime(x + 1)
+            QBMaxxQBioTemp(x) = ecosimData.CmCo(x + 1)
+            SwitchingPowerTemp(x) = ecosimData.SwitchPower(x + 1)
+            For y = 0 To mCore.nGroups - 1
+                VulnerabilitiesTemp(x, y) = ecosimData.VulMult(x + 1, y + 1)
+                DietMatrixTemp(x, y) = ecopathData.DC(x + 1, y + 1)
+            Next
+            DietImpTemp(x) = mCore.EcoPathGroupInputs(x + 1).ImpDiet
+        Next
+
+    End Sub
+
+    Private Sub RestoreParameters()
+
+        Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
+        Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
+
+        For x = 0 To mCore.nGroups - 1
+            ecopathData.B(x + 1) = BTemp(x)
+            ecopathData.PB(x + 1) = PBTemp(x)
+            ecopathData.QB(x + 1) = QBTemp(x)
+            ecopathData.EE(x + 1) = EETemp(x)
+            ecopathData.BA(x + 1) = BATemp(x)
+            ecosimData.QmQo(x + 1) = DenDepCatchabilityTemp(x)
+            ecosimData.FtimeAdjust(x + 1) = FeedingTimeAdjustRateTemp(x)
+            ecosimData.FtimeMax(x + 1) = MaxRelFeedingTimeTemp(x)
+            ecosimData.MoPred(x + 1) = OtherMortFeedingTimeTemp(x)
+            ecosimData.RiskTime(x + 1) = PredEffectFeedingTimeTemp(x)
+            ecosimData.CmCo(x + 1) = QBMaxxQBioTemp(x)
+            ecosimData.SwitchPower(x + 1) = SwitchingPowerTemp(x)
+            For y = 0 To mCore.nGroups - 1
+                ecosimData.VulMult(x + 1, y + 1) = VulnerabilitiesTemp(x, y)
+                ecopathData.DC(x + 1, y + 1) = DietMatrixTemp(x, y)
+            Next
+            mCore.EcoPathGroupInputs(x + 1).ImpDiet = DietImpTemp(x)
+        Next
+
+    End Sub
+
+
     Public Sub LoadSampledParams()
 
         Dim B(,) As Double
@@ -226,6 +313,7 @@ Public Class cMSE
         Dim QBMaxxQBio(,) As Double
         Dim SwitchingPower(,) As Double
         Dim Vulnerabilities(,,) As Double
+        Dim DietMatrix(,,) As Double
         Dim nTrials As Integer
         Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
         Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
@@ -247,6 +335,8 @@ Public Class cMSE
 
 
         OriginalNTimesteps = _ecosim.EcosimData.NTimes
+
+        SaveOriginalParameters()
 
         'Output the final results
         sw = New StreamWriter(DataPath & "\Results\Results.csv", False)
@@ -339,10 +429,17 @@ Public Class cMSE
             Next
 
             'Extract the diet matrix
-            diet_matrix = New CsvReader(New StreamReader(DataPath & "/ParamatersOuts/DietMatrixTrial" & iTrial.ToString & ".csv"), False)
+            diet_matrix = New CsvReader(New StreamReader(DataPath & "/ParametersOut/DietMatrixTrial" & iTrial.ToString & ".csv"), False)
             diet_matrix.ReadNextRecord()
             For iPred As Integer = 1 To mCore.nGroups
                 mCore.EcoPathGroupInputs(iPred).ImpDiet() = diet_matrix(iPred - 1)
+            Next
+            For iPrey As Integer = 1 To mCore.nGroups
+                diet_matrix.ReadNextRecord()
+                For iPred As Integer = 1 To mCore.nGroups
+                    mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) = diet_matrix(iPred - 1)
+                    'ecopathData.DC(iPred, iPrey)
+                Next
             Next
 
             GoodDynamics = True
@@ -486,6 +583,8 @@ BadDynamics:  ' This is so that if the dynamics of a parameterisation are bad th
         sw.Dispose()
         FleetCsv.Dispose()
         TrajectoryF.Dispose()
+
+        RestoreParameters()
 
     End Sub
 
@@ -750,7 +849,7 @@ stepend:
 
     'End Sub
 
-    Public Function CheckEcopathDistributionFilesOkay(ByVal csv As CsvReader, ByRef Param_Name As String) As Boolean
+    Public Function CheckEcopathDistributionFilesOkay(ByVal sPath As String, ByVal csv As CsvReader, ByRef Param_Name As [Enum]) As Boolean
         'Checks whether each of the Ecopath (not diet matrix) distribution files is has the correct functional groups in it
         'They should only have living groups
         'It does this by saving a true in the position of an array at the index at which it exists in EwE
@@ -759,7 +858,7 @@ stepend:
         'If a file has replicate groups and we check each group to see if it is in EwE and it happens that the number
         'of groups in the file are equal to the number of living groups, the file will be wrongly accepted
 
-        Dim Path As String = DataPath & "\DistributionParameters\" & Param_Name
+        'Dim Path As String = DataPath & "\DistributionParameters\" & Param_Name
         Dim correct(mCore.nGroups - 1) As Integer
         Dim TotalFound As Integer = 0
 
@@ -782,7 +881,7 @@ stepend:
         'check that there are no replicates
         For igrp = 1 To mCore.nGroups
             If correct(igrp - 1) > 1 Then
-                MsgBox("The distribution file for " & Param_Name & " has replicate groups in it.")
+                MsgBox("The distribution file " & Path.GetFileName(sPath) & " has replicate groups in it.")
                 Return False
             End If
         Next
@@ -793,10 +892,10 @@ stepend:
         Next
 
         If TotalFound < mCore.nLivingGroups Then 'Check whether there are too few groups in the file
-            MsgBox("The distribution file for " & Param_Name & " does not have all the living groups in it.")
+            MsgBox("The distribution file " & Path.GetFileName(sPath) & " does not have all the living groups in it.")
             Return False
         ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
-            MsgBox("The distribution file for " & Param_Name & " has non-living groups in it.")
+            MsgBox("The distribution file " & Path.GetFileName(sPath) & " has non-living groups in it.")
             Return False
         Else
             Return True
@@ -887,7 +986,6 @@ stepend:
         Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
 
         'I am just altering the tolerance so that it can run faster; this needs deleting later
-        MessageBox.Show("The tolerance default is: " & MonteCarlo.EcopathEETolerance)
         MonteCarlo.EcopathEETolerance = Convert.ToSingle(MSEForm.txtTolerance.Text)
         'Forces the same sequence of random numbers for each run. Used only for debugging runs
         'MonteCarlo.InitRandomSequence(666)
@@ -942,13 +1040,13 @@ stepend:
                         Console.WriteLine("Iteration = " & i)
                         If MonteCarlo.selectNewEcopathParameters(1) Then
 
-                            For iGrp = 1 To nLiving
-                                b(iTrial, iGrp) = Me._ecopath.EcopathData.B(iGrp)
-                                ba(iTrial, iGrp) = Me._ecopath.EcopathData.BA(iGrp)
-                                pb(iTrial, iGrp) = Me._ecopath.EcopathData.PB(iGrp)
-                                qb(iTrial, iGrp) = Me._ecopath.EcopathData.QB(iGrp)
-                                ee(iTrial, iGrp) = Me._ecopath.EcopathData.EE(iGrp)
-                            Next iGrp
+                            'For iGrp = 1 To nLiving
+                            '    b(iTrial, iGrp) = Me._ecopath.EcopathData.B(iGrp)
+                            '    ba(iTrial, iGrp) = Me._ecopath.EcopathData.BA(iGrp)
+                            '    pb(iTrial, iGrp) = Me._ecopath.EcopathData.PB(iGrp)
+                            '    qb(iTrial, iGrp) = Me._ecopath.EcopathData.QB(iGrp)
+                            '    ee(iTrial, iGrp) = Me._ecopath.EcopathData.EE(iGrp)
+                            'Next iGrp
 
                             'Output the diet matrix parameters to csv
                             Dim csv_dietout As New StreamWriter(DataPath & "\ParametersOut\DietMatrixTrial" & iTrial & ".csv", False)
@@ -961,6 +1059,101 @@ stepend:
                             Next
                             'Me._ecopath.EcopathData.DtImp()
                             csv_dietout.Dispose()
+
+                            sPath = DataPath & "\ParametersOut"
+                            Dim b_csvout As StreamWriter
+                            Dim ba_csvout As StreamWriter
+                            Dim pb_csvout As StreamWriter
+                            Dim qb_csvout As StreamWriter
+                            Dim ee_csvout As StreamWriter
+
+                            If Not File.Exists(Path.Combine(sPath & "/b_out.csv")) Then
+                                b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
+                                b_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                For igrp As Integer = 2 To nLiving
+                                    b_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                Next
+
+                            Else
+                                b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
+                            End If
+
+
+                            b_csvout.WriteLine()
+                            b_csvout.Write(Me._ecopath.EcopathData.B(1))
+                            For igrp As Integer = 2 To nLiving
+                                b_csvout.Write(", " & Me._ecopath.EcopathData.B(igrp))
+                            Next
+                            b_csvout.Dispose()
+
+                            If Not File.Exists(Path.Combine(sPath & "/ba_out.csv")) Then
+                                ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
+                                ba_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                For igrp As Integer = 2 To nLiving
+                                    ba_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                Next
+                            Else
+                                ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
+                            End If
+
+                            ba_csvout.WriteLine()
+                            ba_csvout.Write(Me._ecopath.EcopathData.BA(1))
+                            For igrp As Integer = 2 To nLiving
+                                ba_csvout.Write(", " & Me._ecopath.EcopathData.BA(igrp))
+                            Next
+                            ba_csvout.Dispose()
+
+                            If Not File.Exists(Path.Combine(sPath & "/pb_out.csv")) Then
+                                pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
+                                pb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                For igrp As Integer = 2 To nLiving
+                                    pb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                Next
+                            Else
+                                pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
+                            End If
+
+                            pb_csvout.WriteLine()
+                            pb_csvout.Write(Me._ecopath.EcopathData.PB(1))
+                            For igrp As Integer = 2 To nLiving
+                                pb_csvout.Write(", " & Me._ecopath.EcopathData.PB(igrp))
+
+                            Next
+                            pb_csvout.Dispose()
+
+                            If Not File.Exists(Path.Combine(sPath & "/qb_out.csv")) Then
+                                qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
+                                qb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                For igrp As Integer = 2 To nLiving
+                                    qb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                Next
+                            Else
+                                qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
+                            End If
+
+                            qb_csvout.WriteLine()
+                            qb_csvout.Write(Me._ecopath.EcopathData.QB(1))
+                            For igrp As Integer = 2 To nLiving
+                                qb_csvout.Write(", " & Me._ecopath.EcopathData.QB(igrp))
+                            Next
+                            qb_csvout.Dispose()
+
+                            If Not File.Exists(Path.Combine(sPath & "/ee_out.csv")) Then
+                                ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
+                                ee_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                For igrp As Integer = 2 To nLiving
+                                    ee_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                Next
+                            Else
+                                ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
+                            End If
+
+                            ee_csvout.WriteLine()
+                            ee_csvout.Write(Me._ecopath.EcopathData.EE(1))
+                            For igrp As Integer = 2 To nLiving
+                                ee_csvout.Write(", " & Me._ecopath.EcopathData.EE(igrp))
+                            Next
+                            ee_csvout.Dispose()
 
                             ''This runs Ecosim without core support
                             'If Me.RunEcosim() Then
@@ -987,93 +1180,39 @@ stepend:
             'Save the results to a .csv
 
             sPath = DataPath & "\ParametersOut"
-            Dim b_csvout As StreamWriter
-            Dim ba_csvout As StreamWriter
-            Dim pb_csvout As StreamWriter
-            Dim qb_csvout As StreamWriter
-            Dim ee_csvout As StreamWriter
 
-            If Not File.Exists(Path.Combine(sPath & "/b_out.csv")) Then
-                b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
-                b_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                For igrp As Integer = 2 To nLiving
-                    b_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                Next
-            Else
-                b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
-            End If
 
-            If Not File.Exists(Path.Combine(sPath & "/ba_out.csv")) Then
-                ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
-                ba_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                For igrp As Integer = 2 To nLiving
-                    ba_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                Next
-            Else
-                ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
-            End If
 
-            If Not File.Exists(Path.Combine(sPath & "/pb_out.csv")) Then
-                pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
-                pb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                For igrp As Integer = 2 To nLiving
-                    pb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                Next
-            Else
-                pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
-            End If
+            'ba_csvout.WriteLine()
+            'pb_csvout.WriteLine()
+            'qb_csvout.WriteLine()
+            'ee_csvout.WriteLine()
 
-            If Not File.Exists(Path.Combine(sPath & "/qb_out.csv")) Then
-                qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
-                qb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                For igrp As Integer = 2 To nLiving
-                    qb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                Next
-            Else
-                qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
-            End If
+            'For iter As Integer = 1 To nTrials
+            '    b_csvout.Write(b(iter, 1))
+            '    ba_csvout.Write(ba(iter, 1))
+            '    pb_csvout.Write(pb(iter, 1))
+            '    qb_csvout.Write(qb(iter, 1))
+            '    ee_csvout.Write(ee(iter, 1))
+            '    For igrp As Integer = 2 To nLiving
+            '        b_csvout.Write(", " & b(iter, igrp))
+            '        ba_csvout.Write(", " & ba(iter, igrp))
+            '        pb_csvout.Write(", " & pb(iter, igrp))
+            '        qb_csvout.Write(", " & qb(iter, igrp))
+            '        ee_csvout.Write(", " & ee(iter, igrp))
+            '    Next
+            '    b_csvout.WriteLine()
+            '    ba_csvout.WriteLine()
+            '    pb_csvout.WriteLine()
+            '    qb_csvout.WriteLine()
+            '    ee_csvout.WriteLine()
+            'Next
 
-            If Not File.Exists(Path.Combine(sPath & "/ee_out.csv")) Then
-                ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
-                ee_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                For igrp As Integer = 2 To nLiving
-                    ee_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                Next
-            Else
-                ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
-            End If
-
-            b_csvout.WriteLine()
-            ba_csvout.WriteLine()
-            pb_csvout.WriteLine()
-            qb_csvout.WriteLine()
-            ee_csvout.WriteLine()
-
-            For iter As Integer = 1 To nTrials
-                b_csvout.Write(b(iter, 1))
-                ba_csvout.Write(ba(iter, 1))
-                pb_csvout.Write(pb(iter, 1))
-                qb_csvout.Write(qb(iter, 1))
-                ee_csvout.Write(ee(iter, 1))
-                For igrp As Integer = 2 To nLiving
-                    b_csvout.Write(", " & b(iter, igrp))
-                    ba_csvout.Write(", " & ba(iter, igrp))
-                    pb_csvout.Write(", " & pb(iter, igrp))
-                    qb_csvout.Write(", " & qb(iter, igrp))
-                    ee_csvout.Write(", " & ee(iter, igrp))
-                Next
-                b_csvout.WriteLine()
-                ba_csvout.WriteLine()
-                pb_csvout.WriteLine()
-                qb_csvout.WriteLine()
-                ee_csvout.WriteLine()
-            Next
-
-            b_csvout.Dispose()
-            ba_csvout.Dispose()
-            pb_csvout.Dispose()
-            qb_csvout.Dispose()
-            ee_csvout.Dispose()
+            'b_csvout.Dispose()
+            'ba_csvout.Dispose()
+            'pb_csvout.Dispose()
+            'qb_csvout.Dispose()
+            'ee_csvout.Dispose()
 
         Catch ex As Exception
 
@@ -1110,62 +1249,28 @@ stepend:
 
     End Function
 
-    Private Function InitMonteCarloParameters() As Boolean
-        'loads the distribution parameters for the Ecopath parameters from csvs
+    Private Function InitMonteCarloParamX(ByVal Path As String, ByRef ParamName As eParamName) As Boolean
+        Dim csvParamX As CsvReader
+        Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
+        Dim MCGroup As cMonteCarloGroup
+        Dim xgrp As Integer
 
         Try
 
-            Dim Path As String = DataPath & "\DistributionParameters"
-            Dim csv_B, csv_PB, csv_QB, csv_EE, csv_BA As CsvReader
-            Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
-            Dim MCGroup As cMonteCarloGroup
-            Dim xgrp As Integer
-            'Initialize Monte Carlo parameters for B, PB, QB, EE and BA
-            'These are the group parameters in the EwE Monte Carlo runs form
-            'CV Lower and Upper Limit
+            csvParamX = New CsvReader(New StreamReader(Path), True)
+            If Not CheckEcopathDistributionFilesOkay(Path, csvParamX, ParamName) Then Return False
+            csvParamX = New CsvReader(New StreamReader(Path), True) ' I think this is to restart the reading of the csv
 
-            csv_B = New CsvReader(New StreamReader(Path & "/B_Dist.csv"), True)
-            csv_PB = New CsvReader(New StreamReader(Path & "/PB_Dist.csv"), True)
-            csv_QB = New CsvReader(New StreamReader(Path & "/QB_Dist.csv"), True)
-            csv_EE = New CsvReader(New StreamReader(Path & "/EE_Dist.csv"), True)
-            csv_BA = New CsvReader(New StreamReader(Path & "/BA_Dist.csv"), True)
-
-            If Not CheckEcopathDistributionFilesOkay(csv_B, "biomass") Then Return False
-            If Not CheckEcopathDistributionFilesOkay(csv_PB, "production/biomass") Then Return False
-            If Not CheckEcopathDistributionFilesOkay(csv_QB, "consumption/biomass") Then Return False
-            If Not CheckEcopathDistributionFilesOkay(csv_EE, "ecotrophic efficiency") Then Return False
-            If Not CheckEcopathDistributionFilesOkay(csv_BA, "biomass accumulation") Then Return False
-
-            csv_B = New CsvReader(New StreamReader(Path & "/B_Dist.csv"), True)
-            csv_PB = New CsvReader(New StreamReader(Path & "/PB_Dist.csv"), True)
-            csv_QB = New CsvReader(New StreamReader(Path & "/QB_Dist.csv"), True)
-            csv_EE = New CsvReader(New StreamReader(Path & "/EE_Dist.csv"), True)
-            csv_BA = New CsvReader(New StreamReader(Path & "/BA_Dist.csv"), True)
-
-            'Set the cv values first ==================================================================================================================
             For igrp = 1 To mCore.nLivingGroups
 
                 xgrp = 1
-                csv_B.ReadNextRecord()
-                csv_BA.ReadNextRecord()
-                csv_EE.ReadNextRecord()
-                csv_PB.ReadNextRecord()
-                csv_QB.ReadNextRecord()
+                csvParamX.ReadNextRecord()
 
                 'Make sure that .csv files are set up with group names in same order because xgrp is found only from the B file
                 'and then is assumed to be the same for all other files
-                While MonteCarlo.Groups(xgrp).Name <> csv_B(1) 'And xgrp <= mCore.nLivingGroups
+                While MonteCarlo.Groups(xgrp).Name <> csvParamX(1) 'And xgrp <= mCore.nLivingGroups
                     xgrp += 1
                 End While
-
-                'If xgrp > mCore.nLivingGroups Then
-                '    MsgBox(csv_B(0) & " cannot be found! Please make changes to your input file and try again")
-                '    Return False
-                'End If
-                'If Not MonteCarlo.Groups(xgrp).IsLiving Then
-                '    MsgBox(csv_B(0) & " is an invalid non-living group. Please make changes to your input file and try again.")
-                'End If
-
 
                 MCGroup = MonteCarlo.Groups(xgrp)
 
@@ -1174,34 +1279,40 @@ stepend:
                 'If you want to manually set limits it must be done after the CV has been set
 
                 'CVs
-                MCGroup.Bcv = csv_B(2)
-                MCGroup.PBcv = csv_PB(2)
-                MCGroup.QBcv = csv_QB(2)
-                MCGroup.EEcv = csv_EE(2)
-                MCGroup.BAcv = csv_BA(2)
+                If ParamName = eParamName.B Then
+                    MCGroup.Bcv = csvParamX(2)
+                    MCGroup.BLower = csvParamX(3)
+                    MCGroup.BUpper = csvParamX(4)
+                End If
 
-                'LowerBounds
-                MCGroup.BLower = csv_B(3)
-                MCGroup.PBLower = csv_PB(3)
-                MCGroup.QBLower = csv_QB(3)
-                MCGroup.EELower = csv_EE(3)
-                MCGroup.BALower = csv_BA(3)
+                If ParamName = eParamName.PB Then
+                    MCGroup.PBcv = csvParamX(2)
+                    MCGroup.PBLower = csvParamX(3)
+                    MCGroup.PBUpper = csvParamX(4)
+                End If
 
-                'UpperBounds
-                MCGroup.BUpper = csv_B(4)
-                MCGroup.PBUpper = csv_PB(4)
-                MCGroup.QBUpper = csv_QB(4)
-                MCGroup.EEUpper = csv_EE(4)
-                MCGroup.BAUpper = csv_BA(4)
+                If ParamName = eParamName.QB Then
+                    MCGroup.QBcv = csvParamX(2)
+                    MCGroup.QBLower = csvParamX(3)
+                    MCGroup.QBUpper = csvParamX(4)
+                End If
+
+                If ParamName = eParamName.EE Then
+                    MCGroup.EEcv = csvParamX(2)
+                    MCGroup.EELower = csvParamX(3)
+                    MCGroup.EEUpper = csvParamX(4)
+                End If
+
+                If ParamName = eParamName.BA Then
+                    MCGroup.BAcv = csvParamX(2)
+                    MCGroup.BALower = csvParamX(3)
+                    MCGroup.BAUpper = csvParamX(4)
+                End If
 
             Next '========================================================================================================================================================
 
             'reset the connection to the csv files ready to be read from the beginning again
-            csv_B.Dispose()
-            csv_BA.Dispose()
-            csv_EE.Dispose()
-            csv_PB.Dispose()
-            csv_QB.Dispose()
+            csvParamX.Dispose()
 
             Return True
 
@@ -1210,6 +1321,112 @@ stepend:
         End Try
 
         Return False
+
+    End Function
+
+    Enum eParamName
+        B
+        PB
+        QB
+        EE
+        BA
+    End Enum
+
+
+    Private Function InitMonteCarloParameters() As Boolean
+        'loads the distribution parameters for the Ecopath parameters from csvs
+
+        Dim Path As String = DataPath & "\DistributionParameters"
+        'Dim csv_B, csv_PB, csv_QB, csv_EE, csv_BA As CsvReader
+        Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
+        'Dim MCGroup As cMonteCarloGroup
+        'Dim xgrp As Integer
+        'Initialize Monte Carlo parameters for B, PB, QB, EE and BA
+        'These are the group parameters in the EwE Monte Carlo runs form
+        'CV Lower and Upper Limit
+
+        If Not InitMonteCarloParamX(Path & "/B_Dist.csv", eParamName.B) Then Return False
+        If Not InitMonteCarloParamX(Path & "/PB_Dist.csv", eParamName.PB) Then Return False
+        If Not InitMonteCarloParamX(Path & "/QB_Dist.csv", eParamName.QB) Then Return False
+        If Not InitMonteCarloParamX(Path & "/EE_Dist.csv", eParamName.EE) Then Return False
+        If Not InitMonteCarloParamX(Path & "/BA_Dist.csv", eParamName.BA) Then Return False
+
+        'csv_B = New CsvReader(New StreamReader(Path & "/B_Dist.csv"), True)
+        'csv_PB = New CsvReader(New StreamReader(Path & "/PB_Dist.csv"), True)
+        'csv_QB = New CsvReader(New StreamReader(Path & "/QB_Dist.csv"), True)
+        'csv_EE = New CsvReader(New StreamReader(Path & "/EE_Dist.csv"), True)
+        'csv_BA = New CsvReader(New StreamReader(Path & "/BA_Dist.csv"), True)
+
+        'If Not CheckEcopathDistributionFilesOkay(csv_B, "biomass") Then Return False
+        'If Not CheckEcopathDistributionFilesOkay(csv_PB, "production/biomass") Then Return False
+        'If Not CheckEcopathDistributionFilesOkay(csv_QB, "consumption/biomass") Then Return False
+        'If Not CheckEcopathDistributionFilesOkay(csv_EE, "ecotrophic efficiency") Then Return False
+        'If Not CheckEcopathDistributionFilesOkay(csv_BA, "biomass accumulation") Then Return False
+
+        'csv_B = New CsvReader(New StreamReader(Path & "/B_Dist.csv"), True)
+        'csv_PB = New CsvReader(New StreamReader(Path & "/PB_Dist.csv"), True)
+        'csv_QB = New CsvReader(New StreamReader(Path & "/QB_Dist.csv"), True)
+        'csv_EE = New CsvReader(New StreamReader(Path & "/EE_Dist.csv"), True)
+        'csv_BA = New CsvReader(New StreamReader(Path & "/BA_Dist.csv"), True)
+
+        'Set the cv values first ==================================================================================================================
+        'For igrp = 1 To mCore.nLivingGroups
+
+        '    xgrp = 1
+        '    csv_B.ReadNextRecord()
+        '    csv_BA.ReadNextRecord()
+        '    csv_EE.ReadNextRecord()
+        '    csv_PB.ReadNextRecord()
+        '    csv_QB.ReadNextRecord()
+
+        '    'Make sure that .csv files are set up with group names in same order because xgrp is found only from the B file
+        '    'and then is assumed to be the same for all other files
+        '    While MonteCarlo.Groups(xgrp).Name <> csv_B(1) 'And xgrp <= mCore.nLivingGroups
+        '        xgrp += 1
+        '    End While
+
+        '    MCGroup = MonteCarlo.Groups(xgrp)
+
+        '    'Setting a CV value will automatically set the Lower and Upper limits
+        '    'by Calling cEcosimMonteCarlo.CalculateUpperLowerLimits()
+        '    'If you want to manually set limits it must be done after the CV has been set
+
+        '    'CVs
+        '    MCGroup.Bcv = csv_B(2)
+        '    MCGroup.PBcv = csv_PB(2)
+        '    MCGroup.QBcv = csv_QB(2)
+        '    MCGroup.EEcv = csv_EE(2)
+        '    MCGroup.BAcv = csv_BA(2)
+
+        '    'LowerBounds
+        '    MCGroup.BLower = csv_B(3)
+        '    MCGroup.PBLower = csv_PB(3)
+        '    MCGroup.QBLower = csv_QB(3)
+        '    MCGroup.EELower = csv_EE(3)
+        '    MCGroup.BALower = csv_BA(3)
+
+        '    'UpperBounds
+        '    MCGroup.BUpper = csv_B(4)
+        '    MCGroup.PBUpper = csv_PB(4)
+        '    MCGroup.QBUpper = csv_QB(4)
+        '    MCGroup.EEUpper = csv_EE(4)
+        '    MCGroup.BAUpper = csv_BA(4)
+
+        'Next '========================================================================================================================================================
+
+        ''reset the connection to the csv files ready to be read from the beginning again
+        'csv_B.Dispose()
+        'csv_BA.Dispose()
+        'csv_EE.Dispose()
+        'csv_PB.Dispose()
+        'csv_QB.Dispose()
+
+        Return True
+
+        'Catch ex As Exception
+        '    Debug.Assert(False, Me.ToString & ".InitMonteCarloParameters() Exception: " & ex.Message)
+        'End Try
+
     End Function
 
     ''' <summary>
@@ -1413,63 +1630,65 @@ stepend:
 
     End Sub
 
-    Public Sub Create2DimParams(ByVal ParamName As String)
-        Dim sPath As String = DataPath & "\DistributionParameters"
-        Dim csv = New CsvReader(New StreamReader(sPath & "\" & ParamName & ".csv"), True)
-        Dim ParameterArray(mCore.nLivingGroups * mCore.nLivingGroups, 5) As Single
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
-        Dim SampledParameters(nIterations, mCore.nLivingGroups, mCore.nLivingGroups)
-        Dim eDistributionType As DistributionType
+    'Commented out because redundant 3-9-13
 
-        For iGroup = 1 To mCore.nLivingGroups * mCore.nLivingGroups
-            csv.ReadNextRecord()
-            For iField = 1 To 5
-                ParameterArray(iGroup - 1, iField) = csv(iField)
-            Next
-        Next
+    'Public Sub Create2DimParams(ByVal ParamName As String)
+    '    Dim sPath As String = DataPath & "\DistributionParameters"
+    '    Dim csv = New CsvReader(New StreamReader(sPath & "\" & ParamName & ".csv"), True)
+    '    Dim ParameterArray(mCore.nLivingGroups * mCore.nLivingGroups, 5) As Single
+    '    Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
+    '    Dim SampledParameters(nIterations, mCore.nLivingGroups, mCore.nLivingGroups)
+    '    Dim eDistributionType As DistributionType
 
-        'Generate an array of sample parameters
-        For iGroup = 1 To mCore.nLivingGroups
-            For jGroup = 1 To mCore.nLivingGroups
-                eDistributionType = ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 1)
-                For iIteration = 1 To nIterations
+    '    For iGroup = 1 To mCore.nLivingGroups * mCore.nLivingGroups
+    '        csv.ReadNextRecord()
+    '        For iField = 1 To 5
+    '            ParameterArray(iGroup - 1, iField) = csv(iField)
+    '        Next
+    '    Next
 
-                    Select Case eDistributionType
-                        Case DistributionType.Uniform
-                            SampledParameters(iIteration - 1, iGroup, jGroup) = UniformSample(ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 2), ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 3))
+    '    'Generate an array of sample parameters
+    '    For iGroup = 1 To mCore.nLivingGroups
+    '        For jGroup = 1 To mCore.nLivingGroups
+    '            eDistributionType = ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 1)
+    '            For iIteration = 1 To nIterations
 
-                        Case DistributionType.Triangular
-                            SampledParameters(iIteration - 1, iGroup, jGroup) = TriangularSample(ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 2), ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 3), ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 4))
-                    End Select
+    '                Select Case eDistributionType
+    '                    Case DistributionType.Uniform
+    '                        SampledParameters(iIteration - 1, iGroup, jGroup) = UniformSample(ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 2), ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 3))
 
-                Next
-            Next
-        Next
+    '                    Case DistributionType.Triangular
+    '                        SampledParameters(iIteration - 1, iGroup, jGroup) = TriangularSample(ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 2), ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 3), ParameterArray((iGroup - 1) * mCore.nLivingGroups + jGroup - 1, 4))
+    '                End Select
 
-        For iIteration = 1 To nIterations
-            'Output the sampled parameters to a csv
-            sPath = DataPath & "\ParametersOut"
-            Dim csvout As New StreamWriter(Path.Combine(sPath & "\" & ParamName & ToString(iIteration) & "out.csv"), True)
+    '            Next
+    '        Next
+    '    Next
 
-            For igrp As Integer = 1 To mCore.nLivingGroups
-                csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-            Next
-            csvout.WriteLine()
+    '    For iIteration = 1 To nIterations
+    '        'Output the sampled parameters to a csv
+    '        sPath = DataPath & "\ParametersOut"
+    '        Dim csvout As New StreamWriter(Path.Combine(sPath & "\" & ParamName & ToString(iIteration) & "out.csv"), True)
 
-            For jGroup = 1 To mCore.nLivingGroups
-                For iGroup = 1 To mCore.nLivingGroups
-                    csvout.Write("," & SampledParameters(iIteration - 1, iGroup - 1, jGroup - 1))
-                Next
-                csvout.WriteLine()
-            Next
+    '        For igrp As Integer = 1 To mCore.nLivingGroups
+    '            csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+    '        Next
+    '        csvout.WriteLine()
 
-            csvout.Dispose()
-        Next
+    '        For jGroup = 1 To mCore.nLivingGroups
+    '            For iGroup = 1 To mCore.nLivingGroups
+    '                csvout.Write("," & SampledParameters(iIteration - 1, iGroup - 1, jGroup - 1))
+    '            Next
+    '            csvout.WriteLine()
+    '        Next
+
+    '        csvout.Dispose()
+    '    Next
 
 
 
 
-    End Sub
+    'End Sub
 
     Public Sub Create1DimParams(ByVal ParamName As String)
         Dim sPath As String = DataPath & "\DistributionParameters"

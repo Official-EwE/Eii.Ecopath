@@ -28,9 +28,6 @@ Partial Class frmDistributionParameters
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.cboPathOrSim = New System.Windows.Forms.ComboBox()
         Me.cboParamName = New System.Windows.Forms.ComboBox()
         Me.dgvParameters = New System.Windows.Forms.DataGridView()
@@ -40,11 +37,9 @@ Partial Class frmDistributionParameters
         Me.CV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Lower = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Upper = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.chtDistribution = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnSaveAndClose = New System.Windows.Forms.Button()
         CType(Me.dgvParameters, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.chtDistribution, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'cboPathOrSim
@@ -118,22 +113,6 @@ Partial Class frmDistributionParameters
         Me.Upper.Name = "Upper"
         Me.Upper.Width = 50
         '
-        'chtDistribution
-        '
-        ChartArea1.Name = "ChartArea1"
-        Me.chtDistribution.ChartAreas.Add(ChartArea1)
-        Legend1.Name = "Legend1"
-        Me.chtDistribution.Legends.Add(Legend1)
-        Me.chtDistribution.Location = New System.Drawing.Point(766, 147)
-        Me.chtDistribution.Name = "chtDistribution"
-        Series1.ChartArea = "ChartArea1"
-        Series1.Legend = "Legend1"
-        Series1.Name = "Series1"
-        Me.chtDistribution.Series.Add(Series1)
-        Me.chtDistribution.Size = New System.Drawing.Size(210, 217)
-        Me.chtDistribution.TabIndex = 3
-        Me.chtDistribution.Text = "Chart1"
-        '
         'btnClose
         '
         Me.btnClose.Location = New System.Drawing.Point(352, 47)
@@ -159,21 +138,18 @@ Partial Class frmDistributionParameters
         Me.ClientSize = New System.Drawing.Size(992, 519)
         Me.Controls.Add(Me.btnSaveAndClose)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.chtDistribution)
         Me.Controls.Add(Me.dgvParameters)
         Me.Controls.Add(Me.cboParamName)
         Me.Controls.Add(Me.cboPathOrSim)
         Me.Name = "frmDistributionParameters"
         Me.Text = "Distribution Parameters"
         CType(Me.dgvParameters, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.chtDistribution, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents cboPathOrSim As System.Windows.Forms.ComboBox
     Friend WithEvents cboParamName As System.Windows.Forms.ComboBox
     Friend WithEvents dgvParameters As System.Windows.Forms.DataGridView
-    Friend WithEvents chtDistribution As System.Windows.Forms.DataVisualization.Charting.Chart
     Friend WithEvents btnClose As System.Windows.Forms.Button
     Friend WithEvents btnSaveAndClose As System.Windows.Forms.Button
     Friend WithEvents GroupNumber As System.Windows.Forms.DataGridViewTextBoxColumn

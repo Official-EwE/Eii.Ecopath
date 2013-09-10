@@ -62,6 +62,8 @@ Public Class frmTFMpolicy
 
     Private m_HCR As HCR_Group
 
+    Private StrategiesSaved As Boolean
+
 #End Region ' Internals
 
 #Region "Construction Initialization"
@@ -120,6 +122,7 @@ Public Class frmTFMpolicy
     Private Sub OnGridEdited() Handles m_grid.onEdited
         Try
             Me.Redraw()
+            StrategiesSaved = False
         Catch ex As Exception
 
         End Try
@@ -205,6 +208,8 @@ Public Class frmTFMpolicy
             Next
             csvStrategyFile.Dispose()
         Next
+
+
 
     End Sub
 
@@ -427,6 +432,15 @@ Public Class frmTFMpolicy
 
     Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         Me.Close()
+    End Sub
+
+    Private Sub frmTFMpolicy_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        If StrategiesSaved = False Then
+            Dim resultmessage As DialogResult = MessageBox.Show("You have made changes to the data in this form without saving them to CSV." & vbCrLf & "Are you sure you still want to close it?" _
+                                                                & "(The changes you made will be used for the duration of EwE being open this time but won't be available to reload after EwE has been closed)", _
+                                                                    "Warning!", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation)
+            If resultmessage = Windows.Forms.DialogResult.Cancel Then e.Cancel = True
+        End If
     End Sub
 End Class
 

@@ -49,7 +49,6 @@ Public Class frmMSE
     End Sub
 
     Private Sub btnSample_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSample.Click
-        mMSE.GenerateEcopathParamaters()
         mMSE.Create1DimParams("MaxRelFeedingTime")
         mMSE.Create1DimParams("FeedingTimeAdjustRate")
         mMSE.Create1DimParams("OtherMortFeedingTime")
@@ -57,8 +56,8 @@ Public Class frmMSE
         mMSE.Create1DimParams("DenDepCatchability")
         mMSE.Create1DimParams("QBMaxxQBio")
         mMSE.Create1DimParams("SwitchingPower")
-        'mMSE.Create2DimParams("DietComposition")
         mMSE.CreateVulnerabilities()
+        mMSE.GenerateEcopathParamaters()
     End Sub
 
     Private Sub GenerateEmptyDietcsv()
@@ -212,4 +211,5 @@ Public Class frmMSE
 
         frmDisParams.Show()
     End Sub
+
 End Class
