@@ -1,6 +1,27 @@
-﻿
-Imports EwEPlugin
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
+
 Imports EwECore
+Imports EwEPlugin
+Imports EwEUtils.Core
+
+#End Region ' Imports
 
 Public Class cFLEMPluginPoint
     Implements EwEPlugin.ICorePlugin
@@ -13,17 +34,13 @@ Public Class cFLEMPluginPoint
 
 #Region "Public data"
 
-    Public ForcePPSalinity As Boolean
-    Public VaryHabCapWithCultch As Boolean
+    Public Property ForcePPSalinity As Boolean
+    Public Property VaryHabCapWithCultch As Boolean
+    Public Property ForceFile As String = My.Settings.ForceFile
+    Public Property HabCapModGroup As Integer = 6 'Clutch
+    Private m_core As EwECore.cCore
 
-    'Default monthly forcing data file name
-    Public ForceFile As String = "C:\Assessments\Florida oysters\AP666nutsalt.nuo"
-
-    Public iHabCapModGroup As Integer = 6 'Clutch
-
-    Public core As EwECore.cCore
-
-#End Region
+#End Region 'Public data
 
 #Region "Private data"
 
@@ -32,23 +49,21 @@ Public Class cFLEMPluginPoint
     Private CellRatio As Single 'ratio of ecospace to physical model cell length (km/km)
     Private NrowForce As Integer, NcolForce As Integer  'map dimensions for Flem physical model forcing data
     Private FileNumber As Integer
-
-
     Private orgHabCap(,,) As Single
     Private orgRelPP(,) As Single
 
-#Region "Plugin stuff"
-
-    Private frmInterface As frmFLEMReader
-    Private Context As ScientificInterfaceShared.Controls.cUIContext
-    Private bInitOK As Boolean
     Private PathData As cEcopathDataStructures
     Private SimData As cEcosimDatastructures
     Private SpaceData As cEcospaceDataStructures
 
-#End Region
+#Region "Plugin stuff"
 
-#End Region
+    Private Property Context As ScientificInterfaceShared.Controls.cUIContext
+    Private m_frmInterface As frmFLEMReader
+
+#End Region 'Plugin stuff
+
+#End Region 'Private data
 
 #Region "FLEM file reading and data forcing"
 
@@ -151,7 +166,7 @@ Public Class cFLEMPluginPoint
                         If jForce > NcolForce Then jForce = NcolForce
                         'Load salinity forcing into all the groups
                         'Apply a modifier to a group by changing its Salinity Tolerance Modifier in the Ecosim>Group info dialogue
-                        For igrp As Integer = 1 To core.nGroups
+                        For igrp As Integer = 1 To m_core.nGroups
                             SpaceData.SpatialField(i, j, igrp) = ForceData(iForce, jForce, 2)
                         Next
                         SpaceData.RelPP(i, j) = (ForceData(iForce, jForce, 1) - 0.5) ^ 0.5 'reduce the strong Flem nutrient effect here by using lower mean, power
@@ -163,11 +178,11 @@ Public Class cFLEMPluginPoint
 
         '************modify habcap for oysters using culth biomass (group 6)
         If VaryHabCapWithCultch Then
-            Bscale = SimData.StartBiomass(Me.iHabCapModGroup) * Me.SpaceData.nWaterCells / Me.SpaceData.TotHabCap(Me.iHabCapModGroup)
+            Bscale = SimData.StartBiomass(Me.HabCapModGroup) * Me.SpaceData.nWaterCells / Me.SpaceData.TotHabCap(Me.HabCapModGroup)
             For i = 1 To SpaceData.InRow
                 For j = 1 To SpaceData.InCol
                     For ig As Integer = 1 To 4
-                        SpaceData.HabCap(i, j, ig) = 0.8 * SpaceData.HabCap(i, j, ig) + 0.2 * SpaceData.Bcell(i, j, Me.iHabCapModGroup) / Bscale
+                        SpaceData.HabCap(i, j, ig) = 0.8 * SpaceData.HabCap(i, j, ig) + 0.2 * SpaceData.Bcell(i, j, Me.HabCapModGroup) / Bscale
                         If SpaceData.HabCap(i, j, ig) > 1 Then SpaceData.HabCap(i, j, ig) = 1
                     Next
                 Next
@@ -220,7 +235,6 @@ Public Class cFLEMPluginPoint
     ''' <param name="objEcoPath"></param>
     ''' <param name="objEcoSim"></param>
     ''' <param name="objEcoSpace"></param>
-    ''' <remarks></remarks>
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         Try
 
@@ -237,7 +251,6 @@ Public Class cFLEMPluginPoint
         Catch ex As Exception
 
         End Try
-
     End Sub
 
     ''' <summary>
@@ -267,65 +280,80 @@ Public Class cFLEMPluginPoint
 
 #Region "Plugin Requirements"
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As System.Drawing.Image _
+        Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property ControlText As String _
+        Implements EwEPlugin.IGUIPlugin.ControlText
         Get
             Return "FLEM reader"
         End Get
     End Property
 
-    Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText As String _
+        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return "Toggle the FLEM file reader plugin"
+            Return "Configure the FLEM reader"
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState _
+        Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
             Return EwEUtils.Core.eCoreExecutionState.EcospaceLoaded
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, _
+                              ByRef frmPlugin As System.Windows.Forms.Form) _
+        Implements EwEPlugin.IGUIPlugin.OnControlClick
 
-        frmPlugin = Me.MainInterface
+#If 1 Then
+        ' Show UI as docked panel
+        frmPlugin = Me.MainInterfaceDocked
+#Else
+        ' Show UI as dialog
+        MainInterfaceDialog()
+#End If
 
     End Sub
 
-
-    Public ReadOnly Property NavigationTreeItemLocation As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+    Public ReadOnly Property NavigationTreeItemLocation As String _
+        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             Return "ndSpatialDynamic\ndEcospaceTools"
         End Get
     End Property
 
-    Private Function MainInterface() As System.Windows.Forms.Form
-        Dim bHasUI As Boolean = False
+    Private Function MainInterfaceDocked() As System.Windows.Forms.Form
 
-        If (Me.frmInterface IsNot Nothing) Then
-            bHasUI = Not Me.frmInterface.IsDisposed
+        Dim bUIMissing As Boolean = True
+        If (Me.m_frmInterface IsNot Nothing) Then
+            bUIMissing = Me.m_frmInterface.IsDisposed
         End If
 
-        If Not bHasUI Then
-            Me.frmInterface = New frmFLEMReader()
-            Me.frmInterface.UIContext = Me.Context
-            Me.frmInterface.Text = Me.ControlText
-            Me.frmInterface.Init(Me)
+        If bUIMissing Then
+            Me.m_frmInterface = New frmFLEMReader(Me.Context, Me)
+            Me.m_frmInterface.Text = Me.ControlText
         End If
 
-        Return Me.frmInterface
+        Return Me.m_frmInterface
 
     End Function
+
+    Private Sub MainInterfaceDialog()
+        Dim frm As New frmFLEMReader(Me.Context, Me)
+        frm.ShowDialog()
+    End Sub
 
     Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.Context = DirectCast(uic, ScientificInterfaceShared.Controls.cUIContext)
         If Context IsNot Nothing Then
-            core = Context.Core
+            m_core = Context.Core
         End If
     End Sub
 
@@ -336,15 +364,9 @@ Public Class cFLEMPluginPoint
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
 
         Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
-        bInitOK = False
         Try
             If TypeOf core Is EwECore.cCore Then
-                core = DirectCast(core, EwECore.cCore)
-
-                ' m_myForm = New frmInvokeModels(Me)
-                '  m_myForm.Show()
-
-                bInitOK = True
+                m_core = DirectCast(core, EwECore.cCore)
                 System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
             Else
                 'some kind of a message
@@ -388,6 +410,6 @@ Public Class cFLEMPluginPoint
         End Get
     End Property
 
-#End Region 
+#End Region
 
 End Class

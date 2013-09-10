@@ -1,24 +1,121 @@
-﻿
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Option Strict On
 Imports System.IO
+Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls
+
+#End Region ' Imports
 
 Public Class frmFLEMReader
 
-    Private plugin As cFLEMPluginPoint
-    Public Sub Init(ByVal FLEMPlugin As cFLEMPluginPoint)
-        plugin = FLEMPlugin
+    Private m_plugin As cFLEMPluginPoint
+    Private m_bChanged As Boolean = False
+
+    Public Sub New(ByVal uic As cUIContext, ByVal plugin As cFLEMPluginPoint)
+        MyBase.New()
+        Me.InitializeComponent()
+        Me.m_plugin = plugin
+        Me.UIContext = uic
     End Sub
 
-    Private Sub frmFLEMReader_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+#Region " Overrides "
+
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        Me.m_tbxForceFile.Text = m_plugin.ForceFile
+        Me.m_chkForcePP.Checked = m_plugin.ForcePPSalinity
+        Me.m_chkForceHabCap.Checked = m_plugin.VaryHabCapWithCultch
+
+        Me.LoadGroups(Me.m_cmbHabCap)
+
+        If m_plugin.HabCapModGroup <= Me.Core.nGroups Then
+            m_cmbHabCap.SelectedIndex = m_plugin.HabCapModGroup - 1
+        End If
+
+        Me.m_bChanged = False
+        Me.UpdateControls()
+
+        If Me.Modal Then
+            Me.CenterToScreen()
+        End If
+
+    End Sub
+
+    Protected Overrides Sub UpdateControls()
+        MyBase.UpdateControls()
+
+        Dim bValid As Boolean = False
+
+        If Not String.IsNullOrWhiteSpace(Me.m_tbxForceFile.Text) Then
+            bValid = File.Exists(Me.m_tbxForceFile.Text)
+        End If
+
+        ' Trick: disaply OK and Cancel when shown as dialog box
+        Me.m_btnOK.Visible = Me.Modal
+        Me.m_btnCancel.Visible = Me.Modal
+
+        Me.m_btnOK.Enabled = Me.m_bChanged And bValid
+
+    End Sub
+
+#End Region ' Overrides
+
+#Region " Control events "
+
+    Private Sub OnchkForcePP_CheckedChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_chkForcePP.CheckedChanged
+        Try
+            'm_plugin.ForcePPSalinity = Me.m_chkForcePP.Checked
+            Me.SetChanged()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnchkForceHabCap_CheckedChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_chkForceHabCap.CheckedChanged
+        Try
+            'm_plugin.VaryHabCapWithCultch = m_chkForceHabCap.Checked
+            Me.SetChanged()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub btForcingFile_Click(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnChooseFile.Click
 
         Try
-            Me.chkForcePP.Checked = plugin.ForcePPSalinity
-            Me.chkForceHabCap.Checked = plugin.VaryHabCapWithCultch
-            Me.lbForceFile.Text = plugin.ForceFile
 
-            LoadGroups(Me.cbHabCap)
+            Dim cmd As cFileOpenCommand = DirectCast(Me.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+            Debug.Assert(cmd IsNot Nothing)
 
-            If plugin.iHabCapModGroup <= Me.Core.nGroups Then
-                cbHabCap.SelectedIndex = plugin.iHabCapModGroup - 1
+            cmd.Invoke(m_tbxForceFile.Text, "FLEM files (*.nuo)|*.nuo|All files (*.*)|*.*", 0, "Select FLEM file to read")
+
+            If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+                Me.m_tbxForceFile.Text = cmd.FileName
+                Me.SetChanged()
             End If
 
         Catch ex As Exception
@@ -27,45 +124,73 @@ Public Class frmFLEMReader
 
     End Sub
 
-
-    Private Sub OnchkForcePP_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkForcePP.CheckedChanged
-        plugin.ForcePPSalinity = Me.chkForcePP.Checked
+    Private Sub OnGroupSelected(sender As System.Object, e As System.EventArgs) _
+        Handles m_cmbHabCap.SelectedIndexChanged
+        Try
+            'm_plugin.HabCapModGroup = m_cmbHabCap.SelectedIndex + 1
+            Me.SetChanged()
+        Catch ex As Exception
+        End Try
     End Sub
 
-    Private Sub OnchkForceHabCap_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkForceHabCap.CheckedChanged
-        plugin.VaryHabCapWithCultch = chkForceHabCap.Checked
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnOK.Click
+        Try
+            Me.Apply()
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnCancel.Click
+        Try
+            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        Catch ex As Exception
 
-
-    Private Sub btForcingFile_Click(sender As System.Object, e As System.EventArgs) Handles btForcingFile.Click
-        Dim FileDialog As New System.Windows.Forms.OpenFileDialog
-        FileDialog.DefaultExt = "nuo"
-        FileDialog.Filter = "FLEM files (*.nuo)|*.nuo|All files (*.*)|*.*"
-        Dim result As System.Windows.Forms.DialogResult = FileDialog.ShowDialog()
-
-        If result = Windows.Forms.DialogResult.OK Then
-            Dim newForcingFile As String = FileDialog.FileName
-            If File.Exists(newForcingFile) Then
-                lbForceFile.Text = newForcingFile
-                plugin.ForceFile = newForcingFile
-            End If
-        End If
-
+        End Try
     End Sub
 
+#End Region ' Control events
+
+#Region " Internals "
 
     Private Sub LoadGroups(cbBox As Windows.Forms.ComboBox)
 
-        For igrp As Integer = 1 To plugin.core.nGroups
-            cbBox.Items.Add(plugin.core.EcoPathGroupInputs(igrp).Name)
+        ' Always show group with Index
+        Dim fmt As New cCoreInterfaceFormatter()
+        For igrp As Integer = 1 To Me.Core.nGroups
+            cbBox.Items.Add(fmt.GetDescriptor(Me.Core.EcoPathGroupInputs(igrp)))
         Next
 
     End Sub
 
-   
-    Private Sub cbHabCap_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbHabCap.SelectedIndexChanged
-        plugin.iHabCapModGroup = cbHabCap.SelectedIndex + 1
+    Private Sub Apply()
+
+        Me.m_plugin.ForceFile = Me.m_tbxForceFile.Text
+        Me.m_plugin.HabCapModGroup = m_cmbHabCap.SelectedIndex + 1
+        Me.m_plugin.VaryHabCapWithCultch = m_chkForceHabCap.Checked
+        Me.m_plugin.ForcePPSalinity = Me.m_chkForcePP.Checked
+
+        My.Settings.ForceFile = Me.m_plugin.ForceFile
+        My.Settings.Save()
+
     End Sub
+
+    Private Sub SetChanged()
+
+        If Not Me.Modal Then
+            Me.Apply()
+        End If
+
+        Me.m_bChanged = True
+        Me.UpdateControls()
+
+    End Sub
+
+#End Region ' Internals
 
 End Class
