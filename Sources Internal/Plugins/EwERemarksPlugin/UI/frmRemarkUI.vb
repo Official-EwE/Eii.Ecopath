@@ -18,14 +18,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Forms
+Imports System.Windows.Forms
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
-Imports EwECore.Auxiliary
-Imports ScientificInterfaceShared.Properties
-Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -37,28 +36,6 @@ Imports ScientificInterfaceShared.Controls
 Public Class frmRemarkUI
 
 #Region " Private classes "
-
-    Private Class cCoreComponentItem
-
-        Private m_components As eDataTypes() = Nothing
-        Private m_strDisplay As String = ""
-
-        Public Sub New(ByVal strDisplay As String, ByVal components As eDataTypes())
-            Me.m_components = components
-            Me.m_strDisplay = strDisplay
-        End Sub
-
-        Public Overrides Function ToString() As String
-            Return Me.m_strDisplay
-        End Function
-
-        Public ReadOnly Property Components As eDataTypes()
-            Get
-                Return Me.m_components
-            End Get
-        End Property
-
-    End Class
 
     Private Class cSortItem
 
@@ -86,10 +63,8 @@ Public Class frmRemarkUI
 
 #Region " Private vars "
 
-    Private m_filter() As eDataTypes = Nothing
-    Private m_sortorder As ePropertySortOrderTypes = ePropertySortOrderTypes.Source
     Private m_monitor As cRemarkMonitor = Nothing
-    Private m_bInvalid As Boolean = False
+    Private m_bDataInvalidated As Boolean = False
 
 #End Region ' Private vars
 
@@ -106,28 +81,10 @@ Public Class frmRemarkUI
 
 #Region " Form overloads "
 
-    Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
-        Get
-            Return MyBase.UIContext
-        End Get
-        Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
-            MyBase.UIContext = value
-            Me.m_grid.UIContext = value
-        End Set
-    End Property
-
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
-
-        ' Populate filter box
-        Me.AddFilter(SharedResources.GENERIC_VALUE_ALL)
-        Me.AddFilter(SharedResources.GENERIC_VALUE_ALLGROUPS, New eDataTypes() {eDataTypes.EcoPathGroupInput, eDataTypes.EcoPathGroupOutput, _
-                                       eDataTypes.EcoSimGroupInput, eDataTypes.EcoSimGroupOutput, _
-                                       eDataTypes.EcospaceGroup, eDataTypes.EcospaceGroupOuput})
-        Me.AddFilter(SharedResources.GENERIC_VALUE_ALLFLEETS, New eDataTypes() {eDataTypes.FleetInput, eDataTypes.EcosimFleetInput, eDataTypes.EcosimFleetOutput})
-        Me.m_tscmbFilter.SelectedIndex = 0
 
         ' Populate sort box
         Me.AddSortOption(My.Resources.HEADER_SOURCE, ePropertySortOrderTypes.Source)
@@ -135,44 +92,49 @@ Public Class frmRemarkUI
         Me.AddSortOption(My.Resources.HEADER_PARAMETER, ePropertySortOrderTypes.VarName)
         Me.m_tscmbSort.SelectedIndex = 0
 
-        ' Create monitor, start tracking the monitor
+        ' Start tracking core state
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+
+        ' Create selection monitor, start tracking the monitor
         Me.m_monitor = New cRemarkMonitor(Me.PropertyManager)
         AddHandler Me.m_monitor.OnRemarksListChanged, AddressOf OnRemarkListChanged
-
-        ' Kick off
-        Me.InvalidateGrid()
 
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        ' Stop tracking core state
+        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
         ' Get rid of monitor
         RemoveHandler Me.m_monitor.OnRemarksListChanged, AddressOf OnRemarkListChanged
         Me.m_monitor.Dispose()
         Me.m_monitor = Nothing
 
+        My.Settings.LastDocPos = Me.DockState
+        My.Settings.Save()
+
         MyBase.OnFormClosed(e)
 
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Overridden to prevent panel from closing with 'close all docs'
+    ''' </summary>
+    ''' <returns>Cheese!</returns>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function PanelType() As frmEwEDockContent.ePanelType
+        Return ePanelType.SystemPanel
+    End Function
 
 #End Region ' Form overloads
 
 #Region " Events "
 
-    Private Sub OnFilterChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tscmbFilter.SelectedIndexChanged
-
-        Me.m_filter = DirectCast(Me.m_tscmbFilter.SelectedItem, cCoreComponentItem).Components
-        Me.InvalidateGrid()
-
-    End Sub
-
     Private Sub OnSortChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tscmbSort.SelectedIndexChanged
-
-        Me.m_sortorder = DirectCast(Me.m_tscmbSort.SelectedItem, cSortItem).Sort
         Me.InvalidateGrid()
-
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -183,22 +145,16 @@ Public Class frmRemarkUI
     ''' <param name="monitor">The monitor that fired the event.</param>
     ''' -----------------------------------------------------------------------
     Private Sub OnRemarkListChanged(ByRef monitor As cRemarkMonitor)
-        ' Just invalidate the grid, which will get updated when there is time.
         Me.InvalidateGrid()
+    End Sub
+
+    Private Sub OnCoreStateChanged(ByVal cms As cCoreStateMonitor)
+        Me.UpdateControls()
     End Sub
 
 #End Region ' Events
 
 #Region " Form config helpers "
-
-    ''' <summary>
-    ''' Add an item to the filter combo box.
-    ''' </summary>
-    ''' <param name="strDisplay"></param>
-    ''' <param name="components"></param>
-    Private Sub AddFilter(ByVal strDisplay As String, Optional ByVal components As eDataTypes() = Nothing)
-        Me.m_tscmbFilter.Items.Add(New cCoreComponentItem(strDisplay, components))
-    End Sub
 
     ''' <summary>
     ''' Add an item to the sort combo box.
@@ -211,48 +167,58 @@ Public Class frmRemarkUI
 
 #End Region ' Form config helpers
 
-#Region " Invalidation "
+#Region " Control handling "
 
     Private Sub InvalidateGrid()
 
-        ' Optimization
-        If Me.m_bInvalid Then Return
-        ' Set invalid flag
-        Me.m_bInvalid = True
-        ' Update grid asynchronously when there is time
-        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateGrid), Nothing)
+        If (Me.m_monitor Is Nothing) Then Return
+        SyncLock Me
+            Me.m_bDataInvalidated = True
+        End SyncLock
+        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateGrid))
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Delayed grid repopulate logic
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub UpdateGrid()
 
-        ' Optimization. May not be necessary
-        If Not Me.m_bInvalid Then Return
-        Me.m_bInvalid = False
+        SyncLock Me
+            If Not Me.m_bDataInvalidated Then Return
+            Me.m_bDataInvalidated = False
+        End SyncLock
 
         Dim lData As New List(Of cProperty)
 
-        ' Apply filter
         For Each prop As cProperty In Me.m_monitor.Remarks
-            Dim bInclude As Boolean = False
-            If (Me.m_filter Is Nothing) Then
-                bInclude = True
-            Else
-                bInclude = (Array.IndexOf(Me.m_filter, prop.Source.DataType) >= 0)
-            End If
-            If bInclude Then
-                lData.Add(prop)
+            If (prop.Source IsNot Nothing) Then
+                If (Not prop.Source.Disposed) Then
+                    ' ToDo: add filter?
+                    lData.Add(prop)
+                Else
+                    ' Whoah!
+                End If
             End If
         Next
-
         ' Apply sort order
-        lData.Sort(New cPropertySorter(Me.m_sortorder))
-
+        lData.Sort(New cPropertySorter(DirectCast(Me.m_tscmbSort.SelectedItem, cSortItem).Sort))
         ' Update the grid
         Me.m_grid.SetData(lData.ToArray())
 
     End Sub
 
-#End Region ' Invalidation
+    Protected Overrides Sub UpdateControls()
+
+        Dim bHasModel As Boolean = Me.Core.StateMonitor.HasEcopathLoaded
+
+        Me.m_ts.Enabled = bHasModel
+        Me.m_grid.Visible = bHasModel
+
+    End Sub
+
+#End Region ' Control handling
 
 End Class

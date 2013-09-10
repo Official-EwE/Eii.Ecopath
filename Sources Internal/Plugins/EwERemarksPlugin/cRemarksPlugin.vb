@@ -24,6 +24,7 @@ Imports EwEPlugin
 Imports EwERemarksPlugin
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports System.Drawing
 
 #End Region ' Imports
 
@@ -34,6 +35,8 @@ Public Class cRemarksPlugin
     Implements IUIContextPlugin
     Implements IMenuItemPlugin
     Implements IDisposedPlugin
+    Implements IAutolaunchPlugin
+    Implements IDockStatePlugin
 
 #Region " Private variables "
 
@@ -76,7 +79,7 @@ Public Class cRemarksPlugin
     Public ReadOnly Property ControlText() As String _
         Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "EcoWriter"
+            Return My.Resources.CAPTION
         End Get
     End Property
 
@@ -90,7 +93,7 @@ Public Class cRemarksPlugin
     Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState _
         Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-            Return eCoreExecutionState.EcopathLoaded
+            Return eCoreExecutionState.Idle
         End Get
     End Property
 
@@ -105,41 +108,32 @@ Public Class cRemarksPlugin
     Public ReadOnly Property MenuItemLocation() As String _
         Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
         Get
-            Return "MenuTools"
+            Return "MenuView"
         End Get
     End Property
 
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
-
         Try
             If (Me.m_core Is Nothing) Then Return
-
-            If Not Me.HasUI Then
-                Me.m_frm = New frmRemarkUI(Me.m_uic)
-            End If
+            Me.CreateUI()
             frmPlugin = Me.m_frm
-
-            'Dim dlg As New frmRemarkUI(Me.m_uic)
-            'dlg.ShowDialog()
-
         Catch ex As Exception
 
         End Try
-
     End Sub
 
     Public ReadOnly Property Author() As String _
         Implements EwEPlugin.IPlugin.Author
         Get
-            Return "UBC Fisheries Centre"
+            Return "Jeroen Steenbeek"
         End Get
     End Property
 
     Public ReadOnly Property Contact() As String _
         Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "mailto:ewedevteam@gmail.com"
+            Return "mailto:drmbongo@gmail.com"
         End Get
     End Property
 
@@ -150,9 +144,32 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
+    Public Function Autolaunch() As Boolean _
+        Implements EwEPlugin.IAutolaunchPlugin.Autolaunch
+        Return True
+    End Function
+
+    Public Function DockState() As Integer Implements EwEPlugin.IDockStatePlugin.DockState
+        If (My.Settings.LastDocPos = 0) Then
+            Return WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide
+        End If
+        Return DirectCast(My.Settings.LastDocPos, WeifenLuo.WinFormsUI.Docking.DockState)
+    End Function
+
 #End Region ' Plug-in implementation
 
 #Region " Internals "
+
+    Private Function CreateUI() As Boolean
+        If Not Me.HasUI Then
+            Me.m_frm = New frmRemarkUI(Me.m_uic)
+            Me.m_frm.Text = My.Resources.CAPTION
+            Me.m_frm.TabText = My.Resources.CAPTION
+            ' Chop chop
+            Me.m_frm.Icon = Drawing.Icon.FromHandle(DirectCast(Me.ControlImage, Bitmap).GetHicon)
+        End If
+        Return True
+    End Function
 
     Private Function HasUI() As Boolean
         If Me.m_frm Is Nothing Then Return False

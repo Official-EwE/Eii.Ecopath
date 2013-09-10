@@ -46,36 +46,29 @@ Partial Class frmRemarkUI
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim sep1 As System.Windows.Forms.ToolStripSeparator
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.m_tslShow = New System.Windows.Forms.ToolStripLabel()
-        Me.m_tscmbFilter = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tslSort = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmbSort = New System.Windows.Forms.ToolStripComboBox()
         Me.m_grid = New EwERemarksPlugin.cRemarksGrid()
+        sep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_ts.SuspendLayout()
         Me.SuspendLayout()
+        '
+        'sep1
+        '
+        sep1.Name = "sep1"
+        sep1.Size = New System.Drawing.Size(6, 25)
         '
         'm_ts
         '
         Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslShow, Me.m_tscmbFilter, Me.m_tslSort, Me.m_tscmbSort})
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {sep1, Me.m_tslSort, Me.m_tscmbSort})
         Me.m_ts.Location = New System.Drawing.Point(0, 0)
         Me.m_ts.Name = "m_ts"
         Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.m_ts.Size = New System.Drawing.Size(533, 25)
         Me.m_ts.TabIndex = 3
-        '
-        'm_tslShow
-        '
-        Me.m_tslShow.Name = "m_tslShow"
-        Me.m_tslShow.Size = New System.Drawing.Size(57, 22)
-        Me.m_tslShow.Text = "Show for:"
-        '
-        'm_tscmbFilter
-        '
-        Me.m_tscmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_tscmbFilter.Name = "m_tscmbFilter"
-        Me.m_tscmbFilter.Size = New System.Drawing.Size(121, 25)
         '
         'm_tslSort
         '
@@ -94,7 +87,7 @@ Partial Class frmRemarkUI
         Me.m_grid.AllowBlockSelect = True
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
         Me.m_grid.AutoStretchRowsToFitHeight = False
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -102,10 +95,12 @@ Partial Class frmRemarkUI
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
         Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.Location = New System.Drawing.Point(0, 25)
         Me.m_grid.Name = "m_grid"
         Me.m_grid.Size = New System.Drawing.Size(533, 402)
@@ -119,6 +114,7 @@ Partial Class frmRemarkUI
             Or SourceGrid2.GridSpecialKeys.Escape) _
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.TabIndex = 4
+        Me.m_grid.TrackPropertySelection = False
         Me.m_grid.UIContext = Nothing
         '
         'frmRemarkUI
@@ -143,8 +139,6 @@ Partial Class frmRemarkUI
     End Sub
 
     Private WithEvents m_ts As cEwEToolstrip
-    Private WithEvents m_tslShow As System.Windows.Forms.ToolStripLabel
-    Private WithEvents m_tscmbFilter As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_tslSort As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tscmbSort As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_grid As EwERemarksPlugin.cRemarksGrid

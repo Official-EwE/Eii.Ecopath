@@ -27,9 +27,11 @@ Imports EwECore
 Imports SourceGrid2.VisualModels
 Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports System.Windows.Forms
 
 #End Region ' Imports
 
+<CLSCompliant(False)> _
 Friend Class cRemarksGrid
     Inherits EwEGrid
 
@@ -59,7 +61,7 @@ Friend Class cRemarksGrid
     Public Sub SetData(ByVal data() As cProperty)
 
         Me.m_data = data
-        Me.RefreshContent()
+        Me.FillData()
 
     End Sub
 
@@ -70,29 +72,18 @@ Friend Class cRemarksGrid
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        Dim cell As EwECell = Nothing
-
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        cell = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE)
-        Me(0, eColumnTypes.Source1) = cell
+        Me(0, eColumnTypes.Source1) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE)
+        Me(0, eColumnTypes.Parameter) = New EwEColumnHeaderCell(My.Resources.HEADER_PARAMETER)
+        Me(0, eColumnTypes.Source2) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE_SEC)
 
-        cell = New EwEColumnHeaderCell(My.Resources.HEADER_PARAMETER)
-        Me(0, eColumnTypes.Parameter) = cell
+        Me(0, eColumnTypes.Remark) = New EwEColumnHeaderCell(SharedResources.HEADER_REMARK)
+        Me(0, eColumnTypes.Remark).VisualModel.TextAlignment = Drawing.ContentAlignment.MiddleLeft
 
-        cell = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE_SEC)
-        Me(0, eColumnTypes.Source2) = cell
-
-        cell = New EwEColumnHeaderCell(SharedResources.HEADER_REMARK)
-        cell.VisualModel.TextAlignment = Drawing.ContentAlignment.MiddleLeft
-        Me(0, eColumnTypes.Remark) = cell
-
-        Me.FixedColumnWidths = False
-        Me.FixedColumns = 0
-        Me.AutoStretchColumnsToFitWidth = True
-
-        ' Make sure this grid does NOT screw up the selection of properties!
         Me.TrackPropertySelection = False
+        Me.FixedColumnWidths = False
+        Me.FixedColumns = 3
 
     End Sub
 
@@ -101,33 +92,42 @@ Friend Class cRemarksGrid
         If (Me.UIContext Is Nothing) Then Return
         If (Me.m_data Is Nothing) Then Return
 
+        Me.RowsCount = 1
+
         Dim vfm As New cVarnameTypeFormatter()
-        Dim cfm As New cCoreInterfaceFormatter("")
-        Dim styleRO As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
-        Dim cell As EwECellBase = Nothing
-        Dim prop As cProperty = Nothing
 
         For i As Integer = 0 To Me.m_data.Length - 1
 
-            prop = Me.m_data(i)
-            Me.AddRow()
+            Dim prop As cProperty = Me.m_data(i)
+            Dim cell As EwECellBase = Nothing
+            Dim iRow As Integer = Me.AddRow()
 
-            cell = New PropertyRowHeaderCell(Me.PropertyManager, prop.Source, eVarNameFlags.Name)
-            ' Prevent 'Remarks' from popping up
+            cell = New PropertyCell(Me.PropertyManager, prop.Source, eVarNameFlags.Name)
             cell.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
-            Me(Me.RowsCount - 1, eColumnTypes.Source1) = cell
+            Me(iRow, eColumnTypes.Source1) = cell
 
-            cell = New EwERowHeaderCell(vfm.GetDescriptor(prop.VarName))
-            Me(Me.RowsCount - 1, eColumnTypes.Parameter) = cell
+            cell = New EwECell(vfm.GetDescriptor(prop.VarName), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.Parameter) = cell
 
-            cell = New PropertyRowHeaderCell(Me.PropertyManager, prop.SourceSec, eVarNameFlags.Name)
-            ' Prevent 'Remarks' from popping up
+            cell = New PropertyCell(Me.PropertyManager, prop.SourceSec, eVarNameFlags.Name)
             cell.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
-            Me(Me.RowsCount - 1, eColumnTypes.Source2) = cell
+            Me(iRow, eColumnTypes.Source2) = cell
 
-            Me(Me.RowsCount - 1, eColumnTypes.Remark) = New cRemarkCell(prop)
+            Me(iRow, eColumnTypes.Remark) = New cRemarkCell(prop)
 
         Next i
+
+    End Sub
+
+    Protected Overrides Sub FinishStyle()
+
+        Me.Columns(eColumnTypes.Source1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.Parameter).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.Source2).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.Remark).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+        Me.AutoStretchColumnsToFitWidth = True
+
+        MyBase.FinishStyle()
 
     End Sub
 

@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CAPTION" xml:space="preserve">
+    <value>EcoWriter</value>
+  </data>
+  <data name="CAPTION_TOOLTIP" xml:space="preserve">
+    <value>Manage the remarks entered in a model</value>
+  </data>
   <data name="HEADER_PARAMETER" xml:space="preserve">
     <value>Parameter</value>
   </data>

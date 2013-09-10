@@ -100,6 +100,12 @@ Friend Class cRemarkMonitor
 
         Dim lProps As New List(Of cProperty)
         lProps.AddRange(Me.m_dtProps)
+
+#If DEBUG Then
+        For Each prop In lProps
+            Debug.Assert(Not prop.IsDisposed)
+        Next
+#End If
         Return lProps.ToArray()
 
     End Function
