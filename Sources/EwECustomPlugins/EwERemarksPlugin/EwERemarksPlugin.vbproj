@@ -92,11 +92,11 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SourceGrid2">
-      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
+    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
+      <HintPath>..\..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
-    <Reference Include="SourceLibrary">
-      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
+    <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87">
+      <HintPath>..\..\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -104,8 +104,8 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.4392.30540, Culture=neutral, PublicKeyToken=dd4210ebb9723de9, processorArchitecture=MSIL">
+      <HintPath>..\..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -174,21 +174,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
+    <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
-      <Name>EwECore</Name>
+      <Name>EwECore %28EwECore\EwECore%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj">
+    <ProjectReference Include="..\..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
-      <Name>EwEPlugin</Name>
+      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Sources\EwEUtils\EwEUtils.vbproj">
+    <ProjectReference Include="..\..\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils</Name>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
+    <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
-      <Name>ScientificInterfaceShared</Name>
+      <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

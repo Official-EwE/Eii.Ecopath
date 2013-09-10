@@ -111,9 +111,6 @@ Public Class frmRemarkUI
         Me.m_monitor.Dispose()
         Me.m_monitor = Nothing
 
-        My.Settings.LastDocPos = Me.DockState
-        My.Settings.Save()
-
         MyBase.OnFormClosed(e)
 
     End Sub
