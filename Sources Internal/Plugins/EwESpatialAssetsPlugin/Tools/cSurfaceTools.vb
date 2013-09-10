@@ -26,6 +26,7 @@ Imports DotSpatial.Topology
 Imports EwECore
 Imports EwECore.SpatialData
 Imports EwESpatialAssetsPlugin.SpatialData
+Imports System.Data.Linq
 
 #End Region ' Imports
 
@@ -94,17 +95,18 @@ Public Class cSurfaceTools
             featToConvert = fs
         End If
 
-        ' Merge all polygons to avoid double-counting areas when polygons overlap
-        For Each featTmp As IFeature In featToConvert.Features
-            If (featTmp.FeatureType = FeatureType.Polygon) Then
-                Dim polyTemp As New Polygon(featTmp.Coordinates)
-                If polyToConvert Is Nothing Then
-                    polyToConvert = polyTemp
-                Else
-                    polyToConvert = polyToConvert.Union(polyTemp)
-                End If
-            End If
-        Next
+        ' JS: do this AFTER the intersection operation to cut processing time. Keep polygons as small as possible
+        '' Merge all polygons to avoid double-counting areas when polygons overlap
+        'For Each featTmp As IFeature In featToConvert.Features
+        '    If (featTmp.FeatureType = FeatureType.Polygon) Then
+        '        Dim polyTemp As New Polygon(featTmp.Coordinates)
+        '        If polyToConvert Is Nothing Then
+        '            polyToConvert = polyTemp
+        '        Else
+        '            polyToConvert = polyToConvert.Union(polyTemp)
+        '        End If
+        '    End If
+        'Next
 
         ' -----
         ' Create and position raster 
@@ -118,6 +120,7 @@ Public Class cSurfaceTools
 
         If (log IsNot Nothing) Then log.LogOperation(String.Format(My.Resources.OPERATION_EXTRACTPLOYGONS, strFilter), eStatusFlags.ValueComputed)
 
+        ' ToDo: This loop can be sped up by only processing those cells that overlap with the extent of the dataset
         ' For all cols, rows
         For iRow As Integer = 0 To rs.NumRows - 1
             For iCol As Integer = 0 To rs.NumColumns - 1
@@ -139,20 +142,35 @@ Public Class cSurfaceTools
                     Dim dAreaOverlap As Double = 0.0
 
                     ' See useful discussion for faster polygon overlap processing: http://dotspatial.codeplex.com/discussions/265535
+                    Dim candidates As List(Of IFeature) = featToConvert.Select(extCut)
+                    If (candidates IsNot Nothing) Then
 
-                    Try
-                        ' Get intersection of cell with feature
-                        Dim fIntersect As IGeometry = polyCut.Intersection(polyToConvert)
-                        ' Sum fraction area
-                        dAreaOverlap += fIntersect.Area
-                    Catch ex As Exception
-                        ' Woops
-                        If (log IsNot Nothing) Then
-                            log.LogOperation(String.Format("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.ErrorEncountered)
-                        End If
-                        ' Do not obliterate polygon, keep plowing on
-                        'polyToConvert = Nothing
-                    End Try
+                        For Each featTmp As IFeature In candidates
+                            If (featTmp.FeatureType = FeatureType.Polygon) Then
+                                Dim polyTemp As New Polygon(featTmp.Coordinates)
+                                If polyToConvert Is Nothing Then
+                                    polyToConvert = polyTemp
+                                Else
+                                    polyToConvert = polyToConvert.Union(polyTemp)
+                                End If
+                            End If
+                        Next
+
+                        Try
+                            ' Get intersection of cell with feature
+                            Dim fIntersect As IGeometry = polyCut.Intersection(polyToConvert)
+                            ' Sum fraction area
+                            dAreaOverlap += fIntersect.Area
+                        Catch ex As Exception
+                            ' Woops
+                            If (log IsNot Nothing) Then
+                                log.LogOperation(String.Format("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.ErrorEncountered)
+                            End If
+                            ' Do not obliterate polygon, keep plowing on
+                            'polyToConvert = Nothing
+                        End Try
+                    End If
+
                     rs.Value(iRow, iCol) = dAreaOverlap / dAreaCell
 
                 End If
