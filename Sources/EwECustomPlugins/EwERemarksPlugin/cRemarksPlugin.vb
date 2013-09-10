@@ -150,10 +150,7 @@ Public Class cRemarksPlugin
     End Function
 
     Public Function DockState() As Integer Implements EwEPlugin.IDockStatePlugin.DockState
-        If (My.Settings.LastDocPos = 0) Then
-            Return WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide
-        End If
-        Return DirectCast(My.Settings.LastDocPos, WeifenLuo.WinFormsUI.Docking.DockState)
+        Return WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide
     End Function
 
 #End Region ' Plug-in implementation
