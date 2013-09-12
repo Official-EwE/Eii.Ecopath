@@ -214,6 +214,12 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>Catch by Row, Col, Group.</summary>
     Public CatchMap(,,) As Single
+
+    ''' <summary>Discards by Row, Col, Group.</summary>
+    ''' <remarks>This is not exposed by the interface at this time. It was included for the Biodiversity plugin and can only be accessed via code.</remarks>
+    Public DiscardsMap(,,) As Single
+
+    ''' <summary>NOT IMPLEMENTED IN THE CORE YET Is a cell included in modeling by Row, Col, Group.</summary>
     Public Excluded(,) As Boolean
 
     ''' <summary>Trophic Level by Row, Col, Group.</summary>
@@ -252,7 +258,6 @@ Public Class cEcospaceDataStructures
 
     Public BBase() As Single
     Public nRegions As Integer
-
 
     ''' <summary>Number of Importance layers</summary>
     Public nImportanceLayers As Integer
@@ -1213,6 +1218,36 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
+    Friend Sub debugTestDiscardsMaps()
+        Dim sumDiscards As Single
+        Dim n As Integer
+
+        System.Console.WriteLine("---------------Discards Dump-------------------")
+
+        For igrp As Integer = 1 To Me.NGroups
+            sumDiscards = 0
+            n = 0
+            For ir As Integer = 1 To InRow
+                For ic As Integer = 1 To InCol
+                    If DiscardsMap(ir, ic, igrp) > 0 Then
+                        sumDiscards += DiscardsMap(ir, ic, igrp)
+                        n += 1
+                    End If
+                Next ic
+            Next ir
+
+            If sumDiscards > 0 Then
+                System.Console.WriteLine("Discards for group " + igrp.ToString + " = " + (sumDiscards / n).ToString)
+            End If
+
+        Next igrp
+
+        System.Console.WriteLine("---------------END Discards Dump-------------------")
+
+
+    End Sub
+
+
     ''' <summary>
     ''' Populate <see cref="cEcospaceDataStructures.FleetSailCells"></see> with a list of map cells in <see cref="cEcospaceDataStructures.Sail"></see> that are less than <see cref="cEcospaceDataStructures.EffortDistThreshold"></see>
     ''' </summary>
@@ -1411,6 +1446,7 @@ Public Class cEcospaceDataStructures
 
             Me.allocate(Me.HabCapInput, InRow + 1, InCol + 1, nvartot)
             Me.allocate(CatchMap, InRow, InCol, nvartot)
+            Me.allocate(DiscardsMap, InRow, InCol, nvartot)
             Me.allocate(Me.HabCap, InRow + 1, InCol + 1, NGroups)
             Me.allocate(PHabType, InRow, InCol, NoHabitats)
 
