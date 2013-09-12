@@ -1037,6 +1037,9 @@ Public Class cEcoSpace
                 'Debugging dump grid CPU times to the console
                 'dumpGridRunTimes()
 
+                'Debugging discards map dumps discards to console window
+                'Me.m_Data.debugTestDiscardsMaps()
+
                 'make sure none of the biomass cells are zero
                 For ip = 1 To m_Data.nvartot
                     For i = 1 To m_Data.InRow
@@ -1237,6 +1240,7 @@ Public Class cEcoSpace
             'clear out catch and landings data at the start of each timestep
             Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
             Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
+            Array.Clear(Me.m_Data.DiscardsMap, 0, Me.m_Data.DiscardsMap.Length)
 
             If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceBeginTimeStep(m_Data, itt)
 
@@ -6153,6 +6157,8 @@ exitline:
                                 If dmin < 10000 Then Exit Do 'have found the best move
                             Loop
                         End If
+                        Debug.Assert(Me.m_Data.ItoUse(isp, ist, i, j) >= 0 And Me.m_Data.ItoUse(isp, ist, i, j) <= m_Data.InRow, "SetNearestOKcellforIBM() set out of bounds cell.")
+                        Debug.Assert(Me.m_Data.JtoUse(isp, ist, i, j) >= 0 And Me.m_Data.JtoUse(isp, ist, i, j) <= m_Data.InCol, "SetNearestOKcellforIBM() set out of bounds cell.")
                     Next j 'Map cols
                 Next i 'Map rows
             Next ist 'Number of stanzas in this group

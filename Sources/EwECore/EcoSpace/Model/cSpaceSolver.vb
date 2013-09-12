@@ -995,6 +995,7 @@ Public Class cSpaceSolver
     Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal FMortByGroup() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
         Dim cellCatch As Single, iFlt As Integer, iGrp As Integer
         Dim st As Double = Me.m_stpWatch.Elapsed.TotalSeconds
+
         Try
 
             For iFlt = 1 To m_Data.nFleets
@@ -1011,7 +1012,6 @@ Public Class cSpaceSolver
             Next
 
             For iGrp = 1 To Me.m_Data.NGroups
-
                 If Me.m_PathData.fCatch(iGrp) > 0 Then
                     'jb 29-Jan-12 in the multithreaded version FishTime was not updated to the F for this cell
                     'use fishing mortality rate passed in instead 
@@ -1042,9 +1042,12 @@ Public Class cSpaceSolver
                             End If
 
                             Me.Landings(iGrp, iFlt) += cellCatch * Me.m_PathData.PropLanded(iFlt, iGrp)
+                            'Discards map used by the Biodiversity plugin
+                            Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += cellCatch * (1 - Me.m_PathData.PropLanded(iFlt, iGrp))
                         End If
                     Next iFlt
                 End If 'If m_EPdata.fCatch(igrp) > 0 Then
+
             Next iGrp
 
         Catch ex As Exception
@@ -1212,9 +1215,9 @@ Public Class cSpaceSolver
 End Class
 
 
-
 #Region "New Local Memory"
 
+#If NOTUSED Then
 
 Public Class cSpaceSolver_LocalMemory
 
@@ -2717,7 +2720,6 @@ Public Class cSpaceSolver_LocalMemory
             Next
 
             For iGrp = 1 To Me.m_Data.NGroups
-
                 If Me.m_PathData.fCatch(iGrp) > 0 Then
                     'jb 29-Jan-12 in the multithreaded version FishTime was not updated to the F for this cell
                     'use fishing mortality rate passed in instead 
@@ -2756,10 +2758,12 @@ Public Class cSpaceSolver_LocalMemory
                                 End If
 
                                 Me.Landings(iGrp, iFlt) += cellCatch * Me.m_PathData.PropLanded(iFlt, iGrp)
+                                Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += cellCatch * (1 - Me.m_PathData.PropLanded(iFlt, iGrp))
                             End If 'Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp)
                         End If 'Me.m_Data.IsFished(iFlt, iRow, iCol)
                     Next iFlt
                 End If 'If m_EPdata.fCatch(igrp) > 0 Then
+
             Next iGrp
 
         Catch ex As Exception
@@ -2877,5 +2881,7 @@ Public Class cSpaceSolver_LocalMemory
 #End Region
 
 End Class
+
+#End If
 
 #End Region
