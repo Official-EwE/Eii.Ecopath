@@ -157,7 +157,7 @@
     <value>m_nudSumLength</value>
   </data>
   <data name="&gt;&gt;m_nudSumLength.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.9611.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudSumLength.Parent" xml:space="preserve">
     <value>$this</value>
@@ -319,13 +319,13 @@
     <value>224, 57</value>
   </data>
   <data name="m_rbGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 17</value>
+    <value>110, 17</value>
   </data>
   <data name="m_rbGroup.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="m_rbGroup.Text" xml:space="preserve">
-    <value>&amp;Group, landed by:</value>
+    <value>&amp;Group, caught by:</value>
   </data>
   <data name="&gt;&gt;m_rbGroup.Name" xml:space="preserve">
     <value>m_rbGroup</value>
@@ -421,7 +421,7 @@
     <value>m_hdrSummary</value>
   </data>
   <data name="&gt;&gt;m_hdrSummary.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9611.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSummary.Parent" xml:space="preserve">
     <value>$this</value>
@@ -454,7 +454,7 @@
     <value>m_hdrShow</value>
   </data>
   <data name="&gt;&gt;m_hdrShow.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9611.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrShow.Parent" xml:space="preserve">
     <value>$this</value>
@@ -508,9 +508,9 @@
     <value>Ecospace results</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>cFormEcospaceResults</value>
+    <value>frmEcospaceResults</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9611.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

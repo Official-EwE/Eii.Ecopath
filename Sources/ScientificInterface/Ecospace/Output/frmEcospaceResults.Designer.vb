@@ -144,7 +144,7 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_lblNumSteps, "m_lblNumSteps")
             Me.m_lblNumSteps.Name = "m_lblNumSteps"
             '
-            'cFormEcospaceResults
+            'frmEcospaceResults
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -162,7 +162,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_lblSumStartTime)
             Me.Controls.Add(Me.m_lblSumEndTime)
             Me.Controls.Add(Me.m_plResultsGrid)
-            Me.Name = "cFormEcospaceResults"
+            Me.Name = "frmEcospaceResults"
             CType(Me.m_nudSumLength, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
