@@ -336,7 +336,7 @@ Public Class cPluginManager
             ' Get plug-in assembly
             pluginAssembly = Assembly.GetAssembly(GetType(cPluginManager))
             ' Get location of plug-in assembly (which is where plug-ins are installed) ((win7 issues?!))
-            strPluginPath = pluginAssembly.Location
+            strPluginPath = Path.GetDirectoryName(pluginAssembly.Location)
 
             ' Get inventory of all DLLs in the plug-in path
             ' JB: Added "*.dll" to only get files that could contain a Plugin.
@@ -463,7 +463,7 @@ Public Class cPluginManager
         If (String.IsNullOrWhiteSpace(strPluginPath)) Then
             'Get the location of the plugin manager assembly as the default plug-in path
             Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
-            strPluginPath = pluginAssembly.Location
+            strPluginPath = Path.GetDirectoryName(pluginAssembly.Location)
         End If
 
         If Not Directory.Exists(strPluginPath) Then
