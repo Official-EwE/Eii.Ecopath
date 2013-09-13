@@ -122,7 +122,6 @@ Public Class frmTFMpolicy
     Private Sub OnGridEdited() Handles m_grid.onEdited
         Try
             Me.Redraw()
-            StrategiesSaved = False
         Catch ex As Exception
 
         End Try
@@ -442,6 +441,11 @@ Public Class frmTFMpolicy
             If resultmessage = Windows.Forms.DialogResult.Cancel Then e.Cancel = True
         End If
     End Sub
+
+    Private Sub m_grid_SettingCell(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs) Handles m_grid.SettingCell
+
+    End Sub
+
 End Class
 
 
