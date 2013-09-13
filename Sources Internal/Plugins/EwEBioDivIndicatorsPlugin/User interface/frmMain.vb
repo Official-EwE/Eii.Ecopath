@@ -37,7 +37,7 @@ Public Class frmMain
 
 #Region " Variables "
 
-    Private m_ecosimWrapper As cEcosimGraphWrapper = Nothing
+    Private m_ecosimWrapper As cEcosimGraphWrapperOrg = Nothing
     Private m_ecospaceWrapper As cEcospaceMapWrapper = Nothing
     Private m_mcWrapper As cMCGraphWrapper = Nothing
 
@@ -60,7 +60,7 @@ Public Class frmMain
 
         Me.InitializeComponent()
 
-        Me.m_ecosimWrapper = New cEcosimGraphWrapper()
+        Me.m_ecosimWrapper = New cEcosimGraphWrapperOrg()
         Me.m_ecospaceWrapper = New cEcospaceMapWrapper()
         Me.m_mcWrapper = New cMCGraphWrapper()
 

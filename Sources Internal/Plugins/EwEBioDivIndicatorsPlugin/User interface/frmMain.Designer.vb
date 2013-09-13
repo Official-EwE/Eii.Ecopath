@@ -118,6 +118,7 @@ Partial Class frmMain
         Me.m_tvIndicators.HideSelection = False
         Me.m_tvIndicators.HotTracking = True
         Me.m_tvIndicators.Name = "m_tvIndicators"
+        Me.m_tvIndicators.ShowLines = False
         '
         'm_tcOutput
         '
