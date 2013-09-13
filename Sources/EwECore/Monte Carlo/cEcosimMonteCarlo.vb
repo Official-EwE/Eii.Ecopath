@@ -720,6 +720,22 @@ Friend Class cEcosimMonteCarlo
     End Function
 
 
+    Private Sub dumpEstimatedParameters()
+
+        System.Console.WriteLine("-------------Start Parameters Estimated by Ecopath----------------")
+        For igrp As Integer = 1 To m_core.nLivingGroups
+            For iPar As Integer = 1 To 4
+                If m_ecopath.missing(igrp, iPar) = True Then
+                    'Estimated by Ecopath
+                    System.Console.WriteLine(Me.m_epdata.GroupName(igrp) + ", Index =  " + igrp.ToString + ", Parameter = " + iPar.ToString)
+                End If
+            Next
+        Next
+        System.Console.WriteLine("-------------End Parameters Estimated by Ecopath------------------")
+
+    End Sub
+
+
     Private Function BalanceEcopathWithNewPars(ByVal ParCurVal(,) As Single, _
                                                ByVal CVpar(,) As Single, _
                                                ByRef iter As Integer, _
@@ -729,6 +745,9 @@ Friend Class cEcosimMonteCarlo
         Dim bEcopathNeedsBalancing As Boolean
 
         Try
+            'for debugging which parameters are being estimated
+            'dumpEstimatedParameters()
+
             bEcopathNeedsBalancing = True
             Do While bEcopathNeedsBalancing
                 iter = iter + 1
