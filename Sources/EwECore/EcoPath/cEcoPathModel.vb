@@ -212,10 +212,6 @@ Namespace Ecopath
             Dim iParamsEstimated As Integer = eStatusFlags.ErrorEncountered
             Dim msg As cMessage = Nothing
 
-            'For development test that everything has been initialized 
-            Debug.Assert(Not m_Data Is Nothing, Me.ToString + ".EstimateParameters() DataSouce must be set before model is called.")
-            Debug.Assert(m_Data.bInitialized, Me.ToString + ".EstimateParameters() Datasource has not been initilized.")
-
             m_EstimStatus = eStatusFlags.Null
 
             'clear out any existing error messages
@@ -225,12 +221,14 @@ Namespace Ecopath
             'Paraniod double checking for the release version
             'Is there a valid Ecopath data object. There is no messages for this as it should not happen in the release version. Just write to the log???????
             If m_Data Is Nothing Then
-                cLog.Write(Me.ToString + ".EstimateParameters() Datadource must be set before model is called. Ecopath could not be run.")
+                cLog.Write(Me.ToString + ".Run() EcoPathModel.m_Data is Nothing, Ecopath has not been initialized correctly. Ecopath could not be run.")
+                Debug.Assert(Not m_Data Is Nothing, Me.ToString + ".Run() m_data in Nothing. Ecopath could not be run.")
                 Return False
             End If
             'have the parameters been initialized
             If Not m_Data.bInitialized Then
-                cLog.Write(Me.ToString + ".EstimateParameters() Datasource has not been initilized. Ecopath could not be run.")
+                cLog.Write(Me.ToString + ".Run() EcoPathModel.m_Data has been created but not Initialized. Ecopath could not be run.")
+                Debug.Assert(m_Data.bInitialized, Me.ToString + ".Run() EcoPathModel.m_Data has been created but not Initialized..")
                 Return False
             End If
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
