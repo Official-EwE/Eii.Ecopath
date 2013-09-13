@@ -3991,6 +3991,8 @@ Public Class AppLauncher
 
         ' Phew
         Dim pgcmd As cPluginGUICommand = DirectCast(cmd, cPluginGUICommand)
+        Dim iDockState As Integer = 0
+
         ' Check if core can be brought up to par
         If Me.CoreController.LoadState(pgcmd.CoreExecutionState) Then
             ' Invoke plugin. This code does not - and cannot - verify whether the plugin has already ran,
@@ -4007,7 +4009,7 @@ Public Class AppLauncher
 
             ' See if the plug-in attached any form to the command. This form will be nested in the interface
             ' if possible.
-            If pgcmd.Form IsNot Nothing Then
+            If (pgcmd.Form IsNot Nothing) Then
                 ' #Yes: form detected
 
                 ' Able to activate this form from the open tabs?
@@ -4023,9 +4025,11 @@ Public Class AppLauncher
                     If (TypeOf pgcmd.Form Is DockContent) And (m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
                         ' #Yes
                         ' Fix dockstyle
-                        If pgcmd.DockState = 0 Then pgcmd.DockState = DockState.Document
+                        iDockState = pgcmd.DockState
+                        If iDockState = 0 Then iDockState = DockState.Document
+
                         ' Show the form in the dock panel
-                        DirectCast(pgcmd.Form, DockContent).Show(Me.m_DockPanel, DirectCast(pgcmd.DockState, DockState))
+                        DirectCast(pgcmd.Form, DockContent).Show(Me.m_DockPanel, DirectCast(iDockState, DockState))
 
                         ' Fix window state
                         If pgcmd.Form.WindowState = FormWindowState.Minimized Then
