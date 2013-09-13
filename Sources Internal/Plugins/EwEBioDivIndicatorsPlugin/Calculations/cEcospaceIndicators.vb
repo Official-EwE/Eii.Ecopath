@@ -133,13 +133,7 @@ Public Class cEcospaceIndicators
     ''' <inheritdocs cref="cIndicators.ModelDiscards"/>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function ModelDiscards(iGroup As Integer) As Single
-        ' ToDo: implement this method
-        Return 0
-        'Dim sLandings As Single = 0
-        'For iFleet As Integer = 1 To Me.EcopathDS.NumFleet
-        '    sLandings += Me.EcosimDS.ResultsLandings(iGroup, iFleet)
-        'Next
-        'Return Me.EcosimDS.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGroup, Me.m_iTime) - sLandings
+        Return Me.m_ecospaceDS.DiscardsMap(Me.m_ptLocation.Y, Me.m_ptLocation.X, iGroup)
     End Function
 
     ''' -----------------------------------------------------------------------
