@@ -36,6 +36,7 @@ Imports EwEUtils.Commands
 #End Region
 
 ' ToDo: globalize this form
+' ToDo: use cMessage instead of MsgBox
 
 Public Class frmResults
 

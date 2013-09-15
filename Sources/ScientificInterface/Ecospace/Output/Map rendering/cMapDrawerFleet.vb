@@ -20,8 +20,8 @@
 Option Strict On
 Option Explicit On
 
-Imports System.Threading
 Imports EwECore
+Imports ScientificInterfaceShared.Controls.Map
 
 #End Region ' Imports
 

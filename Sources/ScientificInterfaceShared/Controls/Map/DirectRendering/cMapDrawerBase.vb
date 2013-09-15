@@ -26,7 +26,7 @@ Imports EwECore
 
 #End Region ' Imports
 
-Namespace Ecospace
+Namespace Controls.Map
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
