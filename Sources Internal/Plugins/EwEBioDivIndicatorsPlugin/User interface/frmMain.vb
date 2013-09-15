@@ -102,7 +102,7 @@ Public Class frmMain
         End Try
 
         Try
-            Me.m_mcWrapper.Attach(Me.UIContext, Me.m_graphMC, Me.m_settings, Me.m_ppt.m_lIndMC, 0)
+            Me.m_mcWrapper.Attach(Me.UIContext, Me.m_graphMC, Me.m_settings, Me.m_ppt.m_lIndMC)
         Catch ex As Exception
             Debug.Assert(False, "Zed graph handler not able to attach")
         End Try
@@ -478,7 +478,7 @@ Public Class frmMain
             Me.m_ecospaceWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.m_ppt.m_indEcopath)
         End If
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.MonteCarlo) Then
-            Me.m_mcWrapper.RefreshContent(Me.GetSelectedIndicatorGroup())
+            Me.m_mcWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
         End If
 
         ' Update state specific controls as a precaution

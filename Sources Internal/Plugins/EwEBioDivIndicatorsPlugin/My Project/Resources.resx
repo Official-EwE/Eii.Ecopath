@@ -416,4 +416,8 @@
   <data name="CAPTION_INFO" xml:space="preserve">
     <value>Computes biodiversity indicators for Ecopath, Ecosim, Ecospace and Monte Carlo</value>
   </data>
+  <data name="HEADER_TRIAL_N" xml:space="preserve">
+    <value>Trial {0}: {1}</value>
+    <comment>{0} :trial number; {1}: data name</comment>
+  </data>
 </root>

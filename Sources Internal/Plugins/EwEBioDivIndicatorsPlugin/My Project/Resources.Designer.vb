@@ -205,6 +205,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Trial {0}: {1}.
+        '''</summary>
+        Friend ReadOnly Property HEADER_TRIAL_N() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TRIAL_N", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Commercial B.
         '''</summary>
         Friend ReadOnly Property IND_COMMB() As String
