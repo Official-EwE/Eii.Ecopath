@@ -134,6 +134,8 @@
     <Compile Include="Controls\Label\ucLinkLabel.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Map\DirectRendering\cMapDrawerArgs.vb" />
+    <Compile Include="Controls\Map\DirectRendering\cMapDrawerBase.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExcluded.vb" />
     <Compile Include="Controls\Options\IOptionsPage.vb" />

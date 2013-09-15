@@ -20,8 +20,8 @@
 Option Strict On
 Option Explicit On
 
-Imports System.Threading
 Imports EwECore
+Imports ScientificInterfaceShared.Controls.Map
 
 #End Region ' Imports
 
@@ -65,7 +65,7 @@ Namespace Ecospace
                             Dim brCell As Brush = Nothing
 
                             'If it is water
-                            If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
+                            If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
                                 ' Water Cell
                                 sMapValue = Me.Map(i, j, iItem) / RelScaler(iItem)
 

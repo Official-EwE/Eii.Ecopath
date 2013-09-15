@@ -469,6 +469,8 @@ Public Class cPluginManager
         If Not Directory.Exists(strPluginPath) Then
             cLog.Write("Plugin directory does not exist: " & strPluginPath, eVerboseLevel.Detailed)
             Return
+        Else
+            cLog.Write("Plugin directory expected at " & strPluginPath, eVerboseLevel.Detailed)
         End If
 
         Try
@@ -547,6 +549,13 @@ Public Class cPluginManager
                         If Not (clsInterface Is Nothing) Then
                             ' Get the plugin
                             ip = LoadPlugin(strFileName, clsType.FullName)
+
+                            ' Sanity check
+                            If (ip Is Nothing) Then
+                                cLog.Write("Unable to load plugin assembly" & strFileName, eVerboseLevel.Standard)
+                                Return False
+                            End If
+
                             Try
                                 ' Stick it up
                                 plugAssem.Plugin(ip.Name) = ip
@@ -2295,22 +2304,28 @@ Public Class cPluginManager
     ''' <summary>
     ''' Loads a plugin by class name from a given assembly.
     ''' </summary>
-    ''' <param name="AssemblyPath"></param>
-    ''' <param name="ClassName"></param>
-    ''' <param name="args"></param>
-    ''' <returns></returns>
+    ''' <param name="strAssemblyPath">The path to the assembly.</param>
+    ''' <param name="strClassName">The name of the class to load from this assembly.</param>
+    ''' <param name="args">An array of arguments.</param>
+    ''' <returns>A successfully created <see cref="IPlugin"/> instance, or Nothing
+    ''' if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadPlugin(ByVal AssemblyPath As String, ByVal ClassName As String, Optional ByVal args() As Object = Nothing) As IPlugin
+    Private Function LoadPlugin(ByVal strAssemblyPath As String, ByVal strClassName As String, Optional ByVal args() As Object = Nothing) As IPlugin
 
         Dim clsRet As Object = Nothing
         Dim clsAssembly As System.Reflection.Assembly = Nothing
 
-        clsAssembly = System.Reflection.Assembly.LoadFrom(AssemblyPath)
-        If args Is Nothing Then
-            clsRet = clsAssembly.CreateInstance(ClassName)
-        Else
-            clsRet = clsAssembly.CreateInstance(ClassName, False, Nothing, Nothing, args, Nothing, Nothing)
-        End If
+        Try
+
+            clsAssembly = System.Reflection.Assembly.LoadFrom(strAssemblyPath)
+            If args Is Nothing Then
+                clsRet = clsAssembly.CreateInstance(strClassName)
+            Else
+                clsRet = clsAssembly.CreateInstance(strClassName, False, Nothing, Nothing, args, Nothing, Nothing)
+            End If
+        Catch ex As Exception
+            Return Nothing
+        End Try
         Return DirectCast(clsRet, IPlugin)
 
     End Function

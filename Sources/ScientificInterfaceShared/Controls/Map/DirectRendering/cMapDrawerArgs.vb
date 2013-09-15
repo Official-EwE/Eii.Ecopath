@@ -15,7 +15,7 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-Namespace Ecospace
+Namespace Controls.Map
 
     Public Class cMapDrawerArgs
 
