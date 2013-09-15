@@ -33,16 +33,17 @@ Imports System.Text
 Public Class cEcosimGraphWrapper
     Inherits cZedGraphHelper
 
-    ' ToDo_JS: attach once, not for refresh
-
 #Region " Private variables "
 
     ''' <summary>Indicator grouping etc as centrally defined in the plug-in.</summary>
     Private m_settings As cIndicatorSettings = Nothing
     ''' <summary>List of Ecosim indicators.</summary>
     Private m_lind As List(Of cEcosimIndicators) = Nothing
+
     ''' <summary>Current indicator group to display in the graph.</summary>
     Private m_groupCurrent As cIndicatorSettings.cIndicatorInfoGroup = Nothing
+    ''' <summary>Current indicator to display in the graph.</summary>
+    Private m_indCurrent As cIndicatorSettings.cIndicatorInfo = Nothing
 
 #End Region ' Private variables
 
@@ -54,19 +55,18 @@ Public Class cEcosimGraphWrapper
     ''' </summary>
     ''' <param name="uic"><see cref="cUIContext"/> providing UI contextual information.</param>
     ''' <param name="zgc"><see cref="ZedGraphControl"/> to style and interact with.</param>
-    ''' <param name="iNumPanels">Number of panels to create.</param>
     ''' <param name="settings"><see cref="cIndicatorSettings"/> defined centrally in the plug-in.</param>
-    ''' <param name="indicators">List of (hopefully computed) Ecosim indicators.</param>
     ''' -------------------------------------------------------------------
     Public Shadows Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, _
                                 ByVal zgc As ZedGraph.ZedGraphControl, _
                                 ByVal settings As cIndicatorSettings, _
-                                ByVal indicators As List(Of cEcosimIndicators), _
-                                ByVal iNumPanels As Integer)
-        MyBase.Attach(uic, zgc, iNumPanels)
+                                ByVal lind As List(Of cEcosimIndicators))
+        MyBase.Attach(uic, zgc, 1)
         ' Store important bits
         Me.m_settings = settings
-        Me.m_lind = indicators
+
+        Me.m_lind = lind
+
         Me.ShowPointValue = True
     End Sub
 
@@ -74,7 +74,6 @@ Public Class cEcosimGraphWrapper
     ''' <inheritdocs cref="cZedGraphHelper.Detach"/>
     ''' -------------------------------------------------------------------
     Public Overrides Sub Detach()
-        Me.m_lind = Nothing
         Me.m_settings = Nothing
         MyBase.Detach()
     End Sub
@@ -83,77 +82,64 @@ Public Class cEcosimGraphWrapper
 
 #Region " Refreshing "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Refresh the graph to show a <see cref="cIndicatorSettings.IndicatorGroup">group of indicators</see>.
-    ''' </summary>
-    ''' <param name="group">The <see cref="cIndicatorSettings.IndicatorGroup">group of indicators</see> to plot.</param>
-    ''' -------------------------------------------------------------------
-    Public Sub RefreshContent(ByVal group As cIndicatorSettings.cIndicatorInfoGroup)
+    Public Sub RefreshContent(indSingle As cIndicatorSettings.cIndicatorInfo, indGroup As cIndicatorSettings.cIndicatorInfoGroup)
 
-        Dim graph As ZedGraphControl = Me.Graph
+        Dim lInfo As New List(Of cIndicatorSettings.cIndicatorInfo)
+        Dim info As cIndicatorSettings.cIndicatorInfo = Nothing
         Dim gp As GraphPane = Nothing
-        Dim uic As cUIContext = Me.UIContext
+        Dim strLabelTime As String = My.Resources.AXIS_LABEL_TIME
+        Dim strLabelValue As String = ""
         Dim settings As cIndicatorSettings = Me.m_settings
         Dim ind As cEcosimIndicators = Nothing
-        Dim info As cIndicatorSettings.cIndicatorInfo = Nothing
         Dim ppl As PointPairList = Nothing
         Dim sValue As Single = 0
         Dim sXMin As Single = 0
         Dim sXMax As Single = 0
-        Dim strLabelTime As String = My.Resources.AXIS_LABEL_TIME
-        Dim strLabelValue As String = ""
 
-        ' Sanity check
-        If (uic Is Nothing) Then Return
 
-        Try
-
-            ' Switching group?
-            If (Not Object.ReferenceEquals(Me.m_groupCurrent, group)) Then
-                '#Yes: need to detach if currently attached
-
-                ' Carry list of indicators across detach / attach bit
-                Dim lInd As List(Of cEcosimIndicators) = Me.m_lind
-
-                If Me.IsAttached Then
-                    ' Boink
-                    Me.Detach()
-                End If
-
-                ' Store ref to group to show
-                Me.m_groupCurrent = group
-
-                ' This code can be used to clean-up. IF the group is nothing our moble work is done, and we will commence to repose elsewhere. Yippee.
-                If (Me.m_groupCurrent Is Nothing) Then Return
-
-                ' Alas, there is work neigh. Attach and restyle for the number of indicators in the group.
-                Me.Attach(uic, graph, settings, lInd, Me.m_groupCurrent.NumIndicators)
-
-                ' Create all indicators in the group:
-                For iInd As Integer = 0 To Me.m_groupCurrent.NumIndicators - 1
-                    ' Get indicator
-                    info = Me.m_groupCurrent.Indicator(iInd)
-                    ' Determine units to display for the indicator
-                    If String.IsNullOrWhiteSpace(info.UnitMask) Then
-                        strLabelValue = My.Resources.AXIS_LABEL_VALUE
-                    Else
-                        strLabelValue = String.Format(My.Resources.AXIS_LABEL_VALUE_UNIT, info.UnitMask)
-                    End If
-                    ' Make indicator panel pretty
-                    Me.ConfigurePane(info.Name, strLabelTime, Nothing, strLabelValue, info.Units, False, iPane:=iInd + 1)
+        If (indSingle Is Nothing) Then
+            ' Group mode
+            If Not Object.ReferenceEquals(indGroup, Me.m_groupCurrent) Then
+                For i As Integer = 0 To indGroup.NumIndicators - 1
+                    lInfo.Add(indGroup.Indicator(i))
                 Next
             End If
+        Else
+            ' Indicator mode
+            If Not Object.ReferenceEquals(indSingle, Me.m_indCurrent) Then
+                lInfo.Add(indSingle)
+            End If
+        End If
 
+        If (lInfo.Count > 0) Then
+            ' Create and configure panes
+            Me.NumPanes = lInfo.Count
+            For iPane As Integer = 1 To Me.NumPanes
+                info = lInfo(iPane - 1)
+                gp = Me.GetPane(iPane)
+                gp.Tag = info
+                If String.IsNullOrWhiteSpace(info.UnitMask) Then
+                    strLabelValue = My.Resources.AXIS_LABEL_VALUE
+                Else
+                    strLabelValue = String.Format(My.Resources.AXIS_LABEL_VALUE_UNIT, info.UnitMask)
+                End If
+                ' Make indicator panel pretty
+                Me.ConfigurePane(info.Name, strLabelTime, Nothing, strLabelValue, info.Units, False, iPane:=iPane)
+
+            Next
+        End If
+
+         Try
             ' Next populate all panels
-            For iInd As Integer = 0 To Me.m_groupCurrent.NumIndicators - 1
+            For iPane As Integer = 1 To Me.NumPanes
                 ' Get pane for indicator iInd
-                gp = Me.GetPane(iInd + 1)
+                gp = Me.GetPane(iPane)
                 ' Prepare for determining axis range
                 sXMin = Single.MaxValue : sXMax = Single.MinValue
                 ' Prepare structures for creating point list for indicator
+                info = DirectCast(gp.Tag, cIndicatorSettings.cIndicatorInfo)
+
                 ppl = New PointPairList()
-                info = Me.m_groupCurrent.Indicator(iInd)
                 Try
                     ' For all times
                     For iTime As Integer = 0 To Me.m_lind.Count - 1
@@ -177,17 +163,19 @@ Public Class cEcosimGraphWrapper
                         gp.CurveList.Clear()
                     Else
                         ' #Non: plot the line and configure the axis min/max range
-                        Me.PlotLines(New LineItem() {Me.CreateLineItem(info.Name, ScientificInterfaceShared.Definitions.eLineType.ModelData, Drawing.Color.Blue, ppl, info)}, iInd + 1)
+                        Me.PlotLines(New LineItem() {Me.CreateLineItem(info.Name, ScientificInterfaceShared.Definitions.eLineType.ModelData, Drawing.Color.Blue, ppl, info)}, iPane)
                         gp.XAxis.Scale.Min = sXMin
                         gp.XAxis.Scale.Max = sXMax
                     End If
+
+                    gp.AxisChange()
 
                 Catch ex As Exception
                     ' Whoah
                     Debug.Assert(False, ex.Message)
                 End Try
 
-            Next iInd
+            Next iPane
 
         Catch ex As Exception
             ' Ouch

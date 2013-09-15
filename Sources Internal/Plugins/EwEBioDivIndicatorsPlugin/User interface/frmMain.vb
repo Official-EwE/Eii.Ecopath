@@ -37,7 +37,7 @@ Public Class frmMain
 
 #Region " Variables "
 
-    Private m_ecosimWrapper As cEcosimGraphWrapperOrg = Nothing
+    Private m_ecosimWrapper As cEcosimGraphWrapper = Nothing
     Private m_ecospaceWrapper As cEcospaceMapWrapper = Nothing
     Private m_mcWrapper As cMCGraphWrapper = Nothing
 
@@ -60,7 +60,7 @@ Public Class frmMain
 
         Me.InitializeComponent()
 
-        Me.m_ecosimWrapper = New cEcosimGraphWrapperOrg()
+        Me.m_ecosimWrapper = New cEcosimGraphWrapper()
         Me.m_ecospaceWrapper = New cEcospaceMapWrapper()
         Me.m_mcWrapper = New cMCGraphWrapper()
 
@@ -90,7 +90,7 @@ Public Class frmMain
         End Try
 
         Try
-            Me.m_ecosimWrapper.Attach(Me.UIContext, Me.m_graphSim, Me.m_settings, Me.m_ppt.m_lIndEcosim, 0)
+            Me.m_ecosimWrapper.Attach(Me.UIContext, Me.m_graphSim, Me.m_settings, Me.m_ppt.m_lIndEcosim)
         Catch ex As Exception
             Debug.Assert(False, "Zed graph handler not able to attach")
         End Try
@@ -472,7 +472,7 @@ Public Class frmMain
             Me.m_grid.RefreshContent(Me.m_ppt.m_indEcopath)
         End If
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecosim) Then
-            Me.m_ecosimWrapper.RefreshContent(Me.GetSelectedIndicatorGroup())
+            Me.m_ecosimWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
         End If
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecospace) Then
             Me.m_ecospaceWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.m_ppt.m_indEcopath)
