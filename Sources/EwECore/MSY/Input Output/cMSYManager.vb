@@ -78,7 +78,7 @@ Namespace MSY
             Me.m_Core = theCore
             Me.m_msyData = MSYData
 
-            Me.m_MSY = New cMSY(Me.m_Core.m_EcoSim, Me.m_msyData, Me.m_Core.m_EcoPathData, Me.m_search)
+            Me.m_MSY = New cMSY(Me.m_Core.m_EcoSim, Me.m_msyData, Me.m_Core.m_EcoPathData)
             Me.m_parameters = New cMSYParameters(Me.m_Core, Me.m_msyData)
 
             Me.m_MSY.ProgressMessageDelegate = AddressOf Me.SendMessage
@@ -151,23 +151,22 @@ Namespace MSY
 
             Try
                 bSuccess = Me.m_MSY.RunFindFMSY()
-                Dim results As New cFMSYResults(Me.m_Core.nGroups)
+                Dim n As Integer = Me.m_Core.nGroups
+                Dim results As New cFMSYResults(n)
+                Array.Copy(Me.m_MSY.FmsySS, results.FMSY, n)
+                Array.Copy(Me.m_MSY.CmsySS, results.CMSY, n)
 
-                For i As Integer = 1 To Me.m_Core.nGroups
+                Array.Copy(Me.m_MSY.CatchAtFmsy, results.CatchAtFMSY, n)
+                Array.Copy(Me.m_MSY.ValueAtFmsy, results.ValueAtFMSY, n)
 
-                    results.FMSY(i) = Me.m_MSY.FmsySS(i)
-                    results.CMSY(i) = Me.m_MSY.CmsySS(i)
+                'get the base value of catch and F from the Core
+                Array.Copy(Me.m_Core.m_EcoPathData.fCatch, results.CMSYBase, n)
+                Array.Copy(Me.m_Core.m_EcoSimData.Fish1, results.FBase, n)
 
-                    results.CatchAtFMSY(i) = Me.m_MSY.CatchAtFmsy(i)
-                    results.ValueAtFMSY(i) = Me.m_MSY.ValueAtFmsy(i)
+                Array.Copy(Me.m_MSY.VmsySS, results.Value, n)
+                Array.Copy(Me.m_MSY.ValSumBase, results.ValueBase, n)
 
-                    'get the base value of catch and F from the Core
-                    results.CMSYBase(i) = Me.m_Core.m_EcoPathData.fCatch(i)
-                    results.FBase(i) = Me.m_Core.m_EcoSimData.Fish1(i)
-
-                    results.Value(i) = Me.m_MSY.VmsySS(i)
-                    results.ValueBase(i) = Me.m_MSY.ValSumBase(i)
-
+                For i As Integer = 1 To n
                     Dim t As cMSY.cFoptTracker = Me.m_MSY.m_FOptTracker(i)
                     results.IsFopt(i) = t.IsFopt()
                 Next
@@ -216,7 +215,7 @@ Namespace MSY
 
         End Function
 
-        Public Function RunMSYThreaded() As Boolean
+        Public Function RunThreaded() As Boolean
             Try
                 'ToDo there needs to be a way to block when a thread is already running
                 'either a boolean flag or a WaitHandle
@@ -229,6 +228,7 @@ Namespace MSY
             End Try
 
         End Function
+
 
         Private Sub runFullMSYSearch()
             Try
@@ -398,7 +398,7 @@ Namespace MSY
                         bSuccess = writer.WriteGroupResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
                                                             Me.m_parameters.SelGroupFleetIndex, _
                                                             Me.m_parameters.Assessment, _
-                                                            Me.BaseLineResults.FCur, _
+                                                            Me.BaseLineResults.curF, _
                                                             Me.MSYResults, _
                                                             Me.FMSY)
 
