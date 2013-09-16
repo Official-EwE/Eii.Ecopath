@@ -53,7 +53,7 @@ Namespace Controls.Map
         Protected m_SignalState As New ManualResetEvent(True)
         Protected Const MAX_FISH_MORT As Single = 2
         Protected m_core As cCore = Nothing
-        Protected m_lItems As New List(Of cCoreInputOutputBase)
+        Protected m_lItems As New List(Of Integer)
         Protected m_lLocations As New List(Of Integer)
         Protected m_labelposHorz As StringAlignment = StringAlignment.Near
         Protected m_labelposVert As StringAlignment = StringAlignment.Near
@@ -118,8 +118,19 @@ Namespace Controls.Map
         ''' <param name="iLocation">The location to show this item at.</param>
         ''' -----------------------------------------------------------------------
         Public Sub AddItem(ByVal item As cCoreInputOutputBase, ByVal iLocation As Integer)
-            If Not Me.m_lItems.Contains(item) Then
-                Me.m_lItems.Add(item)
+            Me.AddItem(item.Index, iLocation)
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a <see cref="cCoreInputOutputBase">item</see> to draw.
+        ''' </summary>
+        ''' <param name="iIndex">The index of the item to add.</param>
+        ''' <param name="iLocation">The location to show this item at.</param>
+        ''' -----------------------------------------------------------------------
+        Public Sub AddItem(ByVal iIndex As Integer, ByVal iLocation As Integer)
+            If Not Me.m_lItems.Contains(iIndex) Then
+                Me.m_lItems.Add(iIndex)
                 Me.m_lLocations.Add(iLocation)
             End If
         End Sub
@@ -160,19 +171,19 @@ Namespace Controls.Map
 
 #Region " Public access "
 
-        Public Sub Draw(ByVal obParam As Object)
+        Public Overridable Sub Draw(ByVal obParam As Object)
 
             Me.AllowedToRun = False
             Dim args As cMapDrawerArgs = DirectCast(obParam, cMapDrawerArgs)
             Try
                 Dim i As Integer
-                Dim iGroup As Integer
+                Dim iIndex As Integer
                 Dim iLocation As Integer
                 For i = 0 To Me.m_lItems.Count - 1
-                    iGroup = Me.m_lItems(i).Index
+                    iIndex = Me.m_lItems(i)
                     iLocation = Me.m_lLocations(i)
                     Try
-                        DrawMap(iGroup, Me.RectList(iLocation), args)
+                        DrawMap(iIndex, Me.RectList(iLocation), args)
                     Catch ex As Exception
 
                     End Try
@@ -233,9 +244,63 @@ Namespace Controls.Map
             End Try
 
             If (Me.ShowBorder) Then
-                ' Draw the black frame of base map
-                Me.Graphics.DrawRectangle(Pens.Black, rcPos)
+                ' Draw the frame of base map
+                Me.Graphics.DrawRectangle(Pens.LightGray, rcPos)
             End If
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Calculate the best layout of maps on a drawing canvas, considering
+        ''' the requested number of maps on the output client rectangle and map
+        ''' dimensions (row x col).
+        ''' </summary>
+        ''' <param name="rcClient">The client area to draw to.</param>
+        ''' <param name="iNumMaps">The number of maps that will be drawn.</param>
+        ''' <param name="iInRow">The number of rows in the Ecospace base map.</param>
+        ''' <param name="iInCol">The number of columns in the Ecospace base map.</param>
+        ''' <param name="iNumHorz">The calculated number of plots horizontally onto <paramref name="rcClient"/>.</param>
+        ''' <param name="iNumVert">The calculated number of plots vertically onto <paramref name="rcClient"/>.</param>
+        ''' <param name="lOrigins">A list to receive the map origins onto <paramref name="rcClient"/>.</param>
+        ''' <param name="lMaps">A list to receive the map rectangles onto <paramref name="rcClient"/>.</param>
+        ''' -------------------------------------------------------------------
+        Public Shared Sub CalcMapAreas(ByVal rcClient As Rectangle, ByVal iNumMaps As Integer, _
+                                       ByVal iInRow As Integer, ByVal iInCol As Integer, _
+                                       ByRef iNumHorz As Integer, ByRef iNumVert As Integer, _
+                                       ByVal lOrigins As List(Of PointF), _
+                                       ByVal lMaps As List(Of Rectangle))
+
+            lOrigins.Clear()
+            lMaps.Clear()
+            iNumHorz = 0
+            iNumVert = 0
+
+            If (iNumMaps = 0) Then Return
+
+            iNumHorz = CInt(Math.Ceiling(Math.Sqrt(iNumMaps) * iInRow / iInCol * rcClient.Width / rcClient.Height))
+            iNumVert = CInt(Math.Ceiling(iNumMaps / Math.Max(1, iNumHorz)))
+
+            Dim xScale As Double = iNumHorz * (iInCol + 1) + 1
+            Dim yScale As Double = iNumVert * (iInRow + 1) + 1
+
+            If xScale > 0 Then xScale = rcClient.Width / xScale
+            If yScale > 0 Then yScale = rcClient.Height / yScale
+
+            For i As Integer = 0 To iNumVert - 1
+                For j As Integer = 0 To iNumHorz - 1
+                    Dim iRect As Integer = i * iNumHorz + j
+                    If iRect < iNumMaps Then
+                        Dim origin As PointF = New PointF((iInCol + 1) * j + 1, i * (iInRow + 1) + 1)
+                        Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
+                                                                CInt(origin.Y * yScale), _
+                                                                CInt(iInCol * xScale), _
+                                                                CInt(iInRow * yScale))
+                        lOrigins.Add(origin)
+                        lMaps.Add(rect)
+                    End If
+                Next
+            Next
 
         End Sub
 
