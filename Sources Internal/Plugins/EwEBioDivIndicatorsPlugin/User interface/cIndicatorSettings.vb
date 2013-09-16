@@ -137,6 +137,8 @@ Public Class cIndicatorSettings
         ''' -------------------------------------------------------------------
         Public Function GetValue(ByVal indicators As cIndicators) As Single
 
+            If (indicators Is Nothing) Then Return 0
+
             ' Try to get property info from the indicator
             Dim mi As MethodInfo = GetType(cIndicators).GetMethod(Me.m_strFunctionName)
             ' Prepare default value

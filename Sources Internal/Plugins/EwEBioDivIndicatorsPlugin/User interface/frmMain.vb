@@ -38,7 +38,7 @@ Public Class frmMain
 #Region " Variables "
 
     Private m_ecosimWrapper As cEcosimGraphWrapper = Nothing
-    Private m_ecospaceWrapper As cEcospaceMapWrapper = Nothing
+    Private m_ecospaceWrapper As cEcospaceMapWrapper2 = Nothing
     Private m_mcWrapper As cMCGraphWrapper = Nothing
 
     Private m_ppt As cEwEBioDiversityIndicatorsPlugin = Nothing
@@ -61,7 +61,7 @@ Public Class frmMain
         Me.InitializeComponent()
 
         Me.m_ecosimWrapper = New cEcosimGraphWrapper()
-        Me.m_ecospaceWrapper = New cEcospaceMapWrapper()
+        Me.m_ecospaceWrapper = New cEcospaceMapWrapper2()
         Me.m_mcWrapper = New cMCGraphWrapper()
 
     End Sub
@@ -96,7 +96,7 @@ Public Class frmMain
         End Try
 
         Try
-            Me.m_ecospaceWrapper.Attach(Me.UIContext, Me.m_ppt.m_dtIndEcospace, Me.m_settings, Me.m_tsMap, Me.m_map)
+            Me.m_ecospaceWrapper.Attach(Me.UIContext, Me.m_ppt.m_dtIndEcospace, Me.m_settings, Me.m_pbEcospaceMap, Me.m_ppt.m_indEcopath)
         Catch ex As Exception
             Debug.Assert(False, "Map stuff not able to attach")
         End Try
@@ -136,8 +136,10 @@ Public Class frmMain
                     ' Show description as tooltip text
                     tnInd.ToolTipText = ind.Description
 
-                    If (ndSel Is Nothing) Then ndSel = tnInd
                 Next
+
+                If (ndSel Is Nothing) Then ndSel = tnGrp
+
             Next
 
             ' Expand all nodes in the tree
@@ -475,7 +477,7 @@ Public Class frmMain
             Me.m_ecosimWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
         End If
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecospace) Then
-            Me.m_ecospaceWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.m_ppt.m_indEcopath)
+            Me.m_ecospaceWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
         End If
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.MonteCarlo) Then
             Me.m_mcWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())

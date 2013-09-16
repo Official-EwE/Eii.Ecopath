@@ -69,17 +69,16 @@ Partial Class frmMain
         Me.m_hdrExport = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tpEcopath = New System.Windows.Forms.TabPage()
-        Me.m_grid = New EwEBioDiversityIndicatorsPlugin.gridEcopath()
         Me.m_tpEcosim = New System.Windows.Forms.TabPage()
         Me.m_graphSim = New ZedGraph.ZedGraphControl()
         Me.m_tpEcospace = New System.Windows.Forms.TabPage()
-        Me.m_map = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
-        Me.m_tsMap = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
+        Me.m_pbEcospaceMap = New System.Windows.Forms.PictureBox()
         Me.m_tpMC = New System.Windows.Forms.TabPage()
         Me.m_graphMC = New ZedGraph.ZedGraphControl()
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
+        Me.m_grid = New EwEBioDiversityIndicatorsPlugin.gridEcopath()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -93,6 +92,7 @@ Partial Class frmMain
         Me.m_tpEcopath.SuspendLayout()
         Me.m_tpEcosim.SuspendLayout()
         Me.m_tpEcospace.SuspendLayout()
+        CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpMC.SuspendLayout()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -283,37 +283,6 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_tpEcopath, "m_tpEcopath")
         Me.m_tpEcopath.Name = "m_tpEcopath"
         '
-        'm_grid
-        '
-        Me.m_grid.AllowBlockSelect = False
-        resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
-        Me.m_grid.AutoStretchRowsToFitHeight = False
-        Me.m_grid.BackColor = System.Drawing.Color.White
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_grid.CustomSort = False
-        Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = False
-        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_grid.GridToolTipActive = True
-        Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.Name = "m_grid"
-        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.UIContext = Nothing
-        '
         'm_tpEcosim
         '
         Me.m_tpEcosim.BackColor = System.Drawing.SystemColors.Control
@@ -336,25 +305,15 @@ Partial Class frmMain
         'm_tpEcospace
         '
         Me.m_tpEcospace.BackColor = System.Drawing.SystemColors.Control
-        Me.m_tpEcospace.Controls.Add(Me.m_map)
-        Me.m_tpEcospace.Controls.Add(Me.m_tsMap)
+        Me.m_tpEcospace.Controls.Add(Me.m_pbEcospaceMap)
         resources.ApplyResources(Me.m_tpEcospace, "m_tpEcospace")
         Me.m_tpEcospace.Name = "m_tpEcospace"
         '
-        'm_map
+        'm_pbEcospaceMap
         '
-        resources.ApplyResources(Me.m_map, "m_map")
-        Me.m_map.Name = "m_map"
-        Me.m_map.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
-        Me.m_map.UIContext = Nothing
-        Me.m_map.ZoomPercentage = 100.0!
-        '
-        'm_tsMap
-        '
-        resources.ApplyResources(Me.m_tsMap, "m_tsMap")
-        Me.m_tsMap.Name = "m_tsMap"
-        Me.m_tsMap.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
-        Me.m_tsMap.UIContext = Nothing
+        resources.ApplyResources(Me.m_pbEcospaceMap, "m_pbEcospaceMap")
+        Me.m_pbEcospaceMap.Name = "m_pbEcospaceMap"
+        Me.m_pbEcospaceMap.TabStop = False
         '
         'm_tpMC
         '
@@ -395,6 +354,37 @@ Partial Class frmMain
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
         '
+        'm_grid
+        '
+        Me.m_grid.AllowBlockSelect = False
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.UIContext = Nothing
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -421,7 +411,7 @@ Partial Class frmMain
         Me.m_tpEcopath.PerformLayout()
         Me.m_tpEcosim.ResumeLayout(False)
         Me.m_tpEcospace.ResumeLayout(False)
-        Me.m_tpEcospace.PerformLayout()
+        CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpMC.ResumeLayout(False)
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -433,9 +423,6 @@ Partial Class frmMain
     Private WithEvents m_tpEcopath As System.Windows.Forms.TabPage
     Private WithEvents m_tpEcosim As System.Windows.Forms.TabPage
     Private WithEvents m_grid As gridEcopath
-    Private WithEvents m_tpEcospace As System.Windows.Forms.TabPage
-    Private WithEvents m_map As ScientificInterfaceShared.Controls.Map.ucMapZoom
-    Private WithEvents m_tsMap As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
     Private WithEvents m_btnSaveToCSV As System.Windows.Forms.Button
     Private WithEvents m_tpSettings As System.Windows.Forms.TabPage
     Private WithEvents m_btnChooseFolder As System.Windows.Forms.Button
@@ -462,4 +449,6 @@ Partial Class frmMain
     Private WithEvents m_pbStatus As System.Windows.Forms.PictureBox
     Private WithEvents m_llStatus As ScientificInterfaceShared.Controls.ucLinkLabel
     Private WithEvents m_btnChangeDefault As System.Windows.Forms.Button
+    Private WithEvents m_tpEcospace As System.Windows.Forms.TabPage
+    Private WithEvents m_pbEcospaceMap As System.Windows.Forms.PictureBox
 End Class

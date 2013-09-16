@@ -132,7 +132,8 @@
     <Compile Include="Calculations\cEcopathIndicators.vb" />
     <Compile Include="My Project\Settings.vb" />
     <Compile Include="User interface\cEcosimGraphWrapper.vb" />
-    <Compile Include="User interface\cEcospaceLayerFactory.vb" />
+    <Compile Include="User interface\cEcospaceMapDrawer.vb" />
+    <Compile Include="User interface\cEcospaceMapWrapper2.vb" />
     <Compile Include="User interface\cIndicatorSettings.vb" />
     <Compile Include="User interface\cMCGraphWrapper.vb" />
     <Compile Include="User interface\frmMain.Designer.vb">
@@ -159,7 +160,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="User interface\cEcospaceMapWrapper.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="User interface\frmMain.resx">

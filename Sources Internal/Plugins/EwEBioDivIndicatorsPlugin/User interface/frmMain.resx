@@ -174,8 +174,11 @@
   <data name="m_lblCredits.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblCredits.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblCredits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 398</value>
+    <value>0, 399</value>
   </data>
   <data name="m_lblCredits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -213,8 +216,11 @@
   <data name="m_pbICM.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>
   </data>
+  <data name="m_pbICM.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_pbICM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 10</value>
+    <value>140, 10</value>
   </data>
   <data name="m_pbICM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -243,8 +249,11 @@
   <data name="m_pbCSIC.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>
   </data>
+  <data name="m_pbCSIC.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_pbCSIC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>287, 10</value>
+    <value>289, 10</value>
   </data>
   <data name="m_pbCSIC.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -277,7 +286,7 @@
     <value>3</value>
   </data>
   <data name="m_tlpCredits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>543, 66</value>
+    <value>545, 66</value>
   </data>
   <data name="m_tlpCredits.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -298,13 +307,13 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbICM" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbCSIC" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,44.44445,AutoSize,0,Percent,11.11111,AutoSize,0,Percent,44.44444" /&gt;&lt;Rows Styles="Percent,50,AutoSize,0,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_plCredits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-2, 413</value>
+    <value>-3, 414</value>
   </data>
   <data name="m_plCredits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plCredits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>545, 68</value>
+    <value>547, 68</value>
   </data>
   <data name="m_plCredits.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -328,7 +337,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnChangeDefault.Location" type="System.Drawing.Point, System.Drawing">
-    <value>465, 172</value>
+    <value>466, 171</value>
   </data>
   <data name="m_btnChangeDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -358,7 +367,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnChooseFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>465, 198</value>
+    <value>466, 197</value>
   </data>
   <data name="m_btnChooseFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -385,10 +394,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxDefaultLocation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 174</value>
+    <value>155, 173</value>
   </data>
   <data name="m_tbxDefaultLocation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 20</value>
+    <value>305, 20</value>
   </data>
   <data name="m_tbxDefaultLocation.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -409,10 +418,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxOutputFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 200</value>
+    <value>155, 199</value>
   </data>
   <data name="m_tbxOutputFolder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 20</value>
+    <value>305, 20</value>
   </data>
   <data name="m_tbxOutputFolder.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -436,7 +445,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSaveTo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 157</value>
+    <value>0, 156</value>
   </data>
   <data name="m_lblSaveTo.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -466,7 +475,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbCustom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 201</value>
+    <value>24, 200</value>
   </data>
   <data name="m_rbCustom.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 17</value>
@@ -496,7 +505,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDefault.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 175</value>
+    <value>24, 174</value>
   </data>
   <data name="m_rbDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 17</value>
@@ -526,7 +535,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbAutoSaveCSV.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 135</value>
+    <value>3, 134</value>
   </data>
   <data name="m_cbAutoSaveCSV.Size" type="System.Drawing.Size, System.Drawing">
     <value>159, 17</value>
@@ -556,7 +565,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbRunWithMC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 91</value>
+    <value>3, 90</value>
   </data>
   <data name="m_cbRunWithMC.Size" type="System.Drawing.Size, System.Drawing">
     <value>128, 17</value>
@@ -586,7 +595,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbRunWithEcospace.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 68</value>
+    <value>3, 67</value>
   </data>
   <data name="m_cbRunWithEcospace.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 17</value>
@@ -616,7 +625,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbRunWithEcosim.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 45</value>
+    <value>3, 44</value>
   </data>
   <data name="m_cbRunWithEcosim.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 17</value>
@@ -646,7 +655,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbRunWithEcopath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>3, 21</value>
   </data>
   <data name="m_cbRunWithEcopath.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 17</value>
@@ -676,10 +685,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrExport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 111</value>
+    <value>0, 110</value>
   </data>
   <data name="m_hdrExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 18</value>
+    <value>541, 18</value>
   </data>
   <data name="m_hdrExport.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -709,10 +718,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrExecution.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 1</value>
+    <value>0, 0</value>
   </data>
   <data name="m_hdrExecution.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 18</value>
+    <value>541, 18</value>
   </data>
   <data name="m_hdrExecution.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -737,9 +746,6 @@
   </data>
   <data name="m_tpSettings.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="m_tpSettings.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
   </data>
   <data name="m_tpSettings.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 479</value>
@@ -769,13 +775,13 @@
     <value>Fill</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 1</value>
+    <value>0, 0</value>
   </data>
   <data name="m_grid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 477</value>
+    <value>541, 479</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -794,9 +800,6 @@
   </data>
   <data name="m_tpEcopath.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="m_tpEcopath.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
   </data>
   <data name="m_tpEcopath.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 479</value>
@@ -823,10 +826,10 @@
     <value>Fill</value>
   </data>
   <data name="m_graphSim.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 1</value>
+    <value>0, 0</value>
   </data>
   <data name="m_graphSim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 477</value>
+    <value>541, 479</value>
   </data>
   <data name="m_graphSim.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -845,9 +848,6 @@
   </data>
   <data name="m_tpEcosim.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="m_tpEcosim.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
   </data>
   <data name="m_tpEcosim.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 479</value>
@@ -870,71 +870,41 @@
   <data name="&gt;&gt;m_tpEcosim.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_map.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbEcospaceMap.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_map.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 26</value>
+  <data name="m_pbEcospaceMap.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="m_map.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 452</value>
+  <data name="m_pbEcospaceMap.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="m_map.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="m_pbEcospaceMap.Size" type="System.Drawing.Size, System.Drawing">
+    <value>541, 479</value>
   </data>
-  <data name="&gt;&gt;m_map.Name" xml:space="preserve">
-    <value>m_map</value>
-  </data>
-  <data name="&gt;&gt;m_map.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.3.9611.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_map.Parent" xml:space="preserve">
-    <value>m_tpEcospace</value>
-  </data>
-  <data name="&gt;&gt;m_map.ZOrder" xml:space="preserve">
+  <data name="m_pbEcospaceMap.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_tsMap.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;m_pbEcospaceMap.Name" xml:space="preserve">
+    <value>m_pbEcospaceMap</value>
   </data>
-  <data name="m_tsMap.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+  <data name="&gt;&gt;m_pbEcospaceMap.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_tsMap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 1</value>
-  </data>
-  <data name="m_tsMap.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>100, 25</value>
-  </data>
-  <data name="m_tsMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 25</value>
-  </data>
-  <data name="m_tsMap.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsMap.Name" xml:space="preserve">
-    <value>m_tsMap</value>
-  </data>
-  <data name="&gt;&gt;m_tsMap.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.3.9611.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMap.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbEcospaceMap.Parent" xml:space="preserve">
     <value>m_tpEcospace</value>
   </data>
-  <data name="&gt;&gt;m_tsMap.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_pbEcospaceMap.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_tpEcospace.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="m_tpEcospace.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
   </data>
   <data name="m_tpEcospace.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 479</value>
   </data>
   <data name="m_tpEcospace.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="m_tpEcospace.Text" xml:space="preserve">
     <value>Ecospace</value>
@@ -955,10 +925,10 @@
     <value>Fill</value>
   </data>
   <data name="m_graphMC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>0, 0</value>
   </data>
   <data name="m_graphMC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>535, 473</value>
+    <value>541, 479</value>
   </data>
   <data name="m_graphMC.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -977,9 +947,6 @@
   </data>
   <data name="m_tpMC.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="m_tpMC.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpMC.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 479</value>
@@ -1098,6 +1065,9 @@
   <data name="m_pbStatus.ImageLocation" xml:space="preserve">
     <value />
   </data>
+  <data name="m_pbStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_pbStatus.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 523</value>
   </data>
@@ -1121,6 +1091,9 @@
   </data>
   <data name="m_llStatus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_llStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_llStatus.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>0, 54</value>
