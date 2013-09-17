@@ -1077,6 +1077,10 @@ Namespace MSY
 
 #Region " Optimum detection "
 
+        ''' <summary>
+        ''' Helper class that tracks whether a local optimum has been reached over
+        ''' a given set of samples.
+        ''' </summary>
         Friend Class cFoptTracker
 
             Private Const SAMPLESIZE As Integer = 3
@@ -1092,7 +1096,7 @@ Namespace MSY
 
             Public Sub Track(ByVal sF As Single, ByVal sCatch As Single)
 
-                ' Add sample, and kick out old samples
+                ' Fifo: add sample, and kick out old samples
                 Me.m_lSamples.Add(sCatch)
                 While Me.m_lSamples.Count > SAMPLESIZE
                     Me.m_lSamples.RemoveAt(0)

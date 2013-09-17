@@ -69,6 +69,7 @@ Partial Class frmMain
         Me.m_hdrExport = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tpEcopath = New System.Windows.Forms.TabPage()
+        Me.m_grid = New EwEBioDiversityIndicatorsPlugin.gridEcopath()
         Me.m_tpEcosim = New System.Windows.Forms.TabPage()
         Me.m_graphSim = New ZedGraph.ZedGraphControl()
         Me.m_tpEcospace = New System.Windows.Forms.TabPage()
@@ -78,7 +79,7 @@ Partial Class frmMain
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
-        Me.m_grid = New EwEBioDiversityIndicatorsPlugin.gridEcopath()
+        Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -283,6 +284,37 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_tpEcopath, "m_tpEcopath")
         Me.m_tpEcopath.Name = "m_tpEcopath"
         '
+        'm_grid
+        '
+        Me.m_grid.AllowBlockSelect = False
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.UIContext = Nothing
+        '
         'm_tpEcosim
         '
         Me.m_tpEcosim.BackColor = System.Drawing.SystemColors.Control
@@ -305,6 +337,7 @@ Partial Class frmMain
         'm_tpEcospace
         '
         Me.m_tpEcospace.BackColor = System.Drawing.SystemColors.Control
+        Me.m_tpEcospace.Controls.Add(Me.m_legend)
         Me.m_tpEcospace.Controls.Add(Me.m_pbEcospaceMap)
         resources.ApplyResources(Me.m_tpEcospace, "m_tpEcospace")
         Me.m_tpEcospace.Name = "m_tpEcospace"
@@ -354,36 +387,13 @@ Partial Class frmMain
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
         '
-        'm_grid
+        'm_legend
         '
-        Me.m_grid.AllowBlockSelect = False
-        resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
-        Me.m_grid.AutoStretchRowsToFitHeight = False
-        Me.m_grid.BackColor = System.Drawing.Color.White
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_grid.CustomSort = False
-        Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = False
-        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_grid.GridToolTipActive = True
-        Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.Name = "m_grid"
-        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.UIContext = Nothing
+        resources.ApplyResources(Me.m_legend, "m_legend")
+        Me.m_legend.BarWidthPercentage = 80
+        Me.m_legend.Colors = Nothing
+        Me.m_legend.Name = "m_legend"
+        Me.m_legend.UIContext = Nothing
         '
         'frmMain
         '
@@ -451,4 +461,5 @@ Partial Class frmMain
     Private WithEvents m_btnChangeDefault As System.Windows.Forms.Button
     Private WithEvents m_tpEcospace As System.Windows.Forms.TabPage
     Private WithEvents m_pbEcospaceMap As System.Windows.Forms.PictureBox
+    Private WithEvents m_legend As ScientificInterfaceShared.Controls.ucLegendBar
 End Class
