@@ -870,8 +870,6 @@ Public Class cF2TSManager
         ' Clear previous results
         Me.m_results = Nothing
 
-        System.Console.WriteLine("F2TS: Run Started. " & runType.ToString)
-
         Try
             ' Call delegate
             m_SyncObject.BeginInvoke(Me.m_runstartedHandler, parms)
@@ -1085,29 +1083,6 @@ Public Class cF2TSManager
 
 #End Region
 
-    'Public ReadOnly Property IsRunning1() As Boolean Implements IThreadedProcess.IsRunning
-    '    Get
-
-    '    End Get
-    'End Property
-
-    'Public Sub ReleaseWait() Implements IThreadedProcess.ReleaseWait
-
-    'End Sub
-
-    'Public Sub SetWait() Implements IThreadedProcess.SetWait
-
-    'End Sub
-
-    'Public Function StopRun1(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.StopRun
-
-    'End Function
-
-    'Public Function Wait1(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
-
-    'End Function
-
-
 
     Public WriteOnly Property MessagePump As cCore.MessagePumpDelegate Implements IThreadedProcess.MessagePump
         Set(value As cCore.MessagePumpDelegate)
@@ -1115,12 +1090,10 @@ Public Class cF2TSManager
         End Set
     End Property
 
-
     Private Class cNonBlockingWaitHandle
         Inherits cThreadWaitBase
 
         Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
-
             Return True
         End Function
     End Class

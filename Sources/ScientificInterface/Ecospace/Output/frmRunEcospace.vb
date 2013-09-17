@@ -95,10 +95,8 @@ Namespace Ecospace
         ''' <summary>The speed of the plotting. 1 is the slowest, 10 is the fastest.</summary>
         Private m_iPlotStepSize As Integer
 
-        ''' <summary>The row and col number of Biomass map plot.</summary>
-        Private m_iNumGroupPlotsVert As Integer, m_iNumGroupPlotsHorz As Integer
-        ''' <summary>The row and col number of Fleet map plot.</summary>
-        Private m_iNumFleetPlotsVert As Integer, m_iNumFleetPlotsHorz As Integer
+        ''' <summary>The row and col number of map plots.</summary>
+        Private m_iNumPlotsVert As Integer, m_iNumPlotsHorz As Integer
         ''' <summary>Number of rows and columns if basen</summary>
         ''' <remarks>???</remarks>
         Private m_iInRow As Integer, m_iInCol As Integer
@@ -197,8 +195,8 @@ Namespace Ecospace
             Me.m_iInRow = Me.Core.EcospaceBasemap.InRow
             'Core.nGroups --> updated to nLivingGroups? Non - hidden groups? Check EwE5
 
-            Me.CalcMapDimension(Me.Core.nGroups, Me.m_iNumGroupPlotsVert, Me.m_iNumGroupPlotsHorz)
-            Me.CalcMapDimension(Me.Core.nFleets, Me.m_iNumFleetPlotsVert, Me.m_iNumFleetPlotsHorz)
+            Me.CalcMapDimension(Me.Core.nGroups, Me.m_iNumPlotsVert, Me.m_iNumPlotsHorz)
+            Me.CalcMapDimension(Me.Core.nFleets, Me.m_iNumPlotsVert, Me.m_iNumPlotsHorz)
 
         End Sub
 
@@ -470,49 +468,16 @@ Namespace Ecospace
 
             ' JS05Mar10: disabled console output to keep moving fast
             'Console.WriteLine("Step {0} = year {1}, month {2} at {3}", Me.m_iTimeStepCur, iYear, iMonth, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+            Dim originList As New List(Of PointF)
+            Dim rectList As New List(Of Rectangle)
 
-            Select Case Me.ShowItemMode
-
-                Case eShowItemType.ShowAll, _
-                     eShowItemType.ShowNonHidden
-
-                    ' Note that the user may have hidden all groups!
-                    Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVisGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
-                    Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(iNumVisGroups / Math.Max(1, Me.m_iNumGroupPlotsHorz)))
-
-                Case eShowItemType.ShowSingle
-                    Me.m_iNumGroupPlotsHorz = 1
-                    Me.m_iNumGroupPlotsVert = 1
-
-            End Select
+            cMapDrawerBase.CalcMapAreas(Me.m_pbMap.ClientRectangle, iNumVisGroups, Me.m_iInRow, Me.m_iInCol, _
+                                        Me.m_iNumPlotsHorz, Me.m_iNumPlotsVert, originList, rectList)
 
             ' Clear background
             Me.InitOutputBitmaps()
 
             Try
-
-                Dim originList As New List(Of PointF)
-                Dim rectList As New List(Of Rectangle)
-                Dim xScale As Double = m_iNumGroupPlotsHorz * (m_iInCol + 1) + 1
-                Dim yScale As Double = m_iNumGroupPlotsVert * (m_iInRow + 1) + 1
-
-                If xScale > 0 Then xScale = m_pbMap.Width / xScale
-                If yScale > 0 Then yScale = m_pbMap.Height / yScale
-
-                For i As Integer = 0 To m_iNumGroupPlotsVert - 1
-                    For j As Integer = 0 To m_iNumGroupPlotsHorz - 1
-                        Dim iRect As Integer = i * m_iNumGroupPlotsHorz + j
-                        If iRect < Core.nGroups Then
-                            Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
-                            Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
-                                                                    CInt(origin.Y * yScale), _
-                                                                    CInt(m_iInCol * xScale), _
-                                                                    CInt(m_iInRow * yScale))
-                            originList.Add(origin)
-                            rectList.Add(rect)
-                        End If
-                    Next
-                Next
 
                 Dim maptype As cMapDrawerBase.eMapType
                 Dim RelScaler() As Single = Nothing
@@ -641,6 +606,8 @@ Namespace Ecospace
 
             Dim iNumVizFleets As Integer = 0
             Dim lVizFleets As New List(Of Integer)
+            Dim lOrigins As New List(Of PointF)
+            Dim lMaps As New List(Of Rectangle)
 
             Debug.Assert(Me.m_plottype = ePlotTypes.Effort, "Only allowed for effort maps due to limitations in cMapDrawer. Ugh!")
 
@@ -659,30 +626,15 @@ Namespace Ecospace
 
                 If iNumVizFleets = 0 Then Return
 
-                Me.m_iNumFleetPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVizFleets) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
-                Me.m_iNumFleetPlotsVert = CInt(Math.Ceiling(iNumVizFleets / Me.m_iNumFleetPlotsHorz))
+                cMapDrawerBase.CalcMapAreas(Me.m_pbMap.ClientRectangle, iNumVizFleets, Me.m_iInRow, Me.m_iInCol, _
+                                            Me.m_iNumPlotsHorz, Me.m_iNumPlotsVert, lOrigins, lMaps)
 
-                Dim xScale As Double = m_iNumFleetPlotsHorz * (m_iInCol + 1) + 1
-                Dim yScale As Double = m_iNumFleetPlotsVert * (m_iInRow + 1) + 1
-                If xScale > 0 Then xScale = m_pbMap.Width / xScale
-                If yScale > 0 Then yScale = m_pbMap.Height / yScale
+                For i As Integer = 0 To iNumVizFleets - 1
+                    Try
+                        DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, lVizFleets(i), lMaps(i), g)
+                    Catch ex As Exception
 
-                For i As Integer = 0 To m_iNumFleetPlotsVert - 1
-                    For j As Integer = 0 To m_iNumFleetPlotsHorz - 1
-                        Dim cur As Integer = i * m_iNumFleetPlotsHorz + j
-                        If cur < iNumVizFleets Then
-                            Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
-                            Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
-                                                                    CInt(origin.Y * yScale), _
-                                                                    CInt(m_iInCol * xScale), _
-                                                                    CInt(m_iInRow * yScale))
-                            Try
-                                DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, lVizFleets(cur), rect, g)
-                            Catch ex As Exception
-
-                            End Try
-                        End If
-                    Next
+                    End Try
                 Next
 
             End If
@@ -1116,8 +1068,8 @@ Namespace Ecospace
                 m_iInRow = TimeStepData.inRows
                 m_iInCol = TimeStepData.inCols
 
-                CalcMapDimension(Core.nGroups, m_iNumGroupPlotsVert, m_iNumGroupPlotsHorz)
-                CalcMapDimension(Core.nFleets, m_iNumFleetPlotsVert, m_iNumFleetPlotsHorz)
+                CalcMapDimension(Core.nGroups, m_iNumPlotsVert, m_iNumPlotsHorz)
+                CalcMapDimension(Core.nFleets, m_iNumPlotsVert, m_iNumPlotsHorz)
             End If
 
 
