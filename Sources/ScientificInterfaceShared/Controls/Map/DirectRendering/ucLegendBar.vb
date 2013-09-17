@@ -86,9 +86,9 @@ Namespace Controls
         Public Property LabelLow As String = "Low"
 
         <Browsable(True), _
-         DefaultValue(80), _
+         DefaultValue(75), _
          Description("Percentage that the bar occupies of the control")> _
-        Public Property BarWidthPercentage As Integer = 80
+        Public Property BarWidthPercentage As Integer = 75
 
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)
@@ -144,17 +144,16 @@ Namespace Controls
 
         Private Sub DrawBox(g As Graphics, rcBox As Rectangle)
 
-            If (Me.Colors Is Nothing) Then
+            If (Me.m_colors.Count = 0) Then
                 g.FillRectangle(SystemBrushes.GrayText, rcBox)
             Else
-                Dim iNumCols As Integer = Math.Max(Me.Colors.Count, 1)
+                Dim iNumCols As Integer = Me.Colors.Count
                 Dim sHeight As Single = CSng(rcBox.Height / iNumCols)
 
-                Dim brTmp As SolidBrush = Nothing
                 For i As Integer = 1 To iNumCols
-                    brTmp = New SolidBrush(Me.Colors(i - 1))
-                    g.FillRectangle(brTmp, rcBox.X, rcBox.Y + rcBox.Height - sHeight * i, rcBox.Width, sHeight)
-                    brTmp.Dispose()
+                    Using brTmp As New SolidBrush(Me.Colors(i - 1))
+                        g.FillRectangle(brTmp, rcBox.X, rcBox.Y + rcBox.Height - sHeight * i, rcBox.Width, sHeight)
+                    End Using
                 Next
             End If
 

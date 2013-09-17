@@ -79,8 +79,19 @@ Public Class frmMain
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        If (Me.UIContext Is Nothing) Then Return
+
         Dim ndSel As TreeNode = Nothing
         Me.m_bInUpdate = True
+
+        Me.Text = My.Resources.CAPTION
+        Me.TabText = My.Resources.CAPTION
+
+        Me.m_llStatus.UIContext = Me.UIContext
+        Me.m_pbStatus.BackgroundImage = ScientificInterfaceShared.My.Resources.Warning
+
+        Me.m_legend.UIContext = Me.UIContext
+        Me.m_legend.Colors = Me.StyleGuide.GetEwE5ColorRamp(50)
 
         Try
             Me.m_grid.Attach(Me.m_settings)
@@ -96,7 +107,7 @@ Public Class frmMain
         End Try
 
         Try
-            Me.m_ecospaceWrapper.Attach(Me.UIContext, Me.m_ppt.m_dtIndEcospace, Me.m_settings, Me.m_pbEcospaceMap, Me.m_ppt.m_indEcopath)
+            Me.m_ecospaceWrapper.Attach(Me.UIContext, Me.m_ppt.m_dtIndEcospace, Me.m_settings, Me.m_pbEcospaceMap, Me.m_ppt.m_indEcopath, Me.m_legend.Colors)
         Catch ex As Exception
             Debug.Assert(False, "Map stuff not able to attach")
         End Try
@@ -106,12 +117,6 @@ Public Class frmMain
         Catch ex As Exception
             Debug.Assert(False, "Zed graph handler not able to attach")
         End Try
-
-        Me.Text = My.Resources.CAPTION
-        Me.TabText = My.Resources.CAPTION
-
-        Me.m_llStatus.UIContext = Me.UIContext
-        Me.m_pbStatus.BackgroundImage = ScientificInterfaceShared.My.Resources.Warning
 
         Try
             ' Populate tree view from indicator settings

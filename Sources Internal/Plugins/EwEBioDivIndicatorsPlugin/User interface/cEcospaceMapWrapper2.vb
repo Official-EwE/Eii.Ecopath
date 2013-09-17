@@ -61,6 +61,7 @@ Public Class cEcospaceMapWrapper2
     Private m_picbox As PictureBox = Nothing
     Private m_drawers As New List(Of cEcospaceMapDrawer)
     Private m_bmp As Bitmap = Nothing
+    Private m_colors As List(Of Color)
 
 #End Region ' Private variables
 
@@ -69,14 +70,16 @@ Public Class cEcospaceMapWrapper2
     Public Sub Attach(ByVal uic As cUIContext, _
                       ByVal indicators As Dictionary(Of Point, cEcospaceIndicators), _
                       ByVal settings As cIndicatorSettings, _
-                      ByVal picbox As PictureBox,
-                      ByVal indEcopath As cEcopathIndicators)
+                      ByVal picbox As PictureBox, _
+                      ByVal indEcopath As cEcopathIndicators, _
+                      ByVal colors As List(Of Color))
 
         Me.m_uic = uic
         Me.m_settings = settings
         Me.m_dtIndicators = indicators
         Me.m_indPath = indEcopath
         Me.m_picbox = picbox
+        Me.m_colors = colors
 
         AddHandler Me.m_picbox.Resize, AddressOf OnResizePanel
         AddHandler Me.m_picbox.Paint, AddressOf OnPaintPicbox
@@ -123,11 +126,10 @@ Public Class cEcospaceMapWrapper2
         End If
 
         If (lInfo.Count > 0) Then
-            Dim lColors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(200)
             Me.m_drawers.Clear()
             For Each info In lInfo
                 Dim drawer As New cEcospaceMapDrawer(Me.m_uic.Core)
-                drawer.Colors = lColors
+                drawer.Colors = Me.m_colors
                 Me.m_drawers.Add(drawer)
             Next
             Me.m_bmp = Nothing

@@ -390,7 +390,7 @@ Partial Class frmMain
         'm_legend
         '
         resources.ApplyResources(Me.m_legend, "m_legend")
-        Me.m_legend.BarWidthPercentage = 80
+        Me.m_legend.BarWidthPercentage = 75
         Me.m_legend.Colors = Nothing
         Me.m_legend.Name = "m_legend"
         Me.m_legend.UIContext = Nothing
