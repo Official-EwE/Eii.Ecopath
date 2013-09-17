@@ -16,29 +16,22 @@
 ' ===============================================================================
 '
 
-#Region "Imports Complier directives"
+#Region "Imports "
 
 Option Strict On
 
-Imports System.IO
-Imports System.Text
 Imports System.Threading
-
-Imports EwECore
-Imports EwECore.Ecosim
-Imports EwECore.ExternalData
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports EwEPlugin
-Imports EwEPlugin.Data
 Imports EwECore.SearchObjectives
-Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Core
 
-#End Region
+#End Region ' Imports
 
 Namespace MSY
 
-
+    ''' <summary>
+    ''' Delegate that allows MSY / FMSY run progress to be broadcasted.
+    ''' </summary>
+    ''' <param name="RunStateType"></param>
     Public Delegate Sub MSYRunStateDelegate(ByVal RunStateType As eMSYRunStates)
 
     ''' <summary>
@@ -86,7 +79,7 @@ Namespace MSY
 
 #End Region
 
-#Region " Running Saving (public and private) "
+#Region " Running "
 
         ''' <summary>
         ''' Returns whether the MSY can run.
@@ -169,7 +162,9 @@ Namespace MSY
             Return True
         End Function
 
-#Region " Threading "
+#End Region ' Running
+
+#Region " Internal threading "
 
         Private Sub FullMSYSearchThreaded()
 
@@ -284,7 +279,9 @@ Namespace MSY
 
         End Sub
 
-#End Region ' Threading
+#End Region ' Internal threading
+
+#Region " Notifications "
 
         Private Sub OnRunStateChanged(ByVal RunState As eMSYRunStates)
             Try
@@ -312,7 +309,7 @@ Namespace MSY
             End Try
         End Sub
 
-#End Region ' Running
+#End Region ' Notifications
 
 #Region " Saving "
 
