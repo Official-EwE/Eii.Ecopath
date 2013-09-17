@@ -64,6 +64,7 @@ Namespace MSY
         Private m_fmsyresults As cFMSYResults = Nothing
 
         Private m_RunStateDelegate As MSYRunStateDelegate
+        Private m_thread As Thread = Nothing
 
 #End Region
 
@@ -78,10 +79,9 @@ Namespace MSY
             Me.m_Core = theCore
             Me.m_msyData = MSYData
 
-            Me.m_MSY = New cMSY(Me.m_Core.m_EcoSim, Me.m_msyData, Me.m_Core.m_EcoPathData)
+            Me.m_MSY = New cMSY(Me.m_Core.m_EcoSim, Me.m_msyData, Me.m_Core.m_EcoPathData, Me.m_Core.m_EcoSimData)
             Me.m_parameters = New cMSYParameters(Me.m_Core, Me.m_msyData)
 
-            Me.m_MSY.ProgressMessageDelegate = AddressOf Me.SendMessage
         End Sub
 
 #End Region
@@ -100,6 +100,11 @@ Namespace MSY
 
             Dim bEnabledTS As Boolean = False
             Dim bOkToRun As Boolean = True
+
+            ' Cannot run if already running
+            If (Me.m_thread IsNot Nothing) Then
+                bOkToRun = Not Me.m_thread.IsAlive()
+            End If
 
             Try
 
@@ -140,44 +145,128 @@ Namespace MSY
 
         End Function
 
+        Public Function RunMSY() As Boolean
+            Try
+                If Not Me.IsAllowedToRun Then Return False
+                Me.m_thread = New Thread(AddressOf Me.FullMSYSearchThreaded)
+                Me.m_thread.Start()
+            Catch ex As Exception
+                cLog.Write(ex, "cMSYManager.RunMSY")
+                Return False
+            End Try
+            Return True
+        End Function
+
+        Public Function RunFindFMSY() As Boolean
+            Try
+                If Not Me.IsAllowedToRun Then Return False
+                Me.m_thread = New Thread(AddressOf Me.RunFindFMSYThreaded)
+                Me.m_thread.Start()
+            Catch ex As Exception
+                cLog.Write(ex, "cMSYManager.RunFindFMSY")
+                Return False
+            End Try
+            Return True
+        End Function
+
+#Region " Threading "
+
+        Private Sub FullMSYSearchThreaded()
+
+            Dim runState As eMSYRunStates = eMSYRunStates.MSYRunComplete
+
+            Me.SetWait()
+            Me.m_Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
+            Me.m_search.SearchMode = eSearchModes.MSY
+            Me.m_msyData.bStopRun = False
+
+            Try
+
+                Me.m_parameters.Assessment = eMSYAssessmentTypes.FullCompensation
+                If Me.m_MSY.RunMSY() Then
+                    If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                End If
+
+                ' Process may have been stopped in the interim. Do not continue; RunMSY will ignore and reset the stop flag
+                If Not Me.m_msyData.bStopRun Then
+                    Me.m_parameters.Assessment = eMSYAssessmentTypes.StationarySystem
+                    If Me.m_MSY.RunMSY() Then
+                        If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                    End If
+                End If
+
+                If Me.m_msyData.bStopRun Then runState = eMSYRunStates.MSYRunStopped
+
+            Catch ex As Exception
+
+            End Try
+
+            'tell the interface that we are done
+            Me.OnRunStateChanged(runState)
+            Me.m_Core.SetStopRunDelegate(Nothing)
+            Me.m_search.SearchMode = eSearchModes.NotInSearch
+
+            Me.ReleaseWait()
+            Me.m_thread = Nothing
+
+        End Sub
+
         ''' <summary>
         ''' Run the FMSY search, quietly.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
-        Public Function RunFindFMSY() As Boolean
+        Private Sub RunFindFMSYThreaded()
 
-            Dim bSuccess As Boolean = False
+            Dim runState As eMSYRunStates = eMSYRunStates.MSYRunComplete
+            Dim assignments As eMSYAssessmentTypes() = New eMSYAssessmentTypes() {eMSYAssessmentTypes.FullCompensation, eMSYAssessmentTypes.StationarySystem}
+
+            Me.SetWait()
+            Me.m_Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
+            Me.m_search.SearchMode = eSearchModes.MSY
+            Me.m_msyData.bStopRun = False
             Me.m_fmsyresults = Nothing
 
             Try
-                bSuccess = Me.m_MSY.RunFindFMSY()
-                Dim n As Integer = Me.m_Core.nGroups
-                Dim results As New cFMSYResults(n)
-                Array.Copy(Me.m_MSY.FmsySS, results.FMSY, n)
-                Array.Copy(Me.m_MSY.CmsySS, results.CMSY, n)
+                For Each assignment As eMSYAssessmentTypes In assignments
 
-                Array.Copy(Me.m_MSY.CatchAtFmsy, results.CatchAtFMSY, n)
-                Array.Copy(Me.m_MSY.ValueAtFmsy, results.ValueAtFMSY, n)
+                    Me.m_msyData.AssessmentType = assignment
 
-                'get the base value of catch and F from the Core
-                Array.Copy(Me.m_Core.m_EcoPathData.fCatch, results.CMSYBase, n)
-                Array.Copy(Me.m_Core.m_EcoSimData.Fish1, results.FBase, n)
+                    If Not Me.m_msyData.bStopRun Then
+                        If Not Me.m_MSY.RunFindFMSY() Then
+                            ' Apply handbrake
+                            Me.m_msyData.bStopRun = True
+                        End If
+                    End If
 
-                Array.Copy(Me.m_MSY.VmsySS, results.Value, n)
-                Array.Copy(Me.m_MSY.ValSumBase, results.ValueBase, n)
+                    If Not Me.m_msyData.bStopRun Then
+                        ' Only process results when completed successfully
+                        Dim results As New cFMSYResults(Me.m_Core.nGroups)
+                        For i As Integer = 1 To Me.m_Core.nGroups
 
-                For i As Integer = 1 To n
-                    Dim t As cMSY.cFoptTracker = Me.m_MSY.m_FOptTracker(i)
-                    results.IsFopt(i) = t.IsFopt()
+                            results.FMSY(i) = Me.m_MSY.FmsySS(i)
+                            results.CMSY(i) = Me.m_MSY.CmsySS(i)
+
+                            results.CatchAtFMSY(i) = Me.m_MSY.CatchAtFmsy(i)
+                            results.ValueAtFMSY(i) = Me.m_MSY.ValueAtFmsy(i)
+
+                            'get the base value of catch and F from the Core
+                            results.CMSYBase(i) = Me.m_Core.m_EcoPathData.fCatch(i)
+                            results.FBase(i) = Me.m_Core.m_EcoSimData.Fish1(i)
+
+                            results.Value(i) = Me.m_MSY.VmsySS(i)
+                            results.ValueBase(i) = Me.m_MSY.ValSumBase(i)
+
+                            Dim t As cMSY.cFoptTracker = Me.m_MSY.m_FOptTracker(i)
+                            results.IsFopt(i) = t.IsFopt()
+                        Next
+                        Me.m_fmsyresults = results
+
+                        ' JS 04Nov12: Always save FMSY results until FMSY has a user interface.
+                        ' ToDo_JS: Use Autosave settings for FMSY when there is a user interface.
+                        'If Me.IsAutoSaveOutput Then
+                        Me.SaveFMSYOutput()
+                        'End If
+                    End If
                 Next
-
-                Me.m_fmsyresults = results
-
-                ' JS 04Nov12: Always save FMSY results until FMSY has a user interface.
-                ' ToDo_JS: Use Autosave settings for FMSY when there is a user interface.
-                'If Me.IsAutoSaveOutput Then
-                Me.SaveFMSYOutput()
-                'End If
 
             Catch ex As Exception
                 cLog.Write(ex, "cMSYManager::RunFMSY")
@@ -185,83 +274,19 @@ Namespace MSY
                 Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MSY_ERROR_RUN_FMSY, ex.Message), eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                 Me.SendMessage(msg)
             End Try
-            Return bSuccess
 
-        End Function
-
-        ''' <summary>
-        ''' Make a single run of the MSY using the current Parameters
-        ''' </summary>
-        ''' <returns>True if the MSY was successfully run.</returns>
-        Public Function Run() As Boolean
-            Dim bRan As Boolean = False
-            Try
-
-                If Me.m_MSY.RunMSY() Then
-                    bRan = True
-                    If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
-                End If
-
-            Catch ex As Exception
-                cLog.Write(ex, "cMSYManager::Run")
-                System.Console.WriteLine(Me.ToString & ".Run() Exception: " & ex.Message)
-                Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MSY_ERROR_RUN, ex.Message), eMessageType.Any, eCoreComponentType.MSY, eMessageImportance.Critical)
-                Me.SendMessage(msg)
-            End Try
-
-            Me.m_Core.Messages.sendAllMessages()
-
-            Return bRan
-
-        End Function
-
-        Public Function RunThreaded() As Boolean
-            Try
-                'ToDo there needs to be a way to block when a thread is already running
-                'either a boolean flag or a WaitHandle
-                Dim MSYThread As Thread = New Thread(AddressOf Me.runFullMSYSearch)
-                MSYThread.Start()
-
-                Return True
-            Catch ex As Exception
-
-            End Try
-
-        End Function
-
-
-        Private Sub runFullMSYSearch()
-            Try
-
-                Me.SetWait()
-
-                Me.m_Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
-                Me.m_parameters.Assessment = eMSYAssessmentTypes.FullCompensation
-                If Me.m_MSY.RunMSY() Then
-                    If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
-                End If
-
-                Me.m_parameters.Assessment = eMSYAssessmentTypes.StationarySystem
-                If Me.m_MSY.RunMSY() Then
-                    If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
-                End If
-
-                Dim runState As eMSYRunStates = eMSYRunStates.MSYRunComplete
-                If Me.m_msyData.bStopRun Then runState = eMSYRunStates.MSYRunStopped
-
-                'tell the interface that we are done
-                Me.onMSYRunStateChanged(runState)
-                Me.m_Core.SetStopRunDelegate(Nothing)
-            Catch ex As Exception
-
-            End Try
+            'tell the interface that we are done
+            Me.OnRunStateChanged(runState)
+            Me.m_Core.SetStopRunDelegate(Nothing)
+            Me.m_search.SearchMode = eSearchModes.NotInSearch
 
             Me.ReleaseWait()
 
         End Sub
 
+#End Region ' Threading
 
-        Private Sub onMSYRunStateChanged(ByVal RunState As eMSYRunStates)
+        Private Sub OnRunStateChanged(ByVal RunState As eMSYRunStates)
             Try
                 m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireRunStateDelegate), RunState)
             Catch ex As Exception
@@ -269,6 +294,289 @@ Namespace MSY
             End Try
         End Sub
 
+        Private Sub SendMessage(ByRef msg As cMessage)
+            If Me.m_Core IsNot Nothing Then
+                Me.m_Core.Messages.SendMessage(msg)
+            End If
+        End Sub
+
+        Private Sub fireRunStateDelegate(ByVal obj As Object)
+            Try
+                'Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
+                If Me.m_RunStateDelegate IsNot Nothing Then
+                    Dim cbType As eMSYRunStates = DirectCast(obj, eMSYRunStates)
+                    m_RunStateDelegate.Invoke(cbType)
+                End If
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & " Error sending message to interface.")
+            End Try
+        End Sub
+
+#End Region ' Running
+
+#Region " Saving "
+
+        Public Sub SaveMSYOutput()
+            Try
+
+                If (Me.MSYResults Is Nothing) Then Return
+                If (Me.MSYResults.Length = 0) Then Return
+
+                Dim writer As New cMSYResultWriterMSY(Me.m_Core)
+                Dim bSuccess As Boolean = True
+
+                Select Case Me.m_parameters.FSelectionMode
+
+                    Case eMSYFSelectionModeType.Groups
+                        bSuccess = writer.WriteGroupResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
+                                                            Me.m_parameters.SelGroupFleetIndex, _
+                                                            Me.m_parameters.Assessment, _
+                                                            Me.BaseLineResults.FCur, _
+                                                            Me.MSYResults, _
+                                                            Me.FMSY)
+
+                    Case eMSYFSelectionModeType.Fleets
+                        bSuccess = writer.WriteFleetResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
+                                                            Me.m_parameters.SelGroupFleetIndex, _
+                                                            Me.m_parameters.Assessment, _
+                                                            Me.MSYResults, _
+                                                            Me.FMSY)
+
+                End Select
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Sub
+
+        Public Function SaveFMSYOutput() As Boolean
+
+            Try
+                Dim w As New cMSYResultWriterFMSY(Me.m_Core)
+                Return w.WriteCSV(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
+                                  Me.m_parameters.Assessment, _
+                                  Me.m_fmsyresults)
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, ex.Message)
+            End Try
+            Return False
+
+        End Function
+
+#End Region ' Saving
+
+#Region " Public Properties "
+
+        ''' <summary>
+        ''' Returns the <see cref="cMSYParameters"/> to configure the MSY run.
+        ''' </summary>
+        Public Function Parameters() As cMSYParameters
+            Return Me.m_parameters
+        End Function
+
+        ''' <summary>
+        ''' Returns the <see cref="cMSYFResult">results list</see>, sorted by F.
+        ''' </summary>
+        Public Function MSYResults() As cMSYFResult()
+            Return Me.m_msyData.lstResults.ToArray
+        End Function
+
+        ''' <summary>
+        ''' Returns the <see cref="cMSYFResult">results</see> of a base line run.
+        ''' </summary>
+        Public Function BaseLineResults() As cMSYFResult
+            Return Me.m_msyData.BaseLineResult
+        End Function
+
+        ''' <summary>
+        ''' Returns the <see cref="cMSYOptimum">FMSY optimum results</see>.
+        ''' </summary>
+        Public Function FMSY() As cMSYOptimum
+            Return Me.m_msyData.Optimum
+        End Function
+
+        ''' <summary>
+        ''' Get/set whether output should be automatically saved to file.
+        ''' </summary>
+        Public Property IsAutoSaveOutput As Boolean
+            Get
+                Return Me.m_Core.Autosave(eAutosaveTypes.MSY)
+            End Get
+            Set(value As Boolean)
+                Me.m_Core.Autosave(eAutosaveTypes.MSY) = value
+            End Set
+        End Property
+
+        Public ReadOnly Property FMSYResults As cFMSYResults
+            Get
+                Return Me.m_fmsyresults
+            End Get
+        End Property
+
+        Public ReadOnly Property RunType As eMSYRunTypes
+            Get
+                Return Me.m_msyData.MSYRunType
+            End Get
+        End Property
+
+        Public Property RunStateChangedDelegate As MSYRunStateDelegate
+            Get
+                Return Me.m_RunStateDelegate
+            End Get
+
+            Set(value As MSYRunStateDelegate)
+                Me.m_RunStateDelegate = Nothing
+                Me.m_RunStateDelegate = value
+            End Set
+
+        End Property
+
+#End Region ' Public Properties
+
+#Region " ISearchObjective "
+
+        Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
+
+            m_Core = theCore
+            m_searchObjective = m_Core.SearchObjective
+            m_search = theCore.m_SearchData
+
+            Me.m_SyncOb = System.Threading.SynchronizationContext.Current
+            'if there is no current context then create a new one on this thread.
+            If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
+
+            'Connect to the MSY callback
+            Me.m_MSY.Connect(AddressOf Me.OnRunStateChanged, AddressOf Me.SendMessage)
+
+        End Function
+
+        Friend Function Load() As Boolean Implements ISearchObjective.Load
+            ' NOP
+        End Function
+
+        ''' <summary>
+        ''' Update the underlying core data with edits from the interface
+        ''' </summary>
+        ''' <remarks>This is called by the core when a variable passes validation via cCore.OnValidated()</remarks>
+        Public Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
+            ' NOP
+        End Function
+
+        Friend Sub Clear() Implements ISearchObjective.Clear
+            ' NOP
+        End Sub
+
+        Public ReadOnly Property FleetObjectives(ByVal iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
+            Get
+                Return Me.m_searchObjective.FleetObjectives(iFleet)
+            End Get
+        End Property
+
+        Public ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
+            Get
+                Return Me.m_searchObjective.GroupObjectives(iGroup)
+            End Get
+        End Property
+
+        Public ReadOnly Property ValueWeights() As cSearchObjectiveWeights Implements ISearchObjective.ValueWeights
+            Get
+                Return Me.m_searchObjective.ValueWeights
+            End Get
+        End Property
+
+        Public ReadOnly Property ObjectiveParameters() As SearchObjectives.cSearchObjectiveParameters Implements SearchObjectives.ISearchObjective.ObjectiveParameters
+            Get
+                Return Me.m_searchObjective.ObjectiveParameters
+            End Get
+        End Property
+
+#End Region ' ISearchObjective
+
+#Region " ICoreInterface "
+
+        Public ReadOnly Property DataType() As eDataTypes _
+            Implements ICoreInterface.DataType
+            Get
+                Return eDataTypes.MSYManager
+            End Get
+        End Property
+
+        Public ReadOnly Property CoreComponent() As eCoreComponentType _
+            Implements ICoreInterface.CoreComponent
+            Get
+                Return eCoreComponentType.MSY
+            End Get
+        End Property
+
+        Public Property DBID() As Integer _
+            Implements ICoreInterface.DBID
+            Get
+                Return cCore.NULL_VALUE
+            End Get
+            Private Set(ByVal value As Integer)
+                ' NOP
+            End Set
+        End Property
+
+        Public Function GetID() As String _
+            Implements ICoreInterface.GetID
+            Return cCore.NULL_VALUE.ToString
+        End Function
+
+        Public Property Index() As Integer _
+            Implements ICoreInterface.Index
+            Get
+                Return cCore.NULL_VALUE
+            End Get
+            Private Set(ByVal value As Integer)
+                ' NOP
+            End Set
+        End Property
+
+        Public Property Name() As String Implements ICoreInterface.Name
+            Get
+                Return "MSYmanager"
+            End Get
+            Private Set(ByVal value As String)
+                ' NOP
+            End Set
+        End Property
+
+#End Region ' ICoreInterface
+
+#Region "cThreadWaitBase Overrides"
+
+        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
+            Dim result As Boolean = True
+
+            If (Me.m_Core Is Nothing) Then Return True
+
+            Try
+                Me.m_msyData.bStopRun = True
+                result = Me.Wait(WaitTimeInMillSec)
+                Me.m_Core.SetStopRunDelegate(Nothing)
+            Catch ex As Exception
+                result = False
+            End Try
+            Return result
+        End Function
+
+#End Region
+
+#Region " .Net Framework stuff "
+
+        Protected Overrides Sub Finalize()
+            Me.m_MSY.Disconnect()
+            MyBase.Finalize()
+        End Sub
+
+#End Region ' .Net Framework stuff 
+
+#Region " Unit tests "
 
         Public Sub RunMSYEcosimUnitTest()
 
@@ -383,303 +691,7 @@ Namespace MSY
 
         End Sub
 
-        Public Sub SaveMSYOutput()
-            Try
-
-                If (Me.MSYResults Is Nothing) Then Return
-                If (Me.MSYResults.Length = 0) Then Return
-
-                Dim writer As New cMSYResultWriterMSY(Me.m_Core)
-                Dim bSuccess As Boolean = True
-
-                Select Case Me.m_parameters.FSelectionMode
-
-                    Case eMSYFSelectionModeType.Groups
-                        bSuccess = writer.WriteGroupResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
-                                                            Me.m_parameters.SelGroupFleetIndex, _
-                                                            Me.m_parameters.Assessment, _
-                                                            Me.BaseLineResults.curF, _
-                                                            Me.MSYResults, _
-                                                            Me.FMSY)
-
-                    Case eMSYFSelectionModeType.Fleets
-                        bSuccess = writer.WriteFleetResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
-                                                            Me.m_parameters.SelGroupFleetIndex, _
-                                                            Me.m_parameters.Assessment, _
-                                                            Me.MSYResults, _
-                                                            Me.FMSY)
-
-                End Select
-
-            Catch ex As Exception
-                cLog.Write(ex)
-                Debug.Assert(False, ex.Message)
-            End Try
-
-        End Sub
-
-        Public Function SaveFMSYOutput() As Boolean
-
-            Try
-                Dim w As New cMSYResultWriterFMSY(Me.m_Core)
-                Return w.WriteCSV(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
-                                  Me.m_parameters.Assessment, _
-                                  Me.m_fmsyresults)
-
-            Catch ex As Exception
-                cLog.Write(ex)
-                Debug.Assert(False, ex.Message)
-            End Try
-            Return False
-
-        End Function
-
-        Private Sub SendMessage(ByRef msg As cMessage)
-            If Me.m_Core IsNot Nothing Then
-                Me.m_Core.Messages.SendMessage(msg)
-            End If
-        End Sub
-
-        Private Sub fireRunStateDelegate(ByVal obj As Object)
-            Try
-                'Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
-                If Me.m_RunStateDelegate IsNot Nothing Then
-                    Dim cbType As eMSYRunStates = DirectCast(obj, eMSYRunStates)
-                    m_RunStateDelegate.Invoke(cbType)
-                End If
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & " Error sending message to interface.")
-            End Try
-        End Sub
-
-#End Region ' Running Saving (public and private)
-
-#Region " Public Properties "
-
-        ''' <summary>
-        ''' Returns the <see cref="cMSYParameters"/> to configure the MSY run.
-        ''' </summary>
-        Public Function Parameters() As cMSYParameters
-            Return Me.m_parameters
-        End Function
-
-        ''' <summary>
-        ''' Returns the <see cref="cMSYFResult">results list</see>, sorted by F.
-        ''' </summary>
-        Public Function MSYResults() As cMSYFResult()
-            Return Me.m_msyData.lstResults.ToArray
-        End Function
-
-        ''' <summary>
-        ''' Returns the <see cref="cMSYFResult">results</see> of a base line run.
-        ''' </summary>
-        Public Function BaseLineResults() As cMSYFResult
-            Return Me.m_msyData.BaseLineResult
-        End Function
-
-        ''' <summary>
-        ''' Returns the <see cref="cMSYOptimum">FMSY optimum results</see>.
-        ''' </summary>
-        Public Function FMSY() As cMSYOptimum
-            Return Me.m_msyData.Optimum
-        End Function
-
-        ''' <summary>
-        ''' Get/set whether output should be automatically saved to file.
-        ''' </summary>
-        Public Property IsAutoSaveOutput As Boolean
-            Get
-                Return Me.m_Core.Autosave(eAutosaveTypes.MSY)
-            End Get
-            Set(value As Boolean)
-                Me.m_Core.Autosave(eAutosaveTypes.MSY) = value
-            End Set
-        End Property
-
-        Public ReadOnly Property FMSYResults As cFMSYResults
-            Get
-                Return Me.m_fmsyresults
-            End Get
-        End Property
-
-        Public ReadOnly Property RunType As eMSYRunTypes
-            Get
-                Return Me.m_msyData.MSYRunType
-            End Get
-        End Property
-
-        Public Property RunStateChangedDelegate As MSYRunStateDelegate
-            Get
-                Return Me.m_RunStateDelegate
-            End Get
-
-            Set(value As MSYRunStateDelegate)
-                Me.m_RunStateDelegate = Nothing
-                Me.m_RunStateDelegate = value
-            End Set
-
-        End Property
-
-#End Region ' Public Properties
-
-#Region "ISearchObjective"
-
-        Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
-
-            m_Core = theCore
-            m_searchObjective = m_Core.SearchObjective
-            m_search = theCore.m_SearchData
-
-            Me.m_SyncOb = System.Threading.SynchronizationContext.Current
-            'if there is no current context then create a new one on this thread.
-            If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
-
-            'Connect to the MSY callback
-            Me.m_MSY.Connect(AddressOf Me.onMSYRunStateChanged)
-
-        End Function
-
-        Friend Function Load() As Boolean Implements ISearchObjective.Load
-
-            Try
-
-
-
-            Catch ex As Exception
-
-            End Try
-
-        End Function
-
-
-        ''' <summary>
-        ''' Update the underlying core data with edits from the interface
-        ''' </summary>
-        ''' <remarks>This is called by the core when a variable passes validation via cCore.OnValidated()</remarks>
-        Public Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
-
-            Try
-
-                System.Console.WriteLine(Me.ToString & ".Update(" & DataType.ToString & ")")
-
-            Catch ex As Exception
-                cLog.Write(ex)
-            End Try
-
-        End Function
-
-
-        Friend Sub Clear() Implements ISearchObjective.Clear
-            Try
-
-
-            Catch ex As Exception
-                cLog.Write(ex)
-            End Try
-        End Sub
-
-        Public ReadOnly Property FleetObjectives(ByVal iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
-            Get
-                Return Me.m_searchObjective.FleetObjectives(iFleet)
-            End Get
-        End Property
-
-        Public ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
-            Get
-                Return Me.m_searchObjective.GroupObjectives(iGroup)
-            End Get
-        End Property
-
-        Public ReadOnly Property ValueWeights() As cSearchObjectiveWeights Implements ISearchObjective.ValueWeights
-            Get
-                Return Me.m_searchObjective.ValueWeights
-            End Get
-        End Property
-
-        Public ReadOnly Property ObjectiveParameters() As SearchObjectives.cSearchObjectiveParameters Implements SearchObjectives.ISearchObjective.ObjectiveParameters
-            Get
-                Return Me.m_searchObjective.ObjectiveParameters
-            End Get
-        End Property
-
-#End Region
-
-#Region "ICoreInterface"
-
-        Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
-            Get
-                Return eDataTypes.MSYManager
-            End Get
-        End Property
-
-        Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
-            Get
-                Return eCoreComponentType.MSY
-            End Get
-        End Property
-
-        Public Property DBID() As Integer Implements ICoreInterface.DBID
-            Get
-                Return cCore.NULL_VALUE
-            End Get
-            Set(ByVal value As Integer)
-
-            End Set
-        End Property
-
-        Public Function GetID() As String Implements ICoreInterface.GetID
-            Return cCore.NULL_VALUE.ToString
-        End Function
-
-        Public Property Index() As Integer Implements ICoreInterface.Index
-            Get
-                Return cCore.NULL_VALUE
-            End Get
-            Set(ByVal value As Integer)
-
-            End Set
-        End Property
-
-        Public Property Name() As String Implements ICoreInterface.Name
-            Get
-                Return "MSYmanager"
-            End Get
-            Set(ByVal value As String)
-
-            End Set
-        End Property
-
-#End Region
-
-#Region "cThreadWaitBase Overrides"
-
-
-        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
-            Dim result As Boolean = True
-
-            If (Me.m_Core Is Nothing) Then Return True
-
-            Try
-                Me.m_msyData.bStopRun = True
-                result = Me.Wait(WaitTimeInMillSec)
-                Me.m_Core.SetStopRunDelegate(Nothing)
-            Catch ex As Exception
-                result = False
-            End Try
-            Return result
-        End Function
-
-#End Region
-
-#Region " .Net Framework stuff "
-
-        Protected Overrides Sub Finalize()
-            Me.m_MSY.ProgressMessageDelegate = Nothing
-            Me.m_MSY.Connect(Nothing)
-            MyBase.Finalize()
-        End Sub
-
-#End Region ' .Net Framework stuff 
+#End Region ' Unit tests
 
     End Class
 
