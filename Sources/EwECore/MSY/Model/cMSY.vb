@@ -37,20 +37,15 @@ Namespace MSY
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Known issues
-        'ToDo: MSY 18-Oct-2012 DONE BaseLineResult populated in setBaselineValues() are populated from the results at the end of the BaseLine Run
-        'the BaseLineResult should be set from the Ecopath base values
-
-
-        'ToDo: MSY 18-Oct-2012 NA Show Items dialouge disappears if you select a fleet. I don't check this but it could be happening every where.
-        '         JS: is generic UI, not specific to MSY
+        'DONE: MSY 18-Oct-2012 BaseLineResult populated in setBaselineValues() are populated from the results at the end of the BaseLine Run
+        '                      the BaseLineResult should be set from the Ecopath base values
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Plotting
-        'ToDo: MSY 18-Oct-2012 DONE Catch of the selected group should be plotted on the biomass graph
-        'ToDo: MSY 18-Oct-2012 When the selected group in multi stanza all the life stages should be shown, even if they are not fished.
-        '         JS: is generic UI, not specific to MSY
-        'ToDo: MSY 18-Oct-2012 DONE (maybe) It should be possible to show/plot non fished groups from the Show/Hide items. This is important for the Compensatory graph
+        'DONE: MSY 18-Oct-2012 Catch of the selected group should be plotted on the biomass graph
+        'DONE: MSY 18-Oct-2012 When the selected group is multi stanza all the life stages should be shown, even if they are not fished.
+        'DONE: MSY 18-Oct-2012 It should be possible to show/plot non fished groups from the Show/Hide items. This is important for the Compensatory graph
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -65,27 +60,22 @@ Namespace MSY
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Debugging
-        'ToDo: MSY 18-Oct-2012 (DONE) Test against EwE6 Ecosim output. Write a routine that dumps B for each time step to a csv file.
-        'When in Full Compensatory mode (B not forced) this can be used to test against the Ecosim output if the F matches either via Effort or F forcing.
-
+        'DONE: MSY 18-Oct-2012 Test against EwE6 Ecosim output. Write a routine that dumps B for each time step to a csv file.
+        '                      When in Full Compensatory mode (B not forced) this can be used to test against the Ecosim output if the F matches either via Effort or F forcing.
         'ToDo: MSY 18-Oct-2012 Test against EwE5 output. This is tricky because it has to be a model that gives the same Ecosim results in 5 and 6 and is multi stanza with no pair in 5
-        'The MSY in 5 runs in a different mode when it's not a multi stanza model
-
-        'ToDo: MSY 18-Oct-2012 Make sure the F step size is robust to strange values in F
-        'It looks like in some cases (Tampa Bay Snook 48-90) either the F step in wrong, to big, 
-        'or it is not comming to equilibrium during the step, 
-        'or the values are not getting caried from step to step correctly 
-        'DONE (maybe) by adding Max. Rel. F. to the interface 
-
+        '                      The MSY in 5 runs in a different mode when it's not a multi stanza model
+        'DONE? MSY 18-Oct-2012 Make sure the F step size is robust to strange values in F
+        '                      It looks like in some cases (Tampa Bay Snook 48-90) either the F step in wrong, to big, 
+        '                      or it is not comming to equilibrium during the step, 
+        '                      or the values are not getting caried from step to step correctly 
+        '                      DONE (maybe) by adding Max. Rel. F. to the interface 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         'ToDo: MSY 18-Oct-2012 Documentation of code variable and methods and how the code implements the paper, that assumes it does...
         'ToDo: MSY 18-Oct-2012 Documentation of UI on the Wiki
-
-        'ToDo: MSY 19-Oct-2012 (DONE) frmMSYSingleSpecies does not re-plot when the Selected groups/fleets changes (Show items...)
-
-        'ToDo:  MSY 30-Oct-2012 (DONE for time series NOT Forcing functions)  warn about Time Series Forcing function. These are Nutrient, Salinity.... anything that is by time
-        'Group Interaction forcing function should be OK
+        'DONE: MSY 19-Oct-2012 frmMSYSingleSpecies does not re-plot when the Selected groups/fleets changes (Show items...)
+        'ToDo: MSY 30-Oct-2012 (DONE for time series NOT Forcing functions)  warn about Time Series Forcing function. These are Nutrient, Salinity.... anything that is by time
+        '                       Group Interaction forcing function should be OK
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'ToDo FMSY Search
@@ -125,7 +115,7 @@ Namespace MSY
 
 #End Region ' ToDo
 
-#Region "Private variables"
+#Region " Private variables "
 
         Private m_Ecosim As cEcoSimModel
         Private m_msyData As cMSYDataStructures
@@ -133,7 +123,6 @@ Namespace MSY
         Private m_pathData As cEcopathDataStructures
 
         ' -- progress --
-        Private m_dgtProgress As cCore.CoreMessageDelegate = Nothing
         Private m_iNumSteps As Integer
         Private m_iStep As Integer
         Private m_strStatus As String = ""
@@ -161,28 +150,60 @@ Namespace MSY
         Friend m_FOptTracker() As cFoptTracker
 
         Private m_RunStateDelegate As MSYRunStateDelegate
+        Private m_MessageDelegate As cCore.CoreMessageDelegate = Nothing
 
 #End Region
 
-#Region "Construction and Initialization"
+#Region " Construction and Initialization "
 
-        Public Sub New(ByVal Ecosim As cEcoSimModel, ByVal theMSYData As cMSYDataStructures, ByVal theEcopathData As cEcopathDataStructures)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a new instance of the MSY model.
+        ''' </summary>
+        ''' <param name="Ecosim"><see cref="cEcoSimModel">Ecosim model</see> to use.</param>
+        ''' <param name="MsyData"><see cref="cMSYDataStructures">MSY data structures</see> to use.</param>
+        ''' <param name="EcopathData"><see cref="cEcopathDataStructures">Ecopath data structures</see> to use.</param>
+        ''' <param name="EcosimData"><see cref="cEcosimDatastructures">Ecosim data structures</see> to use.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal Ecosim As cEcoSimModel, ByVal MsyData As cMSYDataStructures, _
+                       ByVal EcopathData As cEcopathDataStructures, ByVal EcosimData As cEcosimDatastructures)
 
             Debug.Assert(Ecosim IsNot Nothing, Me.ToString & ".New() Invalid Ecosim Model object!")
             Debug.Assert(Ecosim.EcosimData IsNot Nothing, Me.ToString & ".New() Invalid Ecosim data object!")
-            Debug.Assert(theMSYData IsNot Nothing, Me.ToString & ".New() Invalid MSY data object!")
-            Debug.Assert(theEcopathData IsNot Nothing, Me.ToString & ".New() Invalid MSY data object!")
+            Debug.Assert(MsyData IsNot Nothing, Me.ToString & ".New() Invalid MSY data object!")
+            Debug.Assert(EcopathData IsNot Nothing, Me.ToString & ".New() Invalid MSY data object!")
 
             Me.m_Ecosim = Ecosim
-            Me.m_msyData = theMSYData
-            Me.m_simData = Me.m_Ecosim.EcosimData
-            Me.m_pathData = theEcopathData
+            Me.m_msyData = MsyData
+            Me.m_pathData = EcopathData
+            Me.m_simData = EcosimData
 
         End Sub
 
-        Public Sub Connect(ByVal RunStateDelegate As MSYRunStateDelegate)
-            m_RunStateDelegate = Nothing
-            m_RunStateDelegate = RunStateDelegate
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Connect the MSY model to a <see cref="MSYRunStateDelegate">run state delegate</see> 
+        ''' through which this model can report its run state, and a <see cref="cCore.CoreMessageDelegate">message delegate</see>
+        ''' through which this model can report internal events.
+        ''' </summary>
+        ''' <param name="RunStateDelegate">The <see cref="MSYRunStateDelegate">run state delegate</see>
+        ''' to connect, or Nothing to <seealso cref="Disconnect"/>.</param>
+        ''' <param name="MessageDelegate">The <see cref="cCore.CoreMessageDelegate">message delegate</see> 
+        ''' through which the MSY model can send <see cref="cMessage">messages</see>.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub Connect(ByVal RunStateDelegate As MSYRunStateDelegate,
+                           ByVal MessageDelegate As cCore.CoreMessageDelegate)
+            Me.m_RunStateDelegate = RunStateDelegate
+            Me.m_MessageDelegate = MessageDelegate
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Disconnect from <seealso cref="Connect">previously connected delegates</seealso>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Disconnect()
+            Me.Connect(Nothing, Nothing)
         End Sub
 
 #End Region
@@ -197,22 +218,29 @@ Namespace MSY
         ''' -------------------------------------------------------------------
         Public Function RunMSY() As Boolean
 
-            Me.m_msyData.bStopRun = False
-
-            ' Do this once at the start of it all
-            Me.InitTrackers()
-
-            ' InitForSingleSpeciesRun will set m_FStep
-            'If InitForSingleSpeciesRun Fails it will return false
-            If Not InitForSingleRun() Then Return False
-
             Dim bRan As Boolean = False
-            Dim iNumSteps As Integer = CInt(Me.m_Fmax / Me.m_Fstep)
-            Dim strAssessment As String = Me.m_msyData.AssessmentType.ToString
 
-            Me.StartProgress(String.Format(My.Resources.CoreMessages.MSY_STATUS_RUNNING, strAssessment), iNumSteps)
-            bRan = runSingleSpecies()
-            Me.EndProgress()
+            Try
+
+                Me.m_msyData.bStopRun = False
+
+                ' Do this once at the start of it all
+                Me.InitTrackers()
+
+                ' InitForSingleSpeciesRun will set m_FStep
+                'If InitForSingleSpeciesRun Fails it will return false
+                If Not InitForSingleRun() Then Return False
+
+                Dim iNumSteps As Integer = CInt(Me.m_Fmax / Me.m_Fstep)
+                Dim strAssessment As String = Me.m_msyData.AssessmentType.ToString
+
+                Me.StartProgress(String.Format(My.Resources.CoreMessages.MSY_STATUS_RUNNING, strAssessment), iNumSteps)
+                bRan = runSingleSpecies()
+                Me.EndProgress()
+
+            Catch ex As Exception
+
+            End Try
 
             Return bRan
 
@@ -483,21 +511,6 @@ Namespace MSY
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the <see cref="cCore.CoreMessageDelegate">delegate</see> 
-        ''' that can be used to send progress messages.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Friend Property ProgressMessageDelegate As cCore.CoreMessageDelegate
-            Get
-                Return Me.m_dgtProgress
-            End Get
-            Set(value As cCore.CoreMessageDelegate)
-                Me.m_dgtProgress = value
-            End Set
-        End Property
-
 #End Region ' Friendly bits
 
 #Region " Internals "
@@ -621,7 +634,7 @@ Namespace MSY
                 Dim igrp As Integer = Me.m_msyData.iSelGroupFleet
 
                 For Each result As cMSYFResult In Me.m_msyData.lstResults
-                    System.Console.WriteLine(igrp.ToString + ", " + result.curF.ToString + ",  " + result.TotalValue.ToString + _
+                    System.Console.WriteLine(igrp.ToString + ", " + result.FCur.ToString + ",  " + result.TotalValue.ToString + _
                                              "," + result.B(igrp).ToString + ", " + result.[Catch](igrp).ToString)
                 Next
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -732,7 +745,7 @@ Namespace MSY
                 Dim igrp As Integer = Me.m_msyData.iSelGroupFleet
 
                 For Each result As cMSYFResult In Me.m_msyData.lstResults
-                    System.Console.WriteLine(igrp.ToString & ", " & result.curF.ToString & ",  " & result.TotalValue.ToString & _
+                    System.Console.WriteLine(igrp.ToString & ", " & result.FCur.ToString & ",  " & result.TotalValue.ToString & _
                                              "," & result.B(igrp).ToString & ", " & result.[Catch](igrp).ToString)
                 Next
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1138,13 +1151,12 @@ Namespace MSY
 
 #Region " Progress reporting "
 
-        Private Sub StartProgress(ByVal strStatus As String, _
-                                  ByVal iNumSteps As Integer)
+        Private Sub StartProgress(ByVal strStatus As String, ByVal iNumSteps As Integer)
             Try
 
                 Me.ChangeRunState(eMSYRunStates.MSYRunStarted)
 
-                If (Me.m_dgtProgress IsNot Nothing) Then
+                If (Me.m_MessageDelegate IsNot Nothing) Then
 
                     Select Case Me.m_msyData.RunLengthMode
                         Case eMSYRunLengthModeTypes.FixedF
@@ -1155,7 +1167,7 @@ Namespace MSY
                     End Select
                     Me.m_strStatus = strStatus
                     Me.m_iStep = 1
-                    Me.m_dgtProgress.Invoke(New EwECore.cProgressMessage(eProgressState.Start, Me.m_iNumSteps, Me.m_iStep, strStatus))
+                    Me.m_MessageDelegate.Invoke(New EwECore.cProgressMessage(eProgressState.Start, Me.m_iNumSteps, Me.m_iStep, strStatus))
                 End If
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".StartProgress() Exception: " & ex.Message)
@@ -1166,12 +1178,12 @@ Namespace MSY
         Private Sub IncrementProgress(Optional strStatus As String = "")
             Try
 
-                If (Me.m_dgtProgress IsNot Nothing) Then
+                If (Me.m_MessageDelegate IsNot Nothing) Then
                     If Not String.IsNullOrWhiteSpace(strStatus) Then
                         Me.m_strStatus = strStatus
                     End If
                     Me.m_iStep += 1
-                    Me.m_dgtProgress.Invoke(New EwECore.cProgressMessage(eProgressState.Running, Me.m_iNumSteps, Me.m_iStep, Me.m_strStatus))
+                    Me.m_MessageDelegate.Invoke(New EwECore.cProgressMessage(eProgressState.Running, Me.m_iNumSteps, Me.m_iStep, Me.m_strStatus))
                 End If
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".IncrementProgress() Exception: " & ex.Message)
@@ -1190,8 +1202,8 @@ Namespace MSY
                 End If
                 Me.ChangeRunState(runState)
 
-                If (Me.m_dgtProgress IsNot Nothing) Then
-                    Me.m_dgtProgress.Invoke(New EwECore.cProgressMessage(eProgressState.Finished, Me.m_iNumSteps, Me.m_iNumSteps, ""))
+                If (Me.m_MessageDelegate IsNot Nothing) Then
+                    Me.m_MessageDelegate.Invoke(New EwECore.cProgressMessage(eProgressState.Finished, Me.m_iNumSteps, Me.m_iNumSteps, ""))
                 End If
 
             Catch ex As Exception
@@ -1200,7 +1212,12 @@ Namespace MSY
 
         End Sub
 
+        ''' <summary>
+        ''' Inform the user interface that something is happening
+        ''' </summary>
+        ''' <param name="runState"></param>
         Private Sub ChangeRunState(runState As eMSYRunStates)
+
             Try
                 'I don't think this should happen
                 'If it does better figure out why

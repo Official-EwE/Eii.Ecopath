@@ -88,7 +88,7 @@ Namespace MSY
 
                     For i As Integer = 0 To results.Length - 1
                         r = results(i)
-                        sw.Write(cStringUtils.FormatSingle(r.curF))
+                        sw.Write(cStringUtils.FormatSingle(r.FCur))
                         For j As Integer = 1 To Me.m_core.nGroups
                             Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
                             sw.Write(",{0}", cStringUtils.FormatSingle(cSystemUtils.IIF(k = 0, r.B(j), r.Catch(j))))
@@ -141,7 +141,7 @@ Namespace MSY
 
                 For i As Integer = 0 To results.Length - 1
                     r = results(i)
-                    sw.Write(cStringUtils.FormatSingle(r.curF))
+                    sw.Write(cStringUtils.FormatSingle(r.FCur))
                     sw.Write(",")
                     sw.Write(cStringUtils.FormatSingle(r.TotalValue))
                     sw.WriteLine()
@@ -196,7 +196,7 @@ Namespace MSY
 
                     For i As Integer = 0 To results.Length - 1
                         r = results(i)
-                        sw.Write(cStringUtils.FormatSingle(r.curF))
+                        sw.Write(cStringUtils.FormatSingle(r.FCur))
                         For j As Integer = 1 To Me.m_core.nGroups
                             Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
                             sw.Write(",{0}", cStringUtils.FormatSingle(cSystemUtils.IIF(k = 0, r.B(j), r.Catch(j))))
@@ -248,7 +248,7 @@ Namespace MSY
 
                 For i As Integer = 0 To results.Length - 1
                     r = results(i)
-                    sw.Write(cStringUtils.FormatSingle(r.curF))
+                    sw.Write(cStringUtils.FormatSingle(r.FCur))
                     sw.Write(",")
                     sw.Write(cStringUtils.FormatSingle(r.TotalValue))
                     sw.WriteLine()

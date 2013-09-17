@@ -45,6 +45,10 @@ Public Enum eSearchModes
     MSE
     ''' <summary>Spatial optimization is active.</summary>
     SpatialOpt
+    ''' <summary>MSY search is active.</summary>
+    MSY
+    ''' <summary>FMSY search is active.</summary>
+    FMSY
 End Enum
 
 ''' <summary>
@@ -284,22 +288,6 @@ Public Class cSearchDatastructures
 
 #Region "Public properties"
 
-    '''' <summary>
-    '''' Initializes the search data 
-    '''' </summary>
-    '''' <value></value>
-    '''' <returns></returns>
-    '''' <remarks></remarks>
-    'Public Property bInSearch() As Boolean
-    '    Get
-    '        Return m_bDoSearch
-    '    End Get
-    '    Set(ByVal value As Boolean)
-    '        m_bDoSearch = value
-    '        InitSearch()
-    '    End Set
-    'End Property
-
     Friend Event OnSearchStateChanged(ByVal searchMode As eSearchModes)
 
     Public Property SearchMode() As eSearchModes
@@ -313,16 +301,14 @@ Public Class cSearchDatastructures
         End Set
     End Property
 
-
+    ''' <summary>
+    ''' Get whether a search is currently in progress.
+    ''' </summary>
     Public ReadOnly Property bInSearch() As Boolean
         Get
-            If Me.m_SearchMode <> eSearchModes.NotInSearch Then
-                Return True
-            End If
-            Return False
+            Return (Me.m_SearchMode <> eSearchModes.NotInSearch)
         End Get
     End Property
-
 
     Public Property bUseFishingMortalityPenality() As Boolean
         Get
@@ -336,16 +322,11 @@ Public Class cSearchDatastructures
     ''' <summary>
     ''' The Fishing Policy Search needs Ecosim to run for an additional 20 years
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property ExtraYearsForSearch() As Integer
         Get
             Return m_ExtraYears
         End Get
     End Property
-
-
 
     Public Property nBlocks() As Integer
         Get
@@ -358,7 +339,6 @@ Public Class cSearchDatastructures
         End Set
 
     End Property
-
 
     Public ReadOnly Property WeightedTotal() As Single
         Get
@@ -376,22 +356,17 @@ Public Class cSearchDatastructures
         End Get
     End Property
 
-
     Public ReadOnly Property NumFleets() As Integer
         Get
             Return Me.m_EPdata.NumFleet
         End Get
     End Property
 
-
-
     Public ReadOnly Property NumLiving() As Integer
         Get
             Return Me.m_EPdata.NumLiving
         End Get
     End Property
-
-
 
 #End Region
 
@@ -836,7 +811,6 @@ Public Class cSearchDatastructures
     ''' <param name="Fgear"></param>
     ''' <param name="RelFopt"></param>
     ''' <param name="iYear"></param>
-    ''' <remarks></remarks>
     Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByVal iYear As Integer)
 
         'When Ecosim is run for a Fishing Policy Search it is run for 20 years past the end of the regular run length(cSearchDataStructures.ExtraYearsForSearch)
@@ -874,7 +848,6 @@ Public Class cSearchDatastructures
     ''' </summary>
     ''' <param name="iYear"></param>
     ''' <param name="RelFopt"></param>
-    ''' <remarks></remarks>
     Public Sub YearTimeStepEcoSpace(ByVal Biomass() As Single, ByRef Fgear() As Single, ByVal iYear As Integer, ByVal nWaterCells As Integer, ByVal RelFopt() As Single)
 
         ' Sanity checks
@@ -1173,7 +1146,6 @@ Public Class cSearchDatastructures
     ''' </summary>
     ''' <param name="YearPastBaseYear"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function CalcLTV(ByVal YearPastBaseYear As Integer) As Single
         Dim LTV As Single
         If GenDiscountFactor > 0 Then

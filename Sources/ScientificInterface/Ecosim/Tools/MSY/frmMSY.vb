@@ -110,7 +110,7 @@ Namespace Ecosim
 
             Me.m_manager = Me.Core.MSYManager
             Me.m_parms = Me.m_manager.Parameters
-            Me.m_manager.RunStateChangedDelegate = AddressOf Me.onMSYRunStateChanged
+            Me.m_manager.RunStateChangedDelegate = AddressOf Me.OnMSYRunStateChanged
 
             ' Set up zedgraph
             Me.m_zgh = New cZedGraphHelper()
@@ -290,7 +290,7 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub onMSYRunStateChanged(ByVal RunState As eMSYRunStates)
+        Private Sub OnMSYRunStateChanged(ByVal RunState As eMSYRunStates)
             Try
 
                 If RunState = eMSYRunStates.FullCompRunCompleted Then
@@ -429,7 +429,7 @@ Namespace Ecosim
 
                 'RunThreaded() will run both FullCompensation and StationarySystem on a thread 
                 'me.onMSYRunStateChanged(eMSYRunState) will be called during the run with state info
-                Me.m_manager.RunThreaded()
+                Me.m_manager.RunMSY()
 
                 'All updating is handled in Me.onMSYRunStateChanged(eMSYRunState)
 
@@ -586,7 +586,7 @@ Namespace Ecosim
 
                 For Each r As cMSYFResult In results
                     ' Add to line
-                    ppl.Add(r.curF, r.TotalValue / base.TotalValue)
+                    ppl.Add(r.FCur, r.TotalValue / base.TotalValue)
                 Next r
 
                 ' Add value line to the list of lines to show
@@ -610,7 +610,7 @@ Namespace Ecosim
                             ' Make new line for this group
                             ppl = New PointPairList()
                             For Each r As cMSYFResult In results
-                                ppl.Add(r.curF, r.B(i) / base.B(i))
+                                ppl.Add(r.FCur, r.B(i) / base.B(i))
                             Next r
 
                             ' Create line
@@ -648,10 +648,10 @@ Namespace Ecosim
                             ' Make new line for this group
                             ppl = New PointPairList()
                             For Each r As cMSYFResult In results
-                                ppl.Add(r.curF, r.Catch(i) / base.Catch(i))
+                                ppl.Add(r.FCur, r.Catch(i) / base.Catch(i))
 
                                 bPlotFMSY = False
-                                If r.curF = optimum.Fopt(i) Then
+                                If r.FCur = optimum.Fopt(i) Then
                                     If Me.m_results.SelMode = eMSYFSelectionModeType.Groups Then
                                         bPlotFMSY = (i = Me.m_results.Selection)
                                     Else
@@ -661,8 +661,8 @@ Namespace Ecosim
 
                                 If bPlotFMSY Then
                                     pplFMSY = New PointPairList()
-                                    pplFMSY.Add(r.curF, 0)
-                                    pplFMSY.Add(r.curF, r.Catch(i) / base.Catch(i))
+                                    pplFMSY.Add(r.FCur, 0)
+                                    pplFMSY.Add(r.FCur, r.Catch(i) / base.Catch(i))
 
                                     strLabel = String.Format(My.Resources.MSY_LABEL_FMSY, grp.Name)
                                     liFMSY = New LineItem(Me.GetLabel(strLabel, strPostfix), pplFMSY, _
@@ -674,7 +674,7 @@ Namespace Ecosim
 
                                     pplFMSY = Nothing
                                     liFMSY = Nothing
-                                    Me.m_zgh.CursorPos = r.curF
+                                    Me.m_zgh.CursorPos = r.FCur
                                 End If
 
                             Next r
@@ -729,24 +729,10 @@ Namespace Ecosim
             'End If
 
             Try
-                Me.m_parms.Assessment = eMSYAssessmentTypes.FullCompensation
                 bSucces = bSucces Or Me.m_manager.RunFindFMSY()
-
-                Me.m_parms.Assessment = eMSYAssessmentTypes.StationarySystem
-                bSucces = bSucces Or Me.m_manager.RunFindFMSY()
-
             Catch ex As Exception
 
             End Try
-
-            ' ToDo: demolish this message box (*shudder*) when auto-saving has been 
-            ' properly enabled for Fmsy searches
-            MessageBox.Show("Fmsy results have been saved to " & Me.Core.DefaultOutputPath(eAutosaveTypes.MSY) & ", see the Status panel for details.", _
-                            My.Resources.GENERIC_CAPTION, MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-            If bSucces Then
-
-            End If
 
         End Sub
 

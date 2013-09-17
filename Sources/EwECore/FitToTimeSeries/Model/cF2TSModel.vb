@@ -33,7 +33,6 @@ Namespace FitToTimeSeries
         Search
     End Enum
 
-
     ' Delegates that controlling processes must subscribe to for the model to run
 
     ''' <summary>
@@ -54,23 +53,19 @@ Namespace FitToTimeSeries
     ''' </summary>
     ''' <param name="runType">Type of run</param>
     ''' <param name="nSteps">Number of steps in this run if known at the start time otherwise zero</param>
-    ''' <remarks></remarks>
     Public Delegate Sub RunStartedDelegate(ByVal runType As eRunType, ByVal nSteps As Integer)
 
     ''' <summary>
     ''' A search run has stopped
     ''' </summary>
     ''' <param name="runType">Type of run</param>
-    ''' <remarks></remarks>
     Public Delegate Sub RunStoppedDelegate(ByVal runType As eRunType)
 
     ''' <summary>
     ''' A message being sent out by the search
     ''' </summary>
     ''' <param name="msg"></param>
-    ''' <remarks></remarks>
     Public Delegate Sub RunMessageDelegate(ByVal msg As cMessage)
-
 
     Public Class cF2TSModel
 
