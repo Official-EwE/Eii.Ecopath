@@ -214,7 +214,6 @@ Namespace Ecospace
             Dim drawer As cMapDrawerBase
             Dim nThreads As Integer = Environment.ProcessorCount
             Dim sg As cStyleGuide = Me.StyleGuide
-            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
 
             Me.m_nMapsPerThread = (Me.Core.nGroups + nThreads - 1) \ nThreads
             If Me.m_drawers Is Nothing Then
@@ -228,7 +227,7 @@ Namespace Ecospace
             For i As Integer = 1 To nThreads
                 drawer = New cMapDrawerGroup(Me.Core)
                 drawer.Graphics = Graphics.FromImage(Me.m_bmpBiomassMap)
-                drawer.Colors = lColors
+                drawer.Colors = Me.m_legend.Colors
 
                 Me.m_drawers.Add(drawer)
             Next
@@ -261,7 +260,10 @@ Namespace Ecospace
         Protected Overrides Sub OnLoad(ByVal e As EventArgs)
             MyBase.OnLoad(e)
 
-            If Me.UIContext Is Nothing Then Return
+            If (Me.UIContext Is Nothing) Then Return
+
+            Me.m_legend.UIContext = Me.UIContext
+            Me.m_legend.Colors = Me.StyleGuide.GetEwE5ColorRamp(cColourBins)
 
             Me.m_bInUpdate = True
             Dim pm As cPropertyManager = Me.PropertyManager
@@ -723,25 +725,6 @@ Namespace Ecospace
         End Sub
 
 #End Region ' Map plot
-
-#Region " Color chart "
-
-        Private Sub pbColors_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) Handles m_pbColors.Paint
-
-            Dim g As Graphics = e.Graphics
-            Dim sg As cStyleGuide = Me.StyleGuide
-            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.Core.nGroups)
-            Dim sHeight As Single = CSng(Me.m_pbColors.Height / Me.Core.nGroups)
-            Dim brTmp As SolidBrush = Nothing
-            For i As Integer = 1 To Me.Core.nGroups
-                brTmp = New SolidBrush(lColors(i))
-                g.FillRectangle(brTmp, 0, m_pbColors.Height - sHeight * i, m_pbColors.Width, sHeight)
-                brTmp.Dispose()
-            Next
-
-        End Sub
-
-#End Region ' Color chart
 
 #Region " Events "
 
@@ -1373,10 +1356,9 @@ Namespace Ecospace
 
             Dim maptype As cMapDrawerBase.eMapType
             Dim scaler As Single() = Nothing
-            Dim lColors As List(Of Color) = Me.StyleGuide.GetEwE5ColorRamp(cColourBins)
             Dim drawer As New cMapDrawerGroup(Me.Core)
             drawer.Graphics = Graphics.FromImage(bmp)
-            drawer.Colors = lColors
+            drawer.Colors = Me.m_legend.Colors
             drawer.ShowLabels = False
             drawer.ShowMPA = False
             drawer.ShowLand = False

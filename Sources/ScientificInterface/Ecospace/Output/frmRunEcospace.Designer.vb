@@ -51,9 +51,6 @@ Namespace Ecospace
             Me.m_cbOverlay = New System.Windows.Forms.CheckBox()
             Me.m_btnStop = New System.Windows.Forms.Button()
             Me.m_pbMap = New System.Windows.Forms.PictureBox()
-            Me.m_pbColors = New System.Windows.Forms.PictureBox()
-            Me.m_lblHigh = New System.Windows.Forms.Label()
-            Me.m_lblLow = New System.Windows.Forms.Label()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plLabelOptions = New System.Windows.Forms.Panel()
@@ -85,8 +82,8 @@ Namespace Ecospace
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
+            Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -153,26 +150,6 @@ Namespace Ecospace
             Me.m_pbMap.BackColor = System.Drawing.SystemColors.ControlDark
             Me.m_pbMap.Name = "m_pbMap"
             Me.m_pbMap.TabStop = False
-            '
-            'm_pbColors
-            '
-            resources.ApplyResources(Me.m_pbColors, "m_pbColors")
-            Me.m_pbColors.BackColor = System.Drawing.Color.White
-            Me.m_pbColors.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_pbColors.Name = "m_pbColors"
-            Me.m_pbColors.TabStop = False
-            '
-            'm_lblHigh
-            '
-            resources.ApplyResources(Me.m_lblHigh, "m_lblHigh")
-            Me.m_lblHigh.ForeColor = System.Drawing.Color.Red
-            Me.m_lblHigh.Name = "m_lblHigh"
-            '
-            'm_lblLow
-            '
-            resources.ApplyResources(Me.m_lblLow, "m_lblLow")
-            Me.m_lblLow.ForeColor = System.Drawing.Color.Blue
-            Me.m_lblLow.Name = "m_lblLow"
             '
             'm_scMain
             '
@@ -398,10 +375,8 @@ Namespace Ecospace
             '
             'm_tabMap
             '
+            Me.m_tabMap.Controls.Add(Me.m_legend)
             Me.m_tabMap.Controls.Add(Me.m_pbMap)
-            Me.m_tabMap.Controls.Add(Me.m_pbColors)
-            Me.m_tabMap.Controls.Add(Me.m_lblLow)
-            Me.m_tabMap.Controls.Add(Me.m_lblHigh)
             resources.ApplyResources(Me.m_tabMap, "m_tabMap")
             Me.m_tabMap.Name = "m_tabMap"
             Me.m_tabMap.UseVisualStyleBackColor = True
@@ -425,6 +400,13 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
             '
+            'm_legend
+            '
+            resources.ApplyResources(Me.m_legend, "m_legend")
+            Me.m_legend.Colors = Nothing
+            Me.m_legend.Name = "m_legend"
+            Me.m_legend.UIContext = Nothing
+            '
             'frmRunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -433,7 +415,6 @@ Namespace Ecospace
             Me.Name = "frmRunEcospace"
             Me.TabText = "Run Ecospace"
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
@@ -460,9 +441,6 @@ Namespace Ecospace
         Private WithEvents m_rbShowAll As System.Windows.Forms.RadioButton
         Private WithEvents m_btnStop As System.Windows.Forms.Button
         Private WithEvents m_pbMap As System.Windows.Forms.PictureBox
-        Private WithEvents m_pbColors As System.Windows.Forms.PictureBox
-        Private WithEvents m_lblHigh As System.Windows.Forms.Label
-        Private WithEvents m_lblLow As System.Windows.Forms.Label
         Private WithEvents m_cbOverlay As System.Windows.Forms.CheckBox
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_tcOutputs As System.Windows.Forms.TabControl
@@ -495,6 +473,7 @@ Namespace Ecospace
         Private WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents m_txFMax As System.Windows.Forms.TextBox
         Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_legend As ScientificInterfaceShared.Controls.ucLegendBar
 
 
     End Class

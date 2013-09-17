@@ -136,6 +136,12 @@
     </Compile>
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerArgs.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerBase.vb" />
+    <Compile Include="Controls\Map\DirectRendering\ucLegendBar.Designer.vb">
+      <DependentUpon>ucLegendBar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\DirectRendering\ucLegendBar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExcluded.vb" />
     <Compile Include="Controls\Options\IOptionsPage.vb" />
@@ -710,6 +716,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\InputBox\frmInputBox.resx">
       <DependentUpon>frmInputBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\DirectRendering\ucLegendBar.resx">
+      <DependentUpon>ucLegendBar.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.resx">
       <DependentUpon>ucLayerEditor.vb</DependentUpon>
