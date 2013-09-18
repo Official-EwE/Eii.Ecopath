@@ -24,21 +24,59 @@ Imports System.ComponentModel
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Control that renders a vertical legend bar.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class ucLegendBar
         Implements IUIElement
 
-        Private m_uic As cUIContext = Nothing
-        Private m_colors As New List(Of Color)
+#Region " Private vars "
 
+        Private m_uic As cUIContext = Nothing
+
+        Private m_strLabelHigh As String = ""
+        Private m_clrHigh As Color = Color.DarkGreen
+
+        Private m_strLabelLow As String = ""
+        Private m_clrLow As Color = Color.Red
+
+        Private m_colors As New List(Of Color)
+        Private m_iBarWidthPerc As Integer = 80
+        Private m_fmt As New StringFormat()
+
+#End Region ' Private vars
+
+#Region " Construction / destruction "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Construction.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Public Sub New()
             MyBase.New()
-            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+
+            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer Or ControlStyles.ResizeRedraw Or ControlStyles.AllPaintingInWmPaint, True)
             Me.InitializeComponent()
+
+            Me.m_fmt.FormatFlags = StringFormatFlags.NoWrap
+            Me.m_fmt.Alignment = StringAlignment.Center
+            Me.m_fmt.LineAlignment = StringAlignment.Center
+            Me.m_fmt.Trimming = StringTrimming.None
+
+            Me.m_strLabelHigh = My.Resources.HEADER_HIGH
+            Me.m_strLabelLow = My.Resources.HEADER_LOW
+
         End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Destruction.
+        ''' </summary>
+        ''' <param name="disposing">Yeah...</param>
+        ''' -----------------------------------------------------------------------
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Me.UIContext = Nothing
             Try
@@ -50,7 +88,14 @@ Namespace Controls
             End Try
         End Sub
 
+#End Region ' Construction / destruction
+
+#Region " Properties "
+
+        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -60,13 +105,18 @@ Namespace Controls
                 If (Me.m_uic IsNot Nothing) Then
                     RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
                 End If
-                Me.m_uic = UIContext
+                Me.m_uic = value
                 If (Me.m_uic IsNot Nothing) Then
                     AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
                 End If
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the colours to use for the legend.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property Colors As List(Of Color)
             Get
                 Return Me.m_colors
@@ -79,89 +129,206 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), DefaultValue("High")> _
-        Public Property LabelHigh As String = "High"
-
-        <Browsable(True), DefaultValue("Low")> _
-        Public Property LabelLow As String = "Low"
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the text to display at the high end of the bar.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         <Browsable(True), _
-         DefaultValue(75), _
-         Description("Percentage that the bar occupies of the control")> _
-        Public Property BarWidthPercentage As Integer = 75
+         Description("The text to display at the high end of the bar")> _
+        Public Property LabelHigh As String
+            Get
+                Return Me.m_strLabelHigh
+            End Get
+            Set(value As String)
+                Me.m_strLabelHigh = value
+                Me.Invalidate()
+            End Set
+        End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the text colour for the high label.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         Description("Color for rendering the high label text")> _
+        Public Property ColorHigh As Color
+            Get
+                Return Me.m_clrHigh
+            End Get
+            Set(value As Color)
+                Me.m_clrHigh = value
+                Me.Invalidate()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the text to display at the low end of the bar.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+          Description("The text to display at the low end of the bar")> _
+        Public Property LabelLow As String
+            Get
+                Return Me.m_strLabelLow
+            End Get
+            Set(value As String)
+                Me.m_strLabelLow = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the text colour for the low label.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+           Description("Color for rendering the low label text")> _
+        Public Property ColorLow As Color
+            Get
+                Return Me.m_clrLow
+            End Get
+            Set(value As Color)
+                Me.m_clrLow = value
+                Me.Invalidate()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the percentage that the bar occupies of the width of the control.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+          DefaultValue(75), _
+          Description("Percentage that the bar occupies of the width of the control")> _
+        Public Property BarWidthPercentage As Integer
+            Get
+                Return Me.m_iBarWidthPerc
+            End Get
+            Set(value As Integer)
+                Me.m_iBarWidthPerc = Math.Max(1, Math.Min(100, value))
+                Me.Invalidate()
+            End Set
+        End Property
+
+#End Region ' Properties
+
+#Region " Overrides "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Diddle diddle.
+        ''' </summary>
+        ''' <param name="e"><see cref="System.Windows.Forms.PaintEventArgs">Arguments</see> 
+        ''' with rendering information.</param>
+        ''' -----------------------------------------------------------------------
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)
 
-            Dim g As Graphics = e.Graphics
-            Dim ft As Font = Nothing
+            Try
 
-            If (Me.UIContext IsNot Nothing) Then
-                ft = Me.UIContext.StyleGuide.Font(Style.cStyleGuide.eApplicationFontType.Legend)
-            Else
-                ft = Me.Font
-            End If
+                Dim g As Graphics = e.Graphics
+                Dim ft As Font = Nothing
 
-            Dim rcClient As Rectangle = Me.ClientRectangle
+                If (Me.UIContext IsNot Nothing) Then
+                    ft = Me.UIContext.StyleGuide.Font(Style.cStyleGuide.eApplicationFontType.Scale)
+                Else
+                    ft = Me.Font
+                End If
 
-            Dim szHigh As SizeF = g.MeasureString(Me.LabelHigh, ft)
-            Dim rcHigh As New Rectangle(Me.Padding.Left, Me.Padding.Top, _
-                                        rcClient.Width - Me.Padding.Horizontal, CInt(szHigh.Height))
+                Dim rcClient As Rectangle = Me.ClientRectangle
 
-            Dim szLow As SizeF = g.MeasureString(Me.LabelLow, ft)
-            Dim rcLow As New Rectangle(Me.Padding.Left, CInt(rcClient.Height - Me.Padding.Bottom - szLow.Height), _
-                                       rcClient.Width - Me.Padding.Horizontal, CInt(szLow.Height))
+                Dim szHigh As SizeF = g.MeasureString(Me.LabelHigh, ft)
+                Dim rcHigh As New Rectangle(0, Me.Padding.Top, rcClient.Width, CInt(szHigh.Height))
 
-            Dim iWidth As Integer = CInt(Math.Min((Me.Width - Me.Padding.Horizontal) * Me.BarWidthPercentage / 100, Me.Width - Me.Padding.Horizontal))
-            Dim iHeight As Integer = CInt(rcClient.Height - 2 * Me.Padding.Vertical - rcHigh.Height - rcLow.Height)
-            Dim rcBox As New Rectangle(CInt((Me.Width - iWidth) / 2), CInt(Me.Padding.Vertical + rcHigh.Height), iWidth, iHeight)
+                Dim szLow As SizeF = g.MeasureString(Me.LabelLow, ft)
+                Dim rcLow As New Rectangle(0, CInt(rcClient.Height - Me.Padding.Bottom - szLow.Height), rcClient.Width, CInt(szLow.Height))
 
-            ' Back
-            Using br As New SolidBrush(Me.BackColor)
-                g.FillRectangle(br, rcClient)
+                Dim iWidth As Integer = CInt(Math.Min((Me.Width - Me.Padding.Horizontal) * Me.BarWidthPercentage / 100, Me.Width - Me.Padding.Horizontal))
+                Dim iHeight As Integer = CInt(rcClient.Height - 2 * Me.Padding.Vertical - rcHigh.Height - rcLow.Height)
+                Dim rcBox As New Rectangle(CInt((Me.Width - iWidth) / 2), CInt(Me.Padding.Vertical + rcHigh.Height), Math.Max(iWidth, 1), Math.Max(iHeight, 1))
+
+                ' Back
+                Using br As New SolidBrush(Me.BackColor)
+                    g.FillRectangle(br, rcClient)
+                End Using
+
+                Me.DrawLabel(g, Me.m_strLabelHigh, ft, rcHigh, Me.m_clrHigh)
+                Me.DrawLabel(g, Me.m_strLabelLow, ft, rcLow, Me.m_clrLow)
+                Me.DrawBox(g, rcBox)
+
+                If (Me.UIContext IsNot Nothing) Then
+                    ft.Dispose()
+                End If
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+#End Region ' Overrides
+
+#Region " Internals "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Render a legend box label.
+        ''' </summary>
+        ''' <param name="g">The graphics to render onto.</param>
+        ''' <param name="strText">The text to render.</param>
+        ''' <param name="ft">The font to render with.</param>
+        ''' <param name="rc">The area to render into.</param>
+        ''' <param name="clr">The color to render with.</param>
+        ''' -----------------------------------------------------------------------
+        Private Sub DrawLabel(g As Graphics, strText As String, ft As Font, rc As Rectangle, clr As Color)
+
+            Using br As New SolidBrush(clr)
+                g.DrawString(strText, ft, br, rc, Me.m_fmt)
             End Using
 
-            Me.DrawLabel(g, Me.LabelHigh, ft, rcHigh)
-            Me.DrawLabel(g, Me.LabelLow, ft, rcLow)
-            Me.DrawBox(g, rcBox)
-
-            If (Me.UIContext IsNot Nothing) Then
-                ft.Dispose()
-            End If
-
         End Sub
 
-        Private Sub DrawLabel(g As Graphics, strText As String, ft As Font, rc As Rectangle)
-
-            Dim fmt As New StringFormat()
-            fmt.FormatFlags = StringFormatFlags.NoWrap
-            fmt.Alignment = StringAlignment.Center
-            fmt.LineAlignment = StringAlignment.Center
-            fmt.Trimming = StringTrimming.None
-            g.DrawString(strText, ft, SystemBrushes.WindowText, rc, fmt)
-
-        End Sub
-
-        Private Sub DrawBox(g As Graphics, rcBox As Rectangle)
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Render the legend colour box.
+        ''' </summary>
+        ''' <param name="g">The graphics to render onto.</param>
+        ''' <param name="rc">The area to render into.</param>
+        ''' -----------------------------------------------------------------------
+        Private Sub DrawBox(g As Graphics, rc As Rectangle)
 
             If (Me.m_colors.Count = 0) Then
-                g.FillRectangle(SystemBrushes.GrayText, rcBox)
+                g.FillRectangle(SystemBrushes.GrayText, rc)
             Else
                 Dim iNumCols As Integer = Me.Colors.Count
-                Dim sHeight As Single = CSng(rcBox.Height / iNumCols)
+                Dim sHeight As Single = CSng(rc.Height / iNumCols)
 
                 For i As Integer = 1 To iNumCols
                     Using brTmp As New SolidBrush(Me.Colors(i - 1))
-                        g.FillRectangle(brTmp, rcBox.X, rcBox.Y + rcBox.Height - sHeight * i, rcBox.Width, sHeight)
+                        g.FillRectangle(brTmp, rc.X, rc.Y + rc.Height - sHeight * i, rc.Width, sHeight)
                     End Using
                 Next
             End If
 
         End Sub
 
+#End Region ' Internals
+
 #Region " Events "
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler to respond to appropriate style guide changes.
+        ''' </summary>
+        ''' <param name="ct">The <see cref="Style.cStyleGuide.eChangeType">change</see>
+        ''' that triggered this event.</param>
+        ''' -----------------------------------------------------------------------
         Private Sub OnStyleguideChanged(ct As Style.cStyleGuide.eChangeType)
+            ' Invalidate on font changes
             If ((ct And Style.cStyleGuide.eChangeType.Fonts) > 0) Then
                 Me.Invalidate()
             End If
