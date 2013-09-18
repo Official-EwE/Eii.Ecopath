@@ -4211,6 +4211,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to High.
+        '''</summary>
+        Public ReadOnly Property HEADER_HIGH() As String
+            Get
+                Return ResourceManager.GetString("HEADER_HIGH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Histogram for &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property HEADER_HISTOGRAM_TARGET() As String
@@ -4477,6 +4486,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_LONGITUDE() As String
             Get
                 Return ResourceManager.GetString("HEADER_LONGITUDE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Low.
+        '''</summary>
+        Public ReadOnly Property HEADER_LOW() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LOW", resourceCulture)
             End Get
         End Property
         

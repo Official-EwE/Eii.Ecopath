@@ -2975,4 +2975,10 @@
   <data name="VARIABLE_SAILCOST" xml:space="preserve">
     <value>Sail cost</value>
   </data>
+  <data name="HEADER_HIGH" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="HEADER_LOW" xml:space="preserve">
+    <value>Low</value>
+  </data>
 </root>
