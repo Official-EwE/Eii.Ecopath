@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
@@ -73,13 +74,13 @@ Partial Class frmMain
         Me.m_tpEcosim = New System.Windows.Forms.TabPage()
         Me.m_graphSim = New ZedGraph.ZedGraphControl()
         Me.m_tpEcospace = New System.Windows.Forms.TabPage()
+        Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
         Me.m_pbEcospaceMap = New System.Windows.Forms.PictureBox()
         Me.m_tpMC = New System.Windows.Forms.TabPage()
         Me.m_graphMC = New ZedGraph.ZedGraphControl()
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
-        Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -342,6 +343,17 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_tpEcospace, "m_tpEcospace")
         Me.m_tpEcospace.Name = "m_tpEcospace"
         '
+        'm_legend
+        '
+        resources.ApplyResources(Me.m_legend, "m_legend")
+        Me.m_legend.ColorHigh = System.Drawing.Color.DarkGreen
+        Me.m_legend.ColorLow = System.Drawing.Color.Red
+        Me.m_legend.Colors = CType(resources.GetObject("m_legend.Colors"), System.Collections.Generic.List(Of System.Drawing.Color))
+        Me.m_legend.LabelHigh = "High"
+        Me.m_legend.LabelLow = "Low"
+        Me.m_legend.Name = "m_legend"
+        Me.m_legend.UIContext = Nothing
+        '
         'm_pbEcospaceMap
         '
         resources.ApplyResources(Me.m_pbEcospaceMap, "m_pbEcospaceMap")
@@ -386,14 +398,6 @@ Partial Class frmMain
         Me.m_llStatus.TabStop = True
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
-        '
-        'm_legend
-        '
-        resources.ApplyResources(Me.m_legend, "m_legend")
-        Me.m_legend.BarWidthPercentage = 75
-        Me.m_legend.Colors = Nothing
-        Me.m_legend.Name = "m_legend"
-        Me.m_legend.UIContext = Nothing
         '
         'frmMain
         '

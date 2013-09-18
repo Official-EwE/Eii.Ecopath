@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
@@ -27,9 +28,9 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("EwEBioDiversityIndicatorsPlugin")> 
 <Assembly: AssemblyDescription("Plug-in for EwE6 that computes additional biodiversity indocators")> 
-<Assembly: AssemblyCompany("UBC Fisheries Centre")> 
+<Assembly: AssemblyCompany("ICM-CSIC")> 
 <Assembly: AssemblyProduct("EwEBioDiversityIndicatorsPlugin")> 
-<Assembly: AssemblyCopyright("Copyright © ICM-CSIC, UBC Fisheries Centre 2011")> 
+<Assembly: AssemblyCopyright("Copyright © ICM-CSIC 2013")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
