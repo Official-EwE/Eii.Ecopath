@@ -35,7 +35,7 @@ Imports System.Threading
 ''' Helper class to update the map that reflects Ecospace biodiversity indicators.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cEcospaceMapWrapper2
+Public Class cEcospaceMapWrapper
 
 #Region " Private variables "
 

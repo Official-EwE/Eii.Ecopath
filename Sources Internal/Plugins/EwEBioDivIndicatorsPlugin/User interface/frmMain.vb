@@ -38,7 +38,7 @@ Public Class frmMain
 #Region " Variables "
 
     Private m_ecosimWrapper As cEcosimGraphWrapper = Nothing
-    Private m_ecospaceWrapper As cEcospaceMapWrapper2 = Nothing
+    Private m_ecospaceWrapper As cEcospaceMapWrapper = Nothing
     Private m_mcWrapper As cMCGraphWrapper = Nothing
 
     Private m_ppt As cEwEBioDiversityIndicatorsPlugin = Nothing
@@ -61,7 +61,7 @@ Public Class frmMain
         Me.InitializeComponent()
 
         Me.m_ecosimWrapper = New cEcosimGraphWrapper()
-        Me.m_ecospaceWrapper = New cEcospaceMapWrapper2()
+        Me.m_ecospaceWrapper = New cEcospaceMapWrapper()
         Me.m_mcWrapper = New cMCGraphWrapper()
 
     End Sub
