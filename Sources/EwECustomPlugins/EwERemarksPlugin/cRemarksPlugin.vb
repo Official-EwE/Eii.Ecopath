@@ -28,14 +28,15 @@ Imports System.Drawing
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Plug-in point for the remarks plug-in panel.
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cRemarksPlugin
     Implements IUIContextPlugin
-    Implements IMenuItemPlugin
+    Implements IMenuItemTogglePlugin
     Implements IDisposedPlugin
-    Implements IAutolaunchPlugin
     Implements IDockStatePlugin
 
 #Region " Private variables "
@@ -65,14 +66,15 @@ Public Class cRemarksPlugin
 
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "EwERemarksPlugin"
+            ' The name will (hopefilly) sort the menu item near m_tsmiViewRemarks
+            Return "m_tsmiViewRemarksCollector"
         End Get
     End Property
 
     Public ReadOnly Property ControlImage() As System.Drawing.Image _
      Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
-            Return SharedResources.CommentHS
+            Return Nothing
         End Get
     End Property
 
@@ -112,11 +114,24 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
+    Public ReadOnly Property IsChecked As Boolean _
+        Implements EwEPlugin.IMenuItemTogglePlugin.IsChecked
+        Get
+            Return Me.HasUI
+        End Get
+    End Property
+
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         Try
             If (Me.m_core Is Nothing) Then Return
-            Me.CreateUI()
+            If Me.HasUI Then
+                Me.m_frm.Close()
+                Me.m_frm.Dispose()
+                Me.m_frm = Nothing
+            Else
+                Me.CreateUI()
+            End If
             frmPlugin = Me.m_frm
         Catch ex As Exception
 
@@ -144,11 +159,6 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
-    Public Function Autolaunch() As Boolean _
-        Implements EwEPlugin.IAutolaunchPlugin.Autolaunch
-        Return True
-    End Function
-
     Public Function DockState() As Integer Implements EwEPlugin.IDockStatePlugin.DockState
         Return WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide
     End Function
@@ -163,7 +173,7 @@ Public Class cRemarksPlugin
             Me.m_frm.Text = My.Resources.CAPTION
             Me.m_frm.TabText = My.Resources.CAPTION
             ' Chop chop
-            Me.m_frm.Icon = Drawing.Icon.FromHandle(DirectCast(Me.ControlImage, Bitmap).GetHicon)
+            Me.m_frm.Icon = Drawing.Icon.FromHandle(DirectCast(SharedResources.CommentHS, Bitmap).GetHicon)
         End If
         Return True
     End Function

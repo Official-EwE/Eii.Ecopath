@@ -61,8 +61,10 @@ Public Class cPluginMenuHandler
 
 #End Region ' Private helper class
 
-    ''' <summary>The form holding the menu to modify.</summary>
+    ''' <summary>The menu to modify.</summary>
     Private m_menu As MenuStrip = Nothing
+    ''' <summary>The items that have been created.</summary>
+    Private m_lItems As New List(Of ToolStripMenuItem)
 
 #End Region ' Private parts
 
@@ -87,6 +89,32 @@ Public Class cPluginMenuHandler
     End Sub
 
 #End Region ' Construction 
+
+#Region " Command idle time updating "
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Application idle time handler, makes sure that every plug-in menu item
+    ''' is updated.
+    ''' </summary>
+    ''' <remarks>
+    ''' This method should be invoked in response to the .NET Idle event.
+    ''' </remarks>
+    ''' -------------------------------------------------------------------
+    Public Sub OnIdle(ByVal sender As Object, ByVal e As EventArgs)
+        For Each tsi As ToolStripMenuItem In Me.m_lItems
+            If (TypeOf tsi.Tag Is IMenuItemTogglePlugin) Then
+                Try
+                    Dim ip As IMenuItemTogglePlugin = DirectCast(tsi.Tag, IMenuItemTogglePlugin)
+                    tsi.Checked = ip.IsChecked
+                Catch ex As Exception
+
+                End Try
+            End If
+        Next
+    End Sub
+
+#End Region ' Command idle time updating 
 
 #Region " Menu item handling "
 
@@ -179,6 +207,7 @@ Public Class cPluginMenuHandler
                     tsi.ToolTipText = ip.ControlTooltipText
                     ' Add tag
                     tsi.Tag = ip
+                    Me.m_lItems.Add(tsi)
 
                     ' try to insert menu item into strip
                     Dim bFoundGroup As Boolean = False
@@ -195,6 +224,8 @@ Public Class cPluginMenuHandler
                 Else
                     ' Remove menu item
                     tsic.RemoveByKey(ip.Name)
+                    tsi = DirectCast(tsic.Find(ip.Name, True)(0), ToolStripMenuItem)
+                    Me.m_lItems.Remove(tsi)
                 End If
             End If
 
@@ -234,7 +265,7 @@ Public Class cPluginMenuHandler
 
         atsi = tsic.Find(ip.Name, True)
         For Each tsi As ToolStripItem In atsi
-            If tsi.Tag Is ip Then
+            If (tsi.Tag Is ip) Then
                 tsi.Enabled = bEnable
             End If
         Next

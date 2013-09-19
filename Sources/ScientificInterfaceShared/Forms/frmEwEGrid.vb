@@ -189,6 +189,8 @@ Namespace Forms
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
+            Me.UIContext = Nothing
+
             ' Release any quick edit handler
             Me.SetQuickEditHandler(False)
             ' Clear any message source links

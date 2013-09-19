@@ -174,6 +174,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdHelpReportIssue As cCommand = Nothing
+    Private WithEvents m_cmdHelpFeedback As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
     Private WithEvents m_cmdShowHideItems As cDisplayGroupsCommand = Nothing
     Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
@@ -530,11 +531,17 @@ Public Class AppLauncher
 
         Me.m_cmdHelpReportIssue = New cCommand(cmdh, "ReportIssue")
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
+        Me.m_cmdHelpFeedback = New cCommand(cmdh, "HelpFeedback")
+
 #If BETA = 1 Then
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnBeta)
         Me.m_tsbnBeta.Visible = True
+
+        Me.m_cmdHelpFeedback.AddControl(Me.m_tsbnFeedback)
+        Me.m_tsbnFeedback.Visible = True
 #Else
         Me.m_tsbnBeta.Visible = False
+        Me.m_tsbnFeedback.Visible = False
 #End If
 
         Me.m_cmdPluginGUICommand = New cPluginGUICommand(cmdh)
@@ -552,6 +559,7 @@ Public Class AppLauncher
 
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
+        AddHandler Application.Idle, AddressOf Me.m_pluginMenuHandler.OnIdle
 
     End Sub
 
@@ -687,8 +695,9 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property SelectedFileName(Optional ByVal bFullPath As Boolean = True) As String
         Get
+            If (Me.Core Is Nothing) Then Return ""
             Dim ds As IEwEDataSource = Me.Core.DataSource
-            If Object.ReferenceEquals(ds, Nothing) Then
+            If (Object.ReferenceEquals(ds, Nothing)) Then
                 Return ""
             Else
                 If bFullPath Then
@@ -869,6 +878,7 @@ Public Class AppLauncher
 
         Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
+        RemoveHandler Application.Idle, AddressOf Me.m_pluginMenuHandler.OnIdle
 
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
@@ -3075,6 +3085,11 @@ Public Class AppLauncher
         End If
         cApplicationStatusNotifier.EndProgress(Me.Core)
 
+    End Sub
+
+    Private Sub OnProvideFeedback(cmd As cCommand) Handles m_cmdHelpFeedback.OnInvoke
+        ' Survey monkey URL
+        Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Feedback)
     End Sub
 
     Private Sub OnVisitForums(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpViewForums.Click

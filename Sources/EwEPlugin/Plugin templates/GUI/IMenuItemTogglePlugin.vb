@@ -25,22 +25,23 @@ Option Strict On
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Plugin interface that defines all functionality required to add a menu
-''' item to the EwE main menu.
+''' item to the EwE main menu. The menu item can be checked or unchecked.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Interface IMenuItemPlugin
-    Inherits IGUIPlugin
+Public Interface IMenuItemTogglePlugin
+    Inherits IMenuItemPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' <para>
-    ''' Implement this point to specify the menu item location for this plugin.
-    ''' </para>
-    ''' <para>A location is a '\' separated series of menu item names, starting 
-    ''' at the root node of the menu that the plug-in is nested into.</para>
-    ''' <para>Use of the '|' character to separate menu item names is deprecated.</para>
+    ''' Implement this to specify whether a menu item should be checked or 
+    ''' unchecked at a given moment. This options should always have been part of 
+    ''' <see cref="IMenuItemPlugin"/>.
     ''' </summary>
+    ''' <remarks>
+    ''' Note that the checked state may not show in the Windows UI if a plug-in 
+    ''' has been given a <see cref="ControlImage"/>.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
-    ReadOnly Property MenuItemLocation() As String
+    ReadOnly Property IsChecked() As Boolean
 
 End Interface

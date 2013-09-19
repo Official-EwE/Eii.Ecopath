@@ -61,7 +61,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcoWriter.
+        '''  Looks up a localized string similar to Remarks collector.
         '''</summary>
         Friend ReadOnly Property CAPTION() As String
             Get
@@ -70,7 +70,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Manage the remarks entered in a model.
+        '''  Looks up a localized string similar to Manage all remarks entered in a model from within a single form (reminiscent of EcoWriter).
         '''</summary>
         Friend ReadOnly Property CAPTION_TOOLTIP() As String
             Get

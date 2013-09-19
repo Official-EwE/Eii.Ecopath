@@ -128,6 +128,7 @@
     <Compile Include="Plugin templates\Ecopath\IEcopathRunInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimModifyEffort.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceInitRunCompletedPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IMenuItemTogglePlugin.vb" />
     <Compile Include="Plugin templates\GUI\IAutoSavePlugin.vb" />
     <Compile Include="Plugin templates\Data exchange\cSearchRunType.vb" />
     <Compile Include="Plugin templates\Data exchange\IDataConsumerPlugin.vb" />

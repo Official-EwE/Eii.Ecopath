@@ -134,8 +134,7 @@ Namespace Commands
         ''' is updated.
         ''' </summary>
         ''' <remarks>
-        ''' This method should be invoked in response to the
-        ''' .NET Application.OnIdle event.
+        ''' This method should be invoked in response to the .NET Idle event.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Sub OnIdle(ByVal sender As Object, ByVal e As EventArgs)

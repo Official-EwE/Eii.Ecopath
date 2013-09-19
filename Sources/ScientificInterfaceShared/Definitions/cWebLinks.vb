@@ -41,6 +41,7 @@ Public Class cWebLinks
     Private Const cCourse As String = "http://www.ecopath.org/courses"
     Private Const cForum As String = "http://www.ecopath.org/forum"
     Private Const cFacebook As String = "http://www.facebook.com/eweconsortium"
+    Private Const cFeedback As String = "http://www.surveymonkey.com/s/5XD6HKC"
 
     Private m_core As cCore = Nothing
 
@@ -57,6 +58,7 @@ Public Class cWebLinks
         Facebook
         Forums
         Courses
+        Feedback
     End Enum
 
     Public Function GetURL(type As eLinkType) As String
@@ -69,6 +71,7 @@ Public Class cWebLinks
             Case eLinkType.Courses : Return cWebLinks.cCourse
             Case eLinkType.Forums : Return cWebLinks.cForum
             Case eLinkType.Facebook : Return cWebLinks.cFacebook
+            Case eLinkType.Feedback : Return cWebLinks.cFeedback
         End Select
         Return ""
 
