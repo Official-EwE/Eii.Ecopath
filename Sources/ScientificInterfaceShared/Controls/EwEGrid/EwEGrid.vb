@@ -930,7 +930,11 @@ Namespace Controls.EwEGrid
 
             ' Remove all rows
             If Not Me.Disposing And Me.RowsCount > 0 Then
-                Me.RowsCount = 0
+                Try
+                    Me.RowsCount = 0
+                Catch ex As Exception
+                    ' Hmm
+                End Try
             End If
 
         End Sub

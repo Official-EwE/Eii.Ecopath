@@ -77,12 +77,12 @@ Partial Public Class AppLauncher
         Me.MenuHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiHelpReportIssue = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiHelpViewReports = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiViewLog = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewMainSite = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewForums = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewFacebook = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpViewReports = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpReportIssue = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiViewLog = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuWindows = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiWindowsClose = New System.Windows.Forms.ToolStripMenuItem()
@@ -139,6 +139,7 @@ Partial Public Class AppLauncher
         Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip()
         Me.m_tsbnBeta = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
@@ -356,23 +357,6 @@ Partial Public Class AppLauncher
         resources.ApplyResources(Me.m_tsmiHelpSearch, "m_tsmiHelpSearch")
         Me.m_tsmiHelpSearch.Name = "m_tsmiHelpSearch"
         '
-        'm_tsmiHelpReportIssue
-        '
-        Me.m_tsmiHelpReportIssue.Name = "m_tsmiHelpReportIssue"
-        resources.ApplyResources(Me.m_tsmiHelpReportIssue, "m_tsmiHelpReportIssue")
-        Me.m_tsmiHelpReportIssue.Image = SharedResources.bug
-        '
-        'm_tsmiHelpViewReports
-        '
-        Me.m_tsmiHelpViewReports.Name = "m_tsmiHelpViewReports"
-        resources.ApplyResources(Me.m_tsmiHelpViewReports, "m_tsmiHelpViewReports")
-        Me.m_tsmiHelpViewReports.Image = SharedResources.bug
-        '
-        'm_tsmiViewLog
-        '
-        Me.m_tsmiViewLog.Name = "m_tsmiViewLog"
-        resources.ApplyResources(Me.m_tsmiViewLog, "m_tsmiViewLog")
-        '
         'm_tsmiHelpViewMainSite
         '
         Me.m_tsmiHelpViewMainSite.Name = "m_tsmiHelpViewMainSite"
@@ -387,6 +371,21 @@ Partial Public Class AppLauncher
         '
         Me.m_tsmiHelpViewFacebook.Name = "m_tsmiHelpViewFacebook"
         resources.ApplyResources(Me.m_tsmiHelpViewFacebook, "m_tsmiHelpViewFacebook")
+        '
+        'm_tsmiHelpViewReports
+        '
+        resources.ApplyResources(Me.m_tsmiHelpViewReports, "m_tsmiHelpViewReports")
+        Me.m_tsmiHelpViewReports.Name = "m_tsmiHelpViewReports"
+        '
+        'm_tsmiHelpReportIssue
+        '
+        resources.ApplyResources(Me.m_tsmiHelpReportIssue, "m_tsmiHelpReportIssue")
+        Me.m_tsmiHelpReportIssue.Name = "m_tsmiHelpReportIssue"
+        '
+        'm_tsmiViewLog
+        '
+        Me.m_tsmiViewLog.Name = "m_tsmiViewLog"
+        resources.ApplyResources(Me.m_tsmiViewLog, "m_tsmiViewLog")
         '
         'm_tsmiHelpAbout
         '
@@ -677,7 +676,7 @@ Partial Public Class AppLauncher
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnBeta, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, sep3, Me.ToolStripSeparator5, Me.m_tsbnAutosaveResults})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnBeta, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, sep3, Me.ToolStripSeparator5, Me.m_tsbnAutosaveResults, Me.m_tsbnFeedback})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
@@ -691,6 +690,14 @@ Partial Public Class AppLauncher
         resources.ApplyResources(Me.m_tsbnBeta, "m_tsbnBeta")
         Me.m_tsbnBeta.ForeColor = System.Drawing.SystemColors.Highlight
         Me.m_tsbnBeta.Name = "m_tsbnBeta"
+        '
+        'm_tsbnFeedback
+        '
+        Me.m_tsbnFeedback.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tsbnFeedback.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnFeedback, "m_tsbnFeedback")
+        Me.m_tsbnFeedback.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.m_tsbnFeedback.Name = "m_tsbnFeedback"
         '
         'm_tsbSave
         '
@@ -848,6 +855,7 @@ Partial Public Class AppLauncher
     Private WithEvents m_tsmiHelpViewReports As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiHelpViewFacebook As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiHelpViewMainSite As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsbnFeedback As System.Windows.Forms.ToolStripButton
 
 End Class
 

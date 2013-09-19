@@ -83,6 +83,7 @@ Friend Class cRemarksGrid
 
         Me.TrackPropertySelection = False
         Me.FixedColumnWidths = False
+        Me.AllowBlockSelect = False
         Me.FixedColumns = 3
 
     End Sub
