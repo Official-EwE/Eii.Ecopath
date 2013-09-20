@@ -173,6 +173,8 @@
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="app.config" />
+    <None Include="Documentation\EwE Model from Time Step Final.doc" />
+    <None Include="Documentation\EwE model from time step.pdf" />
     <None Include="EwEModelFromEcosim.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
