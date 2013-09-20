@@ -88,8 +88,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Ro [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\deflang2057{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+        '''{\colortbl ;\red0\green0\blue255;}
+        '''\viewkind4\uc1\pard\nowidctlpar\lang1033\b\f0\fs16 EwE6\b0  was initially developed through funding from Lenfest Ocean Program with additional support from the Pew Charitable Trusts. We thank Margaret Bowman for support. Since version 6.2, EwE is developed entirely without core funding under the Ecopath Research and Development Consortium.\par
+        '''\par
+        '''\b EwE release 6.3\b0  was made pos [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property acknowledgements() As String
             Get
@@ -4067,24 +4070,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("urf", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to http://www.ecopath.org/downloads.
-        '''</summary>
-        Public ReadOnly Property URL_DOWNLOAD() As String
-            Get
-                Return ResourceManager.GetString("URL_DOWNLOAD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to http://ecopath.org.
-        '''</summary>
-        Public ReadOnly Property URL_HOME() As String
-            Get
-                Return ResourceManager.GetString("URL_HOME", resourceCulture)
             End Get
         End Property
         

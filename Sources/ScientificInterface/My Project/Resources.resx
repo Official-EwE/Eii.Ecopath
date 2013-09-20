@@ -24064,10 +24064,4 @@ Description: {2}</value>
   <data name="CAPTION_NICHEPLOT_YAXIS_LABEL" xml:space="preserve">
     <value>Prey overlap index</value>
   </data>
-  <data name="URL_HOME" xml:space="preserve">
-    <value>http://ecopath.org</value>
-  </data>
-  <data name="URL_DOWNLOAD" xml:space="preserve">
-    <value>http://www.ecopath.org/downloads</value>
-  </data>
 </root>
