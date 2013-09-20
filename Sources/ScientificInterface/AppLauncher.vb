@@ -2936,8 +2936,8 @@ Public Class AppLauncher
                     panel = New frmStartPanel(Me.UIContext)
                     Me.m_dtPanels(cPANEL_START) = panel
                 End If
-                panel.Show(Me.m_DockPanel, DockState.Document)
                 panel.URL = strURL
+                panel.Show(Me.m_DockPanel, DockState.Document)
             Else
                 If Not panel.IsDisposed Then
                     panel.Close()
