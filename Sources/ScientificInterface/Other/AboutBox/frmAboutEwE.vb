@@ -82,7 +82,7 @@ Namespace Other
         End Sub
 
         Private Sub OnURLClicked(sender As Object, e As System.Windows.Forms.LinkClickedEventArgs) _
-            Handles m_rtbLicense.LinkClicked, m_rtbDistribution.LinkClicked
+            Handles m_rtbLicense.LinkClicked, m_rtbDistribution.LinkClicked, m_rtbAcknowledgements.LinkClicked
 
             Try
                 Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
