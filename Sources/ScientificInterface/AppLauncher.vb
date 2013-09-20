@@ -1200,6 +1200,7 @@ Public Class AppLauncher
 
         Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
         Dim access As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
+        Dim links As New cWebLinks(Me.Core)
 
         ' Get compatibility
         comp = cDataSourceFactory.GetCompatibility(strFileName, access)
@@ -1216,8 +1217,8 @@ Public Class AppLauncher
         Select Case comp
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
-                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, My.Resources.URL_HOME), _
-                               strHyperlink:=My.Resources.URL_HOME)
+                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)), _
+                               strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
                 Me.AddRecentFilesSetting(strFileName)
@@ -1231,18 +1232,18 @@ Public Class AppLauncher
                 End If
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
-                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, My.Resources.URL_HOME), _
-                               strHyperlink:=My.Resources.URL_HOME)
+                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
+                               strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
 
             Case cEwEDatabase.eCompatibilityTypes.EwE6
                 ' Yippee
 
             Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
-                If Me.AskFeedback(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, My.Resources.URL_HOME), _
+                If Me.AskFeedback(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
                                   eMessageImportance.Question, _
                                   eCoreComponentType.DataSource, _
                                   eMessageReplyStyle.YES_NO, _
-                                  strHyperlink:=My.Resources.URL_HOME) = eMessageReply.NO Then
+                                  strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home)) = eMessageReply.NO Then
                     comp = cEwEDatabase.eCompatibilityTypes.Unknown
                 End If
 
