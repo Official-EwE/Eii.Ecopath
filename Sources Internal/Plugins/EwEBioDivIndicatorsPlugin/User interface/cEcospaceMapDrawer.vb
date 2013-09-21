@@ -18,9 +18,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Controls.Map
-Imports EwECore
 Imports System.Drawing
+Imports EwECore
+Imports ScientificInterfaceShared.Controls.Map
 
 #End Region ' Imports
 
@@ -34,7 +34,11 @@ Public Class cEcospaceMapDrawer
         MyBase.New(core)
     End Sub
 
+    ''' <summary>The labels to use for each plot.</summary>
     Public Property Labels As String()
+    ''' <summary>Descriptions to use for each plot.</summary>
+    ''' <remarks>Can be used in tooltips.</remarks>
+    Public Property Descriptions As String()
 
     Public Overrides Sub DrawMap(ByVal iItem As Integer, ByVal rcPos As Rectangle, ByVal Args As cMapDrawerArgs)
 
