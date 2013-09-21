@@ -172,6 +172,8 @@ Public Class frmMain
         Me.m_tbxDefaultLocation.Text = Me.m_ppt.DefaultFolder
         Me.m_tbxOutputFolder.Text = My.Settings.CustomFolder
 
+        Me.Icon = My.Resources.BioDiversityPluginIcon
+
         ' Start listening to core run state changes
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 

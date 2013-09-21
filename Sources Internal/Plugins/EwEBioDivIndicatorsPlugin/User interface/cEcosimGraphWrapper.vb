@@ -23,6 +23,7 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
 Imports System.Text
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -88,7 +89,7 @@ Public Class cEcosimGraphWrapper
         Dim lInfo As New List(Of cIndicatorSettings.cIndicatorInfo)
         Dim info As cIndicatorSettings.cIndicatorInfo = Nothing
         Dim gp As GraphPane = Nothing
-        Dim strLabelTime As String = My.Resources.AXIS_LABEL_TIME
+        Dim strLabelTime As String = SharedResources.UNIT_TIME_YEAR
         Dim strLabelValue As String = ""
         Dim settings As cIndicatorSettings = Me.m_settings
         Dim ind As cEcosimIndicators = Nothing
@@ -120,9 +121,9 @@ Public Class cEcosimGraphWrapper
                 gp = Me.GetPane(iPane)
                 gp.Tag = info
                 If String.IsNullOrWhiteSpace(info.UnitMask) Then
-                    strLabelValue = My.Resources.AXIS_LABEL_VALUE
+                    strLabelValue = info.ValueDescription
                 Else
-                    strLabelValue = String.Format(My.Resources.AXIS_LABEL_VALUE_UNIT, info.UnitMask)
+                    strLabelValue = String.Format(SharedResources.GENERIC_LABEL_DETAILED, info.ValueDescription, info.UnitMask)
                 End If
                 ' Make indicator panel pretty
                 Me.ConfigurePane(info.Name, strLabelTime, Nothing, strLabelValue, info.Units, False, iPane:=iPane)

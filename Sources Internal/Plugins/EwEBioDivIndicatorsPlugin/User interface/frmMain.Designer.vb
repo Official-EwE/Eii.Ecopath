@@ -177,7 +177,7 @@ Partial Class frmMain
         'm_pbICM
         '
         resources.ApplyResources(Me.m_pbICM, "m_pbICM")
-        Me.m_pbICM.BackgroundImage = Global.EwEBioDiversityIndicatorsPlugin.My.Resources.Resources.new_head_2
+        Me.m_pbICM.BackgroundImage = Global.EwEBioDiversityIndicatorsPlugin.My.Resources.Resources.icm
         Me.m_pbICM.Cursor = System.Windows.Forms.Cursors.Hand
         Me.m_pbICM.Name = "m_pbICM"
         Me.m_pbICM.TabStop = False
@@ -185,7 +185,7 @@ Partial Class frmMain
         'm_pbCSIC
         '
         resources.ApplyResources(Me.m_pbCSIC, "m_pbCSIC")
-        Me.m_pbCSIC.BackgroundImage = Global.EwEBioDiversityIndicatorsPlugin.My.Resources.Resources.new_head_4
+        Me.m_pbCSIC.BackgroundImage = Global.EwEBioDiversityIndicatorsPlugin.My.Resources.Resources.csic
         Me.m_pbCSIC.Cursor = System.Windows.Forms.Cursors.Hand
         Me.m_pbCSIC.Name = "m_pbCSIC"
         Me.m_pbCSIC.TabStop = False

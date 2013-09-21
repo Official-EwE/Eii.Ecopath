@@ -117,16 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AXIS_LABEL_TIME" xml:space="preserve">
-    <value>Year</value>
-  </data>
-  <data name="AXIS_LABEL_VALUE" xml:space="preserve">
-    <value>Value</value>
-  </data>
-  <data name="AXIS_LABEL_VALUE_UNIT" xml:space="preserve">
-    <value>Value ({0})</value>
-    <comment>{0}: unit placeholder</comment>
-  </data>
   <data name="GROUP_BIOMASS" xml:space="preserve">
     <value>Biomass-based</value>
   </data>
@@ -379,13 +369,6 @@
   <data name="IND_PREDC_DESC" xml:space="preserve">
     <value>Catch (C) of predatory organisms with trophic level ≥ 4</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="new_head_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\new_head_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="new_head_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\new_head_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="PROMPT_OUTPUTFOLDER" xml:space="preserve">
     <value>Select location for storing CSV output </value>
   </data>
@@ -419,5 +402,45 @@
   <data name="HEADER_TRIAL_N" xml:space="preserve">
     <value>Trial {0}: {1}</value>
     <comment>{0} :trial number; {1}: data name</comment>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="csic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\csic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icm.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BioDiversityPlugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\biodiversityplugin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BioDiversityPluginIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\biodiversityplugin.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IND_VALUE_AGE" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="IND_VALUE_B" xml:space="preserve">
+    <value>Biomass</value>
+  </data>
+  <data name="IND_VALUE_C" xml:space="preserve">
+    <value>Catch</value>
+  </data>
+  <data name="IND_VALUE_INTR_VUL_INDEX" xml:space="preserve">
+    <value>Intrisic vulnerability</value>
+  </data>
+  <data name="IND_VALUE_ML" xml:space="preserve">
+    <value>Mean length</value>
+  </data>
+  <data name="IND_VALUE_MW" xml:space="preserve">
+    <value>Mean weight</value>
+  </data>
+  <data name="IND_VALUE_TL" xml:space="preserve">
+    <value>Tropic level</value>
+  </data>
+  <data name="IND_VALUE" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="IND_VALUE_DISCARDS" xml:space="preserve">
+    <value>Discards</value>
   </data>
 </root>

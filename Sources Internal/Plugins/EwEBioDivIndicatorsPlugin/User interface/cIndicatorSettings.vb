@@ -47,6 +47,8 @@ Public Class cIndicatorSettings
         Private m_strName As String = ""
         ''' <summary>The description of the indicator</summary>
         Private m_strDescription As String = ""
+        ''' <summary>The description of the unit of the indicator (for display on axis)</summary>
+        Private m_strValueDescription As String = ""
         ''' <summary>The units of the indicator</summary>
         Private m_aunits() As cStyleGuide.eUnitType = Nothing
         ''' <summary>Mask to use for formatting units.</summary>
@@ -65,16 +67,20 @@ Public Class cIndicatorSettings
         ''' <param name="strName">Name to assign to the indicator.</param>
         ''' <param name="strFunctionName">The name of function for the indicator as exposed by the computed <see cref="cIndicators">indicator</see>.</param>
         ''' <param name="strDescription">Description to assign to the indicator.</param>
+        ''' <param name="strValueDescription">Description of the value of indicator (biomass, catch, etc).</param>
+        ''' <param name="strUnitMask">Mask how to fit the units into this monster.</param>
         ''' <param name="aunits">EwE <see cref="cStyleGuide.eUnitType">units</see> to show for the indicator.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal strFunctionName As String, _
                        ByVal strName As String, _
                        ByVal strDescription As String, _
+                       ByVal strValueDescription As String, _
                        ByVal aunits() As cStyleGuide.eUnitType, _
                        ByVal strUnitMask As String)
 
             Me.m_strName = strName
             Me.m_strFunctionName = strFunctionName
+            Me.m_strValueDescription = strValueDescription
             Me.m_aunits = aunits
             Me.m_strUnitMask = strUnitMask
             Me.m_strDescription = strDescription
@@ -104,6 +110,12 @@ Public Class cIndicatorSettings
         Public ReadOnly Property Description As String
             Get
                 Return Me.m_strDescription
+            End Get
+        End Property
+
+        Public ReadOnly Property ValueDescription As String
+            Get
+                Return Me.m_strValueDescription
             End Get
         End Property
 
@@ -239,8 +251,9 @@ Public Class cIndicatorSettings
         Public Function Add(ByVal strPropertyName As String, _
                             ByVal strName As String, _
                             ByVal strDescription As String, _
+                            ByVal strValueDescription As String, _
                             Optional strFixedUnit As String = "") As cIndicatorInfo
-            Return Me.Add(strPropertyName, strName, strDescription, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.None}, strFixedUnit)
+            Return Me.Add(strPropertyName, strName, strDescription, strValueDescription, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.None}, strFixedUnit)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -255,9 +268,10 @@ Public Class cIndicatorSettings
         Public Function Add(ByVal strPropertyName As String, _
                             ByVal strName As String, _
                             ByVal strDescription As String, _
+                            ByVal strValueDescription As String, _
                             ByVal unit As cStyleGuide.eUnitType, _
                             Optional ByVal strUnitMask As String = "{0}") As cIndicatorInfo
-            Return Me.Add(strPropertyName, strName, strDescription, New cStyleGuide.eUnitType() {unit}, strUnitMask)
+            Return Me.Add(strPropertyName, strName, strDescription, strValueDescription, New cStyleGuide.eUnitType() {unit}, strUnitMask)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -267,6 +281,7 @@ Public Class cIndicatorSettings
         ''' <param name="strName">The name to assign to the indicator.</param>
         ''' <param name="strPropertyName">The property name of the indicator as exposed by the computed <see cref="cIndicators">indicator</see>.</param>
         ''' <param name="strDescription">Description to assign to the indicator.</param>
+        ''' <param name="strValueDescription"> Description of the value of the indicator.</param>
         ''' <param name="aunits">Units to display.</param>
         ''' <param name="strUnitMask">Mask to use for formatting the <paramref name="aunits">units</paramref>.</param>
         ''' <returns>The new indicator info object.</returns>
@@ -274,9 +289,10 @@ Public Class cIndicatorSettings
         Public Function Add(ByVal strPropertyName As String, _
                             ByVal strName As String, _
                             ByVal strDescription As String, _
+                            ByVal strValueDescription As String, _
                             ByVal aunits() As cStyleGuide.eUnitType, _
                             Optional ByVal strUnitMask As String = "{0}/{1}") As cIndicatorInfo
-            Dim ind As New cIndicatorInfo(strPropertyName, strName, strDescription, aunits, strUnitMask)
+            Dim ind As New cIndicatorInfo(strPropertyName, strName, strDescription, strValueDescription, aunits, strUnitMask)
             Me.m_lIndicators.Add(ind)
             Return ind
         End Function
@@ -377,56 +393,56 @@ Public Class cIndicatorSettings
 
         ' 6 trophic-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_TROPHIC, My.Resources.GROUP_TROPHIC_DESC)
-        grp.Add("TLC", My.Resources.IND_TLC, My.Resources.IND_TLC_DESC)
-        grp.Add("MTI", My.Resources.IND_MTI, String.Format(My.Resources.IND_MTIX_DESC, 3.25))
-        grp.Add("TLco", My.Resources.IND_TLCo, My.Resources.IND_TLCo_DESC)
-        grp.Add("TLco2", String.Format(My.Resources.IND_TLCoX, 2), String.Format(My.Resources.IND_TLCoX_DESC, 2))
-        grp.Add("TLco325", String.Format(My.Resources.IND_TLCoX, 3.25), String.Format(My.Resources.IND_TLCoX_DESC, 3.25))
-        grp.Add("TLco4", String.Format(My.Resources.IND_TLCoX, 4), String.Format(My.Resources.IND_TLCoX_DESC, 4))
+        grp.Add("TLC", My.Resources.IND_TLC, My.Resources.IND_TLC_DESC, My.Resources.IND_VALUE_TL)
+        grp.Add("MTI", My.Resources.IND_MTI, String.Format(My.Resources.IND_MTIX_DESC, 3.25), My.Resources.IND_VALUE_TL)
+        grp.Add("TLco", My.Resources.IND_TLCo, My.Resources.IND_TLCo_DESC, My.Resources.IND_VALUE_TL)
+        grp.Add("TLco2", String.Format(My.Resources.IND_TLCoX, 2), String.Format(My.Resources.IND_TLCoX_DESC, 2), My.Resources.IND_VALUE_TL)
+        grp.Add("TLco325", String.Format(My.Resources.IND_TLCoX, 3.25), String.Format(My.Resources.IND_TLCoX_DESC, 3.25), My.Resources.IND_VALUE_TL)
+        grp.Add("TLco4", String.Format(My.Resources.IND_TLCoX, 4), String.Format(My.Resources.IND_TLCoX_DESC, 4), My.Resources.IND_VALUE_TL)
 
         '10 biomass-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_BIOMASS, My.Resources.GROUP_BIOMASS_DESC)
-        grp.Add("TotalB", My.Resources.IND_TOTALB, My.Resources.IND_TOTALB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("CommercialB", My.Resources.IND_COMMB, My.Resources.IND_COMMB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("FishB", My.Resources.IND_FISHB, My.Resources.IND_FISHB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("InveB", My.Resources.IND_INVEB, My.Resources.IND_INVEB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("InveFishB", My.Resources.IND_INVFISHB, My.Resources.IND_INVFISHB_DESC)
-        grp.Add("DemB", My.Resources.IND_DEMB, My.Resources.IND_DEMB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("PelB", My.Resources.IND_PELB, My.Resources.IND_PELB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("DemPelB", My.Resources.IND_DEMPELB, My.Resources.IND_DEMPELB_DESC)
-        grp.Add("PredB", My.Resources.IND_PREDB, My.Resources.IND_PREDB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("KemptonsQ", My.Resources.IND_KEMPTONSQ, My.Resources.IND_KEMPTONQ_DESC)
+        grp.Add("TotalB", My.Resources.IND_TOTALB, My.Resources.IND_TOTALB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("CommercialB", My.Resources.IND_COMMB, My.Resources.IND_COMMB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("FishB", My.Resources.IND_FISHB, My.Resources.IND_FISHB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("InveB", My.Resources.IND_INVEB, My.Resources.IND_INVEB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("InveFishB", My.Resources.IND_INVFISHB, My.Resources.IND_INVFISHB_DESC, My.Resources.IND_VALUE)
+        grp.Add("DemB", My.Resources.IND_DEMB, My.Resources.IND_DEMB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("PelB", My.Resources.IND_PELB, My.Resources.IND_PELB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("DemPelB", My.Resources.IND_DEMPELB, My.Resources.IND_DEMPELB_DESC, My.Resources.IND_VALUE_B, My.Resources.IND_VALUE)
+        grp.Add("PredB", My.Resources.IND_PREDB, My.Resources.IND_PREDB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("KemptonsQ", My.Resources.IND_KEMPTONSQ, My.Resources.IND_KEMPTONQ_DESC, My.Resources.IND_VALUE)
 
         '9 catch-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_CATCH, My.Resources.GROUP_CATCH_DESC)
-        grp.Add("Ctotal", My.Resources.IND_TOTALC, My.Resources.IND_TOTALC_DESC, aunitCatch)
-        grp.Add("FishC", My.Resources.IND_FISHC, My.Resources.IND_FISHC_DESC, aunitCatch)
-        grp.Add("InveC", My.Resources.IND_INVC, My.Resources.IND_INVC_DESC, aunitCatch)
-        grp.Add("InveFishC", My.Resources.IND_INVFISHC, My.Resources.IND_INVFISHC_DESC)
-        grp.Add("DemC", My.Resources.IND_DEMC, My.Resources.IND_DEMC_DESC, aunitCatch)
-        grp.Add("PelC", My.Resources.IND_PELC, My.Resources.IND_PELC_DESC, aunitCatch)
-        grp.Add("DemPelC", My.Resources.IND_DEMPELC, My.Resources.IND_DEMPELC_DESC)
-        grp.Add("sC4", My.Resources.IND_PREDC, My.Resources.IND_PREDC_DESC, aunitCatch)
-        grp.Add("DT", My.Resources.IND_DIS, My.Resources.IND_DIS_DESC, aunitCatch)
+        grp.Add("Ctotal", My.Resources.IND_TOTALC, My.Resources.IND_TOTALC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
+        grp.Add("FishC", My.Resources.IND_FISHC, My.Resources.IND_FISHC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
+        grp.Add("InveC", My.Resources.IND_INVC, My.Resources.IND_INVC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
+        grp.Add("InveFishC", My.Resources.IND_INVFISHC, My.Resources.IND_INVFISHC_DESC, My.Resources.IND_VALUE_C)
+        grp.Add("DemC", My.Resources.IND_DEMC, My.Resources.IND_DEMC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
+        grp.Add("PelC", My.Resources.IND_PELC, My.Resources.IND_PELC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
+        grp.Add("DemPelC", My.Resources.IND_DEMPELC, My.Resources.IND_DEMPELC_DESC, My.Resources.IND_VALUE_C)
+        grp.Add("sC4", My.Resources.IND_PREDC, My.Resources.IND_PREDC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
+        grp.Add("DT", My.Resources.IND_DIS, My.Resources.IND_DIS_DESC, My.Resources.IND_VALUE_DISCARDS, aunitCatch)
 
         '7 species-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_SPECIES, My.Resources.GROUP_SPECIES_DESC)
-        grp.Add("IVIC", My.Resources.IND_IVIC, My.Resources.IND_IVIC_DESC)
-        grp.Add("EndemicB", My.Resources.IND_ENDB, My.Resources.IND_ENDB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("EndemicC", My.Resources.IND_ENDC, My.Resources.IND_ENDC_DESC, aunitCatch)
-        grp.Add("IUCNB", My.Resources.IND_IUCNB, My.Resources.IND_IUCNB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("IUCNC", My.Resources.IND_IUCNC, My.Resources.IND_IUCNC_DESC, aunitCatch)
-        grp.Add("MSRB", My.Resources.IND_MSRB, My.Resources.IND_MSRB_DESC, cStyleGuide.eUnitType.Currency)
-        grp.Add("MSRC", My.Resources.IND_MSRC, My.Resources.IND_MSRC_DESC, aunitCatch)
+        grp.Add("IVIC", My.Resources.IND_IVIC, My.Resources.IND_IVIC_DESC, My.Resources.IND_VALUE_INTR_VUL_INDEX)
+        grp.Add("EndemicB", My.Resources.IND_ENDB, My.Resources.IND_ENDB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("EndemicC", My.Resources.IND_ENDC, My.Resources.IND_ENDC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
+        grp.Add("IUCNB", My.Resources.IND_IUCNB, My.Resources.IND_IUCNB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("IUCNC", My.Resources.IND_IUCNC, My.Resources.IND_IUCNC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
+        grp.Add("MSRB", My.Resources.IND_MSRB, My.Resources.IND_MSRB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        grp.Add("MSRC", My.Resources.IND_MSRC, My.Resources.IND_MSRC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
 
         ' 6 size-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_SIZE, My.Resources.GROUP_SIZE_DESC)
-        grp.Add("MLengthB", My.Resources.IND_MLB, My.Resources.IND_MLB_DESC, My.Resources.UNIT_LENGTH_CM)
-        grp.Add("MLengthC", My.Resources.IND_MLC, My.Resources.IND_MLC_DESC, My.Resources.UNIT_LENGTH_CM)
-        grp.Add("MWeightB", My.Resources.IND_MWB, My.Resources.IND_MWB_DESC, My.Resources.UNIT_WEIGHT_KG)
-        grp.Add("MWeightC", My.Resources.IND_MWC, My.Resources.IND_MWC_DESC, My.Resources.UNIT_WEIGHT_KG)
-        grp.Add("MLifeSpanB", My.Resources.IND_MLSC, My.Resources.IND_MLSC_DESC, My.Resources.UNIT_TIME_YEAR)
-        grp.Add("MLifeSpanC", My.Resources.IND_MLSB, My.Resources.IND_MLSB_DESC, My.Resources.UNIT_TIME_YEAR)
+        grp.Add("MLengthB", My.Resources.IND_MLB, My.Resources.IND_MLB_DESC, My.Resources.IND_VALUE_ML, My.Resources.UNIT_LENGTH_CM)
+        grp.Add("MLengthC", My.Resources.IND_MLC, My.Resources.IND_MLC_DESC, My.Resources.IND_VALUE_ML, My.Resources.UNIT_LENGTH_CM)
+        grp.Add("MWeightB", My.Resources.IND_MWB, My.Resources.IND_MWB_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_KG)
+        grp.Add("MWeightC", My.Resources.IND_MWC, My.Resources.IND_MWC_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_KG)
+        grp.Add("MLifeSpanB", My.Resources.IND_MLSC, My.Resources.IND_MLSC_DESC, My.Resources.IND_VALUE_AGE, My.Resources.UNIT_TIME_YEAR)
+        grp.Add("MLifeSpanC", My.Resources.IND_MLSB, My.Resources.IND_MLSB_DESC, My.Resources.IND_VALUE_AGE, My.Resources.UNIT_TIME_YEAR)
 
     End Sub
 

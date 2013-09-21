@@ -206,9 +206,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ind.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
@@ -227,11 +224,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logoICM-CSIC2.jpg" />
+    <None Include="Resources\csic.png" />
+    <None Include="Resources\icm.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\new_head_2.png" />
-    <Content Include="Resources\new_head_4.png" />
+    <Content Include="Resources\BioDiversityPlugin.ico" />
+    <Content Include="Resources\BioDiversityPlugin.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
