@@ -397,7 +397,10 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
         Dim result As Boolean = True
-        If (Me.m_core Is Nothing) Then Return True
+
+        If (Me.m_core Is Nothing) Then Return result
+        If (Me.m_mc Is Nothing) Then Return result
+
         Try
             m_mc.StopTrial = True
             Me.m_core.StopEcoSim()
@@ -418,10 +421,13 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Property nTrials() As Integer
         Get
-            Return m_mc.Ntrials
+            If (Me.m_mc Is Nothing) Then Return 0
+            Return Me.m_mc.Ntrials
         End Get
         Set(ByVal value As Integer)
-            m_mc.Ntrials = value
+            If (Me.m_mc IsNot Nothing) Then
+                Me.m_mc.Ntrials = value
+            End If
         End Set
     End Property
 
@@ -435,22 +441,25 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Property RetainFits() As Boolean
         Get
+            If (Me.m_mc Is Nothing) Then Return False
             Return m_mc.RetainBiomass
         End Get
         Set(ByVal value As Boolean)
-            If value Then
-                'EwE5 code
-                'this is saying if NO time series data is loaded then set FisForced to true 
-                'this is impossible
-                'If Check1.value = Checked And NdatType = 0 Then
-                '    For i = 1 To NumGroups
-                '        FisForced(i) = True
-                '    Next
-                'End If
-            Else
-                'set FisForced back to its original value
+            If (Me.m_mc IsNot Nothing) Then
+                If value Then
+                    'EwE5 code
+                    'this is saying if NO time series data is loaded then set FisForced to true 
+                    'this is impossible
+                    'If Check1.value = Checked And NdatType = 0 Then
+                    '    For i = 1 To NumGroups
+                    '        FisForced(i) = True
+                    '    Next
+                    'End If
+                Else
+                    'set FisForced back to its original value
+                End If
+                Me.m_mc.RetainBiomass = value
             End If
-            Me.m_mc.RetainBiomass = value
         End Set
     End Property
 
@@ -461,10 +470,13 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Property IncludeFpenalty() As Boolean
         Get
+            If (Me.m_mc Is Nothing) Then Return False
             Return Me.m_mc.IncludeFpenalty
         End Get
         Set(ByVal value As Boolean)
-            Me.m_mc.IncludeFpenalty = value
+            If (Me.m_mc IsNot Nothing) Then
+                Me.m_mc.IncludeFpenalty = value
+            End If
         End Set
     End Property
 
@@ -475,10 +487,13 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Property FMRatioForSRA As Single
         Get
+            If (Me.m_mc Is Nothing) Then Return cCore.NULL_VALUE
             Return Me.m_mc.FMratioForSRA
         End Get
         Set(value As Single)
-            Me.m_mc.FMratioForSRA = value
+            If (Me.m_mc IsNot Nothing) Then
+                Me.m_mc.FMratioForSRA = value
+            End If
         End Set
     End Property
 
@@ -507,6 +522,7 @@ Public Class cMonteCarloManager
         Get
             'Sum of Squares fit to the currently loaded reference data 
             'compute by Ecosim into its cEcosimDatastructures object for each trial
+            If (Me.m_mc Is Nothing) Then Return cCore.NULL_VALUE
             Return m_core.m_EcoSimData.SS
         End Get
     End Property
@@ -520,6 +536,7 @@ Public Class cMonteCarloManager
     Public ReadOnly Property SSorg() As Single
         Get
             'Sum of Squares fit to the currently loaded reference data 
+            If (Me.m_mc Is Nothing) Then Return cCore.NULL_VALUE
             Return m_mc.SSorg
         End Get
     End Property
@@ -533,6 +550,7 @@ Public Class cMonteCarloManager
     Public ReadOnly Property SSBestFit() As Single
         Get
             'Sum of Squares fit to the currently loaded reference data 
+            If (Me.m_mc Is Nothing) Then Return cCore.NULL_VALUE
             Return m_mc.SSBestFit
         End Get
     End Property
@@ -545,6 +563,7 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property nEcopathIterations() As Single
         Get
+            If (Me.m_mc Is Nothing) Then Return 0
             Return m_mc.nEcopathIterations
         End Get
     End Property
@@ -556,7 +575,8 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property nTrialIterations() As Single
         Get
-            Return m_mc.nTrialIterations
+            If (Me.m_mc Is Nothing) Then Return 0
+            Return Me.m_mc.nTrialIterations
         End Get
     End Property
 
@@ -614,6 +634,7 @@ Public Class cMonteCarloManager
 
     Public WriteOnly Property EcosimTimeStepHandler() As EcoSimTimeStepDelegate
         Set(ByVal value As EcoSimTimeStepDelegate)
+            Debug.Assert(Me.m_mc IsNot Nothing)
             'save the delegate for use with the bShowPlot flag
             '  m_EcosimTimeStepHandler = value
             'Changed this to pass the delegate directly to the monte carlo model
@@ -653,10 +674,13 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Property IsSaveOutput() As Boolean
         Get
+            If (Me.m_mc Is Nothing) Then Return False
             Return Me.m_mc.bSaveOutput
         End Get
         Set(ByVal value As Boolean)
-            Me.m_mc.bSaveOutput = value
+            If (Me.m_mc IsNot Nothing) Then
+                Me.m_mc.bSaveOutput = value
+            End If
         End Set
     End Property
 
@@ -669,13 +693,12 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Sub LoadFromPedigree(var As eVarNameFlags)
         Try
-
+            If (Me.m_mc Is Nothing) Then Return
             If Me.m_mc.LoadFromPedigree(var) Then
                 Me.m_mc.CalculateUpperLowerLimits(False)
                 Me.LoadGroups()
                 Me.m_core.onChanged(Me, eMessageType.DataModified)
             End If
-
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -690,10 +713,13 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Property EcopathEETolerance() As Single
         Get
+            If (Me.m_mc Is Nothing) Then Return cCore.NULL_VALUE
             Return Me.m_mc.EcopathEETol
         End Get
         Set(ByVal value As Single)
-            Me.m_mc.EcopathEETol = value
+            If (Me.m_mc IsNot Nothing) Then
+                Me.m_mc.EcopathEETol = value
+            End If
         End Set
     End Property
 
@@ -703,6 +729,7 @@ Public Class cMonteCarloManager
     ''' <param name="seed"></param>
     ''' <remarks>This can be used to generate the same sequence of random numbers for each run. This can be useful for debugging. </remarks>
     Public Sub InitRandomSequence(seed As Integer)
+        Debug.Assert(Me.m_mc IsNot Nothing)
         Me.m_mc.initRandomSequence(seed)
     End Sub
     ''' -----------------------------------------------------------------------
@@ -712,10 +739,13 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Property ShowBiomassTrajectories() As Boolean
         Get
-            Return m_mc.bShowPlot
+            If (Me.m_mc Is Nothing) Then Return False
+            Return Me.m_mc.bShowPlot
         End Get
         Set(ByVal value As Boolean)
-            m_mc.bShowPlot = value
+            If (Me.m_mc IsNot Nothing) Then
+                Me.m_mc.bShowPlot = value
+            End If
         End Set
     End Property
 
@@ -729,6 +759,7 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Function selectNewEcopathParameters(Optional MaxEcopathIteration As Integer = 10000) As Boolean
         Try
+            Debug.Assert(Me.m_mc IsNot Nothing)
             'force the interface objects to update the underlying data
             Me.update()
             If Me.m_mc.selectNewEcopathParameters(MaxEcopathIteration) Then
@@ -754,11 +785,13 @@ Public Class cMonteCarloManager
     End Function
 
     Public Function RestoreOriginalValues() As Boolean
+        Debug.Assert(Me.m_mc IsNot Nothing)
         Me.m_mc.restoreOriginalState()
         Return True
     End Function
 
     Public Sub SaveOriginalValues()
+        Debug.Assert(Me.m_mc IsNot Nothing)
         Me.m_mc.initForRun()
     End Sub
 #End Region
