@@ -142,7 +142,7 @@
     <value>m_tvIndicators</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.3.9627.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.4.9657.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -220,13 +220,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbICM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>140, 10</value>
+    <value>59, 8</value>
   </data>
   <data name="m_pbICM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_pbICM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 45</value>
+    <value>210, 50</value>
   </data>
   <data name="m_pbICM.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -253,13 +253,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbCSIC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>289, 10</value>
+    <value>283, 8</value>
   </data>
   <data name="m_pbCSIC.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_pbCSIC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 45</value>
+    <value>202, 50</value>
   </data>
   <data name="m_pbCSIC.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -703,7 +703,7 @@
     <value>m_hdrExport</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9627.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9657.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -736,7 +736,7 @@
     <value>m_hdrExecution</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9627.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9657.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -881,7 +881,7 @@
         ZTA4OQwDAAAAUVN5c3RlbS5EcmF3aW5nLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwg
         UHVibGljS2V5VG9rZW49YjAzZjVmN2YxMWQ1MGEzYQUBAAAAN1N5c3RlbS5Db2xsZWN0aW9ucy5HZW5l
         cmljLkxpc3RgMVtbU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAABl9pdGVtcwVfc2l6ZQhfdmVyc2lvbgQA
-        ABZTeXN0ZW0uRHJhd2luZy5Db2xvcltdAwAAAAgIAgAAAAkEAAAAAAAAAAEAAAAHBAAAAAABAAAAAAAA
+        ABZTeXN0ZW0uRHJhd2luZy5Db2xvcltdAwAAAAgIAgAAAAkEAAAAAAAAAAQAAAAHBAAAAAABAAAAAAAA
         AAQUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAACw==
 </value>
   </data>
@@ -901,7 +901,7 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.3.9627.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.4.9657.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
     <value>m_tpEcospace</value>
@@ -1159,7 +1159,7 @@
     <value>m_llStatus</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.3.9627.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.4.9657.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1189,6 +1189,6 @@
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9627.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.4.9657.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

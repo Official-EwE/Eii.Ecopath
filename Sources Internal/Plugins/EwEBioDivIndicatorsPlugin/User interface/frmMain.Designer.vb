@@ -346,6 +346,7 @@ Partial Class frmMain
         'm_legend
         '
         resources.ApplyResources(Me.m_legend, "m_legend")
+        Me.m_legend.BarWidthPercentage = 80
         Me.m_legend.ColorHigh = System.Drawing.Color.DarkGreen
         Me.m_legend.ColorLow = System.Drawing.Color.Red
         Me.m_legend.Colors = CType(resources.GetObject("m_legend.Colors"), System.Collections.Generic.List(Of System.Drawing.Color))

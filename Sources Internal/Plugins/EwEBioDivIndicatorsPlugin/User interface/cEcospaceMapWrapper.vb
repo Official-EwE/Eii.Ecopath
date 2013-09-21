@@ -84,6 +84,8 @@ Public Class cEcospaceMapWrapper
 
         AddHandler Me.m_picbox.Resize, AddressOf OnResizePanel
         AddHandler Me.m_picbox.Paint, AddressOf OnPaintPicbox
+        AddHandler Me.m_picbox.MouseEnter, AddressOf OnSetTooltip
+        AddHandler Me.m_picbox.MouseLeave, AddressOf OnClearTooltip
 
     End Sub
 
@@ -91,6 +93,8 @@ Public Class cEcospaceMapWrapper
 
         RemoveHandler Me.m_picbox.Resize, AddressOf OnResizePanel
         RemoveHandler Me.m_picbox.Paint, AddressOf OnPaintPicbox
+        RemoveHandler Me.m_picbox.MouseEnter, AddressOf OnSetTooltip
+        RemoveHandler Me.m_picbox.MouseLeave, AddressOf OnClearTooltip
 
         Me.m_settings = Nothing
         Me.m_dtIndicators = Nothing
@@ -184,6 +188,7 @@ Public Class cEcospaceMapWrapper
             Dim sValue As Single = 0
             Dim asScaler(lInfo.Count) As Single
             Dim astrLabels(lInfo.Count) As String
+            Dim astrDescriptions(lInfo.Count) As String
 
             ' Populate result array from computed indicators
             For i As Integer = 0 To lInfo.Count - 1
@@ -198,6 +203,7 @@ Public Class cEcospaceMapWrapper
                 asScaler(i) = info.GetValue(Me.m_indPath)
                 If (asScaler(i) = 0) Then asScaler(i) = 1.0
                 astrLabels(i) = info.Name
+                astrDescriptions(i) = info.Description
             Next
 
             Dim iNumPlotsHorz As Integer = 0
@@ -231,6 +237,7 @@ Public Class cEcospaceMapWrapper
                 drawer.ShowMPA = True
 
                 drawer.Labels = astrLabels
+                drawer.Descriptions = astrDescriptions
                 drawer.Map = asData
                 drawer.Graphics = Graphics.FromImage(Me.m_bmp)
 
@@ -253,6 +260,30 @@ Public Class cEcospaceMapWrapper
 
         End If
 
+    End Sub
+
+    Private Sub OnSetTooltip(sender As Object, args As EventArgs)
+
+        Dim ptScreen As Point = Control.MousePosition
+        Dim ptControl As Point = Me.m_picbox.PointToClient(ptScreen)
+
+        ' Check which drawer this is in
+        For Each d As cEcospaceMapDrawer In Me.m_drawers
+            If (d.RectList IsNot Nothing) Then
+                For i As Integer = 0 To d.RectList.Count - 1
+                    Dim rc As Rectangle = d.RectList(i)
+                    If rc.Contains(ptControl) Then
+                        cToolTipShared.GetInstance().SetToolTip(Me.m_picbox, d.Descriptions(i))
+                        Return
+                    End If
+                Next
+            End If
+        Next
+        cToolTipShared.GetInstance().SetToolTip(Me.m_picbox, "")
+    End Sub
+
+    Private Sub OnClearTooltip(sender As Object, args As EventArgs)
+        cToolTipShared.GetInstance().SetToolTip(Me.m_picbox, "")
     End Sub
 
 End Class
