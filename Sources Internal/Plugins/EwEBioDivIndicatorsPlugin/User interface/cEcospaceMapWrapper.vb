@@ -85,6 +85,7 @@ Public Class cEcospaceMapWrapper
         AddHandler Me.m_picbox.Resize, AddressOf OnResizePanel
         AddHandler Me.m_picbox.Paint, AddressOf OnPaintPicbox
         AddHandler Me.m_picbox.MouseEnter, AddressOf OnSetTooltip
+        AddHandler Me.m_picbox.MouseMove, AddressOf OnSetTooltip
         AddHandler Me.m_picbox.MouseLeave, AddressOf OnClearTooltip
 
     End Sub
@@ -94,6 +95,7 @@ Public Class cEcospaceMapWrapper
         RemoveHandler Me.m_picbox.Resize, AddressOf OnResizePanel
         RemoveHandler Me.m_picbox.Paint, AddressOf OnPaintPicbox
         RemoveHandler Me.m_picbox.MouseEnter, AddressOf OnSetTooltip
+        RemoveHandler Me.m_picbox.MouseMove, AddressOf OnSetTooltip
         RemoveHandler Me.m_picbox.MouseLeave, AddressOf OnClearTooltip
 
         Me.m_settings = Nothing
@@ -262,10 +264,13 @@ Public Class cEcospaceMapWrapper
 
     End Sub
 
+    Private m_strTipLast As String = ""
+
     Private Sub OnSetTooltip(sender As Object, args As EventArgs)
 
         Dim ptScreen As Point = Control.MousePosition
         Dim ptControl As Point = Me.m_picbox.PointToClient(ptScreen)
+        Dim strTip As String = ""
 
         ' Check which drawer this is in
         For Each d As cEcospaceMapDrawer In Me.m_drawers
@@ -273,17 +278,23 @@ Public Class cEcospaceMapWrapper
                 For i As Integer = 0 To d.RectList.Count - 1
                     Dim rc As Rectangle = d.RectList(i)
                     If rc.Contains(ptControl) Then
-                        cToolTipShared.GetInstance().SetToolTip(Me.m_picbox, d.Descriptions(i))
-                        Return
+                        strTip = d.Descriptions(i)
+                        Exit For
                     End If
                 Next
             End If
         Next
-        cToolTipShared.GetInstance().SetToolTip(Me.m_picbox, "")
+
+        If (strTip <> Me.m_strTipLast) Then
+            cToolTipShared.GetInstance().SetToolTip(Me.m_picbox, strTip)
+            Me.m_strTipLast = strTip
+        End If
+
     End Sub
 
     Private Sub OnClearTooltip(sender As Object, args As EventArgs)
         cToolTipShared.GetInstance().SetToolTip(Me.m_picbox, "")
+        Me.m_strTipLast = ""
     End Sub
 
 End Class
