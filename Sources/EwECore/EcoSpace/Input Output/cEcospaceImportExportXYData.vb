@@ -205,7 +205,7 @@ Public Class cEcospaceImportExportXYData
         strm.Write(cStringUtils.ToCSVField(strColField))
         strm.Write(",")
         strm.Write(cStringUtils.ToCSVField(strRowField))
-        strm.Write(",lon,lat")
+        strm.Write(",Lon,Lat")
         For iField As Integer = 0 To lstrFields.Count - 1
             strm.Write(",")
             strm.Write(cStringUtils.ToCSVField(Me.Fields(iField).Trim))
