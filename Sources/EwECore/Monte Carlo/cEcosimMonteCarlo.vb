@@ -830,7 +830,7 @@ Friend Class cEcosimMonteCarlo
 
                 If StopTrial = True Then Exit Do
 
-                If iter > maxEcopathIterations Then
+                If iter >= maxEcopathIterations Then
                     'max number of iteration to find balanced ecopath model
                     'Exit the Do Loop
                     Exit Do
