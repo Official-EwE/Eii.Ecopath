@@ -27,6 +27,8 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 Imports EwECore.SpatialData
+Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -316,16 +318,29 @@ Namespace SpatialData
 #Region " Internals "
 
         Private Sub DoBrowse()
-            Dim fbd As New FolderBrowserDialog()
 
-            fbd.SelectedPath = Me.m_tbxPath.Text
-            fbd.Description = My.Resources.PROMPT_SELECTFOLDER
-            fbd.ShowNewFolderButton = False
+            If (Me.UIContext IsNot Nothing) Then
+                Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
 
-            If fbd.ShowDialog(Me) = DialogResult.OK Then
-                Me.m_tbxPath.Text = fbd.SelectedPath
-                Me.UpdateControls()
+                cmd.Invoke(Me.m_tbxPath.Text, My.Resources.PROMPT_SELECTFOLDER)
+                If cmd.Result = DialogResult.OK Then
+                    Me.m_tbxPath.Text = cmd.Directory
+                    Me.UpdateControls()
+                End If
+            Else
+                Dim fbd As New FolderBrowserDialog()
+
+                fbd.SelectedPath = Me.m_tbxPath.Text
+                fbd.Description = My.Resources.PROMPT_SELECTFOLDER
+                fbd.ShowNewFolderButton = False
+
+                If fbd.ShowDialog(Me) = DialogResult.OK Then
+                    Me.m_tbxPath.Text = fbd.SelectedPath
+                    Me.UpdateControls()
+                End If
             End If
+
         End Sub
 
         ''' -----------------------------------------------------------------------
