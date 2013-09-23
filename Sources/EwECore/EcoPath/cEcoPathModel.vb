@@ -311,7 +311,7 @@ Namespace Ecopath
 
                 Else
 
-                    'failed to estimate parameters
+                    'Failed to estimate parameters
                     'post a message if missing parameters
                     If m_EstimStatus = eStatusFlags.MissingParameter Then
 
@@ -319,10 +319,15 @@ Namespace Ecopath
 
                     Else 'If ParamsEstimated  = eStatusFlags.ErrorEncountered Then
 
+                        If m_EstimStatus <> eStatusFlags.ErrorEncountered Then
+                            System.Console.WriteLine("WARNING: cEcopathModel.Run() may have set EstimationStatus to the wrong value.")
+                        End If
+                        'WARNING: This assumes that any m_EstimStatus other than eStatusFlags.OK or eStatusFlags.MissingParameter is an Error
+                        'So if you mess with m_EstimStatus make sure you have it right
                         msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, _
                                             eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
                         NotifyCore(msg)
-                        cLog.Write("ParamEstimate(...) failed to estimate parameters because of an error.")
+                        cLog.Write("cEcopathModel.Run() failed to estimate parameters because of an error.")
 
                     End If
 
@@ -340,7 +345,7 @@ Namespace Ecopath
                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
                 NotifyCore(msg)
 
-                cLog.Write(Me.ToString + ".ParamEstimate() Error during parameter estimation: " & ex.Message)
+                cLog.Write(Me.ToString + ".Run() Error during parameter estimation: " & ex.Message)
                 Return False
 
             End Try
@@ -1606,8 +1611,16 @@ LoopCalc:
                     For ji = 1 To m_Data.NumLiving                  'GIM
                         If m_Data.mis(ji) > 0 Then           'IF EQ2=0 THEN B,PB,QB,EE known
                             'If Mis(ji) > 1 Then           'IF EQ2=0 THEN B,PB,QB,EE known
-                            GIM()
+                            GIM(Result)
 
+                            'GIM has thrown an error
+                            If Result = eStatusFlags.ErrorEncountered Then
+                                InParameterEstimation = 0
+                                Result = eStatusFlags.ErrorEncountered
+                                Return False
+                            End If
+
+                            'Failed to estimate parameters
                             If Exit_Sub_Missing_Par = 0 Then
                                 InParameterEstimation = 0
                                 Result = eStatusFlags.MissingParameter
@@ -1633,7 +1646,8 @@ LoopCalc:
                 'NextSensL:
             Catch ex As Exception
                 cLog.Write(ex)
-                Debug.Assert(False, "Error in EstimateParameters() " & ex.Message)
+                'Debug.Assert(False, "Error in EstimateParameters() " & ex.Message)
+                'Message will be handled by the calling routine
                 Result = eStatusFlags.ErrorEncountered
                 Return False
             End Try
@@ -2313,7 +2327,7 @@ nextJ:
             Next j
         End Sub
 
-        Private Sub GIM()
+        Private Sub GIM(ByRef Result As eStatusFlags)
             Dim i As Integer
             Dim j As Integer
             Dim Estim As Integer
@@ -2338,147 +2352,153 @@ nextJ:
             ReDim Q(m_Data.NumGroups + 10)
             Dim LHS(m_Data.NumGroups, m_Data.NumGroups) As Single
 
-            '             Count number of unknown B's and QB's
-            '             ------------------------------------
-            'jb
-            'set the NoBQB() flag
-            '1 means B is missing
-            '10 means QB and PP are missing 
-            '11 means B QB and PP are all missing
-            For i = 1 To m_Data.NumLiving
+            Try
 
-                NoBQB(i) = 0
-                If m_Data.B(i) <= 0 Then
-                    NoBQB(i) = 1
+
+                '             Count number of unknown B's and QB's
+                '             ------------------------------------
+                'jb
+                'set the NoBQB() flag
+                '1 means B is missing
+                '10 means QB and PP are missing 
+                '11 means B QB and PP are all missing
+                For i = 1 To m_Data.NumLiving
+
+                    NoBQB(i) = 0
+                    If m_Data.B(i) <= 0 Then
+                        NoBQB(i) = 1
+                    End If
+
+                    '040112VC Added the check for pproducers below, seems necessary when calling from frmBvary
+                    If m_Data.QB(i) < 0 And m_Data.PP(i) < 1 Then
+                        NoBQB(i) = NoBQB(i) + 10
+                    End If
+
+                Next i
+
+                'now count the the number of missing B QB 
+                'and total missing parameters
+                Total = 0 'total number of missing parameter
+                NBQB = 0 'total missing  B QB 
+                For i = 1 To m_Data.NumLiving
+                    If NoBQB(i) = 11 Then NBQB = NBQB + 1
+                    If NoBQB(i) > 0 Then Total = Total + 1
+                Next i
+
+                Pass = 0
+                If NBQB >= 1 Then
+                    'compute B()  and QB() 
+                    SolvenoBnoQB(Pass, NBQB)
+                    If Pass = 1 Then
+                        'all done
+                        Result = eStatusFlags.OK
+                        Exit Sub
+                    End If
                 End If
 
-                '040112VC Added the check for pproducers below, seems necessary when calling from frmBvary
-                If m_Data.QB(i) < 0 And m_Data.PP(i) < 1 Then
-                    NoBQB(i) = NoBQB(i) + 10
-                End If
+                If NBQB > 0 Then
 
-            Next i
+                    Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_INSUFFICIENTDATA, _
+                        eMessageType.MassBalance_InsufficientData, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                    msg.Suppressable = True
 
-            'now count the the number of missing B QB 
-            'and total missing parameters
-            Total = 0 'total number of missing parameter
-            NBQB = 0 'total missing  B QB 
-            For i = 1 To m_Data.NumLiving
-                If NoBQB(i) = 11 Then NBQB = NBQB + 1
-                If NoBQB(i) > 0 Then Total = Total + 1
-            Next i
-
-            Pass = 0
-            If NBQB >= 1 Then
-                'compute B()  and QB() 
-                SolvenoBnoQB(Pass, NBQB)
-                If Pass = 1 Then
-                    'all done
+                    NotifyCore(msg)
+                    Exit_Sub_Missing_Par = 0
+                    Result = eStatusFlags.MissingParameter
                     Exit Sub
                 End If
-            End If
 
-            If NBQB > 0 Then
-
-                Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_INSUFFICIENTDATA, _
-                    eMessageType.MassBalance_InsufficientData, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-                msg.Suppressable = True
-
-                NotifyCore(msg)
-                Exit_Sub_Missing_Par = 0
-                Exit Sub
-            End If
-
-            For i = 1 To m_Data.NumLiving
-                If m_Data.PB(i) >= 0 And m_Data.EE(i) >= 0 Then
-                    'jb fixed bug 891
-                    Q(i) = m_Data.fCatch(i) + m_Data.BA(i) + m_Data.Emigration(i) - m_Data.Immig(i)
-                    'Q(i) = m_Data.fCatch(i) + m_Data.BA(i) + m_Data.Emigration(j) - m_Data.Immig(j)
-                    'vc980303 This was including detritus, don't know why For j = 1 To NumGroups
-                    For j = 1 To m_Data.NumLiving
-                        AUL(i, j) = -9999
-                        If NoBQB(j) = 11 Then
-                            Dim strMsg As String = String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_MISSING_B_QB, m_Data.GroupName(j))
-                            Dim msg As New cMessage(strMsg, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-                            NotifyCore(msg)
-                            Exit_Sub_Missing_Par = 0
-                            Exit Sub
-                        End If
-                        If NoBQB(j) = 10 And i = j Then Q(i) = Q(i) - m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i)
-                        If NoBQB(j) = 1 And i = j Then AUL(i, j) = (m_Data.PB(i) * m_Data.EE(i) - m_Data.QB(j) * m_Data.DC(j, i))
-                        ' No B:
-                        If NoBQB(j) = 1 And i <> j Then AUL(i, j) = -m_Data.QB(j) * m_Data.DC(j, i)
-                        'No QB
-                        '031220VC Emigi and BABi now included as rates, will be zero if there are flows (Emigration and BA)
-                        Sum = CSng(IIF(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                        Sum = Sum + CSng(IIF(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
-                        Sum = Sum * m_Data.B(j)
-                        If NoBQB(j) = 10 Then AUL(i, j) = -m_Data.B(j) * m_Data.DC(j, i)
-                        If NoBQB(j) = 0 And i <> j Then Q(i) = Q(i) + (m_Data.B(j) * m_Data.QB(j) * m_Data.DC(j, i)) + Sum
-                        If NoBQB(j) = 0 And i = j Then Q(i) = Q(i) - m_Data.B(j) * (m_Data.EE(i) * m_Data.PB(j) - m_Data.QB(j) * m_Data.DC(j, i)) + Sum
-                    Next j
-                End If
-            Next i
-
-            'GoSub 7440     'Goto generalized inverse routine
-            '             Generalized inverse method
-            '             --------------------------
-            Kount = 0
-            For i = 1 To m_Data.NumLiving 'N1 modified 053196 eli.
-                Total = 0
-                For j = 1 To m_Data.NumGroups
-                    If AUL(i, j) <> -9999 And AUL(i, j) <> 0 Then
-                        Total = 1
-                        j = m_Data.NumGroups + 1
-                    End If
-                Next j
-
-                If m_Data.fCatch(i) >= 0 And m_Data.PB(i) >= 0 And Total = 1 Then    'GoTo 7620 'OR TD(i) < 0
-                    Kount = Kount + 1
-                    H(Kount) = Q(i)
-                    kountj = 0
-                    For j = 1 To m_Data.NumGroups
-                        If AUL(i, j) <> -9999 Then    'GoTo 7610         'EXCL PRIMARY PROD. & DETRITUS
-                            kountj = kountj + 1
-                            LHS(Kount, kountj) = AUL(i, j)
-                        End If
-                    Next j
-                End If
-            Next i
-
-            NN = Kount : MM = kountj
-            If NN < MM Then Me.ManyUnknown(m_Data.NumLiving, NN, MM, NoBQB)
-            If NN <> 0 And MM <> 0 Then
-                'If g_in_Ranger = 0 And g_in_senseloop = 0 Then
-                'frmGIM.Show
-                'End If
-                Geninv(NN, MM, LHS)
-                'If g_in_Ranger = 0 And g_in_senseloop = 0 Then
-                '        Unload frmGIM
-                'End If
-                Estim = 1
-                'Return
-            Else
-                Estim = 0
-                For j = 1 To m_Data.NumGroups
-                    P(j) = 0
-                Next j
-            End If
-
-
-
-            '             If parameters have been estimated
-            '             ---------------------------------
-            If Estim = 1 Then
-                Kount = 0
-                For i = 1 To m_Data.NumLiving                     '*** Changed 19 jan 94
-                    If m_Data.PB(i) >= 0 And NoBQB(i) > 0 Then
-                        Kount = Kount + 1
-                        If NoBQB(i) = 1 Then m_Data.B(i) = CSng(P(Kount))
-                        If NoBQB(i) = 10 Then m_Data.QB(i) = CSng(P(Kount))
+                For i = 1 To m_Data.NumLiving
+                    If m_Data.PB(i) >= 0 And m_Data.EE(i) >= 0 Then
+                        'jb fixed bug 891
+                        Q(i) = m_Data.fCatch(i) + m_Data.BA(i) + m_Data.Emigration(i) - m_Data.Immig(i)
+                        'Q(i) = m_Data.fCatch(i) + m_Data.BA(i) + m_Data.Emigration(j) - m_Data.Immig(j)
+                        'vc980303 This was including detritus, don't know why For j = 1 To NumGroups
+                        For j = 1 To m_Data.NumLiving
+                            AUL(i, j) = -9999
+                            If NoBQB(j) = 11 Then
+                                Dim strMsg As String = String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_MISSING_B_QB, m_Data.GroupName(j))
+                                Dim msg As New cMessage(strMsg, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                                NotifyCore(msg)
+                                Exit_Sub_Missing_Par = 0
+                                Result = eStatusFlags.MissingParameter
+                                Exit Sub
+                            End If
+                            If NoBQB(j) = 10 And i = j Then Q(i) = Q(i) - m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i)
+                            If NoBQB(j) = 1 And i = j Then AUL(i, j) = (m_Data.PB(i) * m_Data.EE(i) - m_Data.QB(j) * m_Data.DC(j, i))
+                            ' No B:
+                            If NoBQB(j) = 1 And i <> j Then AUL(i, j) = -m_Data.QB(j) * m_Data.DC(j, i)
+                            'No QB
+                            '031220VC Emigi and BABi now included as rates, will be zero if there are flows (Emigration and BA)
+                            Sum = CSng(IIF(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
+                            Sum = Sum + CSng(IIF(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
+                            Sum = Sum * m_Data.B(j)
+                            If NoBQB(j) = 10 Then AUL(i, j) = -m_Data.B(j) * m_Data.DC(j, i)
+                            If NoBQB(j) = 0 And i <> j Then Q(i) = Q(i) + (m_Data.B(j) * m_Data.QB(j) * m_Data.DC(j, i)) + Sum
+                            If NoBQB(j) = 0 And i = j Then Q(i) = Q(i) - m_Data.B(j) * (m_Data.EE(i) * m_Data.PB(j) - m_Data.QB(j) * m_Data.DC(j, i)) + Sum
+                        Next j
                     End If
                 Next i
-            End If
+
+                'GoSub 7440     'Goto generalized inverse routine
+                '             Generalized inverse method
+                '             --------------------------
+                Kount = 0
+                For i = 1 To m_Data.NumLiving 'N1 modified 053196 eli.
+                    Total = 0
+                    For j = 1 To m_Data.NumGroups
+                        If AUL(i, j) <> -9999 And AUL(i, j) <> 0 Then
+                            Total = 1
+                            j = m_Data.NumGroups + 1
+                        End If
+                    Next j
+
+                    If m_Data.fCatch(i) >= 0 And m_Data.PB(i) >= 0 And Total = 1 Then    'GoTo 7620 'OR TD(i) < 0
+                        Kount = Kount + 1
+                        H(Kount) = Q(i)
+                        kountj = 0
+                        For j = 1 To m_Data.NumGroups
+                            If AUL(i, j) <> -9999 Then    'GoTo 7610         'EXCL PRIMARY PROD. & DETRITUS
+                                kountj = kountj + 1
+                                LHS(Kount, kountj) = AUL(i, j)
+                            End If
+                        Next j
+                    End If
+                Next i
+
+                NN = Kount : MM = kountj
+                If NN < MM Then Me.ManyUnknown(m_Data.NumLiving, NN, MM, NoBQB)
+                If NN <> 0 And MM <> 0 Then
+                    Geninv(NN, MM, LHS)
+                    Estim = 1
+                    Result = eStatusFlags.OK
+                Else
+                    Result = eStatusFlags.MissingParameter
+                    Estim = 0
+                    For j = 1 To m_Data.NumGroups
+                        P(j) = 0
+                    Next j
+                End If
+
+
+
+                '             If parameters have been estimated
+                '             ---------------------------------
+                If Estim = 1 Then
+                    Kount = 0
+                    For i = 1 To m_Data.NumLiving                     '*** Changed 19 jan 94
+                        If m_Data.PB(i) >= 0 And NoBQB(i) > 0 Then
+                            Kount = Kount + 1
+                            If NoBQB(i) = 1 Then m_Data.B(i) = CSng(P(Kount))
+                            If NoBQB(i) = 10 Then m_Data.QB(i) = CSng(P(Kount))
+                        End If
+                    Next i
+                End If
+
+            Catch ex As Exception
+                Result = eStatusFlags.ErrorEncountered
+                cLog.Write(ex, "Ecpopath.GIM() Exception. ")
+            End Try
 
         End Sub
 
