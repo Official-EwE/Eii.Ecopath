@@ -228,7 +228,7 @@ Namespace SpatialData
             Dim dataExternal As ISpatialRaster = Nothing
             Dim dCellSize As Double = Math.Round(CDbl(bm.CellSize), 8)
             Dim dt As Date
-            Dim bSuccess As Boolean = False
+            Dim bSuccess As Boolean = True
 
             ' For each layer for this adapter
             For Each layer In bm.Layers(Me.m_varName)
@@ -259,6 +259,7 @@ Namespace SpatialData
                                 Catch ex As Exception
                                     Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                                     cLog.Write(ex, "cSpatialDataAdapter::Populate(" & layer.ToString() & ")")
+                                    bSuccess = False
                                 End Try
 
                                 If (dataExternal IsNot Nothing) Then
@@ -279,14 +280,13 @@ Namespace SpatialData
                                     dataExternal.Dispose()
                                     dataExternal = Nothing
 
-
-
                                     ' Notify core - use AddedOrRemoved flag to not dirty the DB; just broadcast the layer change
                                     ' Me.m_core.onChanged(layer, eMessageType.DataAddedOrRemoved)
 
                                 Else
                                     Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) external data missing for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
                                     cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
+                                    bSuccess = False
                                 End If
 
                                 ' Unlock dataset
