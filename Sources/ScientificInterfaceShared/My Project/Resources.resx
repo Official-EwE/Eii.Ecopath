@@ -2872,7 +2872,7 @@
     <value>Advection</value>
   </data>
   <data name="VARIABLE_NOTSET" xml:space="preserve">
-    <value>|n/a||(No variable specified)</value>
+    <value>(None)||(No variable)</value>
   </data>
   <data name="HEADER_FROM" xml:space="preserve">
     <value>From</value>
