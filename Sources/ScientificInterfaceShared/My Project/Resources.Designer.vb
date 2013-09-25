@@ -8201,7 +8201,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to |n/a||(No variable specified).
+        '''  Looks up a localized string similar to (None)||(No variable).
         '''</summary>
         Public ReadOnly Property VARIABLE_NOTSET() As String
             Get
