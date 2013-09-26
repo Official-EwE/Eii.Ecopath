@@ -220,7 +220,7 @@ Namespace SpatialData
         ''' <param name="iTime">The one-based Ecospace time step to populate data for.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Populate(ByVal iTime As Integer) As Boolean
+        Public Overridable Function Populate(ByVal iTime As Integer, dNoData As Double) As Boolean
 
             Dim msg As cMessage = Nothing
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
@@ -271,7 +271,7 @@ Namespace SpatialData
                                     Me.SaveIntermediateResults(iTime, dataExternal)
 
                                     ' Integrate data
-                                    Me.Adapt(bm, layer, iTime, dt, dataExternal)
+                                    Me.Adapt(bm, layer, iTime, dt, dataExternal, dNoData)
 
                                     ' Restore layer validation
                                     layer.AllowValidation = bAllow
@@ -328,7 +328,8 @@ Namespace SpatialData
                                                     ByVal layer As cEcospaceLayer, _
                                                     ByVal iTime As Integer, _
                                                     ByVal dt As Date, _
-                                                    ByVal dataExternal As ISpatialRaster) As Boolean
+                                                    ByVal dataExternal As ISpatialRaster, _
+                                                    ByVal dNoData As Double) As Boolean
 
             ' To ensure proper usage by inherited classes
             Debug.Assert(bm IsNot Nothing)
@@ -354,12 +355,14 @@ Namespace SpatialData
                         ' Is a water cell or is this layer affecting depth?
                         If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                             ' #Yes: get value
-                            sValue = dataExternal.Cell(iRow, iCol)
+                            sValue = dataExternal.Cell(iRow, iCol, dNoData)
                             ' Is a valid value?
                             If (sValue <> cCore.NULL_VALUE) Then
                                 ' #Yes: set value
                                 bSuccess = bSuccess And Me.SetCell(layer, iRow, iCol, sValue)
                             End If
+                        Else
+                            bSuccess = bSuccess And Me.SetCell(layer, iRow, iCol, dNoData)
                         End If
                         iCol += 1
                     End While ' iCol

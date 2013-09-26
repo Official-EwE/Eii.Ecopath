@@ -92,7 +92,8 @@ Namespace SpatialData
                                                   ByVal layer As cEcospaceLayer, _
                                                   ByVal iTime As Integer, _
                                                   ByVal dt As Date, _
-                                                  ByVal dataExternal As ISpatialRaster) As Boolean
+                                                  ByVal dataExternal As ISpatialRaster, _
+                                                  ByVal dNullValue As Double) As Boolean
 
             Try
                 ' Set PP scale value first time data is encountered for a run
@@ -108,7 +109,7 @@ Namespace SpatialData
             End Try
 
             'Return True
-            Return MyBase.Adapt(bm, layer, iTime, dt, dataExternal)
+            Return MyBase.Adapt(bm, layer, iTime, dt, dataExternal, dNullValue)
 
         End Function
 
