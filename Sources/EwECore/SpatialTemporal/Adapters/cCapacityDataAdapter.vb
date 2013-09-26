@@ -75,10 +75,11 @@ Namespace SpatialData
                                                   ByVal layer As cEcospaceLayer, _
                                                   ByVal iTime As Integer, _
                                                   ByVal dt As Date, _
-                                                  ByVal dataExternal As ISpatialRaster) As Boolean
+                                                  ByVal dataExternal As ISpatialRaster, _
+                                                  ByVal dNoData As Double) As Boolean
             Dim breturnVal As Boolean
 
-            breturnVal = MyBase.Adapt(bm, layer, iTime, dt, dataExternal)
+            breturnVal = MyBase.Adapt(bm, layer, iTime, dt, dataExternal, dNoData)
 
             'tell Ecospace to update the capacity layers
             Me.m_spaceData.bHasCapacityChanged = True
