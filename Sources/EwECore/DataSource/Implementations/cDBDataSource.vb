@@ -7478,10 +7478,17 @@ Namespace DataSources
                 Next
             Next
 
-            Try
-                ' Delete any existing scenario
-                bSucces = Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE ScenarioName='{0}'", strScenarioName))
+            ' Delete any existing scenario with the same name
+            Dim i As Integer = 1
+            While i <= ecopathDS.NumEcospaceScenarios
+                If (String.Compare(ecopathDS.EcospaceScenarioName(i), strScenarioName, True) = 0) Then
+                    bSucces = bSucces And Me.RemoveEcospaceScenario(ecopathDS.EcospaceScenarioDBID(i))
+                Else
+                    i += 1
+                End If
+            End While
 
+            Try
                 iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcospaceScenario", 0)) + 1
                 writer = Me.m_db.GetWriter("EcospaceScenario")
 
@@ -7512,13 +7519,13 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
                 ' First duplicate all Ecospace 'objects'
-                For i As Integer = 1 To ecopathDS.NumGroups
+                For i = 1 To ecopathDS.NumGroups
                     ' Add group to the new scenario
                     bSucces = bSucces And Me.AddEcospaceGroup(ecopathDS.GroupDBID(i), iScenarioID, _
                                                               (ecopathDS.PP(i) = 2.0), iIDtmp)
                 Next
 
-                For i As Integer = 1 To ecopathDS.NumFleet
+                For i = 1 To ecopathDS.NumFleet
                     ' Add fleet to the new scenario
                     bSucces = bSucces And Me.AddEcospaceFleet(ecopathDS.FleetDBID(i), iScenarioID, iIDtmp)
                 Next
@@ -7545,12 +7552,24 @@ Namespace DataSources
 
             Dim bSucces As Boolean = True
 
+            If Me.Version < 6.120001 Then
+                Try
+                    ' Delete 'soft links' present from 6.04005 to 6.120001
+                    bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE (ScenarioID={0})", iScenarioID))
+                    bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioFleetMap WHERE (ScenarioID={0})", iScenarioID))
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
+                    bSucces = False
+                End Try
+            End If
+
             Try
-                ' Delete 'soft links'
-                '    Update 6.04005
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE (ScenarioID={0})", iScenarioID))
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioFleetMap WHERE (ScenarioID={0})", iScenarioID))
+                ' Delete tables not linked by cascading rules
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE(ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
                 ' Delete scenario
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
             Catch ex As Exception
