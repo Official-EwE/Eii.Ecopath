@@ -304,9 +304,12 @@ Namespace SpatialData
 
             Dim lstrPaths As New List(Of String)
             Dim lstrRemove As New List(Of String)
+            Dim strRoot As String = Me.RootFolder
 
-            ' Get all cache dirs
-            lstrPaths.AddRange(Directory.GetDirectories(Me.RootFolder))
+            ' Get all present cache dirs
+            If (Directory.Exists(strRoot)) Then
+                lstrPaths.AddRange(Directory.GetDirectories(strRoot))
+            End If
 
             If (man IsNot Nothing) Then
                 ' Remove all folder entries for datasets that are defined
