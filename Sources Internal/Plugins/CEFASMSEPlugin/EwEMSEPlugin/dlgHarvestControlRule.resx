@@ -120,6 +120,6 @@
   <data name="Label7.Text" xml:space="preserve">
     <value>Target: produces an F that gets as close as possible (either above or below) to the F defined by the HCR.
 
-Conservation: produces an F that is always below the F defined by the HCR, (provided restraints on max changes in effort)</value>
+Conservation: produces an F that is always below the F defined by the HCR, (provided restraints on max changes in effort are met)</value>
   </data>
 </root>

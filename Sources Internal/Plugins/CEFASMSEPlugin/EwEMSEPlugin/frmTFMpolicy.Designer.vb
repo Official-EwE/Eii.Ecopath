@@ -46,6 +46,7 @@ Partial Class frmTFMpolicy
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTFMpolicy))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.btnClose = New System.Windows.Forms.Button()
         Me.btDeleteHCR = New System.Windows.Forms.Button()
         Me.btDeleteStrategy = New System.Windows.Forms.Button()
         Me.btnSaveStrategies = New System.Windows.Forms.Button()
@@ -57,7 +58,6 @@ Partial Class frmTFMpolicy
         Me.ToolStrip1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton()
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
-        Me.btnClose = New System.Windows.Forms.Button()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -87,6 +87,12 @@ Partial Class frmTFMpolicy
         '
         Me.m_scMain.Panel2.Controls.Add(Me.ToolStrip1)
         Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
+        '
+        'btnClose
+        '
+        resources.ApplyResources(Me.btnClose, "btnClose")
+        Me.btnClose.Name = "btnClose"
+        Me.btnClose.UseVisualStyleBackColor = True
         '
         'btDeleteHCR
         '
@@ -171,9 +177,11 @@ Partial Class frmTFMpolicy
                     Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                     Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -185,12 +193,6 @@ Partial Class frmTFMpolicy
                     Or SourceGrid2.GridSpecialKeys.Escape) _
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
-        '
-        'btnClose
-        '
-        resources.ApplyResources(Me.btnClose, "btnClose")
-        Me.btnClose.Name = "btnClose"
-        Me.btnClose.UseVisualStyleBackColor = True
         '
         'frmTFMpolicy
         '

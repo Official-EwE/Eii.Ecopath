@@ -99,18 +99,18 @@ Partial Class dlgHarvestControlRule
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(12, 9)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(140, 13)
+        Me.Label1.Size = New System.Drawing.Size(76, 13)
         Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Biomass conservation group"
+        Me.Label1.Text = "Biomass group"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(12, 58)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(141, 13)
+        Me.Label2.Size = New System.Drawing.Size(111, 13)
         Me.Label2.TabIndex = 4
-        Me.Label2.Text = "Select fishing mortality group"
+        Me.Label2.Text = "Fishing mortality group"
         '
         'txRule
         '
