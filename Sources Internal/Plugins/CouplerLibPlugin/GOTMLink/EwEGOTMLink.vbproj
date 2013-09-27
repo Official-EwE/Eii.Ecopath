@@ -137,11 +137,11 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="couplerlib">
-      <HintPath>..\..\..\ScientificInterface\bin\x64\Debug\couplerlib.dll</HintPath>
+    <Reference Include="couplerlib, Version=1.0.5017.28656, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\Includes\couplerlib.dll</HintPath>
     </Reference>
-    <Reference Include="Python.Runtime">
-      <HintPath>..\..\..\..\..\pythonnet\Pythonnet-2.7\Python.Runtime.dll</HintPath>
+    <Reference Include="Python.Runtime, Version=2.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Includes\Python.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -154,7 +154,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\..\..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +212,30 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Includes\win32\hdf5dll.lib" />
+    <None Include="Includes\win32\hdf5_cppdll.lib" />
+    <None Include="Includes\win32\hdf5_hl_cppdll.lib" />
+    <None Include="Includes\win32\libcurl_imp.lib" />
+    <None Include="Includes\win32\netcdf.lib" />
+    <None Include="Includes\win32\netcdf2.lib" />
+    <None Include="Includes\win32\PocoFoundationmt.lib" />
+    <None Include="Includes\win32\PocoFoundationmtd.lib" />
+    <None Include="Includes\win32\szip.lib" />
+    <None Include="Includes\win32\xerces-c_3.lib" />
+    <None Include="Includes\win32\xerces-c_3D.lib" />
+    <None Include="Includes\win32\xerces-c_static_3.lib" />
+    <None Include="Includes\win32\xerces-c_static_3D.lib" />
+    <None Include="Includes\win32\zlib.lib" />
+    <None Include="Includes\win64\PocoFoundation.lib" />
+    <None Include="Includes\win64\PocoFoundationd.lib" />
+    <None Include="Includes\win64\PocoFoundationmd.lib" />
+    <None Include="Includes\win64\PocoFoundationmdd.lib" />
+    <None Include="Includes\win64\PocoFoundationmt.lib" />
+    <None Include="Includes\win64\PocoFoundationmtd.lib" />
+    <None Include="Includes\win64\xerces-c_3.lib" />
+    <None Include="Includes\win64\xerces-c_3D.lib" />
+    <None Include="Includes\win64\xerces-c_static_3.lib" />
+    <None Include="Includes\win64\xerces-c_static_3D.lib" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -223,6 +247,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Includes\couplerlib.dll" />
+    <Content Include="Includes\Python.Runtime.dll" />
+    <Content Include="Includes\win32\python27.dll" />
     <Content Include="Resources\EwE_GOTM2.PNG" />
     <None Include="Resources\advanced.png" />
     <None Include="Resources\logo.png" />
@@ -262,19 +289,17 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Includes\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\EwECore\EwECore.vbproj">
+    <ProjectReference Include="..\..\..\..\Sources\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\EwEPlugin\EwEPlugin.vbproj">
+    <ProjectReference Include="..\..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
       <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\EwEUtils\EwEUtils.vbproj">
+    <ProjectReference Include="..\..\..\..\Sources\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
       <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
     </ProjectReference>
