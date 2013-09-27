@@ -27,8 +27,6 @@ Public Class cMSE
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer
     Private nPrimaryProducer As Integer
-    Private NatMort() As Double
-    Private NatMortName() As String
     Private ChangeInEffortLimits() As Double
     Const NoHCR_F As Integer = -9999
 
@@ -160,27 +158,6 @@ Public Class cMSE
 
     End Function
 
-    Private Sub LoadNaturalMortalites()
-
-        Dim nRecords As Integer = 0
-        Dim NatMortCSV As New CsvReader(New StreamReader(DataPath & "\naturalmortalities\NaturalMortalities.csv"), True)
-
-        'Count how many records there are
-        While NatMortCSV.ReadNextRecord
-            nRecords += 1
-        End While
-
-        ReDim NatMort(nRecords - 1)
-        ReDim NatMortName(nRecords - 1)
-
-        NatMortCSV = New CsvReader(New StreamReader(DataPath & "\naturalmortalities\NaturalMortalities.csv"), True)
-
-        While NatMortCSV.ReadNextRecord
-            NatMortName(NatMortCSV.CurrentRecordIndex) = NatMortCSV("GroupName")
-            NatMort(NatMortCSV.CurrentRecordIndex) = NatMortCSV("NaturalMortality")
-        End While
-
-    End Sub
 
     'Private Function LoadCostFunctionsCSV()
     '    Dim CostFunctionReader As CsvReader
@@ -396,10 +373,6 @@ Public Class cMSE
 
         'Object for outputting f trajectory
         TrajectoryF = New StreamWriter(DataPath & "\Results\Trajectories\f.csv", False)
-
-        'Load the natural mortalities into class variable so that it can be used by EcosimBeginTimeStep
-        'to convert the Instantaneous Fishing mortality for target F into an exploitation rate that can be used by EwE
-        LoadNaturalMortalites()
 
         'load parameter values into ecopath and ecosim to be used
         nTrials = Convert.ToInt32(MSEForm.txtNModels2Run.Text)    '0 is the 1st dimension and 1' the second etc
@@ -984,6 +957,9 @@ stepend:
         Dim sPath As String = DataPath & "\DistributionParameters"
         Dim nPPers As Integer 'number of primary producers
         Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
+        Const PQThreshold As Double = 0.5
+        Const RespirThreshold As Double = 0
+        Dim isbalanced As Boolean
 
         'I am just altering the tolerance so that it can run faster; this needs deleting later
         MonteCarlo.EcopathEETolerance = Convert.ToSingle(MSEForm.txtTolerance.Text)
@@ -1033,6 +1009,8 @@ stepend:
                     TimeFindingBalanced.Start()
                     For i = 1 To 1000000
 
+                        isbalanced = True
+
                         'Write code here that generates a whole set of diet parameters to be used in combination with new ecopath parameters
                         'to be tested for the mass-balance criteria
                         SampleDietMatrix(Interacts, MeanProportions, DietPropMultipliers)
@@ -1040,128 +1018,132 @@ stepend:
                         Console.WriteLine("Iteration = " & i)
                         If MonteCarlo.selectNewEcopathParameters(1) Then
 
-                            'For iGrp = 1 To nLiving
-                            '    b(iTrial, iGrp) = Me._ecopath.EcopathData.B(iGrp)
-                            '    ba(iTrial, iGrp) = Me._ecopath.EcopathData.BA(iGrp)
-                            '    pb(iTrial, iGrp) = Me._ecopath.EcopathData.PB(iGrp)
-                            '    qb(iTrial, iGrp) = Me._ecopath.EcopathData.QB(iGrp)
-                            '    ee(iTrial, iGrp) = Me._ecopath.EcopathData.EE(iGrp)
-                            'Next iGrp
+                            'For iGrp = 1 To mCore.nGroups
+                            '    If mCore.EcoPathGroupInputs(iGrp).IsLiving Then
+                            '        If _ecopath.EcopathData.GE(iGrp) > PQThreshold Or _ecopath.EcopathData.Resp(iGrp) < RespirThreshold Then
+                            '            isbalanced = False
+                            '        End If
+                            '    End If
+                            'Next
 
-                            'Output the diet matrix parameters to csv
-                            Dim csv_dietout As New StreamWriter(DataPath & "\ParametersOut\DietMatrixTrial" & iTrial & ".csv", False)
-                            For iPrey = 0 To nGroups
-                                csv_dietout.Write(Me._ecopath.EcopathData.DC(1, iPrey))
-                                For iPred = 2 To nGroups
-                                    csv_dietout.Write("," & Me._ecopath.EcopathData.DC(iPred, iPrey))
+                            If isbalanced = True Then
+
+                                'Output the diet matrix parameters to csv
+                                Dim csv_dietout As New StreamWriter(DataPath & "\ParametersOut\DietMatrixTrial" & iTrial & ".csv", False)
+                                For iPrey = 0 To nGroups
+                                    csv_dietout.Write(Me._ecopath.EcopathData.DC(1, iPrey))
+                                    For iPred = 2 To nGroups
+                                        csv_dietout.Write("," & Me._ecopath.EcopathData.DC(iPred, iPrey))
+                                    Next
+                                    csv_dietout.WriteLine()
                                 Next
-                                csv_dietout.WriteLine()
-                            Next
-                            'Me._ecopath.EcopathData.DtImp()
-                            csv_dietout.Dispose()
+                                'Me._ecopath.EcopathData.DtImp()
+                                csv_dietout.Dispose()
 
-                            sPath = DataPath & "\ParametersOut"
-                            Dim b_csvout As StreamWriter
-                            Dim ba_csvout As StreamWriter
-                            Dim pb_csvout As StreamWriter
-                            Dim qb_csvout As StreamWriter
-                            Dim ee_csvout As StreamWriter
+                                sPath = DataPath & "\ParametersOut"
+                                Dim b_csvout As StreamWriter
+                                Dim ba_csvout As StreamWriter
+                                Dim pb_csvout As StreamWriter
+                                Dim qb_csvout As StreamWriter
+                                Dim ee_csvout As StreamWriter
 
-                            If Not File.Exists(Path.Combine(sPath & "/b_out.csv")) Then
-                                b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
-                                b_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                If Not File.Exists(Path.Combine(sPath & "/b_out.csv")) Then
+                                    b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
+                                    b_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                    For igrp As Integer = 2 To nLiving
+                                        b_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    Next
+
+                                Else
+                                    b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
+                                End If
+
+
+                                b_csvout.WriteLine()
+                                b_csvout.Write(Me._ecopath.EcopathData.B(1))
                                 For igrp As Integer = 2 To nLiving
-                                    b_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    b_csvout.Write(", " & Me._ecopath.EcopathData.B(igrp))
                                 Next
+                                b_csvout.Dispose()
 
-                            Else
-                                b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
-                            End If
+                                If Not File.Exists(Path.Combine(sPath & "/ba_out.csv")) Then
+                                    ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
+                                    ba_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                    For igrp As Integer = 2 To nLiving
+                                        ba_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    Next
+                                Else
+                                    ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
+                                End If
 
-
-                            b_csvout.WriteLine()
-                            b_csvout.Write(Me._ecopath.EcopathData.B(1))
-                            For igrp As Integer = 2 To nLiving
-                                b_csvout.Write(", " & Me._ecopath.EcopathData.B(igrp))
-                            Next
-                            b_csvout.Dispose()
-
-                            If Not File.Exists(Path.Combine(sPath & "/ba_out.csv")) Then
-                                ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
-                                ba_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                ba_csvout.WriteLine()
+                                ba_csvout.Write(Me._ecopath.EcopathData.BA(1))
                                 For igrp As Integer = 2 To nLiving
-                                    ba_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    ba_csvout.Write(", " & Me._ecopath.EcopathData.BA(igrp))
                                 Next
-                            Else
-                                ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
-                            End If
+                                ba_csvout.Dispose()
 
-                            ba_csvout.WriteLine()
-                            ba_csvout.Write(Me._ecopath.EcopathData.BA(1))
-                            For igrp As Integer = 2 To nLiving
-                                ba_csvout.Write(", " & Me._ecopath.EcopathData.BA(igrp))
-                            Next
-                            ba_csvout.Dispose()
+                                If Not File.Exists(Path.Combine(sPath & "/pb_out.csv")) Then
+                                    pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
+                                    pb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                    For igrp As Integer = 2 To nLiving
+                                        pb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    Next
+                                Else
+                                    pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
+                                End If
 
-                            If Not File.Exists(Path.Combine(sPath & "/pb_out.csv")) Then
-                                pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
-                                pb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                pb_csvout.WriteLine()
+                                pb_csvout.Write(Me._ecopath.EcopathData.PB(1))
                                 For igrp As Integer = 2 To nLiving
-                                    pb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    pb_csvout.Write(", " & Me._ecopath.EcopathData.PB(igrp))
+
                                 Next
-                            Else
-                                pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
-                            End If
+                                pb_csvout.Dispose()
 
-                            pb_csvout.WriteLine()
-                            pb_csvout.Write(Me._ecopath.EcopathData.PB(1))
-                            For igrp As Integer = 2 To nLiving
-                                pb_csvout.Write(", " & Me._ecopath.EcopathData.PB(igrp))
+                                If Not File.Exists(Path.Combine(sPath & "/qb_out.csv")) Then
+                                    qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
+                                    qb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                    For igrp As Integer = 2 To nLiving
+                                        qb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    Next
+                                Else
+                                    qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
+                                End If
 
-                            Next
-                            pb_csvout.Dispose()
-
-                            If Not File.Exists(Path.Combine(sPath & "/qb_out.csv")) Then
-                                qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
-                                qb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                qb_csvout.WriteLine()
+                                qb_csvout.Write(Me._ecopath.EcopathData.QB(1))
                                 For igrp As Integer = 2 To nLiving
-                                    qb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    qb_csvout.Write(", " & Me._ecopath.EcopathData.QB(igrp))
                                 Next
-                            Else
-                                qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
-                            End If
+                                qb_csvout.Dispose()
 
-                            qb_csvout.WriteLine()
-                            qb_csvout.Write(Me._ecopath.EcopathData.QB(1))
-                            For igrp As Integer = 2 To nLiving
-                                qb_csvout.Write(", " & Me._ecopath.EcopathData.QB(igrp))
-                            Next
-                            qb_csvout.Dispose()
+                                If Not File.Exists(Path.Combine(sPath & "/ee_out.csv")) Then
+                                    ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
+                                    ee_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                    For igrp As Integer = 2 To nLiving
+                                        ee_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    Next
+                                Else
+                                    ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
+                                End If
 
-                            If Not File.Exists(Path.Combine(sPath & "/ee_out.csv")) Then
-                                ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
-                                ee_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                                ee_csvout.WriteLine()
+                                ee_csvout.Write(Me._ecopath.EcopathData.EE(1))
                                 For igrp As Integer = 2 To nLiving
-                                    ee_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                                    ee_csvout.Write(", " & Me._ecopath.EcopathData.EE(igrp))
                                 Next
-                            Else
-                                ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
+                                ee_csvout.Dispose()
+
+                                ''This runs Ecosim without core support
+                                'If Me.RunEcosim() Then
+                                '    'dumps out some Ecosim results
+                                '    Me.getEcosimResults()
+                                'End If 'RunEcosim
+
+                                Exit For
+
                             End If
-
-                            ee_csvout.WriteLine()
-                            ee_csvout.Write(Me._ecopath.EcopathData.EE(1))
-                            For igrp As Integer = 2 To nLiving
-                                ee_csvout.Write(", " & Me._ecopath.EcopathData.EE(igrp))
-                            Next
-                            ee_csvout.Dispose()
-
-                            ''This runs Ecosim without core support
-                            'If Me.RunEcosim() Then
-                            '    'dumps out some Ecosim results
-                            '    Me.getEcosimResults()
-                            'End If 'RunEcosim
-
-                            Exit For
 
                         Else
                             System.Console.WriteLine("Failed to find balanced Ecopath model")
@@ -1890,22 +1872,6 @@ stepend:
                 Next
 
 
-                For iGrp = 1 To mCore.nLivingGroups
-                    For iNatMortName = 1 To NatMortName.Length()
-                        If mCore.EcoPathGroupOutputs(iGrp).Name = NatMortName(xgrp) Then
-                            xgrp = iNatMortName - 1
-                            Exit For
-                        End If
-                    Next
-                    If FTargetandConservation(iGrp - 1, HCRType.Target) <> NoHCR_F Then
-                        FTargetandConservation(iGrp - 1, HCRType.Target) = (1 - Math.Exp(-FTargetandConservation(iGrp - 1, HCRType.Target) - NatMort(xgrp))) * (FTargetandConservation(iGrp - 1, HCRType.Target) / (FTargetandConservation(iGrp - 1, HCRType.Target) + NatMort(xgrp))) ' This is correct if we need to convert from instantaneous to yearly catch/biomass
-                    End If
-                    If FTargetandConservation(iGrp - 1, HCRType.Conservation) <> NoHCR_F Then
-                        FTargetandConservation(iGrp - 1, HCRType.Conservation) = (1 - Math.Exp(-FTargetandConservation(iGrp - 1, HCRType.Conservation) - NatMort(xgrp))) * (FTargetandConservation(iGrp - 1, HCRType.Conservation) / (FTargetandConservation(iGrp - 1, HCRType.Conservation) + NatMort(xgrp))) ' This is correct if we need to convert from instantaneous to yearly catch/biomass
-                    End If
-
-                Next
-
                 'Compiles a list of which fleets are affecting groups which have a zero conservation f
                 'ZeroEffortFleetsList = DetermineZeroEffortFleets(FTargetandConservation)
 
@@ -2083,57 +2049,6 @@ stepend:
 
             End If
         End If
-    End Sub
-
-    Private Sub Effort2produceF(ByVal x As Double(), ByRef func As Double, ByVal obj As List(Of Object))
-
-        Dim FTargetandConservation As Double(,) = obj(0)
-        Dim fleets2fit As List(Of Integer) = obj(1)
-        Dim QMult As Double() = obj(2)
-        Dim TechnologyCreep As Single() = obj(3)
-        Dim iTime As Integer = obj(4)
-        Dim GroupF(mCore.nGroups - 1) As Double
-        Const Penalty As Double = 1000000000
-        Const PenaltyEBelowZero As Double = Penalty ' this is a constant that multiplies by the penalty function
-        Const PenaltyFaboveTarget As Double = Penalty
-        Const PenaltyFOutsideLimitChange As Double = Penalty
-        Dim IndexInX_Effort As Integer
-
-        func = 0 ' func is the cost function. Initialise by setting to 0
-
-        'Initialise Calculated F's by setting to zero
-        For igrp = 1 To mCore.nLivingGroups
-            GroupF(igrp - 1) = 0
-        Next
-
-        'Calculate what F's the specified effort (x) will produce
-        For Each iFleet2Fit In fleets2fit
-            IndexInX_Effort = fleets2fit.IndexOf(iFleet2Fit)
-            For iGrp = 1 To mCore.nGroups
-                GroupF(iGrp - 1) += TechnologyCreep(iFleet2Fit - 1) * _ecosim.EcosimData.FishMGear(iFleet2Fit, iGrp) * x(IndexInX_Effort) * (_ecosim.EcosimData.PropLandedTime(iFleet2Fit, iGrp) + _ecosim.EcosimData.Propdiscardtime(iFleet2Fit, iGrp)) * QMult(iGrp - 1)
-            Next
-            If x(IndexInX_Effort) < 0 Then func += PenaltyEBelowZero * Math.Abs(x(IndexInX_Effort)) ^ 2
-            If Math.Abs(x(IndexInX_Effort) - _ecosim.EcosimData.FishRateGear(iFleet2Fit, iTime - 1)) > ChangeInEffortLimits(iFleet2Fit - 1) Then func += PenaltyFOutsideLimitChange * (x(IndexInX_Effort) - _ecosim.EcosimData.FishRateGear(iFleet2Fit, iTime - 1)) ^ 2
-        Next
-
-        'Compare the produced F's with those that we are trying to obtain and calculated the cost function accordingly
-        For iGrp As Integer = 1 To mCore.nLivingGroups
-            'apply the different possible cost function to each group given in the HCR
-
-            If FTargetandConservation(iGrp - 1, HCRType.Target) <> NoHCR_F And FTargetandConservation(iGrp - 1, HCRType.Conservation) = NoHCR_F Then
-                'Values in left column only of FTargetandConservation mean target F only
-                func += (FTargetandConservation(iGrp - 1, HCRType.Target) - GroupF(iGrp - 1)) ^ 2
-            ElseIf FTargetandConservation(iGrp - 1, HCRType.Target) = NoHCR_F And FTargetandConservation(iGrp - 1, HCRType.Conservation) <> NoHCR_F Then
-                'Values in right column only of FTargetandConservation means conservation F only
-                If GroupF(iGrp - 1) > FTargetandConservation(iGrp - 1, HCRType.Conservation) Then func += PenaltyFaboveTarget * (GroupF(iGrp - 1) - FTargetandConservation(iGrp - 1, HCRType.Conservation)) ^ 2
-            ElseIf FTargetandConservation(iGrp - 1, HCRType.Target) <> NoHCR_F And FTargetandConservation(iGrp - 1, HCRType.Conservation) <> NoHCR_F Then
-                'Values in both columns of FTargetandConservation means both target and conservation
-                func += (FTargetandConservation(iGrp - 1, HCRType.Target) - GroupF(iGrp - 1)) ^ 2
-                If GroupF(iGrp - 1) > FTargetandConservation(iGrp - 1, HCRType.Conservation) Then func += PenaltyFaboveTarget * (GroupF(iGrp - 1) - FTargetandConservation(iGrp - 1, HCRType.Conservation)) ^ 2
-            End If
-
-        Next
-
     End Sub
 
     Friend ReadOnly Property Core As cCore
