@@ -95,7 +95,7 @@ Public Class GOTMplugin
 
     End Function
 
-    
+
 
     Public Sub ModelLoaded(ByVal is3d As Boolean)
         Dim ng As Integer
@@ -537,46 +537,46 @@ Public Class GOTMplugin
                 End If
                 Node.AppendChild(NewNode)
             End If
-                For m = 1 To CL.Count - 1
-                    Node.RemoveChild(CL(m))
-                Next
-                For m = 1 To nodims
-                    NewNode = Specification.CreateElement(NodeName(m - 1))
-                    NewChild = Specification.CreateElement("Minimum")
-                    If m = 1 Then
-                        NewChild.InnerText = Convert.ToString(lonstart)
-                    End If
-                    If m = 2 Then
-                        NewChild.InnerText = Convert.ToString(latstart)
-                    End If
-                    If m = 3 Then
-                        NewChild.InnerText = Convert.ToString(0.0)
-                    End If
-                    NewNode.AppendChild(NewChild)
-                    NewChild = Specification.CreateElement("Interval")
-                    If m = 1 Then
-                        NewChild.InnerText = Convert.ToString(longint)
-                    End If
-                    If m = 2 Then
-                        NewChild.InnerText = Convert.ToString(latint)
-                    End If
-                    If m = 3 Then
-                        NewChild.InnerText = Convert.ToString(1.0) 'Max depth all of sea
-                    End If
-                    NewNode.AppendChild(NewChild)
-                    NewChild = Specification.CreateElement("Length")
-                    If m = 1 Then
-                        NewChild.InnerText = Convert.ToString(longsz)
-                    End If
-                    If m = 2 Then
-                        NewChild.InnerText = Convert.ToString(latsz)
-                    End If
-                    If m = 3 Then
-                        NewChild.InnerText = Convert.ToString(1)
-                    End If
-                    NewNode.AppendChild(NewChild)
-                    Node.AppendChild(NewNode)
-                Next
+            For m = 1 To CL.Count - 1
+                Node.RemoveChild(CL(m))
+            Next
+            For m = 1 To nodims
+                NewNode = Specification.CreateElement(NodeName(m - 1))
+                NewChild = Specification.CreateElement("Minimum")
+                If m = 1 Then
+                    NewChild.InnerText = Convert.ToString(lonstart)
+                End If
+                If m = 2 Then
+                    NewChild.InnerText = Convert.ToString(latstart)
+                End If
+                If m = 3 Then
+                    NewChild.InnerText = Convert.ToString(0.0)
+                End If
+                NewNode.AppendChild(NewChild)
+                NewChild = Specification.CreateElement("Interval")
+                If m = 1 Then
+                    NewChild.InnerText = Convert.ToString(longint)
+                End If
+                If m = 2 Then
+                    NewChild.InnerText = Convert.ToString(latint)
+                End If
+                If m = 3 Then
+                    NewChild.InnerText = Convert.ToString(1.0) 'Max depth all of sea
+                End If
+                NewNode.AppendChild(NewChild)
+                NewChild = Specification.CreateElement("Length")
+                If m = 1 Then
+                    NewChild.InnerText = Convert.ToString(longsz)
+                End If
+                If m = 2 Then
+                    NewChild.InnerText = Convert.ToString(latsz)
+                End If
+                If m = 3 Then
+                    NewChild.InnerText = Convert.ToString(1)
+                End If
+                NewNode.AppendChild(NewChild)
+                Node.AppendChild(NewNode)
+            Next
 
         Next
 
@@ -622,14 +622,14 @@ Public Class GOTMplugin
                         'ds.tval(ds.TemperatureForceNo) = modd(m)
                         'End If
                     End If
-        If d = BiomassAtTimestep.Length + 1 Then
+                    If d = BiomassAtTimestep.Length + 1 Then
                         'If (ds.SalinityForceNo > 0) Then
                         'ds.tval(ds.SalinityForceNo) = modd(m)
                         'End If
                     End If
-        If d < BiomassAtTimestep.Length Then
-            BiomassAtTimestep(cp.OrgReference(imodellm(n), ifinputs(n), m) + 1) = modd(m)  REM biomass at timestep is 1 indexed
-        End If
+                    If d < BiomassAtTimestep.Length Then
+                        BiomassAtTimestep(cp.OrgReference(imodellm(n), ifinputs(n), m) + 1) = modd(m)  REM biomass at timestep is 1 indexed
+                    End If
                 Next
             Next
             For n = 1 To ds.nGroups
@@ -935,6 +935,7 @@ Public Class GOTMplugin
             Next
 
             If isrescale Then
+#If ALLOW_RESCALE Then
                 ds.InCol = reydim
                 ds.InRow = rexdim
                 'ds.nEnvironmentalDriverLayers = 1
@@ -955,6 +956,7 @@ Public Class GOTMplugin
                 ds.redimTimeStepResults(ds.nTimeSteps)
                 m_core.m_Ecospace.redimForRun()
                 m_core.m_Ecospace.InitSpaceSolverThreads()
+#End If
             End If
             ymax = ds.InCol
             xmax = ds.InRow
@@ -1051,6 +1053,7 @@ Public Class GOTMplugin
                 Next
             Next
             If isrescale Then
+#If ALLOW_RESCALE Then
                 If isrescale2 Then
                     cp.GetHabitat(habitat2, xmax * ymax)
                     'Dim tbm As cEcospaceLayerHabitat = New cEcospaceLayerHabitat(m_core, m_core.EcospaceBasemap, 0)
@@ -1082,9 +1085,10 @@ Public Class GOTMplugin
                 ds.nWaterCells = 1
                 m_core.m_Ecospace.summarizeTimeStepData(1, 0)
                 ds.nWaterCells = watercellno
+#End If
             Else
                 ds.bHasCapacityChanged = True
-                m_core.m_Ecospace.SetHabCap()
+                'm_core.m_Ecospace.SetHabCap()
                 'ds.nSumTimeSteps -= 1
                 'ds.RedimHabitatVariables(True)
             End If
