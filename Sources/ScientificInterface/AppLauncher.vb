@@ -171,6 +171,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdExportLayerData As cExportLayerCommand = Nothing
     Private WithEvents m_cmdEditLayer As cEditLayerCommand = Nothing
     Private WithEvents m_cmdShowOptions As cShowOptionsCommand = Nothing
+    Private WithEvents m_cmdEditReferenceMap As cCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdHelpReportIssue As cCommand = Nothing
@@ -460,6 +461,9 @@ Public Class AppLauncher
         'Create and configure 'show options' command
         Me.m_cmdShowOptions = New cShowOptionsCommand(cmdh)
         Me.m_cmdShowOptions.AddControl(Me.m_tsmiOptions)
+
+        'Create and configure 'edit reference map' command
+        Me.m_cmdEditReferenceMap = New cCommand(cmdh, "EditRefMap")
 
         'Create and configure 'Autosave results' command
         Me.m_cmdAutosaveResults = New cCommand(cmdh, "AutosaveResults")
@@ -3036,7 +3040,6 @@ Public Class AppLauncher
 #Region " Tools commands "
 
     Private Sub OnShowOptions(ByVal cmd As cCommand) Handles m_cmdShowOptions.OnInvoke
-
         Try
             Dim dlgOptions As New dlgOptions(Me.UIContext, Me.m_cmdShowOptions.Option)
             dlgOptions.ShowDialog(Me)
@@ -3044,7 +3047,10 @@ Public Class AppLauncher
         Catch ex As Exception
 
         End Try
+    End Sub
 
+    Private Sub OnEditRefMap(ByVal cmd As cCommand) Handles m_cmdEditReferenceMap.OnInvoke
+        Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.ReferenceMaps)
     End Sub
 
 #End Region ' Tools commands

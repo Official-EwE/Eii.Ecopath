@@ -27,6 +27,7 @@ Imports EwEUtils.Core
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -186,10 +187,13 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerPort)
             Me.AddData(eVarNameFlags.LayerSail, False)
+
+            '  -- Reference layer
             Dim l As New cStyleguideImageLayer(Me.UIContext)
             l.Name = ScientificInterfaceShared.My.Resources.HEADER_REFERENCE
-            Me.AddLayer(l, l.Name, "")
+            Me.AddLayer(l, l.Name, "EditRefMap")
             l.Renderer.IsVisible = False
+
             Me.AddData(eVarNameFlags.LayerMigration)
             Me.AddData(eVarNameFlags.LayerRelPP, False)
             Me.AddData(eVarNameFlags.LayerRelCin, False)

@@ -307,7 +307,7 @@ Namespace Other
                     t = GetType(ucOptionsGraphs)
                     strNode = "ndGraphCharts"
 
-                Case eApplicationOptionTypes.Maps
+                Case eApplicationOptionTypes.ReferenceMaps
                     t = GetType(ucOptionsMap)
                     strNode = "ndMap"
 

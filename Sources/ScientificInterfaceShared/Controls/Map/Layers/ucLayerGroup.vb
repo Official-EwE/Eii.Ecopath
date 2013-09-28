@@ -243,7 +243,8 @@ Namespace Controls.Map
             End Select
         End Sub
 
-        Private Sub ucLayerGroup_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+        Protected Overrides Sub OnResize(e As System.EventArgs)
+            MyBase.OnResize(e)
             Me.UpdateSize()
         End Sub
 
@@ -312,7 +313,7 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Sub ucLayerGroup_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseClick
+        Protected Overrides Sub OnMouseClick(e As System.Windows.Forms.MouseEventArgs)
 
             ' Determine hit area
             Select Case Me.GetArea(e.Location)
@@ -333,8 +334,7 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Sub ucLayerGroup_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseMove
-
+        Protected Overrides Sub OnMouseMove(e As System.Windows.Forms.MouseEventArgs)
             ' Determine hit area
             Select Case Me.GetArea(e.Location)
                 Case eAreaTypes.Collapse, eAreaTypes.Visible
@@ -344,15 +344,14 @@ Namespace Controls.Map
                     ' Use default
                     Me.Cursor = Cursors.Default
             End Select
-
         End Sub
 
-        Private Sub ucLayerGroup_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.MouseEnter
+        Protected Overrides Sub OnMouseEnter(e As System.EventArgs)
             Me.m_bHovering = True
             Me.Invalidate(False)
         End Sub
 
-        Private Sub ucLayerGroup_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.MouseLeave
+        Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
             Me.m_bHovering = False
             Me.Invalidate(False)
         End Sub

@@ -303,7 +303,8 @@ Namespace Controls
 
                 ' Draw label
                 Using br As New SolidBrush(Me.ForeColor)
-                    fmt.Trimming = StringTrimming.None
+                    fmt.FormatFlags = StringFormatFlags.NoWrap
+                    fmt.Trimming = StringTrimming.EllipsisPath
                     e.Graphics.DrawString(Me.Text, ft, br, rcText, fmt)
                 End Using
 

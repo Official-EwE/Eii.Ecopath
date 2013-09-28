@@ -168,7 +168,7 @@ Namespace Definitions
         ''' <summary>Graph options.</summary>
         Graphs
         ''' <summary>Map options.</summary>
-        Maps
+        ReferenceMaps
         ''' <summary>Plug-in options.</summary>
         Plugins
         ''' <summary>Message history options.</summary>

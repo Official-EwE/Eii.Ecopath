@@ -328,6 +328,7 @@ Namespace Controls
             Me.m_bInUpdate = False
             Me.Invalidate(True)
 
+            Me.UpdateColors()
         End Sub
 
         Private Sub UpdateControls()
