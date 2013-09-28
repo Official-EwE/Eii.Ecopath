@@ -38,18 +38,16 @@ Namespace Controls.Map.Layers
     Public Class cLayerRendererValue
         Inherits cRasterLayerRenderer
 
-        Private m_brFore As Brush = Nothing
-        Private m_ft As Font = Nothing
-        Private m_bDrawAlways As Boolean = False
-
-        Private m_colorRamp As cColorRamp = New cEwEColorRamp()
-
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or _
                     cVisualStyle.eVisualStyleTypes.Font Or _
                     cVisualStyle.eVisualStyleTypes.Gradient)
 
         End Sub
+
+        Protected Property Font As Font
+        Protected Property ColorRamp As cColorRamp
+        Protected Property ForeBrush As Brush
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -58,21 +56,14 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property DrawAlways() As Boolean
-            Get
-                Return Me.m_bDrawAlways
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bDrawAlways = value
-            End Set
-        End Property
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
                                            ByVal rc As Rectangle)
 
-            If Me.m_brFore Is Nothing Then Me.Update()
+            If Me.ForeBrush Is Nothing Then Me.Update()
 
             If Me.IsStyleValid Then
-                cColorRampIndicator.DrawColorRamp(g, Me.m_colorRamp, rc, False)
+                cColorRampIndicator.DrawColorRamp(g, Me.ColorRamp, rc, False)
             Else
                 Me.RenderError(g, rc)
             End If
@@ -88,7 +79,7 @@ Namespace Controls.Map.Layers
             Dim sValue As Single = CSng(value)
 
             ' Skip this if layer should not draw
-            If ((style And cStyleGuide.eStyleFlags.Highlight) = 0) And (Me.m_bDrawAlways = False) Then
+            If ((style And cStyleGuide.eStyleFlags.Highlight) = 0) And (Me.DrawAlways = False) Then
                 Return
             End If
 
@@ -106,10 +97,10 @@ Namespace Controls.Map.Layers
             Dim bOutOfRange As Boolean = (sValue > sValMax)
 
             Try
-                If Me.m_brFore Is Nothing Then Me.Update()
+                If Me.ForeBrush Is Nothing Then Me.Update()
 
                 ' Draw background
-                If (value IsNot Nothing) And (Me.m_ft IsNot Nothing) Then
+                If (value IsNot Nothing) And (Me.Font IsNot Nothing) Then
 
                     If bOutOfRange Then
                         Using br As New SolidBrush(Color.Magenta)
@@ -123,17 +114,17 @@ Namespace Controls.Map.Layers
                         If (sValRange > 0.0) Then
                             ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
                             ' not (0, sValueMax)!!!
-                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue - sValMin, sValMax - sValMin))
+                            Using br As New SolidBrush(ColorRamp.GetColor(sValue - sValMin, sValMax - sValMin))
                                 g.FillRectangle(br, rc)
                             End Using
                         Else
-                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue, sValMax))
+                            Using br As New SolidBrush(ColorRamp.GetColor(sValue, sValMax))
                                 g.FillRectangle(br, rc)
                             End Using
                         End If
                     End If
                     ' Draw value
-                    g.DrawString(String.Format("{0}", value), Me.m_ft, Me.m_brFore, rc)
+                    g.DrawString(String.Format("{0}", value), Me.Font, Me.ForeBrush, rc)
                 End If
             Catch ex As Exception
                 ' Boom
@@ -144,18 +135,18 @@ Namespace Controls.Map.Layers
 
             Dim vs As cVisualStyle = Me.VisualStyle
 
-            If vs Is Nothing Then
-                Me.m_brFore = cRasterLayerRenderer.brDEFAULT
+            If (vs Is Nothing) Then
+                Me.ForeBrush = cRasterLayerRenderer.brDEFAULT
             Else
-                Me.m_brFore = New SolidBrush(vs.ForeColour)
+                Me.ForeBrush = New SolidBrush(vs.ForeColour)
 
-                If (Me.m_ft IsNot Nothing) Then Me.m_ft.Dispose()
-                Me.m_ft = New Font(vs.FontName, Me.VisualStyle.FontSize, Me.VisualStyle.FontStyle)
+                If (Me.Font IsNot Nothing) Then Me.Font.Dispose()
+                Me.Font = New Font(vs.FontName, Me.VisualStyle.FontSize, Me.VisualStyle.FontStyle)
 
                 If (vs.GradientBreaks IsNot Nothing) And (vs.GradientColors IsNot Nothing) Then
-                    Me.m_colorRamp = New cARGBColorRamp(vs.GradientColors, vs.GradientBreaks)
+                    Me.ColorRamp = New cARGBColorRamp(vs.GradientColors, vs.GradientBreaks)
                 Else
-                    Me.m_colorRamp = New cEwEColorRamp()
+                    Me.ColorRamp = New cEwEColorRamp()
                 End If
             End If
 
@@ -168,10 +159,14 @@ Namespace Controls.Map.Layers
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             MyBase.Dispose(disposing)
-            Me.m_ft.Dispose()
-            Me.m_ft = Nothing
-            Me.m_brFore.Dispose()
-            Me.m_brFore = Nothing
+            Try
+                Me.Font.Dispose()
+                Me.Font = Nothing
+                Me.ForeBrush.Dispose()
+                Me.ForeBrush = Nothing
+            Catch ex As Exception
+                Debug.Assert(False)
+            End Try
         End Sub
 
         Public Overrides Function GetDisplayText(value As Object) As String
