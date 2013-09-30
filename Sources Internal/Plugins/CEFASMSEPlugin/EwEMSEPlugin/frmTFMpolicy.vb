@@ -28,13 +28,14 @@ Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 Imports SourceGrid2
 Imports System.IO
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
 
 ''' =======================================================================
 ''' <summary>
-''' Form, implementing the Ecosim Fishing policy mortality (a.k.a hockey stick) 
+''' Form, implementing the Cefas MSE Fishing policy mortality (a.k.a hockey stick) 
 ''' interface.
 ''' </summary>
 ''' =======================================================================
@@ -85,11 +86,11 @@ Public Class frmTFMpolicy
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        If Me.UIContext Is Nothing Then Return
+        If (Me.UIContext Is Nothing) Then Return
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
-        Me.m_zgh.ConfigurePane("", "Biomass (kt)", SharedResources.HEADER_TFM, True)
+        Me.m_zgh.ConfigurePane("", String.Format(My.Resources.LABEL_BIOMASS_UNIT, "kt"), SharedResources.HEADER_TFM, True)
 
         Me.m_zgh.AllowZoom = False
         Me.m_zgh.AllowPan = False
@@ -104,22 +105,36 @@ Public Class frmTFMpolicy
 
     End Sub
 
+    Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
+
+        ' ToDo_JS: globalize this method
+
+        If StrategiesSaved = False Then
+            Dim resultmessage As DialogResult = MessageBox.Show("You have made changes to the data in this form without saving them to CSV." & vbCrLf & "Are you sure you still want to close it?" _
+                                                                & "(The changes you made will be used for the duration of EwE being open this time but won't be available to reload after EwE has been closed)", _
+                                                                    "Warning!", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation)
+            e.Cancel = (resultmessage = Windows.Forms.DialogResult.Cancel)
+        End If
+        MyBase.OnFormClosing(e)
+
+    End Sub
+
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         If Me.m_zgh IsNot Nothing Then
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
         End If
-
         MyBase.OnFormClosed(e)
+
     End Sub
 
-    Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
+    Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
         ' Update group selection according to user actions in the grid
         Me.HCRGroup = Me.m_grid.HarvestControlRule
     End Sub
 
-    Private Sub OnGridEdited() Handles m_grid.onEdited
+    Private Sub OnGridEdited()
         Try
             Me.Redraw()
         Catch ex As Exception
@@ -170,45 +185,67 @@ Public Class frmTFMpolicy
 
     End Sub
 
-    Private Sub btAddStrategy_Click(sender As Object, e As System.EventArgs) Handles btAddStrategy.Click
+    Private Sub btAddStrategy_Click(sender As Object, e As System.EventArgs) _
+        Handles btAddStrategy.Click
 
-        'Get a Strategy name from the user
-        Dim StratName As String
-        StratName = InputBox("Select a new for the new Strategy", "Add new Strategy.")
+        ' JS 30Sep13: Globalized
+        ' JS 30Sep13: Strategy file name is safe
 
-        If String.IsNullOrEmpty(StratName) Then
-            Return
-        End If
+        Try
+            'Get a Strategy name from the user
+            Dim StratName As String
+            StratName = InputBox(My.Resources.PROMPT_ENTERNAME, My.Resources.PROMPT_ENTERNAME_CAPTION)
 
-        'Build the filename out of the strategy name
-        Dim StartFilename As String = Path.Combine(Me.m_MSEPlugin.Strategies.DataDirectory, StratName + ".csv")
-        Dim strategy As Strategy = New Strategy(StratName, StartFilename)
-        If Not Me.m_MSEPlugin.Strategies.Contains(strategy) Then
-            Me.m_MSEPlugin.Strategies.Add(strategy)
-            Me.UpdateControls()
-            Me.changeSelectedStrategy(Me.cbStrategies.Items.Count - 1)
-        Else
-            MsgBox("Sorry this strategy name has already been used. Please select another name.", MsgBoxStyle.Critical)
-        End If
+            If String.IsNullOrEmpty(StratName) Then
+                Return
+            End If
+
+            'Build the filename out of the strategy name
+            Dim StartFilename As String = Path.Combine(Me.m_MSEPlugin.Strategies.DataDirectory, cFileUtils.ToValidFileName(StratName + ".csv", False))
+            Dim strategy As Strategy = New Strategy(StratName, StartFilename)
+
+            ' JS 30Sep13: Strategies class validates both strategy name and file. VERY GOOD!!
+            If (Not Me.m_MSEPlugin.Strategies.Contains(strategy)) Then
+                Me.m_MSEPlugin.Strategies.Add(strategy)
+                Me.UpdateControls()
+                Me.changeSelectedStrategy(Me.cbStrategies.Items.Count - 1)
+            Else
+                Me.m_MSEPlugin.SendMessage(My.Resources.ERROR_ENTERNAME, eMessageImportance.Warning)
+            End If
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
 
-    Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveStrategies.Click
+    Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles btnSaveStrategies.Click
 
-        Dim csvStrategyFile As StreamWriter
+        ' JS 30Sep13: CSV file written in fixed digit format
+        ' JS 30Sep13: Uses safe streamwriter
+
+        Dim csvStrategyFile As StreamWriter = Nothing
 
         For Each iStrategy In Me.m_MSEPlugin.Strategies
-            csvStrategyFile = New StreamWriter(iStrategy.FileName, False)
-            csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
-            For Each iHCR In iStrategy
-                csvStrategyFile.WriteLine(iHCR.GroupName4Biomass & "," & iHCR.GroupNumber4Biomass & "," & iHCR.LowerLimit & "," & _
-                                            iHCR.UpperLimit & "," & iHCR.GroupName4F & "," & iHCR.GroupNumber4F & "," & iHCR.MaxF & "," & iHCR.CostFunction)
-            Next
-            csvStrategyFile.Dispose()
+            csvStrategyFile = cMSEUtils.GetWriter(iStrategy.FileName, False)
+            If (csvStrategyFile IsNot Nothing) Then
+
+                csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
+                For Each iHCR In iStrategy
+                    csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupName4Biomass) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.GroupNumber4Biomass) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.GroupName4F) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.GroupNumber4F) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.CostFunction))
+                Next
+                cMSEUtils.ReleaseWriter(csvStrategyFile)
+            End If
         Next
-
-
 
     End Sub
 
@@ -431,19 +468,6 @@ Public Class frmTFMpolicy
 
     Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         Me.Close()
-    End Sub
-
-    Private Sub frmTFMpolicy_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        If StrategiesSaved = False Then
-            Dim resultmessage As DialogResult = MessageBox.Show("You have made changes to the data in this form without saving them to CSV." & vbCrLf & "Are you sure you still want to close it?" _
-                                                                & "(The changes you made will be used for the duration of EwE being open this time but won't be available to reload after EwE has been closed)", _
-                                                                    "Warning!", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation)
-            If resultmessage = Windows.Forms.DialogResult.Cancel Then e.Cancel = True
-        End If
-    End Sub
-
-    Private Sub m_grid_SettingCell(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs) Handles m_grid.SettingCell
-
     End Sub
 
 End Class

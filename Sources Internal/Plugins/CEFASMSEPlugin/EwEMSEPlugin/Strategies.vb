@@ -26,7 +26,6 @@ Public Class Strategies
     ''' Overwrite default behaviour to delete the Strategy file when removing a Strategy from the list
     ''' </summary>
     ''' <param name="ZeroBasedIndex">Zero based index of the Strategy to remove</param>
-    ''' <remarks></remarks>
     Public Shadows Sub RemoveAt(ByVal ZeroBasedIndex As Integer)
         Try
             Dim strategy As Strategy = Me.Item(ZeroBasedIndex)
@@ -41,21 +40,19 @@ Public Class Strategies
         End Try
     End Sub
 
-
     Public Shadows Sub Add(StrategyToAdd As Strategy)
 
         If Not Me.Contains(StrategyToAdd) Then
             MyBase.Add(StrategyToAdd)
         End If
 
-
     End Sub
-
 
     Public Shadows Function Contains(Item As Strategy) As Boolean
 
         For Each Strategy As Strategy In Me
-            If Item.Name = Strategy.Name And Item.FileName = Strategy.FileName Then
+            ' JS 30Sep13: made comparison case-insensitive
+            If (String.Compare(Item.Name, Strategy.Name, True) = 0) And (String.Compare(Item.FileName, Strategy.FileName, True) = 0) Then
                 Return True
             End If
         Next

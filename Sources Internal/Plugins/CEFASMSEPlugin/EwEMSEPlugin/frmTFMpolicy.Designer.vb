@@ -44,6 +44,7 @@ Partial Class frmTFMpolicy
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTFMpolicy))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.btnClose = New System.Windows.Forms.Button()
@@ -55,9 +56,9 @@ Partial Class frmTFMpolicy
         Me.Label1 = New System.Windows.Forms.Label()
         Me.cbStrategies = New System.Windows.Forms.ComboBox()
         Me.m_graph = New ZedGraph.ZedGraphControl()
+        Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         Me.ToolStrip1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton()
-        Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -67,7 +68,6 @@ Partial Class frmTFMpolicy
         '
         'm_scMain
         '
-        Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         resources.ApplyResources(Me.m_scMain, "m_scMain")
         Me.m_scMain.Name = "m_scMain"
         '
@@ -85,8 +85,8 @@ Partial Class frmTFMpolicy
         '
         'm_scMain.Panel2
         '
-        Me.m_scMain.Panel2.Controls.Add(Me.ToolStrip1)
         Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
+        Me.m_scMain.Panel2.Controls.Add(Me.ToolStrip1)
         '
         'btnClose
         '
@@ -131,6 +131,7 @@ Partial Class frmTFMpolicy
         '
         'cbStrategies
         '
+        Me.cbStrategies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbStrategies.FormattingEnabled = True
         resources.ApplyResources(Me.cbStrategies, "cbStrategies")
         Me.cbStrategies.Name = "cbStrategies"
@@ -149,6 +150,37 @@ Partial Class frmTFMpolicy
         Me.m_graph.ScrollMinY2 = 0.0R
         Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
         '
+        'm_grid
+        '
+        Me.m_grid.AllowBlockSelect = True
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.UIContext = Nothing
+        '
         'ToolStrip1
         '
         Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -162,37 +194,6 @@ Partial Class frmTFMpolicy
         Me.tsbDefaultTFM.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.tsbDefaultTFM, "tsbDefaultTFM")
         Me.tsbDefaultTFM.Name = "tsbDefaultTFM"
-        '
-        'm_grid
-        '
-        Me.m_grid.AllowBlockSelect = True
-        resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
-        Me.m_grid.AutoStretchRowsToFitHeight = False
-        Me.m_grid.BackColor = System.Drawing.Color.White
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_grid.CustomSort = False
-        Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = False
-        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_grid.GridToolTipActive = True
-        Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.Name = "m_grid"
-        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.UIContext = Nothing
         '
         'frmTFMpolicy
         '
@@ -212,19 +213,20 @@ Partial Class frmTFMpolicy
 
     End Sub
 
-    Private WithEvents m_grid As gridTargetFishingMortalityPolicy 'Ecosim.gridTargetFishingMortalityPolicy
+    'Ecosim.gridTargetFishingMortalityPolicy
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
-    Friend WithEvents ToolStrip1 As cEwEToolstrip
-    Friend WithEvents tsbDefaultTFM As System.Windows.Forms.ToolStripButton
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents cbStrategies As System.Windows.Forms.ComboBox
-    Friend WithEvents btAddHCR As System.Windows.Forms.Button
-    Friend WithEvents btAddStrategy As System.Windows.Forms.Button
-    Friend WithEvents btnSaveStrategies As System.Windows.Forms.Button
-    Friend WithEvents btDeleteHCR As System.Windows.Forms.Button
-    Friend WithEvents btDeleteStrategy As System.Windows.Forms.Button
-    Friend WithEvents btnClose As System.Windows.Forms.Button
+    Private WithEvents ToolStrip1 As cEwEToolstrip
+    Private WithEvents tsbDefaultTFM As System.Windows.Forms.ToolStripButton
+    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents cbStrategies As System.Windows.Forms.ComboBox
+    Private WithEvents btAddHCR As System.Windows.Forms.Button
+    Private WithEvents btAddStrategy As System.Windows.Forms.Button
+    Private WithEvents btnSaveStrategies As System.Windows.Forms.Button
+    Private WithEvents btDeleteHCR As System.Windows.Forms.Button
+    Private WithEvents btDeleteStrategy As System.Windows.Forms.Button
+    Private WithEvents btnClose As System.Windows.Forms.Button
+    Private WithEvents m_grid As EwEMSEPlugin.gridTargetFishingMortalityPolicy
 
 End Class
 

@@ -1,6 +1,8 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports ScientificInterfaceShared.Forms
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmMSE
-    Inherits WeifenLuo.WinFormsUI.Docking.DockContent
+    Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -23,469 +25,321 @@ Partial Class frmMSE
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSE))
-        Me.txtnTrials = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_tbNModels2Run = New System.Windows.Forms.TextBox()
+        Me.m_lblNTrials = New System.Windows.Forms.Label()
         Me.btnLoadSampled = New System.Windows.Forms.Button()
-        Me.txtNYearsProject = New System.Windows.Forms.TextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.txtTolerance = New System.Windows.Forms.TextBox()
+        Me.m_tbNYearsProject = New System.Windows.Forms.TextBox()
+        Me.m_lblNYears = New System.Windows.Forms.Label()
+        Me.m_lblMassBalanceTol = New System.Windows.Forms.Label()
+        Me.m_txtTolerance = New System.Windows.Forms.TextBox()
         Me.btnSample = New System.Windows.Forms.Button()
-        Me.btnGamma = New System.Windows.Forms.Button()
+        Me.m_btnGamma = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.m_btnChangeDataDir = New System.Windows.Forms.Button()
         Me.btShowTFMForm = New System.Windows.Forms.Button()
-        Me.btnEcopathParams2 = New System.Windows.Forms.Button()
-        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.m_btnEcopathParams2 = New System.Windows.Forms.Button()
+        Me.m_plGamma = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.m_tbNTrials = New System.Windows.Forms.TextBox()
         Me.Panel6 = New System.Windows.Forms.Panel()
-        Me.txtNModels2Run = New System.Windows.Forms.TextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.btnAdvancedSettings = New System.Windows.Forms.Button()
+        Me.m_lblNModels = New System.Windows.Forms.Label()
+        Me.m_lblGenDC = New System.Windows.Forms.Label()
+        Me.m_btnAdvancedSettings = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.txtArea = New System.Windows.Forms.TextBox()
-        Me.lblArea = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.m_tbArea = New System.Windows.Forms.TextBox()
+        Me.m_lblArea = New System.Windows.Forms.Label()
+        Me.m_lblStep1 = New System.Windows.Forms.Label()
+        Me.m_lblStep2 = New System.Windows.Forms.Label()
+        Me.m_lblStep3 = New System.Windows.Forms.Label()
+        Me.m_pbCefas = New System.Windows.Forms.PictureBox()
+        Me.m_btn2 = New System.Windows.Forms.Button()
         Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.Label12 = New System.Windows.Forms.Label()
+        Me.m_lblAreaInfo = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.Button3 = New System.Windows.Forms.Button()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.lblDataDirectoryPath = New System.Windows.Forms.Label()
-        Me.btnDistParams = New System.Windows.Forms.Button()
-        Me.Panel3.SuspendLayout()
+        Me.m_lblStep4 = New System.Windows.Forms.Label()
+        Me.m_lblDataDirectoryPath = New System.Windows.Forms.Label()
+        Me.m_btnDistParams = New System.Windows.Forms.Button()
+        Me.m_plGamma.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.Panel6.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
-        'txtnTrials
+        'm_tbNModels2Run
         '
-        Me.txtnTrials.Location = New System.Drawing.Point(119, 24)
-        Me.txtnTrials.Name = "txtnTrials"
-        Me.txtnTrials.Size = New System.Drawing.Size(70, 20)
-        Me.txtnTrials.TabIndex = 0
-        Me.txtnTrials.Text = "5"
-        Me.txtnTrials.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        resources.ApplyResources(Me.m_tbNModels2Run, "m_tbNModels2Run")
+        Me.m_tbNModels2Run.Name = "m_tbNModels2Run"
         '
-        'Label1
+        'm_lblNTrials
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(13, 27)
-        Me.Label1.MaximumSize = New System.Drawing.Size(100, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(95, 13)
-        Me.Label1.TabIndex = 4
-        Me.Label1.Text = "Number of models:"
+        resources.ApplyResources(Me.m_lblNTrials, "m_lblNTrials")
+        Me.m_lblNTrials.Name = "m_lblNTrials"
         '
         'btnLoadSampled
         '
-        Me.btnLoadSampled.Location = New System.Drawing.Point(204, 53)
+        resources.ApplyResources(Me.btnLoadSampled, "btnLoadSampled")
         Me.btnLoadSampled.Name = "btnLoadSampled"
-        Me.btnLoadSampled.Size = New System.Drawing.Size(84, 30)
-        Me.btnLoadSampled.TabIndex = 6
-        Me.btnLoadSampled.Text = "Run"
         Me.btnLoadSampled.UseVisualStyleBackColor = True
         '
-        'txtNYearsProject
+        'm_tbNYearsProject
         '
-        Me.txtNYearsProject.Location = New System.Drawing.Point(119, 59)
-        Me.txtNYearsProject.Name = "txtNYearsProject"
-        Me.txtNYearsProject.Size = New System.Drawing.Size(70, 20)
-        Me.txtNYearsProject.TabIndex = 13
-        Me.txtNYearsProject.Text = "5"
-        Me.txtNYearsProject.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        resources.ApplyResources(Me.m_tbNYearsProject, "m_tbNYearsProject")
+        Me.m_tbNYearsProject.Name = "m_tbNYearsProject"
         '
-        'Label4
+        'm_lblNYears
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(15, 53)
-        Me.Label4.MaximumSize = New System.Drawing.Size(100, 0)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(98, 26)
-        Me.Label4.TabIndex = 14
-        Me.Label4.Text = "Number of Years to Project:"
-        Me.Label4.TextAlign = System.Drawing.ContentAlignment.TopRight
+        resources.ApplyResources(Me.m_lblNYears, "m_lblNYears")
+        Me.m_lblNYears.Name = "m_lblNYears"
         '
-        'Label2
+        'm_lblMassBalanceTol
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(425, 158)
-        Me.Label2.MaximumSize = New System.Drawing.Size(100, 0)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(75, 26)
-        Me.Label2.TabIndex = 15
-        Me.Label2.Text = "Tolerance for mass-balance:"
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.Label2.Visible = False
+        resources.ApplyResources(Me.m_lblMassBalanceTol, "m_lblMassBalanceTol")
+        Me.m_lblMassBalanceTol.Name = "m_lblMassBalanceTol"
         '
-        'txtTolerance
+        'm_txtTolerance
         '
-        Me.txtTolerance.Location = New System.Drawing.Point(506, 157)
-        Me.txtTolerance.Name = "txtTolerance"
-        Me.txtTolerance.Size = New System.Drawing.Size(70, 20)
-        Me.txtTolerance.TabIndex = 1
-        Me.txtTolerance.Text = "0.0005"
-        Me.txtTolerance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.txtTolerance.Visible = False
+        resources.ApplyResources(Me.m_txtTolerance, "m_txtTolerance")
+        Me.m_txtTolerance.Name = "m_txtTolerance"
         '
         'btnSample
         '
-        Me.btnSample.Location = New System.Drawing.Point(204, 14)
+        resources.ApplyResources(Me.btnSample, "btnSample")
         Me.btnSample.Name = "btnSample"
-        Me.btnSample.Size = New System.Drawing.Size(84, 30)
-        Me.btnSample.TabIndex = 3
-        Me.btnSample.Text = "Create models"
         Me.btnSample.UseVisualStyleBackColor = True
         '
-        'btnGamma
+        'm_btnGamma
         '
-        Me.btnGamma.Location = New System.Drawing.Point(200, 6)
-        Me.btnGamma.Name = "btnGamma"
-        Me.btnGamma.Size = New System.Drawing.Size(121, 32)
-        Me.btnGamma.TabIndex = 5
-        Me.btnGamma.Text = "Generate Diet Matrix"
-        Me.btnGamma.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnGamma, "m_btnGamma")
+        Me.m_btnGamma.Name = "m_btnGamma"
+        Me.m_btnGamma.UseVisualStyleBackColor = True
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(747, 257)
+        resources.ApplyResources(Me.Label3, "Label3")
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(95, 13)
-        Me.Label3.TabIndex = 20
-        Me.Label3.Text = "SampleParameters"
-        Me.Label3.Visible = False
         '
-        'Button1
+        'm_btnChangeDataDir
         '
-        Me.Button1.Location = New System.Drawing.Point(80, 26)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(145, 21)
-        Me.Button1.TabIndex = 22
-        Me.Button1.Text = "Change Data Directory"
-        Me.Button1.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnChangeDataDir, "m_btnChangeDataDir")
+        Me.m_btnChangeDataDir.Name = "m_btnChangeDataDir"
+        Me.m_btnChangeDataDir.UseVisualStyleBackColor = True
         '
         'btShowTFMForm
         '
-        Me.btShowTFMForm.Location = New System.Drawing.Point(204, 12)
+        resources.ApplyResources(Me.btShowTFMForm, "btShowTFMForm")
         Me.btShowTFMForm.Name = "btShowTFMForm"
-        Me.btShowTFMForm.Size = New System.Drawing.Size(84, 42)
-        Me.btShowTFMForm.TabIndex = 24
-        Me.btShowTFMForm.Text = "Setup fishing strategies"
         Me.btShowTFMForm.UseVisualStyleBackColor = True
         '
-        'btnEcopathParams2
+        'm_btnEcopathParams2
         '
-        Me.btnEcopathParams2.Location = New System.Drawing.Point(734, 48)
-        Me.btnEcopathParams2.Name = "btnEcopathParams2"
-        Me.btnEcopathParams2.Size = New System.Drawing.Size(108, 52)
-        Me.btnEcopathParams2.TabIndex = 25
-        Me.btnEcopathParams2.Text = "Test Ecopath Params2"
-        Me.btnEcopathParams2.UseVisualStyleBackColor = True
-        Me.btnEcopathParams2.Visible = False
+        resources.ApplyResources(Me.m_btnEcopathParams2, "m_btnEcopathParams2")
+        Me.m_btnEcopathParams2.Name = "m_btnEcopathParams2"
+        Me.m_btnEcopathParams2.UseVisualStyleBackColor = True
         '
-        'Panel3
+        'm_plGamma
         '
-        Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel3.Controls.Add(Me.btnGamma)
-        Me.Panel3.Location = New System.Drawing.Point(513, 254)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(329, 48)
-        Me.Panel3.TabIndex = 26
-        Me.Panel3.Visible = False
+        Me.m_plGamma.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_plGamma.Controls.Add(Me.m_btnGamma)
+        resources.ApplyResources(Me.m_plGamma, "m_plGamma")
+        Me.m_plGamma.Name = "m_plGamma"
         '
         'Panel4
         '
         Me.Panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel4.Controls.Add(Me.txtnTrials)
         Me.Panel4.Controls.Add(Me.btnSample)
-        Me.Panel4.Controls.Add(Me.Label1)
-        Me.Panel4.Location = New System.Drawing.Point(80, 85)
+        Me.Panel4.Controls.Add(Me.m_lblNTrials)
+        Me.Panel4.Controls.Add(Me.m_tbNTrials)
+        resources.ApplyResources(Me.Panel4, "Panel4")
         Me.Panel4.Name = "Panel4"
-        Me.Panel4.Size = New System.Drawing.Size(300, 58)
-        Me.Panel4.TabIndex = 27
+        '
+        'm_tbNTrials
+        '
+        resources.ApplyResources(Me.m_tbNTrials, "m_tbNTrials")
+        Me.m_tbNTrials.Name = "m_tbNTrials"
         '
         'Panel6
         '
         Me.Panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel6.Controls.Add(Me.txtNModels2Run)
-        Me.Panel6.Controls.Add(Me.Label4)
-        Me.Panel6.Controls.Add(Me.Label5)
+        Me.Panel6.Controls.Add(Me.m_tbNModels2Run)
+        Me.Panel6.Controls.Add(Me.m_lblNYears)
+        Me.Panel6.Controls.Add(Me.m_lblNModels)
         Me.Panel6.Controls.Add(Me.btnLoadSampled)
-        Me.Panel6.Controls.Add(Me.txtNYearsProject)
-        Me.Panel6.Location = New System.Drawing.Point(80, 279)
+        Me.Panel6.Controls.Add(Me.m_tbNYearsProject)
+        resources.ApplyResources(Me.Panel6, "Panel6")
         Me.Panel6.Name = "Panel6"
-        Me.Panel6.Size = New System.Drawing.Size(300, 93)
-        Me.Panel6.TabIndex = 29
         '
-        'txtNModels2Run
+        'm_lblNModels
         '
-        Me.txtNModels2Run.Location = New System.Drawing.Point(119, 20)
-        Me.txtNModels2Run.Name = "txtNModels2Run"
-        Me.txtNModels2Run.Size = New System.Drawing.Size(70, 20)
-        Me.txtNModels2Run.TabIndex = 16
-        Me.txtNModels2Run.Text = "5"
-        Me.txtNModels2Run.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        resources.ApplyResources(Me.m_lblNModels, "m_lblNModels")
+        Me.m_lblNModels.Name = "m_lblNModels"
         '
-        'Label5
+        'm_lblGenDC
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(13, 14)
-        Me.Label5.MaximumSize = New System.Drawing.Size(100, 0)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(92, 26)
-        Me.Label5.TabIndex = 17
-        Me.Label5.Text = "Number of models to use:"
-        Me.Label5.TextAlign = System.Drawing.ContentAlignment.TopRight
+        resources.ApplyResources(Me.m_lblGenDC, "m_lblGenDC")
+        Me.m_lblGenDC.Name = "m_lblGenDC"
         '
-        'Label6
+        'm_btnAdvancedSettings
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(517, 238)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(124, 13)
-        Me.Label6.TabIndex = 31
-        Me.Label6.Text = "Generate diet matrix csv:"
-        Me.Label6.Visible = False
-        '
-        'btnAdvancedSettings
-        '
-        Me.btnAdvancedSettings.Location = New System.Drawing.Point(357, 26)
-        Me.btnAdvancedSettings.Name = "btnAdvancedSettings"
-        Me.btnAdvancedSettings.Size = New System.Drawing.Size(23, 21)
-        Me.btnAdvancedSettings.TabIndex = 36
-        Me.btnAdvancedSettings.Text = "+"
-        Me.btnAdvancedSettings.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnAdvancedSettings, "m_btnAdvancedSettings")
+        Me.m_btnAdvancedSettings.Name = "m_btnAdvancedSettings"
+        Me.m_btnAdvancedSettings.UseVisualStyleBackColor = True
         '
         'Panel1
         '
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel1.Controls.Add(Me.btShowTFMForm)
-        Me.Panel1.Location = New System.Drawing.Point(80, 213)
+        resources.ApplyResources(Me.Panel1, "Panel1")
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(300, 68)
-        Me.Panel1.TabIndex = 28
         '
-        'txtArea
+        'm_tbArea
         '
-        Me.txtArea.Location = New System.Drawing.Point(119, 13)
-        Me.txtArea.Name = "txtArea"
-        Me.txtArea.ReadOnly = True
-        Me.txtArea.Size = New System.Drawing.Size(70, 20)
-        Me.txtArea.TabIndex = 25
-        Me.txtArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        resources.ApplyResources(Me.m_tbArea, "m_tbArea")
+        Me.m_tbArea.Name = "m_tbArea"
         '
-        'lblArea
+        'm_lblArea
         '
-        Me.lblArea.AutoSize = True
-        Me.lblArea.Location = New System.Drawing.Point(76, 16)
-        Me.lblArea.MaximumSize = New System.Drawing.Size(100, 0)
-        Me.lblArea.Name = "lblArea"
-        Me.lblArea.Size = New System.Drawing.Size(32, 13)
-        Me.lblArea.TabIndex = 26
-        Me.lblArea.Text = "Area:"
+        resources.ApplyResources(Me.m_lblArea, "m_lblArea")
+        Me.m_lblArea.Name = "m_lblArea"
         '
-        'Label7
+        'm_lblStep1
         '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(36, 91)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(38, 13)
-        Me.Label7.TabIndex = 37
-        Me.Label7.Text = "Step 1"
+        resources.ApplyResources(Me.m_lblStep1, "m_lblStep1")
+        Me.m_lblStep1.Name = "m_lblStep1"
         '
-        'Label8
+        'm_lblStep2
         '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(36, 149)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(38, 13)
-        Me.Label8.TabIndex = 38
-        Me.Label8.Text = "Step 2"
+        resources.ApplyResources(Me.m_lblStep2, "m_lblStep2")
+        Me.m_lblStep2.Name = "m_lblStep2"
         '
-        'Label9
+        'm_lblStep3
         '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(36, 226)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(38, 13)
-        Me.Label9.TabIndex = 39
-        Me.Label9.Text = "Step 3"
+        resources.ApplyResources(Me.m_lblStep3, "m_lblStep3")
+        Me.m_lblStep3.Name = "m_lblStep3"
         '
-        'PictureBox1
+        'm_pbCefas
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.White
-        Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(80, 378)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(300, 29)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox1.TabIndex = 53
-        Me.PictureBox1.TabStop = False
+        Me.m_pbCefas.BackColor = System.Drawing.Color.White
+        Me.m_pbCefas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        resources.ApplyResources(Me.m_pbCefas, "m_pbCefas")
+        Me.m_pbCefas.Name = "m_pbCefas"
+        Me.m_pbCefas.TabStop = False
         '
-        'Button2
+        'm_btn2
         '
-        Me.Button2.Location = New System.Drawing.Point(711, 137)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(99, 43)
-        Me.Button2.TabIndex = 54
-        Me.Button2.Text = "Button2"
-        Me.Button2.UseVisualStyleBackColor = True
-        Me.Button2.Visible = False
+        resources.ApplyResources(Me.m_btn2, "m_btn2")
+        Me.m_btn2.Name = "m_btn2"
+        Me.m_btn2.UseVisualStyleBackColor = True
         '
         'Panel2
         '
         Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel2.Controls.Add(Me.Label12)
+        Me.Panel2.Controls.Add(Me.m_lblAreaInfo)
         Me.Panel2.Controls.Add(Me.Label10)
-        Me.Panel2.Controls.Add(Me.Button3)
-        Me.Panel2.Controls.Add(Me.lblArea)
-        Me.Panel2.Controls.Add(Me.txtArea)
-        Me.Panel2.Location = New System.Drawing.Point(80, 141)
+        Me.Panel2.Controls.Add(Me.m_lblArea)
+        Me.Panel2.Controls.Add(Me.m_tbArea)
+        resources.ApplyResources(Me.Panel2, "Panel2")
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(300, 77)
-        Me.Panel2.TabIndex = 55
         '
-        'Label12
+        'm_lblAreaInfo
         '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(13, 42)
-        Me.Label12.MaximumSize = New System.Drawing.Size(270, 0)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(249, 26)
-        Me.Label12.TabIndex = 58
-        Me.Label12.Text = "If the area is incorrect change it from within EwE at Input data -> Model paramet" & _
-            "ers -> Model area"
+        resources.ApplyResources(Me.m_lblAreaInfo, "m_lblAreaInfo")
+        Me.m_lblAreaInfo.Name = "m_lblAreaInfo"
         '
         'Label10
         '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(15, 10)
-        Me.Label10.MaximumSize = New System.Drawing.Size(100, 0)
+        resources.ApplyResources(Me.Label10, "Label10")
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(0, 13)
-        Me.Label10.TabIndex = 57
-        Me.Label10.Visible = False
         '
-        'Button3
+        'm_lblStep4
         '
-        Me.Button3.Location = New System.Drawing.Point(204, 7)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(84, 30)
-        Me.Button3.TabIndex = 56
-        Me.Button3.Text = "Update Area"
-        Me.Button3.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_lblStep4, "m_lblStep4")
+        Me.m_lblStep4.Name = "m_lblStep4"
         '
-        'Label11
+        'm_lblDataDirectoryPath
         '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(36, 289)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(38, 13)
-        Me.Label11.TabIndex = 56
-        Me.Label11.Text = "Step 4"
+        resources.ApplyResources(Me.m_lblDataDirectoryPath, "m_lblDataDirectoryPath")
+        Me.m_lblDataDirectoryPath.Name = "m_lblDataDirectoryPath"
         '
-        'lblDataDirectoryPath
+        'm_btnDistParams
         '
-        Me.lblDataDirectoryPath.AutoSize = True
-        Me.lblDataDirectoryPath.Location = New System.Drawing.Point(94, 59)
-        Me.lblDataDirectoryPath.Name = "lblDataDirectoryPath"
-        Me.lblDataDirectoryPath.Size = New System.Drawing.Size(45, 13)
-        Me.lblDataDirectoryPath.TabIndex = 57
-        Me.lblDataDirectoryPath.Text = "Label13"
-        '
-        'btnDistParams
-        '
-        Me.btnDistParams.Location = New System.Drawing.Point(525, 23)
-        Me.btnDistParams.Name = "btnDistParams"
-        Me.btnDistParams.Size = New System.Drawing.Size(115, 36)
-        Me.btnDistParams.TabIndex = 58
-        Me.btnDistParams.Text = "Setup Distribution Parameters"
-        Me.btnDistParams.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnDistParams, "m_btnDistParams")
+        Me.m_btnDistParams.Name = "m_btnDistParams"
+        Me.m_btnDistParams.UseVisualStyleBackColor = True
         '
         'frmMSE
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(879, 477)
-        Me.Controls.Add(Me.btnDistParams)
-        Me.Controls.Add(Me.lblDataDirectoryPath)
-        Me.Controls.Add(Me.Label11)
+        Me.ControlBox = False
+        Me.Controls.Add(Me.m_btnDistParams)
+        Me.Controls.Add(Me.m_lblDataDirectoryPath)
+        Me.Controls.Add(Me.m_lblStep4)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Panel2)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.PictureBox1)
-        Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.Label8)
-        Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.txtTolerance)
-        Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.btnAdvancedSettings)
-        Me.Controls.Add(Me.Label6)
+        Me.Controls.Add(Me.m_btn2)
+        Me.Controls.Add(Me.m_pbCefas)
+        Me.Controls.Add(Me.m_lblStep3)
+        Me.Controls.Add(Me.m_lblStep2)
+        Me.Controls.Add(Me.m_lblStep1)
+        Me.Controls.Add(Me.m_lblMassBalanceTol)
+        Me.Controls.Add(Me.m_txtTolerance)
+        Me.Controls.Add(Me.m_btnChangeDataDir)
+        Me.Controls.Add(Me.m_btnAdvancedSettings)
+        Me.Controls.Add(Me.m_lblGenDC)
         Me.Controls.Add(Me.Panel6)
         Me.Controls.Add(Me.Panel4)
-        Me.Controls.Add(Me.Panel3)
-        Me.Controls.Add(Me.btnEcopathParams2)
+        Me.Controls.Add(Me.m_plGamma)
+        Me.Controls.Add(Me.m_btnEcopathParams2)
         Me.Controls.Add(Me.Label3)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSE"
-        Me.Text = "Cefas MSE"
-        Me.Panel3.ResumeLayout(False)
+        Me.m_plGamma.ResumeLayout(False)
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
         Me.Panel6.ResumeLayout(False)
         Me.Panel6.PerformLayout()
         Me.Panel1.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents txtnTrials As System.Windows.Forms.TextBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents btnLoadSampled As System.Windows.Forms.Button
-    Friend WithEvents txtNYearsProject As System.Windows.Forms.TextBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents txtTolerance As System.Windows.Forms.TextBox
-    Friend WithEvents btnSample As System.Windows.Forms.Button
-    Friend WithEvents btnGamma As System.Windows.Forms.Button
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents btShowTFMForm As System.Windows.Forms.Button
-    Friend WithEvents btnEcopathParams2 As System.Windows.Forms.Button
-    Friend WithEvents Panel3 As System.Windows.Forms.Panel
-    Friend WithEvents Panel4 As System.Windows.Forms.Panel
-    Friend WithEvents Panel6 As System.Windows.Forms.Panel
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents btnAdvancedSettings As System.Windows.Forms.Button
-    Friend WithEvents txtNModels2Run As System.Windows.Forms.TextBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents txtArea As System.Windows.Forms.TextBox
-    Friend WithEvents lblArea As System.Windows.Forms.Label
-    Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
-    Friend WithEvents Label12 As System.Windows.Forms.Label
-    Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents Button3 As System.Windows.Forms.Button
-    Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents lblDataDirectoryPath As System.Windows.Forms.Label
-    Friend WithEvents btnDistParams As System.Windows.Forms.Button
+
+    Private WithEvents m_tbNModels2Run As System.Windows.Forms.TextBox
+    Private WithEvents m_lblNTrials As System.Windows.Forms.Label
+    Private WithEvents btnLoadSampled As System.Windows.Forms.Button
+    Private WithEvents m_tbNYearsProject As System.Windows.Forms.TextBox
+    Private WithEvents m_lblNYears As System.Windows.Forms.Label
+    Private WithEvents m_txtTolerance As System.Windows.Forms.TextBox
+    Private WithEvents btnSample As System.Windows.Forms.Button
+    Private WithEvents m_btnGamma As System.Windows.Forms.Button
+    Private WithEvents m_lblMassBalanceTol As System.Windows.Forms.Label
+    Private WithEvents Label3 As System.Windows.Forms.Label
+    Private WithEvents m_btnChangeDataDir As System.Windows.Forms.Button
+    Private WithEvents btShowTFMForm As System.Windows.Forms.Button
+    Private WithEvents m_btnEcopathParams2 As System.Windows.Forms.Button
+    Private WithEvents m_plGamma As System.Windows.Forms.Panel
+    Private WithEvents Panel4 As System.Windows.Forms.Panel
+    Private WithEvents Panel6 As System.Windows.Forms.Panel
+    Private WithEvents m_lblGenDC As System.Windows.Forms.Label
+    Private WithEvents m_btnAdvancedSettings As System.Windows.Forms.Button
+    Private WithEvents m_lblNModels As System.Windows.Forms.Label
+    Private WithEvents Panel1 As System.Windows.Forms.Panel
+    Private WithEvents m_lblStep1 As System.Windows.Forms.Label
+    Private WithEvents m_lblStep2 As System.Windows.Forms.Label
+    Private WithEvents m_lblStep3 As System.Windows.Forms.Label
+    Private WithEvents m_pbCefas As System.Windows.Forms.PictureBox
+    Private WithEvents m_lblArea As System.Windows.Forms.Label
+    Private WithEvents m_btn2 As System.Windows.Forms.Button
+    Private WithEvents Panel2 As System.Windows.Forms.Panel
+    Private WithEvents m_lblAreaInfo As System.Windows.Forms.Label
+    Private WithEvents Label10 As System.Windows.Forms.Label
+    Private WithEvents m_lblStep4 As System.Windows.Forms.Label
+    Private WithEvents m_lblDataDirectoryPath As System.Windows.Forms.Label
+    Private WithEvents m_btnDistParams As System.Windows.Forms.Button
+    Private WithEvents m_tbArea As System.Windows.Forms.TextBox
+    Private WithEvents m_tbNTrials As System.Windows.Forms.TextBox
 End Class

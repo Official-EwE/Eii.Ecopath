@@ -145,7 +145,26 @@
     <value>The distribution file for {0} has too many groups in it.</value>
     <comment>{0}=param_name</comment>
   </data>
+  <data name="ERROR_DISTRPAR_LOAD_ECOPATH" xml:space="preserve">
+    <value>There was a problem loading the Ecopath parameters from csv</value>
+  </data>
+  <data name="ERROR_DISTRPAR_LOAD_ECOSIM" xml:space="preserve">
+    <value>There was a problem loading the Ecosim parameters from csv</value>
+  </data>
+  <data name="ERROR_ENTERNAME" xml:space="preserve">
+    <value>A strategy with this name already exists. Please select another name</value>
+  </data>
+  <data name="LABEL_BIOMASS_UNIT" xml:space="preserve">
+    <value>Biomass ({0})</value>
+    <comment>{0}=unit</comment>
+  </data>
   <data name="PROMPT_DATAPATH" xml:space="preserve">
     <value>Select the directory to retrieve data from and output results to</value>
+  </data>
+  <data name="PROMPT_ENTERNAME" xml:space="preserve">
+    <value>Select a name for the new Strategy</value>
+  </data>
+  <data name="PROMPT_ENTERNAME_CAPTION" xml:space="preserve">
+    <value>New Strategy</value>
   </data>
 </root>

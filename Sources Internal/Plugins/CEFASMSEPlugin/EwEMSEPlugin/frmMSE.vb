@@ -1,52 +1,115 @@
-﻿
-Imports EwECore
+﻿Option Strict On
 Imports System.IO
-Imports LumenWorks.Framework.IO.Csv
-
-Imports ScientificInterfaceShared.Forms
+Imports EwECore
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 
 Public Class frmMSE
 
-    Dim m_bInitOK As Boolean
-    Dim m_uic As cUIContext
-    Dim mCore As cCore
-    Dim mMSE As cMSE
-    Dim StrategiesExtracted As Boolean 'this is a flag used to determine whether the strategies have already been loads and if so not to load them again
+    Private mCore As cCore
+    Private mMSE As cMSE
+    Private StrategiesExtracted As Boolean 'this is a flag used to determine whether the strategies have already been loads and if so not to load them again
+    Private frmTargetF As frmTFMpolicy
+    Private m_bAdvanced As Boolean = False
 
-    Dim frmTargetF As frmTFMpolicy
-    Dim frmDisParams As frmDistributionParameters
+    Private m_fpArea As cEwEFormatProvider = Nothing
+    Private m_fpNModelsToRun As cEwEFormatProvider = Nothing
+    Private m_fpNTrials As cEwEFormatProvider = Nothing
+    Private m_fpNYearsToProject As cEwEFormatProvider = Nothing
+    Private m_fpMassBalanceTol As cEwEFormatProvider = Nothing
 
-    Public Sub New(ByRef core As cCore, ByVal MSE As cMSE)
+    Public Sub New(MSE As cMSE, uic As cUIContext)
 
-        ' This call is required by the designer.
-        InitializeComponent()
-        mCore = core
-        mMSE = MSE
-        StrategiesExtracted = False
-        lblDataDirectoryPath.Text = mMSE.DataPath
-
-        ' Add any initialization after the InitializeComponent() call.
+        Me.InitializeComponent()
+        Me.UIContext = uic
+        Me.mMSE = MSE
+        Me.mCore = uic.Core
+        Me.StrategiesExtracted = False
 
     End Sub
 
-    Public Sub Initialize(ByVal uic As cUIContext)
-        m_bInitOK = False
-        Try
-            Me.m_uic = uic
-            m_bInitOK = True
-            System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
-        Catch ex As Exception
-            '  cLog.Write(ex)
-            System.Console.WriteLine(Me.ToString & ".Initialize() Error: " & ex.Message)
-            Debug.Assert(False, ex.Message)
-            Return
-        End Try
+#Region " Form overrides "
+
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        If (Me.UIContext Is Nothing) Then Return
+
+        ' -- Set up control interactions --
+
+        Me.m_lblDataDirectoryPath.Text = mMSE.DataPath
+
+        ' Connect area UI control to live Ecopath data
+        Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, m_tbArea, Me.Core.EwEModel, eVarNameFlags.Area)
+        ' Area can be made editable from here by not setting the format provider style:
+        Me.m_fpArea.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
+
+        Me.m_fpNModelsToRun = New cEwEFormatProvider(Me.UIContext, Me.m_tbNModels2Run, GetType(Integer))
+        Me.m_fpNModelsToRun.Value = Me.mMSE.NModels2Run
+        AddHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
+
+        Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbNTrials, GetType(Integer))
+        Me.m_fpNTrials.Value = Me.mMSE.NTrials
+        AddHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
+
+        Me.m_fpNYearsToProject = New cEwEFormatProvider(Me.UIContext, m_tbNYearsProject, GetType(Integer))
+        Me.m_fpNYearsToProject.Value = Me.mMSE.NYearsProject
+        AddHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf OnNYearsToProjectChanged
+
+        Me.m_fpMassBalanceTol = New cEwEFormatProvider(Me.UIContext, Me.m_txtTolerance, GetType(Single), New cVariableMetaData(0, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
+        Me.m_fpMassBalanceTol.Value = Me.mMSE.MassBalanceTol
+        AddHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf OnMassBalanceTolChanged
+
+        Me.UpdateControls()
+
     End Sub
 
-    Public Sub StartForm(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form)
-        frmPlugin = Me
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+
+        If (Me.UIContext IsNot Nothing) Then
+
+            Me.m_fpArea.Release()
+
+            RemoveHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
+            Me.m_fpNModelsToRun.Release()
+
+            Me.m_fpNTrials.Release()
+            RemoveHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
+
+            Me.m_fpNYearsToProject.Release()
+            RemoveHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf OnNYearsToProjectChanged
+
+            Me.m_fpMassBalanceTol.Release()
+            RemoveHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf OnMassBalanceTolChanged
+
+        End If
+
+        MyBase.OnFormClosed(e)
+
     End Sub
+
+    Protected Overrides Sub UpdateControls()
+        MyBase.UpdateControls()
+
+        ' ToDo_JS: Update the state of controls depending on the run state of the plug-in
+        ' - Are all input files generated?
+
+        m_lblMassBalanceTol.Visible = Me.m_bAdvanced
+        m_txtTolerance.Visible = Me.m_bAdvanced
+        m_lblGenDC.Visible = Me.m_bAdvanced
+        m_plGamma.Visible = Me.m_bAdvanced
+        m_btnGamma.Visible = Me.m_bAdvanced
+        m_btnEcopathParams2.Visible = Me.m_bAdvanced
+        m_btn2.Visible = Me.m_bAdvanced
+
+    End Sub
+
+#End Region ' Form overrides
+
+#Region " Control events "
 
     Private Sub btnSample_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSample.Click
         mMSE.Create1DimParams("MaxRelFeedingTime")
@@ -60,72 +123,50 @@ Public Class frmMSE
         mMSE.GenerateEcopathParamaters()
     End Sub
 
-    Private Sub GenerateEmptyDietcsv()
-        Dim sPath As String = mMSE.DataPath & "\DistributionParameters"
-        Dim diet_csvout As New StreamWriter(Path.Combine(sPath & "\DietComposition.csv"), False)
-        Dim mean As Single
+    Private Sub btnGamma_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnGamma.Click
+        Try
+            GenerateEmptyDietcsv()
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE:GenerateEmptyDietcsv")
+        End Try
+    End Sub
 
-        diet_csvout.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
-        diet_csvout.WriteLine()
-
-        For iPred As Integer = 1 To mCore.nLivingGroups
-            If mCore.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
-                mean = mCore.EcoPathGroupInputs(iPred).ImpDiet
-                diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,Imports," & iPred & ",0,1," & mean)
-            Else
-                diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,Imports," & iPred & ",0,0,0")
+    Private Sub btnLoadSampled_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles btnLoadSampled.Click
+        Try
+            If StrategiesExtracted = False Then 'This is to prevent it loading the strategies more than once
+                mMSE.ExtractHCR()
+                StrategiesExtracted = True
             End If
-            For iPrey As Integer = 1 To mCore.nGroups
-                If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
-                    mean = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey)
-                    diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,""" & mCore.EcoPathGroupInputs(iPrey).Name & """," & iPred & "," & iPrey & ",1," & mean)
-                Else
-                    diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,""" & mCore.EcoPathGroupInputs(iPrey).Name & """," & iPred & "," & iPrey & ",0,0")
-                End If
-            Next
-        Next
+            mMSE.ChangeEffortFlag = True
+            mMSE.LoadSampledParams()
+            mMSE.ChangeEffortFlag = False
+        Catch ex As Exception
 
-        diet_csvout.Dispose()
+        End Try
     End Sub
 
-    Private Sub btnGamma_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGamma.Click
+    Private Sub OnSelectDataPath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnChangeDataDir.Click
 
-        GenerateEmptyDietcsv()
+        ' JS 30Sep13: Use EwE dialog framework here
+        Try
 
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmd As cShowOptionsCommand = DirectCast(cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
 
-    End Sub
+            cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.FileLocations)
 
-    Private Sub btnLoadSampled_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadSampled.Click
-        If StrategiesExtracted = False Then 'This is to prevent it loading the strategies more than once
-            mMSE.ExtractHCR()
-            StrategiesExtracted = True
-        End If
-        mMSE.ChangeEffortFlag = True
-        mMSE.LoadSampledParams()
-        mMSE.ChangeEffortFlag = False
-    End Sub
-
-
-
-
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        Dim FolderBrowserDialog1 As New FolderBrowserDialog
-
-        With FolderBrowserDialog1
-            .RootFolder = Environment.SpecialFolder.Desktop
-            .SelectedPath = "c:\windows"
-            .Description = "Select the directory to retrieve data from and output results to"
-            If .ShowDialog = DialogResult.OK Then
-                mMSE.DataPath = .SelectedPath
-                lblDataDirectoryPath.Text = .SelectedPath
-            End If
-
-        End With
+        Catch ex As Exception
+            cLog.Write(ex, "CEFASMSE:OnSelectDataPath")
+        End Try
 
     End Sub
 
+    Private Sub btShowTFMForm_Click(sender As System.Object, e As System.EventArgs) _
+        Handles btShowTFMForm.Click
 
-    Private Sub btShowTFMForm_Click(sender As System.Object, e As System.EventArgs) Handles btShowTFMForm.Click
         Dim bhasForm As Boolean
 
         'First make sure the Harvest Controls Rules have been loaded
@@ -137,79 +178,123 @@ Public Class frmMSE
 
         'Ok now the interface
         If Me.frmTargetF IsNot Nothing Then
-            bHasForm = Not frmTargetF.IsDisposed
+            bhasForm = Not frmTargetF.IsDisposed
         End If
-        If Not bHasForm Then
+        If Not bhasForm Then
             frmTargetF = New frmTFMpolicy()
-            frmTargetF.Init(Me.m_uic, Me.mMSE)
+            frmTargetF.Init(Me.UIContext, Me.mMSE)
         End If
 
         frmTargetF.Show()
     End Sub
 
 
-    Private Sub frmMSE_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        txtArea.Text = mCore.EwEModel.Area
+    Private Sub OnToggleAdvancedView(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnAdvancedSettings.Click
+
+        Me.m_bAdvanced = Not Me.m_bAdvanced
+        Me.UpdateControls()
 
     End Sub
 
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btn2.Click
 
+        Try
+            mMSE.Create1DimParams("MaxRelFeedingTime")
+            mMSE.Create1DimParams("FeedingTimeAdjustRate")
+            mMSE.Create1DimParams("OtherMortFeedingTime")
+            mMSE.Create1DimParams("PredEffectFeedingTime")
+            mMSE.Create1DimParams("DenDepCatchability")
+            mMSE.Create1DimParams("QBMaxxQBio")
+            mMSE.Create1DimParams("SwitchingPower")
+            'mMSE.Create2DimParams("DietComposition")
+            mMSE.CreateVulnerabilities()
+        Catch ex As Exception
 
-    Private Sub btnAdvancedSettings_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdvancedSettings.Click
-        If Label2.Visible = False Then
-            Label2.Show()
-            txtTolerance.Show()
-            Label6.Show()
-            Panel3.Show()
-            btnGamma.Show()
-            btnEcopathParams2.Show()
-            Button2.Show()
-        Else
-            Label2.Hide()
-            txtTolerance.Hide()
-            Label6.Hide()
-            Panel3.Hide()
-            btnGamma.Hide()
-            btnEcopathParams2.Hide()
-            Button2.Hide()
-        End If
+        End Try
 
     End Sub
 
-    Private Sub Panel3_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Panel3.Paint
+    Private Sub btnDistParams_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnDistParams.Click
+
+        Try
+            Dim frmDisParams As New frmDistributionParameters()
+            frmDisParams.Init(Me.UIContext, Me.mMSE)
+            frmDisParams.Show(Me)
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
-
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        mMSE.Create1DimParams("MaxRelFeedingTime")
-        mMSE.Create1DimParams("FeedingTimeAdjustRate")
-        mMSE.Create1DimParams("OtherMortFeedingTime")
-        mMSE.Create1DimParams("PredEffectFeedingTime")
-        mMSE.Create1DimParams("DenDepCatchability")
-        mMSE.Create1DimParams("QBMaxxQBio")
-        mMSE.Create1DimParams("SwitchingPower")
-        'mMSE.Create2DimParams("DietComposition")
-        mMSE.CreateVulnerabilities()
+    Private Sub OnNModels2RunChanged(sender As Object, args As EventArgs)
+        Try
+            Me.mMSE.NModels2Run = CInt(Me.m_fpNModelsToRun.Value)
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE:OnNModels2RunChanged")
+        End Try
     End Sub
 
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
-        txtArea.Text = mCore.EwEModel.Area
+    Private Sub OnNTrialsChanged(sender As Object, args As EventArgs)
+        Try
+            Me.mMSE.NTrials = CInt(Me.m_fpNTrials.Value)
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE:OnNTrialsChanged")
+        End Try
     End Sub
 
-    Private Sub btnDistParams_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDistParams.Click
-        Dim bhasForm As Boolean
+    Private Sub OnNYearsToProjectChanged(sender As Object, args As EventArgs)
+        Try
+            Me.mMSE.NYearsProject = CInt(Me.m_fpNYearsToProject.Value)
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE:OnNYearsToProjectChanged")
+        End Try
+    End Sub
 
-        'Ok now the interface
-        If Me.frmDisParams IsNot Nothing Then
-            bhasForm = Not frmDisParams.IsDisposed
-        End If
-        If Not bhasForm Then
-            frmDisParams = New frmDistributionParameters()
-            frmDisParams.Init(Me.m_uic, Me.mMSE, mMSE.DataPath, mCore)
-        End If
+    Private Sub OnMassBalanceTolChanged(sender As Object, args As EventArgs)
+        Try
+            Me.mMSE.MassBalanceTol = CSng(Me.m_fpMassBalanceTol.Value)
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE:OnMassBalanceTolChanged")
+        End Try
+    End Sub
 
-        frmDisParams.Show()
+#End Region ' Control events
+
+    ' This method really should move to the main engine: the plug-in
+    Private Sub GenerateEmptyDietcsv()
+
+        Dim sPath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv", True)
+        Dim diet_csvout As StreamWriter = cMSEUtils.GetWriter(sPath, False)
+        Dim mean As Single
+
+        If (diet_csvout Is Nothing) Then Return
+
+        diet_csvout.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
+        diet_csvout.WriteLine()
+
+        For iPred As Integer = 1 To mCore.nLivingGroups
+            If mCore.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
+                mean = mCore.EcoPathGroupInputs(iPred).ImpDiet
+                diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,1," & cStringUtils.ToCSVField(mean))
+            Else
+                diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,0,0")
+            End If
+
+            For iPrey As Integer = 1 To mCore.nGroups
+                If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
+                    mean = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey)
+                    diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",1," & cStringUtils.ToCSVField(mean))
+                Else
+                    diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",0,0")
+                End If
+            Next
+        Next
+
+        cMSEUtils.ReleaseWriter(diet_csvout)
+
     End Sub
 
 End Class

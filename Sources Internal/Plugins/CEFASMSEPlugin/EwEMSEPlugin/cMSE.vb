@@ -1,9 +1,12 @@
-﻿Imports EwECore
-Imports ScientificInterfaceShared.Controls
+﻿' ToDo_JS: Enable option strict ON
+' ToDo_JS: reinitialize plug-in when core data path has changed
+
 Imports System.IO
+Imports EwECore
+Imports EwEUtils.Core
 Imports LumenWorks.Framework.IO.Csv
+Imports ScientificInterfaceShared.Controls
 Imports Troschuetz.Random
-Imports System.Diagnostics
 
 
 Public Class cMSE
@@ -45,8 +48,6 @@ Public Class cMSE
     Private VulnerabilitiesTemp(,) As Double
     Private DietMatrixTemp(,) As Double
     Private DietImpTemp() As Double
-
-    Public DataPath As String = "C:\Users\Mark\Desktop\GAP\Data"
     Public ChangeEffortFlag As Boolean = False
 
     Enum DistributionType
@@ -54,12 +55,18 @@ Public Class cMSE
         Triangular = 2
     End Enum
 
+    Public ReadOnly Property DataPath As String
+        Get
+            Return Path.Combine(Me.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim), "CefasMSE")
+        End Get
+    End Property
+
     Private Sub ExtractChangeInEffortLimits()
         Dim EffortLimitsCSV As New CsvReader(New StreamReader(DataPath & "\Fleet\ChangesInEffortLimits.csv"), True)
         ReDim ChangeInEffortLimits(mCore.nFleets - 1)
 
         For i = 1 To mCore.nFleets
-            ChangeInEffortLimits(i - 1) = -9999
+            ChangeInEffortLimits(i - 1) = NoHCR_F
         Next
 
         While Not EffortLimitsCSV.EndOfStream
@@ -117,7 +124,7 @@ Public Class cMSE
     End Sub
 
     Private Function ExtractParamsCSV(ByRef param_name As String)
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtNModels2Run.Text)
+        Dim nIterations As Integer = Me.NModels2Run
         Dim csv As New CsvReader(New StreamReader(DataPath & "\ParametersOut\" & param_name & "_out.csv"), True)
         Dim Params(nIterations - 1, csv.FieldCount - 1) As Double
         Dim iRecord As Integer = 0
@@ -137,7 +144,7 @@ Public Class cMSE
     End Function
 
     Private Function ExtractVulnerabilitiesCSV()
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtNModels2Run.Text)
+        Dim nIterations As Integer = Me.NModels2Run
         Dim csv As CsvReader
         Dim vulnerabilities(nIterations - 1, _ecopath.EcopathData.NumGroups - 1, _ecopath.EcopathData.NumGroups - 1) As Double
         Dim countrows As Integer
@@ -295,7 +302,7 @@ Public Class cMSE
         Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
         Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
         Dim GoodDynamics As Boolean
-        Dim NYearsProject = Convert.ToInt32(MSEForm.txtNYearsProject.Text)
+        Dim NYearsProject = Me.NYearsProject
         Dim BiomassProjected(NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
         Dim Results As New DataTable
         'Dim HCRFiles As String()
@@ -372,7 +379,7 @@ Public Class cMSE
         Next
 
         'load parameter values into ecopath and ecosim to be used
-        nTrials = Convert.ToInt32(MSEForm.txtNModels2Run.Text)    '0 is the 1st dimension and 1' the second etc
+        nTrials = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
         For iTrial = 1 To nTrials
             Console.WriteLine("Trial = " & iTrial)
             For igrp = 1 To mCore.nLivingGroups
@@ -920,7 +927,7 @@ stepend:
         Dim nLiving As Integer = mCore.nLivingGroups
         Dim nGroups As Integer = mCore.nGroups
         Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
-        Dim nTrials As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
+        Dim nTrials As Integer = Me.NTrials
         Dim b(nTrials, nGroups) As Single
         Dim ba(nTrials, nLiving) As Single
         Dim pb(nTrials, nLiving) As Single
@@ -940,7 +947,7 @@ stepend:
         Dim isbalanced As Boolean
 
         'I am just altering the tolerance so that it can run faster; this needs deleting later
-        MonteCarlo.EcopathEETolerance = Convert.ToSingle(MSEForm.txtTolerance.Text)
+        MonteCarlo.EcopathEETolerance = Me.MassBalanceTol
         'Forces the same sequence of random numbers for each run. Used only for debugging runs
         'MonteCarlo.InitRandomSequence(666)
 
@@ -1578,10 +1585,11 @@ stepend:
         End If
 
         If Not bHasForm Then
-            MSEForm = New frmMSE(mCore, Me)
-            MSEForm.Initialize(m_uic)
-            MSEForm.StartForm(sender, e, frmPlugin)
+            MSEForm = New frmMSE(Me, Me.m_uic)
         End If
+
+        ' Let EwE show the form
+        frmPlugin = MSEForm
 
         'count the number of primary producers
         For igrp = 1 To mCore.nGroups
@@ -1654,7 +1662,7 @@ stepend:
         Dim sPath As String = DataPath & "\DistributionParameters"
         Dim csv = New CsvReader(New StreamReader(sPath & "\" & ParamName & ".csv"), True)
         Dim ParameterArray(mCore.nLivingGroups - nPrimaryProducer - 1, 3) As Single
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
+        Dim nIterations As Integer = Me.NTrials
         'Dim SampledParameters(nIterations, mCore.nLivingGroups - nPrimaryProducer)
         Dim eDistributionType As DistributionType
         Dim SampledParameters(nIterations - 1, mCore.nLivingGroups - nPrimaryProducer - 1) As Double
@@ -1731,7 +1739,7 @@ stepend:
     Public Sub CreateVulnerabilities()
         'Generate csv with vulnerabilities
 
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
+        Dim nIterations As Integer = NTrials
 
         For iIteration = 1 To nIterations
 
@@ -2054,5 +2062,65 @@ stepend:
             bCancelMessage = True
         End If
     End Sub
+
+    Friend Sub SendMessage(strMessage As String, importance As eMessageImportance, Optional strHyperlink As String = "")
+        If Me.Core IsNot Nothing Then
+            Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, importance)
+            msg.Hyperlink = strHyperlink
+            Me.Core.Messages.SendMessage(msg)
+        End If
+    End Sub
+
+#Region " Configurable settings "
+
+    Public Property NModels2Run As Integer
+        Get
+            Return Math.Max(1, Math.Min(My.Settings.NModels2Run, 100))
+        End Get
+        Set(value As Integer)
+            If (value <> My.Settings.NModels2Run) Then
+                My.Settings.NModels2Run = value
+                My.Settings.Save()
+            End If
+        End Set
+    End Property
+
+    Public Property NTrials As Integer
+        Get
+            Return Math.Max(1, Math.Min(My.Settings.NTrials, 100))
+        End Get
+        Set(value As Integer)
+            If (value <> My.Settings.NTrials) Then
+                My.Settings.NTrials = value
+                My.Settings.Save()
+            End If
+        End Set
+    End Property
+
+    Public Property NYearsProject As Integer
+        Get
+            Return Math.Max(1, Math.Min(My.Settings.NYearsProject, 1000))
+        End Get
+        Set(value As Integer)
+            If (value <> My.Settings.NYearsProject) Then
+                My.Settings.NYearsProject = value
+                My.Settings.Save()
+            End If
+        End Set
+    End Property
+
+    Public Property MassBalanceTol As Single
+        Get
+            Return Math.Max(0, Math.Min(My.Settings.MassBalanceTol, 0.1))
+        End Get
+        Set(value As Single)
+            If (value <> My.Settings.MassBalanceTol) Then
+                My.Settings.MassBalanceTol = value
+                My.Settings.Save()
+            End If
+        End Set
+    End Property
+
+#End Region ' Configurable settings
 
 End Class

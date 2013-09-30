@@ -97,6 +97,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to There was a problem loading the Ecopath parameters from csv.
+        '''</summary>
+        Friend ReadOnly Property ERROR_DISTRPAR_LOAD_ECOPATH() As String
+            Get
+                Return ResourceManager.GetString("ERROR_DISTRPAR_LOAD_ECOPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to There was a problem loading the Ecosim parameters from csv.
+        '''</summary>
+        Friend ReadOnly Property ERROR_DISTRPAR_LOAD_ECOSIM() As String
+            Get
+                Return ResourceManager.GetString("ERROR_DISTRPAR_LOAD_ECOSIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to The distribution file for {0} has replicate groups in it..
         '''</summary>
         Friend ReadOnly Property ERROR_DISTRPARAM_GROUPS_REPLICATED() As String
@@ -124,11 +142,47 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to A strategy with this name already exists. Please select another name.
+        '''</summary>
+        Friend ReadOnly Property ERROR_ENTERNAME() As String
+            Get
+                Return ResourceManager.GetString("ERROR_ENTERNAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biomass ({0}).
+        '''</summary>
+        Friend ReadOnly Property LABEL_BIOMASS_UNIT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_BIOMASS_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Select the directory to retrieve data from and output results to.
         '''</summary>
         Friend ReadOnly Property PROMPT_DATAPATH() As String
             Get
                 Return ResourceManager.GetString("PROMPT_DATAPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Select a name for the new Strategy.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ENTERNAME() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ENTERNAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to New Strategy.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ENTERNAME_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ENTERNAME_CAPTION", resourceCulture)
             End Get
         End Property
     End Module

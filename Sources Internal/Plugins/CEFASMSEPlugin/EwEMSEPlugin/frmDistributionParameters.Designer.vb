@@ -22,12 +22,13 @@ Partial Class frmDistributionParameters
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDistributionParameters))
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.cboPathOrSim = New System.Windows.Forms.ComboBox()
         Me.cboParamName = New System.Windows.Forms.ComboBox()
         Me.dgvParameters = New System.Windows.Forms.DataGridView()
@@ -37,112 +38,110 @@ Partial Class frmDistributionParameters
         Me.CV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Lower = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Upper = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnClose = New System.Windows.Forms.Button()
-        Me.btnSaveAndClose = New System.Windows.Forms.Button()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_btnOK = New System.Windows.Forms.Button()
         CType(Me.dgvParameters, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'cboPathOrSim
         '
+        Me.cboPathOrSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPathOrSim.FormattingEnabled = True
-        Me.cboPathOrSim.Items.AddRange(New Object() {"Ecopath Parameters", "Ecosim Parameters"})
-        Me.cboPathOrSim.Location = New System.Drawing.Point(46, 47)
+        Me.cboPathOrSim.Items.AddRange(New Object() {resources.GetString("cboPathOrSim.Items"), resources.GetString("cboPathOrSim.Items1")})
+        resources.ApplyResources(Me.cboPathOrSim, "cboPathOrSim")
         Me.cboPathOrSim.Name = "cboPathOrSim"
-        Me.cboPathOrSim.Size = New System.Drawing.Size(187, 21)
-        Me.cboPathOrSim.TabIndex = 0
         '
         'cboParamName
         '
+        Me.cboParamName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboParamName.FormattingEnabled = True
-        Me.cboParamName.Location = New System.Drawing.Point(46, 87)
+        resources.ApplyResources(Me.cboParamName, "cboParamName")
         Me.cboParamName.Name = "cboParamName"
-        Me.cboParamName.Size = New System.Drawing.Size(187, 21)
-        Me.cboParamName.TabIndex = 1
         '
         'dgvParameters
         '
+        Me.dgvParameters.AllowUserToAddRows = False
+        Me.dgvParameters.AllowUserToDeleteRows = False
+        Me.dgvParameters.AllowUserToResizeRows = False
+        resources.ApplyResources(Me.dgvParameters, "dgvParameters")
         Me.dgvParameters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvParameters.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.GroupNumber, Me.GroupName, Me.Mean, Me.CV, Me.Lower, Me.Upper})
-        Me.dgvParameters.Location = New System.Drawing.Point(46, 138)
+        Me.dgvParameters.MultiSelect = False
         Me.dgvParameters.Name = "dgvParameters"
-        Me.dgvParameters.Size = New System.Drawing.Size(672, 349)
-        Me.dgvParameters.TabIndex = 2
+        Me.dgvParameters.RowHeadersVisible = False
+        Me.dgvParameters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvParameters.ShowRowErrors = False
         '
         'GroupNumber
         '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.GroupNumber.DefaultCellStyle = DataGridViewCellStyle1
-        Me.GroupNumber.HeaderText = "Group Number"
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.GroupNumber.DefaultCellStyle = DataGridViewCellStyle7
+        resources.ApplyResources(Me.GroupNumber, "GroupNumber")
         Me.GroupNumber.Name = "GroupNumber"
         '
         'GroupName
         '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.GroupName.DefaultCellStyle = DataGridViewCellStyle2
-        Me.GroupName.HeaderText = "Group Name"
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.GroupName.DefaultCellStyle = DataGridViewCellStyle8
+        resources.ApplyResources(Me.GroupName, "GroupName")
         Me.GroupName.Name = "GroupName"
         '
         'Mean
         '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Mean.DefaultCellStyle = DataGridViewCellStyle3
-        Me.Mean.HeaderText = "Mean"
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Mean.DefaultCellStyle = DataGridViewCellStyle9
+        resources.ApplyResources(Me.Mean, "Mean")
         Me.Mean.Name = "Mean"
         '
         'CV
         '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.CV.DefaultCellStyle = DataGridViewCellStyle4
-        Me.CV.HeaderText = "CV"
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.CV.DefaultCellStyle = DataGridViewCellStyle10
+        resources.ApplyResources(Me.CV, "CV")
         Me.CV.Name = "CV"
-        Me.CV.Width = 50
         '
         'Lower
         '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Lower.DefaultCellStyle = DataGridViewCellStyle5
-        Me.Lower.HeaderText = "Lower"
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Lower.DefaultCellStyle = DataGridViewCellStyle11
+        resources.ApplyResources(Me.Lower, "Lower")
         Me.Lower.Name = "Lower"
-        Me.Lower.Width = 50
         '
         'Upper
         '
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Upper.DefaultCellStyle = DataGridViewCellStyle6
-        Me.Upper.HeaderText = "Upper"
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Upper.DefaultCellStyle = DataGridViewCellStyle12
+        resources.ApplyResources(Me.Upper, "Upper")
         Me.Upper.Name = "Upper"
-        Me.Upper.Width = 50
         '
-        'btnClose
+        'm_btnCancel
         '
-        Me.btnClose.Location = New System.Drawing.Point(352, 47)
-        Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(138, 22)
-        Me.btnClose.TabIndex = 4
-        Me.btnClose.Text = "Close"
-        Me.btnClose.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
         '
-        'btnSaveAndClose
+        'm_btnOK
         '
-        Me.btnSaveAndClose.Location = New System.Drawing.Point(352, 87)
-        Me.btnSaveAndClose.Name = "btnSaveAndClose"
-        Me.btnSaveAndClose.Size = New System.Drawing.Size(138, 22)
-        Me.btnSaveAndClose.TabIndex = 5
-        Me.btnSaveAndClose.Text = "Save and Close"
-        Me.btnSaveAndClose.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+        Me.m_btnOK.Name = "m_btnOK"
+        Me.m_btnOK.UseVisualStyleBackColor = True
         '
         'frmDistributionParameters
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AcceptButton = Me.m_btnOK
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(992, 519)
-        Me.Controls.Add(Me.btnSaveAndClose)
-        Me.Controls.Add(Me.btnClose)
+        Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.dgvParameters)
         Me.Controls.Add(Me.cboParamName)
         Me.Controls.Add(Me.cboPathOrSim)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "frmDistributionParameters"
-        Me.Text = "Distribution Parameters"
         CType(Me.dgvParameters, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -150,12 +149,12 @@ Partial Class frmDistributionParameters
     Friend WithEvents cboPathOrSim As System.Windows.Forms.ComboBox
     Friend WithEvents cboParamName As System.Windows.Forms.ComboBox
     Friend WithEvents dgvParameters As System.Windows.Forms.DataGridView
-    Friend WithEvents btnClose As System.Windows.Forms.Button
-    Friend WithEvents btnSaveAndClose As System.Windows.Forms.Button
     Friend WithEvents GroupNumber As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents GroupName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Mean As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents CV As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Lower As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Upper As System.Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_btnOK As System.Windows.Forms.Button
 End Class

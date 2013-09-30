@@ -42,151 +42,89 @@ Partial Class dlgHarvestControlRule
         '
         'TableLayoutPanel1
         '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(630, 307)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(146, 29)
-        Me.TableLayoutPanel1.TabIndex = 0
         '
         'OK_Button
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Location = New System.Drawing.Point(3, 3)
+        resources.ApplyResources(Me.OK_Button, "OK_Button")
         Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
         '
         'Cancel_Button
         '
-        Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        resources.ApplyResources(Me.Cancel_Button, "Cancel_Button")
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Cancel"
         '
         'cbBiomassGroups
         '
-        Me.cbBiomassGroups.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.cbBiomassGroups, "cbBiomassGroups")
+        Me.cbBiomassGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbBiomassGroups.FormattingEnabled = True
-        Me.cbBiomassGroups.Location = New System.Drawing.Point(12, 24)
         Me.cbBiomassGroups.Name = "cbBiomassGroups"
-        Me.cbBiomassGroups.Size = New System.Drawing.Size(261, 21)
-        Me.cbBiomassGroups.TabIndex = 1
         '
         'cbFMortGroups
         '
-        Me.cbFMortGroups.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.cbFMortGroups, "cbFMortGroups")
+        Me.cbFMortGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFMortGroups.FormattingEnabled = True
-        Me.cbFMortGroups.Location = New System.Drawing.Point(12, 74)
         Me.cbFMortGroups.Name = "cbFMortGroups"
-        Me.cbFMortGroups.Size = New System.Drawing.Size(261, 21)
-        Me.cbFMortGroups.TabIndex = 2
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 9)
+        resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(76, 13)
-        Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Biomass group"
         '
         'Label2
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(12, 58)
+        resources.ApplyResources(Me.Label2, "Label2")
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(111, 13)
-        Me.Label2.TabIndex = 4
-        Me.Label2.Text = "Fishing mortality group"
         '
         'txRule
         '
-        Me.txRule.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txRule.Location = New System.Drawing.Point(12, 175)
-        Me.txRule.Multiline = True
+        resources.ApplyResources(Me.txRule, "txRule")
         Me.txRule.Name = "txRule"
-        Me.txRule.Size = New System.Drawing.Size(764, 126)
-        Me.txRule.TabIndex = 5
         '
         'cbCostFunctions
         '
+        Me.cbCostFunctions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbCostFunctions.FormattingEnabled = True
-        Me.cbCostFunctions.Location = New System.Drawing.Point(12, 148)
+        resources.ApplyResources(Me.cbCostFunctions, "cbCostFunctions")
         Me.cbCostFunctions.Name = "cbCostFunctions"
-        Me.cbCostFunctions.Size = New System.Drawing.Size(261, 21)
-        Me.cbCostFunctions.TabIndex = 6
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(12, 129)
+        resources.ApplyResources(Me.Label3, "Label3")
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(53, 13)
-        Me.Label3.TabIndex = 7
-        Me.Label3.Text = "HCR type"
         '
         'Label4
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(283, 24)
-        Me.Label4.MaximumSize = New System.Drawing.Size(200, 0)
+        resources.ApplyResources(Me.Label4, "Label4")
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(181, 39)
-        Me.Label4.TabIndex = 9
-        Me.Label4.Text = "Choose the group for which biomass conservation biomass targets will be defined"
         '
         'Label5
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(282, 77)
-        Me.Label5.MaximumSize = New System.Drawing.Size(200, 0)
+        resources.ApplyResources(Me.Label5, "Label5")
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(199, 65)
-        Me.Label5.TabIndex = 10
-        Me.Label5.Text = "Choose the group whose fishing mortality (F) will be set depending on the biomass" & _
-            " conservation targets. Can be the same or different from the biomass conservatio" & _
-            "n group."
         '
         'Label6
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(65, 168)
+        resources.ApplyResources(Me.Label6, "Label6")
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(0, 13)
-        Me.Label6.TabIndex = 11
         '
         'Label7
         '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(519, 24)
-        Me.Label7.MaximumSize = New System.Drawing.Size(200, 0)
+        resources.ApplyResources(Me.Label7, "Label7")
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(200, 104)
-        Me.Label7.TabIndex = 12
-        Me.Label7.Text = resources.GetString("Label7.Text")
         '
         'dlgHarvestControlRule
         '
         Me.AcceptButton = Me.OK_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(788, 348)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
@@ -204,8 +142,6 @@ Partial Class dlgHarvestControlRule
         Me.MinimizeBox = False
         Me.Name = "dlgHarvestControlRule"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Add Harvest Control Rule"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()

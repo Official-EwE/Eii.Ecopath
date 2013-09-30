@@ -1,34 +1,8 @@
-﻿Imports System.Windows.Forms
+﻿Option Strict On
+Imports System.Windows.Forms
+Imports ScientificInterfaceShared.Controls
 
 Public Class dlgHarvestControlRule
-
-#Region "Private helper class"
-
-    ''' <summary>
-    ''' Wrapper around a EwECore.cCoreInputOutputBase item used for selecting a combobox item
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Class cbItem
-
-        Private m_item As EwECore.cCoreInputOutputBase
-
-        Public Sub New(coreObject As EwECore.cCoreInputOutputBase)
-            m_item = coreObject
-        End Sub
-
-        Public ReadOnly Property Index As Integer
-            Get
-                Return m_item.Index
-            End Get
-        End Property
-
-        Public Overrides Function toString() As String
-            Return m_item.Name
-        End Function
-
-    End Class
-
-#End Region
 
 #Region "Private variables and Properties"
 
@@ -68,14 +42,14 @@ Public Class dlgHarvestControlRule
 
         For igrp As Integer = 1 To Me.Core.nGroups
             If Core.EcoPathGroupInputs(igrp).IsFished Then
-                Me.cbBiomassGroups.Items.Add(New cbItem(Core.EcoPathGroupInputs(igrp)))
+                Me.cbBiomassGroups.Items.Add(New cCoreInputOutputControlItem(Core.EcoPathGroupInputs(igrp)))
             End If
         Next
 
 
         For igrp As Integer = 1 To Me.Core.nGroups
             If Core.EcoPathGroupInputs(igrp).IsFished Then
-                Me.cbFMortGroups.Items.Add(New cbItem(Core.EcoPathGroupInputs(igrp)))
+                Me.cbFMortGroups.Items.Add(New cCoreInputOutputControlItem(Core.EcoPathGroupInputs(igrp)))
             End If
         Next
 
@@ -89,7 +63,11 @@ Public Class dlgHarvestControlRule
     
 #Region "Control event handlers"
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles OK_Button.Click
+
+        ' ToDo_JS: globalize this
+
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Dim validationstring As String
         Me.m_isValid = True
@@ -117,7 +95,8 @@ Public Class dlgHarvestControlRule
 
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.m_isValid = True
         Me.Close()
@@ -139,7 +118,9 @@ Public Class dlgHarvestControlRule
     Private Sub updateHRC()
 
         'Group Biomass
-        Dim selItem As cbItem = DirectCast(cbBiomassGroups.SelectedItem, cbItem)
+        Dim selItem As cCoreInputOutputControlItem = Nothing
+
+        selItem = DirectCast(cbBiomassGroups.SelectedItem, cCoreInputOutputControlItem)
         If selItem IsNot Nothing Then
             Me.m_HRC.GroupNumber4Biomass = selItem.Index
             Me.m_HRC.GroupName4Biomass = selItem.toString
@@ -148,18 +129,18 @@ Public Class dlgHarvestControlRule
         End If
 
         'Fishing Mort
-        selItem = DirectCast(cbFMortGroups.SelectedItem, cbItem)
+        selItem = DirectCast(cbFMortGroups.SelectedItem, cCoreInputOutputControlItem)
         If selItem IsNot Nothing Then
             Me.m_HRC.GroupNumber4F = selItem.Index
             Me.m_HRC.GroupName4F = selItem.toString
             Me.m_HRC.MaxF = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4F).MortCoFishRate
         End If
 
-        If Me.cbCostFunctions.SelectedItem IsNot Nothing Then
-            Me.m_HRC.CostFunction = Me.cbCostFunctions.SelectedItem
+        If (Me.cbCostFunctions.SelectedItem IsNot Nothing) Then
+            Me.m_HRC.CostFunction = Me.cbCostFunctions.SelectedItem.ToString
         End If
 
-        Me.txRule.Text = Me.m_HRC.toDisplayString
+        Me.txRule.Text = Me.m_HRC.ToString
 
     End Sub
 
@@ -167,21 +148,9 @@ Public Class dlgHarvestControlRule
         Me.updateHRC()
     End Sub
 
-
-
 #End Region
 
-    Private Sub dlgHarvestControlRule_Validated(sender As Object, e As System.EventArgs) Handles Me.Validated
-
-    End Sub
-
-    Private Sub dlgHarvestControlRule_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles Me.Validating
-
-    End Sub
-
-
     Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
-        MyBase.OnFormClosing(e)
 
         If Not Me.m_isValid Then
             'Not a valid rule
@@ -189,9 +158,8 @@ Public Class dlgHarvestControlRule
             'to let the user correct the rule
             e.Cancel = True
         End If
+        MyBase.OnFormClosing(e)
 
     End Sub
-
-   
 
 End Class

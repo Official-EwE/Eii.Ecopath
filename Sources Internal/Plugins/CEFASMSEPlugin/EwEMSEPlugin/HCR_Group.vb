@@ -9,7 +9,6 @@ End Enum
 ''' <summary>
 ''' Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
 ''' </summary>
-''' <remarks></remarks>
 Public Class HCR_Group
 
 #Region "Private variables"
@@ -18,25 +17,27 @@ Public Class HCR_Group
 
 #Region "Public variables and Properties"
 
-    Public GroupName4Biomass As String
-    Public GroupNumber4Biomass As Integer = cCore.NULL_VALUE
-    Public LowerLimit As Double = cCore.NULL_VALUE
-    Public UpperLimit As Double = cCore.NULL_VALUE
-    Public GroupName4F As String
-    Public GroupNumber4F As Integer = cCore.NULL_VALUE
-    Public MaxF As Double = cCore.NULL_VALUE
-    Public CostFunction As String
+    Public Property GroupName4Biomass As String
+    Public Property GroupNumber4Biomass As Integer = cCore.NULL_VALUE
+    Public Property LowerLimit As Double = cCore.NULL_VALUE
+    Public Property UpperLimit As Double = cCore.NULL_VALUE
+    Public Property GroupName4F As String
+    Public Property GroupNumber4F As Integer = cCore.NULL_VALUE
+    Public Property MaxF As Double = cCore.NULL_VALUE
+    Public Property CostFunction As String
 
-    Public ReadOnly Property toDisplayString
-        Get
-            Dim tmp As String
-            tmp = "Biomass Group = " + GroupName4Biomass
-            tmp += Environment.NewLine + "Biomass Index = " + GroupNumber4Biomass.ToString
-            tmp += Environment.NewLine + "Fishing Mort. Group = " + GroupName4F
-            tmp += Environment.NewLine + "Fishing Mort. Index = " + GroupNumber4F.ToString
-            Return tmp
-        End Get
-    End Property
+    Public Overrides Function ToString() As String
+
+        ' ToDo_JS: globalize this
+
+        Dim tmp As String
+        tmp = "Biomass Group = " + GroupName4Biomass
+        tmp += Environment.NewLine + "Biomass Index = " + GroupNumber4Biomass.ToString
+        tmp += Environment.NewLine + "Fishing Mort. Group = " + GroupName4F
+        tmp += Environment.NewLine + "Fishing Mort. Index = " + GroupNumber4F.ToString
+        Return tmp
+
+    End Function
 
 #End Region
 
