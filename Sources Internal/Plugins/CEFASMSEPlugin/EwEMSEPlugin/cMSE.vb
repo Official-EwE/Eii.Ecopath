@@ -56,6 +56,8 @@ Public Class cMSE
         Triangular = 2
     End Enum
 
+    Private m_mhSettings As cMessageHandler = Nothing
+
     Public ReadOnly Property DataPath As String
         Get
             ' Sorry Mark, this breaks your system...
@@ -1486,9 +1488,12 @@ stepend:
 
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
         mCore = core
-
         Units.Init(mCore)
 
+        Me.m_mhSettings = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
+#If DEBUG Then
+        Me.m_mhSettings.Name = "CefasMSE_mh"
+#End If
     End Sub
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
@@ -1754,6 +1759,7 @@ stepend:
 
         ' ToDo_JS: Globalize this method
         ' ToDo_JS: Fix path usage
+        ' ToDo_JS: Remove MsgBox
 
         Dim TechnologyCreep(mCore.nFleets) As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
         'Must have nfleets+1 elements so for 10 fleets needs elements 0-10
@@ -2002,7 +2008,7 @@ stepend:
     '    Next
     'End Sub
 
-    Public Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
+    Private Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
         'Plugin Point called to cancel a message
         bCancelMessage = False
         If msg.Type = EwEUtils.Core.eMessageType.Estimate_BA Or msg.Type = EwEUtils.Core.eMessageType.Estimate_Net_Migration Then
