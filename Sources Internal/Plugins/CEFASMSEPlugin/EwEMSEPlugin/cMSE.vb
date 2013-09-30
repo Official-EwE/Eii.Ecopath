@@ -4,10 +4,10 @@
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 Imports ScientificInterfaceShared.Controls
 Imports Troschuetz.Random
-Imports EwEUtils.Utilities
 
 
 Public Class cMSE
@@ -58,11 +58,15 @@ Public Class cMSE
 
     Public ReadOnly Property DataPath As String
         Get
+            ' Sorry Mark, this breaks your system...
             Return Path.Combine(Me.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim), "CefasMSE")
         End Get
     End Property
 
     Private Sub ExtractChangeInEffortLimits()
+
+        ' ToDo_JS: Use standard CSV field reading/writing
+
         ' JS 30Sep13: Standardized path access
         Dim strPath As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")
         Dim EffortLimitsCSV As New CsvReader(New StreamReader(strPath), True)
@@ -74,7 +78,7 @@ Public Class cMSE
 
         While Not EffortLimitsCSV.EndOfStream
             EffortLimitsCSV.ReadNextRecord()
-            ChangeInEffortLimits(EffortLimitsCSV(0) - 1) = EffortLimitsCSV(2)
+            ChangeInEffortLimits(EffortLimitsCSV(0) - 1) = cStringUtils.ConvertToDouble(EffortLimitsCSV(2))
         End While
 
     End Sub
@@ -127,27 +131,25 @@ Public Class cMSE
             'End While
             Strategies.Add(Strategy)
             csv.Dispose()
-
         Next
 
     End Sub
 
     Private Function ExtractParamsCSV(ByRef param_name As String)
 
-        ' ToDo_JS: Fix path usage
         ' ToDo_JS: Use standard readers/writers, and make robust
-        ' ToDo_JS: Use standard CSV field reading/writing
 
         ' JS 30Sep13: Use local properties
         Dim nIterations As Integer = Me.NModels2Run
-        Dim csv As New CsvReader(New StreamReader(DataPath & "\ParametersOut\" & param_name & "_out.csv"), True)
+        Dim csv As New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, param_name & "_out.csv")), True)
+
         Dim Params(nIterations - 1, csv.FieldCount - 1) As Double
         Dim iRecord As Integer = 0
 
         While Not csv.EndOfStream And iRecord < nIterations
             csv.ReadNextRecord()
             For iField = 1 To csv.FieldCount()
-                Params(iRecord, iField - 1) = csv(iField - 1)
+                Params(iRecord, iField - 1) = cStringUtils.ConvertToDouble(csv(iField - 1))
             Next
             iRecord += 1
         End While
@@ -160,9 +162,7 @@ Public Class cMSE
 
     Private Function ExtractVulnerabilitiesCSV()
 
-        ' ToDo_JS: Fix path usage
         ' ToDo_JS: Use standard readers/writers, and make robust
-        ' ToDo_JS: Use standard CSV field reading/writing
 
         Dim nIterations As Integer = Me.NModels2Run
         Dim csv As CsvReader
@@ -170,13 +170,13 @@ Public Class cMSE
         Dim countrows As Integer
 
         For iIteration As Integer = 1 To nIterations
-            csv = New CsvReader(New StreamReader(DataPath & "\ParametersOut\VulnerabilityIteration" & iIteration.ToString & "_out.csv"), True)
+            csv = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration.ToString & "_out.csv")), True)
             countrows = 0
             While Not csv.EndOfStream
                 countrows += 1
                 csv.ReadNextRecord()
                 For iPred As Integer = 1 To _ecopath.EcopathData.NumGroups
-                    vulnerabilities(iIteration - 1, csv.CurrentRecordIndex, iPred - 1) = csv(iPred - 1)
+                    vulnerabilities(iIteration - 1, csv.CurrentRecordIndex, iPred - 1) = cStringUtils.ConvertToDouble(csv(iPred - 1))
                 Next
             End While
         Next
@@ -347,11 +347,11 @@ Public Class cMSE
         SaveOriginalParameters()
 
         'Output the final results
-        sw = New StreamWriter(DataPath & "\Results\Results.csv", False)
+        sw = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Results.csv", True), False)
         sw.WriteLine("Iteration,Strategy,GroupNumber,GroupName,ResultName,Value")
 
         'Create the csv writer for writing out individual fleets catches of each group
-        FleetCsv = New StreamWriter(DataPath & "\Results\Fleet.csv", False)
+        FleetCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Fleet.csv", True), False)
         FleetCsv.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
 
         'Count the number of live groups which aren't primary producers
@@ -394,7 +394,7 @@ Public Class cMSE
         'Prepare the trajectory csv with the column headings
         Trajectory2Csv = New List(Of StreamWriter)
         For igrp = 1 To mCore.nLivingGroups
-            Trajectory2Csv.Add(New StreamWriter(DataPath & "\Results\Trajectories2\" & mCore.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False))
+            Trajectory2Csv.Add(New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTraj2, mCore.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", True), False))
             Trajectory2Csv(igrp - 1).Write("Trial,Strategy")
             For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                 Trajectory2Csv(igrp - 1).Write("," & iTime)
@@ -430,7 +430,7 @@ Public Class cMSE
             Next
 
             'Extract the diet matrix
-            diet_matrix = New CsvReader(New StreamReader(DataPath & "/ParametersOut/DietMatrixTrial" & iTrial.ToString & ".csv"), False)
+            diet_matrix = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv", True)), False)
             diet_matrix.ReadNextRecord()
             For iPred As Integer = 1 To mCore.nGroups
                 mCore.EcoPathGroupInputs(iPred).ImpDiet() = diet_matrix(iPred - 1)
@@ -463,7 +463,7 @@ Public Class cMSE
                 mCore.EcoSimModelParameters.NumberYears = OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject
 
                 'This creates the files we will write the biomass trajectories to
-                TrajectoryCsv = New StreamWriter(DataPath & "\Results\Trajectories\Trial" & iTrial & ".csv", False)
+                TrajectoryCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv", True), False)
                 TrajectoryCsv.Write("GroupNumber,Group,Strategy")
                 For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                     TrajectoryCsv.Write("," & iTime)
@@ -891,7 +891,6 @@ stepend:
 
     Public Function CheckEcoSimDistributionFilesOkay(ByVal csv As CsvReader, ByRef Param_Name As String)
 
-        ' ToDo_JS: Fix path usage
         ' ToDo_JS: Remove MsgBox
         ' ToDo_JS: Globalize this method
 
@@ -903,7 +902,9 @@ stepend:
         'If a file has replicate groups and we check each group to see if it is in EwE and it happens that the number
         'of groups in the file are equal to the number of living groups, the file will be wrongly accepted
 
-        Dim Path As String = DataPath & "\DistributionParameters\" & Param_Name
+        ' JS 30Sep13: Not used
+        'Dim Path As String = DataPath & "\DistributionParameters\" & Param_Name
+
         Dim correct(mCore.nGroups - 1) As Integer
         Dim TotalFound As Integer = 0
 
@@ -976,7 +977,6 @@ stepend:
         Dim MeanProportions(mCore.nLivingGroups - 1, mCore.nGroups) As Single
         Dim DietPropMultipliers(mCore.nLivingGroups - 1) As Double
         Dim Interacts(mCore.nLivingGroups - 1, mCore.nGroups) As Integer
-        Dim sPath As String = DataPath & "\DistributionParameters"
         Dim nPPers As Integer 'number of primary producers
         Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
         Const PQThreshold As Double = 0.5
@@ -993,7 +993,7 @@ stepend:
         Me.SaveOriginalState()
 
         'Read in the values from the DietComposition.csv into each array
-        csv_diet = New CsvReader(New StreamReader(sPath & "/DietComposition.csv"), True)
+        csv_diet = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")), True)
         For iPred As Integer = 1 To mCore.nLivingGroups
             For iPrey As Integer = 0 To mCore.nGroups
                 csv_diet.ReadNextRecord()
@@ -1006,7 +1006,7 @@ stepend:
         Next
 
         'Read in the values from the DietCompositionMultipliers.csv
-        csv_multipliers = New CsvReader(New StreamReader(sPath & "/DietCompositionMultipliers.csv"), True)
+        csv_multipliers = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietCompositionMultipliers.csv")), True)
         Do While csv_multipliers.ReadNextRecord
             DietPropMultipliers(csv_multipliers(0) - 1) = csv_multipliers(2)
         Loop
@@ -1051,7 +1051,7 @@ stepend:
                             If isbalanced = True Then
 
                                 'Output the diet matrix parameters to csv
-                                Dim csv_dietout As New StreamWriter(DataPath & "\ParametersOut\DietMatrixTrial" & iTrial & ".csv", False)
+                                Dim csv_dietout As New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv", True), False)
                                 For iPrey = 0 To nGroups
                                     csv_dietout.Write(Me._ecopath.EcopathData.DC(1, iPrey))
                                     For iPred = 2 To nGroups
@@ -1100,6 +1100,12 @@ stepend:
 
     End Sub
 
+    ''' <summary>
+    ''' Append an Ecopath variable to a CSV out file.
+    ''' </summary>
+    ''' <param name="strFile"></param>
+    ''' <param name="data"></param>
+    ''' <returns>True if successful.</returns>
     Private Function WriteEcopathParms(strFile As String, data As Single()) As Boolean
 
         Dim strPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, strFile)
@@ -1240,11 +1246,8 @@ stepend:
 
     Private Function InitMonteCarloParameters() As Boolean
 
-        ' ToDo_JS: Fix path usage
-
         'loads the distribution parameters for the Ecopath parameters from csvs
 
-        Dim Path As String = DataPath & "\DistributionParameters"
         'Dim csv_B, csv_PB, csv_QB, csv_EE, csv_BA As CsvReader
         Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
         'Dim MCGroup As cMonteCarloGroup
@@ -1253,11 +1256,11 @@ stepend:
         'These are the group parameters in the EwE Monte Carlo runs form
         'CV Lower and Upper Limit
 
-        If Not InitMonteCarloParamX(Path & "/B_Dist.csv", eParamName.B) Then Return False
-        If Not InitMonteCarloParamX(Path & "/PB_Dist.csv", eParamName.PB) Then Return False
-        If Not InitMonteCarloParamX(Path & "/QB_Dist.csv", eParamName.QB) Then Return False
-        If Not InitMonteCarloParamX(Path & "/EE_Dist.csv", eParamName.EE) Then Return False
-        If Not InitMonteCarloParamX(Path & "/BA_Dist.csv", eParamName.BA) Then Return False
+        If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "B_Dist.csv"), eParamName.B) Then Return False
+        If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "PB_Dist.csv"), eParamName.PB) Then Return False
+        If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "QB_Dist.csv"), eParamName.QB) Then Return False
+        If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "EE_Dist.csv"), eParamName.EE) Then Return False
+        If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "BA_Dist.csv"), eParamName.BA) Then Return False
 
         'csv_B = New CsvReader(New StreamReader(Path & "/B_Dist.csv"), True)
         'csv_PB = New CsvReader(New StreamReader(Path & "/PB_Dist.csv"), True)
@@ -1601,12 +1604,10 @@ stepend:
 
     Public Sub Create1DimParams(ByVal ParamName As String)
 
-        ' ToDo_JS: Fix path usage
         ' ToDo_JS: Use standard CSV field reading/writing
         ' ToDo_JS: Use standard readers/writers, and make robust
 
-        Dim sPath As String = DataPath & "\DistributionParameters"
-        Dim csv = New CsvReader(New StreamReader(sPath & "\" & ParamName & ".csv"), True)
+        Dim csv = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv")), True)
         Dim ParameterArray(mCore.nLivingGroups - nPrimaryProducer - 1, 3) As Single
 
         ' JS 30Sep13: Use local properties
@@ -1622,7 +1623,7 @@ stepend:
             Exit Sub
         End If
 
-        csv = New CsvReader(New StreamReader(sPath & "\" & ParamName & ".csv"), True)
+        csv = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv")), True)
 
         'Initialise the datatable
         'SampledParameters.Columns.Add("GroupName", GetType(String))
@@ -1661,8 +1662,7 @@ stepend:
         Next
 
         'Output the sampled parameters to a csv
-        sPath = DataPath & "\ParametersOut"
-        Dim csvout As New StreamWriter(Path.Combine(sPath & "\" & ParamName & "_out.csv"), False)
+        Dim csvout As New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, ParamName & "_out.csv", True), False)
 
         For igrp As Integer = 1 To mCore.nLivingGroups - nPrimaryProducer - 1
             csvout.Write("""" & GroupNames(igrp - 1) & """,")
@@ -1695,7 +1695,7 @@ stepend:
 
         For iIteration = 1 To nIterations
 
-            Dim sw As StreamWriter = New StreamWriter(DataPath & "\ParametersOut\VulnerabilityIteration" & iIteration.ToString() & "_out.csv", False)
+            Dim sw As StreamWriter = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration & "_out.csv", True), False)
 
             'Create random values for the vulnerabilities and store in a csv
             For igrppredator As Integer = 1 To _ecopath.EcopathData().NumGroups
