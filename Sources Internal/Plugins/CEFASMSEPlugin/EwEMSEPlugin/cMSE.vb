@@ -317,11 +317,11 @@ Public Class cMSE
 
         'Output the final results
         sw = New StreamWriter(DataPath & "\Results\Results.csv", False)
-        sw.WriteLine("Iteration,Strategy,GroupName,ResultName,Value")
+        sw.WriteLine("Iteration,Strategy,GroupNumber,GroupName,ResultName,Value")
 
         'Create the csv writer for writing out individual fleets catches of each group
         FleetCsv = New StreamWriter(DataPath & "\Results\Fleet.csv", False)
-        FleetCsv.WriteLine("Iteration,Strategy,FleetName,GroupName,Value")
+        FleetCsv.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
 
         'Count the number of live groups which aren't primary producers
         nLivingGroupsMinusPPers = mCore.nLivingGroups
@@ -363,16 +363,13 @@ Public Class cMSE
         'Prepare the trajectory csv with the column headings
         Trajectory2Csv = New List(Of StreamWriter)
         For igrp = 1 To mCore.nLivingGroups
-            Trajectory2Csv.Add(New StreamWriter(DataPath & "\Results\Trajectories2\" & mCore.EcoPathGroupInputs(igrp).Name & ".csv", False))
+            Trajectory2Csv.Add(New StreamWriter(DataPath & "\Results\Trajectories2\" & mCore.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False))
             Trajectory2Csv(igrp - 1).Write("Trial,Strategy")
             For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                 Trajectory2Csv(igrp - 1).Write("," & iTime)
             Next
             Trajectory2Csv(igrp - 1).WriteLine()
         Next
-
-        'Object for outputting f trajectory
-        TrajectoryF = New StreamWriter(DataPath & "\Results\Trajectories\f.csv", False)
 
         'load parameter values into ecopath and ecosim to be used
         nTrials = Convert.ToInt32(MSEForm.txtNModels2Run.Text)    '0 is the 1st dimension and 1' the second etc
@@ -436,7 +433,7 @@ Public Class cMSE
 
                 'This creates the files we will write the biomass trajectories to
                 TrajectoryCsv = New StreamWriter(DataPath & "\Results\Trajectories\Trial" & iTrial & ".csv", False)
-                TrajectoryCsv.Write("Group,Strategy")
+                TrajectoryCsv.Write("GroupNumber,Group,Strategy")
                 For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                     TrajectoryCsv.Write("," & iTime)
                 Next
@@ -469,28 +466,10 @@ Public Class cMSE
                         'Console.WriteLine("This parameter set is okay")
                     End If
 
-                    'diagnositics check to see what is happening with f's on cod
-
-                    TrajectoryF.Write(CurrentStrategy.Name & ",FishMort-PredMort")
-                    For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
-                        TrajectoryF.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, 14, iTime) - Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, 14, iTime))
-                    Next
-                    TrajectoryF.WriteLine()
-                    TrajectoryF.Write(CurrentStrategy.Name & ",FishMort")
-                    For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
-                        TrajectoryF.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, 14, iTime))
-                    Next
-                    TrajectoryF.WriteLine()
-                    TrajectoryF.Write(CurrentStrategy.Name & ",PredMort")
-                    For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
-                        TrajectoryF.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, 14, iTime))
-                    Next
-                    TrajectoryF.WriteLine()
-
                     For iFleet = 1 To mCore.nFleets
                         For iGrp = 1 To mCore.nLivingGroups
                             'FleetCsv.WriteLine(iTrial + NumberIterationsAlreadyInFleets & "," & HCRFiles(Strategies.IndexOf(iStrategy)) & "," & mCore.FleetInputs(iFleet).Name & ",""" & mCore.EcoPathGroupInputs(iGrp).Name & """," & mCore.EcoSimGroupOutputs(iGrp).CatchEnd(iFleet))
-                            FleetCsv.WriteLine(iTrial + NumberIterationsAlreadyInFleets & "," & iStrategy.Name & "," & mCore.FleetInputs(iFleet).Name & ",""" & mCore.EcoPathGroupInputs(iGrp).Name & """," & Me._simdata.ResultsSumCatchByGroupGear(iGrp, iFleet, OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear))
+                            FleetCsv.WriteLine(iTrial + NumberIterationsAlreadyInFleets & "," & iStrategy.Name & "," & iFleet & "," & mCore.FleetInputs(iFleet).Name & ",""" & iGrp & "," & mCore.EcoPathGroupInputs(iGrp).Name & """," & Me._simdata.ResultsSumCatchByGroupGear(iGrp, iFleet, OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear))
                         Next
                     Next
 
@@ -502,7 +481,7 @@ Public Class cMSE
 
                         'Output to csv the biomass trajectories
                         'TrajectoryCsv.Write("""" & mCore.EcoPathGroupInputs(igrp).Name & """," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(iStrategy))))
-                        TrajectoryCsv.Write("""" & mCore.EcoPathGroupInputs(igrp).Name & """," & iStrategy.Name)
+                        TrajectoryCsv.Write(igrp & """" & mCore.EcoPathGroupInputs(igrp).Name & """," & iStrategy.Name)
                         For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                             TrajectoryCsv.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime))
                         Next
@@ -515,11 +494,11 @@ Public Class cMSE
                         Next
                         Trajectory2Csv(igrp - 1).WriteLine()
 
-                        sw.WriteLine(NumberIterationsAlreadyInResults + iTrial & "," & iStrategy.Name & ",""" & mCore.EcoPathGroupOutputs(igrp).Name & """,Biomass," & BiomassProjected.Min)
-                        sw.WriteLine(NumberIterationsAlreadyInResults + iTrial & "," & iStrategy.Name & ",""" & mCore.EcoPathGroupOutputs(igrp).Name & """,BiomassEnd," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, ecosimData.NTimes))
+                        sw.WriteLine(NumberIterationsAlreadyInResults + iTrial & "," & iStrategy.Name & ",""" & igrp & "," & mCore.EcoPathGroupOutputs(igrp).Name & """,Biomass," & BiomassProjected.Min)
+                        sw.WriteLine(NumberIterationsAlreadyInResults + iTrial & "," & iStrategy.Name & ",""" & igrp & "," & mCore.EcoPathGroupOutputs(igrp).Name & """,BiomassEnd," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, ecosimData.NTimes))
                         'Results.Rows.Add(iIteration, HCRFiles(Strategies.IndexOf(iStrategy)), mCore.EcoPathGroupOutputs(igrp).Name, "Catch", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, ecosimData.NTimes))
                         'Console.WriteLine(mCore.EcoPathGroupInputs(igrp).Name & vbTab & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, ecosimData.NTimes))
-                        sw.WriteLine(NumberIterationsAlreadyInResults + iTrial & "," & iStrategy.Name & ",""" & mCore.EcoPathGroupOutputs(igrp).Name & """,Catch," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, ecosimData.NTimes))
+                        sw.WriteLine(NumberIterationsAlreadyInResults + iTrial & "," & iStrategy.Name & ",""" & igrp & "," & mCore.EcoPathGroupOutputs(igrp).Name & """,Catch," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, ecosimData.NTimes))
 
                     Next
 
@@ -527,7 +506,7 @@ Public Class cMSE
 
 
                     For iFleet As Integer = 1 To mCore.nFleets
-                        sw.WriteLine(NumberIterationsAlreadyInResults + iTrial & "," & iStrategy.Name & ",""" & mCore.FleetInputs(iFleet).Name & """,TotalEndValue," & Me._simdata.ResultsSumValueByGear(iFleet, _ecosim.EcosimData.NTimes))
+                        sw.WriteLine(NumberIterationsAlreadyInResults + iTrial & "," & iStrategy.Name & ",""" & iFleet & "," & mCore.FleetInputs(iFleet).Name & """,TotalEndValue," & Me._simdata.ResultsSumValueByGear(iFleet, _ecosim.EcosimData.NTimes))
                     Next
 
 
@@ -555,7 +534,6 @@ BadDynamics:  ' This is so that if the dynamics of a parameterisation are bad th
 
         sw.Dispose()
         FleetCsv.Dispose()
-        TrajectoryF.Dispose()
 
         RestoreParameters()
 
