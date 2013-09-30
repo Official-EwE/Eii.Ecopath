@@ -7,6 +7,7 @@ Imports EwEUtils.Core
 Imports LumenWorks.Framework.IO.Csv
 Imports ScientificInterfaceShared.Controls
 Imports Troschuetz.Random
+Imports EwEUtils.Utilities
 
 
 Public Class cMSE
@@ -62,7 +63,9 @@ Public Class cMSE
     End Property
 
     Private Sub ExtractChangeInEffortLimits()
-        Dim EffortLimitsCSV As New CsvReader(New StreamReader(DataPath & "\Fleet\ChangesInEffortLimits.csv"), True)
+        ' JS 30Sep13: Standardized path access
+        Dim strPath As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")
+        Dim EffortLimitsCSV As New CsvReader(New StreamReader(strPath), True)
         ReDim ChangeInEffortLimits(mCore.nFleets - 1)
 
         For i = 1 To mCore.nFleets
@@ -77,11 +80,16 @@ Public Class cMSE
     End Sub
 
     Public Sub ExtractHCR()
+
+        ' ToDo_JS: Globalize this method
+        ' ToDo_JS: Fix folder availability flow
+        ' ToDo_JS: Remove MsgBox
+
         Dim StrategiesFileNames As String()
         Dim csv As CsvReader
         Dim tempHCRGroup As HCR_Group
         Dim Strategy As Strategy
-        Dim datadir As String = Path.Combine(DataPath & "\Strategies")
+        Dim datadir As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Strategies)
 
         'Make sure this directory exists
         If Not Directory.Exists(datadir) Then
@@ -92,7 +100,8 @@ Public Class cMSE
         Strategies.DataDirectory = datadir
 
         'Get an array of strings giving the path to each HCR
-        StrategiesFileNames = Directory.GetFiles(datadir)
+        ' JS 30Sep13: Only read CSV files
+        StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
 
         For Each HCRFileName In StrategiesFileNames 'loop through reading each HCR file
             csv = New CsvReader(New StreamReader(HCRFileName), True)
@@ -124,6 +133,12 @@ Public Class cMSE
     End Sub
 
     Private Function ExtractParamsCSV(ByRef param_name As String)
+
+        ' ToDo_JS: Fix path usage
+        ' ToDo_JS: Use standard readers/writers, and make robust
+        ' ToDo_JS: Use standard CSV field reading/writing
+
+        ' JS 30Sep13: Use local properties
         Dim nIterations As Integer = Me.NModels2Run
         Dim csv As New CsvReader(New StreamReader(DataPath & "\ParametersOut\" & param_name & "_out.csv"), True)
         Dim Params(nIterations - 1, csv.FieldCount - 1) As Double
@@ -144,6 +159,11 @@ Public Class cMSE
     End Function
 
     Private Function ExtractVulnerabilitiesCSV()
+
+        ' ToDo_JS: Fix path usage
+        ' ToDo_JS: Use standard readers/writers, and make robust
+        ' ToDo_JS: Use standard CSV field reading/writing
+
         Dim nIterations As Integer = Me.NModels2Run
         Dim csv As CsvReader
         Dim vulnerabilities(nIterations - 1, _ecopath.EcopathData.NumGroups - 1, _ecopath.EcopathData.NumGroups - 1) As Double
@@ -284,6 +304,9 @@ Public Class cMSE
 
     Public Sub LoadSampledParams()
 
+        ' ToDo_JS: Fix path usage
+        ' ToDo_JS: Use standard CSV field reading/writing
+
         Dim B(,) As Double
         Dim PB(,) As Double
         Dim QB(,) As Double
@@ -302,8 +325,6 @@ Public Class cMSE
         Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
         Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
         Dim GoodDynamics As Boolean
-        Dim NYearsProject = Me.NYearsProject
-        Dim BiomassProjected(NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
         Dim Results As New DataTable
         'Dim HCRFiles As String()
         Dim sw As StreamWriter
@@ -317,6 +338,9 @@ Public Class cMSE
         Dim nFailedParameterisations As Integer = 0
         Dim nLivingGroupsMinusPPers As Integer
 
+        ' JS 30Sep13: Use local properties
+        Dim NYearsProject = Me.NYearsProject
+        Dim BiomassProjected(NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
         OriginalNTimesteps = _ecosim.EcosimData.NTimes
 
@@ -808,6 +832,10 @@ stepend:
     'End Sub
 
     Public Function CheckEcopathDistributionFilesOkay(ByVal sPath As String, ByVal csv As CsvReader, ByRef Param_Name As [Enum]) As Boolean
+
+        ' ToDo_JS: Remove MsgBox
+        ' ToDo_JS: Globalize this method
+
         'Checks whether each of the Ecopath (not diet matrix) distribution files is has the correct functional groups in it
         'They should only have living groups
         'It does this by saving a true in the position of an array at the index at which it exists in EwE
@@ -862,6 +890,11 @@ stepend:
     End Function
 
     Public Function CheckEcoSimDistributionFilesOkay(ByVal csv As CsvReader, ByRef Param_Name As String)
+
+        ' ToDo_JS: Fix path usage
+        ' ToDo_JS: Remove MsgBox
+        ' ToDo_JS: Globalize this method
+
         'Checks whether each of the Ecosim distribution files (not vulnerabilities) is has the correct functional groups in it
         'They should have living groups excluding primary producers
         'It does this by saving a true in the position of an array at the index at which it exists in EwE
@@ -923,6 +956,10 @@ stepend:
 
 
     Public Sub GenerateEcopathParamaters()
+
+        ' ToDo_JS: Fix path usage
+        ' ToDo_JS: Use standard CSV field reading/writing
+        ' ToDo_JS: Use standard readers/writers, and make robust
 
         Dim nLiving As Integer = mCore.nLivingGroups
         Dim nGroups As Integer = mCore.nGroups
@@ -1025,100 +1062,12 @@ stepend:
                                 'Me._ecopath.EcopathData.DtImp()
                                 csv_dietout.Dispose()
 
-                                sPath = DataPath & "\ParametersOut"
-                                Dim b_csvout As StreamWriter
-                                Dim ba_csvout As StreamWriter
-                                Dim pb_csvout As StreamWriter
-                                Dim qb_csvout As StreamWriter
-                                Dim ee_csvout As StreamWriter
-
-                                If Not File.Exists(Path.Combine(sPath & "/b_out.csv")) Then
-                                    b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
-                                    b_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                                    For igrp As Integer = 2 To nLiving
-                                        b_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                                    Next
-
-                                Else
-                                    b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
-                                End If
-
-
-                                b_csvout.WriteLine()
-                                b_csvout.Write(Me._ecopath.EcopathData.B(1))
-                                For igrp As Integer = 2 To nLiving
-                                    b_csvout.Write(", " & Me._ecopath.EcopathData.B(igrp))
-                                Next
-                                b_csvout.Dispose()
-
-                                If Not File.Exists(Path.Combine(sPath & "/ba_out.csv")) Then
-                                    ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
-                                    ba_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                                    For igrp As Integer = 2 To nLiving
-                                        ba_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                                    Next
-                                Else
-                                    ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
-                                End If
-
-                                ba_csvout.WriteLine()
-                                ba_csvout.Write(Me._ecopath.EcopathData.BA(1))
-                                For igrp As Integer = 2 To nLiving
-                                    ba_csvout.Write(", " & Me._ecopath.EcopathData.BA(igrp))
-                                Next
-                                ba_csvout.Dispose()
-
-                                If Not File.Exists(Path.Combine(sPath & "/pb_out.csv")) Then
-                                    pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
-                                    pb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                                    For igrp As Integer = 2 To nLiving
-                                        pb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                                    Next
-                                Else
-                                    pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
-                                End If
-
-                                pb_csvout.WriteLine()
-                                pb_csvout.Write(Me._ecopath.EcopathData.PB(1))
-                                For igrp As Integer = 2 To nLiving
-                                    pb_csvout.Write(", " & Me._ecopath.EcopathData.PB(igrp))
-
-                                Next
-                                pb_csvout.Dispose()
-
-                                If Not File.Exists(Path.Combine(sPath & "/qb_out.csv")) Then
-                                    qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
-                                    qb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                                    For igrp As Integer = 2 To nLiving
-                                        qb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                                    Next
-                                Else
-                                    qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
-                                End If
-
-                                qb_csvout.WriteLine()
-                                qb_csvout.Write(Me._ecopath.EcopathData.QB(1))
-                                For igrp As Integer = 2 To nLiving
-                                    qb_csvout.Write(", " & Me._ecopath.EcopathData.QB(igrp))
-                                Next
-                                qb_csvout.Dispose()
-
-                                If Not File.Exists(Path.Combine(sPath & "/ee_out.csv")) Then
-                                    ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
-                                    ee_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-                                    For igrp As Integer = 2 To nLiving
-                                        ee_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                                    Next
-                                Else
-                                    ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
-                                End If
-
-                                ee_csvout.WriteLine()
-                                ee_csvout.Write(Me._ecopath.EcopathData.EE(1))
-                                For igrp As Integer = 2 To nLiving
-                                    ee_csvout.Write(", " & Me._ecopath.EcopathData.EE(igrp))
-                                Next
-                                ee_csvout.Dispose()
+                                ' JS 30Sep13: greatly simplified :)
+                                WriteEcopathParms("b_out.csv", Me._ecopath.EcopathData.B)
+                                WriteEcopathParms("ba_out.csv", Me._ecopath.EcopathData.BA)
+                                WriteEcopathParms("pb_out.csv", Me._ecopath.EcopathData.PB)
+                                WriteEcopathParms("qb_out.csv", Me._ecopath.EcopathData.QB)
+                                WriteEcopathParms("ee_out.csv", Me._ecopath.EcopathData.EE)
 
                                 ''This runs Ecosim without core support
                                 'If Me.RunEcosim() Then
@@ -1127,14 +1076,11 @@ stepend:
                                 'End If 'RunEcosim
 
                                 Exit For
-
                             End If
-
                         Else
                             System.Console.WriteLine("Failed to find balanced Ecopath model")
                         End If ' MonteCarlo.selectNewEcopathParameters()
                     Next
-
 
                     Console.WriteLine("Number of seconds to run iteration: " & (TimeFindingBalanced.ElapsedMilliseconds / 1000).ToString)
                     TimeFindingBalanced.Reset()
@@ -1146,49 +1092,41 @@ stepend:
 
             'Save the results to a .csv
 
-            sPath = DataPath & "\ParametersOut"
-
-
-
-            'ba_csvout.WriteLine()
-            'pb_csvout.WriteLine()
-            'qb_csvout.WriteLine()
-            'ee_csvout.WriteLine()
-
-            'For iter As Integer = 1 To nTrials
-            '    b_csvout.Write(b(iter, 1))
-            '    ba_csvout.Write(ba(iter, 1))
-            '    pb_csvout.Write(pb(iter, 1))
-            '    qb_csvout.Write(qb(iter, 1))
-            '    ee_csvout.Write(ee(iter, 1))
-            '    For igrp As Integer = 2 To nLiving
-            '        b_csvout.Write(", " & b(iter, igrp))
-            '        ba_csvout.Write(", " & ba(iter, igrp))
-            '        pb_csvout.Write(", " & pb(iter, igrp))
-            '        qb_csvout.Write(", " & qb(iter, igrp))
-            '        ee_csvout.Write(", " & ee(iter, igrp))
-            '    Next
-            '    b_csvout.WriteLine()
-            '    ba_csvout.WriteLine()
-            '    pb_csvout.WriteLine()
-            '    qb_csvout.WriteLine()
-            '    ee_csvout.WriteLine()
-            'Next
-
-            'b_csvout.Dispose()
-            'ba_csvout.Dispose()
-            'pb_csvout.Dispose()
-            'qb_csvout.Dispose()
-            'ee_csvout.Dispose()
-
         Catch ex As Exception
 
         End Try
 
         Me.RestoreOriginalState()
 
-
     End Sub
+
+    Private Function WriteEcopathParms(strFile As String, data As Single()) As Boolean
+
+        Dim strPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, strFile)
+        Dim writer As StreamWriter = Nothing
+
+        If Not File.Exists(strFile) Then
+            writer = cMSEUtils.GetWriter(strFile)
+            If (writer Is Nothing) Then Return False
+
+            For igrp As Integer = 1 To Me.Core.nLivingGroups
+                If (igrp > 1) Then writer.Write(",")
+                writer.Write(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(igrp).Name))
+            Next
+        Else
+            writer = cMSEUtils.GetWriter(strFile, True)
+            If (writer Is Nothing) Then Return False
+        End If
+
+        writer.WriteLine()
+        For igrp As Integer = 2 To Me.Core.nLivingGroups
+            If (igrp > 1) Then writer.Write(",")
+            writer.Write(data(igrp))
+        Next
+        cMSEUtils.ReleaseWriter(writer)
+        Return True
+
+    End Function
 
     Private Function getEcosimResults() As Boolean
         Try
@@ -1301,6 +1239,9 @@ stepend:
 
 
     Private Function InitMonteCarloParameters() As Boolean
+
+        ' ToDo_JS: Fix path usage
+
         'loads the distribution parameters for the Ecopath parameters from csvs
 
         Dim Path As String = DataPath & "\DistributionParameters"
@@ -1659,9 +1600,16 @@ stepend:
     'End Sub
 
     Public Sub Create1DimParams(ByVal ParamName As String)
+
+        ' ToDo_JS: Fix path usage
+        ' ToDo_JS: Use standard CSV field reading/writing
+        ' ToDo_JS: Use standard readers/writers, and make robust
+
         Dim sPath As String = DataPath & "\DistributionParameters"
         Dim csv = New CsvReader(New StreamReader(sPath & "\" & ParamName & ".csv"), True)
         Dim ParameterArray(mCore.nLivingGroups - nPrimaryProducer - 1, 3) As Single
+
+        ' JS 30Sep13: Use local properties
         Dim nIterations As Integer = Me.NTrials
         'Dim SampledParameters(nIterations, mCore.nLivingGroups - nPrimaryProducer)
         Dim eDistributionType As DistributionType
@@ -1739,6 +1687,10 @@ stepend:
     Public Sub CreateVulnerabilities()
         'Generate csv with vulnerabilities
 
+        ' ToDo_JS: Fix path usage
+        ' ToDo_JS: Use standard CSV field reading/writing
+
+        ' JS 30Sep13: Use local properties
         Dim nIterations As Integer = NTrials
 
         For iIteration = 1 To nIterations
@@ -1800,6 +1752,9 @@ stepend:
 
     Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
 
+        ' ToDo_JS: Globalize this method
+        ' ToDo_JS: Fix path usage
+
         Dim TechnologyCreep(mCore.nFleets) As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
         'Must have nfleets+1 elements so for 10 fleets needs elements 0-10
         'This is because of the way code works in EwE
@@ -1857,7 +1812,6 @@ stepend:
                     End If
                 Next
 
-
                 'Compiles a list of which fleets are affecting groups which have a zero conservation f
                 'ZeroEffortFleetsList = DetermineZeroEffortFleets(FTargetandConservation)
 
@@ -1874,8 +1828,6 @@ stepend:
                         End If
                     Next
                 Next
-
-
 
                 'if there are no fleets to optimise for skip all this
                 If Fleets2Fit.Count > 0 Then
@@ -1899,8 +1851,6 @@ stepend:
                     'Dim BestCost As Double = 0 'this holds the cost value of best fit so far for comparison with current iteration
                     'Dim BestEfforts(Fleets2Fit.Count - 1) As Double
                     ' if cost improves on current iteration replace all the saved effort values with current effort values
-
-
 
                     'New Linear programming method - ideally needs placing in its own sub
 
@@ -2031,7 +1981,6 @@ stepend:
                 For iMonth = 0 To 11
                     _ecosim.SetFtimeFromGear(Nothing, iTime + iMonth, TechnologyCreep, True)
                 Next
-
 
             End If
         End If
