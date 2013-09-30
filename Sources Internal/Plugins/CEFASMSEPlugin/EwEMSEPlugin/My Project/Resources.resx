@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,40 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ERROR_DISTRFILE_GROUPS_HASNONLIVING" xml:space="preserve">
+    <value>The distribution file {0} has non-living groups in it.</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER" xml:space="preserve">
+    <value>Your distribution file for {0} contains the group '{1}' in it.{2}This is invalid because this group is a primary producer!</value>
+    <comment>{0}=param_name, {1}=group name, {2}=line break</comment>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_LIVING_MISSING" xml:space="preserve">
+    <value>The distribution file {0} does not have all the living groups in it.</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_REPLICATED" xml:space="preserve">
+    <value>The distribution file {0} has replicate groups in it.</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="ERROR_DISTRPARAM_GROUPS_REPLICATED" xml:space="preserve">
+    <value>The distribution file for {0} has replicate groups in it.</value>
+    <comment>{0}=param_name</comment>
+  </data>
+  <data name="ERROR_DISTRPARAM_GROUPS_TOOFEW" xml:space="preserve">
+    <value>The distribution file for {0} does not have all the living groups that are not primary producers in it.</value>
+    <comment>{0}=param_name</comment>
+  </data>
+  <data name="ERROR_DISTRPARAM_GROUPS_TOOMANY" xml:space="preserve">
+    <value>The distribution file for {0} has too many groups in it.</value>
+    <comment>{0}=param_name</comment>
+  </data>
+  <data name="PROMPT_DATAPATH" xml:space="preserve">
+    <value>Select the directory to retrieve data from and output results to</value>
+  </data>
 </root>

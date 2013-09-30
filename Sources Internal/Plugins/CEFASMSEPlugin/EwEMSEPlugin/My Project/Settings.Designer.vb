@@ -65,6 +65,54 @@ Namespace My
                 Me("DataPath") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("5")>  _
+        Public Property NModels2Run() As Integer
+            Get
+                Return CType(Me("NModels2Run"),Integer)
+            End Get
+            Set
+                Me("NModels2Run") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("5")>  _
+        Public Property NYearsProject() As Integer
+            Get
+                Return CType(Me("NYearsProject"),Integer)
+            End Get
+            Set
+                Me("NYearsProject") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("5")>  _
+        Public Property NTrials() As Integer
+            Get
+                Return CType(Me("NTrials"),Integer)
+            End Get
+            Set
+                Me("NTrials") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0.0005")>  _
+        Public Property MassBalanceTol() As Single
+            Get
+                Return CType(Me("MassBalanceTol"),Single)
+            End Get
+            Set
+                Me("MassBalanceTol") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

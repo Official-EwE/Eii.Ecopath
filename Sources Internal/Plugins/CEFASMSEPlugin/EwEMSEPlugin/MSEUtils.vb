@@ -5,20 +5,40 @@ Imports EwEUtils.Utilities
 
 Public Class cMSEUtils
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Fail-safe method to obtain a stream reader to a file.
+    ''' </summary>
+    ''' <param name="strFile">The path to the file to obtain.</param>
+    ''' <returns>A stream reader if successful, or Nothing if an error occurred.</returns>
+    ''' -----------------------------------------------------------------------
     Public Shared Function GetReader(strFile As String) As StreamReader
 
         Dim reader As StreamReader = Nothing
 
-        If Not File.Exists(strFile) Then Return Nothing
+        ' Capture errors
+        If String.IsNullOrWhiteSpace(strFile) Then Return reader
+        If Not File.Exists(strFile) Then Return reader
+
         Try
+            ' Try to create file reader
             reader = New StreamReader(strFile)
         Catch ex As Exception
+            ' Report error
             cLog.Write(ex, eVerboseLevel.Detailed, "MSEplugIn(" & strFile & ")")
         End Try
+
+        ' Done
         Return reader
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Fail-safe method to release stream reader previously obtained via
+    ''' <see cref="GetReader"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Shared Sub ReleaseReader(ByRef reader As StreamReader)
         If (reader IsNot Nothing) Then
             reader.Close()
@@ -29,12 +49,12 @@ Public Class cMSEUtils
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Obtain a stream writer to a given location relative to the <paramref name="strDatapath">data path</paramref>.
-    ''' This method tries to ensure that the file output directory is available.
+    ''' Fail-safe method to obtain a stream writer to a file.
     ''' </summary>
-    ''' <param name="strFile"></param>
-    ''' <param name="bAppend"></param>
-    ''' <returns>A valid Streamwriter, or nothing if the writer could not be created for any reason.</returns>
+    ''' <param name="strFile">The path to the file to obtain.</param>
+    ''' <param name="bAppend">Append to the content if True, or overwrite content
+    ''' if false.</param>
+    ''' <returns>A stream writer if successful, or Nothing if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function GetWriter(strFile As String, Optional bAppend As Boolean = False) As StreamWriter
 
@@ -52,6 +72,12 @@ Public Class cMSEUtils
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Fail-safe method to release stream writer previously obtained via
+    ''' <see cref="GetReader"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Shared Sub ReleaseWriter(ByRef writer As StreamWriter)
         If (writer IsNot Nothing) Then
             writer.Flush()
@@ -73,29 +99,91 @@ Public Class cMSEUtils
         Return strValue.Replace("""", "").Trim
     End Function
 
+    ''' <summary>
+    ''' Data path categories for the MSE plug-in.
+    ''' </summary>
     Public Enum eMSEPaths As Integer
+        ''' <summary>The root folder that the plug-in is configured to use.</summary>
         Root = 0
-        Strategies
+        ''' <summary>The Fleet subfolder under 'Root'.</summary>
+        Fleet
+        ''' <summary>The NaturalMortaility subfolder under 'Root'.</summary>
+        NaturalMort
+        ''' <summary>The Distributions subfolder under 'Root'.</summary>
         DistrParams
+        ''' <summary>The ParametersOut subfolder under 'Root'.</summary>
         ParamsOut
+        ''' <summary>The Results subfolder under 'Root'.</summary>
         Results
+        ''' <summary>The Results\Trajectories1 subfolder under 'Root'.</summary>
+        ResultsTrajectories
+        ''' <summary>The Results\Trajectories2 subfolder under 'Root'.</summary>
+        ResultsTraj2
+        ''' <summary>The Strategies subfolder under 'Root'.</summary>
+        Strategies
     End Enum
 
-    Public Shared Function Folder(DataPath As String, category As eMSEPaths, Optional strSubPath As String = "", Optional bCreateIfNotExists As Boolean = True) As String
-        Dim strPath As String = Path.Combine(DataPath, Subfolder(category), strSubPath)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the full path to a MSE file.
+    ''' </summary>
+    ''' <param name="DataPath">The MSE datapath</param>
+    ''' <param name="category">The <see cref="eMSEPaths">category</see> subfolder for the file.</param>
+    ''' <param name="strFile">The name of the file.</param>
+    ''' <param name="bCreateFolderIfNotExists">Flag that states that the folder should be created if it does not exist.</param>
+    ''' <returns>A path to a file, or an empty string if an error occurred.</returns>
+    ''' <remarks>
+    ''' This method takes care of a few common headaches related to file access, such
+    ''' as ensuring that a directory exists (and optionally creating the directory),
+    ''' and validating whether the file name is valid to be used with the 
+    ''' Operating System.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function MSEFile(DataPath As String, category As eMSEPaths, strFile As String, _
+                                Optional bCreateFolderIfNotExists As Boolean = False) As String
+        Dim strPath As String = MSEFolder(DataPath, category, bCreateFolderIfNotExists)
+        ' Abort if folder not present
+        If String.IsNullOrWhiteSpace(strPath) Then Return ""
+        ' Make sure we're using a safe file name
+        strFile = cFileUtils.ToValidFileName(strFile, False)
+        ' Concat!
+        Return Path.Combine(strPath, strFile)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the full path to an MSE folder.
+    ''' </summary>
+    ''' <param name="DataPath">The MSE datapath</param>
+    ''' <param name="category">The <see cref="eMSEPaths">category</see> subfolder.</param>
+    ''' <param name="bCreateIfNotExists">Flag that states that the folder should be created if it does not exist.</param>
+    ''' <returns>A path to a folder, or an empty string if an error occurred.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function MSEFolder(DataPath As String, category As eMSEPaths, _
+                                  Optional bCreateIfNotExists As Boolean = True) As String
+        Dim strPath As String = Path.Combine(DataPath, Subfolder(category))
         If Not cFileUtils.IsDirectoryAvailable(strPath, bCreateIfNotExists) Then
             Return ""
         End If
         Return strPath
     End Function
 
-    Public Shared Function Subfolder(category As eMSEPaths) As String
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the subfolder path for a folder category.
+    ''' </summary>
+    ''' <param name="category">The <see cref="eMSEPaths">category</see> subfolder.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Shared Function Subfolder(category As eMSEPaths) As String
         Select Case category
             Case eMSEPaths.Root : Return ""
             Case eMSEPaths.DistrParams : Return "DistributionParameters"
             Case eMSEPaths.Strategies : Return "Strategies"
             Case eMSEPaths.ParamsOut : Return "ParametersOut"
             Case eMSEPaths.Results : Return "Results"
+            Case eMSEPaths.ResultsTrajectories : Return "Results\Trajectories"
+            Case eMSEPaths.ResultsTraj2 : Return "Results\Trajectories2"
             Case Else
                 Debug.Assert(False)
         End Select
