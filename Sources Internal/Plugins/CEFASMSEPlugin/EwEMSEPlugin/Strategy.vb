@@ -1,4 +1,25 @@
-﻿
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
+' Aquaculture Science (Cefas). 
+'
+' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+' ===============================================================================
+'
+
 Imports System.IO
 
 ''' <summary>
@@ -36,7 +57,7 @@ Public Class Strategy
     Public Shadows Function Contains(Item As HCR_Group) As Boolean
 
         For Each Rule As HCR_Group In Me
-            If Item.GroupNumber4Biomass = Rule.GroupNumber4Biomass And Item.GroupNumber4F = Rule.GroupNumber4F Then
+            If Object.ReferenceEquals(Item.GroupB, Rule.GroupB) And Object.ReferenceEquals(Item.GroupF, Rule.GroupF) Then
                 Return True
             End If
         Next

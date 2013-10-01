@@ -1,6 +1,28 @@
-﻿Option Strict On
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
+' Aquaculture Science (Cefas). 
+'
+' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+' ===============================================================================
+'
+Option Strict On
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
+Imports EwECore
 
 Public Class dlgHarvestControlRule
 
@@ -60,7 +82,7 @@ Public Class dlgHarvestControlRule
     End Sub
 
 #End Region
-    
+
 #Region "Control event handlers"
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -69,7 +91,7 @@ Public Class dlgHarvestControlRule
         ' ToDo_JS: globalize this
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Dim validationstring As String
+        Dim validationstring As String = ""
         Me.m_isValid = True
 
         If Me.m_strategy.Contains(Me.HarvestControlRule) Then
@@ -117,30 +139,39 @@ Public Class dlgHarvestControlRule
 
     Private Sub updateHRC()
 
-        'Group Biomass
         Dim selItem As cCoreInputOutputControlItem = Nothing
+        Dim grpOut As cEcoPathGroupOutput = Nothing
 
+        ' Group Biomass
         selItem = DirectCast(cbBiomassGroups.SelectedItem, cCoreInputOutputControlItem)
-        If selItem IsNot Nothing Then
-            Me.m_HRC.GroupNumber4Biomass = selItem.Index
-            Me.m_HRC.GroupName4Biomass = selItem.toString
-            Me.m_HRC.LowerLimit = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4Biomass).Biomass * 0.1
-            Me.m_HRC.UpperLimit = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4Biomass).Biomass * 0.4
+        If (selItem IsNot Nothing) Then
+
+            Me.m_HRC.GroupB = DirectCast(selItem.Source, cEcoPathGroupInput)
+            grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupB.Index)
+
+            Me.m_HRC.LowerLimit = grpOut.Biomass * 0.1
+            Me.m_HRC.UpperLimit = grpOut.Biomass * 0.4
+
         End If
 
-        'Fishing Mort
+        ' Fishing Mort
         selItem = DirectCast(cbFMortGroups.SelectedItem, cCoreInputOutputControlItem)
         If selItem IsNot Nothing Then
-            Me.m_HRC.GroupNumber4F = selItem.Index
-            Me.m_HRC.GroupName4F = selItem.toString
-            Me.m_HRC.MaxF = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4F).MortCoFishRate
+
+            Me.m_HRC.GroupF = DirectCast(selItem.Source, cEcoPathGroupInput)
+
+            grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupF.Index)
+            Me.m_HRC.MaxF = grpOut.MortCoFishRate
+
         End If
 
+        ' Cost function
         If (Me.cbCostFunctions.SelectedItem IsNot Nothing) Then
-            Me.m_HRC.CostFunction = Me.cbCostFunctions.SelectedItem.ToString
+            Me.m_HRC.CostFunction = HCR_Group.toCostFunctionEnum(CStr(Me.cbCostFunctions.SelectedItem))
         End If
 
-        Me.txRule.Text = Me.m_HRC.ToString
+        ' Oooh
+        Me.txRule.Text = Me.m_HRC.ToString()
 
     End Sub
 

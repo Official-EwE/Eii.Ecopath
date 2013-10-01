@@ -12,7 +12,11 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
+' Aquaculture Science (Cefas). 
+'
+' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
 
@@ -29,7 +33,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
-
 
 Public Class cTFMFormatter
     Implements ITypeFormatter
@@ -128,6 +131,8 @@ Public Class gridTargetFishingMortalityPolicy
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
+        ' ToDo_JS: Globalize this
+
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
 
         Me.Redim(1, iNumCols)
@@ -149,20 +154,23 @@ Public Class gridTargetFishingMortalityPolicy
         Dim iHCR As Integer
 
         If MSEPlugin Is Nothing Then Return
-        Dim Cell As EwECell
-        Dim strategy As Strategy = MSEPlugin.Strategies(Me.mSelStrategyIndex)
+        Dim Cell As EwECellBase
+        Dim strategy As Strategy = Nothing
+
+        If (Me.mSelStrategyIndex < Me.MSEPlugin.Strategies.Count) And (Me.mSelStrategyIndex >= 0) Then
+            strategy = MSEPlugin.Strategies(Me.mSelStrategyIndex)
+        End If
+        If (strategy Is Nothing) Then Return
 
         Dim lstOptions As List(Of eCostFunctionTypes) = New List(Of eCostFunctionTypes)
         lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(eCostFunctionTypes)), IEnumerable(Of Global.EwEMSEPlugin.eCostFunctionTypes)))
-
         Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cTFMFormatter(), lstOptions)
 
         For Each Rule As HCR_Group In strategy
             iHCR = Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
 
-            Cell = New EwECell(Rule.GroupName4Biomass, GetType(String))
-            Cell.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
+            Cell = New EwECell(Rule.GroupB.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
             Me(iHCR, eColumnTypes.BioGroupName) = Cell
 
             Cell = New EwECell(Units.Convert(eConvertTypes.ToDisplayBio, Rule.LowerLimit), GetType(Double))
@@ -173,16 +181,14 @@ Public Class gridTargetFishingMortalityPolicy
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BUpperLim) = Cell
 
-            Cell = New EwECell(Rule.GroupName4F, GetType(String))
-            Cell.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
+            Cell = New EwECell(Rule.GroupF.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
             Me(iHCR, eColumnTypes.FGroupName) = Cell
-            'Me(iHCR, eColumnTypes.FGroupName).Behaviors.Add(Me.onEdited)
 
             Cell = New EwECell(Rule.MaxF, GetType(Double))
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.MaxF) = Cell
 
-            Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(HCR_Group.toCostFunctionEnum(Rule.CostFunction), cb)
+            Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(Rule.CostFunction, cb)
             cbCell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.CostFunction) = cbCell
 
@@ -198,16 +204,16 @@ Public Class gridTargetFishingMortalityPolicy
             If row.Tag IsNot Nothing Then
 
                 Dim hcr As HCR_Group = DirectCast(row.Tag, HCR_Group)
-                If hcr.GroupNumber4Biomass = curHCR.GroupNumber4Biomass Then
+                If Object.ReferenceEquals(hcr.GroupB, curHCR.GroupB) Then
 
-                    DirectCast(row.GetCells(eColumnTypes.BioGroupName), EwECell).Value = hcr.GroupName4Biomass
-                    DirectCast(row.GetCells(eColumnTypes.FGroupName), EwECell).Value = hcr.GroupName4F
+                    DirectCast(row.GetCells(eColumnTypes.BioGroupName), EwECell).Value = hcr.GroupB.Name
+                    DirectCast(row.GetCells(eColumnTypes.FGroupName), EwECell).Value = hcr.GroupF.Name
 
                     DirectCast(row.GetCells(eColumnTypes.BLowerLim), EwECell).Value = Units.Convert(eConvertTypes.ToDisplayBio, hcr.LowerLimit)
                     DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = Units.Convert(eConvertTypes.ToDisplayBio, hcr.UpperLimit)
                     DirectCast(row.GetCells(eColumnTypes.MaxF), EwECell).Value = hcr.MaxF
 
-                    DirectCast(row.GetCells(eColumnTypes.CostFunction), ICell).Value = HCR_Group.toCostFunctionEnum(hcr.CostFunction)
+                    DirectCast(row.GetCells(eColumnTypes.CostFunction), ICell).Value = hcr.CostFunction
 
                 End If
 
@@ -250,11 +256,12 @@ Public Class gridTargetFishingMortalityPolicy
 
             Select Case p.Column
 
-                Case eColumnTypes.BioGroupName
-                    Me.HarvestControlRule.GroupName4Biomass = CStr(cell.GetValue(p))
+                ' JS: I thought this could not change?!
+                'Case eColumnTypes.BioGroupName
+                '    Me.HarvestControlRule.GroupName4Biomass = CStr(cell.GetValue(p))
 
-                Case eColumnTypes.FGroupName
-                    Me.HarvestControlRule.GroupName4F = CStr(cell.GetValue(p))
+                'Case eColumnTypes.FGroupName
+                '    Me.HarvestControlRule.GroupName4F = CStr(cell.GetValue(p))
 
                 Case eColumnTypes.BLowerLim
                     'bounds checking lower limit can not be > upper limit
@@ -280,7 +287,7 @@ Public Class gridTargetFishingMortalityPolicy
                     Me.HarvestControlRule.MaxF = CDbl(cell.GetValue(p))
 
                 Case eColumnTypes.CostFunction
-                    Me.HarvestControlRule.CostFunction = CStr(cell.GetDisplayText(p))
+                    Me.HarvestControlRule.CostFunction = DirectCast(cell.GetValue(p), eCostFunctionTypes)
 
             End Select
 

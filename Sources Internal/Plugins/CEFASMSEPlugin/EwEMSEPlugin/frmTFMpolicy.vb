@@ -12,7 +12,11 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
+' Aquaculture Science (Cefas). 
+'
+' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
 
@@ -29,9 +33,9 @@ Imports ScientificInterfaceShared.Controls
 Imports SourceGrid2
 Imports System.IO
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
-
 
 ''' =======================================================================
 ''' <summary>
@@ -63,7 +67,7 @@ Public Class frmTFMpolicy
 
     Private m_HCR As HCR_Group
 
-    Private StrategiesSaved As Boolean
+    Private StrategiesSaved As Boolean = True
 
 #End Region ' Internals
 
@@ -101,7 +105,9 @@ Public Class frmTFMpolicy
 
         Me.UpdateControls()
 
-        Me.cbStrategies.SelectedIndex = 0
+        If (Me.m_MSEPlugin.Strategies.Count > 0) Then
+            Me.cbStrategies.SelectedIndex = 0
+        End If
 
     End Sub
 
@@ -234,14 +240,14 @@ Public Class frmTFMpolicy
 
                 csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
                 For Each iHCR In iStrategy
-                    csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupName4Biomass) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.GroupNumber4Biomass) & "," & _
+                    csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
                                               cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
                                               cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.GroupName4F) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.GroupNumber4F) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
+                                              cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
                                               cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.CostFunction))
+                                              cStringUtils.ToCSVField(HCR_Group.toCostFunctionString(iHCR.CostFunction)))
                 Next
                 cMSEUtils.ReleaseWriter(csvStrategyFile)
             End If
@@ -305,11 +311,13 @@ Public Class frmTFMpolicy
     ''' -------------------------------------------------------------------
     Private Sub Redraw()
 
-        If Me.m_zgh Is Nothing Then Return
+        If (Me.m_zgh Is Nothing) Then Return
 
         Dim lpts As New PointPairList
         Dim line As LineItem = Nothing
         Dim lLines As New List(Of LineItem)
+        Dim fmt As New cCoreInterfaceFormatter()
+
         Try
 
             If Me.m_HCR IsNot Nothing Then
@@ -331,7 +339,7 @@ Public Class frmTFMpolicy
                     lpts.Add(4, Me.m_HCR.MaxF) ' Max X value?
                 End If
 
-                line = New LineItem(Me.m_HCR.GroupName4Biomass, lpts, Me.StyleGuide.GroupColor(Me.Core, Me.m_HCR.GroupNumber4Biomass), SymbolType.Circle)
+                line = New LineItem(fmt.GetDescriptor(Me.m_HCR.GroupB), lpts, Me.StyleGuide.GroupColor(Me.Core, Me.m_HCR.GroupB.Index), SymbolType.Circle)
                 line.Line.Width = 2.0
 
                 lLines.Add(line)

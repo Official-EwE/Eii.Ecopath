@@ -1,4 +1,26 @@
-﻿' ToDo_JS: Enable option strict ON
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
+' Aquaculture Science (Cefas). 
+'
+' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+' ===============================================================================
+'
+
+' ToDo_JS: Enable option strict ON
 ' ToDo_JS: reinitialize plug-in when core data path has changed
 
 Imports System.IO
@@ -96,6 +118,7 @@ Public Class cMSE
         Dim tempHCRGroup As HCR_Group
         Dim Strategy As Strategy
         Dim datadir As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Strategies)
+        Dim strVal As String = ""
 
         'Make sure this directory exists
         If Not Directory.Exists(datadir) Then
@@ -120,15 +143,26 @@ Public Class cMSE
                 'csv.ReadNextRecord()
                 'Each HCR Group needs to be a new object
                 tempHCRGroup = New HCR_Group(Me.m_uic.Core)
-                tempHCRGroup.GroupName4Biomass = csv(0)
-                tempHCRGroup.GroupNumber4Biomass = csv(1)
+
+                ' Resolve group
+                tempHCRGroup.GroupB = Me.ResolveGroup(csv(0), cStringUtils.ConvertToInteger(csv(1)))
                 tempHCRGroup.LowerLimit = csv(2)
                 tempHCRGroup.UpperLimit = csv(3)
-                tempHCRGroup.GroupName4F = csv(4)
-                tempHCRGroup.GroupNumber4F = csv(5)
+                tempHCRGroup.GroupF = Me.ResolveGroup(csv(4), cStringUtils.ConvertToInteger(csv(5)))
                 tempHCRGroup.MaxF = csv(6)
-                tempHCRGroup.CostFunction = csv(7)
-                Strategy.Add(tempHCRGroup)
+                tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
+
+                'tempHCRGroup.GroupName4Biomass = csv(0)
+                'tempHCRGroup.GroupNumber4Biomass = csv(1)
+                'tempHCRGroup.GroupName4F = csv(4)
+                'tempHCRGroup.GroupNumber4F = csv(5)
+                'tempHCRGroup.CostFunctionOrg = csv(7)
+
+                ' Only add valid strategies!
+                If tempHCRGroup.isValid(strVal) Then
+                    Strategy.Add(tempHCRGroup)
+                End If
+
             Loop
             'End While
             Strategies.Add(Strategy)
@@ -1489,11 +1523,6 @@ stepend:
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
         mCore = core
         Units.Init(mCore)
-
-        Me.m_mhSettings = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
-#If DEBUG Then
-        Me.m_mhSettings.Name = "CefasMSE_mh"
-#End If
     End Sub
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
@@ -1507,6 +1536,11 @@ stepend:
         _ecopath = objEcoPath
         _ecosim = objEcoSim
 
+        Debug.Assert(Me.m_uic IsNot Nothing)
+        Me.m_mhSettings = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
+#If DEBUG Then
+        Me.m_mhSettings.Name = "CefasMSE_mh"
+#End If
     End Sub
 
     Public Sub UIContext(ByVal uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
@@ -1804,18 +1838,24 @@ stepend:
                 Next
 
                 For Each iHCRGroup In CurrentStrategy
-                    If iHCRGroup.CostFunction = "Target" Then
-                        If FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Target) = NoHCR_F Then
-                            FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Target) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupNumber4Biomass), 0, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
-                        Else
-                            MsgBox("There is more than one hcr that specifies the target F for group " & iHCRGroup.GroupNumber4F)
-                        End If
-                    ElseIf iHCRGroup.CostFunction = "Conservation" Then
-                        tempFConservation = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupNumber4Biomass), iHCRGroup.LowerLimit, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
-                        If tempFConservation < FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Conservation) Or FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Conservation) = NoHCR_F Then
-                            FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Conservation) = tempFConservation
-                        End If
-                    End If
+                    Select Case iHCRGroup.CostFunction
+                        Case eCostFunctionTypes.Target
+                            If FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Target) = NoHCR_F Then
+                                FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Target) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), 0, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
+                            Else
+                                ' ToDo_JS: globalize this
+                                ' ToDo_JS: use cMessage
+                                MsgBox("There is more than one hcr that specifies the target F for group " & iHCRGroup.GroupF.Index)
+                            End If
+                        Case eCostFunctionTypes.Conservation
+                            tempFConservation = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), iHCRGroup.LowerLimit, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
+                            If tempFConservation < FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Conservation) Or FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Conservation) = NoHCR_F Then
+                                FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Conservation) = tempFConservation
+                            End If
+                        Case Else
+                            ' This state is not possible, but good to add a safe catch anyway ;)
+                            Debug.Assert(False)
+                    End Select
                 Next
 
                 'Compiles a list of which fleets are affecting groups which have a zero conservation f
@@ -1825,7 +1865,7 @@ stepend:
                 'change the effort for to try and achieve the target F's for each group
                 For iFleet As Integer = 1 To mCore.nFleets
                     For Each iHCRGroup In CurrentStrategy
-                        If mCore.FleetInputs(iFleet).Landings(iHCRGroup.GroupNumber4F) + mCore.FleetInputs(iFleet).Discards(iHCRGroup.GroupNumber4F) > 0 Then
+                        If mCore.FleetInputs(iFleet).Landings(iHCRGroup.GroupF.Index) + mCore.FleetInputs(iFleet).Discards(iHCRGroup.GroupF.Index) > 0 Then
                             'If Not Fleets2Fit.Contains(iFleet) And Not ZeroEffortFleetsList.Contains(iFleet) Then
                             If Not Fleets2Fit.Contains(iFleet) Then
                                 Fleets2Fit.Add(iFleet)
@@ -2008,6 +2048,56 @@ stepend:
     '    Next
     'End Sub
 
+#Region " Helper methods "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Resolve a name and index to a <see cref="cEcoPathGroupInput"/> instance.
+    ''' </summary>
+    ''' <param name="strName">The name to resolve.</param>
+    ''' <param name="iIndex">The index to resolve.</param>
+    ''' <returns>A <see cref="cEcoPathGroupInput"/> instance, or Nothing if
+    ''' the index or name did not match any of the present groups.</returns>
+    ''' <remarks>Note that name comparison is not case sensitive.</remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
+        If (iIndex < 1) Or (iIndex > Me.Core.nGroups) Then Return Nothing
+        Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iIndex)
+        If String.Compare(grp.Name, strName, True) <> 0 Then
+            Return Nothing
+        End If
+        Return grp
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Resolve a name and index to a <see cref="cFleetInput"/> instance.
+    ''' </summary>
+    ''' <param name="strName">The name to resolve.</param>
+    ''' <param name="iIndex">The index to resolve.</param>
+    ''' <returns>A <see cref="cFleetInput"/> instance, or Nothing if
+    ''' the index or name did not match any of the present fleets.</returns>
+    ''' <remarks>Note that name comparison is not case sensitive.</remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function ResolveFleet(strName As String, iIndex As Integer) As cFleetInput
+        If (iIndex < 1) Or (iIndex > Me.Core.nFleets) Then Return Nothing
+        Dim flt As cFleetInput = Me.Core.FleetInputs(iIndex)
+        If String.Compare(flt.Name, strName, True) <> 0 Then
+            Return Nothing
+        End If
+        Return flt
+    End Function
+
+    Friend Sub SendMessage(strMessage As String, importance As eMessageImportance, Optional strHyperlink As String = "")
+        If Me.Core IsNot Nothing Then
+            Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, importance)
+            msg.Hyperlink = strHyperlink
+            Me.Core.Messages.SendMessage(msg)
+        End If
+    End Sub
+
+#End Region ' Helper methods
+
     Private Sub OnCoreMessage(ByRef msg As cMessage)
         If (msg.Type = eMessageType.GlobalSettingsChanged) Then
             ' ToDo_JS: respond to core root path setting changes.
@@ -2023,14 +2113,6 @@ stepend:
             'Cancel the Estimate BA and Estimate Net Migration messages
             'use the default handling
             bCancelMessage = True
-        End If
-    End Sub
-
-    Friend Sub SendMessage(strMessage As String, importance As eMessageImportance, Optional strHyperlink As String = "")
-        If Me.Core IsNot Nothing Then
-            Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, importance)
-            msg.Hyperlink = strHyperlink
-            Me.Core.Messages.SendMessage(msg)
         End If
     End Sub
 

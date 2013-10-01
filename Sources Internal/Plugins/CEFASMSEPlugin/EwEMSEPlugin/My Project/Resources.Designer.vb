@@ -151,6 +151,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biomass Group = {0}.
+        '''</summary>
+        Friend ReadOnly Property HCR_GROUP_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("HCR_GROUP_BIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing Mort. Group = {0}.
+        '''</summary>
+        Friend ReadOnly Property HCR_GROUP_FISHMORT() As String
+            Get
+                Return ResourceManager.GetString("HCR_GROUP_FISHMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass ({0}).
         '''</summary>
         Friend ReadOnly Property LABEL_BIOMASS_UNIT() As String
