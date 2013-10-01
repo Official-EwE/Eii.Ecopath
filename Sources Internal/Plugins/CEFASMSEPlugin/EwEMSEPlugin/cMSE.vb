@@ -2008,6 +2008,14 @@ stepend:
     '    Next
     'End Sub
 
+    Private Sub OnCoreMessage(ByRef msg As cMessage)
+        If (msg.Type = eMessageType.GlobalSettingsChanged) Then
+            ' ToDo_JS: respond to core root path setting changes.
+            ' This should reinitialize the plug-in, or at least put the plug-in in a state that it 
+            ' knows whether has all the input data to run is available.
+        End If
+    End Sub
+
     Private Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
         'Plugin Point called to cancel a message
         bCancelMessage = False
