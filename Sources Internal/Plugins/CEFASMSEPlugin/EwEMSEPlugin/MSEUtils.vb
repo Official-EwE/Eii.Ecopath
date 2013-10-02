@@ -81,7 +81,6 @@ Public Class cMSEUtils
 
         Dim writer As StreamWriter = Nothing
 
-        If Not File.Exists(strFile) Then Return Nothing
         If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then Return Nothing
 
         Try
