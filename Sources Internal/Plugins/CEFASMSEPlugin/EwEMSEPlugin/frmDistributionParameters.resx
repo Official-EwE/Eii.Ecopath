@@ -304,7 +304,7 @@
     <value>500, 350</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Distribution Parameters</value>
+    <value>Cefas MSE Distribution Parameters</value>
   </data>
   <data name="&gt;&gt;GroupNumber.Name" xml:space="preserve">
     <value>GroupNumber</value>

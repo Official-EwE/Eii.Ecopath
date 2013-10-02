@@ -352,10 +352,10 @@
     <value>DC|Diet||Diet composition</value>
   </data>
   <data name="VARIABLE_PBINPUT" xml:space="preserve">
-    <value>PB|P/B||Production over biomass</value>
+    <value>PB|P/B||Production/biomass</value>
   </data>
   <data name="VARIABLE_QBINPUT" xml:space="preserve">
-    <value>QB|Q/B||Consumption over biomass</value>
+    <value>QB|Q/B||Consumption/biomass</value>
   </data>
   <data name="VARIABLE_TCATCHINPUT" xml:space="preserve">
     <value>Catch</value>
@@ -2612,7 +2612,7 @@
     <value>GE|G/E||Production over consumption</value>
   </data>
   <data name="VARIABLE_QBOUTPUT" xml:space="preserve">
-    <value>QB|Q/B||Consumption over biomass</value>
+    <value>QB|Q/B||Consumption/biomass</value>
   </data>
   <data name="VARIABLE_DETRITUSFATE" xml:space="preserve">
     <value>Detritus fate</value>
@@ -2980,5 +2980,20 @@
   </data>
   <data name="HEADER_LOW" xml:space="preserve">
     <value>Low</value>
+  </data>
+  <data name="HEADER_BIOACCUM" xml:space="preserve">
+    <value>Biomass accummulation</value>
+  </data>
+  <data name="HEADER_DENDEPCATCHABILITY_ABBR" xml:space="preserve">
+    <value>Dens. dep. catchability</value>
+  </data>
+  <data name="HEADER_PRODUCTION_OVER_BIOMASS" xml:space="preserve">
+    <value>Production/biomass</value>
+  </data>
+  <data name="HEADER_SWITCHINGPOWER" xml:space="preserve">
+    <value>Switching power</value>
+  </data>
+  <data name="VARIABLE_PB" xml:space="preserve">
+    <value>PB|P/B||Production/biomass</value>
   </data>
 </root>

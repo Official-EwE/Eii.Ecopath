@@ -169,6 +169,87 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Distribution type.
+        '''</summary>
+        Friend ReadOnly Property HEADER_DISTRIBUTIONTYPE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DISTRIBUTIONTYPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Feeding time adjust. rate.
+        '''</summary>
+        Friend ReadOnly Property HEADER_FEEDTIMEADJUSTRATE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FEEDTIMEADJUSTRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Lower boundary.
+        '''</summary>
+        Friend ReadOnly Property HEADER_LOWERBOUND() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LOWERBOUND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Max. rel. feeding time.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MAXRELFEEDTIME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAXRELFEEDTIME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mid-point.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MIDPOINT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MIDPOINT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Other mort. feeding time.
+        '''</summary>
+        Friend ReadOnly Property HEADER_OTHERMORTFEEDTIME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_OTHERMORTFEEDTIME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Pred. effect feeding time.
+        '''</summary>
+        Friend ReadOnly Property HEADER_PREDEFFECTFEEDINGTIME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PREDEFFECTFEEDINGTIME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Q/B max x P/B max.
+        '''</summary>
+        Friend ReadOnly Property HEADER_QBMAX_X_PBMAX() As String
+            Get
+                Return ResourceManager.GetString("HEADER_QBMAX_X_PBMAX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Upper boundary.
+        '''</summary>
+        Friend ReadOnly Property HEADER_UPPERBOUND() As String
+            Get
+                Return ResourceManager.GetString("HEADER_UPPERBOUND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass ({0}).
         '''</summary>
         Friend ReadOnly Property LABEL_BIOMASS_UNIT() As String
@@ -201,6 +282,15 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_ENTERNAME_CAPTION() As String
             Get
                 Return ResourceManager.GetString("PROMPT_ENTERNAME_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You have made changes that have not been saved. Are you sure that you want to close this form?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_UNSAVED_CHANGES() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_UNSAVED_CHANGES", resourceCulture)
             End Get
         End Property
     End Module

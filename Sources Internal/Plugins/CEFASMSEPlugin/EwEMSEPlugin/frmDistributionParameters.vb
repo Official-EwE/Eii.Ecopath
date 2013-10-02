@@ -22,16 +22,13 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwECore.MSE
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Windows.Forms
-Imports ZedGraph
-Imports ScientificInterfaceShared.Controls
-Imports SourceGrid2
-Imports System.IO
+Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
+Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -39,12 +36,12 @@ Public Class frmDistributionParameters
 
     ' ToDo_JS: use Sourcegrid grid instead, add QuickEditHandler
 
-    Enum eParameterSet
+    Private Enum eParameterSet As Byte
         Ecopath
         Ecosim
     End Enum
 
-    Enum eParamName
+    Private Enum eParamName As Byte
         B
         BA
         PB
@@ -57,64 +54,49 @@ Public Class frmDistributionParameters
         OtherMortFeedingTime
         MaxRelFeedingTime
         FeedingTimeAdjustRate
-
     End Enum
 
+    Private Class ParamComboItem
+        Public Sub New(paramname As eParamName, text As String)
+            Me.ParamName = paramname : Me.Text = text
+        End Sub
+        Public Property ParamName As eParamName
+        Public Property Text As String
+        Public Overrides Function ToString() As String
+            Return Me.Text
+        End Function
+    End Class
+
+    ''' <summary>
+    ''' This holds one item in the list of any Ecopath parameters. 
+    ''' Later in the code the entire list is grouped into a list of EcopathParam
+    ''' </summary>
     Private Structure EcopathParam
-        'This holds one item in the list of any Ecopath parameters
-        'Later in the code the entire list is grouped into a list of EcopathParam
-        Public mGroupNo As Integer
-        Public mGroupName As String
-        Public mMean As Double
-        Public mCV As Double
-        Public mLowerBound As Double
-        Public mUpperBound As Double
+
         Public Sub New(ByVal GroupNumber As Integer, ByVal GroupName As String, ByVal Mean As Single, ByVal CV As Double, ByVal LowerBound As Double, ByVal UpperBound As Double)
-            Me.mGroupNo = GroupNumber
-            Me.mGroupName = GroupName
-            Me.mMean = Mean
-            Me.mCV = CV
-            Me.mLowerBound = LowerBound
-            Me.mUpperBound = UpperBound
+            Me.GroupNo = GroupNumber
+            Me.GroupName = GroupName
+            Me.Mean = Mean
+            Me.CV = CV
+            Me.LowerBound = LowerBound
+            Me.UpperBound = UpperBound
         End Sub
 
         Public Property CV() As Double
-            Get
-                Return mCV
-            End Get
-            Set(ByVal value As Double)
-                mCV = value
-            End Set
-        End Property
-
         Public Property LowerBound() As Double
-            Get
-                Return mLowerBound
-            End Get
-            Set(ByVal value As Double)
-                mLowerBound = value
-            End Set
-        End Property
-
         Public Property UpperBound() As Double
-            Get
-                Return mUpperBound
-            End Get
-            Set(ByVal value As Double)
-                mUpperBound = value
-            End Set
-        End Property
+        Public Property GroupNo As Integer
+        Public Property GroupName As String
+        Public Property Mean As Double
 
     End Structure
 
+    ''' <summary>
+    ''' Similar to <see cref="EcopathParam"/>, this holds one item 
+    ''' in the list of any Ecosim parameters
+    ''' </summary>
     Private Structure EcosimParam
-        'Similar to EcopathParam this holds one item in the list of any Ecosim parameters
-        Public GroupNo As Integer
-        Public GroupName As String
-        Public DistributionType As Integer
-        Public LowerBound As Double
-        Public UpperBound As Double
-        Public MidPoint As Double
+
         Public Sub New(ByVal GroupNumber As Integer, ByVal GroupName As String, ByVal DistributionType As Integer, ByVal LowerBound As Double, ByVal UpperBound As Double, ByVal MidPoint As Double)
             Me.GroupNo = GroupNumber
             Me.GroupName = GroupName
@@ -123,9 +105,16 @@ Public Class frmDistributionParameters
             Me.UpperBound = UpperBound
             Me.MidPoint = MidPoint
         End Sub
+
+        Public Property GroupNo As Integer
+        Public Property GroupName As String
+        Public Property DistributionType As Integer
+        Public Property LowerBound As Double
+        Public Property UpperBound As Double
+        Public Property MidPoint As Double
+
     End Structure
 
-    Private DataPath As String = ""
     Private mUIC As cUIContext = Nothing
     Private mCore As cCore = Nothing
     Private m_MSEPlugin As cMSE = Nothing
@@ -135,12 +124,6 @@ Public Class frmDistributionParameters
     Private QB As List(Of EcopathParam)
     Private PB As List(Of EcopathParam)
     Private EE As List(Of EcopathParam)
-    Private TGroupNumber As Integer
-    Private TGroupName As String
-    Private TMean As Single
-    Private TCV As Double
-    Private TLowerBound As Double
-    Private TUpperBound As Double
 
     Private DenDepCatchability As List(Of EcosimParam)
     Private SwitchingPower As List(Of EcosimParam)
@@ -150,20 +133,19 @@ Public Class frmDistributionParameters
     Private MaxRelFeedingTime As List(Of EcosimParam)
     Private FeedingTimeAdjustRate As List(Of EcosimParam)
 
-    Private TDistributionType As Integer
-    Private TMidPoint As Double
-
     Private nPPers As Integer
     Private BackColorOfDistableDataViewColumns As Color = Color.LightGray
     Private EditsUnsaved As Boolean
+
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
 
     Public Sub Init(ByVal uic As cUIContext, ByVal Plugin As cMSE)
 
         Me.m_MSEPlugin = Plugin
         Me.mUIC = uic
         mCore = uic.Core
-
-        DataPath = cMSEUtils.MSEFolder(Me.m_MSEPlugin.DataPath, cMSEUtils.eMSEPaths.DistrParams)
 
         'These are lists that contain all the Ecopath parameters for all functional groups 
         B = New List(Of EcopathParam)
@@ -187,16 +169,41 @@ Public Class frmDistributionParameters
 
     End Sub
 
-    Private Function ExtractEcosimParam(ByVal csv As CsvReader) As EcosimParam
-        'given a Ecosim csv object this extracts the data from the current line and uses it to return an EcosimParam structure object
+    Private ReadOnly Property DataPath As String
+        Get
+            ' JS 01Oct13: Datapath made dynamic
+            Return cMSEUtils.MSEFolder(Me.m_MSEPlugin.DataPath, cMSEUtils.eMSEPaths.DistrParams)
+        End Get
+    End Property
 
-        csv.ReadNextRecord()
-        TGroupName = csv(0)
-        TGroupNumber = Convert.ToInt16(csv(1))
-        TDistributionType = CInt(csv(2))
-        TLowerBound = Convert.ToDouble(csv(3))
-        TUpperBound = Convert.ToDouble(csv(4))
-        TMidPoint = Convert.ToDouble(csv(5))
+    Private Function ExtractEcosimParam(ByVal csv As CsvReader) As EcosimParam
+
+        ' ToDo_JS: make fail-proof
+        ' ToDo_JS: use fixed CDV field reading
+
+        'given a Ecosim csv object this extracts the data from the current line and uses it to return an EcosimParam structure object
+        Dim TGroupName As String = ""
+        Dim TGroupNumber As Integer
+        Dim TLowerBound As Double
+        Dim TUpperBound As Double
+        Dim TDistributionType As Integer
+        Dim TMidPoint As Double
+
+        Try
+            If (csv IsNot Nothing) Then
+                csv.ReadNextRecord()
+
+                TGroupName = cMSEUtils.FromCSVField(csv(0))
+                TGroupNumber = cStringUtils.ConvertToInteger(csv(1))
+                TDistributionType = cStringUtils.ConvertToInteger(csv(2))
+                TLowerBound = cStringUtils.ConvertToDouble(csv(3))
+                TUpperBound = cStringUtils.ConvertToDouble(csv(4))
+                TMidPoint = cStringUtils.ConvertToDouble(csv(5))
+
+            End If
+        Catch ex As Exception
+            ' ToDo_JS: respond to error
+        End Try
 
         Return New EcosimParam(TGroupNumber, TGroupName, TDistributionType, TLowerBound, TUpperBound, TMidPoint)
 
@@ -205,24 +212,45 @@ Public Class frmDistributionParameters
     Private Function ExtractEcopathParam(ByVal csv As CsvReader, ByVal ParameterType As eParamName) As EcopathParam
         'Extracts distribution parameters for one group from csv and Ecopath
 
-        csv.ReadNextRecord()
-        TGroupNumber = Convert.ToInt16(csv(0))
-        TGroupName = csv(1)
-        TCV = Convert.ToDouble(csv(2))
-        TLowerBound = Convert.ToDouble(csv(3))
-        TUpperBound = Convert.ToDouble(csv(4))
+        Dim TGroupName As String = ""
+        Dim TGroupNumber As Integer
+        Dim TMean As Single
+        Dim TCV As Double
+        Dim TLowerBound As Double
+        Dim TUpperBound As Double
 
-        If ParameterType = eParamName.B Then
-            TMean = mCore.EcoPathGroupInputs(Convert.ToInt16(csv(0))).BiomassAreaInput
-        ElseIf ParameterType = eParamName.BA Then
-            TMean = mCore.EcoPathGroupInputs(Convert.ToInt16(csv(0))).BioAccum
-        ElseIf ParameterType = eParamName.QB Then
-            TMean = mCore.EcoPathGroupInputs(Convert.ToInt16(csv(0))).QBInput
-        ElseIf ParameterType = eParamName.PB Then
-            TMean = mCore.EcoPathGroupInputs(Convert.ToInt16(csv(0))).PBInput
-        ElseIf ParameterType = eParamName.EE Then
-            TMean = mCore.EcoPathGroupInputs(Convert.ToInt16(csv(0))).EEInput
-        End If
+        Try
+            If (csv IsNot Nothing) Then
+                csv.ReadNextRecord()
+
+                TGroupNumber = cStringUtils.ConvertToInteger(csv(0))
+                TGroupName = cMSEUtils.FromCSVField(csv(1))
+                TCV = cStringUtils.ConvertToDouble(csv(2))
+                TLowerBound = cStringUtils.ConvertToDouble(csv(3))
+                TUpperBound = cStringUtils.ConvertToDouble(csv(4))
+
+                ' JS 02Oct2013: Need to validate group number
+                If TGroupNumber < 1 Or TGroupNumber >= Me.mCore.nGroups Then
+                    ' ToDo:_JS: report error somehow
+                    Return Nothing
+                End If
+
+                If ParameterType = eParamName.B Then
+                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).BiomassAreaInput
+                ElseIf ParameterType = eParamName.BA Then
+                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).BioAccum
+                ElseIf ParameterType = eParamName.QB Then
+                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).QBInput
+                ElseIf ParameterType = eParamName.PB Then
+                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).PBInput
+                ElseIf ParameterType = eParamName.EE Then
+                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).EEInput
+                End If
+            End If
+
+        Catch ex As Exception
+            ' ToDo:_JS: report error somehow
+        End Try
 
         Return New EcopathParam(TGroupNumber, TGroupName, TMean, TCV, TLowerBound, TUpperBound)
 
@@ -232,6 +260,7 @@ Public Class frmDistributionParameters
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
+        Dim TMean As Single
         Dim bSuccess As Boolean = True
 
         If File.Exists(Path) Then
@@ -280,24 +309,28 @@ Public Class frmDistributionParameters
     End Function
 
     Private Function LoadEcosimParameters(ByVal Folder As String) As Boolean
+
         'loads all the ecosim csv files up and creates instances of lists of structures that hold it all in memory
 
-        Dim bOK As Boolean = LoadEcosimParamX(DenDepCatchability, Path.Combine(Folder, "DenDepCatchability.csv"), eParamName.DenDepCatchability) And _
-            LoadEcosimParamX(SwitchingPower, Path.Combine(Folder, "SwitchingPower.csv"), eParamName.SwitchingPower) And _
-            LoadEcosimParamX(QBMaxxQBio, Path.Combine(Folder, "QBMaxxQBio.csv"), eParamName.QBMaxxQBio) And _
-            LoadEcosimParamX(PredEffectFeedingTime, Path.Combine(Folder, "PredEffectFeedingTime.csv"), eParamName.PredEffectFeedingTime) And _
-            LoadEcosimParamX(OtherMortFeedingTime, Path.Combine(Folder, "OtherMortFeedingTime.csv"), eParamName.OtherMortFeedingTime) And _
-            LoadEcosimParamX(MaxRelFeedingTime, Path.Combine(Folder, "MaxRelFeedingTime.csv"), eParamName.MaxRelFeedingTime) And _
-            LoadEcosimParamX(FeedingTimeAdjustRate, Path.Combine(Folder, "FeedingTimeAdjustRate.csv"), eParamName.FeedingTimeAdjustRate)
-
-        Return bOK
+        Return LoadEcosimParamX(DenDepCatchability, Path.Combine(Folder, "DenDepCatchability.csv"), eParamName.DenDepCatchability) And _
+               LoadEcosimParamX(SwitchingPower, Path.Combine(Folder, "SwitchingPower.csv"), eParamName.SwitchingPower) And _
+               LoadEcosimParamX(QBMaxxQBio, Path.Combine(Folder, "QBMaxxQBio.csv"), eParamName.QBMaxxQBio) And _
+               LoadEcosimParamX(PredEffectFeedingTime, Path.Combine(Folder, "PredEffectFeedingTime.csv"), eParamName.PredEffectFeedingTime) And _
+               LoadEcosimParamX(OtherMortFeedingTime, Path.Combine(Folder, "OtherMortFeedingTime.csv"), eParamName.OtherMortFeedingTime) And _
+               LoadEcosimParamX(MaxRelFeedingTime, Path.Combine(Folder, "MaxRelFeedingTime.csv"), eParamName.MaxRelFeedingTime) And _
+               LoadEcosimParamX(FeedingTimeAdjustRate, Path.Combine(Folder, "FeedingTimeAdjustRate.csv"), eParamName.FeedingTimeAdjustRate)
 
     End Function
 
-    Private Sub LoadEcopathParamX(ByRef ParamList As List(Of EcopathParam), ByVal Path As String, ByVal ParamName As eParamName)
+    Private Function LoadEcopathParamX(ByRef ParamList As List(Of EcopathParam), ByVal Path As String, ByVal ParamName As eParamName) As Boolean
+
         Dim csv As CsvReader
         Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
         Dim MCGroup As cMonteCarloGroup
+        Dim TMean As Single
+        Dim TCV As Double
+        Dim TLowerBound As Double
+        Dim TUpperBound As Double
 
         ' ToDo_JS: use safe readers
 
@@ -350,30 +383,20 @@ Public Class frmDistributionParameters
                 End If
 
             Next
-
         End If
-    End Sub
 
-    Private Function LoadEcopathParameters(ByVal Path As String) As Boolean
-
-        ' ToDo_JS: use safe paths
-
-        'If File.Exists(Path & "/B_Dist.csv") Then
-        LoadEcopathParamX(B, Path & "/B_Dist.csv", eParamName.B)
-        'End If
-        'If File.Exists(Path & "/PB_Dist.csv") Then
-        LoadEcopathParamX(PB, Path & "/PB_Dist.csv", eParamName.PB)
-        'End If
-        'If File.Exists(Path & "/QB_Dist.csv") Then
-        LoadEcopathParamX(QB, Path & "/QB_Dist.csv", eParamName.QB)
-        'End If
-        'If File.Exists(Path & "/EE_Dist.csv") Then
-        LoadEcopathParamX(EE, Path & "/EE_Dist.csv", eParamName.EE)
-        'End If
-        'If File.Exists(Path & "/BA_Dist.csv") Then
-        LoadEcopathParamX(BA, Path & "/BA_Dist.csv", eParamName.BA)
-        'End If
         Return True
+
+    End Function
+
+    Private Function LoadEcopathParameters(ByVal Folder As String) As Boolean
+
+        ' ToDo_JS: used safe path concatenation
+        Return LoadEcopathParamX(B, Path.Combine(Folder, "B_Dist.csv"), eParamName.B) And _
+               LoadEcopathParamX(PB, Path.Combine(Folder, "PB_Dist.csv"), eParamName.PB) And _
+               LoadEcopathParamX(QB, Path.Combine(Folder, "QB_Dist.csv"), eParamName.QB) And _
+               LoadEcopathParamX(EE, Path.Combine(Folder, "EE_Dist.csv"), eParamName.EE) And _
+               LoadEcopathParamX(BA, Path.Combine(Folder, "BA_Dist.csv"), eParamName.BA)
 
         'loads all the ecopath csv's up and saves all the data to lists of structures
 
@@ -416,20 +439,23 @@ Public Class frmDistributionParameters
 
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
-        ' ToDo_JS: globalize this method
-
-        If EditsUnsaved = True Then
-            Dim resultmessage As DialogResult = MessageBox.Show("You have made changes to the data in this form without saving. Are you sure you still want to close it?", _
-                                                                    "Warning!", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation)
-            If resultmessage = Windows.Forms.DialogResult.Cancel Then e.Cancel = True
+        If (Me.EditsUnsaved = True) Then
+            ' JS 02Oct13: globalized this method
+            ' JS 02Oct13: replaced MsgBox with cFeedbackMessage
+            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_UNSAVED_CHANGES, _
+                                 eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            fmsg.Reply = eMessageReply.YES
+            Me.mCore.Messages.SendMessage(fmsg)
+            e.Cancel = (fmsg.Reply <> eMessageReply.YES)
         End If
+
         MyBase.OnFormClosing(e)
 
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
-        ' JS 30Sep13: globalized
+        ' JS 30Sep13: globalized this method
 
         MyBase.OnLoad(e)
 
@@ -444,76 +470,104 @@ Public Class frmDistributionParameters
         'initialises the dropdown box to the Ecopath parameters
         cboPathOrSim.SelectedIndex = eParameterSet.Ecopath
 
+        Me.EditsUnsaved = False
+
         Me.CenterToParent()
 
     End Sub
 
+    ''' <summary>
+    ''' Modifies the grid to show ecopath parameters
+    ''' </summary>
     Private Sub ChangeGridtoEcopath()
 
-        ' ToDo_JS: globalize this method
+        ' JS 02Oct13: preserve unsaved changes flag
+        Dim bSave As Boolean = Me.EditsUnsaved
 
-        'Modifies the grid to show ecopath parameters
+        ' JS 02Oct13: globalized this method
         dgvParameters.Columns.Clear()
-        dgvParameters.Columns.Add("GroupNumber", "Group Number")
-        dgvParameters.Columns.Add("GroupName", "Group Name")
-        dgvParameters.Columns.Add("Mean", "Mean")
-        dgvParameters.Columns.Add("CV", "CV")
-        dgvParameters.Columns.Add("Lower", "Lower Boundary")
-        dgvParameters.Columns.Add("Upper", "Upper Boundary")
+        dgvParameters.Columns.Add("GroupNumber", SharedResources.HEADER_INDEX) ' "Group Number"
+        dgvParameters.Columns.Add("GroupName", SharedResources.HEADER_NAME) ' "Group Name"
+        dgvParameters.Columns.Add("Mean", SharedResources.HEADER_MEAN) ' "Mean"
+        dgvParameters.Columns.Add("CV", SharedResources.HEADER_CV) ' "CV"
+        dgvParameters.Columns.Add("Lower", My.Resources.HEADER_LOWERBOUND) ' "Lower Boundary"
+        dgvParameters.Columns.Add("Upper", My.Resources.HEADER_UPPERBOUND) ' "Upper Boundary"
         dgvParameters.Columns(0).ReadOnly = True
         dgvParameters.Columns(1).ReadOnly = True
         dgvParameters.Columns(2).ReadOnly = True
         dgvParameters.Columns(0).DefaultCellStyle.BackColor = BackColorOfDistableDataViewColumns
         dgvParameters.Columns(1).DefaultCellStyle.BackColor = BackColorOfDistableDataViewColumns
         dgvParameters.Columns(2).DefaultCellStyle.BackColor = BackColorOfDistableDataViewColumns
+
+        Me.EditsUnsaved = bSave
+
     End Sub
 
+    ''' <summary>
+    ''' Modifies the grid to display Ecosim parameters
+    ''' </summary>
     Private Sub ChangeGridtoEcosim()
 
-        ' ToDo_JS: globalize this method
+        ' JS 02Oct13: preserve unsaved changes flag
+        Dim bSave As Boolean = Me.EditsUnsaved
 
-        'Modifies the grid to display Ecosim parameters
+        ' JS 02Oct13: globalized this method
         dgvParameters.Columns.Clear()
-        dgvParameters.Columns.Add("GroupNumber", "Group Number")
-        dgvParameters.Columns.Add("GroupName", "Group Name")
-        dgvParameters.Columns.Add("DistributionType", "Distribution Type")
-        dgvParameters.Columns.Add("LowerBoundary", "Lower Boundary")
-        dgvParameters.Columns.Add("UpperBoundary", "Upper Boundary")
-        dgvParameters.Columns.Add("MidPoint", "MidPoint")
+        dgvParameters.Columns.Add("GroupNumber", SharedResources.HEADER_INDEX) ' "Group Number"
+        dgvParameters.Columns.Add("GroupName", SharedResources.HEADER_NAME) ' "Group Name"
+        dgvParameters.Columns.Add("DistributionType", My.Resources.HEADER_DISTRIBUTIONTYPE) ' "Distribution Type"
+        dgvParameters.Columns.Add("LowerBoundary", My.Resources.HEADER_LOWERBOUND) ' "Lower Boundary"
+        dgvParameters.Columns.Add("UpperBoundary", My.Resources.HEADER_UPPERBOUND) ' "Upper Boundary"
+        dgvParameters.Columns.Add("MidPoint", My.Resources.HEADER_MIDPOINT) ' "MidPoint"
         dgvParameters.Columns(0).ReadOnly = True
         dgvParameters.Columns(1).ReadOnly = True
         dgvParameters.Columns(0).DefaultCellStyle.BackColor = BackColorOfDistableDataViewColumns
         dgvParameters.Columns(1).DefaultCellStyle.BackColor = BackColorOfDistableDataViewColumns
+
+        Me.EditsUnsaved = bSave
+
     End Sub
 
+    ''' <summary>
+    ''' Everytime the user changes the parameter type combobox from Ecopath 
+    ''' Parameters to Ecosim Parameters and vice versa. This gets called to 
+    ''' change all the options in the combobox used to specify the parameter 
+    ''' name.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub cboPathOrSim_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPathOrSim.SelectedIndexChanged
-        'Everytime the user changes the parameter type combobox from Ecopath Parameters to Ecosim Parameters and vice versa 
-        'this gets called to change all the options in the combobox used to specify the parameter name
 
-        ' ToDo_JS: globalize this method
+        ' JS 02Oct13: preserve unsaved changes flag
+        Dim bSave As Boolean = Me.EditsUnsaved
+
+        ' JS 02Oct13: globalized this method
+        ' JS 02Oct13: used a class to encapsulate param instead of relying on item text
 
         If cboPathOrSim.SelectedIndex = eParameterSet.Ecopath Then
             ChangeGridtoEcopath()
             cboParamName.Items.Clear()
-            cboParamName.Items.Add("Biomass")
-            cboParamName.Items.Add("Biomass Accumulation")
-            cboParamName.Items.Add("Consumption/Biomass")
-            cboParamName.Items.Add("Production/Biomass")
-            cboParamName.Items.Add("Ecotrophic Efficiency")
+            cboParamName.Items.Add(New ParamComboItem(eParamName.B, SharedResources.HEADER_BIOMASS)) ' "Biomass"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.BA, SharedResources.HEADER_BIOMACCUM_ABBR)) ' "Biomass Accumulation"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.QB, SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS)) ' "Consumption/Biomass"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.PB, SharedResources.HEADER_PRODUCTION_OVER_BIOMASS)) ' "Production/Biomass"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.EE, SharedResources.HEADER_EE)) ' "Ecotrophic Efficiency"
             cboParamName.SelectedIndex = 0
         ElseIf cboPathOrSim.SelectedIndex = eParameterSet.Ecosim Then
             ChangeGridtoEcosim()
             cboParamName.Items.Clear()
-            cboParamName.Items.Add("DenDepCatchability")
-            cboParamName.Items.Add("Switching Power")
-            cboParamName.Items.Add("QBMaxxQBio")
-            cboParamName.Items.Add("PredEffectFeedingTime")
-            cboParamName.Items.Add("OtherMortFeedingTime")
-            cboParamName.Items.Add("MaxRelFeedingTime")
-            cboParamName.Items.Add("FeedingTimeAdjustRate")
+            cboParamName.Items.Add(New ParamComboItem(eParamName.DenDepCatchability, SharedResources.HEADER_DENDEPCATCHABILITY_ABBR)) ' "DenDepCatchability"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.SwitchingPower, SharedResources.HEADER_SWITCHINGPOWER)) ' "Switching Power"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.QBMaxxQBio, My.Resources.HEADER_QBMAX_X_PBMAX)) ' "QBMaxxQBio"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.PredEffectFeedingTime, My.Resources.HEADER_PREDEFFECTFEEDINGTIME)) ' "PredEffectFeedingTime"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.OtherMortFeedingTime, My.Resources.HEADER_OTHERMORTFEEDTIME)) ' "OtherMortFeedingTime"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.MaxRelFeedingTime, My.Resources.HEADER_MAXRELFEEDTIME)) ' "MaxRelFeedingTime"
+            cboParamName.Items.Add(New ParamComboItem(eParamName.FeedingTimeAdjustRate, My.Resources.HEADER_FEEDTIMEADJUSTRATE)) ' "FeedingTimeAdjustRate"
             cboParamName.SelectedIndex = 0
 
         End If
+
+        Me.EditsUnsaved = True
 
     End Sub
 
@@ -523,31 +577,37 @@ Public Class frmDistributionParameters
 
         'Whenever the user specifies a given parameter this fills the grid with its values
         dgvParameters.Rows.Clear()
-        If cboParamName.Text = "Biomass" Then
-            FillDataGrid(B)
-        ElseIf cboParamName.Text = "Biomass Accumulation" Then
-            FillDataGrid(BA)
-        ElseIf cboParamName.Text = "Consumption/Biomass" Then
-            FillDataGrid(QB)
-        ElseIf cboParamName.Text = "Production/Biomass" Then
-            FillDataGrid(PB)
-        ElseIf cboParamName.Text = "Ecotrophic Efficiency" Then
-            FillDataGrid(EE)
-        ElseIf cboParamName.Text = "DenDepCatchability" Then
-            FillDataGrid(DenDepCatchability)
-        ElseIf cboParamName.Text = "Switching Power" Then
-            FillDataGrid(SwitchingPower)
-        ElseIf cboParamName.Text = "QBMaxxQBio" Then
-            FillDataGrid(QBMaxxQBio)
-        ElseIf cboParamName.Text = "PredEffectFeedingTime" Then
-            FillDataGrid(PredEffectFeedingTime)
-        ElseIf cboParamName.Text = "OtherMortFeedingTime" Then
-            FillDataGrid(OtherMortFeedingTime)
-        ElseIf cboParamName.Text = "MaxRelFeedingTime" Then
-            FillDataGrid(MaxRelFeedingTime)
-        ElseIf cboParamName.Text = "FeedingTimeAdjustRate" Then
-            FillDataGrid(FeedingTimeAdjustRate)
-        End If
+
+        ' JS 02Oct13: used a class to encapsulate param instead of relying on item text
+        Dim item As ParamComboItem = DirectCast(cboParamName.SelectedItem, ParamComboItem)
+        Select Case item.ParamName
+            Case eParamName.B
+                FillDataGrid(B)
+            Case eParamName.BA
+                FillDataGrid(BA)
+            Case eParamName.QB
+                FillDataGrid(QB)
+            Case eParamName.PB
+                FillDataGrid(PB)
+            Case eParamName.EE
+                FillDataGrid(EE)
+            Case eParamName.DenDepCatchability
+                FillDataGrid(DenDepCatchability)
+            Case eParamName.SwitchingPower
+                FillDataGrid(SwitchingPower)
+            Case eParamName.QBMaxxQBio
+                FillDataGrid(QBMaxxQBio)
+            Case eParamName.MaxRelFeedingTime
+                FillDataGrid(MaxRelFeedingTime)
+            Case eParamName.PredEffectFeedingTime
+                FillDataGrid(PredEffectFeedingTime)
+            Case eParamName.OtherMortFeedingTime
+                FillDataGrid(OtherMortFeedingTime)
+            Case eParamName.FeedingTimeAdjustRate
+                FillDataGrid(FeedingTimeAdjustRate)
+            Case Else
+                Debug.Assert(False, "ParamName not supported")
+        End Select
 
     End Sub
 
@@ -558,7 +618,7 @@ Public Class frmDistributionParameters
         Try
             If cboPathOrSim.SelectedIndex = eParameterSet.Ecopath Then
                 For Each iParameter In CType(Parameters, List(Of EcopathParam))
-                    dgvParameters.Rows.Add(iParameter.mGroupNo, iParameter.mGroupName, iParameter.mMean, iParameter.mCV, iParameter.mLowerBound, iParameter.mUpperBound)
+                    dgvParameters.Rows.Add(iParameter.GroupNo, iParameter.GroupName, iParameter.Mean, iParameter.CV, iParameter.LowerBound, iParameter.UpperBound)
                 Next
             ElseIf cboPathOrSim.SelectedIndex = eParameterSet.Ecosim Then
                 For Each iParameter In CType(Parameters, List(Of EcosimParam))
@@ -572,11 +632,16 @@ Public Class frmDistributionParameters
 
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnCancel.Click
+
+        Me.DialogResult = Windows.Forms.DialogResult.Cancel
         Me.Close()
+
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOK.Click
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnOK.Click
 
         'Saves all the parameters to csv when user clicks to save
 
@@ -596,6 +661,7 @@ Public Class frmDistributionParameters
 
         EditsUnsaved = False
 
+        Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
 
     End Sub
@@ -603,6 +669,7 @@ Public Class frmDistributionParameters
     Private Sub SaveEcoSimParameters2CSV(ByRef EcosimParams As List(Of EcosimParam), ByRef FileName As String)
 
         ' ToDo_JS: use proper path concatenation
+        ' ToDo_JS: use fixed CSV field formatting
 
         Dim sw As StreamWriter = New StreamWriter(DataPath & "\" & FileName & ".csv", False)
 
@@ -619,12 +686,18 @@ Public Class frmDistributionParameters
     Private Sub SaveEcopathParameters2CSV(ByRef EcopathParams As List(Of EcopathParam), ByRef FileName As String)
 
         ' ToDo_JS: use proper path concatenation
+
         Dim sw As StreamWriter = New StreamWriter(DataPath & "\" & FileName & "_Dist.csv", False)
 
         sw.WriteLine("Group Number, Name, CV, Lower Bound, Upper Bound")
 
         For Each Param In EcopathParams
-            sw.WriteLine(Param.mGroupNo & ",""" & Param.mGroupName & """," & Param.mCV & "," & Param.mLowerBound & "," & Param.mUpperBound)
+            ' JS 02Oct13: used fixed CSV field formatting
+            sw.WriteLine(cStringUtils.ToCSVField(Param.GroupNo) & "," & _
+                         cStringUtils.ToCSVField(Param.GroupName) & "," & _
+                         cStringUtils.ToCSVField(Param.CV) & "," & _
+                         cStringUtils.ToCSVField(Param.LowerBound) & "," & _
+                         cStringUtils.ToCSVField(Param.UpperBound))
         Next
 
         sw.Dispose()
@@ -643,13 +716,13 @@ Public Class frmDistributionParameters
             EcopathParamSet = CType(ParamSet, List(Of EcopathParam))
             For i As Integer = 0 To EcopathParamSet.Count - 1
                 iEcopathParam = EcopathParamSet(i)
-                If EcopathParamSet(i).mGroupNo = CType(dgvParameters.Rows(e.RowIndex).Cells(0).Value, Integer) Then
+                If EcopathParamSet(i).GroupNo = CType(dgvParameters.Rows(e.RowIndex).Cells(0).Value, Integer) Then
                     If e.ColumnIndex = 3 Then
                         iEcopathParam.CV = CType(dgvParameters.CurrentCell.Value.ToString, Double)
                     ElseIf e.ColumnIndex = 4 Then
-                        iEcopathParam.mLowerBound = CType(dgvParameters.CurrentCell.Value.ToString, Double)
+                        iEcopathParam.LowerBound = CType(dgvParameters.CurrentCell.Value.ToString, Double)
                     ElseIf e.ColumnIndex = 5 Then
-                        iEcopathParam.mUpperBound = CType(dgvParameters.CurrentCell.Value.ToString, Double)
+                        iEcopathParam.UpperBound = CType(dgvParameters.CurrentCell.Value.ToString, Double)
                     End If
                     EcopathParamSet(i) = iEcopathParam
                 End If
@@ -677,35 +750,39 @@ Public Class frmDistributionParameters
 
     Private Sub dgvParameters_CellEndEdit(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvParameters.CellEndEdit
 
-        ' ToDo_JS: globalize this method
+        ' JS 02Oct13: used a class to encapsulate param instead of relying on item text
+        Dim item As ParamComboItem = DirectCast(cboParamName.SelectedItem, ParamComboItem)
 
         EditsUnsaved = True
 
-        If cboParamName.Text = "Biomass" Then
-            SetValueParameter(B, e)
-        ElseIf cboParamName.Text = "Biomass Accumulation" Then
-            SetValueParameter(BA, e)
-        ElseIf cboParamName.Text = "Consumption/Biomass" Then
-            SetValueParameter(QB, e)
-        ElseIf cboParamName.Text = "Production/Biomass" Then
-            SetValueParameter(PB, e)
-        ElseIf cboParamName.Text = "Ecotrophic Efficiency" Then
-            SetValueParameter(EE, e)
-        ElseIf cboParamName.Text = "DenDepCatchability" Then
-            SetValueParameter(DenDepCatchability, e)
-        ElseIf cboParamName.Text = "Switching Power" Then
-            SetValueParameter(SwitchingPower, e)
-        ElseIf cboParamName.Text = "QBMaxxQBio" Then
-            SetValueParameter(QBMaxxQBio, e)
-        ElseIf cboParamName.Text = "PredEffectFeedingTime" Then
-            SetValueParameter(PredEffectFeedingTime, e)
-        ElseIf cboParamName.Text = "OtherMortFeedingTime" Then
-            SetValueParameter(OtherMortFeedingTime, e)
-        ElseIf cboParamName.Text = "MaxRelFeedingTime" Then
-            SetValueParameter(MaxRelFeedingTime, e)
-        ElseIf cboParamName.Text = "FeedingTimeAdjustRate" Then
-            SetValueParameter(FeedingTimeAdjustRate, e)
-        End If
+        Select Case item.ParamName
+            Case eParamName.B
+                SetValueParameter(B, e)
+            Case eParamName.BA
+                SetValueParameter(BA, e)
+            Case eParamName.QB
+                SetValueParameter(QB, e)
+            Case eParamName.PB
+                SetValueParameter(PB, e)
+            Case eParamName.EE
+                SetValueParameter(EE, e)
+            Case eParamName.DenDepCatchability
+                SetValueParameter(DenDepCatchability, e)
+            Case eParamName.SwitchingPower
+                SetValueParameter(SwitchingPower, e)
+            Case eParamName.QBMaxxQBio
+                SetValueParameter(QBMaxxQBio, e)
+            Case eParamName.PredEffectFeedingTime
+                SetValueParameter(PredEffectFeedingTime, e)
+            Case eParamName.OtherMortFeedingTime
+                SetValueParameter(OtherMortFeedingTime, e)
+            Case eParamName.MaxRelFeedingTime
+                SetValueParameter(MaxRelFeedingTime, e)
+            Case eParamName.FeedingTimeAdjustRate
+                SetValueParameter(FeedingTimeAdjustRate, e)
+            Case Else
+                Debug.Assert(False, "ParamName not supported")
+        End Select
 
     End Sub
 

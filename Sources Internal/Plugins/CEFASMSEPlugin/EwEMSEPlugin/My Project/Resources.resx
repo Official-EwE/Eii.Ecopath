@@ -162,6 +162,33 @@
     <value>Fishing Mort. Group = {0}</value>
     <comment>{0}=group details</comment>
   </data>
+  <data name="HEADER_DISTRIBUTIONTYPE" xml:space="preserve">
+    <value>Distribution type</value>
+  </data>
+  <data name="HEADER_FEEDTIMEADJUSTRATE" xml:space="preserve">
+    <value>Feeding time adjust. rate</value>
+  </data>
+  <data name="HEADER_LOWERBOUND" xml:space="preserve">
+    <value>Lower boundary</value>
+  </data>
+  <data name="HEADER_MAXRELFEEDTIME" xml:space="preserve">
+    <value>Max. rel. feeding time</value>
+  </data>
+  <data name="HEADER_MIDPOINT" xml:space="preserve">
+    <value>Mid-point</value>
+  </data>
+  <data name="HEADER_OTHERMORTFEEDTIME" xml:space="preserve">
+    <value>Other mort. feeding time</value>
+  </data>
+  <data name="HEADER_PREDEFFECTFEEDINGTIME" xml:space="preserve">
+    <value>Pred. effect feeding time</value>
+  </data>
+  <data name="HEADER_QBMAX_X_PBMAX" xml:space="preserve">
+    <value>Q/B max x P/B max</value>
+  </data>
+  <data name="HEADER_UPPERBOUND" xml:space="preserve">
+    <value>Upper boundary</value>
+  </data>
   <data name="LABEL_BIOMASS_UNIT" xml:space="preserve">
     <value>Biomass ({0})</value>
     <comment>{0}=unit</comment>
@@ -174,5 +201,8 @@
   </data>
   <data name="PROMPT_ENTERNAME_CAPTION" xml:space="preserve">
     <value>New Strategy</value>
+  </data>
+  <data name="PROMPT_UNSAVED_CHANGES" xml:space="preserve">
+    <value>You have made changes that have not been saved. Are you sure that you want to close this form?</value>
   </data>
 </root>

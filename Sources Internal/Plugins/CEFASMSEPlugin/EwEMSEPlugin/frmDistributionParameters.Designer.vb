@@ -44,12 +44,12 @@ Partial Class frmDistributionParameters
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDistributionParameters))
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.cboPathOrSim = New System.Windows.Forms.ComboBox()
         Me.cboParamName = New System.Windows.Forms.ComboBox()
         Me.dgvParameters = New System.Windows.Forms.DataGridView()
@@ -95,43 +95,43 @@ Partial Class frmDistributionParameters
         '
         'GroupNumber
         '
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.GroupNumber.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.GroupNumber.DefaultCellStyle = DataGridViewCellStyle1
         resources.ApplyResources(Me.GroupNumber, "GroupNumber")
         Me.GroupNumber.Name = "GroupNumber"
         '
         'GroupName
         '
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.GroupName.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.GroupName.DefaultCellStyle = DataGridViewCellStyle2
         resources.ApplyResources(Me.GroupName, "GroupName")
         Me.GroupName.Name = "GroupName"
         '
         'Mean
         '
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Mean.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Mean.DefaultCellStyle = DataGridViewCellStyle3
         resources.ApplyResources(Me.Mean, "Mean")
         Me.Mean.Name = "Mean"
         '
         'CV
         '
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.CV.DefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.CV.DefaultCellStyle = DataGridViewCellStyle4
         resources.ApplyResources(Me.CV, "CV")
         Me.CV.Name = "CV"
         '
         'Lower
         '
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Lower.DefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Lower.DefaultCellStyle = DataGridViewCellStyle5
         resources.ApplyResources(Me.Lower, "Lower")
         Me.Lower.Name = "Lower"
         '
         'Upper
         '
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Upper.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Upper.DefaultCellStyle = DataGridViewCellStyle6
         resources.ApplyResources(Me.Upper, "Upper")
         Me.Upper.Name = "Upper"
         '
