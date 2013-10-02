@@ -32,7 +32,6 @@ Public Class frmMSE
 
     Private mCore As cCore
     Private mMSE As cMSE
-    Private StrategiesExtracted As Boolean 'this is a flag used to determine whether the strategies have already been loads and if so not to load them again
     Private frmTargetF As frmTFMpolicy
     Private m_bAdvanced As Boolean = False
 
@@ -48,8 +47,7 @@ Public Class frmMSE
         Me.UIContext = uic
         Me.mMSE = MSE
         Me.mCore = uic.Core
-        Me.StrategiesExtracted = False
-
+ 
     End Sub
 
 #Region " Form overrides "
@@ -118,6 +116,9 @@ Public Class frmMSE
         ' ToDo_JS: Update the state of controls depending on the run state of the plug-in
         ' - Are all input files generated?
 
+        ' User can only run when plug-in allows this
+        btnLoadSampled.Enabled = Me.mMSE.CanRun()
+
         m_lblMassBalanceTol.Visible = Me.m_bAdvanced
         m_txtTolerance.Visible = Me.m_bAdvanced
         m_lblGenDC.Visible = Me.m_bAdvanced
@@ -133,6 +134,9 @@ Public Class frmMSE
 #Region " Control events "
 
     Private Sub btnSample_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSample.Click
+
+        Me.mMSE.Configure()
+
         mMSE.Create1DimParams("MaxRelFeedingTime")
         mMSE.Create1DimParams("FeedingTimeAdjustRate")
         mMSE.Create1DimParams("OtherMortFeedingTime")
@@ -142,6 +146,7 @@ Public Class frmMSE
         mMSE.Create1DimParams("SwitchingPower")
         mMSE.CreateVulnerabilities()
         mMSE.GenerateEcopathParamaters()
+
     End Sub
 
     Private Sub btnGamma_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -156,10 +161,10 @@ Public Class frmMSE
     Private Sub btnLoadSampled_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles btnLoadSampled.Click
         Try
-            If StrategiesExtracted = False Then 'This is to prevent it loading the strategies more than once
-                mMSE.ExtractHCR()
-                StrategiesExtracted = True
-            End If
+            ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
+            '             From the UI point of view, we just want strategies. The plug-in does the optimizating
+            mMSE.Configure()
+            mMSE.ExtractHCR()
             mMSE.ChangeEffortFlag = True
             mMSE.LoadSampledParams()
             mMSE.ChangeEffortFlag = False
@@ -179,6 +184,9 @@ Public Class frmMSE
 
             cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.FileLocations)
 
+            ' Evaluate usefulness of the new path
+            Me.UpdateControls()
+
         Catch ex As Exception
             cLog.Write(ex, "CEFASMSE:OnSelectDataPath")
         End Try
@@ -192,10 +200,11 @@ Public Class frmMSE
 
         'First make sure the Harvest Controls Rules have been loaded
         'this is so the interface has some data
-        If StrategiesExtracted = False Then 'This is to prevent it loading the strategies more than once
-            mMSE.ExtractHCR()
-            StrategiesExtracted = True
-        End If
+        mMSE.Configure()
+
+        ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
+        '             From the UI point of view, we just want strategies. The plug-in does the optimizating
+        mMSE.ExtractHCR()
 
         'Ok now the interface
         If Me.frmTargetF IsNot Nothing Then
@@ -222,6 +231,7 @@ Public Class frmMSE
         Handles m_btn2.Click
 
         Try
+            mMSE.Configure()
             mMSE.Create1DimParams("MaxRelFeedingTime")
             mMSE.Create1DimParams("FeedingTimeAdjustRate")
             mMSE.Create1DimParams("OtherMortFeedingTime")
@@ -287,7 +297,7 @@ Public Class frmMSE
     ' This method really should move to the main engine: the plug-in
     Private Sub GenerateEmptyDietcsv()
 
-        Dim sPath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv", True)
+        Dim sPath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")
         Dim diet_csvout As StreamWriter = cMSEUtils.GetWriter(sPath, False)
         Dim mean As Single
 

@@ -72,6 +72,7 @@ Public Class cMSE
     Private DietMatrixTemp(,) As Double
     Private DietImpTemp() As Double
     Public ChangeEffortFlag As Boolean = False
+    Private m_bStrategiesExtracted As Boolean 'this is a flag used to determine whether the strategies have already been loads and if so not to load them again
 
     Enum DistributionType
         Uniform = 1
@@ -79,6 +80,54 @@ Public Class cMSE
     End Enum
 
     Private m_mhSettings As cMessageHandler = Nothing
+
+#Region " New bits to safeguard run state "
+
+    Public Function Configure() As Boolean
+        Dim bSuccess As Boolean = Me.AreAllDirectoriesAvailable(True)
+        Me.ExtractHCR()
+        Return bSuccess
+    End Function
+
+    Public Function IsConfigured() As Boolean
+        Return Me.AreAllDirectoriesAvailable(False)
+    End Function
+
+    ''' <summary>
+    ''' In this method I'd like to put all the stuff that ensures that the MSE plug-in can run.
+    ''' - Make sure all the directories are available
+    ''' - Make sure that required stuff is loaded
+    ''' - Etc
+    ''' </summary>
+    Public Function CanRun() As Boolean
+
+        ''Make sure the DataPath exists
+        'If Not Directory.Exists(DataPath) Then
+        '    MsgBox("Sorry this is not a valid data directory.", MsgBoxStyle.Critical)
+        '    Return False
+        'End If
+
+        Return Me.IsConfigured
+
+    End Function
+
+    ''' <summary>
+    ''' Find (and possibly create) all <see cref="cMSEUtils.eMSEPaths">defined directories</see>.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function AreAllDirectoriesAvailable(bCreate As Boolean) As Boolean
+
+        Dim strPath As String = Me.DataPath
+        Dim bSuccess As Boolean = True
+
+        For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
+            bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
+        Next
+        Return bSuccess
+
+    End Function
+
+#End Region ' New bits to safeguard run state
 
     Public ReadOnly Property DataPath As String
         Get
@@ -89,29 +138,43 @@ Public Class cMSE
 
     Private Sub ExtractChangeInEffortLimits()
 
-        ' ToDo_JS: Use standard CSV field reading/writing
-
         ' JS 30Sep13: Standardized path access
-        Dim strPath As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")
-        Dim EffortLimitsCSV As New CsvReader(New StreamReader(strPath), True)
+        ' JS 02Oct13: Used standard CSV field reading/writing
+
+        Dim strPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")
+        Dim reader As StreamReader = cMSEUtils.GetReader(strPath)
+
         ReDim ChangeInEffortLimits(mCore.nFleets - 1)
 
-        For i = 1 To mCore.nFleets
-            ChangeInEffortLimits(i - 1) = NoHCR_F
-        Next
+        If (reader IsNot Nothing) Then
 
-        While Not EffortLimitsCSV.EndOfStream
-            EffortLimitsCSV.ReadNextRecord()
-            ChangeInEffortLimits(EffortLimitsCSV(0) - 1) = cStringUtils.ConvertToDouble(EffortLimitsCSV(2))
-        End While
+            Try
+                Dim EffortLimitsCSV As New CsvReader(reader, True)
+                For i = 1 To mCore.nFleets
+                    ChangeInEffortLimits(i - 1) = NoHCR_F
+                Next
+                While Not EffortLimitsCSV.EndOfStream
+                    EffortLimitsCSV.ReadNextRecord()
+                    ChangeInEffortLimits(EffortLimitsCSV(0) - 1) = cStringUtils.ConvertToDouble(EffortLimitsCSV(2))
+                End While
+                EffortLimitsCSV.Dispose()
+
+            Catch ex As Exception
+                ' CSV malformed, handle error?
+            End Try
+
+        End If
+
+        cMSEUtils.ReleaseReader(reader)
 
     End Sub
 
-    Public Sub ExtractHCR()
+    Public Function ExtractHCR() As Boolean
+
+        If Me.m_bStrategiesExtracted Then Return True
 
         ' ToDo_JS: Globalize this method
         ' ToDo_JS: Fix folder availability flow
-        ' ToDo_JS: Remove MsgBox
 
         Dim StrategiesFileNames As String()
         Dim csv As CsvReader
@@ -119,12 +182,6 @@ Public Class cMSE
         Dim Strategy As Strategy
         Dim datadir As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Strategies)
         Dim strVal As String = ""
-
-        'Make sure this directory exists
-        If Not Directory.Exists(datadir) Then
-            MsgBox("Sorry this is not a valid data directory.", MsgBoxStyle.Critical)
-            Return
-        End If
 
         Strategies.DataDirectory = datadir
 
@@ -169,7 +226,10 @@ Public Class cMSE
             csv.Dispose()
         Next
 
-    End Sub
+        Me.m_bStrategiesExtracted = True
+        Return True
+
+    End Function
 
     Private Function ExtractParamsCSV(ByRef param_name As String)
 
@@ -383,11 +443,11 @@ Public Class cMSE
         SaveOriginalParameters()
 
         'Output the final results
-        sw = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Results.csv", True), False)
+        sw = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Results.csv"), False)
         sw.WriteLine("Iteration,Strategy,GroupNumber,GroupName,ResultName,Value")
 
         'Create the csv writer for writing out individual fleets catches of each group
-        FleetCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Fleet.csv", True), False)
+        FleetCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Fleet.csv"), False)
         FleetCsv.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
 
         'Count the number of live groups which aren't primary producers
@@ -430,7 +490,7 @@ Public Class cMSE
         'Prepare the trajectory csv with the column headings
         Trajectory2Csv = New List(Of StreamWriter)
         For igrp = 1 To mCore.nLivingGroups
-            Trajectory2Csv.Add(New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTraj2, mCore.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", True), False))
+            Trajectory2Csv.Add(New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTraj2, mCore.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv"), False))
             Trajectory2Csv(igrp - 1).Write("Trial,Strategy")
             For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                 Trajectory2Csv(igrp - 1).Write("," & iTime)
@@ -466,7 +526,7 @@ Public Class cMSE
             Next
 
             'Extract the diet matrix
-            diet_matrix = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv", True)), False)
+            diet_matrix = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv")), False)
             diet_matrix.ReadNextRecord()
             For iPred As Integer = 1 To mCore.nGroups
                 mCore.EcoPathGroupInputs(iPred).ImpDiet() = diet_matrix(iPred - 1)
@@ -499,7 +559,7 @@ Public Class cMSE
                 mCore.EcoSimModelParameters.NumberYears = OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject
 
                 'This creates the files we will write the biomass trajectories to
-                TrajectoryCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv", True), False)
+                TrajectoryCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv"), False)
                 TrajectoryCsv.Write("GroupNumber,Group,Strategy")
                 For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                     TrajectoryCsv.Write("," & iTime)
@@ -1008,8 +1068,7 @@ stepend:
         Dim qb(nTrials, nLiving) As Single
         Dim ee(nTrials, nLiving) As Single
         Dim TimeFindingBalanced As New Stopwatch
-        Dim csv_diet As CsvReader
-        Dim csv_multipliers As CsvReader
+        Dim csv As CsvReader
         Dim MeanProportions(mCore.nLivingGroups - 1, mCore.nGroups) As Single
         Dim DietPropMultipliers(mCore.nLivingGroups - 1) As Double
         Dim Interacts(mCore.nLivingGroups - 1, mCore.nGroups) As Integer
@@ -1028,25 +1087,36 @@ stepend:
         'We need to save the original state of Ecopath so it can be restored when we are done
         Me.SaveOriginalState()
 
+        Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv"))
+        If (reader Is Nothing) Then
+            ' ToDo: report some kind of error
+            Return
+        End If
+
         'Read in the values from the DietComposition.csv into each array
-        csv_diet = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")), True)
+        csv = New CsvReader(reader, True)
         For iPred As Integer = 1 To mCore.nLivingGroups
             For iPrey As Integer = 0 To mCore.nGroups
-                csv_diet.ReadNextRecord()
+                csv.ReadNextRecord()
                 'Note about indices for interacts, lower and upper
                 'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
                 'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                Interacts(csv_diet(2) - 1, csv_diet(3)) = csv_diet(4)
-                MeanProportions(csv_diet(2) - 1, csv_diet(3)) = csv_diet(5)
+                Interacts(csv(2) - 1, csv(3)) = csv(4)
+                MeanProportions(csv(2) - 1, csv(3)) = csv(5)
             Next
         Next
+        cMSEUtils.ReleaseReader(reader)
+
+        reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietCompositionMultipliers.csv"))
+        Debug.Assert(reader IsNot Nothing)
 
         'Read in the values from the DietCompositionMultipliers.csv
-        csv_multipliers = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietCompositionMultipliers.csv")), True)
-        Do While csv_multipliers.ReadNextRecord
-            DietPropMultipliers(csv_multipliers(0) - 1) = csv_multipliers(2)
+        csv = New CsvReader(reader, True)
+        Do While csv.ReadNextRecord
+            DietPropMultipliers(csv(0) - 1) = csv(2)
         Loop
-        csv_multipliers.Dispose()
+        csv.Dispose()
+        cMSEUtils.ReleaseReader(reader)
 
         'Calculate how many living groups that aren't primary producers
         For i = 1 To mCore.nGroups
@@ -1087,7 +1157,7 @@ stepend:
                             If isbalanced = True Then
 
                                 'Output the diet matrix parameters to csv
-                                Dim csv_dietout As New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv", True), False)
+                                Dim csv_dietout As New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"), False)
                                 For iPrey = 0 To nGroups
                                     csv_dietout.Write(Me._ecopath.EcopathData.DC(1, iPrey))
                                     For iPred = 2 To nGroups
@@ -1641,12 +1711,14 @@ stepend:
 
     'End Sub
 
-    Public Sub Create1DimParams(ByVal ParamName As String)
+    Public Function Create1DimParams(ByVal ParamName As String) As Boolean
 
         ' ToDo_JS: Use standard CSV field reading/writing
         ' ToDo_JS: Use standard readers/writers, and make robust
+        Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv"))
+        If (reader Is Nothing) Then Return False
 
-        Dim csv = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv")), True)
+        Dim csv = New CsvReader(reader, True)
         Dim ParameterArray(mCore.nLivingGroups - nPrimaryProducer - 1, 3) As Single
 
         ' JS 30Sep13: Use local properties
@@ -1659,10 +1731,13 @@ stepend:
         Dim GroupNames(mCore.nLivingGroups - nPrimaryProducer - 1) As String
 
         If Not CheckEcoSimDistributionFilesOkay(csv, ParamName) Then
-            Exit Sub
+            csv.Dispose()
+            cMSEUtils.ReleaseReader(reader)
+            Return False
         End If
+        csv.Dispose()
 
-        csv = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv")), True)
+        csv = New CsvReader(reader, True)
 
         'Initialise the datatable
         'SampledParameters.Columns.Add("GroupName", GetType(String))
@@ -1672,12 +1747,11 @@ stepend:
 
         'Read all the distribution information from the .csv file and into an array ParameterArray
         While csv.ReadNextRecord()
-            GroupNames(csv.CurrentRecordIndex) = csv("GroupName")
+            GroupNames(csv.CurrentRecordIndex) = cMSEUtils.FromCSVField(csv("GroupName"))
             For iField = 2 To 5
                 ParameterArray(csv.CurrentRecordIndex, iField - 2) = csv(iField)
             Next
         End While
-
 
         'Generate an array of sample parameters
         For iGroup = 1 To mCore.nLivingGroups - nPrimaryProducer
@@ -1699,29 +1773,29 @@ stepend:
 
             Next
         Next
+        cMSEUtils.ReleaseReader(reader)
+        csv.Dispose()
 
         'Output the sampled parameters to a csv
-        Dim csvout As New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, ParamName & "_out.csv", True), False)
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, ParamName & "_out.csv"))
 
-        For igrp As Integer = 1 To mCore.nLivingGroups - nPrimaryProducer - 1
-            csvout.Write("""" & GroupNames(igrp - 1) & """,")
+        For igrp As Integer = 1 To mCore.nLivingGroups - nPrimaryProducer
+            If (igrp > 1) Then writer.Write(",")
+            writer.Write(cStringUtils.ToCSVField(GroupNames(igrp - 1)))
         Next
-        csvout.Write("""" & GroupNames(mCore.nLivingGroups - nPrimaryProducer - 1) & """")
-
-        csvout.WriteLine()
+        writer.WriteLine()
 
         For iIteration = 1 To nIterations
-            For iGroup = 1 To mCore.nLivingGroups - nPrimaryProducer - 1
-                csvout.Write(SampledParameters(iIteration - 1, iGroup - 1) & ",")
+            For iGroup = 1 To mCore.nLivingGroups - nPrimaryProducer
+                If (iGroup > 1) Then writer.Write(",")
+                writer.Write(cStringUtils.ToCSVField(SampledParameters(iIteration - 1, iGroup - 1)))
             Next
-            csvout.Write(SampledParameters(iIteration - 1, mCore.nLivingGroups - nPrimaryProducer - 1))
-            csvout.WriteLine()
+            writer.WriteLine()
         Next
+        cMSEUtils.ReleaseWriter(writer)
+        Return True
 
-        csv.Dispose()
-        csvout.Dispose()
-
-    End Sub
+    End Function
 
     Public Sub CreateVulnerabilities()
         'Generate csv with vulnerabilities
@@ -1734,7 +1808,7 @@ stepend:
 
         For iIteration = 1 To nIterations
 
-            Dim sw As StreamWriter = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration & "_out.csv", True), False)
+            Dim sw As StreamWriter = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration & "_out.csv"), False)
 
             'Create random values for the vulnerabilities and store in a csv
             For igrppredator As Integer = 1 To _ecopath.EcopathData().NumGroups
@@ -2103,6 +2177,10 @@ stepend:
             ' ToDo_JS: respond to core root path setting changes.
             ' This should reinitialize the plug-in, or at least put the plug-in in a state that it 
             ' knows whether has all the input data to run is available.
+
+            ' ToDo_JS: Invalidate MSE plug-in state
+            Me.m_bStrategiesExtracted = False
+
         End If
     End Sub
 

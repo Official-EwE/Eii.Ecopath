@@ -148,45 +148,25 @@ Public Class cMSEUtils
     ''' <summary>
     ''' Returns the full path to a MSE file.
     ''' </summary>
-    ''' <param name="DataPath">The MSE datapath</param>
+    ''' <param name="strPath">The MSE datapath</param>
     ''' <param name="category">The <see cref="eMSEPaths">category</see> subfolder for the file.</param>
     ''' <param name="strFile">The name of the file.</param>
-    ''' <param name="bCreateFolderIfNotExists">Flag that states that the folder should be created if it does not exist.</param>
     ''' <returns>A path to a file, or an empty string if an error occurred.</returns>
-    ''' <remarks>
-    ''' This method takes care of a few common headaches related to file access, such
-    ''' as ensuring that a directory exists (and optionally creating the directory),
-    ''' and validating whether the file name is valid to be used with the 
-    ''' Operating System.
-    ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Shared Function MSEFile(DataPath As String, category As eMSEPaths, strFile As String, _
-                                Optional bCreateFolderIfNotExists As Boolean = False) As String
-        Dim strPath As String = MSEFolder(DataPath, category, bCreateFolderIfNotExists)
-        ' Abort if folder not present
-        If String.IsNullOrWhiteSpace(strPath) Then Return ""
-        ' Make sure we're using a safe file name
-        strFile = cFileUtils.ToValidFileName(strFile, False)
-        ' Concat!
-        Return Path.Combine(strPath, strFile)
+    Public Shared Function MSEFile(strPath As String, category As eMSEPaths, strFile As String) As String
+        Return Path.Combine(MSEFolder(strPath, category), cFileUtils.ToValidFileName(strFile, False))
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the full path to an MSE folder.
     ''' </summary>
-    ''' <param name="DataPath">The MSE datapath</param>
+    ''' <param name="strPath">The MSE datapath</param>
     ''' <param name="category">The <see cref="eMSEPaths">category</see> subfolder.</param>
-    ''' <param name="bCreateIfNotExists">Flag that states that the folder should be created if it does not exist.</param>
-    ''' <returns>A path to a folder, or an empty string if an error occurred.</returns>
+    ''' <returns>A path to a folder.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function MSEFolder(DataPath As String, category As eMSEPaths, _
-                                  Optional bCreateIfNotExists As Boolean = True) As String
-        Dim strPath As String = Path.Combine(DataPath, Subfolder(category))
-        If Not cFileUtils.IsDirectoryAvailable(strPath, bCreateIfNotExists) Then
-            Return ""
-        End If
-        Return strPath
+    Public Shared Function MSEFolder(strPath As String, category As eMSEPaths) As String
+        Return Path.Combine(strPath, Subfolder(category))
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -200,11 +180,13 @@ Public Class cMSEUtils
         Select Case category
             Case eMSEPaths.Root : Return ""
             Case eMSEPaths.DistrParams : Return "DistributionParameters"
-            Case eMSEPaths.Strategies : Return "Strategies"
+            Case eMSEPaths.Fleet : Return "Fleet"
+            Case eMSEPaths.NaturalMort : Return "NaturalMortalities"
             Case eMSEPaths.ParamsOut : Return "ParametersOut"
             Case eMSEPaths.Results : Return "Results"
             Case eMSEPaths.ResultsTrajectories : Return "Results\Trajectories"
             Case eMSEPaths.ResultsTraj2 : Return "Results\Trajectories2"
+            Case eMSEPaths.Strategies : Return "Strategies"
             Case Else
                 Debug.Assert(False)
         End Select
