@@ -42,13 +42,12 @@ Namespace Controls.Map.Layers
             MyBase.New(vs)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle)
-
-            If Me.ForeBrush Is Nothing Then Me.Update()
-            g.FillRectangle(Brushes.Gray, rc)
-            g.DrawString("#", Me.Font, Me.ForeBrush, rc)
-        End Sub
+        'Public Overrides Sub RenderPreview(ByVal g As Graphics, _
+        '                                   ByVal rc As Rectangle)
+        '    MyBase.RenderPreview(g, rc)
+        '    If Me.ForeBrush Is Nothing Then Me.Update()
+        '    g.DrawString("#", Me.Font, Me.ForeBrush, rc)
+        'End Sub
 
         Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
                                         ByVal rc As System.Drawing.Rectangle, _

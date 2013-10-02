@@ -369,11 +369,23 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generic conversion helper, converts a string into an targeted type using
+        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' </summary>
+        ''' <param name="strNumber">The number to convert.</param>
+        ''' <param name="typeTarget">The target type.</param>
+        ''' <param name="strDecimalSeparator">Separator for decimals.</param>
+        ''' <param name="strThousandsSeparator">Separator for thousands (a.k.a digit grouping separator)</param>
+        ''' <param name="objNullValue">Value to return in case parse failed.</param>
+        ''' <returns>An number.</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function ConvertToNumber(ByVal strNumber As String, _
-                                               ByVal typeTarget As Type, _
-                                               Optional ByVal objNullValue As Object = -9999, _
-                                               Optional ByVal strDecimalSeparator As String = ".", _
-                                               Optional ByVal strThousandsSeparator As String = "") As Object
+                                                ByVal typeTarget As Type, _
+                                                Optional ByVal objNullValue As Object = -9999, _
+                                                Optional ByVal strDecimalSeparator As String = ".", _
+                                                Optional ByVal strThousandsSeparator As String = "") As Object
             If typeTarget Is GetType(Single) Then
                 Return ConvertToSingle(strNumber, CSng(objNullValue), strDecimalSeparator, strThousandsSeparator)
             ElseIf typeTarget Is GetType(Double) Then
@@ -381,7 +393,6 @@ Namespace Utilities
             End If
             Return ConvertToInteger(strNumber, CInt(objNullValue), strDecimalSeparator, strThousandsSeparator)
         End Function
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -604,10 +615,10 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Convert a number to decimal degrees
+        ''' Convert a number to decimal degree notation (hours, minutes and seconds).
         ''' </summary>
-        ''' <param name="dValue"></param>
-        ''' <returns></returns>
+        ''' <param name="dValue">The value to convert.</param>
+        ''' <returns>The number in a decimal degree notation.</returns>
         ''' <remarks>
         ''' http://www.freevbcode.com/ShowCode.asp?ID=8179
         ''' </remarks>
@@ -731,9 +742,9 @@ Namespace Utilities
         ''' <param name="cQuote">Optional quote character to use for wrapping the value.</param>
         ''' <returns>A field fit for display in a CSV file.</returns>
         ''' <remarks>
-        ''' Numbers will be en-US formatted.
-        ''' Double quotes will be removed.
-        ''' Values containing potential CSV separator characters will be encapsulated in double quotes.
+        ''' <para>Numbers will be en-US formatted.</para>
+        ''' <para>Double quotes will be removed.</para>
+        ''' <para>Values containing potential CSV separator characters will be encapsulated in double quotes.</para>
         ''' </remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Function ToCSVField(ByVal objValue As Object, _
@@ -982,6 +993,7 @@ Namespace Utilities
             Return sb.ToString
 
         End Function
+
 #Region " Replace "
 
         ''' -----------------------------------------------------------------------
@@ -1214,11 +1226,11 @@ Namespace Utilities
 
         End Function
 
-
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Enumerated type, stating where to find the data filter in a 3D map array.
         ''' </summary>
-        ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
         Public Enum eFilterIndexTypes As Integer
             FirstIndex = 0
             LastIndex
@@ -1425,6 +1437,7 @@ Namespace Utilities
 
 #Region " Microsoft.VisualBasic alternatives "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return a Tab character.
         ''' </summary>
@@ -1432,12 +1445,14 @@ Namespace Utilities
         ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
         ''' For Mono compliance this definition should be used instead.
         ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Shared ReadOnly Property vbTab As String
             Get
                 Return Convert.ToChar(9).ToString
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return a Newline character.
         ''' </summary>
@@ -1445,12 +1460,14 @@ Namespace Utilities
         ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
         ''' For Mono compliance this definition should be used instead.
         ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Shared ReadOnly Property vbNewline As String
             Get
                 Return cStringUtils.vbCr
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return a carriage return character.
         ''' </summary>
@@ -1458,12 +1475,14 @@ Namespace Utilities
         ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
         ''' For Mono compliance this definition should be used instead.
         ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Shared ReadOnly Property vbCr As String
             Get
                 Return Convert.ToChar(13).ToString
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return a line feed character.
         ''' </summary>
@@ -1471,12 +1490,14 @@ Namespace Utilities
         ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
         ''' For Mono compliance this definition should be used instead.
         ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Shared ReadOnly Property vbLf As String
             Get
                 Return Convert.ToChar(10).ToString
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return a carriage return + line feed character.
         ''' </summary>
@@ -1484,6 +1505,7 @@ Namespace Utilities
         ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
         ''' For Mono compliance this definition should be used instead.
         ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Shared ReadOnly Property vbCrLf As String
             Get
                 Return Environment.NewLine

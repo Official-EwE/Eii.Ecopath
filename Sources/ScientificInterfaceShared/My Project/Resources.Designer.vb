@@ -2852,6 +2852,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biomass accummulation.
+        '''</summary>
+        Public ReadOnly Property HEADER_BIOACCUM() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOACCUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biom. acc..
         '''</summary>
         Public ReadOnly Property HEADER_BIOMACCUM_ABBR() As String
@@ -3532,6 +3541,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_DECAY_RATE_UNIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_DECAY_RATE_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Dens. dep. catchability.
+        '''</summary>
+        Public ReadOnly Property HEADER_DENDEPCATCHABILITY_ABBR() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DENDEPCATCHABILITY_ABBR", resourceCulture)
             End Get
         End Property
         
@@ -5165,6 +5183,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Production/biomass.
+        '''</summary>
+        Public ReadOnly Property HEADER_PRODUCTION_OVER_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PRODUCTION_OVER_BIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Profit.
         '''</summary>
         Public ReadOnly Property HEADER_PROFIT() As String
@@ -5782,6 +5809,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_SURVIVAL() As String
             Get
                 Return ResourceManager.GetString("HEADER_SURVIVAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Switching power.
+        '''</summary>
+        Public ReadOnly Property HEADER_SWITCHINGPOWER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SWITCHINGPOWER", resourceCulture)
             End Get
         End Property
         
@@ -8237,7 +8273,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to PB|P/B||Production over biomass.
+        '''  Looks up a localized string similar to PB|P/B||Production/biomass.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_PB() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_PB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PB|P/B||Production/biomass.
         '''</summary>
         Public ReadOnly Property VARIABLE_PBINPUT() As String
             Get
@@ -8264,7 +8309,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to QB|Q/B||Consumption over biomass.
+        '''  Looks up a localized string similar to QB|Q/B||Consumption/biomass.
         '''</summary>
         Public ReadOnly Property VARIABLE_QBINPUT() As String
             Get
@@ -8273,7 +8318,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to QB|Q/B||Consumption over biomass.
+        '''  Looks up a localized string similar to QB|Q/B||Consumption/biomass.
         '''</summary>
         Public ReadOnly Property VARIABLE_QBOUTPUT() As String
             Get
