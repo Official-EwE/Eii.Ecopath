@@ -56,6 +56,8 @@ Public Class cMSE
     Private ChangeInEffortLimits() As Double
     Const NoHCR_F As Integer = -9999
 
+    Private m_monitor As New cMSEStateMonitor(Me)
+
     Private BTemp() As Double
     Private PBTemp() As Double
     Private QBTemp() As Double
@@ -81,33 +83,45 @@ Public Class cMSE
 
     Private m_mhSettings As cMessageHandler = Nothing
 
-#Region " New bits to safeguard run state "
+#Region " Diagnostics and state management "
 
-    Public Function Configure() As Boolean
-        Dim bSuccess As Boolean = Me.AreAllDirectoriesAvailable(True)
-        Me.ExtractHCR()
-        Return bSuccess
+    Public ReadOnly Property Controller As cMSEStateMonitor
+        Get
+            Return Me.m_monitor
+        End Get
+    End Property
+
+    Public Function IsDirectoryStructureAvailable(bCreate As Boolean) As Boolean
+
+        ' Make sure plug-in has all dirs
+        If Not Me.AreAllDirectoriesAvailable(bCreate) Then Return False
+        ' Make sure plug-in has empty CSV
+        Return Me.HasEmptyDietsCSV(bCreate)
+
     End Function
 
-    Public Function IsConfigured() As Boolean
-        Return Me.AreAllDirectoriesAvailable(False)
-    End Function
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' In this method I'd like to put all the stuff that ensures that the MSE plug-in can run.
-    ''' - Make sure all the directories are available
-    ''' - Make sure that required stuff is loaded
-    ''' - Etc
+    ''' Returns whether all base data is available for building models
     ''' </summary>
-    Public Function CanRun() As Boolean
+    ''' <param name="bCreate"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsInputDataAvailable(bCreate As Boolean) As Boolean
 
-        ''Make sure the DataPath exists
-        'If Not Directory.Exists(DataPath) Then
-        '    MsgBox("Sorry this is not a valid data directory.", MsgBoxStyle.Critical)
-        '    Return False
-        'End If
+        ' JS: This is nasty duplication of logic and requires serious restructuring
+        ' ToDo_JS: Move to new method cMSEUtils.GetInputFile(path, constant)
+        Dim aFiles As String() = New String() {"B", "BA", "QB", "PQ", "EE", _
+                                               "DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
+        Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams)
+        For Each strFile As String In aFiles
+            Dim strFullPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & "_Dist.csv")
+            If Not File.Exists(strFullPath) Then
+                Return False
+            End If
+        Next
 
-        Return Me.IsConfigured
+        Return True
 
     End Function
 
@@ -115,7 +129,7 @@ Public Class cMSE
     ''' Find (and possibly create) all <see cref="cMSEUtils.eMSEPaths">defined directories</see>.
     ''' </summary>
     ''' <returns></returns>
-    Public Function AreAllDirectoriesAvailable(bCreate As Boolean) As Boolean
+    Private Function AreAllDirectoriesAvailable(bCreate As Boolean) As Boolean
 
         Dim strPath As String = Me.DataPath
         Dim bSuccess As Boolean = True
@@ -127,12 +141,14 @@ Public Class cMSE
 
     End Function
 
-#End Region ' New bits to safeguard run state
+#End Region ' Diagnostics and state management
 
     Public ReadOnly Property DataPath As String
         Get
-            ' Sorry Mark, this breaks your system...
-            Return Path.Combine(Me.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim), "CefasMSE")
+            If Me.UseEwEPath Then
+                Return Path.Combine(Me.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim), "CefasMSE")
+            End If
+            Return Me.CustomPath
         End Get
     End Property
 
@@ -963,7 +979,7 @@ stepend:
         'check that there are no replicates
         For igrp = 1 To mCore.nGroups
             If correct(igrp - 1) > 1 Then
-                MsgBox("The distribution file " & Path.GetFileName(sPath) & " has replicate groups in it.")
+                Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(sPath)), eMessageImportance.Warning)
                 Return False
             End If
         Next
@@ -1051,6 +1067,49 @@ stepend:
         End If
     End Function
 
+    Private Function HasEmptyDietsCSV(bCreate As Boolean) As Boolean
+
+        Dim bSuccess As Boolean = File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv"))
+        If bSuccess = False Then
+            If bCreate Then bSuccess = Me.GenerateEmptyDietcsv()
+        End If
+        Return bSuccess
+
+    End Function
+
+    Private Function GenerateEmptyDietcsv() As Boolean
+
+        Dim sPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")
+        Dim diet_csvout As StreamWriter = cMSEUtils.GetWriter(sPath, False)
+        Dim mean As Single
+
+        If (diet_csvout Is Nothing) Then Return False
+
+        diet_csvout.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
+        diet_csvout.WriteLine()
+
+        For iPred As Integer = 1 To mCore.nLivingGroups
+            If mCore.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
+                mean = mCore.EcoPathGroupInputs(iPred).ImpDiet
+                diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,1," & cStringUtils.ToCSVField(mean))
+            Else
+                diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,0,0")
+            End If
+
+            For iPrey As Integer = 1 To mCore.nGroups
+                If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
+                    mean = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey)
+                    diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",1," & cStringUtils.ToCSVField(mean))
+                Else
+                    diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",0,0")
+                End If
+            Next
+        Next
+
+        cMSEUtils.ReleaseWriter(diet_csvout)
+        Return True
+
+    End Function
 
     Public Sub GenerateEcopathParamaters()
 
@@ -2173,15 +2232,20 @@ stepend:
 #End Region ' Helper methods
 
     Private Sub OnCoreMessage(ByRef msg As cMessage)
+
+        ' ToDo: refresh upon ecosim scenario load
+
+        Dim bRefresh As Boolean = False
+
         If (msg.Type = eMessageType.GlobalSettingsChanged) Then
-            ' ToDo_JS: respond to core root path setting changes.
-            ' This should reinitialize the plug-in, or at least put the plug-in in a state that it 
-            ' knows whether has all the input data to run is available.
-
-            ' ToDo_JS: Invalidate MSE plug-in state
             Me.m_bStrategiesExtracted = False
-
+            bRefresh = True
         End If
+
+        If bRefresh Then
+            Me.m_monitor.Refresh()
+        End If
+
     End Sub
 
     Private Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
@@ -2240,6 +2304,36 @@ stepend:
             If (value <> My.Settings.MassBalanceTol) Then
                 My.Settings.MassBalanceTol = value
                 My.Settings.Save()
+            End If
+        End Set
+    End Property
+
+    Public Property UseEwEPath As Boolean
+        Get
+            Return My.Settings.UseEwEPath
+        End Get
+        Set(value As Boolean)
+            If (value <> My.Settings.UseEwEPath) Then
+                My.Settings.UseEwEPath = value
+                My.Settings.Save()
+                Me.m_monitor.Refresh()
+            End If
+        End Set
+    End Property
+
+    Public Property CustomPath As String
+        Get
+            Dim strPath As String = My.Settings.CustomPath
+            If (String.IsNullOrWhiteSpace(strPath)) Then
+                Return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            End If
+            Return strPath
+        End Get
+        Set(value As String)
+            If (value <> My.Settings.CustomPath) Then
+                My.Settings.CustomPath = value
+                My.Settings.Save()
+                Me.m_monitor.Refresh()
             End If
         End Set
     End Property

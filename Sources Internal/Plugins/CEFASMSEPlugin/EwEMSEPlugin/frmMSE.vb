@@ -33,7 +33,6 @@ Public Class frmMSE
     Private mCore As cCore
     Private mMSE As cMSE
     Private frmTargetF As frmTFMpolicy
-    Private m_bAdvanced As Boolean = False
 
     Private m_fpArea As cEwEFormatProvider = Nothing
     Private m_fpNModelsToRun As cEwEFormatProvider = Nothing
@@ -58,8 +57,6 @@ Public Class frmMSE
         If (Me.UIContext Is Nothing) Then Return
 
         ' -- Set up control interactions --
-
-        Me.m_lblDataDirectoryPath.Text = mMSE.DataPath
 
         ' Connect area UI control to live Ecopath data
         Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, m_tbArea, Me.Core.EwEModel, eVarNameFlags.Area)
@@ -113,19 +110,14 @@ Public Class frmMSE
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
-        ' ToDo_JS: Update the state of controls depending on the run state of the plug-in
-        ' - Are all input files generated?
+        'Dim controller As cMSEStateMonitor = Me.mMSE.Controller
 
-        ' User can only run when plug-in allows this
-        btnLoadSampled.Enabled = Me.mMSE.CanRun()
+        'Me.m_plStep1.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.Idle)
+        'Me.m_plStep2.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
+        'Me.m_plStep3.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
+        'Me.m_plStep4.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
 
-        m_lblMassBalanceTol.Visible = Me.m_bAdvanced
-        m_txtTolerance.Visible = Me.m_bAdvanced
-        m_lblGenDC.Visible = Me.m_bAdvanced
-        m_plGamma.Visible = Me.m_bAdvanced
-        m_btnGamma.Visible = Me.m_bAdvanced
-        m_btnEcopathParams2.Visible = Me.m_bAdvanced
-        m_btn2.Visible = Me.m_bAdvanced
+        Me.m_lblDataDirectoryPath.Text = Me.mMSE.DataPath
 
     End Sub
 
@@ -133,9 +125,7 @@ Public Class frmMSE
 
 #Region " Control events "
 
-    Private Sub btnSample_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSample.Click
-
-        Me.mMSE.Configure()
+    Private Sub btnSample_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateModels.Click
 
         mMSE.Create1DimParams("MaxRelFeedingTime")
         mMSE.Create1DimParams("FeedingTimeAdjustRate")
@@ -149,21 +139,22 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub btnGamma_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnGamma.Click
+    Private Sub OnPathPrefChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_rbEwEDefault.CheckedChanged, m_rbCustomPath.CheckedChanged
         Try
-            GenerateEmptyDietcsv()
+            Me.mMSE.UseEwEPath = Me.m_rbEwEDefault.Checked
+            Me.UpdateControls()
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:GenerateEmptyDietcsv")
+
         End Try
     End Sub
+
 
     Private Sub btnLoadSampled_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles btnLoadSampled.Click
         Try
             ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
             '             From the UI point of view, we just want strategies. The plug-in does the optimizating
-            mMSE.Configure()
             mMSE.ExtractHCR()
             mMSE.ChangeEffortFlag = True
             mMSE.LoadSampledParams()
@@ -174,17 +165,20 @@ Public Class frmMSE
     End Sub
 
     Private Sub OnSelectDataPath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnChangeDataDir.Click
+        Handles m_btnChangePath.Click
 
         ' JS 30Sep13: Use EwE dialog framework here
         Try
-
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-            Dim cmd As cShowOptionsCommand = DirectCast(cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
 
-            cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.FileLocations)
+            If Me.mMSE.UseEwEPath Then
+                Dim cmd As cShowOptionsCommand = DirectCast(cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
+                cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.FileLocations)
+            Else
+                Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+                cmd.Invoke(Me.mMSE.CustomPath, My.Resources.PROMPT_DATAPATH)
+            End If
 
-            ' Evaluate usefulness of the new path
             Me.UpdateControls()
 
         Catch ex As Exception
@@ -194,13 +188,12 @@ Public Class frmMSE
     End Sub
 
     Private Sub btShowTFMForm_Click(sender As System.Object, e As System.EventArgs) _
-        Handles btShowTFMForm.Click
+        Handles m_btnShowTFMForm.Click
 
         Dim bhasForm As Boolean
 
         'First make sure the Harvest Controls Rules have been loaded
         'this is so the interface has some data
-        mMSE.Configure()
 
         ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
         '             From the UI point of view, we just want strategies. The plug-in does the optimizating
@@ -218,20 +211,10 @@ Public Class frmMSE
         frmTargetF.Show()
     End Sub
 
-
-    Private Sub OnToggleAdvancedView(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnAdvancedSettings.Click
-
-        Me.m_bAdvanced = Not Me.m_bAdvanced
-        Me.UpdateControls()
-
-    End Sub
-
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btn2.Click
 
         Try
-            mMSE.Configure()
             mMSE.Create1DimParams("MaxRelFeedingTime")
             mMSE.Create1DimParams("FeedingTimeAdjustRate")
             mMSE.Create1DimParams("OtherMortFeedingTime")
@@ -257,6 +240,9 @@ Public Class frmMSE
         Catch ex As Exception
 
         End Try
+
+        ' Perhaps the user has made a useful contribution ;)
+        Me.UpdateControls()
 
     End Sub
 
@@ -293,39 +279,5 @@ Public Class frmMSE
     End Sub
 
 #End Region ' Control events
-
-    ' This method really should move to the main engine: the plug-in
-    Private Sub GenerateEmptyDietcsv()
-
-        Dim sPath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")
-        Dim diet_csvout As StreamWriter = cMSEUtils.GetWriter(sPath, False)
-        Dim mean As Single
-
-        If (diet_csvout Is Nothing) Then Return
-
-        diet_csvout.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
-        diet_csvout.WriteLine()
-
-        For iPred As Integer = 1 To mCore.nLivingGroups
-            If mCore.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
-                mean = mCore.EcoPathGroupInputs(iPred).ImpDiet
-                diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,1," & cStringUtils.ToCSVField(mean))
-            Else
-                diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,0,0")
-            End If
-
-            For iPrey As Integer = 1 To mCore.nGroups
-                If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
-                    mean = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey)
-                    diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",1," & cStringUtils.ToCSVField(mean))
-                Else
-                    diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",0,0")
-                End If
-            Next
-        Next
-
-        cMSEUtils.ReleaseWriter(diet_csvout)
-
-    End Sub
 
 End Class

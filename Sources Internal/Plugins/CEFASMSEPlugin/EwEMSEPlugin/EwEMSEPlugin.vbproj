@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cMSE.vb" />
+    <Compile Include="cMSEStateMonitor.vb" />
     <Compile Include="MSEUtils.vb" />
     <Compile Include="frmDistributionParameters.Designer.vb">
       <DependentUpon>frmDistributionParameters.vb</DependentUpon>

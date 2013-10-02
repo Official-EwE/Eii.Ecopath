@@ -222,29 +222,31 @@ Public Class frmDistributionParameters
         Try
             If (csv IsNot Nothing) Then
                 csv.ReadNextRecord()
+                If (csv.FieldCount >= 5) Then
 
-                TGroupNumber = cStringUtils.ConvertToInteger(csv(0))
-                TGroupName = cMSEUtils.FromCSVField(csv(1))
-                TCV = cStringUtils.ConvertToDouble(csv(2))
-                TLowerBound = cStringUtils.ConvertToDouble(csv(3))
-                TUpperBound = cStringUtils.ConvertToDouble(csv(4))
+                    TGroupNumber = cStringUtils.ConvertToInteger(csv(0))
+                    TGroupName = cMSEUtils.FromCSVField(csv(1))
+                    TCV = cStringUtils.ConvertToDouble(csv(2))
+                    TLowerBound = cStringUtils.ConvertToDouble(csv(3))
+                    TUpperBound = cStringUtils.ConvertToDouble(csv(4))
 
-                ' JS 02Oct2013: Need to validate group number
-                If TGroupNumber < 1 Or TGroupNumber >= Me.mCore.nGroups Then
-                    ' ToDo:_JS: report error somehow
-                    Return Nothing
-                End If
+                    ' JS 02Oct2013: Need to validate group number
+                    If TGroupNumber < 1 Or TGroupNumber >= Me.mCore.nGroups Then
+                        ' ToDo:_JS: report error somehow
+                        Return Nothing
+                    End If
 
-                If ParameterType = eParamName.B Then
-                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).BiomassAreaInput
-                ElseIf ParameterType = eParamName.BA Then
-                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).BioAccum
-                ElseIf ParameterType = eParamName.QB Then
-                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).QBInput
-                ElseIf ParameterType = eParamName.PB Then
-                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).PBInput
-                ElseIf ParameterType = eParamName.EE Then
-                    TMean = mCore.EcoPathGroupInputs(TGroupNumber).EEInput
+                    If ParameterType = eParamName.B Then
+                        TMean = mCore.EcoPathGroupInputs(TGroupNumber).BiomassAreaInput
+                    ElseIf ParameterType = eParamName.BA Then
+                        TMean = mCore.EcoPathGroupInputs(TGroupNumber).BioAccum
+                    ElseIf ParameterType = eParamName.QB Then
+                        TMean = mCore.EcoPathGroupInputs(TGroupNumber).QBInput
+                    ElseIf ParameterType = eParamName.PB Then
+                        TMean = mCore.EcoPathGroupInputs(TGroupNumber).PBInput
+                    ElseIf ParameterType = eParamName.EE Then
+                        TMean = mCore.EcoPathGroupInputs(TGroupNumber).EEInput
+                    End If
                 End If
             End If
 
@@ -643,8 +645,11 @@ Public Class frmDistributionParameters
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnOK.Click
 
-        'Saves all the parameters to csv when user clicks to save
+        If Not Me.m_MSEPlugin.IsDirectoryStructureAvailable(True) Then
+            Return
+        End If
 
+        'Saves all the parameters to csv when user clicks to save
         SaveEcopathParameters2CSV(B, "B")
         SaveEcopathParameters2CSV(BA, "BA")
         SaveEcopathParameters2CSV(PB, "PB")
