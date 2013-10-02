@@ -75,6 +75,11 @@ Namespace Utilities
             ' Work with full path
             strFileName = Path.GetFullPath(strFileName)
 
+            ' Make sure directory is available
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName), True) Then
+                Return False
+            End If
+
             Try
                 If (bOverwrite) Then
                     ' Create the file, overwriting any existing file with the same path
