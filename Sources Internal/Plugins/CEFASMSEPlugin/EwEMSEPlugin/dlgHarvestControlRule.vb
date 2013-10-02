@@ -20,9 +20,9 @@
 ' ===============================================================================
 '
 Option Strict On
-Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Controls
 Imports EwECore
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 
 Public Class dlgHarvestControlRule
 
@@ -58,26 +58,36 @@ Public Class dlgHarvestControlRule
         m_strategy = curStrategy
     End Sub
 
-    Private Sub dlgHarvestControlRule_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
+
+        MyBase.OnLoad(e)
 
         m_HRC = New HCR_Group(m_Plugin.Core)
 
         For igrp As Integer = 1 To Me.Core.nGroups
             If Core.EcoPathGroupInputs(igrp).IsFished Then
-                Me.cbBiomassGroups.Items.Add(New cCoreInputOutputControlItem(Core.EcoPathGroupInputs(igrp)))
+                Me.m_cbBiomassGroups.Items.Add(New cCoreInputOutputControlItem(Core.EcoPathGroupInputs(igrp)))
             End If
         Next
-
 
         For igrp As Integer = 1 To Me.Core.nGroups
             If Core.EcoPathGroupInputs(igrp).IsFished Then
-                Me.cbFMortGroups.Items.Add(New cCoreInputOutputControlItem(Core.EcoPathGroupInputs(igrp)))
+                Me.m_cbFMortGroups.Items.Add(New cCoreInputOutputControlItem(Core.EcoPathGroupInputs(igrp)))
             End If
         Next
 
-        cbCostFunctions.Items.Add(HCR_Group.toCostFunctionString(eCostFunctionTypes.Target))
-        cbCostFunctions.Items.Add(HCR_Group.toCostFunctionString(eCostFunctionTypes.Conservation))
-        cbCostFunctions.SelectedIndex = 0
+        m_cbCostFunctions.Items.Add(HCR_Group.toCostFunctionString(eCostFunctionTypes.Target))
+        m_cbCostFunctions.Items.Add(HCR_Group.toCostFunctionString(eCostFunctionTypes.Conservation))
+        m_cbCostFunctions.SelectedIndex = 0
+
+        Me.CenterToParent()
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
+        'If not a valid rule stop the form from closing to let the user correct the rule
+        e.Cancel = Not Me.m_isValid
+        MyBase.OnFormClosing(e)
 
     End Sub
 
@@ -85,56 +95,51 @@ Public Class dlgHarvestControlRule
 
 #Region "Control event handlers"
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles OK_Button.Click
 
-        ' ToDo_JS: globalize this
+        ' JS 02Oct13: globalized this message
+        ' JS 02Oct13: replaced message box with cMessages
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Dim validationstring As String = ""
+        ' Think positive
         Me.m_isValid = True
 
+        Dim validationstring As String = ""
+
         If Me.m_strategy.Contains(Me.HarvestControlRule) Then
-            Me.m_isValid = False
             'Failed vaidation rule already exists in strategy
-            MsgBox("Sorry this harvest Control Rule already exists in the current Strategy.", MsgBoxStyle.Critical, "Please fix any errors and try again.")
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            '  Me.Close()
-            'Don't bother checking the other validation
-            'Just boot out
+            Me.m_isValid = False
+            Me.m_Plugin.SendMessage(My.Resources.ERROR_HARVESTRULE_DUPLICATE, EwEUtils.Core.eMessageImportance.Critical)
+            ' Don't bother checking the other validation. Just boot out
             Return
         End If
 
         If Not Me.HarvestControlRule.isValid(validationstring) Then
-            Me.m_isValid = False
             'If the Harvest Rule is not valid set the DialogResult to Cancel so the rule is not used
-            MsgBox("Sorry invalid Harvest Control Rule." + Environment.NewLine + validationstring, MsgBoxStyle.Critical, "Please fix any errors and try again.")
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.m_isValid = False
+            Me.m_Plugin.SendMessage(String.Format(My.Resources.ERROR_HARVESTRULE_INVALID, validationstring), EwEUtils.Core.eMessageImportance.Critical)
             Return
         End If
 
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
 
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.m_isValid = True
         Me.Close()
     End Sub
 
-
-    Private Sub cbBiomassGroups_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbBiomassGroups.SelectedIndexChanged
-
-        updateHRC()
-
-    End Sub
-
-    Private Sub cbFMortGroups_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbFMortGroups.SelectedIndexChanged
-
-        updateHRC()
-
+    Private Sub cbBiomassGroups_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbBiomassGroups.SelectedIndexChanged, m_cbFMortGroups.SelectedIndexChanged
+        Try
+            updateHRC()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub updateHRC()
@@ -143,7 +148,7 @@ Public Class dlgHarvestControlRule
         Dim grpOut As cEcoPathGroupOutput = Nothing
 
         ' Group Biomass
-        selItem = DirectCast(cbBiomassGroups.SelectedItem, cCoreInputOutputControlItem)
+        selItem = DirectCast(m_cbBiomassGroups.SelectedItem, cCoreInputOutputControlItem)
         If (selItem IsNot Nothing) Then
 
             Me.m_HRC.GroupB = DirectCast(selItem.Source, cEcoPathGroupInput)
@@ -155,7 +160,7 @@ Public Class dlgHarvestControlRule
         End If
 
         ' Fishing Mort
-        selItem = DirectCast(cbFMortGroups.SelectedItem, cCoreInputOutputControlItem)
+        selItem = DirectCast(m_cbFMortGroups.SelectedItem, cCoreInputOutputControlItem)
         If selItem IsNot Nothing Then
 
             Me.m_HRC.GroupF = DirectCast(selItem.Source, cEcoPathGroupInput)
@@ -166,31 +171,24 @@ Public Class dlgHarvestControlRule
         End If
 
         ' Cost function
-        If (Me.cbCostFunctions.SelectedItem IsNot Nothing) Then
-            Me.m_HRC.CostFunction = HCR_Group.toCostFunctionEnum(CStr(Me.cbCostFunctions.SelectedItem))
+        If (Me.m_cbCostFunctions.SelectedItem IsNot Nothing) Then
+            Me.m_HRC.CostFunction = HCR_Group.toCostFunctionEnum(CStr(Me.m_cbCostFunctions.SelectedItem))
         End If
 
         ' Oooh
-        Me.txRule.Text = Me.m_HRC.ToString()
+        Me.m_tbxRule.Text = Me.m_HRC.ToString()
 
     End Sub
 
-    Private Sub cbCostFunctions_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbCostFunctions.SelectedIndexChanged
-        Me.updateHRC()
+    Private Sub cbCostFunctions_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbCostFunctions.SelectedIndexChanged
+        Try
+            Me.updateHRC()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
 #End Region
-
-    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
-
-        If Not Me.m_isValid Then
-            'Not a valid rule
-            'so stop the form from closing 
-            'to let the user correct the rule
-            e.Cancel = True
-        End If
-        MyBase.OnFormClosing(e)
-
-    End Sub
 
 End Class

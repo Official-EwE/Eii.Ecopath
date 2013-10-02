@@ -154,6 +154,13 @@
   <data name="ERROR_ENTERNAME" xml:space="preserve">
     <value>A strategy with this name already exists. Please select another name</value>
   </data>
+  <data name="ERROR_HARVESTRULE_DUPLICATE" xml:space="preserve">
+    <value>This harvest control rule already exists in the current Strategy</value>
+  </data>
+  <data name="ERROR_HARVESTRULE_INVALID" xml:space="preserve">
+    <value>This harvest control rule is invalid. {0}</value>
+    <comment>{0}=validation string</comment>
+  </data>
   <data name="HCR_GROUP_BIOMASS" xml:space="preserve">
     <value>Biomass Group = {0}</value>
     <comment>{0}=group details</comment>

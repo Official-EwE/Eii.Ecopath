@@ -151,6 +151,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to This harvest control rule already exists in the current Strategy.
+        '''</summary>
+        Friend ReadOnly Property ERROR_HARVESTRULE_DUPLICATE() As String
+            Get
+                Return ResourceManager.GetString("ERROR_HARVESTRULE_DUPLICATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This harvest control rule is invalid. {0}.
+        '''</summary>
+        Friend ReadOnly Property ERROR_HARVESTRULE_INVALID() As String
+            Get
+                Return ResourceManager.GetString("ERROR_HARVESTRULE_INVALID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass Group = {0}.
         '''</summary>
         Friend ReadOnly Property HCR_GROUP_BIOMASS() As String

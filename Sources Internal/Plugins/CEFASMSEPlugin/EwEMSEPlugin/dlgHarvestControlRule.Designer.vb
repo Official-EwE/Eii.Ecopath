@@ -47,17 +47,17 @@ Partial Class dlgHarvestControlRule
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.cbBiomassGroups = New System.Windows.Forms.ComboBox()
-        Me.cbFMortGroups = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.txRule = New System.Windows.Forms.TextBox()
-        Me.cbCostFunctions = New System.Windows.Forms.ComboBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
+        Me.m_cbBiomassGroups = New System.Windows.Forms.ComboBox()
+        Me.m_cbFMortGroups = New System.Windows.Forms.ComboBox()
+        Me.m_lblBiomassGroup = New System.Windows.Forms.Label()
+        Me.m_lblFMortGroup = New System.Windows.Forms.Label()
+        Me.m_tbxRule = New System.Windows.Forms.TextBox()
+        Me.m_cbCostFunctions = New System.Windows.Forms.ComboBox()
+        Me.m_lblHRCType = New System.Windows.Forms.Label()
+        Me.m_lblBiomassGroupInfo = New System.Windows.Forms.Label()
+        Me.m_lblInfoFMortGroup = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
+        Me.m_lblHCRTypeInfo = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -79,66 +79,66 @@ Partial Class dlgHarvestControlRule
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Name = "Cancel_Button"
         '
-        'cbBiomassGroups
+        'm_cbBiomassGroups
         '
-        resources.ApplyResources(Me.cbBiomassGroups, "cbBiomassGroups")
-        Me.cbBiomassGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbBiomassGroups.FormattingEnabled = True
-        Me.cbBiomassGroups.Name = "cbBiomassGroups"
+        Me.m_cbBiomassGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cbBiomassGroups.FormattingEnabled = True
+        resources.ApplyResources(Me.m_cbBiomassGroups, "m_cbBiomassGroups")
+        Me.m_cbBiomassGroups.Name = "m_cbBiomassGroups"
         '
-        'cbFMortGroups
+        'm_cbFMortGroups
         '
-        resources.ApplyResources(Me.cbFMortGroups, "cbFMortGroups")
-        Me.cbFMortGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFMortGroups.FormattingEnabled = True
-        Me.cbFMortGroups.Name = "cbFMortGroups"
+        Me.m_cbFMortGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cbFMortGroups.FormattingEnabled = True
+        resources.ApplyResources(Me.m_cbFMortGroups, "m_cbFMortGroups")
+        Me.m_cbFMortGroups.Name = "m_cbFMortGroups"
         '
-        'Label1
+        'm_lblBiomassGroup
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_lblBiomassGroup, "m_lblBiomassGroup")
+        Me.m_lblBiomassGroup.Name = "m_lblBiomassGroup"
         '
-        'Label2
+        'm_lblFMortGroup
         '
-        resources.ApplyResources(Me.Label2, "Label2")
-        Me.Label2.Name = "Label2"
+        resources.ApplyResources(Me.m_lblFMortGroup, "m_lblFMortGroup")
+        Me.m_lblFMortGroup.Name = "m_lblFMortGroup"
         '
-        'txRule
+        'm_tbxRule
         '
-        resources.ApplyResources(Me.txRule, "txRule")
-        Me.txRule.Name = "txRule"
+        resources.ApplyResources(Me.m_tbxRule, "m_tbxRule")
+        Me.m_tbxRule.Name = "m_tbxRule"
         '
-        'cbCostFunctions
+        'm_cbCostFunctions
         '
-        Me.cbCostFunctions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbCostFunctions.FormattingEnabled = True
-        resources.ApplyResources(Me.cbCostFunctions, "cbCostFunctions")
-        Me.cbCostFunctions.Name = "cbCostFunctions"
+        Me.m_cbCostFunctions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cbCostFunctions.FormattingEnabled = True
+        resources.ApplyResources(Me.m_cbCostFunctions, "m_cbCostFunctions")
+        Me.m_cbCostFunctions.Name = "m_cbCostFunctions"
         '
-        'Label3
+        'm_lblHRCType
         '
-        resources.ApplyResources(Me.Label3, "Label3")
-        Me.Label3.Name = "Label3"
+        resources.ApplyResources(Me.m_lblHRCType, "m_lblHRCType")
+        Me.m_lblHRCType.Name = "m_lblHRCType"
         '
-        'Label4
+        'm_lblBiomassGroupInfo
         '
-        resources.ApplyResources(Me.Label4, "Label4")
-        Me.Label4.Name = "Label4"
+        resources.ApplyResources(Me.m_lblBiomassGroupInfo, "m_lblBiomassGroupInfo")
+        Me.m_lblBiomassGroupInfo.Name = "m_lblBiomassGroupInfo"
         '
-        'Label5
+        'm_lblInfoFMortGroup
         '
-        resources.ApplyResources(Me.Label5, "Label5")
-        Me.Label5.Name = "Label5"
+        resources.ApplyResources(Me.m_lblInfoFMortGroup, "m_lblInfoFMortGroup")
+        Me.m_lblInfoFMortGroup.Name = "m_lblInfoFMortGroup"
         '
         'Label6
         '
         resources.ApplyResources(Me.Label6, "Label6")
         Me.Label6.Name = "Label6"
         '
-        'Label7
+        'm_lblHCRTypeInfo
         '
-        resources.ApplyResources(Me.Label7, "Label7")
-        Me.Label7.Name = "Label7"
+        resources.ApplyResources(Me.m_lblHCRTypeInfo, "m_lblHCRTypeInfo")
+        Me.m_lblHCRTypeInfo.Name = "m_lblHCRTypeInfo"
         '
         'dlgHarvestControlRule
         '
@@ -146,17 +146,17 @@ Partial Class dlgHarvestControlRule
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.m_lblHCRTypeInfo)
         Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.cbCostFunctions)
-        Me.Controls.Add(Me.txRule)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.cbFMortGroups)
-        Me.Controls.Add(Me.cbBiomassGroups)
+        Me.Controls.Add(Me.m_lblInfoFMortGroup)
+        Me.Controls.Add(Me.m_lblBiomassGroupInfo)
+        Me.Controls.Add(Me.m_lblHRCType)
+        Me.Controls.Add(Me.m_cbCostFunctions)
+        Me.Controls.Add(Me.m_tbxRule)
+        Me.Controls.Add(Me.m_lblFMortGroup)
+        Me.Controls.Add(Me.m_lblBiomassGroup)
+        Me.Controls.Add(Me.m_cbFMortGroups)
+        Me.Controls.Add(Me.m_cbBiomassGroups)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -171,16 +171,16 @@ Partial Class dlgHarvestControlRule
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents cbBiomassGroups As System.Windows.Forms.ComboBox
-    Friend WithEvents cbFMortGroups As System.Windows.Forms.ComboBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents txRule As System.Windows.Forms.TextBox
-    Friend WithEvents cbCostFunctions As System.Windows.Forms.ComboBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Private WithEvents m_lblBiomassGroup As System.Windows.Forms.Label
+    Private WithEvents m_lblFMortGroup As System.Windows.Forms.Label
+    Private WithEvents m_lblInfoFMortGroup As System.Windows.Forms.Label
+    Private WithEvents m_lblBiomassGroupInfo As System.Windows.Forms.Label
+    Private WithEvents m_lblHCRTypeInfo As System.Windows.Forms.Label
+    Private WithEvents m_lblHRCType As System.Windows.Forms.Label
+    Private WithEvents m_cbCostFunctions As System.Windows.Forms.ComboBox
+    Private WithEvents m_cbBiomassGroups As System.Windows.Forms.ComboBox
+    Private WithEvents m_cbFMortGroups As System.Windows.Forms.ComboBox
+    Private WithEvents m_tbxRule As System.Windows.Forms.TextBox
 
 End Class
