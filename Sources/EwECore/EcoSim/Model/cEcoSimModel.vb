@@ -929,7 +929,7 @@ Namespace Ecosim
                     End If 'If m_search.PlotOn = True Then
 
                     ' JS 09Sep13: Can run TL calculations with searches upon request
-                    If (Me.m_search.SearchMode = eSearchModes.NotInSearch) Or (Not Me.m_Data.bAlwaysCalcTLc) Then
+                    If ((Me.m_search.SearchMode = eSearchModes.NotInSearch) Or (Me.m_Data.bAlwaysCalcTLc)) And m_Data.bTimestepOutput Then
                         Me.EstimateTLs(itime)
                         Me.EstimateTLofCatch(itime)
                     End If
