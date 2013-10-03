@@ -516,8 +516,11 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the Ecospace port layer.
+    ''' Get the Ecospace port layer for a given fleet.
     ''' </summary>
+    ''' <param name="iFleet">Zero-based fleet index to get the layer for. Fleet
+    ''' index 0 will return the ports for All fleets.
+    ''' </param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerPort(iFleet As Integer) As cEcospaceLayerPort
         Get
@@ -527,12 +530,13 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the Ecospace sailing cost layer.
+    ''' Get the Ecospace sailing cost layer for a given fleet.
     ''' </summary>
+    ''' <param name="iFleet">One-based Fleet index to get the layer for.</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerSailingCost(iFleet As Integer) As cEcospaceLayerSail
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerSail)(iFleet), cEcospaceLayerSail)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerSail)(iFleet - 1), cEcospaceLayerSail)
         End Get
     End Property
 
