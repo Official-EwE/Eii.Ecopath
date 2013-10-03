@@ -2878,6 +2878,7 @@ Public Class cCore
                                 bSucces = cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strDest), True)
                             Catch ex As Exception
                                 ' Hmm
+                                bSucces = False
                             End Try
 
                             ' Create backup

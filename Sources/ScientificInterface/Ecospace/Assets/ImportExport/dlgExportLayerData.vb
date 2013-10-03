@@ -88,9 +88,8 @@ Namespace Ecospace.Basemap
 
             Dim f As New cLayerFactoryInternal()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-
-            ' Set default file
-            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), "layers.csv")
+            Dim lVars As New List(Of eVarNameFlags)
+            Dim strFile As String = "layers.csv"
 
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
@@ -100,6 +99,20 @@ Namespace Ecospace.Basemap
                     End If
                 Next
             End If
+
+            ' Determine name of layer file
+            For Each layer As cEcospaceLayer In Me.m_lLayers
+                If Not lVars.Contains(layer.VarName) Then
+                    lVars.Add(layer.VarName)
+                End If
+            Next
+
+            If (lVars.Count = 1) Then
+                strFile = cFileUtils.ToValidFileName(f.GetLayerGroup(lVars(0)), False) & ".csv"
+            End If
+
+            ' Set default file name (user can override)
+            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), strFile)
 
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
             Me.m_grid.UIContext = Me.m_uic

@@ -246,6 +246,7 @@ Namespace Ecospace.Basemap
             Dim null As Object = 0.0!
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
+            Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Update)
 
             Try
 
@@ -281,10 +282,7 @@ Namespace Ecospace.Basemap
                             layer.Cell(iRow, iCol) = Me.m_data.Value(iCell, strField)
                         Next
 
-                        'layer.IsModified = True
-                        'layer.Update(cDisplayLayer.eChangeFlags.Map)
-
-                        ' ToDo: Send update
+                        Me.m_uic.Core.onChanged(layer)
 
                     End If
                 Next layer
@@ -293,6 +291,7 @@ Namespace Ecospace.Basemap
 
             End Try
 
+            Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             Return True
@@ -379,6 +378,7 @@ Namespace Ecospace.Basemap
             resources.ApplyResources(Me.m_tbInput, "m_tbInput")
             Me.m_tbInput.Name = "m_tbInput"
             Me.m_tbInput.ReadOnly = True
+            Me.m_tbInput.TabStop = False
             '
             'm_btnBrowseInput
             '
@@ -423,10 +423,12 @@ Namespace Ecospace.Basemap
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
-            Me.m_grid.Fields = New String() {}
+            Me.m_grid.DataName = "grid content"
+            Me.m_grid.Fields = New String() {"(none)"}
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
             Me.m_grid.Layers = Nothing
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
