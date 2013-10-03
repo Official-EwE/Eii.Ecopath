@@ -453,10 +453,12 @@ Public Class cMessageHistory
         If String.IsNullOrEmpty(msg.Message) Then Return
 
         ' Early bail-out for messages hidden from UI
-        Select Case msg.Importance
-            Case eMessageImportance.Progress, eMessageImportance.Maintenance
-                Return
-        End Select
+        If Not TypeOf (msg) Is cFeedbackMessage Then
+            Select Case msg.Importance
+                Case eMessageImportance.Progress, eMessageImportance.Maintenance
+                    Return
+            End Select
+        End If
 
         ' Is not a suppressed message?
         If Not msg.Suppressed Then
