@@ -2071,7 +2071,10 @@ Namespace Style
                 Case eApplicationColorType.MISSINGPARAMETER_BACKGROUND : Return Color.FromArgb(255, 182, 134, 221)
                 Case eApplicationColorType.IMAGE_BACKGROUND : Return Color.White
                 Case eApplicationColorType.PLOT_BACKGROUND : Return Color.White
-                Case eApplicationColorType.MAP_BACKGROUND : Return SystemColors.ControlDark
+                Case eApplicationColorType.MAP_BACKGROUND : Return Color.Azure
+                Case eApplicationColorType.PEDIGREE : Return Color.Orange
+                Case eApplicationColorType.PREDATOR : Return Color.Red
+                Case eApplicationColorType.PREY : Return Color.Green
                 Case eApplicationColorType.NotSet
                     Return Color.Transparent
             End Select

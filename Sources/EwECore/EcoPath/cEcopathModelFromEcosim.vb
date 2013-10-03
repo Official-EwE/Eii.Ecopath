@@ -109,13 +109,12 @@ Public Class cEcopathModelFromEcosim
                               ByVal iNumYearsAverage As Integer, _
                               ByVal WeightPower As Single) As eDatasourceAccessType
 
-        Dim returnVal As eDatasourceAccessType = eDatasourceAccessType.Created
+        Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
         Try
 
             Dim coreDest As New cCore()
             Dim db As cEwEDatabase = New cEwEAccessDatabase()
-            Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
             Dim bSucces As Boolean = False
 
             coreDest.PluginManager = Nothing
@@ -125,36 +124,38 @@ Public Class cEcopathModelFromEcosim
             End If
 
             atResult = db.Create(strFileName, strModelName, True, strAuthor:=Me.m_core.DefaultAuthor)
-            If (atResult <> eDatasourceAccessType.Created) Then Return atResult
+            If (atResult = eDatasourceAccessType.Created) Then
 
-            Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFileName)
-            If ds.Open(strFileName, coreDest) = eDatasourceAccessType.Opened Then
-                If coreDest.LoadModel(ds) Then
-                    If Me.CreateItems(coreDest) Then
-                        Me.PopulateItems(coreDest, iTime, BACalculation, iNumYearsAverage, WeightPower)
+                Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFileName)
+                If ds.Open(strFileName, coreDest) = eDatasourceAccessType.Opened Then
+                    If coreDest.LoadModel(ds) Then
+                        If Me.CreateItems(coreDest) Then
+                            Me.PopulateItems(coreDest, iTime, BACalculation, iNumYearsAverage, WeightPower)
+                        End If
                     End If
                 End If
+
+                coreDest.CloseModel()
+
+                db = Nothing
+                ds = Nothing
+                coreDest = Nothing
+
             End If
 
-            coreDest.CloseModel()
-
-            db = Nothing
-            ds = Nothing
-            coreDest = Nothing
-
         Catch ex As Exception
-            returnVal = eDatasourceAccessType.Failed_Unknown
+            atResult = eDatasourceAccessType.Failed_Unknown
             cLog.Write(ex)
             Me.LogSuccess(String.Format("Error generating model '{0}': {1}", strFileName, ex.Message), False)
         End Try
 
-        If (returnVal = eDatasourceAccessType.Created) Then
+        If (atResult = eDatasourceAccessType.Created) Then
             Me.LogSuccess(String.Format("Model successfully saved to '{0}'", strFileName), True)
         Else
             Me.LogSuccess(String.Format("Failed to save mode to '{0}'", strFileName), False)
         End If
 
-        Return returnVal
+        Return atResult
 
     End Function
 
@@ -259,7 +260,7 @@ Public Class cEcopathModelFromEcosim
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim pathDest As cEcopathDataStructures = coreNew.m_EcoPathData
         Dim GroupDBIDs(coreNew.nGroups) As Integer
-        Dim FleetDBIDs(coreNew.nFleets) As Integer
+        Dim FleetDBIDs(coreNew.nFleets + 1) As Integer
 
         Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim stanzaDest As cStanzaDatastructures = coreNew.m_Stanza
@@ -437,7 +438,7 @@ Public Class cEcopathModelFromEcosim
     ''' <param name="strMessage"></param>
     ''' <param name="bSuccess"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub LogSuccess(strMessage As String, bSuccess As Boolean)
+    Public Sub LogSuccess(strMessage As String, bSuccess As Boolean)
 
         Dim vs As cVariableStatus = Nothing
 

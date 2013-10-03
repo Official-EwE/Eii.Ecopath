@@ -111,11 +111,16 @@ Public MustInherit Class cEcospaceLayer
                       ByVal data As Object, _
                       ByVal strName As String, _
                       ByVal typeValue As Type, _
-                      Optional ByVal meta As cVariableMetaData = Nothing)
+                      Optional ByVal meta As cVariableMetaData = Nothing, _
+                      Optional ByVal vn As eVarNameFlags = Nothing)
 
         Me.New(theCore, cCore.NULL_VALUE, strName, typeValue, meta)
 
+        ' Sanity check
+        Debug.Assert(data IsNot Nothing Or VarName <> eVarNameFlags.NotSet, "Layer created without any data!")
+
         Me.m_data = data
+        Me.m_vnData = vn
 
     End Sub
 

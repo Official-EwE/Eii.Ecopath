@@ -518,6 +518,8 @@ Namespace Other
             Dim cmb As ComboBox = DirectCast(sender, ComboBox)
             If cmb Is Nothing Then Return
 
+            If (e.Index = -1) Then Return
+
             Try
                 'Get the current drawn item
                 Dim item As cKnownColorItem = DirectCast(cmb.Items(e.Index), cKnownColorItem)
@@ -573,22 +575,21 @@ Namespace Other
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler to set the color prefrence to default colors. 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub btnUseDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        ' ''' -------------------------------------------------------------------
+        ' ''' <summary>
+        ' ''' Event handler to set the color preference to default colors. 
+        ' ''' </summary>
+        ' ''' -------------------------------------------------------------------
+        'Private Sub btnUseDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
+        '    Dim sel As ListView.SelectedIndexCollection = Me.m_lvItems.SelectedIndices
+        '    Me.UIContext.StyleGuide.ResetApplicationColors()
+        '    Me.FillColorItemsList()
+        '    For Each i As Integer In sel
+        '        Me.m_lvItems.Items(i).Selected = True
+        '    Next
 
-            Dim sel As ListView.SelectedIndexCollection = Me.m_lvItems.SelectedIndices
-            Me.UIContext.StyleGuide.ResetApplicationColors()
-            Me.FillColorItemsList()
-            For Each i As Integer In sel
-                Me.m_lvItems.Items(i).Selected = True
-            Next
-
-        End Sub
+        'End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>

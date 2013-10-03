@@ -23,6 +23,7 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports EwECore
+Imports ScientificInterface.Ecospace.Basemap.Layers
 
 #End Region ' Imports
 
@@ -42,7 +43,8 @@ Namespace Ecospace.Basemap
         Private m_dtLayerMapping As New Dictionary(Of cEcospaceLayer, String)
 
         Private Enum eColumnTypes As Integer
-            ColumnLayer = 0
+            ColumnParent = 0
+            ColumnLayer
             ColumnField
         End Enum
 
@@ -102,10 +104,9 @@ Namespace Ecospace.Basemap
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
-            If Not Me.HasData() Then Return
-
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
+            Me(0, eColumnTypes.ColumnParent) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell(SharedResources.HEADER_LAYER)
             Me(0, eColumnTypes.ColumnField) = New EwEColumnHeaderCell(SharedResources.HEADER_FIELD)
 
@@ -115,33 +116,70 @@ Namespace Ecospace.Basemap
             Me.FixedColumns = 1
             Me.FixedColumnWidths = False
 
+
         End Sub
 
         Protected Overrides Sub FillData()
 
-            If Not Me.HasData Then Return
+            If (Me.UIContext Is Nothing) Then Return
+            If (Not Me.HasData()) Then Return
 
             Me.RowsCount = 1
 
             Dim layer As cEcospaceLayer = Nothing
-            Dim ewec As EwECell = Nothing
+            Dim cell As EwECell = Nothing
             Dim cmb As Cells.Real.ComboBox = Nothing
+            Dim lfbase As New cLayerFactoryInternal()
+            Dim dtParents As New Dictionary(Of String, EwEHierarchyGridCell)
+            Dim strGroup As String = ""
+            Dim iRow As Integer = 0
+            Dim vizChild As New cVisualizerEwEChildRowHeader()
+            Dim cellParent As EwEHierarchyGridCell = Nothing
+            Dim checkParent As EwECheckboxCell = Nothing
 
             For iLayer As Integer = 0 To Me.m_aLayers.Length - 1
 
-                Me.AddRow()
                 layer = Me.m_aLayers(iLayer)
 
-                ewec = New EwECell(layer.Name, GetType(String))
-                ewec.Style = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
-                Me(iLayer + 1, eColumnTypes.ColumnLayer) = ewec
+                strGroup = lfbase.GetLayerGroup(layer.VarName)
+                If Not dtParents.ContainsKey(strGroup) Then
+                    iRow = Me.AddRow()
+                    For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+
+                    ' Hierarchy cell
+                    cellParent = New EwEHierarchyGridCell()
+                    dtParents(strGroup) = cellParent
+                    Me(iRow, eColumnTypes.ColumnParent) = cellParent
+
+                    ' Layer group name
+                    Me(iRow, eColumnTypes.ColumnLayer) = New EwERowHeaderCell(strGroup)
+                    Me(iRow, eColumnTypes.ColumnField) = New EwERowHeaderCell("")
+
+                    ' New row for data
+                    iRow = Me.AddRow()
+
+                Else
+                    cellParent = dtParents(strGroup)
+                    iRow = Me.AddRow(cellParent.Row + cellParent.NumChildRows + 1)
+                End If
+
+                If (layer.Index <= 0) Then
+                    cell = New EwERowHeaderCell("")
+                Else
+                    cell = New EwERowHeaderCell(CStr(layer.Index))
+                End If
+                Me(iRow, eColumnTypes.ColumnParent) = cell
+
+                cell = New EwERowHeaderCell(layer.Name)
+                cell.VisualModel = New cVisualizerEwEChildRowHeader
+                Me(iRow, eColumnTypes.ColumnLayer) = cell
 
                 cmb = New Cells.Real.ComboBox(SharedResources.GENERIC_VALUE_NONE, GetType(String), Me.m_astrFields, True)
                 cmb.EditableMode = EditableMode.SingleClick
-                Me(iLayer + 1, eColumnTypes.ColumnField) = cmb
-                Me(iLayer + 1, eColumnTypes.ColumnField).Behaviors.Add(Me.EwEEditHandler)
+                Me(iRow, eColumnTypes.ColumnField) = cmb
+                Me(iRow, eColumnTypes.ColumnField).Behaviors.Add(Me.EwEEditHandler)
 
-                Me.Rows(iLayer + 1).Tag = layer
+                Me.Rows(iRow).Tag = layer
 
             Next iLayer
 
@@ -151,7 +189,10 @@ Namespace Ecospace.Basemap
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
-            Me.StretchColumnsToFitWidth()
+            Me.Columns(eColumnTypes.ColumnParent).Width = 20
+            Me.Columns(eColumnTypes.ColumnParent).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.Columns(eColumnTypes.ColumnField).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
         End Sub
 
         Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
@@ -181,20 +222,22 @@ Namespace Ecospace.Basemap
 
                 layer = Me.LayerAtRow(iRow)
 
-                cmb = DirectCast(Me(iRow, eColumnTypes.ColumnField), Cells.Real.ComboBox)
-                dm = DirectCast(cmb.DataModel, DataModels.EditorComboBox)
-                dm.DefaultValue = SharedResources.GENERIC_VALUE_NONE
+                If (layer IsNot Nothing) Then
+                    cmb = DirectCast(Me(iRow, eColumnTypes.ColumnField), Cells.Real.ComboBox)
+                    dm = DirectCast(cmb.DataModel, DataModels.EditorComboBox)
+                    dm.DefaultValue = SharedResources.GENERIC_VALUE_NONE
 
-                If Me.m_dtLayerMapping.ContainsKey(layer) Then
-                    strValue = Me.m_dtLayerMapping(layer)
-                Else
-                    strValue = SharedResources.GENERIC_VALUE_NONE
+                    If Me.m_dtLayerMapping.ContainsKey(layer) Then
+                        strValue = Me.m_dtLayerMapping(layer)
+                    Else
+                        strValue = SharedResources.GENERIC_VALUE_NONE
+                    End If
+
+                    Try
+                        cmb.Value = strValue
+                    Catch ex As Exception
+                    End Try
                 End If
-
-                Try
-                    cmb.Value = strValue
-                Catch ex As Exception
-                End Try
 
             Next iRow
 
@@ -224,7 +267,8 @@ Namespace Ecospace.Basemap
         End Function
 
         Private Function HasData() As Boolean
-            Return (Me.m_aLayers IsNot Nothing)
+            If (Me.m_aLayers Is Nothing) Then Return False
+            Return (Me.m_aLayers.Count > 0)
         End Function
 
 #End Region ' Overrides

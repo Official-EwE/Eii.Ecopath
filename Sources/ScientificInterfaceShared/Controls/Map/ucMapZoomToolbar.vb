@@ -68,6 +68,11 @@ Namespace Controls.Map
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
+                ' Just to be sure
+                For Each zc As ucMapZoom In Me.m_lZoomContainers.ToArray
+                    Me.RemoveZoomContainer(zc)
+                Next
+
                 Debug.Assert(Me.m_lLayers.Count = 0)
                 Debug.Assert(Me.m_lZoomContainers.Count = 0)
 
@@ -383,6 +388,8 @@ Namespace Controls.Map
 
         Private Sub UpdateControls()
 
+            If (Me.IsDisposed) Then Return
+
             Me.m_tsbZoomIn.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
             Me.m_tsmiZoomIn.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
 
@@ -403,16 +410,18 @@ Namespace Controls.Map
             ' ToDo: update import/export buttons viz + enabled states
             Dim bHasSelectedLayers As Boolean = False
             Dim bHasEditableLayers As Boolean = False
+            Dim bHasLayers As Boolean = False
 
             For Each l As cDisplayLayer In Me.m_lLayers
                 bHasSelectedLayers = bHasSelectedLayers Or l.IsSelected
+                bHasLayers = True
                 If (TypeOf l Is cDisplayRasterLayer) Then
                     bHasEditableLayers = bHasEditableLayers Or (l.IsSelected And DirectCast(l, cDisplayRasterLayer).Editor.IsEditable)
                 End If
             Next
 
-            Me.m_tsbnImport.Visible = bHasEditableLayers And bHasSelectedLayers
-            Me.m_tsbnExport.Visible = bHasSelectedLayers
+            Me.m_tsbnImport.Enabled = bHasEditableLayers
+            Me.m_tsbnExport.Enabled = bHasLayers
 
         End Sub
 
@@ -425,19 +434,25 @@ Namespace Controls.Map
             Dim lLayers As New List(Of cEcospaceLayer)
             Dim layer As cEcospaceLayer = Nothing
 
+            ' For all raster layers
             For Each l As cDisplayLayer In Me.m_lLayers
-                If (l.IsSelected) And (TypeOf l Is cDisplayRasterLayer) Then
-                    If TypeOf l Is cDisplayRasterLayerBundle Then
+                If (TypeOf l Is cDisplayRasterLayer) Then
+                    ' Show all bundled rasters
+                    If (TypeOf l Is cDisplayRasterLayerBundle) Then
                         Dim rlb As cDisplayRasterLayerBundle = DirectCast(l, cDisplayRasterLayerBundle)
-                        For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
-                            layer = rlb.Data(i)
-                            If (layer IsNot Nothing) Then
-                                lLayers.Add(layer)
-                            End If
-                        Next
+                        If rlb.Editor.IsEditable Then
+                            For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
+                                layer = rlb.Data(i)
+                                If (layer IsNot Nothing) Then
+                                    lLayers.Add(layer)
+                                End If
+                            Next
+                        End If
                     Else
                         Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
-                        lLayers.Add(rl.Data)
+                        If (rl.Editor.IsEditable) Then
+                            lLayers.Add(rl.Data)
+                        End If
                     End If
                 End If
             Next
@@ -454,18 +469,20 @@ Namespace Controls.Map
             Dim layer As cEcospaceLayer = Nothing
 
             For Each l As cDisplayLayer In Me.m_lLayers
-                If (l.IsSelected) And (TypeOf l Is cDisplayRasterLayer) Then
-                    If TypeOf l Is cDisplayRasterLayerBundle Then
-                        Dim rlb As cDisplayRasterLayerBundle = DirectCast(l, cDisplayRasterLayerBundle)
-                        For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
-                            layer = rlb.Data(i)
-                            If (layer IsNot Nothing) Then
-                                lLayers.Add(layer)
-                            End If
-                        Next
-                    Else
-                        Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
-                        lLayers.Add(rl.Data)
+                If (TypeOf l Is cDisplayRasterLayer) Then
+                    If (TypeOf l Is cDisplayRasterLayer) Then
+                        If TypeOf l Is cDisplayRasterLayerBundle Then
+                            Dim rlb As cDisplayRasterLayerBundle = DirectCast(l, cDisplayRasterLayerBundle)
+                            For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
+                                layer = rlb.Data(i)
+                                If (layer IsNot Nothing) Then
+                                    lLayers.Add(layer)
+                                End If
+                            Next
+                        Else
+                            Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+                            lLayers.Add(rl.Data)
+                        End If
                     End If
                 End If
             Next

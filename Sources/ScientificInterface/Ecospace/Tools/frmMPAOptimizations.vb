@@ -828,12 +828,12 @@ Namespace Ecospace
 
             Me.m_ucZoom.Map.Clear()
 
-            Me.m_alayerMPA = Me.AddBaseLayers(eVarNameFlags.LayerMPA)
-            Me.m_layerSeed = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed)(0)
-            Me.AddBaseLayers(eVarNameFlags.LayerMPARandom)
-            Me.AddBaseLayers(eVarNameFlags.LayerImportance)
-            Me.AddBaseLayers(eVarNameFlags.LayerHabitat)
-            Me.AddBaseLayers(eVarNameFlags.LayerDepth)
+            Me.m_alayerMPA = Me.AddBaseLayers(eVarNameFlags.LayerMPA, False)
+            Me.m_layerSeed = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed, True)(0)
+            Me.AddBaseLayers(eVarNameFlags.LayerMPARandom, True)
+            Me.AddBaseLayers(eVarNameFlags.LayerImportance, False)
+            Me.AddBaseLayers(eVarNameFlags.LayerHabitat, False)
+            Me.AddBaseLayers(eVarNameFlags.LayerDepth, False)
 
             ' Hide habitat layers at startup
             Dim factory As New cLayerFactoryInternal()
@@ -1018,7 +1018,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="varName">The core variable to load basemap data for.</param>
         ''' -------------------------------------------------------------------
-        Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cDisplayRasterLayer()
+        Private Function AddBaseLayers(ByVal varName As eVarNameFlags, bEditable As Boolean) As cDisplayRasterLayer()
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = factory.GetLayerGroup(varName)
@@ -1032,8 +1032,12 @@ Namespace Ecospace
             ' Add individual layers
             For iLayer As Integer = 0 To alayers.Length - 1
                 l = alayers(iLayer)
-                ' Add the layer to the control(s)
-                Me.AddLayer(l, strGroup, strCommand)
+                If (TypeOf (l) Is cDisplayRasterLayer) Then
+                    ' Add the layer to the control(s)
+                    Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+                    rl.Editor.IsReadOnly = Not bEditable
+                    Me.AddLayer(l, strGroup, strCommand)
+                End If
             Next
 
             Return alayers
@@ -1048,11 +1052,11 @@ Namespace Ecospace
         Private Sub InitMapFeedback()
 
             Dim strGroup As String = ""
-            Dim datalayerTemp As cEcospaceLayerInteger = Nothing
             Dim l As cDisplayRasterLayer = Nothing
             Dim alayers As cDisplayRasterLayer() = Nothing
             Dim lRunStateLayers As New List(Of cDisplayRasterLayer)
             Dim factory As New cLayerFactoryInternal()
+            Dim datalayerTemp As cEcospaceLayerInteger = Nothing
 
             Me.m_ucLayers.LockUpdates()
 
@@ -1060,8 +1064,6 @@ Namespace Ecospace
 
                 ' Redim data
                 ReDim Me.m_aiFeedback(Me.m_basemap.InRow, Me.m_basemap.InCol)
-                ' Create layer to use for showing the data
-                datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback, "")
 
                 Select Case Me.SearchType
 
@@ -1075,6 +1077,7 @@ Namespace Ecospace
                         ' AND THAT THE BEST CELL SHOWS UP ON TOP OF THE CURRENT CELL
 
                         ' Create best cell layer
+                        datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback, My.Resources.ECOSPACE_LAYER_SEEDBEST, Nothing, eVarNameFlags.LayerMPASeedBest)
                         alayers = factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
@@ -1084,6 +1087,7 @@ Namespace Ecospace
                         lRunStateLayers.AddRange(alayers)
 
                         ' Create current cell layer(s)
+                        datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback, My.Resources.ECOSPACE_LAYER_SEEDCURRENT, Nothing, eVarNameFlags.LayerMPASeedCurrent)
                         alayers = factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
@@ -1097,6 +1101,7 @@ Namespace Ecospace
 
                         ' Create random output layer
                         strGroup = factory.GetLayerGroup(eVarNameFlags.LayerMPARandom)
+                        datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback, My.Resources.ECOSPACE_LAYER_RANDOMBEST, Nothing, eVarNameFlags.LayerMPARandom)
 
                         ' Create current cell layer(s)
                         alayers = factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPARandom, datalayerTemp)

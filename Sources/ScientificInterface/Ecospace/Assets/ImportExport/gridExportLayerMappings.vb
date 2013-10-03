@@ -29,7 +29,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Namespace Ecospace.Basemap
 
     <CLSCompliant(False)> _
-    Public Class gridExportMappings
+    Public Class gridExportLayerMappings
         Inherits EwEGrid
 
 #Region " Private vars "
@@ -118,6 +118,7 @@ Namespace Ecospace.Basemap
             Dim checkParent As EwECheckboxCell = Nothing
             Dim strGroup As String = ""
             Dim iRow As Integer = 0
+            Dim vizChild As New cVisualizerEwEChildRowHeader()
 
             For iLayer As Integer = 0 To Me.m_aLayers.Length - 1
 
@@ -158,7 +159,8 @@ Namespace Ecospace.Basemap
                 End If
                 Me(iRow, eColumnTypes.ColumnParent) = cell
 
-                cell = New EwECell(layer.Name, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
+                cell = New EwERowHeaderCell(layer.Name)
+                cell.VisualModel = New cVisualizerEwEChildRowHeader
                 Me(iRow, eColumnTypes.ColumnLayer) = cell
 
                 cell = New EwECheckboxCell(True)

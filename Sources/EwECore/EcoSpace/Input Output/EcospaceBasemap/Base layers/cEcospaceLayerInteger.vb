@@ -85,6 +85,7 @@ Public Class cEcospaceLayerInteger
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
 
         MyBase.New(theCore, iDBID, manager, strName, varName, iIndex, GetType(Integer))
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -97,9 +98,10 @@ Public Class cEcospaceLayerInteger
     Public Sub New(ByVal theCore As cCore, _
                    ByVal data As Integer(,), _
                    ByVal strName As String, _
-                   Optional ByVal meta As cVariableMetaData = Nothing)
+                   Optional ByVal meta As cVariableMetaData = Nothing, _
+                   Optional ByVal vn As eVarNameFlags = eVarNameFlags.NotSet)
 
-        MyBase.New(theCore, CObj(data), strName, GetType(Integer), meta)
+        MyBase.New(theCore, CObj(data), strName, GetType(Integer), meta, vn)
 
     End Sub
 

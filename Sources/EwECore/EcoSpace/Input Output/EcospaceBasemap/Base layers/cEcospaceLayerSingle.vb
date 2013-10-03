@@ -99,9 +99,10 @@ Public Class cEcospaceLayerSingle
     Public Sub New(ByRef theCore As cCore, _
                    ByRef data As Single(,), _
                    ByVal strName As String, _
-                   Optional ByVal meta As cVariableMetaData = Nothing)
+                   Optional ByVal meta As cVariableMetaData = Nothing, _
+                   Optional ByVal vn As eVarNameFlags = eVarNameFlags.NotSet)
 
-        MyBase.New(theCore, CObj(data), strName, GetType(Single), meta)
+        MyBase.New(theCore, CObj(data), strName, GetType(Single), meta, vn)
 
     End Sub
 

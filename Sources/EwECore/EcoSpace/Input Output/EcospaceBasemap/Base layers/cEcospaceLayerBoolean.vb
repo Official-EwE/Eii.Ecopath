@@ -76,14 +76,19 @@ Public Class cEcospaceLayerBoolean
     ''' Constructor for a NxN layer that is hard-linked to an array of data.
     ''' </summary>
     ''' <param name="theCore"></param>
-    ''' <param name="data"></param>
+    ''' <param name="strName">Display name for the layer.</param>
+    ''' <param name="data">Data to attach to the layer, if any.</param>
+    ''' <param name="meta">Optional metadata for contraining data interactions.</param>
+    ''' <param name="vn">Optional varname for the layer, if <paramref name="data"/>
+    ''' was left empty.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal theCore As cCore, _
                    ByVal data As Boolean(,), _
                    ByVal strName As String, _
-                   Optional ByVal meta As cVariableMetaData = Nothing)
+                   Optional ByVal meta As cVariableMetaData = Nothing, _
+                   Optional ByVal vn As eVarNameFlags = eVarNameFlags.NotSet)
 
-        MyBase.New(theCore, CObj(data), strName, GetType(Boolean), meta)
+        MyBase.New(theCore, CObj(data), strName, GetType(Boolean), meta, vn)
 
     End Sub
 

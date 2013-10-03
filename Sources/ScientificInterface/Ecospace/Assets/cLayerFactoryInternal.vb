@@ -97,8 +97,8 @@ Namespace Ecospace.Basemap.Layers
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
-                    layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.Name, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
-                    layer.Name = My.Resources.ECOSPACE_LAYER_SEEDCURRENT ' Use local layer name
+                    layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedCurrent, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer.Name = layerData.Name
                     layer.Editor.IsReadOnly = True
 
                     lLayers.Add(layer)
@@ -114,8 +114,8 @@ Namespace Ecospace.Basemap.Layers
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
-                    layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.NotSet, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
-                    layer.Name = My.Resources.ECOSPACE_LAYER_SEEDBEST
+                    layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedBest, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer.Name = layerData.Name
                     layer.Editor.IsReadOnly = True
 
                     lLayers.Add(layer)
@@ -130,7 +130,7 @@ Namespace Ecospace.Basemap.Layers
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorRange()
                         layer = New cDisplayRasterLayer(uic, layerData, renderer, editor)
-                        layer.Name = My.Resources.ECOSPACE_LAYER_RANDOMBEST
+                        layer.Name = layerData.Name
                         layer.Editor.IsReadOnly = True
 
                         lLayers.Add(layer)

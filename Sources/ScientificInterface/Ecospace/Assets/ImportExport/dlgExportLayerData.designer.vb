@@ -46,7 +46,7 @@ Namespace Ecospace.Basemap
             Me.m_tlpOkCancel = New System.Windows.Forms.TableLayoutPanel()
             Me.m_bntOK = New System.Windows.Forms.Button()
             Me.m_btnCancel = New System.Windows.Forms.Button()
-            Me.m_grid = New ScientificInterface.Ecospace.Basemap.gridExportMappings()
+            Me.m_grid = New ScientificInterface.Ecospace.Basemap.gridExportLayerMappings()
             Me.m_lblRow = New System.Windows.Forms.Label()
             Me.m_lblCol = New System.Windows.Forms.Label()
             Me.m_tbRow = New System.Windows.Forms.TextBox()
@@ -172,7 +172,7 @@ Namespace Ecospace.Basemap
         Private WithEvents m_tbTarget As System.Windows.Forms.TextBox
         Private WithEvents m_btnBrowseTarget As System.Windows.Forms.Button
         Private WithEvents m_lblMappings As System.Windows.Forms.Label
-        Private WithEvents m_grid As gridExportMappings
+        Private WithEvents m_grid As gridExportLayerMappings
         Private WithEvents m_tlpOkCancel As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_bntOK As System.Windows.Forms.Button
         Private WithEvents m_btnCancel As System.Windows.Forms.Button
