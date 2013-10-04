@@ -514,7 +514,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Includes\Interop.JRO.dll" />
-    <Content Include="Includes\Ionic.Zip.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Includes\LPSolve\win64\lpsolve55.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
