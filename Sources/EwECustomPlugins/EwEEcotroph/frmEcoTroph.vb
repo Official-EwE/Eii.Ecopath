@@ -24,10 +24,11 @@ Imports System.Xml.Serialization
 Imports EcoTroph.cEcotrophPlugin
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
-Imports Ionic.Zip
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
+Imports Ionic.Zip
+Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Commands
 
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32
@@ -40,6 +41,10 @@ Imports EwEUtils.SystemUtilities
 '   integrate with the EwE UI and are logged in cLog
 ' - All lengthy operations should provide status feedback via cApplicationStatusNotifier
 ' - All try/catch blocks should write an entry to cLog
+' - Use the EwEUtils R interop class for interacting with R
+' - Use a class to transfer and analyze R results (now in result_tab) that
+'   1) Gathers result strings in a wrapped buffer protected from index out of range issues
+'   2) Provides a command status
 ' ================================================================================
 
 Public Class frmEcotroph
@@ -61,7 +66,7 @@ Public Class frmEcotroph
         Dim test() As String
         Dim result() As String
         Dim result_tab() As String
-        'Dim repos As String = "http://mirror.ibcp.fr/pub/CRAN/bin/windows/contrib/2.14"
+        ' Dim repos As String = "http://mirror.ibcp.fr/pub/CRAN/bin/windows/contrib/2.14"
         Dim repos_simple As String = "http://cran.univ-lyon1.fr/"
         Dim repos As String = repos_simple & "bin/windows/contrib/2.14/"
 
@@ -166,6 +171,16 @@ Public Class frmEcotroph
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Load_from_ecopath.Click
+
+        ' Try to load a model
+        If Not Me.Core.StateMonitor.HasEcopathLoaded Then
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmd As cCommand = cmdh.GetCommand("LoadEcopathModel")
+            If cmd IsNot Nothing Then
+                cmd.Invoke()
+            End If
+        End If
 
         'a retester ou alors tester si les données sont dispo
         EcoTroph.cEcotrophPlugin.etCore.RunEcoPath()
@@ -297,15 +312,6 @@ Public Class frmEcotroph
         Button2.Enabled = True
         Button3.Enabled = True
         Button4.Enabled = True
-
-    End Sub
-
-    Private Sub ETgridinput_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles ETgridinput.CellContentClick
-
-    End Sub
-
-    Private Sub ETgridinput_CellEndEdit(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles ETgridinput.CellEndEdit
-
     End Sub
 
     Private Sub ETgridinput_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles ETgridinput.CellValueChanged
@@ -334,10 +340,6 @@ Public Class frmEcotroph
 
 
         End If
-
-    End Sub
-
-    Private Sub RadioButton1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
     End Sub
 
@@ -463,9 +465,6 @@ Public Class frmEcotroph
         For igrp As Integer = 0 To nbl - 1
 
             If (grille.Rows.Count < nbl) Then grille.Rows.Add()
-
-
-
             uneligne = donnees(igrp).Split(vbTab)
             If uneligne.Length > 1 Then
 
@@ -506,14 +505,10 @@ Public Class frmEcotroph
                 output2 = ",smooth_type=2,smooth_param=" & Replace(smooth_parameter, ",", ".") & ",shift=" & Replace(decalage, ",", ".")
             Case 3
                 output2 = ",smooth_type=3"
-
         End Select
-
-
         Return (output2)
 
     End Function
-
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         'On commence par sauver le fichier de données 
@@ -537,11 +532,6 @@ Public Class frmEcotroph
         'MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas)
 
         'Le code R en lui même
-
-
-
-
-
         ReDim commandes(9)
         commandes(0) = ""
         commandes(1) = "library(EcoTroph)"
@@ -589,10 +579,6 @@ Public Class frmEcotroph
         Cursor.Current = Cursors.Default
 
         'Test de la partie graphique, pour voir
-
-    End Sub
-
-    Private Sub pas_MaskInputRejected(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MaskInputRejectedEventArgs)
 
     End Sub
 
@@ -737,25 +723,6 @@ Public Class frmEcotroph
 
     End Sub
 
-    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    End Sub
-
-    Private Sub Button4_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-
-
-
-    End Sub
-
-
-
-
-
-    Private Sub Process1_Exited(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-
-    End Sub
 
     Private Sub getgraphs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles getgraphs.CheckedChanged
         If getgraphs.Checked = True Then
@@ -784,8 +751,6 @@ Public Class frmEcotroph
     End Sub
 
     Private Sub CheckBox1_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles smooth_graph.CheckedChanged
-
-
         If smooth_graph.Checked = True Then
             smooth_pdf.BringToFront()
             smooth_pdf.Visible = True
@@ -793,60 +758,16 @@ Public Class frmEcotroph
         End If
     End Sub
 
-    Private Sub Label2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label2.Click
-
-    End Sub
-
-    Private Sub GroupBox2_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox2.Enter
-
-    End Sub
-
-    Private Sub Label1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label1.Click
-
-    End Sub
-
-    Private Sub Label4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label4.Click
-
-    End Sub
-
-    Private Sub smooth_param_MaskInputRejected(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MaskInputRejectedEventArgs) Handles smooth_param.MaskInputRejected
-
-    End Sub
-
-    Private Sub Label5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label5.Click
-
-    End Sub
-
     Private Sub Reset_smooth_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Reset_smooth.Click
-
         smooth_param_1.Text = "0.12"
         decalage.Text = "0.95"
         smooth_param.Text = "0.07"
-
-
     End Sub
 
     Private Sub reset_param_diag_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         TopD.Text = "0.2"
         formd.Text = "0.5"
         beta.Text = "0.1"
-
-    End Sub
-
-    Private Sub Label3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label3.Click, Label13.Click
-
-    End Sub
-
-    Private Sub TabPage1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TabPage1.Click
-
-    End Sub
-
-    Private Sub CheckBox1_CheckedChanged_2(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    End Sub
-
-    Private Sub list_group_diag_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
     End Sub
 
     Private Sub b_input_check_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles b_input_check.CheckedChanged
