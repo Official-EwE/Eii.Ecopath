@@ -26,6 +26,8 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports Ionic.Zip
+Imports EwEUtils.SystemUtilities
 
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32
@@ -42,30 +44,26 @@ Imports ScientificInterfaceShared.Controls
 
 Public Class frmEcotroph
 
-    Dim num_model() As Integer
-    Dim aide As String = "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php?action=examples&lang=uk"
-    Private Sub autre_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-        smooth_pdf = Nothing
-        result_pdf = Nothing
-        result_pdf_et_diag = Nothing
+    Private num_model() As Integer
+    Private aide As String = "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php?action=examples&lang=uk"
+    Private m_strRPath As String = ""
+    Private m_strRRoot As String = ""
 
-
+    Public Sub New()
+        Me.InitializeComponent()
+        Me.m_strRRoot = cSystemUtils.ApplicationSettingsPath
+        Me.m_strRPath = Path.Combine(Me.m_strRRoot, "R\bin\i386\r.exe")
     End Sub
 
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
+        MyBase.OnLoad(e)
 
-
-    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-        Dim fmsg As cFeedbackMessage = Nothing
         Dim test() As String
         Dim result() As String
         Dim result_tab() As String
         'Dim repos As String = "http://mirror.ibcp.fr/pub/CRAN/bin/windows/contrib/2.14"
         Dim repos_simple As String = "http://cran.univ-lyon1.fr/"
-
         Dim repos As String = repos_simple & "bin/windows/contrib/2.14/"
-
-
 
         'We have to test first if R is present in the Ewe directory
         ReDim test(6)
@@ -82,88 +80,89 @@ Public Class frmEcotroph
 
         If (result(0).Contains("R is not")) Then
 
+            ' JS 04Oct13: No need to be adminsitrator when installing R to AppData dir?
+            'If Not cSystemUtils.IsAdministrator Then
+            '    Dim msg As New cMessage("You don't have R installed, you won't be able to run Ecotroph. In order to download and install the minimum R for ecotroph you will need to run EwE with administrator rights", _
+            '                            eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
+            '    Me.Core.Messages.SendMessage(msg)
+            '    Return
+            'End If
+
             ' JS 21Jun13: Really needed to change this
-            fmsg = New cFeedbackMessage("You don't have R installed, you won't be able to run Ecotroph! Do you wish to download and install the minimum R for ecotroph directory now?", _
-                                        eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage("You don't have R installed, you won't be able to run Ecotroph! Do you wish to download and install the minimum R for ecotroph directory now?", _
+                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             fmsg.Reply = eMessageReply.YES
             Me.UIContext.Core.Messages.SendMessage(fmsg)
 
             If (fmsg.Reply = eMessageReply.OK) Then
 
+                Dim ETdownload As String = cFileUtils.MakeTempFile(".zip")
+
                 cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Downloading local copy of R...", -1)
                 Try
-
-                    My.Computer.Network.DownloadFile("http://sirs.agrocampus-ouest.fr/EcoTroph/data/R_ET.zip", CurDir() & "\R_ET.zip", "", "", True, 500, True)
+                    ' ToDo: Download et.zip exe into Temp folder, and install. This requires administrator rights
+                    '       - To unzip we do NOT need unzip.exe. We can use Ionic.zip.dll, provided in ScIntShared. This removes one security vulnerability.
+                    '       - To download et.zip we do not need administrator rights.
+                    '       - To write et files we do need administrator rights. I have added a test in this form
+                    My.Computer.Network.DownloadFile("http://sirs.agrocampus-ouest.fr/EcoTroph/data/R_ET.zip", ETdownload, "", "", True, 500, True)
                 Catch ex As Exception
                     MessageBox.Show(My.Resources.PB_DOWNLOAD & ex.Message)
                     cLog.Write(ex, "frmEcotroph.Load")
                 End Try
                 cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
 
-                'If inzip .exe is not here, we have to download it from the EcoTroph website
-                Dim toto As String
-
                 cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Installing local copy of R...", -1)
                 Try
-                    toto = System.IO.Path.GetFileName(CurDir() & "\unzip.exe")
-
-                    If Not (File.Exists(CurDir() & "\unzip.exe")) Then My.Computer.Network.DownloadFile("http://sirs.agrocampus-ouest.fr/EcoTroph/data/unzip.exe", CurDir() & "\unzip.exe", "", "", True, 500, True)
-                    'This is a way to uncompress R_ET.zip to R folder but it crashs on XP when it's compile on Windows 7 and it 
-                    'use a thirs partu dll (interop.shell32.dll) 
-                    'Dim mydesktop As String = My.Computer.FileSystem.SpecialDirectories.Desktop
-                    'Dim myshell As New Shell32.Shell
-                    'Dim myzip As Shell32.Folder = myshell.NameSpace((CurDir() & "\R_ET.zip"))
-                    'Dim mydrop As Shell32.Folder = myshell.NameSpace((CurDir()))
-                    'mydrop.CopyHere(myzip.Items)
+                    Dim zip As New Ionic.Zip.ZipFile(ETdownload)
+                    zip.ExtractAll(Me.m_strRRoot)
                 Catch ex As Exception
 
                 End Try
-
-                'so i prefer to store the unzip.exe file inside the EwEEcoTroph.zip and use it via the system.command
-                Dim myProcess As New Process()
-                myProcess.StartInfo.UseShellExecute = False ' A remettre à false
-                myProcess.StartInfo.FileName = CurDir() & "\unzip.exe "
-                myProcess.StartInfo.Arguments = "-o R_ET.zip"
-                myProcess.StartInfo.CreateNoWindow = True
-                Try
-                    myProcess.Start()
-                Catch Ex As Exception
-                    cLog.Write(Ex, "frmEcotroph::unzip")
-                    MessageBox.Show(My.Resources.ERROR_UNZIP & Ex.Message)
-                Finally
-
-                End Try
-                myProcess.WaitForExit()
                 cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
+
+                ' Test R version again to see if package needs updating
+                result = execute_r(test)
+                result_tab = Split(result(1), vbCr)
 
             End If
         Else
+            ' Scary
             ecotroph_version.Text = result_tab(6)
         End If
-        If (result_tab(4).Contains("upgrade")) Then
-            ' JS 21Jun13: Really needed to change this
-            fmsg = New cFeedbackMessage("A new version of the EcoTroph R package is available. Do you wish to upgrade now?", _
-                                        eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
-            fmsg.Reply = eMessageReply.YES
-            Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-            If (fmsg.Reply = eMessageReply.OK) Then
+        If (result_tab.Length > 3) Then
+            If (result_tab(4).Contains("upgrade")) Then
+                ' JS 21Jun13: Really needed to change this
+                Dim fmsg As New cFeedbackMessage("A new version of the EcoTroph R package is available. Do you wish to upgrade now?", _
+                                            eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                fmsg.Reply = eMessageReply.YES
+                Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-                cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Upgrading R package...", -1)
-                Try
-                    test(0) = " install.packages('EcoTroph',repos=c('" & repos_simple & "'))"
-                    test(1) = ""
-                    test(2) = ""
-                    test(3) = ""
-                    test(4) = ""
-                    result = execute_r(test)
-                Catch ex As Exception
-                    cLog.Write(ex, "frmEcotroph::upgrade R package")
-                End Try
-                cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
+                If (fmsg.Reply = eMessageReply.OK) Then
+
+                    cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Upgrading R package...", -1)
+                    Try
+                        test(0) = " install.packages('EcoTroph',repos=c('" & repos_simple & "'))"
+                        test(1) = ""
+                        test(2) = ""
+                        test(3) = ""
+                        test(4) = ""
+                        result = execute_r(test)
+                    Catch ex As Exception
+                        cLog.Write(ex, "frmEcotroph::upgrade R package")
+                    End Try
+                    cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
+                End If
             End If
         End If
 
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+        smooth_pdf = Nothing
+        result_pdf = Nothing
+        result_pdf_et_diag = Nothing
+        MyBase.OnFormClosed(e)
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Load_from_ecopath.Click
@@ -358,7 +357,8 @@ Public Class frmEcotroph
         Me.parameters_cst.Visible = False
     End Sub
 
-    Public Shared Function execute_r(ByVal code As String()) As String()
+    Public Function execute_r(ByVal code As String()) As String()
+
         'Cette fonction execute un code R et renvoie le nom d'un fichier resultat
         Dim myProcess As New Process()
         myProcess.StartInfo.UseShellExecute = False ' A remettre à false
@@ -367,16 +367,7 @@ Public Class frmEcotroph
         myProcess.StartInfo.RedirectStandardOutput = True
         myProcess.StartInfo.RedirectStandardError = True
 
-        ' Get the path that stores user documents.
-
-        'myProcess.StartInfo.UseShellExecute = False
-        ' You can start any process, HelloWorld is a do-nothing example.
-        'myProcess.StartInfo.FileName = "C:\Program Files\R\R-2.13.2\bin\i386\r.exe"
-
-        myProcess.StartInfo.FileName = CurDir() & "\R\bin\i386\r.exe"
-
-
-
+        myProcess.StartInfo.FileName = Me.m_strRPath
         myProcess.StartInfo.Arguments = "--slave"
         myProcess.StartInfo.CreateNoWindow = True
 
@@ -385,25 +376,12 @@ Public Class frmEcotroph
         If IO.File.Exists(myProcess.StartInfo.FileName) Then
             Try
                 myProcess.Start()
-
-
-
-
-
-
-
-
-
                 Dim myStreamWriter As StreamWriter = myProcess.StandardInput
-
                 For icod As Integer = 0 To code.Count - 1
                     myStreamWriter.WriteLine(code(icod))
                     Debug.Print(code(icod))
                 Next
                 myStreamWriter.Close()
-
-
-
 
                 Dim depasse As Boolean = myProcess.WaitForExit(100000)
                 If depasse Then
@@ -423,62 +401,36 @@ Public Class frmEcotroph
         Return (output2)
 
     End Function
-    Public Shared Function execute_rplot(ByVal code As String()) As String
+
+    Public Function execute_rplot(ByVal code As String()) As String
         'Cette fonction execute un code R et renvoie le nom d'un fichier resultat
         Dim myProcess As New Process()
         myProcess.StartInfo.RedirectStandardInput = False
 
 
         myProcess.StartInfo.UseShellExecute = True ' A remettre à false
-        myProcess.StartInfo.FileName = CurDir() & "\R\bin\i386\r.exe"
-
-
-
+        myProcess.StartInfo.FileName = Me.m_strRPath
         myProcess.StartInfo.Arguments = "--slave"
         myProcess.StartInfo.CreateNoWindow = False
-
-
-
         myProcess.Start()
 
         'Shell(myProcess.StartInfo.FileName)
-
         'Dim myStreamWriter As StreamWriter = myProcess.
-
         For icod As Integer = 0 To code.Count - 1
-
             My.Computer.Keyboard.SendKeys(code(icod))
             'myStreamWriter.WriteLine(code(icod))
             'MsgBox(myProcess.Threads.Count & "pour " & code(icod))
         Next
-
-
-
-
-
-
-
-
-
-
-        'Dim Output As Object = myProcess.StandardOutput.ReadToEnd()
         'Dim output2 As String = myProcess.StandardError.ReadToEnd()
         'myStreamWriter.Close()
-
-
         Return (vbOK)
 
     End Function
 
     Public Shared Function sauve_datagrid_xml(ByVal grille As ETinputtot, ByVal filename As String) As Boolean
 
-
         Dim writer As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
-
-
         Dim file_data As New System.IO.StreamWriter(filename)
-
-
         writer.Serialize(file_data, ETinputdata)
         file_data.Close()
         Return True
@@ -571,11 +523,7 @@ Public Class frmEcotroph
         Dim fichier_data_transfert As String = cFileUtils.MakeTempFile(".xml")
         Dim fichier As String = cFileUtils.MakeTempFile(".txt")
 
-
-
         sauve_datagrid_xml(ETinputdata, fichier_data_transfert)
-
-
 
         'on charge les différents paramètres du create.smooth
         Dim param_pas As String = ""
@@ -638,28 +586,9 @@ Public Class frmEcotroph
         End If
 
 
-
-
-
-
         Cursor.Current = Cursors.Default
 
-
         'Test de la partie graphique, pour voir
-
-
-
-
-
-
-    End Sub
-
-    Public Sub New()
-
-        ' Cet appel est requis par le concepteur.
-        InitializeComponent()
-
-        ' Ajoutez une initialisation quelconque après l'appel InitializeComponent().
 
     End Sub
 
