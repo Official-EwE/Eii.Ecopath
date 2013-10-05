@@ -36,7 +36,6 @@ Public Class cMonteCarloManager
 
     Private Delegate Sub dlgSendMessages()
 
-    'ToDo_js: globalize the messages in this class
     'ToDo_jb: cMonteCarloManager FisForce flag in EwE5 the "Retain current Ecosim fishing rate pattern" check box sets fisforce to true for all groups
     'this never gets set back to the value computed in DoDatValCalculations. It should be able to reset fisforce() by calling the EwE6 equivalent of DoDatValCalculations when False
 
@@ -159,10 +158,9 @@ Public Class cMonteCarloManager
     ''' <summary>
     ''' Run the Monte Carlo trials with the current parameters
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub Run()
-        Dim isThreading As Boolean = True
 
+        Dim isThreading As Boolean = True
         If isThreading Then
 
             Dim thrdMC As Thread
@@ -180,23 +178,21 @@ Public Class cMonteCarloManager
                     Else 'If m_core.m_TSData.NdatType > 0 Then
                         'm_core.m_TSData.NdatType = 0
                         'there must be at least one reference data set loaded
-                        ' ToDo: globalize this
-                        m_core.Messages.SendMessage(New cMessage("Monte Carlo: No time series reference data has been loaded. Please load time series reference data and try again.", eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
+                        m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MONTECARLO_TIMESERIES_NOREFDATA, eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
                     End If
 
                 Else 'If m_core.StateMonitor.HasEcosimLoaded Then
 
                     'no ecosim scenario loaded
-                    ' ToDo: globalize this
-                    m_core.Messages.SendMessage(New cMessage("Monte Carlo: Please load an Ecosim scenario before running Monte Carlo.", eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
+                    m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOSIM_MISSING, eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
 
                 End If
 
             Catch ex As Exception
                 cLog.Write(ex)
                 Me.ReleaseWait()
-                ' ToDo: globalize this
-                m_core.Messages.SendMessage(New cMessage("Error running the Monte Carlo trials.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
+                m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_RUN_ERROR, ex.Message), _
+                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
             End Try
 
             m_core.Messages.sendAllMessages()
@@ -206,18 +202,13 @@ Public Class cMonteCarloManager
 
     End Sub
 
-
     ''' <summary>
     ''' Load the current data into the MonteCarlo parameters
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub Load()
-
         m_mc.Init()
         m_mc.initForRun()
-
     End Sub
-
 
 #End Region
 
@@ -226,7 +217,6 @@ Public Class cMonteCarloManager
     ''' <summary>
     ''' The Monte Carlo routine has complete its trials. Load the best fitting data into the interace objects and tell the interface that the trials have completed
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub MCCompletedHandler()
 
         Try
@@ -365,8 +355,8 @@ Public Class cMonteCarloManager
         Catch ex As Exception
             Debug.Assert(False)
             cLog.Write(ex)
-            ' ToDo: globalize this
-            m_core.Messages.SendMessage(New cMessage("Monte Carlo Error: Failed to apply best fits.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
+            m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_APPLY_ERROR, ex.Message), _
+                                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
         End Try
 
     End Sub

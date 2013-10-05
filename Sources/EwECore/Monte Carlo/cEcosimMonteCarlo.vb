@@ -806,9 +806,9 @@ Friend Class cEcosimMonteCarlo
                     Dim status As eStatusFlags = m_ecopath.EstimationStatus
                     Dim msg As cMessage
                     If status = eStatusFlags.MissingParameter Then
-                        msg = New cMessage("Monte Carlo: To many missing parameters to run Ecopath. Check your input parameters.", eMessageType.TooManyMissingParameters, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                        msg = New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOPATH_TOOMANYMISSING, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                     Else
-                        msg = New cMessage("Error in Ecopath Monte Carlo trials could not be run.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                        msg = New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOPATH_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                     End If
                     ' m_manager.AddMessage(msg)
                     'Return False
@@ -851,14 +851,17 @@ Friend Class cEcosimMonteCarlo
 
     End Function
 
-
     Private Sub dumpEcopathPars()
-        Dim strm As New System.IO.StreamWriter("EcopathPars.csv", True)
-        strm.WriteLine("iter")
-        For igrp As Integer = 1 To Me.m_epdata.NumGroups
-            strm.WriteLine(Me.m_epdata.GroupName(igrp) + "," + Me.m_epdata.B(igrp).ToString + "," + Me.m_epdata.PB(igrp).ToString + "," + Me.m_epdata.QB(igrp).ToString + "," + Me.m_epdata.EE(igrp).ToString)
-        Next
-        strm.Close()
+        Try
+            Dim strm As New System.IO.StreamWriter("EcopathPars.csv", True)
+            strm.WriteLine("iter")
+            For igrp As Integer = 1 To Me.m_epdata.NumGroups
+                strm.WriteLine(Me.m_epdata.GroupName(igrp) + "," + Me.m_epdata.B(igrp).ToString + "," + Me.m_epdata.PB(igrp).ToString + "," + Me.m_epdata.QB(igrp).ToString + "," + Me.m_epdata.EE(igrp).ToString)
+            Next
+            strm.Close()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     ''' <summary>

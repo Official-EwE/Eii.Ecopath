@@ -833,6 +833,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to save spatial optimization results &apos;{1}&apos; to &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSEED_RESULTS_SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("ECOSEED_RESULTS_SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Spatial optimization results saved to &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSEED_RESULTS_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("ECOSEED_RESULTS_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Feeding proportions by arenas not set properly.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSIM_ERROR_FEEDARENA() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_ERROR_FEEDARENA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecosim scenario &apos;{0}&apos; failed to load. {1}.
         '''</summary>
         Friend Shared ReadOnly Property ECOSIM_LOAD_FAILED() As String
@@ -865,6 +892,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOSIM_RESULTS_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_RESULTS_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Total predation on prey {0} by predator {1} not accounted for. Ecosim has stopped..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSIM_RUN_ERROR_MISSINGPREDATION() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_RUN_ERROR_MISSINGPREDATION", resourceCulture)
             End Get
         End Property
         
@@ -1859,6 +1895,69 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Last year for averaging BA has been changed to the last Ecosim year.
+        '''</summary>
+        Friend Shared ReadOnly Property MODELFRIMSIM_BA_ENDYEAR_ADJ() As String
+            Get
+                Return ResourceManager.GetString("MODELFRIMSIM_BA_ENDYEAR_ADJ", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Start year for averaging BA has been changed to the first Ecosim year.
+        '''</summary>
+        Friend Shared ReadOnly Property MODELFRIMSIM_BA_STARTYEAR_ADJ() As String
+            Get
+                Return ResourceManager.GetString("MODELFRIMSIM_BA_STARTYEAR_ADJ", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Generated Ecopath models from Ecosim..
+        '''</summary>
+        Friend Shared ReadOnly Property MODELFROMSIM_GENERATED() As String
+            Get
+                Return ResourceManager.GetString("MODELFROMSIM_GENERATED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monte Carlo failed to apply best fits. {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property MONTECARLO_APPLY_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_APPLY_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to An error occurred in Ecopath. Monte Carlo trials could not be run..
+        '''</summary>
+        Friend Shared ReadOnly Property MONTECARLO_ECOPATH_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_ECOPATH_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monte Carlo has found too many missing parameters to run Ecopath. Check your input parameters..
+        '''</summary>
+        Friend Shared ReadOnly Property MONTECARLO_ECOPATH_TOOMANYMISSING() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_ECOPATH_TOOMANYMISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Please load an Ecosim scenario before running Monte Carlo..
+        '''</summary>
+        Friend Shared ReadOnly Property MONTECARLO_ECOSIM_MISSING() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_ECOSIM_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Warning: Monte Carlo failed to set Ecopath back to its original state. You may need to close the model without saving to restore your original data..
         '''</summary>
         Friend Shared ReadOnly Property MONTECARLO_RESTORE_FAILED() As String
@@ -1868,11 +1967,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Error running the Monte Carlo trials. {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property MONTECARLO_RUN_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_RUN_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Failed to save Monte Carlo data to file. {0}.
         '''</summary>
         Friend Shared ReadOnly Property MONTECARLO_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monte Carlo requires time series reference data. Please load time series reference data and try again..
+        '''</summary>
+        Friend Shared ReadOnly Property MONTECARLO_TIMESERIES_NOREFDATA() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_TIMESERIES_NOREFDATA", resourceCulture)
             End Get
         End Property
         

@@ -192,7 +192,7 @@ Namespace Ecospace.Basemap
             ' Create data
             Me.m_data = New cEcospaceImportExportXYData(bm, lstrFields.ToArray())
 
-            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_DATA_SAVING)
 
             Try
 
@@ -218,16 +218,12 @@ Namespace Ecospace.Basemap
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             If (bSuccess) Then
-
-                ' Log this
-                ' ToDo: globalize this
-                msg = New cMessage(String.Format("Layer data exported to '{0}'", strFile), _
+                msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_SUCCESS, strFile), _
                                    eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFile)
             Else
-                msg = New cMessage(String.Format("Layer data could not be exported to '{0}'", strFile), _
-                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Warning)
-
+                msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strFile), _
+                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Critical)
             End If
 
             Me.m_uic.Core.Messages.SendMessage(msg)

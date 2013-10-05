@@ -646,6 +646,20 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Format a date into ISO 8601 format YYYY-MM-DDThh:mm:ss.sTZD.
+        ''' </summary>
+        ''' <param name="dtValue">The date to format.</param>
+        ''' <returns>The ISO date </returns>
+        ''' <remarks>
+        ''' http://www.w3.org/TR/NOTE-datetime
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FormatDate(ByVal dtValue As DateTime) As String
+            Return dtValue.ToString("s")
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Method for determining if a string represents a valid email address.
         ''' </summary>
         ''' <param name="strEmail">Email address to validate</param>
@@ -756,6 +770,8 @@ Namespace Utilities
 
             If (TypeOf (objValue) Is String) Then
                 strValue = CStr(objValue)
+            ElseIf (TypeOf (objValue) Is DateTime) Then
+                strValue = cStringUtils.FormatDate(DirectCast(objValue, DateTime))
             Else
                 strValue = cStringUtils.FormatNumber(objValue)
             End If

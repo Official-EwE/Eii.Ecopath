@@ -1073,9 +1073,8 @@ Namespace EcoSeed
             writer.WriteLine("Data Format")
             writer.WriteLine("Row,Col,Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
 
-            ' ToDo: globalize this
             ' ToDo: send at end of autosave, include result
-            Dim msg As New cMessage(String.Format("MPA search output saved to '{0}'", Path.Combine(Me.m_strOutputPath, c_FILENAME)), _
+            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSEED_RESULTS_SAVE_SUCCESS, Path.Combine(Me.m_strOutputPath, c_FILENAME)), _
                                     eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             msg.Hyperlink = Me.m_strOutputPath
             Me.SendMessage(msg)

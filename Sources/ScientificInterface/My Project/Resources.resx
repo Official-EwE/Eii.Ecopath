@@ -24064,4 +24064,7 @@ Description: {2}</value>
   <data name="CAPTION_NICHEPLOT_YAXIS_LABEL" xml:space="preserve">
     <value>Prey overlap index</value>
   </data>
+  <data name="HEADER_MAP_IMAGES" xml:space="preserve">
+    <value>Map image(s)</value>
+  </data>
 </root>

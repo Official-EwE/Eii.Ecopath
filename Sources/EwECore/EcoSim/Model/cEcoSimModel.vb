@@ -4378,11 +4378,9 @@ Namespace Ecosim
                 For j = 1 To nGroups
                     If m_Data.Consumption(i, j) > 0 Then
                         If Tcon(i, j) < 1 Then
-                            ' ToDo: globalize this
-                            Me.m_publisher.AddMessage(New cMessage("total predation on prey type " + m_EPData.GroupName(i) + "by predator " + m_EPData.GroupName(j) + " not accounted for, stopping", _
-                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
-
-                            '    MsgBox("total predation on prey type " + m_EPData.GroupName(i) + "by predator " + m_EPData.GroupName(j) + " not accounted for, stopping")
+                            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, m_EPData.GroupName(i), m_EPData.GroupName(j)), _
+                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                            Me.m_publisher.AddMessage(msg)
                             'assign remaining consumption by j of i to the i,j arena
                             m_Data.PeatArena(m_Data.ArenaNo(i, j), j) = m_Data.PeatArena(m_Data.ArenaNo(i, j), j) + 1 - Tcon(i, j)
                         End If
@@ -4406,6 +4404,7 @@ Namespace Ecosim
                 ' ToDo: globalize this
                 Me.m_publisher.AddMessage(New cMessage("feeding proportions by arenas not set properly", _
                                             eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
+                ' ToDo: Handle this properly
                 Stop
             End If
 

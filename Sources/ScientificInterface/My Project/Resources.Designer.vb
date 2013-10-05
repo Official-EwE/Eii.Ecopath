@@ -1831,6 +1831,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Map image(s).
+        '''</summary>
+        Public ReadOnly Property HEADER_MAP_IMAGES() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAP_IMAGES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Assessment of {0}.
         '''</summary>
         Public ReadOnly Property HEADER_MSY() As String
