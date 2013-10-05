@@ -72,8 +72,7 @@ Public Class cEcopathModelFromEcosim
 
     Public Function InitRun(strOutputPath As String) As Boolean
 
-        ' ToDo: globalize this
-        Me.m_msgStatus = New cMessage("Generated Ecopath models from Ecosim run", eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+        Me.m_msgStatus = New cMessage(My.Resources.CoreMessages.MODELFROMSIM_GENERATED, eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
         Me.m_msgStatus.Hyperlink = strOutputPath
         Return True
 
@@ -466,8 +465,6 @@ Public Class cEcopathModelFromEcosim
     Private Sub SetStartEndTimesteps(ByVal iTime As Integer, ByVal BACalculation As eBACalcTypes, ByVal nYearsAverage As Integer, _
                                     ByRef iStartIndex As Integer, ByRef nBAtimesteps As Integer)
 
-        ' ToDo: globalize this method
-
         'number of Ecosim time steps per year
         Dim nStepsPerYear As Integer = cCore.N_MONTHS * Me.m_core.m_EcoSimData.StepsPerMonth
 
@@ -489,7 +486,7 @@ Public Class cEcopathModelFromEcosim
         'Constrain the start and end years
         If (iStartIndex < 1) Then
             Dim vs As cVariableStatus
-            vs = New cVariableStatus(eStatusFlags.FailedValidation, "Start year of averaging changed to first year.", _
+            vs = New cVariableStatus(eStatusFlags.FailedValidation, My.Resources.CoreMessages.MODELFRIMSIM_BA_STARTYEAR_ADJ, _
                                      eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
             Me.m_msgStatus.AddVariable(vs)
             iStartIndex = 1
@@ -497,7 +494,7 @@ Public Class cEcopathModelFromEcosim
 
         If ((iStartIndex + nBAtimesteps - 1) > iTime) Then
             Dim vs As cVariableStatus
-            vs = New cVariableStatus(eStatusFlags.FailedValidation, "End year of averaging changed to last year.", eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
+            vs = New cVariableStatus(eStatusFlags.FailedValidation, My.Resources.CoreMessages.MODELFRIMSIM_BA_ENDYEAR_ADJ, eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
             Me.m_msgStatus.AddVariable(vs)
             nBAtimesteps = iTime - iStartIndex + 1
         End If

@@ -1177,4 +1177,48 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="F2TS_ERROR_NO_TS" xml:space="preserve">
     <value>No time series have been loaded; Fit to Time Series cannot run.</value>
   </data>
+  <data name="ECOSEED_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Failed to save spatial optimization results '{1}' to '{0}'</value>
+    <comment>{0}=file, {1}=details</comment>
+  </data>
+  <data name="ECOSEED_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Spatial optimization results saved to '{0}'</value>
+    <comment>{0}=file</comment>
+  </data>
+  <data name="ECOSIM_ERROR_FEEDARENA" xml:space="preserve">
+    <value>Feeding proportions by arenas not set properly</value>
+  </data>
+  <data name="ECOSIM_RUN_ERROR_MISSINGPREDATION" xml:space="preserve">
+    <value>Total predation on prey {0} by predator {1} not accounted for. Ecosim has stopped.</value>
+    <comment>{0}=prey name, {1}=predator name</comment>
+  </data>
+  <data name="MODELFRIMSIM_BA_ENDYEAR_ADJ" xml:space="preserve">
+    <value>Last year for averaging BA has been changed to the last Ecosim year</value>
+  </data>
+  <data name="MODELFRIMSIM_BA_STARTYEAR_ADJ" xml:space="preserve">
+    <value>Start year for averaging BA has been changed to the first Ecosim year</value>
+  </data>
+  <data name="MODELFROMSIM_GENERATED" xml:space="preserve">
+    <value>Generated Ecopath models from Ecosim.</value>
+  </data>
+  <data name="MONTECARLO_APPLY_ERROR" xml:space="preserve">
+    <value>Monte Carlo failed to apply best fits. {0}</value>
+    <comment>{0}=exception text</comment>
+  </data>
+  <data name="MONTECARLO_ECOPATH_ERROR" xml:space="preserve">
+    <value>An error occurred in Ecopath. Monte Carlo trials could not be run.</value>
+  </data>
+  <data name="MONTECARLO_ECOPATH_TOOMANYMISSING" xml:space="preserve">
+    <value>Monte Carlo has found too many missing parameters to run Ecopath. Check your input parameters.</value>
+  </data>
+  <data name="MONTECARLO_ECOSIM_MISSING" xml:space="preserve">
+    <value>Please load an Ecosim scenario before running Monte Carlo.</value>
+  </data>
+  <data name="MONTECARLO_RUN_ERROR" xml:space="preserve">
+    <value>Error running the Monte Carlo trials. {0}</value>
+    <comment>{0}=exception message</comment>
+  </data>
+  <data name="MONTECARLO_TIMESERIES_NOREFDATA" xml:space="preserve">
+    <value>Monte Carlo requires time series reference data. Please load time series reference data and try again.</value>
+  </data>
 </root>

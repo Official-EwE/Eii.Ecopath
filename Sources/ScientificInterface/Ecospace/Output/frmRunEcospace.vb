@@ -1292,8 +1292,6 @@ Namespace Ecospace
 
         Private Sub SaveMapImage(strFileName As String, imgFormat As ImageFormat)
 
-            ' ToDo: globalize this
-
             Dim bmp As New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height, Imaging.PixelFormat.Format32bppArgb)
             Dim g As Graphics = Graphics.FromImage(bmp)
             Dim br As New SolidBrush(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
@@ -1311,11 +1309,11 @@ Namespace Ecospace
 
                 Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_plottype), "")
 
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Map image", strFileName), _
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = IO.Path.GetDirectoryName(strFileName)
             Catch ex As Exception
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, "Map image", strFileName, ex.Message), _
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, My.Resources.HEADER_MAP_IMAGES, strFileName, ex.Message), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             End Try
 
@@ -1461,11 +1459,11 @@ Namespace Ecospace
                     End If
                 Next
 
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Map image(s)", strFileName), _
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName), _
                        eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = IO.Path.GetDirectoryName(strFileName)
             Catch ex As Exception
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, "Map image(s)", strFileName, ex.Message), _
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, My.Resources.HEADER_MAP_IMAGES, strFileName, ex.Message), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             End Try
 
