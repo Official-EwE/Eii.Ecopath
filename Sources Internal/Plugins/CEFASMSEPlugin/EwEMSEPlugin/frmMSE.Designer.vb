@@ -58,7 +58,7 @@ Partial Class frmMSE
         Me.m_btnShowTFMForm = New System.Windows.Forms.Button()
         Me.m_btnEcopathParams2 = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
-        Me.m_hrdStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
         Me.m_tbNTrials = New System.Windows.Forms.TextBox()
@@ -155,7 +155,7 @@ Partial Class frmMSE
         '
         'm_plStep2
         '
-        Me.m_plStep2.Controls.Add(Me.m_hrdStep2)
+        Me.m_plStep2.Controls.Add(Me.m_hdrStep2)
         Me.m_plStep2.Controls.Add(Me.btnCreateModels)
         Me.m_plStep2.Controls.Add(Me.Label1)
         Me.m_plStep2.Controls.Add(Me.m_lblNTrials)
@@ -166,13 +166,13 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_plStep2, "m_plStep2")
         Me.m_plStep2.Name = "m_plStep2"
         '
-        'm_hrdStep2
+        'm_hdrStep2
         '
-        Me.m_hrdStep2.CanCollapseParent = True
-        Me.m_hrdStep2.CollapsedParentHeight = 49
-        resources.ApplyResources(Me.m_hrdStep2, "m_hrdStep2")
-        Me.m_hrdStep2.IsCollapsed = False
-        Me.m_hrdStep2.Name = "m_hrdStep2"
+        Me.m_hdrStep2.CanCollapseParent = True
+        Me.m_hdrStep2.CollapsedParentHeight = 72
+        resources.ApplyResources(Me.m_hdrStep2, "m_hdrStep2")
+        Me.m_hdrStep2.IsCollapsed = False
+        Me.m_hdrStep2.Name = "m_hdrStep2"
         '
         'Label1
         '
@@ -337,7 +337,7 @@ Partial Class frmMSE
         '
         'm_hdrStep1
         '
-        Me.m_hdrStep1.CanCollapseParent = True
+        Me.m_hdrStep1.CanCollapseParent = False
         Me.m_hdrStep1.CollapsedParentHeight = 0
         resources.ApplyResources(Me.m_hdrStep1, "m_hdrStep1")
         Me.m_hdrStep1.IsCollapsed = False
@@ -396,7 +396,7 @@ Partial Class frmMSE
     Private WithEvents m_btnDistParams As System.Windows.Forms.Button
     Private WithEvents m_tbArea As System.Windows.Forms.TextBox
     Private WithEvents m_tbNTrials As System.Windows.Forms.TextBox
-    Private WithEvents m_hrdStep2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrStep2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrStep4 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrStep3 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tlpLayout As System.Windows.Forms.TableLayoutPanel

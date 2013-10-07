@@ -86,6 +86,8 @@ Public Class frmMSE
         Me.m_rbEwEDefault.Checked = Me.m_plugin.UseEwEPath
         Me.m_rbCustomPath.Checked = Not Me.m_plugin.UseEwEPath
 
+        Me.m_hdrStep2.IsCollapsed = True
+
         Me.m_bInUpdate = False
 
         Me.UpdateControls()
