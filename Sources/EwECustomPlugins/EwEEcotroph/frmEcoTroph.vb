@@ -29,6 +29,7 @@ Imports EwEUtils.Utilities
 Imports Ionic.Zip
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Commands
+Imports System.Text
 
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32
@@ -60,7 +61,7 @@ Public Class frmEcotroph
         Me.m_strRPath = Path.Combine(Me.m_strRRoot, "R\bin\i386\r.exe")
     End Sub
 
-    Protected Overrides Sub OnLoad(e As System.EventArgs)
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Dim test() As String
@@ -163,7 +164,7 @@ Public Class frmEcotroph
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
         smooth_pdf = Nothing
         result_pdf = Nothing
         result_pdf_et_diag = Nothing
@@ -242,11 +243,20 @@ Public Class frmEcotroph
         ' If the file name is not an empty string open it for saving.
         If saveFileDialog1.FileName <> "" Then
             ' Saves the Image via a FileStream created by the OpenFile method.
-            Dim writer As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
-            Dim file As New System.IO.StreamWriter(saveFileDialog1.FileName)
+            'Due to a bug with special charachter (# or < in description try to add encoding
+            'JG 07/10/2013
+            'Old version
+            'Dim writer As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
+            'Dim file As New System.IO.StreamWriter(saveFileDialog1.FileName)
 
-            writer.Serialize(file, ETinputdata)
-            file.Close()
+            'writer.Serialize(file, ETinputdata)
+            'file.Close()
+            Dim serializer As New XmlSerializer(GetType(ETinputtot))
+            Dim fs As New FileStream(saveFileDialog1.FileName, FileMode.Create)
+            Dim writer As New XmlTextWriter(fs, Encoding.Unicode)
+            serializer.Serialize(writer, ETinputdata)
+            writer.Close()
+
         End If
     End Sub
 
@@ -431,10 +441,20 @@ Public Class frmEcotroph
 
     Public Shared Function sauve_datagrid_xml(ByVal grille As ETinputtot, ByVal filename As String) As Boolean
 
-        Dim writer As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
-        Dim file_data As New System.IO.StreamWriter(filename)
-        writer.Serialize(file_data, ETinputdata)
-        file_data.Close()
+
+        Dim serializer As New XmlSerializer(GetType(ETinputtot))
+        Dim fs As New FileStream(filename, FileMode.Create)
+        Dim writer As New XmlTextWriter(fs, Encoding.Unicode)
+        serializer.Serialize(writer, ETinputdata)
+        writer.Close()
+
+        'Due to a bug with special charachter (# or < in description try to add encoding
+        'JG 07/10/2013
+        'Old version
+        'Dim writer As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
+        'Dim file_data As New System.IO.StreamWriter(filename)
+        'writer.Serialize(file_data, ETinputdata)
+        'file_data.Close()
         Return True
 
     End Function
