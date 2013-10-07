@@ -152,19 +152,22 @@ Public Class cMSE
     Public Function NumModelsAvailable() As Integer
 
         If (Me.m_iNumModelsAvailable = cCore.NULL_VALUE) Then
-            Me.m_iNumModelsAvailable = 0
 
-            ' JS 07Oct13: Very simple test
-            Dim strPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "b_out.csv")
-            If File.Exists(strPath) Then
-                Dim reader As StreamReader = cMSEUtils.GetReader(strPath)
-                If (reader IsNot Nothing) Then
-                    reader.ReadLine()
-                    While reader.ReadLine
-                        Me.m_iNumModelsAvailable += 1
-                    End While
+            SyncLock Me
+                Me.m_iNumModelsAvailable = 0
+                ' JS 07Oct13: Very simple test
+                Dim strPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "b_out.csv")
+                If File.Exists(strPath) Then
+                    Dim reader As StreamReader = cMSEUtils.GetReader(strPath)
+                    If (reader IsNot Nothing) Then
+                        reader.ReadLine()
+                        While Not reader.EndOfStream
+                            reader.ReadLine()
+                            Me.m_iNumModelsAvailable += 1
+                        End While
+                    End If
                 End If
-            End If
+            End SyncLock
         End If
         Return Me.m_iNumModelsAvailable
 
