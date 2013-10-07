@@ -1821,13 +1821,13 @@ stepend:
         'Dim row As DataRow
         Dim GroupNames(mCore.nLivingGroups - nPrimaryProducer - 1) As String
 
-        If Not CheckEcoSimDistributionFilesOkay(csv, ParamName) Then
-            csv.Dispose()
-            cMSEUtils.ReleaseReader(reader)
-            Return False
-        End If
+        Dim bSimFileSOk As Boolean = CheckEcoSimDistributionFilesOkay(csv, ParamName)
+        cMSEUtils.ReleaseReader(reader)
         csv.Dispose()
 
+        If Not bSimFileSOk Then Return False
+
+        reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv"))
         csv = New CsvReader(reader, True)
 
         'Initialise the datatable
