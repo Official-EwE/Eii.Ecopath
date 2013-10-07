@@ -61,7 +61,7 @@ Public Class frmMSE
         ' Connect area UI control to live Ecopath data
         Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, m_tbArea, Me.Core.EwEModel, eVarNameFlags.Area)
         ' Area can be made editable from here by not setting the format provider style:
-        Me.m_fpArea.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
+        'Me.m_fpArea.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
 
         Me.m_fpNModelsToRun = New cEwEFormatProvider(Me.UIContext, Me.m_tbNModels2Run, GetType(Integer))
         Me.m_fpNModelsToRun.Value = Me.m_plugin.NModels2Run
@@ -110,14 +110,15 @@ Public Class frmMSE
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
-        'Dim controller As cMSEStateMonitor = Me.mMSE.Controller
+        Dim controller As cMSEStateMonitor = Me.m_plugin.Controller
 
-        'Me.m_plStep1.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.Idle)
-        'Me.m_plStep2.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
-        'Me.m_plStep3.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
-        'Me.m_plStep4.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
+        Me.m_plStep1.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.Idle)
+        Me.m_plStep2.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
+        Me.m_plStep3.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
+        Me.m_plStep4.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
 
         Me.m_tbxPath.Text = Me.m_plugin.DataPath
+        Me.m_tbxNumAvailableModels.Text = CStr(Me.m_plugin.NumModelsAvailable)
 
     End Sub
 
@@ -240,7 +241,7 @@ Public Class frmMSE
         Try
             Dim frmDisParams As New frmDistributionParameters()
             frmDisParams.Init(Me.UIContext, Me.m_plugin)
-            frmDisParams.Show(Me)
+            frmDisParams.ShowDialog(Me)
         Catch ex As Exception
 
         End Try

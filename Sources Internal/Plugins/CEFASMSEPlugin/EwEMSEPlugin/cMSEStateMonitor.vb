@@ -28,7 +28,7 @@ Public Class cMSEStateMonitor
 
     Public Sub New(plugin As cMSE)
         Me.m_plugin = plugin
-        Me.Refresh()
+        Me.Invalidate()
     End Sub
 
     Public Enum eState As Byte
@@ -53,14 +53,16 @@ Public Class cMSEStateMonitor
 
             Case eState.HasParams
                 bHasState = Me.IsStateAvailable(eState.Idle) And _
-                    Me.m_plugin.IsDirectoryStructureAvailable(False) And _
-                    Me.m_plugin.IsInputDataAvailable(False)
+                    Me.m_plugin.IsInputStructureAvailable(False) And _
+                    Me.m_plugin.IsInputDataAvailable()
 
             Case eState.HasModels
-                bHasState = Me.IsStateAvailable(eState.HasParams) And True ' 
+                bHasState = Me.IsStateAvailable(eState.HasParams) And _
+                    (Me.m_plugin.NumModelsAvailable > 0)
 
             Case eState.HasResults
-                bHasState = Me.IsStateAvailable(eState.HasModels) And True ' 
+                bHasState = Me.IsStateAvailable(eState.HasModels) And _
+                    True ' ToDo_JS: determine this properly
         End Select
 
         If bHasState Then
@@ -73,7 +75,7 @@ Public Class cMSEStateMonitor
 
     End Function
 
-    Public Sub Refresh()
+    Public Sub Invalidate()
         For i As Integer = 0 To Me.m_StateCache.Count - 1
             Me.m_StateCache(i) = TriState.UseDefault
         Next

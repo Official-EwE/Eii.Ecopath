@@ -57,6 +57,7 @@ Public Class cMSE
     Const NoHCR_F As Integer = -9999
 
     Private m_monitor As New cMSEStateMonitor(Me)
+    Private m_bIsRunning As Boolean = False
 
     Private BTemp() As Double
     Private PBTemp() As Double
@@ -83,6 +84,14 @@ Public Class cMSE
 
     Private m_mhSettings As cMessageHandler = Nothing
 
+#Region " Construction "
+
+    Public Sub New()
+        Me.InvalidateConfiguration()
+    End Sub
+
+#End Region ' Construction
+
 #Region " Diagnostics and state management "
 
     Public ReadOnly Property Controller As cMSEStateMonitor
@@ -91,12 +100,23 @@ Public Class cMSE
         End Get
     End Property
 
-    Public Function IsDirectoryStructureAvailable(bCreate As Boolean) As Boolean
+    ''' <summary>
+    ''' Returns whether the MSE plug-in input structure is available, which includes
+    ''' all input and output directoru
+    ''' </summary>
+    ''' <param name="bCreate"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function IsInputStructureAvailable(bCreate As Boolean) As Boolean
 
         ' Make sure plug-in has all dirs
-        If Not Me.AreAllDirectoriesAvailable(bCreate) Then Return False
-        ' Make sure plug-in has empty CSV
-        Return Me.HasEmptyDietsCSV(bCreate)
+        Dim strPath As String = Me.DataPath
+        Dim bSuccess As Boolean = True
+
+        For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
+            bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
+        Next
+        Return bSuccess
 
     End Function
 
@@ -104,18 +124,20 @@ Public Class cMSE
     ''' <summary>
     ''' Returns whether all base data is available for building models
     ''' </summary>
-    ''' <param name="bCreate"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsInputDataAvailable(bCreate As Boolean) As Boolean
+    Public Function IsInputDataAvailable() As Boolean
+
+        ' Make sure plug-in has empty CSV
+        If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Then Return False
 
         ' JS: This is nasty duplication of logic and requires serious restructuring
         ' ToDo_JS: Move to new method cMSEUtils.GetInputFile(path, constant)
-        Dim aFiles As String() = New String() {"B", "BA", "QB", "PQ", "EE", _
+        Dim aFiles As String() = New String() {"B_Dist", "BA_Dist", "PB_Dist", "QB_Dist", "EE_Dist", _
                                                "DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
         Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams)
         For Each strFile As String In aFiles
-            Dim strFullPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & "_Dist.csv")
+            Dim strFullPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")
             If Not File.Exists(strFullPath) Then
                 Return False
             End If
@@ -125,19 +147,26 @@ Public Class cMSE
 
     End Function
 
-    ''' <summary>
-    ''' Find (and possibly create) all <see cref="cMSEUtils.eMSEPaths">defined directories</see>.
-    ''' </summary>
-    ''' <returns></returns>
-    Private Function AreAllDirectoriesAvailable(bCreate As Boolean) As Boolean
+    Private m_iNumModelsAvailable As Integer = cCore.NULL_VALUE
 
-        Dim strPath As String = Me.DataPath
-        Dim bSuccess As Boolean = True
+    Public Function NumModelsAvailable() As Integer
 
-        For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
-            bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
-        Next
-        Return bSuccess
+        If (Me.m_iNumModelsAvailable = cCore.NULL_VALUE) Then
+            Me.m_iNumModelsAvailable = 0
+
+            ' JS 07Oct13: Very simple test
+            Dim strPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "b_out.csv")
+            If File.Exists(strPath) Then
+                Dim reader As StreamReader = cMSEUtils.GetReader(strPath)
+                If (reader IsNot Nothing) Then
+                    reader.ReadLine()
+                    While reader.ReadLine
+                        Me.m_iNumModelsAvailable += 1
+                    End While
+                End If
+            End If
+        End If
+        Return Me.m_iNumModelsAvailable
 
     End Function
 
@@ -415,6 +444,16 @@ Public Class cMSE
 
 
     Public Sub LoadSampledParams()
+        Me.m_bIsRunning = True
+        Try
+            Me.Run()
+        Catch ex As Exception
+
+        End Try
+        Me.m_bIsRunning = False
+    End Sub
+
+    Private Sub Run()
 
         ' ToDo_JS: Fix path usage
         ' ToDo_JS: Use standard CSV field reading/writing
@@ -1067,17 +1106,7 @@ stepend:
         End If
     End Function
 
-    Private Function HasEmptyDietsCSV(bCreate As Boolean) As Boolean
-
-        Dim bSuccess As Boolean = File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv"))
-        If bSuccess = False Then
-            If bCreate Then bSuccess = Me.GenerateEmptyDietcsv()
-        End If
-        Return bSuccess
-
-    End Function
-
-    Private Function GenerateEmptyDietcsv() As Boolean
+    Public Function GenerateEmptyDietcsv() As Boolean
 
         Dim sPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")
         Dim diet_csvout As StreamWriter = cMSEUtils.GetWriter(sPath, False)
@@ -1107,6 +1136,9 @@ stepend:
         Next
 
         cMSEUtils.ReleaseWriter(diet_csvout)
+
+        Me.InvalidateConfiguration()
+
         Return True
 
     End Function
@@ -2237,18 +2269,29 @@ stepend:
 
         Dim bRefresh As Boolean = False
 
+        ' Test all conditions that may cause MSE data to be refreshed
         If (msg.Type = eMessageType.GlobalSettingsChanged) Then
-            Me.m_bStrategiesExtracted = False
             bRefresh = True
         End If
 
         If bRefresh Then
-            Me.m_monitor.Refresh()
+            Me.InvalidateConfiguration()
         End If
 
     End Sub
 
-    Private Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
+    Private Sub InvalidateConfiguration()
+        Me.m_monitor.Invalidate()
+        Me.m_bStrategiesExtracted = False
+        Me.m_iNumModelsAvailable = cCore.NULL_VALUE
+    End Sub
+
+    Private Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) _
+        Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
+
+        ' JS 03Oct13: ONLY SUPPRESS MESSAGES WHEN MSE IS RUNNING! 
+        If Not Me.m_bIsRunning Then Return
+
         'Plugin Point called to cancel a message
         bCancelMessage = False
         If msg.Type = EwEUtils.Core.eMessageType.Estimate_BA Or msg.Type = EwEUtils.Core.eMessageType.Estimate_Net_Migration Then
@@ -2316,7 +2359,7 @@ stepend:
             If (value <> My.Settings.UseEwEPath) Then
                 My.Settings.UseEwEPath = value
                 My.Settings.Save()
-                Me.m_monitor.Refresh()
+                Me.InvalidateConfiguration()
             End If
         End Set
     End Property
@@ -2333,7 +2376,7 @@ stepend:
             If (value <> My.Settings.CustomPath) Then
                 My.Settings.CustomPath = value
                 My.Settings.Save()
-                Me.m_monitor.Refresh()
+                Me.InvalidateConfiguration()
             End If
         End Set
     End Property

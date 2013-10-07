@@ -117,7 +117,7 @@ Public Class frmDistributionParameters
 
     Private mUIC As cUIContext = Nothing
     Private mCore As cCore = Nothing
-    Private m_MSEPlugin As cMSE = Nothing
+    Private m_plugin As cMSE = Nothing
 
     Private B As List(Of EcopathParam)
     Private BA As List(Of EcopathParam)
@@ -143,7 +143,7 @@ Public Class frmDistributionParameters
 
     Public Sub Init(ByVal uic As cUIContext, ByVal Plugin As cMSE)
 
-        Me.m_MSEPlugin = Plugin
+        Me.m_plugin = Plugin
         Me.mUIC = uic
         mCore = uic.Core
 
@@ -168,13 +168,6 @@ Public Class frmDistributionParameters
         Next
 
     End Sub
-
-    Private ReadOnly Property DataPath As String
-        Get
-            ' JS 01Oct13: Datapath made dynamic
-            Return cMSEUtils.MSEFolder(Me.m_MSEPlugin.DataPath, cMSEUtils.eMSEPaths.DistrParams)
-        End Get
-    End Property
 
     Private Function ExtractEcosimParam(ByVal csv As CsvReader) As EcosimParam
 
@@ -310,17 +303,16 @@ Public Class frmDistributionParameters
 
     End Function
 
-    Private Function LoadEcosimParameters(ByVal Folder As String) As Boolean
+    Private Function LoadEcosimParameters() As Boolean
 
         'loads all the ecosim csv files up and creates instances of lists of structures that hold it all in memory
-
-        Return LoadEcosimParamX(DenDepCatchability, Path.Combine(Folder, "DenDepCatchability.csv"), eParamName.DenDepCatchability) And _
-               LoadEcosimParamX(SwitchingPower, Path.Combine(Folder, "SwitchingPower.csv"), eParamName.SwitchingPower) And _
-               LoadEcosimParamX(QBMaxxQBio, Path.Combine(Folder, "QBMaxxQBio.csv"), eParamName.QBMaxxQBio) And _
-               LoadEcosimParamX(PredEffectFeedingTime, Path.Combine(Folder, "PredEffectFeedingTime.csv"), eParamName.PredEffectFeedingTime) And _
-               LoadEcosimParamX(OtherMortFeedingTime, Path.Combine(Folder, "OtherMortFeedingTime.csv"), eParamName.OtherMortFeedingTime) And _
-               LoadEcosimParamX(MaxRelFeedingTime, Path.Combine(Folder, "MaxRelFeedingTime.csv"), eParamName.MaxRelFeedingTime) And _
-               LoadEcosimParamX(FeedingTimeAdjustRate, Path.Combine(Folder, "FeedingTimeAdjustRate.csv"), eParamName.FeedingTimeAdjustRate)
+        Return LoadEcosimParamX(DenDepCatchability, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DenDepCatchability.csv"), eParamName.DenDepCatchability) And _
+               LoadEcosimParamX(SwitchingPower, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "SwitchingPower.csv"), eParamName.SwitchingPower) And _
+               LoadEcosimParamX(QBMaxxQBio, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QBMaxxQBio.csv"), eParamName.QBMaxxQBio) And _
+               LoadEcosimParamX(PredEffectFeedingTime, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PredEffectFeedingTime.csv"), eParamName.PredEffectFeedingTime) And _
+               LoadEcosimParamX(OtherMortFeedingTime, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "OtherMortFeedingTime.csv"), eParamName.OtherMortFeedingTime) And _
+               LoadEcosimParamX(MaxRelFeedingTime, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "MaxRelFeedingTime.csv"), eParamName.MaxRelFeedingTime) And _
+               LoadEcosimParamX(FeedingTimeAdjustRate, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "FeedingTimeAdjustRate.csv"), eParamName.FeedingTimeAdjustRate)
 
     End Function
 
@@ -391,14 +383,14 @@ Public Class frmDistributionParameters
 
     End Function
 
-    Private Function LoadEcopathParameters(ByVal Folder As String) As Boolean
+    Private Function LoadEcopathParameters() As Boolean
 
         ' ToDo_JS: used safe path concatenation
-        Return LoadEcopathParamX(B, Path.Combine(Folder, "B_Dist.csv"), eParamName.B) And _
-               LoadEcopathParamX(PB, Path.Combine(Folder, "PB_Dist.csv"), eParamName.PB) And _
-               LoadEcopathParamX(QB, Path.Combine(Folder, "QB_Dist.csv"), eParamName.QB) And _
-               LoadEcopathParamX(EE, Path.Combine(Folder, "EE_Dist.csv"), eParamName.EE) And _
-               LoadEcopathParamX(BA, Path.Combine(Folder, "BA_Dist.csv"), eParamName.BA)
+        Return LoadEcopathParamX(B, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "B_Dist.csv"), eParamName.B) And _
+               LoadEcopathParamX(PB, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PB_Dist.csv"), eParamName.PB) And _
+               LoadEcopathParamX(QB, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QB_Dist.csv"), eParamName.QB) And _
+               LoadEcopathParamX(EE, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "EE_Dist.csv"), eParamName.EE) And _
+               LoadEcopathParamX(BA, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "BA_Dist.csv"), eParamName.BA)
 
         'loads all the ecopath csv's up and saves all the data to lists of structures
 
@@ -458,15 +450,14 @@ Public Class frmDistributionParameters
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         ' JS 30Sep13: globalized this method
-
         MyBase.OnLoad(e)
 
-        If LoadEcopathParameters(DataPath) = False Then
-            Me.m_MSEPlugin.SendMessage(My.Resources.ERROR_DISTRPAR_LOAD_ECOPATH, eMessageImportance.Warning)
+        If LoadEcopathParameters() = False Then
+            Me.m_plugin.SendMessage(My.Resources.ERROR_DISTRPAR_LOAD_ECOPATH, eMessageImportance.Warning)
         End If
 
-        If LoadEcosimParameters(DataPath) = False Then
-            Me.m_MSEPlugin.SendMessage(My.Resources.ERROR_DISTRPAR_LOAD_ECOSIM, eMessageImportance.Warning)
+        If LoadEcosimParameters() = False Then
+            Me.m_plugin.SendMessage(My.Resources.ERROR_DISTRPAR_LOAD_ECOSIM, eMessageImportance.Warning)
         End If
 
         'initialises the dropdown box to the Ecopath parameters
@@ -645,16 +636,16 @@ Public Class frmDistributionParameters
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnOK.Click
 
-        If Not Me.m_MSEPlugin.IsDirectoryStructureAvailable(True) Then
+        If Not Me.m_plugin.IsInputStructureAvailable(True) Then
             Return
         End If
 
         'Saves all the parameters to csv when user clicks to save
-        SaveEcopathParameters2CSV(B, "B")
-        SaveEcopathParameters2CSV(BA, "BA")
-        SaveEcopathParameters2CSV(PB, "PB")
-        SaveEcopathParameters2CSV(QB, "QB")
-        SaveEcopathParameters2CSV(EE, "EE")
+        SaveEcopathParameters2CSV(B, "B_Dist")
+        SaveEcopathParameters2CSV(BA, "BA_Dist")
+        SaveEcopathParameters2CSV(PB, "PB_Dist")
+        SaveEcopathParameters2CSV(QB, "QB_Dist")
+        SaveEcopathParameters2CSV(EE, "EE_Dist")
 
         SaveEcoSimParameters2CSV(DenDepCatchability, "DenDepCatchability")
         SaveEcoSimParameters2CSV(SwitchingPower, "SwitchingPower")
@@ -663,6 +654,8 @@ Public Class frmDistributionParameters
         SaveEcoSimParameters2CSV(OtherMortFeedingTime, "OtherMortFeedingTime")
         SaveEcoSimParameters2CSV(MaxRelFeedingTime, "MaxRelFeedingTime")
         SaveEcoSimParameters2CSV(FeedingTimeAdjustRate, "FeedingTimeAdjustRate")
+
+        Me.m_plugin.GenerateEmptyDietcsv()
 
         EditsUnsaved = False
 
@@ -673,15 +666,18 @@ Public Class frmDistributionParameters
 
     Private Sub SaveEcoSimParameters2CSV(ByRef EcosimParams As List(Of EcosimParam), ByRef FileName As String)
 
-        ' ToDo_JS: use proper path concatenation
-        ' ToDo_JS: use fixed CSV field formatting
+        Dim sw As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, FileName & ".csv"), False)
+        If (sw Is Nothing) Then Return
 
-        Dim sw As StreamWriter = New StreamWriter(DataPath & "\" & FileName & ".csv", False)
-
-        sw.WriteLine("GroupName, GroupNumber, DistributionType, Lower, Upper, Mid")
+        sw.WriteLine("GroupName,GroupNumber,DistributionType,Lower,Upper,Mid")
 
         For Each Param In EcosimParams
-            sw.WriteLine("""" & Param.GroupName & """," & Param.GroupNo & ",""" & Param.DistributionType & """," & Param.LowerBound & "," & Param.UpperBound & "," & Param.MidPoint)
+            sw.WriteLine(cStringUtils.ToCSVField(Param.GroupName) & "," & _
+                         cStringUtils.ToCSVField(Param.GroupNo) & "," & _
+                         cStringUtils.ToCSVField(Param.DistributionType) & "," & _
+                         cStringUtils.ToCSVField(Param.LowerBound) & "," & _
+                         cStringUtils.ToCSVField(Param.UpperBound) & "," & _
+                         cStringUtils.ToCSVField(Param.MidPoint))
         Next
 
         sw.Dispose()
@@ -690,11 +686,10 @@ Public Class frmDistributionParameters
 
     Private Sub SaveEcopathParameters2CSV(ByRef EcopathParams As List(Of EcopathParam), ByRef FileName As String)
 
-        ' ToDo_JS: use proper path concatenation
+        Dim sw As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, FileName & ".csv"), False)
+        If (sw Is Nothing) Then Return
 
-        Dim sw As StreamWriter = New StreamWriter(DataPath & "\" & FileName & "_Dist.csv", False)
-
-        sw.WriteLine("Group Number, Name, CV, Lower Bound, Upper Bound")
+        sw.WriteLine("Group Number,Name,CV,""Lower Bound"",""Upper Bound""")
 
         For Each Param In EcopathParams
             ' JS 02Oct13: used fixed CSV field formatting

@@ -59,7 +59,6 @@ Partial Class frmMSE
         Me.m_btnEcopathParams2 = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
         Me.m_hrdStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_lblNunMavailable = New System.Windows.Forms.Label()
         Me.m_tbNTrials = New System.Windows.Forms.TextBox()
         Me.m_plStep5 = New System.Windows.Forms.Panel()
         Me.m_hdrStep5 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -83,6 +82,8 @@ Partial Class frmMSE
         Me.m_btnChangePath = New System.Windows.Forms.Button()
         Me.m_lblDataPath = New System.Windows.Forms.Label()
         Me.m_tbxPath = New System.Windows.Forms.TextBox()
+        Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.m_plStep2.SuspendLayout()
         Me.m_plStep5.SuspendLayout()
         Me.m_plStep4.SuspendLayout()
@@ -156,8 +157,9 @@ Partial Class frmMSE
         '
         Me.m_plStep2.Controls.Add(Me.m_hrdStep2)
         Me.m_plStep2.Controls.Add(Me.btnCreateModels)
-        Me.m_plStep2.Controls.Add(Me.m_lblNunMavailable)
+        Me.m_plStep2.Controls.Add(Me.Label1)
         Me.m_plStep2.Controls.Add(Me.m_lblNTrials)
+        Me.m_plStep2.Controls.Add(Me.m_tbxNumAvailableModels)
         Me.m_plStep2.Controls.Add(Me.m_tbNTrials)
         Me.m_plStep2.Controls.Add(Me.m_lblMassBalanceTol)
         Me.m_plStep2.Controls.Add(Me.m_txtTolerance)
@@ -171,11 +173,6 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_hrdStep2, "m_hrdStep2")
         Me.m_hrdStep2.IsCollapsed = False
         Me.m_hrdStep2.Name = "m_hrdStep2"
-        '
-        'm_lblNunMavailable
-        '
-        resources.ApplyResources(Me.m_lblNunMavailable, "m_lblNunMavailable")
-        Me.m_lblNunMavailable.Name = "m_lblNunMavailable"
         '
         'm_tbNTrials
         '
@@ -341,6 +338,17 @@ Partial Class frmMSE
         Me.m_tbxPath.Name = "m_tbxPath"
         Me.m_tbxPath.ReadOnly = True
         '
+        'm_tbxNumAvailableModels
+        '
+        resources.ApplyResources(Me.m_tbxNumAvailableModels, "m_tbxNumAvailableModels")
+        Me.m_tbxNumAvailableModels.Name = "m_tbxNumAvailableModels"
+        Me.m_tbxNumAvailableModels.ReadOnly = True
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -399,8 +407,9 @@ Partial Class frmMSE
     Private WithEvents m_lblInputParams As System.Windows.Forms.Label
     Private WithEvents m_rbEwEDefault As System.Windows.Forms.RadioButton
     Private WithEvents m_btnChangePath As System.Windows.Forms.Button
-    Private WithEvents m_lblNunMavailable As System.Windows.Forms.Label
     Private WithEvents m_lblNumAvailableStrategies As System.Windows.Forms.Label
     Friend WithEvents m_lblDataPath As System.Windows.Forms.Label
     Private WithEvents m_tbxPath As System.Windows.Forms.TextBox
+    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_tbxNumAvailableModels As System.Windows.Forms.TextBox
 End Class
