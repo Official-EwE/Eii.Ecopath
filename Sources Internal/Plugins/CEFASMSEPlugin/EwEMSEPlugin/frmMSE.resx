@@ -126,7 +126,7 @@
     <value>163, 21</value>
   </data>
   <data name="m_tbNModels2Run.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 20</value>
+    <value>213, 20</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tbNModels2Run.TabIndex" type="System.Int32, mscorlib">
@@ -181,7 +181,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnLoadSampled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 45</value>
+    <value>382, 45</value>
   </data>
   <data name="btnLoadSampled.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 23</value>
@@ -211,7 +211,7 @@
     <value>163, 47</value>
   </data>
   <data name="m_tbNYearsProject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 20</value>
+    <value>213, 20</value>
   </data>
   <data name="m_tbNYearsProject.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -301,7 +301,7 @@
     <value>163, 72</value>
   </data>
   <data name="m_txtTolerance.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 20</value>
+    <value>213, 20</value>
   </data>
   <data name="m_txtTolerance.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -328,7 +328,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnCreateModels.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 44</value>
+    <value>382, 44</value>
   </data>
   <data name="btnCreateModels.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 23</value>
@@ -351,8 +351,11 @@
   <data name="&gt;&gt;btnCreateModels.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_btnGenDC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="m_btnGenDC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>416, 64</value>
+    <value>493, 62</value>
   </data>
   <data name="m_btnGenDC.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 23</value>
@@ -382,7 +385,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnShowTFMForm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 21</value>
+    <value>382, 21</value>
   </data>
   <data name="m_btnShowTFMForm.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 44</value>
@@ -405,8 +408,11 @@
   <data name="&gt;&gt;m_btnShowTFMForm.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_btnEcopathParams2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="m_btnEcopathParams2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>416, 7</value>
+    <value>493, 5</value>
   </data>
   <data name="m_btnEcopathParams2.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 23</value>
@@ -439,7 +445,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hrdStep2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 18</value>
+    <value>473, 18</value>
   </data>
   <data name="m_hrdStep2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -454,7 +460,7 @@
     <value>m_hrdStep2</value>
   </data>
   <data name="&gt;&gt;m_hrdStep2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9715.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9747.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hrdStep2.Parent" xml:space="preserve">
     <value>m_plStep2</value>
@@ -496,7 +502,7 @@
     <value>163, 46</value>
   </data>
   <data name="m_tbNTrials.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 20</value>
+    <value>213, 20</value>
   </data>
   <data name="m_tbNTrials.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -520,13 +526,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plStep2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 119</value>
+    <value>1, 110</value>
   </data>
   <data name="m_plStep2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plStep2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 95</value>
+    <value>473, 95</value>
   </data>
   <data name="m_plStep2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -550,7 +556,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrStep5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 18</value>
+    <value>473, 18</value>
   </data>
   <data name="m_hdrStep5.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -565,7 +571,7 @@
     <value>m_hdrStep5</value>
   </data>
   <data name="&gt;&gt;m_hdrStep5.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9715.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9747.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep5.Parent" xml:space="preserve">
     <value>m_plStep5</value>
@@ -607,13 +613,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plStep5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 334</value>
+    <value>1, 325</value>
   </data>
   <data name="m_plStep5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plStep5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 74</value>
+    <value>473, 74</value>
   </data>
   <data name="m_plStep5.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -637,7 +643,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrStep4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 18</value>
+    <value>473, 18</value>
   </data>
   <data name="m_hdrStep4.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -652,7 +658,7 @@
     <value>m_hdrStep4</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9715.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9747.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Parent" xml:space="preserve">
     <value>m_plStep4</value>
@@ -691,13 +697,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plStep4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 265</value>
+    <value>1, 256</value>
   </data>
   <data name="m_plStep4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plStep4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 68</value>
+    <value>473, 68</value>
   </data>
   <data name="m_plStep4.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -721,7 +727,7 @@
     <value>163, 21</value>
   </data>
   <data name="m_tbArea.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 20</value>
+    <value>213, 20</value>
   </data>
   <data name="m_tbArea.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1598,13 +1604,13 @@
 </value>
   </data>
   <data name="m_pbCefas.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 409</value>
+    <value>1, 400</value>
   </data>
   <data name="m_pbCefas.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_pbCefas.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 67</value>
+    <value>473, 75</value>
   </data>
   <data name="m_pbCefas.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>Zoom</value>
@@ -1624,8 +1630,11 @@
   <data name="&gt;&gt;m_pbCefas.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="m_btn2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="m_btn2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>416, 36</value>
+    <value>493, 34</value>
   </data>
   <data name="m_btn2.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 23</value>
@@ -1658,7 +1667,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrStep3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 18</value>
+    <value>473, 18</value>
   </data>
   <data name="m_hdrStep3.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1673,7 +1682,7 @@
     <value>m_hdrStep3</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9715.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9747.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Parent" xml:space="preserve">
     <value>m_plStep3</value>
@@ -1685,13 +1694,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plStep3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 215</value>
+    <value>1, 206</value>
   </data>
   <data name="m_plStep3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plStep3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 49</value>
+    <value>473, 49</value>
   </data>
   <data name="m_plStep3.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1708,38 +1717,11 @@
   <data name="&gt;&gt;m_plStep3.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_lblDataDirectoryPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_lblDataDirectoryPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 67</value>
-  </data>
-  <data name="m_lblDataDirectoryPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>290, 18</value>
-  </data>
-  <data name="m_lblDataDirectoryPath.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_lblDataDirectoryPath.Text" xml:space="preserve">
-    <value>&lt;path&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_lblDataDirectoryPath.Name" xml:space="preserve">
-    <value>m_lblDataDirectoryPath</value>
-  </data>
-  <data name="&gt;&gt;m_lblDataDirectoryPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblDataDirectoryPath.Parent" xml:space="preserve">
-    <value>m_plStep1</value>
-  </data>
-  <data name="&gt;&gt;m_lblDataDirectoryPath.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_btnDistParams.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_btnDistParams.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 91</value>
+    <value>382, 78</value>
   </data>
   <data name="m_btnDistParams.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 23</value>
@@ -1760,13 +1742,43 @@
     <value>m_plStep1</value>
   </data>
   <data name="&gt;&gt;m_btnDistParams.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
+  </data>
+  <data name="m_tlpLayout.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_tlpLayout.CellBorderStyle" type="System.Windows.Forms.TableLayoutPanelCellBorderStyle, System.Windows.Forms">
     <value>Single</value>
   </data>
   <data name="m_tlpLayout.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="m_lblDataPath.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblDataPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 26</value>
+  </data>
+  <data name="m_lblDataPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 13</value>
+  </data>
+  <data name="m_lblDataPath.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_lblDataPath.Text" xml:space="preserve">
+    <value>&amp;Data path:</value>
+  </data>
+  <data name="&gt;&gt;m_lblDataPath.Name" xml:space="preserve">
+    <value>m_lblDataPath</value>
+  </data>
+  <data name="&gt;&gt;m_lblDataPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblDataPath.Parent" xml:space="preserve">
+    <value>m_plStep1</value>
+  </data>
+  <data name="&gt;&gt;m_lblDataPath.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_rbCustomPath.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1775,16 +1787,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbCustomPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 44</value>
+    <value>73, 52</value>
   </data>
   <data name="m_rbCustomPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 17</value>
+    <value>84, 17</value>
   </data>
   <data name="m_rbCustomPath.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_rbCustomPath.Text" xml:space="preserve">
-    <value>Use &amp;custom path</value>
+    <value>&amp;Custom path</value>
   </data>
   <data name="&gt;&gt;m_rbCustomPath.Name" xml:space="preserve">
     <value>m_rbCustomPath</value>
@@ -1796,7 +1808,34 @@
     <value>m_plStep1</value>
   </data>
   <data name="&gt;&gt;m_rbCustomPath.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <data name="m_tbxPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>73, 23</value>
+  </data>
+  <data name="m_tbxPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>393, 20</value>
+  </data>
+  <data name="m_tbxPath.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_tbxPath.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="&gt;&gt;m_tbxPath.Name" xml:space="preserve">
+    <value>m_tbxPath</value>
+  </data>
+  <data name="&gt;&gt;m_tbxPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxPath.Parent" xml:space="preserve">
+    <value>m_plStep1</value>
+  </data>
+  <data name="&gt;&gt;m_tbxPath.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_lblInputParams.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1805,7 +1844,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblInputParams.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 96</value>
+    <value>10, 83</value>
   </data>
   <data name="m_lblInputParams.MaximumSize" type="System.Drawing.Size, System.Drawing">
     <value>100, 0</value>
@@ -1829,13 +1868,13 @@
     <value>m_plStep1</value>
   </data>
   <data name="&gt;&gt;m_lblInputParams.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_rbEwEDefault.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbEwEDefault.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 21</value>
+    <value>163, 52</value>
   </data>
   <data name="m_rbEwEDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>128, 17</value>
@@ -1856,7 +1895,7 @@
     <value>m_plStep1</value>
   </data>
   <data name="&gt;&gt;m_rbEwEDefault.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_hdrStep1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -1865,7 +1904,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrStep1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 18</value>
+    <value>473, 18</value>
   </data>
   <data name="m_hdrStep1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1880,13 +1919,13 @@
     <value>m_hdrStep1</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9715.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9747.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Parent" xml:space="preserve">
     <value>m_plStep1</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_btnChangePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1895,7 +1934,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnChangePath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 62</value>
+    <value>382, 49</value>
   </data>
   <data name="m_btnChangePath.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 23</value>
@@ -1916,7 +1955,7 @@
     <value>m_plStep1</value>
   </data>
   <data name="&gt;&gt;m_btnChangePath.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_plStep1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1928,7 +1967,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plStep1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 117</value>
+    <value>473, 108</value>
   </data>
   <data name="m_plStep1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1952,7 +1991,7 @@
     <value>6</value>
   </data>
   <data name="m_tlpLayout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>398, 476</value>
+    <value>475, 476</value>
   </data>
   <data name="m_tlpLayout.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1979,7 +2018,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>578, 500</value>
+    <value>655, 500</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -1991,6 +2030,6 @@
     <value>frmMSE</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.4.9715.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.4.9747.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

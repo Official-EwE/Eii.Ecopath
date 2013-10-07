@@ -73,7 +73,6 @@ Partial Class frmMSE
         Me.m_btn2 = New System.Windows.Forms.Button()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
         Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_lblDataDirectoryPath = New System.Windows.Forms.Label()
         Me.m_btnDistParams = New System.Windows.Forms.Button()
         Me.m_tlpLayout = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plStep1 = New System.Windows.Forms.Panel()
@@ -82,6 +81,8 @@ Partial Class frmMSE
         Me.m_rbEwEDefault = New System.Windows.Forms.RadioButton()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
+        Me.m_lblDataPath = New System.Windows.Forms.Label()
+        Me.m_tbxPath = New System.Windows.Forms.TextBox()
         Me.m_plStep2.SuspendLayout()
         Me.m_plStep5.SuspendLayout()
         Me.m_plStep4.SuspendLayout()
@@ -266,12 +267,6 @@ Partial Class frmMSE
         Me.m_hdrStep3.IsCollapsed = False
         Me.m_hdrStep3.Name = "m_hdrStep3"
         '
-        'm_lblDataDirectoryPath
-        '
-        resources.ApplyResources(Me.m_lblDataDirectoryPath, "m_lblDataDirectoryPath")
-        Me.m_lblDataDirectoryPath.AutoEllipsis = True
-        Me.m_lblDataDirectoryPath.Name = "m_lblDataDirectoryPath"
-        '
         'm_btnDistParams
         '
         resources.ApplyResources(Me.m_btnDistParams, "m_btnDistParams")
@@ -291,8 +286,9 @@ Partial Class frmMSE
         '
         'm_plStep1
         '
+        Me.m_plStep1.Controls.Add(Me.m_lblDataPath)
         Me.m_plStep1.Controls.Add(Me.m_rbCustomPath)
-        Me.m_plStep1.Controls.Add(Me.m_lblDataDirectoryPath)
+        Me.m_plStep1.Controls.Add(Me.m_tbxPath)
         Me.m_plStep1.Controls.Add(Me.m_lblInputParams)
         Me.m_plStep1.Controls.Add(Me.m_rbEwEDefault)
         Me.m_plStep1.Controls.Add(Me.m_hdrStep1)
@@ -333,6 +329,17 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_btnChangePath, "m_btnChangePath")
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
+        '
+        'm_lblDataPath
+        '
+        resources.ApplyResources(Me.m_lblDataPath, "m_lblDataPath")
+        Me.m_lblDataPath.Name = "m_lblDataPath"
+        '
+        'm_tbxPath
+        '
+        resources.ApplyResources(Me.m_tbxPath, "m_tbxPath")
+        Me.m_tbxPath.Name = "m_tbxPath"
+        Me.m_tbxPath.ReadOnly = True
         '
         'frmMSE
         '
@@ -378,7 +385,6 @@ Partial Class frmMSE
     Private WithEvents m_lblArea As System.Windows.Forms.Label
     Private WithEvents m_btn2 As System.Windows.Forms.Button
     Private WithEvents m_plStep3 As System.Windows.Forms.Panel
-    Private WithEvents m_lblDataDirectoryPath As System.Windows.Forms.Label
     Private WithEvents m_btnDistParams As System.Windows.Forms.Button
     Private WithEvents m_tbArea As System.Windows.Forms.TextBox
     Private WithEvents m_tbNTrials As System.Windows.Forms.TextBox
@@ -395,4 +401,6 @@ Partial Class frmMSE
     Private WithEvents m_btnChangePath As System.Windows.Forms.Button
     Private WithEvents m_lblNunMavailable As System.Windows.Forms.Label
     Private WithEvents m_lblNumAvailableStrategies As System.Windows.Forms.Label
+    Friend WithEvents m_lblDataPath As System.Windows.Forms.Label
+    Private WithEvents m_tbxPath As System.Windows.Forms.TextBox
 End Class

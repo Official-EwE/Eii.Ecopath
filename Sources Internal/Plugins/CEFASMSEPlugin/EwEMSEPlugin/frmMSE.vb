@@ -31,7 +31,7 @@ Imports ScientificInterfaceShared.Controls
 Public Class frmMSE
 
     Private mCore As cCore
-    Private mMSE As cMSE
+    Private m_plugin As cMSE
     Private frmTargetF As frmTFMpolicy
 
     Private m_fpArea As cEwEFormatProvider = Nothing
@@ -44,9 +44,9 @@ Public Class frmMSE
 
         Me.InitializeComponent()
         Me.UIContext = uic
-        Me.mMSE = MSE
+        Me.m_plugin = MSE
         Me.mCore = uic.Core
- 
+
     End Sub
 
 #Region " Form overrides "
@@ -64,19 +64,19 @@ Public Class frmMSE
         Me.m_fpArea.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
 
         Me.m_fpNModelsToRun = New cEwEFormatProvider(Me.UIContext, Me.m_tbNModels2Run, GetType(Integer))
-        Me.m_fpNModelsToRun.Value = Me.mMSE.NModels2Run
+        Me.m_fpNModelsToRun.Value = Me.m_plugin.NModels2Run
         AddHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
 
         Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbNTrials, GetType(Integer))
-        Me.m_fpNTrials.Value = Me.mMSE.NTrials
+        Me.m_fpNTrials.Value = Me.m_plugin.NTrials
         AddHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
 
         Me.m_fpNYearsToProject = New cEwEFormatProvider(Me.UIContext, m_tbNYearsProject, GetType(Integer))
-        Me.m_fpNYearsToProject.Value = Me.mMSE.NYearsProject
+        Me.m_fpNYearsToProject.Value = Me.m_plugin.NYearsProject
         AddHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf OnNYearsToProjectChanged
 
         Me.m_fpMassBalanceTol = New cEwEFormatProvider(Me.UIContext, Me.m_txtTolerance, GetType(Single), New cVariableMetaData(0, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
-        Me.m_fpMassBalanceTol.Value = Me.mMSE.MassBalanceTol
+        Me.m_fpMassBalanceTol.Value = Me.m_plugin.MassBalanceTol
         AddHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf OnMassBalanceTolChanged
 
         Me.UpdateControls()
@@ -117,7 +117,7 @@ Public Class frmMSE
         'Me.m_plStep3.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
         'Me.m_plStep4.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
 
-        Me.m_lblDataDirectoryPath.Text = Me.mMSE.DataPath
+        Me.m_tbxPath.Text = Me.m_plugin.DataPath
 
     End Sub
 
@@ -127,22 +127,22 @@ Public Class frmMSE
 
     Private Sub btnSample_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateModels.Click
 
-        mMSE.Create1DimParams("MaxRelFeedingTime")
-        mMSE.Create1DimParams("FeedingTimeAdjustRate")
-        mMSE.Create1DimParams("OtherMortFeedingTime")
-        mMSE.Create1DimParams("PredEffectFeedingTime")
-        mMSE.Create1DimParams("DenDepCatchability")
-        mMSE.Create1DimParams("QBMaxxQBio")
-        mMSE.Create1DimParams("SwitchingPower")
-        mMSE.CreateVulnerabilities()
-        mMSE.GenerateEcopathParamaters()
+        m_plugin.Create1DimParams("MaxRelFeedingTime")
+        m_plugin.Create1DimParams("FeedingTimeAdjustRate")
+        m_plugin.Create1DimParams("OtherMortFeedingTime")
+        m_plugin.Create1DimParams("PredEffectFeedingTime")
+        m_plugin.Create1DimParams("DenDepCatchability")
+        m_plugin.Create1DimParams("QBMaxxQBio")
+        m_plugin.Create1DimParams("SwitchingPower")
+        m_plugin.CreateVulnerabilities()
+        m_plugin.GenerateEcopathParamaters()
 
     End Sub
 
     Private Sub OnPathPrefChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbEwEDefault.CheckedChanged, m_rbCustomPath.CheckedChanged
         Try
-            Me.mMSE.UseEwEPath = Me.m_rbEwEDefault.Checked
+            Me.m_plugin.UseEwEPath = Me.m_rbEwEDefault.Checked
             Me.UpdateControls()
         Catch ex As Exception
 
@@ -155,10 +155,10 @@ Public Class frmMSE
         Try
             ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
             '             From the UI point of view, we just want strategies. The plug-in does the optimizating
-            mMSE.ExtractHCR()
-            mMSE.ChangeEffortFlag = True
-            mMSE.LoadSampledParams()
-            mMSE.ChangeEffortFlag = False
+            m_plugin.ExtractHCR()
+            m_plugin.ChangeEffortFlag = True
+            m_plugin.LoadSampledParams()
+            m_plugin.ChangeEffortFlag = False
         Catch ex As Exception
 
         End Try
@@ -171,12 +171,16 @@ Public Class frmMSE
         Try
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
 
-            If Me.mMSE.UseEwEPath Then
+            If Me.m_plugin.UseEwEPath Then
                 Dim cmd As cShowOptionsCommand = DirectCast(cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
                 cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.FileLocations)
+                ' Do not set path; let core deal with it
             Else
                 Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
-                cmd.Invoke(Me.mMSE.CustomPath, My.Resources.PROMPT_DATAPATH)
+                cmd.Invoke(Me.m_plugin.CustomPath, My.Resources.PROMPT_DATAPATH)
+                If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+                    Me.m_plugin.CustomPath = cmd.Directory
+                End If
             End If
 
             Me.UpdateControls()
@@ -197,7 +201,7 @@ Public Class frmMSE
 
         ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
         '             From the UI point of view, we just want strategies. The plug-in does the optimizating
-        mMSE.ExtractHCR()
+        m_plugin.ExtractHCR()
 
         'Ok now the interface
         If Me.frmTargetF IsNot Nothing Then
@@ -205,7 +209,7 @@ Public Class frmMSE
         End If
         If Not bhasForm Then
             frmTargetF = New frmTFMpolicy()
-            frmTargetF.Init(Me.UIContext, Me.mMSE)
+            frmTargetF.Init(Me.UIContext, Me.m_plugin)
         End If
 
         frmTargetF.Show()
@@ -215,15 +219,15 @@ Public Class frmMSE
         Handles m_btn2.Click
 
         Try
-            mMSE.Create1DimParams("MaxRelFeedingTime")
-            mMSE.Create1DimParams("FeedingTimeAdjustRate")
-            mMSE.Create1DimParams("OtherMortFeedingTime")
-            mMSE.Create1DimParams("PredEffectFeedingTime")
-            mMSE.Create1DimParams("DenDepCatchability")
-            mMSE.Create1DimParams("QBMaxxQBio")
-            mMSE.Create1DimParams("SwitchingPower")
+            m_plugin.Create1DimParams("MaxRelFeedingTime")
+            m_plugin.Create1DimParams("FeedingTimeAdjustRate")
+            m_plugin.Create1DimParams("OtherMortFeedingTime")
+            m_plugin.Create1DimParams("PredEffectFeedingTime")
+            m_plugin.Create1DimParams("DenDepCatchability")
+            m_plugin.Create1DimParams("QBMaxxQBio")
+            m_plugin.Create1DimParams("SwitchingPower")
             'mMSE.Create2DimParams("DietComposition")
-            mMSE.CreateVulnerabilities()
+            m_plugin.CreateVulnerabilities()
         Catch ex As Exception
 
         End Try
@@ -235,7 +239,7 @@ Public Class frmMSE
 
         Try
             Dim frmDisParams As New frmDistributionParameters()
-            frmDisParams.Init(Me.UIContext, Me.mMSE)
+            frmDisParams.Init(Me.UIContext, Me.m_plugin)
             frmDisParams.Show(Me)
         Catch ex As Exception
 
@@ -248,7 +252,7 @@ Public Class frmMSE
 
     Private Sub OnNModels2RunChanged(sender As Object, args As EventArgs)
         Try
-            Me.mMSE.NModels2Run = CInt(Me.m_fpNModelsToRun.Value)
+            Me.m_plugin.NModels2Run = CInt(Me.m_fpNModelsToRun.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnNModels2RunChanged")
         End Try
@@ -256,7 +260,7 @@ Public Class frmMSE
 
     Private Sub OnNTrialsChanged(sender As Object, args As EventArgs)
         Try
-            Me.mMSE.NTrials = CInt(Me.m_fpNTrials.Value)
+            Me.m_plugin.NTrials = CInt(Me.m_fpNTrials.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnNTrialsChanged")
         End Try
@@ -264,7 +268,7 @@ Public Class frmMSE
 
     Private Sub OnNYearsToProjectChanged(sender As Object, args As EventArgs)
         Try
-            Me.mMSE.NYearsProject = CInt(Me.m_fpNYearsToProject.Value)
+            Me.m_plugin.NYearsProject = CInt(Me.m_fpNYearsToProject.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnNYearsToProjectChanged")
         End Try
@@ -272,7 +276,7 @@ Public Class frmMSE
 
     Private Sub OnMassBalanceTolChanged(sender As Object, args As EventArgs)
         Try
-            Me.mMSE.MassBalanceTol = CSng(Me.m_fpMassBalanceTol.Value)
+            Me.m_plugin.MassBalanceTol = CSng(Me.m_fpMassBalanceTol.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnMassBalanceTolChanged")
         End Try
