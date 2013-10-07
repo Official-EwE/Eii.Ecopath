@@ -59,6 +59,8 @@ Partial Class frmMSE
         Me.m_btnEcopathParams2 = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
         Me.m_hrdStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
         Me.m_tbNTrials = New System.Windows.Forms.TextBox()
         Me.m_plStep5 = New System.Windows.Forms.Panel()
         Me.m_hdrStep5 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -75,15 +77,13 @@ Partial Class frmMSE
         Me.m_btnDistParams = New System.Windows.Forms.Button()
         Me.m_tlpLayout = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plStep1 = New System.Windows.Forms.Panel()
+        Me.m_lblDataPath = New System.Windows.Forms.Label()
         Me.m_rbCustomPath = New System.Windows.Forms.RadioButton()
+        Me.m_tbxPath = New System.Windows.Forms.TextBox()
         Me.m_lblInputParams = New System.Windows.Forms.Label()
         Me.m_rbEwEDefault = New System.Windows.Forms.RadioButton()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
-        Me.m_lblDataPath = New System.Windows.Forms.Label()
-        Me.m_tbxPath = New System.Windows.Forms.TextBox()
-        Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.m_plStep2.SuspendLayout()
         Me.m_plStep5.SuspendLayout()
         Me.m_plStep4.SuspendLayout()
@@ -173,6 +173,17 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_hrdStep2, "m_hrdStep2")
         Me.m_hrdStep2.IsCollapsed = False
         Me.m_hrdStep2.Name = "m_hrdStep2"
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
+        'm_tbxNumAvailableModels
+        '
+        resources.ApplyResources(Me.m_tbxNumAvailableModels, "m_tbxNumAvailableModels")
+        Me.m_tbxNumAvailableModels.Name = "m_tbxNumAvailableModels"
+        Me.m_tbxNumAvailableModels.ReadOnly = True
         '
         'm_tbNTrials
         '
@@ -294,12 +305,23 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_plStep1, "m_plStep1")
         Me.m_plStep1.Name = "m_plStep1"
         '
+        'm_lblDataPath
+        '
+        resources.ApplyResources(Me.m_lblDataPath, "m_lblDataPath")
+        Me.m_lblDataPath.Name = "m_lblDataPath"
+        '
         'm_rbCustomPath
         '
         resources.ApplyResources(Me.m_rbCustomPath, "m_rbCustomPath")
         Me.m_rbCustomPath.Name = "m_rbCustomPath"
         Me.m_rbCustomPath.TabStop = True
         Me.m_rbCustomPath.UseVisualStyleBackColor = True
+        '
+        'm_tbxPath
+        '
+        resources.ApplyResources(Me.m_tbxPath, "m_tbxPath")
+        Me.m_tbxPath.Name = "m_tbxPath"
+        Me.m_tbxPath.ReadOnly = True
         '
         'm_lblInputParams
         '
@@ -326,28 +348,6 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_btnChangePath, "m_btnChangePath")
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
-        '
-        'm_lblDataPath
-        '
-        resources.ApplyResources(Me.m_lblDataPath, "m_lblDataPath")
-        Me.m_lblDataPath.Name = "m_lblDataPath"
-        '
-        'm_tbxPath
-        '
-        resources.ApplyResources(Me.m_tbxPath, "m_tbxPath")
-        Me.m_tbxPath.Name = "m_tbxPath"
-        Me.m_tbxPath.ReadOnly = True
-        '
-        'm_tbxNumAvailableModels
-        '
-        resources.ApplyResources(Me.m_tbxNumAvailableModels, "m_tbxNumAvailableModels")
-        Me.m_tbxNumAvailableModels.Name = "m_tbxNumAvailableModels"
-        Me.m_tbxNumAvailableModels.ReadOnly = True
-        '
-        'Label1
-        '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
         '
         'frmMSE
         '

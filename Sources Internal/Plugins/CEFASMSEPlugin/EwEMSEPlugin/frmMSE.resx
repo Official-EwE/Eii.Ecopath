@@ -1852,9 +1852,6 @@
   <data name="m_tbxPath.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_tbxPath.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Center</value>
-  </data>
   <data name="&gt;&gt;m_tbxPath.Name" xml:space="preserve">
     <value>m_tbxPath</value>
   </data>

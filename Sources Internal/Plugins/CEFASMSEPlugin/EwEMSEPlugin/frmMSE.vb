@@ -40,6 +40,8 @@ Public Class frmMSE
     Private m_fpNYearsToProject As cEwEFormatProvider = Nothing
     Private m_fpMassBalanceTol As cEwEFormatProvider = Nothing
 
+    Private m_bInUpdate As Boolean = False
+
     Public Sub New(MSE As cMSE, uic As cUIContext)
 
         Me.InitializeComponent()
@@ -55,6 +57,8 @@ Public Class frmMSE
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
+
+        Me.m_bInUpdate = True
 
         ' -- Set up control interactions --
 
@@ -78,6 +82,11 @@ Public Class frmMSE
         Me.m_fpMassBalanceTol = New cEwEFormatProvider(Me.UIContext, Me.m_txtTolerance, GetType(Single), New cVariableMetaData(0, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         Me.m_fpMassBalanceTol.Value = Me.m_plugin.MassBalanceTol
         AddHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf OnMassBalanceTolChanged
+
+        Me.m_rbEwEDefault.Checked = Me.m_plugin.UseEwEPath
+        Me.m_rbCustomPath.Checked = Not Me.m_plugin.UseEwEPath
+
+        Me.m_bInUpdate = False
 
         Me.UpdateControls()
 
@@ -142,6 +151,9 @@ Public Class frmMSE
 
     Private Sub OnPathPrefChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbEwEDefault.CheckedChanged, m_rbCustomPath.CheckedChanged
+
+        If Me.m_bInUpdate Then Return
+
         Try
             Me.m_plugin.UseEwEPath = Me.m_rbEwEDefault.Checked
             Me.UpdateControls()
