@@ -186,6 +186,13 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             ReadOnly Property Control As Control
 
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the metadata that the control was wrapped with.
+            ''' </summary>
+            ''' -----------------------------------------------------------------------
+            ReadOnly Property Metadata As cVariableMetaData
+
         End Interface
 
 #End Region ' Interface IControlWrapper
@@ -209,6 +216,8 @@ Namespace Controls
             ''' <summary>The EwEFormatProvider that implements value and colour
             ''' behaviour onto the text box.</summary>
             Private m_provider As cEwEFormatProvider = Nothing
+
+            Private m_md As cVariableMetaData = Nothing
 
 #End Region ' Private variables 
 
@@ -250,16 +259,9 @@ Namespace Controls
                     Me.m_tb = DirectCast(ctrl, TextBoxBase)
                     AddHandler Me.m_tb.LostFocus, AddressOf OnControlLostFocus
 
-                    ' Store ref to provider
                     Me.m_provider = provider
-                    ' Apply metadata
-                    If (metadata IsNot Nothing) Then
-                        ' String variable?
-                        If (objValueType Is GetType(String)) Then
-                            ' #Yes: use metadata length
-                            Me.m_tb.MaxLength = metadata.Length
-                        End If
-                    End If
+                    Me.m_md = metadata
+
                 Catch e As Exception
                     ' Throw dev. time error
                     Debug.Assert(False, "Failed to wrap text box")
@@ -301,6 +303,11 @@ Namespace Controls
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
                 Dim strText As String = ""
+
+                ' Apply metadata
+                If (Me.m_md IsNot Nothing) Then
+                    Me.m_tb.MaxLength = Metadata.Length
+                End If
 
                 If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
 
@@ -358,6 +365,12 @@ Namespace Controls
                 End Get
             End Property
 
+            Public ReadOnly Property Metadata As EwECore.cVariableMetaData Implements IControlWrapper.Metadata
+                Get
+                    Return Me.m_md
+                End Get
+            End Property
+
 #End Region ' Implementation
 
 #Region " TextBox events "
@@ -402,6 +415,7 @@ Namespace Controls
         Private Class cNumericUpDownWrapper
             Implements IControlWrapper
 
+
 #Region " Private variables "
 
             ''' <summary>UI context for this wrapper.</summary>
@@ -412,6 +426,8 @@ Namespace Controls
             Private m_provider As cEwEFormatProvider = Nothing
             ''' <summary>For trapping number of decimal digits display.</summary>
             Private m_sg As cStyleGuide = Nothing
+
+            Private m_md As cVariableMetaData = Nothing
 
 #End Region ' Private variables 
 
@@ -470,13 +486,9 @@ Namespace Controls
                     Me.m_sg = Me.UIContext.StyleGuide
                     AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-                    ' Store ref to provider
                     Me.m_provider = provider
-                    ' Apply metadata
-                    If (metadata IsNot Nothing) Then
-                        Me.m_ud.Minimum = CDec(Math.Max(-10000000000, CSng(metadata.Min)))
-                        Me.m_ud.Maximum = CDec(Math.Min(10000000000, CSng(metadata.Max)))
-                    End If
+                    Me.m_md = metadata
+
                     ' Config control
                     Me.OnStyleGuideChanged(cStyleGuide.eChangeType.All)
                 Catch e As Exception
@@ -523,6 +535,12 @@ Namespace Controls
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
+                ' Apply metadata
+                If (Metadata IsNot Nothing) Then
+                    Me.m_ud.Minimum = CDec(Math.Max(-10000000000, CSng(Metadata.Min)))
+                    Me.m_ud.Maximum = CDec(Math.Min(10000000000, CSng(Metadata.Max)))
+                End If
+
                 If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
 
                     ' Sanity checks
@@ -560,6 +578,12 @@ Namespace Controls
             Public ReadOnly Property Control As System.Windows.Forms.Control Implements IControlWrapper.Control
                 Get
                     Return Me.m_ud
+                End Get
+            End Property
+
+            Public ReadOnly Property Metadata As EwECore.cVariableMetaData Implements IControlWrapper.Metadata
+                Get
+                    Return Me.m_md
                 End Get
             End Property
 
@@ -636,6 +660,8 @@ Namespace Controls
             ''' <summary>Optional combo box items.</summary>
             Private m_aItems As Object() = Nothing
 
+            Private m_md As cVariableMetaData = Nothing
+
 #End Region ' Private variables 
 
 #Region " Implementation "
@@ -682,7 +708,7 @@ Namespace Controls
                         Me.Items = aItems
                     End If
 
-                    ' ToDo: apply metadata
+                    Me.m_md = metadata
 
                 Catch e As Exception
                     ' Throw dev. time error
@@ -723,6 +749,8 @@ Namespace Controls
                 Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
+
+                ' ToDo: apply metadata
 
                 If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
 
@@ -818,6 +846,12 @@ Namespace Controls
                 End Get
             End Property
 
+            Public ReadOnly Property Metadata As EwECore.cVariableMetaData Implements IControlWrapper.Metadata
+                Get
+                    Return Me.m_md
+                End Get
+            End Property
+
 #End Region ' Implementation 
 
 #Region " ComboBox events "
@@ -873,6 +907,8 @@ Namespace Controls
             ''' <summary></summary>
             Private m_provider As cEwEFormatProvider = Nothing
 
+            Private m_md As cVariableMetaData = Nothing
+
 #End Region ' Private variables 
 
 #Region " Implementation "
@@ -915,8 +951,9 @@ Namespace Controls
                     Me.m_cb = DirectCast(ctrl, CheckBox)
                     AddHandler Me.m_cb.CheckedChanged, AddressOf OnControlValueChanged
 
-                    ' Store ref to provider
                     Me.m_provider = provider
+                    Me.m_md = metadata
+
                 Catch e As Exception
                     ' Throw dev. time error
                     Debug.Assert(False, String.Format("Failed to wrap checkbox {0}", ctrl.ToString()))
@@ -1000,6 +1037,12 @@ Namespace Controls
                 End Get
             End Property
 
+            Public ReadOnly Property Metadata As EwECore.cVariableMetaData Implements IControlWrapper.Metadata
+                Get
+                    Return Me.m_md
+                End Get
+            End Property
+
 #End Region ' Implementation
 
 #Region " Control events "
@@ -1042,6 +1085,8 @@ Namespace Controls
             ''' behaviour onto the text box.</summary>
             Private m_provider As cEwEFormatProvider = Nothing
 
+            Private m_md As cVariableMetaData = Nothing
+
 #End Region ' Private variables 
 
 #Region " Implementation "
@@ -1077,8 +1122,10 @@ Namespace Controls
                 Try
                     ' Store ref to Text box
                     Me.m_lb = DirectCast(ctrl, Label)
-                    ' Store ref to provider
+
                     Me.m_provider = provider
+                    Me.m_md = metadata
+
                 Catch e As Exception
                     ' Throw dev. time error
                     Debug.Assert(False, "Failed to wrap label")
@@ -1162,6 +1209,12 @@ Namespace Controls
             Public ReadOnly Property Control As System.Windows.Forms.Control Implements IControlWrapper.Control
                 Get
                     Return Me.m_lb
+                End Get
+            End Property
+
+            Public ReadOnly Property Metadata As EwECore.cVariableMetaData Implements IControlWrapper.Metadata
+                Get
+                    Return Me.m_md
                 End Get
             End Property
 
