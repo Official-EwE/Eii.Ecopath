@@ -75,7 +75,6 @@ Public Class cMSE
     Private DietMatrixTemp(,) As Double
     Private DietImpTemp() As Double
     Public ChangeEffortFlag As Boolean = False
-    Private m_bStrategiesExtracted As Boolean 'this is a flag used to determine whether the strategies have already been loads and if so not to load them again
 
     Enum DistributionType
         Uniform = 1
@@ -173,6 +172,37 @@ Public Class cMSE
 
     End Function
 
+    Private m_iNumStrategiesAvailable As Integer = cCore.NULL_VALUE
+
+    Public Function NumStrategiesAvailable() As Integer
+
+        If (Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE) Then
+            Me.ExtractHCR()
+            Me.m_iNumStrategiesAvailable = Me.Strategies.Count
+        End If
+        Return Me.m_iNumStrategiesAvailable
+
+    End Function
+
+    Friend Enum eModelCompatibility As Byte
+        Unknown = 0
+        SomeGroups
+        AllGroups
+    End Enum
+
+    Private m_ModelCompatibility As eModelCompatibility = eModelCompatibility.Unknown
+
+    Friend Function IsModelCompatible() As eModelCompatibility
+        If (Me.m_ModelCompatibility = eModelCompatibility.Unknown) Then
+            ' ToDo: assess model compatibility
+            ' - Group names? Groups may have been renamed or re-ordered
+            ' - Other group properties?
+            ' - Model name? Can be changed
+            ' - Model ID? Models do not have a unique ID yet
+        End If
+        Return Me.m_ModelCompatibility
+    End Function
+
 #End Region ' Diagnostics and state management
 
     Public ReadOnly Property DataPath As String
@@ -218,8 +248,6 @@ Public Class cMSE
     End Sub
 
     Public Function ExtractHCR() As Boolean
-
-        If Me.m_bStrategiesExtracted Then Return True
 
         ' ToDo_JS: Globalize this method
         ' ToDo_JS: Fix folder availability flow
@@ -274,7 +302,6 @@ Public Class cMSE
             csv.Dispose()
         Next
 
-        Me.m_bStrategiesExtracted = True
         Return True
 
     End Function
@@ -2285,8 +2312,9 @@ stepend:
 
     Private Sub InvalidateConfiguration()
         Me.m_monitor.Invalidate()
-        Me.m_bStrategiesExtracted = False
+        Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
+        Me.m_ModelCompatibility = eModelCompatibility.Unknown
     End Sub
 
     Private Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) _

@@ -71,7 +71,7 @@ Public Class frmMSE
         Me.m_fpNModelsToRun.Value = Me.m_plugin.NModels2Run
         AddHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
 
-        Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbNTrials, GetType(Integer))
+        Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbNTrials, GetType(Integer), New cVariableMetaData(0, Me.m_plugin.NumModelsAvailable, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         Me.m_fpNTrials.Value = Me.m_plugin.NTrials
         AddHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
 
@@ -121,15 +121,23 @@ Public Class frmMSE
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
-        Dim controller As cMSEStateMonitor = Me.m_plugin.Controller
+        Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
 
-        Me.m_plStep1.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.Idle)
-        Me.m_plStep2.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
-        Me.m_plStep3.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
-        Me.m_plStep4.Enabled = controller.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
+        Me.m_plStep1.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.Idle)
+        Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
+        Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
+        Me.m_plStep4.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
+        Me.m_plStep5.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
 
         Me.m_tbxPath.Text = Me.m_plugin.DataPath
-        Me.m_tbxNumAvailableModels.Text = CStr(Me.m_plugin.NumModelsAvailable)
+
+        If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
+            Me.m_tbxNumAvailableModels.Text = CStr(Me.m_plugin.NumModelsAvailable)
+            Me.m_tbxNumAvailableFishingStrategies.Text = CStr(Me.m_plugin.NumStrategiesAvailable)
+        Else
+            Me.m_tbxNumAvailableModels.Text = "?"
+            Me.m_tbxNumAvailableFishingStrategies.Text = "?"
+        End If
 
     End Sub
 

@@ -59,7 +59,7 @@ Partial Class frmMSE
         Me.m_btnEcopathParams2 = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
         Me.m_hdrStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_lblAvailableModels = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
         Me.m_tbNTrials = New System.Windows.Forms.TextBox()
         Me.m_plStep5 = New System.Windows.Forms.Panel()
@@ -67,7 +67,6 @@ Partial Class frmMSE
         Me.m_lblNModels = New System.Windows.Forms.Label()
         Me.m_plStep4 = New System.Windows.Forms.Panel()
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_lblNumAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_tbArea = New System.Windows.Forms.TextBox()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_pbCefas = New System.Windows.Forms.PictureBox()
@@ -84,6 +83,8 @@ Partial Class frmMSE
         Me.m_rbEwEDefault = New System.Windows.Forms.RadioButton()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
+        Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
+        Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_plStep2.SuspendLayout()
         Me.m_plStep5.SuspendLayout()
         Me.m_plStep4.SuspendLayout()
@@ -157,7 +158,7 @@ Partial Class frmMSE
         '
         Me.m_plStep2.Controls.Add(Me.m_hdrStep2)
         Me.m_plStep2.Controls.Add(Me.btnCreateModels)
-        Me.m_plStep2.Controls.Add(Me.Label1)
+        Me.m_plStep2.Controls.Add(Me.m_lblAvailableModels)
         Me.m_plStep2.Controls.Add(Me.m_lblNTrials)
         Me.m_plStep2.Controls.Add(Me.m_tbxNumAvailableModels)
         Me.m_plStep2.Controls.Add(Me.m_tbNTrials)
@@ -174,10 +175,10 @@ Partial Class frmMSE
         Me.m_hdrStep2.IsCollapsed = False
         Me.m_hdrStep2.Name = "m_hdrStep2"
         '
-        'Label1
+        'm_lblAvailableModels
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_lblAvailableModels, "m_lblAvailableModels")
+        Me.m_lblAvailableModels.Name = "m_lblAvailableModels"
         '
         'm_tbxNumAvailableModels
         '
@@ -218,7 +219,8 @@ Partial Class frmMSE
         '
         Me.m_plStep4.Controls.Add(Me.m_hdrStep4)
         Me.m_plStep4.Controls.Add(Me.m_btnShowTFMForm)
-        Me.m_plStep4.Controls.Add(Me.m_lblNumAvailableStrategies)
+        Me.m_plStep4.Controls.Add(Me.m_lblAvailableStrategies)
+        Me.m_plStep4.Controls.Add(Me.m_tbxNumAvailableFishingStrategies)
         resources.ApplyResources(Me.m_plStep4, "m_plStep4")
         Me.m_plStep4.Name = "m_plStep4"
         '
@@ -229,11 +231,6 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_hdrStep4, "m_hdrStep4")
         Me.m_hdrStep4.IsCollapsed = False
         Me.m_hdrStep4.Name = "m_hdrStep4"
-        '
-        'm_lblNumAvailableStrategies
-        '
-        resources.ApplyResources(Me.m_lblNumAvailableStrategies, "m_lblNumAvailableStrategies")
-        Me.m_lblNumAvailableStrategies.Name = "m_lblNumAvailableStrategies"
         '
         'm_tbArea
         '
@@ -349,6 +346,17 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
+        'm_tbxNumAvailableFishingStrategies
+        '
+        resources.ApplyResources(Me.m_tbxNumAvailableFishingStrategies, "m_tbxNumAvailableFishingStrategies")
+        Me.m_tbxNumAvailableFishingStrategies.Name = "m_tbxNumAvailableFishingStrategies"
+        Me.m_tbxNumAvailableFishingStrategies.ReadOnly = True
+        '
+        'm_lblAvailableStrategies
+        '
+        resources.ApplyResources(Me.m_lblAvailableStrategies, "m_lblAvailableStrategies")
+        Me.m_lblAvailableStrategies.Name = "m_lblAvailableStrategies"
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -364,6 +372,7 @@ Partial Class frmMSE
         Me.m_plStep5.ResumeLayout(False)
         Me.m_plStep5.PerformLayout()
         Me.m_plStep4.ResumeLayout(False)
+        Me.m_plStep4.PerformLayout()
         CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_plStep3.ResumeLayout(False)
         Me.m_plStep3.PerformLayout()
@@ -407,9 +416,10 @@ Partial Class frmMSE
     Private WithEvents m_lblInputParams As System.Windows.Forms.Label
     Private WithEvents m_rbEwEDefault As System.Windows.Forms.RadioButton
     Private WithEvents m_btnChangePath As System.Windows.Forms.Button
-    Private WithEvents m_lblNumAvailableStrategies As System.Windows.Forms.Label
     Friend WithEvents m_lblDataPath As System.Windows.Forms.Label
     Private WithEvents m_tbxPath As System.Windows.Forms.TextBox
-    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_lblAvailableModels As System.Windows.Forms.Label
     Private WithEvents m_tbxNumAvailableModels As System.Windows.Forms.TextBox
+    Private WithEvents m_lblAvailableStrategies As System.Windows.Forms.Label
+    Private WithEvents m_tbxNumAvailableFishingStrategies As System.Windows.Forms.TextBox
 End Class
