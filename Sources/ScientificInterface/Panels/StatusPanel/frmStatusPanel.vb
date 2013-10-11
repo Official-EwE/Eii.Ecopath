@@ -42,10 +42,6 @@ Public Class frmStatusPanel
 
 #Region " Private vars "
 
-    Private Const sKEY_INFO As String = "INFO"
-    Private Const sKEY_WARNING As String = "WARNING"
-    Private Const sKEY_ERROR As String = "ERROR"
-    Private Const sKEY_QUESTION As String = "QUESTION"
     Private Const iICON_SIZE As Integer = 8
 
     Private m_il As New ImageList()
@@ -78,10 +74,10 @@ Public Class frmStatusPanel
         If (Me.m_uic Is Nothing) Then Return
 
         ' Prepare image list
-        Me.m_il.Images.Add(sKEY_INFO, SharedResources.Info)
-        Me.m_il.Images.Add(sKEY_WARNING, SharedResources.Warning)
-        Me.m_il.Images.Add(sKEY_ERROR, SharedResources.Critical)
-        Me.m_il.Images.Add(sKEY_QUESTION, SharedResources.Question)
+        Me.m_il.Images.Add(CStr(eMessageImportance.Information), cStyleGuide.GetImage(eMessageImportance.Information))
+        Me.m_il.Images.Add(CStr(eMessageImportance.Warning), cStyleGuide.GetImage(eMessageImportance.Warning))
+        Me.m_il.Images.Add(CStr(eMessageImportance.Critical), cStyleGuide.GetImage(eMessageImportance.Critical))
+        Me.m_il.Images.Add(CStr(eMessageImportance.Question), cStyleGuide.GetImage(eMessageImportance.Question))
 
         ' Set image list
         Me.m_tvStatus.ImageList = Me.m_il
@@ -180,7 +176,7 @@ Public Class frmStatusPanel
 
     End Function
 
-#End Region
+#End Region ' Tree view maintenance
 
 #Region " Message highlighting "
 
@@ -303,18 +299,7 @@ Public Class frmStatusPanel
         tnMessage.Tag = item
 
         ' Add image
-        Select Case item.Importance
-            Case eMessageImportance.Information
-                tnMessage.ImageKey = sKEY_INFO
-            Case eMessageImportance.Warning
-                tnMessage.ImageKey = sKEY_WARNING
-            Case eMessageImportance.Critical
-                tnMessage.ImageKey = sKEY_ERROR
-            Case eMessageImportance.Question
-                tnMessage.ImageKey = sKEY_QUESTION
-            Case Else
-                Debug.Assert(False)
-        End Select
+        tnMessage.ImageKey = CStr(item.Importance)
         ' Set selected image to equal image index
         tnMessage.SelectedImageKey = tnMessage.ImageKey
 
@@ -372,6 +357,8 @@ Public Class frmStatusPanel
             Next
             ' ToDo: reflect whether message was suppressed somehow
         End If
+
+        Me.Pulse(item.Importance, 5)
 
     End Sub
 

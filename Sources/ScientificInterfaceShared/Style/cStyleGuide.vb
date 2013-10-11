@@ -2027,6 +2027,31 @@ Namespace Style
 #End Region ' Internal implementation
 #End Region ' Visual styles
 
+#Region " Images "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return a standard image for a given <see cref="eMessageImportance">importance level</see>.
+        ''' </summary>
+        ''' <param name="importance">The importance level to find the image for.</param>
+        ''' <returns>A bitmap, or nothing if not applicable.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetImage(importance As eMessageImportance) As Bitmap
+            Select Case importance
+                Case eMessageImportance.Critical
+                    Return My.Resources.Critical
+                Case eMessageImportance.Warning
+                    Return My.Resources.Warning
+                Case eMessageImportance.Information
+                    Return My.Resources.Info
+                Case eMessageImportance.Question
+                    Return My.Resources.Question
+            End Select
+            Return Nothing
+        End Function
+
+#End Region ' Images
+
 #Region " Image export settings "
 
         ''' -------------------------------------------------------------------

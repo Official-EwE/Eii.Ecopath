@@ -15,8 +15,12 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
 
+Option Strict On
 Imports ScientificInterfaceShared.Forms
+
+#End Region ' Imports
 
 Partial Class frmStatusPanel
     Inherits frmEwEDockContent
