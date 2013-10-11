@@ -48,16 +48,17 @@ Partial Class frmMSE
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSE))
         Me.m_tbNModels2Run = New System.Windows.Forms.TextBox()
         Me.m_lblNTrials = New System.Windows.Forms.Label()
-        Me.btnLoadSampled = New System.Windows.Forms.Button()
+        Me.m_btnRun = New System.Windows.Forms.Button()
         Me.m_tbNYearsProject = New System.Windows.Forms.TextBox()
         Me.m_lblNYears = New System.Windows.Forms.Label()
         Me.m_lblMassBalanceTol = New System.Windows.Forms.Label()
         Me.m_txtTolerance = New System.Windows.Forms.TextBox()
-        Me.btnCreateModels = New System.Windows.Forms.Button()
+        Me.m_btnCreateModels = New System.Windows.Forms.Button()
         Me.m_btnGenDC = New System.Windows.Forms.Button()
         Me.m_btnShowTFMForm = New System.Windows.Forms.Button()
         Me.m_btnEcopathParams2 = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
+        Me.m_pbCompatible = New System.Windows.Forms.PictureBox()
         Me.m_hdrStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableModels = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
@@ -67,6 +68,8 @@ Partial Class frmMSE
         Me.m_lblNModels = New System.Windows.Forms.Label()
         Me.m_plStep4 = New System.Windows.Forms.Panel()
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
+        Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
         Me.m_tbArea = New System.Windows.Forms.TextBox()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_pbCefas = New System.Windows.Forms.PictureBox()
@@ -83,9 +86,8 @@ Partial Class frmMSE
         Me.m_rbEwEDefault = New System.Windows.Forms.RadioButton()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
-        Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
-        Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_plStep2.SuspendLayout()
+        CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep5.SuspendLayout()
         Me.m_plStep4.SuspendLayout()
         CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -104,11 +106,11 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_lblNTrials, "m_lblNTrials")
         Me.m_lblNTrials.Name = "m_lblNTrials"
         '
-        'btnLoadSampled
+        'm_btnRun
         '
-        resources.ApplyResources(Me.btnLoadSampled, "btnLoadSampled")
-        Me.btnLoadSampled.Name = "btnLoadSampled"
-        Me.btnLoadSampled.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnRun, "m_btnRun")
+        Me.m_btnRun.Name = "m_btnRun"
+        Me.m_btnRun.UseVisualStyleBackColor = True
         '
         'm_tbNYearsProject
         '
@@ -130,11 +132,11 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_txtTolerance, "m_txtTolerance")
         Me.m_txtTolerance.Name = "m_txtTolerance"
         '
-        'btnCreateModels
+        'm_btnCreateModels
         '
-        resources.ApplyResources(Me.btnCreateModels, "btnCreateModels")
-        Me.btnCreateModels.Name = "btnCreateModels"
-        Me.btnCreateModels.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnCreateModels, "m_btnCreateModels")
+        Me.m_btnCreateModels.Name = "m_btnCreateModels"
+        Me.m_btnCreateModels.UseVisualStyleBackColor = True
         '
         'm_btnGenDC
         '
@@ -156,8 +158,9 @@ Partial Class frmMSE
         '
         'm_plStep2
         '
+        Me.m_plStep2.Controls.Add(Me.m_pbCompatible)
         Me.m_plStep2.Controls.Add(Me.m_hdrStep2)
-        Me.m_plStep2.Controls.Add(Me.btnCreateModels)
+        Me.m_plStep2.Controls.Add(Me.m_btnCreateModels)
         Me.m_plStep2.Controls.Add(Me.m_lblAvailableModels)
         Me.m_plStep2.Controls.Add(Me.m_lblNTrials)
         Me.m_plStep2.Controls.Add(Me.m_tbxNumAvailableModels)
@@ -166,6 +169,12 @@ Partial Class frmMSE
         Me.m_plStep2.Controls.Add(Me.m_txtTolerance)
         resources.ApplyResources(Me.m_plStep2, "m_plStep2")
         Me.m_plStep2.Name = "m_plStep2"
+        '
+        'm_pbCompatible
+        '
+        resources.ApplyResources(Me.m_pbCompatible, "m_pbCompatible")
+        Me.m_pbCompatible.Name = "m_pbCompatible"
+        Me.m_pbCompatible.TabStop = False
         '
         'm_hdrStep2
         '
@@ -197,7 +206,7 @@ Partial Class frmMSE
         Me.m_plStep5.Controls.Add(Me.m_tbNModels2Run)
         Me.m_plStep5.Controls.Add(Me.m_lblNYears)
         Me.m_plStep5.Controls.Add(Me.m_lblNModels)
-        Me.m_plStep5.Controls.Add(Me.btnLoadSampled)
+        Me.m_plStep5.Controls.Add(Me.m_btnRun)
         Me.m_plStep5.Controls.Add(Me.m_tbNYearsProject)
         resources.ApplyResources(Me.m_plStep5, "m_plStep5")
         Me.m_plStep5.Name = "m_plStep5"
@@ -231,6 +240,17 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_hdrStep4, "m_hdrStep4")
         Me.m_hdrStep4.IsCollapsed = False
         Me.m_hdrStep4.Name = "m_hdrStep4"
+        '
+        'm_lblAvailableStrategies
+        '
+        resources.ApplyResources(Me.m_lblAvailableStrategies, "m_lblAvailableStrategies")
+        Me.m_lblAvailableStrategies.Name = "m_lblAvailableStrategies"
+        '
+        'm_tbxNumAvailableFishingStrategies
+        '
+        resources.ApplyResources(Me.m_tbxNumAvailableFishingStrategies, "m_tbxNumAvailableFishingStrategies")
+        Me.m_tbxNumAvailableFishingStrategies.Name = "m_tbxNumAvailableFishingStrategies"
+        Me.m_tbxNumAvailableFishingStrategies.ReadOnly = True
         '
         'm_tbArea
         '
@@ -346,17 +366,6 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
-        'm_tbxNumAvailableFishingStrategies
-        '
-        resources.ApplyResources(Me.m_tbxNumAvailableFishingStrategies, "m_tbxNumAvailableFishingStrategies")
-        Me.m_tbxNumAvailableFishingStrategies.Name = "m_tbxNumAvailableFishingStrategies"
-        Me.m_tbxNumAvailableFishingStrategies.ReadOnly = True
-        '
-        'm_lblAvailableStrategies
-        '
-        resources.ApplyResources(Me.m_lblAvailableStrategies, "m_lblAvailableStrategies")
-        Me.m_lblAvailableStrategies.Name = "m_lblAvailableStrategies"
-        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -369,6 +378,7 @@ Partial Class frmMSE
         Me.Name = "frmMSE"
         Me.m_plStep2.ResumeLayout(False)
         Me.m_plStep2.PerformLayout()
+        CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_plStep5.ResumeLayout(False)
         Me.m_plStep5.PerformLayout()
         Me.m_plStep4.ResumeLayout(False)
@@ -385,11 +395,11 @@ Partial Class frmMSE
 
     Private WithEvents m_tbNModels2Run As System.Windows.Forms.TextBox
     Private WithEvents m_lblNTrials As System.Windows.Forms.Label
-    Private WithEvents btnLoadSampled As System.Windows.Forms.Button
+    Private WithEvents m_btnRun As System.Windows.Forms.Button
     Private WithEvents m_tbNYearsProject As System.Windows.Forms.TextBox
     Private WithEvents m_lblNYears As System.Windows.Forms.Label
     Private WithEvents m_txtTolerance As System.Windows.Forms.TextBox
-    Private WithEvents btnCreateModels As System.Windows.Forms.Button
+    Private WithEvents m_btnCreateModels As System.Windows.Forms.Button
     Private WithEvents m_btnGenDC As System.Windows.Forms.Button
     Private WithEvents m_lblMassBalanceTol As System.Windows.Forms.Label
     Private WithEvents m_btnShowTFMForm As System.Windows.Forms.Button
@@ -422,4 +432,5 @@ Partial Class frmMSE
     Private WithEvents m_tbxNumAvailableModels As System.Windows.Forms.TextBox
     Private WithEvents m_lblAvailableStrategies As System.Windows.Forms.Label
     Private WithEvents m_tbxNumAvailableFishingStrategies As System.Windows.Forms.TextBox
+    Private WithEvents m_pbCompatible As System.Windows.Forms.PictureBox
 End Class

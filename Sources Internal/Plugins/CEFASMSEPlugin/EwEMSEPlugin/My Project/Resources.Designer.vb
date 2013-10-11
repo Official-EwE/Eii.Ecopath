@@ -61,6 +61,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The file {0} contains unexpected entires.
+        '''</summary>
+        Friend ReadOnly Property ERROR_CSV_MALFORMED() As String
+            Get
+                Return ResourceManager.GetString("ERROR_CSV_MALFORMED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to The distribution file {0} has non-living groups in it..
         '''</summary>
         Friend ReadOnly Property ERROR_DISTRFILE_GROUPS_HASNONLIVING() As String

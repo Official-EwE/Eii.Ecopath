@@ -76,9 +76,9 @@ Public Class cMSE
     Private DietImpTemp() As Double
     Public ChangeEffortFlag As Boolean = False
 
-    Enum DistributionType
-        Uniform = 1
-        Triangular = 2
+    Enum DistributionType As Byte
+        Uniform
+        Triangular
     End Enum
 
     Private m_mhSettings As cMessageHandler = Nothing
@@ -93,19 +93,33 @@ Public Class cMSE
 
 #Region " Diagnostics and state management "
 
+    Private Sub InvalidateConfiguration()
+        Me.m_monitor.Invalidate()
+        Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
+        Me.m_iNumModelsAvailable = cCore.NULL_VALUE
+        Me.m_tsInputDataCompatibility = TriState.UseDefault
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cMSEStateMonitor">MSE state monitor</see>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Controller As cMSEStateMonitor
         Get
             Return Me.m_monitor
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns whether the MSE plug-in input structure is available, which includes
-    ''' all input and output directoru
+    ''' Returns whether the MSE plug-in has all directories that it needs in the
+    ''' <see cref="DataPath"></see>.
     ''' </summary>
-    ''' <param name="bCreate"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <param name="bCreate">Flag, indicating whether the directory structure
+    ''' should be created if missing.</param>
+    ''' <returns>True if the directory structure exists in its entirety.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function IsInputStructureAvailable(bCreate As Boolean) As Boolean
 
         ' Make sure plug-in has all dirs
@@ -119,28 +133,215 @@ Public Class cMSE
 
     End Function
 
+    Private m_tsInputDataCompatibility As TriState = TriState.UseDefault
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns whether all base data is available for building models
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsInputDataAvailable() As Boolean
+    Public Function IsInputDataCompatible() As Boolean
 
-        ' Make sure plug-in has empty CSV
-        If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Then Return False
-
-        ' JS: This is nasty duplication of logic and requires serious restructuring
-        ' ToDo_JS: Move to new method cMSEUtils.GetInputFile(path, constant)
-        Dim aFiles As String() = New String() {"B_Dist", "BA_Dist", "PB_Dist", "QB_Dist", "EE_Dist", _
-                                               "DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
+        Dim aFilesEcopath As String() = New String() {"B_Dist", "BA_Dist", "PB_Dist", "QB_Dist", "EE_Dist"}
+        Dim aFilesEcosim As String() = New String() {"DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
         Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams)
-        For Each strFile As String In aFiles
-            Dim strFullPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")
-            If Not File.Exists(strFullPath) Then
+
+        If (Me.m_tsInputDataCompatibility = TriState.UseDefault) Then
+
+            ' Hope for the best
+            Me.m_tsInputDataCompatibility = TriState.True
+
+            ' Make sure plug-in has empty CSV
+            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Then
+                Me.m_tsInputDataCompatibility = TriState.False
+            Else
+                ' Assess Ecopath files
+                For Each strFile As String In aFilesEcopath
+                    If Not CheckEcopathDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
+                        Me.m_tsInputDataCompatibility = TriState.False
+                        Exit For
+                    End If
+                Next strFile
+
+                ' Assess Ecopath files
+                For Each strFile As String In aFilesEcosim
+                    If Not CheckEcoSimDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
+                        Me.m_tsInputDataCompatibility = TriState.False
+                        Exit For
+                    End If
+                Next strFile
+
+            End If
+        End If
+
+        Return (Me.m_tsInputDataCompatibility = TriState.True)
+
+    End Function
+
+    ''' <summary>
+    ''' Checks whether each of the Ecopath (not diet matrix) distribution files is has the correct functional groups in it
+    ''' They should only have living groups
+    ''' It does this by saving a true in the position of an array at the index at which it exists in EwE
+    ''' It then sums the values in this array and checks that they are equal to nlivinggroups (TRUE=1)
+    ''' The reason I have done this is to prevent the problem where a file might have replicate groups
+    ''' If a file has replicate groups and we check each group to see if it is in EwE and it happens that the number
+    ''' of groups in the file are equal to the number of living groups, the file will be wrongly accepted.
+    ''' </summary>
+    ''' <param name="strPath"></param>
+    ''' <returns>True if all ok.</returns>
+    Public Function CheckEcopathDistributionFilesOkay(ByVal strPath As String) As Boolean
+
+        Dim reader As StreamReader = Nothing
+        Dim csv As CsvReader = Nothing
+        Dim correct(mCore.nGroups - 1) As Integer
+        Dim TotalFound As Integer = 0
+        Dim bOK As Boolean = True
+
+        reader = cMSEUtils.GetReader(strPath)
+        If (reader Is Nothing) Then Return False
+
+        csv = New CsvReader(reader, True)
+
+        ' Initialise correct to all zeros
+        For i = 1 To mCore.nGroups
+            correct(i - 1) = 0
+        Next
+
+        Try
+            'cycle through each of the living functional groups each time checking if it exists in the file
+            For igrp = 1 To mCore.nLivingGroups
+                csv.ReadNextRecord()
+                For xgrp = 1 To mCore.nGroups
+                    If (cStringUtils.ConvertToInteger(csv(0)) = xgrp) And (String.Compare(cMSEUtils.FromCSVField(csv(1)), _ecopath.EcopathData.GroupName(xgrp), True) = 0) Then
+                        correct(xgrp - 1) += 1
+                        ' Exit For ' JS: keep on checking to find duplicates
+                    End If
+                Next
+            Next
+        Catch ex As Exception
+            bOK = False
+        End Try
+
+        csv.Dispose()
+        cMSEUtils.ReleaseReader(reader)
+
+        ' Report file read error
+        If (bOK = False) Then
+            Me.SendMessage(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
+            Return False
+        End If
+
+        'check that there are no replicates
+        For igrp = 1 To mCore.nGroups
+            If correct(igrp - 1) > 1 Then
+                Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(strPath)), eMessageImportance.Warning)
                 Return False
             End If
         Next
+
+        'sum all the values in correct to be use to diagnose whether there are the correct number of groups in the file
+        For Each i In correct
+            TotalFound += i
+        Next
+
+        If TotalFound < mCore.nLivingGroups Then 'Check whether there are too few groups in the file
+            Me.SendMessage(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)), eMessageImportance.Warning)
+            Return False
+        ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
+            Me.SendMessage(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)), eMessageImportance.Warning)
+            Return False
+        End If
+
+        ' Phew
+        Return True
+
+    End Function
+
+    ''' <summary>
+    ''' Checks whether each of the Ecosim distribution files (not vulnerabilities) is has the correct functional groups in it
+    ''' They should have living groups excluding primary producers
+    ''' It does this by saving a true in the position of an array at the index at which it exists in EwE
+    ''' It then sums the values in this array and checks that they are equal to nlivinggroups (TRUE=1)
+    ''' The reason I have done this is to prevent the problem where a file might have replicate groups
+    ''' If a file has replicate groups and we check each group to see if it is in EwE and it happens that the number
+    ''' of groups in the file are equal to the number of living groups, the file will be wrongly accepted
+    ''' </summary>
+    ''' <param name="strPath"></param>
+    ''' <returns>True if all ok.</returns>
+    Public Function CheckEcoSimDistributionFilesOkay(ByVal strPath As String)
+
+        Dim reader As StreamReader = Nothing
+        Dim csv As CsvReader = Nothing
+        Dim correct(mCore.nGroups - 1) As Integer
+        Dim TotalFound As Integer = 0
+        Dim bOK As Boolean = True
+
+        reader = cMSEUtils.GetReader(strPath)
+        If (reader Is Nothing) Then Return False
+
+        csv = New CsvReader(reader, True)
+
+        'initialise correct to all zeros
+        For i = 1 To mCore.nGroups
+            correct(i - 1) = 0
+        Next
+
+        Try
+
+            'cycle through each of the living functional groups each time checking if it exists in the file
+            While csv.ReadNextRecord
+                For xgrp = 1 To mCore.nGroups
+                    If String.Compare(cMSEUtils.FromCSVField(csv("GroupName")), _ecopath.EcopathData.GroupName(xgrp), True) = 0 Then
+                        correct(xgrp - 1) += 1
+                        Exit For
+                    End If
+                Next
+            End While
+
+        Catch ex As Exception
+            bOK = False
+        End Try
+
+        csv.Dispose()
+        cMSEUtils.ReleaseReader(reader)
+
+        ' Report file read error
+        If (bOK = False) Then
+            Me.SendMessage(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
+            Return False
+        End If
+
+        'Check if any of the records are for groups which are primary producers
+        For igrp = 1 To mCore.nGroups
+            If correct(igrp - 1) > 0 And mCore.EcoPathGroupOutputs(igrp).IsProducer Then
+                Me.SendMessage(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER, _
+                                             Path.GetFileNameWithoutExtension(strPath), _
+                                             mCore.EcoPathGroupOutputs(igrp).Name), eMessageImportance.Warning)
+                Return False
+            End If
+        Next
+
+        'check that there are no replicates
+        For igrp = 1 To mCore.nGroups
+            If correct(igrp - 1) > 1 Then
+                Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
+                Return False
+            End If
+        Next
+
+        'sum all the values in correct to be use to diagnose whether there are the correct number of groups in the file
+        For Each i In correct
+            TotalFound += i
+        Next
+
+        If TotalFound < mCore.nLivingGroups - nPrimaryProducer Then 'Check whether there are too few groups in the file
+            Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
+            Return False
+        ElseIf TotalFound > mCore.nLivingGroups - nPrimaryProducer Then 'Check whether there are too many groups in the file
+            Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOMANY, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
+            Return False
+        End If
 
         Return True
 
@@ -148,6 +349,14 @@ Public Class cMSE
 
     Private m_iNumModelsAvailable As Integer = cCore.NULL_VALUE
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the number of pre-generated models found in the current <see cref="DataPath"/>.
+    ''' </summary>
+    ''' <returns>
+    ''' The number of pre-generated models found in the current <see cref="DataPath"/>.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
     Public Function NumModelsAvailable() As Integer
 
         If (Me.m_iNumModelsAvailable = cCore.NULL_VALUE) Then
@@ -167,6 +376,7 @@ Public Class cMSE
                     End If
                 End If
             End SyncLock
+
         End If
         Return Me.m_iNumModelsAvailable
 
@@ -174,34 +384,38 @@ Public Class cMSE
 
     Private m_iNumStrategiesAvailable As Integer = cCore.NULL_VALUE
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the number of fishing strategies found in the current <see cref="DataPath"/>.
+    ''' </summary>
+    ''' <returns>
+    ''' The number of fishing strategies found in the current <see cref="DataPath"/>.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
     Public Function NumStrategiesAvailable() As Integer
 
         If (Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE) Then
-            Me.ExtractHCR()
-            Me.m_iNumStrategiesAvailable = Me.Strategies.Count
+            SyncLock Me
+                Me.ExtractHCR()
+                Me.m_iNumStrategiesAvailable = Me.Strategies.Count
+            End SyncLock
         End If
         Return Me.m_iNumStrategiesAvailable
 
     End Function
 
-    Friend Enum eModelCompatibility As Byte
-        Unknown = 0
-        SomeGroups
-        AllGroups
-    End Enum
+    Private m_strModelCompatibility As String = ""
 
-    Private m_ModelCompatibility As eModelCompatibility = eModelCompatibility.Unknown
-
-    Friend Function IsModelCompatible() As eModelCompatibility
-        If (Me.m_ModelCompatibility = eModelCompatibility.Unknown) Then
-            ' ToDo: assess model compatibility
-            ' - Group names? Groups may have been renamed or re-ordered
-            ' - Other group properties?
-            ' - Model name? Can be changed
-            ' - Model ID? Models do not have a unique ID yet
-        End If
-        Return Me.m_ModelCompatibility
-    End Function
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get any recent compatibility assessment.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property ModelCompatibilityInfo As String
+        Get
+            Return Me.m_strModelCompatibility
+        End Get
+    End Property
 
 #End Region ' Diagnostics and state management
 
@@ -249,7 +463,6 @@ Public Class cMSE
 
     Public Function ExtractHCR() As Boolean
 
-        ' ToDo_JS: Globalize this method
         ' ToDo_JS: Fix folder availability flow
 
         Dim StrategiesFileNames As String()
@@ -265,38 +478,45 @@ Public Class cMSE
         ' JS 30Sep13: Only read CSV files
         StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
 
-        For Each HCRFileName In StrategiesFileNames 'loop through reading each HCR file
+        For Each HCRFileName As String In StrategiesFileNames 'loop through reading each HCR file
+
             csv = New CsvReader(New StreamReader(HCRFileName), True)
             'Create the new Strategy with the Filename as the strategy name
             Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), HCRFileName)
 
-            'While Not csv.EndOfStream 'Read each line in the file
-            Do Until Not csv.ReadNextRecord()
-                'Read all fields from csv and then add to the list that makes up the whole strategy
-                'csv.ReadNextRecord()
-                'Each HCR Group needs to be a new object
-                tempHCRGroup = New HCR_Group(Me.m_uic.Core)
+            Try
+                Do Until Not csv.ReadNextRecord()
 
-                ' Resolve group
-                tempHCRGroup.GroupB = Me.ResolveGroup(csv(0), cStringUtils.ConvertToInteger(csv(1)))
-                tempHCRGroup.LowerLimit = csv(2)
-                tempHCRGroup.UpperLimit = csv(3)
-                tempHCRGroup.GroupF = Me.ResolveGroup(csv(4), cStringUtils.ConvertToInteger(csv(5)))
-                tempHCRGroup.MaxF = csv(6)
-                tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
+                    'Read all fields from csv and then add to the list that makes up the whole strategy
+                    'csv.ReadNextRecord()
+                    'Each HCR Group needs to be a new object
+                    tempHCRGroup = New HCR_Group(Me.m_uic.Core)
 
-                'tempHCRGroup.GroupName4Biomass = csv(0)
-                'tempHCRGroup.GroupNumber4Biomass = csv(1)
-                'tempHCRGroup.GroupName4F = csv(4)
-                'tempHCRGroup.GroupNumber4F = csv(5)
-                'tempHCRGroup.CostFunctionOrg = csv(7)
+                    ' Resolve group
+                    tempHCRGroup.GroupB = Me.ResolveGroup(csv(0), cStringUtils.ConvertToInteger(csv(1)))
+                    tempHCRGroup.LowerLimit = csv(2)
+                    tempHCRGroup.UpperLimit = csv(3)
+                    tempHCRGroup.GroupF = Me.ResolveGroup(csv(4), cStringUtils.ConvertToInteger(csv(5)))
+                    tempHCRGroup.MaxF = csv(6)
+                    tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
 
-                ' Only add valid strategies!
-                If tempHCRGroup.isValid(strVal) Then
-                    Strategy.Add(tempHCRGroup)
-                End If
+                    'tempHCRGroup.GroupName4Biomass = csv(0)
+                    'tempHCRGroup.GroupNumber4Biomass = csv(1)
+                    'tempHCRGroup.GroupName4F = csv(4)
+                    'tempHCRGroup.GroupNumber4F = csv(5)
+                    'tempHCRGroup.CostFunctionOrg = csv(7)
 
-            Loop
+                    ' Only add valid strategies!
+                    If tempHCRGroup.isValid(strVal) Then
+                        Strategy.Add(tempHCRGroup)
+                    End If
+
+                Loop
+
+            Catch ex As Exception
+                ' ToDo: decide what to do when CSV data is malformed
+            End Try
+
             'End While
             Strategies.Add(Strategy)
             csv.Dispose()
@@ -306,34 +526,42 @@ Public Class cMSE
 
     End Function
 
-    Private Function ExtractParamsCSV(ByRef param_name As String)
+    Private Function ExtractParamsCSV(ByRef param_name As String) As Double(,)
 
-        ' ToDo_JS: Use standard readers/writers, and make robust
+        ' JS 09Oct13: Used standard readers/writers, and made robust
 
-        ' JS 30Sep13: Use local properties
-        Dim nIterations As Integer = Me.NModels2Run
-        Dim csv As New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, param_name & "_out.csv")), True)
-
-        Dim Params(nIterations - 1, csv.FieldCount - 1) As Double
+        Dim Params(,) As Double = Nothing
         Dim iRecord As Integer = 0
+        Dim csv As CsvReader = Nothing
+        Dim nIterations As Integer = Me.NModels2Run
+        Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, param_name & "_out.csv"))
 
-        While Not csv.EndOfStream And iRecord < nIterations
-            csv.ReadNextRecord()
-            For iField = 1 To csv.FieldCount()
-                Params(iRecord, iField - 1) = cStringUtils.ConvertToDouble(csv(iField - 1))
-            Next
-            iRecord += 1
-        End While
+        If (reader Is Nothing) Then Return Params
 
-        Return Params
+        csv = New CsvReader(reader, True)
+        ReDim Params(nIterations - 1, csv.FieldCount - 1)
+        Try
+            While Not csv.EndOfStream And iRecord < nIterations
+                csv.ReadNextRecord()
+                For iField = 1 To csv.FieldCount()
+                    Params(iRecord, iField - 1) = cStringUtils.ConvertToDouble(csv(iField - 1))
+                Next
+                iRecord += 1
+            End While
+        Catch ex As Exception
+            ' ToDo: decide what to do when CSV data is malformed
+        End Try
 
         csv.Dispose()
+        cMSEUtils.ReleaseReader(reader)
+
+        Return Params
 
     End Function
 
     Private Function ExtractVulnerabilitiesCSV()
 
-        ' ToDo_JS: Use standard readers/writers, and make robust
+        ' JS 09Oct13: Used standard readers/writers, and made robust
 
         Dim nIterations As Integer = Me.NModels2Run
         Dim csv As CsvReader
@@ -341,15 +569,24 @@ Public Class cMSE
         Dim countrows As Integer
 
         For iIteration As Integer = 1 To nIterations
-            csv = New CsvReader(New StreamReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration.ToString & "_out.csv")), True)
-            countrows = 0
-            While Not csv.EndOfStream
-                countrows += 1
-                csv.ReadNextRecord()
-                For iPred As Integer = 1 To _ecopath.EcopathData.NumGroups
-                    vulnerabilities(iIteration - 1, csv.CurrentRecordIndex, iPred - 1) = cStringUtils.ConvertToDouble(csv(iPred - 1))
-                Next
-            End While
+            Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration.ToString & "_out.csv"))
+            If (reader IsNot Nothing) Then
+                csv = New CsvReader(reader, True)
+                Try
+                    countrows = 0
+                    While Not csv.EndOfStream
+                        countrows += 1
+                        csv.ReadNextRecord()
+                        For iPred As Integer = 1 To _ecopath.EcopathData.NumGroups
+                            vulnerabilities(iIteration - 1, csv.CurrentRecordIndex, iPred - 1) = cStringUtils.ConvertToDouble(csv(iPred - 1))
+                        Next
+                    End While
+                Catch ex As Exception
+                    ' ToDo: decide what to do when CSV data is malformed
+                End Try
+                csv.Dispose()
+                cMSEUtils.ReleaseReader(reader)
+            End If
         Next
 
         Return vulnerabilities
@@ -487,6 +724,7 @@ Public Class cMSE
 
         ' ToDo_JS: Fix path usage
         ' ToDo_JS: Use standard CSV field reading/writing
+        Debug.Assert(Me.IsInputDataCompatible)
 
         Dim B(,) As Double
         Dim PB(,) As Double
@@ -727,7 +965,7 @@ Public Class cMSE
                 TrajectoryCsv.Dispose()
 
             Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".RunEcosim() Exception: " & ex.Message)
+                Debug.Assert(False, Me.ToString & ".Run() Exception: " & ex.Message)
             End Try
 
 BadDynamics:  ' This is so that if the dynamics of a parameterisation are bad that we can skip out of the loops and onto the the next Trial
@@ -1012,130 +1250,6 @@ stepend:
 
     'End Sub
 
-    Public Function CheckEcopathDistributionFilesOkay(ByVal sPath As String, ByVal csv As CsvReader, ByRef Param_Name As [Enum]) As Boolean
-
-        ' ToDo_JS: Remove MsgBox
-        ' ToDo_JS: Globalize this method
-
-        'Checks whether each of the Ecopath (not diet matrix) distribution files is has the correct functional groups in it
-        'They should only have living groups
-        'It does this by saving a true in the position of an array at the index at which it exists in EwE
-        'It then sums the values in this array and checks that they are equal to nlivinggroups (TRUE=1)
-        'The reason I have done this is to prevent the problem where a file might have replicate groups
-        'If a file has replicate groups and we check each group to see if it is in EwE and it happens that the number
-        'of groups in the file are equal to the number of living groups, the file will be wrongly accepted
-
-        'Dim Path As String = DataPath & "\DistributionParameters\" & Param_Name
-        Dim correct(mCore.nGroups - 1) As Integer
-        Dim TotalFound As Integer = 0
-
-        'initialise correct to all zeros
-        For i = 1 To mCore.nGroups
-            correct(i - 1) = 0
-        Next
-
-        'cycle through each of the living functional groups each time checking if it exists in the file
-        For igrp = 1 To mCore.nLivingGroups
-            csv.ReadNextRecord()
-            For xgrp = 1 To mCore.nGroups
-                If csv(0) = xgrp And csv(1) = _ecopath.EcopathData.GroupName(xgrp) Then
-                    correct(xgrp - 1) += 1
-                    Exit For
-                End If
-            Next
-        Next
-
-        'check that there are no replicates
-        For igrp = 1 To mCore.nGroups
-            If correct(igrp - 1) > 1 Then
-                Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(sPath)), eMessageImportance.Warning)
-                Return False
-            End If
-        Next
-
-        'sum all the values in correct to be use to diagnose whether there are the correct number of groups in the file
-        For Each i In correct
-            TotalFound += i
-        Next
-
-        If TotalFound < mCore.nLivingGroups Then 'Check whether there are too few groups in the file
-            MsgBox("The distribution file " & Path.GetFileName(sPath) & " does not have all the living groups in it.")
-            Return False
-        ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
-            MsgBox("The distribution file " & Path.GetFileName(sPath) & " has non-living groups in it.")
-            Return False
-        Else
-            Return True
-        End If
-
-    End Function
-
-    Public Function CheckEcoSimDistributionFilesOkay(ByVal csv As CsvReader, ByRef Param_Name As String)
-
-        ' ToDo_JS: Remove MsgBox
-        ' ToDo_JS: Globalize this method
-
-        'Checks whether each of the Ecosim distribution files (not vulnerabilities) is has the correct functional groups in it
-        'They should have living groups excluding primary producers
-        'It does this by saving a true in the position of an array at the index at which it exists in EwE
-        'It then sums the values in this array and checks that they are equal to nlivinggroups (TRUE=1)
-        'The reason I have done this is to prevent the problem where a file might have replicate groups
-        'If a file has replicate groups and we check each group to see if it is in EwE and it happens that the number
-        'of groups in the file are equal to the number of living groups, the file will be wrongly accepted
-
-        ' JS 30Sep13: Not used
-        'Dim Path As String = DataPath & "\DistributionParameters\" & Param_Name
-
-        Dim correct(mCore.nGroups - 1) As Integer
-        Dim TotalFound As Integer = 0
-
-        'initialise correct to all zeros
-        For i = 1 To mCore.nGroups
-            correct(i - 1) = 0
-        Next
-
-        'cycle through each of the living functional groups each time checking if it exists in the file
-        While csv.ReadNextRecord
-            For xgrp = 1 To mCore.nGroups
-                If csv("GroupName") = _ecopath.EcopathData.GroupName(xgrp) Then
-                    correct(xgrp - 1) += 1
-                    Exit For
-                End If
-            Next
-        End While
-
-        'Check if any of the records are for groups which are primary producers
-        For igrp = 1 To mCore.nGroups
-            If correct(igrp - 1) > 0 And mCore.EcoPathGroupOutputs(igrp).IsProducer Then
-                MsgBox("Your distribution file for " & Param_Name & " contains the group " & mCore.EcoPathGroupOutputs(igrp).Name & " in it. " & vbCrLf & "This is invalid because this group is a primary producer!")
-                Return False
-            End If
-        Next
-
-        'check that there are no replicates
-        For igrp = 1 To mCore.nGroups
-            If correct(igrp - 1) > 1 Then
-                MsgBox("The distribution file for " & Param_Name & " has replicate groups in it.")
-                Return False
-            End If
-        Next
-
-        'sum all the values in correct to be use to diagnose whether there are the correct number of groups in the file
-        For Each i In correct
-            TotalFound += i
-        Next
-
-        If TotalFound < mCore.nLivingGroups - nPrimaryProducer Then 'Check whether there are too few groups in the file
-            MsgBox("The distribution file for " & Param_Name & " does not have all the living groups that are not primary producers in it.")
-            Return False
-        ElseIf TotalFound > mCore.nLivingGroups - nPrimaryProducer Then 'Check whether there are too many groups in the file
-            MsgBox("The distribution file for " & Param_Name & " has too many groups in it.")
-            Return False
-        Else
-            Return True
-        End If
-    End Function
-
     Public Function GenerateEmptyDietcsv() As Boolean
 
         Dim sPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")
@@ -1387,7 +1501,7 @@ stepend:
 
     End Function
 
-    Private Function InitMonteCarloParamX(ByVal Path As String, ByRef ParamName As eParamName) As Boolean
+    Private Function InitMonteCarloParamX(ByVal strPath As String, ByVal ParamName As eParamName) As Boolean
         Dim csvParamX As CsvReader
         Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
         Dim MCGroup As cMonteCarloGroup
@@ -1395,9 +1509,9 @@ stepend:
 
         Try
 
-            csvParamX = New CsvReader(New StreamReader(Path), True)
-            If Not CheckEcopathDistributionFilesOkay(Path, csvParamX, ParamName) Then Return False
-            csvParamX = New CsvReader(New StreamReader(Path), True) ' I think this is to restart the reading of the csv
+            If Not CheckEcopathDistributionFilesOkay(strPath) Then Return False
+
+            csvParamX = New CsvReader(New StreamReader(strPath), True) ' I think this is to restart the reading of the csv
 
             For igrp = 1 To mCore.nLivingGroups
 
@@ -1836,35 +1950,22 @@ stepend:
 
         ' ToDo_JS: Use standard CSV field reading/writing
         ' ToDo_JS: Use standard readers/writers, and make robust
-        Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv"))
-        If (reader Is Nothing) Then Return False
+        Dim strPath As String = cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv")
 
-        Dim csv = New CsvReader(reader, True)
+        If Not CheckEcoSimDistributionFilesOkay(strPath) Then Return False
+
+        Dim reader As StreamReader = Nothing
+        Dim csv As CsvReader = Nothing
         Dim ParameterArray(mCore.nLivingGroups - nPrimaryProducer - 1, 3) As Single
 
         ' JS 30Sep13: Use local properties
         Dim nIterations As Integer = Me.NTrials
-        'Dim SampledParameters(nIterations, mCore.nLivingGroups - nPrimaryProducer)
         Dim eDistributionType As DistributionType
         Dim SampledParameters(nIterations - 1, mCore.nLivingGroups - nPrimaryProducer - 1) As Double
-        'Dim SampledParameters As DataTable
-        'Dim row As DataRow
         Dim GroupNames(mCore.nLivingGroups - nPrimaryProducer - 1) As String
-
-        Dim bSimFileSOk As Boolean = CheckEcoSimDistributionFilesOkay(csv, ParamName)
-        cMSEUtils.ReleaseReader(reader)
-        csv.Dispose()
-
-        If Not bSimFileSOk Then Return False
 
         reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv"))
         csv = New CsvReader(reader, True)
-
-        'Initialise the datatable
-        'SampledParameters.Columns.Add("GroupName", GetType(String))
-        'For i = 1 To nIterations
-        '    SampledParameters.Columns.Add(i, GetType(Double))
-        'Next
 
         'Read all the distribution information from the .csv file and into an array ParameterArray
         While csv.ReadNextRecord()
@@ -2291,8 +2392,6 @@ stepend:
         End If
     End Sub
 
-#End Region ' Helper methods
-
     Private Sub OnCoreMessage(ByRef msg As cMessage)
 
         ' ToDo: refresh upon ecosim scenario load
@@ -2310,13 +2409,6 @@ stepend:
 
     End Sub
 
-    Private Sub InvalidateConfiguration()
-        Me.m_monitor.Invalidate()
-        Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
-        Me.m_iNumModelsAvailable = cCore.NULL_VALUE
-        Me.m_ModelCompatibility = eModelCompatibility.Unknown
-    End Sub
-
     Private Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) _
         Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
 
@@ -2331,6 +2423,8 @@ stepend:
             bCancelMessage = True
         End If
     End Sub
+
+#End Region ' Helper methods
 
 #Region " Configurable settings "
 

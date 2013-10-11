@@ -27,6 +27,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Public Class frmMSE
 
@@ -122,6 +123,8 @@ Public Class frmMSE
         MyBase.UpdateControls()
 
         Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
+        Dim img As Image = Nothing
+        Dim bCanCreateModels As Boolean = Me.m_plugin.IsInputDataCompatible
 
         Me.m_plStep1.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.Idle)
         Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
@@ -131,12 +134,31 @@ Public Class frmMSE
 
         Me.m_tbxPath.Text = Me.m_plugin.DataPath
 
+        If bCanCreateModels Then
+            img = SharedResources.OK
+        Else
+            img = SharedResources.Critical
+        End If
+        Me.m_pbCompatible.Image = img
+
+        ' Update trial buttons
+        Me.m_fpNTrials.Enabled = bCanCreateModels
+        Me.m_fpMassBalanceTol.Enabled = bCanCreateModels
+        Me.m_btnCreateModels.Enabled = bCanCreateModels
+
+        ' Provide feedback about available models
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
-            Me.m_tbxNumAvailableModels.Text = CStr(Me.m_plugin.NumModelsAvailable)
+            If String.IsNullOrWhiteSpace(Me.m_plugin.ModelCompatibilityInfo) Then
+                Me.m_tbxNumAvailableModels.Text = CStr(Me.m_plugin.NumModelsAvailable)
+            Else
+                Me.m_tbxNumAvailableModels.Text = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                                                                Me.m_plugin.NumModelsAvailable, _
+                                                                Me.m_plugin.ModelCompatibilityInfo)
+            End If
             Me.m_tbxNumAvailableFishingStrategies.Text = CStr(Me.m_plugin.NumStrategiesAvailable)
         Else
-            Me.m_tbxNumAvailableModels.Text = "?"
-            Me.m_tbxNumAvailableFishingStrategies.Text = "?"
+            Me.m_tbxNumAvailableModels.Text = ""
+            Me.m_tbxNumAvailableFishingStrategies.Text = ""
         End If
 
     End Sub
@@ -145,7 +167,8 @@ Public Class frmMSE
 
 #Region " Control events "
 
-    Private Sub btnSample_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateModels.Click
+    Private Sub OnCreateModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnCreateModels.Click
 
         m_plugin.Create1DimParams("MaxRelFeedingTime")
         m_plugin.Create1DimParams("FeedingTimeAdjustRate")
@@ -174,7 +197,7 @@ Public Class frmMSE
 
 
     Private Sub btnLoadSampled_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles btnLoadSampled.Click
+        Handles m_btnRun.Click
         Try
             ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
             '             From the UI point of view, we just want strategies. The plug-in does the optimizating
