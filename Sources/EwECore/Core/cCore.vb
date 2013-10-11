@@ -1767,6 +1767,13 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Obtain a <see cref="cTimeSeriesDataset">time series dataset</see>.
+    ''' </summary>
+    ''' <param name="iDatasetIndex">One-based index of the dataset to retrieve [1, <see cref="ActiveTimeSeriesDatasetIndex">#sets</see>].</param>
+    ''' <returns>A <see cref="cTimeSeriesDataset">time series dataset</see>.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function TimeSeriesDataset(ByVal iDatasetIndex As Integer) As cTimeSeriesDataset
         ' Sanity check
         Debug.Assert(iDatasetIndex > 0 And iDatasetIndex <= Me.m_TSData.nDatasets)
@@ -6156,9 +6163,10 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Gets an <see cref="cEcoSimScenario">Ecosim scenario</see> from the list of available scenarios.
+    ''' Get an <see cref="cEcoSimScenario">Ecosim scenario</see> from the available scenarios.
     ''' </summary>
-    ''' <param name="iScenario">One based indexed property of EcoSim Scenarios objects</param>
+    ''' <param name="iScenario">One-based indexed of the scenario to load
+    ''' [1, <see cref="nEcosimScenarios">#scenarios</see>].</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcosimScenarios(ByVal iScenario As Integer) As cEcoSimScenario
         Get
@@ -8946,13 +8954,12 @@ Public Class cCore
         End Get
     End Property
 
-    ''' -----------------------------------------------------------------------
+     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Gets an <see cref="cEcospaceScenario">Ecospace scenario</see> from the
-    ''' list of available scenarios.
+    ''' Get an <see cref="cEcoSpacescenario">Ecospace scenario</see> from the available scenarios.
     ''' </summary>
-    ''' <param name="iScenario">One based indexed property of Ecospace Scenario 
-    ''' objects</param>
+    ''' <param name="iScenario">One-based indexed of the scenario to load
+    ''' [1, <see cref="nEcospaceScenarios">#scenarios</see>].</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceScenarios(ByVal iScenario As Integer) As cEcospaceScenario
         Get
@@ -11409,8 +11416,7 @@ Public Class cCore
     ''' Get an Ecotracer scenario.
     ''' </summary>
     ''' <param name="iScenario">
-    ''' One-based index of the scenario to obtain. This value cannot exceed 
-    ''' <see cref="EcotracerScenarioCount">EcotracerScenarioCount</see>.
+    ''' One-based index of the scenario to obtain [1, <see cref="EcotracerScenarioCount">#scenarios</see>].
     ''' </param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcotracerScenarios(ByVal iScenario As Integer) As cEcotracerScenario
