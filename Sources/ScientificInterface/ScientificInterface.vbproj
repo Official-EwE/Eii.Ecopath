@@ -1032,6 +1032,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\logo_sm.png" />
     <None Include="Resources\license.rtf" />
     <None Include="Resources\urf.jpg" />
     <EmbeddedResource Include="Controls\cEwEStatusBar.resx">
