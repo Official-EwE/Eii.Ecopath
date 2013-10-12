@@ -125,6 +125,18 @@ Namespace My
                 Me("UseEwEPath") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1000000")>  _
+        Public Property NMaxAttempts() As Integer
+            Get
+                Return CType(Me("NMaxAttempts"),Integer)
+            End Get
+            Set
+                Me("NMaxAttempts") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

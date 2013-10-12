@@ -160,6 +160,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to There is more than one hcr that specifies the target F for group {0}.
+        '''</summary>
+        Friend ReadOnly Property ERROR_HARVESTRUILE_DUPLICATE_F() As String
+            Get
+                Return ResourceManager.GetString("ERROR_HARVESTRUILE_DUPLICATE_F", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to This harvest control rule already exists in the current Strategy.
         '''</summary>
         Friend ReadOnly Property ERROR_HARVESTRULE_DUPLICATE() As String
@@ -313,11 +322,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} out of {1} ({2}%) parameterisations produced reasonable dynamics and were used to generate results..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_TRIAL_REPORT() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_TRIAL_REPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You have made changes that have not been saved. Are you sure that you want to close this form?.
         '''</summary>
         Friend ReadOnly Property PROMPT_UNSAVED_CHANGES() As String
             Get
                 Return ResourceManager.GetString("PROMPT_UNSAVED_CHANGES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE running trial {0}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_RUN_PROGRESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_RUN_PROGRESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE finding models, trial {0}, iteration {1}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_TRIAL_PROGRESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_TRIAL_PROGRESS", resourceCulture)
             End Get
         End Property
     End Module

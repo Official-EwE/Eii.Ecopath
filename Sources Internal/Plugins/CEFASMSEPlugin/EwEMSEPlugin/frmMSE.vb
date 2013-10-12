@@ -199,12 +199,7 @@ Public Class frmMSE
     Private Sub btnLoadSampled_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnRun.Click
         Try
-            ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
-            '             From the UI point of view, we just want strategies. The plug-in does the optimizating
-            m_plugin.ExtractHCR()
-            m_plugin.ChangeEffortFlag = True
-            m_plugin.LoadSampledParams()
-            m_plugin.ChangeEffortFlag = False
+            Me.m_plugin.LoadSampledParams()
         Catch ex As Exception
 
         End Try
@@ -329,5 +324,6 @@ Public Class frmMSE
     End Sub
 
 #End Region ' Control events
+
 
 End Class

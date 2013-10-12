@@ -20,5 +20,8 @@
     <Setting Name="UseEwEPath" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="NMaxAttempts" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

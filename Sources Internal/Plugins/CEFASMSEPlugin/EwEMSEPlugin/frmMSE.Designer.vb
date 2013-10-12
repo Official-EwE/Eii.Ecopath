@@ -63,6 +63,8 @@ Partial Class frmMSE
         Me.m_lblAvailableModels = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
         Me.m_tbNTrials = New System.Windows.Forms.TextBox()
+        Me.m_lblNumAttempts = New System.Windows.Forms.Label()
+        Me.m_tbxNumAttempts = New System.Windows.Forms.TextBox()
         Me.m_plStep5 = New System.Windows.Forms.Panel()
         Me.m_hdrStep5 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblNModels = New System.Windows.Forms.Label()
@@ -165,7 +167,9 @@ Partial Class frmMSE
         Me.m_plStep2.Controls.Add(Me.m_lblNTrials)
         Me.m_plStep2.Controls.Add(Me.m_tbxNumAvailableModels)
         Me.m_plStep2.Controls.Add(Me.m_tbNTrials)
+        Me.m_plStep2.Controls.Add(Me.m_lblNumAttempts)
         Me.m_plStep2.Controls.Add(Me.m_lblMassBalanceTol)
+        Me.m_plStep2.Controls.Add(Me.m_tbxNumAttempts)
         Me.m_plStep2.Controls.Add(Me.m_txtTolerance)
         resources.ApplyResources(Me.m_plStep2, "m_plStep2")
         Me.m_plStep2.Name = "m_plStep2"
@@ -199,6 +203,16 @@ Partial Class frmMSE
         '
         resources.ApplyResources(Me.m_tbNTrials, "m_tbNTrials")
         Me.m_tbNTrials.Name = "m_tbNTrials"
+        '
+        'm_lblNumAttempts
+        '
+        resources.ApplyResources(Me.m_lblNumAttempts, "m_lblNumAttempts")
+        Me.m_lblNumAttempts.Name = "m_lblNumAttempts"
+        '
+        'm_tbxNumAttempts
+        '
+        resources.ApplyResources(Me.m_tbxNumAttempts, "m_tbxNumAttempts")
+        Me.m_tbxNumAttempts.Name = "m_tbxNumAttempts"
         '
         'm_plStep5
         '
@@ -433,4 +447,6 @@ Partial Class frmMSE
     Private WithEvents m_lblAvailableStrategies As System.Windows.Forms.Label
     Private WithEvents m_tbxNumAvailableFishingStrategies As System.Windows.Forms.TextBox
     Private WithEvents m_pbCompatible As System.Windows.Forms.PictureBox
+    Private WithEvents m_lblNumAttempts As System.Windows.Forms.Label
+    Private WithEvents m_tbxNumAttempts As System.Windows.Forms.TextBox
 End Class

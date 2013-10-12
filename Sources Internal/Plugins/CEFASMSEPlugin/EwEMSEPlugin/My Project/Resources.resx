@@ -158,6 +158,10 @@
   <data name="ERROR_ENTERNAME" xml:space="preserve">
     <value>A strategy with this name already exists. Please select another name</value>
   </data>
+  <data name="ERROR_HARVESTRUILE_DUPLICATE_F" xml:space="preserve">
+    <value>There is more than one hcr that specifies the target F for group {0}</value>
+    <comment>{0}=group name</comment>
+  </data>
   <data name="ERROR_HARVESTRULE_DUPLICATE" xml:space="preserve">
     <value>This harvest control rule already exists in the current Strategy</value>
   </data>
@@ -213,7 +217,19 @@
   <data name="PROMPT_ENTERNAME_CAPTION" xml:space="preserve">
     <value>New Strategy</value>
   </data>
+  <data name="PROMPT_TRIAL_REPORT" xml:space="preserve">
+    <value>{0} out of {1} ({2}%) parameterisations produced reasonable dynamics and were used to generate results.</value>
+    <comment>{0}=good number of trials; {1}=total number of trials. {2}=good trial percentage</comment>
+  </data>
   <data name="PROMPT_UNSAVED_CHANGES" xml:space="preserve">
     <value>You have made changes that have not been saved. Are you sure that you want to close this form?</value>
+  </data>
+  <data name="STATUS_RUN_PROGRESS" xml:space="preserve">
+    <value>MSE running trial {0}</value>
+    <comment>{0}=trial number</comment>
+  </data>
+  <data name="STATUS_TRIAL_PROGRESS" xml:space="preserve">
+    <value>MSE finding models, trial {0}, iteration {1}</value>
+    <comment>{0}=trial number, {1}=iteration number</comment>
   </data>
 </root>
