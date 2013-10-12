@@ -535,6 +535,7 @@ Public Class AppLauncher
 
         Me.m_cmdHelpReportIssue = New cCommand(cmdh, "ReportIssue")
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
+
         Me.m_cmdHelpFeedback = New cCommand(cmdh, "HelpFeedback")
 
 #If BETA = 1 Then
@@ -542,10 +543,13 @@ Public Class AppLauncher
         Me.m_tsbnBeta.Visible = True
 
         Me.m_cmdHelpFeedback.AddControl(Me.m_tsbnFeedback)
+        Me.m_cmdHelpFeedback.AddControl(Me.m_tsmiHelpFeedback)
         Me.m_tsbnFeedback.Visible = True
+        Me.m_tsmiHelpFeedback.Visible = True
 #Else
         Me.m_tsbnBeta.Visible = False
         Me.m_tsbnFeedback.Visible = False
+        Me.m_tsmiHelpFeedback.Visible = False
 #End If
 
         Me.m_cmdPluginGUICommand = New cPluginGUICommand(cmdh)

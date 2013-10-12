@@ -96,12 +96,18 @@ Public Class frmStartPanel
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+#If BETA = 1 Then
+        Me.m_tsbnBetaFeedback.Visible = True
+#Else
+        Me.m_tsbnBetaFeedback.Visible = False
+#End If
         Me.m_tsbnStartPage.Image = SharedResources.HomeHS
         Me.m_tsbnBack.Image = SharedResources.Back
         Me.m_tsbnForward.Image = SharedResources.forward
         Me.m_tsbnRefresh.Image = SharedResources.Refresh
         Me.m_tsbnEcopathSite.Image = SharedResources.Ecopath_32x32
         Me.m_tsbnBugTracker.Image = SharedResources.bug
+        Me.m_tsbnBetaFeedback.Image = My.Resources.logo_sm
 
         AddHandler Me.m_browser.CanGoBackChanged, AddressOf OnUpdateNav
         AddHandler Me.m_browser.CanGoForwardChanged, AddressOf OnUpdateNav
@@ -192,7 +198,7 @@ Public Class frmStartPanel
         End Try
     End Sub
 
-    Private Sub m_tsbnEcopathSite_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnEcopathSite.Click
+    Private Sub OnGoHome(sender As System.Object, e As System.EventArgs) Handles m_tsbnEcopathSite.Click
         Try
             Me.Browse(cWebLinks.eLinkType.Home)
         Catch ex As Exception
@@ -200,9 +206,17 @@ Public Class frmStartPanel
         End Try
     End Sub
 
-    Private Sub m_tsbnBugTracker_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnBugTracker.Click
+    Private Sub OnVisitTrac(sender As System.Object, e As System.EventArgs) Handles m_tsbnBugTracker.Click
         Try
             Me.Browse(cWebLinks.eLinkType.Trac)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
+    Private Sub OnVisitSurvey(sender As System.Object, e As System.EventArgs) Handles m_tsbnBetaFeedback.Click
+        Try
+            Me.Browse(cWebLinks.eLinkType.Feedback)
         Catch ex As Exception
             cLog.Write(ex)
         End Try

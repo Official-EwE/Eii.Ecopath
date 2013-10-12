@@ -84,6 +84,7 @@ Partial Public Class AppLauncher
         Me.m_tsmiHelpReportIssue = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewLog = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpAbout = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpFeedback = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuWindows = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiWindowsClose = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiWindowsCloseAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -139,7 +140,6 @@ Partial Public Class AppLauncher
         Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip()
         Me.m_tsbnBeta = New System.Windows.Forms.ToolStripButton()
-        Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
@@ -147,6 +147,7 @@ Partial Public Class AppLauncher
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnAutosaveResults = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
@@ -343,7 +344,7 @@ Partial Public Class AppLauncher
         '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewForums, Me.m_tsmiHelpViewFacebook, m_tssHelp3, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiViewLog, m_tssHelp2, Me.m_tsmiHelpAbout})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewForums, Me.m_tsmiHelpViewFacebook, m_tssHelp3, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiViewLog, m_tssHelp2, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
         '
@@ -391,6 +392,12 @@ Partial Public Class AppLauncher
         '
         Me.m_tsmiHelpAbout.Name = "m_tsmiHelpAbout"
         resources.ApplyResources(Me.m_tsmiHelpAbout, "m_tsmiHelpAbout")
+        '
+        'm_tsmiHelpFeedback
+        '
+        Me.m_tsmiHelpFeedback.Image = Global.ScientificInterface.My.Resources.Resources.logo_sm
+        Me.m_tsmiHelpFeedback.Name = "m_tsmiHelpFeedback"
+        resources.ApplyResources(Me.m_tsmiHelpFeedback, "m_tsmiHelpFeedback")
         '
         'MenuWindows
         '
@@ -691,14 +698,6 @@ Partial Public Class AppLauncher
         Me.m_tsbnBeta.ForeColor = System.Drawing.SystemColors.Highlight
         Me.m_tsbnBeta.Name = "m_tsbnBeta"
         '
-        'm_tsbnFeedback
-        '
-        Me.m_tsbnFeedback.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tsbnFeedback.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.m_tsbnFeedback, "m_tsbnFeedback")
-        Me.m_tsbnFeedback.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.m_tsbnFeedback.Name = "m_tsbnFeedback"
-        '
         'm_tsbSave
         '
         Me.m_tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -739,6 +738,14 @@ Partial Public Class AppLauncher
         Me.m_tsbnAutosaveResults.DoubleClickEnabled = True
         resources.ApplyResources(Me.m_tsbnAutosaveResults, "m_tsbnAutosaveResults")
         Me.m_tsbnAutosaveResults.Name = "m_tsbnAutosaveResults"
+        '
+        'm_tsbnFeedback
+        '
+        Me.m_tsbnFeedback.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tsbnFeedback.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnFeedback, "m_tsbnFeedback")
+        Me.m_tsbnFeedback.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.m_tsbnFeedback.Name = "m_tsbnFeedback"
         '
         'm_ssMain
         '
@@ -856,6 +863,7 @@ Partial Public Class AppLauncher
     Private WithEvents m_tsmiHelpViewFacebook As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiHelpViewMainSite As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbnFeedback As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsmiHelpFeedback As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 
