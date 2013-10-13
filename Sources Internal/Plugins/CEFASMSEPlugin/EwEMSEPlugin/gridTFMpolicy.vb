@@ -138,7 +138,7 @@ Public Class gridTargetFishingMortalityPolicy
         Me.Redim(1, iNumCols)
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.BioGroupName) = New EwEColumnHeaderCell("Biomass Group")
+        Me(0, eColumnTypes.BioGroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell("Lower biomass limit (kt)")
         Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell("Upper biomass limit (kt)")
         Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell("Fishing Mort. Group")

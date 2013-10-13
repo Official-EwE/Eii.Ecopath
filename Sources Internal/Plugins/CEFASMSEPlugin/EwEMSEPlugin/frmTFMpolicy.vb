@@ -113,14 +113,10 @@ Public Class frmTFMpolicy
 
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
-        ' ToDo_JS: globalize this method
-
         If StrategiesSaved = False Then
-            Dim resultmessage As DialogResult = MessageBox.Show("You have made changes to the data in this form without saving them to CSV." & vbCrLf & "Are you sure you still want to close it?" _
-                                                                & "(The changes you made will be used for the duration of EwE being open this time but won't be available to reload after EwE has been closed)", _
-                                                                    "Warning!", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation)
-            e.Cancel = (resultmessage = Windows.Forms.DialogResult.Cancel)
+            e.Cancel = (Me.m_MSEPlugin.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) <> eMessageReplyStyle.OK)
         End If
+
         MyBase.OnFormClosing(e)
 
     End Sub
@@ -196,15 +192,17 @@ Public Class frmTFMpolicy
 
         ' JS 30Sep13: Globalized
         ' JS 30Sep13: Strategy file name is safe
+        ' JS 13Oct13: Replaced use of InputBox
 
         Try
-            'Get a Strategy name from the user
-            Dim StratName As String
-            StratName = InputBox(My.Resources.PROMPT_ENTERNAME, My.Resources.PROMPT_ENTERNAME_CAPTION)
+            Dim StratName As String = ""
+            Dim box As New frmInputBox()
 
-            If String.IsNullOrEmpty(StratName) Then
-                Return
+            If box.Show(Me, My.Resources.PROMPT_ENTERNAME, My.Resources.PROMPT_ENTERNAME_CAPTION) = Windows.Forms.DialogResult.OK Then
+                StratName = box.Value
             End If
+
+            If String.IsNullOrWhiteSpace(StratName) Then Return
 
             'Build the filename out of the strategy name
             Dim StartFilename As String = Path.Combine(Me.m_MSEPlugin.Strategies.DataDirectory, cFileUtils.ToValidFileName(StratName + ".csv", False))
@@ -216,7 +214,7 @@ Public Class frmTFMpolicy
                 Me.UpdateControls()
                 Me.changeSelectedStrategy(Me.cbStrategies.Items.Count - 1)
             Else
-                Me.m_MSEPlugin.SendMessage(My.Resources.ERROR_ENTERNAME, eMessageImportance.Warning)
+                Me.m_MSEPlugin.InformUser(My.Resources.ERROR_ENTERNAME, eMessageImportance.Warning)
             End If
 
         Catch ex As Exception

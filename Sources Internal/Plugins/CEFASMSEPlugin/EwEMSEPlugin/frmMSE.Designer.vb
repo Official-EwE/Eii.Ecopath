@@ -46,13 +46,13 @@ Partial Class frmMSE
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSE))
-        Me.m_tbNModels2Run = New System.Windows.Forms.TextBox()
+        Me.m_tbxNModels2Run = New System.Windows.Forms.TextBox()
         Me.m_lblNTrials = New System.Windows.Forms.Label()
         Me.m_btnRun = New System.Windows.Forms.Button()
-        Me.m_tbNYearsProject = New System.Windows.Forms.TextBox()
+        Me.m_tbxNYearsProject = New System.Windows.Forms.TextBox()
         Me.m_lblNYears = New System.Windows.Forms.Label()
         Me.m_lblMassBalanceTol = New System.Windows.Forms.Label()
-        Me.m_txtTolerance = New System.Windows.Forms.TextBox()
+        Me.m_tbxTolerance = New System.Windows.Forms.TextBox()
         Me.m_btnCreateModels = New System.Windows.Forms.Button()
         Me.m_btnGenDC = New System.Windows.Forms.Button()
         Me.m_btnShowTFMForm = New System.Windows.Forms.Button()
@@ -62,9 +62,9 @@ Partial Class frmMSE
         Me.m_hdrStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableModels = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
-        Me.m_tbNTrials = New System.Windows.Forms.TextBox()
-        Me.m_lblNumAttempts = New System.Windows.Forms.Label()
-        Me.m_tbxNumAttempts = New System.Windows.Forms.TextBox()
+        Me.m_tbxNTrials = New System.Windows.Forms.TextBox()
+        Me.m_lblMaxAttempts = New System.Windows.Forms.Label()
+        Me.m_tbxMaxAttempts = New System.Windows.Forms.TextBox()
         Me.m_plStep5 = New System.Windows.Forms.Panel()
         Me.m_hdrStep5 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblNModels = New System.Windows.Forms.Label()
@@ -72,7 +72,7 @@ Partial Class frmMSE
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
-        Me.m_tbArea = New System.Windows.Forms.TextBox()
+        Me.m_tbxArea = New System.Windows.Forms.TextBox()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_pbCefas = New System.Windows.Forms.PictureBox()
         Me.m_btn2 = New System.Windows.Forms.Button()
@@ -98,10 +98,10 @@ Partial Class frmMSE
         Me.m_plStep1.SuspendLayout()
         Me.SuspendLayout()
         '
-        'm_tbNModels2Run
+        'm_tbxNModels2Run
         '
-        resources.ApplyResources(Me.m_tbNModels2Run, "m_tbNModels2Run")
-        Me.m_tbNModels2Run.Name = "m_tbNModels2Run"
+        resources.ApplyResources(Me.m_tbxNModels2Run, "m_tbxNModels2Run")
+        Me.m_tbxNModels2Run.Name = "m_tbxNModels2Run"
         '
         'm_lblNTrials
         '
@@ -114,10 +114,10 @@ Partial Class frmMSE
         Me.m_btnRun.Name = "m_btnRun"
         Me.m_btnRun.UseVisualStyleBackColor = True
         '
-        'm_tbNYearsProject
+        'm_tbxNYearsProject
         '
-        resources.ApplyResources(Me.m_tbNYearsProject, "m_tbNYearsProject")
-        Me.m_tbNYearsProject.Name = "m_tbNYearsProject"
+        resources.ApplyResources(Me.m_tbxNYearsProject, "m_tbxNYearsProject")
+        Me.m_tbxNYearsProject.Name = "m_tbxNYearsProject"
         '
         'm_lblNYears
         '
@@ -129,10 +129,10 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_lblMassBalanceTol, "m_lblMassBalanceTol")
         Me.m_lblMassBalanceTol.Name = "m_lblMassBalanceTol"
         '
-        'm_txtTolerance
+        'm_tbxTolerance
         '
-        resources.ApplyResources(Me.m_txtTolerance, "m_txtTolerance")
-        Me.m_txtTolerance.Name = "m_txtTolerance"
+        resources.ApplyResources(Me.m_tbxTolerance, "m_tbxTolerance")
+        Me.m_tbxTolerance.Name = "m_tbxTolerance"
         '
         'm_btnCreateModels
         '
@@ -166,11 +166,11 @@ Partial Class frmMSE
         Me.m_plStep2.Controls.Add(Me.m_lblAvailableModels)
         Me.m_plStep2.Controls.Add(Me.m_lblNTrials)
         Me.m_plStep2.Controls.Add(Me.m_tbxNumAvailableModels)
-        Me.m_plStep2.Controls.Add(Me.m_tbNTrials)
-        Me.m_plStep2.Controls.Add(Me.m_lblNumAttempts)
+        Me.m_plStep2.Controls.Add(Me.m_tbxNTrials)
+        Me.m_plStep2.Controls.Add(Me.m_lblMaxAttempts)
         Me.m_plStep2.Controls.Add(Me.m_lblMassBalanceTol)
-        Me.m_plStep2.Controls.Add(Me.m_tbxNumAttempts)
-        Me.m_plStep2.Controls.Add(Me.m_txtTolerance)
+        Me.m_plStep2.Controls.Add(Me.m_tbxMaxAttempts)
+        Me.m_plStep2.Controls.Add(Me.m_tbxTolerance)
         resources.ApplyResources(Me.m_plStep2, "m_plStep2")
         Me.m_plStep2.Name = "m_plStep2"
         '
@@ -199,29 +199,29 @@ Partial Class frmMSE
         Me.m_tbxNumAvailableModels.Name = "m_tbxNumAvailableModels"
         Me.m_tbxNumAvailableModels.ReadOnly = True
         '
-        'm_tbNTrials
+        'm_tbxNTrials
         '
-        resources.ApplyResources(Me.m_tbNTrials, "m_tbNTrials")
-        Me.m_tbNTrials.Name = "m_tbNTrials"
+        resources.ApplyResources(Me.m_tbxNTrials, "m_tbxNTrials")
+        Me.m_tbxNTrials.Name = "m_tbxNTrials"
         '
-        'm_lblNumAttempts
+        'm_lblMaxAttempts
         '
-        resources.ApplyResources(Me.m_lblNumAttempts, "m_lblNumAttempts")
-        Me.m_lblNumAttempts.Name = "m_lblNumAttempts"
+        resources.ApplyResources(Me.m_lblMaxAttempts, "m_lblMaxAttempts")
+        Me.m_lblMaxAttempts.Name = "m_lblMaxAttempts"
         '
-        'm_tbxNumAttempts
+        'm_tbxMaxAttempts
         '
-        resources.ApplyResources(Me.m_tbxNumAttempts, "m_tbxNumAttempts")
-        Me.m_tbxNumAttempts.Name = "m_tbxNumAttempts"
+        resources.ApplyResources(Me.m_tbxMaxAttempts, "m_tbxMaxAttempts")
+        Me.m_tbxMaxAttempts.Name = "m_tbxMaxAttempts"
         '
         'm_plStep5
         '
         Me.m_plStep5.Controls.Add(Me.m_hdrStep5)
-        Me.m_plStep5.Controls.Add(Me.m_tbNModels2Run)
+        Me.m_plStep5.Controls.Add(Me.m_tbxNModels2Run)
         Me.m_plStep5.Controls.Add(Me.m_lblNYears)
         Me.m_plStep5.Controls.Add(Me.m_lblNModels)
         Me.m_plStep5.Controls.Add(Me.m_btnRun)
-        Me.m_plStep5.Controls.Add(Me.m_tbNYearsProject)
+        Me.m_plStep5.Controls.Add(Me.m_tbxNYearsProject)
         resources.ApplyResources(Me.m_plStep5, "m_plStep5")
         Me.m_plStep5.Name = "m_plStep5"
         '
@@ -266,10 +266,10 @@ Partial Class frmMSE
         Me.m_tbxNumAvailableFishingStrategies.Name = "m_tbxNumAvailableFishingStrategies"
         Me.m_tbxNumAvailableFishingStrategies.ReadOnly = True
         '
-        'm_tbArea
+        'm_tbxArea
         '
-        resources.ApplyResources(Me.m_tbArea, "m_tbArea")
-        Me.m_tbArea.Name = "m_tbArea"
+        resources.ApplyResources(Me.m_tbxArea, "m_tbxArea")
+        Me.m_tbxArea.Name = "m_tbxArea"
         '
         'm_lblArea
         '
@@ -294,7 +294,7 @@ Partial Class frmMSE
         '
         Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
         Me.m_plStep3.Controls.Add(Me.m_lblArea)
-        Me.m_plStep3.Controls.Add(Me.m_tbArea)
+        Me.m_plStep3.Controls.Add(Me.m_tbxArea)
         resources.ApplyResources(Me.m_plStep3, "m_plStep3")
         Me.m_plStep3.Name = "m_plStep3"
         '
@@ -407,12 +407,12 @@ Partial Class frmMSE
 
     End Sub
 
-    Private WithEvents m_tbNModels2Run As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxNModels2Run As System.Windows.Forms.TextBox
     Private WithEvents m_lblNTrials As System.Windows.Forms.Label
     Private WithEvents m_btnRun As System.Windows.Forms.Button
-    Private WithEvents m_tbNYearsProject As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxNYearsProject As System.Windows.Forms.TextBox
     Private WithEvents m_lblNYears As System.Windows.Forms.Label
-    Private WithEvents m_txtTolerance As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxTolerance As System.Windows.Forms.TextBox
     Private WithEvents m_btnCreateModels As System.Windows.Forms.Button
     Private WithEvents m_btnGenDC As System.Windows.Forms.Button
     Private WithEvents m_lblMassBalanceTol As System.Windows.Forms.Label
@@ -427,8 +427,8 @@ Partial Class frmMSE
     Private WithEvents m_btn2 As System.Windows.Forms.Button
     Private WithEvents m_plStep3 As System.Windows.Forms.Panel
     Private WithEvents m_btnDistParams As System.Windows.Forms.Button
-    Private WithEvents m_tbArea As System.Windows.Forms.TextBox
-    Private WithEvents m_tbNTrials As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxArea As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxNTrials As System.Windows.Forms.TextBox
     Private WithEvents m_hdrStep2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrStep4 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrStep3 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -447,6 +447,6 @@ Partial Class frmMSE
     Private WithEvents m_lblAvailableStrategies As System.Windows.Forms.Label
     Private WithEvents m_tbxNumAvailableFishingStrategies As System.Windows.Forms.TextBox
     Private WithEvents m_pbCompatible As System.Windows.Forms.PictureBox
-    Private WithEvents m_lblNumAttempts As System.Windows.Forms.Label
-    Private WithEvents m_tbxNumAttempts As System.Windows.Forms.TextBox
+    Private WithEvents m_lblMaxAttempts As System.Windows.Forms.Label
+    Private WithEvents m_tbxMaxAttempts As System.Windows.Forms.TextBox
 End Class

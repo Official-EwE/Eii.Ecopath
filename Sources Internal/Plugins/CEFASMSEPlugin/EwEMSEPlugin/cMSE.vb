@@ -74,9 +74,10 @@ Public Class cMSE
     Private DietMatrixTemp(,) As Double
     Private DietImpTemp() As Double
     Private ChangeEffortFlag As Boolean = False
+    Private m_rand As New Random()
 
-    Enum DistributionType As Byte
-        Uniform
+    Public Enum DistributionType As Integer
+        Uniform = 0
         Triangular
     End Enum
 
@@ -227,14 +228,14 @@ Public Class cMSE
 
         ' Report file read error
         If (bOK = False) Then
-            Me.SendMessage(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
+            Me.InformUser(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
             Return False
         End If
 
         'check that there are no replicates
         For igrp = 1 To mCore.nGroups
             If correct(igrp - 1) > 1 Then
-                Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(strPath)), eMessageImportance.Warning)
+                Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(strPath)), eMessageImportance.Warning)
                 Return False
             End If
         Next
@@ -245,10 +246,10 @@ Public Class cMSE
         Next
 
         If TotalFound < mCore.nLivingGroups Then 'Check whether there are too few groups in the file
-            Me.SendMessage(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)), eMessageImportance.Warning)
+            Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)), eMessageImportance.Warning)
             Return False
         ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
-            Me.SendMessage(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)), eMessageImportance.Warning)
+            Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)), eMessageImportance.Warning)
             Return False
         End If
 
@@ -307,16 +308,18 @@ Public Class cMSE
 
         ' Report file read error
         If (bOK = False) Then
-            Me.SendMessage(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
+            Me.InformUser(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
             Return False
         End If
 
         'Check if any of the records are for groups which are primary producers
         For igrp = 1 To mCore.nGroups
             If correct(igrp - 1) > 0 And mCore.EcoPathGroupOutputs(igrp).IsProducer Then
-                Me.SendMessage(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER, _
+                Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER, _
                                              Path.GetFileNameWithoutExtension(strPath), _
-                                             mCore.EcoPathGroupOutputs(igrp).Name), eMessageImportance.Warning)
+                                             mCore.EcoPathGroupOutputs(igrp).Name, _
+                                             cStringUtils.vbCrLf), _
+                               eMessageImportance.Warning)
                 Return False
             End If
         Next
@@ -324,7 +327,7 @@ Public Class cMSE
         'check that there are no replicates
         For igrp = 1 To mCore.nGroups
             If correct(igrp - 1) > 1 Then
-                Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
+                Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
                 Return False
             End If
         Next
@@ -335,10 +338,10 @@ Public Class cMSE
         Next
 
         If TotalFound < mCore.nLivingGroups - nPrimaryProducer Then 'Check whether there are too few groups in the file
-            Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
+            Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
             Return False
         ElseIf TotalFound > mCore.nLivingGroups - nPrimaryProducer Then 'Check whether there are too many groups in the file
-            Me.SendMessage(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOMANY, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
+            Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOMANY, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
             Return False
         End If
 
@@ -1016,8 +1019,8 @@ Public Class cMSE
         mCore.EcoSimModelParameters.NumberYears = OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear
 
         'Provide user with a message stating how many of the Trials produced reasonable dynamics
-        Me.SendMessage(String.Format(My.Resources.PROMPT_TRIAL_REPORT, (nTrials - nFailedParameterisations), nTrials, CInt((nTrials - nFailedParameterisations) * 100 / nTrials)), _
-                       eMessageImportance.Information, "", True)
+        Me.AskUser(String.Format(My.Resources.PROMPT_TRIAL_REPORT, (nTrials - nFailedParameterisations), nTrials, CInt((nTrials - nFailedParameterisations) * 100 / nTrials)), _
+                    eMessageReplyStyle.OK, eMessageImportance.Information)
 
         sw.Dispose()
         FleetCsv.Dispose()
@@ -1105,13 +1108,13 @@ Public Class cMSE
 
         For i As Integer = 0 To nDimensions - 1
 step1:
-            u1 = Rnd()
+            u1 = CSng(Me.m_rand.NextDouble())
             b = (Math.E + a(i)) / Math.E
             p = b * u1
             If p >= 1 Then GoTo step3
 step2:
             x = p ^ (1 / a(i))
-            u2 = Rnd()
+            u2 = CSng(Me.m_rand.NextDouble())
             If u2 > Math.Exp(-x) Then
                 GoTo step1
             Else
@@ -1120,7 +1123,7 @@ step2:
             End If
 step3:
             x = -Math.Log((b - p) / a(i))
-            u2 = Rnd()
+            u2 = CSng(Me.m_rand.NextDouble())
             If u2 > x ^ (a(i) - 1) Then
                 GoTo step1
             Else
@@ -1138,16 +1141,15 @@ stepend:
 
     End Function
 
-    Private Function UniformSample(ByVal min_par As Single, ByVal max_par As Single)
+    Private Function UniformSample(ByVal min_par As Single, ByVal max_par As Single) As Double
 
-        Randomize()
-        Return (min_par + Rnd() * (max_par - min_par))
+        Return (min_par + Me.m_rand.NextDouble() * (max_par - min_par))
 
     End Function
 
-    Private Function TriangularSample(ByVal A_par As Single, ByVal B_par As Single, ByVal C_par As Single)
-        Randomize()
-        Dim U As Single = Rnd()
+    Private Function TriangularSample(ByVal A_par As Single, ByVal B_par As Single, ByVal C_par As Single) As Double
+
+        Dim U As Double = Me.m_rand.NextDouble()
         If U < ((C_par - A_par) / (B_par - A_par)) Then
             Return A_par + Math.Sqrt(U * (B_par - A_par) * (C_par - A_par))
         Else
@@ -1414,7 +1416,7 @@ stepend:
                 'Succeeded in intitializing Monte Carlo Parameters
 
                 For iTrial As Integer = 1 To nTrials
-                    Dim timestart As Date = Now
+                    Dim timestart As Date = Date.Now
                     'Set the Ecopath parameters using the Monte Carlo input parameters set above
 
                     TimeFindingBalanced.Start()
@@ -1843,13 +1845,13 @@ stepend:
 
     Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "MSE Plugin"
+            Return My.Resources.CAPTION
         End Get
     End Property
 
     Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return ""
+            Return My.Resources.CAPTION
         End Get
     End Property
 
@@ -1891,7 +1893,7 @@ stepend:
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return Me.ControlText
+            Return "ndCefasMSE"
         End Get
     End Property
 
@@ -2094,9 +2096,9 @@ stepend:
             'Create random values for the vulnerabilities and store in a csv
             For igrppredator As Integer = 1 To _ecopath.EcopathData().NumGroups
 
-                sw.Write(Convert.ToSingle(1 + Math.Exp(9 * (Rnd() - 0.5))))
+                sw.Write(Convert.ToSingle(1 + Math.Exp(9 * (CSng(Me.m_rand.NextDouble()) - 0.5))))
                 For igrpprey As Integer = 2 To _ecopath.EcopathData().NumGroups
-                    sw.Write("," & Convert.ToSingle(1 + Math.Exp(9 * (Rnd() - 0.5))))
+                    sw.Write("," & Convert.ToSingle(1 + Math.Exp(9 * (CSng(Me.m_rand.NextDouble()) - 0.5))))
                 Next igrpprey
 
                 sw.WriteLine()
@@ -2146,9 +2148,10 @@ stepend:
 
     Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
 
-        ' ToDo_JS: Globalize this method
-        ' ToDo_JS: Fix path usage
-        ' ToDo_JS: Remove MsgBox
+        ' JS 13Oct13: Fixed CurDir vulnerability in lpsolve
+        ' JS 13Oct13: Globalized this method
+        ' JS 13Oct13: Fixed path usage
+        ' JS 13Oct13: Removed MsgBox
 
         Dim TechnologyCreep(mCore.nFleets) As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
         'Must have nfleets+1 elements so for 10 fleets needs elements 0-10
@@ -2198,7 +2201,7 @@ stepend:
                             If FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Target) = NoHCR_F Then
                                 FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Target) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), 0, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
                             Else
-                                Me.SendMessage(String.Format(My.Resources.ERROR_HARVESTRUILE_DUPLICATE_F, iHCRGroup.GroupF.Name), eMessageImportance.Warning)
+                                Me.InformUser(String.Format(My.Resources.ERROR_HARVESTRUILE_DUPLICATE_F, iHCRGroup.GroupF.Name), eMessageImportance.Warning)
                             End If
                         Case eCostFunctionTypes.Conservation
                             tempFConservation = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), iHCRGroup.LowerLimit, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
@@ -2272,7 +2275,7 @@ stepend:
                     cLPSolver.lpsolve55.Init()
 
                     lp = cLPSolver.lpsolve55.make_lp(0, mCore.nFleets + countGroupsFTarget * 2 + countGroupsFConservation * 2)
-                    cLPSolver.lpsolve55.set_outputfile(lp, CurDir() & "\result_lin_prog_MSE" & iTime & ".txt")
+                    cLPSolver.lpsolve55.set_outputfile(lp, Path.Combine(DataPath, "result_lin_prog_MSE" & iTime & ".txt"))
 
                     cLPSolver.lpsolve55.set_timeout(lp, 0)
 
@@ -2344,9 +2347,11 @@ stepend:
                     cLPSolver.lpsolve55.set_minim(lp)
 
                     solution_return_value = cLPSolver.lpsolve55.solve(lp)
-                    If solution_return_value <> 0 Then MsgBox("Linear Programming solution not optimal. LP Solve code:" & solution_return_value)
+                    If solution_return_value <> 0 Then
+                        Me.InformUser(String.Format(My.Resources.ERROR_LPSOLVE, solution_return_value), eMessageImportance.Warning)
+                    End If
 
-                    cLPSolver.lpsolve55.print_str(lp, solution_return_value & ": " & cLPSolver.lpsolve55.get_objective(lp) & vbLf)
+                    cLPSolver.lpsolve55.print_str(lp, solution_return_value & ": " & cLPSolver.lpsolve55.get_objective(lp) & cStringUtils.vbLf)
 
                     cLPSolver.lpsolve55.print_objective(lp)
                     cLPSolver.lpsolve55.print_solution(lp, 1)
@@ -2443,26 +2448,52 @@ stepend:
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Send a message through the EwE system.
+    ''' Notify the user of an event.
     ''' </summary>
     ''' <param name="strMessage"></param>
     ''' <param name="importance"></param>
     ''' <param name="strHyperlink"></param>
-    ''' <param name="bPopup"></param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SendMessage(strMessage As String, importance As eMessageImportance, Optional strHyperlink As String = "", Optional bPopup As Boolean = False)
-        If (Me.Core IsNot Nothing) Then
-            If (bPopup) Then
-                Dim fmsg As New cFeedbackMessage(strMessage, eCoreComponentType.External, eMessageType.Any, eMessageImportance.Information, eMessageReplyStyle.OK)
-                fmsg.Hyperlink = strHyperlink
-                Me.Core.Messages.SendMessage(fmsg)
-            Else
-                Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, importance)
-                msg.Hyperlink = strHyperlink
-                Me.Core.Messages.SendMessage(msg)
-            End If
+    Friend Sub InformUser(strMessage As String, importance As eMessageImportance, _
+                          Optional strHyperlink As String = "", _
+                          Optional astrSubMessages As String() = Nothing)
+
+        If (Me.Core Is Nothing) Then Return
+
+        Dim msg As New cFeedbackMessage(strMessage, eCoreComponentType.External, eMessageType.Any, importance, eMessageReplyStyle.OK)
+        msg.Hyperlink = strHyperlink
+        If (astrSubMessages IsNot Nothing) Then
+            For Each strSubMessage As String In astrSubMessages
+                msg.AddVariable(New cVariableStatus(eStatusFlags.OK, strSubMessage, eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0))
+            Next
         End If
+        Me.Core.Messages.SendMessage(msg)
+
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ask the user a question.
+    ''' </summary>
+    ''' <param name="strMessage"></param>
+    ''' <param name="style"></param>
+    ''' <param name="importance"></param>
+    ''' <param name="replyDefault"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Friend Function AskUser(strMessage As String, _
+                            style As eMessageReplyStyle, _
+                            Optional importance As eMessageImportance = eMessageImportance.Question, _
+                            Optional replyDefault As eMessageReplyStyle = eMessageReplyStyle.OK) As eMessageReplyStyle
+
+        If (Me.Core Is Nothing) Then Return replyDefault
+
+        Dim fmsg As New cFeedbackMessage(strMessage, eCoreComponentType.External, eMessageType.Any, importance, style)
+        fmsg.Reply = replyDefault
+        Me.Core.Messages.SendMessage(fmsg)
+        Return fmsg.Reply
+
+    End Function
 
     Private Sub OnCoreMessage(ByRef msg As cMessage)
 

@@ -19,9 +19,12 @@
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Controls
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmDistributionParameters
-    Inherits System.Windows.Forms.Form
+    Inherits frmEwEGrid
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -44,96 +47,16 @@ Partial Class frmDistributionParameters
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDistributionParameters))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.cboPathOrSim = New System.Windows.Forms.ComboBox()
-        Me.cboParamName = New System.Windows.Forms.ComboBox()
-        Me.dgvParameters = New System.Windows.Forms.DataGridView()
-        Me.GroupNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.GroupName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Mean = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.CV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Lower = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Upper = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnOK = New System.Windows.Forms.Button()
-        CType(Me.dgvParameters, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_grid = New EwEMSEPlugin.gridDistributionParameters()
+        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tscmPathOrSim = New System.Windows.Forms.ToolStripComboBox()
+        Me.m_tscmParamName = New System.Windows.Forms.ToolStripComboBox()
+        Me.m_tslModel = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tslVariable = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tsMain.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'cboPathOrSim
-        '
-        Me.cboPathOrSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboPathOrSim.FormattingEnabled = True
-        Me.cboPathOrSim.Items.AddRange(New Object() {resources.GetString("cboPathOrSim.Items"), resources.GetString("cboPathOrSim.Items1")})
-        resources.ApplyResources(Me.cboPathOrSim, "cboPathOrSim")
-        Me.cboPathOrSim.Name = "cboPathOrSim"
-        '
-        'cboParamName
-        '
-        Me.cboParamName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboParamName.FormattingEnabled = True
-        resources.ApplyResources(Me.cboParamName, "cboParamName")
-        Me.cboParamName.Name = "cboParamName"
-        '
-        'dgvParameters
-        '
-        Me.dgvParameters.AllowUserToAddRows = False
-        Me.dgvParameters.AllowUserToDeleteRows = False
-        Me.dgvParameters.AllowUserToResizeRows = False
-        resources.ApplyResources(Me.dgvParameters, "dgvParameters")
-        Me.dgvParameters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvParameters.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.GroupNumber, Me.GroupName, Me.Mean, Me.CV, Me.Lower, Me.Upper})
-        Me.dgvParameters.MultiSelect = False
-        Me.dgvParameters.Name = "dgvParameters"
-        Me.dgvParameters.RowHeadersVisible = False
-        Me.dgvParameters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvParameters.ShowRowErrors = False
-        '
-        'GroupNumber
-        '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.GroupNumber.DefaultCellStyle = DataGridViewCellStyle1
-        resources.ApplyResources(Me.GroupNumber, "GroupNumber")
-        Me.GroupNumber.Name = "GroupNumber"
-        '
-        'GroupName
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.GroupName.DefaultCellStyle = DataGridViewCellStyle2
-        resources.ApplyResources(Me.GroupName, "GroupName")
-        Me.GroupName.Name = "GroupName"
-        '
-        'Mean
-        '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Mean.DefaultCellStyle = DataGridViewCellStyle3
-        resources.ApplyResources(Me.Mean, "Mean")
-        Me.Mean.Name = "Mean"
-        '
-        'CV
-        '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.CV.DefaultCellStyle = DataGridViewCellStyle4
-        resources.ApplyResources(Me.CV, "CV")
-        Me.CV.Name = "CV"
-        '
-        'Lower
-        '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Lower.DefaultCellStyle = DataGridViewCellStyle5
-        resources.ApplyResources(Me.Lower, "Lower")
-        Me.Lower.Name = "Lower"
-        '
-        'Upper
-        '
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Upper.DefaultCellStyle = DataGridViewCellStyle6
-        resources.ApplyResources(Me.Upper, "Upper")
-        Me.Upper.Name = "Upper"
         '
         'm_btnCancel
         '
@@ -148,34 +71,94 @@ Partial Class frmDistributionParameters
         Me.m_btnOK.Name = "m_btnOK"
         Me.m_btnOK.UseVisualStyleBackColor = True
         '
+        'm_grid
+        '
+        Me.m_grid.AllowBlockSelect = True
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        Me.m_grid.Data = Nothing
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.Mode = EwEMSEPlugin.frmDistributionParameters.eParameterSet.Ecopath
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.UIContext = Nothing
+        '
+        'm_tsMain
+        '
+        Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslModel, Me.m_tscmPathOrSim, Me.m_tslVariable, Me.m_tscmParamName})
+        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+        Me.m_tsMain.Name = "m_tsMain"
+        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        '
+        'm_tscmPathOrSim
+        '
+        Me.m_tscmPathOrSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscmPathOrSim.Name = "m_tscmPathOrSim"
+        resources.ApplyResources(Me.m_tscmPathOrSim, "m_tscmPathOrSim")
+        '
+        'm_tscmParamName
+        '
+        Me.m_tscmParamName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscmParamName.Name = "m_tscmParamName"
+        resources.ApplyResources(Me.m_tscmParamName, "m_tscmParamName")
+        '
+        'm_tslModel
+        '
+        Me.m_tslModel.Name = "m_tslModel"
+        resources.ApplyResources(Me.m_tslModel, "m_tslModel")
+        '
+        'm_tslVariable
+        '
+        Me.m_tslVariable.Name = "m_tslVariable"
+        resources.ApplyResources(Me.m_tslVariable, "m_tslVariable")
+        '
         'frmDistributionParameters
         '
         Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_tsMain)
+        Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_btnCancel)
-        Me.Controls.Add(Me.dgvParameters)
-        Me.Controls.Add(Me.cboParamName)
-        Me.Controls.Add(Me.cboPathOrSim)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmDistributionParameters"
-        CType(Me.dgvParameters, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tsMain.ResumeLayout(False)
+        Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents cboPathOrSim As System.Windows.Forms.ComboBox
-    Friend WithEvents cboParamName As System.Windows.Forms.ComboBox
-    Friend WithEvents dgvParameters As System.Windows.Forms.DataGridView
-    Friend WithEvents GroupNumber As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents GroupName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Mean As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents CV As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Lower As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Upper As System.Windows.Forms.DataGridViewTextBoxColumn
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_btnOK As System.Windows.Forms.Button
+    Private WithEvents m_grid As gridDistributionParameters
+    Private WithEvents m_tsMain As cEwEToolstrip
+    Private WithEvents m_tscmPathOrSim As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents m_tscmParamName As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents m_tslModel As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tslVariable As System.Windows.Forms.ToolStripLabel
 End Class

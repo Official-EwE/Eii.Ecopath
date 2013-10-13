@@ -21,6 +21,8 @@
 '
 Option Strict On
 
+Imports EwEUtils.Core
+
 Public Class cMSEStateMonitor
 
     Private m_plugin As cMSE = Nothing

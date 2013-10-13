@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CAPTION" xml:space="preserve">
+    <value>Cefas MSE</value>
+  </data>
+  <data name="DISTR_TYPE_TRIANGULAR" xml:space="preserve">
+    <value>Triangular</value>
+  </data>
+  <data name="DISTR_TYPE_UNIFORM" xml:space="preserve">
+    <value>Uniform</value>
+  </data>
   <data name="ERROR_CSV_MALFORMED" xml:space="preserve">
     <value>The file {0} contains unexpected entires</value>
     <comment>{0}=file name</comment>
@@ -168,6 +177,14 @@
   <data name="ERROR_HARVESTRULE_INVALID" xml:space="preserve">
     <value>This harvest control rule is invalid. {0}</value>
     <comment>{0}=validation string</comment>
+  </data>
+  <data name="ERROR_LPSOLVE" xml:space="preserve">
+    <value>Linear Programming solution not optimal. LP Solve code {0}</value>
+    <comment>{0}=error code</comment>
+  </data>
+  <data name="GRID_DISTRPARM_DATANAME" xml:space="preserve">
+    <value>{0} distrparm {1}</value>
+    <comment>{0}=plugin name, {1}=variable name</comment>
   </data>
   <data name="HCR_GROUP_BIOMASS" xml:space="preserve">
     <value>Biomass Group = {0}</value>
@@ -227,6 +244,14 @@
   <data name="STATUS_RUN_PROGRESS" xml:space="preserve">
     <value>MSE running trial {0}</value>
     <comment>{0}=trial number</comment>
+  </data>
+  <data name="STATUS_SAVED_DETAIL" xml:space="preserve">
+    <value>Saved {0}</value>
+    <comment>{0}=name of file</comment>
+  </data>
+  <data name="STATUS_SAVED_DISTPARMS" xml:space="preserve">
+    <value>{0} saved distribution parameters files to {1}</value>
+    <comment>{0}=plugin name, {1}=folder</comment>
   </data>
   <data name="STATUS_TRIAL_PROGRESS" xml:space="preserve">
     <value>MSE finding models, trial {0}, iteration {1}</value>

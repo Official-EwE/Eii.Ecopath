@@ -117,135 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="cboPathOrSim.Items" xml:space="preserve">
-    <value>Ecopath Parameters</value>
-  </data>
-  <data name="cboPathOrSim.Items1" xml:space="preserve">
-    <value>Ecosim Parameters</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="cboPathOrSim.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
-  </data>
-  <data name="cboPathOrSim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 21</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cboPathOrSim.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;cboPathOrSim.Name" xml:space="preserve">
-    <value>cboPathOrSim</value>
-  </data>
-  <data name="&gt;&gt;cboPathOrSim.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cboPathOrSim.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;cboPathOrSim.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="cboParamName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>205, 12</value>
-  </data>
-  <data name="cboParamName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 21</value>
-  </data>
-  <data name="cboParamName.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;cboParamName.Name" xml:space="preserve">
-    <value>cboParamName</value>
-  </data>
-  <data name="&gt;&gt;cboParamName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cboParamName.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;cboParamName.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="dgvParameters.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <metadata name="GroupNumber.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="GroupNumber.HeaderText" xml:space="preserve">
-    <value>Group Number</value>
-  </data>
-  <metadata name="GroupName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="GroupName.HeaderText" xml:space="preserve">
-    <value>Group Name</value>
-  </data>
-  <metadata name="Mean.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="Mean.HeaderText" xml:space="preserve">
-    <value>Mean</value>
-  </data>
-  <metadata name="CV.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="CV.HeaderText" xml:space="preserve">
-    <value>CV</value>
-  </data>
-  <data name="CV.Width" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <metadata name="Lower.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="Lower.HeaderText" xml:space="preserve">
-    <value>Lower</value>
-  </data>
-  <data name="Lower.Width" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <metadata name="Upper.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="Upper.HeaderText" xml:space="preserve">
-    <value>Upper</value>
-  </data>
-  <data name="Upper.Width" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <data name="dgvParameters.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 39</value>
-  </data>
-  <data name="dgvParameters.Size" type="System.Drawing.Size, System.Drawing">
-    <value>698, 350</value>
-  </data>
-  <data name="dgvParameters.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;dgvParameters.Name" xml:space="preserve">
-    <value>dgvParameters</value>
-  </data>
-  <data name="&gt;&gt;dgvParameters.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dgvParameters.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;dgvParameters.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>635, 395</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
@@ -262,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -289,6 +172,75 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 28</value>
+  </data>
+  <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>722, 361</value>
+  </data>
+  <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
+    <value>m_grid</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
+    <value>EwEMSEPlugin.gridDistributionParameters, EwEMSEPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="m_tslModel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 22</value>
+  </data>
+  <data name="m_tslModel.Text" xml:space="preserve">
+    <value>Model:</value>
+  </data>
+  <data name="m_tscmPathOrSim.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 25</value>
+  </data>
+  <data name="m_tslVariable.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 22</value>
+  </data>
+  <data name="m_tslVariable.Text" xml:space="preserve">
+    <value>Variable:</value>
+  </data>
+  <data name="m_tscmParamName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 25</value>
+  </data>
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>722, 25</value>
+  </data>
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_tsMain.Text" xml:space="preserve">
+    <value>ToolStrip1</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.4.9755.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -300,52 +252,43 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>722, 430</value>
   </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>500, 350</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Cefas MSE Distribution Parameters</value>
   </data>
-  <data name="&gt;&gt;GroupNumber.Name" xml:space="preserve">
-    <value>GroupNumber</value>
+  <data name="&gt;&gt;m_tscmPathOrSim.Name" xml:space="preserve">
+    <value>m_tscmPathOrSim</value>
   </data>
-  <data name="&gt;&gt;GroupNumber.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tscmPathOrSim.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;GroupName.Name" xml:space="preserve">
-    <value>GroupName</value>
+  <data name="&gt;&gt;m_tscmParamName.Name" xml:space="preserve">
+    <value>m_tscmParamName</value>
   </data>
-  <data name="&gt;&gt;GroupName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tscmParamName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Mean.Name" xml:space="preserve">
-    <value>Mean</value>
+  <data name="&gt;&gt;m_tslModel.Name" xml:space="preserve">
+    <value>m_tslModel</value>
   </data>
-  <data name="&gt;&gt;Mean.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tslModel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;CV.Name" xml:space="preserve">
-    <value>CV</value>
+  <data name="&gt;&gt;m_tslVariable.Name" xml:space="preserve">
+    <value>m_tslVariable</value>
   </data>
-  <data name="&gt;&gt;CV.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Lower.Name" xml:space="preserve">
-    <value>Lower</value>
-  </data>
-  <data name="&gt;&gt;Lower.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Upper.Name" xml:space="preserve">
-    <value>Upper</value>
-  </data>
-  <data name="&gt;&gt;Upper.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tslVariable.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmDistributionParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.4.9755.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

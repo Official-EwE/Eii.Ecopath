@@ -109,7 +109,7 @@ Public Class dlgHarvestControlRule
         If Me.m_strategy.Contains(Me.HarvestControlRule) Then
             'Failed vaidation rule already exists in strategy
             Me.m_isValid = False
-            Me.m_Plugin.SendMessage(My.Resources.ERROR_HARVESTRULE_DUPLICATE, EwEUtils.Core.eMessageImportance.Critical)
+            Me.m_Plugin.InformUser(My.Resources.ERROR_HARVESTRULE_DUPLICATE, EwEUtils.Core.eMessageImportance.Critical)
             ' Don't bother checking the other validation. Just boot out
             Return
         End If
@@ -117,7 +117,7 @@ Public Class dlgHarvestControlRule
         If Not Me.HarvestControlRule.isValid(validationstring) Then
             'If the Harvest Rule is not valid set the DialogResult to Cancel so the rule is not used
             Me.m_isValid = False
-            Me.m_Plugin.SendMessage(String.Format(My.Resources.ERROR_HARVESTRULE_INVALID, validationstring), EwEUtils.Core.eMessageImportance.Critical)
+            Me.m_Plugin.InformUser(String.Format(My.Resources.ERROR_HARVESTRULE_INVALID, validationstring), EwEUtils.Core.eMessageImportance.Critical)
             Return
         End If
 

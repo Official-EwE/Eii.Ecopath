@@ -61,6 +61,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Cefas MSE.
+        '''</summary>
+        Friend ReadOnly Property CAPTION() As String
+            Get
+                Return ResourceManager.GetString("CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Triangular.
+        '''</summary>
+        Friend ReadOnly Property DISTR_TYPE_TRIANGULAR() As String
+            Get
+                Return ResourceManager.GetString("DISTR_TYPE_TRIANGULAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Uniform.
+        '''</summary>
+        Friend ReadOnly Property DISTR_TYPE_UNIFORM() As String
+            Get
+                Return ResourceManager.GetString("DISTR_TYPE_UNIFORM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to The file {0} contains unexpected entires.
         '''</summary>
         Friend ReadOnly Property ERROR_CSV_MALFORMED() As String
@@ -183,6 +210,24 @@ Namespace My.Resources
         Friend ReadOnly Property ERROR_HARVESTRULE_INVALID() As String
             Get
                 Return ResourceManager.GetString("ERROR_HARVESTRULE_INVALID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Linear Programming solution not optimal. LP Solve code {0}.
+        '''</summary>
+        Friend ReadOnly Property ERROR_LPSOLVE() As String
+            Get
+                Return ResourceManager.GetString("ERROR_LPSOLVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} distrparm {1}.
+        '''</summary>
+        Friend ReadOnly Property GRID_DISTRPARM_DATANAME() As String
+            Get
+                Return ResourceManager.GetString("GRID_DISTRPARM_DATANAME", resourceCulture)
             End Get
         End Property
         
@@ -345,6 +390,24 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_RUN_PROGRESS() As String
             Get
                 Return ResourceManager.GetString("STATUS_RUN_PROGRESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Saved {0}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_SAVED_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SAVED_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} saved distribution parameters files to {1}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_SAVED_DISTPARMS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SAVED_DISTPARMS", resourceCulture)
             End Get
         End Property
         

@@ -40,6 +40,7 @@ Public Class frmMSE
     Private m_fpNTrials As cEwEFormatProvider = Nothing
     Private m_fpNYearsToProject As cEwEFormatProvider = Nothing
     Private m_fpMassBalanceTol As cEwEFormatProvider = Nothing
+    Private m_fpMaxAttempts As cEwEFormatProvider = Nothing
 
     Private m_bInUpdate As Boolean = False
 
@@ -64,25 +65,29 @@ Public Class frmMSE
         ' -- Set up control interactions --
 
         ' Connect area UI control to live Ecopath data
-        Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, m_tbArea, Me.Core.EwEModel, eVarNameFlags.Area)
+        Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, m_tbxArea, Me.Core.EwEModel, eVarNameFlags.Area)
         ' Area can be made editable from here by not setting the format provider style:
         'Me.m_fpArea.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
 
-        Me.m_fpNModelsToRun = New cEwEFormatProvider(Me.UIContext, Me.m_tbNModels2Run, GetType(Integer))
+        Me.m_fpNModelsToRun = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNModels2Run, GetType(Integer))
         Me.m_fpNModelsToRun.Value = Me.m_plugin.NModels2Run
         AddHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
 
-        Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbNTrials, GetType(Integer), New cVariableMetaData(0, Me.m_plugin.NumModelsAvailable, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
+        Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNTrials, GetType(Integer), New cVariableMetaData(0, Me.m_plugin.NumModelsAvailable, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         Me.m_fpNTrials.Value = Me.m_plugin.NTrials
         AddHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
 
-        Me.m_fpNYearsToProject = New cEwEFormatProvider(Me.UIContext, m_tbNYearsProject, GetType(Integer))
+        Me.m_fpNYearsToProject = New cEwEFormatProvider(Me.UIContext, m_tbxNYearsProject, GetType(Integer))
         Me.m_fpNYearsToProject.Value = Me.m_plugin.NYearsProject
         AddHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf OnNYearsToProjectChanged
 
-        Me.m_fpMassBalanceTol = New cEwEFormatProvider(Me.UIContext, Me.m_txtTolerance, GetType(Single), New cVariableMetaData(0, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
+        Me.m_fpMassBalanceTol = New cEwEFormatProvider(Me.UIContext, Me.m_tbxTolerance, GetType(Single), New cVariableMetaData(0, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         Me.m_fpMassBalanceTol.Value = Me.m_plugin.MassBalanceTol
         AddHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf OnMassBalanceTolChanged
+
+        Me.m_fpMaxAttempts = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMaxAttempts, GetType(Integer), New cVariableMetaData(1, 1000000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
+        Me.m_fpMaxAttempts.Value = Me.m_plugin.NMaxAttempts
+        AddHandler Me.m_fpMaxAttempts.OnValueChanged, AddressOf OnMaxAttemptsChanged
 
         Me.m_rbEwEDefault.Checked = Me.m_plugin.UseEwEPath
         Me.m_rbCustomPath.Checked = Not Me.m_plugin.UseEwEPath
@@ -104,14 +109,17 @@ Public Class frmMSE
             RemoveHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
             Me.m_fpNModelsToRun.Release()
 
-            Me.m_fpNTrials.Release()
             RemoveHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
+            Me.m_fpNTrials.Release()
 
-            Me.m_fpNYearsToProject.Release()
             RemoveHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf OnNYearsToProjectChanged
+            Me.m_fpNYearsToProject.Release()
 
-            Me.m_fpMassBalanceTol.Release()
             RemoveHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf OnMassBalanceTolChanged
+            Me.m_fpMassBalanceTol.Release()
+
+            RemoveHandler Me.m_fpMaxAttempts.OnValueChanged, AddressOf OnMaxAttemptsChanged
+            Me.m_fpMaxAttempts.Release()
 
         End If
 
@@ -320,6 +328,14 @@ Public Class frmMSE
             Me.m_plugin.MassBalanceTol = CSng(Me.m_fpMassBalanceTol.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnMassBalanceTolChanged")
+        End Try
+    End Sub
+
+    Private Sub OnMaxAttemptsChanged(sender As Object, args As EventArgs)
+        Try
+            Me.m_plugin.NMaxAttempts = CInt(Me.m_fpMaxAttempts.Value)
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE:OnMaxAttemptsChanged")
         End Try
     End Sub
 
