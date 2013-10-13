@@ -225,12 +225,20 @@ Public Class frmDistributionParameters
 
 #Region " Internals "
 
+    ''' <summary>
+    ''' Given a Ecosim csv object this extracts the data from the current line and uses it to return an EcosimParam structure object
+    ''' </summary>
+    ''' <param name="csv"></param>
+    ''' <returns></returns>
     Private Function ExtractEcosimParam(ByVal csv As CsvReader) As EcosimParam
 
         ' JS 12Oct13: made fail-proof
         ' JS 12Oct13: used fixed CSV field reading
 
-        'given a Ecosim csv object this extracts the data from the current line and uses it to return an EcosimParam structure object
+        ' Sanity checks
+        If (csv Is Nothing) Then Return Nothing
+        If (Not csv.ReadNextRecord()) Then Return Nothing
+
         Dim TGroupName As String = ""
         Dim TGroupNumber As Integer
         Dim TLowerBound As Double
@@ -239,33 +247,41 @@ Public Class frmDistributionParameters
         Dim TMidPoint As Double
 
         Try
-            If (csv IsNot Nothing) Then
-                csv.ReadNextRecord()
 
-                TGroupName = cMSEUtils.FromCSVField(csv(0))
-                TGroupNumber = cStringUtils.ConvertToInteger(csv(1))
-                Dim iDistr As Integer = cStringUtils.ConvertToInteger(csv(2))
-                Try
-                    TDistributionType = DirectCast(iDistr, cMSE.DistributionType)
-                Catch ex As Exception
-                    ' Default
-                    TDistributionType = cMSE.DistributionType.Uniform
-                End Try
-                TLowerBound = cStringUtils.ConvertToDouble(csv(3))
-                TUpperBound = cStringUtils.ConvertToDouble(csv(4))
-                TMidPoint = cStringUtils.ConvertToDouble(csv(5))
+            TGroupName = cMSEUtils.FromCSVField(csv(0))
+            TGroupNumber = cStringUtils.ConvertToInteger(csv(1))
+            Dim iDistr As Integer = cStringUtils.ConvertToInteger(csv(2))
+            Try
+                TDistributionType = DirectCast(iDistr, cMSE.DistributionType)
+            Catch ex As Exception
+                ' Default
+                TDistributionType = cMSE.DistributionType.Uniform
+            End Try
+            TLowerBound = cStringUtils.ConvertToDouble(csv(3))
+            TUpperBound = cStringUtils.ConvertToDouble(csv(4))
+            TMidPoint = cStringUtils.ConvertToDouble(csv(5))
 
-            End If
         Catch ex As Exception
             ' ToDo_JS: respond to error
+            Return Nothing
         End Try
 
         Return New EcosimParam(TGroupNumber, TGroupName, TDistributionType, TLowerBound, TUpperBound, TMidPoint)
 
     End Function
 
+    ''' <summary>
+    ''' Extracts distribution parameters for one group from csv and Ecopath
+    ''' </summary>
+    ''' <param name="csv"></param>
+    ''' <param name="ParameterType"></param>
+    ''' <returns></returns>
     Private Function ExtractEcopathParam(ByVal csv As CsvReader, ByVal ParameterType As eParamName) As EcopathParam
-        'Extracts distribution parameters for one group from csv and Ecopath
+
+        ' Sanity checks
+        If (csv Is Nothing) Then Return Nothing
+        If (Not csv.ReadNextRecord()) Then Return Nothing
+        If (csv.FieldCount < 5) Then Return Nothing
 
         Dim TGroupName As String = ""
         Dim TGroupNumber As Integer
@@ -275,38 +291,33 @@ Public Class frmDistributionParameters
         Dim TUpperBound As Double
 
         Try
-            If (csv IsNot Nothing) Then
-                csv.ReadNextRecord()
-                If (csv.FieldCount >= 5) Then
+            TGroupNumber = cStringUtils.ConvertToInteger(csv(0))
+            TGroupName = cMSEUtils.FromCSVField(csv(1))
+            TCV = cStringUtils.ConvertToDouble(csv(2))
+            TLowerBound = cStringUtils.ConvertToDouble(csv(3))
+            TUpperBound = cStringUtils.ConvertToDouble(csv(4))
 
-                    TGroupNumber = cStringUtils.ConvertToInteger(csv(0))
-                    TGroupName = cMSEUtils.FromCSVField(csv(1))
-                    TCV = cStringUtils.ConvertToDouble(csv(2))
-                    TLowerBound = cStringUtils.ConvertToDouble(csv(3))
-                    TUpperBound = cStringUtils.ConvertToDouble(csv(4))
+            ' JS 02Oct2013: Need to validate group number
+            If TGroupNumber < 1 Or TGroupNumber >= Me.Core.nGroups Then
+                ' ToDo:_JS: report error somehow
+                Return Nothing
+            End If
 
-                    ' JS 02Oct2013: Need to validate group number
-                    If TGroupNumber < 1 Or TGroupNumber >= Me.Core.nGroups Then
-                        ' ToDo:_JS: report error somehow
-                        Return Nothing
-                    End If
-
-                    If ParameterType = eParamName.B Then
-                        TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).BiomassAreaInput
-                    ElseIf ParameterType = eParamName.BA Then
-                        TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).BioAccum
-                    ElseIf ParameterType = eParamName.QB Then
-                        TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).QBInput
-                    ElseIf ParameterType = eParamName.PB Then
-                        TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).PBInput
-                    ElseIf ParameterType = eParamName.EE Then
-                        TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).EEInput
-                    End If
-                End If
+            If ParameterType = eParamName.B Then
+                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).BiomassAreaInput
+            ElseIf ParameterType = eParamName.BA Then
+                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).BioAccum
+            ElseIf ParameterType = eParamName.QB Then
+                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).QBInput
+            ElseIf ParameterType = eParamName.PB Then
+                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).PBInput
+            ElseIf ParameterType = eParamName.EE Then
+                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).EEInput
             End If
 
         Catch ex As Exception
             ' ToDo:_JS: report error somehow
+            Return Nothing
         End Try
 
         Return New EcopathParam(TGroupNumber, TGroupName, TMean, TCV, TLowerBound, TUpperBound)
@@ -318,49 +329,71 @@ Public Class frmDistributionParameters
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
         Dim TMean As Single
+        Dim params(Me.Core.nLivingGroups) As EcosimParam
+        Dim param As EcosimParam = Nothing
         Dim bSuccess As Boolean = True
 
         If File.Exists(Path) Then
 
             reader = cMSEUtils.GetReader(Path)
-            If (reader Is Nothing) Then Return False
+            If (reader IsNot Nothing) Then
+                Try
+                    ParamList.Clear()
+                    csv = New CsvReader(reader, True)
+                    While Not csv.EndOfStream
+                        param = Me.ExtractEcosimParam(csv)
+                        If (param IsNot Nothing) Then
+                            ' Only add with valid group indexes
+                            If (param.GroupNo >= 1 And param.GroupNo <= Me.Core.nLivingGroups) Then
+                                params(param.GroupNo) = param
+                            Else
+                                ' Not used: notify user?
+                            End If
+                        End If
+                    End While
+                    csv.Dispose()
 
-            Try
-                csv = New CsvReader(reader, True)
-                For igrp = 1 To Me.Core.nLivingGroups
-                    ParamList.Add(ExtractEcosimParam(csv))
-                Next
-                csv.Dispose()
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".LoadEcopathParameters() Exception: " & ex.Message)
-                bSuccess = False
-            End Try
-            cMSEUtils.ReleaseReader(reader)
-
-        Else
-            For igrp = 1 To Me.Core.nGroups
-                If Me.Core.EcoPathGroupOutputs(igrp).IsLiving Then
-                    If ParamName = eParamName.DenDepCatchability Then
-                        TMean = Me.Core.EcoSimGroupInputs(igrp).DenDepCatchability
-                    ElseIf ParamName = eParamName.FeedingTimeAdjustRate Then
-                        TMean = Me.Core.EcoSimGroupInputs(igrp).FeedingTimeAdjustRate
-                    ElseIf ParamName = eParamName.MaxRelFeedingTime Then
-                        TMean = Me.Core.EcoSimGroupInputs(igrp).MaxRelFeedingTime
-                    ElseIf ParamName = eParamName.OtherMortFeedingTime Then
-                        TMean = Me.Core.EcoSimGroupInputs(igrp).OtherMortFeedingTime
-                    ElseIf ParamName = eParamName.PredEffectFeedingTime Then
-                        TMean = Me.Core.EcoSimGroupInputs(igrp).PredEffectFeedingTime
-                    ElseIf ParamName = eParamName.QBMaxxQBio Then
-                        TMean = Me.Core.EcoSimGroupInputs(igrp).QBMaxQBio
-                    ElseIf ParamName = eParamName.SwitchingPower Then
-                        TMean = Me.Core.EcoSimGroupInputs(igrp).SwitchingPower
-                    End If
-                    ParamList.Add(New EcosimParam(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean))
-                End If
-
-            Next
-
+                Catch ex As Exception
+                    Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
+                    bSuccess = False
+                End Try
+                cMSEUtils.ReleaseReader(reader)
+            End If
         End If
+
+        ' Complement list with defaults for missing groups
+        For igrp = 1 To Me.Core.nLivingGroups
+            ' ToDo_JS: Exclude primary producers here?
+            If params(igrp) Is Nothing Then
+                If ParamName = eParamName.DenDepCatchability Then
+                    TMean = Me.Core.EcoSimGroupInputs(igrp).DenDepCatchability
+                ElseIf ParamName = eParamName.FeedingTimeAdjustRate Then
+                    TMean = Me.Core.EcoSimGroupInputs(igrp).FeedingTimeAdjustRate
+                ElseIf ParamName = eParamName.MaxRelFeedingTime Then
+                    TMean = Me.Core.EcoSimGroupInputs(igrp).MaxRelFeedingTime
+                ElseIf ParamName = eParamName.OtherMortFeedingTime Then
+                    TMean = Me.Core.EcoSimGroupInputs(igrp).OtherMortFeedingTime
+                ElseIf ParamName = eParamName.PredEffectFeedingTime Then
+                    TMean = Me.Core.EcoSimGroupInputs(igrp).PredEffectFeedingTime
+                ElseIf ParamName = eParamName.QBMaxxQBio Then
+                    TMean = Me.Core.EcoSimGroupInputs(igrp).QBMaxQBio
+                ElseIf ParamName = eParamName.SwitchingPower Then
+                    TMean = Me.Core.EcoSimGroupInputs(igrp).SwitchingPower
+                End If
+                params(igrp) = New EcosimParam(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean)
+            End If
+        Next
+
+        For Each param In params
+            If (param IsNot Nothing) Then
+                Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(param.GroupNo)
+                ' Only allow living non-producers
+                If (Not grp.IsProducer) And (grp.IsLiving) Then
+                    ParamList.Add(param)
+                End If
+            End If
+        Next
+
         Return bSuccess
 
     End Function
@@ -388,56 +421,77 @@ Public Class frmDistributionParameters
         Dim TLowerBound As Double
         Dim TUpperBound As Double
         Dim reader As StreamReader = cMSEUtils.GetReader(strPath)
+        Dim params(Me.Core.nLivingGroups) As EcopathParam
+        Dim param As EcopathParam = Nothing
         Dim bSuccess As Boolean = True
 
-        If (reader IsNot Nothing) Then
-            csv = New CsvReader(reader, True)
-            Try
-                For igrp = 1 To Me.Core.nLivingGroups
-                    ParamList.Add(ExtractEcopathParam(csv, ParamName))
-                Next
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".LoadEcopathParameters() Exception: " & ex.Message)
-                bSuccess = False
-            End Try
-            csv.Dispose()
-        Else
-            For igrp = 1 To Me.Core.nGroups
-                If Me.Core.EcoPathGroupOutputs(igrp).IsLiving Then
-                    MCGroup = MonteCarlo.Groups(igrp)
-                    If ParamName = eParamName.B Then
-                        TMean = Me.Core.EcoPathGroupOutputs(igrp).Biomass
-                        TCV = MCGroup.Bcv
-                        TLowerBound = MCGroup.BLower
-                        TUpperBound = MCGroup.BUpper
-                    ElseIf ParamName = eParamName.BA Then
-                        TMean = Me.Core.EcoPathGroupOutputs(igrp).BioAccum
-                        TCV = MCGroup.BAcv
-                        TLowerBound = MCGroup.BALower
-                        TUpperBound = MCGroup.BAUpper
-                    ElseIf ParamName = eParamName.EE Then
-                        TMean = Me.Core.EcoPathGroupOutputs(igrp).EEOutput
-                        TCV = MCGroup.EEcv
-                        TLowerBound = MCGroup.EELower
-                        TUpperBound = MCGroup.EEUpper
-                    ElseIf ParamName = eParamName.PB Then
-                        TMean = Me.Core.EcoPathGroupOutputs(igrp).PBOutput
-                        TCV = MCGroup.PBcv
-                        TLowerBound = MCGroup.PBLower
-                        TUpperBound = MCGroup.PBUpper
-                    ElseIf ParamName = eParamName.QB Then
-                        TMean = Me.Core.EcoPathGroupOutputs(igrp).QBOutput
-                        TCV = MCGroup.QBcv
-                        TLowerBound = MCGroup.QBLower
-                        TUpperBound = MCGroup.QBUpper
-                    End If
-                    ParamList.Add(New EcopathParam(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, TMean, TCV, TLowerBound, TUpperBound))
-                End If
+        If File.Exists(strPath) Then
+            reader = cMSEUtils.GetReader(strPath)
+            If (reader IsNot Nothing) Then
+                Try
+                    ParamList.Clear()
+                    csv = New CsvReader(reader, True)
+                    While Not csv.EndOfStream
+                        param = Me.ExtractEcopathParam(csv, ParamName)
+                        If (param IsNot Nothing) Then
+                            ' Only add with valid group indexes
+                            If (param.GroupNo >= 1 And param.GroupNo <= Me.Core.nLivingGroups) Then
+                                params(param.GroupNo) = param
+                            Else
+                                ' Not used: notify user?
+                            End If
+                        End If
+                    End While
+                    csv.Dispose()
 
-            Next
+                Catch ex As Exception
+                    Debug.Assert(False, Me.ToString & ".LoadEcopathParameters() Exception: " & ex.Message)
+                    bSuccess = False
+                End Try
+                cMSEUtils.ReleaseReader(reader)
+            End If
         End If
 
-        cMSEUtils.ReleaseReader(reader)
+        ' Complement list with defaults for missing groups
+        For igrp = 1 To Me.Core.nLivingGroups
+            If params(igrp) Is Nothing Then
+                MCGroup = MonteCarlo.Groups(igrp)
+                If ParamName = eParamName.B Then
+                    TMean = Me.Core.EcoPathGroupOutputs(igrp).Biomass
+                    TCV = MCGroup.Bcv
+                    TLowerBound = MCGroup.BLower
+                    TUpperBound = MCGroup.BUpper
+                ElseIf ParamName = eParamName.BA Then
+                    TMean = Me.Core.EcoPathGroupOutputs(igrp).BioAccum
+                    TCV = MCGroup.BAcv
+                    TLowerBound = MCGroup.BALower
+                    TUpperBound = MCGroup.BAUpper
+                ElseIf ParamName = eParamName.EE Then
+                    TMean = Me.Core.EcoPathGroupOutputs(igrp).EEOutput
+                    TCV = MCGroup.EEcv
+                    TLowerBound = MCGroup.EELower
+                    TUpperBound = MCGroup.EEUpper
+                ElseIf ParamName = eParamName.PB Then
+                    TMean = Me.Core.EcoPathGroupOutputs(igrp).PBOutput
+                    TCV = MCGroup.PBcv
+                    TLowerBound = MCGroup.PBLower
+                    TUpperBound = MCGroup.PBUpper
+                ElseIf ParamName = eParamName.QB Then
+                    TMean = Me.Core.EcoPathGroupOutputs(igrp).QBOutput
+                    TCV = MCGroup.QBcv
+                    TLowerBound = MCGroup.QBLower
+                    TUpperBound = MCGroup.QBUpper
+                End If
+                params(igrp) = New EcopathParam(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, TMean, TCV, TLowerBound, TUpperBound)
+            End If
+        Next
+
+        For Each param In params
+            If (param IsNot Nothing) Then
+                ParamList.Add(param)
+            End If
+        Next
+
         Return bSuccess
 
     End Function

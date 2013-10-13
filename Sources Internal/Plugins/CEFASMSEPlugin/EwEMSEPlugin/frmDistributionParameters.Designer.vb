@@ -51,10 +51,10 @@ Partial Class frmDistributionParameters
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_grid = New EwEMSEPlugin.gridDistributionParameters()
         Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.m_tscmPathOrSim = New System.Windows.Forms.ToolStripComboBox()
-        Me.m_tscmParamName = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tslModel = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tscmPathOrSim = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tslVariable = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tscmParamName = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tsMain.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -73,7 +73,7 @@ Partial Class frmDistributionParameters
         '
         'm_grid
         '
-        Me.m_grid.AllowBlockSelect = True
+        Me.m_grid.AllowBlockSelect = False
         resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
@@ -86,6 +86,7 @@ Partial Class frmDistributionParameters
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
         Me.m_grid.Data = Nothing
+        Me.m_grid.DataName = "grid content"
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
@@ -111,27 +112,29 @@ Partial Class frmDistributionParameters
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
-        'm_tscmPathOrSim
-        '
-        Me.m_tscmPathOrSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_tscmPathOrSim.Name = "m_tscmPathOrSim"
-        resources.ApplyResources(Me.m_tscmPathOrSim, "m_tscmPathOrSim")
-        '
-        'm_tscmParamName
-        '
-        Me.m_tscmParamName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_tscmParamName.Name = "m_tscmParamName"
-        resources.ApplyResources(Me.m_tscmParamName, "m_tscmParamName")
-        '
         'm_tslModel
         '
         Me.m_tslModel.Name = "m_tslModel"
         resources.ApplyResources(Me.m_tslModel, "m_tslModel")
         '
+        'm_tscmPathOrSim
+        '
+        Me.m_tscmPathOrSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscmPathOrSim.Name = "m_tscmPathOrSim"
+        Me.m_tscmPathOrSim.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+        resources.ApplyResources(Me.m_tscmPathOrSim, "m_tscmPathOrSim")
+        '
         'm_tslVariable
         '
         Me.m_tslVariable.Name = "m_tslVariable"
         resources.ApplyResources(Me.m_tslVariable, "m_tslVariable")
+        '
+        'm_tscmParamName
+        '
+        Me.m_tscmParamName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscmParamName.Name = "m_tscmParamName"
+        Me.m_tscmParamName.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+        resources.ApplyResources(Me.m_tscmParamName, "m_tscmParamName")
         '
         'frmDistributionParameters
         '

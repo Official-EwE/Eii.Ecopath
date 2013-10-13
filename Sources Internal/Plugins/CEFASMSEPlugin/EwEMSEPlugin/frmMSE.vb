@@ -142,9 +142,7 @@ Public Class frmMSE
 
         Me.m_tbxPath.Text = Me.m_plugin.DataPath
 
-        If bCanCreateModels Then
-            img = SharedResources.OK
-        Else
+        If Not bCanCreateModels And mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
             img = SharedResources.Critical
         End If
         Me.m_pbCompatible.Image = img

@@ -148,8 +148,8 @@ Public Class gridDistributionParameters
                 Me(0, eEcopathColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
                 Me(0, eEcopathColumnTypes.Mean) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN)
                 Me(0, eEcopathColumnTypes.CV) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
-                Me(0, eEcopathColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_LOWERBOUND)
-                Me(0, eEcopathColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_UPPERBOUND)
+                Me(0, eEcopathColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
+                Me(0, eEcopathColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
 
             Case frmDistributionParameters.eParameterSet.Ecosim
                 Dim iNumCols As Integer = [Enum].GetValues(GetType(eEcosimColumnTypes)).Length
@@ -158,9 +158,9 @@ Public Class gridDistributionParameters
                 Me(0, eEcosimColumnTypes.Index) = New EwEColumnHeaderCell("")
                 Me(0, eEcosimColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
                 Me(0, eEcosimColumnTypes.DistrType) = New EwEColumnHeaderCell(My.Resources.HEADER_DISTRIBUTIONTYPE)
-                Me(0, eEcosimColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_LOWERBOUND)
+                Me(0, eEcosimColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
                 Me(0, eEcosimColumnTypes.MidPoint) = New EwEColumnHeaderCell(My.Resources.HEADER_MIDPOINT)
-                Me(0, eEcosimColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_UPPERBOUND)
+                Me(0, eEcosimColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
 
         End Select
 
@@ -198,7 +198,7 @@ Public Class gridDistributionParameters
 
                     Me.Columns(eEcopathColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
                     Me.Columns(eEcopathColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
-                    Me.Columns(eEcopathColumnTypes.Name).Width = 120
+                    Me.Columns(eEcopathColumnTypes.Name).Width = 150
                     Me.Rows(iRow).Tag = data
 
                 Case frmDistributionParameters.eParameterSet.Ecosim
@@ -216,7 +216,7 @@ Public Class gridDistributionParameters
                     Me(iRow, eEcosimColumnTypes.MidPoint) = DataCell(data.MidPoint)
 
                     Me.Columns(eEcosimColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-                    Me.Columns(eEcosimColumnTypes.Name).Width = 120
+                    Me.Columns(eEcosimColumnTypes.Name).Width = 150
                     Me.Columns(eEcosimColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
                     Me.Rows(iRow).Tag = data
 

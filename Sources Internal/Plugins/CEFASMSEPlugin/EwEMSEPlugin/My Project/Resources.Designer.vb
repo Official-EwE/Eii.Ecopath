@@ -70,6 +70,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Launch the Cefas MSE plug-in.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_TOOLTIP() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_TOOLTIP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Triangular.
         '''</summary>
         Friend ReadOnly Property DISTR_TYPE_TRIANGULAR() As String
@@ -250,6 +259,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Lower boundary.
+        '''</summary>
+        Friend ReadOnly Property HEADER_BOUND_LOWER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BOUND_LOWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Upper boundary.
+        '''</summary>
+        Friend ReadOnly Property HEADER_BOUND_UPPER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BOUND_UPPER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cost function type.
+        '''</summary>
+        Friend ReadOnly Property HEADER_COST_FUNCTION_TYPE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_COST_FUNCTION_TYPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Distribution type.
         '''</summary>
         Friend ReadOnly Property HEADER_DISTRIBUTIONTYPE() As String
@@ -268,11 +304,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Lower boundary.
+        '''  Looks up a localized string similar to Fishing Mort. Group.
         '''</summary>
-        Friend ReadOnly Property HEADER_LOWERBOUND() As String
+        Friend ReadOnly Property HEADER_FMORT_GROUP() As String
             Get
-                Return ResourceManager.GetString("HEADER_LOWERBOUND", resourceCulture)
+                Return ResourceManager.GetString("HEADER_FMORT_GROUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Lower biomass limit (k{0}).
+        '''</summary>
+        Friend ReadOnly Property HEADER_LIMIT_LOWER_B() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LIMIT_LOWER_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Upper biomass limit (k{0}).
+        '''</summary>
+        Friend ReadOnly Property HEADER_LIMIT_UPPER_B() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LIMIT_UPPER_B", resourceCulture)
             End Get
         End Property
         
@@ -318,15 +372,6 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_QBMAX_X_PBMAX() As String
             Get
                 Return ResourceManager.GetString("HEADER_QBMAX_X_PBMAX", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Upper boundary.
-        '''</summary>
-        Friend ReadOnly Property HEADER_UPPERBOUND() As String
-            Get
-                Return ResourceManager.GetString("HEADER_UPPERBOUND", resourceCulture)
             End Get
         End Property
         

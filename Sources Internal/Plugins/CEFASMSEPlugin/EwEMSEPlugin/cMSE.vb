@@ -82,6 +82,7 @@ Public Class cMSE
     End Enum
 
     Private m_mhSettings As cMessageHandler = Nothing
+    Private m_mhEcosim As cMessageHandler = Nothing
 
 #Region " Construction "
 
@@ -210,15 +211,18 @@ Public Class cMSE
 
         Try
             'cycle through each of the living functional groups each time checking if it exists in the file
-            For igrp = 1 To mCore.nLivingGroups
-                csv.ReadNextRecord()
-                For xgrp = 1 To mCore.nGroups
-                    If (cStringUtils.ConvertToInteger(csv(0)) = xgrp) And (String.Compare(cMSEUtils.FromCSVField(csv(1)), _ecopath.EcopathData.GroupName(xgrp), True) = 0) Then
-                        correct(xgrp - 1) += 1
-                        ' Exit For ' JS: keep on checking to find duplicates
-                    End If
-                Next
-            Next
+            ' JS 13Oct13: Changed the looping structure here. If csvreader fails to load a record it will repeat the last record!
+            '             This created double-counting when a CSV file did not contain enough records
+            While Not csv.EndOfStream
+                If csv.ReadNextRecord() Then
+                    For xgrp = 1 To mCore.nGroups
+                        If (cStringUtils.ConvertToInteger(csv(0)) = xgrp) And (String.Compare(cMSEUtils.FromCSVField(csv(1)), _ecopath.EcopathData.GroupName(xgrp), True) = 0) Then
+                            correct(xgrp - 1) += 1
+                            ' Exit For ' JS: keep on checking to find duplicates
+                        End If
+                    Next
+                End If
+            End While
         Catch ex As Exception
             bOK = False
         End Try
@@ -448,8 +452,9 @@ Public Class cMSE
                     ChangeInEffortLimits(i - 1) = NoHCR_F
                 Next
                 While Not EffortLimitsCSV.EndOfStream
-                    EffortLimitsCSV.ReadNextRecord()
-                    ChangeInEffortLimits(EffortLimitsCSV(0) - 1) = cStringUtils.ConvertToDouble(EffortLimitsCSV(2))
+                    If EffortLimitsCSV.ReadNextRecord() Then
+                        ChangeInEffortLimits(EffortLimitsCSV(0) - 1) = cStringUtils.ConvertToDouble(EffortLimitsCSV(2))
+                    End If
                 End While
                 EffortLimitsCSV.Dispose()
 
@@ -542,10 +547,11 @@ Public Class cMSE
         ReDim Params(nIterations - 1, csv.FieldCount - 1)
         Try
             While Not csv.EndOfStream And iRecord < nIterations
-                csv.ReadNextRecord()
-                For iField = 1 To csv.FieldCount()
-                    Params(iRecord, iField - 1) = cStringUtils.ConvertToDouble(csv(iField - 1))
-                Next
+                If csv.ReadNextRecord() Then
+                    For iField = 1 To csv.FieldCount()
+                        Params(iRecord, iField - 1) = cStringUtils.ConvertToDouble(csv(iField - 1))
+                    Next
+                End If
                 iRecord += 1
             End While
         Catch ex As Exception
@@ -566,20 +572,18 @@ Public Class cMSE
         Dim nIterations As Integer = Me.NModels2Run
         Dim csv As CsvReader
         Dim vulnerabilities(nIterations - 1, _ecopath.EcopathData.NumGroups - 1, _ecopath.EcopathData.NumGroups - 1) As Double
-        Dim countrows As Integer
 
         For iIteration As Integer = 1 To nIterations
             Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration.ToString & "_out.csv"))
             If (reader IsNot Nothing) Then
                 csv = New CsvReader(reader, True)
                 Try
-                    countrows = 0
                     While Not csv.EndOfStream
-                        countrows += 1
-                        csv.ReadNextRecord()
-                        For iPred As Integer = 1 To _ecopath.EcopathData.NumGroups
-                            vulnerabilities(iIteration - 1, csv.CurrentRecordIndex, iPred - 1) = cStringUtils.ConvertToDouble(csv(iPred - 1))
-                        Next
+                        If csv.ReadNextRecord() Then
+                            For iPred As Integer = 1 To _ecopath.EcopathData.NumGroups
+                                vulnerabilities(iIteration - 1, csv.CurrentRecordIndex, iPred - 1) = cStringUtils.ConvertToDouble(csv(iPred - 1))
+                            Next
+                        End If
                     End While
                 Catch ex As Exception
                     ' ToDo: decide what to do when CSV data is malformed
@@ -868,21 +872,31 @@ Public Class cMSE
                 Next
             Next
 
+            ' Start optimistically. It's a beautiful day outside, etc. etc.
+            GoodDynamics = True
+
             'Extract the diet matrix
             Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"))
             If (reader IsNot Nothing) Then
                 diet_matrix = New CsvReader(reader, False)
-                diet_matrix.ReadNextRecord()
-                For iPred As Integer = 1 To mCore.nGroups
-                    mCore.EcoPathGroupInputs(iPred).ImpDiet() = cStringUtils.ConvertToSingle(diet_matrix(iPred - 1))
-                Next
-                For iPrey As Integer = 1 To mCore.nGroups
-                    diet_matrix.ReadNextRecord()
+                If diet_matrix.ReadNextRecord() Then
                     For iPred As Integer = 1 To mCore.nGroups
-                        mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) = cStringUtils.ConvertToSingle(diet_matrix(iPred - 1))
+                        mCore.EcoPathGroupInputs(iPred).ImpDiet() = cStringUtils.ConvertToSingle(diet_matrix(iPred - 1))
                     Next
+                Else
+                    ' Unable to read predator header line! We have a problem
+                    GoodDynamics = False
+                End If
+                For iPrey As Integer = 1 To mCore.nGroups
+                    If diet_matrix.ReadNextRecord() Then
+                        For iPred As Integer = 1 To mCore.nGroups
+                            mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) = cStringUtils.ConvertToSingle(diet_matrix(iPred - 1))
+                        Next
+                    Else
+                        ' Unable to read prey line! We have a problem
+                        GoodDynamics = False
+                    End If
                 Next
-                GoodDynamics = True
             Else
                 ' Could not read diet matrix for this trial
                 GoodDynamics = False
@@ -1372,12 +1386,13 @@ stepend:
         Try
             For iPred As Integer = 1 To mCore.nLivingGroups
                 For iPrey As Integer = 0 To mCore.nGroups
-                    csv.ReadNextRecord()
-                    'Note about indices for interacts, lower and upper
-                    'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
-                    'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                    Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
-                    MeanProportions(cStringUtils.ConvertToInteger(csv(2) - 1), cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
+                    If csv.ReadNextRecord() Then
+                        'Note about indices for interacts, lower and upper
+                        'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
+                        'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
+                        Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
+                        MeanProportions(cStringUtils.ConvertToInteger(csv(2) - 1), cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
+                    End If
                 Next
             Next
         Catch ex As Exception
@@ -1387,19 +1402,19 @@ stepend:
         cMSEUtils.ReleaseReader(reader)
 
         reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietCompositionMultipliers.csv"))
-        Debug.Assert(reader IsNot Nothing)
-
-        'Read in the values from the DietCompositionMultipliers.csv
-        csv = New CsvReader(reader, True)
-        Try
-            Do While csv.ReadNextRecord
-                DietPropMultipliers(cStringUtils.ConvertToInteger(csv(0) - 1)) = cStringUtils.ConvertToInteger(csv(2))
-            Loop
-        Catch ex As Exception
-            ' ToDo: respond to error
-        End Try
-        csv.Dispose()
-        cMSEUtils.ReleaseReader(reader)
+        If (reader IsNot Nothing) Then
+            'Read in the values from the DietCompositionMultipliers.csv
+            csv = New CsvReader(reader, True)
+            Try
+                Do While csv.ReadNextRecord
+                    DietPropMultipliers(cStringUtils.ConvertToInteger(csv(0) - 1)) = cStringUtils.ConvertToInteger(csv(2))
+                Loop
+            Catch ex As Exception
+                ' ToDo: respond to error
+            End Try
+            csv.Dispose()
+            cMSEUtils.ReleaseReader(reader)
+        End If
 
         'Calculate how many living groups that aren't primary producers
         For i = 1 To mCore.nGroups
@@ -1577,49 +1592,51 @@ stepend:
             For igrp = 1 To mCore.nLivingGroups
 
                 xgrp = 1
-                csvParamX.ReadNextRecord()
+                If csvParamX.ReadNextRecord() Then
+                    'Make sure that .csv files are set up with group names in same order because xgrp is found only from the B file
+                    'and then is assumed to be the same for all other files
+                    While MonteCarlo.Groups(xgrp).Name <> csvParamX(1) 'And xgrp <= mCore.nLivingGroups
+                        xgrp += 1
+                    End While
 
-                'Make sure that .csv files are set up with group names in same order because xgrp is found only from the B file
-                'and then is assumed to be the same for all other files
-                While MonteCarlo.Groups(xgrp).Name <> csvParamX(1) 'And xgrp <= mCore.nLivingGroups
-                    xgrp += 1
-                End While
+                    MCGroup = MonteCarlo.Groups(xgrp)
 
-                MCGroup = MonteCarlo.Groups(xgrp)
+                    'Setting a CV value will automatically set the Lower and Upper limits
+                    'by Calling cEcosimMonteCarlo.CalculateUpperLowerLimits()
+                    'If you want to manually set limits it must be done after the CV has been set
 
-                'Setting a CV value will automatically set the Lower and Upper limits
-                'by Calling cEcosimMonteCarlo.CalculateUpperLowerLimits()
-                'If you want to manually set limits it must be done after the CV has been set
+                    'CVs
+                    If ParamName = eParamName.B Then
+                        MCGroup.Bcv = csvParamX(2)
+                        MCGroup.BLower = csvParamX(3)
+                        MCGroup.BUpper = csvParamX(4)
+                    End If
 
-                'CVs
-                If ParamName = eParamName.B Then
-                    MCGroup.Bcv = csvParamX(2)
-                    MCGroup.BLower = csvParamX(3)
-                    MCGroup.BUpper = csvParamX(4)
-                End If
+                    If ParamName = eParamName.PB Then
+                        MCGroup.PBcv = csvParamX(2)
+                        MCGroup.PBLower = csvParamX(3)
+                        MCGroup.PBUpper = csvParamX(4)
+                    End If
 
-                If ParamName = eParamName.PB Then
-                    MCGroup.PBcv = csvParamX(2)
-                    MCGroup.PBLower = csvParamX(3)
-                    MCGroup.PBUpper = csvParamX(4)
-                End If
+                    If ParamName = eParamName.QB Then
+                        MCGroup.QBcv = csvParamX(2)
+                        MCGroup.QBLower = csvParamX(3)
+                        MCGroup.QBUpper = csvParamX(4)
+                    End If
 
-                If ParamName = eParamName.QB Then
-                    MCGroup.QBcv = csvParamX(2)
-                    MCGroup.QBLower = csvParamX(3)
-                    MCGroup.QBUpper = csvParamX(4)
-                End If
+                    If ParamName = eParamName.EE Then
+                        MCGroup.EEcv = csvParamX(2)
+                        MCGroup.EELower = csvParamX(3)
+                        MCGroup.EEUpper = csvParamX(4)
+                    End If
 
-                If ParamName = eParamName.EE Then
-                    MCGroup.EEcv = csvParamX(2)
-                    MCGroup.EELower = csvParamX(3)
-                    MCGroup.EEUpper = csvParamX(4)
-                End If
-
-                If ParamName = eParamName.BA Then
-                    MCGroup.BAcv = csvParamX(2)
-                    MCGroup.BALower = csvParamX(3)
-                    MCGroup.BAUpper = csvParamX(4)
+                    If ParamName = eParamName.BA Then
+                        MCGroup.BAcv = csvParamX(2)
+                        MCGroup.BALower = csvParamX(3)
+                        MCGroup.BAUpper = csvParamX(4)
+                    End If
+                Else
+                    ' ToDo_JS: Error reading CSV content. How to respond?
                 End If
 
             Next '========================================================================================================================================================
@@ -1851,7 +1868,7 @@ stepend:
 
     Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return My.Resources.CAPTION
+            Return My.Resources.CAPTION_TOOLTIP
         End Get
     End Property
 
@@ -1887,7 +1904,7 @@ stepend:
     End Property
 
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        mCore = core
+        Me.mCore = core
         Units.Init(mCore)
     End Sub
 
@@ -1903,10 +1920,17 @@ stepend:
         _ecosim = objEcoSim
 
         Debug.Assert(Me.m_uic IsNot Nothing)
+
+        ' Set message handlers
+
         Me.m_mhSettings = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
+        Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
+
 #If DEBUG Then
-        Me.m_mhSettings.Name = "CefasMSE_mh"
+        Me.m_mhSettings.Name = "CefasMSE_mhSettings"
+        Me.m_mhEcosim.Name = "CefasMSE_mhEcosim"
 #End If
+
     End Sub
 
     Public Sub UIContext(ByVal uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
@@ -2080,31 +2104,33 @@ stepend:
 
     End Function
 
+    ''' <summary>
+    ''' Generate csv with vulnerabilities.
+    ''' </summary>
     Public Sub CreateVulnerabilities()
-        'Generate csv with vulnerabilities
 
-        ' ToDo_JS: Fix path usage
-        ' ToDo_JS: Use standard CSV field reading/writing
+        ' JS 13Oct13: Fixed path usage
+        ' JS 13Oct13: Used standard CSV field reading/writing
+        ' JS 30Sep13: Used persistent properties
 
-        ' JS 30Sep13: Use local properties
+        Dim writer As StreamWriter = Nothing
         Dim nIterations As Integer = NTrials
 
         For iIteration = 1 To nIterations
 
-            Dim sw As StreamWriter = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration & "_out.csv"), False)
+            writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration & "_out.csv"), False)
+            If (writer IsNot Nothing) Then
+                'Create random values for the vulnerabilities and store in a csv
+                For igrppredator As Integer = 1 To _ecopath.EcopathData().NumGroups
+                    For igrpprey As Integer = 1 To _ecopath.EcopathData().NumGroups
+                        If (igrpprey > 1) Then writer.Write(",")
+                        writer.Write(Convert.ToSingle(1 + Math.Exp(9 * (CSng(Me.m_rand.NextDouble()) - 0.5))))
+                    Next igrpprey
+                    writer.WriteLine()
+                Next igrppredator
+            End If
 
-            'Create random values for the vulnerabilities and store in a csv
-            For igrppredator As Integer = 1 To _ecopath.EcopathData().NumGroups
-
-                sw.Write(Convert.ToSingle(1 + Math.Exp(9 * (CSng(Me.m_rand.NextDouble()) - 0.5))))
-                For igrpprey As Integer = 2 To _ecopath.EcopathData().NumGroups
-                    sw.Write("," & Convert.ToSingle(1 + Math.Exp(9 * (CSng(Me.m_rand.NextDouble()) - 0.5))))
-                Next igrpprey
-
-                sw.WriteLine()
-            Next igrppredator
-
-            sw.Close()
+            cMSEUtils.ReleaseWriter(writer)
 
         Next
 
@@ -2460,7 +2486,7 @@ stepend:
 
         If (Me.Core Is Nothing) Then Return
 
-        Dim msg As New cFeedbackMessage(strMessage, eCoreComponentType.External, eMessageType.Any, importance, eMessageReplyStyle.OK)
+        Dim msg As New cMessage(strMessage, eCoreComponentType.External, eMessageType.Any, importance, eMessageReplyStyle.OK)
         msg.Hyperlink = strHyperlink
         If (astrSubMessages IsNot Nothing) Then
             For Each strSubMessage As String In astrSubMessages
@@ -2497,16 +2523,19 @@ stepend:
 
     Private Sub OnCoreMessage(ByRef msg As cMessage)
 
-        ' ToDo: refresh upon ecosim scenario load
-
         Dim bRefresh As Boolean = False
 
-        ' Test all conditions that may cause MSE data to be refreshed
+        ' Refresh when Core settings have changed
         If (msg.Type = eMessageType.GlobalSettingsChanged) Then
             bRefresh = True
         End If
 
-        If bRefresh Then
+        ' Refresh upon ecosim scenario load
+        If (msg.Type = eMessageType.DataAddedOrRemoved And msg.Source = eCoreComponentType.EcoSim) Then
+            bRefresh = True
+        End If
+
+        If (bRefresh = True) Then
             Me.InvalidateConfiguration()
         End If
 

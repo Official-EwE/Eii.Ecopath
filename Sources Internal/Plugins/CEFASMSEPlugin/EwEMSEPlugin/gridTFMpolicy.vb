@@ -86,11 +86,8 @@ Public Class gridTargetFishingMortalityPolicy
 
     Public Event onEdited()
 
-    ''' <summary>
-    ''' The cMSE Plugin that contains the data 
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private MSEPlugin As cMSE
+    ''' <summary>The cMSE Plugin that contains the data</summary>
+    Private m_plugin As cMSE
 
     Private mSelStrategyIndex As Integer
 
@@ -101,7 +98,7 @@ Public Class gridTargetFishingMortalityPolicy
     End Sub
 
     Public Sub Init(Plugin As cMSE)
-        MSEPlugin = Plugin
+        m_plugin = Plugin
     End Sub
 
 #End Region ' Constructor
@@ -131,7 +128,7 @@ Public Class gridTargetFishingMortalityPolicy
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        ' ToDo_JS: Globalize this
+        ' JS 13Oct13: Globalized this
 
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
 
@@ -139,11 +136,11 @@ Public Class gridTargetFishingMortalityPolicy
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.BioGroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell("Lower biomass limit (kt)")
-        Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell("Upper biomass limit (kt)")
-        Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell("Fishing Mort. Group")
-        Me(0, eColumnTypes.MaxF) = New EwEColumnHeaderCell("Fishing Mort.")
-        Me(0, eColumnTypes.CostFunction) = New EwEColumnHeaderCell("Cost Function Type")
+        Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell(My.Resources.HEADER_LIMIT_LOWER_B, cStyleGuide.eUnitType.Currency)
+        Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell(My.Resources.HEADER_LIMIT_UPPER_B, cStyleGuide.eUnitType.Currency)
+        Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell(My.Resources.HEADER_FMORT_GROUP)
+        Me(0, eColumnTypes.MaxF) = New EwEColumnHeaderCell(SharedResources.HEADER_FISHINGMORTALITY)
+        Me(0, eColumnTypes.CostFunction) = New EwEColumnHeaderCell(My.Resources.HEADER_COST_FUNCTION_TYPE)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -153,12 +150,12 @@ Public Class gridTargetFishingMortalityPolicy
     Protected Overrides Sub FillData()
         Dim iHCR As Integer
 
-        If MSEPlugin Is Nothing Then Return
+        If m_plugin Is Nothing Then Return
         Dim Cell As EwECellBase
         Dim strategy As Strategy = Nothing
 
-        If (Me.mSelStrategyIndex < Me.MSEPlugin.Strategies.Count) And (Me.mSelStrategyIndex >= 0) Then
-            strategy = MSEPlugin.Strategies(Me.mSelStrategyIndex)
+        If (Me.mSelStrategyIndex < Me.m_plugin.Strategies.Count) And (Me.mSelStrategyIndex >= 0) Then
+            strategy = m_plugin.Strategies(Me.mSelStrategyIndex)
         End If
         If (strategy Is Nothing) Then Return
 
