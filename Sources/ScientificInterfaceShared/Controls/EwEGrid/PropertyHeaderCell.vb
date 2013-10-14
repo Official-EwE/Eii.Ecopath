@@ -214,17 +214,16 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayText() As String
             Get
-                Dim strDisplayText As String = ""
+                Dim strDisplayText As String = MyBase.DisplayText
 
-                If (Me.m_aUnitTypes Is Nothing) Or (String.IsNullOrEmpty(Me.m_strUnitMask)) Then
-                    strDisplayText = MyBase.DisplayText
-                Else
-                    Try
-                        strDisplayText = Me.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.Value.ToString, Me.m_aUnitTypes)
-                    Catch ex As Exception
-                        Debug.Assert(False, "Failed to apply format mask, please check")
-                        strDisplayText = MyBase.DisplayText
-                    End Try
+                If (Me.m_aUnitTypes IsNot Nothing) And (Not String.IsNullOrEmpty(Me.m_strUnitMask)) Then
+                    If Me.StyleGuide IsNot Nothing Then
+                        Try
+                            strDisplayText = Me.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.Value.ToString, Me.m_aUnitTypes)
+                        Catch ex As Exception
+                            Debug.Assert(False, "Failed to apply format mask, please check")
+                        End Try
+                    End If
                 End If
                 Return strDisplayText
             End Get
