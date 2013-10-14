@@ -430,6 +430,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to MSE found {0} out of {1} models.
+        '''</summary>
+        Friend ReadOnly Property STATUS_FINDMODELS_SUMMARY() As String
+            Get
+                Return ResourceManager.GetString("STATUS_FINDMODELS_SUMMARY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE found a new balanced model at trial {0}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_FOUND_MODEL() As String
+            Get
+                Return ResourceManager.GetString("STATUS_FOUND_MODEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MSE running trial {0}.
         '''</summary>
         Friend ReadOnly Property STATUS_RUN_PROGRESS() As String

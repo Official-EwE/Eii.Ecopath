@@ -258,6 +258,14 @@
   <data name="PROMPT_UNSAVED_CHANGES" xml:space="preserve">
     <value>You have made changes that have not been saved. Are you sure that you want to close this form?</value>
   </data>
+  <data name="STATUS_FINDMODELS_SUMMARY" xml:space="preserve">
+    <value>MSE found {0} out of {1} models</value>
+    <comment>{0}=#of models found, {1}=#of models requested</comment>
+  </data>
+  <data name="STATUS_FOUND_MODEL" xml:space="preserve">
+    <value>MSE found a new balanced model at trial {0}</value>
+    <comment>{0}=trial number</comment>
+  </data>
   <data name="STATUS_RUN_PROGRESS" xml:space="preserve">
     <value>MSE running trial {0}</value>
     <comment>{0}=trial number</comment>

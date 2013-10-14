@@ -1362,9 +1362,10 @@ stepend:
         Dim Interacts(mCore.nLivingGroups - 1, mCore.nGroups) As Integer
         Dim nPPers As Integer 'number of primary producers
         Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
-        Const PQThreshold As Double = 0.5
-        Const RespirThreshold As Double = 0
+        'Const PQThreshold As Double = 0.5
+        'Const RespirThreshold As Double = 0
         Dim isbalanced As Boolean
+        Dim iNumFound As Integer = 0
 
         'I am just altering the tolerance so that it can run faster; this needs deleting later
         MonteCarlo.EcopathEETolerance = Me.MassBalanceTol
@@ -1383,21 +1384,28 @@ stepend:
 
         'Read in the values from the DietComposition.csv into each array
         csv = New CsvReader(reader, True)
-        Try
-            For iPred As Integer = 1 To mCore.nLivingGroups
-                For iPrey As Integer = 0 To mCore.nGroups
-                    If csv.ReadNextRecord() Then
-                        'Note about indices for interacts, lower and upper
-                        'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
-                        'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                        Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
-                        MeanProportions(cStringUtils.ConvertToInteger(csv(2) - 1), cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
-                    End If
+        If (reader IsNot Nothing) Then
+
+            Try
+                For iPred As Integer = 1 To mCore.nLivingGroups
+                    For iPrey As Integer = 0 To mCore.nGroups
+                        If csv.ReadNextRecord() Then
+                            'Note about indices for interacts, lower and upper
+                            'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
+                            'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
+                            Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
+                            MeanProportions(cStringUtils.ConvertToInteger(csv(2) - 1), cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
+                        Else
+                            ' ToDo_JS: handle error. Unexpected end in CSV file
+                        End If
+                    Next
                 Next
-            Next
-        Catch ex As Exception
-            ' ToDo: respond to error
-        End Try
+            Catch ex As Exception
+                ' ToDo_JS: handle error. Unexpected exception reading CSV file
+            End Try
+        Else
+            ' ToDo_JS: Diets were not read; handle error
+        End If
         csv.Dispose()
         cMSEUtils.ReleaseReader(reader)
 
@@ -1410,10 +1418,12 @@ stepend:
                     DietPropMultipliers(cStringUtils.ConvertToInteger(csv(0) - 1)) = cStringUtils.ConvertToInteger(csv(2))
                 Loop
             Catch ex As Exception
-                ' ToDo: respond to error
+                ' ToDo_JS: handle error. Unexpected exception reading CSV file
             End Try
             csv.Dispose()
             cMSEUtils.ReleaseReader(reader)
+        Else
+            ' ToDo_JS: Diets multipliers were not read; handle error
         End If
 
         'Calculate how many living groups that aren't primary producers
@@ -1431,16 +1441,15 @@ stepend:
                 'Succeeded in intitializing Monte Carlo Parameters
 
                 For iTrial As Integer = 1 To nTrials
-                    Dim timestart As Date = Date.Now
-                    'Set the Ecopath parameters using the Monte Carlo input parameters set above
 
+                    'Set the Ecopath parameters using the Monte Carlo input parameters set above
                     TimeFindingBalanced.Start()
                     For i = 1 To Me.NMaxAttempts
 
                         isbalanced = True
 
                         ' Provide occassional UI feedback
-                        If (i = 1 Or i Mod 100) = 0 Then
+                        If (i = 1 Or i Mod 50) = 0 Then
                             cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_TRIAL_PROGRESS, iTrial, i), -1)
                         End If
 
@@ -1489,7 +1498,10 @@ stepend:
                                 '    Me.getEcosimResults()
                                 'End If 'RunEcosim
 
-                                Exit For
+                                Me.InformUser(String.Format(My.Resources.STATUS_FOUND_MODEL, i), eMessageImportance.Information)
+                                iNumFound += 1
+                                Exit For ' Next trial
+
                             End If
                         Else
                             System.Console.WriteLine("Failed to find balanced Ecopath model")
@@ -1500,9 +1512,6 @@ stepend:
                     TimeFindingBalanced.Reset()
 
                 Next iTrial
-            Else
-                ' JS: should not restore original state?
-                Return
             End If 'Me.InitMonteCarloParameters()
 
             'Save the results to a .csv
@@ -1510,10 +1519,14 @@ stepend:
         Catch ex As Exception
 
         End Try
+
         cApplicationStatusNotifier.EndProgress(Me.Core)
         Me.m_bIsRunning = False
 
         Me.RestoreOriginalState()
+
+        ' Provide summary
+        Me.AskUser(String.Format(My.Resources.STATUS_FINDMODELS_SUMMARY, iNumFound, nTrials), eMessageReplyStyle.OK, eMessageImportance.Information)
 
     End Sub
 
