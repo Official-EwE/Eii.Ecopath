@@ -136,9 +136,11 @@ Namespace Controls.EwEGrid
             Get
                 If (Me.m_aUnitTypes Is Nothing) Then
                     Return MyBase.Value
-                Else
-                    Return Me.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.m_aUnitTypes)
                 End If
+
+                If (Me.StyleGuide Is Nothing) Then Return Me.m_strUnitMask
+
+                Return Me.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.m_aUnitTypes)
             End Get
             Set(ByVal value As Object)
                 If TypeOf value Is String Then
