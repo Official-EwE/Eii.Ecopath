@@ -150,7 +150,9 @@ Public Class gridTargetFishingMortalityPolicy
     Protected Overrides Sub FillData()
         Dim iHCR As Integer
 
-        If m_plugin Is Nothing Then Return
+        If (m_plugin Is Nothing) Then Return
+        If (Me.UIContext Is Nothing) Then Return
+
         Dim Cell As EwECellBase
         Dim strategy As Strategy = Nothing
 

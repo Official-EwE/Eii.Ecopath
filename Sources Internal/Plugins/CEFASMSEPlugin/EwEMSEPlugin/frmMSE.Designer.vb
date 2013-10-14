@@ -55,7 +55,7 @@ Partial Class frmMSE
         Me.m_tbxTolerance = New System.Windows.Forms.TextBox()
         Me.m_btnCreateModels = New System.Windows.Forms.Button()
         Me.m_btnGenDC = New System.Windows.Forms.Button()
-        Me.m_btnShowTFMForm = New System.Windows.Forms.Button()
+        Me.m_btnReviewTFM = New System.Windows.Forms.Button()
         Me.m_btnEcopathParams2 = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
         Me.m_pbCompatible = New System.Windows.Forms.PictureBox()
@@ -78,7 +78,8 @@ Partial Class frmMSE
         Me.m_btn2 = New System.Windows.Forms.Button()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
         Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_btnDistParams = New System.Windows.Forms.Button()
+        Me.m_lblAreaUnit = New System.Windows.Forms.Label()
+        Me.m_btnReviewDistParms = New System.Windows.Forms.Button()
         Me.m_tlpLayout = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plStep1 = New System.Windows.Forms.Panel()
         Me.m_lblDataPath = New System.Windows.Forms.Label()
@@ -86,6 +87,7 @@ Partial Class frmMSE
         Me.m_tbxPath = New System.Windows.Forms.TextBox()
         Me.m_lblInputParams = New System.Windows.Forms.Label()
         Me.m_rbEwEDefault = New System.Windows.Forms.RadioButton()
+        Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
@@ -146,11 +148,11 @@ Partial Class frmMSE
         Me.m_btnGenDC.Name = "m_btnGenDC"
         Me.m_btnGenDC.UseVisualStyleBackColor = True
         '
-        'm_btnShowTFMForm
+        'm_btnReviewTFM
         '
-        resources.ApplyResources(Me.m_btnShowTFMForm, "m_btnShowTFMForm")
-        Me.m_btnShowTFMForm.Name = "m_btnShowTFMForm"
-        Me.m_btnShowTFMForm.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnReviewTFM, "m_btnReviewTFM")
+        Me.m_btnReviewTFM.Name = "m_btnReviewTFM"
+        Me.m_btnReviewTFM.UseVisualStyleBackColor = True
         '
         'm_btnEcopathParams2
         '
@@ -241,7 +243,7 @@ Partial Class frmMSE
         'm_plStep4
         '
         Me.m_plStep4.Controls.Add(Me.m_hdrStep4)
-        Me.m_plStep4.Controls.Add(Me.m_btnShowTFMForm)
+        Me.m_plStep4.Controls.Add(Me.m_btnReviewTFM)
         Me.m_plStep4.Controls.Add(Me.m_lblAvailableStrategies)
         Me.m_plStep4.Controls.Add(Me.m_tbxNumAvailableFishingStrategies)
         resources.ApplyResources(Me.m_plStep4, "m_plStep4")
@@ -293,6 +295,7 @@ Partial Class frmMSE
         'm_plStep3
         '
         Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
+        Me.m_plStep3.Controls.Add(Me.m_lblAreaUnit)
         Me.m_plStep3.Controls.Add(Me.m_lblArea)
         Me.m_plStep3.Controls.Add(Me.m_tbxArea)
         resources.ApplyResources(Me.m_plStep3, "m_plStep3")
@@ -306,11 +309,16 @@ Partial Class frmMSE
         Me.m_hdrStep3.IsCollapsed = False
         Me.m_hdrStep3.Name = "m_hdrStep3"
         '
-        'm_btnDistParams
+        'm_lblAreaUnit
         '
-        resources.ApplyResources(Me.m_btnDistParams, "m_btnDistParams")
-        Me.m_btnDistParams.Name = "m_btnDistParams"
-        Me.m_btnDistParams.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_lblAreaUnit, "m_lblAreaUnit")
+        Me.m_lblAreaUnit.Name = "m_lblAreaUnit"
+        '
+        'm_btnReviewDistParms
+        '
+        resources.ApplyResources(Me.m_btnReviewDistParms, "m_btnReviewDistParms")
+        Me.m_btnReviewDistParms.Name = "m_btnReviewDistParms"
+        Me.m_btnReviewDistParms.UseVisualStyleBackColor = True
         '
         'm_tlpLayout
         '
@@ -330,8 +338,9 @@ Partial Class frmMSE
         Me.m_plStep1.Controls.Add(Me.m_tbxPath)
         Me.m_plStep1.Controls.Add(Me.m_lblInputParams)
         Me.m_plStep1.Controls.Add(Me.m_rbEwEDefault)
+        Me.m_plStep1.Controls.Add(Me.m_tbxParamStatus)
         Me.m_plStep1.Controls.Add(Me.m_hdrStep1)
-        Me.m_plStep1.Controls.Add(Me.m_btnDistParams)
+        Me.m_plStep1.Controls.Add(Me.m_btnReviewDistParms)
         Me.m_plStep1.Controls.Add(Me.m_btnChangePath)
         resources.ApplyResources(Me.m_plStep1, "m_plStep1")
         Me.m_plStep1.Name = "m_plStep1"
@@ -365,6 +374,12 @@ Partial Class frmMSE
         Me.m_rbEwEDefault.Name = "m_rbEwEDefault"
         Me.m_rbEwEDefault.TabStop = True
         Me.m_rbEwEDefault.UseVisualStyleBackColor = True
+        '
+        'm_tbxParamStatus
+        '
+        resources.ApplyResources(Me.m_tbxParamStatus, "m_tbxParamStatus")
+        Me.m_tbxParamStatus.Name = "m_tbxParamStatus"
+        Me.m_tbxParamStatus.ReadOnly = True
         '
         'm_hdrStep1
         '
@@ -416,7 +431,7 @@ Partial Class frmMSE
     Private WithEvents m_btnCreateModels As System.Windows.Forms.Button
     Private WithEvents m_btnGenDC As System.Windows.Forms.Button
     Private WithEvents m_lblMassBalanceTol As System.Windows.Forms.Label
-    Private WithEvents m_btnShowTFMForm As System.Windows.Forms.Button
+    Private WithEvents m_btnReviewTFM As System.Windows.Forms.Button
     Private WithEvents m_btnEcopathParams2 As System.Windows.Forms.Button
     Private WithEvents m_plStep2 As System.Windows.Forms.Panel
     Private WithEvents m_plStep5 As System.Windows.Forms.Panel
@@ -426,7 +441,7 @@ Partial Class frmMSE
     Private WithEvents m_lblArea As System.Windows.Forms.Label
     Private WithEvents m_btn2 As System.Windows.Forms.Button
     Private WithEvents m_plStep3 As System.Windows.Forms.Panel
-    Private WithEvents m_btnDistParams As System.Windows.Forms.Button
+    Private WithEvents m_btnReviewDistParms As System.Windows.Forms.Button
     Private WithEvents m_tbxArea As System.Windows.Forms.TextBox
     Private WithEvents m_tbxNTrials As System.Windows.Forms.TextBox
     Private WithEvents m_hdrStep2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -449,4 +464,6 @@ Partial Class frmMSE
     Private WithEvents m_pbCompatible As System.Windows.Forms.PictureBox
     Private WithEvents m_lblMaxAttempts As System.Windows.Forms.Label
     Private WithEvents m_tbxMaxAttempts As System.Windows.Forms.TextBox
+    Private WithEvents m_lblAreaUnit As System.Windows.Forms.Label
+    Private WithEvents m_tbxParamStatus As System.Windows.Forms.TextBox
 End Class

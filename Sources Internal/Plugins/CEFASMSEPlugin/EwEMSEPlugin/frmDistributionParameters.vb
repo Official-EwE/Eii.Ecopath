@@ -672,7 +672,7 @@ Public Class frmDistributionParameters
         If SaveEcoSimParameters2CSV(MaxRelFeedingTime, "MaxRelFeedingTime") Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "MaxRelFeedingTime.csv"))
         If SaveEcoSimParameters2CSV(FeedingTimeAdjustRate, "FeedingTimeAdjustRate") Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "FeedingTimeAdjustRate.csv"))
 
-        Me.m_plugin.GenerateEmptyDietcsv()
+        Me.m_plugin.GenerateEmptyDietCSVs()
         Me.m_bIsDirty = False
 
         Me.m_plugin.InformUser(String.Format(My.Resources.STATUS_SAVED_DISTPARMS, My.Resources.CAPTION, strFolder), _

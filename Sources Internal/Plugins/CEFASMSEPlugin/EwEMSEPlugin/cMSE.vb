@@ -847,7 +847,7 @@ Public Class cMSE
         For iTrial = 1 To nTrials
 
             'Console.WriteLine("Trial = " & iTrial)
-            cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, iTrial), CSng(iTrial / nTrials))
+            cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iTrial), CSng(iTrial / nTrials))
 
             For igrp = 1 To mCore.nLivingGroups
                 ecopathData.B(igrp) = B(iTrial - 1, igrp - 1)
@@ -1303,40 +1303,59 @@ stepend:
 
     'End Sub
 
-    Public Function GenerateEmptyDietcsv() As Boolean
+    Public Function GenerateEmptyDietCSVs() As Boolean
 
-        Dim sPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")
-        Dim diet_csvout As StreamWriter = cMSEUtils.GetWriter(sPath, False)
-        Dim mean As Single
+        Dim strPath As String = ""
+        Dim writer As StreamWriter = Nothing
+        Dim bSuccess As Boolean = True
 
-        If (diet_csvout Is Nothing) Then Return False
+        strPath = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")
+        writer = cMSEUtils.GetWriter(strPath, False)
 
-        diet_csvout.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
-        diet_csvout.WriteLine()
+        If (writer IsNot Nothing) Then
 
-        For iPred As Integer = 1 To mCore.nLivingGroups
-            If mCore.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
-                mean = mCore.EcoPathGroupInputs(iPred).ImpDiet
-                diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,1," & cStringUtils.ToCSVField(mean))
-            Else
-                diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,0,0")
-            End If
+            writer.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
+            writer.WriteLine()
 
-            For iPrey As Integer = 1 To mCore.nGroups
-                If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
-                    mean = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey)
-                    diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",1," & cStringUtils.ToCSVField(mean))
+            For iPred As Integer = 1 To mCore.nLivingGroups
+                If mCore.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
+                    Dim mean As Single = mCore.EcoPathGroupInputs(iPred).ImpDiet
+                    writer.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,1," & cStringUtils.ToCSVField(mean))
                 Else
-                    diet_csvout.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",0,0")
+                    writer.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,0,0")
                 End If
-            Next
-        Next
 
-        cMSEUtils.ReleaseWriter(diet_csvout)
+                For iPrey As Integer = 1 To mCore.nGroups
+                    If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
+                        Dim mean As Single = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey)
+                        writer.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",1," & cStringUtils.ToCSVField(mean))
+                    Else
+                        writer.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",0,0")
+                    End If
+                Next
+            Next
+        Else
+            bSuccess = False
+        End If
+        cMSEUtils.ReleaseWriter(writer)
+
+        strPath = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietCompositionMultipliers.csv")
+        writer = cMSEUtils.GetWriter(strPath, False)
+        If (writer IsNot Nothing) Then
+            writer.WriteLine("PredatorIndexNumber,PredatorIndexName,Multiplier")
+            For iPred As Integer = 1 To mCore.nLivingGroups
+                writer.WriteLine("{0},{1},{2}", _
+                                 cStringUtils.ToCSVField(iPred), _
+                                 cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name), _
+                                 10000)
+            Next
+        Else
+            bSuccess = False
+        End If
+        cMSEUtils.ReleaseWriter(writer)
 
         Me.InvalidateConfiguration()
-
-        Return True
+        Return bSuccess
 
     End Function
 
@@ -1450,7 +1469,7 @@ stepend:
 
                         ' Provide occassional UI feedback
                         If (i = 1 Or i Mod 50) = 0 Then
-                            cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_TRIAL_PROGRESS, iTrial, i), -1)
+                            cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_TRIAL_PROGRESS, My.Resources.CAPTION, iTrial, i), -1)
                         End If
 
                         'Write code here that generates a whole set of diet parameters to be used in combination with new ecopath parameters
@@ -1498,7 +1517,7 @@ stepend:
                                 '    Me.getEcosimResults()
                                 'End If 'RunEcosim
 
-                                Me.InformUser(String.Format(My.Resources.STATUS_FOUND_MODEL, i), eMessageImportance.Information)
+                                Me.InformUser(String.Format(My.Resources.STATUS_FOUND_MODEL, My.Resources.CAPTION, i), eMessageImportance.Information)
                                 iNumFound += 1
                                 Exit For ' Next trial
 
@@ -1526,7 +1545,13 @@ stepend:
         Me.RestoreOriginalState()
 
         ' Provide summary
-        Me.AskUser(String.Format(My.Resources.STATUS_FINDMODELS_SUMMARY, iNumFound, nTrials), eMessageReplyStyle.OK, eMessageImportance.Information)
+        If iNumFound = 0 Then
+            Me.InformUser(String.Format(My.Resources.STATUS_FINDMODELS_SUMMARY, My.Resources.CAPTION, iNumFound, nTrials), _
+                          eMessageReplyStyle.OK, eMessageImportance.Warning)
+        Else
+            Me.InformUser(String.Format(My.Resources.STATUS_FINDMODELS_SUMMARY, My.Resources.CAPTION, iNumFound, nTrials), _
+                          eMessageReplyStyle.OK, eMessageImportance.Information)
+        End If
 
     End Sub
 

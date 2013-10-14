@@ -430,7 +430,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MSE found {0} out of {1} models.
+        '''  Looks up a localized string similar to Available.
+        '''</summary>
+        Friend ReadOnly Property STATUS_AVAILABLE() As String
+            Get
+                Return ResourceManager.GetString("STATUS_AVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} found {1} out of {2} models.
         '''</summary>
         Friend ReadOnly Property STATUS_FINDMODELS_SUMMARY() As String
             Get
@@ -439,7 +448,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MSE found a new balanced model at trial {0}.
+        '''  Looks up a localized string similar to {0} found a new balanced model at trial {1}.
         '''</summary>
         Friend ReadOnly Property STATUS_FOUND_MODEL() As String
             Get
@@ -448,7 +457,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MSE running trial {0}.
+        '''  Looks up a localized string similar to Not available.
+        '''</summary>
+        Friend ReadOnly Property STATUS_NOTAVAILABLE() As String
+            Get
+                Return ResourceManager.GetString("STATUS_NOTAVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} running trial {1}.
         '''</summary>
         Friend ReadOnly Property STATUS_RUN_PROGRESS() As String
             Get
@@ -475,7 +493,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MSE finding models, trial {0}, iteration {1}.
+        '''  Looks up a localized string similar to {0} finding models, trial {1}, iteration {2}.
         '''</summary>
         Friend ReadOnly Property STATUS_TRIAL_PROGRESS() As String
             Get

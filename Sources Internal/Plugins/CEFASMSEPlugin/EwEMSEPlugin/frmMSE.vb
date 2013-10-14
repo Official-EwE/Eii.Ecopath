@@ -143,9 +143,12 @@ Public Class frmMSE
         Me.m_tbxPath.Text = Me.m_plugin.DataPath
 
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
+            Me.m_tbxParamStatus.Text = My.Resources.STATUS_AVAILABLE
             If Not bCanCreateModels Then
                 img = SharedResources.Critical
             End If
+        Else
+            Me.m_tbxParamStatus.Text = My.Resources.STATUS_NOTAVAILABLE
         End If
         Me.m_pbCompatible.Image = img
 
@@ -241,7 +244,7 @@ Public Class frmMSE
     End Sub
 
     Private Sub btShowTFMForm_Click(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnShowTFMForm.Click
+        Handles m_btnReviewTFM.Click
 
         Dim bhasForm As Boolean
 
@@ -284,7 +287,7 @@ Public Class frmMSE
     End Sub
 
     Private Sub btnDistParams_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnDistParams.Click
+        Handles m_btnReviewDistParms.Click
 
         Try
             Dim frmDisParams As New frmDistributionParameters()

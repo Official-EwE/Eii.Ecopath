@@ -258,17 +258,23 @@
   <data name="PROMPT_UNSAVED_CHANGES" xml:space="preserve">
     <value>You have made changes that have not been saved. Are you sure that you want to close this form?</value>
   </data>
+  <data name="STATUS_AVAILABLE" xml:space="preserve">
+    <value>Available</value>
+  </data>
   <data name="STATUS_FINDMODELS_SUMMARY" xml:space="preserve">
-    <value>MSE found {0} out of {1} models</value>
-    <comment>{0}=#of models found, {1}=#of models requested</comment>
+    <value>{0} found {1} out of {2} models</value>
+    <comment>{0}=plugin name, {1}=#of models found, {2}=#of models requested</comment>
   </data>
   <data name="STATUS_FOUND_MODEL" xml:space="preserve">
-    <value>MSE found a new balanced model at trial {0}</value>
-    <comment>{0}=trial number</comment>
+    <value>{0} found a new balanced model at trial {1}</value>
+    <comment>{0}=plugin name, {1}=trial number</comment>
+  </data>
+  <data name="STATUS_NOTAVAILABLE" xml:space="preserve">
+    <value>Not available</value>
   </data>
   <data name="STATUS_RUN_PROGRESS" xml:space="preserve">
-    <value>MSE running trial {0}</value>
-    <comment>{0}=trial number</comment>
+    <value>{0} running trial {1}</value>
+    <comment>{0}=plugin name, {1}=trial number</comment>
   </data>
   <data name="STATUS_SAVED_DETAIL" xml:space="preserve">
     <value>Saved {0}</value>
@@ -279,7 +285,7 @@
     <comment>{0}=plugin name, {1}=folder</comment>
   </data>
   <data name="STATUS_TRIAL_PROGRESS" xml:space="preserve">
-    <value>MSE finding models, trial {0}, iteration {1}</value>
-    <comment>{0}=trial number, {1}=iteration number</comment>
+    <value>{0} finding models, trial {1}, iteration {2}</value>
+    <comment>{0}=plugin name, {1}=trial number, {2}=iteration number</comment>
   </data>
 </root>
