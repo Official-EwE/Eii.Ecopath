@@ -753,7 +753,6 @@ Public Class cMSE
         Dim QBMaxxQBio(,) As Double
         Dim SwitchingPower(,) As Double
         Dim Vulnerabilities(,,) As Double
-        Dim DietMatrix(,,) As Double
         Dim nTrials As Integer
         Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
         Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
@@ -767,9 +766,9 @@ Public Class cMSE
         Dim TrajectoryCsv As StreamWriter
         Dim Trajectory2Csv As List(Of StreamWriter)             'Trajectories2 is similar to trajectories apart from it each file contains only 1 group
         Dim FleetCsv As StreamWriter
-        Dim TrajectoryF As StreamWriter
         Dim nFailedParameterisations As Integer = 0
         Dim nLivingGroupsMinusPPers As Integer
+        Dim TimeseriesName As String
 
         ' JS 30Sep13: Use local properties
         Dim NYearsProject = Me.NYearsProject
@@ -779,12 +778,25 @@ Public Class cMSE
 
         SaveOriginalParameters()
 
+        'Do test for whether timeseries has been selected
+        If mCore.ActiveTimeSeriesDatasetIndex < 1 Then
+            TimeseriesName = "No time series selected"
+        Else
+            TimeseriesName = mCore.TimeSeriesDataset(mCore.ActiveTimeSeriesDatasetIndex).Name
+        End If
+
         'Output the final results
         sw = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Results.csv"), False)
+        sw.WriteLine("Model: " & mCore.EwEModel.Name)
+        sw.WriteLine("Ecosim Scenario: " & mCore.EcosimScenarios(mCore.ActiveEcosimScenarioIndex).Name)
+        sw.WriteLine("Time series: " & TimeseriesName)
         sw.WriteLine("Iteration,Strategy,GroupNumber,GroupName,ResultName,Value")
 
         'Create the csv writer for writing out individual fleets catches of each group
         FleetCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Fleet.csv"), False)
+        FleetCsv.WriteLine("Model: " & mCore.EwEModel.Name)
+        FleetCsv.WriteLine("Ecosim Scenario: " & mCore.EcosimScenarios(mCore.ActiveEcosimScenarioIndex).Name)
+        FleetCsv.WriteLine("Time series: " & TimeseriesName)
         FleetCsv.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
 
         'Count the number of live groups which aren't primary producers
@@ -834,6 +846,9 @@ Public Class cMSE
             Debug.Assert(writer IsNot Nothing)
 
             Trajectory2Csv.Add(writer)
+            Trajectory2Csv(igrp - 1).WriteLine("Model: " & mCore.EwEModel.Name)
+            Trajectory2Csv(igrp - 1).WriteLine("Ecosim Scenario: " & mCore.EcosimScenarios(mCore.ActiveEcosimScenarioIndex).Name)
+            Trajectory2Csv(igrp - 1).WriteLine("Time series: " & TimeseriesName)
             Trajectory2Csv(igrp - 1).Write("Trial,Strategy")
             For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                 Trajectory2Csv(igrp - 1).Write("," & iTime)
@@ -921,13 +936,16 @@ Public Class cMSE
                     'increase the number of years for the projection
                     mCore.EcoSimModelParameters.NumberYears = OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject
 
-                    'This creates the files we will write the biomass trajectories to
-                    TrajectoryCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv"), False)
-                    TrajectoryCsv.Write("GroupNumber,Group,Strategy")
-                    For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
-                        TrajectoryCsv.Write("," & iTime)
-                    Next
-                    TrajectoryCsv.WriteLine()
+                'This creates the files we will write the biomass trajectories to
+                TrajectoryCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv"), False)
+                TrajectoryCsv.WriteLine("Model: " & mCore.EwEModel.Name)
+                TrajectoryCsv.WriteLine("Ecosim Scenario: " & mCore.EcosimScenarios(mCore.ActiveEcosimScenarioIndex).Name)
+                TrajectoryCsv.WriteLine("Time series: " & TimeseriesName)
+                TrajectoryCsv.Write("GroupNumber,Group,Strategy")
+                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                    TrajectoryCsv.Write("," & iTime)
+                Next
+                TrajectoryCsv.WriteLine()
 
                     For Each iStrategy In Strategies
 
@@ -965,13 +983,13 @@ Public Class cMSE
                                     BiomassProjected(iTime - 1) = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, OriginalNTimesteps + iTime)
                                 Next
 
-                                'Output to csv the biomass trajectories
-                                'TrajectoryCsv.Write("""" & mCore.EcoPathGroupInputs(igrp).Name & """," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(iStrategy))))
-                                TrajectoryCsv.Write(igrp & """" & mCore.EcoPathGroupInputs(igrp).Name & """," & iStrategy.Name)
-                                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
-                                    TrajectoryCsv.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime))
-                                Next
-                                TrajectoryCsv.WriteLine()
+                        'Output to csv the biomass trajectories
+                        'TrajectoryCsv.Write("""" & mCore.EcoPathGroupInputs(igrp).Name & """," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(iStrategy))))
+                        TrajectoryCsv.Write(igrp & ",""" & mCore.EcoPathGroupInputs(igrp).Name & """," & iStrategy.Name)
+                        For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                            TrajectoryCsv.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime))
+                        Next
+                        TrajectoryCsv.WriteLine()
 
                                 'Trajectory2Csv(igrp - 1).Write(iTrial & "," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(iStrategy))))
                                 Trajectory2Csv(igrp - 1).Write(iTrial & "," & iStrategy.Name)
@@ -1580,7 +1598,7 @@ stepend:
         End If
 
         writer.WriteLine()
-        For igrp As Integer = 2 To Me.Core.nLivingGroups
+        For igrp As Integer = 1 To Me.Core.nLivingGroups
             If (igrp > 1) Then writer.Write(",")
             writer.Write(data(igrp))
         Next

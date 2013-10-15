@@ -44,6 +44,9 @@ Public Class cMSEStateMonitor
 
         Dim bHasState As Boolean = True
 
+        'Diagnostics MP
+        Return True
+
         If Me.m_StateCache(state) <> TriState.UseDefault Then
             Return Me.m_StateCache(state) = TriState.True
         End If
