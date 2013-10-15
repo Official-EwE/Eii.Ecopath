@@ -1273,7 +1273,7 @@ Namespace Controls
             ' Respond to styleguide changes
             AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             ' Respond to control closure events
-            AddHandler Me.m_ctrlWrapper.Control.HandleDestroyed, AddressOf OnControlClosing
+            AddHandler Me.m_ctrlWrapper.Control.Disposed, AddressOf OnControlDisposed
 
         End Sub
 
@@ -1322,7 +1322,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overridable Sub Release()
             If (Me.m_ctrlWrapper IsNot Nothing) Then
-                RemoveHandler Me.m_ctrlWrapper.Control.HandleDestroyed, AddressOf OnControlClosing
+                RemoveHandler Me.m_ctrlWrapper.Control.Disposed, AddressOf OnControlDisposed
                 Me.m_ctrlWrapper.Release()
                 Me.m_ctrlWrapper = Nothing
             End If
@@ -1477,10 +1477,11 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, responded 
+        ''' Event handler, responded to the event that a control was disposed while
+        ''' the format provider was still active. This will cause memory leaks.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub OnControlClosing(ByVal sender As Object, ByVal args As EventArgs)
+        Private Sub OnControlDisposed(ByVal sender As Object, ByVal args As EventArgs)
 
             ' Pre
             Debug.Assert(Me.m_ctrlWrapper IsNot Nothing)
