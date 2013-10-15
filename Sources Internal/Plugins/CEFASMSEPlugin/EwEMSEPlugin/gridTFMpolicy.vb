@@ -34,33 +34,6 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
-Public Class cTFMFormatter
-    Implements ITypeFormatter
-
-    Public Function GetDescriptor(ByVal value As Object, _
-                                  Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                  Implements ITypeFormatter.GetDescriptor
-
-        Dim ct As eCostFunctionTypes = DirectCast(value, eCostFunctionTypes)
-
-        Return HCR_Group.toCostFunctionString(ct)
-
-    End Function
-
-    Public Function GetDescribedType() As System.Type _
-        Implements ITypeFormatter.GetDescribedType
-        Return GetType(eCostFunctionTypes)
-    End Function
-
-End Class
-
-
-Public Enum eCostFunctionTypes As Integer
-    Target
-    Conservation
-End Enum
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.
@@ -150,7 +123,7 @@ Public Class gridTargetFishingMortalityPolicy
     Protected Overrides Sub FillData()
         Dim iHCR As Integer
 
-        If (m_plugin Is Nothing) Then Return
+        If (Me.m_plugin Is Nothing) Then Return
         If (Me.UIContext Is Nothing) Then Return
 
         Dim Cell As EwECellBase
@@ -161,9 +134,9 @@ Public Class gridTargetFishingMortalityPolicy
         End If
         If (strategy Is Nothing) Then Return
 
-        Dim lstOptions As List(Of eCostFunctionTypes) = New List(Of eCostFunctionTypes)
-        lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(eCostFunctionTypes)), IEnumerable(Of Global.EwEMSEPlugin.eCostFunctionTypes)))
-        Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cTFMFormatter(), lstOptions)
+        Dim lstOptions As List(Of HCRType) = New List(Of HCRType)
+        lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(HCRType)), IEnumerable(Of HCRType)))
+        Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cCostFunctionTypeFormatter(), lstOptions)
 
         For Each Rule As HCR_Group In strategy
             iHCR = Me.AddRow()
@@ -196,8 +169,7 @@ Public Class gridTargetFishingMortalityPolicy
 
     End Sub
 
-    Public Overloads Sub Update()
-        MyBase.Update()
+    Public Sub UpdateContent()
         Dim curHCR As HCR_Group = Me.HarvestControlRule
         For Each row As RowInfo In Rows
             If row.Tag IsNot Nothing Then
@@ -286,7 +258,7 @@ Public Class gridTargetFishingMortalityPolicy
                     Me.HarvestControlRule.MaxF = CDbl(cell.GetValue(p))
 
                 Case eColumnTypes.CostFunction
-                    Me.HarvestControlRule.CostFunction = DirectCast(cell.GetValue(p), eCostFunctionTypes)
+                    Me.HarvestControlRule.CostFunction = DirectCast(cell.GetValue(p), HCRType)
 
             End Select
 

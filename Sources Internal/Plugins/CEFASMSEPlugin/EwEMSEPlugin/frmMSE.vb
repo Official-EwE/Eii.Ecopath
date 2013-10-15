@@ -33,7 +33,6 @@ Public Class frmMSE
 
     Private mCore As cCore
     Private m_plugin As cMSE
-    Private frmTargetF As frmTFMpolicy
 
     Private m_fpArea As cEwEFormatProvider = Nothing
     Private m_fpNModelsToRun As cEwEFormatProvider = Nothing
@@ -67,7 +66,7 @@ Public Class frmMSE
         ' Connect area UI control to live Ecopath data
         Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, m_tbxArea, Me.Core.EwEModel, eVarNameFlags.Area)
         ' Area can be made editable from here by not setting the format provider style:
-        'Me.m_fpArea.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
+        'Me.m_fpArea.Style = cStyleGuide.eStyleFlags.NotEditable
 
         Me.m_fpNModelsToRun = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNModels2Run, GetType(Integer))
         Me.m_fpNModelsToRun.Value = Me.m_plugin.NModels2Run
@@ -246,8 +245,6 @@ Public Class frmMSE
     Private Sub btShowTFMForm_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_btnReviewTFM.Click
 
-        Dim bhasForm As Boolean
-
         'First make sure the Harvest Controls Rules have been loaded
         'this is so the interface has some data
 
@@ -255,16 +252,10 @@ Public Class frmMSE
         '             From the UI point of view, we just want strategies. The plug-in does the optimizating
         m_plugin.ExtractHCR()
 
-        'Ok now the interface
-        If Me.frmTargetF IsNot Nothing Then
-            bhasForm = Not frmTargetF.IsDisposed
-        End If
-        If Not bhasForm Then
-            frmTargetF = New frmTFMpolicy()
-            frmTargetF.Init(Me.UIContext, Me.m_plugin)
-        End If
+        Dim frm As New frmTFMpolicy2()
+        frm.Init(Me.UIContext, Me.m_plugin)
+        frm.ShowDialog(Me)
 
-        frmTargetF.Show()
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _

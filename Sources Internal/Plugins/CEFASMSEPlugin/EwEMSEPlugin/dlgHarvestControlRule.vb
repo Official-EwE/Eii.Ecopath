@@ -26,6 +26,21 @@ Imports ScientificInterfaceShared.Controls
 
 Public Class dlgHarvestControlRule
 
+    Private Class cHCRTypeItem
+        Private m_rule As HCRType
+        Public Sub New(rule As HCRType)
+            Me.m_rule = rule
+        End Sub
+        Public Overrides Function ToString() As String
+            Return New cCostFunctionTypeFormatter().GetDescriptor(Me.m_rule)
+        End Function
+        Public ReadOnly Property [Function] As HCRType
+            Get
+                Return Me.m_rule
+            End Get
+        End Property
+    End Class
+
 #Region "Private variables and Properties"
 
     Private m_Plugin As cMSE
@@ -76,8 +91,8 @@ Public Class dlgHarvestControlRule
             End If
         Next
 
-        m_cbCostFunctions.Items.Add(HCR_Group.toCostFunctionString(eCostFunctionTypes.Target))
-        m_cbCostFunctions.Items.Add(HCR_Group.toCostFunctionString(eCostFunctionTypes.Conservation))
+        m_cbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Target))
+        m_cbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Conservation))
         m_cbCostFunctions.SelectedIndex = 0
 
         Me.CenterToParent()
@@ -172,7 +187,8 @@ Public Class dlgHarvestControlRule
 
         ' Cost function
         If (Me.m_cbCostFunctions.SelectedItem IsNot Nothing) Then
-            Me.m_HRC.CostFunction = HCR_Group.toCostFunctionEnum(CStr(Me.m_cbCostFunctions.SelectedItem))
+            Dim item As cHCRTypeItem = DirectCast(Me.m_cbCostFunctions.SelectedItem, cHCRTypeItem)
+            Me.m_HRC.CostFunction = item.[Function]
         End If
 
         ' Oooh

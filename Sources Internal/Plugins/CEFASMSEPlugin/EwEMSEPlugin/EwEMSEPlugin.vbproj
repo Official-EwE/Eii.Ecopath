@@ -123,6 +123,12 @@
   <ItemGroup>
     <Compile Include="cMSE.vb" />
     <Compile Include="cMSEStateMonitor.vb" />
+    <Compile Include="frmTFMpolicy2.designer.vb">
+      <DependentUpon>frmTFMpolicy2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTFMpolicy2.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="gridDistributionParameters.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -177,6 +183,9 @@
     <Compile Include="xalglib.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmTFMpolicy2.resx">
+      <DependentUpon>frmTFMpolicy2.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgHarvestControlRule.resx">
       <DependentUpon>dlgHarvestControlRule.vb</DependentUpon>
       <SubType>Designer</SubType>

@@ -123,6 +123,12 @@
   <data name="CAPTION_TOOLTIP" xml:space="preserve">
     <value>Launch the Cefas MSE plug-in</value>
   </data>
+  <data name="COSTFUNCTION_CONSERVATION" xml:space="preserve">
+    <value>Conservation</value>
+  </data>
+  <data name="COSTFUNCTION_TARGET" xml:space="preserve">
+    <value>Target</value>
+  </data>
   <data name="DISTR_TYPE_TRIANGULAR" xml:space="preserve">
     <value>Triangular</value>
   </data>
@@ -196,6 +202,10 @@
   <data name="HCR_GROUP_FISHMORT" xml:space="preserve">
     <value>Fishing Mort. Group = {0}</value>
     <comment>{0}=group details</comment>
+  </data>
+  <data name="HCR_GROUP_FUNCTION" xml:space="preserve">
+    <value>Cost function: {0}</value>
+    <comment>{0}=HCR cost function</comment>
   </data>
   <data name="HEADER_BOUND_LOWER" xml:space="preserve">
     <value>Lower boundary</value>

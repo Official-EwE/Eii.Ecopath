@@ -43,30 +43,28 @@ Imports ScientificInterfaceShared.Style
 Public Class gridDistributionParameters
     Inherits EwEGrid
 
-#Region " Internal defs "
-
     Private Class cDistributionTypeFormatter
         Implements ITypeFormatter
 
-        Public Function GetDescribedType() As System.Type _
-            Implements ITypeFormatter.GetDescribedType
+        Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
             Return GetType(cMSE.DistributionType)
         End Function
 
-        Public Function GetDescriptor(data As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.GetDescriptor
-
-            Select Case DirectCast(data, cMSE.DistributionType)
+            Select Case (DirectCast(value, cMSE.DistributionType))
                 Case cMSE.DistributionType.Triangular
                     Return My.Resources.DISTR_TYPE_TRIANGULAR
                 Case cMSE.DistributionType.Uniform
                     Return My.Resources.DISTR_TYPE_UNIFORM
+                Case Else
+                    Debug.Assert(False)
             End Select
             Return "?"
-
         End Function
 
     End Class
+#Region " Internal defs "
 
     Private Enum eEcopathColumnTypes As Integer
         Index = 0

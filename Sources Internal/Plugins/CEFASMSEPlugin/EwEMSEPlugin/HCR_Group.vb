@@ -31,7 +31,26 @@ Public Enum HCRType
     Conservation = 1
 End Enum
 
+Public Class cCostFunctionTypeFormatter
+    Implements ITypeFormatter
 
+    Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
+        Return GetType(HCRType)
+    End Function
+
+    Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Implements ITypeFormatter.GetDescriptor
+
+        Select Case DirectCast(value, HCRType)
+            Case HCRType.Target
+                Return My.Resources.COSTFUNCTION_TARGET
+            Case HCRType.Conservation
+                Return My.Resources.COSTFUNCTION_CONSERVATION
+        End Select
+        Return "?"
+    End Function
+
+End Class
 ''' <summary>
 ''' Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
 ''' </summary>
@@ -50,27 +69,18 @@ Public Class HCR_Group
     Public Property UpperLimit As Double = cCore.NULL_VALUE
     Public Property MaxF As Double = cCore.NULL_VALUE
 
-    Public Property CostFunction As eCostFunctionTypes
-
-    <Obsolete("Use GroupB instead")> _
-    Public Property GroupName4Biomass As String
-    <Obsolete("Use GroupB instead")> _
-    Public Property GroupNumber4Biomass As Integer = cCore.NULL_VALUE
-    <Obsolete("Use GroupF instead")> _
-    Public Property GroupName4F As String
-    <Obsolete("Use GroupF instead")> _
-    Public Property GroupNumber4F As Integer = cCore.NULL_VALUE
-    <Obsolete("Use CostFunction instead")> _
-    Public Property CostFunctionOrg As String
+    Public Property CostFunction As HCRType
 
     Public Overrides Function ToString() As String
 
         ' JS 01Oct13: StringBuilder is better at handling newlines on different OS-es
         Dim sb As New StringBuilder()
         Dim fmt As New cCoreInterfaceFormatter()
+        Dim fmtC As New cCostFunctionTypeFormatter()
 
-        sb.Append(String.Format(My.Resources.HCR_GROUP_BIOMASS, fmt.GetDescriptor(GroupB)))
-        sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FISHMORT, fmt.GetDescriptor(GroupF)))
+        sb.AppendLine(String.Format(My.Resources.HCR_GROUP_BIOMASS, fmt.GetDescriptor(Me.GroupB)))
+        sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FISHMORT, fmt.GetDescriptor(Me.GroupF)))
+        sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FUNCTION, fmtC.GetDescriptor(Me.CostFunction)))
 
         Return sb.ToString
 
@@ -88,27 +98,21 @@ Public Class HCR_Group
 
 #Region "Public Methods"
 
-    Public Shared Function toCostFunctionString(eCostFunctionTypes As eCostFunctionTypes) As String
-
-        ' ToDo_JS: Globalize this method
-
+    Public Shared Function toCostFunctionString(eCostFunctionTypes As HCRType) As String
         Select Case eCostFunctionTypes
-            Case EwEMSEPlugin.eCostFunctionTypes.Target
+            Case HCRType.Target
                 Return "Target"
-            Case EwEMSEPlugin.eCostFunctionTypes.Conservation
+            Case HCRType.Conservation
                 Return "Conservation"
         End Select
         Return "Target"
     End Function
 
-    Public Shared Function toCostFunctionEnum(CostFunctionString As String) As eCostFunctionTypes
-        'ToDo this should be handled by the HarvestRule
-        If String.Compare(CostFunctionString, "Target") = 0 Then
-            Return eCostFunctionTypes.Target
-        ElseIf String.Compare(CostFunctionString, "Conservation") = 0 Then
-            Return eCostFunctionTypes.Conservation
+    Public Shared Function toCostFunctionEnum(CostFunctionString As String) As HCRType
+        If String.Compare(CostFunctionString, "Conservation", True) = 0 Then
+            Return HCRType.Conservation
         End If
-        Return eCostFunctionTypes.Target
+        Return HCRType.Target
     End Function
 
     ''' <summary>
@@ -119,34 +123,27 @@ Public Class HCR_Group
     Public Function isValid(ByRef ValidationString As String) As Boolean
 
         ' ToDo_JS: Globalize this method
-
-        Dim breturn As Boolean = False
-        Dim nl As String = Environment.NewLine
+        Dim sb As New StringBuilder()
+        Dim breturn As Boolean = True
         Debug.Assert(Me.m_core IsNot Nothing, Me.ToString + ".isValid() cCore has not been set. Validation cannot be run.")
 
         Try
-            If Me.isIndexInBounds(Me.GroupB) Then
-                breturn = True
-            Else
-                ValidationString = "Biomass group number is not valid."
+            If Not Me.isIndexInBounds(Me.GroupB) Then
+                breturn = False
+                sb.AppendLine("Biomass group number is not valid.")
             End If
 
-            If Me.isIndexInBounds(Me.GroupF) Then
-                breturn = breturn And True
-            Else
+            If Not Me.isIndexInBounds(Me.GroupF) Then
                 breturn = False
-                Dim tmp As String = "Fishing Mortality group number is not valid."
-                If String.IsNullOrEmpty(ValidationString) Then
-                    ValidationString = tmp
-                Else
-                    ValidationString += nl + tmp
-                End If
+                sb.AppendLine("Fishing Mortality group number is not valid.")
             End If
 
         Catch ex As Exception
             breturn = False
             Debug.Assert(False, Me.ToString + ".isValid() Exception: " + ex.Message)
         End Try
+
+        ValidationString = sb.ToString()
 
         Return breturn
 

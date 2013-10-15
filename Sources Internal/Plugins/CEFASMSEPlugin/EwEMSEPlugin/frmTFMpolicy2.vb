@@ -34,6 +34,7 @@ Imports SourceGrid2
 Imports System.IO
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls.EwEGrid
 
 #End Region ' Imports
 
@@ -43,7 +44,7 @@ Imports ScientificInterfaceShared.Style
 ''' interface.
 ''' </summary>
 ''' =======================================================================
-Public Class frmTFMpolicy
+Public Class frmTFMpolicy2
 
 #Region " Internals "
 
@@ -61,8 +62,8 @@ Public Class frmTFMpolicy
 
     ''' <summary>MSE Plugin initialized in me.Init(cUIContext,cMSE)</summary>
     ''' <remarks>Provides access to data.</remarks>
-    Private m_MSEPlugin As cMSE
-
+    Private m_plugin As cMSE
+    Private m_qeh As cQuickEditHandler
     Private m_SelectedStrategy As Strategy
 
     Private m_HCR As HCR_Group
@@ -71,7 +72,7 @@ Public Class frmTFMpolicy
 
 #End Region ' Internals
 
-#Region "Construction Initialization"
+#Region " Construction Initialization "
 
     Public Sub New()
         MyBase.New()
@@ -80,7 +81,7 @@ Public Class frmTFMpolicy
 
     Public Sub Init(UI As cUIContext, Plugin As cMSE)
         Me.UIContext = UI
-        Me.m_MSEPlugin = Plugin
+        Me.m_plugin = Plugin
     End Sub
 
 #End Region
@@ -100,13 +101,17 @@ Public Class frmTFMpolicy
         Me.m_zgh.AllowPan = False
         Me.m_zgh.AllowEdit = True
 
-        Me.m_grid.Init(Me.m_MSEPlugin)
+        Me.m_grid.Init(Me.m_plugin)
         Me.m_grid.UIContext = Me.UIContext
+
+        Me.m_qeh = New cQuickEditHandler()
+        Me.m_qeh.Attach(Me.m_grid, Me.UIContext, Me.m_tsHCR)
+        Me.m_grid.DataName = "HarvestControlRules"
 
         Me.UpdateControls()
 
-        If (Me.m_MSEPlugin.Strategies.Count > 0) Then
-            Me.cbStrategies.SelectedIndex = 0
+        If (Me.m_plugin.Strategies.Count > 0) Then
+            Me.m_tscmStrategies.SelectedIndex = 0
         End If
 
     End Sub
@@ -114,7 +119,7 @@ Public Class frmTFMpolicy
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
         If StrategiesSaved = False Then
-            e.Cancel = (Me.m_MSEPlugin.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) <> eMessageReplyStyle.OK)
+            e.Cancel = (Me.m_plugin.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) <> eMessageReplyStyle.OK)
         End If
 
         MyBase.OnFormClosing(e)
@@ -145,7 +150,8 @@ Public Class frmTFMpolicy
     End Sub
 
 
-    Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbDefaultTFM.Click
+    Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles tsbDefaultTFM.Click
         'Try
         '    Me.UIContext.Core.SetDefaultTFM()
         'Catch ex As Exception
@@ -154,10 +160,11 @@ Public Class frmTFMpolicy
     End Sub
 
 
-    Private Sub OnSelectedStrategyChanged(sender As Object, e As System.EventArgs) Handles cbStrategies.SelectedIndexChanged
+    Private Sub OnSelectedStrategyChanged(sender As Object, e As System.EventArgs) _
+        Handles m_tscmStrategies.SelectedIndexChanged
 
-        If Me.cbStrategies.SelectedIndex >= 0 Then
-            Me.changeSelectedStrategy(Me.cbStrategies.SelectedIndex)
+        If Me.m_tscmStrategies.SelectedIndex >= 0 Then
+            Me.changeSelectedStrategy(Me.m_tscmStrategies.SelectedIndex)
         End If
 
     End Sub
@@ -165,17 +172,17 @@ Public Class frmTFMpolicy
 
     Private Sub changeSelectedStrategy(iSelectedIndex As Integer)
 
-        m_SelectedStrategy = Me.m_MSEPlugin.Strategies(iSelectedIndex)
+        m_SelectedStrategy = Me.m_plugin.Strategies(iSelectedIndex)
         Me.m_grid.SelectedStrategyIndex = iSelectedIndex
         Me.Redraw()
 
     End Sub
 
-    Private Sub btAddHCR_Click(sender As Object, e As System.EventArgs) Handles btAddHCR.Click
+    Private Sub OnAddHCR(sender As Object, e As System.EventArgs) Handles m_tsbnAddHCR.Click
 
         'Ask the user to create a new HCR_Group
         Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule
-        HRCDialogue.Init(Me.m_MSEPlugin, Me.m_SelectedStrategy)
+        HRCDialogue.Init(Me.m_plugin, Me.m_SelectedStrategy)
         HRCDialogue.ShowDialog()
 
         If HRCDialogue.DialogResult = Windows.Forms.DialogResult.OK Then
@@ -187,8 +194,8 @@ Public Class frmTFMpolicy
 
     End Sub
 
-    Private Sub btAddStrategy_Click(sender As Object, e As System.EventArgs) _
-        Handles btAddStrategy.Click
+    Private Sub OnAddStrategy(sender As Object, e As System.EventArgs) _
+        Handles m_tsbnAddStrategy.Click
 
         ' JS 30Sep13: Globalized
         ' JS 30Sep13: Strategy file name is safe
@@ -205,16 +212,16 @@ Public Class frmTFMpolicy
             If String.IsNullOrWhiteSpace(StratName) Then Return
 
             'Build the filename out of the strategy name
-            Dim StartFilename As String = Path.Combine(Me.m_MSEPlugin.Strategies.DataDirectory, cFileUtils.ToValidFileName(StratName + ".csv", False))
+            Dim StartFilename As String = Path.Combine(Me.m_plugin.Strategies.DataDirectory, cFileUtils.ToValidFileName(StratName + ".csv", False))
             Dim strategy As Strategy = New Strategy(StratName, StartFilename)
 
             ' JS 30Sep13: Strategies class validates both strategy name and file. VERY GOOD!!
-            If (Not Me.m_MSEPlugin.Strategies.Contains(strategy)) Then
-                Me.m_MSEPlugin.Strategies.Add(strategy)
+            If (Not Me.m_plugin.Strategies.Contains(strategy)) Then
+                Me.m_plugin.Strategies.Add(strategy)
                 Me.UpdateControls()
-                Me.changeSelectedStrategy(Me.cbStrategies.Items.Count - 1)
+                Me.changeSelectedStrategy(Me.m_tscmStrategies.Items.Count - 1)
             Else
-                Me.m_MSEPlugin.InformUser(My.Resources.ERROR_ENTERNAME, eMessageImportance.Warning)
+                Me.m_plugin.InformUser(My.Resources.ERROR_ENTERNAME, eMessageImportance.Warning)
             End If
 
         Catch ex As Exception
@@ -225,14 +232,14 @@ Public Class frmTFMpolicy
 
 
     Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles btnSaveStrategies.Click
+        Handles m_tsbnSaveToCSV.Click
 
         ' JS 30Sep13: CSV file written in fixed digit format
         ' JS 30Sep13: Uses safe streamwriter
 
         Dim csvStrategyFile As StreamWriter = Nothing
 
-        For Each iStrategy In Me.m_MSEPlugin.Strategies
+        For Each iStrategy In Me.m_plugin.Strategies
             csvStrategyFile = cMSEUtils.GetWriter(iStrategy.FileName, False)
             If (csvStrategyFile IsNot Nothing) Then
 
@@ -253,23 +260,23 @@ Public Class frmTFMpolicy
 
     End Sub
 
-    Private Sub btDeleteStrategy_Click(sender As System.Object, e As System.EventArgs) Handles btDeleteStrategy.Click
-        Dim selStrategy As Integer = cbStrategies.SelectedIndex
+    Private Sub OnDeleteStrategy(sender As System.Object, e As System.EventArgs) Handles m_tsbnDeleteStrategy.Click
+        Dim selStrategy As Integer = m_tscmStrategies.SelectedIndex
 
         'ToDo this needs to delete the Strategy file as well as removing it from the list
         'that should happen from the Strategies object itself
         'Also there should be an isDirty flag
         If selStrategy >= 0 Then
-            Me.m_MSEPlugin.Strategies.RemoveAt(selStrategy)
+            Me.m_plugin.Strategies.RemoveAt(selStrategy)
             Me.UpdateControls()
-            Me.cbStrategies.SelectedIndex = 0
+            Me.m_tscmStrategies.SelectedIndex = 0
         End If
 
     End Sub
 
-    Private Sub btDeleteHCR_Click(sender As System.Object, e As System.EventArgs) Handles btDeleteHCR.Click
+    Private Sub OnDeleteHCR(sender As System.Object, e As System.EventArgs) Handles m_tsbnAddHCR.Click
         Dim selHCRIndex As Integer = Me.m_grid.SelectedRow
-        Dim curStratIndex As Integer = Me.cbStrategies.SelectedIndex
+        Dim curStratIndex As Integer = Me.m_tscmStrategies.SelectedIndex
 
         If selHCRIndex > 0 Then
             If Me.m_SelectedStrategy IsNot Nothing Then
@@ -277,8 +284,8 @@ Public Class frmTFMpolicy
                 'that way there can be an isDirty flag
                 Me.m_SelectedStrategy.RemoveAt(selHCRIndex - 1)
                 Me.UpdateControls()
-                If curStratIndex > -1 And curStratIndex < Me.cbStrategies.Items.Count Then
-                    Me.cbStrategies.SelectedIndex = curStratIndex
+                If curStratIndex > -1 And curStratIndex < Me.m_tscmStrategies.Items.Count Then
+                    Me.m_tscmStrategies.SelectedIndex = curStratIndex
                 End If
             End If
         End If
@@ -361,7 +368,7 @@ Public Class frmTFMpolicy
 
     Private ReadOnly Property MSE As cMSE
         Get
-            Return Me.m_MSEPlugin
+            Return Me.m_plugin
         End Get
     End Property
 
@@ -370,10 +377,10 @@ Public Class frmTFMpolicy
 
         Try
             Dim i As Integer
-            Me.cbStrategies.Items.Clear()
-            For Each strategy As Strategy In Me.m_MSEPlugin.Strategies
+            Me.m_tscmStrategies.Items.Clear()
+            For Each strategy As Strategy In Me.m_plugin.Strategies
                 i += 1
-                Me.cbStrategies.Items.Add(strategy.Name)
+                Me.m_tscmStrategies.Items.Add(strategy.Name)
             Next
         Catch ex As Exception
 
@@ -471,10 +478,6 @@ Public Class frmTFMpolicy
     End Function
 
 #End Region ' Dragging
-
-    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
-        Me.Close()
-    End Sub
 
 End Class
 

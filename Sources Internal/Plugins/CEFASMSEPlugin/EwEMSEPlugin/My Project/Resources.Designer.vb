@@ -79,6 +79,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Conservation.
+        '''</summary>
+        Friend ReadOnly Property COSTFUNCTION_CONSERVATION() As String
+            Get
+                Return ResourceManager.GetString("COSTFUNCTION_CONSERVATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Target.
+        '''</summary>
+        Friend ReadOnly Property COSTFUNCTION_TARGET() As String
+            Get
+                Return ResourceManager.GetString("COSTFUNCTION_TARGET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Triangular.
         '''</summary>
         Friend ReadOnly Property DISTR_TYPE_TRIANGULAR() As String
@@ -255,6 +273,15 @@ Namespace My.Resources
         Friend ReadOnly Property HCR_GROUP_FISHMORT() As String
             Get
                 Return ResourceManager.GetString("HCR_GROUP_FISHMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cost function: {0}.
+        '''</summary>
+        Friend ReadOnly Property HCR_GROUP_FUNCTION() As String
+            Get
+                Return ResourceManager.GetString("HCR_GROUP_FUNCTION", resourceCulture)
             End Get
         End Property
         

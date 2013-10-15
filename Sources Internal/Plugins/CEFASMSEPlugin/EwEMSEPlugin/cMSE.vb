@@ -2279,13 +2279,13 @@ stepend:
 
                 For Each iHCRGroup In CurrentStrategy
                     Select Case iHCRGroup.CostFunction
-                        Case eCostFunctionTypes.Target
+                        Case HCRType.Target
                             If FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Target) = NoHCR_F Then
                                 FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Target) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), 0, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
                             Else
                                 Me.InformUser(String.Format(My.Resources.ERROR_HARVESTRUILE_DUPLICATE_F, iHCRGroup.GroupF.Name), eMessageImportance.Warning)
                             End If
-                        Case eCostFunctionTypes.Conservation
+                        Case HCRType.Conservation
                             tempFConservation = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), iHCRGroup.LowerLimit, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
                             If tempFConservation < FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Conservation) Or FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Conservation) = NoHCR_F Then
                                 FTargetandConservation(iHCRGroup.GroupF.Index - 1, HCRType.Conservation) = tempFConservation

@@ -306,6 +306,9 @@
   <data name="m_tbxRule.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="m_tbxRule.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="m_tbxRule.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 175</value>
   </data>
