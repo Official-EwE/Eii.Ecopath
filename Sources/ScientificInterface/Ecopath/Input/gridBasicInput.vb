@@ -209,9 +209,9 @@ Namespace Ecopath.Input
             Dim ci As ColumnInfo = Me.Columns(eColumnTypes.Z)
 
             Me.Rows(0).Height = 60
-            Me.Columns(0).Width = 24
-            Me.Columns(1).Width = 120
-            Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.Columns(eColumnTypes.Index).Width = 24
+            Me.Columns(eColumnTypes.Name).Width = 120
+            Me.Columns(eColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
 
             For i As Integer = 2 To Me.ColumnsCount - 1
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
