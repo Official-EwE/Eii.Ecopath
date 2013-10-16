@@ -1230,6 +1230,8 @@ Namespace Controls
 
 #Region " Private vars "
 
+        ' ToDo_JS: rework to contain the value in a cValue object, with a real validator
+
         ''' <summary>The UI context serving this provider.</summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary>Value of the control.</summary>
@@ -1366,6 +1368,9 @@ Namespace Controls
                 Return Me.m_objValue
             End Get
             Set(ByVal objValue As Object)
+
+                ' ToDo_JS: rework to use cValue validation
+                ' ToDo_JS: set style to match validation styles
 
                 Dim objValueConverted As Object = Nothing
 
