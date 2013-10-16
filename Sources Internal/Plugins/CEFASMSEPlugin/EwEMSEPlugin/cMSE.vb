@@ -1365,7 +1365,7 @@ stepend:
                 writer.WriteLine("{0},{1},{2}", _
                                  cStringUtils.ToCSVField(iPred), _
                                  cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name), _
-                                 10000)
+                                 1)
             Next
         Else
             bSuccess = False
