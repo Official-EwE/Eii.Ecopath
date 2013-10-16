@@ -1057,7 +1057,7 @@ Public Class cMSE
         sw.Dispose()
         FleetCsv.Dispose()
 
-        RestoreParameters()
+        Me.RestoreOriginalState()
 
     End Sub
 
@@ -1379,6 +1379,18 @@ stepend:
 
     Public Sub GenerateEcopathParamaters()
 
+        Me.SaveOriginalParameters()
+        Try
+            Me.GenerateInputStructure()
+        Catch ex As Exception
+            ' Kaboom!
+        End Try
+        Me.RestoreOriginalState()
+
+    End Sub
+
+    Private Sub GenerateInputStructure()
+
         ' JS 12Oct13: Fixed path usage
         ' JS 12Oct13: Used standard CSV field reading/writing
         ' JS 12Oct13: Used standard readers/writers, and made robust
@@ -1387,11 +1399,11 @@ stepend:
         Dim nGroups As Integer = mCore.nGroups
         Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
         Dim nTrials As Integer = Me.NTrials
-        Dim b(nTrials, nGroups) As Single
-        Dim ba(nTrials, nLiving) As Single
-        Dim pb(nTrials, nLiving) As Single
-        Dim qb(nTrials, nLiving) As Single
-        Dim ee(nTrials, nLiving) As Single
+        Dim b(NTrials, nGroups) As Single
+        Dim ba(NTrials, nLiving) As Single
+        Dim pb(NTrials, nLiving) As Single
+        Dim qb(NTrials, nLiving) As Single
+        Dim ee(NTrials, nLiving) As Single
         Dim TimeFindingBalanced As New Stopwatch
         Dim csv As CsvReader
         Dim MeanProportions(mCore.nLivingGroups - 1, mCore.nGroups) As Single
@@ -1476,12 +1488,21 @@ stepend:
             'Init some of the Monte Carlo parameters
             If Me.InitMonteCarloParameters() Then
                 'Succeeded in intitializing Monte Carlo Parameters
+                Dim iTrial As Integer = 1
+                Dim bExpired As Boolean = False
+                Dim sw As New Stopwatch()
+                Dim lTimeout As Long = CLng(60 * 60 * 1000 * Me.NMaxTime)
 
-                For iTrial As Integer = 1 To nTrials
+                sw.Start()
+
+                While (iTrial <= Me.NTrials) And Not bExpired
 
                     'Set the Ecopath parameters using the Monte Carlo input parameters set above
                     TimeFindingBalanced.Start()
-                    For i = 1 To Me.NMaxAttempts
+                    Dim i As Integer = 1
+                    Dim bFound As Boolean = False
+
+                    While (i <= Me.NMaxAttempts) And (Not bExpired) And (Not bFound)
 
                         isbalanced = True
 
@@ -1537,18 +1558,29 @@ stepend:
 
                                 Me.InformUser(String.Format(My.Resources.STATUS_FOUND_MODEL, My.Resources.CAPTION, i), eMessageImportance.Information)
                                 iNumFound += 1
-                                Exit For ' Next trial
+                                bFound = True
 
                             End If
                         Else
                             System.Console.WriteLine("Failed to find balanced Ecopath model")
                         End If ' MonteCarlo.selectNewEcopathParameters()
-                    Next
+
+                        i += 1
+                        bExpired = (sw.ElapsedMilliseconds > lTimeout)
+
+                    End While
 
                     'Console.WriteLine("Number of seconds to run iteration: " & (TimeFindingBalanced.ElapsedMilliseconds / 1000).ToString)
                     TimeFindingBalanced.Reset()
 
-                Next iTrial
+                    iTrial += 1
+
+                End While
+
+                If bExpired Then
+                    Me.InformUser("MSE expired after " & sw.ElapsedMilliseconds & "ms", eMessageImportance.Information)
+                End If
+
             End If 'Me.InitMonteCarloParameters()
 
             'Save the results to a .csv
@@ -1710,14 +1742,13 @@ stepend:
 
     End Function
 
-    Enum eParamName
+    Enum eParamName As Integer
         B
         PB
         QB
         EE
         BA
     End Enum
-
 
     Private Function InitMonteCarloParameters() As Boolean
 
@@ -1890,25 +1921,20 @@ stepend:
     End Function
 
     ''' <summary>
-    ''' Restore the currently loaded model back to it's original state so that it can be run in the interface.
+    ''' Restore the currently loaded model back to its original state so that it can be run in the interface.
     ''' </summary>
     ''' <remarks>In some cases you may want to save changes you made to the model.</remarks>
     Private Sub RestoreOriginalState()
         Try
             'Have the MonteCarloManager restore it's variables to the original state
-            mCore.EcosimMonteCarlo.RestoreOriginalValues()
-
-            'Set the State variables that we changed back to their original state
-            Me._ecopath.suppressMessages = False
+            Me.RestoreParameters()
             Me._ecosim.TimeStepDelegate = Me._EcosimTimeStepDelegate
 
-            'Not included here but we should also set any Monte Carlo Parameters back to their original state
-            'For example
-            'For igrp = 1 To Core.nLivingGroups
-            '    MCGroup = MonteCarlo.Groups(igrp)
-            '    MCGroup.Bcv = _orgB(igrp)
-            '    'PB, QB...               
-            'Next
+            ' No database changes left, yippee
+            Me.Core.DiscardChanges()
+
+            ' Just reload Ecosim
+            Me.Core.LoadEcosimScenario(Me.Core.ActiveEcosimScenarioIndex)
 
         Catch ex As Exception
 
@@ -2100,7 +2126,7 @@ stepend:
         Dim ParameterArray(mCore.nLivingGroups - nPrimaryProducer - 1, 3) As Single
 
         ' JS 30Sep13: Use local properties
-        Dim nIterations As Integer = Me.NTrials
+        Dim nIterations As Integer = Me.nTrials
         Dim eDistributionType As DistributionType
         Dim SampledParameters(nIterations - 1, mCore.nLivingGroups - nPrimaryProducer - 1) As Double
         Dim GroupNames(mCore.nLivingGroups - nPrimaryProducer - 1) As String
@@ -2170,7 +2196,7 @@ stepend:
         ' JS 30Sep13: Used persistent properties
 
         Dim writer As StreamWriter = Nothing
-        Dim nIterations As Integer = NTrials
+        Dim nIterations As Integer = nTrials
 
         For iIteration = 1 To nIterations
 
@@ -2713,6 +2739,24 @@ stepend:
         Set(value As Integer)
             If (value <> My.Settings.NMaxAttempts) Then
                 My.Settings.NMaxAttempts = value
+                My.Settings.Save()
+                Me.InvalidateConfiguration()
+            End If
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the max time for finding a balanced model (in fractions of hours)
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property NMaxTime As Single
+        Get
+            Return My.Settings.NMaxTime
+        End Get
+        Set(value As Single)
+            If (value <> My.Settings.NMaxTime) Then
+                My.Settings.NMaxTime = value
                 My.Settings.Save()
                 Me.InvalidateConfiguration()
             End If

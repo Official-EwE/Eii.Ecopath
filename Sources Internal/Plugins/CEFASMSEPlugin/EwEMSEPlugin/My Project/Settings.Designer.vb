@@ -137,6 +137,18 @@ Namespace My
                 Me("NMaxAttempts") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0.5")>  _
+        Public Property NMaxTime() As Single
+            Get
+                Return CType(Me("NMaxTime"),Single)
+            End Get
+            Set
+                Me("NMaxTime") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

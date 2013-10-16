@@ -54,9 +54,7 @@ Partial Class frmMSE
         Me.m_lblMassBalanceTol = New System.Windows.Forms.Label()
         Me.m_tbxTolerance = New System.Windows.Forms.TextBox()
         Me.m_btnCreateModels = New System.Windows.Forms.Button()
-        Me.m_btnGenDC = New System.Windows.Forms.Button()
         Me.m_btnReviewTFM = New System.Windows.Forms.Button()
-        Me.m_btnEcopathParams2 = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
         Me.m_pbCompatible = New System.Windows.Forms.PictureBox()
         Me.m_hdrStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -64,7 +62,9 @@ Partial Class frmMSE
         Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
         Me.m_tbxNTrials = New System.Windows.Forms.TextBox()
         Me.m_lblMaxAttempts = New System.Windows.Forms.Label()
+        Me.m_lblMaxTime = New System.Windows.Forms.Label()
         Me.m_tbxMaxAttempts = New System.Windows.Forms.TextBox()
+        Me.m_tbxMaxTime = New System.Windows.Forms.TextBox()
         Me.m_plStep5 = New System.Windows.Forms.Panel()
         Me.m_hdrStep5 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblNModels = New System.Windows.Forms.Label()
@@ -75,7 +75,6 @@ Partial Class frmMSE
         Me.m_tbxArea = New System.Windows.Forms.TextBox()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_pbCefas = New System.Windows.Forms.PictureBox()
-        Me.m_btn2 = New System.Windows.Forms.Button()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
         Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAreaUnit = New System.Windows.Forms.Label()
@@ -142,27 +141,17 @@ Partial Class frmMSE
         Me.m_btnCreateModels.Name = "m_btnCreateModels"
         Me.m_btnCreateModels.UseVisualStyleBackColor = True
         '
-        'm_btnGenDC
-        '
-        resources.ApplyResources(Me.m_btnGenDC, "m_btnGenDC")
-        Me.m_btnGenDC.Name = "m_btnGenDC"
-        Me.m_btnGenDC.UseVisualStyleBackColor = True
-        '
         'm_btnReviewTFM
         '
         resources.ApplyResources(Me.m_btnReviewTFM, "m_btnReviewTFM")
         Me.m_btnReviewTFM.Name = "m_btnReviewTFM"
         Me.m_btnReviewTFM.UseVisualStyleBackColor = True
         '
-        'm_btnEcopathParams2
-        '
-        resources.ApplyResources(Me.m_btnEcopathParams2, "m_btnEcopathParams2")
-        Me.m_btnEcopathParams2.Name = "m_btnEcopathParams2"
-        Me.m_btnEcopathParams2.UseVisualStyleBackColor = True
-        '
         'm_plStep2
         '
         Me.m_plStep2.Controls.Add(Me.m_pbCompatible)
+        Me.m_plStep2.Controls.Add(Me.m_lblMassBalanceTol)
+        Me.m_plStep2.Controls.Add(Me.m_tbxTolerance)
         Me.m_plStep2.Controls.Add(Me.m_hdrStep2)
         Me.m_plStep2.Controls.Add(Me.m_btnCreateModels)
         Me.m_plStep2.Controls.Add(Me.m_lblAvailableModels)
@@ -170,9 +159,9 @@ Partial Class frmMSE
         Me.m_plStep2.Controls.Add(Me.m_tbxNumAvailableModels)
         Me.m_plStep2.Controls.Add(Me.m_tbxNTrials)
         Me.m_plStep2.Controls.Add(Me.m_lblMaxAttempts)
-        Me.m_plStep2.Controls.Add(Me.m_lblMassBalanceTol)
+        Me.m_plStep2.Controls.Add(Me.m_lblMaxTime)
         Me.m_plStep2.Controls.Add(Me.m_tbxMaxAttempts)
-        Me.m_plStep2.Controls.Add(Me.m_tbxTolerance)
+        Me.m_plStep2.Controls.Add(Me.m_tbxMaxTime)
         resources.ApplyResources(Me.m_plStep2, "m_plStep2")
         Me.m_plStep2.Name = "m_plStep2"
         '
@@ -211,10 +200,20 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_lblMaxAttempts, "m_lblMaxAttempts")
         Me.m_lblMaxAttempts.Name = "m_lblMaxAttempts"
         '
+        'm_lblMaxTime
+        '
+        resources.ApplyResources(Me.m_lblMaxTime, "m_lblMaxTime")
+        Me.m_lblMaxTime.Name = "m_lblMaxTime"
+        '
         'm_tbxMaxAttempts
         '
         resources.ApplyResources(Me.m_tbxMaxAttempts, "m_tbxMaxAttempts")
         Me.m_tbxMaxAttempts.Name = "m_tbxMaxAttempts"
+        '
+        'm_tbxMaxTime
+        '
+        resources.ApplyResources(Me.m_tbxMaxTime, "m_tbxMaxTime")
+        Me.m_tbxMaxTime.Name = "m_tbxMaxTime"
         '
         'm_plStep5
         '
@@ -281,16 +280,9 @@ Partial Class frmMSE
         'm_pbCefas
         '
         Me.m_pbCefas.BackColor = System.Drawing.Color.White
-        Me.m_pbCefas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         resources.ApplyResources(Me.m_pbCefas, "m_pbCefas")
         Me.m_pbCefas.Name = "m_pbCefas"
         Me.m_pbCefas.TabStop = False
-        '
-        'm_btn2
-        '
-        resources.ApplyResources(Me.m_btn2, "m_btn2")
-        Me.m_btn2.Name = "m_btn2"
-        Me.m_btn2.UseVisualStyleBackColor = True
         '
         'm_plStep3
         '
@@ -400,10 +392,7 @@ Partial Class frmMSE
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_btnGenDC)
         Me.Controls.Add(Me.m_tlpLayout)
-        Me.Controls.Add(Me.m_btn2)
-        Me.Controls.Add(Me.m_btnEcopathParams2)
         Me.Name = "frmMSE"
         Me.m_plStep2.ResumeLayout(False)
         Me.m_plStep2.PerformLayout()
@@ -429,17 +418,14 @@ Partial Class frmMSE
     Private WithEvents m_lblNYears As System.Windows.Forms.Label
     Private WithEvents m_tbxTolerance As System.Windows.Forms.TextBox
     Private WithEvents m_btnCreateModels As System.Windows.Forms.Button
-    Private WithEvents m_btnGenDC As System.Windows.Forms.Button
     Private WithEvents m_lblMassBalanceTol As System.Windows.Forms.Label
     Private WithEvents m_btnReviewTFM As System.Windows.Forms.Button
-    Private WithEvents m_btnEcopathParams2 As System.Windows.Forms.Button
     Private WithEvents m_plStep2 As System.Windows.Forms.Panel
     Private WithEvents m_plStep5 As System.Windows.Forms.Panel
     Private WithEvents m_lblNModels As System.Windows.Forms.Label
     Private WithEvents m_plStep4 As System.Windows.Forms.Panel
     Private WithEvents m_pbCefas As System.Windows.Forms.PictureBox
     Private WithEvents m_lblArea As System.Windows.Forms.Label
-    Private WithEvents m_btn2 As System.Windows.Forms.Button
     Private WithEvents m_plStep3 As System.Windows.Forms.Panel
     Private WithEvents m_btnReviewDistParms As System.Windows.Forms.Button
     Private WithEvents m_tbxArea As System.Windows.Forms.TextBox
@@ -466,4 +452,6 @@ Partial Class frmMSE
     Private WithEvents m_tbxMaxAttempts As System.Windows.Forms.TextBox
     Private WithEvents m_lblAreaUnit As System.Windows.Forms.Label
     Private WithEvents m_tbxParamStatus As System.Windows.Forms.TextBox
+    Private WithEvents m_lblMaxTime As System.Windows.Forms.Label
+    Private WithEvents m_tbxMaxTime As System.Windows.Forms.TextBox
 End Class

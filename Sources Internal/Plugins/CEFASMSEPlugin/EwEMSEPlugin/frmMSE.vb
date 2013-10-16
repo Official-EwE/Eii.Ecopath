@@ -40,6 +40,7 @@ Public Class frmMSE
     Private m_fpNYearsToProject As cEwEFormatProvider = Nothing
     Private m_fpMassBalanceTol As cEwEFormatProvider = Nothing
     Private m_fpMaxAttempts As cEwEFormatProvider = Nothing
+    Private m_fpMaxTime As cEwEFormatProvider = Nothing
 
     Private m_bInUpdate As Boolean = False
 
@@ -88,6 +89,9 @@ Public Class frmMSE
         Me.m_fpMaxAttempts.Value = Me.m_plugin.NMaxAttempts
         AddHandler Me.m_fpMaxAttempts.OnValueChanged, AddressOf OnMaxAttemptsChanged
 
+        Me.m_fpMaxTime = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMaxTime, GetType(Single), New cVariableMetaData(0.08, 48, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
+        AddHandler Me.m_fpMaxTime.OnValueChanged, AddressOf OnMaxTimeChanged
+
         Me.m_rbEwEDefault.Checked = Me.m_plugin.UseEwEPath
         Me.m_rbCustomPath.Checked = Not Me.m_plugin.UseEwEPath
 
@@ -119,6 +123,9 @@ Public Class frmMSE
 
             RemoveHandler Me.m_fpMaxAttempts.OnValueChanged, AddressOf OnMaxAttemptsChanged
             Me.m_fpMaxAttempts.Release()
+
+            RemoveHandler Me.m_fpMaxTime.OnValueChanged, AddressOf OnMaxTimeChanged
+            Me.m_fpMaxTime.Release()
 
         End If
 
@@ -258,8 +265,8 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btn2.Click
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
 
         Try
             m_plugin.Create1DimParams("MaxRelFeedingTime")
@@ -333,7 +340,14 @@ Public Class frmMSE
         End Try
     End Sub
 
-#End Region ' Control events
+    Private Sub OnMaxTimeChanged(sender As Object, args As EventArgs)
+        Try
+            Me.m_plugin.NMaxTime = CSng(Me.m_fpMaxTime.Value)
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE:OnMaxAttemptsChanged")
+        End Try
+    End Sub
 
+#End Region ' Control events
 
 End Class
