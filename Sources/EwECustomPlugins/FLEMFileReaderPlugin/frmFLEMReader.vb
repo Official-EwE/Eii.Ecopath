@@ -30,6 +30,7 @@ Public Class frmFLEMReader
 
     Private m_plugin As cFLEMPluginPoint
     Private m_bChanged As Boolean = False
+    Private m_isInitializing As Boolean
 
     Public Sub New(ByVal uic As cUIContext, ByVal plugin As cFLEMPluginPoint)
         MyBase.New()
@@ -43,22 +44,33 @@ Public Class frmFLEMReader
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_tbxForceFile.Text = m_plugin.ForceFile
-        Me.m_chkForcePP.Checked = m_plugin.ForcePPSalinity
-        Me.m_chkForceHabCap.Checked = m_plugin.VaryHabCapWithCultch
+        Try
 
-        Me.LoadGroups(Me.m_cmbHabCap)
+            Me.m_isInitializing = True
 
-        If m_plugin.HabCapModGroup <= Me.Core.nGroups Then
-            m_cmbHabCap.SelectedIndex = m_plugin.HabCapModGroup - 1
-        End If
+            Me.m_tbxForceFile.Text = m_plugin.ForceFile
+            Me.m_chkForcePP.Checked = m_plugin.ForcePPSalinity
+            Me.m_chkForceHabCap.Checked = m_plugin.VaryHabCapWithCultch
+            Me.m_chkUsePPMod.Checked = m_plugin.UsePPModifier
 
-        Me.m_bChanged = False
-        Me.UpdateControls()
+            Me.LoadGroups(Me.m_cmbHabCap)
 
-        If Me.Modal Then
-            Me.CenterToScreen()
-        End If
+            If m_plugin.HabCapModGroup <= Me.Core.nGroups Then
+                m_cmbHabCap.SelectedIndex = m_plugin.HabCapModGroup - 1
+            End If
+
+            Me.m_bChanged = False
+            Me.UpdateControls()
+
+            If Me.Modal Then
+                Me.CenterToScreen()
+            End If
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString + ".OnLoad() Exception: " + ex.Message)
+        End Try
+
+        Me.m_isInitializing = False
 
     End Sub
 
@@ -97,6 +109,15 @@ Public Class frmFLEMReader
         Handles m_chkForceHabCap.CheckedChanged
         Try
             'm_plugin.VaryHabCapWithCultch = m_chkForceHabCap.Checked
+            Me.SetChanged()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+
+    Private Sub OnchkUsePPMod_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles m_chkUsePPMod.CheckedChanged
+        Try
             Me.SetChanged()
         Catch ex As Exception
 
@@ -170,13 +191,31 @@ Public Class frmFLEMReader
 
     Private Sub Apply()
 
-        Me.m_plugin.ForceFile = Me.m_tbxForceFile.Text
-        Me.m_plugin.HabCapModGroup = m_cmbHabCap.SelectedIndex + 1
-        Me.m_plugin.VaryHabCapWithCultch = m_chkForceHabCap.Checked
-        Me.m_plugin.ForcePPSalinity = Me.m_chkForcePP.Checked
+        Try
 
-        My.Settings.ForceFile = Me.m_plugin.ForceFile
-        My.Settings.Save()
+            If Me.m_isInitializing Then
+                'Don't save the changes during initialization
+                Exit Sub
+            End If
+
+            'update the plugin with the values from the interface
+            Me.m_plugin.ForceFile = Me.m_tbxForceFile.Text
+            Me.m_plugin.HabCapModGroup = m_cmbHabCap.SelectedIndex + 1
+
+            Me.m_plugin.VaryHabCapWithCultch = m_chkForceHabCap.Checked
+            Me.m_plugin.ForcePPSalinity = Me.m_chkForcePP.Checked
+            Me.m_plugin.UsePPModifier = Me.m_chkUsePPMod.Checked
+
+            'Now save the updated values to the settings
+            'VaryHabCapWithCultch is NOT saved in the Setting
+            My.Settings.ForceFile = Me.m_plugin.ForceFile
+            My.Settings.UsePPModifier = Me.m_plugin.UsePPModifier
+            My.Settings.ForcePPSalinity = Me.m_plugin.ForcePPSalinity
+            My.Settings.Save()
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.m_chkUsePPMod.ToString + ".Apply() Exception: " + ex.Message)
+        End Try
 
     End Sub
 
@@ -192,5 +231,6 @@ Public Class frmFLEMReader
     End Sub
 
 #End Region ' Internals
+
 
 End Class

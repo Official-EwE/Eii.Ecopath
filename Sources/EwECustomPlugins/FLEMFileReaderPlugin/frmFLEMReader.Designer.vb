@@ -49,6 +49,7 @@ Partial Class frmFLEMReader
         Me.m_tbxForceFile = New System.Windows.Forms.TextBox()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_chkUsePPMod = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'm_chkForcePP
@@ -105,12 +106,19 @@ Partial Class frmFLEMReader
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
+        'm_chkUsePPMod
+        '
+        resources.ApplyResources(Me.m_chkUsePPMod, "m_chkUsePPMod")
+        Me.m_chkUsePPMod.Name = "m_chkUsePPMod"
+        Me.m_chkUsePPMod.UseVisualStyleBackColor = True
+        '
         'frmFLEMReader
         '
         Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_chkUsePPMod)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_tbxForceFile)
@@ -137,4 +145,5 @@ Partial Class frmFLEMReader
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_cmbHabCap As System.Windows.Forms.ComboBox
     Private WithEvents m_btnChooseFile As System.Windows.Forms.Button
+    Friend WithEvents m_chkUsePPMod As System.Windows.Forms.CheckBox
 End Class

@@ -5,5 +5,11 @@
     <Setting Name="ForceFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Assessments\Florida oysters\AP666nutsalt.nuo</Value>
     </Setting>
+    <Setting Name="UsePPModifier" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ForcePPSalinity" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
