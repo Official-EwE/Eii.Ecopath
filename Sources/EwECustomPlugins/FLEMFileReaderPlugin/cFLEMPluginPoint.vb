@@ -74,7 +74,12 @@ Public Class cFLEMPluginPoint
     ''' <remarks></remarks>
     Private Sub InitSalinityFromEcosim()
 
-        If ForcePPSalinity = False Then Return
+        If ForcePPSalinity = False Then
+            'Turn OFF the Spatial fields
+            SpaceData.SpatialFieldsInUse = False
+            SpaceData.nSpatialFields = 0
+            Return
+        End If
 
         'Turn on the Spatial fields
         SpaceData.SpatialFieldsInUse = True
@@ -169,7 +174,9 @@ Public Class cFLEMPluginPoint
                         For igrp As Integer = 1 To m_core.nGroups
                             SpaceData.SpatialField(i, j, igrp) = ForceData(iForce, jForce, 2)
                         Next
-                        SpaceData.RelPP(i, j) = (ForceData(iForce, jForce, 1) - 0.5) ^ 0.5 'reduce the strong Flem nutrient effect here by using lower mean, power
+                        'SpaceData.RelPP(i, j) = (ForceData(iForce, jForce, 1) - 0.5) ^ 0.5 'reduce the strong Flem nutrient effect here by using lower mean, power
+                        'No modifier, use pp as it appears in the .nuo file
+                        SpaceData.RelPP(i, j) = ForceData(iForce, jForce, 1)
                     Next
                 Next
 
