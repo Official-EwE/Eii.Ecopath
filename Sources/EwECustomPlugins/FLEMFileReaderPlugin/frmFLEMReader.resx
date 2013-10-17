@@ -144,14 +144,14 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_chkForcePP.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnChooseFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_btnChooseFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>358, 12</value>
+    <value>432, 12</value>
   </data>
   <data name="m_btnChooseFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -172,13 +172,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnChooseFile.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_chkForceHabCap.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_chkForceHabCap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 63</value>
+    <value>12, 86</value>
   </data>
   <data name="m_chkForceHabCap.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 17</value>
@@ -199,16 +199,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_chkForceHabCap.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_cmbHabCap.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbHabCap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>198, 84</value>
+    <value>198, 107</value>
   </data>
   <data name="m_cmbHabCap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 21</value>
+    <value>309, 21</value>
   </data>
   <data name="m_cmbHabCap.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -223,13 +223,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cmbHabCap.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_lblGroup.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>31, 87</value>
+    <value>31, 110</value>
   </data>
   <data name="m_lblGroup.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 13</value>
@@ -250,7 +250,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblGroup.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lblForcingFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -277,7 +277,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblForcingFile.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_tbxForceFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -286,7 +286,7 @@
     <value>79, 14</value>
   </data>
   <data name="m_tbxForceFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>273, 20</value>
+    <value>347, 20</value>
   </data>
   <data name="m_tbxForceFile.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -301,13 +301,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxForceFile.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>277, 125</value>
+    <value>351, 199</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -331,13 +331,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>358, 125</value>
+    <value>432, 199</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -361,6 +361,33 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_chkUsePPMod.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkUsePPMod.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 63</value>
+  </data>
+  <data name="m_chkUsePPMod.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 17</value>
+  </data>
+  <data name="m_chkUsePPMod.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_chkUsePPMod.Text" xml:space="preserve">
+    <value>Use PP Modifier (relative PP = (input - 0.5) ^ 0.5)</value>
+  </data>
+  <data name="&gt;&gt;m_chkUsePPMod.Name" xml:space="preserve">
+    <value>m_chkUsePPMod</value>
+  </data>
+  <data name="&gt;&gt;m_chkUsePPMod.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkUsePPMod.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_chkUsePPMod.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -370,7 +397,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>445, 160</value>
+    <value>519, 234</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -385,6 +412,6 @@
     <value>frmFLEMReader</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9593.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.4.9793.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

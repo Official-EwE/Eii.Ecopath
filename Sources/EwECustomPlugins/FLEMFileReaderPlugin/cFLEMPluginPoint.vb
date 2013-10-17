@@ -36,8 +36,9 @@ Public Class cFLEMPluginPoint
 
     Public Property ForcePPSalinity As Boolean
     Public Property VaryHabCapWithCultch As Boolean
-    Public Property ForceFile As String = My.Settings.ForceFile
-    Public Property HabCapModGroup As Integer = 6 'Clutch
+    Public Property ForceFile As String
+    Public Property HabCapModGroup As Integer
+    Public Property UsePPModifier As Boolean
     Private m_core As EwECore.cCore
 
 #End Region 'Public data
@@ -62,6 +63,25 @@ Public Class cFLEMPluginPoint
     Private m_frmInterface As frmFLEMReader
 
 #End Region 'Plugin stuff
+
+
+#Region "Construction"
+
+    Public Sub New()
+
+        Try
+            Me.ForcePPSalinity = My.Settings.ForcePPSalinity
+            Me.ForceFile = My.Settings.ForceFile
+            Me.UsePPModifier = My.Settings.UsePPModifier
+
+            Me.HabCapModGroup = 6 'Clutch
+        Catch ex As Exception
+            cLog.Write(ex, "cFlemPluginPoint.New()")
+        End Try
+
+    End Sub
+
+#End Region
 
 #End Region 'Private data
 
@@ -174,9 +194,14 @@ Public Class cFLEMPluginPoint
                         For igrp As Integer = 1 To m_core.nGroups
                             SpaceData.SpatialField(i, j, igrp) = ForceData(iForce, jForce, 2)
                         Next
-                        'SpaceData.RelPP(i, j) = (ForceData(iForce, jForce, 1) - 0.5) ^ 0.5 'reduce the strong Flem nutrient effect here by using lower mean, power
-                        'No modifier, use pp as it appears in the .nuo file
-                        SpaceData.RelPP(i, j) = ForceData(iForce, jForce, 1)
+
+                        If Me.UsePPModifier Then
+                            'reduce the strong Flem nutrient effect here by using lower mean, power
+                            SpaceData.RelPP(i, j) = (ForceData(iForce, jForce, 1) - 0.5) ^ 0.5
+                        Else
+                            'No modifier, use pp as it appears in the .nuo file
+                            SpaceData.RelPP(i, j) = ForceData(iForce, jForce, 1)
+                        End If
                     Next
                 Next
 
@@ -252,8 +277,6 @@ Public Class cFLEMPluginPoint
             Me.SimData = EcoSimModel.EcosimData
             Me.PathData = EcoPathModel.EcopathData
             Me.SpaceData = EcoSpaceModel.EcoSpaceData
-            Me.ForcePPSalinity = False
-            Me.VaryHabCapWithCultch = False
 
         Catch ex As Exception
 
@@ -419,4 +442,5 @@ Public Class cFLEMPluginPoint
 
 #End Region
 
+ 
 End Class
