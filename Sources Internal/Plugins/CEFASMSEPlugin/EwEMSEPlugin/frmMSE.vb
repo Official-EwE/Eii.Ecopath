@@ -350,4 +350,14 @@ Public Class frmMSE
 
 #End Region ' Control events
 
+    Private Sub btnDecreaseEffort_Click(sender As Object, e As System.EventArgs) Handles btnDecreaseEffort.Click
+
+        Try
+            Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
+            frmMaxDecreaseEfforts.Init(Me.UIContext, Me.m_plugin)
+            frmMaxDecreaseEfforts.ShowDialog(Me)
+        Catch ex As Exception
+
+        End Try
+    End Sub
 End Class

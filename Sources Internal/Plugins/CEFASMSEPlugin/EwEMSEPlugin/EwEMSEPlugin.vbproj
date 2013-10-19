@@ -80,11 +80,6 @@
       <HintPath>Includes\alglibnet2.dll</HintPath>
     </Reference>
     <Reference Include="LumenWorks.Framework.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\ScientificInterfaceShared\Includes\Microsoft.Office.Interop.Excel.dll</HintPath>
-    </Reference>
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
@@ -123,6 +118,12 @@
   <ItemGroup>
     <Compile Include="cMSE.vb" />
     <Compile Include="cMSEStateMonitor.vb" />
+    <Compile Include="frmEditMaxChangeEffort.Designer.vb">
+      <DependentUpon>frmEditMaxChangeEffort.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEditMaxChangeEffort.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTFMpolicy2.designer.vb">
       <DependentUpon>frmTFMpolicy2.vb</DependentUpon>
     </Compile>
@@ -183,6 +184,9 @@
     <Compile Include="xalglib.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmEditMaxChangeEffort.resx">
+      <DependentUpon>frmEditMaxChangeEffort.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmTFMpolicy2.resx">
       <DependentUpon>frmTFMpolicy2.vb</DependentUpon>
     </EmbeddedResource>

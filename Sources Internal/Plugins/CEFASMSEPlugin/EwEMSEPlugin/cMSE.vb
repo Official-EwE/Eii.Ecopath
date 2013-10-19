@@ -1062,16 +1062,9 @@ Public Class cMSE
     End Sub
 
     Public Function DirichletSample2(ByVal nDimensions As Integer, ByVal alpha() As Single, ByRef DietMultiplier As Double)
-        Dim U As Double
-        Dim X As Double
-        Dim V As Double
-        Dim a As Double
-        Dim b As Double
         Dim gamma(nDimensions - 1) As Single
         Dim dirichlet(nDimensions - 1) As Single
         Dim sumofgamma As Single
-        Dim FoundX As Boolean
-        Const TempDietMultiplier As Double = 10000
         Dim GammaGenerator As New GammaDistribution
 
         For i = 0 To alpha.Length() - 1
@@ -2269,7 +2262,6 @@ stepend:
         Dim mincost As Double = 1000000
         Dim Fleets2Fit As List(Of Integer) = New List(Of Integer)
         Dim QMult(_ecosim.EcosimData.nGroups) As Double
-        Dim xgrp As Integer
         Dim tempFConservation As Double
         'used so that we don't repeat same groups when cycling through HCRs
         Dim LastYearsEffort(_ecosim.EcopathData.NumFleet - 1) As Double
