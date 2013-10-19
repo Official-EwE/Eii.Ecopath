@@ -143,8 +143,7 @@ Public Class frmMSE
         Me.m_plStep1.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.Idle)
         Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
-        Me.m_plStep4.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
-        Me.m_plStep5.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
+        Me.m_plStep4.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
 
         Me.m_tbxPath.Text = Me.m_plugin.DataPath
 
@@ -187,15 +186,17 @@ Public Class frmMSE
     Private Sub OnCreateModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnCreateModels.Click
 
-        m_plugin.Create1DimParams("MaxRelFeedingTime")
-        m_plugin.Create1DimParams("FeedingTimeAdjustRate")
-        m_plugin.Create1DimParams("OtherMortFeedingTime")
-        m_plugin.Create1DimParams("PredEffectFeedingTime")
-        m_plugin.Create1DimParams("DenDepCatchability")
-        m_plugin.Create1DimParams("QBMaxxQBio")
-        m_plugin.Create1DimParams("SwitchingPower")
-        m_plugin.CreateVulnerabilities()
-        m_plugin.GenerateEcopathParamaters()
+        Me.m_plugin.Create1DimParams("MaxRelFeedingTime")
+        Me.m_plugin.Create1DimParams("FeedingTimeAdjustRate")
+        Me.m_plugin.Create1DimParams("OtherMortFeedingTime")
+        Me.m_plugin.Create1DimParams("PredEffectFeedingTime")
+        Me.m_plugin.Create1DimParams("DenDepCatchability")
+        Me.m_plugin.Create1DimParams("QBMaxxQBio")
+        Me.m_plugin.Create1DimParams("SwitchingPower")
+        Me.m_plugin.CreateVulnerabilities()
+        Me.m_plugin.GenerateEcopathParamaters()
+
+        Me.UpdateControls()
 
     End Sub
 
@@ -265,25 +266,6 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-
-        Try
-            m_plugin.Create1DimParams("MaxRelFeedingTime")
-            m_plugin.Create1DimParams("FeedingTimeAdjustRate")
-            m_plugin.Create1DimParams("OtherMortFeedingTime")
-            m_plugin.Create1DimParams("PredEffectFeedingTime")
-            m_plugin.Create1DimParams("DenDepCatchability")
-            m_plugin.Create1DimParams("QBMaxxQBio")
-            m_plugin.Create1DimParams("SwitchingPower")
-            'mMSE.Create2DimParams("DietComposition")
-            m_plugin.CreateVulnerabilities()
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
     Private Sub btnDistParams_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnReviewDistParms.Click
 
@@ -348,9 +330,7 @@ Public Class frmMSE
         End Try
     End Sub
 
-#End Region ' Control events
-
-    Private Sub btnDecreaseEffort_Click(sender As Object, e As System.EventArgs) Handles btnDecreaseEffort.Click
+    Private Sub OnDecreaseEffort(sender As Object, e As System.EventArgs) Handles btnDecreaseEffort.Click
 
         Try
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
@@ -360,4 +340,7 @@ Public Class frmMSE
 
         End Try
     End Sub
+
+#End Region ' Control events
+
 End Class

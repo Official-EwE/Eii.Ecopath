@@ -65,18 +65,16 @@ Partial Class frmMSE
         Me.m_lblMaxTime = New System.Windows.Forms.Label()
         Me.m_tbxMaxAttempts = New System.Windows.Forms.TextBox()
         Me.m_tbxMaxTime = New System.Windows.Forms.TextBox()
-        Me.m_plStep5 = New System.Windows.Forms.Panel()
-        Me.m_hdrStep5 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_lblNModels = New System.Windows.Forms.Label()
         Me.m_plStep4 = New System.Windows.Forms.Panel()
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblNModels = New System.Windows.Forms.Label()
+        Me.m_plStep3 = New System.Windows.Forms.Panel()
+        Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
         Me.m_tbxArea = New System.Windows.Forms.TextBox()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_pbCefas = New System.Windows.Forms.PictureBox()
-        Me.m_plStep3 = New System.Windows.Forms.Panel()
-        Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAreaUnit = New System.Windows.Forms.Label()
         Me.m_btnReviewDistParms = New System.Windows.Forms.Button()
         Me.m_tlpLayout = New System.Windows.Forms.TableLayoutPanel()
@@ -92,10 +90,9 @@ Partial Class frmMSE
         Me.btnDecreaseEffort = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_plStep5.SuspendLayout()
         Me.m_plStep4.SuspendLayout()
-        CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep3.SuspendLayout()
+        CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpLayout.SuspendLayout()
         Me.m_plStep1.SuspendLayout()
         Me.SuspendLayout()
@@ -216,36 +213,14 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_tbxMaxTime, "m_tbxMaxTime")
         Me.m_tbxMaxTime.Name = "m_tbxMaxTime"
         '
-        'm_plStep5
-        '
-        Me.m_plStep5.Controls.Add(Me.m_hdrStep5)
-        Me.m_plStep5.Controls.Add(Me.m_tbxNModels2Run)
-        Me.m_plStep5.Controls.Add(Me.m_lblNYears)
-        Me.m_plStep5.Controls.Add(Me.m_lblNModels)
-        Me.m_plStep5.Controls.Add(Me.m_btnRun)
-        Me.m_plStep5.Controls.Add(Me.m_tbxNYearsProject)
-        resources.ApplyResources(Me.m_plStep5, "m_plStep5")
-        Me.m_plStep5.Name = "m_plStep5"
-        '
-        'm_hdrStep5
-        '
-        Me.m_hdrStep5.CanCollapseParent = False
-        Me.m_hdrStep5.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrStep5, "m_hdrStep5")
-        Me.m_hdrStep5.IsCollapsed = False
-        Me.m_hdrStep5.Name = "m_hdrStep5"
-        '
-        'm_lblNModels
-        '
-        resources.ApplyResources(Me.m_lblNModels, "m_lblNModels")
-        Me.m_lblNModels.Name = "m_lblNModels"
-        '
         'm_plStep4
         '
         Me.m_plStep4.Controls.Add(Me.m_hdrStep4)
-        Me.m_plStep4.Controls.Add(Me.m_btnReviewTFM)
-        Me.m_plStep4.Controls.Add(Me.m_lblAvailableStrategies)
-        Me.m_plStep4.Controls.Add(Me.m_tbxNumAvailableFishingStrategies)
+        Me.m_plStep4.Controls.Add(Me.m_tbxNModels2Run)
+        Me.m_plStep4.Controls.Add(Me.m_lblNYears)
+        Me.m_plStep4.Controls.Add(Me.m_lblNModels)
+        Me.m_plStep4.Controls.Add(Me.m_btnRun)
+        Me.m_plStep4.Controls.Add(Me.m_tbxNYearsProject)
         resources.ApplyResources(Me.m_plStep4, "m_plStep4")
         Me.m_plStep4.Name = "m_plStep4"
         '
@@ -256,6 +231,28 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_hdrStep4, "m_hdrStep4")
         Me.m_hdrStep4.IsCollapsed = False
         Me.m_hdrStep4.Name = "m_hdrStep4"
+        '
+        'm_lblNModels
+        '
+        resources.ApplyResources(Me.m_lblNModels, "m_lblNModels")
+        Me.m_lblNModels.Name = "m_lblNModels"
+        '
+        'm_plStep3
+        '
+        Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
+        Me.m_plStep3.Controls.Add(Me.m_btnReviewTFM)
+        Me.m_plStep3.Controls.Add(Me.m_lblAvailableStrategies)
+        Me.m_plStep3.Controls.Add(Me.m_tbxNumAvailableFishingStrategies)
+        resources.ApplyResources(Me.m_plStep3, "m_plStep3")
+        Me.m_plStep3.Name = "m_plStep3"
+        '
+        'm_hdrStep3
+        '
+        Me.m_hdrStep3.CanCollapseParent = False
+        Me.m_hdrStep3.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrStep3, "m_hdrStep3")
+        Me.m_hdrStep3.IsCollapsed = False
+        Me.m_hdrStep3.Name = "m_hdrStep3"
         '
         'm_lblAvailableStrategies
         '
@@ -276,7 +273,6 @@ Partial Class frmMSE
         'm_lblArea
         '
         resources.ApplyResources(Me.m_lblArea, "m_lblArea")
-        Me.m_lblArea.MaximumSize = New System.Drawing.Size(100, 0)
         Me.m_lblArea.Name = "m_lblArea"
         '
         'm_pbCefas
@@ -286,27 +282,9 @@ Partial Class frmMSE
         Me.m_pbCefas.Name = "m_pbCefas"
         Me.m_pbCefas.TabStop = False
         '
-        'm_plStep3
-        '
-        Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
-        Me.m_plStep3.Controls.Add(Me.m_lblAreaUnit)
-        Me.m_plStep3.Controls.Add(Me.m_lblArea)
-        Me.m_plStep3.Controls.Add(Me.m_tbxArea)
-        resources.ApplyResources(Me.m_plStep3, "m_plStep3")
-        Me.m_plStep3.Name = "m_plStep3"
-        '
-        'm_hdrStep3
-        '
-        Me.m_hdrStep3.CanCollapseParent = False
-        Me.m_hdrStep3.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrStep3, "m_hdrStep3")
-        Me.m_hdrStep3.IsCollapsed = False
-        Me.m_hdrStep3.Name = "m_hdrStep3"
-        '
         'm_lblAreaUnit
         '
         resources.ApplyResources(Me.m_lblAreaUnit, "m_lblAreaUnit")
-        Me.m_lblAreaUnit.MaximumSize = New System.Drawing.Size(100, 0)
         Me.m_lblAreaUnit.Name = "m_lblAreaUnit"
         '
         'm_btnReviewDistParms
@@ -321,17 +299,18 @@ Partial Class frmMSE
         Me.m_tlpLayout.Controls.Add(Me.m_plStep2, 0, 1)
         Me.m_tlpLayout.Controls.Add(Me.m_plStep3, 0, 2)
         Me.m_tlpLayout.Controls.Add(Me.m_plStep4, 0, 3)
-        Me.m_tlpLayout.Controls.Add(Me.m_plStep5, 0, 4)
-        Me.m_tlpLayout.Controls.Add(Me.m_pbCefas, 0, 5)
+        Me.m_tlpLayout.Controls.Add(Me.m_pbCefas, 0, 4)
         Me.m_tlpLayout.Controls.Add(Me.m_plStep1, 0, 0)
-        Me.m_tlpLayout.MinimumSize = New System.Drawing.Size(450, 500)
         Me.m_tlpLayout.Name = "m_tlpLayout"
         '
         'm_plStep1
         '
         Me.m_plStep1.Controls.Add(Me.m_lblDataPath)
+        Me.m_plStep1.Controls.Add(Me.m_lblAreaUnit)
         Me.m_plStep1.Controls.Add(Me.m_rbCustomPath)
+        Me.m_plStep1.Controls.Add(Me.m_lblArea)
         Me.m_plStep1.Controls.Add(Me.m_tbxPath)
+        Me.m_plStep1.Controls.Add(Me.m_tbxArea)
         Me.m_plStep1.Controls.Add(Me.m_lblInputParams)
         Me.m_plStep1.Controls.Add(Me.m_rbEwEDefault)
         Me.m_plStep1.Controls.Add(Me.m_tbxParamStatus)
@@ -362,7 +341,6 @@ Partial Class frmMSE
         'm_lblInputParams
         '
         resources.ApplyResources(Me.m_lblInputParams, "m_lblInputParams")
-        Me.m_lblInputParams.MaximumSize = New System.Drawing.Size(100, 0)
         Me.m_lblInputParams.Name = "m_lblInputParams"
         '
         'm_rbEwEDefault
@@ -409,13 +387,11 @@ Partial Class frmMSE
         Me.m_plStep2.ResumeLayout(False)
         Me.m_plStep2.PerformLayout()
         CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_plStep5.ResumeLayout(False)
-        Me.m_plStep5.PerformLayout()
         Me.m_plStep4.ResumeLayout(False)
         Me.m_plStep4.PerformLayout()
-        CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_plStep3.ResumeLayout(False)
         Me.m_plStep3.PerformLayout()
+        CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpLayout.ResumeLayout(False)
         Me.m_plStep1.ResumeLayout(False)
         Me.m_plStep1.PerformLayout()
@@ -433,20 +409,18 @@ Partial Class frmMSE
     Private WithEvents m_lblMassBalanceTol As System.Windows.Forms.Label
     Private WithEvents m_btnReviewTFM As System.Windows.Forms.Button
     Private WithEvents m_plStep2 As System.Windows.Forms.Panel
-    Private WithEvents m_plStep5 As System.Windows.Forms.Panel
-    Private WithEvents m_lblNModels As System.Windows.Forms.Label
     Private WithEvents m_plStep4 As System.Windows.Forms.Panel
+    Private WithEvents m_lblNModels As System.Windows.Forms.Label
+    Private WithEvents m_plStep3 As System.Windows.Forms.Panel
     Private WithEvents m_pbCefas As System.Windows.Forms.PictureBox
     Private WithEvents m_lblArea As System.Windows.Forms.Label
-    Private WithEvents m_plStep3 As System.Windows.Forms.Panel
     Private WithEvents m_btnReviewDistParms As System.Windows.Forms.Button
     Private WithEvents m_tbxArea As System.Windows.Forms.TextBox
     Private WithEvents m_tbxNTrials As System.Windows.Forms.TextBox
     Private WithEvents m_hdrStep2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_hdrStep4 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrStep3 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tlpLayout As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_hdrStep5 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrStep4 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_plStep1 As System.Windows.Forms.Panel
     Private WithEvents m_hdrStep1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_rbCustomPath As System.Windows.Forms.RadioButton
