@@ -1261,8 +1261,8 @@ stepend:
             'mCore.EcoPathGroupInputs(iPred + 1).DietComp(0) = 0
             If (SumInteractions(iPred) = 0) Then    'No need to do any of this unless there is at least 1 prey for this parameter
                 'Set all values to zero - if running slow might want to consider how this could be skipped - possibly setting whole array to zero at start
-                For i = 0 To mCore.nGroups
-                    ecopathData.DCInput(iPred + 1, i) = 0
+                For iPrey = 0 To mCore.nGroups
+                    ecopathData.DCInput(iPred + 1, iPrey) = 0
                 Next
             Else
                 ' DirichStopWatch.Start()
@@ -1577,9 +1577,9 @@ stepend:
                                 Dim csv_dietout As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"), False)
                                 Try
                                     For iPrey = 0 To nGroups
-                                        For iPred = 1 To nGroups
+                                        For iPred = 1 To mCore.nLivingGroups - 1
                                             If iPred > 1 Then csv_dietout.Write(",")
-                                            csv_dietout.Write(cStringUtils.FormatNumber(Me._ecopath.EcopathData.DC(1, iPrey)))
+                                            csv_dietout.Write(cStringUtils.FormatNumber(Me._ecopath.EcopathData.DC(iPred, iPrey)))
                                         Next
                                         csv_dietout.WriteLine()
                                     Next
