@@ -1,6 +1,29 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
+' Aquaculture Science (Cefas). 
+'
+' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+' ===============================================================================
+'
+Imports ScientificInterfaceShared.Forms
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmEditDecreaseEffort
-    Inherits System.Windows.Forms.Form
+    Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -22,6 +45,7 @@ Partial Class frmEditDecreaseEffort
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEditDecreaseEffort))
         Me.dgvMaxDecreaseEffort = New System.Windows.Forms.DataGridView()
         Me.FleetNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.FleetName = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -36,65 +60,58 @@ Partial Class frmEditDecreaseEffort
         Me.dgvMaxDecreaseEffort.AllowUserToAddRows = False
         Me.dgvMaxDecreaseEffort.AllowUserToDeleteRows = False
         Me.dgvMaxDecreaseEffort.AllowUserToResizeRows = False
+        resources.ApplyResources(Me.dgvMaxDecreaseEffort, "dgvMaxDecreaseEffort")
         Me.dgvMaxDecreaseEffort.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMaxDecreaseEffort.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.FleetNumber, Me.FleetName, Me.MaxDecrease})
-        Me.dgvMaxDecreaseEffort.Location = New System.Drawing.Point(12, 12)
         Me.dgvMaxDecreaseEffort.Name = "dgvMaxDecreaseEffort"
-        Me.dgvMaxDecreaseEffort.Size = New System.Drawing.Size(502, 359)
-        Me.dgvMaxDecreaseEffort.TabIndex = 0
+        Me.dgvMaxDecreaseEffort.RowHeadersVisible = False
         '
         'FleetNumber
         '
-        Me.FleetNumber.HeaderText = "Fleet Number"
+        resources.ApplyResources(Me.FleetNumber, "FleetNumber")
         Me.FleetNumber.Name = "FleetNumber"
         '
         'FleetName
         '
-        Me.FleetName.HeaderText = "Fleet Name"
+        resources.ApplyResources(Me.FleetName, "FleetName")
         Me.FleetName.Name = "FleetName"
         '
         'MaxDecrease
         '
-        Me.MaxDecrease.HeaderText = "Maximum percentage decrease in effort"
+        resources.ApplyResources(Me.MaxDecrease, "MaxDecrease")
         Me.MaxDecrease.Name = "MaxDecrease"
-        Me.MaxDecrease.Width = 220
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(274, 388)
+        resources.ApplyResources(Me.btnCancel, "btnCancel")
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(117, 26)
-        Me.btnCancel.TabIndex = 1
-        Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(397, 388)
+        resources.ApplyResources(Me.btnOK, "btnOK")
         Me.btnOK.Name = "btnOK"
-        Me.btnOK.Size = New System.Drawing.Size(117, 26)
-        Me.btnOK.TabIndex = 2
-        Me.btnOK.Text = "OK"
         Me.btnOK.UseVisualStyleBackColor = True
         '
         'frmEditDecreaseEffort
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AcceptButton = Me.btnOK
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(535, 427)
+        Me.CancelButton = Me.btnCancel
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.dgvMaxDecreaseEffort)
         Me.Name = "frmEditDecreaseEffort"
-        Me.Text = "Edit maxim decrease in fishing effort"
         CType(Me.dgvMaxDecreaseEffort, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents dgvMaxDecreaseEffort As System.Windows.Forms.DataGridView
     Friend WithEvents FleetNumber As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents FleetName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents MaxDecrease As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents btnOK As System.Windows.Forms.Button
+    Private WithEvents btnCancel As System.Windows.Forms.Button
+    Private WithEvents btnOK As System.Windows.Forms.Button
+    Private WithEvents dgvMaxDecreaseEffort As System.Windows.Forms.DataGridView
 End Class
