@@ -827,6 +827,9 @@ Public Class cMSE
         Dim NYearsProject = Me.NYearsProject
         Dim BiomassProjected(NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
+        Dim msgReport As New cFeedbackMessage("?", eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Information, eMessageReplyStyle.OK)
+        msgReport.Hyperlink = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Results)
+
         OriginalNTimesteps = _ecosim.EcosimData.NTimes
 
         SaveOriginalParameters()
@@ -835,11 +838,13 @@ Public Class cMSE
         swGroup = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Results.csv"), False)
         If Me.mCore.SaveWithFileHeader Then swGroup.WriteLine(Me.mCore.DefaultFileHeader(eAutosaveTypes.Ecosim))
         swGroup.WriteLine("Iteration,Strategy,GroupNumber,GroupName,ResultName,Value")
+        msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Results.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
         'Create the csv writer for writing out individual fleets catches of each group
         swFleet = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Fleet.csv"), False)
         If Me.mCore.SaveWithFileHeader Then swFleet.WriteLine(Me.mCore.DefaultFileHeader(eAutosaveTypes.Ecosim))
         swFleet.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
+        msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Fleet.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
         'Count the number of live groups which aren't primary producers
         nLivingGroupsMinusPPers = mCore.nLivingGroups
@@ -881,6 +886,7 @@ Public Class cMSE
 
             Dim strFile As String = cFileUtils.ToValidFileName(mCore.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False)
             Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTraj2, strFile))
+            msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
             Debug.Assert(writer IsNot Nothing)
 
@@ -977,6 +983,8 @@ Public Class cMSE
                     TrajectoryCsv = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv"), False)
                     If Me.mCore.SaveWithFileHeader Then TrajectoryCsv.WriteLine(Me.mCore.DefaultFileHeader(eAutosaveTypes.Ecosim))
                     TrajectoryCsv.Write("GroupNumber,Group,Strategy")
+                    msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Trial" & iTrial & ".csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
                     For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                         TrajectoryCsv.Write("," & cStringUtils.FormatNumber(iTime))
                     Next
@@ -1094,10 +1102,8 @@ Public Class cMSE
         mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear)
 
         'Provide user with a message stating how many of the Trials produced reasonable dynamics
-        Me.AskUser(String.Format(My.Resources.PROMPT_TRIAL_REPORT, (nTrials - nFailedParameterisations), nTrials, CInt((nTrials - nFailedParameterisations) * 100 / nTrials)), _
-                    eMessageReplyStyle.OK, eMessageImportance.Information)
-
-        ' ToDo_JS: add info about what data is written to the output directory
+        msgReport.Message = String.Format(My.Resources.PROMPT_TRIAL_REPORT, (nTrials - nFailedParameterisations), nTrials, CInt((nTrials - nFailedParameterisations) * 100 / nTrials))
+        Me.Core.Messages.SendMessage(msgReport)
 
         cMSEUtils.ReleaseWriter(swGroup)
         cMSEUtils.ReleaseWriter(swFleet)

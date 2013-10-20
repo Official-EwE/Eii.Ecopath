@@ -184,6 +184,9 @@
     <Compile Include="xalglib.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmEditMaxChangeEffort.resx">
+      <DependentUpon>frmEditMaxChangeEffort.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmTFMpolicy2.resx">
       <DependentUpon>frmTFMpolicy2.vb</DependentUpon>
     </EmbeddedResource>
