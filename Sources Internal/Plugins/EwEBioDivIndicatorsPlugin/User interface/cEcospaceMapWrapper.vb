@@ -217,6 +217,12 @@ Public Class cEcospaceMapWrapper
             cMapDrawerBase.CalcMapAreas(Me.m_picbox.ClientRectangle, lInfo.Count, iInRow, iInCol, _
                                         iNumPlotsHorz, iNumPlotsVert, originList, rectList)
 
+            Using g As Graphics = Graphics.FromImage(Me.m_bmp)
+                Using br As New SolidBrush(Color.White)
+                    g.FillRectangle(br, 0, 0, Me.m_bmp.Width, Me.m_bmp.Height)
+                End Using
+            End Using
+
             For i As Integer = 0 To lInfo.Count - 1
                 Dim drawer As cEcospaceMapDrawer = Me.m_drawers(i)
 
