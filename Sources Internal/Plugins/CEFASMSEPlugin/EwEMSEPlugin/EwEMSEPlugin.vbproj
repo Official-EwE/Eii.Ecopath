@@ -118,7 +118,12 @@
   <ItemGroup>
     <Compile Include="cMSE.vb" />
     <Compile Include="cMSEStateMonitor.vb" />
-    <Compile Include="frmTFMpolicy2.designer.vb">
+    <Compile Include="frmEditMaxChangeEffort.Designer.vb">
+      <DependentUpon>frmEditMaxChangeEffort.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEditMaxChangeEffort.vb">
+      <SubType>Form</SubType>
+    </Compile>    <Compile Include="frmTFMpolicy2.designer.vb">
       <DependentUpon>frmTFMpolicy2.vb</DependentUpon>
     </Compile>
     <Compile Include="frmTFMpolicy2.vb">
@@ -208,6 +213,7 @@
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="App.config" />
+    <None Include="CefasMSE.licenseheader" />
     <None Include="Includes\alglibnet2" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

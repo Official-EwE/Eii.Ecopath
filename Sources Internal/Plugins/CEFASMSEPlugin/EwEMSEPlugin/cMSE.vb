@@ -37,8 +37,12 @@ Public Class cMSE
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimBeginTimestepPlugin
     Implements EwEPlugin.IMessageFilterPlugin
+    Implements EwEPlugin.IEcopathPlugin
+    Implements EwEPlugin.IEcosimPlugin
 
-    Public Strategies As New Strategies
+#Region " Internal vars "
+
+    Friend Strategies As New Strategies
     Private CurrentStrategy As Strategy
 
     Private MSEForm As frmMSE = Nothing
@@ -50,9 +54,9 @@ Public Class cMSE
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer
-    Private nPrimaryProducer As Integer
+    Private m_nPrimaryProducer As Integer
     Private ChangeInEffortLimits() As Double
-    Const NoHCR_F As Integer = -9999
+    Public Const NoHCR_F As Integer = -9999
 
     Private m_monitor As New cMSEStateMonitor(Me)
     Private m_bIsRunning As Boolean = False
@@ -83,6 +87,8 @@ Public Class cMSE
     Private m_mhSettings As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
 
+#End Region ' Internal vars
+
 #Region " Construction "
 
     Public Sub New()
@@ -94,10 +100,18 @@ Public Class cMSE
 #Region " Diagnostics and state management "
 
     Private Sub InvalidateConfiguration()
-        Me.m_monitor.Invalidate()
+
         Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
+        Me.m_nPrimaryProducer = cCore.NULL_VALUE
+
+        Me.m_monitor.Invalidate()
+
+        If Me.HasUI Then
+            MSEForm.UpdateState()
+        End If
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -201,13 +215,20 @@ Public Class cMSE
         reader = cMSEUtils.GetReader(strPath)
         If (reader Is Nothing) Then Return False
 
-        csv = New CsvReader(reader, True)
-
         ' Initialise correct to all zeros
         For i = 1 To mCore.nGroups
             correct(i - 1) = 0
         Next
 
+        ' Count the number of primary producers if not done yet
+        If (Me.m_nPrimaryProducer < 0) Then
+            Me.m_nPrimaryProducer = 0
+            For igrp = 1 To mCore.nGroups
+                If mCore.EcoPathGroupOutputs(igrp).IsProducer Then Me.m_nPrimaryProducer += 1
+            Next
+        End If
+
+        csv = New CsvReader(reader, True)
         Try
             'cycle through each of the living functional groups each time checking if it exists in the file
             ' JS 13Oct13: Changed the looping structure here. If csvreader fails to load a record it will repeat the last record!
@@ -280,14 +301,14 @@ Public Class cMSE
         Dim TotalFound As Integer = 0
         Dim bOK As Boolean = True
 
-        reader = cMSEUtils.GetReader(strPath)
-        If (reader Is Nothing) Then Return False
-
-        csv = New CsvReader(reader, True)
-
         'initialise correct to all zeros
         For i = 1 To mCore.nGroups
             correct(i - 1) = 0
+
+            reader = cMSEUtils.GetReader(strPath)
+            If (reader Is Nothing) Then Return False
+
+            csv = New CsvReader(reader, True)
         Next
 
         Try
@@ -297,7 +318,7 @@ Public Class cMSE
                 For xgrp = 1 To mCore.nGroups
                     If String.Compare(cMSEUtils.FromCSVField(csv("GroupName")), _ecopath.EcopathData.GroupName(xgrp), True) = 0 Then
                         correct(xgrp - 1) += 1
-                        Exit For
+                        ' Exit For ' JS: keep on checking to find duplicates
                     End If
                 Next
             End While
@@ -340,10 +361,10 @@ Public Class cMSE
             TotalFound += i
         Next
 
-        If TotalFound < mCore.nLivingGroups - nPrimaryProducer Then 'Check whether there are too few groups in the file
+        If TotalFound < mCore.nLivingGroups - m_nPrimaryProducer Then 'Check whether there are too few groups in the file
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
             Return False
-        ElseIf TotalFound > mCore.nLivingGroups - nPrimaryProducer Then 'Check whether there are too many groups in the file
+        ElseIf TotalFound > mCore.nLivingGroups - m_nPrimaryProducer Then 'Check whether there are too many groups in the file
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOMANY, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
             Return False
         End If
@@ -423,6 +444,36 @@ Public Class cMSE
     End Property
 
 #End Region ' Diagnostics and state management
+
+#Region " EwE app flow plugins "
+
+    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
+        ' NOP
+        Return True
+    End Function
+
+    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
+        Me.InvalidateConfiguration()
+        Return True
+    End Function
+
+    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
+        Return True
+    End Function
+
+    Public Sub CloseEcosimScenario() Implements EwEPlugin.IEcosimPlugin.CloseEcosimScenario
+        ' NOP
+    End Sub
+
+    Public Sub LoadEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.LoadEcosimScenario
+        Me.InvalidateConfiguration()
+    End Sub
+
+    Public Sub SaveEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.SaveEcosimScenario
+        ' NOP
+    End Sub
+
+#End Region ' EwE app flow plugins
 
     Public ReadOnly Property DataPath As String
         Get
@@ -870,7 +921,7 @@ Public Class cMSE
                 ecopathData.EE(igrp) = CSng(EE(iTrial - 1, igrp - 1))
                 ecopathData.BA(igrp) = CSng(BA(iTrial - 1, igrp - 1))
             Next
-            For igrp = 1 To mCore.nLivingGroups - nPrimaryProducer
+            For igrp = 1 To mCore.nLivingGroups - m_nPrimaryProducer
                 ecosimData.QmQo(igrp) = CSng(DenDepCatchability(iTrial - 1, igrp - 1))
                 ecosimData.FtimeAdjust(igrp) = CSng(FeedingTimeAdjustRate(iTrial - 1, igrp - 1))
                 ecosimData.FtimeMax(igrp) = CSng(MaxRelFeedingTime(iTrial - 1, igrp - 1))
@@ -935,16 +986,16 @@ Public Class cMSE
                     'increase the number of years for the projection
                     mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject)
 
-                'This creates the files we will write the biomass trajectories to
-                TrajectoryCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv"), False)
-                TrajectoryCsv.WriteLine("Model: " & mCore.EwEModel.Name)
-                TrajectoryCsv.WriteLine("Ecosim Scenario: " & mCore.EcosimScenarios(mCore.ActiveEcosimScenarioIndex).Name)
-                TrajectoryCsv.WriteLine("Time series: " & TimeseriesName)
-                TrajectoryCsv.Write("GroupNumber,Group,Strategy")
-                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
-                    TrajectoryCsv.Write("," & iTime)
-                Next
-                TrajectoryCsv.WriteLine()
+                    'This creates the files we will write the biomass trajectories to
+                    TrajectoryCsv = New StreamWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv"), False)
+                    TrajectoryCsv.WriteLine("Model: " & mCore.EwEModel.Name)
+                    TrajectoryCsv.WriteLine("Ecosim Scenario: " & mCore.EcosimScenarios(mCore.ActiveEcosimScenarioIndex).Name)
+                    TrajectoryCsv.WriteLine("Time series: " & TimeseriesName)
+                    TrajectoryCsv.Write("GroupNumber,Group,Strategy")
+                    For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                        TrajectoryCsv.Write("," & iTime)
+                    Next
+                    TrajectoryCsv.WriteLine()
 
                     For Each iStrategy In Strategies
 
@@ -982,13 +1033,13 @@ Public Class cMSE
                                     BiomassProjected(iTime - 1) = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, OriginalNTimesteps + iTime)
                                 Next
 
-                        'Output to csv the biomass trajectories
-                        'TrajectoryCsv.Write("""" & mCore.EcoPathGroupInputs(igrp).Name & """," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(iStrategy))))
-                        TrajectoryCsv.Write(igrp & ",""" & mCore.EcoPathGroupInputs(igrp).Name & """," & iStrategy.Name)
-                        For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
-                            TrajectoryCsv.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime))
-                        Next
-                        TrajectoryCsv.WriteLine()
+                                'Output to csv the biomass trajectories
+                                'TrajectoryCsv.Write("""" & mCore.EcoPathGroupInputs(igrp).Name & """," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(iStrategy))))
+                                TrajectoryCsv.Write(igrp & ",""" & mCore.EcoPathGroupInputs(igrp).Name & """," & iStrategy.Name)
+                                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                                    TrajectoryCsv.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime))
+                                Next
+                                TrajectoryCsv.WriteLine()
 
                                 'Trajectory2Csv(igrp - 1).Write(iTrial & "," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(iStrategy))))
                                 Trajectory2Csv(igrp - 1).Write(iTrial & "," & iStrategy.Name)
@@ -1393,11 +1444,11 @@ stepend:
         Dim nGroups As Integer = mCore.nGroups
         Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
         Dim nTrials As Integer = Me.NTrials
-        Dim b(NTrials, nGroups) As Single
-        Dim ba(NTrials, nLiving) As Single
-        Dim pb(NTrials, nLiving) As Single
-        Dim qb(NTrials, nLiving) As Single
-        Dim ee(NTrials, nLiving) As Single
+        Dim b(nTrials, nGroups) As Single
+        Dim ba(nTrials, nLiving) As Single
+        Dim pb(nTrials, nLiving) As Single
+        Dim qb(nTrials, nLiving) As Single
+        Dim ee(nTrials, nLiving) As Single
         Dim TimeFindingBalanced As New Stopwatch
         Dim csv As CsvReader
         Dim MeanProportions(mCore.nLivingGroups - 1, mCore.nGroups) As Single
@@ -2025,25 +2076,20 @@ stepend:
     End Property
 
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
-        Dim bHasForm As Boolean = False
 
-        If MSEForm IsNot Nothing Then
-            bHasForm = Not MSEForm.IsDisposed
-        End If
-
-        If Not bHasForm Then
+        If Not Me.HasUI Then
             MSEForm = New frmMSE(Me, Me.m_uic)
         End If
 
         ' Let EwE show the form
         frmPlugin = MSEForm
 
-        'count the number of primary producers
-        For igrp = 1 To mCore.nGroups
-            If mCore.EcoPathGroupOutputs(igrp).IsProducer Then nPrimaryProducer += 1
-        Next
-
     End Sub
+
+    Private Function HasUI() As Boolean
+        If Me.MSEForm Is Nothing Then Return False
+        Return Not Me.MSEForm.IsDisposed
+    End Function
 
     'Commented out because redundant 3-9-13
 
@@ -2115,13 +2161,13 @@ stepend:
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
-        Dim ParameterArray(mCore.nLivingGroups - nPrimaryProducer - 1, 3) As Single
+        Dim ParameterArray(mCore.nLivingGroups - m_nPrimaryProducer - 1, 3) As Single
 
         ' JS 30Sep13: Use local properties
-        Dim nIterations As Integer = Me.nTrials
+        Dim nIterations As Integer = Me.NTrials
         Dim eDistributionType As DistributionType
-        Dim SampledParameters(nIterations - 1, mCore.nLivingGroups - nPrimaryProducer - 1) As Double
-        Dim GroupNames(mCore.nLivingGroups - nPrimaryProducer - 1) As String
+        Dim SampledParameters(nIterations - 1, mCore.nLivingGroups - m_nPrimaryProducer - 1) As Double
+        Dim GroupNames(mCore.nLivingGroups - m_nPrimaryProducer - 1) As String
 
         reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv"))
         csv = New CsvReader(reader, True)
@@ -2135,7 +2181,7 @@ stepend:
         End While
 
         'Generate an array of sample parameters
-        For iGroup = 1 To mCore.nLivingGroups - nPrimaryProducer
+        For iGroup = 1 To mCore.nLivingGroups - m_nPrimaryProducer
             eDistributionType = CType(ParameterArray(iGroup - 1, 0), DistributionType)
             'row = SampledParameters.NewRow()
             'row("GroupName") = 
@@ -2160,14 +2206,14 @@ stepend:
         'Output the sampled parameters to a csv
         Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, ParamName & "_out.csv"))
 
-        For igrp As Integer = 1 To mCore.nLivingGroups - nPrimaryProducer
+        For igrp As Integer = 1 To mCore.nLivingGroups - m_nPrimaryProducer
             If (igrp > 1) Then writer.Write(",")
             writer.Write(cStringUtils.ToCSVField(GroupNames(igrp - 1)))
         Next
         writer.WriteLine()
 
         For iIteration = 1 To nIterations
-            For iGroup = 1 To mCore.nLivingGroups - nPrimaryProducer
+            For iGroup = 1 To mCore.nLivingGroups - m_nPrimaryProducer
                 If (iGroup > 1) Then writer.Write(",")
                 writer.Write(cStringUtils.ToCSVField(SampledParameters(iIteration - 1, iGroup - 1)))
             Next
@@ -2188,7 +2234,7 @@ stepend:
         ' JS 30Sep13: Used persistent properties
 
         Dim writer As StreamWriter = Nothing
-        Dim nIterations As Integer = nTrials
+        Dim nIterations As Integer = NTrials
 
         For iIteration = 1 To nIterations
 

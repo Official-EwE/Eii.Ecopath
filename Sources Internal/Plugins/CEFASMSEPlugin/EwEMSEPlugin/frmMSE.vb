@@ -140,8 +140,7 @@ Public Class frmMSE
 
         Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
         Dim img As Image = Nothing
-        Dim bCanCreateModels As Boolean = Me.m_plugin.IsInputDataCompatible
-
+ 
         Me.m_plStep1.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.Idle)
         Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
@@ -152,7 +151,7 @@ Public Class frmMSE
 
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
             Me.m_tbxParamStatus.Text = My.Resources.STATUS_AVAILABLE
-            If Not bCanCreateModels Then
+            If Not mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
                 img = SharedResources.Critical
             End If
         Else
@@ -161,9 +160,9 @@ Public Class frmMSE
         Me.m_pbCompatible.Image = img
 
         ' Update trial buttons
-        Me.m_fpNTrials.Enabled = bCanCreateModels
-        Me.m_fpMassBalanceTol.Enabled = bCanCreateModels
-        Me.m_btnCreateModels.Enabled = bCanCreateModels
+        Me.m_fpNTrials.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
+        Me.m_fpMassBalanceTol.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
+        Me.m_btnCreateModels.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
 
         ' Provide feedback about available models
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
@@ -205,8 +204,6 @@ Public Class frmMSE
 
         End Try
 
-        Me.UpdateControls()
-
     End Sub
 
     Private Sub OnPathClicked(sender As System.Object, e As System.EventArgs) _
@@ -231,13 +228,12 @@ Public Class frmMSE
 
         Try
             Me.m_plugin.UseEwEPath = Me.m_rbEwEDefault.Checked
-            Me.UpdateControls()
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Private Sub btnLoadSampled_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnRun.Click
         Try
             Me.m_plugin.LoadSampledParams()
@@ -265,15 +261,13 @@ Public Class frmMSE
                 End If
             End If
 
-            Me.UpdateControls()
-
         Catch ex As Exception
             cLog.Write(ex, "CEFASMSE:OnSelectDataPath")
         End Try
 
     End Sub
 
-    Private Sub btShowTFMForm_Click(sender As System.Object, e As System.EventArgs) _
+    Private Sub OnShowTFM(sender As System.Object, e As System.EventArgs) _
         Handles m_btnReviewTFM.Click
 
         'First make sure the Harvest Controls Rules have been loaded
@@ -289,7 +283,7 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub btnDistParams_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnReviewDistParams(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnReviewDistParms.Click
 
         Try
@@ -299,9 +293,6 @@ Public Class frmMSE
         Catch ex As Exception
 
         End Try
-
-        ' Perhaps the user has made a useful contribution ;)
-        Me.UpdateControls()
 
     End Sub
 
@@ -365,5 +356,19 @@ Public Class frmMSE
     End Sub
 
 #End Region ' Control events
+
+#Region " Plug-in callback "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Handle a (remote) request to update the form state. The request is handled
+    ''' in idle time.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Friend Sub UpdateState()
+        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+    End Sub
+
+#End Region ' Plug-in callback
 
 End Class
