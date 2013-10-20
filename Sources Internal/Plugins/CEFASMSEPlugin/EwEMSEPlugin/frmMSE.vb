@@ -19,6 +19,8 @@
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Strict On
 Imports System.IO
 Imports EwECore
@@ -29,10 +31,13 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
+#End Region ' Imports
+
 Public Class frmMSE
 
-    Private mCore As cCore
-    Private m_plugin As cMSE
+#Region " Private vars "
+
+    Private m_plugin As cMSE = Nothing
 
     Private m_fpArea As cEwEFormatProvider = Nothing
     Private m_fpNModelsToRun As cEwEFormatProvider = Nothing
@@ -44,12 +49,13 @@ Public Class frmMSE
 
     Private m_bInUpdate As Boolean = False
 
+#End Region ' Private vars
+
     Public Sub New(MSE As cMSE, uic As cUIContext)
 
         Me.InitializeComponent()
         Me.UIContext = uic
         Me.m_plugin = MSE
-        Me.mCore = uic.Core
 
     End Sub
 
