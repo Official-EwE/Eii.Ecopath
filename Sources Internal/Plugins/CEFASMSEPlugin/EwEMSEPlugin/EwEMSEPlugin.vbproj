@@ -123,7 +123,8 @@
     </Compile>
     <Compile Include="frmEditMaxChangeEffort.vb">
       <SubType>Form</SubType>
-    </Compile>    <Compile Include="frmTFMpolicy2.designer.vb">
+    </Compile>
+    <Compile Include="frmTFMpolicy2.designer.vb">
       <DependentUpon>frmTFMpolicy2.vb</DependentUpon>
     </Compile>
     <Compile Include="frmTFMpolicy2.vb">
