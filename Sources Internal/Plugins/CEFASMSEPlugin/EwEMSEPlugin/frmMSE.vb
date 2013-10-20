@@ -136,6 +136,8 @@ Public Class frmMSE
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
+        If (Me.m_plugin Is Nothing) Then Return
+
         Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
         Dim img As Image = Nothing
         Dim bCanCreateModels As Boolean = Me.m_plugin.IsInputDataCompatible
@@ -145,7 +147,8 @@ Public Class frmMSE
         Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_plStep4.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
 
-        Me.m_tbxPath.Text = Me.m_plugin.DataPath
+        Me.m_lblPathValue.Text = cStringUtils.CompactString(Me.m_plugin.DataPath, Me.m_lblPathValue.ClientRectangle.Width, Me.m_lblPathValue.Font, TextFormatFlags.PathEllipsis)
+        cToolTipShared.GetInstance().SetToolTip(Me.m_lblPathValue, Me.m_plugin.DataPath)
 
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
             Me.m_tbxParamStatus.Text = My.Resources.STATUS_AVAILABLE
@@ -186,17 +189,38 @@ Public Class frmMSE
     Private Sub OnCreateModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnCreateModels.Click
 
-        Me.m_plugin.Create1DimParams("MaxRelFeedingTime")
-        Me.m_plugin.Create1DimParams("FeedingTimeAdjustRate")
-        Me.m_plugin.Create1DimParams("OtherMortFeedingTime")
-        Me.m_plugin.Create1DimParams("PredEffectFeedingTime")
-        Me.m_plugin.Create1DimParams("DenDepCatchability")
-        Me.m_plugin.Create1DimParams("QBMaxxQBio")
-        Me.m_plugin.Create1DimParams("SwitchingPower")
-        Me.m_plugin.CreateVulnerabilities()
-        Me.m_plugin.GenerateEcopathParamaters()
+        If (Me.m_plugin Is Nothing) Then Return
+
+        Try
+            Me.m_plugin.Create1DimParams("MaxRelFeedingTime")
+            Me.m_plugin.Create1DimParams("FeedingTimeAdjustRate")
+            Me.m_plugin.Create1DimParams("OtherMortFeedingTime")
+            Me.m_plugin.Create1DimParams("PredEffectFeedingTime")
+            Me.m_plugin.Create1DimParams("DenDepCatchability")
+            Me.m_plugin.Create1DimParams("QBMaxxQBio")
+            Me.m_plugin.Create1DimParams("SwitchingPower")
+            Me.m_plugin.CreateVulnerabilities()
+            Me.m_plugin.GenerateEcopathParamaters()
+        Catch ex As Exception
+
+        End Try
 
         Me.UpdateControls()
+
+    End Sub
+
+    Private Sub OnPathClicked(sender As System.Object, e As System.EventArgs) _
+        Handles m_lblPathValue.Click
+
+        If (Me.m_plugin Is Nothing) Then Return
+
+        Try
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke(Me.m_plugin.DataPath)
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE.frmMSE::OnPathClicked(" & Me.m_plugin.DataPath & ")")
+        End Try
 
     End Sub
 
@@ -212,7 +236,6 @@ Public Class frmMSE
 
         End Try
     End Sub
-
 
     Private Sub btnLoadSampled_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnRun.Click

@@ -79,9 +79,9 @@ Partial Class frmMSE
         Me.m_btnReviewDistParms = New System.Windows.Forms.Button()
         Me.m_tlpLayout = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plStep1 = New System.Windows.Forms.Panel()
+        Me.m_lblPathValue = New System.Windows.Forms.Label()
         Me.m_lblDataPath = New System.Windows.Forms.Label()
         Me.m_rbCustomPath = New System.Windows.Forms.RadioButton()
-        Me.m_tbxPath = New System.Windows.Forms.TextBox()
         Me.m_lblInputParams = New System.Windows.Forms.Label()
         Me.m_rbEwEDefault = New System.Windows.Forms.RadioButton()
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
@@ -305,11 +305,11 @@ Partial Class frmMSE
         '
         'm_plStep1
         '
+        Me.m_plStep1.Controls.Add(Me.m_lblPathValue)
         Me.m_plStep1.Controls.Add(Me.m_lblDataPath)
         Me.m_plStep1.Controls.Add(Me.m_lblAreaUnit)
         Me.m_plStep1.Controls.Add(Me.m_rbCustomPath)
         Me.m_plStep1.Controls.Add(Me.m_lblArea)
-        Me.m_plStep1.Controls.Add(Me.m_tbxPath)
         Me.m_plStep1.Controls.Add(Me.m_tbxArea)
         Me.m_plStep1.Controls.Add(Me.m_lblInputParams)
         Me.m_plStep1.Controls.Add(Me.m_rbEwEDefault)
@@ -319,6 +319,13 @@ Partial Class frmMSE
         Me.m_plStep1.Controls.Add(Me.m_btnChangePath)
         resources.ApplyResources(Me.m_plStep1, "m_plStep1")
         Me.m_plStep1.Name = "m_plStep1"
+        '
+        'm_lblPathValue
+        '
+        resources.ApplyResources(Me.m_lblPathValue, "m_lblPathValue")
+        Me.m_lblPathValue.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_lblPathValue.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.m_lblPathValue.Name = "m_lblPathValue"
         '
         'm_lblDataPath
         '
@@ -331,12 +338,6 @@ Partial Class frmMSE
         Me.m_rbCustomPath.Name = "m_rbCustomPath"
         Me.m_rbCustomPath.TabStop = True
         Me.m_rbCustomPath.UseVisualStyleBackColor = True
-        '
-        'm_tbxPath
-        '
-        resources.ApplyResources(Me.m_tbxPath, "m_tbxPath")
-        Me.m_tbxPath.Name = "m_tbxPath"
-        Me.m_tbxPath.ReadOnly = True
         '
         'm_lblInputParams
         '
@@ -428,7 +429,6 @@ Partial Class frmMSE
     Private WithEvents m_rbEwEDefault As System.Windows.Forms.RadioButton
     Private WithEvents m_btnChangePath As System.Windows.Forms.Button
     Friend WithEvents m_lblDataPath As System.Windows.Forms.Label
-    Private WithEvents m_tbxPath As System.Windows.Forms.TextBox
     Private WithEvents m_lblAvailableModels As System.Windows.Forms.Label
     Private WithEvents m_tbxNumAvailableModels As System.Windows.Forms.TextBox
     Private WithEvents m_lblAvailableStrategies As System.Windows.Forms.Label
@@ -441,4 +441,5 @@ Partial Class frmMSE
     Private WithEvents m_lblMaxTime As System.Windows.Forms.Label
     Private WithEvents m_tbxMaxTime As System.Windows.Forms.TextBox
     Friend WithEvents btnDecreaseEffort As System.Windows.Forms.Button
+    Private WithEvents m_lblPathValue As System.Windows.Forms.Label
 End Class
