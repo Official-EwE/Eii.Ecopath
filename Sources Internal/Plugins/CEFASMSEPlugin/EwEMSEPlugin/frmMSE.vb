@@ -283,7 +283,7 @@ Public Class frmMSE
         '             From the UI point of view, we just want strategies. The plug-in does the optimizating
         m_plugin.ExtractHCR()
 
-        Dim frm As New frmTFMpolicy2()
+        Dim frm As New frmTFMpolicy()
         frm.Init(Me.UIContext, Me.m_plugin)
         frm.ShowDialog(Me)
 
