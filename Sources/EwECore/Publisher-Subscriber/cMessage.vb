@@ -147,25 +147,25 @@ Public Class cMessage
     End Property
 
     ''' <inheritdocs cref="IMessage.Message"/>
-    Public Property Message() As String Implements IMessage.Message
+    Public Overridable Property Message() As String Implements IMessage.Message
 
     ''' <inheritdocs cref="IMessage.Type"/>
-    Public Property Type() As eMessageType Implements IMessage.Type
+    Public Overridable Property Type() As eMessageType Implements IMessage.Type
 
     ''' <inheritdocs cref="IMessage.Source"/>
-    Public Property Source() As eCoreComponentType Implements IMessage.Source
+    Public Overridable Property Source() As eCoreComponentType Implements IMessage.Source
 
     ''' <inheritdocs cref="IMessage.Importance"/>
-    Public Property Importance() As eMessageImportance Implements IMessage.Importance
+    Public Overridable Property Importance() As eMessageImportance Implements IMessage.Importance
 
     ''' <inheritdocs cref="IMessage.DataType"/>
-    Public Property DataType() As eDataTypes Implements IMessage.DataType
+    Public Overridable Property DataType() As eDataTypes Implements IMessage.DataType
 
     ''' <inheritdocs cref="IMessage.Suppressable"/>
-    Public Property Suppressable() As Boolean Implements IMessage.Suppressable
+    Public Overridable Property Suppressable() As Boolean Implements IMessage.Suppressable
 
     ''' <inheritdocs cref="IMessage.Suppressable"/>
-    Public Property Suppressed() As Boolean Implements IMessage.Suppressed
+    Public Overridable Property Suppressed() As Boolean Implements IMessage.Suppressed
   
     ''' <summary>
     ''' Get/set the hyperlink for this message.
