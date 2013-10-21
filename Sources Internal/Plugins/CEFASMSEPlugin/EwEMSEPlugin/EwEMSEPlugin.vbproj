@@ -204,9 +204,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Deployment\License\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Include="App.config" />
     <None Include="CefasMSE.licenseheader" />
     <None Include="Includes\alglibnet2" />
