@@ -54,7 +54,7 @@ Public Class cMSE
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer
-    Private m_nPrimaryProducer As Integer
+    'Private m_nPrimaryProducer As Integer
     Private ChangeInEffortLimits() As Double
     Public Const NoHCR_F As Integer = -9999
 
@@ -104,7 +104,7 @@ Public Class cMSE
         Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
-        Me.m_nPrimaryProducer = cCore.NULL_VALUE
+        ' Me.m_nPrimaryProducer = cCore.NULL_VALUE
 
         Me.m_monitor.Invalidate()
 
@@ -221,12 +221,12 @@ Public Class cMSE
         Next
 
         ' Count the number of primary producers if not done yet
-        If (Me.m_nPrimaryProducer < 0) Then
-            Me.m_nPrimaryProducer = 0
-            For igrp = 1 To mCore.nGroups
-                If mCore.EcoPathGroupOutputs(igrp).IsProducer Then Me.m_nPrimaryProducer += 1
-            Next
-        End If
+        'If (Me.m_nPrimaryProducer < 0) Then
+        '    Me.m_nPrimaryProducer = 0
+        '    For igrp = 1 To mCore.nGroups
+        '        If mCore.EcoPathGroupOutputs(igrp).IsProducer Then Me.m_nPrimaryProducer += 1
+        '    Next
+        'End If
 
         csv = New CsvReader(reader, True)
         Try
@@ -361,10 +361,10 @@ Public Class cMSE
             TotalFound += i
         Next
 
-        If TotalFound < mCore.nLivingGroups - m_nPrimaryProducer Then 'Check whether there are too few groups in the file
+        If TotalFound < mCore.nLivingGroups Then 'Check whether there are too few groups in the file
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
             Return False
-        ElseIf TotalFound > mCore.nLivingGroups - m_nPrimaryProducer Then 'Check whether there are too many groups in the file
+        ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOMANY, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
             Return False
         End If
@@ -914,7 +914,7 @@ Public Class cMSE
                 ecopathData.EE(igrp) = CSng(EE(iTrial - 1, igrp - 1))
                 ecopathData.BA(igrp) = CSng(BA(iTrial - 1, igrp - 1))
             Next
-            For igrp = 1 To mCore.nLivingGroups - m_nPrimaryProducer
+            For igrp = 1 To mCore.nLivingGroups
                 ecosimData.QmQo(igrp) = CSng(DenDepCatchability(iTrial - 1, igrp - 1))
                 ecosimData.FtimeAdjust(igrp) = CSng(FeedingTimeAdjustRate(iTrial - 1, igrp - 1))
                 ecosimData.FtimeMax(igrp) = CSng(MaxRelFeedingTime(iTrial - 1, igrp - 1))
@@ -2162,13 +2162,13 @@ stepend:
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
-        Dim ParameterArray(mCore.nLivingGroups - m_nPrimaryProducer - 1, 3) As Single
+        Dim ParameterArray(mCore.nLivingGroups - 1, 3) As Single
 
         ' JS 30Sep13: Use local properties
         Dim nIterations As Integer = Me.NTrials
         Dim eDistributionType As DistributionType
-        Dim SampledParameters(nIterations - 1, mCore.nLivingGroups - m_nPrimaryProducer - 1) As Double
-        Dim GroupNames(mCore.nLivingGroups - m_nPrimaryProducer - 1) As String
+        Dim SampledParameters(nIterations - 1, mCore.nLivingGroups - 1) As Double
+        Dim GroupNames(mCore.nLivingGroups - 1) As String
 
         reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv"))
         csv = New CsvReader(reader, True)
@@ -2182,7 +2182,7 @@ stepend:
         End While
 
         'Generate an array of sample parameters
-        For iGroup = 1 To mCore.nLivingGroups - m_nPrimaryProducer
+        For iGroup = 1 To mCore.nLivingGroups
             eDistributionType = CType(ParameterArray(iGroup - 1, 0), DistributionType)
             'row = SampledParameters.NewRow()
             'row("GroupName") = 
@@ -2207,14 +2207,14 @@ stepend:
         'Output the sampled parameters to a csv
         Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, ParamName & "_out.csv"))
 
-        For igrp As Integer = 1 To mCore.nLivingGroups - m_nPrimaryProducer
+        For igrp As Integer = 1 To mCore.nLivingGroups
             If (igrp > 1) Then writer.Write(",")
             writer.Write(cStringUtils.ToCSVField(GroupNames(igrp - 1)))
         Next
         writer.WriteLine()
 
         For iIteration = 1 To nIterations
-            For iGroup = 1 To mCore.nLivingGroups - m_nPrimaryProducer
+            For iGroup = 1 To mCore.nLivingGroups
                 If (iGroup > 1) Then writer.Write(",")
                 writer.Write(cStringUtils.ToCSVField(SampledParameters(iIteration - 1, iGroup - 1)))
             Next
