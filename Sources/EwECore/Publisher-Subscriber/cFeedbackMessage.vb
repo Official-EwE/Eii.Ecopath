@@ -80,6 +80,25 @@ Public Class cFeedbackMessage
 
 #Region " Property access "
 
+    Public Overrides Property Importance As EwEUtils.Core.eMessageImportance
+        Get
+            If MyBase.Importance <> eMessageImportance.Critical And MyBase.Importance <> eMessageImportance.Warning Then
+                ' JS 21Oct13: Revised importance feedback in case it is unknown. 
+                '             If only possible answer is 'OK', and text does not contain an obvious question,
+                '             then set unknown importance to 'information'. In all other cases, revert to a question mark.
+                If (Me.ReplyStyle = eMessageReplyStyle.OK) And (Me.Message.IndexOf("?"c) = -1) Then
+                    Return eMessageImportance.Information
+                Else
+                    Return eMessageImportance.Question
+                End If
+            End If
+            Return MyBase.Importance
+        End Get
+        Set(value As EwEUtils.Core.eMessageImportance)
+            MyBase.Importance = value
+        End Set
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IFeedbackMessage.Reply"/>
     ''' -----------------------------------------------------------------------

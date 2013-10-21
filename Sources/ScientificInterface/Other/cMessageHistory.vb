@@ -119,10 +119,6 @@ Public Class cMessageHistory
                 Dim fmsg As cFeedbackMessage = DirectCast(msg, cFeedbackMessage)
                 Dim strReply As String = ""
 
-                If Me.m_importance <> eMessageImportance.Critical And Me.m_importance <> eMessageImportance.Warning Then
-                    Me.m_importance = eMessageImportance.Question
-                End If
-
                 Select Case fmsg.ReplyStyle
 
                     Case eMessageReplyStyle.OK_CANCEL
@@ -539,8 +535,10 @@ Public Class cMessageHistory
         End Select
 
         Select Case msg.Importance
-            Case eMessageImportance.Progress, eMessageImportance.Maintenance, eMessageImportance.Information
+            Case eMessageImportance.Progress, eMessageImportance.Maintenance
                 mbi = MessageBoxIcon.Question
+            Case eMessageImportance.Information
+                mbi = MessageBoxIcon.Information
             Case eMessageImportance.Warning
                 mbi = MessageBoxIcon.Warning
             Case eMessageImportance.Critical
