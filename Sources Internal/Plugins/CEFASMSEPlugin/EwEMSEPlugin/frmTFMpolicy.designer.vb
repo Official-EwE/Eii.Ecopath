@@ -51,8 +51,8 @@ Partial Class frmTFMpolicy
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTFMpolicy))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
-        Me.m_tsStrategy = New cEwEToolstrip()
-        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tsStrategy = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tslSelectStratagy = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmStrategies = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tsbnAddStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteStrategy = New System.Windows.Forms.ToolStripButton()
@@ -60,10 +60,10 @@ Partial Class frmTFMpolicy
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         Me.m_tsHCR = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton()
-        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnAddHCR = New System.Windows.Forms.ToolStripButton()
-        Me.m_tsbnRemoveHCR = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnDeleteHCR = New System.Windows.Forms.ToolStripButton()
+        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnDefaultTFM = New System.Windows.Forms.ToolStripButton()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -91,14 +91,16 @@ Partial Class frmTFMpolicy
         '
         'm_tsStrategy
         '
-        Me.m_tsStrategy.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1, Me.m_tscmStrategies, Me.m_tsbnAddStrategy, Me.m_tsbnDeleteStrategy, Me.m_tsbnSaveToCSV})
+        Me.m_tsStrategy.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsStrategy.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslSelectStratagy, Me.m_tscmStrategies, Me.m_tsbnAddStrategy, Me.m_tsbnDeleteStrategy, Me.m_tsbnSaveToCSV})
         resources.ApplyResources(Me.m_tsStrategy, "m_tsStrategy")
         Me.m_tsStrategy.Name = "m_tsStrategy"
+        Me.m_tsStrategy.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
-        'ToolStripLabel1
+        'm_tslSelectStratagy
         '
-        Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        resources.ApplyResources(Me.ToolStripLabel1, "ToolStripLabel1")
+        Me.m_tslSelectStratagy.Name = "m_tslSelectStratagy"
+        resources.ApplyResources(Me.m_tslSelectStratagy, "m_tslSelectStratagy")
         '
         'm_tscmStrategies
         '
@@ -140,7 +142,7 @@ Partial Class frmTFMpolicy
         '
         'm_grid
         '
-        Me.m_grid.AllowBlockSelect = True
+        Me.m_grid.AllowBlockSelect = False
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
         resources.ApplyResources(Me.m_grid, "m_grid")
@@ -158,6 +160,7 @@ Partial Class frmTFMpolicy
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.Name = "m_grid"
+        Me.m_grid.SelectedStrategy = Nothing
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -172,21 +175,10 @@ Partial Class frmTFMpolicy
         'm_tsHCR
         '
         Me.m_tsHCR.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsHCR.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbDefaultTFM, Me.m_sep1, Me.m_tsbnAddHCR, Me.m_tsbnRemoveHCR})
+        Me.m_tsHCR.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAddHCR, Me.m_tsbnDeleteHCR, Me.m_sep1, Me.m_tsbnDefaultTFM})
         resources.ApplyResources(Me.m_tsHCR, "m_tsHCR")
         Me.m_tsHCR.Name = "m_tsHCR"
         Me.m_tsHCR.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        '
-        'tsbDefaultTFM
-        '
-        Me.tsbDefaultTFM.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.tsbDefaultTFM, "tsbDefaultTFM")
-        Me.tsbDefaultTFM.Name = "tsbDefaultTFM"
-        '
-        'm_sep1
-        '
-        Me.m_sep1.Name = "m_sep1"
-        resources.ApplyResources(Me.m_sep1, "m_sep1")
         '
         'm_tsbnAddHCR
         '
@@ -194,11 +186,22 @@ Partial Class frmTFMpolicy
         resources.ApplyResources(Me.m_tsbnAddHCR, "m_tsbnAddHCR")
         Me.m_tsbnAddHCR.Name = "m_tsbnAddHCR"
         '
-        'm_tsbnRemoveHCR
+        'm_tsbnDeleteHCR
         '
-        Me.m_tsbnRemoveHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.m_tsbnRemoveHCR, "m_tsbnRemoveHCR")
-        Me.m_tsbnRemoveHCR.Name = "m_tsbnRemoveHCR"
+        Me.m_tsbnDeleteHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnDeleteHCR, "m_tsbnDeleteHCR")
+        Me.m_tsbnDeleteHCR.Name = "m_tsbnDeleteHCR"
+        '
+        'm_sep1
+        '
+        Me.m_sep1.Name = "m_sep1"
+        resources.ApplyResources(Me.m_sep1, "m_sep1")
+        '
+        'm_tsbnDefaultTFM
+        '
+        Me.m_tsbnDefaultTFM.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnDefaultTFM, "m_tsbnDefaultTFM")
+        Me.m_tsbnDefaultTFM.Name = "m_tsbnDefaultTFM"
         '
         'm_btnOK
         '
@@ -213,7 +216,7 @@ Partial Class frmTFMpolicy
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
-        'frmTFMpolicy2
+        'frmTFMpolicy
         '
         Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
@@ -223,7 +226,7 @@ Partial Class frmTFMpolicy
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_scMain)
         Me.MinimizeBox = False
-        Me.Name = "frmTFMpolicy2"
+        Me.Name = "frmTFMpolicy"
         Me.ShowIcon = False
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel1.PerformLayout()
@@ -243,17 +246,17 @@ Partial Class frmTFMpolicy
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tsHCR As cEwEToolstrip
-    Private WithEvents tsbDefaultTFM As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnDefaultTFM As System.Windows.Forms.ToolStripButton
     Private WithEvents m_grid As EwEMSEPlugin.gridTargetFishingMortalityPolicy
     Private WithEvents m_tsStrategy As cEwEToolstrip
-    Private WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tslSelectStratagy As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tscmStrategies As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_tsbnAddStrategy As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnDeleteStrategy As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnSaveToCSV As System.Windows.Forms.ToolStripButton
     Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnAddHCR As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_tsbnRemoveHCR As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnDeleteHCR As System.Windows.Forms.ToolStripButton
     Private WithEvents m_btnOK As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
 

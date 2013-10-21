@@ -58,20 +58,12 @@ Public Class gridTargetFishingMortalityPolicy
 #End Region ' Internal defs
 
     Public Event onEdited()
-
-    ''' <summary>The cMSE Plugin that contains the data</summary>
-    Private m_plugin As cMSE
-
-    Private mSelStrategyIndex As Integer
+    Private m_strategy As Strategy = Nothing
 
 #Region " Constructor "
 
     Public Sub New()
         MyBase.new()
-    End Sub
-
-    Public Sub Init(Plugin As cMSE)
-        m_plugin = Plugin
     End Sub
 
 #End Region ' Constructor
@@ -117,28 +109,26 @@ Public Class gridTargetFishingMortalityPolicy
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
+        Me.AllowBlockSelect = False
 
     End Sub
 
     Protected Overrides Sub FillData()
         Dim iHCR As Integer
 
-        If (Me.m_plugin Is Nothing) Then Return
         If (Me.UIContext Is Nothing) Then Return
 
         Dim Cell As EwECellBase
-        Dim strategy As Strategy = Nothing
 
-        If (Me.mSelStrategyIndex < Me.m_plugin.Strategies.Count) And (Me.mSelStrategyIndex >= 0) Then
-            strategy = m_plugin.Strategies(Me.mSelStrategyIndex)
-        End If
-        If (strategy Is Nothing) Then Return
+        If (Me.m_strategy Is Nothing) Then Return
+
+        Me.RowsCount = 1
 
         Dim lstOptions As List(Of HCRType) = New List(Of HCRType)
         lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(HCRType)), IEnumerable(Of HCRType)))
         Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cCostFunctionTypeFormatter(), lstOptions)
 
-        For Each Rule As HCR_Group In strategy
+        For Each Rule As HCR_Group In Me.m_strategy
             iHCR = Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
 
@@ -204,10 +194,12 @@ Public Class gridTargetFishingMortalityPolicy
         End Get
     End Property
 
-    Public WriteOnly Property SelectedStrategyIndex As Integer
-        Set(value As Integer)
-            Me.mSelStrategyIndex = value
-            Me.InitStyle()
+    Public Property SelectedStrategy As Strategy
+        Get
+            Return Me.m_strategy
+        End Get
+        Set(value As Strategy)
+            Me.m_strategy = value
             Me.FillData()
         End Set
     End Property

@@ -520,6 +520,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} saved strategies data to {1}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_SAVED_STRATEGIES() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SAVED_STRATEGIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} finding models, trial {1}, iteration {2}.
         '''</summary>
         Friend ReadOnly Property STATUS_TRIAL_PROGRESS() As String

@@ -294,6 +294,10 @@
     <value>{0} saved distribution parameters files to {1}</value>
     <comment>{0}=plugin name, {1}=folder</comment>
   </data>
+  <data name="STATUS_SAVED_STRATEGIES" xml:space="preserve">
+    <value>{0} saved strategies data to {1}</value>
+    <comment>{0}=plugin name, {1}=folder</comment>
+  </data>
   <data name="STATUS_TRIAL_PROGRESS" xml:space="preserve">
     <value>{0} finding models, trial {1}, iteration {2}</value>
     <comment>{0}=plugin name, {1}=trial number, {2}=iteration number</comment>

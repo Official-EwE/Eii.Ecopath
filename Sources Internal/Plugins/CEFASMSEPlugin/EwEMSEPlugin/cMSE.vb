@@ -99,7 +99,7 @@ Public Class cMSE
 
 #Region " Diagnostics and state management "
 
-    Private Sub InvalidateConfiguration()
+    Friend Sub InvalidateConfiguration()
 
         Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE

@@ -65,10 +65,10 @@ Public Class frmTFMpolicy
     Private m_plugin As cMSE
     Private m_qeh As cQuickEditHandler
     Private m_SelectedStrategy As Strategy
-
     Private m_HCR As HCR_Group
 
-    Private StrategiesSaved As Boolean = True
+    Private m_strategies As New List(Of Strategy)
+    Private m_bStrategiesSaved As Boolean = True
 
 #End Region ' Internals
 
@@ -82,11 +82,13 @@ Public Class frmTFMpolicy
     Public Sub Init(UI As cUIContext, Plugin As cMSE)
         Me.UIContext = UI
         Me.m_plugin = Plugin
+        ' Make copy of strategies
+        Me.m_strategies.AddRange(Me.m_plugin.Strategies.ToArray())
     End Sub
 
 #End Region
 
-#Region " Events "
+#Region " Form overrides "
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
@@ -101,25 +103,30 @@ Public Class frmTFMpolicy
         Me.m_zgh.AllowPan = False
         Me.m_zgh.AllowEdit = True
 
-        Me.m_grid.Init(Me.m_plugin)
         Me.m_grid.UIContext = Me.UIContext
 
         Me.m_qeh = New cQuickEditHandler()
         Me.m_qeh.Attach(Me.m_grid, Me.UIContext, Me.m_tsHCR)
         Me.m_grid.DataName = "HarvestControlRules"
+        AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+        AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
 
-        Me.UpdateControls()
+        Me.m_tsbnSaveToCSV.Image = SharedResources.ExportXMLHS
 
-        If (Me.m_plugin.Strategies.Count > 0) Then
+        Me.UpdateStrategies()
+
+        If (Me.m_tscmStrategies.Items.Count > 0) Then
             Me.m_tscmStrategies.SelectedIndex = 0
         End If
+
+        Me.UpdateControls()
 
     End Sub
 
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
-        If StrategiesSaved = False Then
-            e.Cancel = (Me.m_plugin.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) <> eMessageReplyStyle.OK)
+        If m_bStrategiesSaved = False Then
+            e.Cancel = (Me.m_plugin.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) = eMessageReplyStyle.OK)
         End If
 
         MyBase.OnFormClosing(e)
@@ -128,7 +135,10 @@ Public Class frmTFMpolicy
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-        If Me.m_zgh IsNot Nothing Then
+        RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+        RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+
+        If (Me.m_zgh IsNot Nothing) Then
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
         End If
@@ -136,63 +146,13 @@ Public Class frmTFMpolicy
 
     End Sub
 
-    Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
-        ' Update group selection according to user actions in the grid
-        Me.HCRGroup = Me.m_grid.HarvestControlRule
-    End Sub
+#End Region ' Form overrides
 
-    Private Sub OnGridEdited()
-        Try
-            Me.Redraw()
-        Catch ex As Exception
+#Region " Events "
 
-        End Try
-    End Sub
-
-
-    Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles tsbDefaultTFM.Click
-        'Try
-        '    Me.UIContext.Core.SetDefaultTFM()
-        'Catch ex As Exception
-        '    Debug.Assert(False, ex.Message)
-        'End Try
-    End Sub
-
-
-    Private Sub OnSelectedStrategyChanged(sender As Object, e As System.EventArgs) _
-        Handles m_tscmStrategies.SelectedIndexChanged
-
-        If Me.m_tscmStrategies.SelectedIndex >= 0 Then
-            Me.changeSelectedStrategy(Me.m_tscmStrategies.SelectedIndex)
-        End If
-
-    End Sub
-
-
-    Private Sub changeSelectedStrategy(iSelectedIndex As Integer)
-
-        m_SelectedStrategy = Me.m_plugin.Strategies(iSelectedIndex)
-        Me.m_grid.SelectedStrategyIndex = iSelectedIndex
-        Me.Redraw()
-
-    End Sub
-
-    Private Sub OnAddHCR(sender As Object, e As System.EventArgs) Handles m_tsbnAddHCR.Click
-
-        'Ask the user to create a new HCR_Group
-        Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule
-        HRCDialogue.Init(Me.m_plugin, Me.m_SelectedStrategy)
-        HRCDialogue.ShowDialog()
-
-        If HRCDialogue.DialogResult = Windows.Forms.DialogResult.OK Then
-            'add the newly created harvest control rule to the current strategy
-            Me.m_SelectedStrategy.Add(HRCDialogue.HarvestControlRule)
-            Me.m_grid.RefreshContent()
-        End If
-
-
-    End Sub
+    ' -----------------------------
+    ' Strategies 
+    ' -----------------------------
 
     Private Sub OnAddStrategy(sender As Object, e As System.EventArgs) _
         Handles m_tsbnAddStrategy.Click
@@ -216,10 +176,11 @@ Public Class frmTFMpolicy
             Dim strategy As Strategy = New Strategy(StratName, StartFilename)
 
             ' JS 30Sep13: Strategies class validates both strategy name and file. VERY GOOD!!
-            If (Not Me.m_plugin.Strategies.Contains(strategy)) Then
-                Me.m_plugin.Strategies.Add(strategy)
-                Me.UpdateControls()
+            If (Not Me.m_strategies.Contains(strategy)) Then
+                Me.m_strategies.Add(strategy)
+                Me.UpdateStrategies()
                 Me.changeSelectedStrategy(Me.m_tscmStrategies.Items.Count - 1)
+                Me.m_bStrategiesSaved = False
             Else
                 Me.m_plugin.InformUser(My.Resources.ERROR_ENTERNAME, eMessageImportance.Warning)
             End If
@@ -228,48 +189,172 @@ Public Class frmTFMpolicy
 
         End Try
 
+        Me.UpdateControls()
+
     End Sub
 
+    Private Sub OnDeleteStrategy(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnDeleteStrategy.Click
+
+        Try
+            Dim selStrategy As Integer = m_tscmStrategies.SelectedIndex
+
+            'ToDo this needs to delete the Strategy file as well as removing it from the list
+            'that should happen from the Strategies object itself
+            'Also there should be an isDirty flag
+            If selStrategy >= 0 Then
+                Me.m_strategies.RemoveAt(selStrategy)
+                Me.UpdateStrategies()
+                Me.m_tscmStrategies.SelectedIndex = (Me.m_strategies.Count - 1)
+                Me.m_bStrategiesSaved = False
+            End If
+        Catch ex As Exception
+
+        End Try
+        Me.UpdateControls()
+
+    End Sub
+
+    Private Sub OnSelectedStrategyChanged(sender As Object, e As System.EventArgs) _
+        Handles m_tscmStrategies.SelectedIndexChanged
+
+        Try
+            If Me.m_tscmStrategies.SelectedIndex >= 0 Then
+                Me.changeSelectedStrategy(Me.m_tscmStrategies.SelectedIndex)
+            End If
+        Catch ex As Exception
+
+        End Try
+        Me.UpdateControls()
+
+    End Sub
 
     Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnSaveToCSV.Click
 
         ' JS 30Sep13: CSV file written in fixed digit format
         ' JS 30Sep13: Uses safe streamwriter
+        Try
+            Dim csvStrategyFile As StreamWriter = Nothing
+            Dim strFile As String = ""
+            Dim strPath As String = ""
+            Dim msg As cMessage = Nothing
 
-        Dim csvStrategyFile As StreamWriter = Nothing
+            For Each iStrategy In Me.m_strategies
 
-        For Each iStrategy In Me.m_plugin.Strategies
-            csvStrategyFile = cMSEUtils.GetWriter(iStrategy.FileName, False)
-            If (csvStrategyFile IsNot Nothing) Then
+                If msg Is Nothing Then
+                    strPath = Path.GetDirectoryName(iStrategy.FileName)
+                    msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_STRATEGIES, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = strPath
+                End If
 
-                csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
-                For Each iHCR In iStrategy
-                    csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
-                                              cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
-                                              cStringUtils.ToCSVField(HCR_Group.toCostFunctionString(iHCR.CostFunction)))
-                Next
-                cMSEUtils.ReleaseWriter(csvStrategyFile)
+                csvStrategyFile = cMSEUtils.GetWriter(iStrategy.FileName, False)
+                If (csvStrategyFile IsNot Nothing) Then
+
+                    msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
+                                                        String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
+                                                        eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+                    csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
+                    For Each iHCR In iStrategy
+                        csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
+                                                  cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
+                                                  cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
+                                                  cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
+                                                  cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
+                                                  cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
+                                                  cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
+                                                  cStringUtils.ToCSVField(HCR_Group.toCostFunctionString(iHCR.CostFunction)))
+                    Next
+                    cMSEUtils.ReleaseWriter(csvStrategyFile)
+
+                End If
+            Next
+
+            If msg IsNot Nothing Then
+                Me.Core.Messages.SendMessage(msg)
             End If
-        Next
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
-    Private Sub OnDeleteStrategy(sender As System.Object, e As System.EventArgs) Handles m_tsbnDeleteStrategy.Click
-        Dim selStrategy As Integer = m_tscmStrategies.SelectedIndex
+    ' -----------------------------
+    ' Controls
+    ' -----------------------------
 
-        'ToDo this needs to delete the Strategy file as well as removing it from the list
-        'that should happen from the Strategies object itself
-        'Also there should be an isDirty flag
-        If selStrategy >= 0 Then
-            Me.m_plugin.Strategies.RemoveAt(selStrategy)
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOK.Click
+
+        Try
+            Me.m_plugin.Strategies.Clear()
+            Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
+            Me.m_plugin.InvalidateConfiguration()
+
+            Me.m_bStrategiesSaved = True
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
+
+        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.Close()
+
+    End Sub
+
+    ' -----------------------------
+    ' Grid
+    ' -----------------------------
+
+    ''' <summary>
+    ''' Update group selection according to user actions in the grid.
+    ''' </summary>
+    Private Sub OnGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
+        Me.HCRGroup = Me.m_grid.HarvestControlRule
+        Me.UpdateControls()
+    End Sub
+
+    ''' <summary>
+    ''' Update to changed grid contents.
+    ''' </summary>
+    Private Sub OnGridEdited()
+        Try
+            Me.UpdatePlot()
             Me.UpdateControls()
-            Me.m_tscmStrategies.SelectedIndex = 0
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsbnDefaultTFM.Click
+        'Try
+        '    Me.UIContext.Core.SetDefaultTFM()
+        'Catch ex As Exception
+        '    Debug.Assert(False, ex.Message)
+        'End Try
+    End Sub
+
+    ' -----------------------------
+    ' HCR
+    ' -----------------------------
+
+    Private Sub OnAddHCR(sender As Object, e As System.EventArgs) Handles m_tsbnAddHCR.Click
+
+        'Ask the user to create a new HCR_Group
+        Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule
+        HRCDialogue.Init(Me.m_plugin, Me.m_SelectedStrategy)
+        HRCDialogue.ShowDialog()
+
+        If HRCDialogue.DialogResult = Windows.Forms.DialogResult.OK Then
+            'add the newly created harvest control rule to the current strategy
+            Me.m_SelectedStrategy.Add(HRCDialogue.HarvestControlRule)
+            Me.m_grid.RefreshContent()
         End If
 
     End Sub
@@ -302,19 +387,22 @@ Public Class frmTFMpolicy
         End Get
         Set(value As HCR_Group)
             Me.m_HCR = value
-            If Me.m_HCR IsNot Nothing Then
-                Redraw()
-            End If
+            Me.UpdatePlot()
         End Set
     End Property
 
+    Private ReadOnly Property MSE As cMSE
+        Get
+            Return Me.m_plugin
+        End Get
+    End Property
 
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Redraw the quota curve.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub Redraw()
+    Private Sub UpdatePlot()
 
         If (Me.m_zgh Is Nothing) Then Return
 
@@ -366,25 +454,34 @@ Public Class frmTFMpolicy
 
     End Sub
 
-    Private ReadOnly Property MSE As cMSE
-        Get
-            Return Me.m_plugin
-        End Get
-    End Property
-
-    Public Shadows Sub UpdateControls()
+    Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
-        Try
-            Dim i As Integer
-            Me.m_tscmStrategies.Items.Clear()
-            For Each strategy As Strategy In Me.m_plugin.Strategies
-                i += 1
-                Me.m_tscmStrategies.Items.Add(strategy.Name)
-            Next
-        Catch ex As Exception
+        Dim bHasStrategy As Boolean = (Me.m_tscmStrategies.SelectedIndex >= 0)
+        Dim bHasHCR As Boolean = (Me.m_grid.SelectedStrategy IsNot Nothing)
 
-        End Try
+        Me.m_tsbnDeleteStrategy.Enabled = bHasStrategy
+        Me.m_tsbnAddHCR.Enabled = bHasStrategy
+        Me.m_tsbnDeleteHCR.Enabled = bHasHCR
+        Me.m_tsbnDefaultTFM.Enabled = bHasHCR
+
+        Me.m_btnOK.Enabled = Not Me.m_bStrategiesSaved
+
+    End Sub
+
+    Public Sub UpdateStrategies()
+        Me.m_tscmStrategies.Items.Clear()
+        For Each strategy As Strategy In Me.m_strategies
+            Me.m_tscmStrategies.Items.Add(strategy.Name)
+        Next
+    End Sub
+
+    Private Sub changeSelectedStrategy(iSelectedIndex As Integer)
+
+        Me.m_SelectedStrategy = Me.m_strategies(iSelectedIndex)
+        Me.m_tscmStrategies.SelectedIndex = iSelectedIndex
+        Me.m_grid.SelectedStrategy = Me.m_SelectedStrategy
+        Me.UpdatePlot()
 
     End Sub
 
@@ -461,7 +558,7 @@ Public Class frmTFMpolicy
                 Case eDragType.FMax
                     Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
             End Select
-            Me.Redraw()
+            Me.UpdatePlot()
             Me.m_grid.UpdateContent()
         End If
         Return True
