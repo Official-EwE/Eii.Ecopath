@@ -4,9 +4,9 @@
 # input - score file
 # output - enaR analysis stored as CSV file
 # ---
-#Borrett,   Feb. 27, 2013
-#Steenbeek, Mar. 17, 2013: Added filename placeholder for EwE
-#Steenbeek, Oct. 22, 2013: Auto-install enaR
+# Borrett,   Feb. 27, 2013
+# Steenbeek, Mar. 17, 2013: Added filename placeholder for EwE
+# Steenbeek, Oct. 22, 2013: Auto-install enaR
 # ========================================================================
 
 install.packages("enaR")

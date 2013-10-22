@@ -285,6 +285,7 @@ Public Class frmInvokeR
         For Each strLine As String In astrLines
             strLine = strLine.Replace(cStringUtils.vbCrLf, cStringUtils.vbNewline)
             strLine = strLine.Replace(cStringUtils.vbLf, cStringUtils.vbNewline)
+            strLine = strLine.Replace(CStr(cStringUtils.vbNewline & cStringUtils.vbNewline), cStringUtils.vbNewline) ' Boohoohoo
             For Each strBit As String In strLine.Split(CChar(cStringUtils.vbNewline))
                 lb.Items.Add(strBit)
             Next
