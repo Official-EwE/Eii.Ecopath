@@ -90,10 +90,10 @@ Partial Class frmInvokeR
         '
         Me.m_tbxR.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxR.Location = New System.Drawing.Point(128, 23)
+        Me.m_tbxR.Location = New System.Drawing.Point(95, 23)
         Me.m_tbxR.Name = "m_tbxR"
         Me.m_tbxR.ReadOnly = True
-        Me.m_tbxR.Size = New System.Drawing.Size(202, 20)
+        Me.m_tbxR.Size = New System.Drawing.Size(235, 20)
         Me.m_tbxR.TabIndex = 2
         '
         'm_btnChooseR
@@ -119,10 +119,10 @@ Partial Class frmInvokeR
         '
         Me.m_tbxScript.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxScript.Location = New System.Drawing.Point(128, 52)
+        Me.m_tbxScript.Location = New System.Drawing.Point(95, 52)
         Me.m_tbxScript.Name = "m_tbxScript"
         Me.m_tbxScript.ReadOnly = True
-        Me.m_tbxScript.Size = New System.Drawing.Size(202, 20)
+        Me.m_tbxScript.Size = New System.Drawing.Size(235, 20)
         Me.m_tbxScript.TabIndex = 5
         '
         'm_btnChooseScript
@@ -149,10 +149,10 @@ Partial Class frmInvokeR
         '
         Me.m_tbxSCOR.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxSCOR.Location = New System.Drawing.Point(128, 97)
+        Me.m_tbxSCOR.Location = New System.Drawing.Point(95, 97)
         Me.m_tbxSCOR.Name = "m_tbxSCOR"
         Me.m_tbxSCOR.ReadOnly = True
-        Me.m_tbxSCOR.Size = New System.Drawing.Size(202, 20)
+        Me.m_tbxSCOR.Size = New System.Drawing.Size(235, 20)
         Me.m_tbxSCOR.TabIndex = 9
         '
         'm_btnChooseSCOR
@@ -167,7 +167,7 @@ Partial Class frmInvokeR
         '
         'm_tbxPlaceholder
         '
-        Me.m_tbxPlaceholder.Location = New System.Drawing.Point(128, 145)
+        Me.m_tbxPlaceholder.Location = New System.Drawing.Point(95, 144)
         Me.m_tbxPlaceholder.MaxLength = 24
         Me.m_tbxPlaceholder.Name = "m_tbxPlaceholder"
         Me.m_tbxPlaceholder.Size = New System.Drawing.Size(120, 20)
@@ -245,10 +245,10 @@ Partial Class frmInvokeR
         Me.m_rbCustomSCOR.AutoSize = True
         Me.m_rbCustomSCOR.Location = New System.Drawing.Point(10, 98)
         Me.m_rbCustomSCOR.Name = "m_rbCustomSCOR"
-        Me.m_rbCustomSCOR.Size = New System.Drawing.Size(112, 17)
+        Me.m_rbCustomSCOR.Size = New System.Drawing.Size(79, 17)
         Me.m_rbCustomSCOR.TabIndex = 8
         Me.m_rbCustomSCOR.TabStop = True
-        Me.m_rbCustomSCOR.Text = "&Custom SCOR file:"
+        Me.m_rbCustomSCOR.Text = "&Custom file:"
         Me.m_rbCustomSCOR.UseVisualStyleBackColor = True
         '
         'm_rbManagedSCOR
@@ -256,10 +256,10 @@ Partial Class frmInvokeR
         Me.m_rbManagedSCOR.AutoSize = True
         Me.m_rbManagedSCOR.Location = New System.Drawing.Point(10, 121)
         Me.m_rbManagedSCOR.Name = "m_rbManagedSCOR"
-        Me.m_rbManagedSCOR.Size = New System.Drawing.Size(155, 17)
+        Me.m_rbManagedSCOR.Size = New System.Drawing.Size(106, 17)
         Me.m_rbManagedSCOR.TabIndex = 11
         Me.m_rbManagedSCOR.TabStop = True
-        Me.m_rbManagedSCOR.Text = "&System managed SCOR file"
+        Me.m_rbManagedSCOR.Text = "&System managed"
         Me.m_rbManagedSCOR.UseVisualStyleBackColor = True
         '
         'm_hdrSettings
