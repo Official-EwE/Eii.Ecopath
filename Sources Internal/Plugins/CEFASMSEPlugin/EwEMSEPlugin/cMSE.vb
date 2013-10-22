@@ -28,6 +28,7 @@ Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 Imports ScientificInterfaceShared.Controls
 Imports Troschuetz.Random
+Imports Microsoft.VisualBasic
 
 
 Public Class cMSE
@@ -284,7 +285,6 @@ Public Class cMSE
 
     ''' <summary>
     ''' Checks whether each of the Ecosim distribution files (not vulnerabilities) is has the correct functional groups in it
-    ''' They should have living groups excluding primary producers
     ''' It does this by saving a true in the position of an array at the index at which it exists in EwE
     ''' It then sums the values in this array and checks that they are equal to nlivinggroups (TRUE=1)
     ''' The reason I have done this is to prevent the problem where a file might have replicate groups
@@ -337,16 +337,16 @@ Public Class cMSE
         End If
 
         'Check if any of the records are for groups which are primary producers
-        For igrp = 1 To mCore.nGroups
-            If correct(igrp - 1) > 0 And mCore.EcoPathGroupOutputs(igrp).IsProducer Then
-                Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER, _
-                                             Path.GetFileNameWithoutExtension(strPath), _
-                                             mCore.EcoPathGroupOutputs(igrp).Name, _
-                                             cStringUtils.vbCrLf), _
-                               eMessageImportance.Warning)
-                Return False
-            End If
-        Next
+        'For igrp = 1 To mCore.nGroups
+        '    If correct(igrp - 1) > 0 And mCore.EcoPathGroupOutputs(igrp).IsProducer Then
+        '        Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER, _
+        '                                     Path.GetFileNameWithoutExtension(strPath), _
+        '                                     mCore.EcoPathGroupOutputs(igrp).Name, _
+        '                                     cStringUtils.vbCrLf), _
+        '                       eMessageImportance.Warning)
+        '        Return False
+        '    End If
+        'Next
 
         'check that there are no replicates
         For igrp = 1 To mCore.nGroups
@@ -816,7 +816,7 @@ Public Class cMSE
         Dim NumberIterationsAlreadyInResults As Integer
         Dim NumberIterationsAlreadyInFleets As Integer
         Dim nFailedParameterisations As Integer = 0
-        Dim nLivingGroupsMinusPPers As Integer
+        'Dim nLivingGroupsMinusPPers As Integer
 
         Dim swGroup As StreamWriter
         Dim swFleet As StreamWriter
@@ -847,12 +847,12 @@ Public Class cMSE
         msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Fleet.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
         'Count the number of live groups which aren't primary producers
-        nLivingGroupsMinusPPers = mCore.nLivingGroups
-        For i = 1 To mCore.nGroups
-            If mCore.EcoPathGroupInputs(i).IsLiving And mCore.EcoPathGroupInputs(i).IsProducer Then
-                nLivingGroupsMinusPPers -= 1
-            End If
-        Next
+        'nLivingGroupsMinusPPers = mCore.nLivingGroups
+        'For i = 1 To mCore.nGroups
+        '    If mCore.EcoPathGroupInputs(i).IsLiving And mCore.EcoPathGroupInputs(i).IsProducer Then
+        '        nLivingGroupsMinusPPers -= 1
+        '    End If
+        'Next
 
         'Extract the maximum percentage change in effort for each fleet from csv and put into array ChangeInEffortLimits
         'to be used by the optim to determine effort is beyond maximum change in effort
@@ -924,8 +924,10 @@ Public Class cMSE
                 ecosimData.SwitchPower(igrp) = CSng(SwitchingPower(iTrial - 1, igrp - 1))
             Next
 
-            For iPrey As Integer = 1 To Vulnerabilities.GetLength(1)
-                For iPred As Integer = 1 To Vulnerabilities.GetLength(2)
+            For iPrey As Integer = 1 To mCore.nGroups
+                'For iPrey As Integer = 1 To Vulnerabilities.GetLength(1)
+                For iPred As Integer = 1 To mCore.nLivingGroups
+                    'For iPred As Integer = 1 To Vulnerabilities.GetLength(2)
                     ecosimData.VulMult(iPrey, iPred) = CSng(Vulnerabilities(iTrial - 1, iPrey - 1, iPred - 1))
                 Next
             Next
@@ -1455,8 +1457,8 @@ stepend:
         Dim MeanProportions(mCore.nLivingGroups - 1, mCore.nGroups) As Single
         Dim DietPropMultipliers(mCore.nLivingGroups - 1) As Double
         Dim Interacts(mCore.nLivingGroups - 1, mCore.nGroups) As Integer
-        Dim nPPers As Integer 'number of primary producers
-        Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
+        'Dim nPPers As Integer 'number of primary producers
+        'Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
         'Const PQThreshold As Double = 0.5
         'Const RespirThreshold As Double = 0
         Dim isbalanced As Boolean
@@ -1482,19 +1484,28 @@ stepend:
         If (reader IsNot Nothing) Then
 
             Try
-                For iPred As Integer = 1 To mCore.nLivingGroups
-                    For iPrey As Integer = 0 To mCore.nGroups
-                        If csv.ReadNextRecord() Then
-                            'Note about indices for interacts, lower and upper
-                            'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
-                            'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                            Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
-                            MeanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
-                        Else
-                            ' ToDo_JS: handle error. Unexpected end in CSV file
-                        End If
-                    Next
-                Next
+                'For iPred As Integer = 1 To mCore.nLivingGroups
+                '    For iPrey As Integer = 0 To mCore.nGroups
+                '        If csv.ReadNextRecord() Then
+                '            'Note about indices for interacts, lower and upper
+                '            'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
+                '            'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
+                '            Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
+                '            MeanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
+                '        Else
+                '            ' ToDo_JS: handle error. Unexpected end in CSV file
+                '        End If
+                '    Next
+                'Next
+                While csv.ReadNextRecord()
+                    'Note about indices for interacts, lower and upper
+                    'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
+                    'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
+                    Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
+                    MeanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
+                End While
+
+
             Catch ex As Exception
                 ' ToDo_JS: handle error. Unexpected exception reading CSV file
             End Try
@@ -1522,10 +1533,10 @@ stepend:
         End If
 
         'Calculate how many living groups that aren't primary producers
-        For i = 1 To mCore.nGroups
-            If mCore.EcoPathGroupInputs(i).IsProducer Then nPPers += 1
-        Next i
-        nLivingMinusPPers = mCore.nLivingGroups - nPPers
+        'For i = 1 To mCore.nGroups
+        '    If mCore.EcoPathGroupInputs(i).IsProducer Then nPPers += 1
+        'Next i
+        'nLivingMinusPPers = mCore.nLivingGroups - nPPers
 
         Me.m_bIsRunning = True
         cApplicationStatusNotifier.StartProgress(Me.Core, "", -1)
@@ -1595,7 +1606,6 @@ stepend:
                                 WriteEcopathParms("pb_out.csv", Me._ecopath.EcopathData.PB)
                                 WriteEcopathParms("qb_out.csv", Me._ecopath.EcopathData.QB)
                                 WriteEcopathParms("ee_out.csv", Me._ecopath.EcopathData.EE)
-
                                 ''This runs Ecosim without core support
                                 'If Me.RunEcosim() Then
                                 '    'dumps out some Ecosim results
@@ -1922,6 +1932,7 @@ stepend:
 
     End Sub
 
+    'This is just a diagnostics routine that outputs to console the Biomass for each living group at a particular iteration
     Private Sub dumpEcopathParameters(ByVal iteration As Integer)
         Dim nliving As Integer = Me.mCore.nLivingGroups
         Dim MonteCarlo As cMonteCarloManager = Me.mCore.EcosimMonteCarlo
@@ -2152,7 +2163,7 @@ stepend:
 
     'End Sub
 
-    Public Function Create1DimParams(ByVal ParamName As String) As Boolean
+    Public Function GenerateEcosimParameters(ByVal ParamName As String) As Boolean
 
         ' ToDo_JS: Use standard CSV field reading/writing
         ' ToDo_JS: Use standard readers/writers, and make robust
@@ -2184,16 +2195,11 @@ stepend:
         'Generate an array of sample parameters
         For iGroup = 1 To mCore.nLivingGroups
             eDistributionType = CType(ParameterArray(iGroup - 1, 0), DistributionType)
-            'row = SampledParameters.NewRow()
-            'row("GroupName") = 
+
             For iIteration = 1 To nIterations
 
                 Select Case eDistributionType
                     Case DistributionType.Uniform
-                        'row(iIteration - 1) =
-                        If iGroup > 63 Then
-                            Console.WriteLine("iGroup is >63")
-                        End If
                         SampledParameters(iIteration - 1, iGroup - 1) = UniformSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2))
                     Case DistributionType.Triangular
                         SampledParameters(iIteration - 1, iGroup - 1) = TriangularSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2), ParameterArray(iGroup - 1, 3))
@@ -2242,7 +2248,7 @@ stepend:
             writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration & "_out.csv"), False)
             If (writer IsNot Nothing) Then
                 'Create random values for the vulnerabilities and store in a csv
-                For igrppredator As Integer = 1 To _ecopath.EcopathData().NumGroups
+                For igrppredator As Integer = 1 To _ecopath.EcopathData().NumLiving
                     For igrpprey As Integer = 1 To _ecopath.EcopathData().NumGroups
                         If (igrpprey > 1) Then writer.Write(",")
                         writer.Write(Convert.ToSingle(1 + Math.Exp(9 * (CSng(Me.m_rand.NextDouble()) - 0.5))))
