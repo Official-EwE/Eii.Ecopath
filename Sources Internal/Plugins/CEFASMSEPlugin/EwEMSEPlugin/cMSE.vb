@@ -20,6 +20,8 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
 Option Strict On
 Imports System.IO
 Imports EwECore
@@ -28,8 +30,8 @@ Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 Imports ScientificInterfaceShared.Controls
 Imports Troschuetz.Random
-Imports Microsoft.VisualBasic
 
+#End Region ' Imports
 
 Public Class cMSE
     Implements EwEPlugin.IMenuItemPlugin
