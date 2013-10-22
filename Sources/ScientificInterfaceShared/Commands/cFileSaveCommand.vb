@@ -85,8 +85,12 @@ Namespace Commands
 
             Try
                 ' Only update directory if a directory has been specified
-                strPath = Path.GetDirectoryName(strFileName)
-                If Not String.IsNullOrEmpty(strPath) Then Me.Directory = strPath
+                If Not String.IsNullOrWhiteSpace(strFileName) Then
+                    strPath = Path.GetDirectoryName(strFileName)
+                End If
+                If Not String.IsNullOrEmpty(strPath) Then
+                    Me.Directory = strPath
+                End If
             Catch ex As Exception
             End Try
 
