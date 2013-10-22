@@ -61,6 +61,11 @@ Namespace Controls
 
 #Region " Events "
 
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
+            Me.CenterToParent()
+            MyBase.OnLoad(e)
+        End Sub
+
         Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOk.Click
             Me.m_strValue = Me.m_tbxValue.Text
