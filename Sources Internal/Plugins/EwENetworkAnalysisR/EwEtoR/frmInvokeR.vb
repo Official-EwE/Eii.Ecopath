@@ -217,11 +217,11 @@ Public Class frmInvokeR
 
         Dim bridge As New cRBridge(Me.m_tbxR.Text)
         bridge.Field(Me.m_tbxPlaceholder.Text) = cFileUtils.DosToUnix(Me.m_tbxSCOR.Text)
-        bridge.Execute(Me.m_tbxScript.Text)
+        bridge.ExecuteFile(Me.m_tbxScript.Text)
 
-        Me.m_lbxScript.DataSource = bridge.Input
-        Me.m_lbxOutput.DataSource = bridge.Output
-        Me.m_lbxError.DataSource = bridge.Errors
+        Me.UpdateList(Me.m_lbxScript, bridge.Input)
+        Me.UpdateList(Me.m_lbxOutput, bridge.Output)
+        Me.UpdateList(Me.m_lbxError, bridge.Errors)
 
         Me.UpdateIcons()
 
@@ -242,6 +242,23 @@ Public Class frmInvokeR
         Else
             tpg.ImageIndex = iIndex
         End If
+
+    End Sub
+
+    Private Sub UpdateList(ByVal lb As ListBox, astrLines As String())
+
+        lb.Items.Clear()
+        lb.BeginUpdate()
+
+        For Each strLine As String In astrLines
+            strLine = strLine.Replace(cStringUtils.vbCrLf, cStringUtils.vbNewline)
+            strLine = strLine.Replace(cStringUtils.vbLf, cStringUtils.vbNewline)
+            For Each strBit As String In strLine.Split(CChar(cStringUtils.vbNewline))
+                lb.Items.Add(strBit)
+            Next
+        Next
+
+        lb.EndUpdate()
 
     End Sub
 
