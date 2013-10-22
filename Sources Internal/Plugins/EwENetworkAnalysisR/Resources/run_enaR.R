@@ -6,19 +6,19 @@
 # ---
 #Borrett,   Feb. 27, 2013
 #Steenbeek, Mar. 17, 2013: Added filename placeholder for EwE
+#Steenbeek, Oct. 22, 2013: Auto-install enaR
 # ========================================================================
 
-
-
-# file.name is the name of plain text SCOR formatted ENA model.  I am assuming it is in the current dirctory or the file name includes the path to the directory.
+install.packages("enaR")
   
 # prepare
 rm(list=ls())
 library(enaR)
 
+# file.name is the name of plain text SCOR formatted ENA model, to be provided by the calling tool
+file.name="%SCORFILE%"
 
 # load model
-file.name="%SCORFILE%"
 m <- read.scor(file.name)          # read in model
 m <- balance(m)                    # balances model if needed
 
