@@ -8,11 +8,17 @@
     <Setting Name="RScript" Type="System.String" Scope="User">
       <Value Profile="(Default)">run_enaR.R</Value>
     </Setting>
-    <Setting Name="SCORFile" Type="System.String" Scope="User">
+    <Setting Name="SCORFileCustom" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="RScriptFilePlaceholder" Type="System.String" Scope="User">
       <Value Profile="(Default)">%SCORFILE%</Value>
+    </Setting>
+    <Setting Name="SCORmanaged" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AdvancedViz" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

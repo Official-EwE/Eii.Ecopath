@@ -10,7 +10,8 @@
 # ========================================================================
 
 install.packages("enaR")
-  
+update.package()
+
 # prepare
 rm(list=ls())
 library(enaR)

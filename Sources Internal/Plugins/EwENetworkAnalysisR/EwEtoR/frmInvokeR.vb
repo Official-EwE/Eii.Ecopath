@@ -69,7 +69,10 @@ Public Class frmInvokeR
         Me.m_tbxR.Text = My.Settings.RPath
         Me.m_tbxScript.Text = My.Settings.RScript
         Me.m_tbxPlaceholder.Text = My.Settings.RScriptFilePlaceholder
-        Me.m_tbxSCOR.Text = My.Settings.SCORFile
+        Me.m_tbxSCOR.Text = My.Settings.SCORFileCustom
+        Me.m_rbManagedSCOR.Checked = My.Settings.SCORmanaged
+        Me.m_rbCustomSCOR.Checked = Not My.Settings.SCORmanaged
+        Me.m_hdrSettings.IsCollapsed = Not My.Settings.AdvancedViz
 
         Me.m_fpR = New cEwEFormatProvider(Me.m_uic, Me.m_tbxR, GetType(String))
         Me.m_fpScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScript, GetType(String))
@@ -84,6 +87,8 @@ Public Class frmInvokeR
     End Sub
 
     Protected Overrides Sub OnClosed(e As System.EventArgs)
+
+        Me.SaveSettings()
 
         Me.m_fpR.Release()
         Me.m_fpScript.Release()
@@ -104,6 +109,7 @@ Public Class frmInvokeR
         cmd.Invoke(Me.m_tbxR.Text, My.Resources.FILEFILTER_R_EXE, 0, My.Resources.PROMPT_SELECT_R_EXE)
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
             Me.m_tbxR.Text = cmd.FileName
+            Me.UpdateControls()
         End If
 
     End Sub
@@ -112,22 +118,34 @@ Public Class frmInvokeR
         Handles m_btnChooseScript.Click
 
         Dim cmd As cFileOpenCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-        cmd.Invoke(Me.m_tbxScript.Text, My.Resources.FILEFILTER_R_SCRIPT, 0, My.Resources.PROMPT_SELECT_R_SCRIPT
-                   )
+        cmd.Invoke(Me.m_tbxScript.Text, My.Resources.FILEFILTER_R_SCRIPT, 0, My.Resources.PROMPT_SELECT_R_SCRIPT)
+
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
             Me.m_tbxScript.Text = cmd.FileName
+            Me.UpdateControls()
         End If
 
     End Sub
 
-    Private Sub OnChooseSCOR_Click(sender As System.Object, e As System.EventArgs) _
+    Private Sub OnChooseCustomSCOR(sender As System.Object, e As System.EventArgs) _
         Handles m_btnChooseSCOR.Click
 
         Dim cmd As cFileSaveCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
         cmd.Invoke(Me.m_tbxSCOR.Text, My.Resources.FILFILTER_SCOR, 0, My.Resources.PROMPT_SELECT_SCOR_FILE)
+
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
             Me.m_tbxSCOR.Text = cmd.FileName
+            Me.m_rbCustomSCOR.Checked = True
+            Me.UpdateControls()
         End If
+
+    End Sub
+
+    Private Sub OnSCORTypeChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_rbManagedSCOR.CheckedChanged, m_rbCustomSCOR.CheckedChanged
+
+        If Me.m_bInUpdate Then Return
+        Me.UpdateControls()
 
     End Sub
 
@@ -161,7 +179,7 @@ Public Class frmInvokeR
         Dim bHasUIC As Boolean = (Me.m_uic IsNot Nothing)
         Dim bHasR As Boolean = File.Exists(Me.m_tbxR.Text)
         Dim bHasScript As Boolean = File.Exists(Me.m_tbxScript.Text)
-        Dim bHasSCOR As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxSCOR.Text)
+        Dim bHasSCOR As Boolean = Me.m_rbManagedSCOR.Checked Or (Not String.IsNullOrWhiteSpace(Me.m_tbxSCOR.Text))
         Dim style As cStyleGuide.eStyleFlags
 
         style = cStyleGuide.eStyleFlags.OK
@@ -184,16 +202,21 @@ Public Class frmInvokeR
 
     End Sub
 
-    Private Sub RunR()
-
+    Private Sub SaveSettings()
         ' Save settings
         My.Settings.RPath = Me.m_tbxR.Text
         My.Settings.RScript = Me.m_tbxScript.Text
         My.Settings.RScriptFilePlaceholder = Me.m_tbxPlaceholder.Text
-        My.Settings.SCORFile = Me.m_tbxSCOR.Text
+        My.Settings.SCORFileCustom = Me.m_tbxSCOR.Text
+        My.Settings.SCORmanaged = Me.m_rbManagedSCOR.Checked()
+        My.Settings.AdvancedViz = Not Me.m_hdrSettings.IsCollapsed
         My.Settings.Save()
+    End Sub
+
+    Private Sub RunR()
 
         Me.UpdateIcons()
+        Me.SaveSettings()
 
         ' Run Ecopath
         Dim sm As cCoreStateMonitor = Me.m_uic.Core.StateMonitor
@@ -204,20 +227,28 @@ Public Class frmInvokeR
         Debug.Assert(Me.m_dad.m_epData IsNot Nothing)
 
         Dim writer As New cSCORWriter(Me.m_dad.m_epData)
-        If writer.Write(Me.m_tbxSCOR.Text) Then
-            Dim msg As New cMessage(String.Format(My.Resources.STATUS_SCOR_SAVED_SUCCESS, Me.m_tbxSCOR.Text), _
+        Dim strSCOR As String = ""
+
+        If My.Settings.SCORmanaged Then
+            strSCOR = cFileUtils.MakeTempFile(".dat")
+        Else
+            strSCOR = My.Settings.SCORFileCustom
+        End If
+
+        If writer.Write(strSCOR) Then
+            Dim msg As New cMessage(String.Format(My.Resources.STATUS_SCOR_SAVED_SUCCESS, strSCOR), _
                                     eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Plugin, eMessageImportance.Information)
-            msg.Hyperlink = Path.GetDirectoryName(Me.m_tbxSCOR.Text)
+            msg.Hyperlink = strSCOR
             Me.m_uic.Core.Messages.SendMessage(msg)
         Else
-            Dim msg As New cMessage(String.Format(My.Resources.STATUS_SCOR_SAVED_FAILED, Me.m_tbxSCOR.Text), _
+            Dim msg As New cMessage(String.Format(My.Resources.STATUS_SCOR_SAVED_FAILED, strSCOR), _
                                     eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Plugin, eMessageImportance.Warning)
             Me.m_uic.Core.Messages.SendMessage(msg)
             Return
         End If
 
         Dim bridge As New cRBridge(Me.m_tbxR.Text)
-        bridge.Field(Me.m_tbxPlaceholder.Text) = cFileUtils.DosToUnix(Me.m_tbxSCOR.Text)
+        bridge.Field(Me.m_tbxPlaceholder.Text) = cFileUtils.DosToUnix(strSCOR)
         bridge.ExecuteFile(Me.m_tbxScript.Text)
 
         Me.UpdateList(Me.m_lbxScript, bridge.Input)
