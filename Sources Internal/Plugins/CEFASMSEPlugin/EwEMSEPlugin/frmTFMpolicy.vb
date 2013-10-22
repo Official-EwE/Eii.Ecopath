@@ -463,7 +463,6 @@ Public Class frmTFMpolicy
         Me.m_tsbnDeleteStrategy.Enabled = bHasStrategy
         Me.m_tsbnAddHCR.Enabled = bHasStrategy
         Me.m_tsbnDeleteHCR.Enabled = bHasHCR
-        Me.m_tsbnDefaultTFM.Enabled = bHasHCR
 
         Me.m_btnOK.Enabled = Not Me.m_bStrategiesSaved
 
