@@ -331,8 +331,8 @@ Public Class frmTFMpolicy
         End Try
     End Sub
 
-    Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsbnDefaultTFM.Click
+    Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
         'Try
         '    Me.UIContext.Core.SetDefaultTFM()
         'Catch ex As Exception
