@@ -424,7 +424,7 @@
     <value>m_hdrStep2</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9794.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9834.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Parent" xml:space="preserve">
     <value>m_plStep2</value>
@@ -694,7 +694,7 @@
     <value>m_hdrStep4</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9794.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9834.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Parent" xml:space="preserve">
     <value>m_plStep4</value>
@@ -781,7 +781,7 @@
     <value>m_hdrStep3</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9794.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9834.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Parent" xml:space="preserve">
     <value>m_plStep3</value>
@@ -905,9 +905,6 @@
   </data>
   <data name="m_lblArea.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 109</value>
-  </data>
-  <data name="m_lblArea.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>100, 0</value>
   </data>
   <data name="m_lblArea.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 13</value>
@@ -1795,9 +1792,6 @@
   <data name="m_lblAreaUnit.Location" type="System.Drawing.Point, System.Drawing">
     <value>475, 109</value>
   </data>
-  <data name="m_lblAreaUnit.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>100, 0</value>
-  </data>
   <data name="m_lblAreaUnit.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 13</value>
   </data>
@@ -1954,9 +1948,6 @@
   <data name="m_lblInputParams.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 83</value>
   </data>
-  <data name="m_lblInputParams.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>100, 0</value>
-  </data>
   <data name="m_lblInputParams.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 13</value>
   </data>
@@ -2057,7 +2048,7 @@
     <value>m_hdrStep1</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9794.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.4.9834.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Parent" xml:space="preserve">
     <value>m_plStep1</value>
@@ -2125,9 +2116,6 @@
   <data name="m_tlpLayout.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>
-  <data name="m_tlpLayout.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>450, 500</value>
-  </data>
   <data name="m_tlpLayout.RowCount" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
@@ -2191,6 +2179,9 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Cefas MSE</value>
   </data>
@@ -2198,6 +2189,6 @@
     <value>frmMSE</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.4.9794.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.4.9834.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

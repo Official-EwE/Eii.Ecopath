@@ -197,13 +197,13 @@ Public Class frmMSE
         If (Me.m_plugin Is Nothing) Then Return
 
         Try
-            Me.m_plugin.Create1DimParams("MaxRelFeedingTime")
-            Me.m_plugin.Create1DimParams("FeedingTimeAdjustRate")
-            Me.m_plugin.Create1DimParams("OtherMortFeedingTime")
-            Me.m_plugin.Create1DimParams("PredEffectFeedingTime")
-            Me.m_plugin.Create1DimParams("DenDepCatchability")
-            Me.m_plugin.Create1DimParams("QBMaxxQBio")
-            Me.m_plugin.Create1DimParams("SwitchingPower")
+            Me.m_plugin.GenerateEcosimParameters("MaxRelFeedingTime")
+            Me.m_plugin.GenerateEcosimParameters("FeedingTimeAdjustRate")
+            Me.m_plugin.GenerateEcosimParameters("OtherMortFeedingTime")
+            Me.m_plugin.GenerateEcosimParameters("PredEffectFeedingTime")
+            Me.m_plugin.GenerateEcosimParameters("DenDepCatchability")
+            Me.m_plugin.GenerateEcosimParameters("QBMaxxQBio")
+            Me.m_plugin.GenerateEcosimParameters("SwitchingPower")
             Me.m_plugin.CreateVulnerabilities()
             Me.m_plugin.GenerateEcopathParamaters()
         Catch ex As Exception
