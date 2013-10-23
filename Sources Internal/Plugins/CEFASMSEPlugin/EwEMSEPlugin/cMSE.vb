@@ -57,9 +57,8 @@ Public Class cMSE
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer
-    'Private m_nPrimaryProducer As Integer
     Private ChangeInEffortLimits() As Double
-    Public Const NoHCR_F As Integer = -9999
+    Public Const NoHCR_F As Integer = cCore.NULL_VALUE
 
     Private m_monitor As New cMSEStateMonitor(Me)
     Private m_bIsRunning As Boolean = False
@@ -107,8 +106,7 @@ Public Class cMSE
         Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
-        ' Me.m_nPrimaryProducer = cCore.NULL_VALUE
-
+ 
         Me.m_monitor.Invalidate()
 
         If Me.HasUI Then
@@ -223,14 +221,6 @@ Public Class cMSE
             correct(i - 1) = 0
         Next
 
-        ' Count the number of primary producers if not done yet
-        'If (Me.m_nPrimaryProducer < 0) Then
-        '    Me.m_nPrimaryProducer = 0
-        '    For igrp = 1 To mCore.nGroups
-        '        If mCore.EcoPathGroupOutputs(igrp).IsProducer Then Me.m_nPrimaryProducer += 1
-        '    Next
-        'End If
-
         csv = New CsvReader(reader, True)
         Try
             'cycle through each of the living functional groups each time checking if it exists in the file
@@ -272,7 +262,8 @@ Public Class cMSE
             TotalFound += i
         Next
 
-        If TotalFound < mCore.nLivingGroups Then 'Check whether there are too few groups in the file
+        ' Check whether there are too few groups in the file
+        If TotalFound < mCore.nLivingGroups Then
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)), eMessageImportance.Warning)
             Return False
         ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
