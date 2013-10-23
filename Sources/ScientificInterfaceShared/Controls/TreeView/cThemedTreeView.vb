@@ -46,7 +46,7 @@ Namespace Controls
 
         Protected Overrides Sub CreateHandle()
             MyBase.CreateHandle()
-            If cSystemUtils.IsWindows And cSystemUtils.IsRunningWin7OrHigher Then
+            If cSystemUtils.IsWindows And cSystemUtils.IsRunningWin7OrHigher And Not cSystemUtils.Is64Bit Then
                 Try
                     SetWindowTheme(Me.Handle, "explorer", Nothing)
                 Catch ex As Exception
