@@ -156,7 +156,7 @@ Public Class cSCORWriter
             For iPred As Integer = 1 To m_epData.NumLiving
                 Dim cons As Single = Me.CalcConsumption(iPred, iPrey)
                 If (cons > 0) Then
-                    sw.WriteLine("{0,3} {1,3} {2}", iPrey, iPred, cStringUtils.FormatNumber(cons))
+                    sw.WriteLine("{0,3}{1,3} {2}", iPrey, iPred, cStringUtils.FormatNumber(cons))
                 End If
             Next iPred
         Next iPrey
