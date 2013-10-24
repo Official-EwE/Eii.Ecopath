@@ -139,46 +139,44 @@ Namespace Forms
 
         Protected Sub Pulse(importance As eMessageImportance, iNumPulses As Integer)
 
-            Return
+            Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding)
 
-            'Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding)
+            ' Only pulse on relevant messages
+            Select Case importance
+                Case eMessageImportance.Critical, eMessageImportance.Information, eMessageImportance.Question, eMessageImportance.Warning
+                    bPulse = bPulse And True
+                Case Else
+                    bPulse = False
+            End Select
 
-            '' Only pulse on relevant messages
-            'Select Case importance
-            '    Case eMessageImportance.Critical, eMessageImportance.Information, eMessageImportance.Question, eMessageImportance.Warning
-            '        bPulse = bPulse And True
-            '    Case Else
-            '        bPulse = False
-            'End Select
+            If (Not bPulse) Then
+                Me.StopPulsing()
+            Else
+                If (Me.m_timerPulse Is Nothing) Then
 
-            'If (Not bPulse) Then
-            '    Me.StopPulsing()
-            'Else
-            '    If (Me.m_timerPulse Is Nothing) Then
+                    Me.m_icoOrg = Me.Icon
+                    Me.m_importancePulse = importance
 
-            '        Me.m_icoOrg = Me.Icon
-            '        Me.m_importancePulse = importance
+                    Me.m_timerPulse = New Timer()
+                    Me.m_timerPulse.Interval = 500
+                    Me.m_timerPulse.Start()
 
-            '        Me.m_timerPulse = New Timer()
-            '        Me.m_timerPulse.Interval = 500
-            '        Me.m_timerPulse.Start()
+                    AddHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+                Else
+                    ' Merge icon status with existing status
+                    Me.m_importancePulse = CType(Math.Max(Me.m_importancePulse, importance), eMessageImportance)
+                End If
 
-            '        AddHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
-            '    Else
-            '        ' Merge icon status with existing status
-            '        Me.m_importancePulse = CType(Math.Max(Me.m_importancePulse, importance), eMessageImportance)
-            '    End If
+                Dim bmp As Bitmap = cStyleGuide.GetImage(importance)
+                Me.m_iNumPulses = iNumPulses * 2
 
-            '    Dim bmp As Bitmap = cStyleGuide.GetImage(importance)
-            '    Me.m_iNumPulses = iNumPulses * 2
+                ' Update pulse icon
+                If (Me.m_icoPulse IsNot Nothing) Then
+                    Me.m_icoPulse.Dispose()
+                End If
+                Me.m_icoPulse = Icon.FromHandle(cStyleGuide.GetImage(Me.m_importancePulse).GetHicon)
 
-            '    ' Update pulse icon
-            '    If (Me.m_icoPulse IsNot Nothing) Then
-            '        Me.m_icoPulse.Dispose()
-            '    End If
-            '    Me.m_icoPulse = Icon.FromHandle(cStyleGuide.GetImage(Me.m_importancePulse).GetHicon)
-
-            'End If
+            End If
 
         End Sub
 
