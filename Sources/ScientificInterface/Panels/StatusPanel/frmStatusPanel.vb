@@ -356,7 +356,7 @@ Public Class frmStatusPanel
             ' ToDo: reflect whether message was suppressed somehow
         End If
 
-        Me.Pulse(item.Importance, 5)
+        ' Me.Pulse(item.Importance, 5)
 
     End Sub
 
