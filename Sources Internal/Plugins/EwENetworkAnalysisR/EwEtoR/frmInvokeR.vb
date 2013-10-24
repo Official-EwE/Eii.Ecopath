@@ -28,6 +28,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports System.Text
 
 #End Region ' Imports
 
@@ -45,7 +46,13 @@ Public Class frmInvokeR
     Private m_fpR As cEwEFormatProvider
     Private m_fpScript As cEwEFormatProvider
     Private m_fpSCOR As cEwEFormatProvider
+
+    Private m_fpOutScript As cEwEFormatProvider
+    Private m_fpOutput As cEwEFormatProvider
+    Private m_fpOutError As cEwEFormatProvider
+
     Private m_bInUpdate As Boolean = True
+    Private m_ilTabs As New ImageList()
 
 #End Region ' Private vars
 
@@ -72,11 +79,28 @@ Public Class frmInvokeR
         Me.m_tbxSCOR.Text = My.Settings.SCORFileCustom
         Me.m_rbManagedSCOR.Checked = My.Settings.SCORmanaged
         Me.m_rbCustomSCOR.Checked = Not My.Settings.SCORmanaged
+
+        ' Collapse SCOR section
+        Me.m_hdrSettings.CollapsedParentHeight = Me.m_hdrSCOR.Location.Y
         Me.m_hdrSettings.IsCollapsed = Not My.Settings.AdvancedViz
 
         Me.m_fpR = New cEwEFormatProvider(Me.m_uic, Me.m_tbxR, GetType(String))
         Me.m_fpScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScript, GetType(String))
         Me.m_fpSCOR = New cEwEFormatProvider(Me.m_uic, Me.m_tbxSCOR, GetType(String))
+
+        Me.m_fpOutScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScriptOut, GetType(String))
+        Me.m_fpOutScript.Style = cStyleGuide.eStyleFlags.NotEditable
+
+        Me.m_fpOutput = New cEwEFormatProvider(Me.m_uic, Me.m_tbxOutput, GetType(String))
+        Me.m_fpOutput.Style = cStyleGuide.eStyleFlags.NotEditable
+
+        Me.m_fpOutError = New cEwEFormatProvider(Me.m_uic, Me.m_tbxErrors, GetType(String))
+        Me.m_fpOutError.Style = cStyleGuide.eStyleFlags.NotEditable
+
+        Me.m_ilTabs.Images.Add(cStyleGuide.GetImage(eMessageImportance.Information))
+        Me.m_ilTabs.Images.Add(cStyleGuide.GetImage(eMessageImportance.Warning))
+        Me.m_ilTabs.Images.Add(cStyleGuide.GetImage(eMessageImportance.Critical))
+        Me.m_tcDebug.ImageList = Me.m_ilTabs
 
         Me.m_bInUpdate = False
 
@@ -251,9 +275,9 @@ Public Class frmInvokeR
         bridge.Field(Me.m_tbxPlaceholder.Text) = cFileUtils.DosToUnix(strSCOR)
         bridge.ExecuteFile(Me.m_tbxScript.Text)
 
-        Me.UpdateList(Me.m_lbxScript, bridge.Input)
-        Me.UpdateList(Me.m_lbxOutput, bridge.Output)
-        Me.UpdateList(Me.m_lbxError, bridge.Errors)
+        Me.UpdateOutput(Me.m_fpOutScript, bridge.Input)
+        Me.UpdateOutput(Me.m_fpOutput, bridge.Output)
+        Me.UpdateOutput(Me.m_fpOutError, bridge.Errors)
 
         Me.UpdateIcons()
 
@@ -261,15 +285,15 @@ Public Class frmInvokeR
 
     Private Sub UpdateIcons()
 
-        Me.UpdateTabIcon(Me.m_tpgScript, Me.m_lbxScript, 0)
-        Me.UpdateTabIcon(Me.m_tpgOutput, Me.m_lbxOutput, 0)
-        Me.UpdateTabIcon(Me.m_tpgErrors, Me.m_lbxError, 2)
+        Me.UpdateTabIcon(Me.m_tpgScript, Me.m_fpOutScript, 0)
+        Me.UpdateTabIcon(Me.m_tpgOutput, Me.m_fpOutput, 0)
+        Me.UpdateTabIcon(Me.m_tpgErrors, Me.m_fpOutError, 2)
 
     End Sub
 
-    Private Sub UpdateTabIcon(tpg As TabPage, lbx As ListBox, iIndex As Integer)
+    Private Sub UpdateTabIcon(tpg As TabPage, fp As cEwEFormatProvider, iIndex As Integer)
 
-        If (lbx.Items.Count = 0) Then
+        If (String.IsNullOrWhiteSpace(CStr(fp.Value))) Then
             tpg.ImageIndex = -1
         Else
             tpg.ImageIndex = iIndex
@@ -277,21 +301,20 @@ Public Class frmInvokeR
 
     End Sub
 
-    Private Sub UpdateList(ByVal lb As ListBox, astrLines As String())
+    Private Sub UpdateOutput(ByVal fp As cEwEFormatProvider, astrLines As String())
 
-        lb.Items.Clear()
-        lb.BeginUpdate()
+        Dim sb As New StringBuilder()
 
         For Each strLine As String In astrLines
             strLine = strLine.Replace(cStringUtils.vbCrLf, cStringUtils.vbNewline)
             strLine = strLine.Replace(cStringUtils.vbLf, cStringUtils.vbNewline)
             strLine = strLine.Replace(CStr(cStringUtils.vbNewline & cStringUtils.vbNewline), cStringUtils.vbNewline) ' Boohoohoo
             For Each strBit As String In strLine.Split(CChar(cStringUtils.vbNewline))
-                lb.Items.Add(strBit)
+                sb.AppendLine(strBit)
             Next
         Next
 
-        lb.EndUpdate()
+        fp.Value = sb.ToString()
 
     End Sub
 

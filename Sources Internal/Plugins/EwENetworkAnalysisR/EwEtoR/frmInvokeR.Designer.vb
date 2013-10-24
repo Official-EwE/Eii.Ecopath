@@ -54,18 +54,18 @@ Partial Class frmInvokeR
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plOptions = New System.Windows.Forms.Panel()
         Me.m_hdrSCOR = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_rbCustomSCOR = New System.Windows.Forms.RadioButton()
         Me.m_rbManagedSCOR = New System.Windows.Forms.RadioButton()
+        Me.m_rbCustomSCOR = New System.Windows.Forms.RadioButton()
         Me.m_hdrSettings = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_plRun = New System.Windows.Forms.Panel()
         Me.m_plResult = New System.Windows.Forms.Panel()
         Me.m_tcDebug = New System.Windows.Forms.TabControl()
         Me.m_tpgScript = New System.Windows.Forms.TabPage()
-        Me.m_lbxScript = New System.Windows.Forms.ListBox()
+        Me.m_tbxScriptOut = New System.Windows.Forms.TextBox()
         Me.m_tpgOutput = New System.Windows.Forms.TabPage()
-        Me.m_lbxOutput = New System.Windows.Forms.ListBox()
+        Me.m_tbxOutput = New System.Windows.Forms.TextBox()
         Me.m_tpgErrors = New System.Windows.Forms.TabPage()
-        Me.m_lbxError = New System.Windows.Forms.ListBox()
+        Me.m_tbxErrors = New System.Windows.Forms.TextBox()
         Me.m_hdrResults = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plOptions.SuspendLayout()
@@ -240,17 +240,6 @@ Partial Class frmInvokeR
         Me.m_hdrSCOR.Text = "SCOR file"
         Me.m_hdrSCOR.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'm_rbCustomSCOR
-        '
-        Me.m_rbCustomSCOR.AutoSize = True
-        Me.m_rbCustomSCOR.Location = New System.Drawing.Point(10, 98)
-        Me.m_rbCustomSCOR.Name = "m_rbCustomSCOR"
-        Me.m_rbCustomSCOR.Size = New System.Drawing.Size(79, 17)
-        Me.m_rbCustomSCOR.TabIndex = 8
-        Me.m_rbCustomSCOR.TabStop = True
-        Me.m_rbCustomSCOR.Text = "&Custom file:"
-        Me.m_rbCustomSCOR.UseVisualStyleBackColor = True
-        '
         'm_rbManagedSCOR
         '
         Me.m_rbManagedSCOR.AutoSize = True
@@ -261,6 +250,17 @@ Partial Class frmInvokeR
         Me.m_rbManagedSCOR.TabStop = True
         Me.m_rbManagedSCOR.Text = "&System managed"
         Me.m_rbManagedSCOR.UseVisualStyleBackColor = True
+        '
+        'm_rbCustomSCOR
+        '
+        Me.m_rbCustomSCOR.AutoSize = True
+        Me.m_rbCustomSCOR.Location = New System.Drawing.Point(10, 98)
+        Me.m_rbCustomSCOR.Name = "m_rbCustomSCOR"
+        Me.m_rbCustomSCOR.Size = New System.Drawing.Size(79, 17)
+        Me.m_rbCustomSCOR.TabIndex = 8
+        Me.m_rbCustomSCOR.TabStop = True
+        Me.m_rbCustomSCOR.Text = "&Custom file:"
+        Me.m_rbCustomSCOR.UseVisualStyleBackColor = True
         '
         'm_hdrSettings
         '
@@ -309,7 +309,7 @@ Partial Class frmInvokeR
         '
         'm_tpgScript
         '
-        Me.m_tpgScript.Controls.Add(Me.m_lbxScript)
+        Me.m_tpgScript.Controls.Add(Me.m_tbxScriptOut)
         Me.m_tpgScript.Location = New System.Drawing.Point(4, 22)
         Me.m_tpgScript.Name = "m_tpgScript"
         Me.m_tpgScript.Size = New System.Drawing.Size(396, 194)
@@ -317,19 +317,19 @@ Partial Class frmInvokeR
         Me.m_tpgScript.Text = "Script"
         Me.m_tpgScript.UseVisualStyleBackColor = True
         '
-        'm_lbxScript
+        'm_tbxScriptOut
         '
-        Me.m_lbxScript.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbxScript.FormattingEnabled = True
-        Me.m_lbxScript.IntegralHeight = False
-        Me.m_lbxScript.Location = New System.Drawing.Point(0, 0)
-        Me.m_lbxScript.Name = "m_lbxScript"
-        Me.m_lbxScript.Size = New System.Drawing.Size(396, 194)
-        Me.m_lbxScript.TabIndex = 0
+        Me.m_tbxScriptOut.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_tbxScriptOut.Location = New System.Drawing.Point(0, 0)
+        Me.m_tbxScriptOut.Multiline = True
+        Me.m_tbxScriptOut.Name = "m_tbxScriptOut"
+        Me.m_tbxScriptOut.Size = New System.Drawing.Size(396, 194)
+        Me.m_tbxScriptOut.TabIndex = 0
+        Me.m_tbxScriptOut.WordWrap = False
         '
         'm_tpgOutput
         '
-        Me.m_tpgOutput.Controls.Add(Me.m_lbxOutput)
+        Me.m_tpgOutput.Controls.Add(Me.m_tbxOutput)
         Me.m_tpgOutput.Location = New System.Drawing.Point(4, 22)
         Me.m_tpgOutput.Name = "m_tpgOutput"
         Me.m_tpgOutput.Size = New System.Drawing.Size(396, 194)
@@ -337,19 +337,19 @@ Partial Class frmInvokeR
         Me.m_tpgOutput.Text = "Output"
         Me.m_tpgOutput.UseVisualStyleBackColor = True
         '
-        'm_lbxOutput
+        'm_tbxOutput
         '
-        Me.m_lbxOutput.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbxOutput.FormattingEnabled = True
-        Me.m_lbxOutput.IntegralHeight = False
-        Me.m_lbxOutput.Location = New System.Drawing.Point(0, 0)
-        Me.m_lbxOutput.Name = "m_lbxOutput"
-        Me.m_lbxOutput.Size = New System.Drawing.Size(396, 194)
-        Me.m_lbxOutput.TabIndex = 1
+        Me.m_tbxOutput.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_tbxOutput.Location = New System.Drawing.Point(0, 0)
+        Me.m_tbxOutput.Multiline = True
+        Me.m_tbxOutput.Name = "m_tbxOutput"
+        Me.m_tbxOutput.Size = New System.Drawing.Size(396, 194)
+        Me.m_tbxOutput.TabIndex = 1
+        Me.m_tbxOutput.WordWrap = False
         '
         'm_tpgErrors
         '
-        Me.m_tpgErrors.Controls.Add(Me.m_lbxError)
+        Me.m_tpgErrors.Controls.Add(Me.m_tbxErrors)
         Me.m_tpgErrors.Location = New System.Drawing.Point(4, 22)
         Me.m_tpgErrors.Name = "m_tpgErrors"
         Me.m_tpgErrors.Size = New System.Drawing.Size(396, 194)
@@ -357,15 +357,15 @@ Partial Class frmInvokeR
         Me.m_tpgErrors.Text = "Errors"
         Me.m_tpgErrors.UseVisualStyleBackColor = True
         '
-        'm_lbxError
+        'm_tbxErrors
         '
-        Me.m_lbxError.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbxError.FormattingEnabled = True
-        Me.m_lbxError.IntegralHeight = False
-        Me.m_lbxError.Location = New System.Drawing.Point(0, 0)
-        Me.m_lbxError.Name = "m_lbxError"
-        Me.m_lbxError.Size = New System.Drawing.Size(396, 194)
-        Me.m_lbxError.TabIndex = 1
+        Me.m_tbxErrors.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_tbxErrors.Location = New System.Drawing.Point(0, 0)
+        Me.m_tbxErrors.Multiline = True
+        Me.m_tbxErrors.Name = "m_tbxErrors"
+        Me.m_tbxErrors.Size = New System.Drawing.Size(396, 194)
+        Me.m_tbxErrors.TabIndex = 1
+        Me.m_tbxErrors.WordWrap = False
         '
         'm_hdrResults
         '
@@ -398,8 +398,11 @@ Partial Class frmInvokeR
         Me.m_plResult.ResumeLayout(False)
         Me.m_tcDebug.ResumeLayout(False)
         Me.m_tpgScript.ResumeLayout(False)
+        Me.m_tpgScript.PerformLayout()
         Me.m_tpgOutput.ResumeLayout(False)
+        Me.m_tpgOutput.PerformLayout()
         Me.m_tpgErrors.ResumeLayout(False)
+        Me.m_tpgErrors.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -423,11 +426,11 @@ Partial Class frmInvokeR
     Private WithEvents m_plResult As System.Windows.Forms.Panel
     Private WithEvents m_tcDebug As System.Windows.Forms.TabControl
     Private WithEvents m_tpgScript As System.Windows.Forms.TabPage
-    Private WithEvents m_lbxScript As System.Windows.Forms.ListBox
     Private WithEvents m_tpgOutput As System.Windows.Forms.TabPage
-    Private WithEvents m_lbxOutput As System.Windows.Forms.ListBox
     Private WithEvents m_tpgErrors As System.Windows.Forms.TabPage
-    Private WithEvents m_lbxError As System.Windows.Forms.ListBox
     Private WithEvents m_hdrResults As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_rbManagedSCOR As System.Windows.Forms.RadioButton
+    Private WithEvents m_tbxScriptOut As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxOutput As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxErrors As System.Windows.Forms.TextBox
 End Class
