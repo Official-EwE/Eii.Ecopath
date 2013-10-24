@@ -21,7 +21,6 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
@@ -73,11 +72,11 @@ Public Class frmStatusPanel
 
         If (Me.m_uic Is Nothing) Then Return
 
-        ' Prepare image list
-        Me.m_il.Images.Add(CStr(eMessageImportance.Information), cStyleGuide.GetImage(eMessageImportance.Information))
-        Me.m_il.Images.Add(CStr(eMessageImportance.Warning), cStyleGuide.GetImage(eMessageImportance.Warning))
-        Me.m_il.Images.Add(CStr(eMessageImportance.Critical), cStyleGuide.GetImage(eMessageImportance.Critical))
-        Me.m_il.Images.Add(CStr(eMessageImportance.Question), cStyleGuide.GetImage(eMessageImportance.Question))
+        ' Prepare image list for all defined importance types
+        For Each imp As eMessageImportance In [Enum].GetValues(GetType(eMessageImportance))
+            Dim img As Image = cStyleGuide.GetImage(imp)
+            If (img IsNot Nothing) Then Me.m_il.Images.Add(CStr(imp), img)
+        Next
 
         ' Set image list
         Me.m_tvStatus.ImageList = Me.m_il
@@ -298,9 +297,8 @@ Public Class frmStatusPanel
         ' Add original message to the master node
         tnMessage.Tag = item
 
-        ' Add image
-        tnMessage.ImageKey = CStr(item.Importance)
-        ' Set selected image to equal image index
+        ' Set image for both keys
+        tnMessage.ImageKey = Me.GetImageKey(item.Importance)
         tnMessage.SelectedImageKey = tnMessage.ImageKey
 
         ' No parent node specified?
@@ -406,6 +404,21 @@ Public Class frmStatusPanel
             strText = item.Text.Replace(cStringUtils.vbNewline, " ")
         End If
         Return strText
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method; resolves a message importance value to a defined image key.
+    ''' </summary>
+    ''' <param name="imp">The message importance to find a key for.</param>
+    ''' <returns>
+    ''' An image key, if available for the given <paramref name="imp">importance</paramref>.
+    ''' </returns>
+    ''' -------------------------------------------------------------------
+    Private Function GetImageKey(imp As eMessageImportance) As String
+        Dim strKey As String = CStr(imp)
+        If Me.m_il.Images.ContainsKey(strKey) Then Return strKey
+        Return ""
     End Function
 
 #End Region ' History handling
