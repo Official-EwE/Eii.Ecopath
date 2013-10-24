@@ -75,7 +75,7 @@ Public Class frmStatusPanel
         ' Prepare image list for all defined importance types
         For Each imp As eMessageImportance In [Enum].GetValues(GetType(eMessageImportance))
             Dim img As Image = cStyleGuide.GetImage(imp)
-            If (img IsNot Nothing) Then Me.m_il.Images.Add(CStr(imp), img)
+            If (img IsNot Nothing) Then Me.m_il.Images.Add(imp.ToString(), img)
         Next
 
         ' Set image list
@@ -416,7 +416,7 @@ Public Class frmStatusPanel
     ''' </returns>
     ''' -------------------------------------------------------------------
     Private Function GetImageKey(imp As eMessageImportance) As String
-        Dim strKey As String = CStr(imp)
+        Dim strKey As String = imp.ToString()
         If Me.m_il.Images.ContainsKey(strKey) Then Return strKey
         Return ""
     End Function
