@@ -22,6 +22,7 @@ Option Strict On
 Imports WeifenLuo.WinFormsUI.Docking
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -93,7 +94,7 @@ Namespace Forms
         ''' <summary>
         ''' Returns whether the dock content is currently hiding.
         ''' </summary>
-         ''' -------------------------------------------------------------------
+        ''' -------------------------------------------------------------------
         Public Function IsHiding() As Boolean
             Return (Me.DockState = DockState.DockTopAutoHide) Or _
                    (Me.DockState = DockState.DockBottomAutoHide) Or _
@@ -139,7 +140,7 @@ Namespace Forms
 
         Protected Sub Pulse(importance As eMessageImportance, iNumPulses As Integer)
 
-            Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding)
+            Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding) And (cSystemUtils.IsWindows)
 
             ' Only pulse on relevant messages
             Select Case importance
@@ -167,14 +168,8 @@ Namespace Forms
                     Me.m_importancePulse = CType(Math.Max(Me.m_importancePulse, importance), eMessageImportance)
                 End If
 
-                Dim bmp As Bitmap = cStyleGuide.GetImage(importance)
                 Me.m_iNumPulses = iNumPulses * 2
-
-                ' Update pulse icon
-                If (Me.m_icoPulse IsNot Nothing) Then
-                    Me.m_icoPulse.Dispose()
-                End If
-                Me.m_icoPulse = Icon.FromHandle(cStyleGuide.GetImage(Me.m_importancePulse).GetHicon)
+                Me.UpdatePulseIcon()
 
             End If
 
@@ -219,6 +214,29 @@ Namespace Forms
 
         End Sub
 
+        <System.Runtime.InteropServices.DllImportAttribute("user32.dll")> _
+        Private Shared Function DestroyIcon(ByVal handle As IntPtr) As Boolean
+        End Function
+
+        Private Sub UpdatePulseIcon()
+
+            Dim bmp As Bitmap = cStyleGuide.GetImage(Me.m_importancePulse)
+
+            ' Update pulse icon
+            If (Me.m_icoPulse IsNot Nothing) Then
+                ' Icon cannot be disposed this way! Need to call user23 fundtion, argh
+                ' http://msdn.microsoft.com/en-us/library/system.drawing.icon.fromhandle.aspx
+                'Me.m_icoPulse.Dispose()
+                DestroyIcon(Me.m_icoPulse.Handle)
+                Me.m_icoPulse = Nothing
+            End If
+
+            If (bmp IsNot Nothing) Then
+                Me.m_icoPulse = Icon.FromHandle(bmp.GetHicon)
+            End If
+
+        End Sub
+
         Private Sub StopPulsing()
 
             If (Me.m_icoOrg Is Nothing) Then Return
@@ -227,11 +245,12 @@ Namespace Forms
             Me.Icon = Me.m_icoOrg
             Me.m_icoOrg = Nothing
 
-            Me.m_icoPulse.Dispose()
-            Me.m_icoPulse = Nothing
+            Me.m_importancePulse = 0
+            Me.UpdatePulseIcon()
 
             RemoveHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
             Me.m_timerPulse.Stop()
+            Me.m_timerPulse.Dispose()
             Me.m_timerPulse = Nothing
 
         End Sub
