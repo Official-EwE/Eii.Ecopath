@@ -28,6 +28,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.modExtensions
 Imports System.Text
 
 #End Region ' Imports
@@ -117,6 +118,7 @@ Public Class frmInvokeR
         Me.m_fpR.Release()
         Me.m_fpScript.Release()
         Me.m_fpSCOR.Release()
+        Me.Icon.Destroy()
 
         MyBase.OnClosed(e)
 

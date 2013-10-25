@@ -172,8 +172,6 @@ Public Class cRemarksPlugin
             Me.m_frm = New frmRemarkUI(Me.m_uic)
             Me.m_frm.Text = My.Resources.CAPTION
             Me.m_frm.TabText = My.Resources.CAPTION
-            ' Chop chop
-            Me.m_frm.Icon = Drawing.Icon.FromHandle(DirectCast(SharedResources.CommentHS, Bitmap).GetHicon)
         End If
         Return True
     End Function

@@ -20,11 +20,10 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Commands
-Imports System.Text
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterfaceShared.Forms
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.modExtensions
 
 #End Region ' Imports
 
@@ -84,6 +83,7 @@ Public Class frmRemarkPanel
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
         ' Clean up
         If (Me.m_uic IsNot Nothing) Then
             RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
@@ -91,6 +91,8 @@ Public Class frmRemarkPanel
             RemoveHandler Me.m_mon.OnSelectionChanged, AddressOf OnSelectionChanged
             Me.m_mon.Detach()
             Me.m_uic = Nothing
+
+            Me.Icon.destroy()
         End If
         MyBase.OnFormClosed(e)
 

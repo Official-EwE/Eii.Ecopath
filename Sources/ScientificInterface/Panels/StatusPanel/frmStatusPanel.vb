@@ -26,6 +26,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.modExtensions
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -102,6 +103,7 @@ Public Class frmStatusPanel
         Me.m_uic = Nothing
         Me.m_tvStatus.ImageList = Nothing
         Me.m_il.Dispose()
+        Me.Icon.Destroy()
 
         MyBase.OnFormClosed(e)
 

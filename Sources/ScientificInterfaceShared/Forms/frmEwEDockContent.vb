@@ -48,6 +48,38 @@ Namespace Forms
 
 #End Region ' Private variables
 
+#Region " Overrides "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="Form.Icon"/>
+        ''' <remarks>
+        ''' Overridden to immediately update visuals.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shadows Property Icon As Icon
+            Get
+                Return MyBase.Icon
+            End Get
+            Set(value As Icon)
+                MyBase.Icon = value
+
+                ' Force Weifen Luo tab refresh by tinkering with the text. How hack is this ;)
+                Dim strText As String = Me.Text
+                Me.Text = "!"
+                Me.Text = strText
+
+            End Set
+        End Property
+
+        Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
+            Me.StopPulsing()
+            MyBase.OnClosing(e)
+        End Sub
+
+#End Region ' Overrides
+
+#Region " Public access "
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Panel categoy types.
@@ -112,32 +144,52 @@ Namespace Forms
             Return ePanelType.Document
         End Function
 
+#End Region ' Public access
+
+#Region " Internals "
+
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="Form.Icon"/>
-        ''' <remarks>
-        ''' Overridden to immediately update visuals.
-        ''' </remarks>
+        ''' <summary>
+        ''' Pulse a given bitmap into the icon area of the dock panel for a given 
+        ''' number of times.
+        ''' </summary>
+        ''' <param name="bmp">The bitmap to pulse. Please use a small (16x16) bitmap ;).</param>
+        ''' <param name="iNumPulses">The number of pulses to show.</param>
         ''' -------------------------------------------------------------------
-        Public Shadows Property Icon As Icon
-            Get
-                Return MyBase.Icon
-            End Get
-            Set(value As Icon)
-                MyBase.Icon = value
+        Protected Sub Pulse(bmp As Bitmap, iNumPulses As Integer)
 
-                ' Force Weifen Luo tab refresh by tinkering with the text. How hack is this ;)
-                Dim strText As String = Me.Text
-                Me.Text = "!"
-                Me.Text = strText
+            Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding) And (cSystemUtils.IsWindows) And (bmp IsNot Nothing)
 
-            End Set
-        End Property
+            If (Not bPulse) Then
+                Me.StopPulsing()
+            Else
+                If (Me.m_timerPulse Is Nothing) Then
 
-        Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
-            Me.StopPulsing()
-            MyBase.OnClosing(e)
+                    Me.m_icoOrg = Me.Icon
+
+                    Me.m_timerPulse = New Timer()
+                    Me.m_timerPulse.Interval = 500
+                    Me.m_timerPulse.Start()
+
+                    AddHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+                End If
+
+                Me.m_iNumPulses = iNumPulses * 2
+                Me.UpdatePulseIcon(bmp)
+
+            End If
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Pulse a given message importance in the icon area of the dock panel
+        ''' for a given number of times. If a pulse is already active, the most
+        ''' severe message importance state is preserved while pulsing.
+        ''' </summary>
+        ''' <param name="importance">The <see cref="eMessageImportance">importance</see>
+        ''' for which to show the icon.</param>
+        ''' <param name="iNumPulses">The number of pulses to show.</param>
+        ''' -------------------------------------------------------------------
         Protected Sub Pulse(importance As eMessageImportance, iNumPulses As Integer)
 
             Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding) And (cSystemUtils.IsWindows)
@@ -150,30 +202,17 @@ Namespace Forms
                     bPulse = False
             End Select
 
-            If (Not bPulse) Then
-                Me.StopPulsing()
+            If (bPulse) Then
+                Me.m_importancePulse = CType(Math.Max(Me.m_importancePulse, importance), eMessageImportance)
             Else
-                If (Me.m_timerPulse Is Nothing) Then
-
-                    Me.m_icoOrg = Me.Icon
-                    Me.m_importancePulse = importance
-
-                    Me.m_timerPulse = New Timer()
-                    Me.m_timerPulse.Interval = 500
-                    Me.m_timerPulse.Start()
-
-                    AddHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
-                Else
-                    ' Merge icon status with existing status
-                    Me.m_importancePulse = CType(Math.Max(Me.m_importancePulse, importance), eMessageImportance)
-                End If
-
-                Me.m_iNumPulses = iNumPulses * 2
-                Me.UpdatePulseIcon()
-
+                Me.m_importancePulse = 0
             End If
 
+            Me.Pulse(cStyleGuide.GetImage(Me.m_importancePulse), iNumPulses)
+
         End Sub
+
+#End Region ' Internals
 
 #Region " Privates "
 
@@ -199,6 +238,11 @@ Namespace Forms
             Return state
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Pulse timer callback.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub OnPulseIcon(serder As Object, args As EventArgs)
 
             Me.m_iNumPulses -= 1
@@ -214,20 +258,43 @@ Namespace Forms
 
         End Sub
 
-        <System.Runtime.InteropServices.DllImportAttribute("user32.dll")> _
-        Private Shared Function DestroyIcon(ByVal handle As IntPtr) As Boolean
-        End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Cancel current pulse plan.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub StopPulsing()
 
-        Private Sub UpdatePulseIcon()
+            If (Me.m_icoOrg Is Nothing) Then Return
+            If (Me.m_timerPulse Is Nothing) Then Return
 
-            Dim bmp As Bitmap = cStyleGuide.GetImage(Me.m_importancePulse)
+            ' Stop timer
+            RemoveHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+            Me.m_timerPulse.Stop()
+            Me.m_timerPulse.Dispose()
+            Me.m_timerPulse = Nothing
+
+            ' Restore icon
+            Me.Icon = Me.m_icoOrg
+            Me.m_icoOrg = Nothing
+
+            ' Dispose current pulsing icon
+            Me.m_importancePulse = 0
+            Me.UpdatePulseIcon(Nothing)
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Manage the current pulse icon and associated GDI+ resources.
+        ''' </summary>
+        ''' <param name="bmp">The bitmap for which to create a new pulse icon.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdatePulseIcon(bmp As Bitmap)
 
             ' Update pulse icon
             If (Me.m_icoPulse IsNot Nothing) Then
-                ' Icon cannot be disposed this way! Need to call user23 fundtion, argh
-                ' http://msdn.microsoft.com/en-us/library/system.drawing.icon.fromhandle.aspx
-                'Me.m_icoPulse.Dispose()
-                DestroyIcon(Me.m_icoPulse.Handle)
+                Me.m_icoPulse.Destroy()
                 Me.m_icoPulse = Nothing
             End If
 
@@ -237,25 +304,7 @@ Namespace Forms
 
         End Sub
 
-        Private Sub StopPulsing()
-
-            If (Me.m_icoOrg Is Nothing) Then Return
-            If (Me.m_timerPulse Is Nothing) Then Return
-
-            Me.Icon = Me.m_icoOrg
-            Me.m_icoOrg = Nothing
-
-            Me.m_importancePulse = 0
-            Me.UpdatePulseIcon()
-
-            RemoveHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
-            Me.m_timerPulse.Stop()
-            Me.m_timerPulse.Dispose()
-            Me.m_timerPulse = Nothing
-
-        End Sub
-
-#End Region ' Privates
+#End Region ' Internals
 
     End Class
 

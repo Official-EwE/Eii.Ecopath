@@ -81,7 +81,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>BETA=1</DefineConstants>
+    <DefineConstants>BETA=0</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -1896,6 +1896,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwENetworkAnalysisR\EwENetworkAnalysisR.vbproj">
+      <Project>{27C1C5F6-1CD6-490A-9C86-5E315937CC2C}</Project>
+      <Name>EwENetworkAnalysisR</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
