@@ -80,7 +80,7 @@ Public Class frmMSE
         AddHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
 
         Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNTrials, GetType(Integer), New cVariableMetaData(0, Me.m_plugin.NumModelsAvailable, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
-        Me.m_fpNTrials.Value = Me.m_plugin.NTrials
+        Me.m_fpNTrials.Value = Me.m_plugin.NModels
         AddHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
 
         Me.m_fpNYearsToProject = New cEwEFormatProvider(Me.UIContext, m_tbxNYearsProject, GetType(Integer))
@@ -146,7 +146,7 @@ Public Class frmMSE
 
         Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
         Dim img As Image = Nothing
- 
+
         Me.m_plStep1.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.Idle)
         Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
@@ -312,7 +312,7 @@ Public Class frmMSE
 
     Private Sub OnNTrialsChanged(sender As Object, args As EventArgs)
         Try
-            Me.m_plugin.NTrials = CInt(Me.m_fpNTrials.Value)
+            Me.m_plugin.NModels = CInt(Me.m_fpNTrials.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnNTrialsChanged")
         End Try

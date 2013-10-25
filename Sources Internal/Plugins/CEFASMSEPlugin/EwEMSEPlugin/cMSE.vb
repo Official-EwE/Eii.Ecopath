@@ -619,12 +619,12 @@ Public Class cMSE
         For iIteration As Integer = 1 To nIterations
             Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration.ToString & "_out.csv"))
             If (reader IsNot Nothing) Then
-                csv = New CsvReader(reader, True)
+                csv = New CsvReader(reader, False)
                 Try
                     While Not csv.EndOfStream
                         If csv.ReadNextRecord() Then
-                            For iPred As Integer = 1 To _ecopath.EcopathData.NumGroups
-                                vulnerabilities(iIteration - 1, CInt(csv.CurrentRecordIndex), iPred - 1) = cStringUtils.ConvertToDouble(csv(iPred - 1))
+                            For iPrey As Integer = 1 To _ecopath.EcopathData.NumGroups
+                                vulnerabilities(iIteration - 1, CInt(csv.CurrentRecordIndex), iPrey - 1) = cStringUtils.ConvertToDouble(csv(iPrey - 1))
                             Next
                         End If
                     End While
@@ -785,7 +785,7 @@ Public Class cMSE
 
         Debug.Assert(Me.IsInputDataCompatible)
 
-        Dim B(,) As Double
+        Dim B(,) As Double 'All basic Ecopath and Ecosim parameters X(a,b) a = iteration b = the functional group
         Dim PB(,) As Double
         Dim QB(,) As Double
         Dim EE(,) As Double
@@ -901,27 +901,33 @@ Public Class cMSE
             cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iTrial), CSng(iTrial / nTrials))
 
             For igrp = 1 To mCore.nLivingGroups
-                ecopathData.B(igrp) = CSng(B(iTrial - 1, igrp - 1))
-                ecopathData.PB(igrp) = CSng(PB(iTrial - 1, igrp - 1))
-                ecopathData.QB(igrp) = CSng(QB(iTrial - 1, igrp - 1))
-                ecopathData.EE(igrp) = CSng(EE(iTrial - 1, igrp - 1))
-                ecopathData.BA(igrp) = CSng(BA(iTrial - 1, igrp - 1))
-            Next
-            For igrp = 1 To mCore.nLivingGroups
-                ecosimData.QmQo(igrp) = CSng(DenDepCatchability(iTrial - 1, igrp - 1))
-                ecosimData.FtimeAdjust(igrp) = CSng(FeedingTimeAdjustRate(iTrial - 1, igrp - 1))
-                ecosimData.FtimeMax(igrp) = CSng(MaxRelFeedingTime(iTrial - 1, igrp - 1))
-                ecosimData.MoPred(igrp) = CSng(OtherMortFeedingTime(iTrial - 1, igrp - 1))
-                ecosimData.RiskTime(igrp) = CSng(PredEffectFeedingTime(iTrial - 1, igrp - 1))
-                ecosimData.CmCo(igrp) = CSng(QBMaxxQBio(iTrial - 1, igrp - 1))
-                ecosimData.SwitchPower(igrp) = CSng(SwitchingPower(iTrial - 1, igrp - 1))
+                If Not B(iTrial - 1, igrp - 1) = -9999 Then
+                    ecopathData.B(igrp) = CSng(B(iTrial - 1, igrp - 1))
+                    ecopathData.PB(igrp) = CSng(PB(iTrial - 1, igrp - 1))
+                    ecopathData.QB(igrp) = CSng(QB(iTrial - 1, igrp - 1))
+                    ecopathData.EE(igrp) = CSng(EE(iTrial - 1, igrp - 1))
+                    ecopathData.BA(igrp) = CSng(BA(iTrial - 1, igrp - 1))
+                    ecosimData.QmQo(igrp) = CSng(DenDepCatchability(iTrial - 1, igrp - 1))
+                    ecosimData.FtimeAdjust(igrp) = CSng(FeedingTimeAdjustRate(iTrial - 1, igrp - 1))
+                    ecosimData.FtimeMax(igrp) = CSng(MaxRelFeedingTime(iTrial - 1, igrp - 1))
+                    ecosimData.MoPred(igrp) = CSng(OtherMortFeedingTime(iTrial - 1, igrp - 1))
+                    ecosimData.RiskTime(igrp) = CSng(PredEffectFeedingTime(iTrial - 1, igrp - 1))
+                    ecosimData.CmCo(igrp) = CSng(QBMaxxQBio(iTrial - 1, igrp - 1))
+                    ecosimData.SwitchPower(igrp) = CSng(SwitchingPower(iTrial - 1, igrp - 1))
+                Else
+                    Stop
+                End If
             Next
 
             For iPrey As Integer = 1 To mCore.nGroups
                 'For iPrey As Integer = 1 To Vulnerabilities.GetLength(1)
                 For iPred As Integer = 1 To mCore.nLivingGroups
                     'For iPred As Integer = 1 To Vulnerabilities.GetLength(2)
-                    ecosimData.VulMult(iPrey, iPred) = CSng(Vulnerabilities(iTrial - 1, iPrey - 1, iPred - 1))
+                    If Not Vulnerabilities(iTrial - 1, iPred - 1, iPrey - 1) = -9999 Then
+                        ecosimData.VulMult(iPrey, iPred) = CSng(Vulnerabilities(iTrial - 1, iPred - 1, iPrey - 1))
+                    Else
+                        ecosimData.VulMult(iPrey, iPred) = -9999
+                    End If
                 Next
             Next
 
@@ -933,7 +939,7 @@ Public Class cMSE
             If (reader IsNot Nothing) Then
                 diet_matrix = New CsvReader(reader, False)
                 If diet_matrix.ReadNextRecord() Then
-                    For iPred As Integer = 1 To mCore.nGroups
+                    For iPred As Integer = 1 To mCore.nLivingGroups
                         mCore.EcoPathGroupInputs(iPred).ImpDiet() = cStringUtils.ConvertToSingle(diet_matrix(iPred - 1))
                     Next
                 Else
@@ -942,7 +948,7 @@ Public Class cMSE
                 End If
                 For iPrey As Integer = 1 To mCore.nGroups
                     If diet_matrix.ReadNextRecord() Then
-                        For iPred As Integer = 1 To mCore.nGroups
+                        For iPred As Integer = 1 To mCore.nLivingGroups
                             mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) = cStringUtils.ConvertToSingle(diet_matrix(iPred - 1))
                         Next
                     Else
@@ -1439,7 +1445,7 @@ stepend:
         Dim nLiving As Integer = mCore.nLivingGroups
         Dim nGroups As Integer = mCore.nGroups
         Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
-        Dim nTrials As Integer = Me.NTrials
+        Dim nTrials As Integer = Me.NModels
         Dim b(nTrials, nGroups) As Single
         Dim ba(nTrials, nLiving) As Single
         Dim pb(nTrials, nLiving) As Single
@@ -1545,7 +1551,7 @@ stepend:
 
                 sw.Start()
 
-                While (iTrial <= Me.NTrials) And Not bExpired
+                While (iTrial <= Me.NModels) And Not bExpired
 
                     'Set the Ecopath parameters using the Monte Carlo input parameters set above
                     TimeFindingBalanced.Start()
@@ -1582,7 +1588,7 @@ stepend:
                                 Dim csv_dietout As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"), False)
                                 Try
                                     For iPrey = 0 To nGroups
-                                        For iPred = 1 To mCore.nLivingGroups - 1
+                                        For iPred = 1 To mCore.nLivingGroups
                                             If iPred > 1 Then csv_dietout.Write(",")
                                             csv_dietout.Write(cStringUtils.FormatNumber(Me._ecopath.EcopathData.DC(iPred, iPrey)))
                                         Next
@@ -2169,9 +2175,9 @@ stepend:
         Dim ParameterArray(mCore.nLivingGroups - 1, 3) As Single
 
         ' JS 30Sep13: Use local properties
-        Dim nIterations As Integer = Me.NTrials
+        Dim nModels As Integer = Me.NModels
         Dim eDistributionType As DistributionType
-        Dim SampledParameters(nIterations - 1, mCore.nLivingGroups - 1) As Double
+        Dim SampledParameters(nModels - 1, mCore.nLivingGroups - 1) As Double
         Dim GroupNames(mCore.nLivingGroups - 1) As String
 
         reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv"))
@@ -2185,23 +2191,35 @@ stepend:
             Next
         End While
 
-        'Generate an array of sample parameters
-        For iGroup = 1 To mCore.nLivingGroups
-            eDistributionType = CType(ParameterArray(iGroup - 1, 0), DistributionType)
-
-            For iIteration = 1 To nIterations
-
-                Select Case eDistributionType
-                    Case DistributionType.Uniform
-                        SampledParameters(iIteration - 1, iGroup - 1) = UniformSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2))
-                    Case DistributionType.Triangular
-                        SampledParameters(iIteration - 1, iGroup - 1) = TriangularSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2), ParameterArray(iGroup - 1, 3))
-                End Select
-
-            Next
-        Next
         cMSEUtils.ReleaseReader(reader)
         csv.Dispose()
+
+
+
+        'Generate an array of sample parameters
+        For iGroup = 1 To mCore.nLivingGroups
+
+            If Not ParameterArray(iGroup - 1, 1) = -9999 Then
+
+                eDistributionType = CType(ParameterArray(iGroup - 1, 0), DistributionType)
+
+                For iIteration = 1 To nModels
+
+                    Select Case eDistributionType
+                        Case DistributionType.Uniform
+                            SampledParameters(iIteration - 1, iGroup - 1) = UniformSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2))
+                        Case DistributionType.Triangular
+                            SampledParameters(iIteration - 1, iGroup - 1) = TriangularSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2), ParameterArray(iGroup - 1, 3))
+                    End Select
+
+                Next
+            Else
+                For iIteration = 1 To nModels
+                    SampledParameters(iIteration - 1, iGroup - 1) = -9999
+                Next
+            End If
+
+        Next
 
         'Output the sampled parameters to a csv
         Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, ParamName & "_out.csv"))
@@ -2212,7 +2230,7 @@ stepend:
         Next
         writer.WriteLine()
 
-        For iIteration = 1 To nIterations
+        For iIteration = 1 To nModels
             For iGroup = 1 To mCore.nLivingGroups
                 If (iGroup > 1) Then writer.Write(",")
                 writer.Write(cStringUtils.ToCSVField(SampledParameters(iIteration - 1, iGroup - 1)))
@@ -2234,7 +2252,7 @@ stepend:
         ' JS 30Sep13: Used persistent properties
 
         Dim writer As StreamWriter = Nothing
-        Dim nIterations As Integer = NTrials
+        Dim nIterations As Integer = NModels
 
         For iIteration = 1 To nIterations
 
@@ -2242,10 +2260,17 @@ stepend:
             If (writer IsNot Nothing) Then
                 'Create random values for the vulnerabilities and store in a csv
                 For igrppredator As Integer = 1 To _ecopath.EcopathData().NumLiving
-                    For igrpprey As Integer = 1 To _ecopath.EcopathData().NumGroups
-                        If (igrpprey > 1) Then writer.Write(",")
-                        writer.Write(Convert.ToSingle(1 + Math.Exp(9 * (CSng(Me.m_rand.NextDouble()) - 0.5))))
-                    Next igrpprey
+                    If mCore.EcoPathGroupInputs(igrppredator).IsProducer Then
+                        For igrpprey As Integer = 1 To _ecopath.EcopathData().NumGroups
+                            If (igrpprey > 1) Then writer.Write(",")
+                            writer.Write(Convert.ToSingle(-9999))
+                        Next igrpprey
+                    Else
+                        For igrpprey As Integer = 1 To _ecopath.EcopathData().NumGroups
+                            If (igrpprey > 1) Then writer.Write(",")
+                            writer.Write(Convert.ToSingle(1 + Math.Exp(9 * (CSng(Me.m_rand.NextDouble()) - 0.5))))
+                        Next igrpprey
+                    End If
                     writer.WriteLine()
                 Next igrppredator
             End If
@@ -2698,7 +2723,7 @@ stepend:
         End Set
     End Property
 
-    Public Property NTrials As Integer
+    Public Property NModels As Integer
         Get
             Return Math.Max(1, Math.Min(My.Settings.NTrials, 100))
         End Get

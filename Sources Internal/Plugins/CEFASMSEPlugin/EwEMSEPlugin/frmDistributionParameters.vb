@@ -380,7 +380,11 @@ Public Class frmDistributionParameters
                 ElseIf ParamName = eParamName.SwitchingPower Then
                     TMean = Me.Core.EcoSimGroupInputs(igrp).SwitchingPower
                 End If
-                params(igrp) = New EcosimParam(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean)
+                If Core.EcoPathGroupInputs(igrp).IsProducer Then
+                    params(igrp) = New EcosimParam(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, 0, -9999, -9999, -9999)
+                Else
+                    params(igrp) = New EcosimParam(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean)
+                End If
             End If
         Next
 
@@ -388,7 +392,7 @@ Public Class frmDistributionParameters
             If (param IsNot Nothing) Then
                 Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(param.GroupNo)
                 ' Only allow living non-producers
-                If (Not grp.IsProducer) And (grp.IsLiving) Then
+                If (grp.IsLiving) Then
                     ParamList.Add(param)
                 End If
             End If
