@@ -632,6 +632,7 @@
     <Compile Include="GeoCode\cBingMapsLookup.vb" />
     <Compile Include="Help\cBugReporter.vb" />
     <Compile Include="Help\cHelp.vb" />
+    <Compile Include="modExtensions.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
