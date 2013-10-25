@@ -1896,10 +1896,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwENetworkAnalysisR\EwENetworkAnalysisR.vbproj">
-      <Project>{27C1C5F6-1CD6-490A-9C86-5E315937CC2C}</Project>
-      <Name>EwENetworkAnalysisR</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
@@ -1927,10 +1923,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwERemarksPlugin\EwERemarksPlugin.vbproj">
       <Project>{804DA432-10C6-418C-B323-99C4FDB5CB67}</Project>
       <Name>EwERemarksPlugin %28EwE plugins\EwERemarksPlugin\EwERemarksPlugin%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj">
-      <Project>{0913D0AE-BDEC-4C3E-9551-D0A314BE9DE6}</Project>
-      <Name>EwEResultsExtractorPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj">
       <Project>{5E7BEAC5-84D8-4BC5-9B53-8C7888FC9786}</Project>
