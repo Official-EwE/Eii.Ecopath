@@ -23,8 +23,10 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.modExtensions
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
+Imports System.Drawing
 
 #End Region ' Imports
 
@@ -99,6 +101,9 @@ Public Class frmRemarkUI
         Me.m_monitor = New cRemarkMonitor(Me.PropertyManager)
         AddHandler Me.m_monitor.OnRemarksListChanged, AddressOf OnRemarkListChanged
 
+        ' Chop chop
+        Me.Icon = Drawing.Icon.FromHandle(DirectCast(SharedResources.CommentHS, Bitmap).GetHicon)
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -111,6 +116,7 @@ Public Class frmRemarkUI
         Me.m_monitor.Dispose()
         Me.m_monitor = Nothing
 
+        Me.Icon.Destroy()
         MyBase.OnFormClosed(e)
 
     End Sub
