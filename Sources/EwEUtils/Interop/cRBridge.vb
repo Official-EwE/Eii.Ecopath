@@ -96,9 +96,11 @@ Namespace Interop
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the R installation locations reported in the Windows registry.
+        ''' Get the R installation locations reported in the registry.
         ''' </summary>
-        ''' <returns></returns>
+        ''' <returns>An array with R installation locations obtained from the
+        ''' registry. This method is MONO-compliant, but may not yield usable
+        ''' results on Linux.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function InstallLocations() As String()
             Dim rk As RegistryKey = Registry.LocalMachine.OpenSubKey("Software\R-core")
@@ -106,13 +108,13 @@ Namespace Interop
             If (rk IsNot Nothing) Then
                 For Each strName As String In rk.GetSubKeyNames
                     Dim rkRSub As RegistryKey = rk.OpenSubKey(strName)
-                    If rkRSub IsNot Nothing Then
+                    If (rkRSub IsNot Nothing) Then
                         Dim objVal As Object = rkRSub.GetValue("InstallPath")
-                        If objVal IsNot Nothing Then
+                        If (objVal IsNot Nothing) Then
                             Dim strVal As String = CStr(objVal)
-                            If Directory.Exists(strVal) Then
+                            If (Directory.Exists(strVal)) Then
                                 strVal = Path.Combine(strVal, "bin\R.exe")
-                                If File.Exists(strVal) And Not lstrPaths.Contains(strVal) Then
+                                If (File.Exists(strVal) And Not lstrPaths.Contains(strVal)) Then
                                     lstrPaths.Add(strVal)
                                 End If
                             End If
