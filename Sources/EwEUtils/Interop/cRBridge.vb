@@ -23,6 +23,7 @@ Imports System.Collections.Generic
 Imports System.Diagnostics
 Imports System.IO
 Imports EwEUtils.Utilities
+Imports Microsoft.Win32
 
 #End Region ' Imports
 
@@ -54,6 +55,15 @@ Namespace Interop
         ''' <summary>Disctionary of fields to replace in the script</summary>
         Private m_dtFields As New Dictionary(Of String, String)
 
+        ''' <summary>Script running flag.</summary>
+        Private m_bIsExecuting As Boolean = False
+        ''' <summary>Last run result.</summary>
+        Private m_bSuccess As Boolean = False
+        ''' <summary>Script running thread, if mutli-threaded.</summary>
+        Private m_thread As Threading.Thread = Nothing
+        ''' <summary>The script being executed.</summary>
+        Private m_script As ICollection(Of String)
+
 #End Region ' Private vars
 
         ''' -------------------------------------------------------------------
@@ -71,6 +81,74 @@ Namespace Interop
             Me.m_strPathToR = strPathToR
 
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clean up left-overs from previous R runs.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Clear()
+            If (Me.IsExecuting) Then Return
+            Me.m_RInput.Clear()
+            Me.m_RErrors.Clear()
+            Me.m_ROutput.Clear()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the R installation locations reported in the Windows registry.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function InstallLocations() As String()
+            Dim rk As RegistryKey = Registry.LocalMachine.OpenSubKey("Software\R-core")
+            Dim lstrPaths As New List(Of String)
+            If (rk IsNot Nothing) Then
+                For Each strName As String In rk.GetSubKeyNames
+                    Dim rkRSub As RegistryKey = rk.OpenSubKey(strName)
+                    If rkRSub IsNot Nothing Then
+                        Dim objVal As Object = rkRSub.GetValue("InstallPath")
+                        If objVal IsNot Nothing Then
+                            Dim strVal As String = CStr(objVal)
+                            If Directory.Exists(strVal) Then
+                                strVal = Path.Combine(strVal, "bin\R.exe")
+                                If File.Exists(strVal) And Not lstrPaths.Contains(strVal) Then
+                                    lstrPaths.Add(strVal)
+                                End If
+                            End If
+                        End If
+                    End If
+                Next
+            End If
+            Return lstrPaths.ToArray
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get whether the R bridge is currently executing a script.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property IsExecuting As Boolean
+            Get
+                SyncLock Me
+                    Return Me.m_bIsExecuting
+                End SyncLock
+            End Get
+            Private Set(value As Boolean)
+                SyncLock Me
+                    Me.m_bIsExecuting = value
+                End SyncLock
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event, thrown when R has completed execution.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="args"></param>
+        ''' -------------------------------------------------------------------
+        Public Event RunCompleted(sender As Object, args As EventArgs)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -109,24 +187,13 @@ Namespace Interop
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Clean up left-overs from previous R runs.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Sub Clear()
-            Me.m_RInput.Clear()
-            Me.m_RErrors.Clear()
-            Me.m_ROutput.Clear()
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Execute an R script provided as a block of text.
         ''' </summary>
-        ''' <param name="Script">The script to execute.</param>
+        ''' <param name="strScript">The script to execute.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Execute(Script As String) As Boolean
-            Return Me.Execute(New String() {Script})
+        Public Function Execute(strScript As String) As Boolean
+            Return Me.Execute(New String() {strScript})
         End Function
 
         ''' -------------------------------------------------------------------
@@ -138,84 +205,21 @@ Namespace Interop
         ''' -------------------------------------------------------------------
         Public Function Execute(RScriptLines As ICollection(Of String)) As Boolean
 
-            Dim Rwrapper As New Process()
-            Dim bSuccess As Boolean
-
-            Me.Clear()
-
-            ' ----------
-            ' Configure how RProcess will run
-            ' ----------
-
-            ' Execute R in the current memory space
-            Rwrapper.StartInfo.UseShellExecute = False
-
-            ' Connect to the R input, output and error streams
-            Rwrapper.StartInfo.RedirectStandardInput = True
-            Rwrapper.StartInfo.RedirectStandardOutput = True
-            Rwrapper.StartInfo.RedirectStandardError = True
-
-            ' Point out the R executable
-            Rwrapper.StartInfo.FileName = Me.m_strPathToR
-            ' Set R command line options (see https://projects.uabgrid.uab.edu/r-group/wiki/CommandLineProcessing)
-            Rwrapper.StartInfo.Arguments = "--slave"
-
-            ' Suppress R user interface
-            Rwrapper.StartInfo.CreateNoWindow = True
-
-            ' The process is ready to run
-            Try
-                ' Launch R
-                Rwrapper.Start()
-            Catch ex As Exception
-                ' Shoot! Something went wrong. Pass error information out
-                Me.m_RErrors.Add(ex.Message)
-                If (ex.InnerException IsNot Nothing) Then
-                    Me.m_RErrors.Add(ex.InnerException.Message)
-                End If
-                ' Abandon ship, women and debuggers first.
+            If (Me.IsExecuting) Then
+                Me.RaiseRunCompleted()
                 Return False
-            End Try
+            End If
 
-            ' ----------
-            ' The R program has been successfully launched. Now, start feeding it with lines of script
-            ' ----------
+            SyncLock Me
 
-            ' Process input lines
-            For Each strLine As String In RScriptLines
-                ' Write each individual script line to R
-                For Each strField As String In Me.m_dtFields.Keys
-                    ' Just to be sure!
-                    If Not String.IsNullOrWhiteSpace(strField) Then
-                        strLine = strLine.Replace(strField, Me.m_dtFields(strField))
-                    End If
-                Next
-                Me.m_RInput.Add(strLine)
-                Rwrapper.StandardInput.WriteLine(strLine)
-            Next
-            ' Tell R that this was it; script is at an end
-            Rwrapper.StandardInput.Close()
+                Me.m_bIsExecuting = True
+                Me.m_script = RScriptLines
+                Me.m_bSuccess = False
+                Me.Run()
+                Me.m_bIsExecuting = False
 
-            ' Wait for R to finish with a configurable time limit.
-            bSuccess = Rwrapper.WaitForExit(Me.TimeOut)
-
-            ' Read whatever output text is available
-            While (Rwrapper.StandardOutput.Peek > 0)
-                Me.m_ROutput.Add(Rwrapper.StandardOutput.ReadLine)
-            End While
-
-            ' Read whatever error text is available
-            While (Rwrapper.StandardError.Peek > 0)
-                Me.m_RErrors.Add(Rwrapper.StandardError.ReadLine)
-                ' Script contained errors
-                bSuccess = False
-            End While
-
-            ' Clean up
-            Rwrapper.Close()
-            Rwrapper.Dispose()
-
-            Return bSuccess
+            End SyncLock
+            Return Me.LastRunSuccess
 
         End Function
 
@@ -296,9 +300,107 @@ Namespace Interop
         ''' -------------------------------------------------------------------
         Public ReadOnly Property LastRunSuccess As Boolean
             Get
-                Return (Me.m_RErrors.Count = 0)
+                Return (Me.m_RErrors.Count = 0) And Me.m_bSuccess
             End Get
         End Property
+
+#Region " Privates "
+
+        Private Sub Run()
+
+            Dim Rwrapper As New Process()
+            Dim bSuccess As Boolean
+
+            Me.Clear()
+
+            ' ----------
+            ' Configure how RProcess will run
+            ' ----------
+
+            ' Execute R in the current memory space
+            Rwrapper.StartInfo.UseShellExecute = False
+
+            ' Connect to the R input, output and error streams
+            Rwrapper.StartInfo.RedirectStandardInput = True
+            Rwrapper.StartInfo.RedirectStandardOutput = True
+            Rwrapper.StartInfo.RedirectStandardError = True
+
+            ' Point out the R executable
+            Rwrapper.StartInfo.FileName = Me.m_strPathToR
+            ' Set R command line options (see https://projects.uabgrid.uab.edu/r-group/wiki/CommandLineProcessing)
+            Rwrapper.StartInfo.Arguments = "--slave"
+
+            ' Suppress R user interface
+            Rwrapper.StartInfo.CreateNoWindow = True
+
+            ' The process is ready to run
+            Try
+                ' Launch R
+                Rwrapper.Start()
+            Catch ex As Exception
+                ' Shoot! Something went wrong. Pass error information out
+                Me.m_RErrors.Add(ex.Message)
+                If (ex.InnerException IsNot Nothing) Then
+                    Me.m_RErrors.Add(ex.InnerException.Message)
+                End If
+                ' Abandon ship, women and debuggers first.
+                Me.m_bSuccess = False
+                ' Let world know
+                Me.RaiseRunCompleted()
+                Return
+            End Try
+
+            ' ----------
+            ' The R program has been successfully launched. Now, start feeding it with lines of script
+            ' ----------
+
+            ' Process input lines
+            For Each strLine As String In Me.m_script
+                ' Write each individual script line to R
+                For Each strField As String In Me.m_dtFields.Keys
+                    ' Just to be sure!
+                    If Not String.IsNullOrWhiteSpace(strField) Then
+                        strLine = strLine.Replace(strField, Me.m_dtFields(strField))
+                    End If
+                Next
+                Me.m_RInput.Add(strLine)
+                Rwrapper.StandardInput.WriteLine(strLine)
+            Next
+            ' Tell R that this was it; script is at an end
+            Rwrapper.StandardInput.Close()
+
+            ' Wait for R to finish with a configurable time limit.
+            bSuccess = Rwrapper.WaitForExit(Me.TimeOut)
+
+            ' Read whatever output text is available
+            While (Rwrapper.StandardOutput.Peek > 0)
+                Me.m_ROutput.Add(Rwrapper.StandardOutput.ReadLine)
+            End While
+
+            ' Read whatever error text is available
+            While (Rwrapper.StandardError.Peek > 0)
+                Me.m_RErrors.Add(Rwrapper.StandardError.ReadLine)
+                ' Script contained errors
+                bSuccess = False
+            End While
+
+            ' Clean up
+            Rwrapper.Close()
+            Rwrapper.Dispose()
+
+            Me.RaiseRunCompleted()
+
+        End Sub
+
+        Private Sub RaiseRunCompleted()
+            Try
+                RaiseEvent RunCompleted(Me, New EventArgs())
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+#End Region ' Privates
 
     End Class
 
