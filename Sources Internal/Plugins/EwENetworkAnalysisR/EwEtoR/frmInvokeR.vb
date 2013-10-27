@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports System.IO
+Imports System.Text
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
@@ -27,9 +28,8 @@ Imports EwEUtils.Interop
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.modExtensions
-Imports System.Text
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -43,14 +43,15 @@ Public Class frmInvokeR
 #Region " Private vars "
 
     Private m_uic As cUIContext = Nothing
-    Private m_dad As cEwEtoRPluginPoint
-    Private m_fpR As cEwEFormatProvider
-    Private m_fpScript As cEwEFormatProvider
-    Private m_fpSCOR As cEwEFormatProvider
+    Private m_dad As cEwEtoRPluginPoint = Nothing
+    Private m_fpR As cEwEFormatProvider = Nothing
+    Private m_fpScript As cEwEFormatProvider = Nothing
+    Private m_fpSCOR As cEwEFormatProvider = Nothing
+    Private m_fpPlaceholder As cEwEFormatProvider = Nothing
 
-    Private m_fpOutScript As cEwEFormatProvider
-    Private m_fpOutput As cEwEFormatProvider
-    Private m_fpOutError As cEwEFormatProvider
+    Private m_fpOutScript As cEwEFormatProvider = Nothing
+    Private m_fpOutput As cEwEFormatProvider = Nothing
+    Private m_fpOutError As cEwEFormatProvider = Nothing
 
     Private m_bInUpdate As Boolean = True
     Private m_ilTabs As New ImageList()
@@ -74,10 +75,10 @@ Public Class frmInvokeR
 
         My.Settings.Reload()
 
-        Me.m_tbxR.Text = My.Settings.RPath
-        Me.m_tbxScript.Text = My.Settings.RScript
-        Me.m_tbxPlaceholder.Text = My.Settings.RScriptFilePlaceholder
-        Me.m_tbxSCOR.Text = My.Settings.SCORFileCustom
+        Dim lstrPaths As New List(Of String)
+        lstrPaths.AddRange(cRBridge.InstallLocations())
+        If Not lstrPaths.Contains(My.Settings.RPath) Then lstrPaths.Add(My.Settings.RPath)
+
         Me.m_rbManagedSCOR.Checked = My.Settings.SCORmanaged
         Me.m_rbCustomSCOR.Checked = Not My.Settings.SCORmanaged
 
@@ -85,9 +86,17 @@ Public Class frmInvokeR
         Me.m_hdrSettings.CollapsedParentHeight = Me.m_hdrSCOR.Location.Y
         Me.m_hdrSettings.IsCollapsed = Not My.Settings.AdvancedViz
 
-        Me.m_fpR = New cEwEFormatProvider(Me.m_uic, Me.m_tbxR, GetType(String))
+        Me.m_fpR = New cEwEFormatProvider(Me.m_uic, Me.m_cmbR, GetType(String), lstrPaths.ToArray())
+        Me.m_fpR.Value = My.Settings.RPath
+
         Me.m_fpScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScript, GetType(String))
+        Me.m_fpScript.Value = My.Settings.RScript
+
         Me.m_fpSCOR = New cEwEFormatProvider(Me.m_uic, Me.m_tbxSCOR, GetType(String))
+        Me.m_fpSCOR.Value = My.Settings.SCORFileCustom
+
+        Me.m_fpPlaceholder = New cEwEFormatProvider(Me.m_uic, Me.m_tbxPlaceholder, GetType(String))
+        Me.m_fpPlaceholder.Value = My.Settings.RScriptFilePlaceholder
 
         Me.m_fpOutScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScriptOut, GetType(String))
         Me.m_fpOutScript.Style = cStyleGuide.eStyleFlags.NotEditable
@@ -118,6 +127,10 @@ Public Class frmInvokeR
         Me.m_fpR.Release()
         Me.m_fpScript.Release()
         Me.m_fpSCOR.Release()
+        Me.m_fpPlaceholder.Release()
+        Me.m_fpOutScript.Release()
+        Me.m_fpOutput.Release()
+        Me.m_fpOutError.Release()
         Me.Icon.Destroy()
 
         MyBase.OnClosed(e)
@@ -132,9 +145,9 @@ Public Class frmInvokeR
         Handles m_btnChooseR.Click
 
         Dim cmd As cFileOpenCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-        cmd.Invoke(Me.m_tbxR.Text, My.Resources.FILEFILTER_R_EXE, 0, My.Resources.PROMPT_SELECT_R_EXE)
+        cmd.Invoke(CStr(Me.m_fpR.Value), My.Resources.FILEFILTER_R_EXE, 0, My.Resources.PROMPT_SELECT_R_EXE)
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
-            Me.m_tbxR.Text = cmd.FileName
+            Me.m_fpR.Value = cmd.FileName
             Me.UpdateControls()
         End If
 
@@ -190,7 +203,7 @@ Public Class frmInvokeR
     End Sub
 
     Private Sub OnInputText(sender As System.Object, e As System.EventArgs) _
-        Handles m_tbxR.TextChanged, m_tbxPlaceholder.TextChanged, m_tbxSCOR.TextChanged, m_tbxScript.TextChanged
+        Handles m_tbxPlaceholder.TextChanged, m_tbxSCOR.TextChanged, m_tbxScript.TextChanged
         Me.UpdateControls()
     End Sub
 
@@ -202,8 +215,9 @@ Public Class frmInvokeR
 
         If Me.m_bInUpdate Then Return
 
+        Dim strR As String = CStr(Me.m_fpR.Value)
         Dim bHasUIC As Boolean = (Me.m_uic IsNot Nothing)
-        Dim bHasR As Boolean = File.Exists(Me.m_tbxR.Text)
+        Dim bHasR As Boolean = File.Exists(strR)
         Dim bHasScript As Boolean = File.Exists(Me.m_tbxScript.Text)
         Dim bHasSCOR As Boolean = Me.m_rbManagedSCOR.Checked Or (Not String.IsNullOrWhiteSpace(Me.m_tbxSCOR.Text))
         Dim style As cStyleGuide.eStyleFlags
@@ -230,10 +244,10 @@ Public Class frmInvokeR
 
     Private Sub SaveSettings()
         ' Save settings
-        My.Settings.RPath = Me.m_tbxR.Text
-        My.Settings.RScript = Me.m_tbxScript.Text
-        My.Settings.RScriptFilePlaceholder = Me.m_tbxPlaceholder.Text
-        My.Settings.SCORFileCustom = Me.m_tbxSCOR.Text
+        My.Settings.RPath = CStr(Me.m_fpR.Value)
+        My.Settings.RScript = CStr(Me.m_fpScript.Value)
+        My.Settings.RScriptFilePlaceholder = CStr(Me.m_fpPlaceholder.Value)
+        My.Settings.SCORFileCustom = CStr(Me.m_fpSCOR.Value)
         My.Settings.SCORmanaged = Me.m_rbManagedSCOR.Checked()
         My.Settings.AdvancedViz = Not Me.m_hdrSettings.IsCollapsed
         My.Settings.Save()
@@ -273,7 +287,7 @@ Public Class frmInvokeR
             Return
         End If
 
-        Dim bridge As New cRBridge(Me.m_tbxR.Text)
+        Dim bridge As New cRBridge(CStr(Me.m_fpR.Value))
         bridge.Field(Me.m_tbxPlaceholder.Text) = cFileUtils.DosToUnix(strSCOR)
         bridge.ExecuteFile(Me.m_tbxScript.Text)
 

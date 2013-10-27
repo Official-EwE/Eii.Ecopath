@@ -41,7 +41,6 @@ Partial Class frmInvokeR
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.m_lblR = New System.Windows.Forms.Label()
-        Me.m_tbxR = New System.Windows.Forms.TextBox()
         Me.m_btnChooseR = New System.Windows.Forms.Button()
         Me.m_lblScript = New System.Windows.Forms.Label()
         Me.m_tbxScript = New System.Windows.Forms.TextBox()
@@ -67,6 +66,7 @@ Partial Class frmInvokeR
         Me.m_tpgErrors = New System.Windows.Forms.TabPage()
         Me.m_tbxErrors = New System.Windows.Forms.TextBox()
         Me.m_hdrResults = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_cmbR = New System.Windows.Forms.ComboBox()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plOptions.SuspendLayout()
         Me.m_plRun.SuspendLayout()
@@ -85,16 +85,6 @@ Partial Class frmInvokeR
         Me.m_lblR.Size = New System.Drawing.Size(59, 13)
         Me.m_lblR.TabIndex = 1
         Me.m_lblR.Text = "R &program:"
-        '
-        'm_tbxR
-        '
-        Me.m_tbxR.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxR.Location = New System.Drawing.Point(95, 23)
-        Me.m_tbxR.Name = "m_tbxR"
-        Me.m_tbxR.ReadOnly = True
-        Me.m_tbxR.Size = New System.Drawing.Size(235, 20)
-        Me.m_tbxR.TabIndex = 2
         '
         'm_btnChooseR
         '
@@ -204,6 +194,7 @@ Partial Class frmInvokeR
         '
         'm_plOptions
         '
+        Me.m_plOptions.Controls.Add(Me.m_cmbR)
         Me.m_plOptions.Controls.Add(Me.m_hdrSCOR)
         Me.m_plOptions.Controls.Add(Me.m_rbManagedSCOR)
         Me.m_plOptions.Controls.Add(Me.m_rbCustomSCOR)
@@ -213,7 +204,6 @@ Partial Class frmInvokeR
         Me.m_plOptions.Controls.Add(Me.m_lblR)
         Me.m_plOptions.Controls.Add(Me.m_btnChooseScript)
         Me.m_plOptions.Controls.Add(Me.m_tbxPlaceholder)
-        Me.m_plOptions.Controls.Add(Me.m_tbxR)
         Me.m_plOptions.Controls.Add(Me.m_lblPlaceholder)
         Me.m_plOptions.Controls.Add(Me.m_tbxScript)
         Me.m_plOptions.Controls.Add(Me.m_btnChooseR)
@@ -380,6 +370,17 @@ Partial Class frmInvokeR
         Me.m_hdrResults.Text = "Results"
         Me.m_hdrResults.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'm_cmbR
+        '
+        Me.m_cmbR.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_cmbR.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbR.FormattingEnabled = True
+        Me.m_cmbR.Location = New System.Drawing.Point(95, 23)
+        Me.m_cmbR.Name = "m_cmbR"
+        Me.m_cmbR.Size = New System.Drawing.Size(235, 21)
+        Me.m_cmbR.TabIndex = 2
+        '
         'frmInvokeR
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -406,7 +407,6 @@ Partial Class frmInvokeR
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents m_tbxR As System.Windows.Forms.TextBox
     Private WithEvents m_btnChooseR As System.Windows.Forms.Button
     Private WithEvents m_btnChooseScript As System.Windows.Forms.Button
     Private WithEvents m_tbxSCOR As System.Windows.Forms.TextBox
@@ -433,4 +433,5 @@ Partial Class frmInvokeR
     Private WithEvents m_tbxScriptOut As System.Windows.Forms.TextBox
     Private WithEvents m_tbxOutput As System.Windows.Forms.TextBox
     Private WithEvents m_tbxErrors As System.Windows.Forms.TextBox
+    Private WithEvents m_cmbR As System.Windows.Forms.ComboBox
 End Class
