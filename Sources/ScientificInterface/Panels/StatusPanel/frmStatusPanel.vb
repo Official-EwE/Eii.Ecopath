@@ -58,10 +58,19 @@ Public Class frmStatusPanel
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal uic As cUIContext, ByVal hist As cMessageHistory)
+
         Me.InitializeComponent()
         Me.m_uic = uic
         Me.m_hist = hist
         Me.TabText = SharedResources.HEADER_STATUS
+
+        ' Prepare image list for all defined importance types
+        ' JS 28Oct13: do this before OnLoad because messages may already have been added before the panel is visible.
+        For Each imp As eMessageImportance In [Enum].GetValues(GetType(eMessageImportance))
+            Dim img As Image = cStyleGuide.GetImage(imp)
+            If (img IsNot Nothing) Then Me.m_il.Images.Add(Me.GetImageKey(imp, False), img)
+        Next
+
     End Sub
 
 #End Region ' Constructor
@@ -72,12 +81,6 @@ Public Class frmStatusPanel
         MyBase.OnLoad(e)
 
         If (Me.m_uic Is Nothing) Then Return
-
-        ' Prepare image list for all defined importance types
-        For Each imp As eMessageImportance In [Enum].GetValues(GetType(eMessageImportance))
-            Dim img As Image = cStyleGuide.GetImage(imp)
-            If (img IsNot Nothing) Then Me.m_il.Images.Add(imp.ToString(), img)
-        Next
 
         ' Set image list
         Me.m_tvStatus.ImageList = Me.m_il
@@ -300,7 +303,7 @@ Public Class frmStatusPanel
         tnMessage.Tag = item
 
         ' Set image for both keys
-        tnMessage.ImageKey = Me.GetImageKey(item.Importance)
+        tnMessage.ImageKey = Me.GetImageKey(item.Importance, True)
         tnMessage.SelectedImageKey = tnMessage.ImageKey
 
         ' No parent node specified?
@@ -413,13 +416,14 @@ Public Class frmStatusPanel
     ''' Helper method; resolves a message importance value to a defined image key.
     ''' </summary>
     ''' <param name="imp">The message importance to find a key for.</param>
+    ''' <param name="bMustExist"></param>
     ''' <returns>
     ''' An image key, if available for the given <paramref name="imp">importance</paramref>.
     ''' </returns>
     ''' -------------------------------------------------------------------
-    Private Function GetImageKey(imp As eMessageImportance) As String
+    Private Function GetImageKey(imp As eMessageImportance, bMustExist As Boolean) As String
         Dim strKey As String = imp.ToString()
-        If Me.m_il.Images.ContainsKey(strKey) Then Return strKey
+        If Not bMustExist Or Me.m_il.Images.ContainsKey(strKey) Then Return strKey
         Return ""
     End Function
 
