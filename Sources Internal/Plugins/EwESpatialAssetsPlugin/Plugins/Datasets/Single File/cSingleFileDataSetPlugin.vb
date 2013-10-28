@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
@@ -63,7 +64,6 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub New()
             MyBase.New()
-            Me.DisplayName = My.Resources.DATASET_SINGLE_NAME
             Me.VarName = eVarNameFlags.NotSet
         End Sub
 
@@ -75,7 +75,6 @@ Namespace SpatialData
         Public Sub New(strSource As String)
             Me.New()
             Me.Source = strSource
-            Me.DisplayName = Path.GetFileNameWithoutExtension(strSource)
         End Sub
 
 #End Region ' Construction / destruction
@@ -90,7 +89,10 @@ Namespace SpatialData
                 If (Not String.IsNullOrWhiteSpace(Me.m_strName)) Then
                     Return Me.m_strName
                 End If
-                Return String.Format(My.Resources.DATASET_SINGLE_DISPLAYNAME, Me.Source)
+                If (Not String.IsNullOrWhiteSpace(Me.Source)) Then
+                    Return String.Format(My.Resources.DATASET_SINGLE_DISPLAYNAME, Path.GetFileName(Me.Source))
+                End If
+                Return My.Resources.DATASET_SINGLE_NAME
             End Get
             Set(value As String)
                 Me.m_strName = value
@@ -148,6 +150,22 @@ Namespace SpatialData
                 Return cDotSpatialUtils.DialogFilter(True, True, False, False)
             End Get
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the dataset equals another.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function Equals(obj As Object) As Boolean
+            If (obj Is Nothing) Then Return False
+            If (Not TypeOf obj Is cSingleFileDataSetPlugin) Then Return False
+
+            Dim sfd As cSingleFileDataSetPlugin = DirectCast(obj, cSingleFileDataSetPlugin)
+
+            Return (String.Compare(Me.SourceFileName, sfd.SourceFileName, True) = 0) And _
+                   (Me.TimeStart = sfd.TimeStart) And _
+                   (Me.TimeEnd = sfd.TimeEnd)
+        End Function
 
 #End Region ' Information
 

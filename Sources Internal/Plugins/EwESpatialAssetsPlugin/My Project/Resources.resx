@@ -218,6 +218,10 @@
     <value>Spatial data {0} does not overlap with Ecospace map</value>
     <comment>{0}=bounds</comment>
   </data>
+  <data name="STATUS_POLYGONSFAILED_INVALID" xml:space="preserve">
+    <value>{0} invalid polygon(s) were excluded from automated processing.</value>
+    <comment>{0}=polygon count</comment>
+  </data>
   <data name="STATUS_RASTERCONVERSION_EXCEPTION" xml:space="preserve">
     <value>Raster data could not be converted. {0}</value>
     <comment>{0}=exception message</comment>

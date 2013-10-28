@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
@@ -70,6 +71,8 @@ Public Class cSurfaceTools
         Dim coords As New List(Of Coordinate)
         Dim featToConvert As IFeatureSet = Nothing
         Dim polyToConvert As IGeometry = Nothing
+        Dim iNumInvalid As Integer = 0
+        Dim iNumComplex As Integer = 0
 
         If (Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection)) Then
             fs.Reproject(cDotSpatialUtils.EcospaceProjection)
@@ -95,18 +98,33 @@ Public Class cSurfaceTools
             featToConvert = fs
         End If
 
-        ' JS: do this AFTER the intersection operation to cut processing time. Keep polygons as small as possible
-        '' Merge all polygons to avoid double-counting areas when polygons overlap
-        'For Each featTmp As IFeature In featToConvert.Features
-        '    If (featTmp.FeatureType = FeatureType.Polygon) Then
-        '        Dim polyTemp As New Polygon(featTmp.Coordinates)
-        '        If polyToConvert Is Nothing Then
-        '            polyToConvert = polyTemp
-        '        Else
-        '            polyToConvert = polyToConvert.Union(polyTemp)
-        '        End If
-        '    End If
-        'Next
+        ' Merge all valid polygons to avoid double-counting areas when polygons overlap
+        For Each featTmp As IFeature In featToConvert.Features
+            If (featTmp.FeatureType = FeatureType.Polygon) Then
+                Dim polyTemp As New Polygon(featTmp.Coordinates)
+                Dim bUsePolygon As Boolean = True
+
+                If Not polyTemp.IsValid Then
+                    bUsePolygon = False
+                    iNumInvalid += 1
+                    If (log IsNot Nothing) Then log.LogOperation(String.Format(My.Resources.OPERATION_EXTRACTPLOYGONS, strFilter), eStatusFlags.ValueComputed)
+                ElseIf Not polyTemp.IsSimple Then
+                    iNumComplex += 1
+                End If
+
+                If (bUsePolygon) Then
+                    If (polyToConvert Is Nothing) Then
+                        polyToConvert = polyTemp
+                    Else
+                        polyToConvert = polyToConvert.Union(polyTemp)
+                    End If
+                End If
+            End If
+        Next
+
+        If ((iNumComplex > 0) And (log IsNot Nothing)) Then
+            log.LogOperation(String.Format(My.Resources.STATUS_POLYGONSFAILED_INVALID, iNumInvalid), eStatusFlags.ErrorEncountered)
+        End If
 
         ' -----
         ' Create and position raster 
