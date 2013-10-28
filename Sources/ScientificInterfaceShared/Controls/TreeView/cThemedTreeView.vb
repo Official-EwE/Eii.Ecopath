@@ -55,6 +55,25 @@ Namespace Controls
             End If
         End Sub
 
+        Private Const WM_ERASEBKGND As Integer = &H14
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Overriden to reduce flicker when redrawing.
+        ''' </summary>
+        ''' <param name="msg"></param>
+        ''' <remarks>
+        ''' http://forums.codeguru.com/showthread.php?182326-TreeView-Flickering-Problem
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Sub WndProc(ByRef msg As System.Windows.Forms.Message)
+            If (msg.Msg = WM_ERASEBKGND) Then
+                msg.Result = IntPtr.Zero
+                Return
+            End If
+            MyBase.WndProc(msg)
+        End Sub
+
     End Class
 
 End Namespace
