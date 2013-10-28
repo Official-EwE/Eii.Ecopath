@@ -135,24 +135,28 @@ Public Class frmStatusPanel
 
 #Region " Events "
 
+    ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Add message to history (thread-safe)
     ''' </summary>
     ''' <param name="hist"></param>
     ''' <param name="item"></param>
+    ''' -------------------------------------------------------------------
     Private Sub OnHistoryItemAdded(ByVal hist As cMessageHistory, _
                                    ByVal item As cMessageHistory.cHistoryItem)
         If Me.InvokeRequired Then
-            Me.Invoke(New AddHistoryItemDelegate(AddressOf Me.AddHistoryItem), New Object() {item, Nothing})
+            Me.Invoke(New AddHistoryItemDelegate(AddressOf Me.AddHistoryItem), New Object() {item})
         Else
-            Me.AddHistoryItem(item, Nothing)
+            Me.AddHistoryItem(item)
         End If
     End Sub
 
+    ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Refresh history (thread-safe)
     ''' </summary>
     ''' <param name="hist"></param>
+    ''' -------------------------------------------------------------------
     Private Sub OnHistoryRefreshed(ByVal hist As cMessageHistory)
         If Me.InvokeRequired Then
             Me.Invoke(New ClearHistoryItemsDelegate(AddressOf Me.RefreshHistoryItems), New Object() {})
@@ -270,20 +274,37 @@ Public Class frmStatusPanel
     ''' Add history item delegate. 
     ''' </summary>
     ''' <param name="item">The item to add.</param>
-    ''' <param name="tnParent">The tree node to add this item to.</param>
     ''' -------------------------------------------------------------------
-    Private Delegate Sub AddHistoryItemDelegate(ByVal item As cMessageHistory.cHistoryItem, _
-                                                ByVal tnParent As TreeNode)
+    Private Delegate Sub AddHistoryItemDelegate(ByVal item As cMessageHistory.cHistoryItem)
 
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Add a new history item to the tree view. 
     ''' </summary>
     ''' <param name="item">The item to add.</param>
+    ''' -------------------------------------------------------------------
+    Private Sub AddHistoryItem(ByVal item As cMessageHistory.cHistoryItem)
+
+        Me.m_tvStatus.BeginUpdate()
+        Try
+            Me.AddHistoryItemRecursive(item, Nothing)
+        Catch ex As Exception
+            ' Owww my GAWD!
+        End Try
+        Me.m_tvStatus.EndUpdate()
+
+        Me.Pulse(item.Importance, 5)
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Recursively a new history item and all its child items to the treeview.
+    ''' </summary>
+    ''' <param name="item">The item to add.</param>
     ''' <param name="tnParent">The tree node to add this item to.</param>
     ''' -------------------------------------------------------------------
-    Private Sub AddHistoryItem(ByVal item As cMessageHistory.cHistoryItem, _
-                               ByVal tnParent As TreeNode)
+    Private Sub AddHistoryItemRecursive(ByVal item As cMessageHistory.cHistoryItem, _
+                                        ByVal tnParent As TreeNode)
 
         ' Sanity checks
         If (item Is Nothing) Then Return
@@ -317,11 +338,9 @@ Public Class frmStatusPanel
                     ' Remove old messages from the bottom of the list
                     Me.m_tvStatus.Nodes.RemoveAt(iMaxMessages - 1)
                 End While
-
                 ' JS 10feb2010: ensure visible not always seem to do reveal the newest item
                 ' tnMessage.EnsureVisible()
                 Me.m_tvStatus.TopNode = tnMessage
-
             Catch ex As Exception
                 ' Hmm
             End Try
@@ -356,12 +375,10 @@ Public Class frmStatusPanel
         If (Not bSuppressChildren) Then
             ' Create subnodes for each history child item
             For Each itemChild As cMessageHistory.cHistoryItem In item.Children
-                Me.AddHistoryItem(itemChild, tnMessage)
+                Me.AddHistoryItemRecursive(itemChild, tnMessage)
             Next
             ' ToDo: reflect whether message was suppressed somehow
         End If
-
-        Me.Pulse(item.Importance, 5)
 
     End Sub
 
@@ -392,7 +409,7 @@ Public Class frmStatusPanel
     Private Sub SyncHistory()
         Dim items As cMessageHistory.cHistoryItem() = Me.m_hist.Items
         For i As Integer = Math.Max(0, items.Length - My.Settings.StatusMaxMessages) To items.Length - 1
-            Me.AddHistoryItem(items(i), Nothing)
+            Me.AddHistoryItemRecursive(items(i), Nothing)
         Next
     End Sub
 
