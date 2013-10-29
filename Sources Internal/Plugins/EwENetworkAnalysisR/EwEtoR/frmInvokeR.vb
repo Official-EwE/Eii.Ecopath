@@ -47,7 +47,7 @@ Public Class frmInvokeR
     Private m_fpR As cEwEFormatProvider = Nothing
     Private m_fpScript As cEwEFormatProvider = Nothing
     Private m_fpSCOR As cEwEFormatProvider = Nothing
-    Private m_fpPlaceholder As cEwEFormatProvider = Nothing
+    Private m_fpOutFile As cEwEFormatProvider = Nothing
 
     Private m_fpOutScript As cEwEFormatProvider = Nothing
     Private m_fpOutput As cEwEFormatProvider = Nothing
@@ -89,14 +89,16 @@ Public Class frmInvokeR
         Me.m_fpR = New cEwEFormatProvider(Me.m_uic, Me.m_cmbR, GetType(String), lstrPaths.ToArray())
         Me.m_fpR.Value = My.Settings.RPath
 
-        Me.m_fpScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScript, GetType(String))
+        Me.m_fpScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScriptFile, GetType(String))
+        Me.m_fpScript.Style = cStyleGuide.eStyleFlags.NotEditable
         Me.m_fpScript.Value = My.Settings.RScript
 
-        Me.m_fpSCOR = New cEwEFormatProvider(Me.m_uic, Me.m_tbxSCOR, GetType(String))
+        Me.m_fpSCOR = New cEwEFormatProvider(Me.m_uic, Me.m_tbxSCORFile, GetType(String))
         Me.m_fpSCOR.Value = My.Settings.SCORFileCustom
 
-        Me.m_fpPlaceholder = New cEwEFormatProvider(Me.m_uic, Me.m_tbxPlaceholder, GetType(String))
-        Me.m_fpPlaceholder.Value = My.Settings.RScriptFilePlaceholder
+        Me.m_fpOutFile = New cEwEFormatProvider(Me.m_uic, Me.m_tbxOutFile, GetType(String))
+        Me.m_fpOutFile.Style = cStyleGuide.eStyleFlags.NotEditable
+        Me.m_fpOutFile.Value = Path.Combine(Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecopath), "enaR_out.txt")
 
         Me.m_fpOutScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScriptOut, GetType(String))
         Me.m_fpOutScript.Style = cStyleGuide.eStyleFlags.NotEditable
@@ -127,7 +129,7 @@ Public Class frmInvokeR
         Me.m_fpR.Release()
         Me.m_fpScript.Release()
         Me.m_fpSCOR.Release()
-        Me.m_fpPlaceholder.Release()
+        Me.m_fpOutFile.Release()
         Me.m_fpOutScript.Release()
         Me.m_fpOutput.Release()
         Me.m_fpOutError.Release()
@@ -157,10 +159,10 @@ Public Class frmInvokeR
         Handles m_btnChooseScript.Click
 
         Dim cmd As cFileOpenCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-        cmd.Invoke(Me.m_tbxScript.Text, My.Resources.FILEFILTER_R_SCRIPT, 0, My.Resources.PROMPT_SELECT_R_SCRIPT)
+        cmd.Invoke(Me.m_tbxScriptFile.Text, My.Resources.FILEFILTER_R_SCRIPT, 0, My.Resources.PROMPT_SELECT_R_SCRIPT)
 
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
-            Me.m_tbxScript.Text = cmd.FileName
+            Me.m_tbxScriptFile.Text = cmd.FileName
             Me.UpdateControls()
         End If
 
@@ -170,10 +172,10 @@ Public Class frmInvokeR
         Handles m_btnChooseSCOR.Click
 
         Dim cmd As cFileSaveCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-        cmd.Invoke(Me.m_tbxSCOR.Text, My.Resources.FILFILTER_SCOR, 0, My.Resources.PROMPT_SELECT_SCOR_FILE)
+        cmd.Invoke(Me.m_tbxSCORFile.Text, My.Resources.FILFILTER_SCOR, 0, My.Resources.PROMPT_SELECT_SCOR_FILE)
 
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
-            Me.m_tbxSCOR.Text = cmd.FileName
+            Me.m_tbxSCORFile.Text = cmd.FileName
             Me.m_rbCustomSCOR.Checked = True
             Me.UpdateControls()
         End If
@@ -203,7 +205,7 @@ Public Class frmInvokeR
     End Sub
 
     Private Sub OnInputText(sender As System.Object, e As System.EventArgs) _
-        Handles m_tbxPlaceholder.TextChanged, m_tbxSCOR.TextChanged, m_tbxScript.TextChanged
+        Handles m_tbxOutFile.TextChanged, m_tbxSCORFile.TextChanged, m_tbxScriptFile.TextChanged
         Me.UpdateControls()
     End Sub
 
@@ -218,21 +220,26 @@ Public Class frmInvokeR
         Dim strR As String = CStr(Me.m_fpR.Value)
         Dim bHasUIC As Boolean = (Me.m_uic IsNot Nothing)
         Dim bHasR As Boolean = File.Exists(strR)
-        Dim bHasScript As Boolean = File.Exists(Me.m_tbxScript.Text)
-        Dim bHasSCOR As Boolean = Me.m_rbManagedSCOR.Checked Or (Not String.IsNullOrWhiteSpace(Me.m_tbxSCOR.Text))
-        Dim style As cStyleGuide.eStyleFlags
+        Dim bHasScript As Boolean = File.Exists(Me.m_tbxScriptFile.Text)
+        Dim bHasSCOR As Boolean = Me.m_rbManagedSCOR.Checked Or (Not String.IsNullOrWhiteSpace(Me.m_tbxSCORFile.Text))
 
-        style = cStyleGuide.eStyleFlags.OK
-        If Not bHasR Then style = cStyleGuide.eStyleFlags.FailedValidation
-        Me.m_fpR.Style = style
+        If bHasR Then
+            Me.m_fpR.Style = Me.m_fpR.Style And Not cStyleGuide.eStyleFlags.FailedValidation
+        Else
+            Me.m_fpR.Style = Me.m_fpR.Style Or cStyleGuide.eStyleFlags.FailedValidation
+        End If
 
-        style = cStyleGuide.eStyleFlags.OK
-        If Not bHasScript Then style = cStyleGuide.eStyleFlags.FailedValidation
-        Me.m_fpScript.Style = style
+        If bHasScript Then
+            Me.m_fpScript.Style = Me.m_fpScript.Style And Not cStyleGuide.eStyleFlags.FailedValidation
+        Else
+            Me.m_fpScript.Style = Me.m_fpScript.Style Or cStyleGuide.eStyleFlags.FailedValidation
+        End If
 
-        style = cStyleGuide.eStyleFlags.OK
-        If Not bHasSCOR Then style = cStyleGuide.eStyleFlags.FailedValidation
-        Me.m_fpSCOR.Style = style
+        If bHasSCOR Then
+            Me.m_fpSCOR.Style = Me.m_fpSCOR.Style And Not cStyleGuide.eStyleFlags.FailedValidation
+        Else
+            Me.m_fpSCOR.Style = Me.m_fpSCOR.Style Or cStyleGuide.eStyleFlags.FailedValidation
+        End If
 
         Me.m_btnChooseR.Enabled = bHasUIC
         Me.m_btnChooseSCOR.Enabled = bHasUIC
@@ -246,7 +253,6 @@ Public Class frmInvokeR
         ' Save settings
         My.Settings.RPath = CStr(Me.m_fpR.Value)
         My.Settings.RScript = CStr(Me.m_fpScript.Value)
-        My.Settings.RScriptFilePlaceholder = CStr(Me.m_fpPlaceholder.Value)
         My.Settings.SCORFileCustom = CStr(Me.m_fpSCOR.Value)
         My.Settings.SCORmanaged = Me.m_rbManagedSCOR.Checked()
         My.Settings.AdvancedViz = Not Me.m_hdrSettings.IsCollapsed
@@ -288,8 +294,9 @@ Public Class frmInvokeR
         End If
 
         Dim bridge As New cRBridge(CStr(Me.m_fpR.Value))
-        bridge.Field(Me.m_tbxPlaceholder.Text) = cFileUtils.DosToUnix(strSCOR)
-        bridge.ExecuteFile(Me.m_tbxScript.Text)
+        bridge.Field(My.Settings.SCORPlaceholder) = cFileUtils.DosToUnix(strSCOR)
+        bridge.Field(My.Settings.OUTPlaceholder) = cFileUtils.DosToUnix(CStr(Me.m_fpOutFile.Value))
+        bridge.ExecuteFile(Me.m_tbxScriptFile.Text)
 
         Me.UpdateOutput(Me.m_fpOutScript, bridge.Input)
         Me.UpdateOutput(Me.m_fpOutput, bridge.Output)

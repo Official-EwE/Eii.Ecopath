@@ -43,15 +43,16 @@ Partial Class frmInvokeR
         Me.m_lblR = New System.Windows.Forms.Label()
         Me.m_btnChooseR = New System.Windows.Forms.Button()
         Me.m_lblScript = New System.Windows.Forms.Label()
-        Me.m_tbxScript = New System.Windows.Forms.TextBox()
+        Me.m_tbxScriptFile = New System.Windows.Forms.TextBox()
         Me.m_btnChooseScript = New System.Windows.Forms.Button()
         Me.m_btnOK = New System.Windows.Forms.Button()
-        Me.m_tbxSCOR = New System.Windows.Forms.TextBox()
+        Me.m_tbxSCORFile = New System.Windows.Forms.TextBox()
         Me.m_btnChooseSCOR = New System.Windows.Forms.Button()
-        Me.m_tbxPlaceholder = New System.Windows.Forms.TextBox()
+        Me.m_tbxOutFile = New System.Windows.Forms.TextBox()
         Me.m_lblPlaceholder = New System.Windows.Forms.Label()
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plOptions = New System.Windows.Forms.Panel()
+        Me.m_cmbR = New System.Windows.Forms.ComboBox()
         Me.m_hdrSCOR = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_rbManagedSCOR = New System.Windows.Forms.RadioButton()
         Me.m_rbCustomSCOR = New System.Windows.Forms.RadioButton()
@@ -66,7 +67,6 @@ Partial Class frmInvokeR
         Me.m_tpgErrors = New System.Windows.Forms.TabPage()
         Me.m_tbxErrors = New System.Windows.Forms.TextBox()
         Me.m_hdrResults = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_cmbR = New System.Windows.Forms.ComboBox()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plOptions.SuspendLayout()
         Me.m_plRun.SuspendLayout()
@@ -89,11 +89,11 @@ Partial Class frmInvokeR
         'm_btnChooseR
         '
         Me.m_btnChooseR.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnChooseR.Location = New System.Drawing.Point(336, 21)
+        Me.m_btnChooseR.Location = New System.Drawing.Point(381, 21)
         Me.m_btnChooseR.Name = "m_btnChooseR"
-        Me.m_btnChooseR.Size = New System.Drawing.Size(70, 23)
+        Me.m_btnChooseR.Size = New System.Drawing.Size(22, 23)
         Me.m_btnChooseR.TabIndex = 3
-        Me.m_btnChooseR.Text = "Choose..."
+        Me.m_btnChooseR.Text = ".."
         Me.m_btnChooseR.UseVisualStyleBackColor = True
         '
         'm_lblScript
@@ -105,73 +105,72 @@ Partial Class frmInvokeR
         Me.m_lblScript.TabIndex = 4
         Me.m_lblScript.Text = "R &script:"
         '
-        'm_tbxScript
+        'm_tbxScriptFile
         '
-        Me.m_tbxScript.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_tbxScriptFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxScript.Location = New System.Drawing.Point(95, 52)
-        Me.m_tbxScript.Name = "m_tbxScript"
-        Me.m_tbxScript.ReadOnly = True
-        Me.m_tbxScript.Size = New System.Drawing.Size(235, 20)
-        Me.m_tbxScript.TabIndex = 5
+        Me.m_tbxScriptFile.Location = New System.Drawing.Point(95, 52)
+        Me.m_tbxScriptFile.Name = "m_tbxScriptFile"
+        Me.m_tbxScriptFile.Size = New System.Drawing.Size(280, 20)
+        Me.m_tbxScriptFile.TabIndex = 5
         '
         'm_btnChooseScript
         '
         Me.m_btnChooseScript.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnChooseScript.Location = New System.Drawing.Point(336, 50)
+        Me.m_btnChooseScript.Location = New System.Drawing.Point(381, 50)
         Me.m_btnChooseScript.Name = "m_btnChooseScript"
-        Me.m_btnChooseScript.Size = New System.Drawing.Size(70, 23)
+        Me.m_btnChooseScript.Size = New System.Drawing.Size(22, 23)
         Me.m_btnChooseScript.TabIndex = 6
-        Me.m_btnChooseScript.Text = "Choose..."
+        Me.m_btnChooseScript.Text = ".."
         Me.m_btnChooseScript.UseVisualStyleBackColor = True
         '
         'm_btnOK
         '
         Me.m_btnOK.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.m_btnOK.Location = New System.Drawing.Point(336, 3)
+        Me.m_btnOK.Location = New System.Drawing.Point(317, 3)
         Me.m_btnOK.Name = "m_btnOK"
-        Me.m_btnOK.Size = New System.Drawing.Size(70, 23)
+        Me.m_btnOK.Size = New System.Drawing.Size(86, 23)
         Me.m_btnOK.TabIndex = 0
         Me.m_btnOK.Text = "Run"
         Me.m_btnOK.UseVisualStyleBackColor = True
         '
-        'm_tbxSCOR
+        'm_tbxSCORFile
         '
-        Me.m_tbxSCOR.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_tbxSCORFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxSCOR.Location = New System.Drawing.Point(95, 97)
-        Me.m_tbxSCOR.Name = "m_tbxSCOR"
-        Me.m_tbxSCOR.ReadOnly = True
-        Me.m_tbxSCOR.Size = New System.Drawing.Size(235, 20)
-        Me.m_tbxSCOR.TabIndex = 9
+        Me.m_tbxSCORFile.Location = New System.Drawing.Point(92, 126)
+        Me.m_tbxSCORFile.Name = "m_tbxSCORFile"
+        Me.m_tbxSCORFile.ReadOnly = True
+        Me.m_tbxSCORFile.Size = New System.Drawing.Size(283, 20)
+        Me.m_tbxSCORFile.TabIndex = 11
         '
         'm_btnChooseSCOR
         '
         Me.m_btnChooseSCOR.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnChooseSCOR.Location = New System.Drawing.Point(336, 97)
+        Me.m_btnChooseSCOR.Location = New System.Drawing.Point(381, 126)
         Me.m_btnChooseSCOR.Name = "m_btnChooseSCOR"
-        Me.m_btnChooseSCOR.Size = New System.Drawing.Size(70, 23)
-        Me.m_btnChooseSCOR.TabIndex = 10
-        Me.m_btnChooseSCOR.Text = "Choose..."
+        Me.m_btnChooseSCOR.Size = New System.Drawing.Size(22, 23)
+        Me.m_btnChooseSCOR.TabIndex = 12
+        Me.m_btnChooseSCOR.Text = ".."
         Me.m_btnChooseSCOR.UseVisualStyleBackColor = True
         '
-        'm_tbxPlaceholder
+        'm_tbxOutFile
         '
-        Me.m_tbxPlaceholder.Location = New System.Drawing.Point(95, 144)
-        Me.m_tbxPlaceholder.MaxLength = 24
-        Me.m_tbxPlaceholder.Name = "m_tbxPlaceholder"
-        Me.m_tbxPlaceholder.Size = New System.Drawing.Size(120, 20)
-        Me.m_tbxPlaceholder.TabIndex = 13
-        Me.m_tbxPlaceholder.Text = "%FILENAME%"
+        Me.m_tbxOutFile.Location = New System.Drawing.Point(95, 78)
+        Me.m_tbxOutFile.MaxLength = 24
+        Me.m_tbxOutFile.Name = "m_tbxOutFile"
+        Me.m_tbxOutFile.Size = New System.Drawing.Size(280, 20)
+        Me.m_tbxOutFile.TabIndex = 8
+        Me.m_tbxOutFile.Text = "%FILENAME%"
         '
         'm_lblPlaceholder
         '
         Me.m_lblPlaceholder.AutoSize = True
-        Me.m_lblPlaceholder.Location = New System.Drawing.Point(7, 148)
+        Me.m_lblPlaceholder.Location = New System.Drawing.Point(5, 81)
         Me.m_lblPlaceholder.Name = "m_lblPlaceholder"
-        Me.m_lblPlaceholder.Size = New System.Drawing.Size(78, 13)
-        Me.m_lblPlaceholder.TabIndex = 12
-        Me.m_lblPlaceholder.Text = "SCOR file field:"
+        Me.m_lblPlaceholder.Size = New System.Drawing.Size(58, 13)
+        Me.m_lblPlaceholder.TabIndex = 7
+        Me.m_lblPlaceholder.Text = "&Output file:"
         '
         'm_tlpContent
         '
@@ -195,17 +194,17 @@ Partial Class frmInvokeR
         'm_plOptions
         '
         Me.m_plOptions.Controls.Add(Me.m_cmbR)
+        Me.m_plOptions.Controls.Add(Me.m_tbxOutFile)
         Me.m_plOptions.Controls.Add(Me.m_hdrSCOR)
+        Me.m_plOptions.Controls.Add(Me.m_lblPlaceholder)
         Me.m_plOptions.Controls.Add(Me.m_rbManagedSCOR)
         Me.m_plOptions.Controls.Add(Me.m_rbCustomSCOR)
         Me.m_plOptions.Controls.Add(Me.m_hdrSettings)
-        Me.m_plOptions.Controls.Add(Me.m_tbxSCOR)
+        Me.m_plOptions.Controls.Add(Me.m_tbxSCORFile)
         Me.m_plOptions.Controls.Add(Me.m_btnChooseSCOR)
         Me.m_plOptions.Controls.Add(Me.m_lblR)
         Me.m_plOptions.Controls.Add(Me.m_btnChooseScript)
-        Me.m_plOptions.Controls.Add(Me.m_tbxPlaceholder)
-        Me.m_plOptions.Controls.Add(Me.m_lblPlaceholder)
-        Me.m_plOptions.Controls.Add(Me.m_tbxScript)
+        Me.m_plOptions.Controls.Add(Me.m_tbxScriptFile)
         Me.m_plOptions.Controls.Add(Me.m_btnChooseR)
         Me.m_plOptions.Controls.Add(Me.m_lblScript)
         Me.m_plOptions.Dock = System.Windows.Forms.DockStyle.Fill
@@ -215,6 +214,17 @@ Partial Class frmInvokeR
         Me.m_plOptions.Size = New System.Drawing.Size(410, 170)
         Me.m_plOptions.TabIndex = 0
         '
+        'm_cmbR
+        '
+        Me.m_cmbR.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_cmbR.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbR.FormattingEnabled = True
+        Me.m_cmbR.Location = New System.Drawing.Point(95, 23)
+        Me.m_cmbR.Name = "m_cmbR"
+        Me.m_cmbR.Size = New System.Drawing.Size(280, 21)
+        Me.m_cmbR.TabIndex = 2
+        '
         'm_hdrSCOR
         '
         Me.m_hdrSCOR.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -222,21 +232,21 @@ Partial Class frmInvokeR
         Me.m_hdrSCOR.CanCollapseParent = False
         Me.m_hdrSCOR.CollapsedParentHeight = 0
         Me.m_hdrSCOR.IsCollapsed = False
-        Me.m_hdrSCOR.Location = New System.Drawing.Point(7, 76)
+        Me.m_hdrSCOR.Location = New System.Drawing.Point(4, 105)
         Me.m_hdrSCOR.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrSCOR.Name = "m_hdrSCOR"
         Me.m_hdrSCOR.Size = New System.Drawing.Size(399, 18)
-        Me.m_hdrSCOR.TabIndex = 7
+        Me.m_hdrSCOR.TabIndex = 9
         Me.m_hdrSCOR.Text = "SCOR file"
         Me.m_hdrSCOR.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_rbManagedSCOR
         '
         Me.m_rbManagedSCOR.AutoSize = True
-        Me.m_rbManagedSCOR.Location = New System.Drawing.Point(10, 121)
+        Me.m_rbManagedSCOR.Location = New System.Drawing.Point(7, 150)
         Me.m_rbManagedSCOR.Name = "m_rbManagedSCOR"
         Me.m_rbManagedSCOR.Size = New System.Drawing.Size(106, 17)
-        Me.m_rbManagedSCOR.TabIndex = 11
+        Me.m_rbManagedSCOR.TabIndex = 13
         Me.m_rbManagedSCOR.TabStop = True
         Me.m_rbManagedSCOR.Text = "&System managed"
         Me.m_rbManagedSCOR.UseVisualStyleBackColor = True
@@ -244,10 +254,10 @@ Partial Class frmInvokeR
         'm_rbCustomSCOR
         '
         Me.m_rbCustomSCOR.AutoSize = True
-        Me.m_rbCustomSCOR.Location = New System.Drawing.Point(10, 98)
+        Me.m_rbCustomSCOR.Location = New System.Drawing.Point(7, 127)
         Me.m_rbCustomSCOR.Name = "m_rbCustomSCOR"
         Me.m_rbCustomSCOR.Size = New System.Drawing.Size(79, 17)
-        Me.m_rbCustomSCOR.TabIndex = 8
+        Me.m_rbCustomSCOR.TabIndex = 10
         Me.m_rbCustomSCOR.TabStop = True
         Me.m_rbCustomSCOR.Text = "&Custom file:"
         Me.m_rbCustomSCOR.UseVisualStyleBackColor = True
@@ -283,7 +293,7 @@ Partial Class frmInvokeR
         Me.m_plResult.Location = New System.Drawing.Point(3, 202)
         Me.m_plResult.Name = "m_plResult"
         Me.m_plResult.Size = New System.Drawing.Size(404, 238)
-        Me.m_plResult.TabIndex = 9
+        Me.m_plResult.TabIndex = 2
         '
         'm_tcDebug
         '
@@ -370,17 +380,6 @@ Partial Class frmInvokeR
         Me.m_hdrResults.Text = "Results"
         Me.m_hdrResults.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'm_cmbR
-        '
-        Me.m_cmbR.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_cmbR.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_cmbR.FormattingEnabled = True
-        Me.m_cmbR.Location = New System.Drawing.Point(95, 23)
-        Me.m_cmbR.Name = "m_cmbR"
-        Me.m_cmbR.Size = New System.Drawing.Size(235, 21)
-        Me.m_cmbR.TabIndex = 2
-        '
         'frmInvokeR
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -409,13 +408,13 @@ Partial Class frmInvokeR
     End Sub
     Private WithEvents m_btnChooseR As System.Windows.Forms.Button
     Private WithEvents m_btnChooseScript As System.Windows.Forms.Button
-    Private WithEvents m_tbxSCOR As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxSCORFile As System.Windows.Forms.TextBox
     Private WithEvents m_btnChooseSCOR As System.Windows.Forms.Button
-    Private WithEvents m_tbxScript As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxScriptFile As System.Windows.Forms.TextBox
     Private WithEvents m_lblScript As System.Windows.Forms.Label
     Private WithEvents m_lblR As System.Windows.Forms.Label
     Private WithEvents m_btnOK As System.Windows.Forms.Button
-    Private WithEvents m_tbxPlaceholder As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxOutFile As System.Windows.Forms.TextBox
     Private WithEvents m_lblPlaceholder As System.Windows.Forms.Label
     Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_plOptions As System.Windows.Forms.Panel

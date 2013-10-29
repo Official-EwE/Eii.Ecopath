@@ -28,13 +28,13 @@ All <- list()
 All$A <- enaStructure(m)           # structure analysis
 All$F <- enaFlow(m)                # flow analysis
 All$S <- enaStorage(m)
-All$U <- enaUtility(mm,eigen.check=FALSE)
+All$U <- enaUtility(m,eigen.check=FALSE)
 All$C <- enaControl(m)
 All$mti <- mixedTrophicImpacts(m,eigen.check=FALSE)
 All$E <- environ(m)
 
 # writes output to a txt file.  
-zz <- file("tmp.txt",open="wt")
+zz <- file("%OUTFILE%",open="wt")
 sink(zz)
 show(All)
 sink()

@@ -11,7 +11,7 @@
     <Setting Name="SCORFileCustom" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="RScriptFilePlaceholder" Type="System.String" Scope="User">
+    <Setting Name="SCORPlaceholder" Type="System.String" Scope="User">
       <Value Profile="(Default)">%SCORFILE%</Value>
     </Setting>
     <Setting Name="SCORmanaged" Type="System.Boolean" Scope="User">
@@ -19,6 +19,9 @@
     </Setting>
     <Setting Name="AdvancedViz" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="OUTPlaceholder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">%OUTFILE%</Value>
     </Setting>
   </Settings>
 </SettingsFile>
