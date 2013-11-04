@@ -129,6 +129,7 @@ Namespace Utilities
             None
             Easter
             Xmas
+            Conf30
         End Enum
 
         Public Shared Function GetNextEvent(ByVal iNumDays As Integer) As eNextEvent
@@ -136,9 +137,12 @@ Namespace Utilities
             Dim dtNow As DateTime = New Date(Date.Now.Year, Date.Now.Month, Date.Now.Day)
             Dim dtEaster As DateTime = cDateUtils.Easter(dtNow.Year)
             Dim dtXMas As DateTime = New Date(dtNow.Year, 12, 25)
+            Dim dtConf30 As DateTime = New Date(2014, 11, 14)
 
             If (dtEaster >= dtNow) And (dtEaster.Subtract(dtNow).Days <= iNumDays) Then Return eNextEvent.Easter
             If (dtXMas >= dtNow) And (dtXMas.Subtract(dtNow).Days <= iNumDays) Then Return eNextEvent.Xmas
+            If (dtConf30 >= dtNow) And (dtConf30.Subtract(dtNow).Days <= iNumDays * 3) Then Return eNextEvent.Conf30
+
             Return eNextEvent.None
 
         End Function
