@@ -2324,6 +2324,8 @@ Public Class cPluginManager
                 clsRet = clsAssembly.CreateInstance(strClassName, False, Nothing, Nothing, args, Nothing, Nothing)
             End If
         Catch ex As Exception
+			' JS 04Nov13: we'd really like to know this, actually...
+            cLog.Write(ex, eVerboseLevel.Detailed, "LoadPlugin")
             Return Nothing
         End Try
         Return DirectCast(clsRet, IPlugin)
