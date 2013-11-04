@@ -806,15 +806,21 @@ Public Class AppLauncher
         ' Prepare icon
         Select Case cDateUtils.GetNextEvent(15)
             Case cDateUtils.eNextEvent.Easter
+                ' EGG
                 Me.Icon = My.Resources.Ecopath3_easter
             Case cDateUtils.eNextEvent.Xmas
+                ' EGG
                 Me.Icon = My.Resources.Ecopath4_hohoho
-            Case cDateUtils.eNextEvent.None
-                Me.Icon = My.Resources.Ecopath0
-        End Select
+            Case cDateUtils.eNextEvent.Conf30
+                ' EGG
+                Me.Icon = My.Resources.ecopath5_30
+            Case Else
 #If BETA = 1 Then
-        Me.Icon = My.Resources.Ecopath2_beta
+                Me.Icon = My.Resources.Ecopath2_beta
+#Else
+                Me.Icon = My.Resources.Ecopath0
 #End If
+        End Select
 
         Me.ResumeLayout()
         My.Settings.Reload()
