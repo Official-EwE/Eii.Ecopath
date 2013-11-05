@@ -2782,13 +2782,24 @@ Namespace Controls
 
 #End Region ' Hover menu handling
 
+#Region " Refresh "
+
         ''' <summary>
         ''' Async full-on refresh
         ''' </summary>
         Private Sub DoRescaleAndRedraw()
-            Me.m_zgc.AxisChange()
-            Me.m_zgc.Invalidate()
+            If (Me.m_zgc Is Nothing) Then Return
+            If (Me.m_zgc.IsDisposed) Then Return
+
+            Try
+                Me.m_zgc.AxisChange()
+                Me.m_zgc.Invalidate()
+            Catch ex As Exception
+                ' Whoah!
+            End Try
         End Sub
+
+#End Region ' Refresh
 
 #End Region ' Internal bits
 
