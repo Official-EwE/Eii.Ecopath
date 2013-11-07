@@ -901,7 +901,7 @@ Public Class cMSE
             cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iTrial), CSng(iTrial / nTrials))
 
             For igrp = 1 To mCore.nLivingGroups
-                If Not B(iTrial - 1, igrp - 1) = -9999 Then
+                If Not B(iTrial - 1, igrp - 1) = cCore.NULL_VALUE Then
                     ecopathData.B(igrp) = CSng(B(iTrial - 1, igrp - 1))
                     ecopathData.PB(igrp) = CSng(PB(iTrial - 1, igrp - 1))
                     ecopathData.QB(igrp) = CSng(QB(iTrial - 1, igrp - 1))
@@ -923,10 +923,10 @@ Public Class cMSE
                 'For iPrey As Integer = 1 To Vulnerabilities.GetLength(1)
                 For iPred As Integer = 1 To mCore.nLivingGroups
                     'For iPred As Integer = 1 To Vulnerabilities.GetLength(2)
-                    If Not Vulnerabilities(iTrial - 1, iPred - 1, iPrey - 1) = -9999 Then
+                    If Not Vulnerabilities(iTrial - 1, iPred - 1, iPrey - 1) = cCore.NULL_VALUE Then
                         ecosimData.VulMult(iPrey, iPred) = CSng(Vulnerabilities(iTrial - 1, iPred - 1, iPrey - 1))
                     Else
-                        ecosimData.VulMult(iPrey, iPred) = -9999
+                        ecosimData.VulMult(iPrey, iPred) = cCore.NULL_VALUE
                     End If
                 Next
             Next
@@ -2199,7 +2199,7 @@ stepend:
         'Generate an array of sample parameters
         For iGroup = 1 To mCore.nLivingGroups
 
-            If Not ParameterArray(iGroup - 1, 1) = -9999 Then
+            If Not ParameterArray(iGroup - 1, 1) = cCore.NULL_VALUE Then
 
                 eDistributionType = CType(ParameterArray(iGroup - 1, 0), DistributionType)
 
@@ -2215,7 +2215,7 @@ stepend:
                 Next
             Else
                 For iIteration = 1 To nModels
-                    SampledParameters(iIteration - 1, iGroup - 1) = -9999
+                    SampledParameters(iIteration - 1, iGroup - 1) = cCore.NULL_VALUE
                 Next
             End If
 
@@ -2263,7 +2263,7 @@ stepend:
                     If mCore.EcoPathGroupInputs(igrppredator).IsProducer Then
                         For igrpprey As Integer = 1 To _ecopath.EcopathData().NumGroups
                             If (igrpprey > 1) Then writer.Write(",")
-                            writer.Write(Convert.ToSingle(-9999))
+                            writer.Write(Convert.ToSingle(cCore.NULL_VALUE))
                         Next igrpprey
                     Else
                         For igrpprey As Integer = 1 To _ecopath.EcopathData().NumGroups

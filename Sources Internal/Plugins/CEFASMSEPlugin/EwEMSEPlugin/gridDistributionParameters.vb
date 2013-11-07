@@ -43,6 +43,8 @@ Imports ScientificInterfaceShared.Style
 Public Class gridDistributionParameters
     Inherits EwEGrid
 
+#Region " Internal defs "
+
     Private Class cDistributionTypeFormatter
         Implements ITypeFormatter
 
@@ -64,7 +66,6 @@ Public Class gridDistributionParameters
         End Function
 
     End Class
-#Region " Internal defs "
 
     Private Enum eEcopathColumnTypes As Integer
         Index = 0
@@ -184,24 +185,37 @@ Public Class gridDistributionParameters
             iRow = Me.AddRow()
             Select Case Me.m_mode
                 Case frmDistributionParameters.eParameterSet.Ecopath
+
                     Dim data As frmDistributionParameters.EcopathParam = DirectCast(Me.m_data(i), frmDistributionParameters.EcopathParam)
+                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(data.GroupNo)
+                    Dim sg As cStanzaGroup = Nothing
+                    Dim bUse As Boolean = True
+
+                    If group.isMultiStanza Then
+                        sg = Me.Core.StanzaGroups(group.iStanza)
+                        bUse = (sg.iGroups(sg.LeadingB) = data.GroupNo)
+                    End If
 
                     Me(iRow, eEcopathColumnTypes.Index) = New EwERowHeaderCell(CStr(data.GroupNo))
                     Me(iRow, eEcopathColumnTypes.Name) = New EwERowHeaderCell(CStr(data.GroupName))
 
-                    Me(iRow, eEcopathColumnTypes.CV) = DataCell(data.CV)
-                    Me(iRow, eEcopathColumnTypes.Mean) = DataCell(data.Mean)
-                    Me(iRow, eEcopathColumnTypes.Lower) = DataCell(data.LowerBound)
-                    Me(iRow, eEcopathColumnTypes.Upper) = DataCell(data.UpperBound)
+                    If (bUse) Then
+                        Me(iRow, eEcopathColumnTypes.CV) = DataCell(data.CV)
+                        Me(iRow, eEcopathColumnTypes.Mean) = DataCell(data.Mean)
+                        Me(iRow, eEcopathColumnTypes.Lower) = DataCell(data.LowerBound)
+                        Me(iRow, eEcopathColumnTypes.Upper) = DataCell(data.UpperBound)
+                    Else
+                        Me(iRow, eEcopathColumnTypes.CV) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                        Me(iRow, eEcopathColumnTypes.Mean) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                        Me(iRow, eEcopathColumnTypes.Lower) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                        Me(iRow, eEcopathColumnTypes.Upper) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                    End If
 
-                    Me.Columns(eEcopathColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-                    Me.Columns(eEcopathColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
-                    Me.Columns(eEcopathColumnTypes.Name).Width = 150
-                    Me.Rows(iRow).Tag = data
+                     Me.Rows(iRow).Tag = data
 
                 Case frmDistributionParameters.eParameterSet.Ecosim
                     Dim data As frmDistributionParameters.EcosimParam = DirectCast(Me.m_data(i), frmDistributionParameters.EcosimParam)
- 
+
                     Me(iRow, eEcosimColumnTypes.Index) = New EwERowHeaderCell(CStr(data.GroupNo))
                     Me(iRow, eEcosimColumnTypes.Name) = New EwERowHeaderCell(CStr(data.GroupName))
 
@@ -212,16 +226,33 @@ Public Class gridDistributionParameters
                     Me(iRow, eEcosimColumnTypes.Lower) = DataCell(data.LowerBound)
                     Me(iRow, eEcosimColumnTypes.Upper) = DataCell(data.UpperBound)
                     Me(iRow, eEcosimColumnTypes.MidPoint) = DataCell(data.MidPoint)
-
-                    Me.Columns(eEcosimColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-                    Me.Columns(eEcosimColumnTypes.Name).Width = 150
-                    Me.Columns(eEcosimColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
                     Me.Rows(iRow).Tag = data
 
             End Select
         Next
 
+        Select Case Me.m_mode
+            Case frmDistributionParameters.eParameterSet.Ecopath
+                Me.Columns(eEcopathColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+                Me.Columns(eEcopathColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
+                Me.AutoSizeColumn(eEcopathColumnTypes.Name, 150)
+            Case frmDistributionParameters.eParameterSet.Ecosim
+                Me.Columns(eEcosimColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+                Me.Columns(eEcosimColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
+                Me.AutoSizeColumn(eEcosimColumnTypes.Name, 150)
+        End Select
+
     End Sub
+
+    Protected Overrides Sub FinishStyle()
+        MyBase.FinishStyle()
+    End Sub
+
+    Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
+        Get
+            Return eCoreComponentType.EcoSim
+        End Get
+    End Property
 
     Private Function DataCell(dValue As Double) As EwECell
 
@@ -237,17 +268,6 @@ Public Class gridDistributionParameters
         Return cell
 
     End Function
-
-    Protected Overrides Sub FinishStyle()
-        MyBase.FinishStyle()
-        Me.AutoSizeAll()
-    End Sub
-
-    Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
-        Get
-            Return eCoreComponentType.EcoSim
-        End Get
-    End Property
 
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
