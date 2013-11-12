@@ -238,71 +238,71 @@ Namespace Forms
             Return state
         End Function
 
-        ' ''' -------------------------------------------------------------------
-        ' ''' <summary>
-        ' ''' Pulse timer callback.
-        ' ''' </summary>
-        ' ''' -------------------------------------------------------------------
-        'Private Sub OnPulseIcon(serder As Object, args As EventArgs)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Pulse timer callback.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub OnPulseIcon(serder As Object, args As EventArgs)
 
-        '    Me.m_iNumPulses -= 1
-        '    If Me.m_iNumPulses Mod 2 = 1 Then
-        '        Me.Icon = Me.m_icoPulse
-        '    Else
-        '        Me.Icon = Me.m_icoOrg
-        '    End If
+            '    Me.m_iNumPulses -= 1
+            '    If Me.m_iNumPulses Mod 2 = 1 Then
+            '        Me.Icon = Me.m_icoPulse
+            '    Else
+            '        Me.Icon = Me.m_icoOrg
+            '    End If
 
-        '    If Me.m_iNumPulses <= 0 Then
-        '        Me.StopPulsing()
-        '    End If
+            '    If Me.m_iNumPulses <= 0 Then
+            '        Me.StopPulsing()
+            '    End If
 
-        'End Sub
+        End Sub
 
-        ' ''' -------------------------------------------------------------------
-        ' ''' <summary>
-        ' ''' Cancel current pulse plan.
-        ' ''' </summary>
-        ' ''' -------------------------------------------------------------------
-        'Private Sub StopPulsing()
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Cancel current pulse plan.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub StopPulsing()
 
-        '    If (Me.m_icoOrg Is Nothing) Then Return
-        '    If (Me.m_timerPulse Is Nothing) Then Return
+            '    If (Me.m_icoOrg Is Nothing) Then Return
+            '    If (Me.m_timerPulse Is Nothing) Then Return
 
-        '    ' Stop timer
-        '    RemoveHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
-        '    Me.m_timerPulse.Stop()
-        '    Me.m_timerPulse.Dispose()
-        '    Me.m_timerPulse = Nothing
+            '    ' Stop timer
+            '    RemoveHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+            '    Me.m_timerPulse.Stop()
+            '    Me.m_timerPulse.Dispose()
+            '    Me.m_timerPulse = Nothing
 
-        '    ' Restore icon
-        '    Me.Icon = Me.m_icoOrg
-        '    Me.m_icoOrg = Nothing
+            '    ' Restore icon
+            '    Me.Icon = Me.m_icoOrg
+            '    Me.m_icoOrg = Nothing
 
-        '    ' Dispose current pulsing icon
-        '    Me.m_importancePulse = 0
-        '    Me.UpdatePulseIcon(Nothing)
+            '    ' Dispose current pulsing icon
+            '    Me.m_importancePulse = 0
+            '    Me.UpdatePulseIcon(Nothing)
 
-        'End Sub
+        End Sub
 
-        ' ''' -------------------------------------------------------------------
-        ' ''' <summary>
-        ' ''' Manage the current pulse icon and associated GDI+ resources.
-        ' ''' </summary>
-        ' ''' <param name="bmp">The bitmap for which to create a new pulse icon.</param>
-        ' ''' -------------------------------------------------------------------
-        'Private Sub UpdatePulseIcon(bmp As Bitmap)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Manage the current pulse icon and associated GDI+ resources.
+        ''' </summary>
+        ''' <param name="bmp">The bitmap for which to create a new pulse icon.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdatePulseIcon(bmp As Bitmap)
 
-        '    ' Update pulse icon
-        '    If (Me.m_icoPulse IsNot Nothing) Then
-        '        Me.m_icoPulse.Destroy()
-        '        Me.m_icoPulse = Nothing
-        '    End If
+            '    ' Update pulse icon
+            '    If (Me.m_icoPulse IsNot Nothing) Then
+            '        Me.m_icoPulse.Destroy()
+            '        Me.m_icoPulse = Nothing
+            '    End If
 
-        '    If (bmp IsNot Nothing) Then
-        '        Me.m_icoPulse = Icon.FromHandle(bmp.GetHicon)
-        '    End If
+            '    If (bmp IsNot Nothing) Then
+            '        Me.m_icoPulse = Icon.FromHandle(bmp.GetHicon)
+            '    End If
 
-        'End Sub
+        End Sub
 
 #End Region ' Internals
 
