@@ -377,34 +377,44 @@ Public Class cPedigreeManager
         ' Borrow status flags from groups
         Me.AllowValidation = False
 
-        If group.IsDetritus Then
-            Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
-        Else
-            Select Case Me.m_varName
+        ' JS 13Nov13: Addressed issue #1301 (VC email "I was doing the pedigree 
+        '             for a model and noted that the table does not allow entry
+        '             of P/B for producers (should have B and P/B) and of B for
+        '             detritus (should only have B))
+        Select Case Me.m_varName
 
-                Case eVarNameFlags.PBInput, eVarNameFlags.QBInput
-                    If (group.IsProducer()) Then
-                        Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
-                    Else
-                        Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
-                    End If
+            Case eVarNameFlags.BiomassAreaInput
+                Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
 
-                Case eVarNameFlags.DietComp
-                    If group.IsConsumer Then
-                        Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
-                    Else
-                        Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
-                    End If
+            Case eVarNameFlags.PBInput
+                If (group.IsDetritus()) Then
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
+                Else
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                End If
 
-                Case eVarNameFlags.TCatchInput
-                    If epdata.fCatch(group.Index) > 0 Then
-                        Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
-                    Else
-                        Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
-                    End If
+            Case eVarNameFlags.QBInput
+                If (group.IsDetritus() Or group.IsProducer()) Then
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
+                Else
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                End If
 
-            End Select
-        End If
+            Case eVarNameFlags.DietComp
+                If (group.IsDetritus() Or group.IsProducer()) Then
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                Else
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                End If
+
+            Case eVarNameFlags.TCatchInput
+                If epdata.fCatch(group.Index) > 0 Then
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                Else
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                End If
+
+        End Select
 
         Me.AllowValidation = True
 
