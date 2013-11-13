@@ -593,8 +593,8 @@ Namespace Controls
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Event handler, invoked when the numeric up down control looses focus. This will pass the
-            ''' control value back into the parent <see cref="cEwEFormatProvider">cEwEFormatProvider</see>.
+            ''' Event handler, invoked when the numeric up down control value has changed. 
+            ''' This will pass the control value back into the parent <see cref="cEwEFormatProvider"/>.
             ''' </summary>
             ''' -----------------------------------------------------------------------
             Private Sub OnSaveValue(ByVal sender As Object, ByVal e As System.EventArgs)

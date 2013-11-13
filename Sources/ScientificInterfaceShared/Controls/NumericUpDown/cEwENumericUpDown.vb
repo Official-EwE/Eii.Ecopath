@@ -182,35 +182,6 @@ Namespace Controls
             MyBase.Dispose(disposing)
         End Sub
 
-        'Protected Overrides Sub OnTextBoxTextChanged(source As Object, e As System.EventArgs)
-        '    ' Pass it on
-        '    If Not Me.m_bReady Then Return
-        '    Me.Validate()
-        '    'Me.OnValueChanged(e)
-        'End Sub
-
-        'Protected Overrides Sub OnValueChanged(e As System.EventArgs)
-        '    ' Hush
-        '    If Not Me.m_bReady Then Return
-        '    MyBase.OnValueChanged(e)
-        'End Sub
-
-        ' ''' <summary>
-        ' ''' Overridden to suppress value change events
-        ' ''' </summary>
-        ' ''' <remarks>
-        ' ''' The re-implementation warning generated here can be ignored.
-        ' ''' </remarks>
-        'Public Overloads Sub BeginInit() Implements ISupportInitialize.BeginInit
-        '    Me.m_bReady = False
-        '    MyBase.BeginInit()
-        'End Sub
-
-        'Public Overloads Sub EndInit() Implements ISupportInitialize.EndInit
-        '    MyBase.EndInit()
-        '    Me.m_bReady = True
-        'End Sub
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Extracts a reference to a private underlying field
@@ -391,7 +362,6 @@ Namespace Controls
 
 #End Region ' New properties
 
-
 #Region " Text selection "
 
         ' select all the text on focus enter
@@ -410,6 +380,11 @@ Namespace Controls
                 Me.m_textbox.SelectAll()
             End If
             MyBase.OnMouseUp(mevent)
+        End Sub
+
+        Protected Overrides Sub OnKeyUp(e As System.Windows.Forms.KeyEventArgs)
+            MyBase.OnKeyUp(e)
+            Me.ValidateEditText()
         End Sub
 
 #End Region
