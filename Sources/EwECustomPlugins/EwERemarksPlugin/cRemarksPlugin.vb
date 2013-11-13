@@ -25,6 +25,7 @@ Imports EwERemarksPlugin
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Drawing
+Imports WeifenLuo.WinFormsUI.Docking
 
 #End Region ' Imports
 

@@ -104,7 +104,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.4392.30540, Culture=neutral, PublicKeyToken=dd4210ebb9723de9, processorArchitecture=MSIL">
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.5065.29479, Culture=neutral, PublicKeyToken=dd4210ebb9723de9, processorArchitecture=MSIL">
       <HintPath>..\..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>

@@ -40,11 +40,11 @@ Namespace Forms
 
 #Region " Private variables "
 
-        'Private m_icoOrg As Icon = Nothing
-        'Private m_icoPulse As Icon = Nothing
-        'Private m_timerPulse As Timer = Nothing
-        'Private m_iNumPulses As Integer = 0
-        'Private m_importancePulse As eMessageImportance = eMessageImportance.Maintenance
+        Private m_icoOrg As Icon = Nothing
+        Private m_icoPulse As Icon = Nothing
+        Private m_timerPulse As Timer = Nothing
+        Private m_iNumPulses As Integer = 0
+        Private m_importancePulse As eMessageImportance = eMessageImportance.Maintenance
 
 #End Region ' Private variables
 
@@ -53,7 +53,7 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="Form.Icon"/>
         ''' <remarks>
-        ''' Overridden to immediately update visuals.
+        ''' Overridden to update visuals.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Shadows Property Icon As Icon
@@ -61,13 +61,12 @@ Namespace Forms
                 Return MyBase.Icon
             End Get
             Set(value As Icon)
-                MyBase.Icon = value
+                Try
+                    MyBase.Icon = value
+                    Me.BeginInvoke(New MethodInvoker(AddressOf Me.Pane.UpdateTabs))
+                Catch ex As Exception
 
-                ' Force Weifen Luo tab refresh by tinkering with the text. How hack is this ;)
-                Dim strText As String = Me.Text
-                Me.Text = "!"
-                Me.Text = strText
-
+                End Try
             End Set
         End Property
 
@@ -158,26 +157,26 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         Protected Sub Pulse(bmp As Bitmap, iNumPulses As Integer)
 
-            'Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding) And (cSystemUtils.IsWindows) And (bmp IsNot Nothing)
+            Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding) And (cSystemUtils.IsWindows) And (bmp IsNot Nothing)
 
-            'If (Not bPulse) Then
-            '    Me.StopPulsing()
-            'Else
-            '    If (Me.m_timerPulse Is Nothing) Then
+            If (Not bPulse) Then
+                Me.StopPulsing()
+            Else
+                If (Me.m_timerPulse Is Nothing) Then
 
-            '        Me.m_icoOrg = Me.Icon
+                    Me.m_icoOrg = Me.Icon
 
-            '        Me.m_timerPulse = New Timer()
-            '        Me.m_timerPulse.Interval = 500
-            '        Me.m_timerPulse.Start()
+                    Me.m_timerPulse = New Timer()
+                    Me.m_timerPulse.Interval = 500
+                    Me.m_timerPulse.Start()
 
-            '        AddHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
-            '    End If
+                    AddHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+                End If
 
-            '    Me.m_iNumPulses = iNumPulses * 2
-            '    Me.UpdatePulseIcon(bmp)
+                Me.m_iNumPulses = iNumPulses * 2
+                Me.UpdatePulseIcon(bmp)
+            End If
 
-            'End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -192,23 +191,23 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         Protected Sub Pulse(importance As eMessageImportance, iNumPulses As Integer)
 
-            'Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding) And (cSystemUtils.IsWindows)
+            Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding) And (cSystemUtils.IsWindows)
 
-            '' Only pulse on relevant messages
-            'Select Case importance
-            '    Case eMessageImportance.Critical, eMessageImportance.Information, eMessageImportance.Question, eMessageImportance.Warning
-            '        bPulse = bPulse And True
-            '    Case Else
-            '        bPulse = False
-            'End Select
+            ' Only pulse on relevant messages
+            Select Case importance
+                Case eMessageImportance.Critical, eMessageImportance.Information, eMessageImportance.Question, eMessageImportance.Warning
+                    bPulse = bPulse And True
+                Case Else
+                    bPulse = False
+            End Select
 
-            'If (bPulse) Then
-            '    Me.m_importancePulse = CType(Math.Max(Me.m_importancePulse, importance), eMessageImportance)
-            'Else
-            '    Me.m_importancePulse = 0
-            'End If
+            If (bPulse) Then
+                Me.m_importancePulse = CType(Math.Max(Me.m_importancePulse, importance), eMessageImportance)
+            Else
+                Me.m_importancePulse = 0
+            End If
 
-            'Me.Pulse(cStyleGuide.GetImage(Me.m_importancePulse), iNumPulses)
+            Me.Pulse(cStyleGuide.GetImage(Me.m_importancePulse), iNumPulses)
 
         End Sub
 
@@ -245,16 +244,16 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         Private Sub OnPulseIcon(serder As Object, args As EventArgs)
 
-            '    Me.m_iNumPulses -= 1
-            '    If Me.m_iNumPulses Mod 2 = 1 Then
-            '        Me.Icon = Me.m_icoPulse
-            '    Else
-            '        Me.Icon = Me.m_icoOrg
-            '    End If
+            Me.m_iNumPulses -= 1
+            If Me.m_iNumPulses Mod 2 = 1 Then
+                Me.Icon = Me.m_icoPulse
+            Else
+                Me.Icon = Me.m_icoOrg
+            End If
 
-            '    If Me.m_iNumPulses <= 0 Then
-            '        Me.StopPulsing()
-            '    End If
+            If Me.m_iNumPulses <= 0 Then
+                Me.StopPulsing()
+            End If
 
         End Sub
 
@@ -265,22 +264,22 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         Private Sub StopPulsing()
 
-            '    If (Me.m_icoOrg Is Nothing) Then Return
-            '    If (Me.m_timerPulse Is Nothing) Then Return
+            If (Me.m_icoOrg Is Nothing) Then Return
+            If (Me.m_timerPulse Is Nothing) Then Return
 
-            '    ' Stop timer
-            '    RemoveHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
-            '    Me.m_timerPulse.Stop()
-            '    Me.m_timerPulse.Dispose()
-            '    Me.m_timerPulse = Nothing
+            ' Stop timer
+            RemoveHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+            Me.m_timerPulse.Stop()
+            Me.m_timerPulse.Dispose()
+            Me.m_timerPulse = Nothing
 
-            '    ' Restore icon
-            '    Me.Icon = Me.m_icoOrg
-            '    Me.m_icoOrg = Nothing
+            ' Restore icon
+            Me.Icon = Me.m_icoOrg
+            Me.m_icoOrg = Nothing
 
-            '    ' Dispose current pulsing icon
-            '    Me.m_importancePulse = 0
-            '    Me.UpdatePulseIcon(Nothing)
+            ' Dispose current pulsing icon
+            Me.m_importancePulse = 0
+            Me.UpdatePulseIcon(Nothing)
 
         End Sub
 
@@ -292,15 +291,15 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         Private Sub UpdatePulseIcon(bmp As Bitmap)
 
-            '    ' Update pulse icon
-            '    If (Me.m_icoPulse IsNot Nothing) Then
-            '        Me.m_icoPulse.Destroy()
-            '        Me.m_icoPulse = Nothing
-            '    End If
+            ' Update pulse icon
+            If (Me.m_icoPulse IsNot Nothing) Then
+                Me.m_icoPulse.Destroy()
+                Me.m_icoPulse = Nothing
+            End If
 
-            '    If (bmp IsNot Nothing) Then
-            '        Me.m_icoPulse = Icon.FromHandle(bmp.GetHicon)
-            '    End If
+            If (bmp IsNot Nothing) Then
+                Me.m_icoPulse = Icon.FromHandle(bmp.GetHicon)
+            End If
 
         End Sub
 
