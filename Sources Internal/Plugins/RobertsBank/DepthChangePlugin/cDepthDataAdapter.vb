@@ -56,23 +56,18 @@ Public Class cDepthDataAdapter
 #Region "Private Modeling Code"
 
     Private Sub InitSpatialChanges()
-        'tell core to make changes 
-        ' Me.m_EwEIsChanged = Me.m_core.HasChanges
 
-        'Count the number of water cells
-        'after the depth has been changed
+        'Counts and re-sets the number of water cells in the core
         WaterCells()
-
-        'Sets PP back to base levels
-        'Sets nWaterCells 
-        'ToDo sort out if setting PP back to baseline is what we want to do here
-        'Me.Ecospace.ScaleRelativePrimaryProductivityToEcopathLevel()
 
         Me.SpaceData.bHasCapacityChanged = True
         Me.Ecospace.SetHabCap()
+
+        'CalcHabitatArea() assumes that we have ONLY set water cells to land. Not the other direction.
+        'If we have added water cells the new cells need PHabType(row,col,habitat) set Proportion of habitat type in a cell
+        'For CalcHabitatArea() to correctly set the habitat areas
         Me.Ecospace.CalcHabitatArea()
         Me.Ecospace.SetMovementParameters()
-        'Me.m_Ecospace.VaryMovementParameters()
 
     End Sub
     Private Sub WaterCells()
@@ -168,8 +163,12 @@ Public Class cDepthDataAdapter
 
             System.Console.WriteLine(Me.ToString + ".Adapt()")
 
+            'This can only be used to convert water cells to land. Not the other direction
+            'If a cell has been converted to water it needs habitats, PP and capacity set
+            'This has no way of knowing what these data should be
             If Me.setDepthCells(bm, layer, iTime, dt, dataExternal, dNullValue) Then
-                Me.AdjustCapacity()
+                'Test set the capacity of adjacent cells 
+                'Me.AdjustCapacity()
                 Me.InitSpatialChanges()
                 bReturn = True
             End If
@@ -221,7 +220,6 @@ Public Class cDepthDataAdapter
                                               ByVal dt As Date, _
                                               ByVal dataExternal As ISpatialRaster, _
                                               ByVal dNullValue As Double) As Boolean
-        ' To ensure proper usage by inherited classes
         Debug.Assert(bm IsNot Nothing)
         Debug.Assert(layer IsNot Nothing)
         Debug.Assert(dataExternal IsNot Nothing)
@@ -247,38 +245,19 @@ Public Class cDepthDataAdapter
 
                     Me.m_bChanged(iRow, iCol) = False
                     If CellValue <> CSng(layerDepth.Cell(iRow, iCol)) Then
-                        'Value of the cell has changed
+                        'Depth has changed
+                        'Set the new depth
                         If Me.SetCell(layer, iRow, iCol, CellValue) Then
+                            'Keep track of which cells have changed
                             Me.m_bChanged(iRow, iCol) = True
                         Else
                             'Failed to set the value of this cell because of an exception in SetCell()
-                            'Return False
                             Return False
                         End If
 
                     End If 'CellValue <> CSng(layerDepth.Cell(iRow, iCol))
                 Next iCol
             Next iRow
-
-
-            'iCol = 1
-            'While (iCol <= iNumCols) And (bSuccess = True)
-            '    ' Is a water cell or is this layer affecting depth?
-            '    If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
-            '        ' #Yes: get value
-
-            '        ' Is a valid value?
-            '        If (sValue <> cCore.NULL_VALUE) Then
-            '            ' #Yes: set value
-            '            bSuccess = bSuccess And Me.SetCell(layer, iRow, iCol, sValue)
-            '        End If
-            '    Else
-            '        bSuccess = bSuccess And Me.SetCell(layer, iRow, iCol, dNoData)
-            '    End If
-            '    iCol += 1
-            'End While ' iCol
-            'iRow += 1
-            'End While ' iRow
 
             If bSuccess Then
                 '   Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()), eStatusFlags.OK)

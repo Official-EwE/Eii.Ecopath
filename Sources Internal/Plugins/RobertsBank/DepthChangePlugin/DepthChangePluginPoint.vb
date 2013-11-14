@@ -106,8 +106,6 @@ Public Class cDepthChangePluginPoint
     End Sub
 
 
-
-
 #End Region
 
 #End Region

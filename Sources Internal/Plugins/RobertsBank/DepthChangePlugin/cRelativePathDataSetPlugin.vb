@@ -52,11 +52,21 @@ Public Class cRelativePathDataSetPlugin
                     Case "Name" : Me.m_strName = xn.InnerText
                     Case "Description" : Me.Description = xn.InnerText
                     Case "Source"
+
                         'xxxxxxxxxxxxxxxxxx HACK xxxxxxxxxxxxxxxxxxxxx
+                        'In the normal data set the Source node is the full path to the data files
+                        'Here it's just the path from the XMLDocument to the data files
+                        'Making this data set "Relative" to the XMLDocument itself
+
                         'Use the path to the Spatial Config file(XmlDocument) as the root path to the data
-                        'this makes the xml file the Source (root path) for all the data files
                         Dim docpath As String = Path.GetDirectoryName(doc.BaseURI.Replace("file:///", ""))
-                        Me.Source = Path.Combine(docpath, xn.InnerText)
+                        'Source node should be the directory structure under the XMLDocument that contains the data files
+                        'Combine the XMLDocument path and Source node for the full data path to this dataset
+                        If Not Path.IsPathRooted(xn.InnerText) Then
+                            Me.Source = Path.Combine(docpath, xn.InnerText)
+                        Else
+                            Me.Source = xn.InnerText
+                        End If
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                     Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
@@ -67,9 +77,9 @@ Public Class cRelativePathDataSetPlugin
                             Dim strDate As String = xnFile.Attributes("Date").InnerText
                             Dim dt As DateTime = DateTime.FromOADate(Convert.ToDouble(strDate))
 
-                            'Source is the path to the xml Spatial Config file and will act as the root to all files 
-                            'Data files need to contain the path UP to the Spatial Config file
-                            'for example " Scenario-1\Datafile.asc"
+                            'Source is the root to all files built from the XMLDocument path and the Source node
+                            'It's relative to the XMLDocument 
+                            'The Name node can be just the file name or it could contain a path from the Source node
                             Dim fullPath As String = Path.Combine(Me.Source, strName)
                             Debug.Assert(System.IO.File.Exists(fullPath), "Spatial Config file invalid path '" + fullPath + "'")
                             Dim f As New cTemporalFile(dt, fullPath)
