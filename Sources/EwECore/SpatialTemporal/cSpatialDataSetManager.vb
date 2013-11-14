@@ -148,11 +148,16 @@ Namespace SpatialData
 
                                     If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
 
+                                Else '(t IsNot Nothing)
+                                    'Failed to convert the Dataset.Type node into a dataset
+                                    Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATASET, _
+                                                                               eMessageType.ErrorEncountered, eCoreComponentType.External, eMessageImportance.Information))
                                 End If
 
                             Catch ex As Exception
                                 ds = Nothing
                                 bReturn = False
+                                cLog.Write(ex, "Exception loading Spatial Configuration file " + strFile)
                             End Try
 
                             Dim bAdd As Boolean = False
