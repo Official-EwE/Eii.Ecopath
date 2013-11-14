@@ -1128,17 +1128,20 @@ Public Class AppLauncher
         Dim strMessage As String = ""
         Dim reply As eMessageReply = eMessageReply.OK
         Dim bNeedReply As Boolean = False
+        Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
 
         Try
             ' Load plug-ins from EwE root folder
-            Me.m_pluginManager.LoadPlugins(My.Settings.DisabledPlugins, [option]:=SearchOption.TopDirectoryOnly)
+            Me.m_pluginManager.LoadPlugins(alDisabledPlugins, [option]:=SearchOption.TopDirectoryOnly)
             ' Load plug-ins from dedicated plug-ins subfolder, recursively
-            Me.m_pluginManager.LoadPlugins(My.Settings.DisabledPlugins, ".\plugins")
+            Me.m_pluginManager.LoadPlugins(alDisabledPlugins, ".\plugins")
         Catch ex As Exception
             ' Ouch!
         End Try
+        alDisabledPlugins = Me.m_pluginManager.DisabledPlugins
 
-        My.Settings.DisabledPlugins = Me.m_pluginManager.DisabledPlugins
+        ' Store (possibly updated) list of disabled plug-ins
+        My.Settings.DisabledPlugins = alDisabledPlugins
 
     End Sub
 

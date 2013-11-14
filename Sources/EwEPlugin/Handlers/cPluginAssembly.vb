@@ -75,6 +75,13 @@ Public Class cPluginAssembly
 
 #Region " Constructor "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Create a new plugin assembly wrapper.
+    ''' </summary>
+    ''' <param name="an">The wrapped <see cref="AssemblyName"/>.</param>
+    ''' <param name="bEnabled">Flag stating that the plug-in assembly is allowed to load.</param>
+    ''' -----------------------------------------------------------------------
     Public Sub New(ByVal an As AssemblyName, ByVal bEnabled As Boolean)
         Me.m_an = an
         Me.m_bEnabledInitially = bEnabled

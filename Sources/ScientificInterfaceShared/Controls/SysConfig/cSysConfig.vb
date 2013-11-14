@@ -50,7 +50,7 @@ Namespace Controls
             Dim an As AssemblyName = Nothing
             Dim sb As New StringBuilder()
 
-            For Each an In cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
+            For Each an In cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.EwECore)
                 sb.AppendLine(String.Format("* {0}={2},{1}", _
                                                 an.Name, cStringUtils.ToHexString(an.GetPublicKeyToken), an.Version))
             Next

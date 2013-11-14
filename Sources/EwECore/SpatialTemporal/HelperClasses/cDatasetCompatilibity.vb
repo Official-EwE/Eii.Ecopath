@@ -110,6 +110,8 @@ Namespace SpatialData
 
         ''' <summary>Compatibility levels.</summary>
         Public Enum eCompatibilityTypes As Integer
+            ''' <summary>Incomplete assessment.</summary>
+            NotSet = 0
             ''' <summary>Errors occurred while assessing the compatibility.</summary>
             ''' <remarks>The number of erroneous data sets can be checked via <see cref="NumError"/>.</remarks>
             Errors
@@ -328,6 +330,7 @@ Namespace SpatialData
                             ' NOP
 
                         Case ISpatialDataSet.eIndexStatus.Failed
+                            Me.m_iNumIndexed += 1
                             Me.m_iNumError += 1
 
                         Case ISpatialDataSet.eIndexStatus.Indexed

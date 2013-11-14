@@ -164,9 +164,6 @@
     <Setting Name="ColorPedigree" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Orange</Value>
     </Setting>
-    <Setting Name="EnableSpatialFramework" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="LinkVisibleGroupsFleets" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

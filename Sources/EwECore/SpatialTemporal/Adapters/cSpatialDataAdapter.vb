@@ -48,10 +48,6 @@ Namespace SpatialData
         ''' <summary>Core counter that this adapter operates onto.</summary>
         Protected m_coreCounter As eCoreCounterTypes = eCoreCounterTypes.NotSet
 
-        Protected m_intSubDir As String
-
-        Protected m_intFileName As String
-
         ''' <summary>Flag, indicating whether the content of input layers needs
         ''' to be preserved: layer data is then preserved on first overwrite,
         ''' and restored when a run finished. Preserved layer data is maintained
@@ -97,7 +93,7 @@ Namespace SpatialData
         ''' obtained from an exernal data connection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property AllowSaveIntermediateResults As Boolean
+        Public Property AllowSaveIntermediateResults As Boolean = False
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -218,6 +214,7 @@ Namespace SpatialData
         ''' Populate the core data that this adapter is responsible for.
         ''' </summary>
         ''' <param name="iTime">The one-based Ecospace time step to populate data for.</param>
+        ''' <param name="dNoData">The no data value for the Ecospace layer.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function Populate(ByVal iTime As Integer, dNoData As Double) As Boolean
@@ -270,8 +267,18 @@ Namespace SpatialData
 
                                     Me.SaveIntermediateResults(iTime, dataExternal)
 
+                                    ' Notify world
+                                    If (Me.m_core.PluginManager IsNot Nothing) Then
+                                        Me.m_core.PluginManager.EcospaceBeginLayerChange(iTime, dt, layer)
+                                    End If
+
                                     ' Integrate data
                                     Me.Adapt(bm, layer, iTime, dt, dataExternal, dNoData)
+
+                                    ' Notify world
+                                    If (Me.m_core.PluginManager IsNot Nothing) Then
+                                        Me.m_core.PluginManager.EcospaceEndLayerChange(iTime, dt, layer)
+                                    End If
 
                                     ' Restore layer validation
                                     layer.AllowValidation = bAllow
@@ -561,9 +568,6 @@ Namespace SpatialData
 
             If Not Me.AllowSaveIntermediateResults Then Return
 
-            ' Dim strPath As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
-            ' Dim strFile As String = Path.Combine(strPath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & "_" & iTime & ".asc", False))
-
             Dim strPath As String = Me.getIntermediateOutputDir()
             Dim strFile As String = Me.getIntermediateFile(strPath, iTime)
 
@@ -575,52 +579,37 @@ Namespace SpatialData
 
 #End Region ' Debugging
 
+#Region " Intermediate output files "
 
-#Region "Intermediate output files"
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the directory for storing intermedite results for debugging.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property IntermediateSubDirectory As String
 
-            Get
-                Return Me.m_intSubDir
-            End Get
-            Set(value As String)
-                Me.m_intSubDir = value
-            End Set
-        End Property
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the file name for storing intermedite results for debugging.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property IntermediateFileName As String
-            Get
-                Return Me.m_intFileName
-            End Get
-            Set(value As String)
-                Me.m_intFileName = value
-            End Set
-        End Property
 
         Protected Function getIntermediateOutputDir() As String
-
-            If Not String.IsNullOrWhiteSpace(Me.m_intSubDir) Then
-                Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), Me.m_intSubDir)
+            If Not String.IsNullOrWhiteSpace(Me.IntermediateSubDirectory) Then
+                Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), Me.IntermediateSubDirectory)
             End If
-
             Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
-
         End Function
-
 
         Protected Function getIntermediateFile(ByVal thePath As String, iTime As Integer) As String
-
-            If Not String.IsNullOrWhiteSpace(Me.m_intFileName) Then
-                Return Path.Combine(thePath, cFileUtils.ToValidFileName(Me.m_intFileName + "_" + Me.m_core.EcospaceTimestepToAbsoluteTime(iTime).ToShortDateString + ".asc", False))
+            If Not String.IsNullOrWhiteSpace(Me.IntermediateFileName) Then
+                Return Path.Combine(thePath, cFileUtils.ToValidFileName(Me.IntermediateFileName + "_" + Me.m_core.EcospaceTimestepToAbsoluteTime(iTime).ToShortDateString + ".asc", False))
             End If
-
             Return Path.Combine(thePath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & "_" & iTime & ".asc", False))
-
         End Function
 
-
-#End Region
-
+#End Region ' Intermediate output files
 
     End Class
 

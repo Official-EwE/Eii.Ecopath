@@ -98,25 +98,22 @@ Namespace Controls
 
 #Region " IndexedCollectionItem "
 
-        Private Class IndexedCollectionItem
+        Private Class cIndexedCollectionItem
+
             Private m_objItem As Object = Nothing
+            Private m_fmt As ITypeFormatter = Nothing
 
             Public Sub New(ByVal objItem As Object)
                 Debug.Assert(objItem IsNot Nothing)
                 Me.m_objItem = objItem
+                Me.m_fmt = cTypeFormatterFactory.GetTypeFormatter(Me.m_objItem.GetType)
             End Sub
 
             Public Overrides Function ToString() As String
-                If (TypeOf Me.m_objItem Is ICoreInterface) Then
-                    If (TypeOf Me.m_objItem Is cForcingFunction) Then
-                        Dim obj As cForcingFunction = DirectCast(Me.m_objItem, cForcingFunction)
-                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, (obj.ID + 1), obj.Name)
-                    Else
-                        Dim obj As ICoreInterface = DirectCast(Me.m_objItem, ICoreInterface)
-                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
-                    End If
+                If (Me.m_fmt Is Nothing) Then
+                    Return Me.m_objItem.ToString()
                 End If
-                Return Me.m_objItem.ToString()
+                Return Me.m_fmt.GetDescriptor(Me.m_objItem, eDescriptorTypes.Name)
             End Function
 
             Public Function CoreIndex(idef As Integer) As Integer
@@ -785,8 +782,8 @@ Namespace Controls
                 If Me.m_provider.ValueType Is GetType(Integer) Then
                     For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
                         objItem = Me.m_cmb.Items(iItem)
-                        If (TypeOf objItem Is IndexedCollectionItem) Then
-                            If (CInt(objValue) = DirectCast(objItem, IndexedCollectionItem).CoreIndex(iItem)) Then
+                        If (TypeOf objItem Is cIndexedCollectionItem) Then
+                            If (CInt(objValue) = DirectCast(objItem, cIndexedCollectionItem).CoreIndex(iItem)) Then
                                 iValue = iItem
                                 Exit For
                             End If
@@ -812,8 +809,8 @@ Namespace Controls
                     objItem = Me.m_cmb.SelectedItem()
                     iIndex = Me.m_cmb.SelectedIndex
 
-                    If (TypeOf objItem Is IndexedCollectionItem) Then
-                        iIndex = DirectCast(objItem, IndexedCollectionItem).CoreIndex(iIndex)
+                    If (TypeOf objItem Is cIndexedCollectionItem) Then
+                        iIndex = DirectCast(objItem, cIndexedCollectionItem).CoreIndex(iIndex)
                     End If
                 End If
                 Return iIndex
@@ -831,7 +828,7 @@ Namespace Controls
                         ' Populate
                         For iItem As Integer = 0 To aItems.Length - 1
                             ' Wrap item
-                            Me.m_cmb.Items.Add(New IndexedCollectionItem(aItems(iItem)))
+                            Me.m_cmb.Items.Add(New cIndexedCollectionItem(aItems(iItem)))
                         Next
                     End If
                     ' Done

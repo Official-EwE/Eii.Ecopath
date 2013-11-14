@@ -36,6 +36,12 @@ Imports SourceGrid2
 Public Class gridAboutEwE
     Inherits EwEGrid
 
+    Private m_bShowEwEComponentsOnly As Boolean = True
+
+    Public Sub New()
+        MyBase.New()
+    End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Populate the grid with data.
@@ -44,41 +50,72 @@ Public Class gridAboutEwE
     Protected Overrides Sub FillData()
 
         Dim pm As cPluginManager = Nothing
-        Dim aanLoaded As AssemblyName() = Nothing
+        Dim aanCore As AssemblyName() = Nothing
+        Dim aanRef As AssemblyName() = Nothing
+        Dim aanFramework As AssemblyName() = Nothing
         Dim aanPlugins As AssemblyName() = Nothing
         Dim iRow As Integer = 0
 
+        aanCore = cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.EwECore)
         pm = Me.UIContext.Core.PluginManager()
         aanPlugins = pm.PluginAssemblyNames()
-        aanLoaded = cAssemblyUtils.GetSummary()
 
         ' Prepare grid
-        Me.Redim(aanLoaded.Length + aanPlugins.Length + 2, 2)
+        If Me.m_bShowEwEComponentsOnly Then
+            Me.Redim(aanCore.Length + 1 + aanPlugins.Length + 1, 2)
+        Else
+            aanRef = cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.Referenced)
+            aanFramework = cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.Framework)
+            Me.Redim(aanCore.Length + 1 + aanPlugins.Length + 1 + aanRef.Length + 1 + aanFramework.Length + 1, 2)
+        End If
 
-        ' Create header cells
-        Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_SYSTEMCOMPONENTS)
+        ' -- Core section --
+
+        Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_EWE)
         Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
-
-        ' Add assembly cells
         iRow += 1
-        For Each an As AssemblyName In aanLoaded
+        For Each an As AssemblyName In aanCore
             Me(iRow, 0) = New EwERowHeaderCell(an.Name)
             Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             ' Next
             iRow += 1
         Next
 
-        ' Plug-ins section
-        Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_PLUGINS)
+        ' -- Plug-in section
+        Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_PLUGINS)
         Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
-
-        ' Add plugin cells
         iRow += 1
         For Each an As AssemblyName In aanPlugins
             Me(iRow, 0) = New EwERowHeaderCell(an.Name)
             Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             iRow += 1
         Next
+
+        If Not Me.m_bShowEwEComponentsOnly Then
+
+            ' -- Referenced section --
+            Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_REFERENCED)
+            Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
+            iRow += 1
+            For Each an As AssemblyName In aanRef
+                Me(iRow, 0) = New EwERowHeaderCell(an.Name)
+                Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                ' Next
+                iRow += 1
+            Next
+
+            ' -- Framework section --
+            Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_FRAMEWORK)
+            Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
+            iRow += 1
+            For Each an As AssemblyName In aanFramework
+                Me(iRow, 0) = New EwERowHeaderCell(an.Name)
+                Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                ' Next
+                iRow += 1
+            Next
+
+        End If
 
         ' Column 1 w version numbers must be fully visible. Column 0 will occupy the rest of the space
         Me.Columns(0).AutoSizeMode = SourceGrid2.AutoSizeMode.None
@@ -111,5 +148,17 @@ Public Class gridAboutEwE
             Me.Columns(0).Width = iWidth
         End If
     End Sub
+
+    Public Property ShowEwEComponentsOnly As Boolean
+        Get
+            Return Me.m_bShowEwEComponentsOnly
+        End Get
+        Set(value As Boolean)
+            If (value <> Me.m_bShowEwEComponentsOnly) Then
+                Me.m_bShowEwEComponentsOnly = value
+                Me.RefreshContent()
+            End If
+        End Set
+    End Property
 
 End Class

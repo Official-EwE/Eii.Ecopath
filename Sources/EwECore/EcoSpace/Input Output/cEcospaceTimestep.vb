@@ -41,6 +41,11 @@ Public Class cEcospaceTimestep
     Private m_biomassByRegion(,) As Single 'biomass by group region
     Private m_sumEffortMap(,) As Single 'map of effort over all fleets
 
+    Private m_F() As Single
+    Private m_pred() As Single
+    Private m_consum() As Single
+    Private m_catch() As Single
+
     Private m_spaceData As cEcospaceDataStructures
     Private m_simData As cEcosimDatastructures
     Private m_stanzaData As cStanzaDatastructures
@@ -142,11 +147,18 @@ Public Class cEcospaceTimestep
         Debug.Assert(Me.m_spaceData IsNot Nothing, Me.ToString & ".New() Ecospace data cannot be null!")
 
         Try
-            ReDim m_biomass(Me.m_simData.nGroups)
-            ReDim m_relativebiomass(Me.m_simData.nGroups)
-            ReDim m_ConMax(Me.m_simData.nGroups)
-            ReDim m_biomassByRegion(Me.m_simData.nGroups, Me.m_spaceData.nRegions)
+            ReDim m_biomass(Me.m_spaceData.NGroups)
+            ReDim m_relativebiomass(Me.m_spaceData.NGroups)
+            ReDim m_ConMax(Me.m_spaceData.NGroups)
+            ReDim m_biomassByRegion(Me.m_spaceData.NGroups, Me.m_spaceData.nRegions)
             ReDim m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
+
+
+            ReDim m_F(Me.m_spaceData.NGroups)
+            ReDim m_pred(Me.m_spaceData.NGroups)
+            ReDim m_consum(Me.m_spaceData.NGroups)
+            ReDim m_catch(Me.m_spaceData.NGroups)
+
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)
         End Try
@@ -255,6 +267,94 @@ Public Class cEcospaceTimestep
             Return Me.m_spaceData.Ccell
         End Get
     End Property
+
+    Public Property FishingMort(ByVal iGroup As Single) As Single
+
+        Get
+            Try
+                Return m_F(iGroup)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Get
+
+        Set(ByVal value As Single)
+            Try
+                m_F(iGroup) = value
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Set
+
+    End Property
+
+    Public Property PredMortRate(ByVal iGroup As Single) As Single
+
+        Get
+            Try
+                Return m_pred(iGroup)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Get
+
+        Set(ByVal value As Single)
+            Try
+                m_pred(iGroup) = value
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Set
+
+    End Property
+
+
+    Public Property [Catch](ByVal iGroup As Single) As Single
+
+        Get
+            Try
+                Return m_catch(iGroup)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Get
+
+        Set(ByVal value As Single)
+            Try
+                m_catch(iGroup) = value
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Set
+
+    End Property
+
+
+    Public Property ConsumptRate(ByVal iGroup As Single) As Single
+
+        Get
+            Try
+                Return m_consum(iGroup)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Get
+
+        Set(ByVal value As Single)
+            Try
+                m_consum(iGroup) = value
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Set
+
+    End Property
+
+
 
 
     ''' <summary>

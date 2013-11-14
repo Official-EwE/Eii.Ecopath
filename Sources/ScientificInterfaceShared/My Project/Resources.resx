@@ -734,7 +734,7 @@
     <value>Cons/biom</value>
   </data>
   <data name="HEADER_COLOR" xml:space="preserve">
-    <value>Color</value>
+    <value>Colour</value>
   </data>
   <data name="HEADER_CONCENTRATION" xml:space="preserve">
     <value>Concentration (cumulative)</value>
@@ -1114,7 +1114,7 @@
     <value>/{0}</value>
     <comment>{0}: unit</comment>
   </data>
-  <data name="HEADER_PLUGINS" xml:space="preserve">
+  <data name="HEADER_COMPONENTS_PLUGINS" xml:space="preserve">
     <value>Plug-ins</value>
   </data>
   <data name="HEADER_POPULATIONBIOMASS" xml:space="preserve">
@@ -1334,8 +1334,8 @@
   <data name="HEADER_SWITCHINGPOWER_VALRANGE" xml:space="preserve">
     <value>Switching power parameter [0,2]</value>
   </data>
-  <data name="HEADER_SYSTEMCOMPONENTS" xml:space="preserve">
-    <value>System components</value>
+  <data name="HEADER_COMPONENTS_EWE" xml:space="preserve">
+    <value>EwE components</value>
   </data>
   <data name="HEADER_TAC" xml:space="preserve">
     <value>Total allowable catch</value>
@@ -2995,5 +2995,53 @@
   </data>
   <data name="VARIABLE_PB" xml:space="preserve">
     <value>PB|P/B||Production/biomass</value>
+  </data>
+  <data name="GENERIC_COLOUR_USAGE" xml:space="preserve">
+    <value>Colour usage</value>
+  </data>
+  <data name="GENERIC_SHOW_NUMTL" xml:space="preserve">
+    <value>Number of trophic levels</value>
+  </data>
+  <data name="HEADER_LINE_COLOR" xml:space="preserve">
+    <value>Line color</value>
+  </data>
+  <data name="HEADER_LINE_TYPE" xml:space="preserve">
+    <value>Line type</value>
+  </data>
+  <data name="HEADER_LINE_WIDTH" xml:space="preserve">
+    <value>Fixed line width</value>
+  </data>
+  <data name="HEADER_LINE_WIDTH_AUTO" xml:space="preserve">
+    <value>Auto-scale lines</value>
+  </data>
+  <data name="HEADER_NODE_SIZE" xml:space="preserve">
+    <value>Fixed node size</value>
+  </data>
+  <data name="HEADER_NODE_SIZE_AUTO" xml:space="preserve">
+    <value>Auto-size nodes</value>
+  </data>
+  <data name="HEADER_NODE_TYPE" xml:space="preserve">
+    <value>Node type</value>
+  </data>
+  <data name="HEADER_SHOW_LABELS" xml:space="preserve">
+    <value>Show labels</value>
+  </data>
+  <data name="HEADER_SHOW_VALUES" xml:space="preserve">
+    <value>Show values in labels</value>
+  </data>
+  <data name="PROMPT_SHOWTITLE" xml:space="preserve">
+    <value>Show title</value>
+  </data>
+  <data name="PROMPT_SHOWTITLE_DESCR" xml:space="preserve">
+    <value>Show or hide the title</value>
+  </data>
+  <data name="HEADER_COMPONENTS_FRAMEWORK" xml:space="preserve">
+    <value>.NET components</value>
+  </data>
+  <data name="HEADER_COMPONENTS_REFERENCED" xml:space="preserve">
+    <value>Referenced components</value>
+  </data>
+  <data name="CogHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\coghs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

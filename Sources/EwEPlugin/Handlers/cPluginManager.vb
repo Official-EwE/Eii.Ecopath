@@ -542,8 +542,14 @@ Public Class cPluginManager
                         ' Check for the implementation of the specified interface
                         clsInterface = clsType.GetInterface("EwEPlugin.IPlugin", True)
                         If Not (clsInterface Is Nothing) Then
-                            ' Get the plugin
-                            ip = LoadPlugin(strFileName, clsType.FullName)
+
+                            ' Store plugin assembly (but not more than once)
+                            If (Not Me.m_dictAssemblies.ContainsKey(strFileName)) Then
+                                Me.m_dictAssemblies.Add(strFileName, plugAssem)
+                            End If
+
+                            ' Try to get the plugin
+                            ip = LoadPlugin(plugAssem, strFileName, clsType.FullName)
 
                             ' Sanity check
                             If (ip Is Nothing) Then
@@ -616,9 +622,6 @@ Public Class cPluginManager
                 If description IsNot Nothing Then plugAssem.Description = description.Description.ToString
                 ' Okay, let's keep at least THIS one simple...
                 plugAssem.Version = nameAssembly.Version.ToString()
-
-                ' Store plugin assembly
-                Me.m_dictAssemblies.Add(strFileName, plugAssem)
 
                 ' Connect to manager where applicable
                 For Each pi As IPlugin In plugAssem.Plugins(GetType(IDataProducerPlugin))
@@ -1389,16 +1392,42 @@ Public Class cPluginManager
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Function EcospaceRunInvalidated() As Boolean
-
         ' Invoke IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated()
         Return Me.TryInvokeMethod(GetType(IEcospaceRunInvalidatedPlugin), "EcospaceRunInvalidated")
-
     End Function
 
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the <see cref="IEcospaceLayerChangePlugin.EcospaceBeginLayerChange"/> 
+    ''' plug-in point on any available and responsive <see cref="IEcospaceLayerChangePlugin"/>.
+    ''' </summary>
+    ''' <param name="EcospaceDataStructures"></param>
+    ''' ---------------------------------------------------------------------------
     Public Function EcospaceInitRunCompleted(ByVal EcospaceDataStructures As Object) As Boolean
+        Return Me.TryInvokeMethod(GetType(IEcospaceRunCompletedPlugin), "EcospaceRunCompleted", New Object() {EcospaceDataStructures})
+    End Function
 
-        Return Me.TryInvokeMethod(GetType(IEcospaceInitRunCompletedPlugin), "EcospaceInitRunCompleted", New Object() {EcospaceDataStructures})
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the <see cref="IEcospaceLayerChangePlugin.EcospaceBeginLayerChange"/> 
+    ''' plug-in point on any available and responsive <see cref="IEcospaceLayerChangePlugin"/>.
+    ''' </summary>
+    ''' <param name="iTime"></param>
+    ''' <param name="dt"></param>
+    ''' <param name="layer"></param>
+    ''' ---------------------------------------------------------------------------
+    Public Function EcospaceBeginLayerChange(ByVal iTime As Integer, dt As Date, layer As Object) As Boolean
+        Return Me.TryInvokeMethod(GetType(IEcospaceLayerChangePlugin), "EcospaceBeginLayerChange", New Object() {iTime, dt, layer})
+    End Function
 
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the <see cref="IEcospaceLayerChangePlugin.EcospaceEndLayerChange"/> 
+    ''' plug-in point on any available and responsive <see cref="IEcospaceLayerChangePlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Function EcospaceEndLayerChange(ByVal iTime As Integer, dt As Date, layer As Object) As Boolean
+        Return Me.TryInvokeMethod(GetType(IEcospaceLayerChangePlugin), "EcospaceEndLayerChange", New Object() {iTime, dt, layer})
     End Function
 
 #End Region ' Ecospace
@@ -2118,9 +2147,9 @@ Public Class cPluginManager
         ' Fix arguments
         If (aArgs Is Nothing) Then aArgs = New Object() {}
 
-        ' ---                                                               --- '
-        ' Validate called prototype and number of parameters in DEBUG mode only '
-        ' ---                                                               --- '
+        ' ---                                            --- '
+        ' Validate called prototype and number of parameters '
+        ' ---                                            --- '
 #If 0 Then
 
         Try
@@ -2272,13 +2301,15 @@ Public Class cPluginManager
     ''' <summary>
     ''' Loads a plugin by class name from a given assembly.
     ''' </summary>
+    ''' <param name="assem">The <see cref="cPluginAssembly"/> to load from.</param>
     ''' <param name="strAssemblyPath">The path to the assembly.</param>
     ''' <param name="strClassName">The name of the class to load from this assembly.</param>
     ''' <param name="args">An array of arguments.</param>
     ''' <returns>A successfully created <see cref="IPlugin"/> instance, or Nothing
     ''' if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadPlugin(ByVal strAssemblyPath As String, _
+    Private Function LoadPlugin(ByVal assem As cPluginAssembly, _
+                                ByVal strAssemblyPath As String, _
                                 ByVal strClassName As String, _
                                 Optional ByVal args() As Object = Nothing) As IPlugin
 
@@ -2294,8 +2325,13 @@ Public Class cPluginManager
                 clsRet = clsAssembly.CreateInstance(strClassName, False, Nothing, Nothing, args, Nothing, Nothing)
             End If
         Catch ex As Exception
+
+            ' Generic catch for any type of exception
+
             ' JS 04Nov13: we'd really like to know this, actually...
             cLog.Write(ex, eVerboseLevel.Detailed, "LoadPlugin")
+            ' Notify world
+            Me.RaisePluginException(assem, ex)
             Return Nothing
         End Try
         Return DirectCast(clsRet, IPlugin)

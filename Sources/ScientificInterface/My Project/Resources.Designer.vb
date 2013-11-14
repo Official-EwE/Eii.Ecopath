@@ -2995,6 +2995,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The spatial data set has not been indexed yet..
+        '''</summary>
+        Public ReadOnly Property PROMPT_SPATIALTEMPORAL_CALC_NOINDEX() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SPATIALTEMPORAL_CALC_NOINDEX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to There is no spatial overlap with your model area and the external data for year {0}. Annual average could not be calculated..
         '''</summary>
         Public ReadOnly Property PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP() As String

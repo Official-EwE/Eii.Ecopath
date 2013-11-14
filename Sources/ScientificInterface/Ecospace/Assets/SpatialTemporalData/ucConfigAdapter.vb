@@ -400,6 +400,9 @@ Namespace Ecospace.Controls
                 ' Perform calculation
                 Select Case ssda.CalculateScaleFromEcopathTimePeriod(iStartTimeStep, dScale)
 
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
+                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX), _
+                                           eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Information)
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
                          cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
                         msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, dtStartDate.ToShortDateString()), _
@@ -495,6 +498,10 @@ Namespace Ecospace.Controls
 
         End Sub
 
+        Private Sub OnConfigDS(ds As ISpatialDataSet) Handles m_gridDatasets.OnConfigDS
+            Me.ConfigDS(ds)
+        End Sub
+
 #End Region ' Control events
 
 #Region " Internals "
@@ -586,10 +593,11 @@ Namespace Ecospace.Controls
                 ' Apply
                 If (Not Object.ReferenceEquals(Me.m_adt.Dataset(Me.m_layer.Index), dataset)) Then
                     Me.m_adt.Dataset(Me.m_layer.Index) = dataset
-                    Me.LayerChanged()
+                    'Me.LayerChanged()
+                    Me.SelectedConverter = Me.m_adt.Converter(Me.m_layer.Index)
+                    Me.m_manSets.IndexDataset = dataset
+                    Me.UpdateControls()
                 End If
-                Me.m_manSets.IndexDataset = dataset
-                Me.UpdateControls()
 
             End Set
         End Property
@@ -620,7 +628,10 @@ Namespace Ecospace.Controls
                 ' Apply
                 If (Not Object.ReferenceEquals(Me.m_adt.Converter(Me.m_layer.Index), converter)) Then
                     Me.m_adt.Converter(Me.m_layer.Index) = converter
-                    Me.LayerChanged()
+
+                    If Not Me.m_bInUpdate Then
+                        Me.LayerChanged()
+                    End If
                 End If
 
             End Set

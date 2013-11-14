@@ -46,6 +46,7 @@ Namespace Ecospace.Controls
         Private m_manSets As cSpatialDataSetManager = Nothing
 
         Private Enum eColumnTypes As Integer
+            Index = 0
             Name
             DateFrom
             DateTo
@@ -56,6 +57,59 @@ Namespace Ecospace.Controls
             SpatOverlap
             CacheSize
         End Enum
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' EwEParentRowHeaderVisualizer implements a EwERowHeaderVisualizer visualizer
+        ''' for rendering EwE hierarchical parent row header cells
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <CLSCompliant(False)> _
+        Private Class cDatasetStatusCellVisualizer
+            : Inherits cEwEGridRowHeaderVisualizer
+
+            Public Sub New()
+                MyBase.New()
+                Me.ImageAlignment = ContentAlignment.MiddleLeft
+            End Sub
+
+            Public Sub SetCompatibility(ByVal comp As SpatialData.cDatasetCompatilibity)
+                If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
+                    Me.Image = Nothing
+                Else
+                    Select Case comp.Compatibility
+                        Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
+                            Me.Image = SharedResources.OK
+                        Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
+                            Me.Image = SharedResources.Warning
+                        Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
+                             cDatasetCompatilibity.eCompatibilityTypes.NoSpatial, _
+                             cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
+                            Me.Image = SharedResources.Critical
+                        Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
+                            Me.Image = Nothing
+                    End Select
+                End If
+            End Sub
+
+        End Class
+
+        Private Class cDatasetStatusCell
+            : Inherits EwERowHeaderCell
+
+            Private m_viz As New cDatasetStatusCellVisualizer()
+
+            Public Sub New()
+                MyBase.New("")
+                Me.VisualModel = m_viz
+                Me.DataModel.EditableMode = SourceGrid2.EditableMode.None
+            End Sub
+
+            Public Sub SetCompatibility(comp As cDatasetCompatilibity)
+                Me.m_viz.SetCompatibility(comp)
+            End Sub
+
+        End Class
 
 #End Region ' Private vars
 
@@ -106,6 +160,7 @@ Namespace Ecospace.Controls
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
             Me(0, eColumnTypes.DateFrom) = New EwEColumnHeaderCell(SharedResources.HEADER_FROM)
             Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
@@ -150,12 +205,13 @@ Namespace Ecospace.Controls
                 If (ds.VarName = eVarNameFlags.NotSet Or ds.VarName = Me.m_adt.VarName) Then
 
                     iRow = Me.AddRow()
+                    Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i + 1))
                     Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Variable) = New EwECell(vfmt.GetDescriptor(ds.VarName), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Description) = New EwECell(ds.Description, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.DateFrom) = New EwECell(ds.TimeStart.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.DateTo) = New EwECell(ds.TimeEnd.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                    Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.Status) = New cDatasetStatusCell()
                     Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.CacheSize) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
@@ -173,9 +229,25 @@ Namespace Ecospace.Controls
             Me.Columns(eColumnTypes.Description).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
             Me.AutoSizeAll()
             Me.AutoStretchColumnsToFitWidth = True
-            Me.FixedColumns = 1
+            Me.FixedColumns = 2
             Me.FixedColumnWidths = False
 
+        End Sub
+
+        Public Event OnConfigDS(ds As ISpatialDataSet)
+
+        Protected Overrides Sub OnCellDoubleClicked(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual)
+            MyBase.OnCellDoubleClicked(p, cell)
+
+            Try
+                Dim item As Object = Me.Rows(p.Row).Tag
+                If (item Is Nothing) Then Return
+                If (Not TypeOf (item) Is ISpatialDataSet) Then Return
+
+                RaiseEvent OnConfigDS(DirectCast(item, ISpatialDataSet))
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         Private Sub UpdateDatasetRow(ds As ISpatialDataSet)
@@ -183,18 +255,20 @@ Namespace Ecospace.Controls
             Dim iRow As Integer = Me.DatasetRowIndex(ds)
             Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
 
-            If (iRow < 1) Then Return
+            If (iRow <= 1) Then Return
 
             Dim comp As New cDatasetCompatilibity(Me.Core, ds)
             Dim iNumTS As Integer = Math.Max(Core.nEcospaceTimeSteps, 1)
             Dim strVal As String = ""
+            Dim cellComp As cDatasetStatusCell = DirectCast(Me(iRow, eColumnTypes.Status), cDatasetStatusCell)
 
             ' Status col: indexing x%, or compatibility result
             If Me.m_manSets.IsIndexing(ds) Then
-                Me(iRow, eColumnTypes.Status).Value = String.Format(SharedResources.VALUE_INDEXING_PERCENT, CInt(Math.Ceiling(100 * comp.NumIndexed / Math.Max(1, comp.NumOverlappingTimeSteps))))
+                cellComp.Value = String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, CInt(Math.Ceiling(100 * comp.NumIndexed / Math.Max(1, comp.NumOverlappingTimeSteps))))
+                cellComp.SetCompatibility(comp)
             Else
-                Dim cfmt As New cCompatibilityTypeFormatter()
-                Me(iRow, eColumnTypes.Status).Value = cfmt.GetDescriptor(comp.Compatibility)
+                cellComp.Value = ""
+                cellComp.SetCompatibility(comp)
             End If
 
             ' Temporal overlap
@@ -212,13 +286,15 @@ Namespace Ecospace.Controls
             Me(iRow, eColumnTypes.SpatOverlap).Value = strVal
 
             Me(iRow, eColumnTypes.CacheSize).Value = Me.StyleGuide.FormatNumber(cache.GetSize(ds) / (1024 * 1024))
+            Me.InvalidateCells()
 
         End Sub
 
         Private Function DatasetRowIndex(ds As ISpatialDataSet) As Integer
-            For Each ri As RowInfo In Me.Rows
+            For iRow As Integer = 1 To Me.RowsCount - 1
+                Dim ri As RowInfo = Me.Rows(iRow)
                 If (Object.ReferenceEquals(ri.Tag, ds)) Then
-                    Return ri.Index
+                    Return iRow
                 End If
             Next
             Return -1
@@ -237,7 +313,7 @@ Namespace Ecospace.Controls
         Public Sub Fill(adt As cSpatialDataAdapter, Optional dsSelect As ISpatialDataSet = Nothing)
 
             If (adt Is Nothing) Then Return
-            If (dsSelect Is Nothing) Then dsSelect = Me.SelectedDataset
+            ' If (dsSelect Is Nothing) Then dsSelect = Me.SelectedDataset
 
             Me.m_adt = adt
 

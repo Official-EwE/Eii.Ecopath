@@ -39,6 +39,7 @@ Namespace Controls.Wizard
     ''' =======================================================================
     <CLSCompliant(True)> _
     Public Class cWizard
+        Implements IDisposable
 
 #Region " Private vars "
 
@@ -88,6 +89,21 @@ Namespace Controls.Wizard
             Me.m_nav = nav
             Me.m_nav.Attach(Me)
 
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IDisposable.Dispose"/>.
+        ''' -------------------------------------------------------------------
+        Public Overridable Sub Dispose() Implements IDisposable.Dispose
+
+            ' Close any current pages
+            Me.ClosePage()
+
+            If (Me.m_nav IsNot Nothing) Then
+                Me.m_nav.Detach()
+                Me.m_nav = Nothing
+            End If
+            GC.SuppressFinalize(Me)
         End Sub
 
 #End Region ' Constructor
@@ -203,9 +219,6 @@ Namespace Controls.Wizard
         ''' -------------------------------------------------------------------
         Protected Sub SwitchPage(ByVal iPage As Integer)
 
-            Dim ctrl As Control = Nothing
-            Dim pageNew As IWizardPage = Nothing
-
             ' Optimization
             If (iPage = Me.m_iPageActive) Then Return
 
@@ -215,30 +228,52 @@ Namespace Controls.Wizard
 
             ' Truncate page number
             Me.m_iPageActive = Math.Max(0, Math.Min(Me.m_lPages.Count - 1, iPage))
+            Me.OpenPage()
 
-            ' Create new page
-            pageNew = DirectCast(Activator.CreateInstance(Me.m_lPages(Me.m_iPageActive)), IWizardPage)
-            pageNew.Init(Me, Me.m_uic)
-
-            ' Switch pages only after new page init is complete
-            If Me.m_page IsNot Nothing Then
-                Me.m_page.Close()
-                Me.m_content.Controls.Clear()
-            End If
-            Me.m_page = pageNew
-
-            ctrl = DirectCast(Me.m_page, Control)
-            ctrl.Dock = DockStyle.Fill
-            Me.m_content.Controls.Add(ctrl)
-            ctrl.Show()
-
-            ' Halt!
+            ' Resume rendering
             Me.m_content.ResumeLayout()
-            If Not Me.m_page.IsBusy Then Me.m_parent.Cursor = Cursors.Default
+            Me.m_parent.Cursor = Cursors.Default
 
             Me.m_nav.UpdateNavigation()
 
         End Sub
+
+        Private Function OpenPage() As Boolean
+
+            Dim pageNew As IWizardPage = Nothing
+            Dim ctrl As Control = Nothing
+
+            pageNew = DirectCast(Activator.CreateInstance(Me.m_lPages(Me.m_iPageActive)), IWizardPage)
+
+            If (pageNew IsNot Nothing) Then
+                pageNew.Init(Me, Me.m_uic)
+
+                Me.ClosePage()
+
+                Me.m_page = pageNew
+
+                ctrl = DirectCast(Me.m_page, Control)
+                ctrl.Dock = DockStyle.Fill
+                Me.m_content.Controls.Add(ctrl)
+                ctrl.Show()
+            End If
+
+            Return True
+
+        End Function
+
+        Private Function ClosePage() As Boolean
+
+            If (Me.m_page IsNot Nothing) Then
+                Me.m_page.Close()
+                Try
+                    DirectCast(Me.m_page, Control).Dispose()
+                Catch ex As Exception
+                End Try
+                Me.m_content.Controls.Clear()
+            End If
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

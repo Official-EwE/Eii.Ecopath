@@ -29,10 +29,15 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="cShapeData">shapes</see>.
+    ''' Class for providing a textual description of <see cref="eAutosaveTypes"/>.
     ''' </summary>
+    ''' <remarks>
+    ''' <para>This class tries to obtain a string from the ScientificShared resources.
+    ''' The resource string is expected to be named and formatted as follows:</para>
+    ''' <para>AUTOSAVE_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
+    ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Class cShapeDataFormatter
+    Public Class cShapeDataTypeFormatter
         Implements ITypeFormatter
 
         Private m_strNone As String = ""
@@ -67,7 +72,7 @@ Namespace Style
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(cShapeData)
+            Return GetType(cForcingFunction)
         End Function
 
     End Class

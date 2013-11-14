@@ -39,6 +39,14 @@ Imports System.Drawing.Imaging
 
 Namespace Ecospace
 
+    'ToDo For Graph Plot Options added after 6.4 release
+    'Move Options panel up to below "Distribution of" panel
+    'Make it clear that one controls the maps and the other controls the graphs
+    'Enable/Disable the panels based on the Map or Plots tab selection
+    'Added an option to plot relative to Ecopath base (how it works now) or relative to the end of the last timestep (now biomass plot works now) 
+    'Relative plotting option will need to be integrated with the Spin-Up period some how
+    'This requires that the core pass out different base line values and the plots decide which type to use
+
     ''' <summary>
     ''' Form, implementing the Ecospace Run interface.
     ''' </summary>
@@ -62,6 +70,10 @@ Namespace Ecospace
             Contaminant
             CoverB
             Effort
+            FishingMortGraph
+            CatchGraph
+            PredMortRateGraph
+            ConsumpRateGraph
         End Enum
 
 #Region " Variables "
@@ -81,6 +93,9 @@ Namespace Ecospace
         Private m_ConcOverB(,,) As Single
         ''' <summary>Effort over Biomass.</summary>
         Private m_FoverB(,,) As Single
+
+        Private m_graphData As Dictionary(Of ePlotTypes, Single(,))
+
 
         ' -- bits to remember, ugh --
 
@@ -122,6 +137,8 @@ Namespace Ecospace
         Private m_showitemMode As eShowItemType = eShowItemType.ShowAll
         Private m_iItemToShow As Integer = 1
 
+        Private m_graphPlotType As ePlotTypes = ePlotTypes.RelB
+
         Private m_zgh As cEcospaceZedGraphHelper = Nothing
 
         ''' <summary>Exposing m_sMaxEffort to the interface would allow the user to set the Effort legend sensitivity.</summary>
@@ -161,6 +178,14 @@ Namespace Ecospace
 
             'Redim relative biomass results array
             ReDim Me.m_RelBiomassResults(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps)
+
+            Me.m_graphData = New Dictionary(Of ePlotTypes, Single(,))
+
+            Me.m_graphData.Add(ePlotTypes.RelB, New Single(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps) {})
+            Me.m_graphData.Add(ePlotTypes.FishingMortGraph, New Single(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps) {})
+            Me.m_graphData.Add(ePlotTypes.PredMortRateGraph, New Single(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps) {})
+            Me.m_graphData.Add(ePlotTypes.ConsumpRateGraph, New Single(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps) {})
+            Me.m_graphData.Add(ePlotTypes.CatchGraph, New Single(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps) {})
 
             'Redim base biomass base result array
             ReDim Me.m_BaseBiomassResults(Me.Core.nGroups)
@@ -332,6 +357,12 @@ Namespace Ecospace
             Me.UpdateStyleColors()
             Me.UpdateControls()
 
+            Me.m_rbRelBiomassGraph.Tag = ePlotTypes.RelB
+            Me.m_rbPredMortGraph.Tag = ePlotTypes.PredMortRateGraph
+            Me.m_rbFishMortGraph.Tag = ePlotTypes.FishingMortGraph
+            Me.m_rbConsumpGraph.Tag = ePlotTypes.ConsumpRateGraph
+            Me.m_rbCatchGraph.Tag = ePlotTypes.CatchGraph
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
         End Sub
@@ -419,12 +450,18 @@ Namespace Ecospace
 #Region " Biomass graph "
 
         Private Sub UpdateBiomassPlot()
-            For iGroup As Integer = 1 To Core.nGroups
-                For iTimeStep As Integer = Me.m_iTimeStepPrev To Me.m_iTimeStepCur - 1
-                    Me.m_zgh.AddValue(iGroup, iTimeStep, Me.m_RelBiomassResults(iGroup, iTimeStep + 1))
+            Try
+                'get the data from the dictionary of graph plot types
+                Dim data(,) As Single = Me.m_graphData.Item(Me.m_graphPlotType)
+                For iGroup As Integer = 1 To Core.nGroups
+                    For iTimeStep As Integer = Me.m_iTimeStepPrev To Me.m_iTimeStepCur - 1
+                        Me.m_zgh.AddValue(iGroup, iTimeStep, data(iGroup, iTimeStep + 1))
+                    Next
                 Next
-            Next
-            Me.m_zgh.RescaleAndRedraw()
+                Me.m_zgh.RescaleAndRedraw()
+            Catch ex As Exception
+                cLog.Write(ex, Me.ToString + ".UpdateBiomassPlot()")
+            End Try
         End Sub
 
 #End Region ' Biomass graph
@@ -739,6 +776,12 @@ Namespace Ecospace
                 Me.m_BaseBiomassResults(i) = 0
             Next i
 
+            'clear the arrays in the graph data dictionary
+            'this will leave them dimensioned but clear of the old data
+            For Each dataarray As Single(,) In Me.m_graphData.Values
+                Array.Clear(dataarray, 0, dataarray.Length)
+            Next
+
             ' Reset plot drawer if overlay is not needed
             If Me.m_bOverlay = False Then
                 Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, parms.NumberOfTimeStepsPerYear)
@@ -748,6 +791,25 @@ Namespace Ecospace
             Me.RefreshPlot()
             Me.RefreshMap()
         End Sub
+
+        Private Sub UpdateGraph()
+
+            Dim useLogScale As Boolean = False
+            If Me.m_graphPlotType = ePlotTypes.RelB Then
+                useLogScale = True
+            End If
+            Me.m_zgh.useLogScale = useLogScale
+
+            Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+
+            Dim orgTime As Integer = Me.m_iTimeStepPrev
+            Me.m_iTimeStepPrev = 0
+            Me.RefreshPlot()
+            Me.UpdateBiomassPlot()
+            Me.m_iTimeStepPrev = orgTime
+
+        End Sub
+
 
         Private Sub btnRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnRun.Click
 
@@ -817,6 +879,7 @@ Namespace Ecospace
         Private Sub OnSelectGroupToShow(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_cmbDisplayItem.SelectedIndexChanged
             Me.ItemToShow = (Me.m_cmbDisplayItem.SelectedIndex + 1)
+            ' Me.UpdateGraph()
         End Sub
 
         Private Sub rbDisplayOption_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
@@ -902,6 +965,24 @@ Namespace Ecospace
                 Me.Core.EcospacePaused = True
             End If
             Me.UpdateControls()
+        End Sub
+
+
+        Private Sub onGraphTypeCheckedChanged(sender As Object, e As System.EventArgs) _
+            Handles m_rbRelBiomassGraph.CheckedChanged, m_rbConsumpGraph.CheckedChanged, m_rbFishMortGraph.CheckedChanged, m_rbPredMortGraph.CheckedChanged, m_rbCatchGraph.CheckedChanged
+
+            Try
+                Dim rb As RadioButton = DirectCast(sender, RadioButton)
+                'During initialization this handler can be fired before the tag has been populated
+                If rb.Tag Is Nothing Then Return
+
+                If rb.Checked Then
+                    Me.m_graphPlotType = DirectCast(rb.Tag, ePlotTypes)
+                    Me.UpdateGraph()
+                End If
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #Region " FishingMort legend scaling "
@@ -1017,6 +1098,12 @@ Namespace Ecospace
                 Else
                     m_RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex)))
                 End If
+
+                Me.m_graphData.Item(ePlotTypes.RelB)(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex)))
+                Me.m_graphData.Item(ePlotTypes.FishingMortGraph)(groupIndex, TimeStepData.iTimeStep) = TimeStepData.FishingMort(groupIndex)
+                Me.m_graphData.Item(ePlotTypes.PredMortRateGraph)(groupIndex, TimeStepData.iTimeStep) = TimeStepData.PredMortRate(groupIndex)
+                Me.m_graphData.Item(ePlotTypes.ConsumpRateGraph)(groupIndex, TimeStepData.iTimeStep) = TimeStepData.ConsumptRate(groupIndex)
+                Me.m_graphData.Item(ePlotTypes.CatchGraph)(groupIndex, TimeStepData.iTimeStep) = TimeStepData.Catch(groupIndex)
             Next
 
             'Temporary variables to store the timesteps for plotting. 
@@ -1250,9 +1337,13 @@ Namespace Ecospace
             If Me.Core Is Nothing Then Return
             If (Me.m_zgh IsNot Nothing) Then
 
+                'UpdateGraph()
+
                 Me.m_zgh.ItemShowMode = Me.ShowItemMode
                 Me.m_zgh.ItemToShow = Me.ItemToShow
                 Me.m_zgh.UpdateCurveVisibility()
+
+
                 Me.m_zgh.Redraw()
 
             End If

@@ -178,10 +178,23 @@ Namespace Controls.EwEGrid
             Dim ftCell As Font = Me.GetCellFont()
             Using ft As New Font(ftCell, _
                                  ftCell.Style Or DirectCast(IIF((style And cStyleGuide.eStyleFlags.Taxon) > 0, FontStyle.Italic, ftCell.Style), FontStyle))
+
+                Dim strText As String = cell.GetDisplayText(pos)
+                Dim al As ContentAlignment = Me.ImageAlignment
+
+                If String.IsNullOrWhiteSpace(strText) Then
+                    al = ContentAlignment.MiddleCenter
+                Else
+                    If cSystemUtils.IsRightToLeft() Then
+                        al = ContentAlignment.MiddleRight
+                    Else
+                        al = ContentAlignment.MiddleLeft
+                    End If
+                End If
+
                 Utility.PaintImageAndText(e.Graphics, rcClient, _
-                    Me.Image, Me.ImageAlignment, Me.ImageStretch, _
-                    cell.GetDisplayText(pos), _
-                    Me.StringFormat, Me.AlignTextToImage, rcBorder, _
+                    Me.Image, al, Me.ImageStretch, _
+                    strText, Me.StringFormat, Me.AlignTextToImage, rcBorder, _
                     clrFore, ft)
             End Using
 

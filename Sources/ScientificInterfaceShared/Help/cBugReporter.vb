@@ -67,7 +67,7 @@ Public Class cBugReporter
         sbBody.AppendLine("Configuration (do not modify):")
         sbBody.AppendLine(cSysConfig.OSVersion())
         sbBody.AppendLine(cSysConfig.NETVersion())
-        For Each an In cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
+        For Each an In cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.EwECore)
             sbBody.AppendLine(String.Format("* {0}={2},{1}", _
                                             an.Name, cStringUtils.ToHexString(an.GetPublicKeyToken), an.Version))
         Next
@@ -112,7 +112,7 @@ Public Class cBugReporter
         swTemp.WriteLine(cSysConfig.NETVersion())
         swTemp.WriteLine()
         swTemp.WriteLine("EwE modules:")
-        For Each an In cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
+        For Each an In cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.EwECore)
             swTemp.WriteLine(String.Format("* {0}={2},{1}", _
                                             an.Name, cStringUtils.ToHexString(an.GetPublicKeyToken), an.Version))
         Next

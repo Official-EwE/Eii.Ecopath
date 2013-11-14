@@ -96,10 +96,19 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Variable of the dataset, if any.
+        ''' Get the <see cref="eVarNameFlags">core variable</see> associated 
+        ''' with the dataset, if any.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Property VarName As eVarNameFlags
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="eSpatialDataFormatFlags">format</see> of the 
+        ''' data in the data set.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property DataFormat As eSpatialDataFormatFlags
 
 #End Region ' Information
 
@@ -202,9 +211,24 @@ Namespace SpatialData
                        ByVal dtEnd As DateTime, _
                        Optional ByVal updatedelegate As BuildIndexUpdateDelegate = Nothing)
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Stop a running <see cref="BuildIndex"/> command.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Sub StopIndexing()
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Possible status flags for source data.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Enum eIndexStatus As Integer
+            ''' <summary>Data has not been indexed yet.</summary>
             NotIndexed
+            ''' <summary>Data has been indexed.</summary>
             Indexed
+            ''' <summary>Data could not be indexed.</summary>
             Failed
         End Enum
 
@@ -217,15 +241,6 @@ Namespace SpatialData
         ''' <returns>True if data at a given time is indexed.</returns>
         ''' -------------------------------------------------------------------
         Function IndexStatusAtT(ByVal datetime As DateTime) As eIndexStatus
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns the fraction of the dataset that is indexed.
-        ''' </summary>
-        ''' <returns>A value that indicates the fraction of the dataset that
-        ''' is indexed [0, 1].</returns>
-        ''' -------------------------------------------------------------------
-        Function FractionIndexed() As Single
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -267,8 +282,11 @@ Namespace SpatialData
         ''' <summary>
         ''' Get the dialog read filter for all supported file types.
         ''' </summary>
+        ''' <param name="bRaster">Allowed to include raster file types.</param>
+        ''' <param name="bImage">Allowed to include image file types.</param>
+        ''' <param name="bVector">Allowed to include vector file types.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property DialogReadFilter() As String
+        ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, ByVal bImage As Boolean, ByVal bVector As Boolean) As String
 
 #End Region ' Data
 

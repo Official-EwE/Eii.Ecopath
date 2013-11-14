@@ -28,9 +28,32 @@ Imports EwEUtils.Utilities
 Namespace Ecopath
 
     ''' <summary>
+    ''' State of the last call to <see cref="cEcopathmodel.Run">cEcopathmodel.Run</see>
+    ''' </summary>
+    ''' <remarks>This passes out the internal state of an Ecopath run.</remarks>
+    Public Enum eEcopathRunState
+        ''' <summary>Model has not been run yet.</summary>
+        NotRun
+        ''' <summary>Model ran with a balanced model. EE in bounds. </summary>
+        ValidEE
+        ''' <summary>Failed EE out of bounds.</summary>
+        InValidEE
+        ''' <summary>Failed to find all the parameter. </summary>
+        MissingParameter
+        ''' <summary>Failed to run because diet matrix does not sum to one. </summary>
+        InValidDietMatrix
+        ''' <summary>Failed due to invalid initialization of data.  </summary>
+        InValidInitialization
+        ''' <summary>Failed to run because an error was encountered. </summary>
+        [Error]
+    End Enum
+
+    ''' <summary>
     ''' Class that Encapsulates the EcoPath Model
     ''' </summary>
     Public Class cEcoPathModel
+
+        Public RunState As eEcopathRunState = eEcopathRunState.NotRun
 
         ''' <summary>Enumerator indicating which variables to estimate.</summary>
         Private Enum eEstimateTypes As Byte
@@ -92,6 +115,7 @@ Namespace Ecopath
         Public Sub New(ByVal EcoFunctions As cEcoFunctions)
             m_eEstimType = eEstimateParameterFor.ParameterEstimation
             m_Ecofunctions = EcoFunctions
+            RunState = eEcopathRunState.NotRun
         End Sub
 
 
@@ -213,6 +237,7 @@ Namespace Ecopath
             Dim msg As cMessage = Nothing
 
             m_EstimStatus = eStatusFlags.Null
+            Me.RunState = eEcopathRunState.NotRun
 
             'clear out any existing error messages
             m_messages.Clear()
@@ -223,12 +248,14 @@ Namespace Ecopath
             If m_Data Is Nothing Then
                 cLog.Write(Me.ToString + ".Run() EcoPathModel.m_Data is Nothing, Ecopath has not been initialized correctly. Ecopath could not be run.")
                 Debug.Assert(Not m_Data Is Nothing, Me.ToString + ".Run() m_data in Nothing. Ecopath could not be run.")
+                Me.RunState = eEcopathRunState.InValidInitialization
                 Return False
             End If
             'have the parameters been initialized
             If Not m_Data.bInitialized Then
                 cLog.Write(Me.ToString + ".Run() EcoPathModel.m_Data has been created but not Initialized. Ecopath could not be run.")
                 Debug.Assert(m_Data.bInitialized, Me.ToString + ".Run() EcoPathModel.m_Data has been created but not Initialized..")
+                Me.RunState = eEcopathRunState.InValidInitialization
                 Return False
             End If
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -252,6 +279,7 @@ Namespace Ecopath
                 'check that all diet composition DC() sum to 1
                 'False flag do NOT to ask user what to do
                 If Not checkDietsSumToOne(False) Then
+                    Me.RunState = eEcopathRunState.InValidDietMatrix
                     Return False
                 End If
 
@@ -316,9 +344,10 @@ Namespace Ecopath
                     If m_EstimStatus = eStatusFlags.MissingParameter Then
 
                         MissingParameterMessage()
+                        Me.RunState = eEcopathRunState.MissingParameter
 
                     Else 'If ParamsEstimated  = eStatusFlags.ErrorEncountered Then
-
+                        Me.RunState = eEcopathRunState.Error
                         If m_EstimStatus <> eStatusFlags.ErrorEncountered Then
                             System.Console.WriteLine("WARNING: cEcopathModel.Run() may have set EstimationStatus to the wrong value.")
                         End If
@@ -339,8 +368,8 @@ Namespace Ecopath
 
             Catch ex As Exception
 
-                Debug.Assert(False)
-
+                Debug.Assert(False, ex.Message)
+                Me.RunState = eEcopathRunState.Error
                 msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, _
                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
                 NotifyCore(msg)
@@ -349,6 +378,12 @@ Namespace Ecopath
                 Return False
 
             End Try
+
+            'Finally did the model balance
+            Me.RunState = eEcopathRunState.InValidEE
+            If Me.CheckIfEEsAreOK(False) Then
+                Me.RunState = eEcopathRunState.ValidEE
+            End If
 
             Return True
 
@@ -645,22 +680,30 @@ Namespace Ecopath
                     Next j
                 End If   'Surplus > 0
                 m_Data.FlowToDet(i) = m_Data.DetPassedOn(i)
+                m_Data.DetPassedProp(i) = CSng(m_Data.DetPassedOn(i) / (m_Data.B(i) + 1.0E-20))
             Next i
         End Sub
+
         Private Sub CalcBAofDetritus()
-            ' Calculate BA biomass accumulation of detritus
+            'Calculate fate of detritus as BA biomass accumulation of detritus 
+            'for groups that have detritus fate as themselves
             '27 May 2002: VC subtracted Catch from the surplus as Simone had a model where there is a 'catch' of discard,
             'which is subsequently discarded and sent to another detritus group.
             Dim i As Integer, Surplus As Single
 
+            'Debug.Assert(False, "WARNING: Ecopath.CalcBAofDetritus() has been called.")
+
             For i = m_Data.NumLiving + 1 To m_Data.NumGroups
-                'BA(i) = 0
+
+                'InputToDet(i) is the sum of all detritus flows NOT including immigration, emigration, import or biomass accumulation. 
+                'See CalcGS_Det_FlowToDet() and CalcFateOfDetritus()
                 'DetEaten(i) is amount eaten of the group by all consumers
                 Surplus = m_Data.InputToDet(i) - m_Data.DetEaten(i) - m_Data.fCatch(i)
-                'If Surplus > 0 Then   'Where do we send the surplus detr. to?
-                m_Data.BA(i) = Surplus * m_Data.DF(i, i - m_Data.NumLiving)
-                'End If
+                'jb Add detritus fate from this group to BA (biomass accumulation)
+                ' m_Data.BA(i) = Surplus * m_Data.DF(i, i - m_Data.NumLiving)
+                m_Data.BA(i) += Surplus * m_Data.DF(i, i - m_Data.NumLiving)
             Next i
+
         End Sub
 
         Private Sub CalcEEforDetritus()
@@ -716,6 +759,7 @@ Namespace Ecopath
                     m_Data.Ex(i) = 0.0
                 End If
             Next i
+
         End Sub
 
         Private Sub CalcDCofDetritus()
@@ -1321,7 +1365,9 @@ Namespace Ecopath
                 'End If
             End If
             'set DF(NumGroups) to 0  to avoid biomass accumulation which screws up EcoSim
-            m_Data.DF(m_Data.NumGroups, m_Data.NumDetrit) = 0
+            'jb 30-Sept-2013 allow BA for Detritus to make it to Ecosim
+            'this would only have set the last detritus group to zero...
+            'm_Data.DF(m_Data.NumGroups, m_Data.NumDetrit) = 0
         End Sub
 
         Private Sub CheckDetritusFateTooBig()

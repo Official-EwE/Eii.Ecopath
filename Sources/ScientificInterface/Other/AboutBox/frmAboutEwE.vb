@@ -38,6 +38,8 @@ Namespace Other
     Public Class frmAboutEwE
 
         Private m_uic As cUIContext = Nothing
+        Private m_qehTech As cQuickEditHandler = Nothing
+        Private m_bInUpdate As Boolean = False
 
         Public Sub New(ByVal uic As cUIContext)
             Me.InitializeComponent()
@@ -51,6 +53,8 @@ Namespace Other
 
             If (Me.m_uic Is Nothing) Then Return
 
+            Me.m_bInUpdate = True
+
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
             Dim strBitApp As String = cSystemUtils.IIF(cSystemUtils.Is64Bit, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
 
@@ -60,20 +64,34 @@ Namespace Other
             Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VERSION, cCore.Version, strBitApp)
             Me.m_lbCopyright.Text = String.Format(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
-            ' Format technical page
-            Me.m_lblOSVersion.Text = cSysConfig.OSVersion()
-            Me.m_lblNetVersion.Text = cSysConfig.NETVersion()
-
-            Dim strFont As String = Me.Font.Name
-
+            ' Format RTF content pages
             Me.m_rtbTeam.Rtf = StyleRTF(My.Resources.team)
             Me.m_rtbLicense.Rtf = StyleRTF(My.Resources.license)
             Me.m_rtbAcknowledgements.Rtf = StyleRTF(My.Resources.acknowledgements)
 
+            ' Format technical page
+            Me.m_lblOSVersion.Text = cSysConfig.OSVersion()
+            Me.m_lblNetVersion.Text = cSysConfig.NETVersion()
+
+            Me.m_qehTech = New cQuickEditHandler()
+            Me.m_qehTech.IsOutputGrid = True
+            Me.m_qehTech.Attach(Me.m_gridTechnical, Me.m_uic, Me.m_tsTechnical)
+
+            Me.m_tsbnShowEwEAssembliesOnly.Image = SharedResources.FilterHS
+            Me.m_tsbnShowEwEAssembliesOnly.Checked = Me.m_gridTechnical.ShowEwEComponentsOnly
+
+            ' Format database page
             If Not Me.m_uic.Core.StateMonitor.HasEcopathLoaded Then
                 Me.m_tcMain.TabPages.Remove(Me.m_tpDatabase)
             End If
 
+            Me.m_bInUpdate = False
+
+        End Sub
+
+        Protected Overrides Sub OnClosed(e As System.EventArgs)
+            Me.m_qehTech.Detach()
+            MyBase.OnClosed(e)
         End Sub
 
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -93,6 +111,20 @@ Namespace Other
                 ' Aargh
                 cLog.Write(ex, "frmAboutEwE::OnURLClicked")
             End Try
+
+        End Sub
+
+        Private Sub OnToggleEwECOmponentView(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnShowEwEAssembliesOnly.Click
+
+            If (Me.m_bInUpdate) Then Return
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
+            Try
+                Me.m_gridTechnical.ShowEwEComponentsOnly = Me.m_tsbnShowEwEAssembliesOnly.Checked
+            Catch ex As Exception
+                Debug.Assert(False)
+            End Try
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
         End Sub
 

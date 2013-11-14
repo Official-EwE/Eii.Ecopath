@@ -487,11 +487,10 @@ Namespace Controls
 
 #Region " Configuration "
 
-        ' ToDo_JS: somehow globalize these properties 
         <Browsable(True), _
             Category("Appearance"), _
-            DisplayName("Show title"), _
-            Description("Draw the title on the flow diagram"), _
+            cLocalizedDisplayName("PROMPT_SHOWTITLE"), _
+            cLocalizedDescription("PROMPT_SHOWTITLE_DESCR"), _
             DefaultValue(True)> _
         Public Property ShowTitle() As Boolean
             Get
@@ -505,8 +504,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Appearance"), _
-            DisplayName("Number of trophic levels"), _
-            Description("The number of trophic levels to display."), _
+            cLocalizedDisplayName("GENERIC_SHOW_NUMTL"), _
             DefaultValue(7)> _
         Public Property NumberOfTrophicLevels() As Integer
             Get
@@ -523,8 +521,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Appearance"), _
-            DisplayName("Auto-colour"), _
-            Description("Define which aspect of the flow diagram to auto-colour: nodes by value, nodes by EwE default colour, or lines by diet"), _
+            cLocalizedDisplayName("GENERIC_COLOUR_USAGE"), _
             DefaultValue(eColorUsageTypes.None)> _
         Public Property AutoColorUsage() As eColorUsageTypes
             Get
@@ -538,8 +535,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Appearance"), _
-            DisplayName("Show legend"), _
-            Description("True to always show the legend, false to always hide the legend, or UseDefault to use application wide settings."), _
+            cLocalizedDisplayName("GENERIC_SHOW_LEGEND"), _
             DefaultValue(TriState.UseDefault)> _
         Public Property ShowLegend As TriState
             Get
@@ -553,8 +549,7 @@ Namespace Controls
 
         <Browsable(True), _
              Category("Node"), _
-             DisplayName("Custom node color"), _
-             Description("Custom color to use for nodes if nodes are not auto-colored."), _
+             cLocalizedDisplayName("HEADER_COLOR"), _
              DefaultValue(&HFFD3D3D3)> _
         Public Property CustomNodeColor() As Color
             Get
@@ -568,8 +563,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Node"), _
-            DisplayName("Auto-size nodes"), _
-            Description("Set true to scale nodes to value."), _
+            cLocalizedDisplayName("HEADER_NODE_SIZE_AUTO"), _
             DefaultValue(True)> _
         Public Property AutoNodeSize() As Boolean
             Get
@@ -583,8 +577,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Node"), _
-            DisplayName("Node custom size"), _
-            Description("Custom node size to use if nodes are not set to auto-size."), _
+            cLocalizedDisplayName("HEADER_NODE_SIZE"), _
             DefaultValue(True)> _
         Public Property CustomNodeSize() As Integer
             Get
@@ -598,8 +591,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Node"), _
-            DisplayName("Node type"), _
-            Description("Shape type to use for rendering groups."), _
+            cLocalizedDisplayName("HEADER_NODE_TYPE"), _
             DefaultValue(cFlowDiagramNode.eNodeTypes.Circle)> _
         Public Property NodeType() As cFlowDiagramNode.eNodeTypes
             Get
@@ -613,8 +605,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Line"), _
-            DisplayName("Auto-scale lines"), _
-            Description("Scale lines by flow amount."), _
+            cLocalizedDisplayName("HEADER_LINE_WIDTH_AUTO"), _
             DefaultValue(False)> _
         Public Property AutoLineWidth() As Boolean
             Get
@@ -628,8 +619,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Line"), _
-            DisplayName("Custom line width"), _
-            Description("Custom line width to use if lines are not set to auto-scale."), _
+            cLocalizedDisplayName("HEADER_LINE_WIDTH"), _
             DefaultValue(1)> _
         Public Property CustomLineWidth() As Integer
             Get
@@ -643,8 +633,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Line"), _
-            DisplayName("Custom line color"), _
-            Description("Custom color to use for lines if lines are not auto-colored.")> _
+            cLocalizedDisplayName("HEADER_LINE_COLOR")> _
         Public Property CustomLineColor() As Color
             Get
                 Return Me.m_clrLine
@@ -657,8 +646,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Line"), _
-            DisplayName("Line type"), _
-            Description("Line type to use for rendering flows."), _
+            cLocalizedDisplayName("HEADER_LINE_TYPE"), _
             DefaultValue(cFlowDiagramConnector.eConnectionType.Arch)> _
         Public Property LineConnectionType() As cFlowDiagramConnector.eConnectionType
             Get
@@ -674,8 +662,7 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Node"), _
-            DisplayName("Show value in label"), _
-            Description("Show value of groups in the node labels."), _
+            cLocalizedDisplayName("HEADER_SHOW_VALUES"), _
             DefaultValue(False)> _
         Public Property NodeDrawValue() As Boolean
             Get
@@ -689,8 +676,8 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Node"), _
-            DisplayName("Draw labels"), _
-            Description("Draw group name labels.")> _
+            cLocalizedDisplayName("HEADER_SHOW_LABELS"), _
+            DefaultValue(True)> _
         Public Property NodeDrawLabels() As Boolean
             Get
                 Return Me.m_bIsDrawLabel

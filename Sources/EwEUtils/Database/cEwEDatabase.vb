@@ -466,7 +466,9 @@ Namespace Database
         ''' Close an open connection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public MustOverride Sub Close()
+        Public Overridable Sub Close()
+            Me.m_sVersion = 0.0!
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>

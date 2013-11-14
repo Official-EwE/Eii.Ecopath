@@ -42,9 +42,8 @@ Namespace Style
 
             For Each tTest As Type In ass.GetTypes
                 If tfm.IsAssignableFrom(tTest) And tTest.GetConstructor(Type.EmptyTypes) IsNot Nothing Then
-
                     Dim f As ITypeFormatter = DirectCast(Activator.CreateInstance(tTest), ITypeFormatter)
-                    If f.GetDescribedType.Equals(t) Then
+                    If f.GetDescribedType.IsAssignableFrom(t) Then
                         Return f
                     End If
                 End If

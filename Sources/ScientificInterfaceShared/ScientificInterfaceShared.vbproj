@@ -152,6 +152,9 @@
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExcluded.vb" />
     <Compile Include="Controls\Options\IOptionsPage.vb" />
     <Compile Include="Controls\SysConfig\cSysConfig.vb" />
+    <Compile Include="Controls\TabControl\ucTabControlEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\Toolstrip\cEwEMenustrip.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -676,6 +679,8 @@
     <Compile Include="Style\ColorRamps\cSAUPColorRamp.vb" />
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
+    <Compile Include="Style\Localization\cLocalizedDisplayNameAttribute.vb" />
+    <Compile Include="Style\Localization\cLocalizedDescriptionAttribute.vb" />
     <Compile Include="Style\Type formatters\cBACalcTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cCoreInterfaceFormatter.vb" />
     <Compile Include="Style\Type formatters\cCurrencyUnitFormatter.vb" />
@@ -690,6 +695,7 @@
     <Compile Include="Style\Type formatters\cCharFormatter.vb" />
     <Compile Include="Style\Type formatters\cDatasourceTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cCompatibilityTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cShapeDataFormatter.vb" />
     <Compile Include="Style\Type formatters\cStyleTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cVerboseLevelTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cSpatialDataAdapterFormatter.vb" />
@@ -697,7 +703,6 @@
     <Compile Include="Style\Type formatters\cSpatialDatasetFormatter.vb" />
     <Compile Include="Style\Type formatters\cShapeFunctionTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cOrganismTypeFormatter.vb" />
-    <Compile Include="Style\Type formatters\cShapeDataFormatter.vb" />
     <Compile Include="Style\Type formatters\cTaxonLevelTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cTimeSeriesTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cTypeFormatterFactory.vb" />
@@ -994,6 +999,7 @@
     <None Include="Resources\MPA.png" />
     <None Include="Resources\Raster.png" />
     <Content Include="Resources\bug.png" />
+    <Content Include="Resources\CogHS.png" />
     <Content Include="Resources\FilterHS.png" />
     <None Include="Resources\fish_dead.png" />
     <Content Include="Resources\SnapshotHS.png" />

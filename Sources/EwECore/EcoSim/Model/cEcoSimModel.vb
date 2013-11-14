@@ -1183,7 +1183,7 @@ Namespace Ecosim
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 For igrp As Integer = 1 To nvar
-                    'overwrite FishRateNo() with computed mortality rates (FishYear(group)) if in Fishing Policy or MSE 
+                    'overwrite FishRateNo() with computed mortality rates (FishYear(group)) if in Fishing Policy 
                     'see EwE5 RunModelValue()
                     m_Data.FishRateNo(igrp, iTime) = m_search.FishYear(igrp) 'fish year was computed or set to FishRateNo(j, 12 * iyr - 11) if FisForced() = True (forcing data loaded)
                     m_Data.FishTime(igrp) = m_Data.FishRateNo(igrp, iTime) * Qmult(igrp)
@@ -1462,6 +1462,13 @@ Namespace Ecosim
                 Next
 
             End If
+
+            'System.Console.WriteLine("--------------Detritus----------------")
+            'System.Console.Write("T=" + t.ToString)
+            'For idet As Integer = m_EPData.NumLiving + 1 To m_EPData.NumGroups
+            '    System.Console.Write("," + m_EPData.GroupName(idet) + "," + B(idet).ToString)
+            'Next
+            'System.Console.WriteLine()
 
         End Sub
 
@@ -2281,12 +2288,14 @@ Namespace Ecosim
 
             Derivt(0, m_Data.StartBiomass, dydx)
 
-            'turn of numeric intergration for groups where rate of change is to big
+            'turn off numeric intergration for groups where rate of change is to big
             For i = 1 To nGroups
 
-                If i > m_EPData.NumLiving Then
-                    m_Data.NoIntegrate(i) = 0 'VC following CJWs email of 05dec97
-                End If
+                'jb 3-Oct-2013 Allow Detritus to use rk4 integration if rate is low enough
+                'This is part of detritus BA, Immig and Emig changes
+                'If i > m_EPData.NumLiving Then
+                '    m_Data.NoIntegrate(i) = 0 'VC following CJWs email of 05dec97
+                'End If
 
                 rrate = Math.Abs(m_Data.loss(i)) / m_Data.StartBiomass(i)
 
@@ -2328,7 +2337,7 @@ Namespace Ecosim
             'Imported Detritus forcing function multiplier
             Dim DtImpMult As Single
             'Imported Detritus after forcing function has been applied
-            Dim DtImp As Single
+            Dim DetInFlow As Single
 
             ReDim aeff(m_Data.inlinks)
             ReDim Veff(m_Data.inlinks)
@@ -2522,20 +2531,20 @@ Namespace Ecosim
 
                         deriv(i) = m_EPData.Immig(i) + Biomass(i) * pbb(i) + SimGEtemp(i) * m_Data.Eatenby(i) - m_Data.loss(i)
                         biomeq(i) = (m_EPData.Immig(i) + m_Data.SimGE(i) * m_Data.Eatenby(i) + pbb(i) * Biomass(i)) / (m_Data.loss(i) / Biomass(i))
-                    Else                'Detritus group
-                        'VC: Follow the logic for the living groups; assume no pbmaxs for detritus
-                        'VC: I will ignore tval(SeasonType()) for detritus
-                        'VC: Emig(i) should include export of detritus??? How about biomass accumulation???
+                    Else
+                        'Detritus group
+                        'Flow to detritus from imports and immigration
+                        'jb 3-Oct-2013 added immig
                         DtImpMult = 1
                         ApplyAVmodifiers(DtImpMult, 0, i, i, True)
-                        'Imported Detritus for non-living groups is copied from DtImp(i) to Immig(i) in SetupSimVariables() Really...
-                        DtImp = m_EPData.Immig(i) * DtImpMult
+                        DetInFlow = m_EPData.DtImp(i) * DtImpMult + m_EPData.Immig(i)
 
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.Emig(i) + m_Data.DetritusOut(i)) * Biomass(i)
-                        deriv(i) = DtImp + m_Data.ToDetritus(i - m_EPData.NumLiving) - m_Data.loss(i)
 
-                        If m_Data.loss(i) <> 0 And Biomass(i) > 0 And DtImp + m_Data.ToDetritus(i - m_EPData.NumLiving) > 0 Then
-                            biomeq(i) = (DtImp + m_Data.ToDetritus(i - m_EPData.NumLiving)) / (m_Data.loss(i) / Biomass(i))
+                        deriv(i) = DetInFlow + m_Data.ToDetritus(i - m_EPData.NumLiving) - m_Data.loss(i)
+
+                        If m_Data.loss(i) <> 0 And Biomass(i) > 0 And DetInFlow + m_Data.ToDetritus(i - m_EPData.NumLiving) > 0 Then
+                            biomeq(i) = (DetInFlow + m_Data.ToDetritus(i - m_EPData.NumLiving)) / (m_Data.loss(i) / Biomass(i))
                         Else
                             biomeq(i) = 1.0E-20
                         End If
@@ -2594,17 +2603,22 @@ Namespace Ecosim
 
                 Next j
             Next i
+
             'Next add flow from other detritus groups
             For i = m_EPData.NumLiving + 1 To nGroups
                 For j = m_EPData.NumLiving + 1 To nGroups
-                    If i <> j Then ToDetritus(j - m_EPData.NumLiving) = ToDetritus(j - m_EPData.NumLiving) + m_EPData.DetPassedProp(i) * Biomass(i) * m_EPData.DF(i, j - m_EPData.NumLiving)
+                    If i <> j Then
+                        ToDetritus(j - m_EPData.NumLiving) = ToDetritus(j - m_EPData.NumLiving) + m_EPData.DetPassedProp(i) * Biomass(i) * m_EPData.DF(i, j - m_EPData.NumLiving)
+                    End If
                 Next
             Next
 
             If m_Data.FirstTime = True Then
                 For i = m_EPData.NumLiving + 1 To nGroups
-                    m_Data.DetritusOut(i) = (ToDetritus(i - m_EPData.NumLiving) - m_EPData.BA(i) + m_EPData.Immig(i) - EatenOf(i)) / Biomass(i) - m_Data.Emig(i)
-                    'DetritusOut(i) = (ToDetritus(i - mEPData.NumLiving) - BA(i) + DetPassedOn(i) + EX(i) + Immig(i) - Eatenof(i)) / Biomass(i) - Emig(i)
+                    'jb 3-Oct-2013 include immigration and import
+                    'm_Data.DetritusOut(i) = (ToDetritus(i - m_EPData.NumLiving) - m_EPData.BA(i) + m_EPData.Immig(i) - EatenOf(i)) / Biomass(i) - m_Data.Emig(i)
+                    m_Data.DetritusOut(i) = (ToDetritus(i - m_EPData.NumLiving) - m_EPData.BA(i) + m_EPData.Immig(i) + m_EPData.DtImp(i) - EatenOf(i)) / Biomass(i) - m_Data.Emig(i)
+                    If m_Data.DetritusOut(i) < 1.0E-20 Then m_Data.DetritusOut(i) = 1.0E-20
                 Next i
             End If
             m_Data.FirstTime = False
@@ -3831,8 +3845,9 @@ Namespace Ecosim
                 Else    'for detriuts
                     m_Data.Fish1(i) = 0
                     m_Data.FishRateMax(i) = 1
-                    m_Data.Emig(i) = 0
-                    m_EPData.Immig(i) = m_EPData.DtImp(i)
+                    m_Data.Emig(i) = IIF(m_EPData.Emig(i) > 0 And m_EPData.Emigration(i) = 0, m_EPData.Emig(i), m_EPData.Emigration(i) / m_Data.StartBiomass(i))
+                    'jb Don't overwrite Immigration with Imported Detritus
+                    ' m_EPData.Immig(i) = m_EPData.DtImp(i)
                 End If
             Next
             'If there are fishing rates over time then use them for scaling

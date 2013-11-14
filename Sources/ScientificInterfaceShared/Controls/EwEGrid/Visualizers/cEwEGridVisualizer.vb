@@ -48,6 +48,7 @@ Namespace Controls.EwEGrid
         Public Sub New(Optional ByVal alignment As ContentAlignment = ContentAlignment.MiddleCenter)
             MyBase.New()
             Me.TextAlignment = alignment
+            Me.AlignTextToImage = True
             Me.WordWrap = False
             Me.AlignTextToImage = True
         End Sub

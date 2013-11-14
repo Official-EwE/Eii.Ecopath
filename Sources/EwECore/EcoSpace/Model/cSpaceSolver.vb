@@ -230,9 +230,9 @@ Public Class cSpaceSolver
 
         ReDim BBRatio(m_Data.NGroups)
 
-        ReDim ResultsByGroup(cEcospaceDataStructures.N_RESULTS_GROUPS, m_Data.NGroups)
-        ReDim ResultsByFleet(cEcospaceDataStructures.N_RESULTS_FLEETS, m_Data.nFleets)
-        ReDim ResultsByFleetGroup(cEcospaceDataStructures.N_RESULTS_FLEETGROUPS, m_Data.nFleets, m_Data.NGroups)
+        ReDim ResultsByGroup([Enum].GetValues(GetType(eSpaceResultsGroups)).Length, m_Data.NGroups)
+        ReDim ResultsByFleet([Enum].GetValues(GetType(eSpaceResultsFleets)).Length, m_Data.nFleets)
+        ReDim ResultsByFleetGroup([Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length, m_Data.nFleets, m_Data.NGroups)
         ReDim Landings(m_Data.NGroups, m_Data.nFleets)
         ReDim ResultsCatchRegionGearGroup(m_Data.nRegions, m_Data.nFleets, m_Data.NGroups)
 
@@ -388,7 +388,7 @@ Public Class cSpaceSolver
             ' Debug.Assert(Me.m_Data.Depth(i, j) > 0)
             ' System.Console.WriteLine("Thread ID, " & Me.ThreadID & ", " & i.ToString & ", " & j.ToString)
             'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
-            TimeStep2 = m_Data.TimeStep * 0.66667F
+            TimeStep2 = CSng(m_Data.TimeStep * 0.66667)
 
             If m_TracerData.EcoSpaceConSimOn Then
                 m_ConTracer.ConcTr(0) = m_Data.Ccell(i, j, 0)
@@ -501,6 +501,11 @@ Public Class cSpaceSolver
                 Else
                     RelFitness(i, j, iGrp) = -2.0F * m_PathData.PB(iGrp)
                 End If
+
+                Me.ResultsByGroup(eSpaceResultsGroups.FishingMort, iGrp) += FishTime(iGrp)
+                Me.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, iGrp) += Eatenby(iGrp) / (BB(iGrp) + 1.0E-20F)
+                Me.ResultsByGroup(eSpaceResultsGroups.PredMortRate, iGrp) += Eatenof(iGrp) / (BB(iGrp) + 1.0E-20F) 'eat / (Bprey + 1.0E-20F)
+
             Next
 
             For iGrp = 1 To m_Data.NGroups
@@ -1196,7 +1201,9 @@ Public Class cSpaceSolver
         'Next add flow from other detritus groups
         For i = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
             For j = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
-                If i <> j Then ToDetritus(j - m_PathData.NumLiving) = ToDetritus(j - m_PathData.NumLiving) + m_PathData.DetPassedProp(i) * Biomass(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
+                If i <> j Then
+                    ToDetritus(j - m_PathData.NumLiving) = ToDetritus(j - m_PathData.NumLiving) + m_PathData.DetPassedProp(i) * Biomass(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
+                End If
             Next
         Next
 
