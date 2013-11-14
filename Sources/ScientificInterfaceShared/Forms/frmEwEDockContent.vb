@@ -39,6 +39,7 @@ Namespace Forms
         Inherits DockContent
 
 #Region " Private variables "
+        'Bogus comment to get this file to update on the SVN server
 
         Private m_icoOrg As Icon = Nothing
         Private m_icoPulse As Icon = Nothing
