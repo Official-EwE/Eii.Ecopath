@@ -1404,7 +1404,7 @@ Public Class cPluginManager
     ''' <param name="EcospaceDataStructures"></param>
     ''' ---------------------------------------------------------------------------
     Public Function EcospaceInitRunCompleted(ByVal EcospaceDataStructures As Object) As Boolean
-        Return Me.TryInvokeMethod(GetType(IEcospaceRunCompletedPlugin), "EcospaceRunCompleted", New Object() {EcospaceDataStructures})
+        Return Me.TryInvokeMethod(GetType(IEcospaceInitRunCompletedPlugin), "EcospaceInitRunCompleted", New Object() {EcospaceDataStructures})
     End Function
 
     ''' ---------------------------------------------------------------------------
