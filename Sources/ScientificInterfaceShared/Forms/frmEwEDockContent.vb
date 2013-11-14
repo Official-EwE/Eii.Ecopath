@@ -39,7 +39,7 @@ Namespace Forms
         Inherits DockContent
 
 #Region " Private variables "
-
+        'WTF... force a merge...
         Private m_icoOrg As Icon = Nothing
         Private m_icoPulse As Icon = Nothing
         Private m_timerPulse As Timer = Nothing
