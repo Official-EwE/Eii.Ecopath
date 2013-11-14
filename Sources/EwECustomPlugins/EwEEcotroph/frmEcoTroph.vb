@@ -58,7 +58,16 @@ Public Class frmEcotroph
     Public Sub New()
         Me.InitializeComponent()
         Me.m_strRRoot = cSystemUtils.ApplicationSettingsPath
-        Me.m_strRPath = Path.Combine(Me.m_strRRoot, "R\bin\i386\r.exe")
+        'JG 14/11/2013 For all the profiles of all the students i can't install R for Ecopath (disk space and storing in the Roaming profile 
+        'is not good
+        'So if the R directory as been installed by the administrator i use this install instead of download and store in each roaming profiles
+
+        If (My.Computer.FileSystem.FileExists(Path.Combine(CurDir(), "R\bin\i386\r.exe"))) Then
+            Me.m_strRPath = Path.Combine(CurDir(), "R\bin\i386\r.exe")
+        Else
+            Me.m_strRPath = Path.Combine(Me.m_strRRoot, "R\bin\i386\r.exe")
+        End If
+
     End Sub
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
@@ -120,7 +129,19 @@ Public Class frmEcotroph
                 cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Installing local copy of R...", -1)
                 Try
                     Dim zip As New Ionic.Zip.ZipFile(ETdownload)
-                    zip.ExtractAll(Me.m_strRRoot)
+
+                    Dim fmsg2 As New cFeedbackMessage("Do you want to install the R for Ecotroph minimal application in the EwE directory (need administrator right) ? if no it will be install in your profile.", _
+                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                    fmsg2.Reply = eMessageReply.YES
+                    Me.UIContext.Core.Messages.SendMessage(fmsg2)
+                    If (fmsg2.Reply = eMessageReply.OK) Then
+                        zip.ExtractAll(CurDir())
+                        Me.m_strRPath = Path.Combine(CurDir(), "R\bin\i386\r.exe")
+                    Else
+                        zip.ExtractAll(Me.m_strRRoot)
+                        Me.m_strRPath = Path.Combine(Me.m_strRRoot, "R\bin\i386\r.exe")
+                    End If
+
                 Catch ex As Exception
 
                 End Try
@@ -1370,6 +1391,10 @@ Public Class frmEcotroph
 
 
     Private Sub result_pdf_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles result_pdf.DocumentCompleted
+
+    End Sub
+
+    Private Sub frmEcotroph_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
     End Sub
 End Class
