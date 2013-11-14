@@ -191,6 +191,52 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Cleans up a string of separated file extensions, eliminating duplicates
+        ''' and optionally sorting them.
+        ''' </summary>
+        ''' <param name="strExt">The <paramref name="cSeparator"/>-separated string of extensions to clean.</param>
+        ''' <param name="bIgnoreCase">Flag, indicating whether upper/lower case should be ignored.</param>
+        ''' <param name="cSeparator">The character that separates extentions.</param>
+        ''' <returns>A merged </returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function CleanupExtensions(ByVal strExt As String, _
+                                                 Optional ByVal bIgnoreCase As Boolean = True, _
+                                                 Optional ByVal cSeparator As Char = ";"c, _
+                                                 Optional ByVal bSort As Boolean = True) As String
+
+            Dim sb As New StringBuilder()
+            Dim lstrBits As New List(Of String)
+            Dim lstrFinal As New List(Of String)
+
+            lstrBits.AddRange(strExt.Split(cSeparator))
+
+            ' Add only unique new bits
+            For Each strNew As String In lstrBits
+                Dim bUnique As Boolean = True
+                For Each strOrg As String In lstrFinal
+                    bUnique = bUnique And (String.Compare(strNew, strOrg, bIgnoreCase) <> 0)
+                Next
+                If (bUnique = True) Then lstrFinal.Add(strNew)
+            Next
+
+            ' Sort if needed
+            If bSort Then lstrFinal.Sort()
+
+            ' Concoct final list
+            For i As Integer = 0 To lstrFinal.Count - 1
+                If Not String.IsNullOrWhiteSpace(lstrFinal(i)) Then
+                    If (sb.Length > 0) Then sb.Append(cSeparator)
+                    sb.Append(lstrFinal(i))
+                End If
+            Next
+
+            ' Done
+            Return sb.ToString
+
+        End Function
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Create a backup copy of a file.
@@ -226,6 +272,7 @@ Namespace Utilities
                 File.SetAttributes(strDest, attributes)
                 Return True
             Catch ex As Exception
+                ' Whoah!
             End Try
             Return False
 

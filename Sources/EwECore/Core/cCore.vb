@@ -694,6 +694,7 @@ Public Class cCore
     Public Shared ReadOnly Property Version As String
         Get
             Try
+                ' ToDo_JS: globalize this
                 Dim an As Reflection.AssemblyName = cAssemblyUtils.GetAssemblyName(GetType(cCore))
                 Return String.Format("{0} (compiled {1})", cAssemblyUtils.GetVersion(an), cAssemblyUtils.GetCompileDate(an).ToShortDateString)
             Catch ex As Exception
@@ -1279,6 +1280,7 @@ Public Class cCore
 
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
             Me.m_EcoPath.EcopathData = Me.m_EcoPathData
+
 
             'protect against error loading the validators
             Try
@@ -3218,6 +3220,7 @@ Public Class cCore
         ' Only perform a total close if not reopening for the same datasource
         If Not Me.CloseModel(Not Object.ReferenceEquals(ds, Me.DataSource)) Then Return False
 
+        Me.m_EcoPath.RunState = Ecopath.eEcopathRunState.NotRun
         Me.m_EcoPathData.ActiveEcosimScenario = -1
         Me.m_EcoPathData.ActiveEcospaceScenario = -1
         Me.m_EcoPathData.ActiveEcotracerScenario = -1
@@ -4906,7 +4909,16 @@ Public Class cCore
                 'Assuming here that if EcoPath returned false it has already sent a message that explains the problem 
                 'No need to send another message
                 cLog.Write(Me.ToString & ".RunEcoPath() Failed to Estimate Parameters.")
+
                 bSuccessEcopath = True
+                bSuccessPSD = False
+
+                If m_EcoPath.RunState = Ecopath.eEcopathRunState.Error Or _
+                    m_EcoPath.RunState = Ecopath.eEcopathRunState.InValidInitialization Then
+                    'Only return false if there was an error
+                    bSuccessEcopath = False
+                    bSuccessPSD = False
+                End If
             End If
 
         Catch ex As Exception
@@ -4915,9 +4927,10 @@ Public Class cCore
             m_publisher.AddMessage(msg)
 
             cLog.Write(Me.ToString & ".RunEcoPath() Error. " & ex.Message)
-            Debug.Assert(False)
             bSuccessEcopath = False
             bSuccessPSD = False
+            'Set the run state to Error
+            m_EcoPath.RunState = Ecopath.eEcopathRunState.Error
         End Try
 
         ' Did Ecopath run succesful?
@@ -4925,7 +4938,9 @@ Public Class cCore
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
             m_publisher.AddMessage(msg)
 
-            isModelBalanced = Me.m_EcoPath.CheckIfEEsAreOK(bSendMessage:=False)
+            'Is the model balanced
+            isModelBalanced = False
+            If m_EcoPath.RunState = Ecopath.eEcopathRunState.ValidEE Then isModelBalanced = True
 
             ' Update core state monitor
             Me.m_StateMonitor.SetEcopathCompleted()
@@ -8481,7 +8496,7 @@ Public Class cCore
     Public Function EcospaceTimestepToAbsoluteTime(ByVal iTime As Integer) As DateTime
 
         ' Translate ecospace time step to year and month
-        Dim sTimeStepYearFraction As Single = (iTime - 1) * Me.m_EcoSpaceData.TimeStep
+        Dim sTimeStepYearFraction As Single = CSng((iTime - 1) * Me.m_EcoSpaceData.TimeStep)
         Dim iTimeStepYear As Integer = CInt(Math.Floor(sTimeStepYearFraction))
         Dim iTimeStepMonth As Integer = CInt(((sTimeStepYearFraction - iTimeStepYear) * cCore.N_MONTHS))
 
@@ -8527,8 +8542,8 @@ Public Class cCore
     ''' By default Ecospace is run on a separate thread. If RunOnThread = False Ecospace will run on the same thread as the calling process.
     ''' </param>
     ''' <remarks>
-    ''' If RunOnThread = True (default behaviour) then RunEcoSpace(...) is run asynchronously, will return immediately after starting Ecospace on a separate thread.
-    ''' Once the Ecospace run completes the <see cref="StateMonitor">cCore.StateMonitor()</see> will fire a CoreExecutionStateEvent(.
+    ''' If RunOnThread = True (default behaviour) then RunEcoSpace(...) is run asynchronously, it will return immediately after starting Ecospace on a separate thread.
+    ''' Once the Ecospace run completes the <see cref="StateMonitor">cCore.StateMonitor()</see> will fire a CoreExecutionStateEvent().
     ''' </remarks>
     ''' <returns>
     ''' If RunOnThread = True then True if a new thread was started. False otherwise. 
@@ -8813,7 +8828,7 @@ Public Class cCore
         Try
 
             m_spaceresults.iTimeStep = iTime
-            m_spaceresults.TimeStepinYears = m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep
+            m_spaceresults.TimeStepinYears = CSng(m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep)
 
             m_spaceresults.ComputeSumEffortMap()
 
@@ -8821,6 +8836,13 @@ Public Class cCore
             For igrp As Integer = 1 To nGroups
                 m_spaceresults.Biomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
                 m_spaceresults.RelativeBiomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTime)
+
+                'Make these relative to base values
+                m_spaceresults.FishingMort(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, iTime) / Me.m_EcoSpaceData.BaseFishMort(igrp)
+                m_spaceresults.ConsumptRate(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, iTime) / Me.m_EcoSpaceData.BaseConsump(igrp)
+                m_spaceresults.PredMortRate(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, iTime) / Me.m_EcoSpaceData.BasePredMort(igrp)
+                m_spaceresults.Catch(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iTime) / Me.m_EcoSpaceData.BaseCatch(igrp)
+
                 If m_Ecospace.ContaiminantTracerData.EcoSpaceConSimOn Then
                     m_spaceresults.ConcMax(igrp) = m_Ecospace.ContaiminantTracerData.ConcMax(igrp)
                 End If
@@ -13671,26 +13693,32 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' The Plugin Manager has caught an exception thrown by a plugin
+    ''' The Plug-in Manager has caught an exception thrown by a plugin.
     ''' </summary>
-    ''' <param name="PluginException"></param>
+    ''' <param name="ex">The <see cref="cPluginException"/> that was thrown.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_PluginException(ByVal PluginException As cPluginException) _
+    Private Sub OnPluginException(ByVal ex As cPluginException) _
         Handles m_pluginManager.PluginException
 
-        If PluginException.Assembly.AlwaysEnabled Then
-            Dim msg As cMessage = New cMessage(PluginException.Message, eMessageType.ErrorEncountered, eCoreComponentType.External, eMessageImportance.Warning)
-            m_publisher.SendMessage(msg)
-        Else
-            Dim fmsg As New cFeedbackMessage( _
-                    String.Format(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, PluginException.Message, Environment.NewLine), _
-                    eCoreComponentType.External, eMessageType.Any, _
-                    eMessageImportance.Warning, _
-                    eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
-
-            m_publisher.SendMessage(fmsg)
-            PluginException.Assembly.Enabled = (fmsg.Reply = eMessageReply.NO)
+        If (ex.Assembly Is Nothing) Then
+            Debug.Assert(False)
+            Return
         End If
+
+        If ex.Assembly.AlwaysEnabled Then
+            Dim msg As cMessage = New cMessage(ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.External, eMessageImportance.Warning)
+            Me.m_publisher.SendMessage(msg)
+            Return
+        End If
+
+        Dim fmsg As New cFeedbackMessage( _
+                String.Format(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, ex.Message, Environment.NewLine), _
+                eCoreComponentType.External, eMessageType.Any, _
+                eMessageImportance.Warning, _
+                eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
+
+        Me.m_publisher.SendMessage(fmsg)
+        ex.Assembly.Enabled = (fmsg.Reply = eMessageReply.NO)
 
     End Sub
 

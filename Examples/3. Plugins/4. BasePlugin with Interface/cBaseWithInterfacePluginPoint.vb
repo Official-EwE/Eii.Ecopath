@@ -219,7 +219,7 @@ Public Class cBaseWithInterfacePluginPoint
         System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
 
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
-        Debug.Assert(Me.m_EcoSimData IsNot Nothing, Me.ToString + ".EcosimInitialized() Failed to get EcosimDataStructures.")
+        Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
     End Sub
 
 #End Region

@@ -3940,21 +3940,23 @@ Namespace DataSources
             Dim iFishMortShapeID As Integer = -1
 
             readerGroup = Me.m_db.GetReader(String.Format("SELECT GroupID, FishMortShapeID FROM EcosimScenarioGroup WHERE (EcopathGroupID={0}) AND (ScenarioID={1})", iEcopathGroupID, iScenarioID))
-            If readerGroup IsNot Nothing Then
+            If (readerGroup IsNot Nothing) Then
+
+                iGroupID = -1
+                iFishMortShapeID = -1
+                bGroupFound = False
+
                 Try
-                    readerGroup.Read()
-
-                    ' Try to find existing Sim group ID
-                    iGroupID = CInt(readerGroup(0))
-                    ' Try to find existing Fish mort shape ID
-                    iFishMortShapeID = CInt(readerGroup(1))
-
-                    ' It this did not fail we have found a group, whoot! whoot!
-                    bGroupFound = True
+                    If readerGroup.Read() Then
+                        ' Try to find existing Sim group ID
+                        iGroupID = CInt(readerGroup(0))
+                        ' Try to find existing Fish mort shape ID
+                        iFishMortShapeID = CInt(readerGroup(1))
+                        ' It this did not fail we have found a group, whoot! whoot!
+                        bGroupFound = True
+                    End If
                 Catch ex As InvalidOperationException
-                    iGroupID = -1
-                    iFishMortShapeID = -1
-                    bGroupFound = False
+                    ' Kaboom
                 End Try
                 Me.m_db.ReleaseReader(readerGroup)
             End If

@@ -1,0 +1,208 @@
+﻿
+' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
+
+Option Strict On
+Imports System.IO
+Imports EwECore
+Imports EwECore.Ecopath
+Imports EwECore.Ecosim
+Imports EwEPlugin
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+
+Imports EwECore.SpatialData
+Imports EwESpatialAssetsPlugin
+
+#End Region
+
+
+Public Class cSpatialDataLoader
+
+#Region "Private Variables"
+
+    Private m_core As cCore
+    Private m_plugin As cDepthChangePluginPoint
+    'For now the name of the Depth Dataset is hardwired
+    'this may have to change
+    Private m_DepthDSName As String = "Roberts Bank Depth"
+    Private m_SpatialConfigFile As String
+
+#End Region
+
+#Region "Public Stuff"
+
+#Region "Methods"
+
+    Public Sub New(thePlugin As cDepthChangePluginPoint)
+
+        Me.m_core = thePlugin.Core
+        Me.m_plugin = thePlugin
+
+    End Sub
+
+
+    Public Function LoadSpatialConfigFile(theConfigFile As String) As Boolean
+        Dim bLoaded As Boolean = False
+
+        Try
+            Me.SpatialConfigFile = theConfigFile
+            If Me.ReadSpatialConfigFile() Then
+                bLoaded = True
+            End If 'Me.m_SpatialDataLoader.LoadSpatialConfigFile(filename)
+
+        Catch ex As Exception
+            bLoaded = False
+        End Try
+
+        Debug.Assert(bLoaded, "Failed to Configure and Load Spatial data.")
+        Return bLoaded
+    End Function
+
+#End Region
+
+#Region "Properties"
+
+    Public Property DepthDataSetName As String
+        Get
+            Return Me.m_DepthDSName
+        End Get
+        Set(value As String)
+            Me.m_DepthDSName = value
+        End Set
+    End Property
+
+   
+    Public Property SpatialConfigFile As String
+        Get
+            Return Me.m_SpatialConfigFile
+        End Get
+        Set(value As String)
+            Me.m_SpatialConfigFile = value
+        End Set
+    End Property
+
+
+    Public ReadOnly Property DataSets() As List(Of EwEUtils.SpatialData.ISpatialDataSet)
+        Get
+            Return Me.Plugin.Core.SpatialDataConnectionManager.DatasetManager.ToList
+        End Get
+    End Property
+
+
+
+#End Region
+
+#End Region
+
+#Region "Private Stuff"
+
+
+    Private Function ReadSpatialConfigFile() As Boolean
+
+        Try
+
+            If Not File.Exists(Me.SpatialConfigFile) Then
+                Debug.Assert(False, Me.ToString + ".LoadSpatialConfigFile() File does not exist.")
+                Return False
+            End If
+
+            If Me.m_core.SpatialDataConnectionManager.LoadSystemSettings(Me.SpatialConfigFile) Then
+                Return True
+            End If
+            Return False
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString + ".LoadSpatialConfigFile() Exception: " + ex.Message)
+        End Try
+
+        'oppsssss
+        Return False
+
+    End Function
+
+
+    Public Function InitDepthDataSet() As Boolean
+        Dim bReturn As Boolean = False
+
+        Try
+            Dim DepthAdapter As cDepthDataAdapter
+            Dim DataSet As EwEUtils.SpatialData.ISpatialDataSet
+            Dim Converter As EwEUtils.SpatialData.ISpatialDataConverter
+
+            DepthAdapter = New cDepthDataAdapter(Me.Plugin)
+            Debug.Assert(DepthAdapter IsNot Nothing, Me.ToString + ".InitSpatialData() Failed to create Adapter.")
+
+            DataSet = Me.getDataSetByName(Me.DepthDataSetName)
+            Converter = Me.getConverterByType(GetType(EwESpatialAssetsPlugin.SpatialData.cRasterConverterPlugin))
+
+            If (Not DepthAdapter Is Nothing) And (Not DataSet Is Nothing) And (Not Converter Is Nothing) Then
+                'Ok managed to create all the objects
+                'Now hook them up
+
+                'I'm not sure about this indexing for the dataset and converter
+                'it seems it will not use the index when adding an item
+                DepthAdapter.Dataset(0) = DataSet
+                DepthAdapter.Converter(0) = Converter
+                Plugin.Core.SpatialDataConnectionManager.AddAdapter(DepthAdapter)
+                bReturn = True
+            End If
+
+        Catch ex As Exception
+            bReturn = False
+
+        End Try
+
+        Debug.Assert(bReturn, Me.ToString + ".InitSpatialData() Failed to initialize the spatial data.")
+        Return bReturn
+    End Function
+
+    Private Function getConverterByType(ConverterType As Type) As EwEUtils.SpatialData.ISpatialDataConverter
+        For Each converter In Plugin.Core.SpatialDataConnectionManager.ConverterTemplates
+            If converter.GetType Is ConverterType Then
+                Return converter
+            End If
+        Next
+        Debug.Assert(False, Me.ToString + ".getConverterByType() Failed to find Converter " + ConverterType.ToString)
+        Return Nothing
+    End Function
+
+
+
+    Private Function getDataSetByName(name As String) As EwEUtils.SpatialData.ISpatialDataSet
+
+        For Each ds As EwEUtils.SpatialData.ISpatialDataSet In Plugin.Core.SpatialDataConnectionManager.DatasetManager
+            If String.Compare(ds.DisplayName, name) = 0 Then
+                Return ds
+            End If
+        Next ds
+        Debug.Assert(False, Me.ToString + ".getDataSetByName() Failed to find dataset " + name)
+        Return Nothing
+    End Function
+
+    Private ReadOnly Property Plugin As cDepthChangePluginPoint
+        Get
+            Return Me.m_plugin
+        End Get
+    End Property
+
+
+#End Region
+
+End Class

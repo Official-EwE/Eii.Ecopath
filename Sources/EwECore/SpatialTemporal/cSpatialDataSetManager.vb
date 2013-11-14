@@ -112,16 +112,20 @@ Namespace SpatialData
             Dim xa As XmlAttribute = Nothing
             Dim ds As ISpatialDataSet = Nothing
             Dim an As AssemblyName = Nothing
+            Dim bReturn As Boolean = False
 
             If (bClearFirst) Then Me.Clear()
             If (String.IsNullOrEmpty(strFile)) Then strFile = cSpatialDataSetManager.ConfigFileName()
 
-            If Not File.Exists(strFile) Then Return True
+            'jb if it failed to find the config file shouldn't it return False
+            If Not File.Exists(strFile) Then Return False '  True
 
             ' Load datasets
             doc.Load(strFile)
 
             For Each xnRoot In doc.GetElementsByTagName("Datasets")
+                'Found a "Datasets" tag in the file
+                bReturn = True
                 For Each xn As XmlNode In xnRoot.ChildNodes
                     ds = Nothing
                     If (xn.Name = "Dataset") Then
@@ -148,6 +152,7 @@ Namespace SpatialData
 
                             Catch ex As Exception
                                 ds = Nothing
+                                bReturn = False
                             End Try
 
                             Dim bAdd As Boolean = False
@@ -162,7 +167,8 @@ Namespace SpatialData
                     End If
                 Next ' xn
             Next ' xnRoot
-            Return True
+
+            Return bReturn
 
         End Function
 
@@ -304,14 +310,8 @@ Namespace SpatialData
                 If Object.ReferenceEquals(ds, Me.m_dsIndex) Then Return
 
                 Try
-                    If (Me.m_threadIndex IsNot Nothing) Then
-                        If (Me.m_threadIndex.IsAlive) Then
-                            Try
-                                Me.m_threadIndex.Abort()
-                            Catch ex As Exception
-                                ' All good
-                            End Try
-                        End If
+                    If (Me.m_dsIndex IsNot Nothing) Then
+                        Me.m_dsIndex.StopIndexing()
                         Me.m_threadIndex = Nothing
                         Me.m_dsIndex = Nothing
                     End If
@@ -323,7 +323,8 @@ Namespace SpatialData
                 Me.m_dsIndex = ds
 
                 If (ds IsNot Nothing) Then
-                    If (ds.FractionIndexed() < 1.0!) Then
+                    Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
+                    If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
                         Me.m_dsIndex = ds
                         Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
                         Me.m_threadIndex.Priority = Threading.ThreadPriority.BelowNormal
@@ -373,10 +374,7 @@ Namespace SpatialData
                     Me.OnSpatialIndexUpdated(ds)
                 End If
                 Console.WriteLine("Done indexing " & ds.DisplayName)
-            Catch ex As Threading.ThreadAbortException
-                ' Ok, we're being expired
-                Console.WriteLine("Indexing terminated")
-            Catch ex As Exception
+             Catch ex As Exception
                 cLog.Write(ex, "cSpatialDatasetManager::IndexDatasetThread(" & ds.DisplayName & ")")
                 Console.WriteLine(ex.Message)
             End Try

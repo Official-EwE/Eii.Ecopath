@@ -108,8 +108,6 @@ Public Class frmNavigationPanel
         Me.m_nodeController = New cTreeViewNodeController()
         Me.m_nodeController.Attach(Me.m_uic, Me.m_tvNavigation)
 
-        If Not My.Settings.EnableSpatialFramework Then Me.RemoveNode("ndEcospaceExtData")
-
 #If Not Debug Then
         Me.RemoveNode("ndMSEBatch")
         Console.writeline("Removed MSE Batch node in release mode")

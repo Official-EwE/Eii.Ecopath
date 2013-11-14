@@ -1,27 +1,44 @@
-﻿Imports EwECore
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' EwE Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' GOTMLink plug-in Copyright 2013- Cefas, Lowestoft, UK.
+' ===============================================================================
+'
+
+#Region " Imports "
+
 Imports System.IO
+Imports System.Reflection
 Imports System.Text
 Imports System.Threading
-Imports System.Diagnostics
-Imports Microsoft.Win32
-Imports System.Reflection
 Imports Couplerlib
+Imports EwECore
+Imports Microsoft.Win32
+Imports ScientificInterfaceShared.Controls
+Imports System.Windows.Forms
 
-
-
-
+#End Region ' Imports
 
 Public Module GlobalCoupler
     Public cpglobal As CCouplerlib
 End Module
 
-
-
 Public Class FormGotmPluggin
 
     Public xx As CCouplerlib
-    Private m_core As cCore
-    Dim stationno As Integer
+    Private stationno As Integer
     'Dim fs As FileStream
     Private timebase As Double = 2436934.0
     Public hasrun, isnotended As Boolean
@@ -43,14 +60,14 @@ Public Class FormGotmPluggin
     Public EwEGOTMtimeratio As Integer
     Public cp As CCouplerlib
     Delegate Sub stadelegate(ByVal ib As Integer, ByVal ic As Integer)
-    Dim sta1 As stadelegate
-    Dim useextender As Integer
+    Private sta1 As stadelegate
+    Private useextender As Integer
     Public wx4, wx5, wx6 As Boolean
     Private usenetCDFfile As Boolean
     Public Specification As Xml.XmlDocument
-    Dim dictiname, Shortpathname As String
+    Private dictiname, Shortpathname As String
     Private maxbufferlen, currbufferlen As Integer
-    Dim stbuf() As String
+    Private stbuf() As String
     Private isrescale, isrescale2 As Boolean
     Private xdim, ydim As Integer
     Private TestDataPath As String
@@ -58,11 +75,11 @@ Public Class FormGotmPluggin
     Friend extenders As List(Of PluginExtenderBase.PluginExtenderBase)
 
     Friend assembles As List(Of Assembly)
-    Dim curtime As Double
-    Dim slabsize As Integer
+    Private curtime As Double
+    Private slabsize As Integer
     Private modelno, modelnox, modelnix, modeliix, modeliox, modelni As List(Of Integer)
     Private modelio, modelii As List(Of Integer)
-    Dim regkey1, regkey2 As RegistryKey
+    Private regkey1, regkey2 As RegistryKey
 
 
 
@@ -71,13 +88,12 @@ Public Class FormGotmPluggin
     ''' <summary>
     ''' New constructor, is called everytime this object is created
     ''' </summary>
-    Public Sub New(ByVal Core As cCore)
+    Public Sub New(uic As cUIContext)
 
         Dim typ As Type()
         Dim consinfo As ConstructorInfo
         isinitialized = False
         EwEGOTMtimeratio = 1
-        ' This call is required by the Windows Form Designer.
         InitializeComponent()
         NumericUpDown1.Value = EwEGOTMtimeratio
         Status(0, 0)
@@ -132,24 +148,27 @@ Public Class FormGotmPluggin
         OpenFileDialog1.FileName = TestDataPath + "\GOTMEWELink4.xml"
         OpenFileDialog1.FilterIndex = 3
         OpenFileDialog1.RestoreDirectory = True
-        TextBox1.Text = OpenFileDialog1.FileName()
+        m_tbxLinkFile.Text = OpenFileDialog1.FileName()
         hasrun = False
-        ' Add any initialization after the InitializeComponent() call.
-        m_core = Core
+        Me.UIContext = uic
         sta1 = New stadelegate(AddressOf Status)
         maxbufferlen = 20
         currbufferlen = 1
         ReDim stbuf(maxbufferlen + 1)
     End Sub
 
-   
+
     Public Sub Status()
-        Invoke(sta1, plugin.GOTMstat, plugin.EwEstat)
+        If Me.InvokeRequired Then
+            Invoke(sta1, plugin.GOTMstat, plugin.EwEstat)
+        Else
+            Me.BeginInvoke(New MethodInvoker(AddressOf Status), New Object() {plugin.GOTMstat, plugin.EwEstat})
+        End If
     End Sub
 
     Public Sub Status(ByVal GS As Integer, ByVal ES As Integer)
-        TextBox4.Text = StatusT(GS)
-        TextBox3.Text = StatusT(ES)
+        m_tbxGOTMStatus.Text = StatusT(GS)
+        m_tbxEwEStatus.Text = StatusT(ES)
         Update()
     End Sub
 
@@ -159,11 +178,11 @@ Public Class FormGotmPluggin
     End Sub
 
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        Me.OpenFileDialog1.ShowDialog()
-        TextBox1.Text = OpenFileDialog1.FileName()
-
-
+    Private Sub OnChooseLinkFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnChooseLinkFile.Click
+        If Me.OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Me.m_tbxLinkFile.Text = OpenFileDialog1.FileName()
+        End If
     End Sub
 
 
@@ -175,7 +194,7 @@ Public Class FormGotmPluggin
         stationno = cp.ps.AddStation(Connectname)
         cp.outputmessage.setdelegate(Me, New textedelegate(AddressOf ConsoleOutputText), True)
         cp.errormessage.setdelegate(Me, New textedelegate(AddressOf ErrorOutputText), True)
-        dictiname = Path.GetDirectoryName(TextBox1.Text)
+        dictiname = Path.GetDirectoryName(m_tbxLinkFile.Text)
         thread.Sleep(50)
         If (stationno > 0) Then
             cp.ps.Establishcomms(stationno, New String("HOST"))
@@ -254,7 +273,7 @@ Public Class FormGotmPluggin
                 cp.SetStartDate(DateTimePicker1.Value())
                 plugin.gearratio = NumericUpDown1.Value
             End If
-            dictiname = Path.GetDirectoryName(TextBox1.Text)
+            dictiname = Path.GetDirectoryName(m_tbxLinkFile.Text)
             'fs = File.Create(TestDataPath + "\bfmoutputs.txt")
             wx4 = wx5 = wx6 = False
             isedited = False
@@ -397,8 +416,9 @@ Public Class FormGotmPluggin
     End Function
 
     Public Sub Progressbar()
-        Me.ProgressBar1.Value = Int(Math.Round(nprogress * 100))
-        Me.Update()
+        cApplicationStatusNotifier.UpdateProgress(Me.Core, "", nprogress)
+        'Me.ProgressBar1.Value = Int(Math.Round(nprogress * 100))
+        'Me.Update()
     End Sub
 
     Public Function orgrefs() As Integer()
@@ -516,7 +536,7 @@ Public Class FormGotmPluggin
 
     Public Function setstep(ByRef duration As Integer, ByRef StepSize As Double, ByVal gearratioi As Integer, ByVal isnet As Boolean, ByVal istation As Integer, ByVal connectname As String) As Integer
         Dim slabsize As Integer
-        slabsize = plugin.setstep(duration, StepSize, gearratioi, isnet, istation, connectname, dictiname, TextBox1.Text, NumericUpDown2.Value, NumericUpDown3.Value)
+        slabsize = plugin.setstep(duration, StepSize, gearratioi, isnet, istation, connectname, dictiname, m_tbxLinkFile.Text, NumericUpDown2.Value, NumericUpDown3.Value)
         Return (slabsize)
     End Function
 
@@ -531,7 +551,7 @@ Public Class FormGotmPluggin
             cp.ps.Setstagestatus(maprotocols.Returntimestep, cp.ps.pollmessage.sc)
             If cp.ps.pollmessage.sc = mastatuscodes.Ok Then
                 Dim timepart() As String = cp.ps.pollmessage.getmessage().Split(":")
-                slabsize = plugin.setstep(Convert.ToInt32(timepart(1)) - Convert.ToInt32(timepart(0)), Convert.ToDouble(timepart(2)), EwEGOTMtimeratio, True, stationno, Connectname, dictiname, TextBox1.Text, Me.NumericUpDown2.Value, NumericUpDown3.Value)
+                slabsize = plugin.setstep(Convert.ToInt32(timepart(1)) - Convert.ToInt32(timepart(0)), Convert.ToDouble(timepart(2)), EwEGOTMtimeratio, True, stationno, Connectname, dictiname, m_tbxLinkFile.Text, Me.NumericUpDown2.Value, NumericUpDown3.Value)
                 plugin.GOTMstat = 1 'Ready to go
                 Status()
             End If
@@ -582,7 +602,7 @@ Public Class FormGotmPluggin
         EwEGOTMtimeratio = NumericUpDown1.Value
     End Sub
 
-    Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox1.TextChanged
+    Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tbxLinkFile.TextChanged
 
     End Sub
 
@@ -625,10 +645,6 @@ Public Class FormGotmPluggin
             cp.SetStartDate(DateTimePicker1.Value())
         End If
     End Sub
-
-
-
-
 
     Public Sub StoreInRegistry()
         For n As Integer = 0 To extenders.Count - 1

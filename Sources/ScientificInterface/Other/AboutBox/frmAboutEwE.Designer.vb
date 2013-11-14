@@ -73,16 +73,18 @@ Namespace Other
             Me.m_tlpTechnical = New System.Windows.Forms.TableLayoutPanel()
             Me.m_pbFish3 = New System.Windows.Forms.PictureBox()
             Me.m_tlpTechnicalDetails = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_lbTechnical = New System.Windows.Forms.Label()
+            Me.m_lblOSVersion = New System.Windows.Forms.Label()
+            Me.m_lblNetVersion = New System.Windows.Forms.Label()
             Me.m_gridTechnical = New ScientificInterface.gridAboutEwE()
+            Me.m_tsTechnical = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnShowEwEAssembliesOnly = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
             Me.m_tpDatabase = New System.Windows.Forms.TabPage()
             Me.m_tlpDatabase = New System.Windows.Forms.TableLayoutPanel()
             Me.m_pbFish4 = New System.Windows.Forms.PictureBox()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblDatabase = New System.Windows.Forms.Label()
             Me.m_gridDatabase = New ScientificInterface.gridDatabase()
-            Me.m_lblNetVersion = New System.Windows.Forms.Label()
-            Me.m_lblOSVersion = New System.Windows.Forms.Label()
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpDetails.SuspendLayout()
@@ -106,6 +108,7 @@ Namespace Other
             Me.m_tlpTechnical.SuspendLayout()
             CType(Me.m_pbFish3, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpTechnicalDetails.SuspendLayout()
+            Me.m_tsTechnical.SuspendLayout()
             Me.m_tpDatabase.SuspendLayout()
             Me.m_tlpDatabase.SuspendLayout()
             CType(Me.m_pbFish4, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -350,14 +353,19 @@ Namespace Other
             resources.ApplyResources(Me.m_tlpTechnicalDetails, "m_tlpTechnicalDetails")
             Me.m_tlpTechnicalDetails.Controls.Add(Me.m_lblOSVersion, 0, 2)
             Me.m_tlpTechnicalDetails.Controls.Add(Me.m_lblNetVersion, 0, 2)
-            Me.m_tlpTechnicalDetails.Controls.Add(Me.m_lbTechnical, 0, 0)
             Me.m_tlpTechnicalDetails.Controls.Add(Me.m_gridTechnical, 0, 1)
+            Me.m_tlpTechnicalDetails.Controls.Add(Me.m_tsTechnical, 0, 0)
             Me.m_tlpTechnicalDetails.Name = "m_tlpTechnicalDetails"
             '
-            'm_lbTechnical
+            'm_lblOSVersion
             '
-            resources.ApplyResources(Me.m_lbTechnical, "m_lbTechnical")
-            Me.m_lbTechnical.Name = "m_lbTechnical"
+            resources.ApplyResources(Me.m_lblOSVersion, "m_lblOSVersion")
+            Me.m_lblOSVersion.Name = "m_lblOSVersion"
+            '
+            'm_lblNetVersion
+            '
+            resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
+            Me.m_lblNetVersion.Name = "m_lblNetVersion"
             '
             'm_gridTechnical
             '
@@ -373,10 +381,13 @@ Namespace Other
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridTechnical.CustomSort = False
+            Me.m_gridTechnical.DataName = "EwE components"
             Me.m_gridTechnical.FixedColumnWidths = False
             Me.m_gridTechnical.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridTechnical.GridToolTipActive = True
+            Me.m_gridTechnical.IsLayoutSuspended = False
             Me.m_gridTechnical.Name = "m_gridTechnical"
+            Me.m_gridTechnical.ShowEwEComponentsOnly = True
             Me.m_gridTechnical.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                 Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -387,6 +398,26 @@ Namespace Other
                 Or SourceGrid2.GridSpecialKeys.Escape) _
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridTechnical.UIContext = Nothing
+            '
+            'm_tsTechnical
+            '
+            Me.m_tsTechnical.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsTechnical.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnShowEwEAssembliesOnly, Me.ToolStripLabel1})
+            resources.ApplyResources(Me.m_tsTechnical, "m_tsTechnical")
+            Me.m_tsTechnical.Name = "m_tsTechnical"
+            Me.m_tsTechnical.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnShowEwEAssembliesOnly
+            '
+            Me.m_tsbnShowEwEAssembliesOnly.CheckOnClick = True
+            Me.m_tsbnShowEwEAssembliesOnly.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnShowEwEAssembliesOnly, "m_tsbnShowEwEAssembliesOnly")
+            Me.m_tsbnShowEwEAssembliesOnly.Name = "m_tsbnShowEwEAssembliesOnly"
+            '
+            'ToolStripLabel1
+            '
+            Me.ToolStripLabel1.Name = "ToolStripLabel1"
+            resources.ApplyResources(Me.ToolStripLabel1, "ToolStripLabel1")
             '
             'm_tpDatabase
             '
@@ -436,9 +467,11 @@ Namespace Other
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridDatabase.CustomSort = False
+            Me.m_gridDatabase.DataName = "grid content"
             Me.m_gridDatabase.FixedColumnWidths = False
             Me.m_gridDatabase.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridDatabase.GridToolTipActive = True
+            Me.m_gridDatabase.IsLayoutSuspended = False
             Me.m_gridDatabase.Name = "m_gridDatabase"
             Me.m_gridDatabase.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -450,16 +483,6 @@ Namespace Other
                 Or SourceGrid2.GridSpecialKeys.Escape) _
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatabase.UIContext = Nothing
-            '
-            'm_lblNetVersion
-            '
-            resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
-            Me.m_lblNetVersion.Name = "m_lblNetVersion"
-            '
-            'm_lblOSVersion
-            '
-            resources.ApplyResources(Me.m_lblOSVersion, "m_lblOSVersion")
-            Me.m_lblOSVersion.Name = "m_lblOSVersion"
             '
             'frmAboutEwE
             '
@@ -505,6 +528,9 @@ Namespace Other
             Me.m_tlpTechnical.PerformLayout()
             CType(Me.m_pbFish3, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpTechnicalDetails.ResumeLayout(False)
+            Me.m_tlpTechnicalDetails.PerformLayout()
+            Me.m_tsTechnical.ResumeLayout(False)
+            Me.m_tsTechnical.PerformLayout()
             Me.m_tpDatabase.ResumeLayout(False)
             Me.m_tlpDatabase.ResumeLayout(False)
             Me.m_tlpDatabase.PerformLayout()
@@ -514,7 +540,6 @@ Namespace Other
 
         End Sub
         Private WithEvents m_pbFish3 As System.Windows.Forms.PictureBox
-        Private WithEvents m_lbTechnical As System.Windows.Forms.Label
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_rtbAcknowledgements As System.Windows.Forms.RichTextBox
         Private WithEvents m_pbFish2 As System.Windows.Forms.PictureBox
@@ -556,6 +581,9 @@ Namespace Other
         Private WithEvents m_lbLicense As System.Windows.Forms.Label
         Private WithEvents m_lblOSVersion As System.Windows.Forms.Label
         Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
+        Private WithEvents m_tsTechnical As ScientificInterfaceShared.Controls.cEwEToolstrip
+        Private WithEvents m_tsbnShowEwEAssembliesOnly As System.Windows.Forms.ToolStripButton
+        Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
 
     End Class
 End Namespace

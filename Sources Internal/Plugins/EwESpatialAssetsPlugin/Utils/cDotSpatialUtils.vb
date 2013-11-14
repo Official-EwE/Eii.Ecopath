@@ -32,6 +32,7 @@ Imports DotSpatial.Topology
 Imports System.Drawing
 Imports EwEUtils.SpatialData
 Imports EwESpatialAssetsPlugin.SpatialData
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -115,7 +116,7 @@ Public Class cDotSpatialUtils
     ''' <summary>
     ''' Read a file from DotSpatial.
     ''' </summary>
-    ''' <param name="strFileName"></param>
+    ''' <param name="strFileName">The file to open.</param>
     ''' <returns>A <see cref="IDataSet"/></returns>
     ''' <remarks>
     ''' <para>DotSpatial allows files to be loaded in a gazillion different ways, 
@@ -126,7 +127,7 @@ Public Class cDotSpatialUtils
     ''' rasters, which have unwanted effects on spatial operations.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Shared Function OpenFile(strFileName As String) As IDataSet
+    Public Shared Function OpenFile(ByVal strFileName As String) As IDataSet
 
         ' Just to make sure
         cDotSpatialUtils.InitDotSpatial()
@@ -139,6 +140,33 @@ Public Class cDotSpatialUtils
         End If
 
         Return ds
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the data format for a given file.
+    ''' </summary>
+    ''' <param name="strFileName"></param>
+    ''' <returns>A data format.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function GetDataFormat(ByVal strFileName As String) As eSpatialDataFormatFlags
+
+        ' Just to make sure
+        cDotSpatialUtils.InitDotSpatial()
+
+        Dim man As IDataManager = DataManager.DefaultDataManager
+        Select Case man.GetFileFormat(strFileName)
+            Case DataFormat.Image
+                Return eSpatialDataFormatFlags.Image
+            Case DataFormat.Raster
+                Return eSpatialDataFormatFlags.Raster
+            Case DataFormat.Vector
+                Return eSpatialDataFormatFlags.Vector
+            Case DataFormat.Custom
+                ' NOP
+        End Select
+        Return eSpatialDataFormatFlags.Incompatible
 
     End Function
 
@@ -161,26 +189,31 @@ Public Class cDotSpatialUtils
         ' Just to make sure
         cDotSpatialUtils.InitDotSpatial()
 
-        Dim lstrExts As New List(Of String)
         Dim sb As New StringBuilder()
         Dim man As IDataManager = DataManager.DefaultDataManager
         Dim bUseProvider As Boolean = False
+        Dim lFilters() As String = New String() {"", "", ""}
+        Dim lFilterNames() As String = New String() {My.Resources.DIALOGFILTER_RASTER, My.Resources.DIALOGFILTER_IMAGE, My.Resources.DIALOGFILTER_VECTOR}
 
         For Each prov In man.DataProviders
-            bUseProvider = (bRaster And TypeOf prov Is IRasterProvider) Or _
-                           (bImage And TypeOf prov Is IImageDataProvider) Or _
-                           (bVector And TypeOf prov Is IVectorProvider)
 
-            If bUseProvider Then
-                Dim strFilter As String = CStr(cSystemUtils.IIF(bRead, prov.DialogReadFilter, prov.DialogWriteFilter))
-                lstrExts.Add(strFilter)
+            Dim astrFilter() As String = CStr(cSystemUtils.IIF(bRead, prov.DialogReadFilter, prov.DialogWriteFilter)).Split("|"c)
+
+            If (astrFilter.Length = 2) Then
+                If (TypeOf prov Is IRasterProvider) And bRaster Then lFilters(0) &= (";" & astrFilter(1))
+                If (TypeOf prov Is IImageDataProvider) And bImage Then lFilters(1) &= (";" & astrFilter(1))
+                If (TypeOf prov Is IVectorProvider) And bVector Then lFilters(2) &= (";" & astrFilter(1))
             End If
         Next
 
         ' Concoct total
-        For Each strExt As String In lstrExts
-            If (sb.Length > 0) Then sb.Append("|")
-            sb.Append(strExt)
+        For i As Integer = 0 To 2
+            If Not String.IsNullOrEmpty(lFilters(i)) Then
+                If sb.Length > 0 Then sb.Append("|"c)
+                sb.Append(lFilterNames(i))
+                sb.Append("|")
+                sb.Append(cFileUtils.CleanupExtensions(lFilters(i)))
+            End If
         Next
 
         Return sb.ToString

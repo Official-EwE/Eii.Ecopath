@@ -1740,7 +1740,7 @@ Namespace MSE
             'HACK WARNING
             'BatchMode (cMSEBatchManager) needs to be able to set FixedF() and TAC() values to zero and still have them considered a valid value
             'It does this by setting values to Epsilon 1.401298E-45 when the user enters zero
-            'This is interpreted as >0 then rounded off too zero
+            'This is interpreted as >0 then rounded off to zero
             'this allows the interface and database to remain the same Zero means TAC() and FixedF() are NOT USED.
             'It would be tricky to fix this with a flag and not break existing models.
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

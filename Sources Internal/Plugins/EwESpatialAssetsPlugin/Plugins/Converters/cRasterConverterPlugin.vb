@@ -21,7 +21,6 @@
 Option Strict On
 Imports System.Collections.Generic
 Imports System.Drawing
-Imports DotSpatial.Analysis
 Imports DotSpatial.Data
 Imports EwECore
 Imports EwEPlugin
@@ -66,9 +65,18 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.IsConfigured"/>
         ''' -----------------------------------------------------------------------
-        Function IsConfigured() As Boolean _
+        Public Function IsConfigured() As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured
             Return True
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataConverter.IsCompatible"/>
+        ''' -----------------------------------------------------------------------
+        Public Function IsCompatible(ds As ISpatialDataSet) As Boolean _
+            Implements ISpatialDataConverter.IsCompatible
+            If (ds Is Nothing) Then Return False
+            Return (ds.DataFormat = eSpatialDataFormatFlags.Raster)
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -164,9 +172,6 @@ Namespace SpatialData
                             rs.Close()
                             rs = rstResult
 
-                            'Dim wrap As New cSpatialRaster(rstResult)
-                            'wrap.Save("D:\Nereus\EwE output\NCAdriaticSea_Fitted7502_Ecospace_Fouzaicorrected\Ecospace_new6 (Valid)\_debug_\extr.asc")
-
                             ' Log
                             Me.LogMessage(String.Format(My.Resources.OPERATION_EXTRACTRASTER, cDotSpatialUtils.FormatExtent(rs.Bounds), cDotSpatialUtils.FormatRasterGrid(rs)), eStatusFlags.ValueComputed)
                             ' Converted data must be cached
@@ -219,28 +224,10 @@ Namespace SpatialData
                     Return Nothing
                 End Try
 
-            ElseIf (TypeOf data Is IFeatureSet) Then
-                Try
-                    Dim fs As IFeatureSet = CType(data, IFeatureSet)
-
-                    ' Is attribute filter specified?
-                    If Not String.IsNullOrWhiteSpace(Me.m_strAttributeFilter) Then
-                        ' #Yes: extract features that match the filter
-                        Dim lFeatures As List(Of IFeature) = fs.SelectByAttribute(Me.m_strAttributeFilter)
-                        fs = New FeatureSet(lFeatures)
-                        Me.LogMessage(String.Format(My.Resources.OPERATION_EXTRACTPLOYGONS, Me.m_strAttributeFilter), eStatusFlags.ValueComputed)
-                    End If
-
-                    ' Rasterize the features
-                    rstResult = DotSpatial.Analysis.VectorToRaster.ToRaster(fs, dCellSize, Me.m_strAttributeName, strFile)
-                    rstResult.Close()
-                    Debug.Assert(rstResult IsNot Nothing)
-
-                    Me.LogMessage(String.Format(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
-
-                Catch ex As Exception
-                    Me.LogMessage(String.Format(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
-                End Try
+            Else
+                ' Log error
+                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_RASTERONLY, _
+                              eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
             End If
 
             Return New cSpatialRaster(rstResult)
@@ -250,27 +237,21 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.DisplayName"/>
         ''' -----------------------------------------------------------------------
-        Public Property DisplayName As String _
+        Public ReadOnly Property DisplayName As String _
             Implements ISpatialDataConverter.DisplayName
             Get
                 Return My.Resources.CONVERTER_DIRECTRASTER_NAME
             End Get
-            Set(value As String)
-                ' NOP
-            End Set
         End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Description"/>
         ''' -----------------------------------------------------------------------
-        Public Property Description As String _
-            Implements ISpatialDataConverter.Description
+        Public ReadOnly Property Description As String _
+            Implements ISpatialDataConverter.Description, EwEPlugin.IPlugin.Description
             Get
-                Return My.Resources.CONVERTER_DIRECTRASTER_NAME
+                Return My.Resources.CONVERTER_DIRECTRASTER_DESCR
             End Get
-            Set(value As String)
-                'NOP
-            End Set
         End Property
 
         ''' -----------------------------------------------------------------------
@@ -300,16 +281,6 @@ Namespace SpatialData
             Implements ISpatialDataConverterPlugin.Initialize
             Me.m_core = DirectCast(core, cCore)
         End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="IPlugin.Description"/>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property PluginDescription As String _
-            Implements EwEPlugin.IPlugin.Description
-            Get
-                Return Me.Description
-            End Get
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="IPlugin.Name"/>

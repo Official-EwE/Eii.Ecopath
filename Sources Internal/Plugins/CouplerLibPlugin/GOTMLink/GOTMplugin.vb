@@ -1,16 +1,39 @@
-﻿Imports EwECore
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' EwE Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' GOTMLink plug-in Copyright 2013- Cefas, Lowestoft, UK.
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Imports EwECore
 Imports EwECore.ValueWrapper
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports System.Threading
 Imports Couplerlib
+Imports ScientificInterfaceShared.Controls
 
+#End Region ' Imports
 
 Public Class GOTMplugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IAutolaunchPlugin
-    Implements EwEPlugin.IGUIPlugin
+    Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.ICorePlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
@@ -26,9 +49,8 @@ Public Class GOTMplugin
     Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcospacePlugin
 
-
-
     Private m_core As EwECore.cCore
+    Private m_uic As cUIContext = Nothing
     ' The Ecospace model
     Private m_ecospace As cEcoSpace
     Private m_bInitOK As Boolean
@@ -74,36 +96,33 @@ Public Class GOTMplugin
     Public autorescale, isrescale, isrescale2 As Boolean
     Public rexdim, reydim As Integer
 
-
-
     ''' <summary>
     ''' Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
     ''' </summary>
     ''' 
-    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
+    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) _
+        Implements EwEPlugin.ICorePlugin.CoreInitialized
         m_EcosimDS = DirectCast(objEcoSim, Ecosim.cEcoSimModel).EcosimData
         m_ecospace = DirectCast(objEcoSpace, cEcoSpace)
         autorescale = False
     End Sub
 
-    Public Function SaveModel(ByVal dataSource As Object) As Boolean Implements Global.EwEPlugin.IEcopathPlugin.SaveModel
-
+    Public Function SaveModel(ByVal dataSource As Object) As Boolean _
+        Implements Global.EwEPlugin.IEcopathPlugin.SaveModel
         Return True
     End Function
 
-    Public Function LoadModel(ByVal dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-        REM m_core = cCore.GetInstance()
-
+    Public Function LoadModel(ByVal dataSource As Object) As Boolean _
+        Implements EwEPlugin.IEcopathPlugin.LoadModel
+        ' NOP
     End Function
-
-    
 
     Public Sub ModelLoaded(ByVal is3d As Boolean)
         Dim ng As Integer
         ng = m_core.nGroups
         'Dim longitude As Double = m_core.m_EcoSpaceData.lon1
         Dim nx(ng) As String
-        Dim nu(ng) As String REM EwE must supply units 
+        Dim nu(ng) As String ' EwE must supply units 
         Dim nc(ng) As String
         ReDim predscreen(ng + 1)
         ReDim detrituspomscreen(ng + 1)
@@ -126,8 +145,9 @@ Public Class GOTMplugin
         ReDim oldbiomass(ng + 1)
         XmlSpecify(ng, nx, nu, nc, is3d)
     End Sub
+
     Public Sub Initialize(ByVal core As Object) Implements Global.EwEPlugin.IPlugin.Initialize
-        REM Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
+        ' Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
         m_bInitOK = False
         EwEstat = 0
         GOTMstat = 0
@@ -144,11 +164,6 @@ Public Class GOTMplugin
         Try
             If TypeOf core Is EwECore.cCore Then
                 m_core = DirectCast(core, EwECore.cCore)
-                m_PluginInterface = New FormGotmPluggin(m_core)
-                m_PluginInterface.plugin = Me
-                m_PluginInterface.GOTMfront()
-                Me.thread = New Thread(AddressOf Me.displaythread)
-                Me.thread.Start()
                 m_bInitOK = True
                 System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
             Else
@@ -257,13 +272,14 @@ Public Class GOTMplugin
 
 #Region " GUI "
 
+#If 0 Then
     ''' ===========================================================================
     ''' <summary>
     ''' Plug-in that should auto-launch when a consuming GUI is loaded
     ''' </summary>
     ''' ===========================================================================
     Public Interface IAutolaunchPlugin
-        REM Inherits IGUIPlugin
+        ' Inherits IGUIPlugin
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -308,7 +324,6 @@ Public Class GOTMplugin
     Public Interface IEcosimSubTimeStepPlugin
         Sub EcosimTimeStepBegin(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object)
         Sub EcosimTimeStepEnd(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object)
-
     End Interface
 
     Public Interface IMenuItemPlugin
@@ -326,9 +341,24 @@ Public Class GOTMplugin
     Public Interface IEcopathClosedPlugin
         Function CloseModel() As Boolean
     End Interface
+#End If
 
+    Public Sub UIContext(uic As Object) _
+        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Me.m_uic = uic
 
-    Public Sub EcosimRunInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+        If (uic IsNot Nothing) And (Me.m_PluginInterface Is Nothing) Then
+            m_PluginInterface = New FormGotmPluggin(m_uic)
+            m_PluginInterface.plugin = Me
+            m_PluginInterface.GOTMfront()
+            Me.thread = New Thread(AddressOf Me.displaythread)
+            Me.thread.Start()
+        End If
+
+    End Sub
+
+    Public Sub EcosimRunInitialized(ByVal EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
         If contclick Then
             EcoModelRunInitialized(EcosimDatastructures, Nothing, False)
         End If
@@ -342,10 +372,10 @@ Public Class GOTMplugin
         ds = EcosimDatastructures
         maxsize = 0
 
-        ifinputs = cp.GetIfAddress(imodellm, modelname, True, False) REM inputs
-        ifoutputs = cp.GetIfAddress(omodellm, modelname, False, True) REM outputs
-        ixinputs = cp.GetIfAddress(ixmodellm, modelname, True, True) REM inputs
-        ixoutputs = cp.GetIfAddress(oxmodellm, modelname, False, False) REM outputs
+        ifinputs = cp.GetIfAddress(imodellm, modelname, True, False) ' inputs
+        ifoutputs = cp.GetIfAddress(omodellm, modelname, False, True) ' outputs
+        ixinputs = cp.GetIfAddress(ixmodellm, modelname, True, True) ' inputs
+        ixoutputs = cp.GetIfAddress(oxmodellm, modelname, False, False) ' outputs
         cp.GetSupplement("predscreen", predscreen, imodellm(0), ifinputs(0), ds.nGroups + 1)
         cp.GetSupplement("detrituspomscreen", detrituspomscreen, imodellm(0), ifinputs(0), ds.nGroups + 1)
         cp.GetSupplement("detritusdomscreen", detritusdomscreen, imodellm(0), ifinputs(0), ds.nGroups + 1)
@@ -362,7 +392,7 @@ Public Class GOTMplugin
         Threading.Thread.Sleep(10)
         EwEstat = 2
         'm_PluginInterface.Invoke(New InvokeStatusDelegate(AddressOf m_PluginInterface.Status))
-        REM m_PluginInterface.Status(GOTMstat, EwEstat)
+        ' m_PluginInterface.Status(GOTMstat, EwEstat)
         If (Not isnetworked) Then
             wx2 = True
             WH2(0).Set()
@@ -373,16 +403,15 @@ Public Class GOTMplugin
             cp.ps.SndMessage(initmessage, False, stationno)
             ' cp.ps.pollevent(protocols.Ack_Initializemodel).WaitOne(-1)
         End If
-
-
-        REM Threading.WaitHandle.WaitAll(WH1)
-
+        ' Threading.WaitHandle.WaitAll(WH1)
     End Sub
+
     Public Sub EcosimInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         If contclick Then
             EcoModelInitialized(EcosimDatastructures, Nothing, False)
         End If
     End Sub
+
     Public Sub EcoModelInitialized(ByVal EcosimDatastructures As Object, ByVal EcospaceDatastructures As Object, ByVal UseEcospace As Boolean)
         Dim ds As cEcosimDatastructures
         Dim eds As cEcospaceDataStructures
@@ -392,11 +421,11 @@ Public Class GOTMplugin
             'm_core = cCore.GetInstance()
             Dim ng As Integer
             ng = m_core.nGroups
-            REM a = m_core.m_EwEModelUnitCurrency
+            ' a = m_core.m_EwEModelUnitCurrency
             ds.NumYears = numyears
             nsy = ds.NumStepsPerYear
             If numyears > 0 Then
-                ds.redimTime()
+                ds.RedimTime()
             End If
             If UseEcospace Then
                 eds = EcospaceDatastructures
@@ -515,9 +544,8 @@ Public Class GOTMplugin
         Next
         Specification.Save(sdictname + "\EWE.xml")
 
-
-
     End Sub
+
     Public Sub EcospaceSpecify(ByRef Specification As Xml.XmlDocument, ByVal lonstart As Double, ByVal latstart As Double, ByVal longint As Double, ByVal latint As Double, ByVal longsz As Integer, ByVal latsz As Integer, ByVal is3d As Boolean)
         Dim NL, CL, GCL As Xml.XmlNodeList
         Dim Node, NewNode, NewChild As Xml.XmlNode
@@ -546,52 +574,54 @@ Public Class GOTMplugin
                 End If
                 Node.AppendChild(NewNode)
             End If
-                For m = 1 To CL.Count - 1
-                    Node.RemoveChild(CL(m))
-                Next
-                For m = 1 To nodims
-                    NewNode = Specification.CreateElement(NodeName(m - 1))
-                    NewChild = Specification.CreateElement("Minimum")
-                    If m = 1 Then
-                        NewChild.InnerText = Convert.ToString(lonstart)
-                    End If
-                    If m = 2 Then
-                        NewChild.InnerText = Convert.ToString(latstart)
-                    End If
-                    If m = 3 Then
-                        NewChild.InnerText = Convert.ToString(0.0)
-                    End If
-                    NewNode.AppendChild(NewChild)
-                    NewChild = Specification.CreateElement("Interval")
-                    If m = 1 Then
-                        NewChild.InnerText = Convert.ToString(longint)
-                    End If
-                    If m = 2 Then
-                        NewChild.InnerText = Convert.ToString(latint)
-                    End If
-                    If m = 3 Then
-                        NewChild.InnerText = Convert.ToString(1.0) 'Max depth all of sea
-                    End If
-                    NewNode.AppendChild(NewChild)
-                    NewChild = Specification.CreateElement("Length")
-                    If m = 1 Then
-                        NewChild.InnerText = Convert.ToString(longsz)
-                    End If
-                    If m = 2 Then
-                        NewChild.InnerText = Convert.ToString(latsz)
-                    End If
-                    If m = 3 Then
-                        NewChild.InnerText = Convert.ToString(1)
-                    End If
-                    NewNode.AppendChild(NewChild)
-                    Node.AppendChild(NewNode)
-                Next
+            For m = 1 To CL.Count - 1
+                Node.RemoveChild(CL(m))
+            Next
+            For m = 1 To nodims
+                NewNode = Specification.CreateElement(NodeName(m - 1))
+                NewChild = Specification.CreateElement("Minimum")
+                If m = 1 Then
+                    NewChild.InnerText = Convert.ToString(lonstart)
+                End If
+                If m = 2 Then
+                    NewChild.InnerText = Convert.ToString(latstart)
+                End If
+                If m = 3 Then
+                    NewChild.InnerText = Convert.ToString(0.0)
+                End If
+                NewNode.AppendChild(NewChild)
+                NewChild = Specification.CreateElement("Interval")
+                If m = 1 Then
+                    NewChild.InnerText = Convert.ToString(longint)
+                End If
+                If m = 2 Then
+                    NewChild.InnerText = Convert.ToString(latint)
+                End If
+                If m = 3 Then
+                    NewChild.InnerText = Convert.ToString(1.0) 'Max depth all of sea
+                End If
+                NewNode.AppendChild(NewChild)
+                NewChild = Specification.CreateElement("Length")
+                If m = 1 Then
+                    NewChild.InnerText = Convert.ToString(longsz)
+                End If
+                If m = 2 Then
+                    NewChild.InnerText = Convert.ToString(latsz)
+                End If
+                If m = 3 Then
+                    NewChild.InnerText = Convert.ToString(1)
+                End If
+                NewNode.AppendChild(NewChild)
+                Node.AppendChild(NewNode)
+            Next
 
         Next
 
     End Sub
 
-    Public Sub EcosimSubTimeStepBegin(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimSubTimestepsPlugin.EcosimSubTimeStepBegin
+    Public Sub EcosimSubTimeStepBegin(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimSubTimestepsPlugin.EcosimSubTimeStepBegin
+
         Dim noip, n As Integer
         Dim IParray As Integer()
         Dim modd As Double()
@@ -631,14 +661,14 @@ Public Class GOTMplugin
                         'ds.tval(ds.TemperatureForceNo) = modd(m)
                         'End If
                     End If
-        If d = BiomassAtTimestep.Length + 1 Then
+                    If d = BiomassAtTimestep.Length + 1 Then
                         'If (ds.SalinityForceNo > 0) Then
                         'ds.tval(ds.SalinityForceNo) = modd(m)
                         'End If
                     End If
-        If d < BiomassAtTimestep.Length Then
-            BiomassAtTimestep(cp.OrgReference(imodellm(n), ifinputs(n), m) + 1) = modd(m)  REM biomass at timestep is 1 indexed
-        End If
+                    If d < BiomassAtTimestep.Length Then
+                        BiomassAtTimestep(cp.OrgReference(imodellm(n), ifinputs(n), m) + 1) = modd(m)  ' biomass at timestep is 1 indexed
+                    End If
                 Next
             Next
             For n = 1 To ds.nGroups
@@ -646,7 +676,10 @@ Public Class GOTMplugin
             Next
         End If
     End Sub
-    Public Sub EcosimSubTimeStepEnd(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimSubTimestepsPlugin.EcosimSubTimeStepEnd
+
+    Public Sub EcosimSubTimeStepEnd(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimSubTimestepsPlugin.EcosimSubTimeStepEnd
+
         Dim n, m, k, ng, jlink, ilink, a As Integer
         Dim ds As cEcosimDatastructures
         Dim prex As Single()
@@ -706,24 +739,27 @@ Public Class GOTMplugin
 
     End Sub
 
-    Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
-
-
+    Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) _
+        Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
+        ' NOP
     End Sub
-    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object) Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
+    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object) _
+        Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+        ' NOP
     End Sub
+
     Public Sub EcosimEcosimRunCompleted(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
         isended = True
         If (isnetworked) Then
             cp.ps.SndMessage(New Cprotmessage(stationno, maprotocols.Finishtimestep, mastatuscodes.Waitingonresponse, "Model Over"), False, stationno)
             isended = True
         End If
-
     End Sub
+
     Public Sub wait(ByRef waiter As Boolean, ByVal sinvoke As Boolean)
         Dim a As Integer
-        REM Dim b As Integer = AppDomain.GetCurrentThreadId()
+        ' Dim b As Integer = AppDomain.GetCurrentThreadId()
         While (Not waiter And Not isabort)
             a *= 1
             Threading.Thread.Sleep(1)
@@ -739,7 +775,7 @@ Public Class GOTMplugin
     End Sub
 
     Public Function setstep(ByRef duration As Integer, ByRef stepsz As Double, ByVal gearratioi As Integer, ByVal isnet As Boolean, ByVal istation As Integer, ByVal connectname As String, ByVal dictname As String, ByVal specname As String, ByVal yearoff As Decimal, ByVal monthoff As Decimal) As Double
-        REM Python.Runtime.PythonEngine.EndAllowThreads(tp)
+        ' Python.Runtime.PythonEngine.EndAllowThreads(tp)
         isnetworked = isnet
         stationno = istation
         hosttono = connectname
@@ -757,8 +793,9 @@ Public Class GOTMplugin
         retval = ((calctimestep) / (nsy * numyears))
         Return (retval)
     End Function
+
     Public Function runstep() As Boolean
-        REM TRANSFER DATA WHILE THREAD IS SUSPENDED
+        ' TRANSFER DATA WHILE THREAD IS SUSPENDED
         Threading.Thread.Sleep(1)
         WH3(0).Set() 'Ewe Thread starts
         wx3 = True
@@ -770,14 +807,14 @@ Public Class GOTMplugin
             End If
         Else
             wait(wx2, False)
-            REM Threading.WaitHandle.WaitAll(WH2) 'wait for ewe to end
+            ' Threading.WaitHandle.WaitAll(WH2) 'wait for ewe to end
         End If
         Return isended
     End Function
 
     Public Function Starting(ByVal cpi As CCouplerlib, ByVal gearratioi As Decimal, ByVal usesocket As Boolean) As Boolean
-        REM now we check the xml files
-        REM normall call the interface with the name of the interface file
+        ' now we check the xml files
+        ' normall call the interface with the name of the interface file
         Dim linkstat As Boolean
         cp = cpi
         'gearratio = gearratioi
@@ -793,11 +830,12 @@ Public Class GOTMplugin
         If (Not usesocket) Then
             wait(wx2, False)
         End If
-        REM Threading.WaitHandle.WaitAll(WH2)
+        ' Threading.WaitHandle.WaitAll(WH2)
         GOTMstat = 2 'EwE is now running so can continue
         wx1 = True
         Return linkstat
     End Function
+
     Public Sub isover()
         wx3 = True
         GOTMstat = 3
@@ -806,11 +844,12 @@ Public Class GOTMplugin
         End If
     End Sub
 
-
     ''' <summary>
     ''' Menu Item or Tree node clicked
     ''' </summary>
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) _
+        Implements EwEPlugin.IGUIPlugin.OnControlClick
+
         ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
         Dim bIsFormReady As Boolean = False
         EwEstat = 0
@@ -823,51 +862,50 @@ Public Class GOTMplugin
             ' Test if form still exists
 
             If Me.m_PluginInterface IsNot Nothing And Me.m_PluginInterface.IsDisposed Then
-                Me.m_PluginInterface = New FormGotmPluggin(m_core)
+                Me.m_PluginInterface = New FormGotmPluggin(m_uic)
             End If
 
+            ' JS: EwE framework will show the form after it has properly been nested in the main UI
 
-            ' Activate the form
-            Me.m_PluginInterface.Show()
+            '' Activate the form
+            'Me.m_PluginInterface.Show()
 
             ' Pass form reference back to calling app
             f = Me.m_PluginInterface
 
             If TypeOf sender Is System.Windows.Forms.TreeView Then
                 'from the navigation panel
-
             ElseIf TypeOf sender Is System.Windows.Forms.ToolStripMenuItem Then
                 'from the menu
-
             End If
         Else
-            REM Debug.Assert(False, "Plugin was not initialized properly.")
+            ' Debug.Assert(False, "Plugin was not initialized properly.")
         End If
+
     End Sub
 
     Function Autolaunch() As Boolean Implements EwEPlugin.IAutolaunchPlugin.Autolaunch
-
-
         Return False
-
     End Function
-
 
 #End Region 'GUI
 
-
-    Public Sub EcosimPreDataInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreDataInitialized
-
+    Public Sub EcosimPreDataInitialized(ByVal EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreDataInitialized
+        ' NOP
     End Sub
 
-    Public Sub EcosimPreRunInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreRunInitialized
+    Public Sub EcosimPreRunInitialized(ByVal EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreRunInitialized
         If GOTMstat > 0 Then
             Me.m_EcosimDS.StepsPerMonth = 30 / gearratio
             Me.m_EcosimDS.bMultiThreaded = True
         End If
     End Sub
 
-    Public Sub EcospaceInitialized(ByVal EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
+    Public Sub EcospaceInitialized(ByVal EcospaceDatastructures As Object) _
+        Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
+
         If contclick Then
             EcoModelInitialized(Me.m_EcosimDS, EcospaceDatastructures, True)
             Dim sscale As Double = EcospaceDatastructures.CellLength * (1.0 / (60.0 * 1.852))
@@ -894,7 +932,9 @@ Public Class GOTMplugin
         End If
     End Sub
 
-    Public Sub EcospaceBeginTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep
+    Public Sub EcospaceBeginTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) _
+        Implements EwEPlugin.IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep
+
         Dim noip, n, ycell As Integer
         Dim IParray As Integer()
         Dim modd As Double()()
@@ -1033,7 +1073,7 @@ Public Class GOTMplugin
                     For xdim = 1 To xmax
                         For ydim = 1 To ymax
                             ycell = (xmax - xdim) * ymax + (ydim - 1)
-                            ds.Bcell(xdim, ydim, (cp.OrgReference(imodellm(n), ifinputs(n), m) + 1)) = modd(m)(ycell)  REM biomass at timestep is 1 indexed
+                            ds.Bcell(xdim, ydim, (cp.OrgReference(imodellm(n), ifinputs(n), m) + 1)) = modd(m)(ycell)  ' biomass at timestep is 1 indexed
                         Next
                     Next
                     If d = ds.NGroups + 1 And etemp > -1 Then
@@ -1107,7 +1147,9 @@ Public Class GOTMplugin
 
     End Sub
 
-    Public Sub EcospaceEndTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
+    Public Sub EcospaceEndTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) _
+        Implements EwEPlugin.IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
+
         Dim n, m, k, ng, jlink, ilink As Integer
         Dim ds As cEcospaceDataStructures
         Dim dsim As cEcosimDatastructures
@@ -1157,22 +1199,28 @@ Public Class GOTMplugin
 
     End Sub
 
-    Public Sub LoadEcospaceScenario(ByVal dataSource As Object) Implements EwEPlugin.IEcospacePlugin.LoadEcospaceScenario
-
+    Public Sub LoadEcospaceScenario(ByVal dataSource As Object) _
+        Implements EwEPlugin.IEcospacePlugin.LoadEcospaceScenario
+        ' NOP
     End Sub
 
-    Public Sub SaveEcospaceScenario(ByVal dataSource As Object) Implements EwEPlugin.IEcospacePlugin.SaveEcospaceScenario
-        Dim a = 1
+    Public Sub SaveEcospaceScenario(ByVal dataSource As Object) _
+        Implements EwEPlugin.IEcospacePlugin.SaveEcospaceScenario
+        ' NOP
     End Sub
 
-    Public Sub EcospaceRunCompleted(ByVal EcoSpaceDatastructures As Object) Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
+    Public Sub EcospaceRunCompleted(ByVal EcoSpaceDatastructures As Object) _
+        Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
         isended = True
         If (isnetworked) Then
             cp.ps.SndMessage(New Cprotmessage(stationno, maprotocols.Finishtimestep, mastatuscodes.Waitingonresponse, "Model Over"), False, stationno)
             'cp.ps.SendMessage(New protmessage(stationno, protocols.Modelterminated, statuscodes.Ok, "Model finished"), False, stationno)
         End If
     End Sub
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
+
+    Public Function CloseModel() As Boolean _
+        Implements EwEPlugin.IEcopathPlugin.CloseModel
+
         isabort = True
         If contclick Then
             m_PluginInterface.ClosePipes()
@@ -1185,8 +1233,12 @@ Public Class GOTMplugin
             End If
             Threading.Thread.Sleep(20)
         End If
-    End Function
-    Public Sub CloseEcospaceScenario() Implements EwEPlugin.IEcospacePlugin.CloseEcospaceScenario
 
+    End Function
+
+    Public Sub CloseEcospaceScenario() _
+        Implements EwEPlugin.IEcospacePlugin.CloseEcospaceScenario
+        ' NOP
     End Sub
+
 End Class

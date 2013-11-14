@@ -137,10 +137,10 @@
   <ItemGroup>
     <Compile Include="cMSE.vb" />
     <Compile Include="cMSEStateMonitor.vb" />
-    <Compile Include="frmEditMaxChangeEffort.Designer.vb">
-      <DependentUpon>frmEditMaxChangeEffort.vb</DependentUpon>
+    <Compile Include="frmEditDecreaseEffort.Designer.vb">
+      <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmEditMaxChangeEffort.vb">
+    <Compile Include="frmEditDecreaseEffort.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTFMpolicy.designer.vb">
@@ -197,8 +197,8 @@
     <Compile Include="xalglib.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmEditMaxChangeEffort.resx">
-      <DependentUpon>frmEditMaxChangeEffort.vb</DependentUpon>
+    <EmbeddedResource Include="frmEditDecreaseEffort.resx">
+      <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTFMpolicy.resx">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>

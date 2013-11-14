@@ -67,31 +67,46 @@ Public Class frmEditDecreaseEffort
             cMSEUtils.ReleaseReader(reader)
         End If
 
+    End Sub
 
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
+        Handles btnCancel.Click
+
+        Try
+            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
-    Private Sub btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel.Click
-        Me.Close()
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
+        Handles btnOK.Click
+
+        Try
+
+            Dim csv_out As New StreamWriter(cMSEUtils.MSEFile(m_plugin.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv"), False)
+
+            ' JS 19Oct13: Avoid spaces in CSV headers, this may confuse readers
+            csv_out.WriteLine("FleetNumber,FleetName,MaxChangeEffort")
+            For irow = 0 To dgvMaxDecreaseEffort.Rows.Count - 1
+                Dim row As DataGridViewRow = dgvMaxDecreaseEffort.Rows.Item(irow)
+                csv_out.WriteLine("{0},{1},{2}", _
+                                  cStringUtils.FormatNumber(row.Cells(0).Value), _
+                                  cStringUtils.ToCSVField(row.Cells(1).Value), _
+                                  cStringUtils.FormatNumber(row.Cells(2).Value))
+            Next
+
+            csv_out.Dispose()
+
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
+
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
-    Private Sub btnOK_Click(sender As System.Object, e As System.EventArgs) Handles btnOK.Click
-
-        Dim csv_out As New StreamWriter(cMSEUtils.MSEFile(m_plugin.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv"), False)
-
-        ' JS 19Oct13: Avoid spaces in CSV headers, this may confuse readers
-        csv_out.WriteLine("FleetNumber,FleetName,MaxChangeEffort")
-        For irow = 0 To dgvMaxDecreaseEffort.Rows.Count - 1
-            Dim row As DataGridViewRow = dgvMaxDecreaseEffort.Rows.Item(irow)
-            csv_out.WriteLine("{0},{1},{2}", _
-                              cStringUtils.FormatNumber(row.Cells(0).Value), _
-                              cStringUtils.ToCSVField(row.Cells(1).Value), _
-                              cStringUtils.FormatNumber(row.Cells(2).Value))
-        Next
-
-        csv_out.Dispose()
-
-        Me.Close()
-
-    End Sub
 End Class

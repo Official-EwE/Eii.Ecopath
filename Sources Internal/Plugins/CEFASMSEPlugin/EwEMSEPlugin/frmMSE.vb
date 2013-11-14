@@ -143,6 +143,7 @@ Public Class frmMSE
         MyBase.UpdateControls()
 
         If (Me.m_plugin Is Nothing) Then Return
+        If (Me.IsDisposed) Then Return
 
         Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
         Dim img As Image = Nothing
@@ -168,6 +169,7 @@ Public Class frmMSE
         ' Update trial buttons
         Me.m_fpNTrials.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_fpMassBalanceTol.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
+        Me.m_btnDecreaseEffort.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_btnCreateModels.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
 
         ' Provide feedback about available models
@@ -350,7 +352,7 @@ Public Class frmMSE
         End Try
     End Sub
 
-    Private Sub OnDecreaseEffort(sender As Object, e As System.EventArgs) Handles btnDecreaseEffort.Click
+    Private Sub OnDecreaseEffort(sender As Object, e As System.EventArgs) Handles m_btnDecreaseEffort.Click
 
         Try
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()

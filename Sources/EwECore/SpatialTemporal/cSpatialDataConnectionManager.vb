@@ -217,7 +217,7 @@ Namespace SpatialData
             End Get
         End Property
 
-        Private Sub AddAdapter(adapter As cSpatialDataAdapter)
+        Public Sub AddAdapter(adapter As cSpatialDataAdapter)
             Me.m_data.DataAdapters.Add(adapter)
         End Sub
 
@@ -234,13 +234,14 @@ Namespace SpatialData
         ''' <see cref="cSpatialDataSetManager.ConfigFileName">default file path</see> 
         ''' is used.</param>
         ''' -------------------------------------------------------------------
-        Public Sub LoadSystemSettings(Optional strFile As String = "")
+        Public Function LoadSystemSettings(Optional strFile As String = "") As Boolean
             Try
-                Me.m_datasetManager.Load(strFile, False)
+                Return Me.m_datasetManager.Load(strFile, False)
             Catch ex As Exception
                 cLog.Write(ex, "cSpatialDataConnectionManager.Load")
             End Try
-        End Sub
+            Return False
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

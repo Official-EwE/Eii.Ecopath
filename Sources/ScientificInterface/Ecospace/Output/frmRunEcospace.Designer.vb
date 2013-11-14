@@ -78,11 +78,18 @@ Namespace Ecospace
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel()
             Me.m_btnPause = New System.Windows.Forms.Button()
             Me.m_cmbRunType = New System.Windows.Forms.ComboBox()
+            Me.m_plGraphTypes = New System.Windows.Forms.Panel()
+            Me.m_rbCatchGraph = New System.Windows.Forms.RadioButton()
+            Me.m_rbConsumpGraph = New System.Windows.Forms.RadioButton()
+            Me.m_rbPredMortGraph = New System.Windows.Forms.RadioButton()
+            Me.m_rbFishMortGraph = New System.Windows.Forms.RadioButton()
+            Me.m_rbRelBiomassGraph = New System.Windows.Forms.RadioButton()
+            Me.m_hdrGraphTypes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tcOutputs = New System.Windows.Forms.TabControl()
             Me.m_tabMap = New System.Windows.Forms.TabPage()
+            Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
-            Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -94,6 +101,7 @@ Namespace Ecospace
             Me.m_plDisplayOptions.SuspendLayout()
             Me.m_plRun.SuspendLayout()
             Me.m_tlpRun.SuspendLayout()
+            Me.m_plGraphTypes.SuspendLayout()
             Me.m_tcOutputs.SuspendLayout()
             Me.m_tabMap.SuspendLayout()
             Me.m_tabPlot.SuspendLayout()
@@ -172,6 +180,7 @@ Namespace Ecospace
             Me.m_tlpOptions.Controls.Add(Me.m_plDistribution, 0, 0)
             Me.m_tlpOptions.Controls.Add(Me.m_plDisplayOptions, 0, 1)
             Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 3)
+            Me.m_tlpOptions.Controls.Add(Me.m_plGraphTypes, 0, 4)
             Me.m_tlpOptions.Name = "m_tlpOptions"
             '
             'm_plLabelOptions
@@ -365,6 +374,61 @@ Namespace Ecospace
             Me.m_cmbRunType.Items.AddRange(New Object() {resources.GetString("m_cmbRunType.Items"), resources.GetString("m_cmbRunType.Items1"), resources.GetString("m_cmbRunType.Items2")})
             Me.m_cmbRunType.Name = "m_cmbRunType"
             '
+            'm_plGraphTypes
+            '
+            Me.m_plGraphTypes.Controls.Add(Me.m_rbCatchGraph)
+            Me.m_plGraphTypes.Controls.Add(Me.m_rbConsumpGraph)
+            Me.m_plGraphTypes.Controls.Add(Me.m_rbPredMortGraph)
+            Me.m_plGraphTypes.Controls.Add(Me.m_rbFishMortGraph)
+            Me.m_plGraphTypes.Controls.Add(Me.m_rbRelBiomassGraph)
+            Me.m_plGraphTypes.Controls.Add(Me.m_hdrGraphTypes)
+            resources.ApplyResources(Me.m_plGraphTypes, "m_plGraphTypes")
+            Me.m_plGraphTypes.Name = "m_plGraphTypes"
+            '
+            'm_rbCatchGraph
+            '
+            resources.ApplyResources(Me.m_rbCatchGraph, "m_rbCatchGraph")
+            Me.m_rbCatchGraph.Name = "m_rbCatchGraph"
+            Me.m_rbCatchGraph.TabStop = True
+            Me.m_rbCatchGraph.UseVisualStyleBackColor = True
+            '
+            'm_rbConsumpGraph
+            '
+            resources.ApplyResources(Me.m_rbConsumpGraph, "m_rbConsumpGraph")
+            Me.m_rbConsumpGraph.Name = "m_rbConsumpGraph"
+            Me.m_rbConsumpGraph.TabStop = True
+            Me.m_rbConsumpGraph.UseVisualStyleBackColor = True
+            '
+            'm_rbPredMortGraph
+            '
+            resources.ApplyResources(Me.m_rbPredMortGraph, "m_rbPredMortGraph")
+            Me.m_rbPredMortGraph.Name = "m_rbPredMortGraph"
+            Me.m_rbPredMortGraph.TabStop = True
+            Me.m_rbPredMortGraph.UseVisualStyleBackColor = True
+            '
+            'm_rbFishMortGraph
+            '
+            resources.ApplyResources(Me.m_rbFishMortGraph, "m_rbFishMortGraph")
+            Me.m_rbFishMortGraph.Name = "m_rbFishMortGraph"
+            Me.m_rbFishMortGraph.TabStop = True
+            Me.m_rbFishMortGraph.UseVisualStyleBackColor = True
+            '
+            'm_rbRelBiomassGraph
+            '
+            resources.ApplyResources(Me.m_rbRelBiomassGraph, "m_rbRelBiomassGraph")
+            Me.m_rbRelBiomassGraph.Checked = True
+            Me.m_rbRelBiomassGraph.Name = "m_rbRelBiomassGraph"
+            Me.m_rbRelBiomassGraph.TabStop = True
+            Me.m_rbRelBiomassGraph.UseVisualStyleBackColor = True
+            '
+            'm_hdrGraphTypes
+            '
+            resources.ApplyResources(Me.m_hdrGraphTypes, "m_hdrGraphTypes")
+            Me.m_hdrGraphTypes.CanCollapseParent = True
+            Me.m_hdrGraphTypes.CollapsedParentHeight = 0
+            Me.m_hdrGraphTypes.IsCollapsed = False
+            Me.m_hdrGraphTypes.Name = "m_hdrGraphTypes"
+            '
             'm_tcOutputs
             '
             resources.ApplyResources(Me.m_tcOutputs, "m_tcOutputs")
@@ -380,6 +444,18 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tabMap, "m_tabMap")
             Me.m_tabMap.Name = "m_tabMap"
             Me.m_tabMap.UseVisualStyleBackColor = True
+            '
+            'm_legend
+            '
+            resources.ApplyResources(Me.m_legend, "m_legend")
+            Me.m_legend.BarWidthPercentage = 80
+            Me.m_legend.ColorHigh = System.Drawing.Color.DarkGreen
+            Me.m_legend.ColorLow = System.Drawing.Color.Red
+            Me.m_legend.Colors = CType(resources.GetObject("m_legend.Colors"), System.Collections.Generic.List(Of System.Drawing.Color))
+            Me.m_legend.LabelHigh = "High"
+            Me.m_legend.LabelLow = "Low"
+            Me.m_legend.Name = "m_legend"
+            Me.m_legend.UIContext = Nothing
             '
             'm_tabPlot
             '
@@ -399,13 +475,6 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinX = 0.0R
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
-            '
-            'm_legend
-            '
-            resources.ApplyResources(Me.m_legend, "m_legend")
-            Me.m_legend.Colors = Nothing
-            Me.m_legend.Name = "m_legend"
-            Me.m_legend.UIContext = Nothing
             '
             'frmRunEcospace
             '
@@ -428,6 +497,8 @@ Namespace Ecospace
             Me.m_plDisplayOptions.PerformLayout()
             Me.m_plRun.ResumeLayout(False)
             Me.m_tlpRun.ResumeLayout(False)
+            Me.m_plGraphTypes.ResumeLayout(False)
+            Me.m_plGraphTypes.PerformLayout()
             Me.m_tcOutputs.ResumeLayout(False)
             Me.m_tabMap.ResumeLayout(False)
             Me.m_tabPlot.ResumeLayout(False)
@@ -474,6 +545,13 @@ Namespace Ecospace
         Friend WithEvents m_txFMax As System.Windows.Forms.TextBox
         Friend WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_legend As ScientificInterfaceShared.Controls.ucLegendBar
+        Friend WithEvents m_plGraphTypes As System.Windows.Forms.Panel
+        Friend WithEvents m_rbConsumpGraph As System.Windows.Forms.RadioButton
+        Friend WithEvents m_rbPredMortGraph As System.Windows.Forms.RadioButton
+        Friend WithEvents m_rbFishMortGraph As System.Windows.Forms.RadioButton
+        Friend WithEvents m_rbRelBiomassGraph As System.Windows.Forms.RadioButton
+        Friend WithEvents m_hdrGraphTypes As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Friend WithEvents m_rbCatchGraph As System.Windows.Forms.RadioButton
 
 
     End Class

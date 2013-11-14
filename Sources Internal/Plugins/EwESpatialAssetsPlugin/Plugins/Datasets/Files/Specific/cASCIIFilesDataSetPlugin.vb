@@ -55,7 +55,9 @@ Namespace SpatialData
         ''' Get the dialog read filter for files supported by the AAAS reader.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property DialogReadFilter As String
+        Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, _
+                                                            ByVal bImage As Boolean, _
+                                                            ByVal bVector As Boolean) As String
             Get
                 Return "ASCII files|*.asc"
             End Get

@@ -51,6 +51,9 @@ Namespace Ecospace
         Private m_showitemMode As frmRunEcospace.eShowItemType = frmRunEcospace.eShowItemType.ShowAll
         Private m_iItemToShow As Integer = cCore.NULL_VALUE
 
+
+        Private m_useLogScale As Boolean = True
+
         Public Overrides Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, ByVal zgc As ZedGraph.ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
             MyBase.Attach(uic, zgc, iNumPanels)
             For i As Integer = 0 To Me.NumPanes - 1
@@ -73,10 +76,18 @@ Namespace Ecospace
                          ByVal sNumStepsPerYear As Single)
 
             Dim li As LineItem = Nothing
+            Dim YMin As Single, YMax As Single
+            If Me.m_useLogScale Then
+                YMin = -1
+                YMax = 1
+            End If
 
             Me.m_pane = Me.ConfigurePane(My.Resources.ECOSPACE_HEADER_RELB, _
-                                         ScientificInterfaceShared.My.Resources.HEADER_YEAR, _
-                                         0, nTotalSteps, My.Resources.ECOSPACE_HEADER_LOGBREL, -1, 1, True)
+                                        ScientificInterfaceShared.My.Resources.HEADER_YEAR, _
+                                       0, nTotalSteps, My.Resources.ECOSPACE_HEADER_LOGBREL, YMin, YMax, False)
+            'Auto Scale the Y Axis if not using a log scale
+            Me.m_pane.YAxis.Scale.MaxAuto = (Not Me.m_useLogScale)
+
             Me.m_nGroups = nGroups
             Me.m_nTotalSteps = nTotalSteps
             Me.m_iFirstYear = iFirstYear
@@ -146,6 +157,16 @@ Namespace Ecospace
             End Set
         End Property
 
+        Public Property useLogScale() As Boolean
+            Get
+                Return Me.m_useLogScale
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_useLogScale = value
+            End Set
+        End Property
+
+
         Protected Overrides Function IsCurveVisible(ByVal ci As ZedGraph.CurveItem) As Boolean
 
             Dim info As cCurveInfo = Me.CurveInfo(ci)
@@ -180,7 +201,11 @@ Namespace Ecospace
                                            ByVal axis As Axis, _
                                            ByVal dValue As Double, _
                                            ByVal iIndex As Integer) As String
-            Return Me.StyleGuide.FormatNumber(Math.Pow(10, dValue))
+            If Me.useLogScale Then
+                Return Me.StyleGuide.FormatNumber(Math.Pow(10, dValue))
+            Else
+                Return Me.StyleGuide.FormatNumber(dValue)
+            End If
         End Function
 
     End Class

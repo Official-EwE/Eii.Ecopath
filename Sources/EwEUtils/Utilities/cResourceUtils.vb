@@ -149,11 +149,11 @@ Namespace Utilities
         ''' <summary>
         ''' Load a resource string from a .NET assembly.
         ''' </summary>
-        ''' <param name="strName"></param>
-        ''' <param name="ass"></param>
-        ''' <param name="strNamespace"></param>
-        ''' <param name="culture"></param>
-        ''' <returns></returns>
+        ''' <param name="strName">The name of the string resource.</param>
+        ''' <param name="ass">The assembly to load the resource from.</param>
+        ''' <param name="strNamespace">The namespace within the assembly, if any.</param>
+        ''' <param name="culture">The culture info, if any.</param>
+        ''' <returns>A string, or <paramref name="strName"/> if an error occurred.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function LoadString(ByVal strName As String, _
                                           Optional ByVal ass As Assembly = Nothing, _
@@ -172,10 +172,30 @@ Namespace Utilities
             Try
                 strRes = rm.GetString(strName, culture)
             Catch ex As Exception
-
+                ' Whoah!
             End Try
+
             Return strRes
 
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load a resource string from a .NET assembly.
+        ''' </summary>
+        ''' <param name="strName">The name of the string resource.</param>
+        ''' <param name="typeAssembly">The type for which to find the assembly.</param>
+        ''' <param name="strNamespace">The namespace within the assembly, if any.</param>
+        ''' <param name="culture">The culture info, if any.</param>
+        ''' <returns>A string, or <paramref name="strName"/> if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
+        Shared Function LoadString(ByVal strName As String, _
+                                   ByVal typeAssembly As Type, _
+                                   Optional ByVal strNamespace As String = "", _
+                                   Optional ByVal culture As CultureInfo = Nothing) As String
+
+            Dim ass As Assembly = Assembly.GetAssembly(typeAssembly)
+            Return LoadString(strName, ass, strNamespace, culture)
         End Function
 
     End Class

@@ -21,14 +21,12 @@
 Option Strict On
 Imports System.Collections.Generic
 Imports System.Drawing
-Imports DotSpatial.Analysis
 Imports DotSpatial.Data
-Imports EwEPlugin
-Imports EwEUtils.SpatialData
-Imports EwEUtils.Utilities
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwECore.SpatialData
+Imports EwEPlugin
+Imports EwEUtils.Core
+Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 
@@ -36,10 +34,11 @@ Namespace SpatialData
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Default spatial data converter.
+    ''' Spatial data converter that converts polygons to fractions of cell sizes.
     ''' </summary>
     ''' <remarks>
-    ''' Converts an incoming raster or vector map to a raster of a given spatial extent, cell size and standard Ecospace projection.
+    ''' Converts an incoming vector map to a raster of a given spatial extent, cell 
+    ''' size and standard Ecospace projection.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Class cAreaRatioConverterPlugin
@@ -67,6 +66,15 @@ Namespace SpatialData
         Function IsConfigured() As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured
             Return True
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataConverter.IsCompatible"/>
+        ''' -----------------------------------------------------------------------
+        Public Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialDataConverter.IsCompatible
+            If (ds Is Nothing) Then Return False
+            Return (ds.DataFormat = eSpatialDataFormatFlags.Vector)
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -134,7 +142,7 @@ Namespace SpatialData
 
             ' Perform conversion
             If (TypeOf data Is IRaster) Then
-                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_RASTERONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
+                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
             ElseIf (TypeOf data Is IFeatureSet) Then
                 Try
                     ' Rasterize the features
@@ -158,27 +166,21 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.DisplayName"/>
         ''' -----------------------------------------------------------------------
-        Public Property DisplayName As String _
+        Public ReadOnly Property DisplayName As String _
             Implements ISpatialDataConverter.DisplayName
             Get
                 Return My.Resources.CONVERTER_AREARASTER_NAME
             End Get
-            Set(value As String)
-                ' NOP
-            End Set
         End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Description"/>
         ''' -----------------------------------------------------------------------
-        Public Property Description As String _
-            Implements ISpatialDataConverter.Description
+        Public ReadOnly Property Description As String _
+            Implements ISpatialDataConverter.Description, EwEPlugin.IPlugin.Description
             Get
                 Return My.Resources.CONVERTER_AREARASTER_DESCR
             End Get
-            Set(value As String)
-                'NOP
-            End Set
         End Property
 
         ''' -----------------------------------------------------------------------
@@ -187,7 +189,7 @@ Namespace SpatialData
         Public ReadOnly Property Author As String _
             Implements ISpatialDataConverterPlugin.Author
             Get
-                Return "Jeroen Steenbeek, UBC Fisheries Centre"
+                Return "Jeroen Steenbeek, Ecopath International Initiative"
             End Get
         End Property
 
@@ -208,16 +210,6 @@ Namespace SpatialData
             Implements ISpatialDataConverterPlugin.Initialize
             Me.m_core = DirectCast(core, cCore)
         End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="IPlugin.Description"/>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property PluginDescription As String _
-            Implements EwEPlugin.IPlugin.Description
-            Get
-                Return Me.Description
-            End Get
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="IPlugin.Name"/>

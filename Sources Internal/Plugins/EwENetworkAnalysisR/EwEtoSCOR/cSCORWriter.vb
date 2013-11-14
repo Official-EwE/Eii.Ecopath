@@ -141,7 +141,12 @@ Public Class cSCORWriter
         ' c) Export
         sw.WriteLine("{0,3}\EXPORTS", -1)
         For i As Integer = 1 To Me.m_epData.NumGroups
-            sw.WriteLine("{0,3} {1}", i, cStringUtils.FormatNumber(Me.m_epData.Ex(i)))
+            Dim sDetEx As Single = 1.0
+            ' JS 10Nov11: Include detritus fate exports
+            For j As Integer = 1 To Me.m_epData.NumDetrit
+                sDetEx -= Me.m_epData.DF(i, j)
+            Next
+            sw.WriteLine("{0,3} {1}", i, cStringUtils.FormatNumber(Me.m_epData.Ex(i) + sDetEx))
         Next i
 
         ' d) Respiration

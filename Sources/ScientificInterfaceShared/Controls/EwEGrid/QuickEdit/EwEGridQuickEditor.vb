@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports System.IO
+Imports System.Text
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
@@ -440,9 +441,32 @@ Namespace Controls.EwEGrid
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a csv file name from a concatenation of the EwE model name, 
+        ''' if any, and the grid dataname, if any. The resulting file name is 
+        ''' made safe for use by the current OS.
+        ''' </summary>
+        ''' <returns>A file name for the grid data.</returns>
+        ''' -------------------------------------------------------------------
         Private Function GetCSVFileName() As String
-            Dim strFileName As String = Me.m_uic.Core.EwEModel.Name & "-" & Me.m_grid.DataName
-            Return cFileUtils.ToValidFileName(strFileName, False)
+
+            Dim sbFileName As New StringBuilder()
+
+            If (Me.m_uic.Core.EwEModel IsNot Nothing) Then
+                sbFileName.Append(Me.m_uic.Core.EwEModel.Name)
+                sbFileName.Append("-")
+            End If
+
+            If (String.IsNullOrWhiteSpace(Me.m_grid.DataName)) Then
+                sbFileName.Append("grid")
+            Else
+                sbFileName.Append(Me.m_grid.DataName)
+            End If
+            sbFileName.Append(".csv")
+
+            Return cFileUtils.ToValidFileName(sbFileName.ToString, False)
+
         End Function
 
         Private Sub ImportFromCSV()

@@ -1,6 +1,27 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' EwE Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' GOTMLink plug-in Copyright 2013- Cefas, Lowestoft, UK.
+' ===============================================================================
+'
+
+Imports ScientificInterfaceShared.Forms
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class FormGotmPluggin
-    Inherits WeifenLuo.WinFormsUI.Docking.DockContent
+    Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -24,17 +45,16 @@ Partial Class FormGotmPluggin
     Private Sub InitializeComponent()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.m_tbxLinkFile = New System.Windows.Forms.TextBox()
+        Me.m_btnChooseLinkFile = New System.Windows.Forms.Button()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
-        Me.TextBox4 = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.m_tbxEwEStatus = New System.Windows.Forms.TextBox()
+        Me.m_tbxGOTMStatus = New System.Windows.Forms.TextBox()
+        Me.m_lblGOTMStatus = New System.Windows.Forms.Label()
+        Me.m_lblEwEStatus = New System.Windows.Forms.Label()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.Button5 = New System.Windows.Forms.Button()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
@@ -46,7 +66,7 @@ Partial Class FormGotmPluggin
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
+        Me.m_lblLinkFile = New System.Windows.Forms.Label()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.TextBox12 = New System.Windows.Forms.TextBox()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
@@ -65,71 +85,73 @@ Partial Class FormGotmPluggin
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(12, 77)
+        Me.Button1.Location = New System.Drawing.Point(12, 66)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(146, 23)
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "Load Scenario"
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'TextBox1
+        'm_tbxLinkFile
         '
-        Me.TextBox1.Location = New System.Drawing.Point(78, 35)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(220, 20)
-        Me.TextBox1.TabIndex = 1
+        Me.m_tbxLinkFile.Location = New System.Drawing.Point(91, 32)
+        Me.m_tbxLinkFile.Name = "m_tbxLinkFile"
+        Me.m_tbxLinkFile.Size = New System.Drawing.Size(246, 20)
+        Me.m_tbxLinkFile.TabIndex = 1
         '
-        'Button2
+        'm_btnChooseLinkFile
         '
-        Me.Button2.Location = New System.Drawing.Point(310, 35)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(102, 20)
-        Me.Button2.TabIndex = 2
-        Me.Button2.Text = "ChangeLink File"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.m_btnChooseLinkFile.Location = New System.Drawing.Point(343, 30)
+        Me.m_btnChooseLinkFile.Name = "m_btnChooseLinkFile"
+        Me.m_btnChooseLinkFile.Size = New System.Drawing.Size(75, 23)
+        Me.m_btnChooseLinkFile.TabIndex = 2
+        Me.m_btnChooseLinkFile.Text = "Choose..."
+        Me.m_btnChooseLinkFile.UseVisualStyleBackColor = True
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(12, 236)
+        Me.TextBox2.Location = New System.Drawing.Point(12, 211)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(405, 20)
         Me.TextBox2.TabIndex = 5
         '
-        'TextBox3
+        'm_tbxEwEStatus
         '
-        Me.TextBox3.Location = New System.Drawing.Point(271, 6)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(141, 20)
-        Me.TextBox3.TabIndex = 6
+        Me.m_tbxEwEStatus.Location = New System.Drawing.Point(277, 6)
+        Me.m_tbxEwEStatus.Name = "m_tbxEwEStatus"
+        Me.m_tbxEwEStatus.ReadOnly = True
+        Me.m_tbxEwEStatus.Size = New System.Drawing.Size(141, 20)
+        Me.m_tbxEwEStatus.TabIndex = 6
         '
-        'TextBox4
+        'm_tbxGOTMStatus
         '
-        Me.TextBox4.Location = New System.Drawing.Point(78, 6)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(125, 20)
-        Me.TextBox4.TabIndex = 7
+        Me.m_tbxGOTMStatus.Location = New System.Drawing.Point(91, 6)
+        Me.m_tbxGOTMStatus.Name = "m_tbxGOTMStatus"
+        Me.m_tbxGOTMStatus.ReadOnly = True
+        Me.m_tbxGOTMStatus.Size = New System.Drawing.Size(112, 20)
+        Me.m_tbxGOTMStatus.TabIndex = 7
         '
-        'Label1
+        'm_lblGOTMStatus
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(0, 9)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(72, 13)
-        Me.Label1.TabIndex = 8
-        Me.Label1.Text = "GOTM Status"
+        Me.m_lblGOTMStatus.AutoSize = True
+        Me.m_lblGOTMStatus.Location = New System.Drawing.Point(12, 9)
+        Me.m_lblGOTMStatus.Name = "m_lblGOTMStatus"
+        Me.m_lblGOTMStatus.Size = New System.Drawing.Size(73, 13)
+        Me.m_lblGOTMStatus.TabIndex = 8
+        Me.m_lblGOTMStatus.Text = "GOTM status:"
         '
-        'Label2
+        'm_lblEwEStatus
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(203, 12)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(62, 13)
-        Me.Label2.TabIndex = 9
-        Me.Label2.Text = "EwE Status"
+        Me.m_lblEwEStatus.AutoSize = True
+        Me.m_lblEwEStatus.Location = New System.Drawing.Point(209, 9)
+        Me.m_lblEwEStatus.Name = "m_lblEwEStatus"
+        Me.m_lblEwEStatus.Size = New System.Drawing.Size(63, 13)
+        Me.m_lblEwEStatus.TabIndex = 9
+        Me.m_lblEwEStatus.Text = "EwE status:"
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(12, 106)
+        Me.Button3.Location = New System.Drawing.Point(12, 95)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(146, 23)
         Me.Button3.TabIndex = 10
@@ -138,7 +160,7 @@ Partial Class FormGotmPluggin
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(12, 135)
+        Me.Button4.Location = New System.Drawing.Point(12, 124)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(146, 23)
         Me.Button4.TabIndex = 11
@@ -147,19 +169,12 @@ Partial Class FormGotmPluggin
         '
         'Button5
         '
-        Me.Button5.Location = New System.Drawing.Point(12, 164)
+        Me.Button5.Location = New System.Drawing.Point(12, 153)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(146, 23)
         Me.Button5.TabIndex = 12
         Me.Button5.Text = "View Results"
         Me.Button5.UseVisualStyleBackColor = True
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(172, 207)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(245, 23)
-        Me.ProgressBar1.TabIndex = 13
         '
         'NumericUpDown1
         '
@@ -195,10 +210,10 @@ Partial Class FormGotmPluggin
         '
         'TextBox6
         '
-        Me.TextBox6.Location = New System.Drawing.Point(12, 338)
+        Me.TextBox6.Location = New System.Drawing.Point(13, 289)
         Me.TextBox6.Multiline = True
         Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(405, 273)
+        Me.TextBox6.Size = New System.Drawing.Size(405, 319)
         Me.TextBox6.TabIndex = 18
         '
         'NumericUpDown2
@@ -246,7 +261,7 @@ Partial Class FormGotmPluggin
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(12, 193)
+        Me.Button6.Location = New System.Drawing.Point(12, 182)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(146, 23)
         Me.Button6.TabIndex = 24
@@ -263,14 +278,14 @@ Partial Class FormGotmPluggin
         Me.Label6.TabIndex = 25
         Me.Label6.Text = "Timestep Ratio"
         '
-        'Label7
+        'm_lblLinkFile
         '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(0, 38)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(77, 13)
-        Me.Label7.TabIndex = 26
-        Me.Label7.Text = "Link File Name"
+        Me.m_lblLinkFile.AutoSize = True
+        Me.m_lblLinkFile.Location = New System.Drawing.Point(12, 35)
+        Me.m_lblLinkFile.Name = "m_lblLinkFile"
+        Me.m_lblLinkFile.Size = New System.Drawing.Size(46, 13)
+        Me.m_lblLinkFile.TabIndex = 26
+        Me.m_lblLinkFile.Text = "Link file:"
         '
         'Label12
         '
@@ -285,9 +300,9 @@ Partial Class FormGotmPluggin
         'TextBox12
         '
         Me.TextBox12.Enabled = False
-        Me.TextBox12.Location = New System.Drawing.Point(172, 181)
+        Me.TextBox12.Location = New System.Drawing.Point(164, 184)
         Me.TextBox12.Name = "TextBox12"
-        Me.TextBox12.Size = New System.Drawing.Size(245, 20)
+        Me.TextBox12.Size = New System.Drawing.Size(253, 20)
         Me.TextBox12.TabIndex = 41
         Me.TextBox12.Text = "e:/ersemewecoupler/testdata/PML.NC"
         '
@@ -315,7 +330,7 @@ Partial Class FormGotmPluggin
         '
         'DomainUpDown1
         '
-        Me.DomainUpDown1.Location = New System.Drawing.Point(12, 262)
+        Me.DomainUpDown1.Location = New System.Drawing.Point(12, 237)
         Me.DomainUpDown1.Name = "DomainUpDown1"
         Me.DomainUpDown1.Size = New System.Drawing.Size(120, 20)
         Me.DomainUpDown1.TabIndex = 45
@@ -323,23 +338,23 @@ Partial Class FormGotmPluggin
         '
         'DateTimePicker1
         '
-        Me.DateTimePicker1.Location = New System.Drawing.Point(12, 299)
+        Me.DateTimePicker1.Location = New System.Drawing.Point(12, 263)
         Me.DateTimePicker1.Name = "DateTimePicker1"
-        Me.DateTimePicker1.Size = New System.Drawing.Size(200, 20)
+        Me.DateTimePicker1.Size = New System.Drawing.Size(191, 20)
         Me.DateTimePicker1.TabIndex = 46
         '
         'DateTimePicker2
         '
-        Me.DateTimePicker2.Location = New System.Drawing.Point(241, 299)
+        Me.DateTimePicker2.Location = New System.Drawing.Point(241, 263)
         Me.DateTimePicker2.Name = "DateTimePicker2"
-        Me.DateTimePicker2.Size = New System.Drawing.Size(200, 20)
+        Me.DateTimePicker2.Size = New System.Drawing.Size(177, 20)
         Me.DateTimePicker2.TabIndex = 47
         '
         'FormGotmPluggin
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(473, 885)
+        Me.ClientSize = New System.Drawing.Size(429, 620)
         Me.Controls.Add(Me.DateTimePicker2)
         Me.Controls.Add(Me.DateTimePicker1)
         Me.Controls.Add(Me.DomainUpDown1)
@@ -347,7 +362,7 @@ Partial Class FormGotmPluggin
         Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.TextBox12)
         Me.Controls.Add(Me.Label12)
-        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.m_lblLinkFile)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Label5)
@@ -359,17 +374,16 @@ Partial Class FormGotmPluggin
         Me.Controls.Add(Me.RadioButton2)
         Me.Controls.Add(Me.RadioButton1)
         Me.Controls.Add(Me.NumericUpDown1)
-        Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.TextBox4)
-        Me.Controls.Add(Me.TextBox3)
+        Me.Controls.Add(Me.m_lblEwEStatus)
+        Me.Controls.Add(Me.m_lblGOTMStatus)
+        Me.Controls.Add(Me.m_tbxGOTMStatus)
+        Me.Controls.Add(Me.m_tbxEwEStatus)
         Me.Controls.Add(Me.TextBox2)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.m_btnChooseLinkFile)
+        Me.Controls.Add(Me.m_tbxLinkFile)
         Me.Controls.Add(Me.Button1)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "FormGotmPluggin"
@@ -383,17 +397,10 @@ Partial Class FormGotmPluggin
     End Sub
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
-    Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents Button4 As System.Windows.Forms.Button
     Friend WithEvents Button5 As System.Windows.Forms.Button
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents NumericUpDown1 As System.Windows.Forms.NumericUpDown
     Friend WithEvents RadioButton1 As System.Windows.Forms.RadioButton
     Friend WithEvents RadioButton2 As System.Windows.Forms.RadioButton
@@ -405,7 +412,6 @@ Partial Class FormGotmPluggin
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Button6 As System.Windows.Forms.Button
     Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents TextBox12 As System.Windows.Forms.TextBox
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
@@ -413,4 +419,11 @@ Partial Class FormGotmPluggin
     Friend WithEvents DomainUpDown1 As System.Windows.Forms.DomainUpDown
     Friend WithEvents DateTimePicker1 As System.Windows.Forms.DateTimePicker
     Friend WithEvents DateTimePicker2 As System.Windows.Forms.DateTimePicker
+    Private WithEvents m_lblGOTMStatus As System.Windows.Forms.Label
+    Private WithEvents m_tbxGOTMStatus As System.Windows.Forms.TextBox
+    Private WithEvents m_lblEwEStatus As System.Windows.Forms.Label
+    Private WithEvents m_tbxEwEStatus As System.Windows.Forms.TextBox
+    Private WithEvents m_lblLinkFile As System.Windows.Forms.Label
+    Private WithEvents m_tbxLinkFile As System.Windows.Forms.TextBox
+    Private WithEvents m_btnChooseLinkFile As System.Windows.Forms.Button
 End Class

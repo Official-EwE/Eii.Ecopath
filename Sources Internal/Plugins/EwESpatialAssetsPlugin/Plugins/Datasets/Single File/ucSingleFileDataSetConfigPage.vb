@@ -137,7 +137,8 @@ Friend Class ucSingleFileDataSetConfigPage
     End Sub
 
     Private Sub DoBrowse()
-        Dim dlg As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(ScientificInterfaceShared.My.Resources.CAPTION_SELECT_FILE, Me.m_dataset.Source, Me.m_dataset.DialogReadFilter)
+        Dim dlg As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(ScientificInterfaceShared.My.Resources.CAPTION_SELECT_FILE, _
+                                                                        Me.m_dataset.Source, Me.m_dataset.DialogReadFilter(True, False, True))
         If dlg.ShowDialog(Me) = DialogResult.OK Then
             Me.m_tbxFile.Text = dlg.FileName
         End If

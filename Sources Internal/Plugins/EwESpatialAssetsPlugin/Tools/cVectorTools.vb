@@ -26,7 +26,6 @@ Imports DotSpatial.Projections
 Imports DotSpatial.Topology
 Imports EwECore
 Imports EwECore.SpatialData
-Imports EwESpatialAssetsPlugin.SpatialData
 
 #End Region ' Imports
 

@@ -286,8 +286,6 @@ Public Class cEcoSpace
 
     Private threadGroupsConSim(,) As Integer
 
-    'Private m_SpaceCatchSemaphor As Semaphore
-
     Private m_rand As Random
 
     Private CopySyncLock As New Object
@@ -297,6 +295,24 @@ Public Class cEcoSpace
     Private Shared nFleets As Integer
 
     Private bEffortAdjusted As Boolean
+
+    ''' <summary>Number of timesteps in the total Spin-Up period</summary>   
+    Private nSpinUp As Integer
+
+    ''' <summary>Number of timesteps in one year used by Spin-Up.</summary>   
+    Private nSpinUpYear As Integer
+
+    ''' <summary>Cumulative Spin-Up counter</summary>   
+    Private iSpinUp As Integer
+
+    ''' <summary>Yearly Spin-Up counter</summary>   
+    Private iSpinUpYear As Integer
+
+    '''' <summary>Are we in a Spin-Up period </summary>   
+    'Private bInSpinUp As Boolean
+
+    ''' <summary>Does the Spin-Up base biomass need initialization</summary>
+    Private bInitSpinUpBase As Boolean
 
 #End Region
 
@@ -862,6 +878,8 @@ Public Class cEcoSpace
         Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
         'Dim steps_per_year As Integer = 1 / m_Data.TimeStep
 
+        Dim irgn As Integer
+
         'timers
         Dim stpwchTotRunTime As New Stopwatch
         Dim stpwchSolver As New Stopwatch
@@ -914,10 +932,10 @@ Public Class cEcoSpace
                 'Ecospace has been stopped
                 If Me.m_StopRun Then Exit For
 
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'Set time step counters
-                'itt is the cumulative time counter
-                itt += 1
+                'Set itt(cumulative timestep counter) and its(monthly index counter)
+                'setTimeStepCounters() also deals with the SpinUp period
+                Me.setTimeStepCounters(itt, its)
+
                 If itt > nEcospaceTimeSteps Then
                     'We have exceeded the number of time step bump out of the time loop.
                     'This quarantees we don't come up one time step short due to rounding issues with m_Data.TimeStep
@@ -925,21 +943,9 @@ Public Class cEcoSpace
                     Exit For
                 End If
 
-                'its is the cumulative monthly counter used for data array by month i.e. zscale()
-                its = Math.Truncate(m_Data.TimeNow * 12) + 1
-                'make sure its (time loop indexes) do not get larger than the data they reference
-                If its > m_SimData.ForcePoints Then its = m_SimData.ForcePoints 'HACK  bump back the index
-                If its > m_SimData.NTimes Then its = m_SimData.NTimes
-
-                'MonthNow will be truncated to monthly(decimal) part of TimeNow
-                m_Data.MonthNow = Math.Truncate(1.0F + (m_Data.TimeNow - Math.Truncate(m_Data.TimeNow)) * 12.0F)
-                'YearNow will be truncated to the integer part of timenow
-                m_Data.YearNow = 1 + Math.Truncate(m_Data.TimeNow)
-
                 If m_Data.MonthNow = 1 Then
-                    bAccumulateData = True 'new year collect the model fitting data after the six month
+                    bAccumulateData = True 'new year collect the model fitting data after the sixth month
                 End If
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 'Set the isFished(fleet,row,col) array
                 Me.EvaluateFishing()
@@ -1108,47 +1114,38 @@ Public Class cEcoSpace
 
                 'sum biomass after Multistanza updates
                 Array.Clear(Btime, 0, Btime.Length)
-                For i = 1 To m_Data.InRow
-                    For j = 1 To m_Data.InCol
-                        For ip = 0 To m_Data.NGroups
+
+                For ip = 0 To m_Data.NGroups
+                    For i = 1 To m_Data.InRow
+                        For j = 1 To m_Data.InCol
                             'jb 12-July-2013 Added Depth check and removed width multiplier
                             'This fixes a bug in the Ecospace Results grid were biomass was not matching Ecopath base with large spatial models
                             If Me.m_Data.Depth(i, j) > 0 Then
-                                Btime(ip) += m_Data.Bcell(i, j, ip) ' * m_Data.Width(i)
+                                Btime(ip) += m_Data.Bcell(i, j, ip)
+                                'By Region
+                                irgn = Me.m_Data.Region(i, j)
+                                If (irgn > Me.m_Data.nRegions) Then irgn = 0
+                                Me.m_Data.ResultsRegionGroup(irgn, ip, its) += Me.m_Data.Bcell(i, j, ip)
                             End If
-                        Next ip
-                    Next j
-                Next i
+                        Next j
+                    Next i
+
+                    'Average across all the cells
+                    Btime(ip) /= m_Data.nWaterCells
+                    If Btime(ip) = 0 Then Btime(ip) = 0.0000000001
+
+                    For irgn = 0 To Me.m_Data.nRegions
+                        Me.m_Data.ResultsRegionGroup(irgn, ip, its) /= Me.m_Data.nCellsInRegion(irgn)
+                    Next irgn
+
+                Next ip
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'contaminant tracing
                 If m_tracerData.EcoSpaceConSimOn Then
-                    Me.grdslvConSim.FirstLastGroups(0, m_EPdata.NumGroups)
-                    'the grid solver has already been initialized with a reference to the contaminant tracing data
-                    Me.grdslvConSim.Solve(Nothing)
 
-                    ReDim m_tracerData.ConcMax(m_EPdata.NumGroups)
+                    Me.runContaminantTracerSolveGrid()
 
-                    For i = 1 To m_Data.InRow
-                        For j = 1 To m_Data.InCol
-
-                            Dim iRgn As Integer = m_Data.Region(i, j)
-                            If iRgn > m_Data.nRegions Then iRgn = 0
-
-                            For ip = 0 To m_Data.NGroups
-                                'If SpaceTime = False Then Wtr = Exp(AMmTr(i, j, ip) * TimeStep) Else Wtr = 0
-                                Wtr = Math.Exp(m_Data.AMmTr(i, j, ip) * m_Data.TimeStep)
-                                m_Data.Ccell(i, j, ip) = Wtr * m_Data.Clast(i, j, ip) + (1 - Wtr) * m_Data.Ccell(i, j, ip)
-                                m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
-
-                                If m_Data.Ccell(i, j, ip) > m_tracerData.ConcMax(ip) Then m_tracerData.ConcMax(ip) = m_Data.Ccell(i, j, ip)
-
-                                m_tracerData.TracerConcByRegion(iRgn, ip, itt) = m_tracerData.TracerConcByRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip)
-                                m_tracerData.TracerCBRegion(iRgn, ip, itt) = m_tracerData.TracerCBRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip) / m_Data.Bcell(i, j, ip)
-
-                            Next ip
-                        Next j
-                    Next i
                 End If 'm_tracerData.EcoSpaceConSimOn 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -1156,12 +1153,15 @@ Public Class cEcoSpace
                     'make sure AccumulateDataInfo only gets called once a year
                     'if the user has set the time step to a value other the one month imonth may never = 6 or it may = 6 for multiple time steps
 
-                    'jb loss needs to change to average loss over all the water cells
                     m_Ecosim.AccumulateDataInfo(m_Data.YearNow, Btime, loss)
                     bAccumulateData = False
                 End If
 
-                summarizeTimeStepData(itt, m_Data.MonthNow)
+                If itt = 1 Then
+                    Me.setBaseValues(itt)
+                End If
+
+                updateBiomassResults(itt)
 
                 Me.calcValue(itt, m_Data.YearNow)
 
@@ -1185,8 +1185,8 @@ Public Class cEcoSpace
             'END OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-            Me.m_Data.AverageSpatialResults()
-            Me.m_Data.SummarizeResults(Me.m_EPdata.cost, Me.m_search.Jobs)
+            ' Me.m_Data.AverageSpatialResults()
+            Me.m_Data.SummarizeResultsByFleet(itt, Me.m_EPdata.cost, Me.m_search.Jobs)
 
             If m_search.bInSearch Then
                 Dim runTime As Integer = CInt(itt * m_Data.TimeStep)
@@ -1230,6 +1230,61 @@ Public Class cEcoSpace
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("FindSpatialEquilibrium() Error: " & ex.Message, ex)
         End Try
+
+    End Sub
+
+
+    ''' <summary>
+    ''' Set time step index counters. This includes setting the counters for the Spin-Up period.
+    ''' </summary>
+    ''' <param name="iCumTimeStep">Cumulative time step counter.</param>
+    ''' <param name="iDataTimeStep">Time step counter use to access data arrayed on cumulative month.</param>
+    ''' <remarks>This also sets YearNow and MonthNow yearly and monthly indexes.</remarks>
+    Private Sub setTimeStepCounters(ByRef iCumTimeStep As Integer, ByRef iDataTimeStep As Integer)
+
+        'The cumulative timestep counter
+        iCumTimeStep += 1
+
+        'Increment the SpinUp counters
+        Me.iSpinUp += 1
+        Me.iSpinUpYear += 1
+
+        'If in a Spin Up Period then...
+        If Me.m_Data.bInSpinUp Then
+
+            If Me.iSpinUp <= Me.nSpinUp Then
+                'Still in a Spin-Up period
+
+                'Recycle through the first year
+                If Me.iSpinUpYear > Me.nSpinUpYear Then
+                    'Set counters and time back to the start
+                    Me.iSpinUpYear = 1
+                    iCumTimeStep = 1
+                    m_Data.TimeNow = 0
+                End If
+
+            Else 'Me.iSpinUp <= Me.nSpinUp T
+                'Spin-Up period ended
+                Me.m_Data.bInSpinUp = False
+
+                'Re-start from the first time step
+                iCumTimeStep = 1
+                m_Data.TimeNow = 0
+
+            End If 'Me.iSpinUp <= Me.nSpinUp T
+
+        End If 'm_Data.bInSpinUp 
+
+        'The cumulative monthly counter used for data arrayed by month i.e. zscale()
+        iDataTimeStep = Math.Truncate(m_Data.TimeNow * 12) + 1
+        'make sure the data array index (its in the main loop) do not get larger than the data they reference
+        If iDataTimeStep > m_SimData.ForcePoints Then iDataTimeStep = m_SimData.ForcePoints 'HACK  bump back the index
+        If iDataTimeStep > m_SimData.NTimes Then iDataTimeStep = m_SimData.NTimes
+
+        'MonthNow will be truncated to monthly(decimal) part of TimeNow
+        m_Data.MonthNow = Math.Truncate(1.0F + (m_Data.TimeNow - Math.Truncate(m_Data.TimeNow)) * 12.0F)
+        'YearNow will be truncated to the integer part of timenow
+        m_Data.YearNow = 1 + Math.Truncate(m_Data.TimeNow)
 
     End Sub
 
@@ -1597,6 +1652,10 @@ Public Class cEcoSpace
 
                 For igrp As Integer = 1 To m_Data.NGroups
                     m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp)
+
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp)
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp)
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp)
                 Next igrp
 
                 For iflt As Integer = 0 To Me.m_Data.nFleets
@@ -1635,6 +1694,32 @@ Public Class cEcoSpace
                 End If
             Next solver
 
+            'Average values across all the map cells
+            For igrp As Integer = 1 To m_Data.NGroups
+                m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) /= m_Data.nWaterCells
+            Next igrp
+
+            For iflt As Integer = 0 To Me.m_Data.nFleets
+                m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, itt) /= m_Data.nWaterCells
+
+                For igrp As Integer = 1 To m_Data.NGroups
+                    m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp, itt) /= m_Data.nWaterCells
+
+                    Dim nInReg As Integer
+                    For irgn As Integer = 0 To m_Data.nRegions
+                        nInReg = m_Data.nCellsInRegion(irgn)
+                        If nInReg = 0 Then nInReg = 1
+                        m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) /= nInReg
+                    Next irgn
+
+                Next igrp
+            Next iflt
+
             stpTotRun.Stop()
             'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
             System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
@@ -1652,6 +1737,55 @@ Public Class cEcoSpace
         End Try
 
         ' GC.Collect()
+
+    End Sub
+
+    Private Sub runContaminantTracerSolveGrid()
+        Dim i As Integer
+        Dim j As Integer
+        Dim iRgn As Integer
+        Dim ip As Integer
+        Dim Wtr As Double
+
+        Me.grdslvConSim.FirstLastGroups(0, m_EPdata.NumGroups)
+        'the grid solver has already been initialized with a reference to the contaminant tracing data
+        Me.grdslvConSim.Solve(Nothing)
+
+        ReDim m_tracerData.ConcMax(m_EPdata.NumGroups)
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+
+                iRgn = m_Data.Region(i, j)
+                If iRgn > m_Data.nRegions Then iRgn = 0
+
+                For ip = 0 To m_Data.NGroups
+                    'If SpaceTime = False Then Wtr = Exp(AMmTr(i, j, ip) * TimeStep) Else Wtr = 0
+                    Wtr = Math.Exp(m_Data.AMmTr(i, j, ip) * m_Data.TimeStep)
+                    m_Data.Ccell(i, j, ip) = Wtr * m_Data.Clast(i, j, ip) + (1 - Wtr) * m_Data.Ccell(i, j, ip)
+                    m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
+
+                    If m_Data.Ccell(i, j, ip) > m_tracerData.ConcMax(ip) Then m_tracerData.ConcMax(ip) = m_Data.Ccell(i, j, ip)
+
+                    m_tracerData.TracerConcByRegion(iRgn, ip, itt) = m_tracerData.TracerConcByRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip)
+                    m_tracerData.TracerCBRegion(iRgn, ip, itt) = m_tracerData.TracerCBRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip) / m_Data.Bcell(i, j, ip)
+
+                Next ip
+
+            Next j
+        Next i
+
+        'average contamintant results by region
+        For irgn = 0 To m_Data.nRegions
+            Dim nInRgn As Integer = m_Data.nCellsInRegion(irgn)
+            If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero cells(no area) this avoids a /0 
+
+            For igrp As Integer = 0 To m_Data.NGroups
+                m_tracerData.TracerConcByRegion(irgn, igrp, itt) = m_tracerData.TracerConcByRegion(irgn, igrp, itt) / nInRgn
+                m_tracerData.TracerCBRegion(irgn, igrp, itt) = m_tracerData.TracerCBRegion(irgn, igrp, itt) / nInRgn
+            Next igrp
+        Next iRgn
+
 
     End Sub
 
@@ -2150,6 +2284,22 @@ Public Class cEcoSpace
             m_Ecosim.InitializeDataInfo()
             m_Data.nIBMGroupsPerThread = (m_Stanza.Nsplit + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
 
+            'Spin-up Initialization
+
+            'Does the current run use a Spin-Up period
+            Me.m_Data.bInSpinUp = Me.m_Data.UseSpinUp
+
+            'Total number of time steps in the Spin-Up 
+            Me.nSpinUp = CInt(Me.m_Data.SpinUpYears * (1 / Me.m_Data.TimeStep))
+            'Number of time steps in one year. 
+            'Use to cycle through the first year for the Spin-Up period
+            Me.nSpinUpYear = CInt(1 * (1 / Me.m_Data.TimeStep))
+            'Clear the counters
+            Me.iSpinUp = 0
+            Me.iSpinUpYear = 0
+            'Spin-Up biomass base has not been initialized yet
+            Me.bInitSpinUpBase = True
+
             'For debugging Effort Zones code
             'sets up some zones with modified effort
             'Me.m_Data.DebugTestEffortZones()
@@ -2292,6 +2442,13 @@ Public Class cEcoSpace
 
             ReDim m_Data.ByPassIntegrate(m_Data.nvartot)
             ReDim m_Data.BBase(m_Data.NGroups)
+            ReDim m_Data.SpinUpBBase(m_Data.NGroups)
+
+            ReDim m_Data.BaseFishMort(m_Data.NGroups)
+            ReDim m_Data.BaseConsump(m_Data.NGroups)
+            ReDim m_Data.BaseCatch(m_Data.NGroups)
+            ReDim m_Data.BasePredMort(m_Data.NGroups)
+
             ReDim Basebiomass(m_Data.nvartot)
             ReDim der(m_Data.NGroups)
             ReDim loss(m_Data.NGroups)
@@ -2885,7 +3042,7 @@ Public Class cEcoSpace
                                     m_Data.TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
                                 Else
                                     'Sailing cost > effort distribution threshold
-                                    'So not fishing in this cell
+                                    'So this fleet is not fishing in this cell
                                     Me.m_Data.PAreaFished(i, j, ig) = 0
                                 End If 'Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold
 
@@ -3659,8 +3816,6 @@ exitline:
                 If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit Do
 
                 TotE = m_Data.TotEffort(iFlt) * m_Data.SEmult(iFlt)
-                ' Debug.Assert(iFlt <> 14)
-
                 'set the total effort by zone
                 For iZone As Integer = 0 To Me.m_Data.nEffZones
                     TotEffortZone(iZone) = TotE * Me.m_Data.PropEffortFleetZone(iFlt, iZone)
@@ -3697,8 +3852,6 @@ exitline:
                             Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(iRow, iCol, isp) * m_SimData.relQ(iFlt, isp)
                         Next
 
-                        'Debug.Assert(Not (iFlt = 14 And Me.m_Data.EffZones(iRow, iCol) = 0))
-
                         Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
                         Attract(iRow, iCol) = Valt * Me.m_Data.PAreaFished(iRow, iCol, iFlt)  'may want to modify this by dividing by a site cost factor for cell i,j
                         'TotAttract += Attract(iRow, iCol)
@@ -3717,9 +3870,6 @@ exitline:
                     'IsFished() is set every timestep to account for monthly MPA Closures
                     If Me.m_Data.IsFished(iFlt, iRow, iCol) Then
 
-                        ' Debug.Assert(Not (iFlt = 14 And Me.m_Data.EffZones(iRow, iCol) = 0))
-
-                        'm_Data.EffortSpace(iFlt, iRow, iCol) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(iRow, iCol) / TotAttract
                         'Effort distribution scaled by Effort Zone
                         m_Data.EffortSpace(iFlt, iRow, iCol) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.m_Data.EffZones(iRow, iCol)) * Attract(iRow, iCol) / TotAttractZone(Me.m_Data.EffZones(iRow, iCol))
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -4872,28 +5022,28 @@ exitline:
         Dim AvgLandings(,) As Single
         ReDim AvgLandings(Me.m_Data.NGroups, Me.m_Data.nFleets)
 
-        'landings is the sum of landing across all cells for a timestep
-        'SetPriceMedFunctions(landings) sets the PES multiplier based on Ecopath landings
-        'which is just one cell so average the landing across cells for SetPriceMedFunctions(landings)
+        'Ecospace Landings(group,fleet) are the sum of landing across all cells for a timestep.
+        'SetPriceMedFunctions(landings) sets the PES multiplier based on Ecopath landings which are t/km2/Year
+        'The average will be the landing in Ecopath units 
         For igrp = 1 To Me.m_EPdata.NumGroups
             For iflt = 0 To Me.m_EPdata.NumFleet
                 AvgLandings(igrp, iflt) = Me.m_Data.Landings(igrp, iflt) / Me.m_Data.nWaterCells
             Next
         Next
 
-        'set the price elasticity values for the landings in this cell
+        'set the price elasticity values for the average landings
         Me.m_SimData.PriceMedData.SetPriceMedFunctions(AvgLandings)
 
         'Value of landings
         Dim ValLandings As Single
         For igrp = 1 To Me.m_EPdata.NumGroups
 
-
             For iflt = 0 To Me.m_EPdata.NumFleet
 
                 If Me.m_Data.Landings(igrp, iflt) > 0.0 Then
                     'Value = Landings * [market value] * [price elasticity multiplier]
-                    ValLandings = Me.m_Data.Landings(igrp, iflt) * Me.m_EPdata.Market(iflt, igrp) * Me.m_SimData.PriceMedData.getPESMult(igrp, iflt)
+                    'Value is in the same units as Ecopath Off-vessel price value/km2/year. So the landings need to be the Ecospace average.
+                    ValLandings = AvgLandings(igrp, iflt) * Me.m_EPdata.Market(iflt, igrp) * Me.m_SimData.PriceMedData.getPESMult(igrp, iflt)
 
                     'Add to group and to gear sums
                     m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iflt, igrp, iCumTime) += ValLandings
@@ -4926,147 +5076,27 @@ exitline:
 
 
     ''' <summary>
-    ''' Sumarize output data for at the end of a time step
+    ''' Keep the Biomass results for this time step after all the calculation have been done. Trophic (deritRed), Spatial distribution (solve grid) and Multi-stanza biomasses updated.
     ''' </summary>
-    ''' <param name="iTimeStep"></param>
-    ''' <param name="iMonth"></param>
-    ''' <remarks>Called at the end of a time step to populate data for a time step output/results.</remarks>
-    Private Sub summarizeTimeStepData(ByVal iTimeStep As Integer, ByVal iMonth As Integer)
-
+    ''' <param name="iTimeStep">Current cumulative time step.</param>
+    ''' <remarks>Biomass is the average across all the water cells</remarks>
+    Private Sub updateBiomassResults(ByVal iTimeStep As Integer)
         Dim igrp As Integer
         Try
 
-            'increment the number of timestep the model ran for
-            m_Data.nSumTimeSteps += 1
-
-            'if this is the first time step
-            'then BBase() needs to be set to the base value calculated be Ecospace this may not be the same as the starting Ecopath biomass
-            If iTimeStep = 1 Then
-                For igrp = 1 To m_Data.NGroups
-                    If Btime(igrp) = 0 Then Btime(igrp) = 0.0000000001
-                    m_Data.BBase(igrp) = Btime(igrp) / m_Data.nWaterCells
-                Next igrp
-            End If
-
-            Dim irgn As Integer
-            For ir As Integer = 1 To Me.m_Data.InRow
-                For ic As Integer = 1 To Me.m_Data.InCol
-                    irgn = Me.m_Data.Region(ir, ic)
-                    If (irgn > Me.m_Data.nRegions) Then irgn = 0
-                    For igrp = 1 To Me.m_Data.NGroups
-                        Me.m_Data.ResultsRegionGroup(irgn, igrp, iTimeStep) += Me.m_Data.Bcell(ir, ic, igrp)
-                    Next
-                Next ic
-            Next ir
-
             For igrp = 1 To m_Data.NGroups
 
-                'biomass averaged across all the cells for this time step
-                Btime(igrp) = Btime(igrp) / m_Data.nWaterCells
-
-                'save for each time step
                 'biomass
                 m_Data.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTimeStep) = Btime(igrp)
                 'relative biomass
-                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp) ' Me.m_EPdata.B(igrp) ' to use Ecopath base
+                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp) ' Me.m_EPdata.B(igrp) to use Ecopath base
 
             Next igrp
 
-            If m_tracerData.EcoSpaceConSimOn Then
-
-                'average contamintant by region for each time step
-                For irgn = 0 To m_Data.nRegions
-
-                    Dim nInRgn As Integer = m_Data.nCellsInRegion(irgn)
-                    If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero cells(no area) this avoids a /0 
-
-                    For igrp = 0 To m_Data.NGroups
-                        m_tracerData.TracerConcByRegion(irgn, igrp, iTimeStep) = m_tracerData.TracerConcByRegion(irgn, igrp, iTimeStep) / nInRgn
-                        m_tracerData.TracerCBRegion(irgn, igrp, iTimeStep) = m_tracerData.TracerCBRegion(irgn, igrp, iTimeStep) / nInRgn
-                    Next igrp
-
-                Next irgn
-
-            End If 'If m_tracerData.EcoSpaceConSimOn Then
-
         Catch ex As Exception
             Debug.Assert(False)
-            Throw New Exception("summarizeTimeStepData() Error: " & ex.Message, ex)
+            cLog.Write(ex)
         End Try
-
-        '  Debug.Assert(iSumIndex <> -1)
-        Exit Sub
-
-
-        '   If imonth = 6 Then AccumulateDataInfo(1 + Int(TimeNow), Btime, False)
-
-
-
-        'EwE5 code from FindSpatialEquilibrium
-        '            If EcoSeedOn = False And MPAstep <= 1 Or MPAstep >= CLng(Inrow) * CLng(Incol) + 1 Then
-        '                ShowTransect(Blast)
-        '                If StopRun > 0 Then GoTo exitSub
-        '                If itt > TotalTime / TimeStep Then itt = TotalTime / TimeStep
-        '                'itt = 12 * TimeNow + 1
-        '                'VC020130: Carl, you suggested that the below should be used to constrain itt. MaxTime is however
-        '                'a constant 1200, while simplot is dyn. dimensioned. hence I think the above constraint is better
-        '                'If itt > MaxTime Then itt = MaxTime
-        '                For ip = 1 To m_data.nGroups : Btime(ip) = Btime(ip) / Water : SimPlot(ip, 0, itt) = Btime(ip) : Next
-        '                If imonth = 6 Then AccumulateDataInfo(1 + Int(TimeNow), Btime, False)
-
-        '                'plot time results
-        '                If TimeNow > 0.0# Then
-        '                    For ip = 1 To nvar
-        '                        If GrpsToShow(ip) Then        'Only display non-hidden groups
-        '                            If Tn >= 0 Then SumBiomass(Tn, ip) = SumBiomass(Tn, ip) + Btime(ip)
-        '                            'If TimeNow >= SumStart(1) Then SumBiomass(ip) = SumBiomass(ip) + Btime(ip)
-        '                            'SumCatch(ip) = SumCatch(ip) + Btime(ip) * ?(ip)
-        '                            'End If
-        '                            If Btime(ip) < 0.1 * BBase(ip) Then Btime(ip) = 0.1 * BBase(ip)
-        '                            If Btime(ip) > 10.0# * BBase(ip) Then Btime(ip) = 10.0# * BBase(ip)
-        '                            Btime(ip) = Log(Btime(ip) / BBase(ip))
-        '                        BioPlot.Line (LastT, LastB(ip))-(TimeNow, Btime(ip)), PoolColor(ip)
-        '                        BioPlot2.Line (LastT, LastB(ip))-(TimeNow, Btime(ip)), PoolColor(ip)
-        '                            LastB(ip) = Btime(ip)
-        '                        End If
-        '                    Next
-        '                Else   'First entry
-        '                    For ip = 1 To nvar
-        '                        BBase(ip) = Btime(ip)
-        '                        LastB(ip) = 0
-        '                        If Tn >= 0 Then
-        '                            SumBiomass(Tn, ip) = SumBiomass(Tn, ip) + Btime(ip)
-        '                            If NoRegions > 0 Then SumBiomassRegion(Tn, ip, Region(i, j)) = SumBiomassRegion(Tn, ip, Region(i, j)) + Btime(ip)
-        '                        End If
-        '                    Next
-        '                End If
-        '                LastT = TimeNow
-        '                'Update the time counter
-        '                timeshow.Caption = Format$(TimeNow, "0.00") + " of " + CStr(TotalTime) + " years"
-        '                If chkEnlargePlot.value = Checked Then
-        '                    BioPlot2.Visible = True
-        '                    BioPlot2.ZOrder()
-        '                    MapD.Visible = False
-        '                Else
-        '                    BioPlot2.Visible = False
-        '                    MapD.Visible = True
-        '                End If
-        '                DoEvents()
-        '            End If
-        '            If EcoSeedOn = True Then
-        '                LastT = TimeNow
-        '                'Update the time counter
-        '                timeshow.Caption = Format$(TimeNow, "0.00") + " of " + CStr(TotalTime) + " years"
-        '                If chkEnlargePlot.value = Checked Then
-        '                    BioPlot2.Visible = True
-        '                    BioPlot2.ZOrder()
-        '                    MapD.Visible = False
-        '                Else
-        '                    BioPlot2.Visible = False
-        '                    MapD.Visible = True
-        '                End If
-        '                DoEvents()
-        '            End If
 
     End Sub
 
@@ -5078,7 +5108,6 @@ exitline:
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            Throw New Exception("processTimeStep() Error: " & ex.Message)
         End Try
 
     End Sub
@@ -5086,9 +5115,12 @@ exitline:
 
     Private Sub marshallOnTimeStep(ByVal iTime As Integer)
         Try
-            m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnTimeStep), iTime)
+            'No timesteps if in the Spinup period
+            If Not Me.m_Data.bInSpinUp Then
+                m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnTimeStep), iTime)
+            End If
         Catch ex As Exception
-
+            cLog.Write(ex)
         End Try
     End Sub
 
@@ -6760,7 +6792,10 @@ exitline:
                 For icol = 1 To Me.m_Data.InCol
 
                     'Sum the values from the user input capacity map into the HabCap map
-                    If Me.m_Data.Depth(irow, icol) > 0 Then Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
+                    If Me.m_Data.Depth(irow, icol) > 0 Then
+                        Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
+                    End If
+
                     'get max for rescaling to 0-1 range
                     m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
 
@@ -7015,7 +7050,103 @@ exitline:
 
     End Sub
 
+    Public Sub setBaseValues(iTime As Integer)
+        Dim igrp As Integer
 
+        If iTime <> 1 Then
+            'Only set base values if in the first timestep
+            'If in a Spin-Up iTime is held at 1
+            Return
+        End If
+
+        'Spin-Up Flags
+        'Me.m_Data.UseSpinUp 
+        'Using a Spin-Up period
+        'Public Boolean used by the interface
+
+        'Me.m_Data.bInSpinUp 
+        'Are we currently in a Spin-Up period 
+        'Can be used by an interface to tell if the current time step is in the Spin-Up period
+
+        'Me.bInitSpinUpBase
+        'Use the Spin-Up base been initialized yet
+        'Private use only by Ecosim to maintian the initialization state of the base values
+
+        'xxxxxxxxxxxxxxx NOT USING SPIN-UP xxxxxxxxxxxxxxx
+        'Set the base values and return
+        If Not Me.m_Data.UseSpinUp Then
+            'xxxxx NOT Using the Spin-Up xxxxxx'
+            For igrp = 1 To Me.m_Data.NGroups
+                Me.m_Data.BBase(igrp) = Btime(igrp) ' / Me.m_Data.nWaterCells
+
+                'Base values from Ecosim and EcoPath
+                Me.m_Data.BaseFishMort(igrp) = Me.m_SimData.Fish1(igrp)
+                Me.m_Data.BaseConsump(igrp) = (Me.m_SimData.Eatenby(igrp) / Me.m_SimData.StartBiomass(igrp))
+                Me.m_Data.BasePredMort(igrp) = (Me.m_SimData.Eatenof(igrp) / Me.m_SimData.StartBiomass(igrp))
+                Me.m_Data.BaseCatch(igrp) = Me.m_EPdata.fCatch(igrp)
+
+            Next igrp
+        End If
+
+        'xxxxxxxxxxxxxxx USE SPIN-UP xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'In a Spin-Up Period and the base values have NOT been initialized
+        If Me.m_Data.bInSpinUp And Me.bInitSpinUpBase Then
+            'ONLY Do this once for the first time step
+
+            'In SpinUp period always keep the SpinUpBase for the Spin-Up Stats
+            For igrp = 1 To Me.m_Data.NGroups
+                Me.m_Data.SpinUpBBase(igrp) = Btime(igrp) '/ Me.m_Data.nWaterCells
+            Next igrp
+
+            If Me.m_Data.UseSpinUpBase Then
+                'User want to plot the values relative to the beginning of the Spin-Up period
+                For igrp = 1 To Me.m_Data.NGroups
+                    Me.m_Data.BBase(igrp) = Btime(igrp) ' / Me.m_Data.nWaterCells
+
+                    'Base values from Ecosim and EcoPath
+                    Me.m_Data.BaseFishMort(igrp) = Me.m_SimData.Fish1(igrp)
+                    Me.m_Data.BaseConsump(igrp) = (Me.m_SimData.Eatenby(igrp) / Me.m_SimData.StartBiomass(igrp))
+                    Me.m_Data.BasePredMort(igrp) = (Me.m_SimData.Eatenof(igrp) / Me.m_SimData.StartBiomass(igrp))
+                    Me.m_Data.BaseCatch(igrp) = Me.m_EPdata.fCatch(igrp)
+
+                Next igrp
+            End If 'Me.m_Data.UseSpinUpBase
+
+            'SpinUp base has been initialized
+            'we don't want to do this again
+            Me.bInitSpinUpBase = False
+
+        End If 'Me.m_Data.UseSpinUp And Me.m_Data.bInitSpinUpBase
+
+
+        'xxxxxxxxxxxxxxx USING SPIN-UP xxxxxxxxxxxxxxxxxxxxxx'
+        If Me.m_Data.UseSpinUp And Not Me.m_Data.UseSpinUpBase Then
+            'NOT using the Spin-Up base values
+            'Base values from the first timestep after the Spin-Up
+
+            'HACK These values will get set at each step of the Spin-Up 
+            'Not just the first timestep of the run
+            For igrp = 1 To Me.m_Data.NGroups
+                Me.m_Data.BBase(igrp) = Btime(igrp)
+
+                'Use the first timestep as the base
+                Me.m_Data.BaseFishMort(igrp) = Me.m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, 1)
+                Me.m_Data.BaseConsump(igrp) = Me.m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, 1)
+                Me.m_Data.BasePredMort(igrp) = Me.m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, 1)
+                Me.m_Data.BaseCatch(igrp) = Me.m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, 1)
+
+            Next igrp
+        End If
+
+        For igrp = 1 To Me.m_Data.NGroups
+            If Me.m_Data.BBase(igrp) = 0.0 Then Me.m_Data.BBase(igrp) = 1.0E-20
+            If Me.m_Data.BaseFishMort(igrp) = 0.0 Then Me.m_Data.BaseFishMort(igrp) = 1.0E-20
+            If Me.m_Data.BaseConsump(igrp) = 0 Then Me.m_Data.BaseConsump(igrp) = 1.0E-20
+            If Me.m_Data.BasePredMort(igrp) = 0 Then Me.m_Data.BasePredMort(igrp) = 1.0E-20
+            If Me.m_Data.BaseCatch(igrp) = 0 Then Me.m_Data.BaseCatch(igrp) = 1.0E-20
+        Next igrp
+
+    End Sub
 
 #End Region
 

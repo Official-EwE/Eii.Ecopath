@@ -133,6 +133,9 @@ Public Class cMessageHandler
                             Me.m_syncobj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.marshallSendMessage), message)
                             ' Me.m_syncobj.Invoke(Me.m_DelegateNotifier, New Object() {message})
                         End If
+                    Catch ex As Threading.ThreadAbortException
+                        ' A thread is dying, do not assert
+                        cLog.Write(ex)
                     Catch ex As Exception
                         'Error thrown in the handler by an interface that was not handled 
                         'we have no idea if this message got handled or not

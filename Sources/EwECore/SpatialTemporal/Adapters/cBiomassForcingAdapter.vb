@@ -43,7 +43,7 @@ Namespace SpatialData
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Warning this hardwires the scale value
-        'so changing the scale in the interface has no effect
+        'so changing the scale in the interface has no affect
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         '12 grams of carbon per mol 
         '9x for conversion of C to wet weight

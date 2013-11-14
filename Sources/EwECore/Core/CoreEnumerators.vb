@@ -361,6 +361,9 @@ Friend Enum eSpaceResultsGroups
     RelativeBiomass
     CatchBio
     Value
+    FishingMort
+    PredMortRate
+    ConsumpRate
 End Enum
 
 Friend Enum eSpaceResultsFleets

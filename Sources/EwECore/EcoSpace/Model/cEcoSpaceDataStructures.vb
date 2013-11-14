@@ -70,8 +70,8 @@ Public Class cEcospaceDataStructures
     'for now this will let the code function
     Public EcoseedOn As Boolean
 
-    ''' <summary>Current Model time step.</summary>
-    ''' <remarks>This is the time in years, not the array index</remarks>
+    ''' <summary>Current model time step in years. Incremented by <see cref="TimeStep">TimeStep</see> at the end of the timestep.</summary>
+    ''' <remarks>This is the time in years, not the array index.</remarks>
     Public TimeNow As Single
 
     ''' <summary>
@@ -256,6 +256,10 @@ Public Class cEcospaceDataStructures
 
     Public EffPower() As Single
 
+    ''' <summary>
+    ''' Ecospace base biomass gathered at the end of the first timestep after any spinup period.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public BBase() As Single
     Public nRegions As Integer
 
@@ -282,8 +286,8 @@ Public Class cEcospaceDataStructures
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Summary data
 
-    ''' <summary>Number of timesteps the model ran for. Used to average data over the run.</summary>
-    Public nSumTimeSteps As Integer
+    '''' <summary>Number of timesteps the model ran for. Used to average data over the run.</summary>
+    'Public nSumTimeSteps As Integer
 
     Public NumStep As Integer       'Number of time steps for averaging summary window data
 
@@ -310,10 +314,10 @@ Public Class cEcospaceDataStructures
     ''' <summary> Sum of landings across all cells by Group/Fleet for the current timestep </summary>
     Public Landings(,) As Single
 
-    ''' <summary>Number of variables in ResultsXXX arrays </summary>
-    Public Const N_RESULTS_GROUPS As Integer = 3
-    Public Const N_RESULTS_FLEETS As Integer = 3
-    Public Const N_RESULTS_FLEETGROUPS As Integer = 1
+    ' ''' <summary>Number of variables in ResultsXXX arrays </summary>
+    'Public Const N_RESULTS_GROUPS As Integer = 6 '3
+    'Public Const N_RESULTS_FLEETS As Integer = 3
+    'Public Const N_RESULTS_FLEETGROUPS As Integer = 1
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -629,13 +633,14 @@ Public Class cEcospaceDataStructures
     Public nEffZones As Integer
 
     ''' <summary>
-    ''' Proportion of fishing effort for a fleet in an zone(LME,Region....) by nFleets, nEffZones
+    ''' Proportion of relative fishing effort for a fleet in an zone(LME,Region....) by nFleets, nEffZones
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>
+    ''' </remarks>
     Public PropEffortFleetZone(,) As Single
 
     ''' <summary>
-    ''' PropEffortFleetArea() index of the Effort Zone a cell is in by Row Col
+    ''' Index of the Effort Zone a cell is in by Row Col
     ''' </summary>
     ''' <remarks></remarks>
     Public EffZones(,) As Integer
@@ -648,7 +653,37 @@ Public Class cEcospaceDataStructures
     ''' </see></remarks>
     Public TotEffort() As Single
 
-  
+    ''' <summary>
+    ''' Use a "Spin-Up" period for Ecospace
+    ''' </summary>
+    ''' <remarks>Only Accessible from code at this time</remarks>
+    Public UseSpinUp As Boolean
+
+    ''' <summary>Are we in a Spin-Up period </summary>   
+    Public bInSpinUp As Boolean
+
+    Public UseSpinUpPlot As Boolean
+
+    Public UseSpinUpBase As Boolean
+
+    ''' <summary>
+    ''' Number of years to run the Spin-Up for
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public SpinUpYears As Single
+
+    ''' <summary>
+    ''' Ecospace base biomass before the Spin-Up period. Gathered at the end of the first timestep.
+    ''' </summary>
+    ''' <remarks>Only populted if UseSpin = True</remarks>
+    Public SpinUpBBase() As Single
+
+    Public BaseFishMort() As Single
+    Public BaseCatch() As Single
+    Public BaseConsump() As Single
+    Public BasePredMort() As Single
+
+
 #End Region
 
 #Region "Private Data"
@@ -904,6 +939,13 @@ Public Class cEcospaceDataStructures
 
             Me.bUseEffortDistThreshold = False
             EffortDistThreshold = 10000
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Spin Up
+            Me.UseSpinUp = False
+            Me.UseSpinUpPlot = False
+            Me.SpinUpYears = 10
+            'xxxxxxxxxxxxxxxxxxxxxxxxx
 
             Return True
         Catch ex As Exception
@@ -1576,14 +1618,14 @@ Public Class cEcospaceDataStructures
         Dim success As Boolean = True
 
         'reset the number of time steps the model ran for
-        nSumTimeSteps = 0
+        'nSumTimeSteps = 0
         Dim message As cMessage
 
         Try
 
-            Me.allocate(ResultsByGroup, N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
-            Me.allocate(ResultsByFleet, N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
-            Me.allocate(ResultsByFleetGroup, N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
+            Me.allocate(ResultsByGroup, [Enum].GetValues(GetType(eSpaceResultsGroups)).Length, m_ngroups, NumberOfTimeSteps)
+            Me.allocate(ResultsByFleet, [Enum].GetValues(GetType(eSpaceResultsFleets)).Length, nFleets, NumberOfTimeSteps)
+            Me.allocate(ResultsByFleetGroup, [Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length, nFleets, NGroups, NumberOfTimeSteps)
 
             Me.allocate(ResultsRegionGroup, nRegions, NGroups, NumberOfTimeSteps)
             Me.allocate(ResultsCatchRegionGearGroup, nRegions, nFleets, NGroups, NumberOfTimeSteps)
@@ -1885,7 +1927,7 @@ Public Class cEcospaceDataStructures
         Dim ncells As Integer
         Try
 
-            For ivar = 0 To N_RESULTS_FLEETS
+            For ivar = 0 To [Enum].GetValues(GetType(eSpaceResultsFleets)).Length
                 For iflt = 0 To Me.nFleets
                     For it = 1 To nTimeSteps
                         Me.ResultsByFleet(ivar, iflt, it) /= Me.nWaterCells
@@ -1893,7 +1935,7 @@ Public Class cEcospaceDataStructures
                 Next iflt
             Next ivar
 
-            For ivar = 0 To N_RESULTS_FLEETGROUPS
+            For ivar = 0 To [Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length
                 For iflt = 0 To Me.nFleets
                     For igrp = 1 To Me.NGroups
                         For it = 1 To nTimeSteps
@@ -1933,14 +1975,15 @@ Public Class cEcospaceDataStructures
     End Sub
 
 
-    Public Sub SummarizeResults(ByVal EcopathCost(,) As Single, ByVal JobMultiplier() As Single)
+    Public Sub SummarizeResultsByFleet(nTimeSteps As Integer, ByVal EcopathCost(,) As Single, ByVal JobMultiplier() As Single)
         Dim SailEffort As Single, FishEffort As Single
         Dim cost As Single, value As Single
 
-        Debug.Assert(nSumTimeSteps <= ResultsByFleet.GetUpperBound(2), "EcoSpace summary data time step counter not set correctly!")
+        'Me.nSumTimeSteps = 0
+        Debug.Assert(nTimeSteps <= ResultsByFleet.GetUpperBound(2), "EcoSpace summary data time step counter not set correctly!")
 
         'number of years the model actually ran for, computed in case the model run was stopped by the user
-        Dim nYears As Single = Me.nSumTimeSteps / (1 / TimeStep)
+        Dim nYears As Single = CSng(nTimeSteps / (1 / TimeStep))
 
         ReDim Me.ResultsSummaryByFleet(1, Me.nFleets)
 
@@ -1949,7 +1992,7 @@ Public Class cEcospaceDataStructures
             SailEffort = 0
             FishEffort = 0
             value = 0
-            For it As Integer = 1 To Me.nSumTimeSteps
+            For it As Integer = 1 To nTimeSteps
                 SailEffort += Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, it)
                 FishEffort += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, it)
                 value += Me.ResultsByFleet(eSpaceResultsFleets.Value, iflt, it)
@@ -2045,6 +2088,8 @@ Public Class cEcospaceDataStructures
         If cellSizeDegrees = 0 Then cellSizeDegrees = cEcospaceBasemap.ToCellSize(Me.CellLength)
         Return cellSizeDegrees
     End Function
+
+
 
 #End Region
 

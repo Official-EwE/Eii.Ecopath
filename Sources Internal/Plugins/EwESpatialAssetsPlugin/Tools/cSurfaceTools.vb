@@ -26,8 +26,6 @@ Imports DotSpatial.Projections
 Imports DotSpatial.Topology
 Imports EwECore
 Imports EwECore.SpatialData
-Imports EwESpatialAssetsPlugin.SpatialData
-Imports System.Data.Linq
 
 #End Region ' Imports
 

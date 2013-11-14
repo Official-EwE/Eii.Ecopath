@@ -144,10 +144,11 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.DialogReadFilter"/>"
         ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property DialogReadFilter As String
+        Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, _
+                                                            ByVal bImage As Boolean, _
+                                                            ByVal bVector As Boolean) As String
             Get
-                ' Support raster and image reading, ignore vectors
-                Return cDotSpatialUtils.DialogFilter(True, True, False, False)
+                Return cDotSpatialUtils.DialogFilter(True, bRaster, bImage, bVector)
             End Get
         End Property
 
@@ -166,6 +167,16 @@ Namespace SpatialData
                    (Me.TimeStart = sfd.TimeStart) And _
                    (Me.TimeEnd = sfd.TimeEnd)
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cFileDataSetPlugin.DataFormat"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides ReadOnly Property DataFormat() As EwEUtils.Core.eSpatialDataFormatFlags
+            Get
+                If (String.IsNullOrWhiteSpace(Me.Source)) Then Return eSpatialDataFormatFlags.NotSet
+                Return cDotSpatialUtils.GetDataFormat(Me.Source)
+            End Get
+        End Property
 
 #End Region ' Information
 
@@ -302,7 +313,8 @@ Namespace SpatialData
                             End If
                             Me.m_indexstatus = ISpatialDataSet.eIndexStatus.NotIndexed
                             If (xn.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
-                                If Boolean.Parse(xn.Attributes("Indexed").InnerText) Then
+                                ' JS 06Nov13: added file exist check when loading dataset metadata
+                                If Boolean.Parse(xn.Attributes("Indexed").InnerText) And IO.File.Exists(Me.SourceFileName) Then
                                     Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed
                                     Me.m_ptTL = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("lonmin").InnerText, GetType(Single))), _
                                                            CSng(cStringUtils.ConvertToNumber(xn.Attributes("latmax").InnerText, GetType(Single))))
@@ -348,14 +360,6 @@ Namespace SpatialData
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.FractionIndexed"/>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Function FractionIndexed() As Single
-            If (Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed) Then Return 1
-            Return 0
-        End Function
-
-        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.IndexStatusAtT"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Function IndexStatusAtT(dt As Date) As EwEUtils.SpatialData.ISpatialDataSet.eIndexStatus
@@ -391,6 +395,13 @@ Namespace SpatialData
 
             End If
 
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cFileDataSetPlugin.StopIndexing"/>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub StopIndexing()
+            ' NOP
         End Sub
 
         ''' -------------------------------------------------------------------

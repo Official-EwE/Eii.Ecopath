@@ -47,8 +47,11 @@ Namespace SpatialData
         ''' <summary>
         ''' Wrapper to maintain a file / time stamp link.
         ''' </summary>
+        ''' <remarks>
+        ''' Declared as Protected so this class can be Inherited
+        ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Class cTemporalFile
+        Protected Class cTemporalFile
             Public Property Time As DateTime
             Public Property FileName As String
             Public Property IndexStatus As ISpatialDataSet.eIndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
@@ -83,13 +86,15 @@ Namespace SpatialData
 #Region " Private vars "
 
         ''' <summary>List of time-indexed <see cref="cTemporalFile">files</see>.</summary>
-        Private m_lFiles As List(Of cTemporalFile) = Nothing
+        Protected m_lFiles As List(Of cTemporalFile) = Nothing
         ''' <summary>Index in the file list for the current date.</summary>
         Protected m_iFileIndex As Integer = -1
 
         ''' <summary>Flag stating whether the dataset is sorted.</summary>
-        Private m_bSorted As Boolean = False
-        Private m_bCanSort As Boolean = True
+        Protected m_bSorted As Boolean = False
+        Protected m_bCanSort As Boolean = True
+
+        Private m_bStopIndexing As Boolean = False
 
 #End Region ' Private vars
 
@@ -162,10 +167,21 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.DialogReadFilter"/>"
         ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property DialogReadFilter As String
+        Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, _
+                                                            ByVal bImage As Boolean, _
+                                                            ByVal bVector As Boolean) As String
             Get
-                ' Support reading rasters only, for now
-                Return cDotSpatialUtils.DialogFilter(True, True, False, False)
+                Return cDotSpatialUtils.DialogFilter(True, bRaster, bImage, bVector)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cFileDataSetPlugin.DataFormat"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides ReadOnly Property DataFormat() As EwEUtils.Core.eSpatialDataFormatFlags
+            Get
+                If (Me.m_lFiles.Count = 0) Then Return eSpatialDataFormatFlags.NotSet
+                Return cDotSpatialUtils.GetDataFormat(Me.m_lFiles(0).FileName)
             End Get
         End Property
 
@@ -427,7 +443,8 @@ Namespace SpatialData
                                 Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
                                 If (xnFile.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
-                                    If (Boolean.Parse(xnFile.Attributes("Indexed").InnerText)) Then
+                                    ' JS 06Nov13: added file exist check when loading dataset metadata
+                                    If (Boolean.Parse(xnFile.Attributes("Indexed").InnerText)) And IO.File.Exists(f.FileName) Then
                                         f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed
                                         f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("lonmin").InnerText, GetType(Single))), _
                                                             CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("latmax").InnerText, GetType(Single))))
@@ -455,8 +472,9 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Protected Overrides Function StoreExtent(ByVal ext As IExtent) As Boolean
 
-            Debug.Assert(Me.m_iFileIndex >= 0)
-            Debug.Assert(Me.m_iFileIndex < Me.m_lFiles.Count)
+            If (Me.m_iFileIndex < 0) Then Return False
+            If (Me.m_iFileIndex >= Me.m_lFiles.Count) Then Return False
+            If (Me.m_bStopIndexing) Then Return False
 
             Dim f As cTemporalFile = Me.m_lFiles(Me.m_iFileIndex)
 
@@ -544,21 +562,6 @@ Namespace SpatialData
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.FractionIndexed"/>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Function FractionIndexed() As Single
-
-            If (Me.m_lFiles.Count = 0) Then Return 0
-            Dim iNumIndexed As Integer = 0
-
-            For Each f As cTemporalFile In Me.m_lFiles
-                If (f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed) Then iNumIndexed += 1
-            Next
-            Return CSng(iNumIndexed / Me.m_lFiles.Count)
-
-        End Function
-
-        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.IndexStatusAtT"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Function IndexStatusAtT(dt As Date) As ISpatialDataSet.eIndexStatus
@@ -582,6 +585,8 @@ Namespace SpatialData
             Dim ptfBR As New PointF(180, -90)
             Dim f As cTemporalFile = Nothing
 
+            Me.m_bStopIndexing = False
+
             ' Truncate dates
             If (Me.m_lFiles.Count > 0) Then
                 If dateStart < Me.m_lFiles(0).Time Then dateStart = Me.m_lFiles(0).Time
@@ -599,10 +604,12 @@ Namespace SpatialData
                     Dim bOldFlag = Me.ReadFromCache
                     Me.ReadFromCache = False
 
+                    ' Assume the worst
+                    f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
+
                     Try
                         If Me.LockDataAtT(f.Time, 1.0!, ptfTL, ptfBR) Then
                             Me.LoadSource()
-                            dgt.Invoke(Me)
                             Me.UnlockData()
                         End If
                     Catch ex As Exception
@@ -612,8 +619,25 @@ Namespace SpatialData
                     ' Restore cache access
                     Me.ReadFromCache = bOldFlag
                 End If
+
+                Try
+                    ' Always tell the world
+                    dgt.Invoke(Me)
+                Catch ex As Exception
+                    ' Khazaam
+                End Try
+
+                If Me.m_bStopIndexing Then Exit For
+
             Next
 
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cFileDataSetPlugin.StopIndexing"/>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub StopIndexing()
+            Me.m_bStopIndexing = True
         End Sub
 
 #End Region ' Internals

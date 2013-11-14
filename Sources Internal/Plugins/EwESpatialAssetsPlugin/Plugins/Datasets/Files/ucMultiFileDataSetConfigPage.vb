@@ -138,7 +138,7 @@ Namespace SpatialData
             Me.m_tbxDescription.Text = Me.m_dataset.Description
             Me.m_tbxPath.Text = Me.m_dataset.Source
 
-            Dim astrFilters As String() = Me.m_dataset.DialogReadFilter.Split("|"c)
+            Dim astrFilters As String() = Me.m_dataset.DialogReadFilter(True, False, True).Split("|"c)
             For i As Integer = 0 To astrFilters.Length - 1 Step 2
                 Me.m_cmbExtensions.Items.Add(New cFileExtItem(astrFilters(i), astrFilters(i + 1)))
             Next

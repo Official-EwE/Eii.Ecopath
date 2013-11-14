@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CONVERTER_AREARASTER_DESCR" xml:space="preserve">
-    <value>Plugin that converts GISvector data to a Ecospace raster containing polygon/cell area cell overlap ratios. For this, every cell area / polygon area overlap ratio is calculated, and the ratio [0, 1] is stored in the raster. This method becomes slow for large polygon data sets.</value>
+    <value>Plugin that converts GIS vector data to a Ecospace raster with polygon/cell area cell overlap ratios. For this, every cell area / polygon area overlap ratio is calculated, and the ratio [0, 1] is stored in the raster. This method becomes slow for large polygon data sets.</value>
   </data>
   <data name="CONVERTER_AREARASTER_NAME" xml:space="preserve">
     <value>Area ratio converter</value>
   </data>
   <data name="CONVERTER_DIRECTRASTER_DESCR" xml:space="preserve">
-    <value>Plugin that converts GIS raster or polygon data to a value raster compatible with Ecospace. In case of raster data, executed GIS raster operations are Clip and Resample. In case of vector data a given attribute in the polygon dataset is rendered and converted to raster on pixel-to-cell basis.</value>
+    <value>Plugin that converts GIS raster or polygon data to a value raster compatible with Ecospace. Executed GIS raster operations are Clip and Resample.</value>
   </data>
   <data name="CONVERTER_DIRECTRASTER_NAME" xml:space="preserve">
-    <value>Simple raster converter</value>
+    <value>Simple raster interpolator</value>
   </data>
   <data name="CONVERTER_DIRECTVECTOR_DESCR" xml:space="preserve">
-    <value>Plugin that converts GIS polygon attribute values to a value raster compatible with Ecospace.</value>
+    <value>Plugin that converts the attribute values of GIS vector data (points, multi-points and polygones) to a raster compatible with Ecospace.</value>
   </data>
   <data name="CONVERTER_DIRECTVECTOR_NAME" xml:space="preserve">
     <value>Simple vector converter</value>
@@ -156,6 +156,15 @@
   </data>
   <data name="DATASET_SINGLE_NAME" xml:space="preserve">
     <value>A single spatial file</value>
+  </data>
+  <data name="DIALOGFILTER_IMAGE" xml:space="preserve">
+    <value>Image files</value>
+  </data>
+  <data name="DIALOGFILTER_RASTER" xml:space="preserve">
+    <value>Raster files</value>
+  </data>
+  <data name="DIALOGFILTER_VECTOR" xml:space="preserve">
+    <value>Vector files</value>
   </data>
   <data name="FORMAT_BOUNDS" xml:space="preserve">
     <value>bounds ({0},{1}) to ({2},{3})</value>

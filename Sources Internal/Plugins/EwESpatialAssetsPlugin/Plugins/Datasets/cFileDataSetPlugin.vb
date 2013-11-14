@@ -64,7 +64,7 @@ Namespace SpatialData
         Protected m_extModelArea As Extent = Nothing
         ''' <summary>Ecospace cell size.</summary>
         Protected m_dModelCellSize As Double = 0
-
+ 
         ''' <summary>States whether the dataset is allowed to deliver data.</summary>
         Private m_bEnabled As Boolean = True
         ''' <summary>Internal helper flag, determining if data can be read from the cache.</summary>
@@ -133,7 +133,9 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.DialogReadFilter"/>"
         ''' -------------------------------------------------------------------
-        Public MustOverride ReadOnly Property DialogReadFilter As String _
+        Public MustOverride ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, _
+                                                               ByVal bImage As Boolean, _
+                                                               ByVal bVector As Boolean) As String _
              Implements ISpatialDataSet.DialogReadFilter
 
         Public Overrides Function ToString() As String
@@ -145,6 +147,12 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property VarName As EwEUtils.Core.eVarNameFlags _
              Implements EwEUtils.SpatialData.ISpatialDataSet.VarName
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.VarName"/>"
+        ''' -------------------------------------------------------------------
+        Public MustOverride ReadOnly Property DataFormat As EwEUtils.Core.eSpatialDataFormatFlags _
+            Implements EwEUtils.SpatialData.ISpatialDataSet.DataFormat
 
 #End Region ' Information
 
@@ -287,12 +295,6 @@ Namespace SpatialData
             Implements ISpatialDataSet.GetExtentAtT
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataSet.FractionIndexed"/>
-        ''' -------------------------------------------------------------------
-        Protected MustOverride Function FractionIndexed() As Single _
-            Implements ISpatialDataSet.FractionIndexed
-
-        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.IndexStatusAtT"/>
         ''' -------------------------------------------------------------------
         Protected MustOverride Function IndexStatusAtT(dt As DateTime) As ISpatialDataSet.eIndexStatus _
@@ -305,6 +307,12 @@ Namespace SpatialData
                                               ByVal dateEnd As DateTime, _
                                               Optional dgt As ISpatialDataSet.BuildIndexUpdateDelegate = Nothing) _
             Implements ISpatialDataSet.BuildIndex
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.StopIndexing"/>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Sub StopIndexing() _
+            Implements ISpatialDataSet.StopIndexing
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.IsLocked"/>

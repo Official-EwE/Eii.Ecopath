@@ -39,14 +39,14 @@ Namespace SpatialData
         ''' Get the name for displaying the converter in a user interface.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property DisplayName As String
+        ReadOnly Property DisplayName As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the description for displaying the converter in a user interface.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property Description As String
+        ReadOnly Property Description As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -54,6 +54,7 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Property AttributeFilter As String
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the name of the attribute to rasterize, if needed.
@@ -103,10 +104,20 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get whether the converter is configured and ready to operate.
+        ''' Returns whether the converter is configured and ready to operate.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Function IsConfigured() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the converter is compatible with the data provided 
+        ''' by a given dataset.
+        ''' </summary>
+        ''' <param name="ds">The dataset to the data.</param>
+        ''' <returns>True if compatible.</returns>
+        ''' -------------------------------------------------------------------
+        Function IsCompatible(ByVal ds As ISpatialDataSet) As Boolean
 
     End Interface
 

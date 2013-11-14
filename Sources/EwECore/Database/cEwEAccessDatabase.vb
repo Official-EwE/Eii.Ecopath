@@ -312,6 +312,9 @@ Namespace Database
 
             ' Clear file name
             Me.m_strFileName = ""
+
+            MyBase.Close()
+
         End Sub
 
         ''' -------------------------------------------------------------------

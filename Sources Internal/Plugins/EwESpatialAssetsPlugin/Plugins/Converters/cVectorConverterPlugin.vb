@@ -21,14 +21,12 @@
 Option Strict On
 Imports System.Collections.Generic
 Imports System.Drawing
-Imports DotSpatial.Analysis
 Imports DotSpatial.Data
 Imports EwECore
+Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports EwEUtils.Utilities
-Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -72,6 +70,15 @@ Namespace SpatialData
         Function IsConfigured() As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured
             Return Not String.IsNullOrWhiteSpace(Me.m_strAttributeName)
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataConverter.IsCompatible"/>
+        ''' -----------------------------------------------------------------------
+        Public Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialDataConverter.IsCompatible
+            If (ds Is Nothing) Then Return False
+            Return (ds.DataFormat = eSpatialDataFormatFlags.Vector)
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -139,9 +146,7 @@ Namespace SpatialData
             Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
             Dim rstResult As IRaster = Nothing
 
-            If (TypeOf data Is IRaster) Then
-                  Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_RASTERONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
-            ElseIf (TypeOf data Is IFeatureSet) Then
+            If (TypeOf data Is IFeatureSet) Then
                 Try
 
                     Dim fs As IFeatureSet = CType(data, IFeatureSet)
@@ -169,7 +174,9 @@ Namespace SpatialData
                 Catch ex As Exception
                     Me.LogMessage(String.Format(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                 End Try
-
+            Else
+                ' Log error
+                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
             End If
             Return New cSpatialRaster(rstResult)
 
@@ -178,27 +185,21 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.DisplayName"/>
         ''' -----------------------------------------------------------------------
-        Public Property DisplayName As String _
+        Public ReadOnly Property DisplayName As String _
             Implements ISpatialDataConverter.DisplayName
             Get
                 Return My.Resources.CONVERTER_DIRECTVECTOR_NAME
             End Get
-            Set(value As String)
-                ' NOP
-            End Set
         End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Description"/>
         ''' -----------------------------------------------------------------------
-        Public Property Description As String _
-            Implements ISpatialDataConverter.Description
+        Public ReadOnly Property Description As String _
+            Implements ISpatialDataConverter.Description, IPlugin.Description
             Get
                 Return My.Resources.CONVERTER_DIRECTVECTOR_DESCR
             End Get
-            Set(value As String)
-                'NOP
-            End Set
         End Property
 
         ''' -----------------------------------------------------------------------
@@ -228,16 +229,6 @@ Namespace SpatialData
             Implements ISpatialDataConverterPlugin.Initialize
             Me.m_core = DirectCast(core, cCore)
         End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="IPlugin.Description"/>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property PluginDescription As String _
-            Implements EwEPlugin.IPlugin.Description
-            Get
-                Return Me.Description
-            End Get
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="IPlugin.Name"/>
