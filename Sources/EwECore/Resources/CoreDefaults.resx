@@ -123,6 +123,9 @@
   <data name="CORE_ALL_HABITAT" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="CORE_DEFAULT" xml:space="preserve">
+    <value>(default)</value>
+  </data>
   <data name="CORE_DEFAULT_ADVECTION" xml:space="preserve">
     <value>Advection</value>
   </data>
