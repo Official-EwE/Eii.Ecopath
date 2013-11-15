@@ -316,19 +316,24 @@ Namespace SpatialData
 
 #Region " Converters "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns an array of data converter templates.
+        ''' Returns an array of data converter templates compatible with a <see cref="ISpatialDataSet"/>.
         ''' </summary>
-        ''' <returns></returns>
-        Public Function ConverterTemplates() As ISpatialDataConverter()
+        ''' <returns>An array of compatible <see cref="ISpatialDataConverter">converters</see>.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function ConverterTemplates(ds As ISpatialDataSet) As ISpatialDataConverter()
 
             Dim lConverters As New List(Of ISpatialDataConverter)
             Dim pm As cPluginManager = Me.m_core.PluginManager
 
-            If (pm IsNot Nothing) Then
+            If (pm IsNot Nothing And ds IsNot Nothing) Then
                 For Each ip As IPlugin In pm.GetPlugins(GetType(ISpatialDataConverterPlugin))
                     If (TypeOf ip Is ISpatialDataConverter) Then
-                        lConverters.Add(DirectCast(ip, ISpatialDataConverter))
+                        Dim conv As ISpatialDataConverter = DirectCast(ip, ISpatialDataConverter)
+                        If (conv.IsCompatible(ds)) Then
+                            lConverters.Add(conv)
+                        End If
                     End If
                 Next
             End If

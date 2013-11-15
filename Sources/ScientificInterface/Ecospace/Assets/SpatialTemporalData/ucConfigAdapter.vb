@@ -64,7 +64,7 @@ Namespace Ecospace.Controls
         ''' <summary>Flag that states whether there is any data in the cache</summary>
         Private m_bHasCachedData As Boolean = False
 
-        Private m_bHasTemplates As Boolean = False
+        Private m_bHasDatasetTemplates As Boolean = False
 
 #End Region ' Private variables
 
@@ -124,7 +124,6 @@ Namespace Ecospace.Controls
             ' Populate all
             Me.FillTemplateDatasetBox()
             Me.m_gridDatasets.Fill(Me.m_adt, Nothing)
-            Me.FillExistingConverterBox()
 
             ' Update cache state (will also update controls)
             Me.EvaluateCache()
@@ -515,16 +514,18 @@ Namespace Ecospace.Controls
             Dim bCanConfigCV As Boolean = False
             Dim bIsConfigured As Boolean = False
             Dim bIsIndexing As Boolean = Me.m_manSets.IsIndexing(ds)
+            Dim bNeedsConverter As Boolean = False
 
             If (ds IsNot Nothing) Then
                 bCanConfigDS = bHasContext And (TypeOf ds Is IConfigurablePlugin)
                 bIsConfigured = bHasContext And Me.m_adt.IsConnected(Me.m_layer.Index)
+                bNeedsConverter = Not String.IsNullOrWhiteSpace(ds.ConversionFormat)
             End If
             If (cv IsNot Nothing) Then
                 bCanConfigCV = bHasContext And (TypeOf cv Is IConfigurablePlugin)
             End If
 
-            Me.m_btnCreateDS.Enabled = Me.m_bHasTemplates
+            Me.m_btnCreateDS.Enabled = Me.m_bHasDatasetTemplates
             Me.m_btnConfigDS.Enabled = bCanConfigDS
             Me.m_btnDeleteDS.Enabled = (ds IsNot Nothing)
             Me.m_btnConfigureCV.Enabled = bCanConfigCV
@@ -544,7 +545,10 @@ Namespace Ecospace.Controls
             End If
 
             Me.m_gridDatasets.Enabled = bHasContext
-            Me.m_cmbConverter.Enabled = bHasContext
+
+            Me.m_lblSelectCV.Enabled = bHasContext And bNeedsConverter
+            Me.m_cmbConverter.Enabled = Me.m_lblSelectCV.Enabled
+
             Me.m_btnCalculate.Enabled = bIsConfigured
 
         End Sub
@@ -558,23 +562,24 @@ Namespace Ecospace.Controls
 
             If (Me.m_cmbNewDS.Items.Count = 0) Then
                 Me.m_cmbNewDS.Items.Add("")
-                Me.m_bHasTemplates = False
+                Me.m_bHasDatasetTemplates = False
             Else
-                Me.m_bHasTemplates = True
+                Me.m_bHasDatasetTemplates = True
             End If
             Me.m_cmbNewDS.SelectedIndex = 0
 
         End Sub
 
-        Private Sub FillExistingConverterBox(Optional cv As ISpatialDataConverter = Nothing)
+        Private Sub FillCompatibleConverterBox(Optional cv As ISpatialDataConverter = Nothing)
 
             If (cv Is Nothing) Then cv = Me.SelectedConverter
             Me.m_cmbConverter.Items.Clear()
             Me.m_cmbConverter.Items.Add("")
-            For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates
+            For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates(Me.SelectedDataset)
                 Me.m_cmbConverter.Items.Add(cvTest)
             Next
             Me.SelectConverter(cv)
+
         End Sub
 
         Private Sub ConfigConverter(cv As ISpatialDataConverter)
@@ -594,7 +599,7 @@ Namespace Ecospace.Controls
                 If (Not Object.ReferenceEquals(Me.m_adt.Dataset(Me.m_layer.Index), dataset)) Then
                     Me.m_adt.Dataset(Me.m_layer.Index) = dataset
                     'Me.LayerChanged()
-                    Me.SelectedConverter = Me.m_adt.Converter(Me.m_layer.Index)
+                    Me.FillCompatibleConverterBox(Me.m_adt.Converter(Me.m_layer.Index))
                     Me.m_manSets.IndexDataset = dataset
                     Me.UpdateControls()
                 End If

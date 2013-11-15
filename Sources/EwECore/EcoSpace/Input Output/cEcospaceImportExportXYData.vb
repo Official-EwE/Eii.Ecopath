@@ -23,10 +23,12 @@ Option Strict On
 Imports System.IO
 Imports System.Text
 Imports EwEUtils.Utilities
+Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 
 ' ToDo_JS: merge with EcospaceCSVResultWriter
+' ToDo_JS: enable data access via ISpatialRaster
 
 ' There is a high degree of overlap in the read/write logic here and in cEcospaceCSVResultWriter. That is silly.
 ' Moreover, it would be really nice if the logic presented here would be available to the spatial assets plugin via datasets.
@@ -40,10 +42,167 @@ Imports EwEUtils.Utilities
 ''' -----------------------------------------------------------------------
 Public Class cEcospaceImportExportXYData
 
+#Region " Private classes "
+
+    Private Class cEcospaceImportExportRaster
+        Implements ISpatialRaster
+
+        Private m_parent As cEcospaceImportExportXYData = Nothing
+        Private m_strField As String = ""
+
+        Public Sub New(parent As cEcospaceImportExportXYData, strField As String)
+            Me.m_parent = parent
+            Me.m_strField = strField
+        End Sub
+
+        Public Function Cell(iRow As Integer, iCol As Integer, Optional dNoDataValue As Double = -9999.0) As Double _
+            Implements EwEUtils.SpatialData.ISpatialRaster.Cell
+            Return Convert.ToDouble(Me.m_parent.Value(iRow, iCol, Me.m_strField))
+        End Function
+
+        Public Function CellSize() As Double _
+            Implements EwEUtils.SpatialData.ISpatialRaster.CellSize
+            Return Me.m_parent.m_bm.CellSize
+        End Function
+
+        Public Function Max() As Double _
+            Implements EwEUtils.SpatialData.ISpatialRaster.Max
+            Me.CalculateStats()
+            Return Me.m_dMax
+        End Function
+
+        Public Function Mean() As Double _
+            Implements EwEUtils.SpatialData.ISpatialRaster.Mean
+            Me.CalculateStats()
+            Return Me.m_dMean
+        End Function
+
+        Public Function Min() As Double _
+            Implements EwEUtils.SpatialData.ISpatialRaster.Min
+            Me.CalculateStats()
+            Return Me.m_dMin
+        End Function
+
+        Public Function NoData() As Single _
+            Implements EwEUtils.SpatialData.ISpatialRaster.NoData
+            Return cCore.NULL_VALUE
+        End Function
+
+        Public Function NumCols() As Integer _
+            Implements EwEUtils.SpatialData.ISpatialRaster.NumCols
+            Return Me.m_parent.m_bm.InCol
+        End Function
+
+        Public Function NumRows() As Integer _
+            Implements EwEUtils.SpatialData.ISpatialRaster.NumRows
+            Return Me.m_parent.m_bm.InRow
+        End Function
+
+        Public Function NumValueCells() As Long _
+            Implements EwEUtils.SpatialData.ISpatialRaster.NumValueCells
+            Me.CalculateStats()
+            Return Me.m_lNumValueCells
+        End Function
+
+        Public Function Save(strFile As String) As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialRaster.Save
+            Return False
+        End Function
+
+        Public Function StandardDeviation() As Double _
+            Implements EwEUtils.SpatialData.ISpatialRaster.StandardDeviation
+            Return Me.m_dStdDev
+        End Function
+
+        Public Function TopLeft() As System.Drawing.PointF _
+            Implements EwEUtils.SpatialData.ISpatialRaster.TopLeft
+            Return Me.m_parent.m_bm.PosTopLeft
+        End Function
+
+        Public Sub Dispose() Implements IDisposable.Dispose
+            GC.SuppressFinalize(Me)
+        End Sub
+
+        Private m_bStatsCalculated As Boolean = False
+        Private m_lNumValueCells As Long = 0
+        Private m_dMax As Double = 0
+        Private m_dMin As Double = 0
+        Private m_dMean As Double = 0
+        Private m_dStdDev As Double = 0
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Calculate the statistics of the data wrapped by this class.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub CalculateStats()
+
+            If (Me.m_bStatsCalculated) Then Return
+
+            Dim dVal As Double = 0
+            Dim dNoData As Double = cCore.NULL_VALUE
+            Dim dTot As Double = 0
+            Dim dMax As Double = Double.MinValue
+            Dim dMin As Double = Double.MaxValue
+            Dim dStdDev As Double = cCore.NULL_VALUE
+            Dim iNumCols As Integer = Me.NumCols
+            Dim iNumRows As Integer = Me.NumRows
+
+            Me.m_lNumValueCells = 0
+
+            Try
+
+                For iRow As Integer = 1 To iNumRows
+                    For iCol As Integer = 1 To iNumCols
+                        dVal = Me.Cell(iRow, iCol)
+                        If (dVal <> dNoData) And (dVal <> cCore.NULL_VALUE) Then
+                            Me.m_lNumValueCells += 1
+                            dMax = Math.Max(dMax, dVal)
+                            dMin = Math.Min(dMin, dVal)
+                            dTot += dVal
+                        End If
+                    Next
+                Next
+
+                If (Me.m_lNumValueCells > 0) Then
+                    Me.m_dMax = dMax
+                    Me.m_dMin = dMin
+                    Me.m_dMean = dTot / Me.m_lNumValueCells
+
+                    ' Standard deviation
+                    dTot = 0
+
+                    For iRow As Integer = 1 To iNumRows
+                        For iCol As Integer = 1 To iNumCols
+                            dVal = Me.Cell(iRow, iCol)
+                            If (dVal <> dNoData) And (dVal <> cCore.NULL_VALUE) Then
+                                dTot += (dVal - Me.m_dMean) * (dVal - Me.m_dMean)
+                            End If
+                        Next
+                    Next
+                    Me.m_dStdDev = Math.Sqrt(dTot / Me.m_lNumValueCells)
+                Else
+                    Me.m_dMin = cCore.NULL_VALUE
+                    Me.m_dMax = cCore.NULL_VALUE
+                    Me.m_dMean = cCore.NULL_VALUE
+                    Me.m_dStdDev = cCore.NULL_VALUE
+                End If
+
+            Catch ex As Exception
+                ' Overflow?!
+            End Try
+
+            Me.m_bStatsCalculated = True
+
+        End Sub
+
+    End Class ' cEcospaceImportExportRaster
+
+#End Region ' Private classes
+
 #Region " Private vars "
 
-    ' ToDo: globalize this
-    Public Shared cMAPPING_IMPLICIT As String = "(default)"
+    Public Shared cMAPPING_IMPLICIT As String = My.Resources.CoreDefaults.CORE_DEFAULT
 
     Private m_bm As cEcospaceBasemap = Nothing
 
@@ -368,6 +527,16 @@ Public Class cEcospaceImportExportXYData
     ''' -------------------------------------------------------------------
     Public Function IsRowColImplicit() As Boolean
         Return Me.m_bRowColImplicit
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns data in the form of a <see cref="ISpatialRaster"/>>
+    ''' </summary>
+    ''' <returns>True if no row and column fields have been defined.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function ToRaster(Optional ByVal strField As String = "") As ISpatialRaster
+        Return New cEcospaceImportExportRaster(Me, strField)
     End Function
 
 #End Region ' Properties
