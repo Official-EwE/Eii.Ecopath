@@ -341,6 +341,29 @@ Namespace SpatialData
 
         End Function
 
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns an array of data converter templates compatible with a <see cref="ISpatialDataSet"/>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Function ConverterTemplates() As ISpatialDataConverter()
+
+            Dim lConverters As New List(Of ISpatialDataConverter)
+            Dim pm As cPluginManager = Me.m_core.PluginManager
+
+            If (pm IsNot Nothing) Then
+                For Each ip As IPlugin In pm.GetPlugins(GetType(ISpatialDataConverterPlugin))
+                    If (TypeOf ip Is ISpatialDataConverter) Then
+                        lConverters.Add(DirectCast(ip, ISpatialDataConverter))
+                    End If
+                Next
+            End If
+            Return lConverters.ToArray
+
+        End Function
+
+
 #End Region ' Converters
 
 #Region " ICoreInterface implementation "
@@ -436,6 +459,7 @@ Namespace SpatialData
 
 #End Region ' Internals
 
+       
     End Class
 
 End Namespace
