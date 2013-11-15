@@ -104,11 +104,11 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="eSpatialDataFormatFlags">format</see> of the 
-        ''' data in the data set.
+        ''' Get a descriptor for the data in the data set. This value is used
+        ''' to find converters that are compatible with this dataformat.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        ReadOnly Property DataFormat As eSpatialDataFormatFlags
+        ReadOnly Property ConversionFormat As String
 
 #End Region ' Information
 

@@ -150,7 +150,7 @@ Public Class cDotSpatialUtils
     ''' <param name="strFileName"></param>
     ''' <returns>A data format.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetDataFormat(ByVal strFileName As String) As eSpatialDataFormatFlags
+    Public Shared Function GetDataFormat(ByVal strFileName As String) As String
 
         ' Just to make sure
         cDotSpatialUtils.InitDotSpatial()
@@ -158,15 +158,15 @@ Public Class cDotSpatialUtils
         Dim man As IDataManager = DataManager.DefaultDataManager
         Select Case man.GetFileFormat(strFileName)
             Case DataFormat.Image
-                Return eSpatialDataFormatFlags.Image
+                Return "DotSpatialImage"
             Case DataFormat.Raster
-                Return eSpatialDataFormatFlags.Raster
+                Return "DotSpatialRaster"
             Case DataFormat.Vector
-                Return eSpatialDataFormatFlags.Vector
+                Return "DotSpatialVector"
             Case DataFormat.Custom
                 ' NOP
         End Select
-        Return eSpatialDataFormatFlags.Incompatible
+        Return ""
 
     End Function
 

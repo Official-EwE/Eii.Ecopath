@@ -178,9 +178,9 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.DataFormat"/>
         ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property DataFormat() As EwEUtils.Core.eSpatialDataFormatFlags
+        Public Overrides ReadOnly Property ConversionFormat() As String
             Get
-                If (Me.m_lFiles.Count = 0) Then Return eSpatialDataFormatFlags.NotSet
+                If (Me.m_lFiles.Count = 0) Then Return ""
                 Return cDotSpatialUtils.GetDataFormat(Me.m_lFiles(0).FileName)
             End Get
         End Property

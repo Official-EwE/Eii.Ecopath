@@ -76,7 +76,7 @@ Namespace SpatialData
         Public Function IsCompatible(ds As ISpatialDataSet) As Boolean _
             Implements ISpatialDataConverter.IsCompatible
             If (ds Is Nothing) Then Return False
-            Return (ds.DataFormat = eSpatialDataFormatFlags.Raster)
+            Return (ds.ConversionFormat = "DotSpatialRaster")
         End Function
 
         ''' -----------------------------------------------------------------------

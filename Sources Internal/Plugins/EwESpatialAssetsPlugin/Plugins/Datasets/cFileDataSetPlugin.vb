@@ -149,10 +149,10 @@ Namespace SpatialData
              Implements EwEUtils.SpatialData.ISpatialDataSet.VarName
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataSet.VarName"/>"
+        ''' <inheritdocs cref="ISpatialDataSet.ConversionFormat"/>"
         ''' -------------------------------------------------------------------
-        Public MustOverride ReadOnly Property DataFormat As EwEUtils.Core.eSpatialDataFormatFlags _
-            Implements EwEUtils.SpatialData.ISpatialDataSet.DataFormat
+        Public MustOverride ReadOnly Property ConversionFormat As String _
+            Implements EwEUtils.SpatialData.ISpatialDataSet.ConversionFormat
 
 #End Region ' Information
 

@@ -136,10 +136,16 @@
     <value>Simple vector converter</value>
   </data>
   <data name="DATASET_ASCII_DESCRIPTION" xml:space="preserve">
-    <value>Plugin that implements access to a series of ASCII map files over time.</value>
+    <value>Plugin that implements access to a series of ASCII map files prepared for a specific Ecospace map size and map extent, over time.</value>
   </data>
   <data name="DATASET_ASCII_NAME" xml:space="preserve">
-    <value>A series of ASCII maps over time</value>
+    <value>A series of Ecospace-ready ASCII maps over time</value>
+  </data>
+  <data name="DATASET_CSV_DESCRIPTION" xml:space="preserve">
+    <value>Plugin that implements access to a series of CSV map files prepared for a specific Ecospace map size and map extent, over time.</value>
+  </data>
+  <data name="DATASET_CSV_NAME" xml:space="preserve">
+    <value>A series of Ecospace-ready CSV maps over time</value>
   </data>
   <data name="DATASET_MULTIPLE_DESCR" xml:space="preserve">
     <value>Plugin that implements access to a series of spatial files over time.</value>
@@ -156,6 +162,12 @@
   </data>
   <data name="DATASET_SINGLE_NAME" xml:space="preserve">
     <value>A single spatial file</value>
+  </data>
+  <data name="DIALOGFILTER_ASCII" xml:space="preserve">
+    <value>Ecospace ASCII files</value>
+  </data>
+  <data name="DIALOGFILTER_CSV" xml:space="preserve">
+    <value>Ecospace CSV files</value>
   </data>
   <data name="DIALOGFILTER_IMAGE" xml:space="preserve">
     <value>Image files</value>

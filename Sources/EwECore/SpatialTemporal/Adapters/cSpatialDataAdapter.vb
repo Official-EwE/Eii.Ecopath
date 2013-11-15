@@ -135,8 +135,13 @@ Namespace SpatialData
             Dim cv As ISpatialDataConverter = Me.Converter(iIndex)
             Dim ds As ISpatialDataSet = Me.Dataset(iIndex)
 
-            If (cv Is Nothing) Or (ds Is Nothing) Then Return False
-            Return cv.IsConfigured() And ds.IsConfigured()
+            If (ds Is Nothing) Then Return False
+            If (Not ds.IsConfigured()) Then Return False
+
+            If String.IsNullOrWhiteSpace(ds.ConversionFormat) Then Return True
+
+            If (cv Is Nothing) Then Return False
+            Return cv.IsConfigured()
 
         End Function
 

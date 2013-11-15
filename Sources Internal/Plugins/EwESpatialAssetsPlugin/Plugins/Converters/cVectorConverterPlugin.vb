@@ -78,7 +78,7 @@ Namespace SpatialData
         Public Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsCompatible
             If (ds Is Nothing) Then Return False
-            Return (ds.DataFormat = eSpatialDataFormatFlags.Vector)
+            Return (ds.ConversionFormat = "DotSpatialVector")
         End Function
 
         ''' -----------------------------------------------------------------------

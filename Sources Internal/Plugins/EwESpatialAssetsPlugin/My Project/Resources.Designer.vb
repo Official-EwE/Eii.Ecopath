@@ -115,7 +115,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that implements access to a series of ASCII map files over time..
+        '''  Looks up a localized string similar to Plugin that implements access to a series of ASCII map files prepared for a specific Ecospace map size and map extent, over time..
         '''</summary>
         Friend ReadOnly Property DATASET_ASCII_DESCRIPTION() As String
             Get
@@ -124,11 +124,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to A series of ASCII maps over time.
+        '''  Looks up a localized string similar to A series of Ecospace-ready ASCII maps over time.
         '''</summary>
         Friend ReadOnly Property DATASET_ASCII_NAME() As String
             Get
                 Return ResourceManager.GetString("DATASET_ASCII_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plugin that implements access to a series of CSV map files prepared for a specific Ecospace map size and map extent, over time..
+        '''</summary>
+        Friend ReadOnly Property DATASET_CSV_DESCRIPTION() As String
+            Get
+                Return ResourceManager.GetString("DATASET_CSV_DESCRIPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to A series of Ecospace-ready CSV maps over time.
+        '''</summary>
+        Friend ReadOnly Property DATASET_CSV_NAME() As String
+            Get
+                Return ResourceManager.GetString("DATASET_CSV_NAME", resourceCulture)
             End Get
         End Property
         
@@ -174,6 +192,24 @@ Namespace My.Resources
         Friend ReadOnly Property DATASET_SINGLE_NAME() As String
             Get
                 Return ResourceManager.GetString("DATASET_SINGLE_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace ASCII files.
+        '''</summary>
+        Friend ReadOnly Property DIALOGFILTER_ASCII() As String
+            Get
+                Return ResourceManager.GetString("DIALOGFILTER_ASCII", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace CSV files.
+        '''</summary>
+        Friend ReadOnly Property DIALOGFILTER_CSV() As String
+            Get
+                Return ResourceManager.GetString("DIALOGFILTER_CSV", resourceCulture)
             End Get
         End Property
         
