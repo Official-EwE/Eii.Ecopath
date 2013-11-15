@@ -149,16 +149,18 @@ Public Class cSpatialDataLoader
             DepthAdapter = New cDepthDataAdapter(Me.Plugin.Core, Me.Plugin.Ecospace, Me.Plugin.Ecospace.EcoSpaceData)
             Debug.Assert(DepthAdapter IsNot Nothing, Me.ToString + ".InitSpatialData() Failed to create Adapter.")
 
-            DataSet = Me.getDataSetByName(Me.DepthDataSetName)
+            'ToDo fix this....
+            ' DataSet = Me.getDataSetByName(Me.DepthDataSetName)
             Converter = Me.getConverterByType(GetType(EwESpatialAssetsPlugin.SpatialData.cRasterConverterPlugin))
 
-            If (Not DepthAdapter Is Nothing) And (Not DataSet Is Nothing) And (Not Converter Is Nothing) Then
+            ' If (Not DepthAdapter Is Nothing) And (Not DataSet Is Nothing) And (Not Converter Is Nothing) Then
+            If (Not DepthAdapter Is Nothing) And (Not Converter Is Nothing) Then
                 'Ok managed to create all the objects
                 'Now hook them up
 
                 'I'm not sure about this indexing for the dataset and converter
                 'it seems it will not use the index when adding an item
-                DepthAdapter.Dataset(0) = DataSet
+                'DepthAdapter.Dataset(0) = DataSet
                 DepthAdapter.Converter(0) = Converter
                 Plugin.Core.SpatialDataConnectionManager.AddAdapter(DepthAdapter)
                 bReturn = True
