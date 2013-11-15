@@ -23,6 +23,9 @@ Public Class cRelativePathDataSetPlugin
     Public Sub New()
         MyBase.New()
 
+        Me.m_strName = "Relative Dataset"
+        Me.Description = "ASCII file dataset containing files in a relative path"
+
     End Sub
 
 
@@ -55,7 +58,7 @@ Public Class cRelativePathDataSetPlugin
 
                         'xxxxxxxxxxxxxxxxxx HACK xxxxxxxxxxxxxxxxxxxxx
                         'In the normal data set the Source node is the full path to the data files
-                        'Here it's just the path from the XMLDocument to the data files
+                        'Here it CAN be just the path from the XMLDocument to the data files
                         'Making this data set "Relative" to the XMLDocument itself
 
                         'Use the path to the Spatial Config file(XmlDocument) as the root path to the data
@@ -108,5 +111,8 @@ Public Class cRelativePathDataSetPlugin
         Return True
 
     End Function
+
+
+
 
 End Class

@@ -79,7 +79,6 @@ Public Class cDepthChangePluginPoint
     Private m_uic As cUIContext
     Private m_form As frmEwEPlugin
 
-    Private m_bInitialized As Boolean
     Private m_SpatialDataLoader As cSpatialDataLoader
     Private m_EwEIsChanged As Boolean
 
@@ -102,7 +101,6 @@ Public Class cDepthChangePluginPoint
 
     Private Sub InitSpatialData()
         m_SpatialDataLoader = New cSpatialDataLoader(Me)
-        m_bInitialized = True
     End Sub
 
 
@@ -145,6 +143,10 @@ Public Class cDepthChangePluginPoint
 
             Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing), _
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
+
+            Me.InitSpatialData()
+            Me.SpatialDataLoader.InitDepthDataSet()
+
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".CoreInitialized() Exception " + ex.Message)
@@ -236,8 +238,6 @@ Public Class cDepthChangePluginPoint
 
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
         Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
-
-        Me.InitSpatialData()
 
     End Sub
 

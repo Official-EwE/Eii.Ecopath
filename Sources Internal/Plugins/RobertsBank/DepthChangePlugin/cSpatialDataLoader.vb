@@ -146,7 +146,7 @@ Public Class cSpatialDataLoader
             Dim DataSet As EwEUtils.SpatialData.ISpatialDataSet
             Dim Converter As EwEUtils.SpatialData.ISpatialDataConverter
 
-            DepthAdapter = New cDepthDataAdapter(Me.Plugin)
+            DepthAdapter = New cDepthDataAdapter(Me.Plugin.Core, Me.Plugin.Ecospace, Me.Plugin.Ecospace.EcoSpaceData)
             Debug.Assert(DepthAdapter IsNot Nothing, Me.ToString + ".InitSpatialData() Failed to create Adapter.")
 
             DataSet = Me.getDataSetByName(Me.DepthDataSetName)
@@ -174,7 +174,7 @@ Public Class cSpatialDataLoader
     End Function
 
     Private Function getConverterByType(ConverterType As Type) As EwEUtils.SpatialData.ISpatialDataConverter
-        For Each converter In Plugin.Core.SpatialDataConnectionManager.ConverterTemplates
+        For Each converter In Plugin.Core.SpatialDataConnectionManager.ConverterTemplates()
             If converter.GetType Is ConverterType Then
                 Return converter
             End If

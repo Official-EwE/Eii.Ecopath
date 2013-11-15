@@ -29,14 +29,19 @@ Imports EwECore.SpatialData
 
 #End Region ' Imports
 
+
+''' <summary>
+''' External defined Depth Data Adapter for the Spatial Temporal framework
+''' </summary>
+''' <remarks></remarks>
 Public Class cDepthDataAdapter
     Inherits cSpatialDataAdapter
 
 #Region "Private variables"
 
-    Private m_plugin As cDepthChangePluginPoint
-
     Private m_orgDepth(,) As Integer
+    Private m_Ecospace As cEcoSpace
+    Private m_SpaceData As cEcospaceDataStructures
 
     'has the original map value changed
     Private m_bChanged(,) As Boolean
@@ -44,10 +49,11 @@ Public Class cDepthDataAdapter
 
 #Region "Construction"
 
-    Public Sub New(thePlugin As cDepthChangePluginPoint)
-        MyBase.New(thePlugin.Core, eVarNameFlags.LayerDepth, eCoreCounterTypes.NotSet)
+    Public Sub New(theCore As cCore, EcoSpace As cEcoSpace, EcoSpaceData As cEcospaceDataStructures)
+        MyBase.New(theCore, eVarNameFlags.LayerDepth, eCoreCounterTypes.NotSet)
 
-        Me.m_plugin = thePlugin
+        Me.m_Ecospace = EcoSpace
+        Me.m_SpaceData = EcoSpaceData
 
     End Sub
 
@@ -114,14 +120,14 @@ Public Class cDepthDataAdapter
 
     Private ReadOnly Property Ecospace As cEcoSpace
         Get
-            Return Me.m_plugin.Ecospace
+            Return Me.m_Ecospace
         End Get
     End Property
 
 
     Private ReadOnly Property SpaceData As cEcospaceDataStructures
         Get
-            Return Me.m_plugin.EcoSpaceData
+            Return Me.m_SpaceData
         End Get
     End Property
 
@@ -172,11 +178,6 @@ Public Class cDepthDataAdapter
                 Me.InitSpatialChanges()
                 bReturn = True
             End If
-
-            'If MyBase.Adapt(bm, layer, iTime, dt, dataExternal, dNullValue) Then
-            '    Me.InitSpatialChanges()
-            '    bReturn = True
-            'End If
 
         Catch ex As Exception
             System.Console.WriteLine("Exception: " & Me.ToString & ".Adapt() " & ex.Message)
