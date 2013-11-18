@@ -135,7 +135,7 @@ Namespace SpatialData
 
             Me.m_mtbIntervalStart.ValidatingType = GetType(Date)
             Me.m_tbxName.Text = Me.m_dataset.DisplayName
-            Me.m_tbxDescription.Text = Me.m_dataset.Description
+            Me.m_tbxDescription.Text = Me.m_dataset.DataDescription
             Me.m_tbxPath.Text = Me.m_dataset.Source
 
             Dim astrFilters As String() = Me.m_dataset.DialogReadFilter(True, False, True).Split("|"c)
@@ -145,14 +145,20 @@ Namespace SpatialData
             Me.m_cmbExtensions.SelectedIndex = 0
             Me.m_cmbInterval.SelectedIndex = 0
 
-            Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
-            If Me.UIContext IsNot Nothing Then
-                For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
-                    Me.m_cmbVarName.Items.Add(adt.VarName)
-                Next
+            If (Me.m_dataset.VarName = eVarNameFlags.NotSet) Then
+                ' Allow all supported varnames
+                Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
+                If (Me.UIContext IsNot Nothing) Then
+                    For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
+                        Me.m_cmbVarName.Items.Add(adt.VarName)
+                    Next
+                End If
+            Else
+                ' Allow only dataset varname when configuring a pre-existing dataset
+                Me.m_cmbVarName.Items.Add(Me.m_dataset.VarName)
             End If
-            Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
 
+            Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
             Me.m_hdrDescription.IsCollapsed = True
             Me.m_hdrTime.IsCollapsed = True
 
@@ -308,10 +314,10 @@ Namespace SpatialData
 
         End Function
 
-        Private Sub m_cmbVarName_Format(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Private Sub OnFormatVarname(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_cmbVarName.Format
             Dim fmt As New cVarnameTypeFormatter
-            e.Value = fmt.GetDescriptor(e.Value)
+            e.Value = fmt.GetDescriptor(e.ListItem)
         End Sub
 
 #End Region ' Control events
@@ -465,7 +471,7 @@ Namespace SpatialData
         Private Sub DoApply()
 
             Me.m_dataset.DisplayName = Me.m_tbxName.Text
-            Me.m_dataset.Description = Me.m_tbxDescription.Text
+            Me.m_dataset.DataDescription = Me.m_tbxDescription.Text
             Me.m_dataset.Source = Me.m_tbxPath.Text
             Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
 

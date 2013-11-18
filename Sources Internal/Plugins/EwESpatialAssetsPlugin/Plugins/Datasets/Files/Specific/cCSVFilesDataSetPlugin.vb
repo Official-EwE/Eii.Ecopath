@@ -46,7 +46,7 @@ Namespace SpatialData
             MyBase.New()
             ' Default name and description
             Me.m_strName = My.Resources.DATASET_CSV_NAME
-            Me.Description = My.Resources.DATASET_CSV_DESCRIPTION
+            Me.DataDescription = My.Resources.DATASET_CSV_DESCRIPTION
         End Sub
 
 #Region " Overrides "
@@ -122,7 +122,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides ReadOnly Property PluginDescription As String
+        Public Overrides ReadOnly Property Description As String
             Get
                 Return "Plug-in that provides direct access to CSV files catered to fit the spatial extent and grid size of Ecospace, without requiring GDAL"
             End Get

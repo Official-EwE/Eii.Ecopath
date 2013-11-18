@@ -228,7 +228,7 @@ Namespace SpatialData
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Description")
-            xn.InnerText = Me.Description
+            xn.InnerText = Me.DataDescription
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Variable")
@@ -297,7 +297,7 @@ Namespace SpatialData
                 For Each xn In node.ChildNodes
                     Select Case xn.Name
                         Case "Name" : Me.m_strName = xn.InnerText
-                        Case "Description" : Me.Description = xn.InnerText
+                        Case "Description" : Me.DataDescription = xn.InnerText
                         Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
                         Case "Annual" : Convert.ToBoolean(xn.InnerText)
                         Case "File"
@@ -453,9 +453,9 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides ReadOnly Property PluginDescription As String
+        Public Overrides ReadOnly Property Description As String
             Get
-                Return My.Resources.DATASET_SINGLE_DESCR
+                Return "Plug-in that provides access to a dataset that contains a single time-stamped spatial file"
             End Get
         End Property
 

@@ -136,25 +136,25 @@
     <value>Simple vector converter</value>
   </data>
   <data name="DATASET_ASCII_DESCRIPTION" xml:space="preserve">
-    <value>Plugin that implements access to a series of ASCII map files prepared for a specific Ecospace map size and map extent, over time.</value>
+    <value>A series of ASCII map files, prepared to match a specific Ecospace map size and extent</value>
   </data>
   <data name="DATASET_ASCII_NAME" xml:space="preserve">
-    <value>A series of Ecospace-ready ASCII maps over time</value>
+    <value>A series of Ecospace ASCII files over time</value>
   </data>
   <data name="DATASET_CSV_DESCRIPTION" xml:space="preserve">
-    <value>Plugin that implements access to a series of CSV map files prepared for a specific Ecospace map size and map extent, over time.</value>
+    <value>A series of CSV map files, prepared to match a specific Ecospace map size and extent</value>
   </data>
   <data name="DATASET_CSV_NAME" xml:space="preserve">
-    <value>A series of Ecospace-ready CSV maps over time</value>
+    <value>A series of Ecospace CSV maps over time</value>
   </data>
   <data name="DATASET_MULTIPLE_DESCR" xml:space="preserve">
-    <value>Plugin that implements access to a series of spatial files over time.</value>
+    <value>A series of spatial time-tagged files</value>
   </data>
   <data name="DATASET_MULTIPLE_NAME" xml:space="preserve">
     <value>A series of spatial files over time</value>
   </data>
   <data name="DATASET_SINGLE_DESCR" xml:space="preserve">
-    <value>Plugin that implements access to a single spatial file without any temporal attributes.</value>
+    <value>A single time-tagged spatial file</value>
   </data>
   <data name="DATASET_SINGLE_DISPLAYNAME" xml:space="preserve">
     <value>File '{0}'</value>

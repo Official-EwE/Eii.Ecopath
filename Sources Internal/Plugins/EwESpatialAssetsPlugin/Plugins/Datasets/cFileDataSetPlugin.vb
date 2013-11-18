@@ -101,10 +101,16 @@ Namespace SpatialData
             Implements ISpatialDataSet.DisplayName
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataSet.Description" />
+        ''' <inheritdocs cref="ISpatialDataSet.DataDescription" />
         ''' -------------------------------------------------------------------
-        Public Property Description As String _
-            Implements ISpatialDataSet.Description
+        Public Overridable Property DataDescription As String _
+            Implements ISpatialDataSet.DataDescription
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IPlugin.Description" />
+        ''' -------------------------------------------------------------------
+        Public MustOverride ReadOnly Property Description As String _
+            Implements IPlugin.Description
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.Source" />
@@ -583,12 +589,6 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public MustOverride ReadOnly Property PluginName As String _
             Implements EwEPlugin.IPlugin.Name
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
-        ''' -----------------------------------------------------------------------
-        Public MustOverride ReadOnly Property PluginDescription As String _
-            Implements EwEPlugin.IPlugin.Description
 
 #End Region ' Plug-in implementation
 

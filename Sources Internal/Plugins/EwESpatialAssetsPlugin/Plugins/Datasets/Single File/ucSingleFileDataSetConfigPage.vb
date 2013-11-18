@@ -25,6 +25,7 @@ Imports EwESpatialAssetsPlugin.SpatialData
 Imports ScientificInterfaceShared.Controls
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -38,7 +39,7 @@ Friend Class ucSingleFileDataSetConfigPage
         MyBase.OnLoad(e)
 
         Me.m_tbxName.Text = Me.m_dataset.DisplayName
-        Me.m_tbxDescription.Text = Me.m_dataset.Description
+        Me.m_tbxDescription.Text = Me.m_dataset.DataDescription
         Me.m_tbxFile.Text = Me.m_dataset.Source
 
         If (Me.m_dataset.TimeStart = Me.m_dataset.TimeEnd) Then
@@ -49,11 +50,17 @@ Friend Class ucSingleFileDataSetConfigPage
             Me.m_date.Value = Date.Now
         End If
 
-        Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
-        If Me.UIContext IsNot Nothing Then
-            For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
-                Me.m_cmbVarName.Items.Add(adt.VarName)
-            Next
+        If (Me.m_dataset.VarName = eVarNameFlags.NotSet) Then
+            ' Allow all supported varnames
+            Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
+            If (Me.UIContext IsNot Nothing) Then
+                For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
+                    Me.m_cmbVarName.Items.Add(adt.VarName)
+                Next
+            End If
+        Else
+            ' Allow only dataset varname when configuring a pre-existing dataset
+            Me.m_cmbVarName.Items.Add(Me.m_dataset.VarName)
         End If
         Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
 
@@ -83,6 +90,12 @@ Friend Class ucSingleFileDataSetConfigPage
     Private Sub OnSwitchToDatePicker(sender As System.Object, e As System.EventArgs) _
         Handles m_date.GotFocus
         Me.m_rbMonth.Checked = True
+    End Sub
+
+    Private Sub OnFormatVarname(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_cmbVarName.Format
+        Dim fmt As New cVarnameTypeFormatter()
+        e.Value = fmt.GetDescriptor(e.ListItem)
     End Sub
 
 #End Region ' Events
@@ -147,7 +160,7 @@ Friend Class ucSingleFileDataSetConfigPage
     Private Sub DoApply()
 
         Me.m_dataset.DisplayName = Me.m_tbxName.Text
-        Me.m_dataset.Description = Me.m_tbxDescription.Text
+        Me.m_dataset.DataDescription = Me.m_tbxDescription.Text
         Me.m_dataset.Source = Me.m_tbxFile.Text
         Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
 

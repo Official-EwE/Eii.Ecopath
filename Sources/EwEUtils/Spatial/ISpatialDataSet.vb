@@ -48,10 +48,10 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Legible description of the dataset.
+        ''' Description of the data in the dataset.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property Description As String
+        Property DataDescription As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>

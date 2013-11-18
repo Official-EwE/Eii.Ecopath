@@ -45,7 +45,7 @@ Namespace SpatialData
             MyBase.New()
             ' Default name and description
             Me.m_strName = My.Resources.DATASET_ASCII_NAME
-            Me.Description = My.Resources.DATASET_ASCII_DESCRIPTION
+            Me.DataDescription = My.Resources.DATASET_ASCII_DESCRIPTION
         End Sub
 
 #Region " Overrides "
@@ -175,7 +175,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides ReadOnly Property PluginDescription As String
+        Public Overrides ReadOnly Property Description As String
             Get
                 Return "Plug-in that provides direct access to ASCII files, without requiring GDAL"
             End Get

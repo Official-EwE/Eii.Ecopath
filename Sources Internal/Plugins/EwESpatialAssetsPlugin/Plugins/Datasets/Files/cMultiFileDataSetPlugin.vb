@@ -431,7 +431,7 @@ Namespace SpatialData
                 For Each xn In node.ChildNodes
                     Select Case xn.Name
                         Case "Name" : Me.m_strName = xn.InnerText
-                        Case "Description" : Me.Description = xn.InnerText
+                        Case "Description" : Me.DataDescription = xn.InnerText
                         Case "Source" : Me.Source = xn.InnerText
                         Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
                         Case "Annual" : Convert.ToBoolean(xn.InnerText)
@@ -647,9 +647,9 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides ReadOnly Property PluginDescription As String
+        Public Overrides ReadOnly Property Description As String
             Get
-                Return My.Resources.DATASET_MULTIPLE_DESCR
+                Return "Plug-in that provides dataset access to a series of time-stamped spatial files."
             End Get
         End Property
 

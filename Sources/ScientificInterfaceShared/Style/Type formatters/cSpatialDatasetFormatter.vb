@@ -88,7 +88,7 @@ Namespace Style
                             End If
 
                         Case eDescriptorTypes.Description
-                            strResult = obj.Description
+                            strResult = obj.DataDescription
                     End Select
                 Else
                     strResult = My.Resources.GENERIC_VALUE_NONE

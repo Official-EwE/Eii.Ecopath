@@ -115,7 +115,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that implements access to a series of ASCII map files prepared for a specific Ecospace map size and map extent, over time..
+        '''  Looks up a localized string similar to A series of ASCII map files, prepared to match a specific Ecospace map size and extent.
         '''</summary>
         Friend ReadOnly Property DATASET_ASCII_DESCRIPTION() As String
             Get
@@ -124,7 +124,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to A series of Ecospace-ready ASCII maps over time.
+        '''  Looks up a localized string similar to A series of Ecospace ASCII files over time.
         '''</summary>
         Friend ReadOnly Property DATASET_ASCII_NAME() As String
             Get
@@ -133,7 +133,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that implements access to a series of CSV map files prepared for a specific Ecospace map size and map extent, over time..
+        '''  Looks up a localized string similar to A series of CSV map files, prepared to match a specific Ecospace map size and extent.
         '''</summary>
         Friend ReadOnly Property DATASET_CSV_DESCRIPTION() As String
             Get
@@ -142,7 +142,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to A series of Ecospace-ready CSV maps over time.
+        '''  Looks up a localized string similar to A series of Ecospace CSV maps over time.
         '''</summary>
         Friend ReadOnly Property DATASET_CSV_NAME() As String
             Get
@@ -151,7 +151,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that implements access to a series of spatial files over time..
+        '''  Looks up a localized string similar to A series of spatial time-tagged files.
         '''</summary>
         Friend ReadOnly Property DATASET_MULTIPLE_DESCR() As String
             Get
@@ -169,7 +169,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that implements access to a single spatial file without any temporal attributes..
+        '''  Looks up a localized string similar to A single time-tagged spatial file.
         '''</summary>
         Friend ReadOnly Property DATASET_SINGLE_DESCR() As String
             Get
