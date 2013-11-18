@@ -2993,24 +2993,4 @@ Namespace Core
 
 #End Region ' LP Solver
 
-#Region " Spatial "
-
-    ''' <summary>
-    ''' Enumerated type stating fundamental types of spatial data.
-    ''' </summary>
-    Public Enum eSpatialDataFormatFlags As Byte
-        ''' <summary>Data format is not determined.</summary>
-        NotSet = 0
-        ''' <summary>Gridded data in spatial raster formats.</summary>
-        Raster
-        ''' <summary>Gridded data in spatial multi-band image formats.</summary>
-        Image
-        ''' <summary>Vector spatial data.</summary>
-        Vector
-        ''' <summary>Data that is not a known data format.</summary>
-        Incompatible
-    End Enum
-
-#End Region ' Spatial
-
 End Namespace ' Core

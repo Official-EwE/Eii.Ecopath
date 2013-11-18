@@ -8292,6 +8292,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biomass forcing.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_LAYERBIOMASSFORCING() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERBIOMASSFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Depth map.
         '''</summary>
         Public ReadOnly Property VARIABLE_LAYERDEPTH() As String

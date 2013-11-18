@@ -285,8 +285,9 @@ Namespace SpatialData
         ''' <summary>
         ''' Returns an array of dataset templates.
         ''' </summary>
+        ''' <param name="vn">The varname to filter by, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Function DatasetTemplates() As ISpatialDataSet()
+        Public Function DatasetTemplates(Optional vn As eVarNameFlags = eVarNameFlags.NotSet) As ISpatialDataSet()
 
             Dim lDatasets As New List(Of ISpatialDataSet)
             Dim pm As cPluginManager = Me.m_core.PluginManager
@@ -294,7 +295,10 @@ Namespace SpatialData
             If (pm IsNot Nothing) Then
                 For Each ip As IPlugin In pm.GetPlugins(GetType(ISpatialDataSetPlugin))
                     If (TypeOf ip Is ISpatialDataSet) Then
-                        lDatasets.Add(DirectCast(ip, ISpatialDataSet))
+                        Dim ds As ISpatialDataSet = DirectCast(ip, ISpatialDataSet)
+                        If (ds.VarName = vn Or ds.VarName = eVarNameFlags.NotSet) Then
+                            lDatasets.Add(ds)
+                        End If
                     End If
                 Next
             End If
