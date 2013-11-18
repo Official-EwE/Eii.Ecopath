@@ -225,7 +225,7 @@ Namespace Ecospace.Controls
             Me.Cursor = Cursors.WaitCursor
             Try
                 Me.ConfigDS(Me.SelectedDataset)
-                Me.m_gridDatasets.Fill(Me.m_adt, Nothing)
+                Me.m_gridDatasets.Fill(Me.m_adt, Me.SelectedDataset)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex, "ucConficAdapter::OnConfigureDS")
@@ -574,8 +574,8 @@ Namespace Ecospace.Controls
 
             If (cv Is Nothing) Then cv = Me.SelectedConverter
             Me.m_cmbConverter.Items.Clear()
-            Me.m_cmbConverter.Items.Add("")
             For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates(Me.SelectedDataset)
+                If (cv Is Nothing) Then cv = cvTest
                 Me.m_cmbConverter.Items.Add(cvTest)
             Next
             Me.SelectConverter(cv)
