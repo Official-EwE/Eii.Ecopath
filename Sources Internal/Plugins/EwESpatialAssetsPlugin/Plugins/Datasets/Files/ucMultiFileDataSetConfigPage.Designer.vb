@@ -209,6 +209,7 @@ Namespace SpatialData
             Me.m_tbxDescription.Location = New System.Drawing.Point(80, 46)
             Me.m_tbxDescription.Multiline = True
             Me.m_tbxDescription.Name = "m_tbxDescription"
+            Me.m_tbxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
             Me.m_tbxDescription.Size = New System.Drawing.Size(388, 73)
             Me.m_tbxDescription.TabIndex = 4
             '
