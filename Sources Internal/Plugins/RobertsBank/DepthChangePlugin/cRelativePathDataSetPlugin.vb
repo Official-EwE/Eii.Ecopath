@@ -24,7 +24,7 @@ Public Class cRelativePathDataSetPlugin
         MyBase.New()
 
         Me.m_strName = "Relative Dataset"
-        Me.Description = "ASCII file dataset containing files in a relative path"
+        'Me.Description = "ASCII file dataset containing files in a relative path"
 
     End Sub
 
@@ -53,7 +53,7 @@ Public Class cRelativePathDataSetPlugin
             For Each xn In node.ChildNodes
                 Select Case xn.Name
                     Case "Name" : Me.m_strName = xn.InnerText
-                    Case "Description" : Me.Description = xn.InnerText
+                    Case "Description" ': Me.Description = xn.InnerText
                     Case "Source"
 
                         'xxxxxxxxxxxxxxxxxx HACK xxxxxxxxxxxxxxxxxxxxx
@@ -61,13 +61,15 @@ Public Class cRelativePathDataSetPlugin
                         'Here it CAN be just the path from the XMLDocument to the data files
                         'Making this data set "Relative" to the XMLDocument itself
 
-                        'Use the path to the Spatial Config file(XmlDocument) as the root path to the data
-                        Dim docpath As String = Path.GetDirectoryName(doc.BaseURI.Replace("file:///", ""))
-                        'Source node should be the directory structure under the XMLDocument that contains the data files
-                        'Combine the XMLDocument path and Source node for the full data path to this dataset
                         If Not Path.IsPathRooted(xn.InnerText) Then
+                            'Relative path
+                            'Use the path to the Spatial Config file(XmlDocument) as the root path to the data
+                            Dim docpath As String = Path.GetDirectoryName(doc.BaseURI.Replace("file:///", ""))
+                            'Source node should be the directory structure under the XMLDocument that contains the data files
+                            'Combine the XMLDocument path and Source node for the full data path to this dataset
                             Me.Source = Path.Combine(docpath, xn.InnerText)
                         Else
+                            'Fully qualified path
                             Me.Source = xn.InnerText
                         End If
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -111,6 +113,15 @@ Public Class cRelativePathDataSetPlugin
         Return True
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property Description As String
+        Get
+            Return "ASCII file dataset containing files in a relative path"
+        End Get
+    End Property
 
 
 
