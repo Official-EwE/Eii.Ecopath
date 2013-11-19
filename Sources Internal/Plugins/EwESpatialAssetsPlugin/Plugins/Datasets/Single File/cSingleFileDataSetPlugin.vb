@@ -169,7 +169,7 @@ Namespace SpatialData
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.DataFormat"/>
+        ''' <inheritdocs cref="cFileDataSetPlugin.ConversionFormat"/>
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property ConversionFormat() As String
             Get
