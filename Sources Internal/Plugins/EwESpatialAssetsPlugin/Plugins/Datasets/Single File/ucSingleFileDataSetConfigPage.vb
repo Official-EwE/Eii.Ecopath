@@ -21,10 +21,10 @@
 Option Strict On
 Imports System.IO
 Imports System.Windows.Forms
-Imports EwESpatialAssetsPlugin.SpatialData
-Imports ScientificInterfaceShared.Controls
 Imports EwECore.SpatialData
+Imports EwESpatialAssetsPlugin.SpatialData
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -178,6 +178,6 @@ Friend Class ucSingleFileDataSetConfigPage
     End Function
 
     Public Event OnSingleFileConfigPageChanged(sender As IOptionsPage, args As System.EventArgs) _
-        Implements IOptionsPage.OnChanged
+        Implements ScientificInterfaceShared.Controls.IOptionsPage.OnChanged
 
 End Class

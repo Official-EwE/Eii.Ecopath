@@ -19,17 +19,17 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Collections.Generic
 Imports System.IO
 Imports System.Windows.Forms
+Imports EwECore.SpatialData
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports System.Collections.Generic
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Controls
-Imports EwECore.SpatialData
 Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -189,7 +189,7 @@ Namespace SpatialData
         End Function
 
         Public Event OnMultiFileConfigPageChanged(sender As IOptionsPage, args As System.EventArgs) _
-            Implements IOptionsPage.OnChanged
+            Implements ScientificInterfaceShared.Controls.IOptionsPage.OnChanged
 
         Public Function Apply() As IOptionsPage.eApplyResultType _
             Implements IOptionsPage.Apply
