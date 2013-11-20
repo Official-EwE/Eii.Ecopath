@@ -2440,16 +2440,39 @@ Public Class AppLauncher
 
     Private Sub OnDirectoryOpen(ByVal cmd As cCommand) Handles m_cmdDirectoryOpen.OnInvoke
 
-        Dim dlgLoad As Ookii.Dialogs.VistaFolderBrowserDialog = Nothing
+        ' JS 19Nov13: Restored old path if something went wrong
+
         Dim doc As cDirectoryOpenCommand = DirectCast(cmd, cDirectoryOpenCommand)
         Dim strPath As String = doc.Directory
+        Dim bOK As Boolean = False
 
-        dlgLoad = cEwEFileDialogHelper.FolderBrowserDialog(doc.Prompt, strPath)
+        Try
+            ' Try Ookii dialogs first
+            Dim dlgLoad As Ookii.Dialogs.VistaFolderBrowserDialog = Nothing
+            dlgLoad = cEwEFileDialogHelper.FolderBrowserDialog(doc.Prompt, strPath)
+            If dlgLoad IsNot Nothing Then
+                doc.Result = dlgLoad.ShowDialog()
+                strPath = dlgLoad.SelectedPath
+                bOK = True
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "OnDirectoryOpen ookii")
+        End Try
 
-        doc.Result = dlgLoad.ShowDialog()
+        If Not bOK Then
+            Try
+                Dim dlgLoad As FolderBrowserDialog = Nothing
+                dlgLoad = cEwEFileDialogHelper.FolderBrowserDialogOld(doc.Prompt, strPath)
+                doc.Result = dlgLoad.ShowDialog()
+                strPath = dlgLoad.SelectedPath
+                bOK = True
+            Catch ex As Exception
+                cLog.Write(ex, "OnDirectoryOpen old")
+            End Try
+        End If
 
         If (doc.Result = Windows.Forms.DialogResult.OK) Then
-            doc.Directory = dlgLoad.SelectedPath
+            doc.Directory = strPath
         End If
 
     End Sub
