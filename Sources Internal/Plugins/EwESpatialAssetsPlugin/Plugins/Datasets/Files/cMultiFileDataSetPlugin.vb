@@ -95,6 +95,7 @@ Namespace SpatialData
         Protected m_bCanSort As Boolean = True
 
         Private m_bStopIndexing As Boolean = False
+        Private m_bIsIndexing As Boolean = False
 
 #End Region ' Private vars
 
@@ -346,7 +347,7 @@ Namespace SpatialData
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Description")
-            xn.InnerText = Me.Description
+            xn.InnerText = Me.DataDescription
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Variable")
@@ -574,6 +575,8 @@ Namespace SpatialData
 
         End Function
 
+        Private m_lockObj As New Object()
+
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.BuildIndex"/>
         ''' -------------------------------------------------------------------
@@ -581,55 +584,70 @@ Namespace SpatialData
                                            ByVal dateEnd As DateTime, _
                                            Optional ByVal dgt As ISpatialDataSet.BuildIndexUpdateDelegate = Nothing)
 
+            While Me.m_bIsIndexing
+                ' Spin wheels, waiting for other version of indexing to complete
+            End While
+
             Dim ptfTL As New PointF(-180, 90)
             Dim ptfBR As New PointF(180, -90)
             Dim f As cTemporalFile = Nothing
 
-            Me.m_bStopIndexing = False
+            SyncLock m_lockObj
 
-            ' Truncate dates
-            If (Me.m_lFiles.Count > 0) Then
-                If dateStart < Me.m_lFiles(0).Time Then dateStart = Me.m_lFiles(0).Time
-                If dateEnd > Me.m_lFiles(Me.m_lFiles.Count - 1).Time Then dateEnd = Me.m_lFiles(Me.m_lFiles.Count - 1).Time
-            End If
-
-            Dim iStart As Integer = Me.FileIndex(dateStart)
-            Dim iEnd As Integer = Me.FileIndex(dateEnd)
-
-            For i As Integer = Math.Max(0, iStart) To Math.Min(Me.m_lFiles.Count - 1, iEnd)
-                f = Me.m_lFiles(i Mod Me.m_lFiles.Count)
-                If (f.IndexStatus <> ISpatialDataSet.eIndexStatus.Indexed) Then
-
-                    ' Limit cache access
-                    Dim bOldFlag = Me.ReadFromCache
-                    Me.ReadFromCache = False
-
-                    ' Assume the worst
-                    f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
-
-                    Try
-                        If Me.LockDataAtT(f.Time, 1.0!, ptfTL, ptfBR) Then
-                            Me.LoadSource()
-                            Me.UnlockData()
-                        End If
-                    Catch ex As Exception
-                        cLog.Write(ex, "cMultiFileDatasetPlugin::BuildIndex")
-                    End Try
-
-                    ' Restore cache access
-                    Me.ReadFromCache = bOldFlag
-                End If
-
+                Me.m_bStopIndexing = False
+                Me.m_bIsIndexing = True
                 Try
-                    ' Always tell the world
-                    dgt.Invoke(Me)
+
+                    ' Truncate dates
+                    If (Me.m_lFiles.Count > 0) Then
+                        If dateStart < Me.m_lFiles(0).Time Then dateStart = Me.m_lFiles(0).Time
+                        If dateEnd > Me.m_lFiles(Me.m_lFiles.Count - 1).Time Then dateEnd = Me.m_lFiles(Me.m_lFiles.Count - 1).Time
+                    End If
+
+                    Dim iStart As Integer = Me.FileIndex(dateStart)
+                    Dim iEnd As Integer = Me.FileIndex(dateEnd)
+
+                    For i As Integer = Math.Max(0, iStart) To Math.Min(Me.m_lFiles.Count - 1, iEnd)
+                        f = Me.m_lFiles(i Mod Me.m_lFiles.Count)
+                        If (f.IndexStatus <> ISpatialDataSet.eIndexStatus.Indexed) Then
+
+                            ' Limit cache access
+                            Dim bOldFlag = Me.ReadFromCache
+                            Me.ReadFromCache = False
+
+                            ' Assume the worst
+                            f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
+
+                            Try
+                                If Me.LockDataAtT(f.Time, 1.0!, ptfTL, ptfBR) Then
+                                    Me.LoadSource()
+                                    Me.UnlockData()
+                                End If
+                            Catch ex As Exception
+                                cLog.Write(ex, "cMultiFileDatasetPlugin::BuildIndex")
+                            End Try
+
+                            ' Restore cache access
+                            Me.ReadFromCache = bOldFlag
+                        End If
+
+                        Try
+                            ' Always tell the world
+                            dgt.Invoke(Me)
+                        Catch ex As Exception
+                            ' Khazaam
+                        End Try
+
+                        If Me.m_bStopIndexing Then Exit For
+
+                    Next
+
                 Catch ex As Exception
-                    ' Khazaam
+
                 End Try
+                Me.m_bIsIndexing = False
 
-                If Me.m_bStopIndexing Then Exit For
-
-            Next
+            End SyncLock
 
         End Sub
 

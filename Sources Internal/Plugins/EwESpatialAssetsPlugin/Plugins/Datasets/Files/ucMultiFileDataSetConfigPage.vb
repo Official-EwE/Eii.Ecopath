@@ -159,7 +159,7 @@ Namespace SpatialData
             End If
 
             Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
-            Me.m_hdrDescription.IsCollapsed = True
+            Me.m_hdrDescription.IsCollapsed = False
             Me.m_hdrTime.IsCollapsed = True
 
         End Sub
