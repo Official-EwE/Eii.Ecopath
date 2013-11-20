@@ -1700,6 +1700,14 @@ Public Class cEcoSpace
                 m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) /= m_Data.nWaterCells
                 m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) /= m_Data.nWaterCells
                 m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) /= m_Data.nWaterCells
+
+                'HACK
+                'Lovley little hack for computing fit to Ecosim time series data SS
+                'Ecosim.AccumulateDataInfo(...) Uses Ecosim.FishTime() to calculate catch for the fitting stats
+                'So set it to the average F 
+                'This shouldn't cause problems because when Ecosim it run FishTime() is calculated on the fly for each time step
+                'this value will be over written
+                Me.m_SimData.FishTime(igrp) = m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt)
             Next igrp
 
             For iflt As Integer = 0 To Me.m_Data.nFleets
