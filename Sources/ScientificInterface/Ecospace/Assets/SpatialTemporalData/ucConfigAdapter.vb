@@ -58,8 +58,6 @@ Namespace Ecospace.Controls
 
         ''' <summary>Flag to break looped layer change updates/notifications</summary>
         Private m_bInUpdate As Boolean = False
-        ''' <summary>Flag that states whether indexing is in place</summary>
-        Private m_bIndexing As Boolean = False
 
         ''' <summary>Flag that states whether there is any data in the cache</summary>
         Private m_bHasCachedData As Boolean = False
@@ -226,6 +224,7 @@ Namespace Ecospace.Controls
             Try
                 Me.ConfigDS(Me.SelectedDataset)
                 Me.m_gridDatasets.Fill(Me.m_adt, Me.SelectedDataset)
+                Me.m_manSets.IndexDataset = Me.SelectedDataset
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex, "ucConficAdapter::OnConfigureDS")
@@ -497,6 +496,10 @@ Namespace Ecospace.Controls
 
         End Sub
 
+        ''' <summary>
+        ''' Grid callback
+        ''' </summary>
+        ''' <param name="ds"></param>
         Private Sub OnConfigDS(ds As ISpatialDataSet) Handles m_gridDatasets.OnConfigDS
             Me.ConfigDS(ds)
         End Sub
@@ -662,6 +665,7 @@ Namespace Ecospace.Controls
                 If Me.ConfigDS(dsNew) Then
                     Me.m_manSets.Add(dsNew)
                     Me.m_gridDatasets.Fill(Me.m_adt, dsNew)
+                    Me.m_manSets.IndexDataset = dsNew
                 End If
             Catch ex As Exception
                 cLog.Write(ex, "ucConficAdapter::CreateDS")
