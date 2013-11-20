@@ -1897,14 +1897,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
-      <Project>{C1081265-6A9D-4087-8BB5-E907D86FD719}</Project>
-      <Name>EwESpatialAssetsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\MejsHasanExtensionsPlugin\MejsHasanExtensionsPlugin.vbproj">
-      <Project>{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}</Project>
-      <Name>MejsHasanExtensionsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
