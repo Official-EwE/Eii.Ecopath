@@ -61,6 +61,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwERemarksPlugin", "EwECust
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwESpatialAssetsPlugin", "..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj", "{C1081265-6A9D-4087-8BB5-E907D86FD719}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MejsHasanExtensionsPlugin", "..\Sources Internal\Plugins\MejsHasanExtensionsPlugin\MejsHasanExtensionsPlugin.vbproj", "{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -250,6 +252,18 @@ Global
 		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Release|x64.Build.0 = Release|x64
 		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Release|x86.ActiveCfg = Release|x86
 		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Release|x86.Build.0 = Release|x86
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Debug|x64.ActiveCfg = Debug|x64
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Debug|x64.Build.0 = Debug|x64
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Debug|x86.ActiveCfg = Debug|x86
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Debug|x86.Build.0 = Debug|x86
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Release|x64.ActiveCfg = Release|x64
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Release|x64.Build.0 = Release|x64
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Release|x86.ActiveCfg = Release|x86
+		{0E7FB7F1-C272-4DC6-ABA9-4B2C601698D1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
