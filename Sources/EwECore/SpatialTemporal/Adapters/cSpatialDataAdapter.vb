@@ -239,86 +239,79 @@ Namespace SpatialData
                 Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
                 Dim cv As ISpatialDataConverter = Me.Converter(layer.Index)
 
-                ' Has both dataset and converter?
-                If (ds IsNot Nothing) And (cv IsNot Nothing) Then
-                    ' #Yes: allowed to execute?
-                    If ds.IsConfigured And cv.IsConfigured Then
-                        ' #Yes: has data for this time step?
-                        dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
+                ' Is ready to go?
+                If Me.IsConnected(layer.Index) Then
 
-                        If (ds.HasDataAtT(dt)) Then
-                            ' #Yes: Can lock that data?
-                            If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
-                                ' #Yes: start process of extracting external data
-                                Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, layer)
+                    ' #Yes: has data for this time step?
+                    dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
 
-                                ' Sanity check
-                                Debug.Assert(ds.IsLocked, "Dataset is not locked - something is wrong")
+                    If (ds.HasDataAtT(dt)) Then
+                        ' #Yes: Can lock that data?
+                        If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
+                            ' #Yes: start process of extracting external data
+                            Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, layer)
 
-                                Try
-                                    ' The raster returned here MUST have the extent and projection compatible with Ecospace
-                                    dataExternal = ds.GetRaster(cv, cValueID.getDataTypeID(layer.DataType, layer.DBID))
-                                Catch ex As Exception
-                                    Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
-                                    cLog.Write(ex, "cSpatialDataAdapter::Populate(" & layer.ToString() & ")")
-                                    bSuccess = False
-                                End Try
+                            ' Sanity check
+                            Debug.Assert(ds.IsLocked, "Dataset is not locked - something is wrong")
 
-                                If (dataExternal IsNot Nothing) Then
+                            Try
+                                ' The raster returned here MUST have the extent and projection compatible with Ecospace
+                                dataExternal = ds.GetRaster(cv, cValueID.getDataTypeID(layer.DataType, layer.DBID))
+                            Catch ex As Exception
+                                Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+                                cLog.Write(ex, "cSpatialDataAdapter::Populate(" & layer.ToString() & ")")
+                                bSuccess = False
+                            End Try
 
-                                    ' Stop any validation
-                                    Dim bAllow As Boolean = layer.AllowValidation
-                                    layer.AllowValidation = False
+                            If (dataExternal IsNot Nothing) Then
 
-                                    Me.SaveIntermediateResults(iTime, dataExternal)
+                                ' Stop any validation
+                                Dim bAllow As Boolean = layer.AllowValidation
+                                layer.AllowValidation = False
 
-                                    ' Notify world
-                                    If (Me.m_core.PluginManager IsNot Nothing) Then
-                                        Me.m_core.PluginManager.EcospaceBeginLayerChange(iTime, dt, layer)
-                                    End If
+                                Me.SaveIntermediateResults(iTime, dataExternal)
 
-                                    ' Integrate data
-                                    Me.Adapt(bm, layer, iTime, dt, dataExternal, dNoData)
-
-                                    ' Notify world
-                                    If (Me.m_core.PluginManager IsNot Nothing) Then
-                                        Me.m_core.PluginManager.EcospaceEndLayerChange(iTime, dt, layer)
-                                    End If
-
-                                    ' Restore layer validation
-                                    layer.AllowValidation = bAllow
-
-                                    ' Done, clean up
-                                    dataExternal.Dispose()
-                                    dataExternal = Nothing
-
-                                    ' Notify core - use AddedOrRemoved flag to not dirty the DB; just broadcast the layer change
-                                    ' Me.m_core.onChanged(layer, eMessageType.DataAddedOrRemoved)
-
-                                Else
-                                    Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) external data missing for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
-                                    cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
-                                    bSuccess = False
+                                ' Notify world
+                                If (Me.m_core.PluginManager IsNot Nothing) Then
+                                    Me.m_core.PluginManager.EcospaceBeginLayerChange(iTime, dt, layer)
                                 End If
 
-                                ' Unlock dataset
-                                ds.Unlock()
-                                Me.m_core.SpatialOperationLog.EndLayerLog()
+                                ' Integrate data
+                                Me.Adapt(bm, layer, iTime, dt, dataExternal, dNoData)
+
+                                ' Notify world
+                                If (Me.m_core.PluginManager IsNot Nothing) Then
+                                    Me.m_core.PluginManager.EcospaceEndLayerChange(iTime, dt, layer)
+                                End If
+
+                                ' Restore layer validation
+                                layer.AllowValidation = bAllow
+
+                                ' Done, clean up
+                                dataExternal.Dispose()
+                                dataExternal = Nothing
+
+                                ' Notify core - use AddedOrRemoved flag to not dirty the DB; just broadcast the layer change
+                                ' Me.m_core.onChanged(layer, eMessageType.DataAddedOrRemoved)
+
                             Else
-                                Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} failed to load data for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
+                                Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) external data missing for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
                                 cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
+                                bSuccess = False
                             End If
+
+                            ' Unlock dataset
+                            ds.Unlock()
+                            Me.m_core.SpatialOperationLog.EndLayerLog()
                         Else
-                            Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} missing data for T{2}, ext({3},{4}) to ({5},{6})"
-                            cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
+                            Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} failed to load data for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
+                            cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
                         End If
                     Else
-                        Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} or converter {2} not configured"
-                        cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, cv.DisplayName()), eVerboseLevel.Detailed)
+                        Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} missing data for T{2}, ext({3},{4}) to ({5},{6})"
+                        cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
                     End If
-                Else
-                    'cLog.Write("cSpatialDataAdapter.Populate: layer " & layer.ToString() & " not connected", eVerboseLevel.Detailed)
-                End If
+                 End If
             Next
 
             Return bSuccess
