@@ -30,6 +30,8 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+' ToDo: perform indexing in a queue?
+
 Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
@@ -312,7 +314,6 @@ Namespace SpatialData
                 Return Me.m_dsIndex
             End Get
             Set(ds As ISpatialDataSet)
-                If Object.ReferenceEquals(ds, Me.m_dsIndex) Then Return
 
                 Try
                     If (Me.m_dsIndex IsNot Nothing) Then
@@ -330,7 +331,6 @@ Namespace SpatialData
                 If (ds IsNot Nothing) Then
                     Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
                     If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
-                        Me.m_dsIndex = ds
                         Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
                         Me.m_threadIndex.Priority = Threading.ThreadPriority.BelowNormal
                         Me.m_threadIndex.Start()
@@ -371,14 +371,15 @@ Namespace SpatialData
                 Me.m_dsIndex.BuildIndex(Me.m_core.EcospaceTimestepToAbsoluteTime(1), _
                                         Me.m_core.EcospaceTimestepToAbsoluteTime(Me.m_core.nEcospaceTimeSteps + 1), _
                                         New ISpatialDataSet.BuildIndexUpdateDelegate(AddressOf OnSpatialIndexUpdated))
+                Me.m_threadIndex = Nothing
 
                 If (Object.ReferenceEquals(Me.m_dsIndex, ds)) Then
                     Me.m_dsIndex = Nothing
-                    Me.m_threadIndex = Nothing
                     ' Fire off one last update to signify that dataset has been completely indexed
                     Me.OnSpatialIndexUpdated(ds)
                 End If
                 Console.WriteLine("Done indexing " & ds.DisplayName)
+
              Catch ex As Exception
                 cLog.Write(ex, "cSpatialDatasetManager::IndexDatasetThread(" & ds.DisplayName & ")")
                 Console.WriteLine(ex.Message)
@@ -394,8 +395,6 @@ Namespace SpatialData
                                                                 EwEUtils.Core.eCoreComponentType.EcoSpace, _
                                                                 eMessageImportance.Maintenance, _
                                                                 EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection))
-                Catch ex As Threading.ThreadAbortException
-                    ' Ssst
                 Catch ex As Exception
                     ' Hmm
                     Debug.Assert(False, ex.Message)
