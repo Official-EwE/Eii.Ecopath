@@ -59,7 +59,7 @@ Namespace SpatialData
                                                             ByVal bImage As Boolean, _
                                                             ByVal bVector As Boolean) As String
             Get
-                Return String.Format("{0}|*.asc", My.Resources.DIALOGFILTER_CSV)
+                Return String.Format("{0}|*.asc", My.Resources.DIALOGFILTER_ASCII)
             End Get
         End Property
 
