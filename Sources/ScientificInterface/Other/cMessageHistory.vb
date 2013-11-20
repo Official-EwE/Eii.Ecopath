@@ -637,7 +637,8 @@ Public Class cMessageHistory
             ' == Show the message ==
 
             ' Can the message be suppressed?
-            If msg.Suppressable Then
+            ' JS 19Nov13: Can only suppress messages with suppressable features
+            If msg.Suppressable And ((msg.Source <> eCoreComponentType.NotSet) Or (msg.Type <> eMessageType.NotSet)) Then
 
                 ' #Yes: check suppressed state
 

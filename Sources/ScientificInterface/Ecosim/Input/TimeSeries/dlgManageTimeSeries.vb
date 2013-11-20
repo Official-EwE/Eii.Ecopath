@@ -663,9 +663,11 @@ Public Class dlgManageTimeSeries
         Dim ds As cTimeSeriesDataset = Nothing
         Dim clf As cCore.eBatchChangeLevelFlags = cCore.eBatchChangeLevelFlags.TimeSeries
         Dim bCreateNewSet As Boolean = False
-        Dim bSucces As Boolean = True
         Dim iDataset As Integer = 0
         Dim fmsg As cFeedbackMessage = Nothing
+        Dim bSuppressed As Boolean = False
+        Dim reply As eMessageReply = eMessageReply.CANCEL
+        Dim bSucces As Boolean = True
 
         If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
 
@@ -695,24 +697,28 @@ Public Class dlgManageTimeSeries
         If (bSucces = True) Then
             ' #Yes: start importing
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, String.Format(My.Resources.STATUS_IMPORTING_DATASET, Me.DatasetName))
+
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
 
                     If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Forcing) And _
                        (Me.m_tr.FirstYear >= 1900) Then
 
-                        fmsg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_TIMESERIES_IMPORT_AS_MONTHLY, ts.Name), _
-                                                    eCoreComponentType.TimeSeries, _
-                                                    eMessageType.DataImport, _
-                                                    eMessageImportance.Warning, _
-                                                    eMessageReplyStyle.YES_NO_CANCEL, _
-                                                    eDataTypes.NotSet, _
-                                                    eMessageReply.YES)
-                        fmsg.Suppressable = False
-                        Me.m_uic.Core.Messages.SendMessage(fmsg)
+                        If Not bSuppressed Then
+                            fmsg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_TIMESERIES_IMPORT_AS_MONTHLY, ts.Name), _
+                                                        eCoreComponentType.NotSet, _
+                                                        eMessageType.NotSet, _
+                                                        eMessageImportance.Warning, _
+                                                        eMessageReplyStyle.YES_NO_CANCEL, _
+                                                        eDataTypes.NotSet, _
+                                                        eMessageReply.YES)
+                            fmsg.Suppressable = True
+                            Me.m_uic.Core.Messages.SendMessage(fmsg)
+                            bSuppressed = fmsg.Suppressed
+                            reply = fmsg.Reply
+                        End If
 
-                        Select Case fmsg.Reply
-
+                        Select Case reply
                             Case eMessageReply.YES
                                 ts.IsMonthly = True
                             Case eMessageReply.NO
@@ -720,7 +726,6 @@ Public Class dlgManageTimeSeries
                             Case eMessageReply.CANCEL
                                 bSucces = False
                                 Exit For
-
                         End Select
 
                     End If

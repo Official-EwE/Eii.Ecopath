@@ -163,6 +163,34 @@ Namespace Controls
 
         End Function
 
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create an standardized Folder browse dialog for use in EwE.
+        ''' </summary>
+        ''' <param name="strDescription">Description to display in the dialog.</param>
+        ''' <param name="strInitialDirectory">The initial directory to open the
+        ''' dialog for.</param>
+        ''' <returns>A file dialog.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FolderBrowserDialogOld(ByVal strDescription As String, _
+                                    ByVal strInitialDirectory As String) As FolderBrowserDialog
+
+            Dim dlg As New FolderBrowserDialog()
+
+            With dlg
+                .SelectedPath = strInitialDirectory
+                .ShowNewFolderButton = True
+                .Description = strDescription
+            End With
+
+            ' Hack when SP1 installation is not detected
+            Dim pi As PropertyInfo = GetType(FolderBrowserDialog).GetProperty("AutoUpgradeEnabled")
+            If (pi IsNot Nothing) Then pi.SetValue(dlg, True, Nothing)
+
+            Return dlg
+
+        End Function
     End Class
 
 End Namespace ' Controls
