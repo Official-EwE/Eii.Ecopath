@@ -70,7 +70,7 @@ Namespace SpatialData
             If (Not Me.IsLocked) Then
                 Me.m_reader = New cEcospaceImportExportXYData(Me.m_core.EcospaceBasemap)
             End If
-            Return True
+            Return MyBase.LockDataAtT(datetime, dCellSize, ptfTL, ptfBR)
         End Function
 
         Public Overrides Function IsLocked() As Boolean
