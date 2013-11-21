@@ -1112,7 +1112,7 @@ Public Class cEcoSpace
                                 'By Region
                                 irgn = Me.m_Data.Region(i, j)
                                 If (irgn > Me.m_Data.nRegions) Then irgn = 0
-                                Me.m_Data.ResultsRegionGroup(irgn, ip, its) += Me.m_Data.Bcell(i, j, ip)
+                                Me.m_Data.ResultsRegionGroup(irgn, ip, itt) += Me.m_Data.Bcell(i, j, ip)
                             End If
                         Next j
                     Next i
@@ -1122,7 +1122,7 @@ Public Class cEcoSpace
                     If Btime(ip) = 0 Then Btime(ip) = 0.0000000001
 
                     For irgn = 0 To Me.m_Data.nRegions
-                        Me.m_Data.ResultsRegionGroup(irgn, ip, its) /= Me.m_Data.nCellsInRegion(irgn)
+                        Me.m_Data.ResultsRegionGroup(irgn, ip, itt) /= Me.m_Data.nCellsInRegion(irgn)
                     Next irgn
 
                 Next ip
