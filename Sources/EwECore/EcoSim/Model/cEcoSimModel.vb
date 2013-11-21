@@ -2132,20 +2132,20 @@ Namespace Ecosim
         ''' <summary>
         ''' Compute stats used for SS for this Ecosim year
         ''' </summary>
-        ''' <param name="iyear">Ecosim year index, one based index.</param>
+        ''' <param name="iyear">Ecosim year index, zero based, first year = zero</param>
         ''' <param name="BB">Ecosim predicted biomass for this year</param>
         ''' <param name="loss">Ecosim predicted loss for this year</param>
         ''' <remarks>Called once a year in the middle of the year </remarks>
         Public Sub AccumulateDataInfo(ByVal iyear As Integer, ByVal BB() As Single, ByRef loss() As Single)
             'accumulates statistical information for comparing model to data
-            'for simulation year iyear (1=first simulation year)
+            'for simulation year iyear (0=first simulation year)
             'assumes first simulation year is first calendar year in data csv file
 
             'ToDo_jb AccumulateDataInfo needs to be made callable by Ecospace
             'ToDo_jb AccumulateDataInfo eTimeSeriesType.AverageWeight is not computed by Ecospace 
 
             'ToDo_jb AccumulateDataInfo MakeTestData is only set to True from EwE5 Ecoranger EwE6 does not contain Ecoranger so MakeTestData is never True
-            Dim i As Integer, j As Integer, iDyear As Integer, Zstat As Single ', bplot As Single
+            Dim i As Integer, j As Integer, iDyear As Integer, Zstat As Single
             Dim Zest As Single, SDtest As Single
             SDtest = 0.05
 
@@ -2260,8 +2260,6 @@ Namespace Ecosim
             End Try
 
         End Sub
-
-
 
 
         ''' <summary>
