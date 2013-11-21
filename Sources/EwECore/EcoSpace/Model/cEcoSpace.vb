@@ -253,7 +253,7 @@ Public Class cEcoSpace
     ''' This is the index to the imonth for data arrayed by month i.e. zscale()
     ''' </summary>
     ''' <remarks>If the user has set the Ecospace time step to some value other than monthly this index will point to the first month of the time step.
-    ''' For example timestep = 0.5 first loop itt = 1 second loop itt = 7</remarks>
+    ''' For example timestep = 0.5 first loop its = 1 second loop its = 7</remarks>
     Private its As Integer
 
     ''' <summary>
@@ -261,7 +261,6 @@ Public Class cEcoSpace
     ''' </summary>
     ''' <remarks></remarks>
     Private itt As Integer
-
 
     Private HabAreaUsed() As Single
 
@@ -313,6 +312,8 @@ Public Class cEcoSpace
 
     ''' <summary>Does the Spin-Up base biomass need initialization</summary>
     Private bInitSpinUpBase As Boolean
+
+    Private iFitCurYear As Integer
 
 #End Region
 
@@ -868,17 +869,11 @@ Public Class cEcoSpace
         Dim i As Integer
         Dim j As Integer
         Dim ip As Integer
-        Dim BB() As Single
-        Dim ebb() As Single 'abmpa
-        Dim Wtr As Single
-        Dim bAccumulateData As Boolean
+        Dim irgn As Integer
         Dim RelFopt() As Single
         Dim Fgear() As Single
         Dim FtimeTotal(m_Data.NGroups) As Single
         Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
-        'Dim steps_per_year As Integer = 1 / m_Data.TimeStep
-
-        Dim irgn As Integer
 
         'timers
         Dim stpwchTotRunTime As New Stopwatch
@@ -897,14 +892,8 @@ Public Class cEcoSpace
 
             Dim iTotalCells As Integer = m_Data.InCol * m_Data.InRow
 
-            ReDim ebb(m_Data.nvartot)
-            ReDim BB(m_Data.nvartot)
-
             'Initialize IBM 
             Me.InitIBM()
-            m_Data.nIBMPacketsPerThread = (m_Stanza.Npackets + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
-
-            itt = 0
 
             If m_search.bInSearch Then
                 m_search.initForRun(Me.m_EPdata, Me.m_SimData)
@@ -922,6 +911,8 @@ Public Class cEcoSpace
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceInitRunCompleted(Me.m_Data)
             stpwchTotRunTime.Start()
 
+            'Zero the cummulative time step counter
+            itt = 0
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'START OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -941,10 +932,6 @@ Public Class cEcoSpace
                     'This quarantees we don't come up one time step short due to rounding issues with m_Data.TimeStep
                     itt = nEcospaceTimeSteps
                     Exit For
-                End If
-
-                If m_Data.MonthNow = 1 Then
-                    bAccumulateData = True 'new year collect the model fitting data after the sixth month
                 End If
 
                 'Set the isFished(fleet,row,col) array
@@ -1149,19 +1136,15 @@ Public Class cEcoSpace
                 End If 'm_tracerData.EcoSpaceConSimOn 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                If m_Data.MonthNow >= 6 And bAccumulateData Then
-                    'make sure AccumulateDataInfo only gets called once a year
-                    'if the user has set the time step to a value other the one month imonth may never = 6 or it may = 6 for multiple time steps
-
-                    m_Ecosim.AccumulateDataInfo(m_Data.YearNow, Btime, loss)
-                    bAccumulateData = False
-                End If
+                'Fit to loaded time series data
+                Me.AccumulateFitStats()
 
                 If itt = 1 Then
                     Me.setBaseValues(itt)
                 End If
 
-                updateBiomassResults(itt)
+                'Update the Biomass results with the spatially averaged values
+                Me.updateBiomassResults(itt)
 
                 Me.calcValue(itt, m_Data.YearNow)
 
@@ -1285,6 +1268,41 @@ Public Class cEcoSpace
         m_Data.MonthNow = Math.Truncate(1.0F + (m_Data.TimeNow - Math.Truncate(m_Data.TimeNow)) * 12.0F)
         'YearNow will be truncated to the integer part of timenow
         m_Data.YearNow = 1 + Math.Truncate(m_Data.TimeNow)
+
+    End Sub
+
+    ''' <summary>
+    ''' Call Ecosim.AccumulateDataInfo() to gather the fit to time series stats once a year at the end of the sixth month
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub AccumulateFitStats()
+        Try
+
+            'Don't gather stats during the Spin-Up
+            If m_Data.bInSpinUp Then Return
+
+            Static bNeedStatsForYear As Boolean
+            If iFitCurYear <> Me.m_Data.YearNow Then
+                'In a new year
+                'Keep track of this year
+                iFitCurYear = Me.m_Data.YearNow
+                'We need to gather stats for this year
+                bNeedStatsForYear = True
+            End If
+
+            'Make sure AccumulateDataInfo only gets called once a year
+            'If the user has set the time step to a value other the one month MonthNow may never = 6 or it may = 6 for multiple time steps
+            If m_Data.MonthNow >= 6 And bNeedStatsForYear Then
+                'Call Ecosim to gather the stats
+                m_Ecosim.AccumulateDataInfo(m_Data.YearNow - 1, Btime, loss)
+                'Ok we have the stats for this year 
+                'so turn off the boolean flag until the next year
+                bNeedStatsForYear = False
+            End If
+
+        Catch ex As Exception
+            cLog.Write(ex, "cEcospace.AccumulateFitStats()")
+        End Try
 
     End Sub
 
@@ -1784,13 +1802,13 @@ Public Class cEcoSpace
         Next i
 
         'average contamintant results by region
-        For irgn = 0 To m_Data.nRegions
-            Dim nInRgn As Integer = m_Data.nCellsInRegion(irgn)
+        For iRgn = 0 To m_Data.nRegions
+            Dim nInRgn As Integer = m_Data.nCellsInRegion(iRgn)
             If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero cells(no area) this avoids a /0 
 
             For igrp As Integer = 0 To m_Data.NGroups
-                m_tracerData.TracerConcByRegion(irgn, igrp, itt) = m_tracerData.TracerConcByRegion(irgn, igrp, itt) / nInRgn
-                m_tracerData.TracerCBRegion(irgn, igrp, itt) = m_tracerData.TracerCBRegion(irgn, igrp, itt) / nInRgn
+                m_tracerData.TracerConcByRegion(iRgn, igrp, itt) = m_tracerData.TracerConcByRegion(iRgn, igrp, itt) / nInRgn
+                m_tracerData.TracerCBRegion(iRgn, igrp, itt) = m_tracerData.TracerCBRegion(iRgn, igrp, itt) / nInRgn
             Next igrp
         Next iRgn
 
@@ -2307,6 +2325,8 @@ Public Class cEcoSpace
             Me.iSpinUpYear = 0
             'Spin-Up biomass base has not been initialized yet
             Me.bInitSpinUpBase = True
+
+            Me.iFitCurYear = 0
 
             'For debugging Effort Zones code
             'sets up some zones with modified effort
@@ -6002,6 +6022,9 @@ exitline:
                 '
                 SetNearestOKcellforIBM()
             End If
+
+            m_Data.nIBMPacketsPerThread = (m_Stanza.Npackets + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
+
         Catch ex As Exception
 
         End Try
