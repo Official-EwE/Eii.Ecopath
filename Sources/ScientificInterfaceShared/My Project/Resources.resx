@@ -2910,8 +2910,8 @@
   <data name="COMPATIBILITY_TOTALOVERLAP" xml:space="preserve">
     <value>Full spatial overlap</value>
   </data>
-  <data name="VALUE_INDEXING_PERCENT" xml:space="preserve">
-    <value>Indexing {0}%</value>
+  <data name="VALUE_INDEXED_PERCENT" xml:space="preserve">
+    <value>Indexed {0}%</value>
   </data>
   <data name="HEADER_CACHESIZE" xml:space="preserve">
     <value>Cache size (MB)</value>

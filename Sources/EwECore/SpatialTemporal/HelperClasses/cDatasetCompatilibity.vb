@@ -229,7 +229,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumError As Integer
             Get
-                Return Me.m_iNumFullSpatialOverlap
+                Return Me.m_iNumError
             End Get
         End Property
 
@@ -301,7 +301,7 @@ Namespace SpatialData
 
             ' Store assessment period
             Me.m_iFirstTimeStep = iTimeStart
-            Me.m_iLastTimeStep = iTimeStart + iNumTimeSteps
+            Me.m_iLastTimeStep = iTimeStart + iNumTimeSteps - 1
 
             ' Initialize counters
             Me.m_iNumTimeSteps = iNumTimeSteps
@@ -334,8 +334,8 @@ Namespace SpatialData
                             Me.m_iNumError += 1
 
                         Case ISpatialDataSet.eIndexStatus.Indexed
-                            Me.m_iNumIndexed += 1
                             If ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
+                                Me.m_iNumIndexed += 1
                                 rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
                                 If rcfMap.Contains(rcfEcospace) Then
                                     Me.m_iNumFullSpatialOverlap += 1

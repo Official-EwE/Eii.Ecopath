@@ -247,9 +247,11 @@ Namespace SpatialData
         ''' Delegate callback for reporting <see cref="BuildIndex">index construction</see> 
         ''' progress.
         ''' </summary>
-        ''' <param name="dataset"></param>
+        ''' <param name="dataset">The dataset that is indexing.</param>
+        ''' <param name="sProgress">The progress [0, 1].</param>
         ''' -------------------------------------------------------------------
-        Delegate Sub BuildIndexUpdateDelegate(dataset As ISpatialDataSet)
+        Delegate Sub BuildIndexUpdateDelegate(ByVal dataset As ISpatialDataSet, _
+                                              ByVal sProgress As Single)
 
         ''' -------------------------------------------------------------------
         ''' <summary>

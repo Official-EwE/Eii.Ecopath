@@ -56,6 +56,8 @@ Public Class cMessageHandler
     ''' <summary>Message type filter. Can be anything.</summary>
     Private m_msgtype As eMessageType = eMessageType.Any
 
+    Private m_bIsDisposed As Boolean = False
+
 #If DEBUG Then
     ''' <summary>Message handler name for ease of debugging.</summary>
     Private m_strName As String = ""
@@ -96,6 +98,7 @@ Public Class cMessageHandler
             Me.m_syncobj = Nothing
             Me.m_corecomponent = eCoreComponentType.NotSet
             Me.m_msgtype = eMessageType.NotSet
+            Me.m_bIsDisposed = True
         End If
         GC.SuppressFinalize(Me)
     End Sub
@@ -113,6 +116,11 @@ Public Class cMessageHandler
     ''' For the message to be handled it must have the same Type and Source as this handler.
     ''' </remarks>
     Friend Function SendMessage(ByRef message As cMessage) As Boolean
+
+        ' TEMPORARY FIX -- DISCUSS W JOEB
+        ' JS 22Nov13: message handler may have been disposed while the messages queue is being processed. 
+        If (Me.m_bIsDisposed) Then Return False
+        ' TEMPORARY FIX -- DISCUSS W JOEB
 
         Debug.Assert(Not m_DelegateNotifier Is Nothing)
 

@@ -3571,15 +3571,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Indexing....
-        '''</summary>
-        Public ReadOnly Property STATUS_INDEXING() As String
-            Get
-                Return ResourceManager.GetString("STATUS_INDEXING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Launching e-mail client....
         '''</summary>
         Public ReadOnly Property STATUS_LAUNCHING_EMAIL() As String

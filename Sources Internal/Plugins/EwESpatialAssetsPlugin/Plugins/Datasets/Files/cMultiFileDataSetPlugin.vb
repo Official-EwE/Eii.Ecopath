@@ -604,10 +604,10 @@ Namespace SpatialData
                         If dateEnd > Me.m_lFiles(Me.m_lFiles.Count - 1).Time Then dateEnd = Me.m_lFiles(Me.m_lFiles.Count - 1).Time
                     End If
 
-                    Dim iStart As Integer = Me.FileIndex(dateStart)
-                    Dim iEnd As Integer = Me.FileIndex(dateEnd)
+                    Dim iStart As Integer = Math.Max(0, Me.FileIndex(dateStart))
+                    Dim iEnd As Integer = Math.Min(Me.m_lFiles.Count - 1, Me.FileIndex(dateEnd))
 
-                    For i As Integer = Math.Max(0, iStart) To Math.Min(Me.m_lFiles.Count - 1, iEnd)
+                    For i As Integer = iStart To iEnd
                         f = Me.m_lFiles(i Mod Me.m_lFiles.Count)
                         If (f.IndexStatus <> ISpatialDataSet.eIndexStatus.Indexed) Then
 
@@ -617,6 +617,13 @@ Namespace SpatialData
 
                             ' Assume the worst
                             f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
+
+                            Try
+                                ' Always tell the world
+                                dgt.Invoke(Me, CSng((i - iStart + 1) / (iEnd - iStart + 1)))
+                            Catch ex As Exception
+                                ' Khazaam
+                            End Try
 
                             Try
                                 If Me.LockDataAtT(f.Time, 1.0!, ptfTL, ptfBR) Then
@@ -629,14 +636,8 @@ Namespace SpatialData
 
                             ' Restore cache access
                             Me.ReadFromCache = bOldFlag
-                        End If
 
-                        Try
-                            ' Always tell the world
-                            dgt.Invoke(Me)
-                        Catch ex As Exception
-                            ' Khazaam
-                        End Try
+                        End If
 
                         If Me.m_bStopIndexing Then Exit For
 

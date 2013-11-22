@@ -384,7 +384,7 @@ Namespace SpatialData
                 Try
                     If Me.LockDataAtT(Nothing, 1.0!, ptfTL, ptfBR) Then
                         Me.LoadSource()
-                        dgt.Invoke(Me)
+                        dgt.Invoke(Me, 1)
                         Me.UnlockData()
                     End If
                 Catch ex As Exception

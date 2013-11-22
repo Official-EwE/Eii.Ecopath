@@ -63,7 +63,9 @@ Namespace Forms
             Set(value As Icon)
                 Try
                     MyBase.Icon = value
-                    Me.BeginInvoke(New MethodInvoker(AddressOf Me.Pane.UpdateTabs))
+                    If (Me.Pane IsNot Nothing) Then
+                        Me.BeginInvoke(New MethodInvoker(AddressOf Me.Pane.UpdateTabs))
+                    End If
                 Catch ex As Exception
 
                 End Try

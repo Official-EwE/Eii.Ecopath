@@ -192,7 +192,7 @@ Namespace Ecospace
             ' Release config screen
             Me.m_tvAdapters.Nodes.Clear()
             Me.UIContext = Nothing
-
+            Me.m_config.Dispose()
             ' Dome
             MyBase.OnFormClosed(e)
 
@@ -221,9 +221,14 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnEcospaceMessage(ByRef msg As cMessage)
-            If (msg.Type = eMessageType.DataModified) Then
-                Me.UpdateNodeImages()
-            End If
+            Try
+                ' May have been disposed already
+                If (msg.Type = eMessageType.DataModified) And (Me.m_mhEcospace IsNot Nothing) Then
+                    Me.UpdateNodeImages()
+                End If
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #End Region ' Event handlers

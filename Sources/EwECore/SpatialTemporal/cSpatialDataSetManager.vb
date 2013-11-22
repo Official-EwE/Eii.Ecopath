@@ -54,10 +54,11 @@ Namespace SpatialData
         Private m_core As cCore = Nothing
         Private m_bReadOnly As Boolean = False
 
+        Private m_indexer As cSpatialDatasetIndexer = Nothing
+
 #End Region ' Private vars
 
 #Region " Construction "
-        Dim m_lxnPreserved As Object
 
         Public Sub New(core As cCore)
 
@@ -71,6 +72,8 @@ Namespace SpatialData
             Me.m_fswSpy.NotifyFilter = NotifyFilters.LastWrite
             Me.m_fswSpy.Filter = "*.xml"
             Me.m_fswSpy.EnableRaisingEvents = True
+
+            Me.m_indexer = New cSpatialDatasetIndexer(Me.m_core)
 
             AddHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
 
@@ -290,9 +293,6 @@ Namespace SpatialData
 
 #Region " Dataset indexing "
 
-        Private m_threadIndex As Threading.Thread = Nothing
-        Private m_dsIndex As ISpatialDataSet = Nothing
-
         Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
             Dim result As Boolean = True
             Try
@@ -311,31 +311,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property IndexDataset As ISpatialDataSet
             Get
-                Return Me.m_dsIndex
+                Return Me.m_indexer.Current
             End Get
             Set(ds As ISpatialDataSet)
-
-                Try
-                    If (Me.m_dsIndex IsNot Nothing) Then
-                        Me.m_dsIndex.StopIndexing()
-                        Me.m_threadIndex = Nothing
-                        Me.m_dsIndex = Nothing
-                    End If
-                Catch ex As Exception
-                    ' Whoah
-                    cLog.Write(ex, "cSpatialDataSetManager::UpdateIndex")
-                End Try
-
-                Me.m_dsIndex = ds
-
-                If (ds IsNot Nothing) Then
-                    Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
-                    If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
-                        Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
-                        Me.m_threadIndex.Priority = Threading.ThreadPriority.BelowNormal
-                        Me.m_threadIndex.Start()
-                    End If
-                End If
+                Me.m_indexer.Add(ds)
             End Set
         End Property
 
@@ -348,59 +327,8 @@ Namespace SpatialData
         ''' <returns>True if a dataset is being indexed.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsIndexing(Optional ds As ISpatialDataSet = Nothing) As Boolean
-
-            If (ds Is Nothing) Then ds = Me.m_dsIndex
-            If (Me.m_threadIndex IsNot Nothing) Then
-                If (Me.m_threadIndex.IsAlive) Then
-                    Return Object.ReferenceEquals(Me.m_dsIndex, ds)
-                End If
-            End If
-            Return False
-
+            Return Me.m_indexer.IsIndexing(ds)
         End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Private indexing thread 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub IndexDatasetThread()
-            Dim ds As ISpatialDataSet = Me.m_dsIndex
-            Try
-                ' Start building index for Ecospace run time
-                Me.m_dsIndex.BuildIndex(Me.m_core.EcospaceTimestepToAbsoluteTime(1), _
-                                        Me.m_core.EcospaceTimestepToAbsoluteTime(Me.m_core.nEcospaceTimeSteps + 1), _
-                                        New ISpatialDataSet.BuildIndexUpdateDelegate(AddressOf OnSpatialIndexUpdated))
-                Me.m_threadIndex = Nothing
-
-                If (Object.ReferenceEquals(Me.m_dsIndex, ds)) Then
-                    Me.m_dsIndex = Nothing
-                    ' Fire off one last update to signify that dataset has been completely indexed
-                    Me.OnSpatialIndexUpdated(ds)
-                End If
-                Console.WriteLine("Done indexing " & ds.DisplayName)
-
-             Catch ex As Exception
-                cLog.Write(ex, "cSpatialDatasetManager::IndexDatasetThread(" & ds.DisplayName & ")")
-                Console.WriteLine(ex.Message)
-            End Try
-        End Sub
-
-        Private Delegate Sub OnSpatialIndexUpdatedDelegate(ds As ISpatialDataSet)
-
-        Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
-            If (Me.m_core IsNot Nothing) Then
-                Try
-                    Me.m_core.Messages.SendMessage(New cMessage("Spatial dataset index updated", eMessageType.DataModified,
-                                                                EwEUtils.Core.eCoreComponentType.EcoSpace, _
-                                                                eMessageImportance.Maintenance, _
-                                                                EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection))
-                Catch ex As Exception
-                    ' Hmm
-                    Debug.Assert(False, ex.Message)
-                End Try
-            End If
-        End Sub
 
 #End Region ' Dataset indexing
 
@@ -423,7 +351,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub Clear() _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Clear
-            If (Me.IsIndexing(Me.m_dsIndex)) Then Me.IndexDataset = Nothing
+            Me.m_indexer.Stop()
             Me.m_lAvailable.Clear()
             Me.m_lDeleted.Clear()
         End Sub
