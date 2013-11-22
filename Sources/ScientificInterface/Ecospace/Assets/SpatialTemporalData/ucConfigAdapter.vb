@@ -87,11 +87,7 @@ Namespace Ecospace.Controls
             Set(uic As cUIContext)
 
                 If (Me.m_uic IsNot Nothing) Then
-                    '' Stop indexing
-                    'Me.m_manSets.IndexDataset = Nothing 
-
-                    ' Disconnect from data objects first; we do not want disconnecting UI
-                    ' elements from screwing up the last configuration
+                    ' Disconnect from data objects first; we do not want disconnecting UI elements from screwing up the last configuration
                     Me.m_adt = Nothing
                     Me.m_layer = Nothing
 
@@ -126,7 +122,25 @@ Namespace Ecospace.Controls
             ' Update cache state (will also update controls)
             Me.EvaluateCache()
 
+            ' Start listening to grid events
             AddHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnSelectDS
+        End Sub
+
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                If Not Me.IsDisposed Then
+                    ' Stop listening to grid events
+                    RemoveHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnSelectDS
+                    Me.UIContext = Nothing
+                End If
+
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                    components = Nothing
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
         End Sub
 
 #End Region ' Mandatory overrides etc
@@ -166,10 +180,16 @@ Namespace Ecospace.Controls
 
 #Region " Control events "
 
+        ''' <summary>
+        ''' Respond to a dataset template selection
+        ''' </summary>
         Private Sub OnDatasetTemplateSelected(sender As Object, e As System.EventArgs) _
             Handles m_cmbNewDS.SelectedIndexChanged
-            ' A new data set template has been selected. Make UI respond
-            Me.UpdateControls()
+            Try
+                Me.UpdateControls()
+            Catch ex As Exception
+                ' WHoah!
+            End Try
         End Sub
 
         ''' <summary>
@@ -205,7 +225,6 @@ Namespace Ecospace.Controls
         ''' User has selected a dataset for the current adapter and layer.
         ''' </summary>
         Private Sub OnSelectDS(selection As SourceGrid2.CellVirtualCollection)
-
             Try
                 Me.SelectedDataset = Me.m_gridDatasets.SelectedDataset
             Catch ex As Exception
@@ -217,8 +236,7 @@ Namespace Ecospace.Controls
         ''' <summary>
         ''' User wants to configure the currently selected dataset.
         ''' </summary>
-        Private Sub OnConfigDS(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnConfigDS.Click
+        Private Sub OnConfigDS(sender As System.Object, e As System.EventArgs) Handles m_btnConfigDS.Click
 
             Me.Cursor = Cursors.WaitCursor
             Try
@@ -556,6 +574,9 @@ Namespace Ecospace.Controls
 
         End Sub
 
+        ''' <summary>
+        ''' Fill UI with available dataset templates
+        ''' </summary>
         Private Sub FillTemplateDatasetBox()
 
             Me.m_cmbNewDS.Items.Clear()
@@ -573,9 +594,11 @@ Namespace Ecospace.Controls
 
         End Sub
 
-        Private Sub FillCompatibleConverterBox(Optional cv As ISpatialDataConverter = Nothing)
+        ''' <summary>
+        ''' Fill UI with converters compatible with the selected dataset.
+        ''' </summary>
+        Private Sub FillCompatibleConverterBox(cv As ISpatialDataConverter)
 
-            If (cv Is Nothing) Then cv = Me.SelectedConverter
             Me.m_cmbConverter.Items.Clear()
             For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates(Me.SelectedDataset)
                 If (cv Is Nothing) Then cv = cvTest
@@ -599,13 +622,10 @@ Namespace Ecospace.Controls
                 If (Me.m_adt Is Nothing) Then Return
 
                 ' Apply
-                If (Not Object.ReferenceEquals(Me.m_adt.Dataset(Me.m_layer.Index), dataset)) Then
-                    Me.m_adt.Dataset(Me.m_layer.Index) = dataset
-                    'Me.LayerChanged()
-                    Me.FillCompatibleConverterBox(Me.m_adt.Converter(Me.m_layer.Index))
-                    Me.m_manSets.IndexDataset = dataset
-                    Me.UpdateControls()
-                End If
+                Me.m_adt.Dataset(Me.m_layer.Index) = dataset
+                Me.FillCompatibleConverterBox(Me.m_adt.Converter(Me.m_layer.Index))
+                Me.m_manSets.IndexDataset = dataset
+                Me.UpdateControls()
 
             End Set
         End Property

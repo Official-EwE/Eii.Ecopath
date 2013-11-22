@@ -52,64 +52,10 @@ Namespace Ecospace.Controls
             DateTo
             Variable
             Description
-            Status
             TempOverlap
             SpatOverlap
             CacheSize
         End Enum
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' EwEParentRowHeaderVisualizer implements a EwERowHeaderVisualizer visualizer
-        ''' for rendering EwE hierarchical parent row header cells
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <CLSCompliant(False)> _
-        Private Class cDatasetStatusCellVisualizer
-            : Inherits cEwEGridRowHeaderVisualizer
-
-            Public Sub New()
-                MyBase.New()
-                Me.ImageAlignment = ContentAlignment.MiddleLeft
-            End Sub
-
-            Public Sub SetCompatibility(ByVal comp As SpatialData.cDatasetCompatilibity)
-                If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
-                    Me.Image = Nothing
-                Else
-                    Select Case comp.Compatibility
-                        Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                            Me.Image = SharedResources.OK
-                        Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                            Me.Image = SharedResources.Warning
-                        Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
-                             cDatasetCompatilibity.eCompatibilityTypes.NoSpatial, _
-                             cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                            Me.Image = SharedResources.Critical
-                        Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
-                            Me.Image = Nothing
-                    End Select
-                End If
-            End Sub
-
-        End Class
-
-        Private Class cDatasetStatusCell
-            : Inherits EwERowHeaderCell
-
-            Private m_viz As New cDatasetStatusCellVisualizer()
-
-            Public Sub New()
-                MyBase.New("")
-                Me.VisualModel = m_viz
-                Me.DataModel.EditableMode = SourceGrid2.EditableMode.None
-            End Sub
-
-            Public Sub SetCompatibility(comp As cDatasetCompatilibity)
-                Me.m_viz.SetCompatibility(comp)
-            End Sub
-
-        End Class
 
 #End Region ' Private vars
 
@@ -117,6 +63,14 @@ Namespace Ecospace.Controls
 
         Public Sub New()
             MyBase.New()
+        End Sub
+
+        Protected Overrides Sub Dispose(disposing As Boolean)
+            If (Me.m_mhEcospace IsNot Nothing) Then
+                Me.m_mhEcospace.Dispose()
+                Me.m_mhEcospace = Nothing
+            End If
+            MyBase.Dispose(disposing)
         End Sub
 
 #End Region ' Construction / destruction
@@ -131,10 +85,10 @@ Namespace Ecospace.Controls
 
                 ' Deconfigure
                 If (Me.UIContext IsNot Nothing) Then
+                    Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+                    Me.m_mhEcospace.Dispose()
                     Me.m_man = Nothing
                     Me.m_manSets = Nothing
-                    Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
-                    Me.m_mhEcospace = Nothing
                 End If
 
                 ' Apply
@@ -144,7 +98,7 @@ Namespace Ecospace.Controls
                 If (value IsNot Nothing) Then
                     Me.m_man = Me.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
-                    Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.UIContext.SyncObject)
+                    Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
                     Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 #If DEBUG Then
                     Me.m_mhEcospace.Name = "gridDatasets"
@@ -166,7 +120,6 @@ Namespace Ecospace.Controls
             Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
             Me(0, eColumnTypes.Variable) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUE)
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
-            Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
             Me(0, eColumnTypes.SpatOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
             Me(0, eColumnTypes.TempOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_TEMPORAL)
             Me(0, eColumnTypes.CacheSize) = New EwEColumnHeaderCell(SharedResources.HEADER_CACHESIZE)
@@ -211,7 +164,6 @@ Namespace Ecospace.Controls
                     Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.DateFrom) = New EwECell(ds.TimeStart.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.DateTo) = New EwECell(ds.TimeEnd.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                    Me(iRow, eColumnTypes.Status) = New cDatasetStatusCell()
                     Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.CacheSize) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
@@ -260,22 +212,19 @@ Namespace Ecospace.Controls
             Dim comp As New cDatasetCompatilibity(Me.Core, ds)
             Dim iNumTS As Integer = Math.Max(Core.nEcospaceTimeSteps, 1)
             Dim strVal As String = ""
-            Dim cellComp As cDatasetStatusCell = DirectCast(Me(iRow, eColumnTypes.Status), cDatasetStatusCell)
+            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
 
-            ' Status col: indexing x%, or compatibility result
-            If Me.m_manSets.IsIndexing(ds) Then
-                cellComp.Value = String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, CInt(Math.Ceiling(100 * comp.NumIndexed / Math.Max(1, comp.NumOverlappingTimeSteps))))
-                cellComp.SetCompatibility(comp)
-            Else
-                cellComp.Value = ""
-                cellComp.SetCompatibility(comp)
-            End If
-
-            ' Temporal overlap
+             ' Temporal overlap
             Me(iRow, eColumnTypes.TempOverlap).Value = String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, CInt(Math.Ceiling(100 * comp.NumOverlappingTimeSteps / iNumTS)))
 
-            If (comp.NumIndexed > 0) Then
-                If (comp.NumFullSpatialOverlap = comp.NumIndexed) Then
+            ' Spatial overlap col
+            If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
+                strVal = String.Format(SharedResources.VALUE_INDEXED_PERCENT, CInt(Math.Ceiling(100 * comp.NumIndexed / (comp.NumOverlappingTimeSteps + 1))))
+            Else
+                If (comp.NumError > 0) Then
+                    strVal = String.Format("{0} errors", comp.NumError)
+                    style = style Or cStyleGuide.eStyleFlags.ErrorEncountered
+                ElseIf (comp.NumFullSpatialOverlap = comp.NumIndexed) Then
                     strVal = SharedResources.GENERIC_VALUE_FULL
                 ElseIf (comp.NumPartialSpatialOverlap > 0) Then
                     strVal = SharedResources.GENERIC_VALUE_PARTIAL
@@ -283,7 +232,10 @@ Namespace Ecospace.Controls
                     strVal = SharedResources.GENERIC_VALUE_NONE
                 End If
             End If
-            Me(iRow, eColumnTypes.SpatOverlap).Value = strVal
+
+            Dim cell As EwECell = DirectCast(Me(iRow, eColumnTypes.SpatOverlap), EwECell)
+            cell.Value = strVal
+            cell.Style = style
 
             Me(iRow, eColumnTypes.CacheSize).Value = Me.StyleGuide.FormatNumber(cache.GetSize(ds) / (1024 * 1024))
             Me.InvalidateCells()
@@ -302,9 +254,17 @@ Namespace Ecospace.Controls
 
         Public Overrides Sub OnCoreMessage(ByRef msg As cMessage)
 
-            If (msg.DataType = EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection) Then
-                Me.UpdateDatasetRow(Me.m_manSets.IndexDataset)
-            End If
+            Try
+                ' May have been disposed already
+                If (msg.DataType = EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection) Then
+                    Me.UpdateDatasetRow(Me.m_manSets.IndexDataset)
+                Else
+                    MyBase.OnCoreMessage(msg)
+                End If
+
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 

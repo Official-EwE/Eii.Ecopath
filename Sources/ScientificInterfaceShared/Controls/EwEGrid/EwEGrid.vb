@@ -1003,9 +1003,13 @@ Namespace Controls.EwEGrid
         End Property
 
         Public Overridable Sub OnCoreMessage(ByRef msg As cMessage)
-            If (msg.Type = eMessageType.DataAddedOrRemoved) Then
-                Me.RefreshContent()
-            End If
+            Try
+                If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                    Me.RefreshContent()
+                End If
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         ''' -------------------------------------------------------------------

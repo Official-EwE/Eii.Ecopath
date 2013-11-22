@@ -22493,9 +22493,6 @@ Description: {2}</value>
     <value>{0} connection/s</value>
     <comment>{0}=connection count</comment>
   </data>
-  <data name="STATUS_INDEXING" xml:space="preserve">
-    <value>Indexing...</value>
-  </data>
   <data name="CAPTION_DATASET" xml:space="preserve">
     <value>External data set {0}</value>
     <comment>{0}=data set description</comment>

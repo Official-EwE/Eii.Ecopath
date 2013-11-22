@@ -2082,15 +2082,13 @@ Namespace Core
 
         MSYManager = 110
         MSYParameters = 111
-
-        EcospaceLayerBiomassForcing = 107
-
         EcospaceLayerExclusion = 112
+        EcospaceLayerBiomassForcing = 113
 
-    ''' <summary>
-    ''' Data belongs to an external, unspecified source.
-    ''' </summary>
-        External = 777
+        ''' <summary>
+        ''' Data belongs to an external, unspecified source.
+        ''' </summary>
+        External = -9999
 
     End Enum
 

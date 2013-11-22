@@ -278,6 +278,7 @@
     <Compile Include="SpatialTemporal\Adapters\cSpatialDataAdapter.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataCache.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataConnectionManager.vb" />
+    <Compile Include="SpatialTemporal\HelperClasses\cSpatialDatasetIndexer.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataSetManager.vb" />
     <Compile Include="SpatialTemporal\HelperClasses\cDatasetCompatilibity.vb" />
     <Compile Include="SpatialTemporal\Model\cSpatialDataStructures.vb" />

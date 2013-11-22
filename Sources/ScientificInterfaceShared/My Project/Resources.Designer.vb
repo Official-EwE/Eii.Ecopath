@@ -8004,11 +8004,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Indexing {0}%.
+        '''  Looks up a localized string similar to Indexed {0}%.
         '''</summary>
-        Public ReadOnly Property VALUE_INDEXING_PERCENT() As String
+        Public ReadOnly Property VALUE_INDEXED_PERCENT() As String
             Get
-                Return ResourceManager.GetString("VALUE_INDEXING_PERCENT", resourceCulture)
+                Return ResourceManager.GetString("VALUE_INDEXED_PERCENT", resourceCulture)
             End Get
         End Property
         
