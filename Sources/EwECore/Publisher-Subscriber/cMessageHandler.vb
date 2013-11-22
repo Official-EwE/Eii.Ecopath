@@ -56,13 +56,6 @@ Public Class cMessageHandler
     ''' <summary>Message type filter. Can be anything.</summary>
     Private m_msgtype As eMessageType = eMessageType.Any
 
-    Private m_bIsDisposed As Boolean = False
-
-#If DEBUG Then
-    ''' <summary>Message handler name for ease of debugging.</summary>
-    Private m_strName As String = ""
-#End If
-
 #End Region ' Private vars
 
     ''' <summary>
@@ -80,14 +73,14 @@ Public Class cMessageHandler
             ByVal MessageTypeToHandle As eMessageType, _
             ByVal syncobj As System.Threading.SynchronizationContext)
 
+        Debug.Assert(DelegateToCall IsNot Nothing, "Must specify a valid delegate")
         Debug.Assert(SourceToHandle <> eCoreComponentType.NotSet, "Must specify a valid source")
+        Debug.Assert(syncobj IsNot Nothing, Me.ToString & ".New() SynchronizationContext must not be Nothing!")
 
         Me.m_DelegateNotifier = DelegateToCall
         Me.m_corecomponent = SourceToHandle
         Me.m_msgtype = MessageTypeToHandle
         Me.m_syncobj = syncobj
-
-        Debug.Assert(Me.m_syncobj IsNot Nothing, Me.ToString & ".New() SynchronizationContext must not be Nothing!")
 
     End Sub
 
@@ -98,10 +91,21 @@ Public Class cMessageHandler
             Me.m_syncobj = Nothing
             Me.m_corecomponent = eCoreComponentType.NotSet
             Me.m_msgtype = eMessageType.NotSet
-            Me.m_bIsDisposed = True
         End If
         GC.SuppressFinalize(Me)
     End Sub
+
+#If DEBUG Then
+
+    ''' <summary>
+    ''' Get/set the name of a message handler for ease of debugging.
+    ''' </summary>
+    ''' <remarks>
+    ''' Property available in DEBUG mode only.
+    ''' </remarks>
+    Public Property Name() As String
+
+#End If
 
     ''' <summary>
     ''' Called by the cMessagePublisher to send a message to a message specific handler. 
@@ -117,16 +121,9 @@ Public Class cMessageHandler
     ''' </remarks>
     Friend Function SendMessage(ByRef message As cMessage) As Boolean
 
-        ' TEMPORARY FIX -- DISCUSS W JOEB
-        ' JS 22Nov13: message handler may have been disposed while the messages queue is being processed. 
-        If (Me.m_bIsDisposed) Then Return False
-        ' TEMPORARY FIX -- DISCUSS W JOEB
-
-        Debug.Assert(Not m_DelegateNotifier Is Nothing)
-
         Try
             'test for a NULL delegate this should not be possible but check anyway
-            If Not m_DelegateNotifier Is Nothing Then
+            If (Not m_DelegateNotifier Is Nothing) Then
 
                 'test the type and source of the message
                 ' JS 15Mar06: test for MessageType.Any
@@ -166,8 +163,8 @@ Public Class cMessageHandler
             End If 'If Not m_DelegateNotifier Is Nothing Then
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".SendMessage(cMessage)  Error:" & ex.Message)
-            Debug.Assert(False, "Error in Subscriber.SendMessage")
+            cLog.Write(ex, Me.ToString & ".SendMessage(cMessage)")
+            Debug.Assert(False, "Error in cMessageHandler.SendMessage")
             Return False
         End Try
 
@@ -178,7 +175,13 @@ Public Class cMessageHandler
 
     Private Sub marshallSendMessage(ByVal Message As Object)
         Debug.Assert(TypeOf Message Is cMessage, "Invalid type passed to cMessageHandler.SendMessage()!")
-        Me.m_DelegateNotifier.Invoke(DirectCast(Message, cMessage))
+        If (Me.m_DelegateNotifier IsNot Nothing) Then
+            Try
+                Me.m_DelegateNotifier.Invoke(DirectCast(Message, cMessage))
+            Catch ex As Exception
+                cLog.Write(ex, "cMessageHandler.marshallSendMessage(" & Message.ToString & ")")
+            End Try
+        End If
     End Sub
 
     ''' <summary>
@@ -211,23 +214,6 @@ Public Class cMessageHandler
     Friend Function getDelegate() As cCore.CoreMessageDelegate
         Return m_DelegateNotifier
     End Function
-
-#If DEBUG Then
-    ''' <summary>
-    ''' Get/set the name of a message handler for ease of debugging.
-    ''' </summary>
-    ''' <remarks>
-    ''' Property available in DEBUG mode only.
-    ''' </remarks>
-    Public Property Name() As String
-        Get
-            Return Me.m_strName
-        End Get
-        Set(ByVal value As String)
-            Me.m_strName = value
-        End Set
-    End Property
-#End If
 
 End Class
 
