@@ -57,6 +57,8 @@ Public Class cDotSpatialUtils
     ''' -----------------------------------------------------------------------
     Public Shared Sub InitDotSpatial()
 
+        ' ToDo_JS: place DotSpatial initialization in a separate thread, called as soon as the plug-in initializes instead of on first use
+
         If (cDotSpatialUtils.g_DotSpatialAppMan IsNot Nothing) Then Return
 
         Dim appman As New AppManager()
