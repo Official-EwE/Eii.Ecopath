@@ -132,7 +132,7 @@ Public Class cMessageHandler
 
                     Try
                         If Object.ReferenceEquals(Me.m_syncobj, Nothing) Then
-                            m_DelegateNotifier(message)
+                            Me.marshallSendMessage(message)
                         Else
                             'marshall the call to the delegate onto the thread that created this handler
                             Me.m_syncobj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.marshallSendMessage), message)
