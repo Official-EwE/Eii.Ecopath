@@ -271,7 +271,7 @@ Namespace SpatialData
             ReDim Me.m_scales(iNumItems)
             ReDim Me.m_scaleType(iNumItems)
 
-            For i As Integer = 0 To iNumItems - 1
+            For i As Integer = 0 To iNumItems
                 Me.m_scales(i) = 1.0!
                 Me.m_scaleType(i) = eScaleType.Relative
             Next
