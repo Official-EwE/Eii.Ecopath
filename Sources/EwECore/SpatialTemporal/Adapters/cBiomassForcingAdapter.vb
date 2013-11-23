@@ -68,6 +68,16 @@ Namespace SpatialData
         Friend Overrides Sub Initialize()
             MyBase.Initialize()
             Me.m_spaceData = Me.m_core.m_EcoSpaceData
+            Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)
+
+            Debug.Assert(Me.m_coreCounter = eCoreCounterTypes.nGroups, Me.ToString + ".Initialize() incorrect core counter")
+
+            'WARNING: These values get overwritten by the loading 
+            'For now you can't hardwire an initial scaler value into an Adapter
+            For i As Integer = 0 To n
+                Me.m_scales(i) = Me.molesm2_to_kgkm2
+                Me.m_scaleType(i) = eScaleType.Relative
+            Next
 
         End Sub
 
@@ -81,16 +91,16 @@ Namespace SpatialData
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
 
-            'For now the conversion is fixed at mol to kg
+            ''convert from mol C /m2 to kg/km2
             'If (Me.DataScaleType(layer.Index) = eScaleType.Relative) Then
-            '    sValueAtT /= Me.DataScale(layer.Index)
+            '    sValueAtT *= Me.DataScale(layer.Index)
             'End If
-
-            'convert from mol C /m2 to kg/km2
+            'Hardwire the scaler until we sort out the interface issue with setting the scale value
             sValueAtT *= Me.molesm2_to_kgkm2
             Return MyBase.SetCell(layer, iRow, iCol, sValueAtT)
 
         End Function
+
 
 #End Region ' Overrides
 
