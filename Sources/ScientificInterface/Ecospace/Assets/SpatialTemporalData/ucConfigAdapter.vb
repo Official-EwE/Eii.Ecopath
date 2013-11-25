@@ -227,6 +227,9 @@ Namespace Ecospace.Controls
         Private Sub OnSelectDS(selection As SourceGrid2.CellVirtualCollection)
             Try
                 Me.SelectedDataset = Me.m_gridDatasets.SelectedDataset
+                If Not Me.m_bInUpdate Then
+                    Me.LayerChanged()
+                End If
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
