@@ -82,15 +82,16 @@ Partial Class frmEcospaceSpinup
         Me.m_chkUseBaseBio.AutoSize = True
         Me.m_chkUseBaseBio.Location = New System.Drawing.Point(6, 26)
         Me.m_chkUseBaseBio.Name = "m_chkUseBaseBio"
-        Me.m_chkUseBaseBio.Size = New System.Drawing.Size(249, 17)
+        Me.m_chkUseBaseBio.Size = New System.Drawing.Size(162, 17)
         Me.m_chkUseBaseBio.TabIndex = 3
-        Me.m_chkUseBaseBio.Text = "Use start of spin-up for relative plot base values"
+        Me.m_chkUseBaseBio.TabStop = False
+        Me.m_chkUseBaseBio.Text = "Plot relative to Ecopath base"
         Me.m_chkUseBaseBio.UseVisualStyleBackColor = True
         '
         'CEwEHeaderLabel1
         '
         Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CEwEHeaderLabel1.CanCollapseParent = False
         Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
         Me.CEwEHeaderLabel1.IsCollapsed = False
@@ -104,8 +105,8 @@ Partial Class frmEcospaceSpinup
         'Panel1
         '
         Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.Controls.Add(Me.m_gridSpinUpDif)
         Me.Panel1.Location = New System.Drawing.Point(15, 115)
         Me.Panel1.Name = "Panel1"
@@ -122,8 +123,8 @@ Partial Class frmEcospaceSpinup
         Me.m_gridSpinUpDif.BackColor = System.Drawing.Color.White
         Me.m_gridSpinUpDif.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_gridSpinUpDif.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridSpinUpDif.CustomSort = False
         Me.m_gridSpinUpDif.DataName = "grid content"
         Me.m_gridSpinUpDif.Dock = System.Windows.Forms.DockStyle.Fill
@@ -135,14 +136,14 @@ Partial Class frmEcospaceSpinup
         Me.m_gridSpinUpDif.Name = "m_gridSpinUpDif"
         Me.m_gridSpinUpDif.Size = New System.Drawing.Size(585, 285)
         Me.m_gridSpinUpDif.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridSpinUpDif.TabIndex = 0
         Me.m_gridSpinUpDif.UIContext = Nothing
         '
