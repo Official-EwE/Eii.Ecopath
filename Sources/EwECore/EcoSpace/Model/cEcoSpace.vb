@@ -1674,6 +1674,9 @@ Public Class cEcoSpace
                     m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp)
                     m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp)
                     m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp)
+
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.Loss, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.Loss, igrp)
+
                 Next igrp
 
                 For iflt As Integer = 0 To Me.m_Data.nFleets
@@ -1718,6 +1721,7 @@ Public Class cEcoSpace
                 m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) /= m_Data.nWaterCells
                 m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) /= m_Data.nWaterCells
                 m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByGroup(eSpaceResultsGroups.Loss, igrp, itt) /= m_Data.nWaterCells
 
                 'HACK
                 'Lovley little hack for computing fit to Ecosim time series data SS
@@ -7100,11 +7104,11 @@ exitline:
         'Can be used by an interface to tell if the current time step is in the Spin-Up period
 
         'Me.bInitSpinUpBase
-        'Use the Spin-Up base been initialized yet
+        'Use to tell if the Spin-Up base has been ititialized yet
         'Private use only by Ecosim to maintian the initialization state of the base values
 
         'xxxxxxxxxxxxxxx NOT USING SPIN-UP xxxxxxxxxxxxxxx
-        'Set the base values and return
+        'Set the base values
         If Not Me.m_Data.UseSpinUp Then
             'xxxxx NOT Using the Spin-Up xxxxxx'
             For igrp = 1 To Me.m_Data.NGroups
@@ -7126,13 +7130,13 @@ exitline:
 
             'In SpinUp period always keep the SpinUpBase for the Spin-Up Stats
             For igrp = 1 To Me.m_Data.NGroups
-                Me.m_Data.SpinUpBBase(igrp) = Btime(igrp) '/ Me.m_Data.nWaterCells
+                Me.m_Data.SpinUpBBase(igrp) = Btime(igrp)
             Next igrp
 
             If Me.m_Data.UseSpinUpBase Then
                 'User want to plot the values relative to the beginning of the Spin-Up period
                 For igrp = 1 To Me.m_Data.NGroups
-                    Me.m_Data.BBase(igrp) = Btime(igrp) ' / Me.m_Data.nWaterCells
+                    Me.m_Data.BBase(igrp) = Btime(igrp)
 
                     'Base values from Ecosim and EcoPath
                     Me.m_Data.BaseFishMort(igrp) = Me.m_SimData.Fish1(igrp)
@@ -7167,7 +7171,7 @@ exitline:
                 Me.m_Data.BaseCatch(igrp) = Me.m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, 1)
 
             Next igrp
-        End If
+        End If 'Me.m_Data.UseSpinUp And Not Me.m_Data.UseSpinUpBase
 
         For igrp = 1 To Me.m_Data.NGroups
             If Me.m_Data.BBase(igrp) = 0.0 Then Me.m_Data.BBase(igrp) = 1.0E-20

@@ -364,6 +364,7 @@ Friend Enum eSpaceResultsGroups
     FishingMort
     PredMortRate
     ConsumpRate
+    Loss
 End Enum
 
 Friend Enum eSpaceResultsFleets
