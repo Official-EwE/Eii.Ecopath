@@ -505,6 +505,7 @@ Public Class cSpaceSolver
                 Me.ResultsByGroup(eSpaceResultsGroups.FishingMort, iGrp) += FishTime(iGrp)
                 Me.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, iGrp) += Eatenby(iGrp) / (BB(iGrp) + 1.0E-20F)
                 Me.ResultsByGroup(eSpaceResultsGroups.PredMortRate, iGrp) += Eatenof(iGrp) / (BB(iGrp) + 1.0E-20F) 'eat / (Bprey + 1.0E-20F)
+                Me.ResultsByGroup(eSpaceResultsGroups.Loss, iGrp) += loss(iGrp)
 
             Next
 
