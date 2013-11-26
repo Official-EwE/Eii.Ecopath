@@ -145,7 +145,7 @@ Public Class cDepthChangePluginPoint
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
             Me.InitSpatialData()
-            Me.SpatialDataLoader.InitDepthDataSet()
+            Me.SpatialDataLoader.AddedDepthAdapter()
 
 
         Catch ex As Exception

@@ -44,6 +44,8 @@ Public Class cSpatialDataLoader
     Private m_DepthDSName As String = "Roberts Bank Depth"
     Private m_SpatialConfigFile As String
 
+    Private m_DepthAdapter As cDepthDataAdapter
+
 #End Region
 
 #Region "Public Stuff"
@@ -98,14 +100,11 @@ Public Class cSpatialDataLoader
         End Set
     End Property
 
-
     Public ReadOnly Property DataSets() As List(Of EwEUtils.SpatialData.ISpatialDataSet)
         Get
             Return Me.Plugin.Core.SpatialDataConnectionManager.DatasetManager.ToList
         End Get
     End Property
-
-
 
 #End Region
 
@@ -142,38 +141,50 @@ Public Class cSpatialDataLoader
         Dim bReturn As Boolean = False
 
         Try
-            Dim DepthAdapter As cDepthDataAdapter
+            Debug.Assert(Me.m_DepthAdapter IsNot Nothing, "Oppss... DepthChangePluginPoint not configured correctly.")
             Dim DataSet As EwEUtils.SpatialData.ISpatialDataSet
-            Dim Converter As EwEUtils.SpatialData.ISpatialDataConverter
 
-            DepthAdapter = New cDepthDataAdapter(Me.Plugin.Core, Me.Plugin.Ecospace, Me.Plugin.Ecospace.EcoSpaceData)
-            Debug.Assert(DepthAdapter IsNot Nothing, Me.ToString + ".InitSpatialData() Failed to create Adapter.")
+            DataSet = Me.getDataSetByName(Me.DepthDataSetName)
 
-            'ToDo fix this....
-            ' DataSet = Me.getDataSetByName(Me.DepthDataSetName)
-            Converter = Me.getConverterByType(GetType(EwESpatialAssetsPlugin.SpatialData.cRasterConverterPlugin))
-
-            ' If (Not DepthAdapter Is Nothing) And (Not DataSet Is Nothing) And (Not Converter Is Nothing) Then
-            If (Not DepthAdapter Is Nothing) And (Not Converter Is Nothing) Then
-                'Ok managed to create all the objects
-                'Now hook them up
-
-                'I'm not sure about this indexing for the dataset and converter
-                'it seems it will not use the index when adding an item
-                'DepthAdapter.Dataset(0) = DataSet
-                DepthAdapter.Converter(0) = Converter
-                Plugin.Core.SpatialDataConnectionManager.AddAdapter(DepthAdapter)
+            If Not DataSet Is Nothing Then
+                'Added the DataSet to the DepthAdapter
+                Me.m_DepthAdapter.Dataset(0) = DataSet
                 bReturn = True
             End If
 
         Catch ex As Exception
             bReturn = False
-
         End Try
 
         Debug.Assert(bReturn, Me.ToString + ".InitSpatialData() Failed to initialize the spatial data.")
         Return bReturn
     End Function
+
+
+    Public Sub AddedDepthAdapter()
+        Try
+
+            '  Dim DataSet As EwEUtils.SpatialData.ISpatialDataSet
+            Dim Converter As EwEUtils.SpatialData.ISpatialDataConverter
+
+            Me.m_DepthAdapter = New cDepthDataAdapter(Me.Plugin.Core, Me.Plugin.Ecospace, Me.Plugin.Ecospace.EcoSpaceData)
+            Debug.Assert(Me.m_DepthAdapter IsNot Nothing, Me.ToString + ".InitSpatialData() Failed to create Adapter.")
+
+            Converter = Me.getConverterByType(GetType(EwESpatialAssetsPlugin.SpatialData.cRasterConverterPlugin))
+
+            If (Not Me.m_DepthAdapter Is Nothing) And (Not Converter Is Nothing) Then
+                'Ok managed to create the DepthAdapter and the get the Converter from the core
+                'Now hook them up
+                'And add the DepthAdapter to the core spatial data manager          
+                Me.m_DepthAdapter.Converter(0) = Converter
+                Plugin.Core.SpatialDataConnectionManager.AddAdapter(Me.m_DepthAdapter)
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+    End Sub
 
     Private Function getConverterByType(ConverterType As Type) As EwEUtils.SpatialData.ISpatialDataConverter
         For Each converter In Plugin.Core.SpatialDataConnectionManager.ConverterTemplates()

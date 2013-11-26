@@ -109,4 +109,13 @@ Public Class frmEwEPlugin
 
         End Try
     End Sub
+
+    Private Sub frmEwEPlugin_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub frmEwEPlugin_Resize(sender As Object, e As System.EventArgs) Handles Me.Resize
+        Me.Panel1.Width = Me.Width - 2
+        Me.Panel1.Height = Me.Height - 2
+    End Sub
 End Class
