@@ -243,7 +243,7 @@ Public Class cEcospaceSpinupPlugin
                 Dim B0 As Single
                 For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
                     'Biomass at the current time step
-                    Bt = Me.EcoSpaceData.ResultsByGroup(0, igrp, iTime)
+                    Bt = Me.EcoSpaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, igrp, iTime)
                     'Biomass at zero time step
                     B0 = Me.EcoSpaceData.SpinUpBBase(igrp)
 
