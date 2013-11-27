@@ -1254,6 +1254,9 @@ Public Class cEcoSpace
                 iCumTimeStep = 1
                 m_Data.TimeNow = 0
 
+                'Clear out the results that were gathered during the Spin-Up
+                Me.m_Data.redimTimeStepResults(nEcospaceTimeSteps)
+
             End If 'Me.iSpinUp <= Me.nSpinUp T
 
         End If 'm_Data.bInSpinUp 
@@ -1579,11 +1582,7 @@ Public Class cEcoSpace
         Dim solver As cSpaceSolver
         Dim iFrstCell As Integer
         Dim iLstCell As Integer
-        Dim ieco As Integer
-        Dim cpuTime As Single
         Dim etRunTime As Double
-
-        'GC.Collect()
 
         Array.Clear(Btime, 0, Btime.Length)
         Array.Clear(TotLoss, 0, TotLoss.Length)
@@ -1631,7 +1630,6 @@ Public Class cEcoSpace
                     iLstCell = m_Data.iTotalWaterCells 'iTotalCells Then iLstCell = iTotalCells
                 End If
 
-                ' solver.syncCopyLock = Me.CopySyncLock
                 solver.FirstLastCells(iFrstCell, iLstCell)
                 'same wait object for all the threads
                 'Once the thread counter has been Decrement to Zero
@@ -1639,8 +1637,6 @@ Public Class cEcoSpace
                 solver.WaitHandle = WaitOb
 
                 ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
-                'Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                'worker.Start()
 
                 iFrstCell += nCells
 
@@ -1660,95 +1656,8 @@ Public Class cEcoSpace
             End If
 
             etRunTime = stpTotRun.Elapsed.TotalSeconds
-            Dim cpuTimeCatch As Double
-            'Gather data from across all threads
-            For Each solver In m_spaceSolvers
 
-                'Console.WriteLine("SpaceSolver.Solve() ID " & solver.ThreadID.ToString & " CPU time(sec), " & solver.RunTimeSeconds.ToString)
-                cpuTime += solver.RunTimeSeconds
-                cpuTimeCatch += solver.CatchCPUTimeSec
-
-                For igrp As Integer = 1 To m_Data.NGroups
-                    m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp)
-
-                    m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp)
-                    m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp)
-                    m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp)
-
-                    m_Data.ResultsByGroup(eSpaceResultsGroups.Loss, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.Loss, igrp)
-
-                Next igrp
-
-                For iflt As Integer = 0 To Me.m_Data.nFleets
-                    m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt)
-                    m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt)
-                    m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt)
-
-                    For igrp As Integer = 1 To m_Data.NGroups
-                        m_Data.Landings(igrp, iflt) += solver.Landings(igrp, iflt)
-                        m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp, itt) += solver.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp)
-
-                        For irgn As Integer = 0 To m_Data.nRegions
-                            m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) += solver.ResultsCatchRegionGearGroup(irgn, iflt, igrp)
-                        Next irgn
-
-                    Next igrp
-                Next iflt
-
-                If m_Data.NewMultiStanza Then
-                    For isp As Integer = 1 To m_Stanza.Nsplit
-                        For ist As Integer = 1 To m_Stanza.Nstanza(isp)
-                            ieco = m_Stanza.EcopathCode(isp, ist)
-
-                            'accumulate information needed to predict mean stanza loss, feeding, IFD weights from derivtred outputs
-                            'these arrays are used in the new SpaceSplitUpdate subroutine for predicting mortality
-                            'rate and growth rate averages over space by age in that update routine
-                            'IFDweight is used to predict proportion of biomass of ieco stanza that will be on cell i,j
-                            TotLoss(ieco) = TotLoss(ieco) + solver.TotLossThread(ieco)
-                            TotEatenBy(ieco) = TotEatenBy(ieco) + solver.TotEatenByThread(ieco)
-                            TotBiom(ieco) = TotBiom(ieco) + solver.TotBiomThread(ieco)
-                            TotPred(ieco) = TotPred(ieco) + solver.TotPredThread(ieco)
-                            TotIFDweight(ieco) = TotIFDweight(ieco) + solver.TotIFDweightThread(ieco)
-
-                        Next
-                    Next
-                End If
-            Next solver
-
-            'Average values across all the map cells
-            For igrp As Integer = 1 To m_Data.NGroups
-                m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) /= m_Data.nWaterCells
-                m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) /= m_Data.nWaterCells
-                m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) /= m_Data.nWaterCells
-                m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) /= m_Data.nWaterCells
-                m_Data.ResultsByGroup(eSpaceResultsGroups.Loss, igrp, itt) /= m_Data.nWaterCells
-
-                'HACK
-                'Lovley little hack for computing fit to Ecosim time series data SS
-                'Ecosim.AccumulateDataInfo(...) Uses Ecosim.FishTime() to calculate catch for the fitting stats
-                'So set it to the average F 
-                'This shouldn't cause problems because when Ecosim it run FishTime() is calculated on the fly for each time step
-                'this value will be over written
-                Me.m_SimData.FishTime(igrp) = m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt)
-            Next igrp
-
-            For iflt As Integer = 0 To Me.m_Data.nFleets
-                m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, itt) /= m_Data.nWaterCells
-                m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, itt) /= m_Data.nWaterCells
-                m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, itt) /= m_Data.nWaterCells
-
-                For igrp As Integer = 1 To m_Data.NGroups
-                    m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp, itt) /= m_Data.nWaterCells
-
-                    Dim nInReg As Integer
-                    For irgn As Integer = 0 To m_Data.nRegions
-                        nInReg = m_Data.nCellsInRegion(irgn)
-                        If nInReg = 0 Then nInReg = 1
-                        m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) /= nInReg
-                    Next irgn
-
-                Next igrp
-            Next iflt
+            Me.UpdateThreadedResults()
 
             stpTotRun.Stop()
             'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
@@ -5106,6 +5015,112 @@ exitline:
     End Sub
 
 
+    Private Sub UpdateThreadedResults()
+        Dim solver As cSpaceSolver
+        Dim ieco As Integer
+
+        'Don't save the results if in a Spin-Up period
+        'If Me.m_Data.bInSpinUp Then Return
+
+        Try
+
+            'Gather data from across all threads
+            For Each solver In m_spaceSolvers
+
+                ''Console.WriteLine("SpaceSolver.Solve() ID " & solver.ThreadID.ToString & " CPU time(sec), " & solver.RunTimeSeconds.ToString)
+                'cpuTime += solver.RunTimeSeconds
+                'cpuTimeCatch += solver.CatchCPUTimeSec
+
+                For igrp As Integer = 1 To m_Data.NGroups
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp)
+
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp)
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp)
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp)
+
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.Loss, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.Loss, igrp)
+
+                Next igrp
+
+                For iflt As Integer = 0 To Me.m_Data.nFleets
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt)
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt)
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt)
+
+                    For igrp As Integer = 1 To m_Data.NGroups
+                        m_Data.Landings(igrp, iflt) += solver.Landings(igrp, iflt)
+                        m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp, itt) += solver.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp)
+
+                        For irgn As Integer = 0 To m_Data.nRegions
+                            m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) += solver.ResultsCatchRegionGearGroup(irgn, iflt, igrp)
+                        Next irgn
+
+                    Next igrp
+                Next iflt
+
+                If m_Data.NewMultiStanza Then
+                    For isp As Integer = 1 To m_Stanza.Nsplit
+                        For ist As Integer = 1 To m_Stanza.Nstanza(isp)
+                            ieco = m_Stanza.EcopathCode(isp, ist)
+
+                            'accumulate information needed to predict mean stanza loss, feeding, IFD weights from derivtred outputs
+                            'these arrays are used in the new SpaceSplitUpdate subroutine for predicting mortality
+                            'rate and growth rate averages over space by age in that update routine
+                            'IFDweight is used to predict proportion of biomass of ieco stanza that will be on cell i,j
+                            TotLoss(ieco) = TotLoss(ieco) + solver.TotLossThread(ieco)
+                            TotEatenBy(ieco) = TotEatenBy(ieco) + solver.TotEatenByThread(ieco)
+                            TotBiom(ieco) = TotBiom(ieco) + solver.TotBiomThread(ieco)
+                            TotPred(ieco) = TotPred(ieco) + solver.TotPredThread(ieco)
+                            TotIFDweight(ieco) = TotIFDweight(ieco) + solver.TotIFDweightThread(ieco)
+
+                        Next
+                    Next
+                End If
+            Next solver
+
+            'Average values across all the map cells
+            For igrp As Integer = 1 To m_Data.NGroups
+                m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByGroup(eSpaceResultsGroups.Loss, igrp, itt) /= m_Data.nWaterCells
+
+                'HACK
+                'Lovley little hack for computing fit to Ecosim time series data SS
+                'Ecosim.AccumulateDataInfo(...) Uses Ecosim.FishTime() to calculate catch for the fitting stats
+                'So set it to the average F 
+                'This shouldn't cause problems because when Ecosim it run FishTime() is calculated on the fly for each time step
+                'this value will be over written
+                Me.m_SimData.FishTime(igrp) = m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt)
+            Next igrp
+
+            For iflt As Integer = 0 To Me.m_Data.nFleets
+                m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, itt) /= m_Data.nWaterCells
+                m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, itt) /= m_Data.nWaterCells
+
+                For igrp As Integer = 1 To m_Data.NGroups
+                    m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp, itt) /= m_Data.nWaterCells
+
+                    Dim nInReg As Integer
+                    For irgn As Integer = 0 To m_Data.nRegions
+                        nInReg = m_Data.nCellsInRegion(irgn)
+                        If nInReg = 0 Then nInReg = 1
+                        m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) /= nInReg
+                    Next irgn
+
+                Next igrp
+            Next iflt
+
+        Catch ex As Exception
+            cLog.Write(ex, "EcoSpace.UpdateEcospaceResults()")
+            Debug.Assert(False, "Exception in EcoSpace.UpdateEcospaceResults() " + ex.Message)
+        End Try
+
+    End Sub
+
+
 
     ''' <summary>
     ''' Keep the Biomass results for this time step after all the calculation have been done. Trophic (deritRed), Spatial distribution (solve grid) and Multi-stanza biomasses updated.
@@ -5115,6 +5130,9 @@ exitline:
     Private Sub updateBiomassResults(ByVal iTimeStep As Integer)
         Dim igrp As Integer
         Try
+
+            'Don't gather results when in a spin-up period
+            ' If Me.m_Data.bInSpinUp Then Return
 
             For igrp = 1 To m_Data.NGroups
 
