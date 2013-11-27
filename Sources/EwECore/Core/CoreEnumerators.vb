@@ -354,9 +354,9 @@ End Enum
 ''' <summary>
 ''' Index of results from Ecospace saved over time by group
 ''' </summary>
-''' <remarks>This data will be exposed by the core so it needs to know the index that the data is stored in</remarks>
+''' <remarks>Index to data stored in the <see cref="cEcospaceDataStructures.ResultsByGroup">cEcospaceDataStructures.ResultsByGroup(eSpaceResultsGroups,group,time) array</see></remarks>
 ''' ---------------------------------------------------------------------------
-Friend Enum eSpaceResultsGroups
+Public Enum eSpaceResultsGroups
     Biomass
     RelativeBiomass
     CatchBio
@@ -367,7 +367,7 @@ Friend Enum eSpaceResultsGroups
     Loss
 End Enum
 
-Friend Enum eSpaceResultsFleets
+Public Enum eSpaceResultsFleets
     SailingEffort
     FishingEffort
     CatchBio
@@ -375,7 +375,7 @@ Friend Enum eSpaceResultsFleets
 End Enum
 
 
-Friend Enum eSpaceResultsFleetsGroups
+Public Enum eSpaceResultsFleetsGroups
     CatchBio
     Value
 End Enum
