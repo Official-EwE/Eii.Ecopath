@@ -364,7 +364,8 @@ Public Enum eSpaceResultsGroups
     FishingMort
     PredMortRate
     ConsumpRate
-    Loss
+    ''' <summary>Total Loss in tons summed across all cells. Not KM2</summary>
+    TotalLoss
 End Enum
 
 Public Enum eSpaceResultsFleets
