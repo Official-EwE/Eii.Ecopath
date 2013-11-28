@@ -383,14 +383,16 @@ Public Class cSpaceSolver
     Private Function SolveCell(ByVal i As Integer, ByVal j As Integer) As Boolean
         Dim iGrp As Integer
         Dim PopWt As Single
-        'Cell area in KM2 at the equator use to calculate total loss
-        Dim CellAreaKM2 As Single = CSng(Me.m_Data.CellLength ^ 2.0)
+        Dim CellAreaKM2 As Single
 
         Try
             ' Debug.Assert(Me.m_Data.Depth(i, j) > 0)
             ' System.Console.WriteLine("Thread ID, " & Me.ThreadID & ", " & i.ToString & ", " & j.ToString)
             'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
             TimeStep2 = CSng(m_Data.TimeStep * 0.66667)
+
+            'Cell area in KM2 at the equator * relative width of the cell
+            CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.Width(i)
 
             If m_TracerData.EcoSpaceConSimOn Then
                 m_ConTracer.ConcTr(0) = m_Data.Ccell(i, j, 0)
@@ -507,9 +509,9 @@ Public Class cSpaceSolver
                 Me.ResultsByGroup(eSpaceResultsGroups.FishingMort, iGrp) += FishTime(iGrp)
                 Me.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, iGrp) += Eatenby(iGrp) / (BB(iGrp) + 1.0E-20F)
                 Me.ResultsByGroup(eSpaceResultsGroups.PredMortRate, iGrp) += Eatenof(iGrp) / (BB(iGrp) + 1.0E-20F)
-                'loss(group) is loss km2
+                'loss(group) units are KM2
                 'TotalLoss sum of loss for the total area of the cell. Not just KM2
-                Me.ResultsByGroup(eSpaceResultsGroups.TotalLoss, iGrp) += loss(iGrp) * CellAreaKM2 * Me.m_Data.Width(i)
+                Me.ResultsByGroup(eSpaceResultsGroups.TotalLoss, iGrp) += loss(iGrp) * CellAreaKM2
 
             Next
 
