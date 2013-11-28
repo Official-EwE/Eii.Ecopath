@@ -1551,14 +1551,16 @@ Public Class cEcospaceDataStructures
             ReDim Lat(InRow)
             ReDim Width(InRow)
 
-
-            ''jb move this here to set a few defaults this will have to change
+            'jb move this here to set a few defaults this will have to change
             For i = 1 To NGroups                            'CJW had nvar not n1
                 PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
 
+            'jb 28-Nov-2013 find width for the center of the cell
+            'half a cell height in degrees 
+            Dim halfcell As Single = Me.CellLength / 2 / (60 * 1.852F)
             For i = 1 To InRow
-                Lat(i) = Lat1 - Me.CellLength * (i - 1) / (60 * 1.855F)
+                Lat(i) = Lat1 - Me.CellLength * (i - 1) / (60 * 1.852F) - halfcell
                 Width(i) = CSng(Math.Cos(Lat(i) / 90.0 * Math.PI / 2.0))
                 For j = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
