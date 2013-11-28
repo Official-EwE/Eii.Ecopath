@@ -5038,7 +5038,7 @@ exitline:
                     m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp)
                     m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp)
 
-                    m_Data.ResultsByGroup(eSpaceResultsGroups.Loss, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.Loss, igrp)
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.TotalLoss, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.TotalLoss, igrp)
 
                 Next igrp
 
@@ -5084,7 +5084,8 @@ exitline:
                 m_Data.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) /= m_Data.nWaterCells
                 m_Data.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) /= m_Data.nWaterCells
                 m_Data.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) /= m_Data.nWaterCells
-                m_Data.ResultsByGroup(eSpaceResultsGroups.Loss, igrp, itt) /= m_Data.nWaterCells
+                'Don't include TotalLoss in the averaging. It's the total loss across the model area, NOT KM2
+                'm_Data.ResultsByGroup(eSpaceResultsGroups.TotalLoss, igrp, itt) /= m_Data.nWaterCells
 
                 'HACK
                 'Lovley little hack for computing fit to Ecosim time series data SS
