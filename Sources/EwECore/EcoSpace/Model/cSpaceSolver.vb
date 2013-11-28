@@ -383,6 +383,8 @@ Public Class cSpaceSolver
     Private Function SolveCell(ByVal i As Integer, ByVal j As Integer) As Boolean
         Dim iGrp As Integer
         Dim PopWt As Single
+        'Cell area in KM2 at the equator use to calculate total loss
+        Dim CellAreaKM2 As Single = CSng(Me.m_Data.CellLength ^ 2.0)
 
         Try
             ' Debug.Assert(Me.m_Data.Depth(i, j) > 0)
@@ -504,8 +506,10 @@ Public Class cSpaceSolver
 
                 Me.ResultsByGroup(eSpaceResultsGroups.FishingMort, iGrp) += FishTime(iGrp)
                 Me.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, iGrp) += Eatenby(iGrp) / (BB(iGrp) + 1.0E-20F)
-                Me.ResultsByGroup(eSpaceResultsGroups.PredMortRate, iGrp) += Eatenof(iGrp) / (BB(iGrp) + 1.0E-20F) 'eat / (Bprey + 1.0E-20F)
-                Me.ResultsByGroup(eSpaceResultsGroups.Loss, iGrp) += loss(iGrp)
+                Me.ResultsByGroup(eSpaceResultsGroups.PredMortRate, iGrp) += Eatenof(iGrp) / (BB(iGrp) + 1.0E-20F)
+                'loss(group) is loss km2
+                'TotalLoss sum of loss for the total area of the cell. Not just KM2
+                Me.ResultsByGroup(eSpaceResultsGroups.TotalLoss, iGrp) += loss(iGrp) * CellAreaKM2 * Me.m_Data.Width(i)
 
             Next
 
