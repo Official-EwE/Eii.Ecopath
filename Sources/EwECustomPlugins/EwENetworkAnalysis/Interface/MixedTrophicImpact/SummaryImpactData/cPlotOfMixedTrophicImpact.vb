@@ -16,6 +16,7 @@
 ' ===============================================================================
 '
 
+' ToDo_JS: fix bolded and horrible fonts in EMF
 #Region " Imports "
 
 Option Strict On
@@ -131,25 +132,27 @@ Public Class cPlotOfMixedTrophicImpact
 
     Public Overrides Sub SaveToEMF(ByVal strFileName As String)
 
-        Dim fs As FileStream = Nothing
+        'Dim fs As FileStream = Nothing
         Dim bmp As Bitmap = Nothing
-        Dim hdc As IntPtr = Nothing ' :)
-        Dim mf As Metafile = Nothing
+        'Dim hdc As IntPtr = Nothing ' :)
+        'Dim mf As Metafile = Nothing
 
         Me.Plot.Refresh()
-        fs = New FileStream(strFileName, FileMode.Create)
+        'fs = New FileStream(strFileName, FileMode.Create)
         bmp = New Bitmap(Me.Plot.Content.Width, Me.Plot.Content.Height, PixelFormat.Format32bppArgb)
         Using g As Graphics = Graphics.FromImage(bmp)
-            hdc = g.GetHdc()
-            mf = New Metafile(fs, hdc, EmfType.EmfOnly)
-            g.ReleaseHdc(hdc)
-        End Using
-
-        Using g As Graphics = Graphics.FromImage(mf)
+            g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+            g.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
+            g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
             PlotToEMF(g)
         End Using
-        fs.Close()
-        mf.Dispose()
+        Try
+            bmp.Save(strFileName)
+        Catch ex As Exception
+
+        End Try
+        bmp.Dispose()
+
     End Sub
 
     Public Overrides Function OptionsControl() As UserControl
@@ -197,7 +200,7 @@ Public Class cPlotOfMixedTrophicImpact
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
-        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.ClientRectangle, Me.m_style, _
+        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.Content.ClientRectangle, Me.m_style, _
                 Me.m_asData, _
                 My.Resources.LBL_IMPACTED_GP, Me.m_astrLabelsX, _
                 My.Resources.LBL_IMPACTING_GP, Me.m_astrLabelsY, _
