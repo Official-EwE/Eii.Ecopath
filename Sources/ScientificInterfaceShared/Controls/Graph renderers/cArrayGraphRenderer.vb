@@ -91,8 +91,8 @@ Public Class cArrayGraphRenderer
         ' Measure max label sizes
         Dim szLabelTopMaxSize As Size = Me.CalcLabelMaxSize(g, ftScale, astrLabelsX)
         Dim szLabelSideMaxSize As Size = Me.CalcLabelMaxSize(g, ftScale, astrLabelsY)
-        Dim szLegendTop As Size = Me.CalcLegendMaxSize(g, ftLegend, strTitleX)
-        Dim szLegendSide As Size = Me.CalcLegendMaxSize(g, ftLegend, strTitleY)
+        Dim szTitleTop As Size = Me.CalcTitleMaxSize(g, ftLegend, strTitleX)
+        Dim szTitleSide As Size = Me.CalcTitleMaxSize(g, ftLegend, strTitleY)
 
         ' Graph layout explanation:
         '
@@ -104,8 +104,8 @@ Public Class cArrayGraphRenderer
         ' | Grid           | Horz. labels
         ' |                |
         ' +----------------+-------------
-        Dim iArea3Width As Integer = szLabelSideMaxSize.Width + szLegendSide.Height * 2
-        Dim iArea1Height As Integer = szLabelTopMaxSize.Width + szLegendTop.Height * 2
+        Dim iArea3Width As Integer = szLabelSideMaxSize.Width + szTitleSide.Height * 2
+        Dim iArea1Height As Integer = szLabelTopMaxSize.Width + szTitleTop.Height * 2
 
         Return New Size(CInt(astrLabelsX.Length * (szLabelTopMaxSize.Height + 2)) + iArea3Width + 1, _
                         CInt(astrLabelsY.Length * (szLabelSideMaxSize.Height + 2)) + iArea1Height + 1)
@@ -141,8 +141,8 @@ Public Class cArrayGraphRenderer
 
         ' Use system fonts
         Dim ftScale As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
-        Dim ftLegend As Font = sg.Font(cStyleGuide.eApplicationFontType.Legend)
-        Dim ftSubtitle As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
+        Dim ftLegend As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
+        Dim ftSubtitle As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
 
         ' ToDo: take right-to-left reading order into account
         ' ToDo: allow side label positioning (left or right)
@@ -159,8 +159,8 @@ Public Class cArrayGraphRenderer
         ' Measure max label sizes
         Dim szLabelTopMaxSize As Size = Me.CalcLabelMaxSize(g, ftScale, astrLabelsX)
         Dim szLabelSideMaxSize As Size = Me.CalcLabelMaxSize(g, ftScale, astrLabelsY)
-        Dim szLegendTop As Size = Me.CalcLegendMaxSize(g, ftLegend, strTitleX)
-        Dim szLegendSide As Size = Me.CalcLegendMaxSize(g, ftLegend, strTitleY)
+        Dim szTitleTop As Size = Me.CalcTitleMaxSize(g, ftLegend, strTitleX)
+        Dim szTitleSide As Size = Me.CalcTitleMaxSize(g, ftLegend, strTitleY)
         Dim szCellSize As SizeF
 
         ' Graph layout explanation:
@@ -173,8 +173,8 @@ Public Class cArrayGraphRenderer
         ' | Grid           | Horz. labels
         ' |                |
         ' +----------------+-------------
-        Dim iArea3Width As Integer = szLabelSideMaxSize.Width + szLegendSide.Height * 2
-        Dim iArea1Height As Integer = szLabelTopMaxSize.Width + szLegendTop.Height * 2
+        Dim iArea3Width As Integer = szLabelSideMaxSize.Width + szTitleSide.Height * 2
+        Dim iArea1Height As Integer = szLabelTopMaxSize.Width + szTitleTop.Height * 2
         Dim iArea3Height As Integer = rcRender.Height - iArea1Height
         Dim iArea1Width As Integer = rcRender.Width - iArea3Width
 
@@ -182,6 +182,8 @@ Public Class cArrayGraphRenderer
         Dim rcArea2 As Rectangle = New Rectangle(rcRender.X, rcRender.Y + iArea1Height, rcArea1.Width, iArea3Height)
         Dim rcArea3 As Rectangle = New Rectangle(rcRender.X + rcArea1.Width, rcRender.Y + rcArea1.Height, iArea3Width, iArea3Height)
         Dim rcArea4 As Rectangle = New Rectangle(rcRender.X + rcArea1.Width, rcRender.Y, rcArea1.Height, rcArea3.Width)
+
+        g.FillRectangle(Brushes.White, rcRender)
 
         ' Figure out where to draw the graphs
         szCellSize = CalcGridSize(rcArea2, asData.GetUpperBound(0) + 1, asData.GetUpperBound(1) + 1)
@@ -281,7 +283,7 @@ Public Class cArrayGraphRenderer
         Return szMax
     End Function
 
-    Private Function CalcLegendMaxSize(ByVal g As Graphics, ByVal ft As Font, ByVal strLegend As String) As Size
+    Private Function CalcTitleMaxSize(ByVal g As Graphics, ByVal ft As Font, ByVal strLegend As String) As Size
 
         Dim szLegend As New Size(0, 0)
         Dim szfLegend As SizeF = Nothing
@@ -315,7 +317,7 @@ Public Class cArrayGraphRenderer
                               ByVal rect As Rectangle, ByVal szCellSize As SizeF, _
                               ByVal strLegend As String, ByVal astrLabels As String(), ByVal szLabelMaxSize As Size, _
                               Optional ByVal sAngle As Single = 0.0!)
-        Dim szLegendTop As Size = Me.CalcLegendMaxSize(g, ftScale, strLegend)
+        Dim szLegendTop As Size = Me.CalcTitleMaxSize(g, ftScale, strLegend)
 
         ' Label
         g.DrawString(strLegend, ftSubtitle, SystemBrushes.WindowText, _
@@ -362,7 +364,7 @@ Public Class cArrayGraphRenderer
                                ByVal rect As Rectangle, ByVal szCellSize As SizeF, _
                                ByVal strLegend As String, ByVal astrLabels As String(), _
                                Optional ByVal sAngle As Single = 0.0!)
-        Dim szLegendSide As Size = Me.CalcLegendMaxSize(g, ftScale, strLegend)
+        Dim szLegendSide As Size = Me.CalcTitleMaxSize(g, ftScale, strLegend)
 
         DrawAngledText(g, ftScale, strLegend, rect.Width - szLegendSide.Height + rect.X, _
                        CInt(rect.Height - (rect.Height - szLegendSide.Width) / 2) + rect.Y, _
@@ -379,6 +381,8 @@ Public Class cArrayGraphRenderer
                             ByVal astrLegends As String(), _
                             ByVal style As eRenderStyle, _
                             Optional ByVal sAngle As Single = 0.0!)
+
+        If (astrLegends Is Nothing) Then Return
 
         For i As Integer = 0 To astrLegends.GetUpperBound(0)
             ' Area to render a single circle into
