@@ -38,6 +38,10 @@ Namespace SpatialData
 
 #Region " Private vars "
 
+        Private m_core As cCore = Nothing
+        Private m_ds As ISpatialDataSet = Nothing
+        Private m_rcf As RectangleF = Nothing
+
         ' -- Time step assessment period --
         Private m_iFirstTimeStep As Integer = 0
         Private m_iLastTimeStep As Integer = 0
@@ -75,6 +79,10 @@ Namespace SpatialData
             Debug.Assert(core IsNot Nothing)
             Debug.Assert(ds IsNot Nothing)
 
+            Me.m_core = core
+            Me.m_ds = ds
+            Me.m_rcf = Me.ToRect(Me.m_core.EcospaceBasemap.PosTopLeft, Me.m_core.EcospaceBasemap.PosBottomRight)
+
             Dim iNumTimeSteps As Integer = core.nEcospaceTimeSteps
             ' Special case for datasets without temporal range
             If (ds.TimeStart = Date.MinValue) Or (ds.TimeEnd = Date.MaxValue) Then
@@ -82,7 +90,7 @@ Namespace SpatialData
             End If
 
             ' Assess the entire Ecospace run time
-            Me.Assess(core, ds, 1, iNumTimeSteps)
+            Me.Assess(1, iNumTimeSteps)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -100,8 +108,12 @@ Namespace SpatialData
             ' Sanity checks
             Debug.Assert(core IsNot Nothing)
             Debug.Assert(ds IsNot Nothing)
+
+            Me.m_core = core
+            Me.m_ds = ds
+
             ' Assess the entire Ecospace run time
-            Me.Assess(core, ds, iTimeStart, iNumTimeSteps)
+            Me.Assess(iTimeStart, iNumTimeSteps)
         End Sub
 
 #End Region ' Construction
@@ -157,6 +169,48 @@ Namespace SpatialData
                 Return eCompatibilityTypes.TotalOverlap
             End Get
         End Property
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="iTimeStep"></param>
+        ''' <returns>
+        ''' <para>Return values should be interpreted as follows:</para>
+        ''' </returns>
+        ''' <remarks></remarks>
+        Public Function CompatibilityAt(iTimeStep As Integer) As eCompatibilityTypes
+
+            Dim tm As DateTime = Me.m_core.EcospaceTimestepToAbsoluteTime(iTimeStep)
+            Dim ptfMapTL As PointF = Nothing
+            Dim ptfMapBR As PointF = Nothing
+            Dim rcfMap As RectangleF = Nothing
+
+            If Not Me.m_ds.HasDataAtT(tm) Then
+                Return eCompatibilityTypes.NoTemporal
+            End If
+
+            Select Case Me.m_ds.IndexStatusAtT(tm)
+
+                Case ISpatialDataSet.eIndexStatus.NotIndexed
+                    Return eCompatibilityTypes.NotSet
+
+                Case ISpatialDataSet.eIndexStatus.Failed
+                    Return eCompatibilityTypes.Errors
+
+                Case ISpatialDataSet.eIndexStatus.Indexed
+                    If Me.m_ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
+                        rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
+                        If rcfMap.Contains(Me.m_rcf) Then
+                            Return eCompatibilityTypes.TotalOverlap
+                        ElseIf rcfMap.IntersectsWith(Me.m_rcf) Then
+                            Return eCompatibilityTypes.PartialSpatial
+                        End If
+                    End If
+            End Select
+
+            Return eCompatibilityTypes.Errors
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -290,14 +344,11 @@ Namespace SpatialData
         ''' <summary>
         ''' Perform assessment.
         ''' </summary>
-        ''' <param name="core"></param>
-        ''' <param name="ds"></param>
         ''' <param name="iTimeStart"></param>
         ''' <param name="iNumTimeSteps"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function Assess(core As cCore, ds As ISpatialDataSet, _
-                                iTimeStart As Integer, iNumTimeSteps As Integer) As Boolean
+        Private Function Assess(iTimeStart As Integer, iNumTimeSteps As Integer) As Boolean
 
             ' Store assessment period
             Me.m_iFirstTimeStep = iTimeStart
@@ -311,42 +362,38 @@ Namespace SpatialData
             Me.m_iNumPartialSpatialOverlap = 0
 
             ' Protect against improper use
-            If (core.ActiveEcospaceScenarioIndex = -1) Then Return False
+            If (Me.m_core.ActiveEcospaceScenarioIndex = -1) Then Return False
             If (iNumTimeSteps < 0) Then Return False
 
             Dim iTimeEnd As Integer = iTimeStart + iNumTimeSteps
-            Dim rcfEcospace As RectangleF = Me.ToRect(core.EcospaceBasemap.PosTopLeft, core.EcospaceBasemap.PosBottomRight)
-            Dim ptfMapTL As PointF = Nothing
-            Dim ptfMapBR As PointF = Nothing
-            Dim rcfMap As RectangleF = Nothing
 
             For iStep As Integer = iTimeStart To iTimeEnd
-                Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
-                If ds.HasDataAtT(tm) Then
-                    Me.m_iNumTimeOverlap += 1
-                    Select Case ds.IndexStatusAtT(tm)
 
-                        Case ISpatialDataSet.eIndexStatus.NotIndexed
-                            ' NOP
+                Select Case CompatibilityAt(iStep)
 
-                        Case ISpatialDataSet.eIndexStatus.Failed
-                            Me.m_iNumIndexed += 1
-                            Me.m_iNumError += 1
+                    Case eCompatibilityTypes.NoTemporal
+                        ' NOP
 
-                        Case ISpatialDataSet.eIndexStatus.Indexed
-                            If ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
-                                Me.m_iNumIndexed += 1
-                                rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
-                                If rcfMap.Contains(rcfEcospace) Then
-                                    Me.m_iNumFullSpatialOverlap += 1
-                                ElseIf rcfMap.IntersectsWith(rcfEcospace) Then
-                                    Me.m_iNumPartialSpatialOverlap += 1
-                                End If
-                            Else
-                                Me.m_iNumError += 1
-                            End If
-                    End Select
-                End If
+                    Case eCompatibilityTypes.NotSet
+                        Me.m_iNumTimeOverlap += 1
+
+                    Case eCompatibilityTypes.NoSpatial
+                        Me.m_iNumTimeOverlap += 1
+                        Me.m_iNumIndexed += 1
+                        Me.m_iNumError += 1
+
+                    Case eCompatibilityTypes.PartialSpatial
+                        Me.m_iNumTimeOverlap += 1
+                        Me.m_iNumIndexed += 1
+                        Me.m_iNumPartialSpatialOverlap += 1
+
+                    Case eCompatibilityTypes.TotalOverlap
+                        Me.m_iNumTimeOverlap += 1
+                        Me.m_iNumIndexed += 1
+                        Me.m_iNumFullSpatialOverlap += 1
+
+                End Select
+
             Next
 
             Return True

@@ -47,7 +47,6 @@ Namespace Ecospace.Controls
             Public m_iPosVert As Integer = 0
             Public m_liData As New List(Of Integer) ' Time steps with data
             Public m_liTime As New List(Of DateTime) ' Translated time for time steps
-            Public m_liError As New List(Of Boolean) ' Data error states
         End Class
 
 #End Region ' Private classes
@@ -389,7 +388,6 @@ Namespace Ecospace.Controls
                             If ds.HasDataAtT(tm) Then
                                 pos.m_liData.Add(iStep)
                                 pos.m_liTime.Add(tm)
-                                pos.m_liError.Add(ds.IndexStatusAtT(tm) = ISpatialDataSet.eIndexStatus.Failed)
                             End If
                         Next
 
@@ -471,19 +469,11 @@ Namespace Ecospace.Controls
             Dim rcLabel As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barlabelheight)
             Dim rcTimeStep As New Rectangle(rcBar.X, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
             Dim clrFill As Color = Color.LightGreen
-            Dim clrData As Color = Color.DarkGreen
+            Dim clrOutline As Color = Color.DarkGreen
             Dim clrText As Color = SystemColors.ControlText
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
-
-            Select Case comp.Compatibility
-                Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
-                     cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
-                     cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                    clrData = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
-                    clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
-            End Select
             Dim clrTextFill As Color = clrFill
+            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
 
             If bSelected Then
                 clrText = SystemColors.HighlightText
@@ -504,34 +494,50 @@ Namespace Ecospace.Controls
                 rcLabel.Width = rcBack.Width
                 g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, Math.Max(rcBack.X, rcLabel.X), rcLabel.Y)
             End Using
-            Using p As New Pen(clrData)
+            Using p As New Pen(clrOutline)
                 g.DrawRectangle(p, rcBar)
             End Using
-
-            Dim brIndexed As New SolidBrush(clrData)
-            Dim penPending As New Pen(clrData, 0.001)
-            Dim brFailed As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT))
-
-            Dim pt1, pt2 As PointF
 
             For i As Integer = 0 To pos.m_liData.Count - 1
                 Dim iStep As Integer = pos.m_liData(i)
                 rcTimeStep.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize - c_dotradius
 
-                If pos.m_liError(i) Then
-                    g.FillEllipse(brFailed, rcTimeStep)
-                Else
-                    If Not pos.m_ds.GetExtentAtT(pos.m_liTime(i), pt1, pt2) Then
-                        g.DrawEllipse(penPending, rcTimeStep)
-                    Else
-                        g.FillEllipse(brIndexed, rcTimeStep)
-                    End If
-                End If
-            Next
+                Select Case comp.CompatibilityAt(iStep)
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
+                        clrOutline = Color.Black
+                        clrFill = Color.White
 
-            brIndexed.Dispose()
-            penPending.Dispose()
-            brFailed.Dispose()
+                    Case cDatasetCompatilibity.eCompatibilityTypes.Errors
+                        clrOutline = Color.Red
+                        clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
+
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
+                        clrOutline = Color.Black
+                        clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
+
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
+                        clrOutline = Color.DarkGray
+                        clrFill = Color.Gray
+
+                    Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
+                        clrOutline = Color.Gray
+                        clrFill = Color.DarkGreen
+
+                    Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
+                        clrOutline = Color.Black
+                        clrFill = Color.Green
+
+                End Select
+
+                Using br As New SolidBrush(clrFill)
+                    g.FillEllipse(br, rcTimeStep)
+                End Using
+
+                Using p As New Pen(clrOutline, 0.001)
+                    g.DrawEllipse(p, rcTimeStep)
+                End Using
+
+            Next
 
         End Sub
 

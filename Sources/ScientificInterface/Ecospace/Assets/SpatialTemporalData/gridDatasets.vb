@@ -161,7 +161,7 @@ Namespace Ecospace.Controls
                     Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i + 1))
                     Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Variable) = New EwECell(vfmt.GetDescriptor(ds.VarName), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                    ' Me(iRow, eColumnTypes.Description) = New EwECell(ds.Description, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.DateFrom) = New EwECell(ds.TimeStart.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.DateTo) = New EwECell(ds.TimeEnd.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
