@@ -326,16 +326,27 @@ Namespace SpatialData
 
         Private Sub DoBrowse()
 
-            If (Me.UIContext IsNot Nothing) Then
-                Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-                Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+            Dim bOK As Boolean = False
 
-                cmd.Invoke(Me.m_tbxPath.Text, My.Resources.PROMPT_SELECTFOLDER)
-                If cmd.Result = DialogResult.OK Then
-                    Me.m_tbxPath.Text = cmd.Directory
-                    Me.UpdateControls()
-                End If
-            Else
+            If (Me.UIContext IsNot Nothing) Then
+                Try
+
+                    Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                    Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+
+                    cmd.Invoke(Me.m_tbxPath.Text, My.Resources.PROMPT_SELECTFOLDER)
+                    If cmd.Result = DialogResult.OK Then
+                        Me.m_tbxPath.Text = cmd.Directory
+                        Me.UpdateControls()
+                    End If
+                    bOK = True
+                Catch ex As Exception
+
+                End Try
+            End If
+
+
+            If Not bOK Then
                 Dim fbd As New FolderBrowserDialog()
 
                 fbd.SelectedPath = Me.m_tbxPath.Text
