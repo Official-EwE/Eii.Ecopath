@@ -149,7 +149,7 @@ Namespace SpatialData
                 Try
                     ' Rasterize the features
                     Dim fs As IFeatureSet = CType(data, IFeatureSet)
-                    rstResult = cSurfaceTools.RasterizeIsobar(fs, ptfTL, ptfBR, dCellSize, Me.m_strAttributeFilter, strFile, log)
+                    rstResult = cSurfaceTools.RasterizeIsobar(fs, ptfTL, ptfBR, dCellSize, Me.m_strAttributeName, strFile, log)
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 
