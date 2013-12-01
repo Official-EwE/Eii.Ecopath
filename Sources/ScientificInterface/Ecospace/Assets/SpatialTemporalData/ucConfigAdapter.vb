@@ -359,6 +359,8 @@ Namespace Ecospace.Controls
         Private Sub OnDatScaleTypeChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbAbsolute.CheckedChanged, m_rbRelative.CheckedChanged
 
+            If Me.m_bInUpdate Then Return
+
             Try
                 If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
                     Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
@@ -368,15 +370,13 @@ Namespace Ecospace.Controls
                         ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapterBase.eScaleType.Relative
                     End If
 
-                    If Not Me.m_bInUpdate Then
-                        ' Invalidate the cached data for this dataset
-                        ' ToDo_JS: Make dataset clearing more sublte. 
-                        '          This statement deletes cached data for ALL scenarios a dataset is cached for. It should only
-                        '          clear the cached data for the current Ecospace scenario. Oof. Ok, at least it works...
-                        cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
-                        ' Reflect new state
-                        Me.EvaluateCache()
-                    End If
+                    ' Invalidate the cached data for this dataset
+                    ' ToDo_JS: Make dataset clearing more sublte. 
+                    '          This statement deletes cached data for ALL scenarios a dataset is cached for. It should only
+                    '          clear the cached data for the current Ecospace scenario. Oof. Ok, at least it works...
+                    cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
+                    ' Reflect new state
+                    Me.EvaluateCache()
                 End If
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
@@ -386,21 +386,23 @@ Namespace Ecospace.Controls
 
         Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
             Handles m_tbxScale.TextChanged, m_tbxScale.LostFocus
+
+            If Me.m_bInUpdate Then Return
+
             Try
                 If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
                     Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
                     Double.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
                 End If
 
-                If Not Me.m_bInUpdate Then
-                    ' Invalidate the cached data for this dataset
-                    cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
-                End If
+                ' Invalidate the cached data for this dataset
+                cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
                 ' Reflect new state
                 Me.EvaluateCache()
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
+
         End Sub
 
         Private Sub OnCalculateScale(sender As System.Object, e As System.EventArgs) _

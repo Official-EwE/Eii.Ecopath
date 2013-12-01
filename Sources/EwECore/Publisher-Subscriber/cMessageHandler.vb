@@ -141,6 +141,8 @@ Public Class cMessageHandler
                     Catch ex As Threading.ThreadAbortException
                         ' A thread is dying, do not assert
                         cLog.Write(ex)
+                    Catch ex As InvalidAsynchronousStateException
+                        ' Message target has evaporated. Ignore
                     Catch ex As Exception
                         'Error thrown in the handler by an interface that was not handled 
                         'we have no idea if this message got handled or not
