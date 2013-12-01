@@ -157,4 +157,46 @@ Public Class cVectorTools
         Return dVal
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="fs"></param>
+    ''' <param name="bRejectComplex"></param>
+    ''' <param name="bRejectInvalid"></param>
+    ''' <returns>The number of rejected features</returns>
+    ''' <remarks></remarks>
+    Public Shared Function CheckUsablePolygons(ByRef fs As IFeatureSet, ByVal bRejectComplex As Boolean, ByVal bRejectInvalid As Boolean) As Integer
+
+        Dim iNumRejected As Integer = 0
+
+        If (fs Is Nothing) Then Return iNumRejected
+
+        ' Merge all valid polygons to avoid double-counting areas when polygons overlap
+        For Each featTmp As IFeature In fs.Features.CloneList
+            If (featTmp.FeatureType = FeatureType.Polygon) Then
+                Dim polyTemp As New Polygon(featTmp.Coordinates)
+                Dim bUsePolygon As Boolean = True
+
+                If (Not polyTemp.IsValid) Then
+                    If (bRejectInvalid) Then
+                        bUsePolygon = False
+                        iNumRejected += 1
+                    End If
+                ElseIf Not polyTemp.IsSimple Then
+                    If bRejectComplex Then
+                        bUsePolygon = False
+                        iNumRejected += 1
+                    End If
+                End If
+
+                If (Not bUsePolygon) Then
+                    fs.Features.Remove(featTmp)
+                End If
+            End If
+        Next
+
+        Return iNumRejected
+
+    End Function
+
 End Class

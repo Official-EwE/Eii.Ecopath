@@ -385,6 +385,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} too complex polygon(s) were excluded from automated processing..
+        '''</summary>
+        Friend ReadOnly Property STATUS_POLYGONSFAILED_COMPLEX() As String
+            Get
+                Return ResourceManager.GetString("STATUS_POLYGONSFAILED_COMPLEX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} invalid polygon(s) were excluded from automated processing..
         '''</summary>
         Friend ReadOnly Property STATUS_POLYGONSFAILED_INVALID() As String

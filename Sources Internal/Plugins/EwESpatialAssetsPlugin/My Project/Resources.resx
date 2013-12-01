@@ -239,6 +239,10 @@
     <value>Spatial data {0} does not overlap with Ecospace map</value>
     <comment>{0}=bounds</comment>
   </data>
+  <data name="STATUS_POLYGONSFAILED_COMPLEX" xml:space="preserve">
+    <value>{0} too complex polygon(s) were excluded from automated processing.</value>
+    <comment>{0}=polygon count</comment>
+  </data>
   <data name="STATUS_POLYGONSFAILED_INVALID" xml:space="preserve">
     <value>{0} invalid polygon(s) were excluded from automated processing.</value>
     <comment>{0}=polygon count</comment>
