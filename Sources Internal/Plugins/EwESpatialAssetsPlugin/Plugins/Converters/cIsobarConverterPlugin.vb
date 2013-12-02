@@ -219,7 +219,7 @@ Namespace SpatialData
         Public ReadOnly Property PlugingName As String _
             Implements EwEPlugin.IPlugin.Name
             Get
-                Return "DotSpatial.VectorAreaConverter"
+                Return "DotSpatial.IsobarConverter"
             End Get
         End Property
 
