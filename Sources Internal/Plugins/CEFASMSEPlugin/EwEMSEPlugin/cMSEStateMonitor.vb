@@ -33,10 +33,17 @@ Public Class cMSEStateMonitor
         Me.Invalidate()
     End Sub
 
+    ''' <summary>
+    ''' Possible execution states for the MSE plug-in.
+    ''' </summary>
     Public Enum eState As Byte
+        ''' <summary>MSE is ready to operate. The default state, and always true.</summary>
         Idle = 0
+        ''' <summary>MSE has input parameters and a number of strategies.</summary>
         HasParams
+        ''' <summary>MSE has generated models.</summary>
         HasModels
+        ''' <summary>MSE has run.</summary>
         HasResults
     End Enum
 
