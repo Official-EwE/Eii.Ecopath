@@ -234,9 +234,11 @@ Public Class frmDistributionParameters
 
         ' JS 12Oct13: made fail-proof
         ' JS 12Oct13: used fixed CSV field reading
+        ' JS 02Dec13: added EndOfStream checks
 
         ' Sanity checks
         If (csv Is Nothing) Then Return Nothing
+        If (csv.EndOfStream()) Then Return Nothing
         If (Not csv.ReadNextRecord()) Then Return Nothing
 
         Dim TGroupName As String = ""

@@ -158,6 +158,8 @@ Public Class cMSE
     ''' -----------------------------------------------------------------------
     Public Function IsInputDataCompatible() As Boolean
 
+        ' Would it not be nice if these file names were represented by enums as well?
+
         Dim aFilesEcopath As String() = New String() {"B_Dist", "BA_Dist", "PB_Dist", "QB_Dist", "EE_Dist"}
         Dim aFilesEcosim As String() = New String() {"DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
         Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams)
@@ -297,31 +299,29 @@ Public Class cMSE
         'initialise correct to all zeros
         For i = 1 To mCore.nGroups
             correct(i - 1) = 0
-
             reader = cMSEUtils.GetReader(strPath)
-            If (reader Is Nothing) Then Return False
+            If (reader IsNot Nothing) Then
+                csv = New CsvReader(reader, True)
+                Try
+                    'cycle through each of the living functional groups each time checking if it exists in the file
+                    While Not csv.EndOfStream
+                        If csv.ReadNextRecord() Then
+                            For xgrp = 1 To mCore.nGroups
+                                If String.Compare(cMSEUtils.FromCSVField(csv("GroupName")), _ecopath.EcopathData.GroupName(xgrp), True) = 0 Then
+                                    correct(xgrp - 1) += 1
+                                End If
+                            Next
+                        End If
+                    End While
 
-            csv = New CsvReader(reader, True)
+                Catch ex As Exception
+                    bOK = False
+                End Try
+                csv.Dispose()
+            End If
+
+            cMSEUtils.ReleaseReader(reader)
         Next
-
-        Try
-
-            'cycle through each of the living functional groups each time checking if it exists in the file
-            While csv.ReadNextRecord
-                For xgrp = 1 To mCore.nGroups
-                    If String.Compare(cMSEUtils.FromCSVField(csv("GroupName")), _ecopath.EcopathData.GroupName(xgrp), True) = 0 Then
-                        correct(xgrp - 1) += 1
-                        ' Exit For ' JS: keep on checking to find duplicates
-                    End If
-                Next
-            End While
-
-        Catch ex As Exception
-            bOK = False
-        End Try
-
-        csv.Dispose()
-        cMSEUtils.ReleaseReader(reader)
 
         ' Report file read error
         If (bOK = False) Then
@@ -516,7 +516,7 @@ Public Class cMSE
         Dim StrategiesFileNames As String()
         Dim csv As CsvReader
         Dim tempHCRGroup As HCR_Group
-        Dim Strategy As Strategy
+        Dim Strategy As Strategy = Nothing
         Dim datadir As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Strategies)
         Dim strVal As String = ""
 
@@ -528,46 +528,52 @@ Public Class cMSE
 
         For Each HCRFileName As String In StrategiesFileNames 'loop through reading each HCR file
 
-            csv = New CsvReader(New StreamReader(HCRFileName), True)
-            'Create the new Strategy with the Filename as the strategy name
-            Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), HCRFileName)
+            ' ToDo_JS: make robust
+            Dim reader As StreamReader = cMSEUtils.GetReader(HCRFileName)
+            If (reader IsNot Nothing) Then
+                csv = New CsvReader(reader, True)
+                'Create the new Strategy with the Filename as the strategy name
+                Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), HCRFileName)
 
-            Try
-                Do Until Not csv.ReadNextRecord()
+                Try
+                    Do Until Not csv.EndOfStream
+                        If csv.ReadNextRecord() Then
+                            'Read all fields from csv and then add to the list that makes up the whole strategy
+                            'csv.ReadNextRecord()
+                            'Each HCR Group needs to be a new object
+                            tempHCRGroup = New HCR_Group(Me.m_uic.Core)
 
-                    'Read all fields from csv and then add to the list that makes up the whole strategy
-                    'csv.ReadNextRecord()
-                    'Each HCR Group needs to be a new object
-                    tempHCRGroup = New HCR_Group(Me.m_uic.Core)
+                            ' Resolve group
+                            tempHCRGroup.GroupB = Me.ResolveGroup(csv(0), cStringUtils.ConvertToInteger(csv(1)))
+                            tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(csv(2))
+                            tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(csv(3))
+                            tempHCRGroup.GroupF = Me.ResolveGroup(csv(4), cStringUtils.ConvertToInteger(csv(5)))
+                            tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(csv(6))
+                            tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
 
-                    ' Resolve group
-                    tempHCRGroup.GroupB = Me.ResolveGroup(csv(0), cStringUtils.ConvertToInteger(csv(1)))
-                    tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(csv(2))
-                    tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(csv(3))
-                    tempHCRGroup.GroupF = Me.ResolveGroup(csv(4), cStringUtils.ConvertToInteger(csv(5)))
-                    tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(csv(6))
-                    tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
+                            'tempHCRGroup.GroupName4Biomass = csv(0)
+                            'tempHCRGroup.GroupNumber4Biomass = csv(1)
+                            'tempHCRGroup.GroupName4F = csv(4)
+                            'tempHCRGroup.GroupNumber4F = csv(5)
+                            'tempHCRGroup.CostFunctionOrg = csv(7)
 
-                    'tempHCRGroup.GroupName4Biomass = csv(0)
-                    'tempHCRGroup.GroupNumber4Biomass = csv(1)
-                    'tempHCRGroup.GroupName4F = csv(4)
-                    'tempHCRGroup.GroupNumber4F = csv(5)
-                    'tempHCRGroup.CostFunctionOrg = csv(7)
+                            ' Only add valid strategies!
+                            If tempHCRGroup.isValid(strVal) Then
+                                Strategy.Add(tempHCRGroup)
+                            End If
+                        End If
+                    Loop
+                    Strategies.Add(Strategy)
 
-                    ' Only add valid strategies!
-                    If tempHCRGroup.isValid(strVal) Then
-                        Strategy.Add(tempHCRGroup)
-                    End If
-
-                Loop
-
-            Catch ex As Exception
-                ' ToDo: decide what to do when CSV data is malformed
-            End Try
+                Catch ex As Exception
+                    ' ToDo: decide what to do when CSV data is malformed
+                End Try
+                csv.Dispose()
+            End If
 
             'End While
-            Strategies.Add(Strategy)
             csv.Dispose()
+            cMSEUtils.ReleaseReader(reader)
         Next
 
         Return True
@@ -947,7 +953,7 @@ Public Class cMSE
                     GoodDynamics = False
                 End If
                 For iPrey As Integer = 1 To mCore.nGroups
-                    If diet_matrix.ReadNextRecord() Then
+                    If (Not diet_matrix.EndOfStream) And (diet_matrix.ReadNextRecord()) Then
                         For iPred As Integer = 1 To mCore.nLivingGroups
                             mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) = cStringUtils.ConvertToSingle(diet_matrix(iPred - 1))
                         Next
@@ -1496,15 +1502,15 @@ stepend:
                 '        End If
                 '    Next
                 'Next
-                While csv.ReadNextRecord()
-                    'Note about indices for interacts, lower and upper
-                    'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
-                    'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                    Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
-                    MeanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
+                While Not csv.EndOfStream
+                    If csv.ReadNextRecord() Then
+                        'Note about indices for interacts, lower and upper
+                        'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
+                        'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
+                        Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
+                        MeanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
+                    End If
                 End While
-
-
             Catch ex As Exception
                 ' ToDo_JS: handle error. Unexpected exception reading CSV file
             End Try
@@ -1519,8 +1525,10 @@ stepend:
             'Read in the values from the DietCompositionMultipliers.csv
             csv = New CsvReader(reader, True)
             Try
-                Do While csv.ReadNextRecord
-                    DietPropMultipliers(cStringUtils.ConvertToInteger(csv(0)) - 1) = cStringUtils.ConvertToInteger(csv(2))
+                Do While Not csv.EndOfStream
+                    If csv.ReadNextRecord() Then
+                        DietPropMultipliers(cStringUtils.ConvertToInteger(csv(0)) - 1) = cStringUtils.ConvertToInteger(csv(2))
+                    End If
                 Loop
             Catch ex As Exception
                 ' ToDo_JS: handle error. Unexpected exception reading CSV file
@@ -1733,7 +1741,7 @@ stepend:
             For igrp = 1 To mCore.nLivingGroups
 
                 xgrp = 1
-                If csvParamX.ReadNextRecord() Then
+                If (Not csvParamX.EndOfStream) And (csvParamX.ReadNextRecord()) Then
                     'Make sure that .csv files are set up with group names in same order because xgrp is found only from the B file
                     'and then is assumed to be the same for all other files
                     While MonteCarlo.Groups(xgrp).Name <> csvParamX(1) 'And xgrp <= mCore.nLivingGroups
@@ -2164,8 +2172,6 @@ stepend:
 
     Public Function GenerateEcosimParameters(ByVal ParamName As String) As Boolean
 
-        ' ToDo_JS: Use standard CSV field reading/writing
-        ' ToDo_JS: Use standard readers/writers, and make robust
         Dim strPath As String = cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv")
 
         If Not CheckEcoSimDistributionFilesOkay(strPath) Then Return False
@@ -2181,20 +2187,26 @@ stepend:
         Dim GroupNames(mCore.nLivingGroups - 1) As String
 
         reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv"))
-        csv = New CsvReader(reader, True)
+        If (reader IsNot Nothing) Then
+            csv = New CsvReader(reader, True)
+            'Read all the distribution information from the .csv file and into an array ParameterArray
+            Try
 
-        'Read all the distribution information from the .csv file and into an array ParameterArray
-        While csv.ReadNextRecord()
-            GroupNames(CInt(csv.CurrentRecordIndex)) = cMSEUtils.FromCSVField(csv("GroupName"))
-            For iField = 2 To 5
-                ParameterArray(CInt(csv.CurrentRecordIndex), iField - 2) = cStringUtils.ConvertToSingle(csv(iField))
-            Next
-        End While
+                While Not csv.EndOfStream
+                    If csv.ReadNextRecord() Then
+                        GroupNames(CInt(csv.CurrentRecordIndex)) = cMSEUtils.FromCSVField(csv("GroupName"))
+                        For iField = 2 To 5
+                            ParameterArray(CInt(csv.CurrentRecordIndex), iField - 2) = cStringUtils.ConvertToSingle(csv(iField))
+                        Next
+                    End If
+                End While
+            Catch ex As Exception
+
+            End Try
+            csv.Dispose()
+        End If
 
         cMSEUtils.ReleaseReader(reader)
-        csv.Dispose()
-
-
 
         'Generate an array of sample parameters
         For iGroup = 1 To mCore.nLivingGroups
@@ -2223,20 +2235,25 @@ stepend:
 
         'Output the sampled parameters to a csv
         Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, ParamName & "_out.csv"))
+        If (writer IsNot Nothing) Then
+            Try
+                For igrp As Integer = 1 To mCore.nLivingGroups
+                    If (igrp > 1) Then writer.Write(",")
+                    writer.Write(cStringUtils.ToCSVField(GroupNames(igrp - 1)))
+                Next
+                writer.WriteLine()
 
-        For igrp As Integer = 1 To mCore.nLivingGroups
-            If (igrp > 1) Then writer.Write(",")
-            writer.Write(cStringUtils.ToCSVField(GroupNames(igrp - 1)))
-        Next
-        writer.WriteLine()
-
-        For iIteration = 1 To nModels
-            For iGroup = 1 To mCore.nLivingGroups
-                If (iGroup > 1) Then writer.Write(",")
-                writer.Write(cStringUtils.ToCSVField(SampledParameters(iIteration - 1, iGroup - 1)))
-            Next
-            writer.WriteLine()
-        Next
+                For iIteration = 1 To nModels
+                    For iGroup = 1 To mCore.nLivingGroups
+                        If (iGroup > 1) Then writer.Write(",")
+                        writer.Write(cStringUtils.ToCSVField(SampledParameters(iIteration - 1, iGroup - 1)))
+                    Next
+                    writer.WriteLine()
+                Next
+            Catch ex As Exception
+                ' ToDo: respond to error, somehow
+            End Try
+        End If
         cMSEUtils.ReleaseWriter(writer)
         Return True
 
@@ -2273,10 +2290,10 @@ stepend:
                     End If
                     writer.WriteLine()
                 Next igrppredator
+            Else
+                ' Hmm, writer could not be created?!
             End If
-
             cMSEUtils.ReleaseWriter(writer)
-
         Next
 
     End Sub
@@ -2297,22 +2314,15 @@ stepend:
         Dim ZeroEffortFleets As New List(Of Integer)
 
         For iGrp = 1 To mCore.nGroups
-
             If FTargCons(iGrp - 1, HCRType.Conservation) = 0 Then
-
                 For iFleet = 1 To mCore.nFleets
-
                     If mCore.FleetInputs(iFleet).Landings(iGrp) + mCore.FleetInputs(iFleet).Discards(iGrp) > 0 And _
                         Not ZeroEffortFleets.Contains(iFleet) Then
                         ZeroEffortFleets.Add(iFleet)
                     End If
-
                 Next
-
             End If
-
         Next
-
         Return ZeroEffortFleets.ToArray
 
     End Function

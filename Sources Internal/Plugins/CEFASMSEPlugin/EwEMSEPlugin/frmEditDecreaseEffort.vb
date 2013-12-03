@@ -56,11 +56,12 @@ Public Class frmEditDecreaseEffort
             reader = cMSEUtils.GetReader(strPath)
             csv = New CsvReader(reader, True)
             While Not csv.EndOfStream
-                csv.ReadNextRecord()
-                irow = dgvMaxDecreaseEffort.Rows.Add()
-                dgvMaxDecreaseEffort.Rows.Item(irow).Cells(0).Value = cStringUtils.ConvertToInteger(csv(0))
-                dgvMaxDecreaseEffort.Rows.Item(irow).Cells(1).Value = cMSEUtils.FromCSVField(csv(1))
-                dgvMaxDecreaseEffort.Rows.Item(irow).Cells(2).Value = cStringUtils.ConvertToDouble(csv(2))
+                If csv.ReadNextRecord() Then
+                    irow = dgvMaxDecreaseEffort.Rows.Add()
+                    dgvMaxDecreaseEffort.Rows.Item(irow).Cells(0).Value = cStringUtils.ConvertToInteger(csv(0))
+                    dgvMaxDecreaseEffort.Rows.Item(irow).Cells(1).Value = cMSEUtils.FromCSVField(csv(1))
+                    dgvMaxDecreaseEffort.Rows.Item(irow).Cells(2).Value = cStringUtils.ConvertToDouble(csv(2))
+                End If
             End While
 
             csv.Dispose()
