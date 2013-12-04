@@ -28,6 +28,7 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports System.Xml
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -74,7 +75,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Function IsConfigured() As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured, EwEPlugin.IConfigurablePlugin.IsConfigured
-            Return Not String.IsNullOrWhiteSpace(Me.AttributeFilter)
+            Return Not String.IsNullOrWhiteSpace(Me.m_strAttributeName)
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -188,7 +189,14 @@ Namespace SpatialData
         Public ReadOnly Property DisplayName As String _
             Implements ISpatialDataConverter.DisplayName
             Get
-                Return My.Resources.CONVERTER_ISOBAR_NAME
+                If String.IsNullOrWhiteSpace(Me.m_strAttributeName) Then
+                    Return My.Resources.CONVERTER_ISOBAR_NAME
+                Else
+                    ' ToDo: globalize this
+                    Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                                         My.Resources.CONVERTER_ISOBAR_NAME, _
+                                         String.Format(SharedResources.GENERIC_LABEL_DOUBLE, "Field", Me.m_strAttributeName))
+                End If
             End Get
         End Property
 
