@@ -36,6 +36,13 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set the dataset to link to this converter.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property Dataset As ISpatialDataSet
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Get the name for displaying the converter in a user interface.
         ''' </summary>
         ''' -------------------------------------------------------------------
