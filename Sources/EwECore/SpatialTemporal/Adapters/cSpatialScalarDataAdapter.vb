@@ -58,7 +58,7 @@ Namespace SpatialData
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
 
-            If (Me.DataScaleType(layer.Index) = eScaleType.Relative) Then
+            If (Me.DataScaleType(layer.Index) = eScaleType.Relative) And (sValueAtT <> cCore.NULL_VALUE) Then
                 sValueAtT /= Me.DataScale(layer.Index)
             End If
 
