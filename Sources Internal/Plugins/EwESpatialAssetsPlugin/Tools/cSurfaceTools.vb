@@ -26,6 +26,7 @@ Imports DotSpatial.Projections
 Imports DotSpatial.Topology
 Imports EwECore
 Imports EwECore.SpatialData
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -183,7 +184,7 @@ Public Class cSurfaceTools
     ''' the cell area.
     ''' </summary>
     ''' <param name="fs">The polygon feature set to convert.</param>
-    ''' <param name="dCellSize">Cell size, in decimal degrees, of the raster to create.</param>
+    ''' <param name="dCellWidth">Cell width, in decimal degrees, of the raster to create.</param>
     ''' <param name="strField">Attribute field to convert.</param>
     ''' <param name="strFileName">The output file name to write the raster to.</param>
     ''' <param name="Log"><see cref="cSpatialOperationLog"/> for logging operations.</param>
@@ -201,15 +202,14 @@ Public Class cSurfaceTools
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Shared Function RasterizeIsobar(ByVal fs As IFeatureSet,
-                                         ByVal ptfTL As PointF, _
-                                         ByVal ptfBR As PointF, _
-                                         ByVal dCellSize As Double, _
-                                         ByVal strField As String, _
-                                         ByVal strFileName As String,
-                                         ByVal log As cSpatialOperationLog) As IRaster
+                                           ByVal ptfTL As PointF, _
+                                           ByVal ptfBR As PointF, _
+                                           ByVal dCellWidth As Double, _
+                                           ByVal strField As String, _
+                                           ByVal strFileName As String,
+                                           ByVal log As cSpatialOperationLog) As IRaster
 
         'Dim projWork As ProjectionInfo = KnownCoordinateSystems.Projected.World.CylindricalEqualAreaworld
-        Dim coords As New List(Of Coordinate)
         Dim featToConvert As IFeatureSet = Nothing
         Dim iNumRejected As Integer = 0
 
@@ -229,11 +229,16 @@ Public Class cSurfaceTools
         ' -----
         ' Create and position raster 
         ' -----
-        Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
+        Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellWidth)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
         rs.Projection = cDotSpatialUtils.EcospaceProjection
         rs.Bounds = bnds
         rs.NoDataValue = 0
+
+        Dim dCellHeight As Double = rs.CellHeight
+
+        Debug.Assert(cNumberUtils.Approximates(rs.CellWidth, dCellWidth, dCellWidth * 0.1))
+        Debug.Assert(cNumberUtils.Approximates(dCellHeight, dCellWidth, rs.CellHeight * 0.1))
 
         If (log IsNot Nothing) Then log.LogOperation(String.Format(My.Resources.OPERATION_EXTRACTPLOYGONS, ""), eStatusFlags.ValueComputed)
 
@@ -244,20 +249,19 @@ Public Class cSurfaceTools
 
                 ' Create cookie cutter for a cell
                 Dim ptCut = rs.CellToProj(iRow, iCol)
-                coords.Clear()
-                coords.Add(New Coordinate(ptCut.X - rs.CellWidth / 2, ptCut.Y - rs.CellHeight / 2))
-                coords.Add(New Coordinate(ptCut.X + rs.CellWidth / 2, ptCut.Y - rs.CellHeight / 2))
-                coords.Add(New Coordinate(ptCut.X + rs.CellWidth / 2, ptCut.Y + rs.CellHeight / 2))
-                coords.Add(New Coordinate(ptCut.X - rs.CellWidth / 2, ptCut.Y + rs.CellHeight / 2))
+                Dim coords As New List(Of Coordinate)
+                coords.Add(New Coordinate(ptCut.X - dCellWidth / 2, ptCut.Y - dCellHeight / 2))
+                coords.Add(New Coordinate(ptCut.X + dCellWidth / 2, ptCut.Y - dCellHeight / 2))
+                coords.Add(New Coordinate(ptCut.X + dCellWidth / 2, ptCut.Y + dCellHeight / 2))
+                coords.Add(New Coordinate(ptCut.X - dCellWidth / 2, ptCut.Y + dCellHeight / 2))
                 coords.Add(coords(0)) ' Close polygon
 
                 Dim polyCut As New Polygon(coords)
-                Dim extCut As Extent = polyCut.Envelope.ToExtent
-                Dim dAreaTot As Double
-                Dim dValueTot As Double
+                Dim dAreaTot As Double = 0
+                Dim dValueTot As Double = 0
 
                 ' See useful discussion for faster polygon overlap processing: http://dotspatial.codeplex.com/discussions/265535
-                Dim candidates As List(Of IFeature) = featToConvert.Select(extCut)
+                Dim candidates As List(Of IFeature) = featToConvert.Select(polyCut.Envelope.ToExtent)
                 If (candidates IsNot Nothing) Then
 
                     For Each featTmp As IFeature In candidates
