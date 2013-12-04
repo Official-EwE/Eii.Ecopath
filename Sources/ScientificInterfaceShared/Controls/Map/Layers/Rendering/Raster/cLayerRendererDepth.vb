@@ -58,6 +58,7 @@ Namespace Controls.Map.Layers
             Try
                 Dim sValue As Single = CSng(value)
                 Dim sValueMax As Single = layer.MaxValue
+                Dim sValueMin As Single = layer.MinValue
 
                 ' Is non-water cell?
                 If (sValue <= 0) Then
@@ -73,7 +74,7 @@ Namespace Controls.Map.Layers
 
                         If (value IsNot Nothing) And (Me.Font IsNot Nothing) Then
                             ' Calculate the cell color based on the cell value RELATIVE TO [0, sValueMax),
-                            Using br As New SolidBrush(Me.ColorRamp.GetColor(sValue, sValueMax))
+                            Using br As New SolidBrush(Me.ColorRamp.GetColor(sValue - sValueMin, sValueMax - sValueMin))
                                 g.FillRectangle(br, rc)
                             End Using
                         End If
