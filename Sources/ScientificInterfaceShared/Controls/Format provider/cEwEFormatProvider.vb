@@ -70,16 +70,16 @@ Namespace Controls
                 Dim wrapper As IControlWrapper = Nothing
 
                 ' Wrapper supported Windows controls
-                If TypeOf (ctrl) Is TextBox Or TypeOf (ctrl) Is RichTextBox Then
-                    wrapper = New cTextBoxWrapper
+                If TypeOf (ctrl) Is Windows.Forms.TextBox Or TypeOf (ctrl) Is Windows.Forms.RichTextBox Then
+                    wrapper = New cTextBoxWrapper()
                 ElseIf TypeOf (ctrl) Is Label Then
-                    wrapper = New cLabelWrapper
+                    wrapper = New cLabelWrapper()
                 ElseIf TypeOf (ctrl) Is CheckBox Then
-                    wrapper = New cCheckboxWrapper
+                    wrapper = New cCheckboxWrapper()
                 ElseIf TypeOf (ctrl) Is ComboBox Then
-                    wrapper = New cComboBoxWrapper
+                    wrapper = New cComboBoxWrapper()
                 ElseIf TypeOf (ctrl) Is NumericUpDown Then
-                    wrapper = New cNumericUpDownWrapper
+                    wrapper = New cNumericUpDownWrapper()
                 End If
 
                 ' Development time sanity check
@@ -254,7 +254,8 @@ Namespace Controls
                 Try
                     ' Store ref to Text box
                     Me.m_tb = DirectCast(ctrl, TextBoxBase)
-                    AddHandler Me.m_tb.LostFocus, AddressOf OnControlLostFocus
+                    AddHandler Me.m_tb.Enter, AddressOf OnControlEntered
+                    AddHandler Me.m_tb.Leave, AddressOf OnControlLeft
 
                     Me.m_provider = provider
                     Me.m_md = metadata
@@ -279,7 +280,8 @@ Namespace Controls
                     Implements IControlWrapper.Release
 
                 If (Me.m_tb IsNot Nothing) Then
-                    RemoveHandler Me.m_tb.LostFocus, AddressOf OnControlLostFocus
+                    RemoveHandler Me.m_tb.Enter, AddressOf OnControlEntered
+                    RemoveHandler Me.m_tb.LostFocus, AddressOf OnControlLeft
                     Me.m_tb = Nothing
                 End If
 
@@ -317,13 +319,21 @@ Namespace Controls
                     ' Interpret as single?
                     If objValueType Is GetType(Single) Then
                         ' #Yes: apply format
-                        strText = sg.FormatNumber(CSng(objValue), style)
+                        If Me.m_tb.Focused Then
+                            strText = CDbl(objValue).ToString
+                        Else
+                            strText = sg.FormatNumber(CSng(objValue), style)
+                        End If
                     End If
 
                     ' Interpret as double?
                     If objValueType Is GetType(Double) Then
                         ' #Yes: apply format
-                        strText = sg.FormatNumber(CDbl(objValue), style)
+                        If Me.m_tb.Focused Then
+                            strText = CDbl(objValue).ToString
+                        Else
+                            strText = sg.FormatNumber(CDbl(objValue), style)
+                        End If
                     End If
 
                     ' Update text box
@@ -374,19 +384,37 @@ Namespace Controls
 
             '''' -----------------------------------------------------------------------
             '''' <summary>
+            '''' Event handler, invoked when the Text Box text was entered.
+            '''' </summary>
+            '''' -----------------------------------------------------------------------
+            Private Sub OnControlEntered(ByVal sender As Object, ByVal e As System.EventArgs)
+                Try
+                    ' Refresh value
+                    Me.UpdateContent(ScientificInterfaceShared.Properties.cProperty.eChangeFlags.Value)
+                Catch ex As Exception
+                    ' WHoah!
+                End Try
+            End Sub
+            '''' -----------------------------------------------------------------------
+            '''' <summary>
             '''' Event handler, invoked when the Text Box text has lost focus. This will 
             '''' pass the modified text back to the parent 
             '''' <see cref="EwEFormatProvider">EwEFormatProvider</see>.
             '''' </summary>
             '''' -----------------------------------------------------------------------
-            Private Sub OnControlLostFocus(ByVal sender As Object, ByVal e As System.EventArgs)
-                ' Did anything change?
-                If Me.m_tb.Modified Then
-                    ' Update internal value
-                    Me.m_provider.Value = Me.m_tb.Text
-                    ' Clear modified flag
-                    Me.m_tb.Modified = False
-                End If
+            Private Sub OnControlLeft(ByVal sender As Object, ByVal e As System.EventArgs)
+                Try
+                    ' Did anything change?
+                    If Me.m_tb.Modified Then
+                        ' Update internal value
+                        Me.m_provider.Value = Me.m_tb.Text
+                        ' Clear modified flag
+                        Me.m_tb.Modified = False
+                    End If
+                    Me.UpdateContent(ScientificInterfaceShared.Properties.cProperty.eChangeFlags.Value)
+                Catch ex As Exception
+
+                End Try
             End Sub
 
 #End Region ' TextBox events
