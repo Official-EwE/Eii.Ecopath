@@ -160,6 +160,11 @@ Namespace SpatialData
                 If (Me.m_converters Is Nothing) Then Me.Initialize()
                 Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Me.m_converters(Math.Max(0, iIndex)) = value
+
+                ' Connect converter and dataset, if possible
+                If (value IsNot Nothing) Then
+                    value.Dataset = Me.Dataset(iIndex)
+                End If
             End Set
         End Property
 
