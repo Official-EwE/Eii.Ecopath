@@ -19,21 +19,18 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports System.Windows.Forms
-Imports System.Xml
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>
-''' Plugin point that provides a configuration interface as a <see cref="Control">user interface control</see>.
+''' Plugin point that provides a <see cref="IConfigurable">configurable</see>
+''' interactions.
 ''' </summary>
 ''' ===========================================================================
 Public Interface IConfigurablePlugin
     Inherits IPlugin
-
-    Function IsConfigured() As Boolean
-    Function GetConfigUI() As Control
+    Inherits IConfigurable
 
 End Interface
