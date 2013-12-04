@@ -127,13 +127,19 @@
     <value>Plugin that converts GIS raster or polygon data to a value raster compatible with Ecospace. Executed GIS raster operations are Clip and Resample.</value>
   </data>
   <data name="CONVERTER_DIRECTRASTER_NAME" xml:space="preserve">
-    <value>Simple raster interpolator</value>
+    <value>Raster interpolator</value>
   </data>
   <data name="CONVERTER_DIRECTVECTOR_DESCR" xml:space="preserve">
     <value>Plugin that converts the attribute values of GIS vector data (points, multi-points and polygones) to a raster compatible with Ecospace.</value>
   </data>
   <data name="CONVERTER_DIRECTVECTOR_NAME" xml:space="preserve">
-    <value>Simple vector converter</value>
+    <value>Vector converter</value>
+  </data>
+  <data name="CONVERTER_ISOBAR_DESCR" xml:space="preserve">
+    <value>Plugin that converts GIS isobar (height contours) to a Ecospace depth map.</value>
+  </data>
+  <data name="CONVERTER_ISOBAR_NAME" xml:space="preserve">
+    <value>Isobar converter</value>
   </data>
   <data name="DATASET_ASCII_DESCRIPTION" xml:space="preserve">
     <value>A series of ASCII map files, prepared to match a specific Ecospace map size and extent</value>

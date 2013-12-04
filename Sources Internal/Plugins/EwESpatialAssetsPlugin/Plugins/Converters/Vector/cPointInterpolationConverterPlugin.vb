@@ -34,22 +34,25 @@ Namespace SpatialData
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Default spatial data converter.
+    ''' Spatial data converter that interpolates a point grid to a grid with values,
+    ''' interpolated from one of the point's attributes.
     ''' </summary>
     ''' <remarks>
-    ''' Converts an incoming vector map to a raster of an Ecospace raster.
+    ''' Converts an incoming vector map to a raster of a given spatial extent, cell 
+    ''' size and standard Ecospace projection.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Class cVectorConverterPlugin
+    Public Class cPointInterpolationConverterPlugin
         Implements ISpatialDataConverterPlugin
 
-        ''' <summary>Filter for extracting features (vector set only).</summary>
         Private m_strAttributeFilter As String = ""
-        ''' <summary>Name of attribute value to rasterize (vector set only).</summary>
-        Private m_strAttributeName As String = ""
-        Private m_dtAttributeValues As Dictionary(Of Object, Object) = Nothing
-
         Private m_core As cCore = Nothing
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="EwEUtils.SpatialData.ISpatialDataConverter.Dataset"/>
+        ''' -----------------------------------------------------------------------
+        Public Property Dataset As EwEUtils.SpatialData.ISpatialDataSet _
+            Implements EwEUtils.SpatialData.ISpatialDataConverter.Dataset
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Configuration"/>
@@ -69,7 +72,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Function IsConfigured() As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured
-            Return Not String.IsNullOrWhiteSpace(Me.m_strAttributeName)
+            Return True
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -78,20 +81,8 @@ Namespace SpatialData
         Public Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsCompatible
             If (ds Is Nothing) Then Return False
-            Return (ds.ConversionFormat = "DotSpatialVector")
+            Return False And (ds.ConversionFormat = "DotSpatialVector")
         End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.AttributeName"/>
-        ''' -----------------------------------------------------------------------
-        Public Property AttributeName As String Implements ISpatialDataConverter.AttributeName
-            Get
-                Return Me.m_strAttributeName
-            End Get
-            Set(value As String)
-                Me.m_strAttributeName = value
-            End Set
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.AttributeFilter"/>
@@ -106,14 +97,26 @@ Namespace SpatialData
         End Property
 
         ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataConverter.AttributeName"/>
+        ''' -----------------------------------------------------------------------
+        Public Property AttributeName As String Implements ISpatialDataConverter.AttributeName
+            Get
+                Return ""
+            End Get
+            Set(value As String)
+                ' Ignored
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.AttributeValueMappings"/>
         ''' -----------------------------------------------------------------------
         Public Property AttributeValueMappings As Dictionary(Of Object, Object) Implements ISpatialDataConverter.AttributeValueMappings
             Get
-                Return Me.m_dtAttributeValues
+                Return Nothing
             End Get
             Set(value As System.Collections.Generic.Dictionary(Of Object, Object))
-                Me.m_dtAttributeValues = value
+                ' Ignored
             End Set
         End Property
 
@@ -127,58 +130,44 @@ Namespace SpatialData
                                 ByVal strFile As String) As ISpatialRaster _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.Convert
 
-            Dim log As cSpatialOperationLog = Nothing
-            If (Me.m_core IsNot Nothing) Then log = Me.m_core.SpatialOperationLog
+            'Dim log As cSpatialOperationLog = Nothing
+            'Dim rstResult As IRaster = Nothing
 
-            ' Sanity checks
-            Debug.Assert((data IsNot Nothing) And (Not String.IsNullOrWhiteSpace(strFile)) And (dCellSize > 0))
+            'If (Me.m_core IsNot Nothing) Then log = Me.m_core.SpatialOperationLog
 
-            ' Validate data
-            If (Not TypeOf data Is IDataSet) Then
-                cLog.Write(Me.DisplayName & ": cannot convert data of type " & data.GetType().ToString, eVerboseLevel.Detailed)
-                Return Nothing
-            End If
+            '' Sanity checks
+            'Debug.Assert((data IsNot Nothing) And (Not String.IsNullOrWhiteSpace(strFile)) And (dCellSize > 0))
 
-            ' Log
-            Me.LogMessage(String.Format(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
+            '' Validate data
+            'If (Not TypeOf data Is IDataSet) Then
+            '    cLog.Write(Me.DisplayName & ": cannot convert data of type " & data.GetType().ToString, eVerboseLevel.Detailed)
+            '    Return Nothing
+            'End If
 
-            ' Get Ecospace raster bounds
-            Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
-            Dim rstResult As IRaster = Nothing
+            '' Log
+            'Me.LogMessage(String.Format(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
 
-            If (TypeOf data Is IFeatureSet) Then
-                Try
+            '' Perform conversion
+            'If (TypeOf data Is IRaster) Then
+            '    Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
+            'ElseIf (TypeOf data Is IFeatureSet) Then
+            '    Try
+            '        ' Rasterize the features
+            '        Dim fs As IFeatureSet = CType(data, IFeatureSet)
+            '        rstResult = cSurfaceTools.RasterizeArea(fs, ptfTL, ptfBR, dCellSize, Me.m_strAttributeFilter, strFile, log)
+            '        rstResult.Close()
+            '        Debug.Assert(rstResult IsNot Nothing)
 
-                    Dim fs As IFeatureSet = CType(data, IFeatureSet)
+            '        Me.LogMessage(String.Format(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
 
-                    ' Is attribute filter specified?
-                    If Not String.IsNullOrWhiteSpace(Me.m_strAttributeFilter) Then
-                        ' #Yes: extract features that match the filter
-                        Dim lFeatures As List(Of IFeature) = fs.SelectByAttribute(Me.m_strAttributeFilter)
-                        fs = New FeatureSet(lFeatures)
-                        Me.LogMessage(String.Format(My.Resources.OPERATION_EXTRACTPLOYGONS, Me.m_strAttributeFilter), eStatusFlags.ValueComputed)
-                    End If
+            '    Catch ex As Exception
+            '        Me.LogMessage(String.Format(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+            '    End Try
 
-                    If Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection) Then
-                        fs.Reproject(cDotSpatialUtils.EcospaceProjection)
-                        Me.LogMessage(String.Format(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
-                    End If
+            'End If
 
-                    ' Rasterize the features
-                    rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, m_strAttributeName, m_dtAttributeValues, strFile, log)
-                    rstResult.Close()
-                    Debug.Assert(rstResult IsNot Nothing)
-
-                    Me.LogMessage(String.Format(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
-
-                Catch ex As Exception
-                    Me.LogMessage(String.Format(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
-                End Try
-            Else
-                ' Log error
-                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
-            End If
-            Return New cSpatialRaster(rstResult)
+            'Return New cSpatialRaster(rstResult)
+            Return Nothing
 
         End Function
 
@@ -188,7 +177,7 @@ Namespace SpatialData
         Public ReadOnly Property DisplayName As String _
             Implements ISpatialDataConverter.DisplayName
             Get
-                Return My.Resources.CONVERTER_DIRECTVECTOR_NAME
+                Return "Point interpolator"
             End Get
         End Property
 
@@ -196,9 +185,9 @@ Namespace SpatialData
         ''' <inheritdocs cref="ISpatialDataConverter.Description"/>
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Description As String _
-            Implements ISpatialDataConverter.Description, IPlugin.Description
+            Implements ISpatialDataConverter.Description, EwEPlugin.IPlugin.Description
             Get
-                Return My.Resources.CONVERTER_DIRECTVECTOR_DESCR
+                Return "ToDo: describe this"
             End Get
         End Property
 
@@ -208,7 +197,7 @@ Namespace SpatialData
         Public ReadOnly Property Author As String _
             Implements ISpatialDataConverterPlugin.Author
             Get
-                Return "Jeroen Steenbeek, UBC Fisheries Centre"
+                Return "Jeroen Steenbeek, Ecopath International Initiative"
             End Get
         End Property
 
@@ -236,7 +225,7 @@ Namespace SpatialData
         Public ReadOnly Property PlugingName As String _
             Implements EwEPlugin.IPlugin.Name
             Get
-                Return "DotSpatial.DefaultVectorConverter"
+                Return "DotSpatial.PointInterpolationConverter"
             End Get
         End Property
 

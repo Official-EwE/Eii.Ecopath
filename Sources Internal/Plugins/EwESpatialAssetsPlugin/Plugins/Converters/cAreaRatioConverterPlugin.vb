@@ -48,6 +48,12 @@ Namespace SpatialData
         Private m_core As cCore = Nothing
 
         ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="EwEUtils.SpatialData.ISpatialDataConverter.Dataset"/>
+        ''' -----------------------------------------------------------------------
+        Public Property Dataset As EwEUtils.SpatialData.ISpatialDataSet _
+            Implements EwEUtils.SpatialData.ISpatialDataConverter.Dataset
+
+        ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Configuration"/>
         ''' -----------------------------------------------------------------------
         Public Property Configuration(ByVal doc As System.Xml.XmlDocument) As System.Xml.XmlNode _

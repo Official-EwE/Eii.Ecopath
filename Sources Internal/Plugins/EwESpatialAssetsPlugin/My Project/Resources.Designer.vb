@@ -88,7 +88,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Simple raster interpolator.
+        '''  Looks up a localized string similar to Raster interpolator.
         '''</summary>
         Friend ReadOnly Property CONVERTER_DIRECTRASTER_NAME() As String
             Get
@@ -106,11 +106,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Simple vector converter.
+        '''  Looks up a localized string similar to Vector converter.
         '''</summary>
         Friend ReadOnly Property CONVERTER_DIRECTVECTOR_NAME() As String
             Get
                 Return ResourceManager.GetString("CONVERTER_DIRECTVECTOR_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plugin that converts GIS isobar (height contours) to a Ecospace depth map..
+        '''</summary>
+        Friend ReadOnly Property CONVERTER_ISOBAR_DESCR() As String
+            Get
+                Return ResourceManager.GetString("CONVERTER_ISOBAR_DESCR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Isobar converter.
+        '''</summary>
+        Friend ReadOnly Property CONVERTER_ISOBAR_NAME() As String
+            Get
+                Return ResourceManager.GetString("CONVERTER_ISOBAR_NAME", resourceCulture)
             End Get
         End Property
         

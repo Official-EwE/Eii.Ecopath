@@ -23,10 +23,11 @@ Imports System.Collections.Generic
 Imports System.Drawing
 Imports DotSpatial.Data
 Imports EwECore
+Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports EwEUtils.Utilities
+Imports System.Xml
 
 #End Region ' Imports
 
@@ -34,18 +35,18 @@ Namespace SpatialData
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Default spatial data converter.
+    ''' Spatial data converter that converts the area of all ploygons with a given
+    ''' attribute value to a fractions of cell area value.
     ''' </summary>
     ''' <remarks>
-    ''' Clips and resamples an incoming raster to an Ecospace raster.
+    ''' Converts an incoming vector map to a raster of a given spatial extent, cell 
+    ''' size and standard Ecospace projection.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Class cRasterConverterPlugin
+    Public Class cIsobarConverterPlugin
         Implements ISpatialDataConverterPlugin
+        Implements IConfigurablePlugin
 
-        ''' <summary>Filter for extracting features (vector set only).</summary>
-        Private m_strAttributeFilter As String = ""
-        ''' <summary>Name of attribute value to rasterize (vector set only).</summary>
         Private m_strAttributeName As String = ""
         Private m_core As cCore = Nothing
 
@@ -61,29 +62,51 @@ Namespace SpatialData
         Public Property Configuration(ByVal doc As System.Xml.XmlDocument) As System.Xml.XmlNode _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.Configuration
             Get
-                Return Nothing
+                Return Me.ToXML(doc)
             End Get
-            Set(ByVal value As System.Xml.XmlNode)
-                ' NOP: nothing to configure
+            Set(ByVal value As XmlNode)
+                Me.FromXML(doc, value)
             End Set
         End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.IsConfigured"/>
         ''' -----------------------------------------------------------------------
-        Public Function IsConfigured() As Boolean _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured
-            Return True
+        Function IsConfigured() As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured, EwEPlugin.IConfigurablePlugin.IsConfigured
+            Return Not String.IsNullOrWhiteSpace(Me.AttributeFilter)
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="IConfigurablePlugin.GetConfigUI"/>
+        ''' -----------------------------------------------------------------------
+        Public Function GetConfigUI() As System.Windows.Forms.Control _
+            Implements EwEPlugin.IConfigurablePlugin.GetConfigUI
+            Dim pg As New ucIsobarConverterConfigPage()
+            pg.Converter = Me
+            Return pg
         End Function
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.IsCompatible"/>
         ''' -----------------------------------------------------------------------
-        Public Function IsCompatible(ds As ISpatialDataSet) As Boolean _
-            Implements ISpatialDataConverter.IsCompatible
+        Public Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialDataConverter.IsCompatible
             If (ds Is Nothing) Then Return False
-            Return (ds.ConversionFormat = "DotSpatialRaster")
+            Return (ds.ConversionFormat = "DotSpatialVector") And (ds.VarName = eVarNameFlags.LayerDepth)
         End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataConverter.AttributeFilter"/>
+        ''' -----------------------------------------------------------------------
+        Public Property AttributeFilter As String Implements ISpatialDataConverter.AttributeFilter
+            Get
+                Return ""
+            End Get
+            Set(value As String)
+                ' Ignored
+            End Set
+        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.AttributeName"/>
@@ -94,18 +117,6 @@ Namespace SpatialData
             End Get
             Set(value As String)
                 Me.m_strAttributeName = value
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.AttributeFilter"/>
-        ''' -----------------------------------------------------------------------
-        Public Property AttributeFilter As String Implements ISpatialDataConverter.AttributeFilter
-            Get
-                Return Me.m_strAttributeFilter
-            End Get
-            Set(value As String)
-                Me.m_strAttributeFilter = value
             End Set
         End Property
 
@@ -131,8 +142,10 @@ Namespace SpatialData
                                 ByVal strFile As String) As ISpatialRaster _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.Convert
 
+            Dim log As cSpatialOperationLog = Nothing
             Dim rstResult As IRaster = Nothing
-            Dim ext As Extent = cDotSpatialUtils.Extent(ptfTL, ptfBR)
+
+            If (Me.m_core IsNot Nothing) Then log = Me.m_core.SpatialOperationLog
 
             ' Sanity checks
             Debug.Assert((data IsNot Nothing) And (Not String.IsNullOrWhiteSpace(strFile)) And (dCellSize > 0))
@@ -148,92 +161,21 @@ Namespace SpatialData
 
             ' Perform conversion
             If (TypeOf data Is IRaster) Then
+                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
+            ElseIf (TypeOf data Is IFeatureSet) Then
                 Try
-                    Dim rs As IRaster = CType(data, IRaster)
-                    Dim bMustCache As Boolean = False
+                    ' Rasterize the features
+                    Dim fs As IFeatureSet = CType(data, IFeatureSet)
+                    rstResult = cSurfaceTools.RasterizeIsobar(fs, ptfTL, ptfBR, dCellSize, Me.m_strAttributeName, strFile, log)
+                    rstResult.Close()
+                    Debug.Assert(rstResult IsNot Nothing)
 
-                    ' Does overlap?
-                    If (rs.Bounds.Extent.Intersects(ext)) Then
-                        ' Perform extraction if extents do not match
-                        If (Not cDotSpatialUtils.Approximates(rs.Extent, ext, dCellSize * cDotSpatialUtils.EQUALS_FACTOR)) Then
-
-                            ' JS Verified 18/feb/13
-
-                            ' Get intersection extent
-                            Dim extIntersect As Extent = rs.Extent.Intersection(ext)
-
-                            ' Extract intersection area
-                            Dim tl As RcIndex = rs.ProjToCell(extIntersect.MinX, extIntersect.MaxY)
-                            Dim br As RcIndex = rs.ProjToCell(extIntersect.MaxX, extIntersect.MinY)
-                            Dim x As Integer = Math.Max(tl.Column, 0)
-                            Dim y As Integer = Math.Max(tl.Row, 0)
-                            Dim dx As Integer = Math.Max(br.Column - x, br.Row - y)
-
-                            ' Extract rectangular block for this area
-                            ' JS: the block is rectangular to overcome a bug in DotSpatial where bounds width and height are reversed. Note
-                            '     that the square block only works when cell width and height are equal. Now this code is correct, verified 18/feb/13
-
-                            ' ToDo: recalc extent to fix bounds
-                            rstResult = rs.ReadBlock(x, y, Math.Max(dx, 2), Math.Max(dx, 2))
-                            rs.Close()
-                            rs = rstResult
-
-                            ' Log
-                            Me.LogMessage(String.Format(My.Resources.OPERATION_EXTRACTRASTER, cDotSpatialUtils.FormatExtent(rs.Bounds), cDotSpatialUtils.FormatRasterGrid(rs)), eStatusFlags.ValueComputed)
-                            ' Converted data must be cached
-                            bMustCache = True
-
-                        End If
-                    Else
-                        ' Log
-                        Me.LogMessage(String.Format(My.Resources.STATUS_NO_OVERLAP, cDotSpatialUtils.FormatExtent(rs.Bounds)), eStatusFlags.ErrorEncountered)
-                        Return Nothing
-                    End If
-
-                    ' Cell sizes differ?
-                    If Not (cNumberUtils.Approximates(rs.CellHeight, dCellSize, dCellSize * cDotSpatialUtils.EQUALS_FACTOR) And _
-                            cNumberUtils.Approximates(rs.CellWidth, dCellSize, dCellSize * cDotSpatialUtils.EQUALS_FACTOR)) Then
-
-                        ' #Yes: need to resample cells
-
-                        ' JS Verified 18/feb/13
-
-                        'rstResult = DotSpatial.Analysis.ResampleCells.Resample(rs, dCellSize, dCellSize, cFileUtils.MakeTempFile(IO.Path.GetExtension(strFile)))
-                        rstResult = cDotSpatialUtils.ResampleToEcospace(rs, ptfTL, ptfBR, dCellSize, cFileUtils.MakeTempFile(IO.Path.GetExtension(strFile)))
-                        rstResult.Close()
-                        bMustCache = True
-
-                        'Dim wrap As New cSpatialRaster(rstResult)
-                        'wrap.Save("D:\Nereus\EwE output\NCAdriaticSea_Fitted7502_Ecospace_Fouzaicorrected\Ecospace_new6 (Valid)\_debug_\resample.asc")
-
-                        ' Sanity checks
-                        Debug.Assert(cNumberUtils.Approximates(dCellSize, rstResult.Bounds.CellWidth, dCellSize * cDotSpatialUtils.EQUALS_FACTOR))
-                        Debug.Assert(cNumberUtils.Approximates(dCellSize, rstResult.Bounds.CellHeight, dCellSize * cDotSpatialUtils.EQUALS_FACTOR))
-
-                        ' Log
-                        Me.LogMessage(String.Format(My.Resources.OPERATION_RESAMPLE, cDotSpatialUtils.FormatRasterGrid(rstResult), cDotSpatialUtils.FormatRasterStats(rs)), eStatusFlags.ValueComputed)
-                    Else
-                        rstResult = rs
-                    End If
-
-                    ' Need to cache?
-                    If bMustCache Then
-                        ' #Yes: save
-                        rstResult.SaveAs(strFile)
-                        ' Log
-                        Me.LogMessage(String.Format(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
-                    End If
+                    Me.LogMessage(String.Format(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
 
                 Catch ex As Exception
-                    ' Log
-                    Me.LogMessage(String.Format(My.Resources.STATUS_RASTERCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
-                    Return Nothing
+                    Me.LogMessage(String.Format(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                 End Try
 
-            Else
-                ' Log error
-                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_RASTERONLY, _
-                              eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
             End If
 
             Return New cSpatialRaster(rstResult)
@@ -246,7 +188,7 @@ Namespace SpatialData
         Public ReadOnly Property DisplayName As String _
             Implements ISpatialDataConverter.DisplayName
             Get
-                Return My.Resources.CONVERTER_DIRECTRASTER_NAME
+                Return My.Resources.CONVERTER_ISOBAR_NAME
             End Get
         End Property
 
@@ -256,7 +198,7 @@ Namespace SpatialData
         Public ReadOnly Property Description As String _
             Implements ISpatialDataConverter.Description, EwEPlugin.IPlugin.Description
             Get
-                Return My.Resources.CONVERTER_DIRECTRASTER_DESCR
+                Return My.Resources.CONVERTER_ISOBAR_DESCR
             End Get
         End Property
 
@@ -266,7 +208,7 @@ Namespace SpatialData
         Public ReadOnly Property Author As String _
             Implements ISpatialDataConverterPlugin.Author
             Get
-                Return "Jeroen Steenbeek, UBC Fisheries Centre"
+                Return "Jeroen Steenbeek, Ecopath International Initiative"
             End Get
         End Property
 
@@ -294,7 +236,7 @@ Namespace SpatialData
         Public ReadOnly Property PlugingName As String _
             Implements EwEPlugin.IPlugin.Name
             Get
-                Return "DotSpatial.DefaultRasterConverter"
+                Return "DotSpatial.IsobarConverter"
             End Get
         End Property
 
@@ -309,6 +251,67 @@ Namespace SpatialData
             End If
 
         End Sub
+
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write dataset configuration to XML.
+        ''' </summary>
+        ''' <param name="doc">The doc to generate nodes for.</param>
+        ''' <returns>
+        ''' An XML node that contains the content of the dataset.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Protected Function ToXML(ByVal doc As XmlDocument) As XmlNode
+
+            Dim xnMaster As XmlNode = Nothing
+            Dim xn As XmlNode = Nothing
+
+            xnMaster = doc.CreateElement("Configuration")
+            xn = doc.CreateElement("Attribute")
+            xn.InnerText = Me.m_strAttributeName
+            xnMaster.AppendChild(xn)
+
+            Return xnMaster
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Read dataset configuration from XML.
+        ''' </summary>
+        ''' <param name="doc">The doc to read nodes from.</param>
+        ''' <param name="node">The configuration node that contains the content
+        ''' of the dataset. Happy, happy, happy.</param>
+        ''' <returns>
+        ''' True if successful.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Protected Function FromXML(ByVal doc As XmlDocument, ByVal node As XmlNode) As Boolean
+
+            Dim xn As XmlNode = Nothing
+            Dim xnFile As XmlNode = Nothing
+            Dim xaFile As XmlAttribute = Nothing
+
+            If (String.Compare(node.Name, "Configuration") <> 0) Then Return False
+
+            Try
+                For Each xn In node.ChildNodes
+                    Select Case xn.Name
+                        Case "Attribute" : Me.m_strAttributeName = xn.InnerText
+                    End Select
+                Next
+
+            Catch ex As Exception
+                Return False
+            End Try
+
+            Return True
+
+        End Function
+
+#End Region ' Internals
 
     End Class
 

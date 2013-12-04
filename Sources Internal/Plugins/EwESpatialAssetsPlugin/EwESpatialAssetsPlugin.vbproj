@@ -166,9 +166,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\Converters\cAreaRatioConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\cIsobarConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\cPointInterpolationConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\Isobar conversion\cIsobarConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\cRasterConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\cVectorConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\cVectorConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\Isobar conversion\ucIsobarConverterConfigPage.Designer.vb">
+      <DependentUpon>ucIsobarConverterConfigPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Converters\Vector\Isobar conversion\ucIsobarConverterConfigPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Plugins\Datasets\Files\Specific\cASCIIFilesDataSetPlugin.vb" />
     <Compile Include="Plugins\Datasets\Files\cCalendarColumn.vb">
       <SubType>Component</SubType>
@@ -210,6 +217,9 @@
     <Compile Include="Utils\cDotSpatialUtils.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Plugins\Converters\Vector\Isobar conversion\ucIsobarConverterConfigPage.resx">
+      <DependentUpon>ucIsobarConverterConfigPage.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Datasets\Files\ucMultiFileDataSetConfigPage.resx">
       <DependentUpon>ucMultiFileDataSetConfigPage.vb</DependentUpon>
     </EmbeddedResource>

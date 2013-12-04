@@ -64,27 +64,16 @@ Namespace SpatialData
 
         Private Class cFileEntry
             Private m_strFileName As String
-            Private m_dtDate As Date
-
             Public Sub New(strFileName As String, dt As Date)
-                Me.m_dtDate = dt
+                Me.FileDate = dt
                 Me.m_strFileName = strFileName
             End Sub
-
             Public ReadOnly Property FileName As String
                 Get
                     Return Me.m_strFileName
                 End Get
             End Property
-
             Public Property FileDate As DateTime
-                Get
-                    Return Me.m_dtDate
-                End Get
-                Set(value As DateTime)
-                    Me.m_dtDate = value
-                End Set
-            End Property
         End Class
 
 #End Region ' Private classes
