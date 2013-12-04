@@ -367,7 +367,7 @@ Namespace SpatialData
                             ' #Yes: get value
                             sValue = dataExternal.Cell(iRow, iCol, dNoData)
                             ' Is a valid value?
-                            If (sValue <> cCore.NULL_VALUE) Then
+                            If (sValue <> cCore.NULL_VALUE) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                                 ' #Yes: set value
                                 bSuccess = bSuccess And Me.SetCell(layer, iRow, iCol, sValue)
                             End If
