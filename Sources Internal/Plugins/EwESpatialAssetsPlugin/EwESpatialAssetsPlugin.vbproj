@@ -146,6 +146,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Symbology.Forms.dll</HintPath>
     </Reference>
+    <Reference Include="DotSpatial.Tools, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6219d88fb4baf469, processorArchitecture=x86" />
     <Reference Include="DotSpatial.Topology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=a66b5e9434ca3671, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Topology.dll</HintPath>
@@ -165,10 +166,10 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Plugins\Converters\cAreaRatioConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\Vector\cPointInterpolationConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Raster\cAreaRatioConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\Point interpolation\cPointInterpolationConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\Isobar conversion\cIsobarConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\cRasterConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Raster\cRasterConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\cVectorConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\Isobar conversion\ucIsobarConverterConfigPage.Designer.vb">
       <DependentUpon>ucIsobarConverterConfigPage.vb</DependentUpon>
@@ -280,6 +281,7 @@
     <Content Include="Includes\DotSpatial.Serialization.dll" />
     <Content Include="Includes\DotSpatial.Symbology.dll" />
     <Content Include="Includes\DotSpatial.Symbology.Forms.dll" />
+    <Content Include="Includes\DotSpatial.Tools.dll" />
     <Content Include="Includes\DotSpatial.Topology.dll" />
     <Content Include="Includes\GDAL\win32\cairo.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

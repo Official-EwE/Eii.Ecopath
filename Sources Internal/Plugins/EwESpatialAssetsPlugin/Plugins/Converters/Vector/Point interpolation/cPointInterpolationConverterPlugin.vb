@@ -80,8 +80,12 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsCompatible
+
+            ' JS: DELIBERATELY DISABLED WHILE IN PROGRESS
+            Return False
+
             If (ds Is Nothing) Then Return False
-            Return False And (ds.ConversionFormat = "DotSpatialVector")
+            Return (ds.ConversionFormat = "DotSpatialVector")
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -129,6 +133,10 @@ Namespace SpatialData
                                 ByVal dCellSize As Double, _
                                 ByVal strFile As String) As ISpatialRaster _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.Convert
+
+            ' Convert points to Voronoi ploygons, which then is rasterized?
+            Dim idw As New DotSpatial.Tools.InverseDistanceWeighting()
+
 
             'Dim log As cSpatialOperationLog = Nothing
             'Dim rstResult As IRaster = Nothing
