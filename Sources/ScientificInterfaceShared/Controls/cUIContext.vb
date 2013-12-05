@@ -67,17 +67,24 @@ Namespace Controls
         ''' </summary>
         ''' <param name="core">The <see cref="cCore">core</see> that a UI can interact with.</param>
         ''' <param name="sg">The <see cref="cStyleGuide">style guide</see> that a UI can interact with.</param>
-        ''' <param name="propman">The <see cref="PropertyManager">property manager</see>
-        ''' that a UI can interact with.</param>
+        ''' <param name="propman">The <see cref="PropertyManager">property manager</see> that any UI can interact with, if available.</param>
+        ''' <param name="cmdhandler">The <see cref="cCommandHandler">EwE command handler</see>, if available.</param>
+        ''' <param name="formpos">The central <see cref="cFormSettings">EwE-wide form settings provider</see>, if available.</param>
+        ''' <param name="frmMain">The EwE main form, if available.</param>
+        ''' <param name="help">The <see cref="cHelp">EwE help provider</see>, if available.</param>
+        ''' <param name="syncObj">The <see cref="SynchronizationContext"/> for marshalling calls to the main EwE thread, if available.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal core As cCore, _
                        ByVal sg As cStyleGuide, _
-                       ByVal propman As cPropertyManager, _
-                       ByVal cmdhandler As cCommandHandler, _
-                       ByVal frmMain As Form, _
-                       ByVal formpos As cFormSettings, _
-                       ByVal help As cHelp, _
-                       ByVal syncObj As SynchronizationContext)
+                       Optional ByVal propman As cPropertyManager = Nothing, _
+                       Optional ByVal cmdhandler As cCommandHandler = Nothing, _
+                       Optional ByVal frmMain As Form = Nothing, _
+                       Optional ByVal formpos As cFormSettings = Nothing, _
+                       Optional ByVal help As cHelp = Nothing, _
+                       Optional ByVal syncObj As SynchronizationContext = Nothing)
+
+            Debug.Assert(core IsNot Nothing)
+            Debug.Assert(sg IsNot Nothing)
 
             Me.m_core = core
             Me.m_sg = sg
@@ -140,7 +147,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the main EwE form for centering pop-up dialogs, obtaining the
-        ''' form title, etc.
+        ''' application title, etc.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property FormMain() As Form
