@@ -42,37 +42,41 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimParameters))
-            Me.m_nudNutBaseFreeProp = New cEwENumericUpDown
-            Me.m_nudNumberYears = New cEwENumericUpDown
-            Me.m_cmbSalinityForcing = New System.Windows.Forms.ComboBox
-            Me.m_cmbNutForcing = New System.Windows.Forms.ComboBox
-            Me.m_chkPredictEffort = New System.Windows.Forms.CheckBox
-            Me.m_chkConTracing = New System.Windows.Forms.CheckBox
-            Me.m_lblSalinityForcing = New System.Windows.Forms.Label
-            Me.m_lblNutForcing = New System.Windows.Forms.Label
-            Me.m_lblNutBaseFreeProp = New System.Windows.Forms.Label
-            Me.m_lblNumberYears = New System.Windows.Forms.Label
-            Me.m_hdrInitialization = New cEwEHeaderLabel
-            Me.m_hdrScenario = New cEwEHeaderLabel
-            Me.m_tbContact = New System.Windows.Forms.TextBox
-            Me.m_tbAuthor = New System.Windows.Forms.TextBox
-            Me.m_lbContact = New System.Windows.Forms.Label
-            Me.m_lbAuthor = New System.Windows.Forms.Label
-            Me.m_tbName = New System.Windows.Forms.TextBox
-            Me.m_tbDescription = New System.Windows.Forms.TextBox
-            Me.m_lblDescription = New System.Windows.Forms.Label
-            Me.m_lbScenarioName = New System.Windows.Forms.Label
-            Me.m_chkUseVarPQ = New System.Windows.Forms.CheckBox
-            Me.cmbTempLoading = New System.Windows.Forms.ComboBox
-            Me.m_lblTempLoading = New System.Windows.Forms.Label
+            Me.m_nudNutBaseFreeProp = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudNumberYears = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_cmbSalinityForcing = New System.Windows.Forms.ComboBox()
+            Me.m_cmbNutForcing = New System.Windows.Forms.ComboBox()
+            Me.m_chkPredictEffort = New System.Windows.Forms.CheckBox()
+            Me.m_chkConTracing = New System.Windows.Forms.CheckBox()
+            Me.m_lblSalinityForcing = New System.Windows.Forms.Label()
+            Me.m_lblNutForcing = New System.Windows.Forms.Label()
+            Me.m_lblNutBaseFreeProp = New System.Windows.Forms.Label()
+            Me.m_lblNumberYears = New System.Windows.Forms.Label()
+            Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tbContact = New System.Windows.Forms.TextBox()
+            Me.m_tbAuthor = New System.Windows.Forms.TextBox()
+            Me.m_lbContact = New System.Windows.Forms.Label()
+            Me.m_lbAuthor = New System.Windows.Forms.Label()
+            Me.m_tbName = New System.Windows.Forms.TextBox()
+            Me.m_tbDescription = New System.Windows.Forms.TextBox()
+            Me.m_lblDescription = New System.Windows.Forms.Label()
+            Me.m_lbScenarioName = New System.Windows.Forms.Label()
+            Me.m_chkUseVarPQ = New System.Windows.Forms.CheckBox()
+            Me.cmbTempLoading = New System.Windows.Forms.ComboBox()
+            Me.m_lblTempLoading = New System.Windows.Forms.Label()
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_nudNutBaseFreeProp
             '
+            Me.m_nudNutBaseFreeProp.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
             resources.ApplyResources(Me.m_nudNutBaseFreeProp, "m_nudNutBaseFreeProp")
+            Me.m_nudNutBaseFreeProp.Maximum = New Decimal(New Integer() {999, 0, 0, 196608})
+            Me.m_nudNutBaseFreeProp.Minimum = New Decimal(New Integer() {1, 0, 0, 65536})
             Me.m_nudNutBaseFreeProp.Name = "m_nudNutBaseFreeProp"
+            Me.m_nudNutBaseFreeProp.Value = New Decimal(New Integer() {1, 0, 0, 65536})
             '
             'm_nudNumberYears
             '
@@ -128,15 +132,17 @@ Namespace Ecosim
             'm_hdrInitialization
             '
             resources.ApplyResources(Me.m_hdrInitialization, "m_hdrInitialization")
-            Me.m_hdrInitialization.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_hdrInitialization.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_hdrInitialization.CanCollapseParent = False
+            Me.m_hdrInitialization.CollapsedParentHeight = 0
+            Me.m_hdrInitialization.IsCollapsed = False
             Me.m_hdrInitialization.Name = "m_hdrInitialization"
             '
             'm_hdrScenario
             '
             resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
-            Me.m_hdrScenario.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_hdrScenario.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_hdrScenario.CanCollapseParent = False
+            Me.m_hdrScenario.CollapsedParentHeight = 0
+            Me.m_hdrScenario.IsCollapsed = False
             Me.m_hdrScenario.Name = "m_hdrScenario"
             '
             'm_tbContact
@@ -197,7 +203,7 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblTempLoading, "m_lblTempLoading")
             Me.m_lblTempLoading.Name = "m_lblTempLoading"
             '
-            'EcosimParameters
+            'frmEcosimParameters
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -224,7 +230,7 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_lblDescription)
             Me.Controls.Add(Me.m_lblNutBaseFreeProp)
             Me.Controls.Add(Me.m_lblNumberYears)
-            Me.Name = "EcosimParameters"
+            Me.Name = "frmEcosimParameters"
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
@@ -235,14 +241,12 @@ Namespace Ecosim
         Private WithEvents m_tbName As System.Windows.Forms.TextBox
         Private WithEvents m_tbContact As System.Windows.Forms.TextBox
         Private WithEvents m_tbAuthor As System.Windows.Forms.TextBox
-        Private WithEvents m_nudNutBaseFreeProp As System.Windows.Forms.NumericUpDown
         Private WithEvents m_chkUseVarPQ As System.Windows.Forms.CheckBox
         Private WithEvents m_lbScenarioName As System.Windows.Forms.Label
         Private WithEvents m_lbContact As System.Windows.Forms.Label
         Private WithEvents m_lbAuthor As System.Windows.Forms.Label
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
         Private WithEvents m_lblNumberYears As System.Windows.Forms.Label
-        Private WithEvents m_nudNumberYears As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblNutBaseFreeProp As System.Windows.Forms.Label
         Private WithEvents m_cmbNutForcing As System.Windows.Forms.ComboBox
         Private WithEvents m_lblNutForcing As System.Windows.Forms.Label
@@ -254,6 +258,8 @@ Namespace Ecosim
         Private WithEvents m_chkConTracing As System.Windows.Forms.CheckBox
         Private WithEvents m_hdrScenario As cEwEHeaderLabel
         Private WithEvents m_hdrInitialization As cEwEHeaderLabel
+        Private WithEvents m_nudNutBaseFreeProp As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudNumberYears As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
     End Class
 End Namespace
