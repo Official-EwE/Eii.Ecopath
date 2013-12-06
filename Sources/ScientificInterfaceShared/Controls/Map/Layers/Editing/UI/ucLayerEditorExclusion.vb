@@ -1,0 +1,106 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Core
+
+Namespace Controls.Map.Layers
+
+    ''' <summary>
+    ''' Visual editor for <see cref="cLayerRendererExclusion"/>
+    ''' </summary>
+    Public Class ucLayerEditorExclusion
+
+#Region " Construction / destruction "
+
+        Public Sub New()
+            MyBase.New()
+            Me.InitializeComponent()
+        End Sub
+
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+            Try
+                If bDisposing Then
+                    If (Me.UIContext Is Nothing) Then Return
+                    If components IsNot Nothing Then
+                        components.Dispose()
+                    End If
+                End If
+            Finally
+                MyBase.Dispose(bDisposing)
+            End Try
+        End Sub
+
+#End Region ' Construction / destruction
+
+#Region " Overrides "
+
+        Public Overrides Sub Initialize(ByVal editor As cLayerEditor)
+            MyBase.Initialize(editor)
+
+            Me.m_nudDepth.DecimalPlaces = 0
+            Me.m_nudDepth.Maximum = 10000
+            Me.m_nudDepth.Minimum = 1
+            Me.m_nudDepth.Increment = 10
+
+        End Sub
+
+#End Region ' Overrides
+
+#Region " Events "
+
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+        End Sub
+
+        Private Sub OnClear(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnClear.Click
+            Try
+                Me.UIContext.Core.ClearExcludedCells()
+            Catch ex As Exception
+                cLog.Write(ex, "ucLayerEditorExclusion:OnExcludeDepths(" & Me.m_nudDepth.Value & ")")
+            End Try
+        End Sub
+
+        Private Sub OnExcludeDepths(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnSet.Click
+            Try
+                Me.UIContext.Core.SetExcludedDepth(CInt(Me.m_nudDepth.Value))
+            Catch ex As Exception
+                cLog.Write(ex, "ucLayerEditorExclusion:OnExcludeDepths(" & Me.m_nudDepth.Value & ")")
+            End Try
+        End Sub
+
+#End Region ' Events
+
+#Region " Internals "
+
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+            MyBase.UpdateContent(editor)
+
+            Me.m_btnClear.Enabled = (Me.IsAttached)
+            Me.m_btnSet.Enabled = (Me.IsAttached)
+
+        End Sub
+
+#End Region ' Internals
+
+    End Class
+
+End Namespace

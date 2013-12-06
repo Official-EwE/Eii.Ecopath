@@ -1368,6 +1368,46 @@ Public Class cEcoSpace
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Update the Depth(,) map used by Ecospace with the Excluded layer
+    ''' </summary>
+    Friend Sub UpdateDepthMap()
+        For i As Integer = 1 To m_Data.InRow
+            For j As Integer = 1 To m_Data.InCol
+                If Me.m_Data.Excluded(i, j) Then
+                    Me.m_Data.Depth(i, j) = cCore.NULL_VALUE
+                Else
+                    Me.m_Data.Depth(i, j) = Me.m_Data.DepthInput(i, j)
+                End If
+            Next
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Exclude cells at and past a specified depth.
+    ''' </summary>
+    ''' <param name="iDepth">The minimum depth to exclude.</param>
+    Friend Sub SetExcludedDepth(iDepth As Integer)
+        For i As Integer = 1 To m_Data.InRow
+            For j As Integer = 1 To m_Data.InCol
+                Me.m_Data.Excluded(i, j) = (Me.m_Data.DepthInput(i, j) >= iDepth)
+            Next
+        Next
+        Me.UpdateDepthMap()
+    End Sub
+
+    ''' <summary>
+    ''' Reset the map of excluded cells to include the entire map into computations.
+    ''' </summary>
+    Friend Sub ClearExcludedCells()
+        For i As Integer = 1 To m_Data.InRow
+            For j As Integer = 1 To m_Data.InCol
+                Me.m_Data.Excluded(i, j) = False
+            Next
+        Next
+        Me.UpdateDepthMap()
+    End Sub
+
     Private Sub EcoseedBeginTimeStep(ByVal imonth As Integer, ByRef iYear As Integer, ByRef BiomassCellAvg() As Single)
 
         If m_OptMPA IsNot Nothing Then
@@ -1830,6 +1870,9 @@ Public Class cEcoSpace
             ReDim Wchange(m_Data.nvartot)
 
             ReDim Ecode(m_Data.Nvarsplit)
+
+            'Update the Depth map based on the Exclusion layer
+            Me.UpdateDepthMap()
 
             If m_tracerData.EcoSpaceConSimOn Then
                 m_Data.RedimConSimVars()
@@ -5467,24 +5510,22 @@ exitline:
 
 
     Private Sub InitSolversForYear(ByVal iYear As Integer)
-
         Try
             For Each solver As cSpaceSolver In Me.m_spaceSolvers
-
                 solver.YearTimeStep(iYear)
                 'discount factor was computed in the main time loop
-
             Next
         Catch ex As Exception
             cLog.Write(ex)
             Throw New ApplicationException(Me.ToString & ".InitForYear() Error:  " & ex.Message, ex)
         End Try
+
     End Sub
+
     ''' <summary>
     ''' Creates a spacesolver object for each thread, and initialises them with references to ecospace variables
     ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>True if successful.</returns>
     Private Function InitIBMSolverThreads() As Boolean
         Dim solver As cIBMSolver
 
@@ -6898,11 +6939,11 @@ exitline:
                 MapDataType = eDataTypes.EcospaceMapResponse Or _
                 MapDataType = eDataTypes.EcospaceModelParameter Or _
                 MapDataType = eDataTypes.EcospaceGroup Or
-                MapDataType = eDataTypes.EcospaceLayerDriver Then
+                MapDataType = eDataTypes.EcospaceLayerDriver Or _
+                MapDataType = eDataTypes.EcospaceLayerExclusion Then
 
+                'This will force the capacity model to update
                 Me.m_Data.bHasCapacityChanged = True
-                'Me.SetHabCap()
-                'Me.m_Data.bHasCapacityChanged = False
 
                 Return True
 

@@ -140,6 +140,7 @@
     <Compile Include="Controls\Label\ucLinkLabel.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Map\cMapSettings.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerArgs.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerBase.vb" />
     <Compile Include="Controls\Map\DirectRendering\ucLegendBar.Designer.vb">
@@ -149,7 +150,13 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExcluded.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorExclusion.Designer.vb">
+      <DependentUpon>ucLayerEditorExclusion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorExclusion.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExclusion.vb" />
     <Compile Include="Controls\Options\IOptionsPage.vb" />
     <Compile Include="Controls\SysConfig\cSysConfig.vb" />
     <Compile Include="Controls\TabControl\ucTabControlEx.vb">
@@ -734,6 +741,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\DirectRendering\ucLegendBar.resx">
       <DependentUpon>ucLegendBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorExclusion.resx">
+      <DependentUpon>ucLayerEditorExclusion.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.resx">
       <DependentUpon>ucLayerEditor.vb</DependentUpon>

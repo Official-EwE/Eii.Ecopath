@@ -8483,6 +8483,31 @@ Public Class cCore
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Set all coastal cells to ports for a given fleet.
+    ''' </summary>
+    ''' <param name="iDepth">The min depth to exclude from computations.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub SetExcludedDepth(ByVal iDepth As Integer)
+
+        Me.m_Ecospace.SetExcludedDepth(iDepth)
+        Me.onChanged(Me.EcospaceBasemap.LayerExclusion())
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Clear excluded cells.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub ClearExcludedCells()
+
+        Me.m_Ecospace.ClearExcludedCells()
+        Me.onChanged(Me.EcospaceBasemap.LayerExclusion())
+
+    End Sub
+
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Convert an Ecospace time step to absolute time.
@@ -8510,7 +8535,6 @@ Public Class cCore
         Return New DateTime(Math.Max(Me.EcosimFirstYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
 
     End Function
-
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -13485,7 +13509,8 @@ Public Class cCore
                      eDataTypes.EcospaceLayerMigration, _
                      eDataTypes.EcospaceLayerFlow, _
                      eDataTypes.EcospaceLayerUpwelling, _
-                     eDataTypes.EcospaceLayerHabitatCapacityInput
+                     eDataTypes.EcospaceLayerHabitatCapacityInput, _
+                     eDataTypes.EcospaceLayerExclusion
 
                     DirectCast(obj, cEcospaceLayer).Invalidate()
 
@@ -13574,10 +13599,19 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Spatial data configuration changed.", TypeOfChange, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceSpatialDataConnection))
                     Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.True)
 
+                Case eDataTypes.EcospaceLayerExclusion
+                    'Update the Depth map based on the Exlusion layer
+                    Me.m_Ecospace.UpdateDepthMap()
+
+                    Me.m_publisher.AddMessage(New cMessage("Depth map update to exclusion layer.", eMessageType.DataModified, _
+                                      eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
+
             End Select
 
             'Ecospace map input map(s) may have change
             'Let Ecospace decide what to update in response
+
+
             If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
                 'Capacity layer has changed
                 'send out a message

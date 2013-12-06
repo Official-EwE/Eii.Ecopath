@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
+Imports System.Drawing.Drawing2D
 
 #End Region 'Imports
 
@@ -30,23 +31,14 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer renderer that draws cells as an arrow with a specific direction
-    ''' and scale. The cell value to render provided in 
-    ''' <see cref="cLayerRendererArrow.RenderCell">RenderCell</see> should hold a
-    ''' two-dimensional array describing these arrow properties.
+    ''' Layer renderer that draws cells for the <see cref="EwEUtils.Core.eVarNameFlags.LayerExclusion">exclusion layer</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerRendererExcluded
-        Inherits cRasterLayerRenderer
-
+    Public Class cLayerRendererExclusion
+        Inherits cLayerRendererHatch
 
         Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
-        End Sub
-
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle)
-            g.FillRectangle(Brushes.Red, rc)
+            MyBase.New(vs)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -73,10 +65,6 @@ Namespace Controls.Map.Layers
             If CBool(value) Then Me.RenderPreview(g, rc)
 
         End Sub
-
-        Protected Overrides Function IsStyleValid() As Boolean
-            Return True
-        End Function
 
         Public Overrides Function GetDisplayText(value As Object) As String
             Return ""

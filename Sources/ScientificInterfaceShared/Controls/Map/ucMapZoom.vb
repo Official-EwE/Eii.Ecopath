@@ -94,9 +94,15 @@ Namespace Controls.Map
                 Return Me.m_uic
             End Get
             Set(ByVal value As cUIContext)
+                If (Me.m_uic IsNot Nothing) Then
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
                 Me.m_uic = value
                 If (Me.m_map IsNot Nothing) Then
                     Me.m_map.UIContext = Me.m_uic
+                End If
+                If (Me.m_uic IsNot Nothing) Then
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 End If
             End Set
         End Property
@@ -199,6 +205,16 @@ Namespace Controls.Map
         End Sub
 
 #End Region ' Scroll bars
+
+#Region " Style guide "
+
+        Private Sub OnStyleGuideChanged(ct As Style.cStyleGuide.eChangeType)
+            If (ct And Style.cStyleGuide.eChangeType.Colours) > 0 Then
+                Me.UpdateControls()
+            End If
+        End Sub
+
+#End Region ' Style guide
 
 #End Region ' Events
 
@@ -319,6 +335,9 @@ Namespace Controls.Map
         ''' -----------------------------------------------------------------------
         Private Sub UpdateControls()
 
+            If (Me.IsDisposed) Then Return
+            If (Object.ReferenceEquals(Me.m_map, Nothing)) Then Return
+
             ' In stretch mode zooming and scrolling is disabled since
             ' the map fills the entire available area. When the zoom percentage is 
             ' less that 100%, scrolling is not required. As such, in both cases, 
@@ -333,6 +352,10 @@ Namespace Controls.Map
                 Me.m_sbVert.Visible = True
                 Me.m_plZoom.Size = New Size(Me.m_sbVert.Location.X, _
                                             Me.m_sbHorz.Location.Y)
+            End If
+
+            If (Me.m_uic IsNot Nothing) Then
+                Me.m_plZoom.BackColor = Me.m_uic.StyleGuide.ApplicationColor(Style.cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
             End If
 
         End Sub

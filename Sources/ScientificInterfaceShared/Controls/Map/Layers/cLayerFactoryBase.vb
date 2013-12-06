@@ -346,9 +346,14 @@ Namespace Controls.Map
                     ad = core.AuxillaryData(key)
 
                     vs = ad.VisualStyle
-                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererExcluded(vs)
-                    editor = New cLayerEditorTwoState()
+                    If (vs Is Nothing) Then
+                        vs = New cVisualStyle(ad)
+                        vs.ForeColour = Color.Red
+                        vs.BackColour = Color.OrangeRed
+                        vs.HatchStyle = Drawing2D.HatchStyle.DiagonalCross
+                    End If
+                    renderer = New cLayerRendererExclusion(vs)
+                    editor = New cLayerEditorTwoState(GetType(ucLayerEditorExclusion))
                     layer = New cDisplayRasterLayer(uic, src, renderer, editor, src, eVarNameFlags.Name, CSng(True), CSng(False))
 
                     lLayers.Add(layer)

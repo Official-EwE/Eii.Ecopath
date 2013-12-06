@@ -255,7 +255,7 @@
     <value>m_tvOptions</value>
   </data>
   <data name="&gt;&gt;m_tvOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.4.9994.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvOptions.Parent" xml:space="preserve">
     <value>m_scContent.Panel1</value>
