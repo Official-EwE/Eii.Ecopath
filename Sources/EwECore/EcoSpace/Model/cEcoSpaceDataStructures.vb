@@ -207,6 +207,7 @@ Public Class cEcospaceDataStructures
     Public Ftr(,,) As Single
 
     Public Blast(,,) As Single
+    ''' <summary>Actual depth map as used by Ecospace, computed from <see cref="DepthInput"/> and <see cref="Excluded"/>.</summary>
     Public Depth(,) As Integer
     Public DepthA(,) As Single
     Public DepthX(,) As Integer
@@ -219,7 +220,9 @@ Public Class cEcospaceDataStructures
     ''' <remarks>This is not exposed by the interface at this time. It was included for the Biodiversity plugin and can only be accessed via code.</remarks>
     Public DiscardsMap(,,) As Single
 
-    ''' <summary>NOT IMPLEMENTED IN THE CORE YET Is a cell included in modeling by Row, Col, Group.</summary>
+    ''' <summary>User-entered depth map</summary>
+    Public DepthInput(,) As Integer
+    ''' <summary>Is a cell included in modeling by Row, Col.</summary>
     Public Excluded(,) As Boolean
 
     ''' <summary>Trophic Level by Row, Col, Group.</summary>
@@ -1495,6 +1498,9 @@ Public Class cEcospaceDataStructures
             Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
             Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
 
+            Me.allocate(DepthInput, InRow + 1, InCol + 1)
+            Me.allocate(Excluded, InRow + 1, InCol + 1)
+
             Me.allocate(Depth, InRow + 1, InCol + 1)
             Me.allocate(DepthA, InRow + 1, InCol + 1)
             Me.allocate(DepthX, InRow + 1, InCol + 1)
@@ -1510,7 +1516,6 @@ Public Class cEcospaceDataStructures
             Me.allocate(MPA, InRow + 1, InCol + 1)
             Me.allocate(RelPP, InRow + 1, InCol + 1)
             Me.allocate(RelCin, InRow + 1, InCol + 1)
-            Me.allocate(Excluded, InRow + 1, InCol + 1)
 
             Me.allocate(relPP0, InRow + 1, InCol + 1)
 
@@ -2050,10 +2055,19 @@ Public Class cEcospaceDataStructures
     Public Sub setDebugCapMaps(ByVal CapEnvResData As cMediationDataStructures)
 
         Try
-            'set PHabType(,,) to 100% for cells that are loaded as a HabType from the database 
+            ''set PHabType(,,) to 100% for cells that are loaded as a HabType from the database 
             'For irow As Integer = 1 To InRow
             '    For icol As Integer = 1 To InCol
             '        PHabType(irow, icol, HabType(irow, icol)) = 1
+            '    Next icol
+            'Next irow
+
+            ''set Input habitat capacity to 1 for all groups 
+            'For irow As Integer = 1 To InRow
+            '    For icol As Integer = 1 To InCol
+            '        For igrp As Integer = 1 To Me.NGroups
+            '            Me.HabCapInput(irow, icol, igrp) = 1
+            '        Next
             '    Next icol
             'Next irow
 
@@ -2064,34 +2078,11 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-
-    ''' <summary>
-    ''' Until the Excluded Cells Layer has been completed make sure all cells are Included.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub OverwriteExcludedCells()
-        Try
-            System.Console.WriteLine("WARNING: Excluded cells will be overwritten.")
-            'Include all cells
-            For irow As Integer = 1 To InRow
-                For icol As Integer = 1 To InCol
-                    Me.Excluded(irow, icol) = False
-                Next icol
-            Next irow
-
-        Catch ex As Exception
-            Debug.Assert(False, "setDebugNoExcludedCells()")
-        End Try
-
-    End Sub
-
     Public Function GetCellSize() As Single
         Dim cellSizeDegrees As Single = Me.CellSize
         If cellSizeDegrees = 0 Then cellSizeDegrees = cEcospaceBasemap.ToCellSize(Me.CellLength)
         Return cellSizeDegrees
     End Function
-
-
 
 #End Region
 

@@ -113,6 +113,16 @@ Namespace Ecospace.Basemap
 
         End Sub
 
+        Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
+
+            ' Addresses issue #1251
+            ' Store settings before calling baseclass OnFormClosing
+            Me.Settings = cMapSettings.Save(Me.m_ucBasemap)
+
+            MyBase.OnFormClosing(e)
+
+        End Sub
+
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             MyBase.OnFormClosed(e)
@@ -199,13 +209,15 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerRelCin, False)
             Me.AddData(eVarNameFlags.LayerRegion)
             Me.AddData(eVarNameFlags.LayerDepth)
-            '16-Aug-2013 Remove the Exclusion layer until it has been implemented in the core
-            'Me.AddData(eVarNameFlags.LayerExclusion, False)
+            Me.AddData(eVarNameFlags.LayerExclusion, False)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput)
             Me.AddData(eVarNameFlags.LayerHabitatCapacity, False)
             Me.AddData(eVarNameFlags.LayerDriver)
             Me.AddData(eVarNameFlags.LayerImportance)
             Me.AddData(eVarNameFlags.LayerHabitat)
+
+            ' Addresses issue #1251
+            cMapSettings.Load(Me.Settings, Me.m_ucBasemap)
 
             Me.m_ucLayers.UnlockUpdates()
 

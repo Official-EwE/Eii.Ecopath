@@ -41,7 +41,7 @@ Namespace Other
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgOptions))
             Me.m_btnOk = New System.Windows.Forms.Button()
             Me.m_btnCancel = New System.Windows.Forms.Button()
-            Me.m_tvOptions = New System.Windows.Forms.TreeView()
+            Me.m_tvOptions = New ScientificInterfaceShared.Controls.cThemedTreeView()
             Me.m_btnApply = New System.Windows.Forms.Button()
             Me.m_scContent = New System.Windows.Forms.SplitContainer()
             Me.m_btnSetDefaults = New System.Windows.Forms.Button()
@@ -70,6 +70,7 @@ Namespace Other
             Me.m_tvOptions.LineColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
             Me.m_tvOptions.Name = "m_tvOptions"
             Me.m_tvOptions.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvOptions.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes3"), System.Windows.Forms.TreeNode)})
+            Me.m_tvOptions.ShowLines = False
             '
             'm_btnApply
             '
@@ -118,7 +119,7 @@ Namespace Other
         Private WithEvents m_btnCancel As System.Windows.Forms.Button
         Private WithEvents m_btnOk As System.Windows.Forms.Button
         Private WithEvents m_btnApply As System.Windows.Forms.Button
-        Private WithEvents m_tvOptions As System.Windows.Forms.TreeView
+        Private WithEvents m_tvOptions As cThemedTreeView
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
         Private WithEvents m_btnSetDefaults As System.Windows.Forms.Button
     End Class

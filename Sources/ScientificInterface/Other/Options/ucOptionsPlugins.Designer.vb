@@ -33,7 +33,7 @@ Namespace Other
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_tvPlugins = New System.Windows.Forms.TreeView()
+            Me.m_tvPlugins = New ScientificInterfaceShared.Controls.cThemedTreeView()
             Me.m_ilPlugins = New System.Windows.Forms.ImageList(Me.components)
             Me.m_split = New System.Windows.Forms.SplitContainer()
             Me.m_cbEnablePlugin = New System.Windows.Forms.CheckBox()
@@ -73,7 +73,8 @@ Namespace Other
             Me.m_tvPlugins.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tvPlugins.Name = "m_tvPlugins"
             Me.m_tvPlugins.SelectedImageIndex = 0
-            Me.m_tvPlugins.Size = New System.Drawing.Size(134, 257)
+            Me.m_tvPlugins.ShowLines = False
+            Me.m_tvPlugins.Size = New System.Drawing.Size(136, 259)
             Me.m_tvPlugins.TabIndex = 0
             '
             'm_ilPlugins
@@ -87,7 +88,7 @@ Namespace Other
             Me.m_split.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                 Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_split.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_split.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_split.Location = New System.Drawing.Point(0, 72)
             Me.m_split.Margin = New System.Windows.Forms.Padding(0)
             Me.m_split.Name = "m_split"
@@ -184,7 +185,7 @@ Namespace Other
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_tvPlugins As System.Windows.Forms.TreeView
+        Private WithEvents m_tvPlugins As cThemedTreeView
         Private WithEvents m_split As System.Windows.Forms.SplitContainer
         Private WithEvents m_ilPlugins As System.Windows.Forms.ImageList
         Private WithEvents m_hdrCaption As cEwEHeaderLabel

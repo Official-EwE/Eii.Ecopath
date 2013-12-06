@@ -31,6 +31,8 @@ Imports ScientificInterfaceShared.Properties
 
 #End Region ' Imports
 
+#Const DRAW_THREADED = 0
+
 Namespace Controls.Map
 
     ' ToDo_JS: overhaul map drawing
@@ -86,7 +88,13 @@ Namespace Controls.Map
                 Return Me.m_uic
             End Get
             Set(ByVal uic As cUIContext)
+                If (Me.m_uic IsNot Nothing) Then
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
                 Me.m_uic = uic
+                If (Me.m_uic IsNot Nothing) Then
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
                 Me.Clear()
             End Set
         End Property
@@ -237,17 +245,11 @@ Namespace Controls.Map
                 Me.m_bRefreshMap = False
                 Try
 #If DRAW_THREADED Then
-                If Me.m_thread IsNot Nothing Then
-                    If Me.m_thread.IsAlive Then
-                        Me.m_thread.Abort()
-                    End If
-                    Me.m_thread = Nothing
+                If (Me.m_thread Is Nothing) Then
+                    Me.m_thread = New Threading.Thread(AddressOf RedrawMapThreaded)
+                    Me.m_thread.Start()
                 End If
-
-                Me.m_thread = New Threading.Thread(AddressOf RedrawMapThreaded)
-                Me.m_thread.Start()
 #Else
-
                     Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
 #End If
                 Catch ex As Exception
@@ -262,8 +264,7 @@ Namespace Controls.Map
 
 #If DRAW_THREADED Then
         Private Sub RedrawMapThreaded()
-            Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.m_basemap.InCol, Me.m_basemap.InRow))
-            Me.Invalidate()
+            Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
             Me.m_thread = Nothing
         End Sub
 #End If
@@ -425,6 +426,12 @@ Namespace Controls.Map
 
         End Sub
 
+        Private Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
+            If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
+                Me.UpdateMap()
+            End If
+        End Sub
+
 #End Region ' Event handlers
 
 #Region " Internals "
@@ -559,7 +566,7 @@ Namespace Controls.Map
                             For X As Integer = iXFrom To iXTo
                                 For Y As Integer = iYFrom To iYTo
 
-                                    If Not CBool(layExcl.Cell(Y, X)) Or rl.Data.DataType = eDataTypes.EcospaceLayerExclusion Then
+                                    If Not CBool(layExcl.Cell(Y, X)) Or (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion) Then
 
                                         ptCell = New Point(X, Y)
                                         Dim rcCell As Rectangle = Me.GetCellRect(ptCell, InRow, InCol)

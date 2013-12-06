@@ -757,7 +757,7 @@ Public Class cEcospaceBasemap
 
         Select Case varName
             Case eVarNameFlags.LayerDepth
-                Return Me.m_core.m_EcoSpaceData.Depth
+                Return Me.m_core.m_EcoSpaceData.DepthInput
             Case eVarNameFlags.LayerHabitat
                 Return Me.m_core.m_EcoSpaceData.PHabType
             Case eVarNameFlags.LayerHabitatCapacity

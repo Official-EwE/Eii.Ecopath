@@ -257,7 +257,7 @@ Public Class cFormSettings
 #Region " Private vars "
 
     ''' <summary>All maintained form positions.</summary>
-    Private m_dictFormPositions As New Dictionary(Of String, cFormSetting)
+    Private m_dictFormSettings As New Dictionary(Of String, cFormSetting)
 
 #End Region ' Private vars
 
@@ -302,9 +302,9 @@ Public Class cFormSettings
         strFormType = FormTypeString(frm, bIncludeFormText)
 
         ' Already has it?
-        If Me.m_dictFormPositions.ContainsKey(strFormType) Then
+        If Me.m_dictFormSettings.ContainsKey(strFormType) Then
             ' Obliterate
-            Me.m_dictFormPositions.Remove(strFormType)
+            Me.m_dictFormSettings.Remove(strFormType)
         End If
 
         ' Create form state
@@ -312,7 +312,7 @@ Public Class cFormSettings
         ' Able to read from form?
         If fs.Store(frm) Then
             ' #Yes: store it
-            Me.m_dictFormPositions(strFormType) = fs
+            Me.m_dictFormSettings(strFormType) = fs
         End If
 
     End Sub
@@ -330,9 +330,9 @@ Public Class cFormSettings
         If frm Is Nothing Then Return
         strFormType = FormTypeString(frm, bIncludeFormText)
         ' Get info
-        If Me.m_dictFormPositions.ContainsKey(strFormType) Then
+        If Me.m_dictFormSettings.ContainsKey(strFormType) Then
             ' Apply
-            Me.m_dictFormPositions(strFormType).Apply(frm)
+            Me.m_dictFormSettings(strFormType).Apply(frm)
         End If
     End Sub
 
@@ -352,7 +352,7 @@ Public Class cFormSettings
         Dim node As XmlNode = Nothing
 
         ' Clear!
-        Me.m_dictFormPositions.Clear()
+        Me.m_dictFormSettings.Clear()
 
         ' Sanity checks
         If (settings Is Nothing) Then Return
@@ -366,7 +366,7 @@ Public Class cFormSettings
                 ' Can read form position data?
                 If fp.FromXML(node) Then
                     ' #Yes: store in local admin!
-                    Me.m_dictFormPositions(fp.Name) = fp
+                    Me.m_dictFormSettings(fp.Name) = fp
                 End If
             Catch ex As Exception
                 ' Woops - ignore malformed setting
@@ -392,9 +392,9 @@ Public Class cFormSettings
         node = doc.CreateElement("formsettings")
         doc.AppendChild(node)
 
-        For Each strFormName As String In Me.m_dictFormPositions.Keys
+        For Each strFormName As String In Me.m_dictFormSettings.Keys
             Try
-                Dim ndForm As XmlNode = Me.m_dictFormPositions(strFormName).ToXML(doc)
+                Dim ndForm As XmlNode = Me.m_dictFormSettings(strFormName).ToXML(doc)
                 node.AppendChild(ndForm)
             Catch ex As Exception
 
