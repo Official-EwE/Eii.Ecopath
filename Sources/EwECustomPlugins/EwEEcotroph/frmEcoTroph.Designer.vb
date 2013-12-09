@@ -444,7 +444,7 @@ Partial Class frmEcotroph
         Me.TopD.Name = "TopD"
         Me.TopD.Size = New System.Drawing.Size(34, 20)
         Me.TopD.TabIndex = 4
-        Me.TopD.Text = "02"
+        Me.TopD.Text = "04"
         Me.TopD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'ShapeContainer1

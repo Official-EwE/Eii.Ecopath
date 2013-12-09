@@ -1397,4 +1397,8 @@ Public Class frmEcotroph
     Private Sub frmEcotroph_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
     End Sub
+
+    Private Sub TopD_MaskInputRejected(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MaskInputRejectedEventArgs) Handles TopD.MaskInputRejected
+
+    End Sub
 End Class
