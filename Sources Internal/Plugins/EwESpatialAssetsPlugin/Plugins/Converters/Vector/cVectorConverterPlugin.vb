@@ -60,7 +60,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Configuration"/>
         ''' -----------------------------------------------------------------------
-        Public Property Configuration(ByVal doc As System.Xml.XmlDocument) As System.Xml.XmlNode _
+        Public Overridable Property Configuration(ByVal doc As System.Xml.XmlDocument) As System.Xml.XmlNode _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.Configuration
             Get
                 Return Nothing
@@ -73,7 +73,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.IsConfigured"/>
         ''' -----------------------------------------------------------------------
-        Function IsConfigured() As Boolean _
+        Public Overridable Function IsConfigured() As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured
             Return Not String.IsNullOrWhiteSpace(Me.m_strAttributeName)
         End Function
@@ -81,7 +81,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.IsCompatible"/>
         ''' -----------------------------------------------------------------------
-        Public Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean _
+        Public Overridable Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.IsCompatible
             If (ds Is Nothing) Then Return False
             Return (ds.ConversionFormat = "DotSpatialVector")
@@ -126,11 +126,11 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Convert"/>
         ''' -----------------------------------------------------------------------
-        Public Function Convert(ByVal data As Object, _
-                                ByVal ptfTL As PointF, _
-                                ByVal ptfBR As PointF, _
-                                ByVal dCellSize As Double, _
-                                ByVal strFile As String) As ISpatialRaster _
+        Public Overridable Function Convert(ByVal data As Object, _
+                                            ByVal ptfTL As PointF, _
+                                            ByVal ptfBR As PointF, _
+                                            ByVal dCellSize As Double, _
+                                            ByVal strFile As String) As ISpatialRaster _
             Implements EwEUtils.SpatialData.ISpatialDataConverter.Convert
 
             Dim log As cSpatialOperationLog = Nothing
@@ -171,7 +171,7 @@ Namespace SpatialData
                     End If
 
                     ' Rasterize the features
-                    rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, m_strAttributeName, m_dtAttributeValues, strFile, log)
+                    rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, strFile, log, New cVectorTools.TranslateValueDelegate(AddressOf ToValue))
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 
@@ -191,7 +191,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.DisplayName"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property DisplayName As String _
+        Public Overridable ReadOnly Property DisplayName As String _
             Implements ISpatialDataConverter.DisplayName
             Get
                 Return My.Resources.CONVERTER_DIRECTVECTOR_NAME
@@ -201,7 +201,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Description"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Description As String _
+        Public Overridable ReadOnly Property Description As String _
             Implements ISpatialDataConverter.Description, IPlugin.Description
             Get
                 Return My.Resources.CONVERTER_DIRECTVECTOR_DESCR
@@ -211,7 +211,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverterPlugin.Author"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Author As String _
+        Public Overridable ReadOnly Property Author As String _
             Implements ISpatialDataConverterPlugin.Author
             Get
                 Return "Jeroen Steenbeek, UBC Fisheries Centre"
@@ -221,7 +221,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverterPlugin.Contact"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Contact As String _
+        Public Overridable ReadOnly Property Contact As String _
             Implements ISpatialDataConverterPlugin.Contact
             Get
                 Return "mailto:ewedevteam@gmail.com"
@@ -239,7 +239,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="IPlugin.Name"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property PlugingName As String _
+        Public Overridable ReadOnly Property PluginName As String _
             Implements EwEPlugin.IPlugin.Name
             Get
                 Return "DotSpatial.DefaultVectorConverter"
@@ -257,6 +257,28 @@ Namespace SpatialData
             End If
 
         End Sub
+
+        Protected Overridable Function ToValue(drow As DataRow, dValueNone As Double) As Double
+
+            Dim dVal As Double = cCore.NULL_VALUE
+            Dim objVal As Object = drow(Me.m_strAttributeName)
+
+            If (Me.m_dtAttributeValues IsNot Nothing) Then
+                If Me.m_dtAttributeValues.ContainsKey(objVal) Then
+                    objVal = Me.m_dtAttributeValues(objVal)
+                Else
+                    objVal = dValueNone
+                End If
+            End If
+
+            Try
+                dVal = System.Convert.ToDouble(objVal)
+            Catch ex As Exception
+                ' Whoah!
+            End Try
+            Return dVal
+
+        End Function
 
     End Class
 

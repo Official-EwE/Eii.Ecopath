@@ -167,7 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\Converters\Raster\cAreaRatioConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\Vector\Point interpolation\cPointInterpolationConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\Inclusion\cVectorExclusionConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\Isobar conversion\cIsobarConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Raster\cRasterConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\cVectorConverterPlugin.vb" />

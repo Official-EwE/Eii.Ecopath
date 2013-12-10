@@ -33,6 +33,17 @@ Public Class cVectorTools
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Delegate to call for translating a rasterized value.
+    ''' </summary>
+    ''' <param name="drow">The datarow with metadata from a feature that was hit, if any.
+    ''' If nothing, a feature was not hit.</param>
+    ''' <param name="dNoData">The nodata value of the raster.</param>
+    ''' <returns>The converted value.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Delegate Function TranslateValueDelegate(ByVal drow As DataRow, ByVal dNoData As Double) As Double
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Convert features in a polygon feature set to a raster, populating each
     ''' occurrence data.
     ''' </summary>
@@ -57,14 +68,17 @@ Public Class cVectorTools
                                      ByVal ptfTL As PointF, _
                                      ByVal ptfBR As PointF, _
                                      ByVal dCellSize As Double, _
-                                     ByVal strAttribute As String, _
-                                     ByVal dictValueMap As Dictionary(Of Object, Object), _
                                      ByVal strFileName As String,
-                                     ByVal log As cSpatialOperationLog) As IRaster
+                                     ByVal log As cSpatialOperationLog, _
+                                     ByVal dgt As TranslateValueDelegate) As IRaster
+
+        Debug.Assert(dgt IsNot Nothing)
 
         Dim coords As New List(Of Coordinate)
         Dim featToConvert As IFeatureSet = Nothing
         Dim polyToConvert As IGeometry = Nothing
+        Dim dValClear As Double
+        Dim dValSet As Double
 
         ' -----
         ' Create and position raster 
@@ -76,9 +90,10 @@ Public Class cVectorTools
         rs.NoDataValue = cCore.NULL_VALUE
 
         ' Wipe array
+        dValClear = dgt.Invoke(Nothing, rs.NoDataValue)
         For iRow As Integer = 0 To bnds.NumRows - 1
             For iCol As Integer = 0 To bnds.NumColumns - 1
-                rs.Value(iRow, iCol) = rs.NoDataValue
+                rs.Value(iRow, iCol) = dValClear
             Next
         Next
 
@@ -92,45 +107,43 @@ Public Class cVectorTools
 
             Dim f As IFeature = fs.Features(i)
             Dim drow As DataRow = dtAttribs.Rows(i)
-            Dim dVal As Double = cVectorTools.ToValue(drow(strAttribute), dictValueMap)
+            dValSet = dgt.Invoke(drow, rs.NoDataValue)
 
-            If (dVal <> cCore.NULL_VALUE) Then
-                Select Case f.FeatureType
-                    Case FeatureType.Point
-                        ' To test
-                        Dim pt As IPoint = New DotSpatial.Topology.Point(f.Coordinates(0))
-                        If rs.ContainsFeature(f) Then
+            Select Case f.FeatureType
+                Case FeatureType.Point
+                    ' To test
+                    Dim pt As IPoint = New DotSpatial.Topology.Point(f.Coordinates(0))
+                    If rs.ContainsFeature(f) Then
+                        Dim cellpos As RcIndex = rs.ProjToCell(CType(pt.Centroid, Coordinate))
+                        rs.Value(cellpos.Row, cellpos.Column) = dValSet
+                    End If
+
+                Case FeatureType.MultiPoint
+                    ' To test
+                    Dim mp As IMultiPoint = New MultiPoint(f.Coordinates)
+                    For j As Integer = 0 To mp.NumPoints - 1
+                        Dim pt As IPoint = mp.Item(j)
+                        If rs.ContainsFeature(CType(pt, IFeature)) Then
                             Dim cellpos As RcIndex = rs.ProjToCell(CType(pt.Centroid, Coordinate))
-                            rs.Value(cellpos.Row, cellpos.Column) = dVal
+                            rs.Value(cellpos.Row, cellpos.Column) = dValSet
                         End If
+                    Next
 
-                    Case FeatureType.MultiPoint
-                        ' To test
-                        Dim mp As IMultiPoint = New MultiPoint(f.Coordinates)
-                        For j As Integer = 0 To mp.NumPoints - 1
-                            Dim pt As IPoint = mp.Item(j)
-                            If rs.ContainsFeature(CType(pt, IFeature)) Then
-                                Dim cellpos As RcIndex = rs.ProjToCell(CType(pt.Centroid, Coordinate))
-                                rs.Value(cellpos.Row, cellpos.Column) = dVal
+                Case FeatureType.Polygon
+                    Dim poly As IPolygon = New Polygon(f.Coordinates)
+                    For iRow As Integer = 0 To bnds.NumRows - 1
+                        For iCol As Integer = 0 To bnds.NumColumns - 1
+                            Dim pt As IPoint = New DotSpatial.Topology.Point(rs.CellToProj(iRow, iCol))
+                            If poly.Contains(pt) Then
+                                rs.Value(iRow, iCol) = dValSet
                             End If
                         Next
+                    Next
 
-                    Case FeatureType.Polygon
-                        Dim poly As IPolygon = New Polygon(f.Coordinates)
-                        For iRow As Integer = 0 To bnds.NumRows - 1
-                            For iCol As Integer = 0 To bnds.NumColumns - 1
-                                Dim pt As IPoint = New DotSpatial.Topology.Point(rs.CellToProj(iRow, iCol))
-                                If poly.Contains(pt) Then
-                                    rs.Value(iRow, iCol) = dVal
-                                End If
-                            Next
-                        Next
+                Case FeatureType.Line
+                    ' Dunno how to process
 
-                    Case FeatureType.Line
-                        ' Dunno how to process
-
-                End Select
-            End If
+            End Select
         Next
 
         rs.Save()
@@ -138,24 +151,24 @@ Public Class cVectorTools
 
     End Function
 
-    Private Shared Function ToValue(objValue As Object, dtMapping As Dictionary(Of Object, Object)) As Double
-        Dim dVal As Double = cCore.NULL_VALUE
+    'Private Shared Function ToValue(objValue As Object, dtMapping As Dictionary(Of Object, Object)) As Double
+    '    Dim dVal As Double = cCore.NULL_VALUE
 
-        If (dtMapping IsNot Nothing) Then
-            If dtMapping.ContainsKey(objValue) Then
-                objValue = dtMapping(objValue)
-            Else
-                objValue = cCore.NULL_VALUE
-            End If
-        End If
+    '    If (dtMapping IsNot Nothing) Then
+    '        If dtMapping.ContainsKey(objValue) Then
+    '            objValue = dtMapping(objValue)
+    '        Else
+    '            objValue = cCore.NULL_VALUE
+    '        End If
+    '    End If
 
-        Try
-            dVal = Convert.ToDouble(objValue)
-        Catch ex As Exception
-            ' Whoah!
-        End Try
-        Return dVal
-    End Function
+    '    Try
+    '        dVal = Convert.ToDouble(objValue)
+    '    Catch ex As Exception
+    '        ' Whoah!
+    '    End Try
+    '    Return dVal
+    'End Function
 
     ''' <summary>
     ''' 
