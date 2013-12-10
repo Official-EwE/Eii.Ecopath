@@ -2881,19 +2881,10 @@ Public Class cCore
 
                         If (fmsg.Reply = eMessageReply.OK) Then
 
-                            ' Pick destiniation location
-                            Try
-                                cPathUtility.ResolvePath(Me.BackupFileMask, strSrc, db.GetVersion.ToString, strDest)
-                                bSucces = cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strDest), True)
-                            Catch ex As Exception
-                                ' Hmm
-                                bSucces = False
-                            End Try
-
+                            ' Try to resolve path
+                            cPathUtility.ResolvePath(Me.BackupFileMask, strSrc, db.GetVersion.ToString, strDest)
                             ' Create backup
-                            If bSucces Then
-                                bSucces = cFileUtils.CreateBackup(strSrc, strDest)
-                            End If
+                            bSucces = cFileUtils.CreateBackup(strSrc, strDest)
 
                             If bSucces Then
                                 msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest), _
@@ -2916,15 +2907,15 @@ Public Class cCore
                     End If
 
                 Catch ex As Exception
-                    cLog.Write(ex, "cCore::UpdateDataSource")
-                    ' Whoah
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
-                                          eMessageType.DataImport, _
-                                          eCoreComponentType.DataSource, _
-                                          eMessageImportance.Warning)
-                    Me.m_publisher.SendMessage(msg)
-                    Return False
-                End Try
+                cLog.Write(ex, "cCore::UpdateDataSource")
+                ' Whoah
+                msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
+                                      eMessageType.DataImport, _
+                                      eCoreComponentType.DataSource, _
+                                      eMessageImportance.Warning)
+                Me.m_publisher.SendMessage(msg)
+                Return False
+            End Try
 
                 ' Run updates
                 If Not dbUpd.UpdateDatabase(db) Then
