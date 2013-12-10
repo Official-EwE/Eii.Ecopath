@@ -132,6 +132,9 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function IsConnected(iIndex As Integer) As Boolean
 
+            If (Me.m_datasets Is Nothing) Then Me.Initialize()
+            If (Me.m_converters Is Nothing) Then Me.Initialize()
+
             Dim cv As ISpatialDataConverter = Me.Converter(iIndex)
             Dim ds As ISpatialDataSet = Me.Dataset(iIndex)
 
