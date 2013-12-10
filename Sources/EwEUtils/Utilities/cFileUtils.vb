@@ -257,7 +257,7 @@ Namespace Utilities
                                             ByRef strDest As String, _
                                             Optional ByVal attributes As FileAttributes = FileAttributes.Archive Or FileAttributes.NotContentIndexed) As Boolean
 
-            If String.IsNullOrEmpty(strDest) Then
+            If String.IsNullOrWhiteSpace(strDest) Then
                 strDest = strSrc & ".backup_" & ToValidFileName(Date.Now.ToShortDateString, False)
             End If
 
