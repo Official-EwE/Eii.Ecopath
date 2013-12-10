@@ -360,9 +360,10 @@ Namespace SpatialData
             If (Me.m_dsSourceData IsNot Nothing) Then
                 Try
                     Me.m_dsSourceData.Close()
+                Catch ex As ApplicationException
+                    ' Swallow this - GDAL may complain
                 Catch ex As Exception
-                    ' Swallow this
-                    ' Debug.Assert(False)
+                    Debug.Assert(False)
                 End Try
                 Me.m_dsSourceData.Dispose()
                 Me.m_dsSourceData = Nothing
