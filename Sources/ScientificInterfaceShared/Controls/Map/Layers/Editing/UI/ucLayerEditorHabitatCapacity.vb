@@ -98,6 +98,57 @@ Namespace Controls.Map.Layers
             e.Value = fmt.GetDescriptor(io)
         End Sub
 
+        Private Sub OnSetDefaultAllClick(sender As System.Object, e As System.EventArgs) Handles m_btAllDefault.Click
+            Dim ngrps As Integer = Me.UIContext.Core.nGroups
+
+            Try
+
+                Dim capManager As EwECore.cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+                Dim map As cEcospaceLayerHabitatCapacity
+                Dim nrows As Integer = capManager.InRow
+                Dim ncols As Integer = capManager.InCol
+                For igrp As Integer = 1 To ngrps
+                    map = capManager.LayerHabitatCapacityInput(igrp)
+                    Me.setDefault(map, nrows, ncols)
+                Next igrp
+
+                Me.UpdateCore()
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+        Private Sub OnSetDefaultThis(sender As System.Object, e As System.EventArgs) Handles m_btLayerDefault.Click
+            Try
+
+                Dim capManager As EwECore.cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+
+                Me.setDefault(capManager.LayerHabitatCapacityInput(Me.GroupIndex), _
+                                  capManager.InRow, capManager.InCol)
+
+                Me.UpdateCore()
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+        Private Sub setDefault(map As cEcospaceLayerHabitatCapacity, nrows As Integer, ncols As Integer)
+            For ir As Integer = 1 To nrows
+                For ic As Integer = 1 To ncols
+                    map.Cell(ir, ic) = 1.0
+                Next
+            Next
+        End Sub
+
+        Private Sub UpdateCore()
+
+            Me.UIContext.Core.onChanged(Me.UIContext.Core.EcospaceBasemap.LayerHabitatCapacityInput(1))
+
+        End Sub
     End Class
 
 End Namespace
