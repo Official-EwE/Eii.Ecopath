@@ -463,7 +463,6 @@ Namespace SpatialData
 
 #End Region ' Internals
 
-       
     End Class
 
 End Namespace
