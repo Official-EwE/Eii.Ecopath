@@ -147,6 +147,21 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the number of months between two dates.
+        ''' </summary>
+        ''' <param name="first"></param>
+        ''' <param name="second"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' http://stackoverflow.com/questions/3249968/calculating-number-of-months-between-2-dates
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function MonthDifference(ByVal first As DateTime, ByVal second As DateTime) As Integer
+            Return Math.Abs((first.Month - second.Month) + 12 * (first.Year - second.Year))
+        End Function
+
     End Class
 
 End Namespace

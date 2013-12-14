@@ -165,7 +165,8 @@
     <comment>{0} group index</comment>
   </data>
   <data name="CORE_DEFAULT_HABITAT" xml:space="preserve">
-    <value>Habitat</value>
+    <value>Habitat {0}</value>
+    <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_MEDIATIONSHAPE" xml:space="preserve">
     <value>Mediation Shape {0}</value>

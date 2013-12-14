@@ -30,7 +30,9 @@ Public Class cEcospaceLayerHabitat
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
-        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_HABITAT, EwEUtils.Core.eVarNameFlags.LayerHabitat, iIndex)
+        MyBase.New(theCore, manager, _
+                   String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_HABITAT, iIndex), _
+                   eVarNameFlags.LayerHabitat, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerHabitat
     End Sub
 
