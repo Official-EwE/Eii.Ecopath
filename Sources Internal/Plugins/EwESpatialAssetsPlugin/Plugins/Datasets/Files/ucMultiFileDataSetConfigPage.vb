@@ -115,14 +115,15 @@ Namespace SpatialData
             Dim iRow As Integer = 0
             Dim strFile As String = ""
 
+            Me.m_mtbIntervalStart.ValidatingType = GetType(Date)
             For i As Integer = 0 To aTimes.Length - 1
                 dt = aTimes(i)
                 If (i = 0) Then Me.m_mtbIntervalStart.Text = dt.ToString("yyyy") & dt.ToString("MM")
                 Me.m_lFiles.Add(New cFileEntry(Me.m_dataset.File(dt), dt))
             Next
+
             Me.UpdateGrid()
 
-            Me.m_mtbIntervalStart.ValidatingType = GetType(Date)
             Me.m_tbxName.Text = Me.m_dataset.DisplayName
             Me.m_tbxDescription.Text = Me.m_dataset.DataDescription
             Me.m_tbxPath.Text = Me.m_dataset.Source
@@ -133,6 +134,10 @@ Namespace SpatialData
             Next
             Me.m_cmbExtensions.SelectedIndex = 0
             Me.m_cmbInterval.SelectedIndex = 0
+
+            Me.m_cbSeasonal.Checked = Me.m_dataset.IsSeasonal
+            Me.m_mtbSeasonalEnd.ValidatingType = GetType(Date)
+            Me.m_mtbSeasonalEnd.Text = Me.m_dataset.TimeEnd.ToString("yyyy") & Me.m_dataset.TimeEnd.ToString("MM")
 
             If (Me.m_dataset.VarName = eVarNameFlags.NotSet) Then
                 ' Allow all supported varnames
@@ -309,6 +314,16 @@ Namespace SpatialData
             e.Value = fmt.GetDescriptor(e.ListItem)
         End Sub
 
+        Private Sub OnSeasonalCheckChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_cbSeasonal.CheckedChanged
+            Try
+                Me.m_dataset.IsSeasonal = Me.m_cbSeasonal.Checked
+                Me.UpdateControls()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
 #End Region ' Control events
 
 #Region " Internals "
@@ -387,6 +402,8 @@ Namespace SpatialData
             Dim bHasPattern As Boolean = (Not String.IsNullOrEmpty(Me.m_tbxDatePart.SelectedText))
             Dim strPath As String = Me.m_tbxPath.Text
             Dim bHasFolder As Boolean = False
+
+            Me.m_mtbSeasonalEnd.Enabled = Me.m_cbSeasonal.Checked
 
             Try
                 If Not String.IsNullOrWhiteSpace(strPath) Then
@@ -474,6 +491,8 @@ Namespace SpatialData
             Me.m_dataset.DataDescription = Me.m_tbxDescription.Text
             Me.m_dataset.Source = Me.m_tbxPath.Text
             Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
+            Me.m_dataset.IsSeasonal = Me.m_cbSeasonal.Checked
+            Me.m_dataset.SeasonsEnd = CType(Me.m_mtbSeasonalEnd.ValidateText, Date)
 
             Me.m_dataset.Clear()
             For Each entry As cFileEntry In Me.m_lFiles

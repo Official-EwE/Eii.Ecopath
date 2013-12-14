@@ -191,7 +191,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Habitat.
+        '''  Looks up a localized string similar to Habitat {0}.
         '''</summary>
         Friend Shared ReadOnly Property CORE_DEFAULT_HABITAT() As String
             Get

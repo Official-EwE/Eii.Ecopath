@@ -148,6 +148,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property TimeEnd As DateTime
             Get
+                If Me.IsSeasonal Then Return Me.SeasonsEnd
                 If (Me.m_lFiles.Count = 0) Then Return DateTime.MinValue
                 Me.Sort()
                 Return Me.m_lFiles(Me.m_lFiles.Count - 1).Time
@@ -246,6 +247,13 @@ Namespace SpatialData
         Public Overrides Function IsDataAvailable(ByVal runtype As IRunType) As Boolean
             Return Me.IsConfigured And Me.EnableData(runtype)
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>Get/set whether the dataset repeats seasonally.</summary>
+        ''' -------------------------------------------------------------------
+        Public Property IsSeasonal As Boolean
+
+        Public Property SeasonsEnd As Date = New Date(2100, 1, 1)
 
 #End Region ' Configuration
 
@@ -358,6 +366,14 @@ Namespace SpatialData
             xn.InnerText = Me.Source
             xnMaster.AppendChild(xn)
 
+            xn = doc.CreateElement("Seasonal")
+            xn.InnerText = Convert.ToString(Me.IsSeasonal)
+            xnMaster.AppendChild(xn)
+
+            xn = doc.CreateAttribute("SeasonsEnd")
+            xn.InnerText = Convert.ToString(Me.SeasonsEnd.ToOADate)
+            xnMaster.AppendChild(xn)
+
             xn = doc.CreateElement("Files")
             xnMaster.AppendChild(xn)
 
@@ -435,6 +451,8 @@ Namespace SpatialData
                         Case "Description" : Me.DataDescription = xn.InnerText
                         Case "Source" : Me.Source = xn.InnerText
                         Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                        Case "Seasonal" : Me.IsSeasonal = Convert.ToBoolean(xn.InnerText)
+                        Case "SeasonsEnd" : Me.SeasonsEnd = DateTime.FromOADate(Convert.ToDouble(xn.InnerText))
                         Case "Annual" : Convert.ToBoolean(xn.InnerText)
                         Case "Files"
                             For Each xnFile In xn.ChildNodes
@@ -541,6 +559,18 @@ Namespace SpatialData
         Private Function FileIndex(ByVal time As DateTime) As Integer
 
             Dim t As DateTime
+
+            ' ToDo: take seasonality into account
+            If Me.IsSeasonal Then
+                ' Is within date range?
+                If (time >= Me.TimeStart) And (time < Me.TimeEnd) Then
+                    ' #Yes: translate date
+                    time = Me.TimeStart.AddMonths(cDateUtils.MonthDifference(time, Me.TimeStart) Mod 12)
+                Else
+                    ' Outside range: exit
+                    Return -1
+                End If
+            End If
 
             For i As Integer = 0 To Me.m_lFiles.Count - 1
                 t = Me.m_lFiles(i).Time

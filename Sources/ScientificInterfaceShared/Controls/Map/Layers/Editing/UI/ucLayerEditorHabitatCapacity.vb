@@ -86,6 +86,8 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
+#Region " Events "
+
         Private Sub OnGroupSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbGroups.SelectedIndexChanged
             Me.GroupIndex = Me.m_cmbGroups.SelectedIndex + 1
@@ -98,57 +100,58 @@ Namespace Controls.Map.Layers
             e.Value = fmt.GetDescriptor(io)
         End Sub
 
-        Private Sub OnSetDefaultAllClick(sender As System.Object, e As System.EventArgs) Handles m_btAllDefault.Click
+        Private Sub OnSetDefaultAllClick(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnAllDefault.Click
+
             Dim ngrps As Integer = Me.UIContext.Core.nGroups
 
             Try
-
                 Dim capManager As EwECore.cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
                 Dim map As cEcospaceLayerHabitatCapacity
                 Dim nrows As Integer = capManager.InRow
                 Dim ncols As Integer = capManager.InCol
                 For igrp As Integer = 1 To ngrps
                     map = capManager.LayerHabitatCapacityInput(igrp)
-                    Me.setDefault(map, nrows, ncols)
+                    Me.SetDefault(map, nrows, ncols)
                 Next igrp
 
                 Me.UpdateCore()
-
             Catch ex As Exception
 
             End Try
 
         End Sub
 
-        Private Sub OnSetDefaultThis(sender As System.Object, e As System.EventArgs) Handles m_btLayerDefault.Click
+        Private Sub OnSetDefaultThis(sender As System.Object, e As System.EventArgs) Handles m_btnLayerDefault.Click
             Try
-
                 Dim capManager As EwECore.cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-
-                Me.setDefault(capManager.LayerHabitatCapacityInput(Me.GroupIndex), _
+                Me.SetDefault(capManager.LayerHabitatCapacityInput(Me.GroupIndex), _
                                   capManager.InRow, capManager.InCol)
-
                 Me.UpdateCore()
-
             Catch ex As Exception
 
             End Try
-
         End Sub
 
-        Private Sub setDefault(map As cEcospaceLayerHabitatCapacity, nrows As Integer, ncols As Integer)
+#End Region ' Events
+
+#Region " Internals "
+
+        Private Sub SetDefault(map As cEcospaceLayerHabitatCapacity, nrows As Integer, ncols As Integer)
             For ir As Integer = 1 To nrows
                 For ic As Integer = 1 To ncols
+                    ' The user interface should really not assume this. It's a core thing
                     map.Cell(ir, ic) = 1.0
                 Next
             Next
         End Sub
 
         Private Sub UpdateCore()
-
             Me.UIContext.Core.onChanged(Me.UIContext.Core.EcospaceBasemap.LayerHabitatCapacityInput(1))
-
         End Sub
+
+#End Region ' Internals
+
     End Class
 
 End Namespace

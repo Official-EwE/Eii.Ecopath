@@ -43,9 +43,10 @@ Namespace Controls.Map.Layers
         Private Sub InitializeComponent()
             Me.m_cmbGroups = New System.Windows.Forms.ComboBox()
             Me.m_lblFleet = New System.Windows.Forms.Label()
-            Me.m_btAllDefault = New System.Windows.Forms.Button()
-            Me.m_btLayerDefault = New System.Windows.Forms.Button()
+            Me.m_btnAllDefault = New System.Windows.Forms.Button()
+            Me.m_btnLayerDefault = New System.Windows.Forms.Button()
             Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_hdDefaults = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -63,7 +64,7 @@ Namespace Controls.Map.Layers
             Me.m_cmbGroups.MaxDropDownItems = 12
             Me.m_cmbGroups.Name = "m_cmbGroups"
             Me.m_cmbGroups.Size = New System.Drawing.Size(123, 21)
-            Me.m_cmbGroups.TabIndex = 6
+            Me.m_cmbGroups.TabIndex = 8
             '
             'm_lblFleet
             '
@@ -72,57 +73,72 @@ Namespace Controls.Map.Layers
             Me.m_lblFleet.Location = New System.Drawing.Point(3, 99)
             Me.m_lblFleet.Name = "m_lblFleet"
             Me.m_lblFleet.Size = New System.Drawing.Size(39, 13)
-            Me.m_lblFleet.TabIndex = 5
+            Me.m_lblFleet.TabIndex = 7
             Me.m_lblFleet.Text = "&Group:"
             '
-            'm_btAllDefault
+            'm_btnAllDefault
             '
-            Me.m_btAllDefault.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_btnAllDefault.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btAllDefault.Location = New System.Drawing.Point(65, 168)
-            Me.m_btAllDefault.Name = "m_btAllDefault"
-            Me.m_btAllDefault.Size = New System.Drawing.Size(99, 23)
-            Me.m_btAllDefault.TabIndex = 7
-            Me.m_btAllDefault.Text = "Set all layers"
-            Me.m_btAllDefault.UseVisualStyleBackColor = True
+            Me.m_btnAllDefault.Location = New System.Drawing.Point(65, 167)
+            Me.m_btnAllDefault.Name = "m_btnAllDefault"
+            Me.m_btnAllDefault.Size = New System.Drawing.Size(123, 23)
+            Me.m_btnAllDefault.TabIndex = 12
+            Me.m_btnAllDefault.Text = "Reset &all layers"
+            Me.m_btnAllDefault.UseVisualStyleBackColor = True
             '
-            'm_btLayerDefault
+            'm_btnLayerDefault
             '
-            Me.m_btLayerDefault.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_btnLayerDefault.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btLayerDefault.Location = New System.Drawing.Point(65, 138)
-            Me.m_btLayerDefault.Name = "m_btLayerDefault"
-            Me.m_btLayerDefault.Size = New System.Drawing.Size(99, 23)
-            Me.m_btLayerDefault.TabIndex = 8
-            Me.m_btLayerDefault.Text = "Set this layer"
-            Me.m_btLayerDefault.UseVisualStyleBackColor = True
+            Me.m_btnLayerDefault.Location = New System.Drawing.Point(65, 138)
+            Me.m_btnLayerDefault.Name = "m_btnLayerDefault"
+            Me.m_btnLayerDefault.Size = New System.Drawing.Size(123, 23)
+            Me.m_btnLayerDefault.TabIndex = 11
+            Me.m_btnLayerDefault.Text = "Reset &this layer"
+            Me.m_btnLayerDefault.UseVisualStyleBackColor = True
             '
             'Label1
             '
             Me.Label1.AutoSize = True
             Me.Label1.Location = New System.Drawing.Point(3, 138)
             Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(49, 13)
-            Me.Label1.TabIndex = 9
-            Me.Label1.Text = "Defaults:"
+            Me.Label1.Size = New System.Drawing.Size(0, 13)
+            Me.Label1.TabIndex = 10
+            '
+            'm_hdDefaults
+            '
+            Me.m_hdDefaults.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdDefaults.CanCollapseParent = False
+            Me.m_hdDefaults.CollapsedParentHeight = 0
+            Me.m_hdDefaults.IsCollapsed = False
+            Me.m_hdDefaults.Location = New System.Drawing.Point(0, 120)
+            Me.m_hdDefaults.Name = "m_hdDefaults"
+            Me.m_hdDefaults.Size = New System.Drawing.Size(188, 18)
+            Me.m_hdDefaults.TabIndex = 9
+            Me.m_hdDefaults.Text = "Defaults"
+            Me.m_hdDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'ucLayerEditorHabitatCapacity
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_hdDefaults)
             Me.Controls.Add(Me.Label1)
-            Me.Controls.Add(Me.m_btLayerDefault)
+            Me.Controls.Add(Me.m_btnLayerDefault)
             Me.Controls.Add(Me.m_cmbGroups)
             Me.Controls.Add(Me.m_lblFleet)
-            Me.Controls.Add(Me.m_btAllDefault)
+            Me.Controls.Add(Me.m_btnAllDefault)
             Me.Name = "ucLayerEditorHabitatCapacity"
-            Me.Size = New System.Drawing.Size(191, 201)
-            Me.Controls.SetChildIndex(Me.m_btAllDefault, 0)
+            Me.Size = New System.Drawing.Size(191, 196)
+            Me.Controls.SetChildIndex(Me.m_btnAllDefault, 0)
             Me.Controls.SetChildIndex(Me.m_lblFleet, 0)
             Me.Controls.SetChildIndex(Me.m_cmbGroups, 0)
             Me.Controls.SetChildIndex(Me.m_pbPreview, 0)
-            Me.Controls.SetChildIndex(Me.m_btLayerDefault, 0)
+            Me.Controls.SetChildIndex(Me.m_btnLayerDefault, 0)
             Me.Controls.SetChildIndex(Me.Label1, 0)
+            Me.Controls.SetChildIndex(Me.m_hdDefaults, 0)
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -130,9 +146,10 @@ Namespace Controls.Map.Layers
         End Sub
         Private WithEvents m_cmbGroups As System.Windows.Forms.ComboBox
         Private WithEvents m_lblFleet As System.Windows.Forms.Label
-        Friend WithEvents m_btAllDefault As System.Windows.Forms.Button
-        Friend WithEvents m_btLayerDefault As System.Windows.Forms.Button
         Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_hdDefaults As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnAllDefault As System.Windows.Forms.Button
+        Private WithEvents m_btnLayerDefault As System.Windows.Forms.Button
 
     End Class
 
