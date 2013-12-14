@@ -106,8 +106,10 @@ Namespace SpatialData
         ''' <param name="strFile">Optional file to load datasets from. If this 
         ''' parameter is left empty the <see cref="cSpatialDataSetManager.ConfigFileName">default file path</see>
         ''' is used.</param>
-        ''' <param name="bClearFirst">Flag, stating that the content currently in the manager should be cleared first.</param>
+        ''' <param name="bClearFirst">Flag, stating that the content currently in 
+        ''' the manager should be cleared first.</param>
         ''' <returns>True if successful.</returns>
+        ''' <remarks>This method can also be used to import extra datasets.</remarks>
         ''' -------------------------------------------------------------------
         Public Function Load(Optional strFile As String = "", _
                              Optional bClearFirst As Boolean = False) As Boolean
@@ -187,10 +189,14 @@ Namespace SpatialData
         ''' Saves all datasets currently loaded by the manager to persistent storage.
         ''' </summary>
         ''' <returns>True if successful.</returns>
-        ''' <remarks>If the manager is read-only, which is set when the datafile
-        ''' is externally modified, any save attempt will abort and fail.</remarks>
+        ''' <remarks>
+        ''' <para>If the manager is read-only, which is set when the datafile
+        ''' is externally modified, any save attempt will abort and fail.</para>
+        ''' <para>Note that this method can also be used to export datasets.</para>
+        ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function Save() As Boolean
+        Public Function Save(Optional strFile As String = "", _
+                             Optional datasets As ISpatialDataSet() = Nothing) As Boolean
 
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
@@ -198,17 +204,26 @@ Namespace SpatialData
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
             Dim bChanged As Boolean = False
-            Dim strConfigFileName As String = cSpatialDataSetManager.ConfigFileName()
             Dim bSuccess As Boolean = True
 
+            ' Complete missing file name, if any
+            If (String.IsNullOrWhiteSpace(strFile)) Then
+                strFile = cSpatialDataSetManager.ConfigFileName()
+            End If
+
+            ' Complete missing datasets, if any
+            If (datasets Is Nothing) Then
+                datasets = Me.m_lAvailable.ToArray()
+            End If
+
             ' Create dir
-            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strConfigFileName)) Then
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile)) Then
                 Return False
             End If
 
             Try
-                If File.Exists(strConfigFileName) Then
-                    doc.Load(strConfigFileName)
+                If File.Exists(strFile) Then
+                    doc.Load(strFile)
                     xnRoot = doc.GetElementsByTagName("Datasets")(0)
                 End If
             Catch ex As Exception
@@ -247,7 +262,7 @@ Namespace SpatialData
             lDelete.Clear()
 
             ' Gather dataset config nodes, but do not add to the doc until all done
-            For Each ds As ISpatialDataSet In Me.m_lAvailable
+            For Each ds As ISpatialDataSet In datasets
 
                 xnDataset = doc.CreateElement("Dataset")
 
