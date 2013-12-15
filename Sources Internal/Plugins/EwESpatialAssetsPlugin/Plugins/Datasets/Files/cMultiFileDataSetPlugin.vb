@@ -253,6 +253,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property IsSeasonal As Boolean
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>Get/set whether date where 'seasonality' ends.</summary>
+        ''' <remarks>Thanks, Marillion ;)</remarks>
+        ''' -------------------------------------------------------------------
         Public Property SeasonsEnd As Date = New Date(2100, 1, 1)
 
 #End Region ' Configuration
@@ -370,7 +374,7 @@ Namespace SpatialData
             xn.InnerText = Convert.ToString(Me.IsSeasonal)
             xnMaster.AppendChild(xn)
 
-            xn = doc.CreateAttribute("SeasonsEnd")
+            xn = doc.CreateElement("SeasonsEnd")
             xn.InnerText = Convert.ToString(Me.SeasonsEnd.ToOADate)
             xnMaster.AppendChild(xn)
 
@@ -559,22 +563,23 @@ Namespace SpatialData
         Private Function FileIndex(ByVal time As DateTime) As Integer
 
             Dim t As DateTime
+            Dim timeFile As New DateTime(time.Ticks)
 
-            ' ToDo: take seasonality into account
+            ' Take seasonality into account
             If Me.IsSeasonal Then
                 ' Is within date range?
-                If (time >= Me.TimeStart) And (time < Me.TimeEnd) Then
-                    ' #Yes: translate date
-                    time = Me.TimeStart.AddMonths(cDateUtils.MonthDifference(time, Me.TimeStart) Mod 12)
+                If (timeFile >= Me.TimeStart) And (timeFile < Me.TimeEnd) Then
+                    ' #Yes: translate 'wrap' date
+                    timeFile = Me.TimeStart.AddMonths(cDateUtils.MonthDifference(timeFile, Me.TimeStart) Mod 12)
                 Else
-                    ' Outside range: exit
+                    ' Outside data range: exit
                     Return -1
                 End If
             End If
 
             For i As Integer = 0 To Me.m_lFiles.Count - 1
                 t = Me.m_lFiles(i).Time
-                If (time = t) Then Return i
+                If (timeFile = t) Then Return i
             Next i
             Return -1
 
