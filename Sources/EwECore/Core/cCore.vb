@@ -8523,7 +8523,7 @@ Public Class cCore
         End While
 
         ' Return absolute date
-        Return New DateTime(Math.Max(Me.EcosimFirstYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
+        Return New DateTime(Math.Max(Me.EcosimFirstYear + iTimeStepYear, 1), Math.Max(iTimeStepMonth + 1, 1), 1)
 
     End Function
 
