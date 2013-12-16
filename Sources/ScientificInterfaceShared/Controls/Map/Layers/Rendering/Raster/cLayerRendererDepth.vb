@@ -80,6 +80,9 @@ Namespace Controls.Map.Layers
                         End If
                         '' Draw value
                         'g.DrawString(String.Format("{0}", value), Me.Font, Me.ForeBrush, rc)
+                    Else
+                        ' Dangerous! This assumes depth layer is positioned correctly at the bottom of the layer pile
+                        g.FillRectangle(Brushes.White, rc)
                     End If
                 End If
 
@@ -87,24 +90,6 @@ Namespace Controls.Map.Layers
                 ' Boom
             End Try
         End Sub
-
-        'Public Overrides Sub Update()
-        '    MyBase.Update()
-        '    If (Me.VisualStyle Is Nothing) Then
-        '        Me.ForeBrush = cRasterLayerRenderer.brDEFAULT
-        '    Else
-        '        Me.ForeBrush = New SolidBrush(Me.VisualStyle.ForeColour)
-        '        Me.Font = New Font(Me.VisualStyle.FontName, Me.VisualStyle.FontSize, Me.VisualStyle.FontStyle)
-        '    End If
-        'End Sub
-
-        'Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        '    MyBase.Dispose(disposing)
-        '    Me.Font.Dispose()
-        '    Me.Font = Nothing
-        '    Me.ForeBrush.Dispose()
-        '    Me.ForeBrush = Nothing
-        'End Sub
 
         Public Overrides Function GetDisplayText(value As Object) As String
             Return cStringUtils.FormatNumber(value)
