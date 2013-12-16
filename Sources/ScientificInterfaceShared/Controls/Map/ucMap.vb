@@ -552,10 +552,33 @@ Namespace Controls.Map
             Dim ptTL As New PointF(bm.ColToLon(iXFrom), bm.RowToLat(iYFrom))
             Dim ptBR As New PointF(bm.ColToLon(iXTo), bm.RowToLat(iYTo))
 
-            ' Draw raster layers in reverse order
-            For iLayer As Integer = Me.m_layers.Count - 1 To 0 Step -1
+            Dim layers As New List(Of cDisplayLayer)
+            Dim displayDepth As cDisplayLayer = Nothing
 
-                l = Me.m_layers(iLayer)
+            For Each l In Me.m_layers
+                Dim bDrawLayer As Boolean = (l.Renderer.IsVisible)
+                If TypeOf l Is cDisplayRasterLayer Then
+                    If (DirectCast(l, cDisplayRasterLayer).VarName = eVarNameFlags.LayerDepth) Then
+                        bDrawLayer = False
+                        displayDepth = l
+                    End If
+                End If
+                If bDrawLayer Then layers.Add(l)
+            Next
+
+            If (displayDepth IsNot Nothing) Then
+                If displayDepth.IsSelected Then
+                    layers.Clear()
+                    layers.Add(displayDepth)
+                Else
+                    layers.Insert(0, displayDepth)
+                End If
+            End If
+
+            ' Draw raster layers in reverse order
+            For iLayer As Integer = layers.Count - 1 To 0 Step -1
+
+                l = layers(iLayer)
                 If (l.Renderer.IsVisible) Then
 
                     If (TypeOf l Is cDisplayRasterLayer) Then
