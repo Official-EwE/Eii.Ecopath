@@ -569,10 +569,8 @@ Namespace Controls.Map
             If (displayDepth IsNot Nothing) Then
                 If displayDepth.IsSelected Then
                     layers.Clear()
-                    layers.Add(displayDepth)
-                Else
-                    layers.Insert(0, displayDepth)
                 End If
+                layers.Add(displayDepth)
             End If
 
             ' Draw raster layers in reverse order
