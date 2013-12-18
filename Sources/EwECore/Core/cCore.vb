@@ -13472,6 +13472,8 @@ Public Class cCore
 
                 Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerHabitat
 
+                    Me.m_Ecospace.UpdateDepthMap()
+
                     ' Recalc habitat area
                     Me.LoadEcospaceHabitats()
 
