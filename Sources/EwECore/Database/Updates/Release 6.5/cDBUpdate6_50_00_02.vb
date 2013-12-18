@@ -56,7 +56,7 @@ Friend Class cDBUpdate6_50_00_02
             If db.Execute("ALTER TABLE EcospaceScenarioCapacityDrivers DROP CONSTRAINT " & db.GetPkKeyName("GroupID")) Then
                 db.Execute("ALTER TABLE EcospaceScenarioCapacityDrivers ADD CONSTRAINT fkGroupID FOREIGN KEY (GroupID) REFERENCES EcospaceScenarioGroup (GroupID)")
             End If
-
+        Catch e As Exception
         End Try
         Me.LogProgress("Validate EcospaceScenarioCapacityDrivers", True)
         Return True
