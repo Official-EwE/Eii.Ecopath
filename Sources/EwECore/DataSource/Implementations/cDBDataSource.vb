@@ -9259,9 +9259,7 @@ Namespace DataSources
             Try
 
                 While reader.Read()
-                    'Dim iGroup As Integer = Array.IndexOf(ecospaceDS.GroupDBID, CInt(reader("GroupID")))
-                    'jb 17-Dec-2013 The GroupID is the EcopathGroupID EcospaceScenarioCapacityDrivers.GroupId has many to one relationship with EcopathGroup.GroupID
-                    Dim iGroup As Integer = Array.IndexOf(ecospaceDS.EcopathGroupDBID, CInt(reader("GroupID")))
+                    Dim iGroup As Integer = Array.IndexOf(ecospaceDS.GroupDBID, CInt(reader("GroupID")))
                     Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ShapeID")))
                     Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(reader("VarDBID")))
                     Dim varName As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
@@ -9372,8 +9370,7 @@ Namespace DataSources
                         If (ecospaceDS.CapMapFunctions(iMap, iGroup) > 0) Then
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
-                            'drow("GroupID") = ecospaceDS.GroupDBID(iGroup)
-                            'jb 17-Dec-2013 The GroupID is the EcopathGroupID EcospaceScenarioCapacityDrivers.GroupId has many to one relationship with EcopathGroup.GroupID
+                            ' Referenced to Ecopath groups
                             drow("GroupID") = ecospaceDS.EcopathGroupDBID(iGroup)
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
                             If iMap = 0 Then layerType = eVarNameFlags.LayerDepth Else layerType = eVarNameFlags.LayerDriver
