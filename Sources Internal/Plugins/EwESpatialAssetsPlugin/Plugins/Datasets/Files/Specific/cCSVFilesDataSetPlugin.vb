@@ -111,7 +111,11 @@ Namespace SpatialData
         Public Overrides Function GetRaster(converter As ISpatialDataConverter, strLayerName As String) As ISpatialRaster
 
             If (Not Me.IsLocked) Then Return Nothing
-            Return Me.m_reader.ToRaster(strLayerName)
+            If Me.LoadSource Then
+                Return Me.m_reader.ToRaster(strLayerName)
+            Else
+                Return Nothing
+            End If
 
         End Function
 
