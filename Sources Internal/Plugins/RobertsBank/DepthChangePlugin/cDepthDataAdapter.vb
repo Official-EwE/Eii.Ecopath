@@ -63,6 +63,8 @@ Public Class cDepthDataAdapter
 
     Private Sub InitSpatialChanges()
 
+        Me.m_core.onChanged(Me.m_core.EcospaceBasemap.LayerDepth)
+
         'Counts and re-sets the number of water cells in the core
         WaterCells()
 
@@ -73,6 +75,8 @@ Public Class cDepthDataAdapter
         'If we have added water cells the new cells need PHabType(row,col,habitat) set Proportion of habitat type in a cell
         'For CalcHabitatArea() to correctly set the habitat areas
         Me.Ecospace.CalcHabitatArea()
+
+        'Set the cell exchange rates(biomass flow between cells) based on the habitat capacity that was changed above
         Me.Ecospace.SetMovementParameters()
 
     End Sub
@@ -147,7 +151,7 @@ Public Class cDepthDataAdapter
         'ToDo save the initial state
         Try
             Me.m_orgDepth = New Integer(Me.SpaceData.InRow + 1, Me.SpaceData.InCol + 1) {}
-            Array.Copy(Me.SpaceData.Depth, Me.m_orgDepth, Me.SpaceData.Depth.Length)
+            Array.Copy(Me.SpaceData.DepthInput, Me.m_orgDepth, Me.SpaceData.DepthInput.Length)
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
@@ -245,7 +249,7 @@ Public Class cDepthDataAdapter
                     CellValue = dataExternal.Cell(iRow, iCol, dNoData)
 
                     Me.m_bChanged(iRow, iCol) = False
-                    If CellValue <> CSng(layerDepth.Cell(iRow, iCol)) Then
+                    If CellValue <> CDbl(layerDepth.Cell(iRow, iCol)) Then
                         'Depth has changed
                         'Set the new depth
                         If Me.SetCell(layer, iRow, iCol, CellValue) Then
@@ -290,10 +294,12 @@ Public Class cDepthDataAdapter
         'MyBase.EndRun()
         Try
             'ToDo restore the initial state
-            Array.Copy(Me.m_orgDepth, Me.SpaceData.Depth, Me.SpaceData.Depth.Length)
+            Array.Copy(Me.m_orgDepth, Me.SpaceData.DepthInput, Me.SpaceData.Depth.Length)
 
             '
             Me.InitSpatialChanges()
+
+
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
