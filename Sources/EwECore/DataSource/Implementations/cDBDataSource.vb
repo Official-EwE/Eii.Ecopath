@@ -9371,8 +9371,8 @@ Namespace DataSources
                         If (ecospaceDS.CapMapFunctions(iMap, iGroup) > 0) Then
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
-                            ' Referenced to Ecopath groups
-                            drow("GroupID") = ecospaceDS.EcopathGroupDBID(iGroup)
+                            ' Referenced to Ecospace group DBIDs
+                            drow("GroupID") = ecospaceDS.GroupDBID(iGroup)
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
                             If iMap = 0 Then layerType = eVarNameFlags.LayerDepth Else layerType = eVarNameFlags.LayerDriver
                             drow("VarName") = cin.GetVarName(layerType)
