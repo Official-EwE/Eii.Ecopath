@@ -17,19 +17,14 @@
 '
 
 Option Strict On
-Imports EwEPlugin
 Imports EwEUtils.Database
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-
-Imports EwEUtils.SystemUtilities.cSystemUtils
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.40.0.03:</para>
+''' <para>Database update 6.40.0.04:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Added model exclusion layer</description></item>
+''' <item><description>Fixed ref integrity to Ecospace groups (not Ecopath)</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
