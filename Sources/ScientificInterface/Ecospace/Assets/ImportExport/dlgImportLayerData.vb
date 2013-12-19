@@ -210,7 +210,7 @@ Namespace Ecospace.Basemap
             Me.m_grid.Mappings.Clear()
 
             ' Read file
-            If (Not Me.m_data.ReadXYFile(Me.m_tbInput.Text)) Then
+            If (Not Me.m_data.ReadXYFile(Me.m_tbInput.Text, Me.RowField, Me.ColField)) Then
                 Return False
             End If
 
@@ -270,16 +270,10 @@ Namespace Ecospace.Basemap
 
                         ' Load layer
                         For iCell = 0 To Me.m_data.NumCells
-                            If Me.m_data.IsRowColImplicit Then
-                                ' Calculate row, col from cell index
-                                iRow = CInt(Math.Floor(iCell / bm.InCol)) + 1
-                                iCol = CInt(iCell Mod bm.InCol) + 1
-                            Else
-                                ' Obtain row, col field values from data
-                                iRow = CInt(Me.m_data.Value(iCell, Me.RowField()))
-                                iCol = CInt(Me.m_data.Value(iCell, Me.ColField()))
-                            End If
-                            layer.Cell(iRow, iCol) = Me.m_data.Value(iCell, strField)
+                            ' Obtain row, col field values from data
+                            iRow = CInt(Me.m_data.Value(iCell, Me.RowField()))
+                            iCol = CInt(Me.m_data.Value(iCell, Me.ColField()))
+                            layer.Cell(iRow, iCol) = Me.m_data.Value(iRow, iCol, strField)
                         Next
 
                         Me.m_uic.Core.onChanged(layer)

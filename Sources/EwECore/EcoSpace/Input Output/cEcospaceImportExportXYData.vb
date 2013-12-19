@@ -266,6 +266,7 @@ Public Class cEcospaceImportExportXYData
 
     End Function
 
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Write data to a XY text file. The format of the file is
@@ -277,15 +278,12 @@ Public Class cEcospaceImportExportXYData
     ''' values are separated by commas.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ReadXYFile(ByVal strFile As String, _
-                               Optional ByVal separator As Char = ","c) As Boolean
+    Public Function ReadXYFields(ByVal strFile As String, _
+                                 Optional ByVal separator As Char = ","c) As Boolean
 
         Dim tr As TextReader = Nothing
         Dim strLine As String = ""
         Dim astrFields As String() = Nothing
-        Dim astrValues As String() = Nothing
-        Dim iCell, iField As Integer
-        Dim sValue As Single = 0.0!
         Dim bSuccess As Boolean = True
 
         Try
@@ -303,18 +301,73 @@ Public Class cEcospaceImportExportXYData
             For i As Integer = 0 To astrFields.Length - 1
                 astrFields(i) = astrFields(i).Trim
             Next
+
             Me.Fields = astrFields
 
-            iCell = 0
-            While (tr.Peek() <> -1) And (iCell < Me.NumCells)
+        Catch ex As Exception
+            bSuccess = False
+        End Try
+
+        tr.Close()
+        Return bSuccess
+
+    End Function
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write data to a XY text file. The format of the file is
+    ''' 'col,row[,<see cref="Fields"/>]*', with a configurable the separator character.
+    ''' Field names encountered in the file can be found in <see cref="Fields"/>.
+    ''' </summary>
+    ''' <param name="strFile">The name of the file to write.</param>
+    ''' <param name="separator">The separator character to use. By default, CSV
+    ''' values are separated by commas.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function ReadXYFile(ByVal strFile As String, _
+                               ByVal strRowField As String, _
+                               ByVal strColField As String, _
+                               Optional ByVal separator As Char = ","c) As Boolean
+
+        If Me.m_astrFields.Length = 0 Then
+            If Not Me.ReadXYFields(strFile) Then Return False
+        End If
+
+        Dim tr As TextReader = Nothing
+        Dim strLine As String = ""
+        Dim astrFields As String() = Me.Fields
+        Dim astrValues As String() = Nothing
+        Dim iField As Integer
+        Dim sValue As Single = 0.0!
+        Dim iColField As Integer = -1
+        Dim iRowField As Integer = -1
+        Dim bSuccess As Boolean = True
+
+        Try
+            tr = New StreamReader(strFile)
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Try
+            ' Read fields line
+            strLine = tr.ReadLine()
+
+            iColField = Array.IndexOf(astrFields, strColField)
+            iRowField = Array.IndexOf(astrFields, strRowField)
+
+            If (iColField = -1 Or iRowField = -1) Then Return False
+
+            While (tr.Peek() <> -1)
                 strLine = tr.ReadLine()
                 astrValues = strLine.Split(separator)
 
                 For iField = 0 To astrFields.Length - 1
-                    Me.Value(iCell, astrFields(iField)) = astrValues(iField)
+                    If (iField <> iRowField) And (iField <> iColField) Then
+                        Me.Value(CInt(astrValues(iRowField)), CInt(astrValues(iColField)), astrFields(iField)) = astrValues(iField)
+                    End If
                 Next
-                ' Next
-                iCell += 1
             End While
 
         Catch ex As Exception
@@ -491,7 +544,7 @@ Public Class cEcospaceImportExportXYData
             Return Me.m_buffer(strField)(iCell)
         End Get
         Set(ByVal value As Object)
-            If String.IsNullOrEmpty(strField) Then
+            If String.IsNullOrWhiteSpace(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If
             Me.m_buffer(strField)(iCell) = value
