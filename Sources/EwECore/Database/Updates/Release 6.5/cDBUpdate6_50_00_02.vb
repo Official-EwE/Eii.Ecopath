@@ -21,16 +21,16 @@ Imports EwEUtils.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.50.0.01:</para>
+''' <para>Database update 6.50.0.02:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Added model exclusion layer</description></item>
+''' <item><description>Re-issued 6.4.04 to fix development time updates</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
 Friend Class cDBUpdate6_50_00_02
-    Inherits cDBUpdate
+    Inherits cDBUpdate6_40_00_04
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cDBUpdate.UpdateVersion"/>
@@ -46,21 +46,8 @@ Friend Class cDBUpdate6_50_00_02
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Validated capacity maps"
+            Return "Re-checked capacity maps"
         End Get
     End Property
-
-    Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-
-        Try
-            If db.Execute("ALTER TABLE EcospaceScenarioCapacityDrivers DROP CONSTRAINT " & db.GetPkKeyName("GroupID")) Then
-                db.Execute("ALTER TABLE EcospaceScenarioCapacityDrivers ADD CONSTRAINT fkGroupID FOREIGN KEY (GroupID) REFERENCES EcospaceScenarioGroup (GroupID)")
-            End If
-        Catch e As Exception
-        End Try
-        Me.LogProgress("Validate EcospaceScenarioCapacityDrivers", True)
-        Return True
-
-    End Function
 
 End Class

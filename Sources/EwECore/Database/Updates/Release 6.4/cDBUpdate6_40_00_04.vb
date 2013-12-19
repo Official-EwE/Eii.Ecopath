@@ -58,9 +58,13 @@ Friend Class cDBUpdate6_40_00_04
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
         Dim bSuccess As Boolean = True
+        Dim strKey As String = db.GetFkKeyName("EcopathGroup", "EcospaceScenarioCapacityDrivers", "GroupID")
 
-        If db.Execute("ALTER TABLE EcospaceScenarioCapacityDrivers DROP CONSTRAINT " & db.GetPkKeyName("GroupID")) Then
-            bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityDrivers ADD CONSTRAINT fkGroupID FOREIGN KEY (GroupID) REFERENCES EcospaceScenarioGroup (GroupID)")
+        If Not String.IsNullOrWhiteSpace(strKey) Then
+            bSuccess = False
+            If db.Execute("ALTER TABLE EcospaceScenarioCapacityDrivers DROP CONSTRAINT " & strKey) Then
+                bSuccess = db.Execute("ALTER TABLE EcospaceScenarioCapacityDrivers ADD CONSTRAINT fkGroupID FOREIGN KEY (GroupID) REFERENCES EcospaceScenarioGroup (GroupID)")
+            End If
         End If
 
         Me.LogProgress("UpdateEcospaceScenarioCapacityDrivers", bSuccess)
