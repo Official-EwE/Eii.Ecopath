@@ -543,12 +543,12 @@ Namespace Ecospace.Controls
             Dim bNeedsConverter As Boolean = False
 
             If (ds IsNot Nothing) Then
-                bCanConfigDS = bHasContext And (TypeOf ds Is IConfigurablePlugin)
+                bCanConfigDS = bHasContext And (TypeOf ds Is IConfigurable)
                 bIsConfigured = bHasContext And Me.m_adt.IsConnected(Me.m_layer.Index)
                 bNeedsConverter = Not String.IsNullOrWhiteSpace(ds.ConversionFormat)
             End If
             If (cv IsNot Nothing) Then
-                bCanConfigCV = bHasContext And (TypeOf cv Is IConfigurablePlugin)
+                bCanConfigCV = bHasContext And (TypeOf cv Is IConfigurable)
             End If
 
             Me.m_btnCreateDS.Enabled = Me.m_bHasDatasetTemplates
@@ -613,9 +613,28 @@ Namespace Ecospace.Controls
 
         End Sub
 
-        Private Sub ConfigConverter(cv As ISpatialDataConverter)
-            ' NOP
-        End Sub
+        Private Function ConfigConverter(cv As ISpatialDataConverter) As Boolean
+
+            If (cv Is Nothing) Then Return False
+            If (Not TypeOf cv Is IConfigurable) Then Return True
+
+            If (TypeOf cv Is IPlugin) Then
+                DirectCast(cv, IPlugin).Initialize(Me.m_uic.Core)
+            End If
+
+            Dim cvConf As IConfigurable = DirectCast(cv, IConfigurable)
+            Dim ctrl As Control = cvConf.GetConfigUI()
+
+            If (ctrl Is Nothing) Then Return cvConf.IsConfigured
+
+            Dim dlg As New dlgConfig()
+            dlg.UIContext = Me.UIContext
+            dlg.ShowDialog(Me.FindForm, "Configure conversion", ctrl)
+
+            Me.EvaluateCache()
+
+            Return (cvConf.IsConfigured)
+        End Function
 
         Private Property SelectedDataset As ISpatialDataSet
             Get
@@ -701,13 +720,13 @@ Namespace Ecospace.Controls
         Private Function ConfigDS(ds As ISpatialDataSet) As Boolean
 
             If (ds Is Nothing) Then Return False
-            If (Not TypeOf ds Is IConfigurablePlugin) Then Return True
+            If (Not TypeOf ds Is IConfigurable) Then Return True
 
             If (TypeOf ds Is IPlugin) Then
                 DirectCast(ds, IPlugin).Initialize(Me.m_uic.Core)
             End If
 
-            Dim dsConf As IConfigurablePlugin = DirectCast(ds, IConfigurablePlugin)
+            Dim dsConf As IConfigurable = DirectCast(ds, IConfigurable)
             Dim ctrl As Control = dsConf.GetConfigUI()
 
             If (ctrl Is Nothing) Then Return dsConf.IsConfigured

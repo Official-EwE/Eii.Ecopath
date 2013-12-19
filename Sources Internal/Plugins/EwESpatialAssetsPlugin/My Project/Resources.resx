@@ -148,10 +148,10 @@
     <value>A series of Ecospace ASCII files over time</value>
   </data>
   <data name="DATASET_CSV_DESCRIPTION" xml:space="preserve">
-    <value>A series of CSV map files, prepared to match a specific Ecospace map size and extent</value>
+    <value>A series of CSV files in row, col, values* format, as exported by Ecospace. Note that these files lack any spatial reference, and are intended to be used only with the Ecospace scenario from which they were generated.</value>
   </data>
   <data name="DATASET_CSV_NAME" xml:space="preserve">
-    <value>A series of Ecospace CSV maps over time</value>
+    <value>A series of Ecospace [row, col, value] CSV files over time</value>
   </data>
   <data name="DATASET_MULTIPLE_DESCR" xml:space="preserve">
     <value>A series of spatial time-tagged files</value>

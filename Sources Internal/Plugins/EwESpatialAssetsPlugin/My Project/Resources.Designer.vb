@@ -151,7 +151,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to A series of CSV map files, prepared to match a specific Ecospace map size and extent.
+        '''  Looks up a localized string similar to A series of CSV files in row, col, values* format, as exported by Ecospace. Note that these files lack any spatial reference, and are intended to be used only with the Ecospace scenario from which they were generated..
         '''</summary>
         Friend ReadOnly Property DATASET_CSV_DESCRIPTION() As String
             Get
@@ -160,7 +160,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to A series of Ecospace CSV maps over time.
+        '''  Looks up a localized string similar to A series of Ecospace [row, col, value] CSV files over time.
         '''</summary>
         Friend ReadOnly Property DATASET_CSV_NAME() As String
             Get
