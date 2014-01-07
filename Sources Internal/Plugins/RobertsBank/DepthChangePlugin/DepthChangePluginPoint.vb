@@ -144,9 +144,11 @@ Public Class cDepthChangePluginPoint
             Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing), _
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
-            Me.InitSpatialData()
-            Me.SpatialDataLoader.AddedDepthAdapter()
-
+            'Only Initialize once
+            If Me.SpatialDataLoader Is Nothing Then
+                Me.InitSpatialData()
+                Me.SpatialDataLoader.AddedDepthAdapter()
+            End If
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".CoreInitialized() Exception " + ex.Message)

@@ -37,6 +37,7 @@ Imports EwECore.SpatialData
 Public Class cDepthDataAdapter
     Inherits cSpatialDataAdapter
 
+
 #Region "Private variables"
 
     Private m_orgDepth(,) As Integer

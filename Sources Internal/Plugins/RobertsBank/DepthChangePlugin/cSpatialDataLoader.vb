@@ -46,6 +46,8 @@ Public Class cSpatialDataLoader
 
     Private m_DepthAdapter As cDepthDataAdapter
 
+    Private Shared m_isAdapterLoaded As Boolean = False
+
 #End Region
 
 #Region "Public Stuff"
@@ -90,7 +92,7 @@ Public Class cSpatialDataLoader
         End Set
     End Property
 
-   
+
     Public Property SpatialConfigFile As String
         Get
             Return Me.m_SpatialConfigFile
@@ -164,12 +166,15 @@ Public Class cSpatialDataLoader
     Public Sub AddedDepthAdapter()
         Try
 
-            '  Dim DataSet As EwEUtils.SpatialData.ISpatialDataSet
+            If cSpatialDataLoader.m_isAdapterLoaded Then
+                Return
+            End If
             Dim Converter As EwEUtils.SpatialData.ISpatialDataConverter
 
             Me.m_DepthAdapter = New cDepthDataAdapter(Me.Plugin.Core, Me.Plugin.Ecospace, Me.Plugin.Ecospace.EcoSpaceData)
             Debug.Assert(Me.m_DepthAdapter IsNot Nothing, Me.ToString + ".InitSpatialData() Failed to create Adapter.")
 
+            'Get the Rater Converter from the core
             Converter = Me.getConverterByType(GetType(EwESpatialAssetsPlugin.SpatialData.cRasterConverterPlugin))
 
             If (Not Me.m_DepthAdapter Is Nothing) And (Not Converter Is Nothing) Then
@@ -178,10 +183,12 @@ Public Class cSpatialDataLoader
                 'And add the DepthAdapter to the core spatial data manager          
                 Me.m_DepthAdapter.Converter(0) = Converter
                 Plugin.Core.SpatialDataConnectionManager.AddAdapter(Me.m_DepthAdapter)
+                cSpatialDataLoader.m_isAdapterLoaded = True
             End If
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
+            cSpatialDataLoader.m_isAdapterLoaded = False
         End Try
 
     End Sub
