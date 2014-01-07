@@ -166,6 +166,27 @@ Namespace SystemUtilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <returns>True if an internet connection has been detected.</returns>
+        ''' <remarks>
+        ''' For original article, see http://stackoverflow.com/questions/8800119/check-internet-connectivity.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsConnectedToInternet() As Boolean
+            Try
+                Using client As New WebClient()
+                    Using stream As IDisposable = client.OpenRead("http://www.google.com")
+                        Return True
+                    End Using
+                End Using
+            Catch
+                Return False
+            End Try
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Function that execute external applications for all plug-ins
         ''' </summary>
         ''' <param name="strAppName">Name of the executable to execute (including extension)</param>

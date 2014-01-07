@@ -84,6 +84,14 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Returns whether the raster is connected to actual data.
+        ''' </summary>
+        ''' <returns>True if the raster is connected to actual data.</returns>
+        ''' -------------------------------------------------------------------
+        Function IsValid() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Return the mean value across all data values the raster.
         ''' </summary>
         ''' <returns>The mean value across all data values the raster. This
