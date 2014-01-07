@@ -183,7 +183,7 @@ Public Class cDotSpatialUtils
     ''' <param name="bVector">Flag indicating whether <see cref="IVectorProvider">vectors</see> must be supported.</param>
     ''' <returns>A combined <see cref="System.Windows.Forms.FileDialog.Filter">dialog filter</see>.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Shared Function DialogFilter(ByVal bRead As Boolean, _
+    Public Shared Function DialogFilter(ByVal bRead As Boolean, _
                                         Optional ByVal bRaster As Boolean = True, _
                                         Optional ByVal bImage As Boolean = True, _
                                         Optional ByVal bVector As Boolean = True) As String

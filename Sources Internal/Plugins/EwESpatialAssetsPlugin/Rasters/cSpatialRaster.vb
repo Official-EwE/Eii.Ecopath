@@ -76,6 +76,10 @@ Namespace SpatialData
 
         End Sub
 
+        Public Sub New(ByVal strFile As String)
+            Me.Load(strFile)
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IDisposable.Dispose"/>
         ''' -------------------------------------------------------------------
@@ -127,7 +131,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="ISpatialRaster.Max"/>
         ''' -------------------------------------------------------------------
         Public Function Max() As Double Implements ISpatialRaster.Max
-            If (Me.m_rs Is Nothing) Then Return cCore.NULL_VALUE
+            If (Not Me.IsValid()) Then Return cCore.NULL_VALUE
             Me.CalculateStats()
             Return Me.m_dMax
         End Function
@@ -136,7 +140,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="ISpatialRaster.Mean"/>
         ''' -------------------------------------------------------------------
         Public Function Mean() As Double Implements ISpatialRaster.Mean
-            If (Me.m_rs Is Nothing) Then Return cCore.NULL_VALUE
+            If (Not Me.IsValid()) Then Return cCore.NULL_VALUE
             Me.CalculateStats()
             Return Me.m_dMean
         End Function
@@ -145,7 +149,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="ISpatialRaster.Min"/>
         ''' -------------------------------------------------------------------
         Public Function Min() As Double Implements ISpatialRaster.Min
-            If (Me.m_rs Is Nothing) Then Return cCore.NULL_VALUE
+            If (Not Me.IsValid()) Then Return cCore.NULL_VALUE
             Me.CalculateStats()
             Return Me.m_dMin
         End Function
@@ -155,7 +159,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function StandardDeviation() As Double _
             Implements EwEUtils.SpatialData.ISpatialRaster.StandardDeviation
-            If (Me.m_rs Is Nothing) Then Return cCore.NULL_VALUE
+            If (Not Me.IsValid()) Then Return cCore.NULL_VALUE
             Me.CalculateStats()
             Return Me.m_dStdDev
         End Function
@@ -164,7 +168,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="ISpatialRaster.NoData"/>
         ''' -------------------------------------------------------------------
         Public Function NoData() As Single Implements ISpatialRaster.NoData
-            If (Me.m_rs Is Nothing) Then Return cCore.NULL_VALUE
+            If (Not Me.IsValid()) Then Return cCore.NULL_VALUE
             Return CSng(Me.m_rs.NoDataValue)
         End Function
 
@@ -172,7 +176,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="ISpatialRaster.NumValueCells"/>
         ''' -------------------------------------------------------------------
         Public Function NumValueCells() As Long Implements ISpatialRaster.NumValueCells
-            If (Me.m_rs Is Nothing) Then Return cCore.NULL_VALUE
+            If (Not Me.IsValid()) Then Return cCore.NULL_VALUE
             Me.CalculateStats()
             Return Me.m_lNumValueCells
         End Function
@@ -192,6 +196,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function CellSize() As Double _
             Implements ISpatialRaster.CellSize
+            If (Not Me.IsValid()) Then Return cCore.NULL_VALUE
             Return Me.m_rs.CellWidth
         End Function
 
@@ -200,6 +205,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function NumCols() As Integer _
             Implements ISpatialRaster.NumCols
+            If (Not Me.IsValid()) Then Return cCore.NULL_VALUE
             Return Me.m_rs.NumColumns
         End Function
 
@@ -208,6 +214,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function NumRows() As Integer _
             Implements ISpatialRaster.NumRows
+            If (Not Me.IsValid()) Then Return cCore.NULL_VALUE
             Return Me.m_rs.NumRows
         End Function
 
@@ -216,8 +223,16 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function TopLeft() As PointF _
             Implements ISpatialRaster.TopLeft
+            If (Not Me.IsValid()) Then Return New PointF(cCore.NULL_VALUE, cCore.NULL_VALUE)
             Dim ext As Extent = Me.m_rs.Extent
             Return New PointF(CSng(ext.MinX), CSng(ext.MaxY))
+        End Function
+
+        Public Function Load(strFile As String) As Boolean
+            Dim rs As IRaster = DotSpatial.Data.Raster.Open(strFile)
+            If (rs Is Nothing) Then Return False
+            Me.m_rs = rs
+            Return True
         End Function
 
         ''' -------------------------------------------------------------------
@@ -225,6 +240,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function Save(strFile As String) As Boolean _
             Implements ISpatialRaster.Save
+
+            If (Not Me.IsValid()) Then Return False
 
             If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
                 Return False
@@ -238,6 +255,13 @@ Namespace SpatialData
             End Select
             Return False
 
+        End Function
+
+        Public Function IsValid() As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialRaster.IsValid
+            If (Me.m_rs Is Nothing) Then Return False
+            If (Not cNumberUtils.Approximates(Me.m_rs.CellHeight, Me.m_rs.CellWidth, Me.m_rs.CellHeight / 100)) Then Return False
+            Return True
         End Function
 
 #End Region ' Public access
