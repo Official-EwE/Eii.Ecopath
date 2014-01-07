@@ -428,32 +428,30 @@ Public Class cEcospaceImportExportXYData
         For iRow As Integer = 1 To Me.m_bm.InRow
             For iCol As Integer = 1 To Me.m_bm.InCol
 
-                'jb 18-Dec-2012 For now write all the cells so the data can be EASILY read by the Spatial framework
-                'via the cCSVFilesDataSetPlugin. This can be sorted out better but for now this is a pragmatic solution.
                 ' Water cell filter
-                ' If depth.IsWaterCell(iRow, iCol) Or Not bWaterCellsOnly Then
-                strm.Write(cStringUtils.FormatNumber(iCol))
-                strm.Write(",")
-                strm.Write(cStringUtils.FormatNumber(iRow))
-                strm.Write(",")
-                strm.Write(cStringUtils.FormatNumber(Me.m_bm.ColToLon(iCol)))
-                strm.Write(",")
-                strm.Write(cStringUtils.FormatNumber(Me.m_bm.RowToLat(iRow)))
-                For iField As Integer = 0 To Me.Fields.Length - 1
+                If depth.IsWaterCell(iRow, iCol) Or Not bWaterCellsOnly Then
+                    strm.Write(cStringUtils.FormatNumber(iCol))
                     strm.Write(",")
-                    Dim val As Object = Me.Value(iRow, iCol, Me.Fields(iField))
-                    If (val IsNot Nothing) Then
-                        Select Case val.GetType
-                            Case GetType(Single), GetType(Double), GetType(Integer)
-                                strm.Write(cStringUtils.FormatNumber(val))
-                            Case GetType(Boolean), GetType(String)
-                                strm.Write(cStringUtils.ToCSVField(CStr(val)))
-                            Case Else
-                        End Select
-                    End If
-                Next iField
-                strm.WriteLine()
-                ' End If
+                    strm.Write(cStringUtils.FormatNumber(iRow))
+                    strm.Write(",")
+                    strm.Write(cStringUtils.FormatNumber(Me.m_bm.ColToLon(iCol)))
+                    strm.Write(",")
+                    strm.Write(cStringUtils.FormatNumber(Me.m_bm.RowToLat(iRow)))
+                    For iField As Integer = 0 To Me.Fields.Length - 1
+                        strm.Write(",")
+                        Dim val As Object = Me.Value(iRow, iCol, Me.Fields(iField))
+                        If (val IsNot Nothing) Then
+                            Select Case val.GetType
+                                Case GetType(Single), GetType(Double), GetType(Integer)
+                                    strm.Write(cStringUtils.FormatNumber(val))
+                                Case GetType(Boolean), GetType(String)
+                                    strm.Write(cStringUtils.ToCSVField(CStr(val)))
+                                Case Else
+                            End Select
+                        End If
+                    Next iField
+                    strm.WriteLine()
+                End If
             Next iCol
         Next iRow
 

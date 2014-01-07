@@ -133,7 +133,7 @@ Namespace Ecospace.Basemap
                     Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
                     If astrFiles.Length > 0 Then
                         Me.m_tbInput.Text = astrFiles(0)
-                        Me.ReadCSVFields()
+                        Me.ReadCSVFile()
                     End If
                 Catch ex As Exception
 
@@ -164,7 +164,9 @@ Namespace Ecospace.Basemap
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_bntOK.Click
 
-            If Not Me.LoadMappedLayers() Then Return
+            If ReadCSVFile() Then
+                If Not Me.LoadMappedLayers() Then Return
+            End If
 
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
@@ -180,52 +182,49 @@ Namespace Ecospace.Basemap
 
 #Region " Internals "
 
-        Private Function ReadCSVFields() As Boolean
-
+        Private Function ReadCSVFile() As Boolean
             Dim bSuccess As Boolean = True
 
-            Me.m_cmbRow.Items.Clear()
-            Me.m_cmbRow.Items.Clear()
-            Me.m_grid.Fields = Nothing
+            'Make sure the initialization all happened correctly
+            'Me.m_data was initialized in me.ReadCSVFields()
+            Debug.Assert(Me.m_data IsNot Nothing, Me.ToString + ".ReadCSVFile() cEcospaceImportExportXYData has not been initialized correctly.")
 
-            Me.UpdateControls()
-
-            If Not Me.ReadCSVFile() Then
+            If Not Me.m_data.ReadXYFile(Me.m_tbInput.Text, Me.RowField, Me.ColField) Then
                 Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_READ, Me.m_tbInput.Text), _
                                         eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
                 Me.m_uic.Core.Messages.SendMessage(msg)
                 bSuccess = False
             End If
 
-            Me.UpdateControls()
-
-            Return True
+            Return bSuccess
 
         End Function
 
-        Private Function ReadCSVFile() As Boolean
+        Private Function ReadCSVFields() As Boolean
 
             ' Create data buffer
             Me.m_data = New cEcospaceImportExportXYData(Me.m_uic.Core.EcospaceBasemap)
+
             Me.m_grid.Mappings.Clear()
 
             ' Read file
-            If (Not Me.m_data.ReadXYFile(Me.m_tbInput.Text, Me.RowField, Me.ColField)) Then
+            If (Not Me.m_data.ReadXYFields(Me.m_tbInput.Text)) Then
                 Return False
             End If
 
-            ' Get fields
+            ' Get fields from the XY Reader
             Dim astrFields As String() = Me.m_data.Fields
-            Array.Sort(astrFields)
+
             ' Show in UI
             Me.m_cmbRow.Items.AddRange(astrFields) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
-            Me.m_cmbCol.Items.AddRange(astrFields) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
+            Me.m_cmbCol.Items.AddRange(astrFields) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Column")
 
             For Each l As cEcospaceLayer In Me.m_lLayers
                 If Array.IndexOf(astrFields, l.Name) > -1 Then
                     Me.m_grid.Mappings(l) = l.Name
                 End If
             Next
+
             ' Last apply fields
             Me.m_grid.Fields = astrFields
 
@@ -269,11 +268,10 @@ Namespace Ecospace.Basemap
                         Next
 
                         ' Load layer
-                        For iCell = 0 To Me.m_data.NumCells
-                            ' Obtain row, col field values from data
-                            iRow = CInt(Me.m_data.Value(iCell, Me.RowField()))
-                            iCol = CInt(Me.m_data.Value(iCell, Me.ColField()))
-                            layer.Cell(iRow, iCol) = Me.m_data.Value(iRow, iCol, strField)
+                        For iRow = 1 To bm.InRow
+                            For iCol = 1 To bm.InCol
+                                layer.Cell(iRow, iCol) = Me.m_data.Value(iRow, iCol, strField)
+                            Next
                         Next
 
                         Me.m_uic.Core.onChanged(layer)
