@@ -196,6 +196,11 @@ Public Class cEcospaceImportExportXYData
 
         End Sub
 
+        Public Function IsValid() As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialRaster.IsValid
+            Return True
+        End Function
+
     End Class ' cEcospaceImportExportRaster
 
 #End Region ' Private classes
