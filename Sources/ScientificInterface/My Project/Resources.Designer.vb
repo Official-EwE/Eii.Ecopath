@@ -2098,6 +2098,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to There are no reference time series loaded. Are you sure that you want to run Monte Carlo without reference time series?.
+        '''</summary>
+        Public ReadOnly Property MONTECARLO_PROMPT_RUNWITHOUTTS() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_PROMPT_RUNWITHOUTTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Do you want to delete MPA from {0} to {1}? This action cannot be undone..
         '''</summary>
         Public ReadOnly Property MPA_BATCH_DELETE_CONFIRMATION() As String
