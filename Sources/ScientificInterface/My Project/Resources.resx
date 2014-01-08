@@ -24073,4 +24073,7 @@ Description: {2}</value>
   <data name="ecopath5_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ecopath5_30.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="MONTECARLO_PROMPT_RUNWITHOUTTS" xml:space="preserve">
+    <value>There are no reference time series loaded. Are you sure that you want to run Monte Carlo without reference time series?</value>
+  </data>
 </root>

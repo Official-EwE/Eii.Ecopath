@@ -520,6 +520,32 @@ Namespace Ecosim
         Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
             Handles m_cmdRunMonteCarlo.OnInvoke
 
+            Dim bCheckTimeseries As Boolean = True
+
+            While bCheckTimeseries
+                If Not Me.Core.HasAppliedTimeSeries() Then
+
+                    Dim fmsg As New cFeedbackMessage(My.Resources.MONTECARLO_PROMPT_RUNWITHOUTTS, eCoreComponentType.EcoSimMonteCarlo, _
+                                                     eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
+                    fmsg.Reply = eMessageReply.NO
+                    Me.Core.Messages.SendMessage(fmsg)
+
+                    Select Case fmsg.Reply
+                        Case eMessageReply.YES
+                            ' Continue execution without time series
+                            bCheckTimeseries = False
+
+                        Case eMessageReply.NO
+                            ' Load time series
+                            Me.m_cmdLoadTS.Invoke()
+
+                        Case eMessageReply.CANCEL
+                            ' Abort attempt to run
+                            Return
+                    End Select
+                End If
+            End While
+
             If Me.m_mcmanager.ShowBiomassTrajectories Then
                 ' Select biomass plot page.
                 Me.m_tcMain.SelectedTab = Me.m_tbpBPlot
@@ -554,7 +580,6 @@ Namespace Ecosim
             Handles m_cmdRunMonteCarlo.OnUpdate
 
             cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() And _
-                          Me.Core.HasAppliedTimeSeries() And _
                           Not Me.m_mcmanager.IsRunning
 
             If Me.Core.HasAppliedTimeSeries() Then
