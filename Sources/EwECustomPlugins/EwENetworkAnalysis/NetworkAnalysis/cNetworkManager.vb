@@ -198,7 +198,6 @@ Public Class cNetworkManager
                 'This may not be necessary because m_EcoNetwork keeps a reference to the data. 
                 'However, this is more robust, incase the core has created a new m_EcoPathData object.
                 Me.m_econetwork.EcopathData = m_epdata
-                'Me.m_econetwork.RunNetworkAnalysis()
                 If Me.m_econetwork.RunNetworkAnalysis() Then
 
                     Me.m_runstate = eRunState.NetworkHasRun
@@ -607,7 +606,16 @@ Public Class cNetworkManager
 #Region " Public Properties "
 
 #Region " Settings "
-
+    ''' <summary>
+    ''' Boolean flag to run Network Analysis automatically when an Ecopath run has completed.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' WARNING this may not function correctly.
+    '''  Call cNetworkManager.RunMainNetwork() explicity to run the Network Analysis after an Ecopath run.
+    '''  The internal run state flag m_runstate maybe set to eRunState.CoreNotReady preventing the EcopathRunCompleted plugin point from working.
+    ''' </remarks>
     Public Property RunWithEcopath() As Boolean
     Public Property RunWithEcosim() As Boolean
 
