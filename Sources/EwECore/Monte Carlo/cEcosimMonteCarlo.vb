@@ -322,6 +322,7 @@ Friend Class cEcosimMonteCarlo
         Try
 
             StopTrial = False
+            m_esdata.SS = 0
 
             'This gives the same sequence of random numbers 
             'Used for debugging
@@ -409,6 +410,8 @@ Friend Class cEcosimMonteCarlo
                 m_ecosim.TimeStepDelegate = Nothing
             End If
 
+            Me.m_ouputWriter.Init()
+
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.StackTrace)
@@ -439,8 +442,6 @@ Friend Class cEcosimMonteCarlo
         Try
             initForRun()
 
-            Me.m_ouputWriter.Init()
-
             ' Fire plug-in point
             If Me.m_pluginmanager IsNot Nothing Then
                 Try
@@ -461,10 +462,10 @@ Friend Class cEcosimMonteCarlo
 
             'Ecosim was run in initForRun()
             'm_esdata.SS is the fit of the currently loaded reference data
-            If m_esdata.SS > 0 Then
+            If Me.isTimeSeriesLoaded Then
                 SSBestFit = m_esdata.SS
             Else
-                SSBestFit = Single.MaxValue
+                SSBestFit = 0
             End If
 
             Dim maxEcopathTries As Integer = 10000
@@ -490,7 +491,8 @@ Friend Class cEcosimMonteCarlo
                     'Debug.Print(Me.m_esdata.SS & " = " & Me.m_esdata.SS - Fpenalty & " + " & Fpenalty)
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                    If m_esdata.SS < SSBestFit Then
+                    'Only keep the best fit if there is time series loaded
+                    If Me.isTimeSeriesLoaded() And (m_esdata.SS < SSBestFit) Then
                         RunsSinceLastWithLowerSS = 0
                         'SSBestFit = MCthread.ESdata.SS
                         SSBestFit = m_esdata.SS
@@ -558,6 +560,12 @@ Friend Class cEcosimMonteCarlo
     Public Sub setDefaults()
         Me.EcopathEETol = EE_TOL
     End Sub
+
+
+    Private Function isTimeSeriesLoaded() As Boolean
+        'Number of applied time series
+        Return Me.m_tsdata.NdatType > 0
+    End Function
 
     ''' <summary>
     ''' Calculate penalty for being away from reasonable fishing mortality

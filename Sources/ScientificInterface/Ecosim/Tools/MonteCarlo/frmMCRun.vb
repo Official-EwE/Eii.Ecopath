@@ -469,11 +469,14 @@ Namespace Ecosim
             Me.m_nTrials = 0
 
             Try
-                'populate the grid with new values (biomass....)
-                Me.m_gridBestFit.RefreshContent()
+                'Show the Best Fit if there is time series loaded
+                If Me.Core.HasAppliedTimeSeries() Then
+                    'populate the grid with new values (biomass....)
+                    Me.m_gridBestFit.RefreshContent()
 
-                ' Select outputs
-                Me.m_tcMain.SelectedTab = m_tbpBestTrial
+                    ' Select outputs
+                    Me.m_tcMain.SelectedTab = m_tbpBestTrial
+                End If
 
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
@@ -521,9 +524,12 @@ Namespace Ecosim
             Handles m_cmdRunMonteCarlo.OnInvoke
 
             Dim bCheckTimeseries As Boolean = True
-
             While bCheckTimeseries
-                If Not Me.Core.HasAppliedTimeSeries() Then
+
+                If Me.Core.HasAppliedTimeSeries() Then
+                    bCheckTimeseries = False
+
+                ElseIf Not Me.Core.HasAppliedTimeSeries() Then
 
                     Dim fmsg As New cFeedbackMessage(My.Resources.MONTECARLO_PROMPT_RUNWITHOUTTS, eCoreComponentType.EcoSimMonteCarlo, _
                                                      eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
@@ -544,7 +550,9 @@ Namespace Ecosim
                             Return
                     End Select
                 End If
+
             End While
+
 
             If Me.m_mcmanager.ShowBiomassTrajectories Then
                 ' Select biomass plot page.

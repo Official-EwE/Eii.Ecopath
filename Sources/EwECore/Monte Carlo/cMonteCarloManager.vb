@@ -159,27 +159,16 @@ Public Class cMonteCarloManager
     ''' Run the Monte Carlo trials with the current parameters
     ''' </summary>
     Public Sub Run()
-
-        Dim isThreading As Boolean = True
-        If isThreading Then
-
-            Dim thrdMC As Thread
+        Dim thrdMC As Thread
 
             Try
                 If m_core.StateMonitor.HasEcosimLoaded Then
-                    If (m_core.m_TSData.NdatType > 0) Then
 
-                        Me.SetWait()
-                        Me.update()
+                    Me.SetWait()
+                    Me.update()
 
-                        thrdMC = New Thread(AddressOf m_mc.Run)
-                        thrdMC.Start()
-
-                    Else 'If m_core.m_TSData.NdatType > 0 Then
-                        'm_core.m_TSData.NdatType = 0
-                        'there must be at least one reference data set loaded
-                        m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MONTECARLO_TIMESERIES_NOREFDATA, eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
-                    End If
+                    thrdMC = New Thread(AddressOf m_mc.Run)
+                    thrdMC.Start()
 
                 Else 'If m_core.StateMonitor.HasEcosimLoaded Then
 
@@ -196,7 +185,6 @@ Public Class cMonteCarloManager
             End Try
 
             m_core.Messages.sendAllMessages()
-        End If
 
         Return
 

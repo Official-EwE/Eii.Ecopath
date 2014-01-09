@@ -1218,9 +1218,6 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Error running the Monte Carlo trials. {0}</value>
     <comment>{0}=exception message</comment>
   </data>
-  <data name="MONTECARLO_TIMESERIES_NOREFDATA" xml:space="preserve">
-    <value>Monte Carlo requires time series reference data. Please load time series reference data and try again.</value>
-  </data>
   <data name="SPATIALTEMPORAL_MISSINGDATASET" xml:space="preserve">
     <value>External Data Connections. Failed to read external data set.</value>
   </data>
