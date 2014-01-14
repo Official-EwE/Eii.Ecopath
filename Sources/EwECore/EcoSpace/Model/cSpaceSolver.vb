@@ -701,7 +701,6 @@ Public Class cSpaceSolver
             For ii = 1 To m_SimData.inlinks
                 i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
 
-                'aeff(ii) = m_Data.Aspace(ii) * Ftime(j) * RelaSwitch(ii) * EatEff(j) * VulPred(i)
                 aeff(ii) = m_Data.Aspace(ii) * Ftime(j) * RelaSwitch(ii) * VulPred(i)
                 Veff(ia) = m_Data.Vspace(ia) * Ftime(i)
                 ApplyAVmodifiers(aeff(ii), Veff(ia), i, m_SimData.Jarena(ia), False, iRow, iCol)  '?not sure this will work right with multiple preds in arenas

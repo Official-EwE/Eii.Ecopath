@@ -90,14 +90,90 @@ Namespace SpatialData
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
-
-            ''convert from mol C /m2 to kg/km2
+            'Dim scalar As Double
             'If (Me.DataScaleType(layer.Index) = eScaleType.Relative) Then
-            '    sValueAtT *= Me.DataScale(layer.Index)
+            '    scalar = Me.DataScale(layer.Index)
             'End If
+            'convert from mol C /m2 to kg/km2
             'Hardwire the scaler until we sort out the interface issue with setting the scale value
             sValueAtT *= Me.molesm2_to_kgkm2
             Return MyBase.SetCell(layer, iRow, iCol, sValueAtT)
+
+        End Function
+
+
+#End Region ' Overrides
+
+    End Class
+
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Data Adapter specific to Biomass forcing.
+    ''' </summary>
+    ''' <remarks>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Class cBiomassRelativeAdapter
+        Inherits cSpatialScalarDataAdapterBase
+
+
+#Region " Private vars "
+
+        Private m_spaceData As cEcospaceDataStructures
+
+
+#End Region ' Private vars
+
+#Region " Constructor "
+
+        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+            MyBase.New(core, varName, cc)
+        End Sub
+
+#End Region ' Constructor
+
+#Region " Overrides "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cSpatialScalarDataAdapter.Initialize"/>.
+        ''' -------------------------------------------------------------------
+        Friend Overrides Sub Initialize()
+            MyBase.Initialize()
+            Me.m_spaceData = Me.m_core.m_EcoSpaceData
+            Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)
+
+            Debug.Assert(Me.m_coreCounter = eCoreCounterTypes.nGroups, Me.ToString + ".Initialize() incorrect core counter")
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
+        ''' <remarks>Overridden to scale values prior to being set in the 
+        ''' Ecospace data structures.</remarks>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
+                                             ByVal iRow As Integer, _
+                                             ByVal iCol As Integer, _
+                                             ByVal sValueAtT As Double) As Boolean
+            Dim scalar As Double
+
+            Try
+                'Debug.Assert(sValueAtT = 0)
+                If (Me.DataScaleType(layer.Index) = eScaleType.Relative) Then
+                    scalar = Me.DataScale(layer.Index)
+                End If
+
+                layer.Cell(iRow, iCol) = CDbl(layer.Cell(iRow, iCol)) + (sValueAtT * scalar)
+
+                Return True
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString + ".SetCell() Exception: " + ex.Message)
+            End Try
+
+            Return False
 
         End Function
 

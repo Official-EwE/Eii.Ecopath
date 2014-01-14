@@ -66,3 +66,46 @@ Public Class cEcospaceLayerBiomassForcing
 
 
 End Class
+
+Public Class cEcospaceLayerRelativeBiomassForcing
+    Inherits cEcospaceLayerSingle
+
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
+        MyBase.New(theCore, manager, theCore.m_EcoPathData.GroupName(iIndex) + " " + iIndex.ToString, EwEUtils.Core.eVarNameFlags.LayerRelativeBiomassForcing, iIndex)
+        Me.m_dataType = eDataTypes.EcospaceLayerRelativeBiomassForcing
+    End Sub
+
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+        Get
+            Try
+                Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
+                Return d(iRow, iCol, Me.Index)
+            Catch ex As Exception
+
+            End Try
+            Return cCore.NULL_VALUE
+            ' Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
+            ' If Me.ValidateCellPosition(iRow, iCol) Then Return d(iRow, iCol, Me.Index) Else Return cCore.NULL_VALUE
+        End Get
+        Set(ByVal value As Object)
+            Try
+                Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
+                Dim s As Single = Convert.ToSingle(value)
+                d(iRow, iCol, Me.Index) = s
+                Me.Invalidate()
+            Catch ex As Exception
+
+            End Try
+            'Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
+            'Dim s As Single = Convert.ToSingle(value)
+            'If Me.ValidateCellValue(value) Then
+            '    If Me.ValidateCellPosition(iRow, iCol) Then
+            '        d(iRow, iCol, Me.Index) = s
+            '        Me.Invalidate()
+            '    End If
+            'End If
+        End Set
+    End Property
+
+
+End Class

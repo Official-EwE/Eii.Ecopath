@@ -197,6 +197,12 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerBiomassForcing, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' RelativeBiomassForcing
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerRelativeBiomassForcing, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+
             ' LayerExclusion
             meta = New cVariableMetaData()
             val = New cValue(0, eVarNameFlags.LayerExclusion, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -237,6 +243,13 @@ Public Class cEcospaceBasemap
                 llayers.Add(New cEcospaceLayerBiomassForcing(theCore, Me, i))
             Next
             Me.m_dictLayers(eVarNameFlags.LayerBiomassForcing) = llayers.ToArray
+
+            ' Relative Biomass Forcing
+            llayers.Clear()
+            For i As Integer = 1 To ecospaceDS.NGroups
+                llayers.Add(New cEcospaceLayerRelativeBiomassForcing(theCore, Me, i))
+            Next
+            Me.m_dictLayers(eVarNameFlags.LayerRelativeBiomassForcing) = llayers.ToArray
 
 
             ' MPA layer
@@ -746,6 +759,7 @@ Public Class cEcospaceBasemap
     Public Function Layer(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer _
         Implements IEcospaceLayerManager.Layer
         If (iIndex = cCore.NULL_VALUE) Then iIndex = 0
+        If (iIndex < 0) Then iIndex = 0
         Return Me.Layers(varName)(iIndex)
     End Function
 
@@ -795,6 +809,8 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerSail
                 Return Me.m_core.m_EcoSpaceData.Sail
             Case eVarNameFlags.LayerBiomassForcing
+                Return Me.m_core.m_EcoSpaceData.Bcell
+            Case eVarNameFlags.LayerRelativeBiomassForcing
                 Return Me.m_core.m_EcoSpaceData.Bcell
             Case eVarNameFlags.LayerExclusion
                 Return Me.m_core.m_EcoSpaceData.Excluded
