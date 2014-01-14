@@ -540,6 +540,9 @@ Namespace Core
         LayerDistribution
 
         LayerBiomassForcing
+
+        LayerRelativeBiomassForcing
+    
         ''' <summary>Ecospace/MPA importance weight of the weight layer.</summary>
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type.</summary>
@@ -2084,6 +2087,8 @@ Namespace Core
         MSYParameters = 111
         EcospaceLayerExclusion = 112
         EcospaceLayerBiomassForcing = 113
+
+        EcospaceLayerRelativeBiomassForcing = 114
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

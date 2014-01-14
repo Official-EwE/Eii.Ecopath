@@ -419,7 +419,7 @@ Namespace Ecospace.Controls
                 Dim msg As cMessage = Nothing
 
                 ' Perform calculation
-                Select Case ssda.CalculateScaleFromEcopathTimePeriod(iStartTimeStep, dScale)
+                Select Case ssda.CalculateScaleFromEcopathTimePeriod(Me.m_layer.Index, iStartTimeStep, dScale)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
                         msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX), _

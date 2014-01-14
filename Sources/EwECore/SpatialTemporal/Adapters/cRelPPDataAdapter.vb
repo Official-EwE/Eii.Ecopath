@@ -101,7 +101,7 @@ Namespace SpatialData
                 If (Me.m_sPreservedScale = cCore.NULL_VALUE) And (Me.m_spaceData.PPScale <> cCore.NULL_VALUE) Then
                     Me.m_sPreservedScale = Me.m_spaceData.PPScale
                     'Me.m_spaceData.PPScale = 1.0F
-                    Me.m_spaceData.PPScale = Me.DataScale(layer.Index)
+                    Me.m_spaceData.PPScale = (1 / Me.DataScale(layer.Index))
                 End If
             Catch ex As Exception
                 System.Console.WriteLine("Exception: " & Me.ToString & ".PreAdapt() " & ex.Message)

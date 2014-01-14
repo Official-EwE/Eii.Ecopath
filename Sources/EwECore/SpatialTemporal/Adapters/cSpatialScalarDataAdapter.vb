@@ -165,21 +165,22 @@ Namespace SpatialData
         ''' <returns>A <see cref="cDatasetCompatilibity.Compatibility"/> result
         ''' indicating the outcome of the calculation.</returns>
         ''' -------------------------------------------------------------------
-        Public Function CalculateScaleFromEcopathTimePeriod(ByVal iFirstTimeStep As Integer, _
+        Public Function CalculateScaleFromEcopathTimePeriod(iLayerIndex As Integer, ByVal iFirstTimeStep As Integer, _
                                                             ByRef dScale As Double) As cDatasetCompatilibity.eCompatibilityTypes
 
             Dim result As cDatasetCompatilibity.eCompatibilityTypes = cDatasetCompatilibity.eCompatibilityTypes.Errors
 
-            ' Early bail-out
-            If Not Me.IsConnected(Index) Then Return result
 
-            Dim ds As ISpatialDataSet = Me.Dataset(Me.Index)
-            Dim cv As ISpatialDataConverter = Me.Converter(Me.Index)
+            ' Early bail-out
+            If Not Me.IsConnected(iLayerIndex) Then Return result
+
+            Dim ds As ISpatialDataSet = Me.Dataset(iLayerIndex)
+            Dim cv As ISpatialDataConverter = Me.Converter(iLayerIndex)
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim iInRow As Integer = bm.InRow
             Dim iInCol As Integer = bm.InCol
             Dim dCellSize As Double = bm.CellSize
-            Dim layer As cEcospaceLayer = bm.Layer(Me.VarName, Me.Index)
+            Dim layer As cEcospaceLayer = bm.Layer(Me.VarName, iLayerIndex - 1)
             Dim depth As cEcospaceLayerDepth = bm.LayerDepth
             Dim strLayerName As String = layer.Name
             Dim ldtData As New List(Of DateTime)
@@ -241,13 +242,14 @@ Namespace SpatialData
 
             If dMapTotValue = 0 Then dMapTotValue = 1
             If iNumWaterCells = 0 Then iNumWaterCells = 1
+            
+            dScale = (iNumWaterCells / dMapTotValue)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'jb 30-July-2012 changed DataScale to be used as a divider
             'to be compatiable with RellPP scaler cEcospaceDataStructures.PPScale
             'this makes debugging easier
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            ' dScale = (iNumWaterCells / dMapTotValue)
-            dScale = (dMapTotValue / iNumWaterCells) 'mean across all the applicable cells
+            ' dScale = (dMapTotValue / iNumWaterCells) 'mean across all the applicable cells
 
             ' Report for the calculation period
             Dim comp As New cDatasetCompatilibity(Me.m_core, ds, iTSMin, iTSMax - iTSMin)
