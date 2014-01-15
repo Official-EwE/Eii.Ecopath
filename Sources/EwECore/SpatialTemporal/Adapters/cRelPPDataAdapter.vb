@@ -104,7 +104,7 @@ Namespace SpatialData
                     Me.m_spaceData.PPScale = (1 / Me.DataScale(layer.Index))
                 End If
             Catch ex As Exception
-                System.Console.WriteLine("Exception: " & Me.ToString & ".PreAdapt() " & ex.Message)
+                System.Console.WriteLine("Exception: " & Me.ToString & ".Adapt() " & ex.Message)
                 Return False
             End Try
 
