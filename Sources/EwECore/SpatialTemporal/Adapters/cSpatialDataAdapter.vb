@@ -228,20 +228,29 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="iTime">The one-based Ecospace time step to populate data for.</param>
         ''' <param name="dNoData">The no data value for the Ecospace layer.</param>
+        ''' <param name="layer">The layers to populate. If left to null, all layers
+        ''' for the implicit <see cref="VarName"/> will be populated.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Populate(ByVal iTime As Integer, dNoData As Double) As Boolean
+        Public Overridable Function Populate(ByVal iTime As Integer, ByVal dNoData As Double, _
+                                             Optional ByVal layer As cEcospaceLayer = Nothing) As Boolean
 
             Dim msg As cMessage = Nothing
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim layer As cEcospaceLayer = Nothing
             Dim dataExternal As ISpatialRaster = Nothing
             Dim dCellSize As Double = Math.Round(CDbl(bm.CellSize), 8)
+            Dim layers As cEcospaceLayer() = Nothing
             Dim dt As Date
             Dim bSuccess As Boolean = True
 
-            ' For each layer for this adapter
-            For Each layer In bm.Layers(Me.m_varName)
+            ' Decide which layers to update
+            If (layer Is Nothing) Then
+                layers = bm.Layers(Me.VarName)
+            Else
+                layers = New cEcospaceLayer() {layer}
+            End If
+
+            For Each layer In layers
 
                 ' Get dataset and converter
                 Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
@@ -319,7 +328,7 @@ Namespace SpatialData
                         Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} missing data for T{2}, ext({3},{4}) to ({5},{6})"
                         cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
                     End If
-                 End If
+                End If
             Next
 
             Return bSuccess
