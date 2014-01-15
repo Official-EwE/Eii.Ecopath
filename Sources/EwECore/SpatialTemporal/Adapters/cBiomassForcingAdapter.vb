@@ -165,7 +165,8 @@ Namespace SpatialData
                     scalar = Me.DataScale(layer.Index)
                 End If
 
-                layer.Cell(iRow, iCol) = CDbl(layer.Cell(iRow, iCol)) + (sValueAtT * scalar)
+                'layer.Cell(iRow, iCol) = CDbl(layer.Cell(iRow, iCol)) + (sValueAtT * scalar)
+                layer.Cell(iRow, iCol) = CDbl(layer.Cell(iRow, iCol)) * sValueAtT * scalar
 
                 Return True
 
