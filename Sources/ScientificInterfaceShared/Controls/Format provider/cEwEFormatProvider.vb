@@ -301,6 +301,7 @@ Namespace Controls
                 Dim objValueType As Object = Me.m_provider.ValueType
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
+                Dim bVisible As Boolean = ((style And cStyleGuide.eStyleFlags.Null) = 0)
                 Dim strText As String = ""
 
                 ' Apply metadata
@@ -308,7 +309,7 @@ Namespace Controls
                     Me.m_tb.MaxLength = Metadata.Length
                 End If
 
-                If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
+                If (cf And (Properties.cProperty.eChangeFlags.Value Or Properties.cProperty.eChangeFlags.CoreStatus)) > 0 Then
 
                     ' Sanity checks
                     If objValue Is Nothing Then Return
@@ -336,13 +337,6 @@ Namespace Controls
                         End If
                     End If
 
-                    ' Update text box
-                    ' - Set text
-                    Me.m_tb.Text = strText
-
-                End If
-
-                If (cf And Properties.cProperty.eChangeFlags.CoreStatus) > 0 Then
                     ' - Set colours
                     sg.GetStyleColors(style, Me.m_tb.ForeColor, Me.m_tb.BackColor)
 
@@ -354,7 +348,15 @@ Namespace Controls
                     If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
                         Me.m_tb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                     End If
+
+                    If Not bVisible Then
+                        strText = ""
+                    End If
+
+                    Me.m_tb.Text = strText
+
                 End If
+
 
             End Sub
 
@@ -395,6 +397,7 @@ Namespace Controls
                     ' WHoah!
                 End Try
             End Sub
+
             '''' -----------------------------------------------------------------------
             '''' <summary>
             '''' Event handler, invoked when the Text Box text has lost focus. This will 
@@ -405,12 +408,16 @@ Namespace Controls
             Private Sub OnControlLeft(ByVal sender As Object, ByVal e As System.EventArgs)
                 Try
                     ' Did anything change?
-                    If Me.m_tb.Modified Then
+                    Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
+                    Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
+                    Dim bVisible As Boolean = ((style And cStyleGuide.eStyleFlags.Null) = 0)
+
+                    If Me.m_tb.Modified And bVisible And bEditable Then
                         ' Update internal value
                         Me.m_provider.Value = Me.m_tb.Text
-                        ' Clear modified flag
-                        Me.m_tb.Modified = False
                     End If
+                    ' Clear modified flag
+                    Me.m_tb.Modified = False
                     Me.UpdateContent(ScientificInterfaceShared.Properties.cProperty.eChangeFlags.Value)
                 Catch ex As Exception
 
