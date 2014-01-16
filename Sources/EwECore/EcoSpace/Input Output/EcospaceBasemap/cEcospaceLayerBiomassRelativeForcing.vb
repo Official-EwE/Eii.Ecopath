@@ -23,13 +23,12 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-
-Public Class cEcospaceLayerBiomassForcing
+Public Class cEcospaceLayerBiomassRelativeForcing
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
-        MyBase.New(theCore, manager, theCore.m_EcoPathData.GroupName(iIndex) + " " + iIndex.ToString, EwEUtils.Core.eVarNameFlags.LayerBiomassForcing, iIndex)
-        Me.m_dataType = eDataTypes.EcospaceLayerBiomassForcing
+        MyBase.New(theCore, manager, theCore.m_EcoPathData.GroupName(iIndex) + " " + iIndex.ToString, EwEUtils.Core.eVarNameFlags.LayerBiomassRelativeForcing, iIndex)
+        Me.m_dataType = eDataTypes.EcospaceLayerBiomassRelativeForcing
     End Sub
 
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
@@ -64,5 +63,5 @@ Public Class cEcospaceLayerBiomassForcing
         End Set
     End Property
 
-End Class
 
+End Class

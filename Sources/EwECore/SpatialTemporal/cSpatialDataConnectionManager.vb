@@ -433,7 +433,7 @@ Namespace SpatialData
             Me.AddAdapter(New cCapacityDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, eCoreCounterTypes.nGroups))
             Me.AddAdapter(New cCapacityDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, eCoreCounterTypes.nEnvironmentalDriverLayers))
             Me.AddAdapter(New cBiomassForcingAdapter(Me.m_core, eVarNameFlags.LayerBiomassForcing, eCoreCounterTypes.nGroups))
-            Me.AddAdapter(New cBiomassRelativeAdapter(Me.m_core, eVarNameFlags.LayerRelativeBiomassForcing, eCoreCounterTypes.nGroups))
+            Me.AddAdapter(New cBiomassRelativeAdapter(Me.m_core, eVarNameFlags.LayerBiomassRelativeForcing, eCoreCounterTypes.nGroups))
 
         End Sub
 

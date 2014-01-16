@@ -367,6 +367,9 @@ Namespace SpatialData
             Dim iRow As Integer
             Dim iCol As Integer
 
+            Dim sum As Double = 0
+            Dim n As Integer = 0
+
             Try
                 ' For all rows
                 iRow = 1
@@ -382,6 +385,8 @@ Namespace SpatialData
                             If (sValue <> cCore.NULL_VALUE) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                                 ' #Yes: set value
                                 bSuccess = bSuccess And Me.SetCell(layer, iRow, iCol, sValue)
+                                sum += CDbl(layer.Cell(iRow, iCol))
+                                n += 1
                             End If
                         Else
                             bSuccess = bSuccess And Me.SetCell(layer, iRow, iCol, dNoData)
@@ -390,6 +395,8 @@ Namespace SpatialData
                     End While ' iCol
                     iRow += 1
                 End While ' iRow
+
+                System.Console.WriteLine(layer.Name + " mean = " + (sum / n).ToString)
 
                 If bSuccess Then
                     Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()), eStatusFlags.OK)
