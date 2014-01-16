@@ -541,7 +541,7 @@ Namespace Core
 
         LayerBiomassForcing
 
-        LayerRelativeBiomassForcing
+        LayerBiomassRelativeForcing
     
         ''' <summary>Ecospace/MPA importance weight of the weight layer.</summary>
         ImportanceWeight
@@ -2088,7 +2088,7 @@ Namespace Core
         EcospaceLayerExclusion = 112
         EcospaceLayerBiomassForcing = 113
 
-        EcospaceLayerRelativeBiomassForcing = 114
+        EcospaceLayerBiomassRelativeForcing = 114
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

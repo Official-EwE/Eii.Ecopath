@@ -407,8 +407,8 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerBiomassForcing
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_BIOMASSFORCING
 
-                Case eVarNameFlags.LayerRelativeBiomassForcing
-                    strGroup = "Relative biomass forcing"
+                Case eVarNameFlags.LayerBiomassRelativeForcing
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING '"Relative biomass forcing"
 
                 Case eVarNameFlags.LayerAdvection, _
                      eVarNameFlags.LayerMLD, _

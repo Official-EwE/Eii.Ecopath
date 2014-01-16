@@ -3047,4 +3047,7 @@
   <data name="VARIABLE_LAYERBIOMASSFORCING" xml:space="preserve">
     <value>Biomass forcing</value>
   </data>
+  <data name="ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING" xml:space="preserve">
+    <value>Biomass relative forcing</value>
+  </data>
 </root>

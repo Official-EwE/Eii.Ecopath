@@ -612,8 +612,9 @@ Public Class cEcoSpace
 
                 'Init the Spatial Temporal data
                 Me.InitSpatialTemporalRun()
-
+                'Initialized EcoSpace
                 Me.initSpatialEquilibrium()
+                'Run Ecospace
                 Me.FindSpatialEquilibrium()
 
                 'Cleanup the Spatial Temporal data
@@ -2292,26 +2293,32 @@ Public Class cEcoSpace
 
         Catch ex As Exception
             Debug.Assert(False, ex.StackTrace)
-            Throw New Exception("InitSpatialEquilibrium() Error: " & ex.Message, ex)
+            Throw New Exception("Exception initializing Ecospace. Ecospace cannot be run. " & ex.Message, ex)
         End Try
 
     End Function
 
     Private Sub InitSpatialTemporalRun()
-        ' Preserve base RelPP, either loaded or sketched
-        Me.m_Data.setBaseRelPP()
 
-        If (Me.m_SpatialData IsNot Nothing) Then
-            For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
-                If (src IsNot Nothing) Then
-                    Try
-                        src.InitRun()
-                    Catch ex As Exception
-                        cLog.Write(ex, "cEcospace::Run.InitAdapters " & src.Name & "(" & src.Index & ")")
-                    End Try
-                End If
-            Next
-        End If
+        Try
+            ' Preserve base RelPP, either loaded or sketched
+            Me.m_Data.setBaseRelPP()
+
+            If (Me.m_SpatialData IsNot Nothing) Then
+                For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
+                    If (src IsNot Nothing) Then
+                        Try
+                            src.InitRun()
+                        Catch ex As Exception
+                            cLog.Write(ex, "cEcospace::Run.InitAdapters " & src.Name & "(" & src.Index & ")")
+                        End Try
+                    End If
+                Next
+            End If
+
+        Catch ex As Exception
+            Throw New Exception("Exception initializing Spatial Temporal data. Ecospace cannot be run. " + ex.Message, ex)
+        End Try
 
     End Sub
 

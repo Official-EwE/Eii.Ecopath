@@ -157,6 +157,7 @@
     <Compile Include="EcoPath\cEcopathResultWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassForcing.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassRelativeForcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerExclusion.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceRegionResultWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
@@ -276,6 +277,7 @@
     <Compile Include="Shapes\TimeSeries\cTimeSeriesTextReader.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeries.vb" />
     <Compile Include="SpatialTemporal\Adapters\cBiomassForcingAdapter.vb" />
+    <Compile Include="SpatialTemporal\Adapters\cBiomassRelativeAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cCapacityDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cRelPPDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cSpatialDataAdapter.vb" />

@@ -199,7 +199,7 @@ Public Class cEcospaceBasemap
 
             ' RelativeBiomassForcing
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(0, eVarNameFlags.LayerRelativeBiomassForcing, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(0, eVarNameFlags.LayerBiomassRelativeForcing, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
 
@@ -247,9 +247,9 @@ Public Class cEcospaceBasemap
             ' Relative Biomass Forcing
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
-                llayers.Add(New cEcospaceLayerRelativeBiomassForcing(theCore, Me, i))
+                llayers.Add(New cEcospaceLayerBiomassRelativeForcing(theCore, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerRelativeBiomassForcing) = llayers.ToArray
+            Me.m_dictLayers(eVarNameFlags.LayerBiomassRelativeForcing) = llayers.ToArray
 
 
             ' MPA layer
@@ -810,7 +810,7 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Sail
             Case eVarNameFlags.LayerBiomassForcing
                 Return Me.m_core.m_EcoSpaceData.Bcell
-            Case eVarNameFlags.LayerRelativeBiomassForcing
+            Case eVarNameFlags.LayerBiomassRelativeForcing
                 Return Me.m_core.m_EcoSpaceData.Bcell
             Case eVarNameFlags.LayerExclusion
                 Return Me.m_core.m_EcoSpaceData.Excluded
