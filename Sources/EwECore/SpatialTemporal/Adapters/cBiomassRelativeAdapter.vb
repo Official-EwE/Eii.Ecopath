@@ -96,7 +96,7 @@ Namespace SpatialData
             Try
                 Debug.Assert(Me.DataScaleType(layer.Index) = eScaleType.Relative, Me.ToString + ".SetCell() Warning scale type should be 'Relative'")
 
-                scalar = Me.m_scaleType(layer.Index)
+                scalar = Me.m_scales(layer.Index)
 
                 'Debug.Assert(sValueAtT = 0)
                 'External data is the pattern of biomass distribution relative to the Ecospace base biomass
