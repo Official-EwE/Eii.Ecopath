@@ -275,7 +275,7 @@ Namespace SpatialData
         Private Sub OnReload(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnSearch.Click
             Try
-                Me.Reload()
+                Me.FindFiles()
             Catch ex As Exception
             End Try
         End Sub
@@ -359,6 +359,7 @@ Namespace SpatialData
 
                 If fbd.ShowDialog(Me) = DialogResult.OK Then
                     Me.m_tbxPath.Text = fbd.SelectedPath
+                    Me.FindFiles()
                     Me.UpdateControls()
                 End If
             End If
@@ -447,7 +448,7 @@ Namespace SpatialData
         ''' 
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub Reload()
+        Private Sub FindFiles()
 
             Dim astrFiles As String() = Me.ReadFilesFromLocation(Me.m_tbxPath.Text, _
                                                                  Me.m_tbxFileNamePattern.Text, _

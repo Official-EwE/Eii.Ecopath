@@ -229,7 +229,10 @@ Namespace SpatialData
         End Function
 
         Public Function Load(strFile As String) As Boolean
-            Dim rs As IRaster = DotSpatial.Data.Raster.Open(strFile)
+            Dim ds As IDataSet = cDotSpatialUtils.OpenFile(strFile)
+            If (ds Is Nothing) Then Return False
+            If (Not TypeOf ds Is IRaster) Then Return False
+            Dim rs As IRaster = DirectCast(ds, IRaster)
             If (rs Is Nothing) Then Return False
             Me.m_rs = rs
             Return True

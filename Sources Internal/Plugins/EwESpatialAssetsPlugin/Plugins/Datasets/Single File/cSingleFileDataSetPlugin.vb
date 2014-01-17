@@ -366,6 +366,8 @@ Namespace SpatialData
             Return Me.m_indexstatus
         End Function
 
+        Private m_bIsIndexing As Boolean = False
+
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.BuildIndex"/>
         ''' -------------------------------------------------------------------
@@ -377,6 +379,8 @@ Namespace SpatialData
             Dim ptfBR As New PointF(180, -90)
 
             If (Me.m_indexstatus <> ISpatialDataSet.eIndexStatus.Indexed) And (Me.IsConfigured) Then
+
+                Me.m_bIsIndexing = True
 
                 ' Build index from original data, bypass reading from cache
                 Dim bOldFlag As Boolean = Me.ReadFromCache
@@ -390,12 +394,22 @@ Namespace SpatialData
                 Catch ex As Exception
                     cLog.Write(ex, "cSingleFileDatasetPlugin::BuildIndex")
                 End Try
+
+                Me.m_bIsIndexing = False
+
                 ' Restore cache access
                 Me.ReadFromCache = bOldFlag
 
             End If
 
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cFileDataSetPlugin.IsIndexing"/>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function IsIndexing() As Boolean
+            Return Me.m_bIsIndexing
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.StopIndexing"/>

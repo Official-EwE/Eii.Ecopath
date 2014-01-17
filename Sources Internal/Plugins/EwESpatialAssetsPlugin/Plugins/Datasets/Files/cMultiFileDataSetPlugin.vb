@@ -52,14 +52,14 @@ Namespace SpatialData
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Protected Class cTemporalFile
-            Public Property Time As DateTime
+            Public Property [Date] As DateTime
             Public Property FileName As String
             Public Property IndexStatus As ISpatialDataSet.eIndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
             Public Property TopLeft As PointF
             Public Property BottomRight As PointF
 
-            Public Sub New(ByVal time As DateTime, ByVal strFile As String)
-                Me.Time = time
+            Public Sub New(ByVal dt As DateTime, ByVal strFile As String)
+                Me.Date = dt
                 Me.FileName = strFile
             End Sub
 
@@ -76,7 +76,7 @@ Namespace SpatialData
 
             Public Function Compare(ByVal x As cTemporalFile, ByVal y As cTemporalFile) As Integer _
                 Implements System.Collections.Generic.IComparer(Of cTemporalFile).Compare
-                Return DateTime.Compare(x.Time, y.Time)
+                Return DateTime.Compare(x.Date, y.Date)
             End Function
 
         End Class
@@ -137,7 +137,7 @@ Namespace SpatialData
                 Dim lTimeSteps As New List(Of DateTime)
                 Me.Sort()
                 For i As Integer = 0 To Me.m_lFiles.Count - 1
-                    lTimeSteps.Add(Me.m_lFiles(i).Time)
+                    lTimeSteps.Add(Me.m_lFiles(i).Date)
                 Next
                 Return lTimeSteps.ToArray
             End Get
@@ -151,7 +151,7 @@ Namespace SpatialData
                 If Me.IsSeasonal Then Return Me.SeasonsEnd
                 If (Me.m_lFiles.Count = 0) Then Return DateTime.MinValue
                 Me.Sort()
-                Return Me.m_lFiles(Me.m_lFiles.Count - 1).Time
+                Return Me.m_lFiles(Me.m_lFiles.Count - 1).Date
             End Get
         End Property
 
@@ -162,7 +162,7 @@ Namespace SpatialData
             Get
                 If (Me.m_lFiles.Count = 0) Then Return DateTime.MaxValue
                 Me.Sort()
-                Return Me.m_lFiles(0).Time
+                Return Me.m_lFiles(0).Date
             End Get
         End Property
 
@@ -393,7 +393,7 @@ Namespace SpatialData
                 xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("Date")
-                xaFile.Value = Convert.ToString(tf.Time.ToOADate)
+                xaFile.Value = Convert.ToString(tf.Date.ToOADate)
                 xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("Indexed")
@@ -546,7 +546,7 @@ Namespace SpatialData
                                      cDotSpatialUtils.TopLeft(Me.m_extModelArea), _
                                      cDotSpatialUtils.BottomRight(Me.m_extModelArea), _
                                      Me.m_dModelCellSize, _
-                                     Me.m_lFiles(Me.m_iFileIndex).Time, _
+                                     Me.m_lFiles(Me.m_iFileIndex).Date, _
                                      strLayerName, strExt)
             End If
             Return cFileUtils.MakeTempFile(strExt)
@@ -578,7 +578,7 @@ Namespace SpatialData
             End If
 
             For i As Integer = 0 To Me.m_lFiles.Count - 1
-                t = Me.m_lFiles(i).Time
+                t = Me.m_lFiles(i).Date
                 If (timeFile = t) Then Return i
             Next i
             Return -1
@@ -635,8 +635,8 @@ Namespace SpatialData
 
                     ' Truncate dates
                     If (Me.m_lFiles.Count > 0) Then
-                        If dateStart < Me.m_lFiles(0).Time Then dateStart = Me.m_lFiles(0).Time
-                        If dateEnd > Me.m_lFiles(Me.m_lFiles.Count - 1).Time Then dateEnd = Me.m_lFiles(Me.m_lFiles.Count - 1).Time
+                        If dateStart < Me.m_lFiles(0).Date Then dateStart = Me.m_lFiles(0).Date
+                        If dateEnd > Me.m_lFiles(Me.m_lFiles.Count - 1).Date Then dateEnd = Me.m_lFiles(Me.m_lFiles.Count - 1).Date
                     End If
 
                     Dim iStart As Integer = Math.Max(0, Me.FileIndex(dateStart))
@@ -661,7 +661,7 @@ Namespace SpatialData
                             End Try
 
                             Try
-                                If Me.LockDataAtT(f.Time, 1.0!, ptfTL, ptfBR) Then
+                                If Me.LockDataAtT(f.Date, 1.0!, ptfTL, ptfBR) Then
                                     Me.LoadSource()
                                     Me.UnlockData()
                                 End If
@@ -693,6 +693,13 @@ Namespace SpatialData
         Protected Overrides Sub StopIndexing()
             Me.m_bStopIndexing = True
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cFileDataSetPlugin.IsIndexing"/>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function IsIndexing() As Boolean
+            Return Me.m_bIsIndexing
+        End Function
 
 #End Region ' Internals
 

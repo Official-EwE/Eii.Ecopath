@@ -64,7 +64,7 @@ Namespace SpatialData
         Protected m_extModelArea As Extent = Nothing
         ''' <summary>Ecospace cell size.</summary>
         Protected m_dModelCellSize As Double = 0
- 
+
         ''' <summary>States whether the dataset is allowed to deliver data.</summary>
         Private m_bEnabled As Boolean = True
         ''' <summary>Internal helper flag, determining if data can be read from the cache.</summary>
@@ -319,6 +319,12 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Protected MustOverride Sub StopIndexing() _
             Implements ISpatialDataSet.StopIndexing
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.IsIndexing"/>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Function IsIndexing() As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialDataSet.IsIndexing
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.IsLocked"/>
