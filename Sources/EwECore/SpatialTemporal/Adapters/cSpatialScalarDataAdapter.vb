@@ -177,8 +177,8 @@ Namespace SpatialData
             ' Early bail-out
             If Not Me.IsConnected(iLayerIndex) Then Return result
 
-            Dim ds As ISpatialDataSet = Me.Dataset(Me.Index, iConnection)
-            Dim cv As ISpatialDataConverter = Me.Converter(Me.Index, iConnection)
+            Dim ds As ISpatialDataSet = Me.Dataset(iLayerIndex, iConnection)
+            Dim cv As ISpatialDataConverter = Me.Converter(iLayerIndex, iConnection)
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim iInRow As Integer = bm.InRow
             Dim iInCol As Integer = bm.InCol
