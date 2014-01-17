@@ -2011,14 +2011,7 @@ Public Class cEcoSpace
                         If m_Data.Depth(i, j) > 0 Then
 
                             m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip)
-                            sumb(ip) += m_Data.Bcell(i, j, ip)
-                            'If m_Data.PrefHab(ip, m_Data.HabType(i, j)) = False And m_Data.PrefHab(ip, 0) = False Then
-                            '    m_Data.Bcell(i, j, ip) = 0.1 * m_SimData.StartBiomass(ip)
-                            'End If
-                            'VC Hobart Sep 2008: only assign biomass if it is within distribution envelope
-                            'If m_Data.DistributionEnvelope(i, j, ip) = False Then
-                            '    m_Data.Bcell(i, j, ip) = 0.0001 * m_SimData.StartBiomass(ip)
-                            'End If
+                            'sumb(ip) += m_Data.Bcell(i, j, ip)
 
                             If m_Data.IsMigratory(ip) Then
                                 If i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1 Then m_Data.Bcell(i, j, ip) = 0
@@ -2052,35 +2045,32 @@ Public Class cEcoSpace
 
             Dim isc As Integer, ieco As Integer
             isc = 0
-
-
             For isp = 1 To m_Stanza.Nsplit
                 For ist = 1 To m_Stanza.Nstanza(isp)
                     isc = isc + 1
 
-                    '  If ist = m_Stanza.Nstanza(isp) Then iadultS(isp) = isc
                     ieco = m_Stanza.EcopathCode(isp, ist)
                     If m_Data.NewMultiStanza Or m_Data.UseIBM Then
                         'these flags turn off implicit integration for multistanza biomasses when newmultistanza=true
                         m_Data.ByPassIntegrate(ieco) = True
                         If m_Data.UseIBM Then m_Data.ByPassIntegrate(nvar2 + isc) = True
                     End If
+
                     Ecode(isc) = ieco
                     If m_Data.IsMigratory(ieco) = True Then m_Data.IsMigratory(nvar2 + isc) = True
                     For i = 0 To m_Data.InRow + 1
                         For j = 0 To m_Data.InCol + 1
                             If m_Data.Depth(i, j) > 0 Then
-                                'VC Hobart Sep 2008: adding distribution envelope 
-                                'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) _
-                                'And m_Data.DistributionEnvelope(i, j, ieco) = True Then
+
                                 m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
                                 If m_Data.NewMultiStanza Then
                                     m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
                                 End If
-                            Else
+
+                            Else 'm_Data.Depth(i, j) > 0
                                 'Land
                                 m_Data.Bcell(i, j, nvar2 + isc) = 1.0E-20
-                            End If
+                            End If 'm_Data.Depth(i, j) > 0
                             m_Data.Blast(i, j, nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
                         Next j
                     Next i
