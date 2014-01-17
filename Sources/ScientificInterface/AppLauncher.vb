@@ -167,6 +167,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditMPAs As cCommand = Nothing
     Private WithEvents m_cmdDefineImportanceMaps As cCommand = Nothing
     Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
+    Private WithEvents m_cmdDefineSpatialDatasets As cCommand = Nothing
     Private WithEvents m_cmdImportLayerData As cImportLayerCommand = Nothing
     Private WithEvents m_cmdExportLayerData As cExportLayerCommand = Nothing
     Private WithEvents m_cmdEditLayer As cEditLayerCommand = Nothing
@@ -504,6 +505,9 @@ Public Class AppLauncher
 
         Me.m_cmdDefineInputLayers = New cEditDriverLayersCommand(cmdh)
         Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceInputMaps)
+
+        Me.m_cmdDefineSpatialDatasets = New cCommand(cmdh, "EditSpatialDatasets")
+        Me.m_cmdDefineSpatialDatasets.AddControl(Me.m_tsmiEcospaceDatasets)
 
         Me.m_cmdEcospaceDataConnections = New cEcospaceExternalDataCommand(cmdh)
         Me.m_cmdEcospaceDataConnections.AddControl(Me.m_tsmiEcospaceDataConnections)
@@ -3768,6 +3772,31 @@ Public Class AppLauncher
     Private Sub OnInvokeDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnInvoke
         Dim dlg As New dlgDefineEnvInputMaps(Me.UIContext)
         dlg.ShowDialog(Me)
+    End Sub
+
+    ''' <summary>
+    ''' Command handler
+    ''' </summary>
+    Private Sub OnInvokeDefineEcospaceDatasets(cmd As cCommand) Handles m_cmdDefineSpatialDatasets.OnInvoke
+        Try
+            Dim dlg As New Ecospace.Controls.dlgDefineExternalSpatialData()
+            dlg.UIContext = Me.UIContext
+            dlg.ShowDialog()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Command handler updater
+    ''' </summary>
+    Private Sub OnUpdateDefineEcospaceDatasetsInvoke(cmd As cCommand) Handles m_cmdDefineSpatialDatasets.OnUpdate
+        Try
+            Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+            cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     ''' <summary>

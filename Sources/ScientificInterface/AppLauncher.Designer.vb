@@ -71,6 +71,7 @@ Partial Public Class AppLauncher
         Me.m_tsmiEcospaceDefineRegions = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDefineImportanceMaps = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceInputMaps = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcospaceDatasets = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tssEcospace4 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsmiEcospaceDataConnections = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem()
@@ -238,7 +239,7 @@ Partial Public Class AppLauncher
         '
         'MenuEcospace
         '
-        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceImportLayers, Me.m_tsmiEcospaceExportLayers, m_tssEcospace3, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDefineImportanceMaps, Me.m_tsmiEcospaceInputMaps, Me.m_tssEcospace4, Me.m_tsmiEcospaceDataConnections})
+        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceImportLayers, Me.m_tsmiEcospaceExportLayers, m_tssEcospace3, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDefineImportanceMaps, Me.m_tsmiEcospaceInputMaps, Me.m_tssEcospace4, Me.m_tsmiEcospaceDatasets, Me.m_tsmiEcospaceDataConnections})
         MenuEcospace.Name = "MenuEcospace"
         resources.ApplyResources(MenuEcospace, "MenuEcospace")
         '
@@ -306,6 +307,11 @@ Partial Public Class AppLauncher
         '
         Me.m_tsmiEcospaceInputMaps.Name = "m_tsmiEcospaceInputMaps"
         resources.ApplyResources(Me.m_tsmiEcospaceInputMaps, "m_tsmiEcospaceInputMaps")
+        '
+        'm_tsmiEcospaceDatasets
+        '
+        resources.ApplyResources(Me.m_tsmiEcospaceDatasets, "m_tsmiEcospaceDatasets")
+        Me.m_tsmiEcospaceDatasets.Name = "m_tsmiEcospaceDatasets"
         '
         'm_tssEcospace4
         '
@@ -864,6 +870,7 @@ Partial Public Class AppLauncher
     Private WithEvents m_tsmiHelpViewMainSite As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbnFeedback As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsmiHelpFeedback As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceDatasets As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 
