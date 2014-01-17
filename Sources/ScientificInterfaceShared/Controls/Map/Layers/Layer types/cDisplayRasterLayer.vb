@@ -26,6 +26,7 @@ Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
+Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -482,7 +483,10 @@ Namespace Controls.Map.Layers
             Get
                 Dim l As cEcospaceLayer = Me.Data
                 If (l Is Nothing) Then Return False
-                Return l.IsExternalData
+                For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                    If l.IsExternalData(j) Then Return True
+                Next
+                Return False
             End Get
         End Property
 
