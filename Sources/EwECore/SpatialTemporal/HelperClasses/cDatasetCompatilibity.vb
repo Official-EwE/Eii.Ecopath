@@ -75,12 +75,16 @@ Namespace SpatialData
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Sub New(core As cCore, ds As ISpatialDataSet)
+
             ' Sanity checks
             Debug.Assert(core IsNot Nothing)
             Debug.Assert(ds IsNot Nothing)
 
             Me.m_core = core
             Me.m_ds = ds
+
+            If Not core.StateMonitor.HasEcospaceLoaded Then Return
+
             Me.m_rcf = Me.ToRect(Me.m_core.EcospaceBasemap.PosTopLeft, Me.m_core.EcospaceBasemap.PosBottomRight)
 
             Dim iNumTimeSteps As Integer = core.nEcospaceTimeSteps
@@ -91,6 +95,7 @@ Namespace SpatialData
 
             ' Assess the entire Ecospace run time
             Me.Assess(1, iNumTimeSteps)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -177,7 +182,6 @@ Namespace SpatialData
         ''' <returns>
         ''' <para>Return values should be interpreted as follows:</para>
         ''' </returns>
-        ''' <remarks></remarks>
         Public Function CompatibilityAt(iTimeStep As Integer) As eCompatibilityTypes
 
             Dim tm As DateTime = Me.m_core.EcospaceTimestepToAbsoluteTime(iTimeStep)

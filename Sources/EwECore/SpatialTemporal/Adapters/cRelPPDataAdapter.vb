@@ -90,6 +90,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, _
                                                   ByVal layer As cEcospaceLayer, _
+                                                  ByVal iConnection As Integer, _
                                                   ByVal iTime As Integer, _
                                                   ByVal dt As Date, _
                                                   ByVal dataExternal As ISpatialRaster, _
@@ -101,7 +102,7 @@ Namespace SpatialData
                 If (Me.m_sPreservedScale = cCore.NULL_VALUE) And (Me.m_spaceData.PPScale <> cCore.NULL_VALUE) Then
                     Me.m_sPreservedScale = Me.m_spaceData.PPScale
                     'Me.m_spaceData.PPScale = 1.0F
-                    Me.m_spaceData.PPScale = (1 / Me.DataScale(layer.Index))
+                    Me.m_spaceData.PPScale = (1 / Me.DataScale(layer.Index, iConnection))
                 End If
             Catch ex As Exception
                 System.Console.WriteLine("Exception: " & Me.ToString & ".Adapt() " & ex.Message)
@@ -109,7 +110,7 @@ Namespace SpatialData
             End Try
 
             'Return True
-            Return MyBase.Adapt(bm, layer, iTime, dt, dataExternal, dNullValue)
+            Return MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNullValue)
 
         End Function
 

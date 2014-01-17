@@ -87,44 +87,46 @@ Namespace SpatialData
             Dim t As Type = Nothing
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
-                For i As Integer = 0 To adt.Length - 1
+                For i As Integer = 0 To adt.MaxLength
+                    For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
 
-                    ds = Nothing
-                    cv = Nothing
-                    cfg = Me.m_data.Item(adt.VarName, i)
+                        ds = Nothing
+                        cv = Nothing
+                        cfg = Me.m_data.Item(adt.VarName, i, j)
 
-                    If (cfg IsNot Nothing) Then
+                        If (cfg IsNot Nothing) Then
 
-                        ' Try to resolve dataset
-                        If guid.TryParse(cfg.DatasetGUID, guid) Then
-                            ds = Me.m_datasetManager.ItemByGUID(guid)
+                            ' Try to resolve dataset
+                            If guid.TryParse(cfg.DatasetGUID, guid) Then
+                                ds = Me.m_datasetManager.ItemByGUID(guid)
+                            End If
+
+                            ' Try to create converter
+                            t = cTypeUtils.StringToType(cfg.Converter)
+                            If (t IsNot Nothing) Then
+                                Try
+                                    cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
+
+                                    If TypeOf (adt) Is cSpatialScalarDataAdapterBase Then
+                                        With DirectCast(adt, cSpatialScalarDataAdapterBase)
+                                            .DataScale(i, j) = cfg.Scale
+                                            .DataScaleType(i, j) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
+                                        End With
+                                    End If
+
+                                    ' Properly initialuize
+                                    If (TypeOf cv Is IPlugin) Then DirectCast(cv, IPlugin).Initialize(Me.m_core)
+                                Catch ex As Exception
+
+                                End Try
+                            End If
                         End If
 
-                        ' Try to create converter
-                        t = cTypeUtils.StringToType(cfg.Converter)
-                        If (t IsNot Nothing) Then
-                            Try
-                                cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
-
-                                If TypeOf (adt) Is cSpatialScalarDataAdapterBase Then
-                                    With DirectCast(adt, cSpatialScalarDataAdapterBase)
-                                        .DataScale(i) = cfg.Scale
-                                        .DataScaleType(i) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
-                                    End With
-                                End If
-
-                                ' Properly initialuize
-                                If (TypeOf cv Is IPlugin) Then DirectCast(cv, IPlugin).Initialize(Me.m_core)
-                            Catch ex As Exception
-
-                            End Try
-                        End If
-                    End If
-
-                    adt.Dataset(i) = ds
-                    adt.Converter(i) = cv
-                Next
-            Next
+                        adt.Dataset(i, j) = ds
+                        adt.Converter(i, j) = cv
+                    Next j
+                Next i
+            Next adt
 
             ' Invalidate connection count
             Me.m_iNumConnected = cCore.NULL_VALUE
@@ -138,36 +140,38 @@ Namespace SpatialData
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
-                For i As Integer = 0 To adt.Length - 1
+                For i As Integer = 0 To adt.MaxLength
+                    For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
 
-                    ds = adt.Dataset(i)
-                    cv = adt.Converter(i)
-                    cfg = Me.m_data.Item(adt.VarName, i)
+                        ds = adt.Dataset(i, j)
+                        cv = adt.Converter(i, j)
+                        cfg = Me.m_data.Item(adt.VarName, i, j)
 
-                    If (cfg IsNot Nothing) Then
-                        If (ds IsNot Nothing) Then
-                            cfg.DatasetGUID = ds.GUID.ToString
-                        Else
-                            cfg.DatasetGUID = ""
+                        If (cfg IsNot Nothing) Then
+                            If (ds IsNot Nothing) Then
+                                cfg.DatasetGUID = ds.GUID.ToString
+                            Else
+                                cfg.DatasetGUID = ""
+                            End If
+
+                            If (cv IsNot Nothing) Then
+                                cfg.Converter = cTypeUtils.TypeToString(cv.GetType)
+                            Else
+                                cfg.Converter = ""
+                            End If
+                            cfg.ConverterConfig = ""
+
+                            If TypeOf adt Is cSpatialScalarDataAdapterBase Then
+                                With DirectCast(adt, cSpatialScalarDataAdapterBase)
+                                    cfg.Scale = CSng(.DataScale(i, j))
+                                    cfg.ScaleType = CByte(.DataScaleType(i, j))
+                                End With
+                            End If
+
                         End If
-
-                        If (cv IsNot Nothing) Then
-                            cfg.Converter = cTypeUtils.TypeToString(cv.GetType)
-                        Else
-                            cfg.Converter = ""
-                        End If
-                        cfg.ConverterConfig = ""
-
-                        If TypeOf adt Is cSpatialScalarDataAdapterBase Then
-                            With DirectCast(adt, cSpatialScalarDataAdapterBase)
-                                cfg.Scale = CSng(.DataScale(i))
-                                cfg.ScaleType = CByte(.DataScaleType(i))
-                            End With
-                        End If
-
-                    End If
-                Next
-            Next
+                    Next j
+                Next i
+            Next adt
 
             ' Invalidate connection count
             Me.m_iNumConnected = cCore.NULL_VALUE
@@ -455,8 +459,10 @@ Namespace SpatialData
 
             Me.m_iNumConnected = 0
             For Each adt As cSpatialDataAdapter In Me.Adapters
-                For i As Integer = 0 To adt.Length - 1
-                    If adt.IsConnected(i) Then m_iNumConnected += 1
+                For i As Integer = 0 To adt.MaxLength
+                    For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                        If adt.IsConnected(i, j) Then m_iNumConnected += 1
+                    Next
                 Next
             Next
         End Sub

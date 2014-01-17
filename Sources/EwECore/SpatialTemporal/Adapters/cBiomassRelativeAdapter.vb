@@ -88,15 +88,16 @@ Namespace SpatialData
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
         Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
+                                             ByVal iConnection As Integer, _
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
             Dim scalar As Double
 
             Try
-                Debug.Assert(Me.DataScaleType(layer.Index) = eScaleType.Relative, Me.ToString + ".SetCell() Warning scale type should be 'Relative'")
+                Debug.Assert(Me.DataScaleType(layer.Index, iConnection) = eScaleType.Relative, Me.ToString + ".SetCell() Warning scale type should be 'Relative'")
 
-                scalar = Me.m_scales(layer.Index)
+                scalar = Me.m_scales(layer.Index, iConnection)
 
                 'Debug.Assert(sValueAtT = 0)
                 'External data is the pattern of biomass distribution relative to the Ecospace base biomass
@@ -115,6 +116,7 @@ Namespace SpatialData
 
 
         Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, ByVal layer As cEcospaceLayer,
+                                                  ByVal iConnection As Integer, _
                                                   ByVal iTime As Integer, ByVal dt As Date,
                                                   ByVal dataExternal As ISpatialRaster, ByVal dNoData As Double) As Boolean
 
@@ -124,7 +126,7 @@ Namespace SpatialData
                     Me.InitializeBaseLayer(layer.Index)
                 End If
 
-                Return MyBase.Adapt(bm, layer, iTime, dt, dataExternal, dNoData)
+                Return MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
 
             Catch ex As Exception
                 'Ok what now....

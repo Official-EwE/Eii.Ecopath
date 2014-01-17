@@ -9459,6 +9459,7 @@ Namespace DataSources
             Dim var As eVarNameFlags = eVarNameFlags.NotSet
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
             Dim iIndex As Integer = 0
+            Dim iConnection As Integer = 0
             Dim strDatasetGUID As String = ""
             Dim strConverterType As String = ""
             Dim strConverterCfg As String = ""
@@ -9468,7 +9469,8 @@ Namespace DataSources
                 Try
                     var = cin.GetVarName(CStr(reader("VarName")))
                     iIndex = CInt(reader("LayerIndex"))
-                    cfg = spatialDS.Item(var, iIndex)
+                    iConnection = CInt(Me.m_db.ReadSafe(reader, "ConnectionIndex", 1))
+                    cfg = spatialDS.Item(var, iIndex, iConnection)
 
                     If (cfg IsNot Nothing) Then
                         cfg.DatasetGUID = CStr(reader("Dataset"))
@@ -9512,24 +9514,31 @@ Namespace DataSources
                 dt = writer.GetDataTable()
 
                 For Each adt As cSpatialDataAdapter In spatialDS.DataAdapters
-                    For i As Integer = 0 To adt.Length - 1
-                        cfg = spatialDS.Item(adt.VarName, i)
-                        Dim strDataset As String = cfg.DatasetGUID
-                        Dim strConverter As String = cfg.Converter
-                        If Not String.IsNullOrWhiteSpace(strDataset) Or Not String.IsNullOrWhiteSpace(strConverter) Then
-                            drow = writer.NewRow()
-                            drow("ScenarioID") = iScenarioID
-                            drow("VarName") = cin.GetVarName(adt.VarName)
-                            drow("LayerIndex") = i
-                            drow("Dataset") = strDataset
-                            drow("Converter") = strConverter
-                            drow("ConverterCfg") = cfg.ConverterConfig
-                            drow("Scale") = cfg.Scale
-                            drow("ScaleType") = cfg.ScaleType
-                            writer.AddRow(drow)
-                        End If
-                    Next
-                Next
+                    For i As Integer = 0 To adt.MaxLength - 1
+                        For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                            cfg = spatialDS.Item(adt.VarName, i, j)
+                            If (cfg IsNot Nothing) Then
+                                Dim strDataset As String = cfg.DatasetGUID
+                                Dim strConverter As String = cfg.Converter
+                                If Not String.IsNullOrWhiteSpace(strDataset) Or Not String.IsNullOrWhiteSpace(strConverter) Then
+                                    drow = writer.NewRow()
+                                    drow("ScenarioID") = iScenarioID
+                                    drow("VarName") = cin.GetVarName(adt.VarName)
+                                    drow("LayerIndex") = i
+                                    drow("ConnectionIndex") = j
+                                    drow("Dataset") = strDataset
+                                    drow("Converter") = strConverter
+                                    drow("ConverterCfg") = cfg.ConverterConfig
+                                    drow("Scale") = cfg.Scale
+                                    drow("ScaleType") = cfg.ScaleType
+                                    writer.AddRow(drow)
+                                End If
+                            Else
+                                cfg = cfg
+                            End If
+                        Next j
+                    Next i
+                Next adt
 
             Catch ex As Exception
                 bSucces = False
