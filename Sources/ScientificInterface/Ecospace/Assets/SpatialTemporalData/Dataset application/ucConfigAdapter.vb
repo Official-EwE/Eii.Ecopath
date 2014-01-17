@@ -55,14 +55,12 @@ Namespace Ecospace.Controls
         Private m_adt As cSpatialDataAdapter = Nothing
         ''' <summary>Selected layer</summary>
         Private m_layer As cEcospaceLayer = Nothing
+        Private m_iSlot As Integer = 0
 
         ''' <summary>Flag to break looped layer change updates/notifications</summary>
         Private m_bInUpdate As Boolean = False
 
-        ''' <summary>Flag that states whether there is any data in the cache</summary>
-        Private m_bHasCachedData As Boolean = False
-
-        Private m_bHasDatasetTemplates As Boolean = False
+        Private m_bIsChanged As Boolean = False
 
 #End Region ' Private variables
 
@@ -87,6 +85,14 @@ Namespace Ecospace.Controls
             Set(uic As cUIContext)
 
                 If (Me.m_uic IsNot Nothing) Then
+
+                    ' Process changes all at once
+                    If Me.m_bIsChanged Then
+                        Me.m_man.Update()
+                        Me.m_uic.Core.onChanged(Me.m_uic.Core.EcospaceBasemap)
+                        Me.m_bIsChanged = False
+                    End If
+
                     ' Disconnect from data objects first; we do not want disconnecting UI elements from screwing up the last configuration
                     Me.m_adt = Nothing
                     Me.m_layer = Nothing
@@ -114,16 +120,11 @@ Namespace Ecospace.Controls
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
-
-            ' Populate all
-            Me.FillTemplateDatasetBox()
-            Me.m_gridDatasets.Fill(Me.m_adt, Nothing)
-
-            ' Update cache state (will also update controls)
-            Me.EvaluateCache()
-
+            ' Kick!
+            Me.UpdateSlotSelection()
             ' Start listening to grid events
             AddHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnSelectDS
+
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -160,19 +161,12 @@ Namespace Ecospace.Controls
             Me.m_adt = adt
             Me.m_layer = layer
 
-            Me.m_bInUpdate = True
-
-            ' Set initials
-            If (adt IsNot Nothing) And (layer IsNot Nothing) Then
-                Me.m_gridDatasets.Fill(Me.m_adt, adt.Dataset(layer.Index))
-                Me.SelectConverter(adt.Converter(layer.Index))
+            If (Me.m_adt Is Nothing) Or (Me.m_layer Is Nothing) Then
+                Me.m_lbSlots.SelectedIndex = -1
+            Else
+                Me.m_lbSlots.SelectedIndex = -1
+                Me.m_lbSlots.SelectedIndex = 0
             End If
-
-            ' Done
-            Me.PopulateAdapterControls()
-            Me.UpdateControls()
-
-            Me.m_bInUpdate = False
 
         End Sub
 
@@ -180,45 +174,12 @@ Namespace Ecospace.Controls
 
 #Region " Control events "
 
-        ''' <summary>
-        ''' Respond to a dataset template selection
-        ''' </summary>
-        Private Sub OnDatasetTemplateSelected(sender As Object, e As System.EventArgs) _
-            Handles m_cmbNewDS.SelectedIndexChanged
-            Try
-                Me.UpdateControls()
-            Catch ex As Exception
-                ' WHoah!
-            End Try
-        End Sub
+        Private Sub OnSlotSelected(sender As System.Object, e As System.EventArgs) _
+            Handles m_lbSlots.SelectedIndexChanged
 
-        ''' <summary>
-        ''' Event handler for customizing how datasets are displayed in this UI.
-        ''' </summary>
-        Private Sub OnFormatDS(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-            Handles m_cmbNewDS.Format
+            If (Me.m_bInUpdate) Then Return
+            Me.UpdateSlotSelection()
 
-            Dim fmt As New cSpatialDatasetFormatter()
-            If e.ListItem.Equals(String.Empty) Then
-                e.Value = fmt.GetDescriptor(Nothing)
-            Else
-                e.Value = fmt.GetDescriptor(e.ListItem)
-            End If
-
-        End Sub
-
-        ''' <summary>
-        ''' User wants to create a dataset of the selected type.
-        ''' </summary>
-        Private Sub OnCreateDS(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnCreateDS.Click
-            Me.Cursor = Cursors.WaitCursor
-            Try
-                Me.CreateDS()
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
-            Me.Cursor = Cursors.Default
         End Sub
 
         ''' <summary>
@@ -256,63 +217,6 @@ Namespace Ecospace.Controls
         End Sub
 
         ''' <summary>
-        ''' User wants to delete the selected dataset
-        ''' </summary>
-        Private Sub OnDeleteDS(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnDeleteDS.Click
-            Try
-                Me.DeleteDS(Me.SelectedDataset)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
-        End Sub
-
-        ''' <summary>
-        ''' User wants to clear the spatial data cache.
-        ''' </summary>
-        Private Sub OnClearCache(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnClearCache.Click
-
-            Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
-            Dim dSizeTot As Double = cache.GetSize() / 1024
-            Dim dSizeUnused As Double = cache.GetUnusedSize(Me.m_manSets) / 1024
-            Dim strPrompt As String = My.Resources.PROMPT_CACHE_CLEAR
-            Dim bSucces As Boolean = True
-
-            Try
-                If (dSizeUnused > 0) Then
-                    Dim fmsg As New cFeedbackMessage(String.Format(strPrompt, Me.m_uic.StyleGuide.FormatNumber(dSizeTot), Me.m_uic.StyleGuide.FormatNumber(dSizeUnused)), _
-                                                     EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
-                    Me.m_uic.Core.Messages.SendMessage(fmsg)
-
-                    Select Case fmsg.Reply
-                        Case eMessageReply.YES
-                            bSucces = cSpatialDataCache.DefaultDataCache.Clear(Me.m_manSets)
-                        Case eMessageReply.NO
-                            bSucces = cSpatialDataCache.DefaultDataCache.Clear()
-                        Case eMessageReply.CANCEL
-                    End Select
-                Else
-                    bSucces = cSpatialDataCache.DefaultDataCache.Clear()
-                End If
-            Catch ex As Exception
-                bSucces = False
-            End Try
-
-            ' Repopulate grid to reflect cache sizes
-            Me.m_gridDatasets.Fill(Me.m_adt, Me.SelectedDataset)
-
-            Dim dSizeTot2 As Double = cache.GetSize() / 1024
-            Dim msg As New cMessage(String.Format(My.Resources.STATUS_CACHECLEARED, Me.m_uic.StyleGuide.FormatNumber(dSizeTot - dSizeTot2)), _
-                                    eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
-            Me.m_uic.Core.Messages.SendMessage(msg)
-
-            ' Reflect new state
-            Me.EvaluateCache()
-
-        End Sub
-
-        ''' <summary>
         ''' Event handler for customizing how converters are displayed in this UI.
         ''' </summary>
         Private Sub OnFormatCV(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
@@ -330,7 +234,7 @@ Namespace Ecospace.Controls
         ''' User wants to configure the currently selected converter.
         ''' </summary>
         Private Sub OnConfigCV(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnConfigureCV.Click
+            Handles m_btnConfigCV.Click
             Try
                 Me.ConfigConverter(Me.SelectedConverter)
             Catch ex As Exception
@@ -365,9 +269,9 @@ Namespace Ecospace.Controls
                 If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
                     Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
                     If (Me.m_rbAbsolute.Checked) Then
-                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapterBase.eScaleType.Absolute
+                        ssda.DataScaleType(Me.m_layer.Index, Me.m_iSlot) = cSpatialScalarDataAdapterBase.eScaleType.Absolute
                     Else
-                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        ssda.DataScaleType(Me.m_layer.Index, Me.m_iSlot) = cSpatialScalarDataAdapterBase.eScaleType.Relative
                     End If
 
                     ' Invalidate the cached data for this dataset
@@ -375,13 +279,23 @@ Namespace Ecospace.Controls
                     '          This statement deletes cached data for ALL scenarios a dataset is cached for. It should only
                     '          clear the cached data for the current Ecospace scenario. Oof. Ok, at least it works...
                     cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
-                    ' Reflect new state
-                    Me.EvaluateCache()
+
+                    Me.LayerChanged()
+
                 End If
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
+        End Sub
+
+        Private Sub OnEnterScaleTextBox(sender As Object, e As System.EventArgs) _
+            Handles m_tbxScale.Enter
+            Try
+                Me.m_rbRelative.Checked = True
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
         End Sub
 
         Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
@@ -392,13 +306,13 @@ Namespace Ecospace.Controls
             Try
                 If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
                     Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
-                    Double.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
+                    Double.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index, Me.m_iSlot))
                 End If
 
                 ' Invalidate the cached data for this dataset
                 cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
-                ' Reflect new state
-                Me.EvaluateCache()
+
+                Me.LayerChanged()
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -408,8 +322,12 @@ Namespace Ecospace.Controls
         Private Sub OnCalculateScale(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCalculate.Click
             Try
-                ' Stop any indexing
-                Me.m_manSets.IndexDataset = Nothing
+
+                ' Wait for indexing to stop
+                While Me.SelectedDataset.IsIndexing()
+                    Me.m_manSets.IndexDataset = Nothing
+                End While
+
                 Me.UpdateControls()
 
                 Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
@@ -419,7 +337,7 @@ Namespace Ecospace.Controls
                 Dim msg As cMessage = Nothing
 
                 ' Perform calculation
-                Select Case ssda.CalculateScaleFromEcopathTimePeriod(Me.m_layer.Index, iStartTimeStep, dScale)
+                Select Case ssda.CalculateScaleFromEcopathTimePeriod(Me.m_layer.Index, iStartTimeStep, Me.m_iSlot, dScale)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
                         msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX), _
@@ -433,8 +351,8 @@ Namespace Ecospace.Controls
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case Else
                         ' Only when ok
-                        ssda.DataScale(Me.m_layer.Index) = dScale
-                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        ssda.DataScale(Me.m_layer.Index, Me.m_iSlot) = dScale
+                        ssda.DataScaleType(Me.m_layer.Index, Me.m_iSlot) = cSpatialScalarDataAdapterBase.eScaleType.Relative
 
                 End Select
 
@@ -443,8 +361,7 @@ Namespace Ecospace.Controls
                     Me.m_uic.Core.Messages.SendMessage(msg)
                 End If
 
-                Me.PopulateAdapterControls()
-                Me.EvaluateCache()
+                Me.UpdateScalingPanel()
                 Me.m_gridDatasets.UpdateCacheInfo(Me.SelectedDataset)
 
             Catch ex As Exception
@@ -452,8 +369,236 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
-        Private Sub OnSaveStats(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnSaveStats.Click
+        ''' <summary>
+        ''' Grid callback
+        ''' </summary>
+        ''' <param name="ds"></param>
+        Private Sub OnConfigDS(ds As ISpatialDataSet) Handles m_gridDatasets.OnConfigDS
+            Me.ConfigDS(ds)
+        End Sub
+
+#End Region ' Control events
+
+#Region " Internals "
+
+        Private Sub UpdateControls()
+
+            Dim bHasLayer As Boolean = (Me.m_adt IsNot Nothing) And (Me.m_layer IsNot Nothing)
+            Dim bHasContext As Boolean = bHasLayer And (Me.m_iSlot > 0)
+            Dim ds As ISpatialDataSet = Me.SelectedDataset
+            Dim cv As ISpatialDataConverter = Me.SelectedConverter
+            Dim bCanConfigDS As Boolean = False
+            Dim bCanConfigCV As Boolean = False
+            Dim bIsConfigured As Boolean = False
+            Dim bNeedsConverter As Boolean = False
+            Dim bNeedsScaling As Boolean = False
+
+            If (ds IsNot Nothing) Then
+                bCanConfigDS = bHasContext And (TypeOf ds Is IConfigurable)
+                bIsConfigured = bHasContext And Me.m_adt.IsConnected(Me.m_layer.Index)
+                bNeedsConverter = Not String.IsNullOrWhiteSpace(ds.ConversionFormat)
+                bNeedsScaling = (TypeOf m_adt Is cSpatialScalarDataAdapterBase)
+            End If
+
+            If (cv IsNot Nothing) Then
+                bCanConfigCV = bHasContext And (TypeOf cv Is IConfigurable)
+            End If
+
+            Me.m_plConnections.Enabled = bHasLayer
+
+            Me.m_plConnection.Enabled = bHasContext
+            Me.m_btnConfigDS.Enabled = bCanConfigDS
+
+            Me.m_plConversion.Enabled = bHasContext And bNeedsConverter
+            Me.m_plConversion.Visible = bNeedsConverter
+            Me.m_btnConfigCV.Enabled = bCanConfigCV
+
+            Me.m_plScalarAdapter.Enabled = bHasContext And bNeedsScaling
+            Me.m_plScalarAdapter.Visible = bNeedsScaling
+            Me.m_btnCalculate.Enabled = bIsConfigured
+
+            'If (bHasContext) Then
+            '    Me.m_hdrSource.Text = String.Format(My.Resources.CAPTION_EXTERNAL_DATA_DETAIL, Me.m_layer.Name)
+            'Else
+            '    Me.m_hdrSource.Text = My.Resources.CAPTION_EXTERNAL_DATA
+            'End If
+
+        End Sub
+
+        Private Sub UpdateSlotSelection()
+            Me.m_bInUpdate = True
+            Try
+                Me.m_iSlot = (Me.m_lbSlots.SelectedIndex + 1)
+
+                If (Me.m_adt Is Nothing) Or (Me.m_layer Is Nothing) Or (Me.m_iSlot <= 0) Then
+                    Me.m_gridDatasets.Fill(Nothing)
+                    Me.UpdateConversionPanel(Nothing)
+                Else
+                    ' Show configuration for this slow
+                    Me.m_gridDatasets.Fill(Me.m_adt, Me.m_adt.Dataset(Me.m_layer.Index, Me.m_iSlot))
+                    Me.UpdateConversionPanel(Me.m_adt.Converter(Me.m_layer.Index, Me.m_iSlot))
+                End If
+                Me.UpdateScalingPanel()
+
+            Catch ex As Exception
+
+            End Try
+            Me.m_bInUpdate = False
+            Me.UpdateControls()
+        End Sub
+        ''' <summary>
+        ''' Fill UI with converters compatible with the selected dataset.
+        ''' </summary>
+        Private Sub UpdateConversionPanel(cv As ISpatialDataConverter)
+
+            Me.m_cmbConverter.Items.Clear()
+            For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates(Me.SelectedDataset)
+                If (cv Is Nothing) Then cv = cvTest
+                Me.m_cmbConverter.Items.Add(cvTest)
+            Next
+            Me.SelectConverter(cv)
+
+        End Sub
+
+        Private Function ConfigConverter(cv As ISpatialDataConverter) As Boolean
+
+            If (cv Is Nothing) Then Return False
+            If (Not TypeOf cv Is IConfigurable) Then Return True
+
+            If (TypeOf cv Is IPlugin) Then
+                DirectCast(cv, IPlugin).Initialize(Me.m_uic.Core)
+            End If
+
+            Dim cvConf As IConfigurable = DirectCast(cv, IConfigurable)
+            Dim ctrl As Control = cvConf.GetConfigUI()
+
+            If (ctrl Is Nothing) Then Return cvConf.IsConfigured
+
+            Dim dlg As New dlgConfig()
+            dlg.UIContext = Me.UIContext
+            dlg.ShowDialog(Me.FindForm, "Configure conversion", ctrl)
+
+            Return (cvConf.IsConfigured)
+        End Function
+
+        Private Property SelectedDataset As ISpatialDataSet
+            Get
+                If (Me.m_adt Is Nothing) Then Return Nothing
+                If (Me.m_layer Is Nothing) Then Return Nothing
+                If (Me.m_iSlot <= 0) Then Return Nothing
+                Return Me.m_adt.Dataset(Me.m_layer.Index, Me.m_iSlot)
+            End Get
+            Set(dataset As ISpatialDataSet)
+
+                If (Me.m_adt Is Nothing) Then Return
+
+                ' Apply
+                Me.m_adt.Dataset(Me.m_layer.Index, Me.m_iSlot) = dataset
+                Me.UpdateConversionPanel(Me.m_adt.Converter(Me.m_layer.Index, Me.m_iSlot))
+                Me.m_manSets.IndexDataset = dataset
+                Me.UpdateControls()
+
+            End Set
+        End Property
+
+        Private Sub SelectConverter(converter As ISpatialDataConverter)
+            ' Update selection
+            Dim iIndex As Integer = 0
+            If (converter IsNot Nothing) Then
+                For Each item As Object In Me.m_cmbConverter.Items
+                    If converter.GetType().Equals(item.GetType()) Then
+                        Me.m_cmbConverter.SelectedItem = item
+                        Return
+                    End If
+                Next
+            End If
+            Me.m_cmbConverter.SelectedItem = Nothing
+        End Sub
+
+        Private Property SelectedConverter As ISpatialDataConverter
+            Get
+                If (Me.m_adt Is Nothing) Then Return Nothing
+                If (Me.m_layer Is Nothing) Then Return Nothing
+                If (Me.m_iSlot <= 0) Then Return Nothing
+                Return Me.m_adt.Converter(Me.m_layer.Index, Me.m_iSlot)
+            End Get
+            Set(converter As ISpatialDataConverter)
+
+                If (Me.m_adt Is Nothing) Then Return
+
+                ' Apply
+                If (Not Object.ReferenceEquals(Me.m_adt.Converter(Me.m_layer.Index, Me.m_iSlot), converter)) Then
+                    Me.m_adt.Converter(Me.m_layer.Index, Me.m_iSlot) = converter
+
+                    If Not Me.m_bInUpdate Then
+                        Me.LayerChanged()
+                    End If
+                End If
+
+            End Set
+        End Property
+
+        Private Function ConfigDS(ds As ISpatialDataSet) As Boolean
+
+            If (ds Is Nothing) Then Return False
+            If (Not TypeOf ds Is IConfigurable) Then Return True
+
+            If (TypeOf ds Is IPlugin) Then
+                DirectCast(ds, IPlugin).Initialize(Me.m_uic.Core)
+            End If
+
+            Dim dsConf As IConfigurable = DirectCast(ds, IConfigurable)
+            Dim ctrl As Control = dsConf.GetConfigUI()
+
+            If (ctrl Is Nothing) Then Return dsConf.IsConfigured
+
+            Dim dlg As New dlgConfig()
+            dlg.UIContext = Me.UIContext
+            dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
+
+            Return (dsConf.IsConfigured)
+
+        End Function
+
+        Private Sub LayerChanged()
+
+            If (Me.m_uic Is Nothing) Then Return
+            If (Me.m_adt Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
+
+            Me.m_bIsChanged = True
+
+        End Sub
+
+#Region " Scalar data adapter "
+
+        Private Sub UpdateScalingPanel()
+
+            If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
+                Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
+                Select Case ssda.DataScaleType(Me.m_layer.Index, Me.m_iSlot)
+                    Case cSpatialScalarDataAdapterBase.eScaleType.Absolute
+                        Me.m_rbAbsolute.Checked = True
+                    Case cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        Me.m_rbRelative.Checked = True
+                End Select
+                Me.m_tbxScale.Text = ssda.DataScale(Me.m_layer.Index, Me.m_iSlot).ToString
+                Me.m_plScalarAdapter.Visible = True
+            Else
+                Me.m_plScalarAdapter.Visible = False
+            End If
+
+        End Sub
+
+#End Region ' Scalar data adapter
+
+#End Region ' Internals
+
+#Region " Disabled bits that may come in handy again "
+
+#If 0 Then
+
+        Private Sub OnSaveStats(sender As System.Object, e As System.EventArgs)
 
             ' This is very deliberately hidden functionality!
             Dim ds As ISpatialDataSet = Me.SelectedDataset
@@ -518,280 +663,9 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
 
         End Sub
-
-        ''' <summary>
-        ''' Grid callback
-        ''' </summary>
-        ''' <param name="ds"></param>
-        Private Sub OnConfigDS(ds As ISpatialDataSet) Handles m_gridDatasets.OnConfigDS
-            Me.ConfigDS(ds)
-        End Sub
-
-#End Region ' Control events
-
-#Region " Internals "
-
-        Private Sub UpdateControls()
-
-            Dim bHasContext As Boolean = (Me.m_adt IsNot Nothing) And (Me.m_layer IsNot Nothing)
-            Dim ds As ISpatialDataSet = Me.SelectedDataset
-            Dim cv As ISpatialDataConverter = Me.SelectedConverter
-            Dim bCanConfigDS As Boolean = False
-            Dim bCanConfigCV As Boolean = False
-            Dim bIsConfigured As Boolean = False
-            Dim bIsIndexing As Boolean = Me.m_manSets.IsIndexing(ds)
-            Dim bNeedsConverter As Boolean = False
-
-            If (ds IsNot Nothing) Then
-                bCanConfigDS = bHasContext And (TypeOf ds Is IConfigurable)
-                bIsConfigured = bHasContext And Me.m_adt.IsConnected(Me.m_layer.Index)
-                bNeedsConverter = Not String.IsNullOrWhiteSpace(ds.ConversionFormat)
-            End If
-            If (cv IsNot Nothing) Then
-                bCanConfigCV = bHasContext And (TypeOf cv Is IConfigurable)
-            End If
-
-            Me.m_btnCreateDS.Enabled = Me.m_bHasDatasetTemplates
-            Me.m_btnConfigDS.Enabled = bCanConfigDS
-            Me.m_btnDeleteDS.Enabled = (ds IsNot Nothing)
-            Me.m_btnConfigureCV.Enabled = bCanConfigCV
-            Me.m_btnClearCache.Enabled = (Me.m_bHasCachedData = True)
-
-#If DEBUG Then
-            Me.m_btnSaveStats.Visible = True
-            Me.m_btnSaveStats.Enabled = bIsConfigured
-#Else
-            Me.m_btnSaveStats.Visible = False
 #End If
 
-            If (bHasContext) Then
-                Me.m_hdrSource.Text = String.Format(My.Resources.CAPTION_EXTERNAL_DATA_DETAIL, Me.m_layer.Name)
-            Else
-                Me.m_hdrSource.Text = My.Resources.CAPTION_EXTERNAL_DATA
-            End If
-
-            Me.m_gridDatasets.Enabled = bHasContext
-
-            Me.m_lblSelectCV.Enabled = bHasContext And bNeedsConverter
-            Me.m_cmbConverter.Enabled = Me.m_lblSelectCV.Enabled
-
-            Me.m_btnCalculate.Enabled = bIsConfigured
-
-        End Sub
-
-        ''' <summary>
-        ''' Fill UI with available dataset templates
-        ''' </summary>
-        Private Sub FillTemplateDatasetBox()
-
-            Me.m_cmbNewDS.Items.Clear()
-            For Each ds As ISpatialDataSet In Me.m_man.DatasetTemplates
-                Me.m_cmbNewDS.Items.Add(ds)
-            Next
-
-            If (Me.m_cmbNewDS.Items.Count = 0) Then
-                Me.m_cmbNewDS.Items.Add("")
-                Me.m_bHasDatasetTemplates = False
-            Else
-                Me.m_bHasDatasetTemplates = True
-            End If
-            Me.m_cmbNewDS.SelectedIndex = 0
-
-        End Sub
-
-        ''' <summary>
-        ''' Fill UI with converters compatible with the selected dataset.
-        ''' </summary>
-        Private Sub FillCompatibleConverterBox(cv As ISpatialDataConverter)
-
-            Me.m_cmbConverter.Items.Clear()
-            For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates(Me.SelectedDataset)
-                If (cv Is Nothing) Then cv = cvTest
-                Me.m_cmbConverter.Items.Add(cvTest)
-            Next
-            Me.SelectConverter(cv)
-
-        End Sub
-
-        Private Function ConfigConverter(cv As ISpatialDataConverter) As Boolean
-
-            If (cv Is Nothing) Then Return False
-            If (Not TypeOf cv Is IConfigurable) Then Return True
-
-            If (TypeOf cv Is IPlugin) Then
-                DirectCast(cv, IPlugin).Initialize(Me.m_uic.Core)
-            End If
-
-            Dim cvConf As IConfigurable = DirectCast(cv, IConfigurable)
-            Dim ctrl As Control = cvConf.GetConfigUI()
-
-            If (ctrl Is Nothing) Then Return cvConf.IsConfigured
-
-            Dim dlg As New dlgConfig()
-            dlg.UIContext = Me.UIContext
-            dlg.ShowDialog(Me.FindForm, "Configure conversion", ctrl)
-
-            Me.EvaluateCache()
-
-            Return (cvConf.IsConfigured)
-        End Function
-
-        Private Property SelectedDataset As ISpatialDataSet
-            Get
-                If (Me.m_adt Is Nothing) Then Return Nothing
-                Return Me.m_adt.Dataset(Me.m_layer.Index)
-            End Get
-            Set(dataset As ISpatialDataSet)
-
-                If (Me.m_adt Is Nothing) Then Return
-
-                ' Apply
-                Me.m_adt.Dataset(Me.m_layer.Index) = dataset
-                Me.FillCompatibleConverterBox(Me.m_adt.Converter(Me.m_layer.Index))
-                Me.m_manSets.IndexDataset = dataset
-                Me.UpdateControls()
-
-            End Set
-        End Property
-
-        Private Sub SelectConverter(converter As ISpatialDataConverter)
-            ' Update selection
-            Dim iIndex As Integer = 0
-            If (converter IsNot Nothing) Then
-                For Each item As Object In Me.m_cmbConverter.Items
-                    If converter.GetType().Equals(item.GetType()) Then
-                        Me.m_cmbConverter.SelectedItem = item
-                        Return
-                    End If
-                Next
-            End If
-            Me.m_cmbConverter.SelectedItem = Nothing
-        End Sub
-
-        Private Property SelectedConverter As ISpatialDataConverter
-            Get
-                If (Me.m_adt Is Nothing) Then Return Nothing
-                Return Me.m_adt.Converter(Me.m_layer.Index)
-            End Get
-            Set(converter As ISpatialDataConverter)
-
-                If (Me.m_adt Is Nothing) Then Return
-
-                ' Apply
-                If (Not Object.ReferenceEquals(Me.m_adt.Converter(Me.m_layer.Index), converter)) Then
-                    Me.m_adt.Converter(Me.m_layer.Index) = converter
-
-                    If Not Me.m_bInUpdate Then
-                        Me.LayerChanged()
-                    End If
-                End If
-
-            End Set
-        End Property
-
-        Private Sub CreateDS()
-
-            If (Me.m_adt Is Nothing) Then Return
-
-            Dim item As Object = Me.m_cmbNewDS.SelectedItem
-            If Not TypeOf (item) Is ISpatialDataSet Then Return
-
-            Dim dsSelected As ISpatialDataSet = DirectCast(item, ISpatialDataSet)
-            Dim dsNew As ISpatialDataSet = Nothing
-
-            If (dsSelected Is Nothing) Then Return
-
-            dsNew = CType(Activator.CreateInstance(dsSelected.GetType()), ISpatialDataSet)
-            If (dsNew Is Nothing) Then Return
-
-            Try
-                dsNew.VarName = Me.m_adt.VarName
-                If Me.ConfigDS(dsNew) Then
-                    Me.m_manSets.Add(dsNew)
-                    Me.m_gridDatasets.Fill(Me.m_adt, dsNew)
-                    Me.m_manSets.IndexDataset = dsNew
-                End If
-            Catch ex As Exception
-                cLog.Write(ex, "ucConficAdapter::CreateDS")
-            End Try
-
-        End Sub
-
-        Private Function ConfigDS(ds As ISpatialDataSet) As Boolean
-
-            If (ds Is Nothing) Then Return False
-            If (Not TypeOf ds Is IConfigurable) Then Return True
-
-            If (TypeOf ds Is IPlugin) Then
-                DirectCast(ds, IPlugin).Initialize(Me.m_uic.Core)
-            End If
-
-            Dim dsConf As IConfigurable = DirectCast(ds, IConfigurable)
-            Dim ctrl As Control = dsConf.GetConfigUI()
-
-            If (ctrl Is Nothing) Then Return dsConf.IsConfigured
-
-            Dim dlg As New dlgConfig()
-            dlg.UIContext = Me.UIContext
-            dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
-
-            Me.EvaluateCache()
-
-            Return (dsConf.IsConfigured)
-
-        End Function
-
-        Public Sub DeleteDS(ds As ISpatialDataSet)
-            Me.SelectedDataset = Nothing
-            Me.m_manSets.Remove(ds)
-            Me.m_gridDatasets.Fill(Me.m_adt)
-        End Sub
-
-        Private Sub LayerChanged()
-
-            If (Me.m_uic Is Nothing) Then Return
-            If (Me.m_adt Is Nothing) Then Return
-            If (Me.m_bInUpdate) Then Return
-
-            Me.m_man.Update()
-            ' Me.m_uic.Core.onChanged(Me.m_layer)
-            Me.UpdateControls()
-
-        End Sub
-
-        Private Sub EvaluateCache()
-            Me.m_bHasCachedData = (cSpatialDataCache.DefaultDataCache.GetSize > 0)
-            Me.UpdateControls()
-        End Sub
-
-#Region " Scalar data adapter "
-
-        Private Sub PopulateAdapterControls()
-
-            ' Do not trigger invalidating updates!
-            Me.m_bInUpdate = True
-
-            If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
-                Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
-                Select Case ssda.DataScaleType(Me.m_layer.Index)
-                    Case cSpatialScalarDataAdapterBase.eScaleType.Absolute
-                        Me.m_rbAbsolute.Checked = True
-                    Case cSpatialScalarDataAdapterBase.eScaleType.Relative
-                        Me.m_rbRelative.Checked = True
-                End Select
-                Me.m_tbxScale.Text = ssda.DataScale(Me.m_layer.Index).ToString
-                Me.m_plScalarAdapter.Visible = True
-            Else
-                Me.m_plScalarAdapter.Visible = False
-            End If
-
-            Me.m_bInUpdate = False
-
-        End Sub
-
-#End Region ' Scalar data adapter
-
-#End Region ' Internals
+#End Region ' Disabled bits that may come in handy again
 
     End Class
 

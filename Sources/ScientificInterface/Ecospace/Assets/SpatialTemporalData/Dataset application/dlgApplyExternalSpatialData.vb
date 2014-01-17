@@ -26,6 +26,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -143,8 +144,11 @@ Namespace Ecospace
                         tnLayer.Tag = New cLayerLink(adt, layer)
                         ' Add to parent
                         tnAdapter.Nodes.Add(tnLayer)
+
                         ' Check whether any layer is connected to external data
-                        bHasExternalLayer = bHasExternalLayer Or layer.IsExternalData
+                        For iConnection As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                            bHasExternalLayer = bHasExternalLayer Or layer.IsExternalData(iConnection)
+                        Next
 
                         ' Selection
                         If (Me.m_layerStartup IsNot Nothing) Then
@@ -181,6 +185,8 @@ Namespace Ecospace
             If (tnSelect IsNot Nothing) Then
                 Me.m_tvAdapters.SelectedNode = tnSelect
             End If
+
+            Me.m_tsbnConnections.Image = SharedResources.Database
 
             ' Ooh!
             Me.CenterToParent()
@@ -238,8 +244,7 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IUIElement.UIContext"/>
         ''' -------------------------------------------------------------------
-        Private Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
-            Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
+        Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
             Get
                 Return Me.m_uic
             End Get
@@ -247,6 +252,11 @@ Namespace Ecospace
 
                 ' Clean up
                 If (Me.m_uic IsNot Nothing) Then
+                    Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditSpatialDatasets")
+                    If (cmd IsNot Nothing) Then
+                        cmd.RemoveControl(Me.m_tsbnConnections)
+                    End If
+
                     Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
                     Me.m_mhEcospace.Dispose()
                     Me.m_mhEcospace = Nothing
@@ -260,10 +270,14 @@ Namespace Ecospace
                     Me.m_config.UIContext = Me.m_uic
                     Me.m_mhEcospace = New cMessageHandler(AddressOf OnEcospaceMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
-
 #If DEBUG Then
-                    Me.m_mhEcospace.Name = "dlgExternalData::m_mhEcospace"
+                    Me.m_mhEcospace.Name = "dlgApplyExternalSpatialData::m_mhEcospace"
 #End If
+                    Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditSpatialDatasets")
+                    If (cmd IsNot Nothing) Then
+                        cmd.AddControl(Me.m_tsbnConnections)
+                    End If
+
                 End If
             End Set
         End Property
@@ -311,7 +325,6 @@ Namespace Ecospace
         Private Sub UpdateNodeImages()
 
             For Each ndAdt As TreeNode In Me.m_tvAdapters.Nodes
-                Dim iNumConnected As Integer = 0
                 Dim iImg As Integer = 0
 
                 For Each ndLayer As TreeNode In ndAdt.Nodes
@@ -320,22 +333,23 @@ Namespace Ecospace
 
                     ' Calc display image
                     iImg = 0
-                    If l.IsExternalData Then
-                        iNumConnected += 1
-                        Dim ds As ISpatialDataSet = link.Adapter.Dataset(l.Index)
-                        Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
-                        Select Case comp.Compatibility
-                            Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
-                                cDatasetCompatilibity.eCompatibilityTypes.NoSpatial, _
-                                cDatasetCompatilibity.eCompatibilityTypes.Errors
-                                iImg = 2
-                            Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial, _
-                                cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                                iImg = 1
-                            Case Else
-                                ' NOP
-                        End Select
-                    End If
+                    For iSlot As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                        If l.IsExternalData(iSlot) Then
+                            Dim ds As ISpatialDataSet = link.Adapter.Dataset(l.Index, iSlot)
+                            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
+                            Select Case comp.Compatibility
+                                Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
+                                    cDatasetCompatilibity.eCompatibilityTypes.NoSpatial, _
+                                    cDatasetCompatilibity.eCompatibilityTypes.Errors
+                                    iImg = 2
+                                Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial, _
+                                    cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
+                                    iImg = 1
+                                Case Else
+                                    ' NOP
+                            End Select
+                        End If
+                    Next
 
                     ' Update image
                     If (iImg <> ndLayer.ImageIndex) Then
@@ -346,7 +360,7 @@ Namespace Ecospace
                 Next
 
                 ' Calc display image
-                iImg = Math.Min(1, iNumConnected)
+                iImg = Math.Min(1, iImg)
                 ' Img has changed?
                 If (iImg <> ndAdt.ImageIndex) Then
                     ' Update image
