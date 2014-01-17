@@ -174,8 +174,29 @@
     <Compile Include="Ecospace\Assets\ImportExport\gridImportLayerMappings.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\gridDatasets.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgDefineExternalSpatialData.Designer.vb">
+      <DependentUpon>dlgDefineExternalSpatialData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgDefineExternalSpatialData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\gridDefineExternalSpatialData.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyExternalSpatialData.Designer.vb">
+      <DependentUpon>dlgApplyExternalSpatialData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyExternalSpatialData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\gridDatasets.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\ucConfigAdapter.Designer.vb">
+      <DependentUpon>ucConfigAdapter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\ucConfigAdapter.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">
       <DependentUpon>dlgDefineRegions.vb</DependentUpon>
@@ -267,34 +288,22 @@
     <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.designer.vb">
       <DependentUpon>dlgExportLayerData.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.Designer.vb">
-      <DependentUpon>dlgExternalData.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmExtermalSpatialData.Designer.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\frmExtermalSpatialData.Designer.vb">
       <DependentUpon>frmExtermalSpatialData.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmExtermalSpatialData.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\frmExtermalSpatialData.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.Designer.vb">
-      <DependentUpon>ucConfigAdapter.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\ucSpatialTimeSeriesMap.Designer.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesMap.Designer.vb">
       <DependentUpon>ucSpatialTimeSeriesMap.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\ucSpatialTimeSeriesMap.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesMap.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\ucSpatialTimeSeriesToolbox.Designer.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesToolbox.Designer.vb">
       <DependentUpon>ucSpatialTimeSeriesToolbox.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\ucSpatialTimeSeriesToolbox.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesToolbox.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgDefineEnvInputMaps.Designer.vb">
@@ -839,19 +848,22 @@
     <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgExportLayerData.resx">
       <DependentUpon>dlgExportLayerData.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.resx">
-      <DependentUpon>dlgExternalData.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyExternalSpatialData.resx">
+      <DependentUpon>dlgApplyExternalSpatialData.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\frmExtermalSpatialData.resx">
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\frmExtermalSpatialData.resx">
       <DependentUpon>frmExtermalSpatialData.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.resx">
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgDefineExternalSpatialData.resx">
+      <DependentUpon>dlgDefineExternalSpatialData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset application\ucConfigAdapter.resx">
       <DependentUpon>ucConfigAdapter.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\ucSpatialTimeSeriesMap.resx">
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesMap.resx">
       <DependentUpon>ucSpatialTimeSeriesMap.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\ucSpatialTimeSeriesToolbox.resx">
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesToolbox.resx">
       <DependentUpon>ucSpatialTimeSeriesToolbox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgDefineImportanceMaps.resx">

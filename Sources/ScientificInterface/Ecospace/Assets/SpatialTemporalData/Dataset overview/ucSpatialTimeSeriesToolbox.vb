@@ -360,47 +360,50 @@ Namespace Ecospace.Controls
             Me.m_lInfo.Clear()
 
             For Each adt As cSpatialDataAdapter In lAdt
-                For i As Integer = 0 To adt.Length - 1
-                    If adt.IsConnected(i) Then
+                For i As Integer = 0 To adt.MaxLength - 1
+                    For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
 
-                        ds = adt.Dataset(i)
+                        If adt.IsConnected(i, j) Then
 
-                        Dim pos As New cDatasetInfo()
-                        pos.m_ds = ds
-                        pos.m_var = adt.VarName
-                        pos.m_iIndex = adt.Index
-                        pos.m_iPosVert = iRow
+                            ds = adt.Dataset(i, j)
 
-                        If ds.TimeStart = Date.MinValue Then
-                            pos.m_iTimeStart = 1
-                        Else
-                            pos.m_iTimeStart = core.AbsoluteTimeToEcospaceTimestep(ds.TimeStart)
-                        End If
+                            Dim pos As New cDatasetInfo()
+                            pos.m_ds = ds
+                            pos.m_var = adt.VarName
+                            pos.m_iIndex = adt.Index
+                            pos.m_iPosVert = iRow
 
-                        If ds.TimeEnd = Date.MaxValue Then
-                            pos.m_iTimeEnd = core.nEcospaceTimeSteps
-                        Else
-                            pos.m_iTimeEnd = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(ds.TimeEnd)
-                        End If
-
-                        For iStep As Integer = pos.m_iTimeStart To pos.m_iTimeEnd
-                            Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
-                            If ds.HasDataAtT(tm) Then
-                                pos.m_liData.Add(iStep)
-                                pos.m_liTime.Add(tm)
+                            If ds.TimeStart = Date.MinValue Then
+                                pos.m_iTimeStart = 1
+                            Else
+                                pos.m_iTimeStart = core.AbsoluteTimeToEcospaceTimestep(ds.TimeStart)
                             End If
-                        Next
 
-                        Me.m_lInfo.Add(pos)
+                            If ds.TimeEnd = Date.MaxValue Then
+                                pos.m_iTimeEnd = core.nEcospaceTimeSteps
+                            Else
+                                pos.m_iTimeEnd = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(ds.TimeEnd)
+                            End If
 
-                        If (pos.m_var = var) And (pos.m_iIndex = iIndex) Then
-                            iSel = iRow
+                            For iStep As Integer = pos.m_iTimeStart To pos.m_iTimeEnd
+                                Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
+                                If ds.HasDataAtT(tm) Then
+                                    pos.m_liData.Add(iStep)
+                                    pos.m_liTime.Add(tm)
+                                End If
+                            Next
+
+                            Me.m_lInfo.Add(pos)
+
+                            If (pos.m_var = var) And (pos.m_iIndex = iIndex) Then
+                                iSel = iRow
+                            End If
+
+                            iRow += 1
                         End If
-
-                        iRow += 1
-                    End If
-                Next
-            Next
+                    Next j
+                Next i
+            Next adt
 
             Me.SelectedDatasetIndex = iSel
 

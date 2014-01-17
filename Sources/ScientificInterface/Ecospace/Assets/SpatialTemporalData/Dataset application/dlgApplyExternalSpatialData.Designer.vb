@@ -21,8 +21,7 @@ Imports ScientificInterfaceShared.Forms
 Namespace Ecospace
 
     Partial Class dlgExternalData
-        Inherits Form
-        Implements IUIElement
+        Inherits frmEwE
 
         'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
@@ -44,16 +43,20 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExternalData))
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_sc = New System.Windows.Forms.SplitContainer()
             Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tvAdapters = New System.Windows.Forms.TreeView()
             Me.m_config = New ScientificInterface.Ecospace.Controls.ucConfigAdapter()
             Me.m_ilConnections = New System.Windows.Forms.ImageList(Me.components)
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnConnections = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_sc.Panel1.SuspendLayout()
             Me.m_sc.Panel2.SuspendLayout()
             Me.m_sc.SuspendLayout()
+            Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnOK
@@ -71,7 +74,7 @@ Namespace Ecospace
             Me.m_sc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                 Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_sc.Location = New System.Drawing.Point(12, 12)
+            Me.m_sc.Location = New System.Drawing.Point(12, 28)
             Me.m_sc.Name = "m_sc"
             '
             'm_sc.Panel1
@@ -82,7 +85,7 @@ Namespace Ecospace
             'm_sc.Panel2
             '
             Me.m_sc.Panel2.Controls.Add(Me.m_config)
-            Me.m_sc.Size = New System.Drawing.Size(881, 383)
+            Me.m_sc.Size = New System.Drawing.Size(881, 367)
             Me.m_sc.SplitterDistance = 201
             Me.m_sc.TabIndex = 0
             '
@@ -109,7 +112,7 @@ Namespace Ecospace
             Me.m_tvAdapters.Location = New System.Drawing.Point(0, 21)
             Me.m_tvAdapters.Name = "m_tvAdapters"
             Me.m_tvAdapters.ShowLines = False
-            Me.m_tvAdapters.Size = New System.Drawing.Size(201, 362)
+            Me.m_tvAdapters.Size = New System.Drawing.Size(201, 346)
             Me.m_tvAdapters.TabIndex = 0
             '
             'm_config
@@ -117,7 +120,7 @@ Namespace Ecospace
             Me.m_config.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_config.Location = New System.Drawing.Point(0, 0)
             Me.m_config.Name = "m_config"
-            Me.m_config.Size = New System.Drawing.Size(676, 383)
+            Me.m_config.Size = New System.Drawing.Size(676, 367)
             Me.m_config.TabIndex = 0
             Me.m_config.UIContext = Nothing
             '
@@ -127,23 +130,47 @@ Namespace Ecospace
             Me.m_ilConnections.ImageSize = New System.Drawing.Size(16, 16)
             Me.m_ilConnections.TransparentColor = System.Drawing.Color.Transparent
             '
+            'm_tsMain
+            '
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnConnections})
+            Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
+            Me.m_tsMain.Name = "m_tsMain"
+            Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            Me.m_tsMain.Size = New System.Drawing.Size(905, 25)
+            Me.m_tsMain.TabIndex = 3
+            Me.m_tsMain.Text = "ToolStrip1"
+            '
+            'm_tsbnConnections
+            '
+            Me.m_tsbnConnections.Image = CType(resources.GetObject("m_tsbnConnections.Image"), System.Drawing.Image)
+            Me.m_tsbnConnections.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnConnections.Name = "m_tsbnConnections"
+            Me.m_tsbnConnections.Size = New System.Drawing.Size(128, 22)
+            Me.m_tsbnConnections.Text = "Manage data sets..."
+            '
             'dlgExternalData
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(905, 439)
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_tsMain)
             Me.Controls.Add(Me.m_sc)
             Me.Controls.Add(Me.m_btnOK)
+            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.MinimumSize = New System.Drawing.Size(560, 350)
             Me.Name = "dlgExternalData"
             Me.ShowInTaskbar = False
-            Me.Text = "Ecospace external data connections"
+            Me.Text = "Apply external spatial/temporal data connections"
             Me.m_sc.Panel1.ResumeLayout(False)
             Me.m_sc.Panel2.ResumeLayout(False)
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_sc.ResumeLayout(False)
+            Me.m_tsMain.ResumeLayout(False)
+            Me.m_tsMain.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_btnOK As System.Windows.Forms.Button
@@ -152,6 +179,8 @@ Namespace Ecospace
         Private WithEvents m_tvAdapters As System.Windows.Forms.TreeView
         Private WithEvents m_ilConnections As System.Windows.Forms.ImageList
         Private WithEvents m_hdrLayers As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Friend WithEvents m_tsMain As cEwEToolstrip
+        Private WithEvents m_tsbnConnections As System.Windows.Forms.ToolStripButton
 
     End Class
 
