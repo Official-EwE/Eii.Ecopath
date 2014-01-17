@@ -270,13 +270,13 @@ Public MustInherit Class cEcospaceLayer
     ''' States if layer is receiving data from an external source.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property IsExternalData As Boolean
+    Public ReadOnly Property IsExternalData(iConnection As Integer) As Boolean
         Get
             Dim man As SpatialData.cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
             If (man Is Nothing) Then Return False
             Dim adapter As cSpatialDataAdapter = man.Adapter(Me.VarName)
             If (adapter Is Nothing) Then Return False
-            Return adapter.IsConnected(Me.Index)
+            Return adapter.IsConnected(Me.Index, iConnection)
         End Get
     End Property
 

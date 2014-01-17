@@ -75,8 +75,10 @@ Namespace SpatialData
             'WARNING: These values get overwritten by the loading 
             'For now you can't hardwire an initial scaler value into an Adapter
             For i As Integer = 0 To n
-                Me.m_scales(i) = Me.molesm2_to_kgkm2
-                Me.m_scaleType(i) = eScaleType.Relative
+                For j As Integer = 0 To cSpatialDataStructures.cMAX_CONN
+                    Me.m_scales(i, j) = Me.molesm2_to_kgkm2
+                    Me.m_scaleType(i, j) = eScaleType.Relative
+                Next
             Next
 
         End Sub
@@ -87,6 +89,7 @@ Namespace SpatialData
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
         Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
+                                             ByVal iConnection As Integer, _
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
@@ -97,7 +100,7 @@ Namespace SpatialData
             'convert from mol C /m2 to kg/km2
             'Hardwire the scaler until we sort out the interface issue with setting the scale value
             sValueAtT *= Me.molesm2_to_kgkm2
-            Return MyBase.SetCell(layer, iRow, iCol, sValueAtT)
+            Return MyBase.SetCell(layer, iConnection, iRow, iCol, sValueAtT)
 
         End Function
 

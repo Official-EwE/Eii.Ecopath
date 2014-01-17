@@ -54,15 +54,16 @@ Namespace SpatialData
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
         Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
+                                             ByVal iConnection As Integer, _
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
 
-            If (Me.DataScaleType(layer.Index) = eScaleType.Relative) And (sValueAtT <> cCore.NULL_VALUE) Then
-                sValueAtT /= Me.DataScale(layer.Index)
+            If (Me.DataScaleType(layer.Index, iConnection) = eScaleType.Relative) And (sValueAtT <> cCore.NULL_VALUE) Then
+                sValueAtT /= Me.DataScale(layer.Index, iConnection)
             End If
 
-            Return MyBase.SetCell(layer, iRow, iCol, sValueAtT)
+            Return MyBase.SetCell(layer, iConnection, iRow, iCol, sValueAtT)
 
         End Function
 
@@ -86,8 +87,8 @@ Namespace SpatialData
 
 #Region " Private variables "
 
-        Protected m_scales() As Double
-        Protected m_scaleType() As eScaleType
+        Protected m_scales(,) As Double
+        Protected m_scaleType(,) As eScaleType
 
 #End Region ' Private variables
 
@@ -118,18 +119,18 @@ Namespace SpatialData
         ''' Get/set the <see cref="eScaleType">scale type</see> for the layer identified by <paramref name="iIndex"/>.
         ''' If set to <see cref="eScaleType.Relative"/>, external values are <see cref="DataScale">scaled</see>.
         ''' </summary>
-        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>&lt;</param>
+        ''' <param name="iIndex">Layer index [0, <see cref="MaxLength"/>&lt;</param>
         ''' -------------------------------------------------------------------
-        Public Property DataScaleType(iIndex As Integer) As eScaleType
+        Public Property DataScaleType(iIndex As Integer, iConnection As Integer) As eScaleType
             Get
                 If (Me.m_scaleType Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
-                Return Me.m_scaleType(Math.Max(0, iIndex))
+                Debug.Assert(iIndex <= Me.MaxLength, "Index out of range")
+                Return Me.m_scaleType(Math.Max(0, iIndex), iConnection)
             End Get
             Set(value As eScaleType)
                 If (Me.m_scaleType Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
-                Me.m_scaleType(Math.Max(0, iIndex)) = value
+                Debug.Assert(iIndex <= Me.MaxLength, "Index out of range")
+                Me.m_scaleType(Math.Max(0, iIndex), iConnection) = value
             End Set
         End Property
 
@@ -139,18 +140,18 @@ Namespace SpatialData
         ''' <see cref="DataScaleType"/> for layer <paramref name="iIndex"/> is
         ''' set to <see cref="eScaleType.Relative"/>.
         ''' </summary>
-        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>&lt;</param>
+        ''' <param name="iIndex">Layer index [0, <see cref="MaxLength"/>&lt;</param>
         ''' -------------------------------------------------------------------
-        Public Property DataScale(iIndex As Integer) As Double
+        Public Property DataScale(iIndex As Integer, iConnection As Integer) As Double
             Get
                 If (Me.m_scales Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
-                Return Me.m_scales(Math.Max(0, iIndex))
+                Debug.Assert(iIndex <= Me.MaxLength, "Index out of range")
+                Return Me.m_scales(Math.Max(0, iIndex), iConnection)
             End Get
             Set(value As Double)
                 If (Me.m_scales Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
-                Me.m_scales(Math.Max(0, iIndex)) = value
+                Debug.Assert(iIndex <= Me.MaxLength, "Index out of range")
+                Me.m_scales(Math.Max(0, iIndex), iConnection) = value
             End Set
         End Property
 
@@ -165,7 +166,9 @@ Namespace SpatialData
         ''' <returns>A <see cref="cDatasetCompatilibity.Compatibility"/> result
         ''' indicating the outcome of the calculation.</returns>
         ''' -------------------------------------------------------------------
-        Public Function CalculateScaleFromEcopathTimePeriod(iLayerIndex As Integer, ByVal iFirstTimeStep As Integer, _
+        Public Function CalculateScaleFromEcopathTimePeriod(ByVal iLayerIndex As Integer, _
+                                                            ByVal iFirstTimeStep As Integer, _
+                                                            ByVal iConnection As Integer, _
                                                             ByRef dScale As Double) As cDatasetCompatilibity.eCompatibilityTypes
 
             Dim result As cDatasetCompatilibity.eCompatibilityTypes = cDatasetCompatilibity.eCompatibilityTypes.Errors
@@ -174,8 +177,8 @@ Namespace SpatialData
             ' Early bail-out
             If Not Me.IsConnected(iLayerIndex) Then Return result
 
-            Dim ds As ISpatialDataSet = Me.Dataset(iLayerIndex)
-            Dim cv As ISpatialDataConverter = Me.Converter(iLayerIndex)
+            Dim ds As ISpatialDataSet = Me.Dataset(Me.Index, iConnection)
+            Dim cv As ISpatialDataConverter = Me.Converter(Me.Index, iConnection)
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim iInRow As Integer = bm.InRow
             Dim iInCol As Integer = bm.InCol
@@ -242,7 +245,7 @@ Namespace SpatialData
 
             If dMapTotValue = 0 Then dMapTotValue = 1
             If iNumWaterCells = 0 Then iNumWaterCells = 1
-            
+
             dScale = (iNumWaterCells / dMapTotValue)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'jb 30-July-2012 changed DataScale to be used as a divider
@@ -270,12 +273,14 @@ Namespace SpatialData
 
             Dim iNumItems As Integer = Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))
 
-            ReDim Me.m_scales(iNumItems)
-            ReDim Me.m_scaleType(iNumItems)
+            ReDim Me.m_scales(iNumItems, cSpatialDataStructures.cMAX_CONN)
+            ReDim Me.m_scaleType(iNumItems, cSpatialDataStructures.cMAX_CONN)
 
             For i As Integer = 0 To iNumItems
-                Me.m_scales(i) = 1.0!
-                Me.m_scaleType(i) = eScaleType.Relative
+                For j As Integer = 0 To cSpatialDataStructures.cMAX_CONN
+                    Me.m_scales(i, j) = 1.0!
+                    Me.m_scaleType(i, j) = eScaleType.Relative
+                Next
             Next
 
         End Sub

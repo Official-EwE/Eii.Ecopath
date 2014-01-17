@@ -73,13 +73,14 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, _
                                                   ByVal layer As cEcospaceLayer, _
+                                                  ByVal iConnection As Integer, _
                                                   ByVal iTime As Integer, _
                                                   ByVal dt As Date, _
                                                   ByVal dataExternal As ISpatialRaster, _
                                                   ByVal dNoData As Double) As Boolean
             Dim breturnVal As Boolean
 
-            breturnVal = MyBase.Adapt(bm, layer, iTime, dt, dataExternal, dNoData)
+            breturnVal = MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
 
             'tell Ecospace to update the capacity layers
             Me.m_spaceData.bHasCapacityChanged = True

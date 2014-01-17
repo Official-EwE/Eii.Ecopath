@@ -2478,6 +2478,7 @@ Public Class cEIIXMLDataSource
         Dim var As eVarNameFlags = eVarNameFlags.NotSet
         Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
         Dim iIndex As Integer = 0
+        Dim iConnection As Integer = 1
         Dim strDatasetGUID As String = ""
         Dim strConverterType As String = ""
         Dim strConverterCfg As String = ""
@@ -2488,7 +2489,8 @@ Public Class cEIIXMLDataSource
             Try
                 var = cin.GetVarName(CStr(drow("VarName")))
                 iIndex = CInt(drow("LayerIndex"))
-                cfg = spatialDS.Item(var, iIndex)
+                iConnection = CInt(Me.ReadSafe(drow, "ConnectionIndex", 1))
+                cfg = spatialDS.Item(var, iIndex, iConnection)
 
                 If (cfg IsNot Nothing) Then
                     cfg.DatasetGUID = CStr(drow("Dataset"))

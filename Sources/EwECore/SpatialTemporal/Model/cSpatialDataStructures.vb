@@ -30,27 +30,40 @@ Namespace SpatialData
 
         ''' <summary>Availalable data adapters</summary>
         Public DataAdapters As New List(Of cSpatialDataAdapter)
-       
+        ''' <summary>Max. number of external data connections per layer.</summary>
+        Public Const cMAX_CONN As Integer = 6
+
         Public Sub SetDefaults()
 
             Me.m_data.Clear()
 
             For Each adt As cSpatialDataAdapter In Me.DataAdapters
                 adt.Initialize()
-                Dim iLen As Integer = adt.Length
-                Dim arr(iLen) As cAdapaterConfiguration
-                For i As Integer = 0 To iLen - 1 : arr(i) = New cAdapaterConfiguration() : Next
+                Dim iLen As Integer = adt.MaxLength
+                Dim arr(iLen, cMAX_CONN) As cAdapaterConfiguration
+                For i As Integer = 0 To iLen - 1
+                    For j As Integer = 1 To cMAX_CONN
+                        arr(i, j) = New cAdapaterConfiguration()
+                    Next j
+                Next i
+
                 Me.m_data(adt.VarName) = arr
             Next adt
 
         End Sub
 
-        Public ReadOnly Property Item(varname As eVarNameFlags, iIndex As Integer) As cAdapaterConfiguration
+        ''' <summary>
+        ''' Get a spatial data configuration for a given (layer, connection slot) combination.
+        ''' </summary>
+        ''' <param name="varname"></param>
+        ''' <param name="iIndex">One-based layer index</param>
+        ''' <param name="iConnection">One-based connection index</param>
+        Public ReadOnly Property Item(varname As eVarNameFlags, iIndex As Integer, iConnection As Integer) As cAdapaterConfiguration
             Get
                 If Me.m_data.ContainsKey(varname) Then
-                    Dim adata As cAdapaterConfiguration() = Me.m_data(varname)
-                    If iIndex >= 0 And iIndex < adata.Length Then
-                        Return adata(iIndex)
+                    Dim adata As cAdapaterConfiguration(,) = Me.m_data(varname)
+                    If (iIndex >= 0 And iIndex < adata.Length) And (iIndex >= 0 And iIndex <= cMAX_CONN) Then
+                        Return adata(iIndex, iConnection)
                     End If
                 End If
                 Return Nothing
@@ -74,7 +87,7 @@ Namespace SpatialData
             Public ScaleType As Byte = 0
         End Class
 
-        Private m_data As New Dictionary(Of eVarNameFlags, cAdapaterConfiguration())
+        Private m_data As New Dictionary(Of eVarNameFlags, cAdapaterConfiguration(,))
 
 #End Region ' Internals
 
