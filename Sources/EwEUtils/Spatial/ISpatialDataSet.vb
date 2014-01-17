@@ -220,6 +220,13 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Check whether a dataset is running a <see cref="BuildIndex"/> command.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Function IsIndexing() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Possible status flags for source data.
         ''' </summary>
         ''' -------------------------------------------------------------------
