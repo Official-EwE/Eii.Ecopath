@@ -27,6 +27,7 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports DotSpatial.Topology
 
 #End Region ' Imports
 
@@ -167,14 +168,28 @@ Namespace SpatialData
                             Dim br As RcIndex = rs.ProjToCell(extIntersect.MaxX, extIntersect.MinY)
                             Dim x As Integer = Math.Max(tl.Column, 0)
                             Dim y As Integer = Math.Max(tl.Row, 0)
-                            Dim dx As Integer = Math.Max(br.Column - x, br.Row - y)
+                            Dim dx As Integer = br.Column - x
+                            Dim dy As Integer = br.Row - y
+                            Dim bndsCheck As IRasterBounds = Nothing
 
-                            ' Extract rectangular block for this area
-                            ' JS: the block is rectangular to overcome a bug in DotSpatial where bounds width and height are reversed. Note
-                            '     that the square block only works when cell width and height are equal. Now this code is correct, verified 18/feb/13
+                            ' Extract data block for this area
+                            ' DotSpatial ReadBlock has a bug
+                            ' JS: Earlier code that used a rectangular extraction only succeeded if the entir erectangular area was contained withint rs
+                            ' 
+                            rstResult = rs.ReadBlock(x, y, Math.Max(dx, 2), Math.Max(dy, 2))
+                            bndsCheck = rstResult.Bounds
 
-                            ' ToDo: recalc extent to fix bounds
-                            rstResult = rs.ReadBlock(x, y, Math.Max(dx, 2), Math.Max(dx, 2))
+                            ' Bounds reversed? (bug in DotSpatial.Data.Raster(T).ReadBlock)
+                            If (bndsCheck.NumRows = dx And bndsCheck.NumColumns = dy) Then
+                                ' Checked, JS 18Jan14
+                                Dim topleft As Coordinate = rs.Bounds.CellCenter_ToProj(y, x)
+                                Dim aff(6) As Double
+                                Array.Copy(rs.Bounds.AffineCoefficients, 0, aff, 0, 6)
+                                aff(0) = topleft.X
+                                aff(3) = topleft.Y
+                                rstResult.Bounds = New RasterBounds(dy, dx, aff)
+                            End If
+
                             rs.Close()
                             rs = rstResult
 
