@@ -109,6 +109,8 @@ Public Class gridLayerData
         data = Me.m_layer.Data
         tCell = data.ValueType
 
+        Me.SuspendLayoutGrid()
+
         ' Prepare grid
         Me.RowsCount = 1
 
@@ -140,6 +142,8 @@ Public Class gridLayerData
                 Me(iRow, iCol) = cell
             Next iCol
         Next iRow
+
+        Me.ResumeLayoutGrid()
 
     End Sub
 

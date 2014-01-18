@@ -292,8 +292,11 @@ Namespace Utilities
             ' TODO: Check if file is writeable!!!
 
             Dim strFileName As String = Path.GetRandomFileName() & strExt
-
-            Dim strFile As String = Path.Combine(System.IO.Path.GetTempPath(), strFileName)
+            Dim strPath As String = Path.Combine(System.IO.Path.GetTempPath(), "EwE")
+            If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
+                strPath = System.IO.Path.GetTempPath()
+            End If
+            Dim strFile As String = Path.Combine(strPath, strFileName)
             ' Add to temp file registry
             If Not cFileUtils.g_files.Contains(strFile) Then cFileUtils.g_files.Add(strFile)
             ' Done
@@ -323,6 +326,7 @@ Namespace Utilities
             Try
                 If File.Exists(strTempFile) Then File.Delete(strTempFile)
                 cFileUtils.g_files.Remove(strTempFile)
+                ' Console.WriteLine("Purged temp file " & strTempFile)
             Catch ex As Exception
                 ' Hmm
             End Try

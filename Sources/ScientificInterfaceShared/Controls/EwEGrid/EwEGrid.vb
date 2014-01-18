@@ -896,7 +896,13 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub RefreshContent()
-            Me.InitLayout()
+            Me.SuspendLayoutGrid()
+            Try
+                Me.InitLayout()
+            Catch ex As Exception
+
+            End Try
+            Me.ResumeLayoutGrid()
         End Sub
 
         ''' -------------------------------------------------------------------

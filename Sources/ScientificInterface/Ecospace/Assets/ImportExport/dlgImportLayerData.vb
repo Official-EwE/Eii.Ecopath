@@ -29,6 +29,7 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -242,7 +243,7 @@ Namespace Ecospace.Basemap
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
-            Dim null As Object = 0.0!
+            Dim sNoData As Single = 0.0!
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
             Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Update)
@@ -257,26 +258,32 @@ Namespace Ecospace.Basemap
 
                         md = layer.GetVariableMetadata(layer.VarName)
                         If (md IsNot Nothing) Then
-                            null = md.NullValue
+                            sNoData = CSng(md.NullValue)
                         End If
 
                         ' Clear layer
                         For iRow = 1 To bm.InRow
                             For iCol = 1 To bm.InCol
-                                layer.Cell(iRow, iCol) = null
+                                layer.Cell(iRow, iCol) = sNoData
                             Next
                         Next
 
                         ' Load layer
                         For iRow = 1 To bm.InRow
                             For iCol = 1 To bm.InCol
-                                layer.Cell(iRow, iCol) = Me.m_data.Value(iRow, iCol, strField)
+                                Dim val As Object = Me.m_data.Value(iRow, iCol, strField)
+                                Dim sVal As Single = sNoData
+                                If (val IsNot Nothing) Then
+                                    sVal = cStringUtils.ConvertToSingle(CStr(val))
+                                    If (sVal = cCore.NULL_VALUE) then sVal = sNoData
+                                End If
+                                layer.Cell(iRow, iCol) = val
                             Next
                         Next
-
-                        Me.m_uic.Core.onChanged(layer)
-
                     End If
+
+                    layer.Invalidate()
+
                 Next layer
 
             Catch ex As Exception
@@ -285,6 +292,8 @@ Namespace Ecospace.Basemap
 
             Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+
+            Me.m_uic.Core.onChanged(Me.m_uic.Core.EcospaceBasemap)
 
             Return True
 
