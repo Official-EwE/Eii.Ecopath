@@ -117,9 +117,10 @@ Namespace SpatialData
             Dim sValueNone As Single = -9999
             Dim strHeadName As String = ""
             Dim strValue As String = ""
+            Dim strLine As String
 
             Do
-                Dim strLine As String = reader.ReadLine()
+                strLine = reader.ReadLine()
                 If Not String.IsNullOrEmpty(strLine) Then
                     While strLine.IndexOf("  ") > 0
                         strLine = strLine.Replace("  ", " ")
@@ -140,7 +141,8 @@ Namespace SpatialData
                     Case "nodatavalue", "nodata_value" : sValueNone = CSng(strValue)
 
                 End Select
-            Loop Until (strHeadName = "nodatavalue" Or strHeadName = "nodata_value")
+                ' Debug.Assert(Not String.IsNullOrEmpty(strLine), Me.ToString + ".ReadHeader() file contains no data.")
+            Loop Until (strHeadName = "nodatavalue" Or strHeadName = "nodata_value" Or String.IsNullOrEmpty(strLine))
 
             rs = New Raster(Of Single)(nRows, nCols)
             rs.Bounds = cDotSpatialUtils.EcospaceToBounds(New PointF(xllcorner, yllcorner + nRows * sCellSize), New PointF(xllcorner + nCols * sCellSize, yllcorner), sCellSize)
