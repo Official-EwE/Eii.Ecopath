@@ -173,14 +173,13 @@ Namespace SpatialData
                             Dim bndsCheck As IRasterBounds = Nothing
 
                             ' Extract data block for this area
-                            ' DotSpatial ReadBlock has a bug
-                            ' JS: Earlier code that used a rectangular extraction only succeeded if the entir erectangular area was contained withint rs
-                            ' 
                             rstResult = rs.ReadBlock(x, y, Math.Max(dx, 2), Math.Max(dy, 2))
-                            bndsCheck = rstResult.Bounds
 
-                            ' Bounds reversed? (bug in DotSpatial.Data.Raster(T).ReadBlock)
+                            ' JS: Earlier code that used a rectangular extraction only succeeded if the entire rectangular area was contained within rs
+                            ' Check if bounds rows and cols are reversed (this is a bug in DotSpatial.Data.Raster(T).ReadBlock)
+                            bndsCheck = rstResult.Bounds
                             If (bndsCheck.NumRows = dx And bndsCheck.NumColumns = dy) Then
+                                ' #Yes: reconstruct bounds properly which does not affect the raster data
                                 ' Checked, JS 18Jan14
                                 Dim topleft As Coordinate = rs.Bounds.CellCenter_ToProj(y, x)
                                 Dim aff(6) As Double
