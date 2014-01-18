@@ -190,6 +190,7 @@ Namespace Ecospace.Basemap.Layers
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
                 cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data})
+                Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
             Catch ex As Exception
 
             End Try

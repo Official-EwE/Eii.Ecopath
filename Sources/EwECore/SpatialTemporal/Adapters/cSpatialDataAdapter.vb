@@ -506,7 +506,7 @@ Namespace SpatialData
         Private Sub SaveLayerData(bm As cEcospaceBasemap)
 
             ' Wipe, just in case
-            For i As Integer = 0 To Me.m_core.GetCoreCounter(Me.m_coreCounter) ' Me.m_astrLayerBackupFiles.Length - 1
+            For i As Integer = 0 To Me.m_core.GetCoreCounter(Me.m_coreCounter)
                 For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
                     Me.m_astrLayerBackupFiles(i, j) = String.Empty
                 Next
