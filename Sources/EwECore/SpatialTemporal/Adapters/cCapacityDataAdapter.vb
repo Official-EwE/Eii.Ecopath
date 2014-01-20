@@ -80,10 +80,15 @@ Namespace SpatialData
                                                   ByVal dNoData As Double) As Boolean
             Dim breturnVal As Boolean
 
+            Me.m_spaceData.bHasCapacityChanged = False
+
             breturnVal = MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
 
-            'tell Ecospace to update the capacity layers
-            Me.m_spaceData.bHasCapacityChanged = True
+            For iGroup As Integer = 1 To Me.m_spaceData.NGroups
+                If Me.m_spaceData.CapMapFunctions(layer.Index, iGroup) > 0 Then
+                    Me.m_spaceData.bHasCapacityChanged(iGroup) = True
+                End If
+            Next
 
             Return breturnVal
 

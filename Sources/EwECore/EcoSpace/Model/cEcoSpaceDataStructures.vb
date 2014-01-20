@@ -110,11 +110,7 @@ Public Class cEcospaceDataStructures
     ''' <remarks>Indexed Row,Col,Habitat</remarks>
     Public PHabType(,,) As Single
 
-    ''' <summary>
-    ''' Have any of the capacity input layers changed
-    ''' </summary>
-    ''' <remarks>Capacity Inputs, Habitats, Environmental layers, depth....</remarks>
-    Public bHasCapacityChanged As Boolean
+
 
     ''' <summary>The proportion of map cell that is fished by a fleet.</summary>
     ''' <remarks>Sum of habitat areas fished by a fleet. Computed in cEcoSpace.SetEffortParameters() Indexed Row,Col,Gear</remarks>
@@ -687,6 +683,9 @@ Public Class cEcospaceDataStructures
     Public BasePredMort() As Single
 
 
+    Public isGroupHabCapChanged() As Boolean
+
+
 #End Region
 
 #Region "Private Data"
@@ -694,6 +693,7 @@ Public Class cEcospaceDataStructures
     'not much
     Private m_ngroups As Integer
     Private m_publisher As cMessagePublisher
+    Private m_bHasCapacityChanged As Boolean
 
 #End Region
 
@@ -706,6 +706,28 @@ Public Class cEcospaceDataStructures
 #End Region
 
 #Region "Public Properties"
+
+    '''<summary>
+    ''' Have any of the capacity input layers changed
+    ''' </summary>
+    ''' <remarks>Capacity Inputs, Habitats, Environmental layers, depth....</remarks>
+    Public Property bHasCapacityChanged(Optional GroupIndex As Integer = cCore.NULL_VALUE) As Boolean
+        Get
+            Return m_bHasCapacityChanged
+        End Get
+        Set(value As Boolean)
+
+            m_bHasCapacityChanged = value
+            If GroupIndex = cCore.NULL_VALUE Then
+                For igrp As Integer = 1 To Me.NGroups
+                    Me.isGroupHabCapChanged(igrp) = value
+                Next
+            Else
+                Me.isGroupHabCapChanged(GroupIndex) = value
+            End If
+
+        End Set
+    End Property
 
     ''' <summary>Number of Base Groups (Ecopath) </summary>
     ''' <remarks>This was nvar in EwE5</remarks>

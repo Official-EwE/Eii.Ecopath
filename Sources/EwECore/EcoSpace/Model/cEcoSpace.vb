@@ -938,14 +938,21 @@ Public Class cEcoSpace
                 'Set the isFished(fleet,row,col) array
                 Me.EvaluateFishing()
 
+                Dim SPSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
                 'Read any Spatial Temporal data into memory for this timestep
                 Me.SetSpatialTempData(itt)
+                System.Console.WriteLine("SetSpatialTempData() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - SPSt).ToString)
 
                 'do external processing at the start of the time step i.e. Call Plugins or sub models
                 Me.BeginTimeStep(Fgear, its, m_Data.MonthNow, m_Data.YearNow, Btime, RelFopt, m_Data.TimeNow)
 
-                'set the Capacity maps if any of the inputs have changed
-                Me.SetHabCap()
+                If Me.m_Data.bHasCapacityChanged Then
+                    Dim hcSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
+                    'set the Capacity maps if any of the inputs have changed
+                    Me.SetHabCap()
+
+                    System.Console.WriteLine("SetHabCap() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - hcSt).ToString)
+                End If
 
                 'Tell Ecoseed that we are at the start of a timestep
                 Me.EcoseedBeginTimeStep(m_Data.MonthNow, m_Data.YearNow, Btime)
@@ -2446,6 +2453,8 @@ Public Class cEcoSpace
             ReDim PconSplit(m_Data.Nvarsplit)
             ReDim Tstanza(m_Data.Nvarsplit)
             ReDim NstanzaBase(m_Data.Nvarsplit)
+
+            ReDim m_Data.isGroupHabCapChanged(m_Data.NGroups)
 
             'GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
@@ -6583,35 +6592,40 @@ exitline:
 
         For K = 1 To Me.m_Data.NGroups
 
-            'If Me.m_Data.bHasHabitatChanged(K) Then
-            For i = 1 To Me.m_Data.InRow
-                For j = 1 To Me.m_Data.InCol
+            If Me.m_Data.isGroupHabCapChanged(K) Then
+                For i = 1 To Me.m_Data.InRow
+                    For j = 1 To Me.m_Data.InCol
 
-                    If m_Data.Depth(i, j) > 0.0 Then
+                        If m_Data.Depth(i, j) > 0.0 Then
 
-                        'Does this group use 'All Habitats'
-                        If Me.m_Data.PrefHab(K, 0) = 0.0 Then
-                            'No this group has habitat preferrences
-                            For ihab As Integer = 1 To Me.m_Data.NoHabitats
-                                '[capacity of cell] = sumof([habitat preference] * [percentage of habitat in cell])
-                                Me.m_Data.HabCap(i, j, K) += Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
+                            'Does this group use 'All Habitats'
+                            If Me.m_Data.PrefHab(K, 0) = 0.0 Then
+                                'No this group has habitat preferrences
+                                For ihab As Integer = 1 To Me.m_Data.NoHabitats
 
-                            Next ihab
+                                    If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
+                                        '[capacity of cell] = sumof([habitat preference] * [percentage of habitat in cell])
+                                        Me.m_Data.HabCap(i, j, K) += Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
+                                    Else
+                                        Me.m_Data.HabCap(i, j, K) *= Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
+                                    End If
 
-                        Else
+                                Next ihab
 
-                            'Group uses All Habitats at 100% (PrefHab(K, 0) = 1.0)
-                            Me.m_Data.HabCap(i, j, K) = 1.0
+                            Else
 
-                        End If 'Me.m_Data.PrefHab(K, 0) = 0.0
-                    End If 'm_Data.Depth(i, j) > 0.0
+                                'Group uses All Habitats at 100% (PrefHab(K, 0) = 1.0)
+                                Me.m_Data.HabCap(i, j, K) = 1.0
 
-                    'get max for rescaling to 0-1 range
-                    m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
+                            End If 'Me.m_Data.PrefHab(K, 0) = 0.0
+                        End If 'm_Data.Depth(i, j) > 0.0
 
-                Next j
-            Next i
-            ' End If ' Me.m_Data.bHasHabitatChanged(K)
+                        'get max for rescaling to 0-1 range
+                        m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
+
+                    Next j
+                Next i
+            End If ' Me.m_Data.bHasHabitatChanged(K)
         Next K
 
     End Sub
@@ -6635,14 +6649,12 @@ exitline:
             Return
         End If
 
-        'set up array of relative habitat capacities by cell and group
-        Array.Clear(m_Data.HabCap, 0, m_Data.HabCap.Length)
-        Array.Clear(m_Data.TotHabCap, 0, m_Data.TotHabCap.Length)
-        Array.Clear(m_Data.MaxHabCap, 0, m_Data.MaxHabCap.Length)
+        Me.ClearHabCapGroups(Me.m_Data.isGroupHabCapChanged)
 
-        'Me.m_Data.allocate(m_Data.HabCap, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-        'ReDim m_Data.TotHabCap(m_Data.NGroups)
-        'ReDim m_Data.MaxHabCap(m_Data.NGroups)
+        ''set up array of relative habitat capacities by cell and group
+        'Array.Clear(m_Data.HabCap, 0, m_Data.HabCap.Length)
+        'Array.Clear(m_Data.TotHabCap, 0, m_Data.TotHabCap.Length)
+        'Array.Clear(m_Data.MaxHabCap, 0, m_Data.MaxHabCap.Length)
 
         'Sum the capacity input map into HabCap
         Me.setHabCapFromCapInputMap()
@@ -6667,13 +6679,39 @@ exitline:
                     If Me.m_Data.Depth(ir, ic) > 0 Then
                         'Debug.Assert(Me.m_Data.HabCap(ir, ic, ig) > 0, "Habcap = 0")
                         If Me.m_Data.HabCap(ir, ic, ig) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, ig) = MIN_HABCAP
-                    End If
-                Next
-            Next
-        Next
+                    End If 'Me.m_Data.Depth(ir, ic) 
+                Next ic
+            Next ir
+        Next ig
 
         'All the map changes have been computed
         Me.m_Data.bHasCapacityChanged = False
+
+    End Sub
+
+
+    Private Sub ClearHabCapGroups(isCapChanged() As Boolean)
+
+        'Array.Clear(m_Data.HabCap, 0, m_Data.HabCap.Length)
+        'Array.Clear(m_Data.TotHabCap, 0, m_Data.TotHabCap.Length)
+        'Array.Clear(m_Data.MaxHabCap, 0, m_Data.MaxHabCap.Length)
+
+
+        For igrp As Integer = 1 To Me.m_Data.NGroups
+           
+            If isCapChanged(igrp) Then
+                m_Data.TotHabCap(igrp) = 0.0F
+                m_Data.MaxHabCap(igrp) = 0.0F
+                For irow As Integer = 1 To Me.m_Data.InRow
+                    For icol As Integer = 1 To Me.m_Data.InCol
+
+                        Me.m_Data.HabCap(irow, icol, igrp) = 0.0F
+
+                    Next icol
+                Next irow
+            End If
+
+        Next igrp
 
     End Sub
 
@@ -6750,7 +6788,6 @@ exitline:
 
             Debug.Assert(grpArgs.iFirst > 0)
 
-
             'bounds checking 
             If grpArgs.iFirst < 1 Then grpArgs.iFirst = 1
             If grpArgs.iLast > Me.m_Data.NGroups Then grpArgs.iLast = Me.m_Data.NGroups
@@ -6765,83 +6802,86 @@ exitline:
             For k = grpArgs.iFirst To grpArgs.iLast 'Me.m_Data.nvartot
                 'initialize distmin for all cells for group k
 
-                'How many cells can a fish move in a lifetime? We take it to be longevity * dispersal as a distance in km. 
-                'Divide this with the average cell size. For this we could use length or width or ? 
-                'We chose now to use half the cell length as a compromise, rather than cell width, as it up north would mean that
-                'groups could move perhaps down to equator. 
-                'this is really important with the big global half degree model, where it now (Jan 2012) was iterating 360 times
-                'over the 350 x 720 cell maps.
-                Dim MaxNoOfCellsToMoveInALifetime As Integer = CInt(EcoSpaceData.Mvel(k) / EcoPathData.PB(k) / (EcoSpaceData.CellLength / 2))
-                '                                           = Dispersal           * Longevity          /half the cell length
-                Maxiter = Min(MaxNoOfCellsToMoveInALifetime, MaxDist)
-                If Maxiter = 0 Then Maxiter = 1
+                If Me.m_Data.isGroupHabCapChanged(k) Then
 
-                'Longevity for this species:
-                'Dim Longevity As Single = 1 / Me.EcoPathData.PB(k)
-                'Dim Dispersal As Single = Me.EcoSpaceData.Mvel(k)
+                    'How many cells can a fish move in a lifetime? We take it to be longevity * dispersal as a distance in km. 
+                    'Divide this with the average cell size. For this we could use length or width or ? 
+                    'We chose now to use half the cell length as a compromise, rather than cell width, as it up north would mean that
+                    'groups could move perhaps down to equator. 
+                    'this is really important with the big global half degree model, where it now (Jan 2012) was iterating 360 times
+                    'over the 350 x 720 cell maps.
+                    Dim MaxNoOfCellsToMoveInALifetime As Integer = CInt(EcoSpaceData.Mvel(k) / EcoPathData.PB(k) / (EcoSpaceData.CellLength / 2))
+                    '                                           = Dispersal           * Longevity          /half the cell length
+                    Maxiter = Min(MaxNoOfCellsToMoveInALifetime, MaxDist)
+                    If Maxiter = 0 Then Maxiter = 1
 
-                NumBad = 0
-                For i = 0 To Me.m_Data.InRow + 1
-                    For j = 0 To Me.m_Data.InCol + 1
-                        If Me.m_Data.Depth(i, j) > 0 Then
-                            If Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
-                                Me.m_Data.HabCap(i, j, k) = HabCapMin
-                                DistMin(i, j) = MaxDist
-                                NumBad = NumBad + 1
-                            Else
-                                DistMin(i, j) = 0
-                            End If
-                        End If
-                    Next j
-                Next i
+                    'Longevity for this species:
+                    'Dim Longevity As Single = 1 / Me.EcoPathData.PB(k)
+                    'Dim Dispersal As Single = Me.EcoSpaceData.Mvel(k)
 
-                'then do dynamic program iteratation to reset distmin for each cell to minimum distance to cell with habcap>habcapmin
-                'skip iteration if numbad=0
-                If NumBad > 0 Then
-                    For iter = 1 To Maxiter
-                        For i = 1 To Me.m_Data.InRow
-                            For j = 1 To Me.m_Data.InCol
-                                If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
-                                    'check the four faces of this cell to find min distance from it toward good cell
-                                    Dmin = MaxDist
-
-                                    If Me.m_Data.Depth(i - 1, j) > 0 Then
-                                        d = DistMin(i - 1, j) + 1
-                                        If d < Dmin Then Dmin = d
-                                    End If
-
-                                    If Me.m_Data.Depth(i + 1, j) > 0 Then
-                                        d = DistMin(i + 1, j) + 1
-                                        If d < Dmin Then Dmin = d
-                                    End If
-
-                                    If Me.m_Data.Depth(i, j - 1) > 0 Then
-                                        d = DistMin(i, j - 1) + 1
-                                        If d < Dmin Then Dmin = d
-                                    End If
-
-                                    If Me.m_Data.Depth(i, j + 1) > 0 Then
-                                        d = DistMin(i, j + 1) + 1
-                                        If d < Dmin Then Dmin = d
-                                    End If
-                                    DistMin(i, j) = Dmin
+                    NumBad = 0
+                    For i = 0 To Me.m_Data.InRow + 1
+                        For j = 0 To Me.m_Data.InCol + 1
+                            If Me.m_Data.Depth(i, j) > 0 Then
+                                If Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
+                                    Me.m_Data.HabCap(i, j, k) = HabCapMin
+                                    DistMin(i, j) = MaxDist
+                                    NumBad = NumBad + 1
+                                Else
+                                    DistMin(i, j) = 0
                                 End If
-                            Next j
-                        Next i
-                    Next iter
-
-                    'have now set distmin for each bad cell to minimum travel distance from that cell to a cell with habcap>habcapmin
-                    'apply exponential decrease to habcap based on the minimum travel distance
-                    For i = 1 To Me.m_Data.InRow
-                        For j = 1 To Me.m_Data.InCol
-                            If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
-                                Me.m_Data.HabCap(i, j, k) = HabCapMin * Exp(-DistFac * DistMin(i, j))
-                                If Me.m_Data.HabCap(i, j, k) < MIN_HABCAP Then Me.m_Data.HabCap(i, j, k) = MIN_HABCAP
                             End If
                         Next j
                     Next i
 
-                End If 'end of if when numbad=0 and iteration+adjustment can be skipped
+                    'then do dynamic program iteratation to reset distmin for each cell to minimum distance to cell with habcap>habcapmin
+                    'skip iteration if numbad=0
+                    If NumBad > 0 Then
+                        For iter = 1 To Maxiter
+                            For i = 1 To Me.m_Data.InRow
+                                For j = 1 To Me.m_Data.InCol
+                                    If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
+                                        'check the four faces of this cell to find min distance from it toward good cell
+                                        Dmin = MaxDist
+
+                                        If Me.m_Data.Depth(i - 1, j) > 0 Then
+                                            d = DistMin(i - 1, j) + 1
+                                            If d < Dmin Then Dmin = d
+                                        End If
+
+                                        If Me.m_Data.Depth(i + 1, j) > 0 Then
+                                            d = DistMin(i + 1, j) + 1
+                                            If d < Dmin Then Dmin = d
+                                        End If
+
+                                        If Me.m_Data.Depth(i, j - 1) > 0 Then
+                                            d = DistMin(i, j - 1) + 1
+                                            If d < Dmin Then Dmin = d
+                                        End If
+
+                                        If Me.m_Data.Depth(i, j + 1) > 0 Then
+                                            d = DistMin(i, j + 1) + 1
+                                            If d < Dmin Then Dmin = d
+                                        End If
+                                        DistMin(i, j) = Dmin
+                                    End If
+                                Next j
+                            Next i
+                        Next iter
+
+                        'have now set distmin for each bad cell to minimum travel distance from that cell to a cell with habcap>habcapmin
+                        'apply exponential decrease to habcap based on the minimum travel distance
+                        For i = 1 To Me.m_Data.InRow
+                            For j = 1 To Me.m_Data.InCol
+                                If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
+                                    Me.m_Data.HabCap(i, j, k) = HabCapMin * Exp(-DistFac * DistMin(i, j))
+                                    If Me.m_Data.HabCap(i, j, k) < MIN_HABCAP Then Me.m_Data.HabCap(i, j, k) = MIN_HABCAP
+                                End If
+                            Next j
+                        Next i
+
+                    End If 'end of if when numbad=0 and iteration+adjustment can be skipped
+                End If ' Me.m_Data.isGroupHabCapChanged(k)
             Next k
 
         Catch ex As Exception
@@ -6878,22 +6918,24 @@ exitline:
         bReturn = True
         For igrp = 1 To Me.m_Data.NGroups
             'Have the Habitat Capacity input maps changed
-            '  If Me.m_Data.bHabCapInputChanged(igrp) Then
-            'Yes the map has changed
-            For irow = 1 To Me.m_Data.InRow
-                For icol = 1 To Me.m_Data.InCol
+            If Me.m_Data.isGroupHabCapChanged(igrp) Then
+                'Yes the map has changed
+                For irow = 1 To Me.m_Data.InRow
+                    For icol = 1 To Me.m_Data.InCol
 
-                    'Sum the values from the user input capacity map into the HabCap map
-                    If Me.m_Data.Depth(irow, icol) > 0 Then
-                        Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
-                    End If
+                        'Get the base line values from the user input capacity map 
+                        'This is done first so the values are just copied in
+                        'All others capacity inputs act as a multiplier on this base line 
+                        If Me.m_Data.Depth(irow, icol) > 0 Then
+                            Me.m_Data.HabCap(irow, icol, igrp) = Me.m_Data.HabCapInput(irow, icol, igrp)
+                        End If
 
-                    'get max for rescaling to 0-1 range
-                    m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+                        'get max for rescaling to 0-1 range
+                        m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
 
-                Next icol
-            Next irow
-            '  End If
+                    Next icol
+                Next irow
+            End If
         Next igrp
 
         Return bReturn
@@ -6903,6 +6945,7 @@ exitline:
 
     Public Function GetHabCapsLessThen(ByVal LowerLimits() As Single) As List(Of Integer)
         'make sure the habitat capacity has been set
+        Me.m_Data.bHasCapacityChanged = True
         Me.SetHabCap()
 
         'build a list of groups that have a max capacity of less than the lower limit
@@ -6961,45 +7004,55 @@ exitline:
 
         'now normalize the capacity map
         For iGrp = 1 To Me.m_Data.NGroups
-            'rescale and sum up over cells
-            For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
-                    If Me.m_Data.Depth(ir, ic) > 0 Then
-                        'normalized capacity
-                        Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / Me.m_Data.MaxHabCap(iGrp)
-                        'Greater than min Capacity
-                        If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP '0.000001F
-                        'sum of capacity
-                        Me.m_Data.TotHabCap(iGrp) = Me.m_Data.TotHabCap(iGrp) + Me.m_Data.HabCap(ir, ic, iGrp)
-                    End If
+            If Me.m_Data.isGroupHabCapChanged(iGrp) Then
+
+                Me.m_Data.MaxHabCap(iGrp) = 0
+                For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
+                        If Me.m_Data.Depth(ir, ic) > 0 Then
+                            m_Data.MaxHabCap(iGrp) = Math.Max(Me.m_Data.HabCap(ir, ic, iGrp), m_Data.MaxHabCap(iGrp))
+                        End If
+                    Next
                 Next
-            Next
 
-            'set habcaps for cells across grid boundaries
-            Dim bMultiStanza As Boolean = False
-            For ist As Integer = 1 To m_Stanza.Nsplit
+                'rescale and sum up over cells
+                For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
+                        If Me.m_Data.Depth(ir, ic) > 0 Then
+                            'normalized capacity
+                            Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / Me.m_Data.MaxHabCap(iGrp)
+                            'Greater than min Capacity
+                            If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP '0.000001F
+                            'sum of capacity
+                            Me.m_Data.TotHabCap(iGrp) = Me.m_Data.TotHabCap(iGrp) + Me.m_Data.HabCap(ir, ic, iGrp)
+                        End If
+                    Next
+                Next
 
-                For ii As Integer = 1 To m_Stanza.Nstanza(ist)
-                    If iGrp = m_Stanza.EcopathCode(ist, ii) Then
-                        bMultiStanza = True 'stanzas are indexed from zero
-                        Exit For
-                    End If
-                Next ii
-                If bMultiStanza = True Then Exit For
-            Next ist
+                'set habcaps for cells across grid boundaries
+                Dim bMultiStanza As Boolean = False
+                For ist As Integer = 1 To m_Stanza.Nsplit
 
-            If Not bMultiStanza Then
-                For ic = 0 To Me.m_Data.InCol + 1
-                    Me.m_Data.HabCap(0, ic, iGrp) = Me.m_Data.HabCap(1, ic, iGrp)
+                    For ii As Integer = 1 To m_Stanza.Nstanza(ist)
+                        If iGrp = m_Stanza.EcopathCode(ist, ii) Then
+                            bMultiStanza = True 'stanzas are indexed from zero
+                            Exit For
+                        End If
+                    Next ii
+                    If bMultiStanza = True Then Exit For
+                Next ist
 
-                    Me.m_Data.HabCap(Me.m_Data.InRow + 1, ic, iGrp) = Me.m_Data.HabCap(Me.m_Data.InRow, ic, iGrp)
-                Next ic
+                If Not bMultiStanza Then
+                    For ic = 0 To Me.m_Data.InCol + 1
+                        Me.m_Data.HabCap(0, ic, iGrp) = Me.m_Data.HabCap(1, ic, iGrp)
 
-                For ir = 0 To Me.m_Data.InRow + 1
-                    Me.m_Data.HabCap(ir, 0, iGrp) = Me.m_Data.HabCap(ir, 1, iGrp)
-                    Me.m_Data.HabCap(ir, Me.m_Data.InCol + 1, iGrp) = Me.m_Data.HabCap(ir, Me.m_Data.InCol, iGrp)
-                Next ir
+                        Me.m_Data.HabCap(Me.m_Data.InRow + 1, ic, iGrp) = Me.m_Data.HabCap(Me.m_Data.InRow, ic, iGrp)
+                    Next ic
+
+                    For ir = 0 To Me.m_Data.InRow + 1
+                        Me.m_Data.HabCap(ir, 0, iGrp) = Me.m_Data.HabCap(ir, 1, iGrp)
+                        Me.m_Data.HabCap(ir, Me.m_Data.InCol + 1, iGrp) = Me.m_Data.HabCap(ir, Me.m_Data.InCol, iGrp)
+                    Next ir
+                End If
             End If
-
         Next iGrp
     End Sub
 
@@ -7085,22 +7138,25 @@ exitline:
         End If
 
         For Each map As IEnviroInputMap In Me.m_Data.CapMaps
+            'Debug.Assert(map.Layer.Name <> "SST")
             '  If map.bHasChanged Then
             For igrp = 1 To Me.m_Data.NGroups
                 'Does this group contain a response function for this map
-                If map.ResponseIndexForGroup(igrp) > 0 Then
-                    For irow = 1 To Me.m_Data.InRow
-                        For icol = 1 To Me.m_Data.InCol
-                            If Me.m_Data.Depth(irow, icol) > 0 Then
-                                '28-Sept-2011 jb Changed to multiple response with the existing capacity
-                                'this allows the enviromental response function to reduce the capacity
-                                Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
-                                'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
-                                m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
-                            End If
+                If Me.m_Data.isGroupHabCapChanged(igrp) Then
+                    If map.ResponseIndexForGroup(igrp) > 0 Then
+                        For irow = 1 To Me.m_Data.InRow
+                            For icol = 1 To Me.m_Data.InCol
+                                If Me.m_Data.Depth(irow, icol) > 0 Then
+                                    '28-Sept-2011 jb Changed to multiple response with the existing capacity
+                                    'this allows the enviromental response function to reduce the capacity
+                                    Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
+                                    'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
+                                    m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+                                End If
+                            Next
                         Next
-                    Next
-                End If ' map.ResponseIndexForGroup(igrp) > 0
+                    End If ' map.ResponseIndexForGroup(igrp) > 0
+                End If
             Next igrp
             '     End If ' If map.bHasChanged Then
         Next map
@@ -7169,14 +7225,13 @@ exitline:
         If Not Me.m_Data.UseSpinUp Then
             'xxxxx NOT Using the Spin-Up xxxxxx'
             For igrp = 1 To Me.m_Data.NGroups
-                Me.m_Data.BBase(igrp) = Btime(igrp) ' / Me.m_Data.nWaterCells
+                Me.m_Data.BBase(igrp) = Btime(igrp) ' Me.m_EPdata.B(igrp) '
 
                 'Base values from Ecosim and EcoPath
                 Me.m_Data.BaseFishMort(igrp) = Me.m_SimData.Fish1(igrp)
                 Me.m_Data.BaseConsump(igrp) = (Me.m_SimData.Eatenby(igrp) / Me.m_SimData.StartBiomass(igrp))
                 Me.m_Data.BasePredMort(igrp) = (Me.m_SimData.Eatenof(igrp) / Me.m_SimData.StartBiomass(igrp))
                 Me.m_Data.BaseCatch(igrp) = Me.m_EPdata.fCatch(igrp)
-
             Next igrp
         End If
 

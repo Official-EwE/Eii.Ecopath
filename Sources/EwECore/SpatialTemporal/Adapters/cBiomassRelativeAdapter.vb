@@ -116,8 +116,7 @@ Namespace SpatialData
 
 
         Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, ByVal layer As cEcospaceLayer,
-                                                  ByVal iConnection As Integer, _
-                                                  ByVal iTime As Integer, ByVal dt As Date,
+                                                  ByVal iConnection As Integer, ByVal iTime As Integer, ByVal dt As Date,
                                                   ByVal dataExternal As ISpatialRaster, ByVal dNoData As Double) As Boolean
 
             Try
@@ -137,8 +136,6 @@ Namespace SpatialData
             Return False
 
         End Function
-
-
 
 #End Region ' Overrides
 
