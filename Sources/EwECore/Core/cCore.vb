@@ -8750,39 +8750,39 @@ Public Class cCore
         Dim vs As cVariableStatus = Nothing
         Dim limits() As Single
 
-        'set the lower limit based on the trophic level
-        ReDim limits(Me.nGroups)
-        For i As Integer = 1 To Me.nGroups
-            limits(i) = 1.0F - CSng(Math.Log10(Me.m_EcoPathData.TTLX(i)))
-            If limits(i) < 0.1F Then limits(i) = 0.1F
-        Next
+        ''set the lower limit based on the trophic level
+        'ReDim limits(Me.nGroups)
+        'For i As Integer = 1 To Me.nGroups
+        '    limits(i) = 1.0F - CSng(Math.Log10(Me.m_EcoPathData.TTLX(i)))
+        '    If limits(i) < 0.1F Then limits(i) = 0.1F
+        'Next
 
-        'get the groups that are below the limit
-        Dim FailedGroups As List(Of Integer)
-        FailedGroups = Me.m_Ecospace.GetHabCapsLessThen(limits)
+        ''get the groups that are below the limit
+        'Dim FailedGroups As List(Of Integer)
+        'FailedGroups = Me.m_Ecospace.GetHabCapsLessThen(limits)
 
-        'send a message if there are groups that failed the HabCap test
-        If FailedGroups.Count > 0 Then
-            Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP
-            msg = New cFeedbackMessage(strMsg, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
-                                                                eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+        ''send a message if there are groups that failed the HabCap test
+        'If FailedGroups.Count > 0 Then
+        '    Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP
+        '    msg = New cFeedbackMessage(strMsg, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
+        '                                                        eMessageReplyStyle.YES_NO, , eMessageReply.YES)
 
-            For Each igrp In FailedGroups
-                ' Connect variable status to group preferred habitat
-                strMsg = String.Format(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcoPathData.GroupName(igrp), Me.m_EcoSpaceData.MaxHabCap(igrp))
-                vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, _
-                                         eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
+        '    For Each igrp In FailedGroups
+        '        ' Connect variable status to group preferred habitat
+        '        strMsg = String.Format(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcoPathData.GroupName(igrp), Me.m_EcoSpaceData.MaxHabCap(igrp))
+        '        vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, _
+        '                                 eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
 
-                msg.AddVariable(vs)
-            Next
+        '        msg.AddVariable(vs)
+        '    Next
 
-            Me.m_publisher.SendMessage(msg)
+        '    Me.m_publisher.SendMessage(msg)
 
-            If msg.Reply = eMessageReply.NO Then
-                Return False
-            End If
+        '    If msg.Reply = eMessageReply.NO Then
+        '        Return False
+        '    End If
 
-        End If
+        'End If
 
         Return True
 
@@ -9398,6 +9398,7 @@ Public Class cCore
 
             'all the input maps have changed if a new scenario is loaded
             Me.m_EcoSpaceData.bHasCapacityChanged = True
+
 
             'hardwire some capacity maps for debugging
             Me.m_EcoSpaceData.setDebugCapMaps(Me.m_EcoSimData.CapEnvResData)
