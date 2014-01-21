@@ -933,10 +933,10 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=stanza group name</comment>
   </data>
   <data name="ECOSPACE_LOWHABITAT_CAP" xml:space="preserve">
-    <value>The following group(s) have a low maximun habitat capacity. Do you want to continue?</value>
+    <value>WARNING: The following group(s) have a low average habitat capacity. Do you want to continue?</value>
   </data>
   <data name="ECOSPACE_LOWHABITAT_CAP_GROUP" xml:space="preserve">
-    <value>Group '{0}' area is {1}</value>
+    <value>Group '{0}' average capacity per cell {1}%</value>
     <comment>{0}=group name, {1}=area</comment>
   </data>
   <data name="ECOPATH_ESTIMATED" xml:space="preserve">

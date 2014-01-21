@@ -214,7 +214,7 @@ Public Class cEcospaceImportExportXYData
     ''' <summary>Buffer that holds the data to read or write.</summary>
     ''' <remarks>To save on memory we allow the use of value callbacks per field as an alternative to the buffer.</remarks>
     Private m_buffer As New Dictionary(Of String, Object())
-    ''' <summary>All defined data fieldds.</summary>
+    ''' <summary>All defined data fields.</summary>
     Private m_astrFields As String() = Nothing
 
     Private m_bRowColImplicit As Boolean = False

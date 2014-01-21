@@ -2048,6 +2048,9 @@ Public Class cEcoSpace
                     Next j
                 Next i
                 Btime(ip) = Btime(ip) / m_Data.nWaterCells
+                If ip > 0 Then
+                    System.Console.WriteLine(Me.m_EPdata.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.m_EPdata.B(ip)).ToString)
+                End If
             Next ip
 
             Dim isc As Integer, ieco As Integer
@@ -2859,15 +2862,17 @@ Public Class cEcoSpace
         ' Restore RelPP
         Me.m_Data.restoreBaseRelPP()
 
+        'Make sure we know the number of water cells
+        If Me.m_Data.nWaterCells <= 0 Then
+            Me.m_Data.setNWaterCells()
+        End If
+
         'This function is used to scale the relative primary productivity _
         'so that the total primary productivity is the same in Ecospace and Ecopath
-
-        m_Data.nWaterCells = 0
-        For i = 1 To m_Data.InRow
-            For j = 1 To m_Data.InCol
-                If m_Data.Depth(i, j) > 0 Then 'Water
-                    totPP = totPP + m_Data.RelPP(i, j)
-                    m_Data.nWaterCells = m_Data.nWaterCells + 1
+        For i = 1 To Me.m_Data.InRow
+            For j = 1 To Me.m_Data.InCol
+                If Me.m_Data.Depth(i, j) > 0 Then 'Water
+                    totPP = totPP + Me.m_Data.RelPP(i, j)
                 End If
             Next
         Next
@@ -2885,6 +2890,8 @@ Public Class cEcoSpace
         End If
 
     End Function
+
+
 
     ''' <summary>
     ''' Scaling Sailing cost 
@@ -6931,7 +6938,7 @@ exitline:
                         End If
 
                         'get max for rescaling to 0-1 range
-                        m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+                        ' m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
 
                     Next icol
                 Next irow
@@ -6944,14 +6951,23 @@ exitline:
 
 
     Public Function GetHabCapsLessThen(ByVal LowerLimits() As Single) As List(Of Integer)
+
+        Me.UpdateDepthMap()
+
         'make sure the habitat capacity has been set
         Me.m_Data.bHasCapacityChanged = True
         Me.SetHabCap()
 
+        'Makes sure the number of water cells has been set
+        If Me.m_Data.nWaterCells <= 0 Then
+            Me.m_Data.setNWaterCells()
+        End If
+
         'build a list of groups that have a max capacity of less than the lower limit
         Dim failedIndexes As New List(Of Integer)
         For igrp As Integer = 1 To Me.m_Data.NGroups
-            If Me.m_Data.MaxHabCap(igrp) < LowerLimits(igrp) Then
+            Dim CapPerCell As Single = Me.m_Data.TotHabCap(igrp) / Me.m_Data.nWaterCells * 100
+            If CapPerCell < LowerLimits(igrp) Or Single.IsNaN(CapPerCell) Then
                 failedIndexes.Add(igrp)
             End If
         Next
@@ -7006,6 +7022,8 @@ exitline:
         For iGrp = 1 To Me.m_Data.NGroups
             If Me.m_Data.isGroupHabCapChanged(iGrp) Then
 
+                Me.m_Data.TotHabCap(iGrp) = 0.0
+
                 Me.m_Data.MaxHabCap(iGrp) = 0
                 For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
                         If Me.m_Data.Depth(ir, ic) > 0 Then
@@ -7013,7 +7031,7 @@ exitline:
                         End If
                     Next
                 Next
-
+                Dim tempmax As Single = 0
                 'rescale and sum up over cells
                 For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
                         If Me.m_Data.Depth(ir, ic) > 0 Then
@@ -7022,7 +7040,8 @@ exitline:
                             'Greater than min Capacity
                             If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP '0.000001F
                             'sum of capacity
-                            Me.m_Data.TotHabCap(iGrp) = Me.m_Data.TotHabCap(iGrp) + Me.m_Data.HabCap(ir, ic, iGrp)
+                            Me.m_Data.TotHabCap(iGrp) += Me.m_Data.HabCap(ir, ic, iGrp)
+                            tempmax = Math.Max(Me.m_Data.HabCap(ir, ic, iGrp), tempmax)
                         End If
                     Next
                 Next
@@ -7144,6 +7163,7 @@ exitline:
                 'Does this group contain a response function for this map
                 If Me.m_Data.isGroupHabCapChanged(igrp) Then
                     If map.ResponseIndexForGroup(igrp) > 0 Then
+                        'Debug.Assert(igrp <> 3)
                         For irow = 1 To Me.m_Data.InRow
                             For icol = 1 To Me.m_Data.InCol
                                 If Me.m_Data.Depth(irow, icol) > 0 Then
@@ -7151,7 +7171,7 @@ exitline:
                                     'this allows the enviromental response function to reduce the capacity
                                     Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
                                     'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
-                                    m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+                                    ' m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
                                 End If
                             Next
                         Next

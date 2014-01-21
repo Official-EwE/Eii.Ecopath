@@ -8748,41 +8748,48 @@ Public Class cCore
         Dim igrp As Integer
         Dim msg As cFeedbackMessage = Nothing
         Dim vs As cVariableStatus = Nothing
-        Dim limits() As Single
+        Dim limits() As Single = New Single(Me.nGroups) {}
 
-        ''set the lower limit based on the trophic level
-        'ReDim limits(Me.nGroups)
-        'For i As Integer = 1 To Me.nGroups
-        '    limits(i) = 1.0F - CSng(Math.Log10(Me.m_EcoPathData.TTLX(i)))
-        '    If limits(i) < 0.1F Then limits(i) = 0.1F
-        'Next
+        'set the lower limit based on the trophic level
+        For i As Integer = 1 To Me.nGroups
+            '1.0% 
+            limits(i) = 0.1
+        Next
 
-        ''get the groups that are below the limit
-        'Dim FailedGroups As List(Of Integer)
-        'FailedGroups = Me.m_Ecospace.GetHabCapsLessThen(limits)
+        Try
 
-        ''send a message if there are groups that failed the HabCap test
-        'If FailedGroups.Count > 0 Then
-        '    Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP
-        '    msg = New cFeedbackMessage(strMsg, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
-        '                                                        eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+            'get the groups that are below the limit
+            Dim FailedGroups As List(Of Integer)
+            FailedGroups = Me.m_Ecospace.GetHabCapsLessThen(limits)
 
-        '    For Each igrp In FailedGroups
-        '        ' Connect variable status to group preferred habitat
-        '        strMsg = String.Format(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcoPathData.GroupName(igrp), Me.m_EcoSpaceData.MaxHabCap(igrp))
-        '        vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, _
-        '                                 eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
+            'send a message if there are groups that failed the HabCap test
+            If FailedGroups.Count > 0 Then
+                Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP
+                msg = New cFeedbackMessage(strMsg, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
+                                                                    eMessageReplyStyle.YES_NO, , eMessageReply.YES)
 
-        '        msg.AddVariable(vs)
-        '    Next
+                For Each igrp In FailedGroups
+                    Dim avgCap As Single = Me.m_EcoSpaceData.TotHabCap(igrp) / Me.m_EcoSpaceData.nWaterCells * 100
 
-        '    Me.m_publisher.SendMessage(msg)
+                    strMsg = String.Format(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcoPathData.GroupName(igrp), avgCap)
+                    vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, _
+                                             eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
 
-        '    If msg.Reply = eMessageReply.NO Then
-        '        Return False
-        '    End If
+                    msg.AddVariable(vs)
+                Next
 
-        'End If
+                Me.m_publisher.SendMessage(msg)
+
+                If msg.Reply = eMessageReply.NO Then
+                    Return False
+                End If
+
+            End If
+
+        Catch ex As Exception
+
+        End Try
+
 
         Return True
 
