@@ -780,12 +780,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Other\cCoreController.vb" />
-    <Compile Include="Panels\RemarkPanel\frmRemarkPanel.Designer.vb">
-      <DependentUpon>frmRemarkPanel.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Panels\RemarkPanel\frmRemarkPanel.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Panels\StatusPanel\frmStatusPanel.Designer.vb">
       <DependentUpon>frmStatusPanel.vb</DependentUpon>
     </Compile>
@@ -1841,10 +1835,6 @@
       <DependentUpon>ucOptionsPluginDetails.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Panels\RemarkPanel\frmRemarkPanel.resx">
-      <DependentUpon>frmRemarkPanel.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <Resource Include="Resources\Ecopath0.ico" />
     <EmbeddedResource Include="Resources\Ecosim.ico" />
     <EmbeddedResource Include="Resources\Ecospace.ico" />
@@ -1962,6 +1952,8 @@
       <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Panels\RemarkPanel\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>
