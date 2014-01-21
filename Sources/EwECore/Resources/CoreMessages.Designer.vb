@@ -995,7 +995,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The following group(s) have a low maximun habitat capacity. Do you want to continue?.
+        '''  Looks up a localized string similar to WARNING: The following group(s) have a low average habitat capacity. Do you want to continue?.
         '''</summary>
         Friend Shared ReadOnly Property ECOSPACE_LOWHABITAT_CAP() As String
             Get
@@ -1004,7 +1004,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Group &apos;{0}&apos; area is {1}.
+        '''  Looks up a localized string similar to Group &apos;{0}&apos; average capacity per cell {1}%.
         '''</summary>
         Friend Shared ReadOnly Property ECOSPACE_LOWHABITAT_CAP_GROUP() As String
             Get

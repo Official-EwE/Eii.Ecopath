@@ -2106,6 +2106,25 @@ Public Class cEcospaceDataStructures
         Return cellSizeDegrees
     End Function
 
+
+    ''' <summary>
+    ''' Count the number of water cells and sets public property nWaterCells
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function setNWaterCells() As Integer
+        Me.nWaterCells = 0
+        For i As Integer = 1 To Me.InRow
+            For j As Integer = 1 To Me.InCol
+                If Me.Depth(i, j) > 0 Then 'Water
+                    Me.nWaterCells += 1
+                End If
+            Next
+        Next
+
+    End Function
+    
+
 #End Region
 
 End Class
