@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>827, 10</value>
+    <value>697, 10</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -151,7 +151,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>827, 86</value>
+    <value>697, 86</value>
   </data>
   <data name="m_btnDelete.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -181,7 +181,7 @@
     <value>12, 57</value>
   </data>
   <data name="m_gridDatasets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 193</value>
+    <value>679, 293</value>
   </data>
   <data name="m_gridDatasets.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -190,7 +190,7 @@
     <value>m_gridDatasets</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridDefineDatasets, EwE6, Version=6.5.10161.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.10188.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Parent" xml:space="preserve">
     <value>$this</value>
@@ -205,7 +205,7 @@
     <value>12, 12</value>
   </data>
   <data name="m_cmbNewDS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 21</value>
+    <value>679, 21</value>
   </data>
   <data name="m_cmbNewDS.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -226,7 +226,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>827, 227</value>
+    <value>697, 327</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -256,7 +256,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConfigure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>827, 57</value>
+    <value>697, 57</value>
   </data>
   <data name="m_btnConfigure.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -279,31 +279,34 @@
   <data name="&gt;&gt;m_btnConfigure.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="CEwEHeaderLabel1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdr.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdr.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 36</value>
   </data>
-  <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 18</value>
+  <data name="m_hdr.Size" type="System.Drawing.Size, System.Drawing">
+    <value>679, 18</value>
   </data>
-  <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdr.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="CEwEHeaderLabel1.Text" xml:space="preserve">
+  <data name="m_hdr.Text" xml:space="preserve">
     <value>Existing datasets</value>
   </data>
-  <data name="CEwEHeaderLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdr.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel1</value>
+  <data name="&gt;&gt;m_hdr.Name" xml:space="preserve">
+    <value>m_hdr</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10161.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10188.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdr.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -313,7 +316,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>914, 262</value>
+    <value>784, 362</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -322,9 +325,9 @@
     <value>Define external datasets</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgDefineDatasets</value>
+    <value>dlgDefineExternalSpatialData</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10161.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10188.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

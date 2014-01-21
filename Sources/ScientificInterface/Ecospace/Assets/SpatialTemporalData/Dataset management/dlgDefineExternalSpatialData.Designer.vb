@@ -33,7 +33,7 @@ Namespace Ecospace.Controls
             Me.m_cmbNewDS = New System.Windows.Forms.ComboBox()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_btnConfigure = New System.Windows.Forms.Button()
-            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdr = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.SuspendLayout()
             '
             'm_btnAdd
@@ -99,21 +99,21 @@ Namespace Ecospace.Controls
             Me.m_btnConfigure.Name = "m_btnConfigure"
             Me.m_btnConfigure.UseVisualStyleBackColor = True
             '
-            'CEwEHeaderLabel1
+            'm_hdr
             '
-            Me.CEwEHeaderLabel1.CanCollapseParent = False
-            Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
-            Me.CEwEHeaderLabel1.IsCollapsed = False
-            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
-            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+            resources.ApplyResources(Me.m_hdr, "m_hdr")
+            Me.m_hdr.CanCollapseParent = False
+            Me.m_hdr.CollapsedParentHeight = 0
+            Me.m_hdr.IsCollapsed = False
+            Me.m_hdr.Name = "m_hdr"
             '
-            'dlgDefineDatasets
+            'dlgDefineExternalSpatialData
             '
             Me.AcceptButton = Me.m_btnOK
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ControlBox = False
-            Me.Controls.Add(Me.CEwEHeaderLabel1)
+            Me.Controls.Add(Me.m_hdr)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_cmbNewDS)
             Me.Controls.Add(Me.m_gridDatasets)
@@ -122,7 +122,7 @@ Namespace Ecospace.Controls
             Me.Controls.Add(Me.m_btnAdd)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "dlgDefineDatasets"
+            Me.Name = "dlgDefineExternalSpatialData"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.ResumeLayout(False)
@@ -134,7 +134,7 @@ Namespace Ecospace.Controls
         Private WithEvents m_cmbNewDS As System.Windows.Forms.ComboBox
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_btnConfigure As System.Windows.Forms.Button
-        Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_hdr As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     End Class
 
 End Namespace
