@@ -50,10 +50,14 @@ Namespace Ecospace
         ''' <summary>Enumerated type defining the columns in this grid.</summary>
         Private Enum eColumnTypes As Integer
             LayerIndex = 0
+            LayerIsActive
             LayerName
             LayerDescription
             LayerStatus
         End Enum
+
+
+        Private m_isInInit As Boolean
 
 #Region " Helper classes "
 
@@ -82,6 +86,8 @@ Namespace Ecospace
             ''' <summary>The status of a Layer in the interface.</summary>
             Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
+            Private m_isActive As Boolean
+
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Constructor, initializes a new instanze of this class.
@@ -96,6 +102,7 @@ Namespace Ecospace
                 Me.m_strName = Layer.Name
                 Me.m_strDescription = Layer.Description
                 Me.m_status = eItemStatusTypes.Original
+                Me.m_isActive = True
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -109,6 +116,7 @@ Namespace Ecospace
                 Me.m_strName = strName
                 Me.m_strDescription = strDescription
                 Me.m_status = eItemStatusTypes.Added
+                Me.m_isActive = True
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -149,6 +157,15 @@ Namespace Ecospace
                 Get
                     Return Me.m_Layer
                 End Get
+            End Property
+
+            Public Property isActive() As Boolean
+                Get
+                    Return Me.m_isActive
+                End Get
+                Set(value As Boolean)
+                    Me.m_isActive = value
+                End Set
             End Property
 
             ''' -------------------------------------------------------------------
@@ -268,6 +285,7 @@ Namespace Ecospace
 
             ' Layer index cell
             Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
+            Me(0, eColumnTypes.LayerIsActive) = New EwEColumnHeaderCell("Active")
             ' Layer name cell, editable this time
             Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
             Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
@@ -291,13 +309,21 @@ Namespace Ecospace
 
             Dim Layer As cEcospaceLayerDriver = Nothing
             Dim li As cLayerInfo = Nothing
+            Dim CapManager As cMapResponseInteractionManager = Me.Core.CapacityMapInteractionManager
+            Dim EnviroMap As IEnviroInputMap
 
             ' Populate local administration from a snapshot of the live data
 
             ' Make snapshot of Layer configuration
             For iLayer As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
                 Layer = Me.Core.EcospaceBasemap.LayerDriver(iLayer)
+                'Find the IEnviroInputMap that this layer is attached to
+                EnviroMap = CapManager.Map(Layer)
+                'For debugging just make sure
+                Debug.Assert(EnviroMap IsNot Nothing, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer " + Layer.Name)
+
                 li = New cLayerInfo(Layer)
+                li.isActive = EnviroMap.isLayerActive
                 Me.m_alLayers.Add(li)
             Next
 
@@ -310,6 +336,7 @@ Namespace Ecospace
             MyBase.FinishStyle()
 
             Me.Columns(eColumnTypes.LayerIndex).Width = 40
+            Me.Columns(eColumnTypes.LayerIsActive).Width = 80
             Me.Columns(eColumnTypes.LayerName).Width = 120
             Me.Columns(eColumnTypes.LayerDescription).Width = 278
 
@@ -330,6 +357,8 @@ Namespace Ecospace
             Dim vm As VisualModels.Common = Nothing
             Dim ewec As EwECell = Nothing
 
+            Me.m_isInInit = True
+
             ' Create missing rows
             For iRow As Integer = Me.Rows.Count To Me.m_alLayers.Count
                 Me.AddRow()
@@ -337,6 +366,9 @@ Namespace Ecospace
                 ewec = New EwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.LayerIndex) = ewec
+
+                Me(iRow, eColumnTypes.LayerIsActive) = New Cells.Real.CheckBox(False)
+                Me(iRow, eColumnTypes.LayerIsActive).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iRow, eColumnTypes.LayerName) = New Cells.Real.Cell("", GetType(String))
                 Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
@@ -366,6 +398,8 @@ Namespace Ecospace
                 UpdateRow(iRow)
             Next iRow
 
+            Me.m_isInInit = False
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -393,6 +427,9 @@ Namespace Ecospace
 
             pos = New Position(iRow, eColumnTypes.LayerIndex)
             aCells(eColumnTypes.LayerIndex).SetValue(pos, CInt(iRow))
+
+            pos = New Position(iRow, eColumnTypes.LayerIsActive)
+            aCells(eColumnTypes.LayerIsActive).SetValue(pos, CBool(li.isActive))
 
             pos = New Position(iRow, eColumnTypes.LayerName)
             aCells(eColumnTypes.LayerName).SetValue(pos, CStr(li.Name))
@@ -469,6 +506,27 @@ Namespace Ecospace
             Return True
 
         End Function
+
+        Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+            If Not Me.m_isInInit Then
+
+                Dim li As cLayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), cLayerInfo)
+                Select Case DirectCast(p.Column, eColumnTypes)
+
+                    Case eColumnTypes.LayerIsActive
+                        li.isActive = CBool(cell.GetValue(p))
+
+                End Select
+
+                Return True
+
+            End If
+
+            Return MyBase.OnCellValueChanged(p, cell)
+
+        End Function
+
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -811,6 +869,31 @@ Namespace Ecospace
                     End If
                 Next
             End If
+
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Blunt dumbness 
+            'Update all the layers and update the CapacityMapInteractionManager map with the isActive flag
+            Dim CapManager As cMapResponseInteractionManager = Me.Core.CapacityMapInteractionManager
+            Dim EnviroMap As IEnviroInputMap
+            For iLayer = 0 To Me.m_alLayers.Count - 1
+                li = Me.m_alLayers(iLayer)
+                Try
+                    'Ok this is a little dicey
+                    'Lookup the Enviro map based on the layer name
+                    EnviroMap = CapManager.Map(li.Name)
+                    If Not li.IsNew() Then
+                        'For debugging make sure we got the correct layer
+                        Debug.Assert(EnviroMap.Layer.getID = li.Layer.getID, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer.")
+                    End If
+                    Debug.Assert(EnviroMap IsNot Nothing, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer.")
+                    EnviroMap.isLayerActive = li.isActive
+
+                Catch ex As Exception
+                    cLog.Write(ex, Me.ToString + " Failed to find CapacityMapInteractionManager.Map() for Enviromental Driver Layer.")
+                End Try
+            Next iLayer
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             Return bSuccess
 

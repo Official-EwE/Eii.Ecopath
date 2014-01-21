@@ -7157,28 +7157,28 @@ exitline:
         End If
 
         For Each map As IEnviroInputMap In Me.m_Data.CapMaps
-            'Debug.Assert(map.Layer.Name <> "SST")
-            '  If map.bHasChanged Then
-            For igrp = 1 To Me.m_Data.NGroups
-                'Does this group contain a response function for this map
-                If Me.m_Data.isGroupHabCapChanged(igrp) Then
-                    If map.ResponseIndexForGroup(igrp) > 0 Then
-                        'Debug.Assert(igrp <> 3)
-                        For irow = 1 To Me.m_Data.InRow
-                            For icol = 1 To Me.m_Data.InCol
-                                If Me.m_Data.Depth(irow, icol) > 0 Then
-                                    '28-Sept-2011 jb Changed to multiple response with the existing capacity
-                                    'this allows the enviromental response function to reduce the capacity
-                                    Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
-                                    'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
-                                    ' m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
-                                End If
-                            Next
-                        Next
-                    End If ' map.ResponseIndexForGroup(igrp) > 0
-                End If
-            Next igrp
-            '     End If ' If map.bHasChanged Then
+
+            'Is this layer active
+            If map.isLayerActive Then
+                For igrp = 1 To Me.m_Data.NGroups
+                    'Has the habitat for this group changed
+                    If Me.m_Data.isGroupHabCapChanged(igrp) Then
+                        'Does this group contain a response function for this map
+                        If map.ResponseIndexForGroup(igrp) > 0 Then
+                            'Yep Layer is Active
+                            'Habitat for group has change
+                            'There response function is configured
+                            For irow = 1 To Me.m_Data.InRow
+                                For icol = 1 To Me.m_Data.InCol
+                                    If Me.m_Data.Depth(irow, icol) > 0 Then
+                                        Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
+                                    End If
+                                Next icol
+                            Next irow
+                        End If ' map.ResponseIndexForGroup(igrp) > 0
+                    End If ' Me.m_Data.isGroupHabCapChanged(igrp)
+                Next igrp
+            End If ' map.isLayerActive
         Next map
 
         bReturn = True

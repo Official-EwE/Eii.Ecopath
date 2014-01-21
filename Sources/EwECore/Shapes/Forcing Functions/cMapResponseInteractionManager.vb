@@ -74,6 +74,34 @@ Public Class cMapResponseInteractionManager
 
     End Property
 
+    Public ReadOnly Property Map(ByVal LayerName As String) As IEnviroInputMap
+        Get
+
+            For Each envMap As cEnviroInputMap In Me.m_maps
+                If String.Compare(envMap.Layer.Name, LayerName) = 0 Then
+                    Return envMap
+                End If
+            Next
+
+            Return Nothing
+        End Get
+
+    End Property
+
+    Public ReadOnly Property Map(ByVal layer As cEcospaceLayer) As IEnviroInputMap
+        Get
+
+            For Each envMap As cEnviroInputMap In Me.m_maps
+                If envMap.Layer.getID = layer.getID Then
+                    Return envMap
+                End If
+            Next
+
+            Return Nothing
+        End Get
+
+    End Property
+
 #End Region ' Public Methods and Properties
 
 #Region " Friend interfaces "

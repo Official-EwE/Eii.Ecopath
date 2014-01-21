@@ -8752,7 +8752,7 @@ Public Class cCore
 
         'set the lower limit based on the trophic level
         For i As Integer = 1 To Me.nGroups
-            '1.0% 
+            '0.1% average capacity
             limits(i) = 0.1
         Next
 
