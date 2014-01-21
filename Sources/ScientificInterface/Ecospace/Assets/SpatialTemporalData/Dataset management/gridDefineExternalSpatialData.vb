@@ -72,7 +72,6 @@ Namespace Ecospace.Controls
             Name
             DateFrom
             DateTo
-            Variable
             Description
             SpatOverlap
             TempOverlap
@@ -140,7 +139,6 @@ Namespace Ecospace.Controls
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
             Me(0, eColumnTypes.DateFrom) = New EwEColumnHeaderCell(SharedResources.HEADER_FROM)
             Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
-            Me(0, eColumnTypes.Variable) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUE)
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
             Me(0, eColumnTypes.SpatOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
             Me(0, eColumnTypes.TempOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_TEMPORAL)
@@ -166,6 +164,8 @@ Namespace Ecospace.Controls
             Dim cell As EwECell = Nothing
             Dim vnLast As eVarNameFlags = eVarNameFlags.Area
             Dim hgc As EwEHierarchyGridCell = Nothing
+            Dim vizParent As New cVisualizerEwEParentRowHeader()
+            Dim vizKiddo As New cVisualizerEwEChildRowHeader()
 
             ' Get sorted list of datasets
             Dim datasets As New List(Of ISpatialDataSet)
@@ -185,9 +185,10 @@ Namespace Ecospace.Controls
                     iRow = Me.AddRow()
                     hgc = New EwEHierarchyGridCell()
                     Me(iRow, 0) = hgc
-                    Me(iRow, 1) = New EwERowHeaderCell(vnLast)
+                    Me(iRow, 1) = New EwEColumnHeaderCell(vnLast)
+                    Me(iRow, 1).VisualModel = vizParent
                     For iCol As Integer = 2 To Me.ColumnsCount - 1
-                        Me(iRow, iCol) = New EwERowHeaderCell()
+                        Me(iRow, iCol) = New EwEColumnHeaderCell()
                     Next
 
                 End If
@@ -195,7 +196,7 @@ Namespace Ecospace.Controls
                 iRow = Me.AddRow()
                 Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iDS))
                 Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.Variable) = New EwECell(vfmt.GetDescriptor(ds.VarName), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Name).VisualModel = vizKiddo
                 Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.DateFrom) = New EwECell(ds.TimeStart.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.DateTo) = New EwECell(ds.TimeEnd.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
