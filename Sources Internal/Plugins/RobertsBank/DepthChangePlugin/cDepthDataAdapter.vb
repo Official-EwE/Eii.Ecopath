@@ -37,7 +37,6 @@ Imports EwECore.SpatialData
 Public Class cDepthDataAdapter
     Inherits cSpatialDataAdapter
 
-
 #Region "Private variables"
 
     Private m_orgDepth(,) As Integer
@@ -158,17 +157,8 @@ Public Class cDepthDataAdapter
         End Try
     End Sub
 
-    ''' -------------------------------------------------------------------
-    ''' <inheritdocs cref="cSpatialScalarDataAdapter.Adapt"/>
-    ''' <remarks>
-    ''' </remarks>
-    ''' -------------------------------------------------------------------
-    Protected Overrides Function Adapt(ByVal bm As cEcospaceBasemap, _
-                                              ByVal layer As cEcospaceLayer, _
-                                              ByVal iTime As Integer, _
-                                              ByVal dt As Date, _
-                                              ByVal dataExternal As ISpatialRaster, _
-                                              ByVal dNullValue As Double) As Boolean
+    Protected Overrides Function Adapt(bm As EwECore.cEcospaceBasemap, layer As EwECore.cEcospaceLayer, iConnection As Integer, _
+                                       iTime As Integer, dt As Date, dataExternal As EwEUtils.SpatialData.ISpatialRaster, dNoData As Double) As Boolean
         Dim bReturn As Boolean = False
         Try
 
@@ -177,7 +167,7 @@ Public Class cDepthDataAdapter
             'This can only be used to convert water cells to land. Not the other direction
             'If a cell has been converted to water it needs habitats, PP and capacity set
             'This has no way of knowing what these data should be
-            If Me.setDepthCells(bm, layer, iTime, dt, dataExternal, dNullValue) Then
+            If Me.setDepthCells(bm, layer, iConnection, iTime, dt, dataExternal, dNoData) Then
                 'Test set the capacity of adjacent cells 
                 'Me.AdjustCapacity()
                 Me.InitSpatialChanges()
@@ -190,38 +180,13 @@ Public Class cDepthDataAdapter
         End Try
 
         Return bReturn
-
     End Function
 
-    Private Sub AdjustCapacity()
-
-        'JUST PROOF OF CONCEPT
-        'This needs to have a distance weighting scheme
-        For irow As Integer = 1 To Me.SpaceData.InRow
-            For icol As Integer = 1 To Me.SpaceData.InCol
-                If Me.m_bChanged(irow, icol) Then
-                    'set capacity for all the groups
-                    For igrp As Integer = 1 To Me.SpaceData.NGroups
-                        'Me.SpaceData.HabCap() contains boundry cells 
-                        'so don't worry about being out of bounds
-                        For iirow As Integer = irow - 1 To irow + 1
-                            For iicol As Integer = icol - 1 To icol + 1
-                                'set the Habitat Capacity on the input map
-                                'this will get transfered to the HabCap by the Capacity Model
-                                Me.SpaceData.HabCapInput(iirow, iicol, igrp) = 0 'Me.SpaceData.HabCapInput(iirow, iicol, igrp) * 0.5F
-                            Next iicol
-                        Next iirow
-                    Next igrp
-                End If
-
-            Next icol
-        Next irow
-
-    End Sub
-
+   
 
     Private Function setDepthCells(ByVal bm As cEcospaceBasemap, _
                                               ByVal layer As cEcospaceLayer, _
+                                              iConnection As Integer, _
                                               ByVal iTime As Integer, _
                                               ByVal dt As Date, _
                                               ByVal dataExternal As ISpatialRaster, _
@@ -253,7 +218,7 @@ Public Class cDepthDataAdapter
                     If CellValue <> CDbl(layerDepth.Cell(iRow, iCol)) Then
                         'Depth has changed
                         'Set the new depth
-                        If Me.SetCell(layer, iRow, iCol, CellValue) Then
+                        If Me.SetCell(layer, iConnection, iRow, iCol, CellValue) Then
                             'Keep track of which cells have changed
                             Me.m_bChanged(iRow, iCol) = True
                         Else
@@ -300,14 +265,37 @@ Public Class cDepthDataAdapter
             '
             Me.InitSpatialChanges()
 
-
-
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
 
     End Sub
 
+    Private Sub AdjustCapacity()
+
+        'JUST PROOF OF CONCEPT
+        'This needs to have a distance weighting scheme
+        For irow As Integer = 1 To Me.SpaceData.InRow
+            For icol As Integer = 1 To Me.SpaceData.InCol
+                If Me.m_bChanged(irow, icol) Then
+                    'set capacity for all the groups
+                    For igrp As Integer = 1 To Me.SpaceData.NGroups
+                        'Me.SpaceData.HabCap() contains boundry cells 
+                        'so don't worry about being out of bounds
+                        For iirow As Integer = irow - 1 To irow + 1
+                            For iicol As Integer = icol - 1 To icol + 1
+                                'set the Habitat Capacity on the input map
+                                'this will get transfered to the HabCap by the Capacity Model
+                                Me.SpaceData.HabCapInput(iirow, iicol, igrp) = 0 'Me.SpaceData.HabCapInput(iirow, iicol, igrp) * 0.5F
+                            Next iicol
+                        Next iirow
+                    Next igrp
+                End If
+
+            Next icol
+        Next irow
+
+    End Sub
 
 
 #End Region ' Overrides

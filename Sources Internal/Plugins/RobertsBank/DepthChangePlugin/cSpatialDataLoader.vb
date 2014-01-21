@@ -150,7 +150,7 @@ Public Class cSpatialDataLoader
 
             If Not DataSet Is Nothing Then
                 'Added the DataSet to the DepthAdapter
-                Me.m_DepthAdapter.Dataset(0) = DataSet
+                Me.m_DepthAdapter.Dataset(0, 0) = DataSet
                 bReturn = True
             End If
 
@@ -181,7 +181,7 @@ Public Class cSpatialDataLoader
                 'Ok managed to create the DepthAdapter and the get the Converter from the core
                 'Now hook them up
                 'And add the DepthAdapter to the core spatial data manager          
-                Me.m_DepthAdapter.Converter(0) = Converter
+                Me.m_DepthAdapter.Converter(0, 0) = Converter
                 Plugin.Core.SpatialDataConnectionManager.AddAdapter(Me.m_DepthAdapter)
                 cSpatialDataLoader.m_isAdapterLoaded = True
             End If
