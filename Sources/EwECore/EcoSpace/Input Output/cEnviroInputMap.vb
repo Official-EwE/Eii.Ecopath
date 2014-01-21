@@ -46,6 +46,8 @@ Public Class cEnviroInputMap
     Private m_manager As cMapResponseInteractionManager
     Private m_iLayerIndex As Integer
 
+    Private m_isLayerActive As Boolean
+
 #End Region ' Private vars
 
 #Region "Construction Initialization"
@@ -56,6 +58,7 @@ Public Class cEnviroInputMap
         ' Init to the data in the manager
         Me.Init(Me.m_manager.MediationData, Me.m_manager.SpaceData)
         m_iLayerIndex = cCore.NULL_VALUE
+        Me.m_isLayerActive = True
         Me.Update()
     End Sub
 
@@ -303,4 +306,12 @@ Public Class cEnviroInputMap
 
 #End Region
 
+    Public Property isLayerActive As Boolean Implements IEnviroInputMap.isLayerActive
+        Get
+            Return Me.m_isLayerActive
+        End Get
+        Set(value As Boolean)
+            Me.m_isLayerActive = value
+        End Set
+    End Property
 End Class

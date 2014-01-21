@@ -105,4 +105,8 @@ Public Interface IEnviroInputMap
     ''' </summary>
     ReadOnly Property Layer As cEcospaceLayer
 
+
+    Property isLayerActive As Boolean
+
+
 End Interface
