@@ -873,7 +873,7 @@ Namespace Ecospace
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Blunt dumbness 
-            'Update all the layers and update the CapacityMapInteractionManager map with the isActive flag
+            'Update all isActive flag on all the layers
             Dim CapManager As cMapResponseInteractionManager = Me.Core.CapacityMapInteractionManager
             Dim EnviroMap As IEnviroInputMap
             For iLayer = 0 To Me.m_alLayers.Count - 1
