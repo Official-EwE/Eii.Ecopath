@@ -9514,7 +9514,7 @@ Namespace DataSources
                 dt = writer.GetDataTable()
 
                 For Each adt As cSpatialDataAdapter In spatialDS.DataAdapters
-                    For i As Integer = 0 To adt.MaxLength - 1
+                    For i As Integer = 1 To adt.MaxLength
                         For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
                             cfg = spatialDS.Item(adt.VarName, i, j)
                             If (cfg IsNot Nothing) Then

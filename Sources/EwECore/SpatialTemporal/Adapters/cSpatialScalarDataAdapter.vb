@@ -271,7 +271,7 @@ Namespace SpatialData
 
             MyBase.Initialize()
 
-            Dim iNumItems As Integer = Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))
+            Dim iNumItems As Integer = Math.Max(1, Me.m_core.GetCoreCounter(Me.m_coreCounter))
 
             ReDim Me.m_scales(iNumItems, cSpatialDataStructures.cMAX_CONN)
             ReDim Me.m_scaleType(iNumItems, cSpatialDataStructures.cMAX_CONN)

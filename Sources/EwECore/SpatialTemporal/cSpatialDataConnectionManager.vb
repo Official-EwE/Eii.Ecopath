@@ -87,7 +87,7 @@ Namespace SpatialData
             Dim t As Type = Nothing
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
-                For i As Integer = 0 To adt.MaxLength
+                For i As Integer = 1 To adt.MaxLength
                     For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
 
                         ds = Nothing
@@ -140,7 +140,7 @@ Namespace SpatialData
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
-                For i As Integer = 0 To adt.MaxLength
+                For i As Integer = 1 To adt.MaxLength
                     For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
 
                         ds = adt.Dataset(i, j)
