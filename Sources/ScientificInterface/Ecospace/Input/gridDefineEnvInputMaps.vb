@@ -285,7 +285,7 @@ Namespace Ecospace
 
             ' Layer index cell
             Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
-            Me(0, eColumnTypes.LayerIsActive) = New EwEColumnHeaderCell("Active")
+            Me(0, eColumnTypes.LayerIsActive) = New EwEColumnHeaderCell(SharedResources.HEADER_ENVINPUT_ACTIVE)
             ' Layer name cell, editable this time
             Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
             Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
@@ -336,9 +336,9 @@ Namespace Ecospace
             MyBase.FinishStyle()
 
             Me.Columns(eColumnTypes.LayerIndex).Width = 40
-            Me.Columns(eColumnTypes.LayerIsActive).Width = 80
+            Me.Columns(eColumnTypes.LayerIsActive).Width = 50
             Me.Columns(eColumnTypes.LayerName).Width = 120
-            Me.Columns(eColumnTypes.LayerDescription).Width = 278
+            Me.Columns(eColumnTypes.LayerDescription).Width = 200
 
         End Sub
 

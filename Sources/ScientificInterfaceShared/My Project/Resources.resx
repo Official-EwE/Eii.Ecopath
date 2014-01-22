@@ -3050,4 +3050,7 @@
   <data name="ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING" xml:space="preserve">
     <value>Biomass relative forcing</value>
   </data>
+  <data name="HEADER_ENVINPUT_ACTIVE" xml:space="preserve">
+    <value>Acitve</value>
+  </data>
 </root>
