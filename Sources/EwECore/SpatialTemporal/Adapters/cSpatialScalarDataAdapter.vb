@@ -175,7 +175,7 @@ Namespace SpatialData
 
 
             ' Early bail-out
-            If Not Me.IsConnected(iLayerIndex) Then Return result
+            If Not Me.IsConnected(iLayerIndex, iConnection) Then Return result
 
             Dim ds As ISpatialDataSet = Me.Dataset(iLayerIndex, iConnection)
             Dim cv As ISpatialDataConverter = Me.Converter(iLayerIndex, iConnection)

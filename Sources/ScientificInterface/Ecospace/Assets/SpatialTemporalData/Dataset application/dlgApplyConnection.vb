@@ -250,7 +250,7 @@ Namespace Ecospace.Controls
         Private Sub OnAddDataset(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAdd.Click, m_lbSourceDatasets.DoubleClick
 
-            Me.m_bInUpdate = True
+            'Me.m_bInUpdate = True
 
             Try
                 Dim ds As ISpatialDataSet = Me.m_lbSourceDatasets.SelectedDataset
@@ -258,12 +258,16 @@ Namespace Ecospace.Controls
                     Dim conn As New cConnectionInfo(ds, Nothing)
                     Me.m_lconnections.Add(conn)
                     Me.m_gridConnections.Add(conn.Dataset, True)
+
+                    Me.updateConfig()
                 End If
             Catch ex As Exception
 
             End Try
 
-            Me.m_bInUpdate = False
+
+
+            'Me.m_bInUpdate = False
 
         End Sub
 
@@ -277,6 +281,8 @@ Namespace Ecospace.Controls
                 If (conn IsNot Nothing) Then
                     Me.m_gridConnections.Remove(Me.m_gridConnections.SelectedDataset)
                     Me.m_lconnections.Remove(conn)
+
+                    Me.updateConfig()
                 End If
             Catch ex As Exception
 
@@ -515,33 +521,18 @@ Namespace Ecospace.Controls
 
         Private Sub OnOK(sender As Object, e As System.EventArgs) Handles m_btnOK.Click
 
-            If Me.m_bIsChanged Then
+            ' If Me.m_bIsChanged Then
 
-                Dim conn As cConnectionInfo = Nothing
+            ' Apply configuration changes
+            Me.updateConfig()
 
-                ' Apply configuration changes
-                For i As Integer = 0 To cSpatialDataStructures.cMAX_CONN - 1
-                    conn = Nothing
-                    If (i < Me.m_lconnections.Count) Then
-                        conn = m_lconnections(i)
-                        Me.m_adt.Dataset(Me.m_layer.Index, i + 1) = conn.Dataset
-                        Me.m_adt.Converter(Me.m_layer.Index, i + 1) = conn.Converter
-                        If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
-                            With DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
-                                .DataScale(Me.m_layer.Index, i + 1) = conn.Scale
-                                .DataScaleType(Me.m_layer.Index, i + 1) = conn.ScaleType
-                            End With
-                        End If
-                    Else
-                        Me.m_adt.Dataset(Me.m_layer.Index, i + 1) = Nothing
-                    End If
-                Next
+            'Tell the core
+            Me.m_man.Update()
+            Me.m_uic.Core.onChanged(Me.m_uic.Core.EcospaceBasemap)
+            Me.m_bIsChanged = False
+            ' End If
 
-                Me.m_man.Update()
-                Me.m_uic.Core.onChanged(Me.m_uic.Core.EcospaceBasemap)
-                Me.m_bIsChanged = False
-            End If
-
+            'Close the dialogue
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
 
@@ -560,6 +551,32 @@ Namespace Ecospace.Controls
 #End Region ' Control events
 
 #Region " Internals "
+
+
+        Private Sub updateConfig()
+
+            Dim conn As cConnectionInfo = Nothing
+
+            ' Apply configuration changes
+            For i As Integer = 0 To cSpatialDataStructures.cMAX_CONN - 1
+                conn = Nothing
+                If (i < Me.m_lconnections.Count) Then
+                    conn = m_lconnections(i)
+                    Me.m_adt.Dataset(Me.m_layer.Index, i + 1) = conn.Dataset
+                    Me.m_adt.Converter(Me.m_layer.Index, i + 1) = conn.Converter
+                    If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
+                        With DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
+                            .DataScale(Me.m_layer.Index, i + 1) = conn.Scale
+                            .DataScaleType(Me.m_layer.Index, i + 1) = conn.ScaleType
+                        End With
+                    End If
+                Else
+                    Me.m_adt.Dataset(Me.m_layer.Index, i + 1) = Nothing
+                End If
+            Next
+
+
+        End Sub
 
         Private Sub FillSourceDatasetBox()
 
