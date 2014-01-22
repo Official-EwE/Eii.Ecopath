@@ -97,11 +97,13 @@ Namespace SpatialData
                                                   ByVal dNullValue As Double) As Boolean
 
             Try
-                ' Set PP scale value first time data is encountered for a run
-                ' Is PP scale factor (still) clear?
+                'If this is the first time step?
+                'Get the base line PP Scalar
                 If (Me.m_sPreservedScale = cCore.NULL_VALUE) And (Me.m_spaceData.PPScale <> cCore.NULL_VALUE) Then
                     Me.m_sPreservedScale = Me.m_spaceData.PPScale
-                    'Me.m_spaceData.PPScale = 1.0F
+                    'In Ecospace PP is scaled as  [PP = RelPP(i, j) / PPScale] 
+                    'PPScale is the mean over the base line map [Total PP] / [n water cells]
+                    'DataScale() in the spatial temporal is calculate as [n water cells]/[total]
                     Me.m_spaceData.PPScale = (1 / Me.DataScale(layer.Index, iConnection))
                 End If
             Catch ex As Exception
