@@ -97,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cDepthDataAdapter.vb" />
-    <Compile Include="cRelativePathDataSetPlugin.vb" />
     <Compile Include="cSpatialDataLoader.vb" />
     <Compile Include="DepthChangePluginPoint.vb" />
     <Compile Include="frmDepthChangeForm.Designer.vb">
