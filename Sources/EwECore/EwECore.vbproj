@@ -156,6 +156,8 @@
     <Compile Include="DataSource\Implementations\cEIIDataSource.vb" />
     <Compile Include="DataSource\Implementations\cEIIXMLDataSource.vb" />
     <Compile Include="EcoPath\cEcopathResultWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassForcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassRelativeForcing.vb" />

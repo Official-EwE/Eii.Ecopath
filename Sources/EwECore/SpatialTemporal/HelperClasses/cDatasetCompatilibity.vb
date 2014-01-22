@@ -340,6 +340,15 @@ Namespace SpatialData
             End Get
         End Property
 
+        Public ReadOnly Property PercentIndexed As Integer
+            Get
+                If (Me.m_iNumTimeOverlap > 0) Then
+                    Return CInt(Math.Ceiling(100 * Me.m_iNumIndexed / Me.m_iNumTimeOverlap))
+                End If
+                Return 0
+            End Get
+        End Property
+
 #End Region ' Public access
 
 #Region " Internals "

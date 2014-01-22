@@ -85,6 +85,7 @@ Namespace Ecospace
                 MyBase.UIContext = value
                 Me.m_toolbox.UIContext = value
                 Me.m_map.UIContext = value
+                Me.m_gridApply.UIContext = value
 
                 ' Config
                 If (value IsNot Nothing) Then
@@ -100,7 +101,7 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             ' Connect to edit command
-            Dim cmd As cEcospaceExternalDataCommand = DirectCast(Me.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME), cEcospaceExternalDataCommand)
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditSpatialDatasets")
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnConnections)
 
             ' Fill filter combo
@@ -180,7 +181,8 @@ Namespace Ecospace
                 End If
             End If
 
-            Me.m_toolbox.VarName = vn
+            Me.m_gridApply.Filter = vn
+            Me.m_toolbox.Filter = vn
 
         End Sub
 

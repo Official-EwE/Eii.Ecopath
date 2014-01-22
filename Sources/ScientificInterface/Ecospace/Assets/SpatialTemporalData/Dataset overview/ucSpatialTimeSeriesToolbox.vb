@@ -112,7 +112,7 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
-        Public Property VarName As eVarNameFlags
+        Public Property Filter As eVarNameFlags
             Get
                 Return Me.m_varname
             End Get

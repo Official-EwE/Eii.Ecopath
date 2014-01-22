@@ -174,6 +174,15 @@
     <Compile Include="Ecospace\Assets\ImportExport\gridImportLayerMappings.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\cSpatialDatasetListbox.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyConnection.Designer.vb">
+      <DependentUpon>dlgApplyConnection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyConnection.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgDefineExternalSpatialData.Designer.vb">
       <DependentUpon>dlgDefineExternalSpatialData.vb</DependentUpon>
     </Compile>
@@ -183,20 +192,11 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\gridDefineExternalSpatialData.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyExternalSpatialData.Designer.vb">
-      <DependentUpon>dlgApplyExternalSpatialData.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyExternalSpatialData.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\gridDatasets.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\gridApplyDatasets.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\ucConfigAdapter.Designer.vb">
-      <DependentUpon>ucConfigAdapter.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\ucConfigAdapter.vb">
-      <SubType>UserControl</SubType>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\gridApplyExternalSpatialData.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">
       <DependentUpon>dlgDefineRegions.vb</DependentUpon>
@@ -848,17 +848,14 @@
     <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgExportLayerData.resx">
       <DependentUpon>dlgExportLayerData.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyExternalSpatialData.resx">
-      <DependentUpon>dlgApplyExternalSpatialData.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyConnection.resx">
+      <DependentUpon>dlgApplyConnection.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\frmExtermalSpatialData.resx">
       <DependentUpon>frmExtermalSpatialData.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgDefineExternalSpatialData.resx">
       <DependentUpon>dlgDefineExternalSpatialData.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset application\ucConfigAdapter.resx">
-      <DependentUpon>ucConfigAdapter.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesMap.resx">
       <DependentUpon>ucSpatialTimeSeriesMap.vb</DependentUpon>

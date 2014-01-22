@@ -128,6 +128,7 @@
     <Compile Include="Commands\cCommandHandler.vb" />
     <Compile Include="Commands\cControlHandler.vb" />
     <Compile Include="Core\IConfigurable.vb" />
+    <Compile Include="Core\IEcospaceImportExport.vb" />
     <Compile Include="Core\IFeedbackMessage.vb" />
     <Compile Include="Core\IEcospaceResultsWriter.vb" />
     <Compile Include="Core\IExternalDataSource.vb" />
