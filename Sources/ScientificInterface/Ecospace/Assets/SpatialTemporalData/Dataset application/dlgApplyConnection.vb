@@ -466,10 +466,15 @@ Namespace Ecospace.Controls
                 Debug.Assert(Me.m_bIsScaling)
                 Debug.Assert(Me.SelectedConnectionIndex <> -1)
 
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'HACK This needs to be sorted out still 
+                'For now just plough ahead even if the dataset is indexing
+
                 ' Wait for indexing to stop
-                While Me.SelectedDataset.IsIndexing()
-                    Me.m_manSets.IndexDataset = Nothing
-                End While
+                'While Me.SelectedDataset.IsIndexing()
+                '    Me.m_manSets.IndexDataset = Nothing
+                'End While
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 Me.UpdateControls()
                 Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
