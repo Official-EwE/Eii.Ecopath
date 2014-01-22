@@ -41,7 +41,7 @@ Namespace SpatialData
                 adt.Initialize()
                 Dim iLen As Integer = adt.MaxLength
                 Dim arr(iLen, cMAX_CONN) As cAdapaterConfiguration
-                For i As Integer = 0 To iLen - 1
+                For i As Integer = 0 To iLen
                     For j As Integer = 1 To cMAX_CONN
                         arr(i, j) = New cAdapaterConfiguration()
                     Next j
@@ -62,7 +62,7 @@ Namespace SpatialData
             Get
                 If Me.m_data.ContainsKey(varname) Then
                     Dim adata As cAdapaterConfiguration(,) = Me.m_data(varname)
-                    If (iIndex >= 0 And iIndex < adata.Length) And (iIndex >= 0 And iIndex <= cMAX_CONN) Then
+                    If (iIndex >= 0 And iIndex < adata.Length) And (iConnection >= 0 And iConnection <= cMAX_CONN) Then
                         Return adata(iIndex, iConnection)
                     End If
                 End If
