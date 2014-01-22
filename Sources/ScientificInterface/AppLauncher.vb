@@ -183,7 +183,6 @@ Public Class AppLauncher
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
     Private WithEvents m_cmdExportEcosimResultsToCSV As cEcosimSaveDataCommand = Nothing
     Private WithEvents m_cmdPrint As cCommand = Nothing
-    Private WithEvents m_cmdEcospaceDataConnections As cEcospaceExternalDataCommand = Nothing
     Private WithEvents m_cmdEcosimTrimShapes As cCommand = Nothing
 
 #End Region ' Commands
@@ -509,8 +508,8 @@ Public Class AppLauncher
         Me.m_cmdDefineSpatialDatasets = New cCommand(cmdh, "EditSpatialDatasets")
         Me.m_cmdDefineSpatialDatasets.AddControl(Me.m_tsmiEcospaceDatasets)
 
-        Me.m_cmdEcospaceDataConnections = New cEcospaceExternalDataCommand(cmdh)
-        Me.m_cmdEcospaceDataConnections.AddControl(Me.m_tsmiEcospaceDataConnections)
+        'Me.m_cmdEcospaceDataConnections = New cEcospaceExternalDataCommand(cmdh)
+        'Me.m_cmdEcospaceDataConnections.AddControl(Me.m_tsmiEcospaceDataConnections)
 
         Me.m_cmdImportLayerData = New cImportLayerCommand(cmdh)
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
@@ -3770,20 +3769,24 @@ Public Class AppLauncher
     ''' Command handler; invokes the Ecospace define input dialog.
     ''' </summary>
     Private Sub OnInvokeDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnInvoke
-        Dim dlg As New dlgDefineEnvInputMaps(Me.UIContext)
-        dlg.ShowDialog(Me)
+        Try
+            Dim dlg As New dlgDefineEnvInputMaps(Me.UIContext)
+            dlg.ShowDialog(Me)
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     ''' <summary>
     ''' Command handler
     ''' </summary>
-    Private Sub OnInvokeDefineEcospaceDatasets(cmd As cCommand) Handles m_cmdDefineSpatialDatasets.OnInvoke
+    Private Sub OnDefineEcospaceDatasets(cmd As cCommand) Handles m_cmdDefineSpatialDatasets.OnInvoke
         Try
             Dim dlg As New Ecospace.Controls.dlgDefineExternalSpatialData()
             dlg.UIContext = Me.UIContext
-            dlg.ShowDialog()
+            dlg.ShowDialog(Me)
         Catch ex As Exception
-
+            cLog.Write(ex, "AppLauncher:OnDefineEcospaceDatasets")
         End Try
     End Sub
 
@@ -3799,28 +3802,15 @@ Public Class AppLauncher
         End Try
     End Sub
 
-    ''' <summary>
-    ''' Command handler
-    ''' </summary>
-    Private Sub OnUpdateEcospaceDataConnections(ByVal cmd As cCommand) Handles m_cmdEcospaceDataConnections.OnUpdate
-        ' Disable development-time functionality
-        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
-        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
-    End Sub
-
-    Private Sub OnInvokeEcospaceDataConnections(ByVal cmd As cCommand) Handles m_cmdEcospaceDataConnections.OnInvoke
-        ' Provide debug access to ecospace connections 
-        Dim dlg As New dlgExternalData(Me.UIContext, Me.m_cmdEcospaceDataConnections.Layer)
-        dlg.ShowDialog(Me)
-    End Sub
-
     Private Sub OnImportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnInvoke
-
-        Dim dlg As New dlgImportLayerData(Me.UIContext)
-        dlg.Layers = Me.m_cmdImportLayerData.Layers
-        dlg.ShowDialog(Me)
-
+        Try
+            Dim dlg As New dlgImportLayerData(Me.UIContext)
+            dlg.Layers = Me.m_cmdImportLayerData.Layers
+            dlg.ShowDialog(Me)
+        Catch ex As Exception
+            cLog.Write(ex, "AppLauncher:OnImportLayerData")
+        End Try
     End Sub
 
     ''' <summary>
@@ -3837,11 +3827,13 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnExportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportLayerData.OnInvoke
-
-        Dim dlg As New dlgExportLayerData(Me.UIContext)
-        dlg.Layers = Me.m_cmdExportLayerData.Layers
-        dlg.ShowDialog(Me)
-
+        Try
+            Dim dlg As New dlgExportLayerData(Me.UIContext)
+            dlg.Layers = Me.m_cmdExportLayerData.Layers
+            dlg.ShowDialog(Me)
+        Catch ex As Exception
+            cLog.Write(ex, "AppLauncher:OnExportLayerData")
+        End Try
     End Sub
 
     ''' <summary>

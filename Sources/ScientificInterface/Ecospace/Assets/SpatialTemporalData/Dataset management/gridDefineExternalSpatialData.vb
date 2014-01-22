@@ -122,7 +122,7 @@ Namespace Ecospace.Controls
                     Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
                     Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 #If DEBUG Then
-                    Me.m_mhEcospace.Name = "gridDatasets"
+                    Me.m_mhEcospace.Name = "gridDefineExternalSpatialData"
 #End If
                 End If
 
@@ -157,7 +157,6 @@ Namespace Ecospace.Controls
             If (Me.UIContext Is Nothing) Then Return
             If (Me.m_manSets Is Nothing) Then Return
 
-            Dim vfmt As New cVarnameTypeFormatter()
             Dim ds As ISpatialDataSet = Nothing
             Dim iRow As Integer = 0
             Dim iDS As Integer = 1
@@ -166,6 +165,8 @@ Namespace Ecospace.Controls
             Dim hgc As EwEHierarchyGridCell = Nothing
             Dim vizParent As New cVisualizerEwEParentRowHeader()
             Dim vizKiddo As New cVisualizerEwEChildRowHeader()
+            Dim strVar As String = ""
+            Dim fmt As New cVarnameTypeFormatter()
 
             ' Get sorted list of datasets
             Dim datasets As New List(Of ISpatialDataSet)
@@ -173,7 +174,6 @@ Namespace Ecospace.Controls
             datasets.Sort(New cDatasetSorter)
 
             ' Add dataset rows
-            ' ToDo: add hierarchical row headers by varname!
 
             For i As Integer = 0 To datasets.Count - 1
                 ds = datasets(i)
@@ -185,7 +185,14 @@ Namespace Ecospace.Controls
                     iRow = Me.AddRow()
                     hgc = New EwEHierarchyGridCell()
                     Me(iRow, 0) = hgc
-                    Me(iRow, 1) = New EwEColumnHeaderCell(vnLast)
+
+                    If (vnLast = eVarNameFlags.NotSet) Then
+                        strVar = "(Generic)"
+                    Else
+                        strVar = fmt.GetDescriptor(vnLast)
+                    End If
+
+                    Me(iRow, 1) = New EwEColumnHeaderCell(strVar)
                     Me(iRow, 1).VisualModel = vizParent
                     For iCol As Integer = 2 To Me.ColumnsCount - 1
                         Me(iRow, iCol) = New EwEColumnHeaderCell()
@@ -295,9 +302,8 @@ Namespace Ecospace.Controls
                 ' May have been disposed already
                 If (msg.DataType = EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection) Then
                     Me.UpdateDatasetRow(Me.m_manSets.IndexDataset)
-                Else
-                    MyBase.OnCoreMessage(msg)
                 End If
+                MyBase.OnCoreMessage(msg)
 
             Catch ex As Exception
 

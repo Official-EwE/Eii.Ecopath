@@ -27,6 +27,13 @@ Imports EwECore
 
 #End Region ' Imports
 
+' ToDo: implement create and delete in different tabs
+' ToDo: add check on delete if dataset is applied in this model. Could also be applied to other models, have no idea
+' ToDo: add support for switching dataset files
+' ToDo: add import / export (package / unpackage) features
+' ToDo: add indexing overview
+' ToDo: add cache overview
+
 Namespace Ecospace.Controls
 
     ''' <summary>
