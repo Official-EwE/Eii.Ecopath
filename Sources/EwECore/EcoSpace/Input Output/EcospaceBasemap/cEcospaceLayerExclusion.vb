@@ -30,7 +30,7 @@ Public Class cEcospaceLayerExclusion
     Inherits cEcospaceLayerBoolean
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_EXCLUSION, _
+        MyBase.New(theCore, 1, manager, My.Resources.CoreDefaults.CORE_DEFAULT_EXCLUSION, _
                    EwEUtils.Core.eVarNameFlags.LayerExclusion, cCore.NULL_VALUE)
         Me.m_dataType = eDataTypes.EcospaceLayerExclusion
     End Sub
