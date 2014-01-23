@@ -115,13 +115,16 @@ Namespace Ecospace.Controls
         Protected Overrides Sub UpdateControls()
             MyBase.UpdateControls()
 
-            Dim bHasTemp As Boolean = (Me.m_cmbNewDS.SelectedItem IsNot Nothing)
-            Dim bHasDS As Boolean = (Me.m_gridDatasets.SelectedDataset IsNot Nothing)
+            Dim ds As ISpatialDataSet = Me.m_gridDatasets.SelectedDataset
 
-            Me.m_cmbNewDS.Enabled = bHasTemp
+            Dim bHasTemplate As Boolean = (Me.m_cmbNewDS.SelectedItem IsNot Nothing)
+            Dim bHasDS As Boolean = (ds IsNot Nothing)
+            Dim bCanConfig As Boolean = (TypeOf ds Is IConfigurable)
+
+            Me.m_cmbNewDS.Enabled = bHasTemplate
 
             Me.m_btnDelete.Enabled = bHasDS
-            Me.m_btnConfigure.Enabled = bHasDS
+            Me.m_btnConfigure.Enabled = bHasDS And bCanConfig
 
         End Sub
 
