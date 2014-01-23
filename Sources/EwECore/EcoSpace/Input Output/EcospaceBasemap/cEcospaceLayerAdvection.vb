@@ -43,7 +43,7 @@ Public Class cEcospaceLayerAdvection
 
         MyBase.New(theCore, cCore.NULL_VALUE, manager, _
                    My.Resources.CoreDefaults.CORE_DEFAULT_ADVECTION, _
-                   eVarNameFlags.LayerAdvection, cCore.NULL_VALUE)
+                   eVarNameFlags.LayerAdvection, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerAdvection
 
     End Sub

@@ -31,7 +31,7 @@ Public Class cEcospaceLayerMPA
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_MPA, _
-                   EwEUtils.Core.eVarNameFlags.LayerMPA, cCore.NULL_VALUE)
+                   EwEUtils.Core.eVarNameFlags.LayerMPA, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerMPA
     End Sub
 

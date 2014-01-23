@@ -101,7 +101,7 @@ Namespace SpatialData
 
                 'Debug.Assert(sValueAtT = 0)
                 'External data is the pattern of biomass distribution relative to the Ecospace base biomass
-                'B = [B at t=zero] * [B external] * [1/mean B external at t=zero]
+                'B = [B base at t=zero] * [B external] * [1/mean B external at t=zero]
                 layer.Cell(iRow, iCol) = CDbl(Me.m_baseLayers(layer.Index)(iRow, iCol)) * sValueAtT * scalar
 
                 Return True
