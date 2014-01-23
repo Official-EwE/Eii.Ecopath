@@ -48,7 +48,7 @@ Public Class cEcospaceLayerWind
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal theCore As cCore, _
                    ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, My.Resources.CoreDefaults.CORE_DEFAULT_WIND, eVarNameFlags.LayerWind, cCore.NULL_VALUE)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, My.Resources.CoreDefaults.CORE_DEFAULT_WIND, eVarNameFlags.LayerWind, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerWind
     End Sub
 
