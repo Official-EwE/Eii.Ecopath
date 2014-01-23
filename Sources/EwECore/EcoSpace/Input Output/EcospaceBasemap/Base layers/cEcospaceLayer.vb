@@ -55,6 +55,8 @@ Public MustInherit Class cEcospaceLayer
     Private m_data As Object = Nothing
     ''' <summary>Type of the data.</summary>
     Private m_typeValue As Type = Nothing
+    ''' <summary>User description of layer.</summary>
+    Protected m_description As String
 
 #End Region ' Private variables
 
@@ -223,6 +225,15 @@ Public MustInherit Class cEcospaceLayer
         End Get
     End Property
 
+    Public Overridable Property Description() As String
+        Get
+            Return Me.m_description
+        End Get
+        Set(value As String)
+            Me.m_description = value
+        End Set
+    End Property
+
     ' This function does not require a GetVariable/SetVariable counterpart
     Public MustOverride Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
 
@@ -285,6 +296,7 @@ Public MustInherit Class cEcospaceLayer
     Public Overrides Function ToString() As String
         Return "cEcospaceLayer " & Me.m_vnData.ToString() ' Cannot show any variables here - may cause deadlocks
     End Function
+
 
 End Class
 
