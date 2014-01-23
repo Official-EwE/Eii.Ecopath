@@ -79,9 +79,9 @@ Namespace SpatialData
                 Me.StoreExtent(rs.Extent)
                 Me.m_raster = New cSpatialRaster(rs)
 
-                Me.LogMessage("Loaded ASCII " & Me.m_raster.ToString & " from " & strFileName, eStatusFlags.OK)
+                Me.LogMessage("Loaded ASCII " + Me.m_raster.ToString + cStringUtils.vbTab + strFileName, eStatusFlags.OK)
             Else
-                Me.LogMessage("Failed to find ASCII raster " & strFileName, eStatusFlags.ErrorEncountered)
+                Me.LogMessage("Failed to find ASCII raster" + cStringUtils.vbTab + strFileName, eStatusFlags.ErrorEncountered)
             End If
             Return (Me.m_raster IsNot Nothing)
 
