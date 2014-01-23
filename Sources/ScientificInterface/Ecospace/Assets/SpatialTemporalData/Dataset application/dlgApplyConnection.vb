@@ -577,6 +577,7 @@ Namespace Ecospace.Controls
                     End If
                 Else
                     Me.m_adt.Dataset(Me.m_layer.Index, i + 1) = Nothing
+                    Me.m_adt.Converter(Me.m_layer.Index, i + 1) = Nothing
                 End If
             Next
 
