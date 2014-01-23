@@ -338,7 +338,9 @@ Namespace SpatialData
                                 Else
                                     Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) external data missing for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
                                     cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
+                                    Me.m_core.SpatialOperationLog.LogOperation(strMsg, eStatusFlags.ErrorEncountered)
                                     bSuccess = False
+
                                 End If
 
                                 ' Unlock dataset

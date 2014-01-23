@@ -170,6 +170,7 @@ Namespace SpatialData
 
             Dim sb As New StringBuilder()
             Dim strPath As String = ""
+            Dim sep As String = cStringUtils.vbTab
 
             If (Not Me.m_bLogStarted) Then
 
@@ -184,10 +185,10 @@ Namespace SpatialData
                 Me.m_strLogFileName = Path.Combine(strPath, "SpatialOperations.txt")
 
                 If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(Me.m_strLogFileName), True) Then
-                    cLog.Write("cSpatialOperationsLog: unable to create output directory " & Me.m_strLogFileName)
+                    cLog.Write("cSpatialOperationsLog: unable to create output directory " + Me.m_strLogFileName)
                     Return
                 Else
-                    cLog.Write("cSpatialOperationsLog: saving to " & Me.m_strLogFileName, eVerboseLevel.Detailed)
+                    cLog.Write("cSpatialOperationsLog: saving to " + Me.m_strLogFileName, eVerboseLevel.Detailed)
                 End If
 
                 If Me.m_core.SaveWithFileHeader Then
@@ -197,13 +198,14 @@ Namespace SpatialData
 
             End If
 
-            sb.AppendLine("Message, " & cStringUtils.ToCSVField(Me.m_msgCurrent.Message))
+            'Double seperators to keep the columns aligned when loading the data in Excel
+            sb.AppendLine("Message" + sep + sep + Me.m_msgCurrent.Message)
             For Each vs As cVariableStatus In Me.m_msgCurrent.Variables
-                sb.AppendLine("Status, " & cStringUtils.ToCSVField(vs.Status.ToString & ", " & vs.Message))
+                sb.AppendLine("Status" + sep + vs.Status.ToString + sep + vs.Message)
             Next
 
             If Not String.IsNullOrWhiteSpace(Me.m_msgCurrent.Hyperlink) Then
-                sb.AppendLine("Output, " & cStringUtils.ToCSVField(Me.m_msgCurrent.Hyperlink))
+                sb.AppendLine("Output" + sep + sep + Me.m_msgCurrent.Hyperlink)
             End If
 
             cLog.WriteTextToFile(Me.m_strLogFileName, sb, Me.m_bLogStarted)

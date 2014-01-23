@@ -92,7 +92,7 @@ Public Class cEcospaceLayerDriver
 
 #Region " Properties by dot (.) operator "
 
-    Public Property Description() As String
+    Public Overrides Property Description() As String
         Get
             Return CStr(GetVariable(eVarNameFlags.Description))
         End Get

@@ -76,7 +76,7 @@ Namespace Ecospace
         Private Class cLayerInfo
 
             ''' <summary><see cref="cEcospaceBasemap">cEcospaceBasemap</see> associated with this Layer, if any.</summary>
-            Private m_Layer As cEcospaceLayerDriver = Nothing
+            Private m_Layer As cEcospaceLayer = Nothing
             ''' <summary>Name for this Layer.</summary>
             Private m_strName As String = ""
             ''' <summary>Description for this Layer.</summary>
@@ -88,6 +88,8 @@ Namespace Ecospace
 
             Private m_isActive As Boolean
 
+            Private m_canRemove As Boolean
+
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Constructor, initializes a new instanze of this class.
@@ -96,13 +98,18 @@ Namespace Ecospace
             ''' initialize this instance from. If set, this instance represents a
             ''' Layer currently active in the EwE model.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal Layer As cEcospaceLayerDriver)
+            Public Sub New(ByVal Layer As cEcospaceLayer, Optional LayerRemovable As Boolean = True)
                 Debug.Assert(Layer IsNot Nothing)
                 Me.m_Layer = Layer
                 Me.m_strName = Layer.Name
-                Me.m_strDescription = Layer.Description
+                If TypeOf Layer Is cEcospaceLayerDriver Then
+                    Me.m_strDescription = DirectCast(Layer, cEcospaceLayerDriver).Description
+                Else
+                    Me.m_strDescription = Layer.ToString
+                End If
                 Me.m_status = eItemStatusTypes.Original
                 Me.m_isActive = True
+                Me.m_canRemove = LayerRemovable
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -153,7 +160,7 @@ Namespace Ecospace
             ''' with this administrative unit.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Layer() As cEcospaceLayerDriver
+            Public ReadOnly Property Layer() As cEcospaceLayer
                 Get
                     Return Me.m_Layer
                 End Get
@@ -205,7 +212,7 @@ Namespace Ecospace
             Public Function IsChanged() As Boolean
                 If (Me.IsNew()) Then Return False
                 Return (Me.m_Layer.Name <> Me.m_strName) Or _
-                       (Me.Layer.Description <> Me.m_strDescription)
+                       (Me.Layer.Description <> Me.m_strDescription) 
             End Function
 
             ''' -------------------------------------------------------------------
@@ -245,6 +252,12 @@ Namespace Ecospace
                         End If
                     End If
                 End Set
+            End Property
+
+            Public ReadOnly Property CanRemove As Boolean
+                Get
+                    Return m_canRemove
+                End Get
             End Property
 
         End Class
@@ -313,6 +326,12 @@ Namespace Ecospace
             Dim EnviroMap As IEnviroInputMap
 
             ' Populate local administration from a snapshot of the live data
+
+            Dim depth As cEcospaceLayer = Me.Core.EcospaceBasemap.LayerDepth
+            'Depth layer cannot be deleted
+            li = New cLayerInfo(depth, LayerRemovable:=False)
+            li.isActive = CapManager.Map(depth).isLayerActive
+            Me.m_alLayers.Add(li)
 
             ' Make snapshot of Layer configuration
             For iLayer As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
@@ -562,6 +581,10 @@ Namespace Ecospace
             If iLayer < 0 Then Return
 
             li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
+
+            'This is the Depth row it canot be deleted
+            If Not li.CanRemove Then Return
+
             ' Toggle 'flagged for deletion' flag
             li.FlaggedForDeletion = Not li.FlaggedForDeletion
 
@@ -835,13 +858,15 @@ Namespace Ecospace
                 cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 ' Test whether new Layers were loaded correctly 
-                Debug.Assert(Me.m_alLayers.Count = Me.Core.nEnvironmentalDriverLayers, ">> Internal panic: Dialog and core out of sync on Layers")
+                Debug.Assert(Me.m_alLayers.Count - 1 = Me.Core.nEnvironmentalDriverLayers, ">> Internal panic: Dialog and core out of sync on Layers")
             End If
 
             ' Update core objects
             If (bLayersChanged) Then
                 ' For each local layer admin unit
-                For iLayer = 0 To Me.m_alLayers.Count - 1
+                'Skip the Depth layer in the first index
+                'It's not in the EcospaceBasemap.LayerDriver(iLayTest) list
+                For iLayer = 1 To Me.m_alLayers.Count - 1
                     ' Get local admin unit
                     li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
                     ' Has it changed?
@@ -874,6 +899,7 @@ Namespace Ecospace
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Blunt dumbness 
             'Update all isActive flag on all the layers
+            'Newly added and removed layers will be update in the CapManager by the core
             Dim CapManager As cMapResponseInteractionManager = Me.Core.CapacityMapInteractionManager
             Dim EnviroMap As IEnviroInputMap
             For iLayer = 0 To Me.m_alLayers.Count - 1
@@ -881,8 +907,10 @@ Namespace Ecospace
                 Try
                     'Ok this is a little dicey
                     'Lookup the Enviro map based on the layer name
+                    'Can't use the layer because m_alLayers has not re-load new layers
                     EnviroMap = CapManager.Map(li.Name)
                     If Not li.IsNew() Then
+                        'you could fish the layer out of the EcospaceBasemap.LayerDriver(li)
                         'For debugging make sure we got the correct layer
                         Debug.Assert(EnviroMap.Layer.getID = li.Layer.getID, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer.")
                     End If
