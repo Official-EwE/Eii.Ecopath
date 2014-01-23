@@ -9520,7 +9520,9 @@ Namespace DataSources
                             If (cfg IsNot Nothing) Then
                                 Dim strDataset As String = cfg.DatasetGUID
                                 Dim strConverter As String = cfg.Converter
-                                If Not String.IsNullOrWhiteSpace(strDataset) Or Not String.IsNullOrWhiteSpace(strConverter) Then
+                                'Don't need a converter to be a valid config
+                                'If Not String.IsNullOrWhiteSpace(strDataset) Or Not String.IsNullOrWhiteSpace(strConverter) Then
+                                If Not String.IsNullOrWhiteSpace(strDataset) Then
                                     drow = writer.NewRow()
                                     drow("ScenarioID") = iScenarioID
                                     drow("VarName") = cin.GetVarName(adt.VarName)
