@@ -107,7 +107,7 @@ Namespace Ecospace
 
         Private Sub UpdateControls()
             Me.m_btnAddHabitat.Enabled = Me.m_grid.CanAddRow()
-            Me.m_btnRemoveHabitat.Enabled = Me.m_grid.IsLayerRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
+            Me.m_btnRemoveHabitat.Enabled = Me.m_grid.IsLayerRow() And (Not Me.m_grid.IsFlaggedForDeletionRow()) And (Me.m_grid.CanRemoveRow())
             Me.m_btnKeep.Enabled = Me.m_grid.IsLayerRow() And Me.m_grid.IsFlaggedForDeletionRow()
         End Sub
 

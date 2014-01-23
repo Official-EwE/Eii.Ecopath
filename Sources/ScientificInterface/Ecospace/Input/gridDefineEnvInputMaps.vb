@@ -88,7 +88,7 @@ Namespace Ecospace
 
             Private m_isActive As Boolean
 
-            Private m_canRemove As Boolean
+            Private m_isEditable As Boolean
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -109,7 +109,7 @@ Namespace Ecospace
                 End If
                 Me.m_status = eItemStatusTypes.Original
                 Me.m_isActive = True
-                Me.m_canRemove = LayerRemovable
+                Me.m_isEditable = LayerRemovable
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -212,7 +212,7 @@ Namespace Ecospace
             Public Function IsChanged() As Boolean
                 If (Me.IsNew()) Then Return False
                 Return (Me.m_Layer.Name <> Me.m_strName) Or _
-                       (Me.Layer.Description <> Me.m_strDescription) 
+                       (Me.Layer.Description <> Me.m_strDescription)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -254,9 +254,9 @@ Namespace Ecospace
                 End Set
             End Property
 
-            Public ReadOnly Property CanRemove As Boolean
+            Public ReadOnly Property isEditable As Boolean
                 Get
-                    Return m_canRemove
+                    Return m_isEditable
                 End Get
             End Property
 
@@ -389,11 +389,23 @@ Namespace Ecospace
                 Me(iRow, eColumnTypes.LayerIsActive) = New Cells.Real.CheckBox(False)
                 Me(iRow, eColumnTypes.LayerIsActive).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerName) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
+                If Me.m_alLayers(iRow - 1).isEditable Then
+                    Me(iRow, eColumnTypes.LayerName) = New Cells.Real.Cell("", GetType(String))
+                    Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerDescription) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iRow, eColumnTypes.LayerDescription) = New Cells.Real.Cell("", GetType(String))
+                    Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
+
+                Else
+                    'Depth(Cell)
+                    ewec = New EwECell("", GetType(String))
+                    ewec.Style = cStyleGuide.eStyleFlags.NotEditable
+                    Me(iRow, eColumnTypes.LayerName) = ewec
+
+                    ewec = New EwECell("", GetType(String))
+                    ewec.Style = cStyleGuide.eStyleFlags.NotEditable
+                    Me(iRow, eColumnTypes.LayerDescription) = ewec
+                End If
 
                 ' Status
                 vm = New VisualModels.Common()
@@ -497,6 +509,9 @@ Namespace Ecospace
 
             Dim li As cLayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), cLayerInfo)
 
+            'Depth row can't be edited
+            If Not li.isEditable Then Return True
+
             Select Case DirectCast(p.Column, eColumnTypes)
                 Case eColumnTypes.LayerIndex
                     ' Not possible
@@ -583,7 +598,7 @@ Namespace Ecospace
             li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
 
             'This is the Depth row it canot be deleted
-            If Not li.CanRemove Then Return
+            If Not li.isEditable Then Return
 
             ' Toggle 'flagged for deletion' flag
             li.FlaggedForDeletion = Not li.FlaggedForDeletion
@@ -621,6 +636,11 @@ Namespace Ecospace
         Public Function IsLayerRow(Optional ByVal iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
             Return (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount)
+        End Function
+
+        Public Function CanRemoveRow(Optional ByVal iRow As Integer = -1) As Boolean
+            If iRow = -1 Then iRow = Me.SelectedRow()
+            Return Me.m_alLayers(iRow - 1).isEditable
         End Function
 
         ''' <summary>
@@ -908,9 +928,9 @@ Namespace Ecospace
                     'Ok this is a little dicey
                     'Lookup the Enviro map based on the layer name
                     'Can't use the layer because m_alLayers has not re-load new layers
+                    'you could fish the layer out of the EcospaceBasemap.LayerDriver(li) and use that to get the enviromap
                     EnviroMap = CapManager.Map(li.Name)
                     If Not li.IsNew() Then
-                        'you could fish the layer out of the EcospaceBasemap.LayerDriver(li)
                         'For debugging make sure we got the correct layer
                         Debug.Assert(EnviroMap.Layer.getID = li.Layer.getID, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer.")
                     End If
