@@ -54,6 +54,7 @@ Namespace Ecospace
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tpConnections = New System.Windows.Forms.TabPage()
+            Me.m_gridApply = New ScientificInterface.Ecospace.gridApplyExternalSpatialData()
             Me.m_tpMap = New System.Windows.Forms.TabPage()
             Me.m_tsMap = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tslZoom = New System.Windows.Forms.ToolStripLabel()
@@ -64,12 +65,11 @@ Namespace Ecospace
             Me.m_tsbnShowGrid = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnShowRefMap = New System.Windows.Forms.ToolStripButton()
             Me.m_map = New ScientificInterface.Ecospace.ucSpatialTimeSeriesMap()
-            Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
             Me.m_tsDatasets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tscmTypes = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tslData = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsbnConnections = New System.Windows.Forms.ToolStripButton()
-            Me.m_gridApply = New gridApplyExternalSpatialData()
+            Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -117,6 +117,38 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tpConnections, "m_tpConnections")
             Me.m_tpConnections.Name = "m_tpConnections"
             Me.m_tpConnections.UseVisualStyleBackColor = True
+            '
+            'm_gridApply
+            '
+            Me.m_gridApply.AllowBlockSelect = True
+            Me.m_gridApply.AutoSizeMinHeight = 10
+            Me.m_gridApply.AutoSizeMinWidth = 10
+            Me.m_gridApply.AutoStretchColumnsToFitWidth = False
+            Me.m_gridApply.AutoStretchRowsToFitHeight = False
+            Me.m_gridApply.BackColor = System.Drawing.Color.White
+            Me.m_gridApply.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridApply.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridApply.CustomSort = False
+            Me.m_gridApply.DataName = "grid content"
+            resources.ApplyResources(Me.m_gridApply, "m_gridApply")
+            Me.m_gridApply.Filter = EwEUtils.Core.eVarNameFlags.NotSet
+            Me.m_gridApply.FixedColumnWidths = False
+            Me.m_gridApply.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridApply.GridToolTipActive = True
+            Me.m_gridApply.IsLayoutSuspended = False
+            Me.m_gridApply.Name = "m_gridApply"
+            Me.m_gridApply.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridApply.UIContext = Nothing
             '
             'm_tpMap
             '
@@ -196,16 +228,6 @@ Namespace Ecospace
             Me.m_map.UseBuiltInReferenceMap = False
             Me.m_map.ZoomLevel = ScientificInterface.Ecospace.ucSpatialTimeSeriesMap.eZoomLevel.Both
             '
-            'm_toolbox
-            '
-            Me.m_toolbox.BackColor = System.Drawing.SystemColors.Window
-            resources.ApplyResources(Me.m_toolbox, "m_toolbox")
-            Me.m_toolbox.Name = "m_toolbox"
-            Me.m_toolbox.SelectedDatasetIndex = -1
-            Me.m_toolbox.SelectedTimeStep = -1
-            Me.m_toolbox.UIContext = Nothing
-            Me.m_toolbox.Filter = EwEUtils.Core.eVarNameFlags.NotSet
-            '
             'm_tsDatasets
             '
             Me.m_tsDatasets.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -234,10 +256,15 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tsbnConnections, "m_tsbnConnections")
             Me.m_tsbnConnections.Name = "m_tsbnConnections"
             '
-            'm_gridApply
+            'm_toolbox
             '
-            resources.ApplyResources(Me.m_gridApply, "m_gridApply")
-            Me.m_gridApply.Name = "m_gridApply"
+            Me.m_toolbox.BackColor = System.Drawing.SystemColors.Window
+            resources.ApplyResources(Me.m_toolbox, "m_toolbox")
+            Me.m_toolbox.Filter = EwEUtils.Core.eVarNameFlags.NotSet
+            Me.m_toolbox.Name = "m_toolbox"
+            Me.m_toolbox.SelectedDatasetIndex = -1
+            Me.m_toolbox.SelectedTimeStep = -1
+            Me.m_toolbox.UIContext = Nothing
             '
             'frmSpatialTimeSeries
             '
@@ -245,6 +272,7 @@ Namespace Ecospace
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmSpatialTimeSeries"
+            Me.ShowInTaskbar = False
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
