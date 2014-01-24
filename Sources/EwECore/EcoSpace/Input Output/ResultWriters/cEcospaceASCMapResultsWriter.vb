@@ -231,6 +231,7 @@ Public Class cEcospaceASCMapResultsWriter
 
         Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
         Dim value As Double = 0
+        Dim strValue As String = ""
 
         Debug.Assert(map IsNot Nothing)
 
@@ -246,7 +247,16 @@ Public Class cEcospaceASCMapResultsWriter
                     'land as NODATAVALUE
                     value = cCore.NULL_VALUE
                 End If
-                writer.Write(cStringUtils.FormatNumber(value))
+
+                ' Fix #1321 - always make sure the first cell value is written as floating point
+                strValue = cStringUtils.FormatNumber(value)
+                If (ir = 1 And ic = 1) Then
+                    If (strValue.IndexOf("."c) = -1) Then
+                        strValue = strValue + ".0"
+                    End If
+                End If
+
+                writer.Write(strValue)
             Next
             writer.WriteLine("")
         Next
