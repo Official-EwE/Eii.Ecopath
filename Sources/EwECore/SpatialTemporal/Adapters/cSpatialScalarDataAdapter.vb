@@ -213,7 +213,7 @@ Namespace SpatialData
 
                     Dim dt As DateTime = ldtData(i)
                     msg = New cProgressMessage(eProgressState.Running, 1.0!, CSng((i + 1) / ldtData.Count), _
-                                               String.Format(My.Resources.CoreMessages.STATUS_SPATIALTERMPORAL_CALCULATING, strLayerName, ds.DisplayName, cv.DisplayName), _
+                                               String.Format(My.Resources.CoreMessages.STATUS_SPATIALTERMPORAL_CALCULATING, strLayerName, ds.DisplayName, ""), _
                                                eMessageType.Progress, eDataTypes.EcospaceSpatialDataConnection)
                     Me.m_core.Messages.SendMessage(msg)
 
