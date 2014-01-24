@@ -1401,4 +1401,8 @@ Public Class frmEcotroph
     Private Sub TopD_MaskInputRejected(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MaskInputRejectedEventArgs) Handles TopD.MaskInputRejected
 
     End Sub
+
+    Private Sub ETgridinput_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles ETgridinput.CellContentClick
+
+    End Sub
 End Class
