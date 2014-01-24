@@ -103,6 +103,12 @@ Namespace SpatialData
 
         End Function
 
+        Public Overrides ReadOnly Property ConversionFormat As String
+            Get
+                Return ""
+            End Get
+        End Property
+
 #End Region ' Overrides
 
 #Region " Internals "
