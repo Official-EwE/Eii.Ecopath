@@ -233,8 +233,16 @@
     <value>An error occurred loading data. {0}</value>
     <comment>{0}=exception message</comment>
   </data>
+  <data name="STATUS_LOAD_FAILED_ASCIIBODY" xml:space="preserve">
+    <value>Unable to load ASCII body from '{0}'</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="STATUS_LOAD_FAILED_ASCIIHEADER" xml:space="preserve">
+    <value>Unable to load ASCII header from '{0}'</value>
+    <comment>{0}=file name</comment>
+  </data>
   <data name="STATUS_LOAD_FILENOTFOUND" xml:space="preserve">
-    <value>Unable to load file '{0}', file could not be found</value>
+    <value>Unable to load '{0}', file could not be found</value>
     <comment>{0}=file name</comment>
   </data>
   <data name="STATUS_LOAD_SKIPPED" xml:space="preserve">

@@ -358,7 +358,25 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Unable to load file &apos;{0}&apos;, file could not be found.
+        '''  Looks up a localized string similar to Unable to load ASCII body from &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property STATUS_LOAD_FAILED_ASCIIBODY() As String
+            Get
+                Return ResourceManager.GetString("STATUS_LOAD_FAILED_ASCIIBODY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unable to load ASCII header from &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property STATUS_LOAD_FAILED_ASCIIHEADER() As String
+            Get
+                Return ResourceManager.GetString("STATUS_LOAD_FAILED_ASCIIHEADER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unable to load &apos;{0}&apos;, file could not be found.
         '''</summary>
         Friend ReadOnly Property STATUS_LOAD_FILENOTFOUND() As String
             Get
