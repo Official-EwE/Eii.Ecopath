@@ -413,7 +413,7 @@ Namespace SpatialData
                             If (sValue <> cCore.NULL_VALUE) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                                 ' #Yes: set value
                                 bSuccess = bSuccess And Me.SetCell(layer, iConnection, iRow, iCol, sValue)
-                                sum += CDbl(layer.Cell(iRow, iCol))
+                                'sum += CDbl(layer.Cell(iRow, iCol))
                                 n += 1
                             End If
                         Else
@@ -424,7 +424,7 @@ Namespace SpatialData
                     iRow += 1
                 End While ' iRow
 
-                System.Console.WriteLine(layer.Name + " mean = " + (sum / n).ToString)
+                'System.Console.WriteLine(layer.Name + " mean = " + (sum / n).ToString)
 
                 If bSuccess Then
                     Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()), eStatusFlags.OK)

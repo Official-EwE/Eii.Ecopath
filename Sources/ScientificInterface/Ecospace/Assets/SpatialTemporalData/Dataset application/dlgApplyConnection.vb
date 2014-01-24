@@ -620,7 +620,7 @@ Namespace Ecospace.Controls
                 bNeedsScaling = Me.m_bIsScaling
                 bCanRemoveDS = True
 
-                bIsConfigured = False
+                bIsConfigured = ds.IsConfigured
                 If (ds.IsConfigured) And (bNeedsConverter) Then
                     If (cv IsNot Nothing) Then
                         If cv.IsCompatible(ds) Then
