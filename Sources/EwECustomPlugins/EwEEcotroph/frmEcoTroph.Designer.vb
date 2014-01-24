@@ -149,17 +149,17 @@ Partial Class frmEcotroph
         Me.Load_from_ecopath = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ETgridinput = New System.Windows.Forms.DataGridView()
+        Me.panel_webservi = New System.Windows.Forms.Panel()
+        Me.site_eco = New System.Windows.Forms.WebBrowser()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.models_list = New System.Windows.Forms.ListBox()
+        Me.inputdata = New System.Windows.Forms.TabControl()
         Me.Group_name = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TTL = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Biomass = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Production = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.accessibilty = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.OI = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.panel_webservi = New System.Windows.Forms.Panel()
-        Me.site_eco = New System.Windows.Forms.WebBrowser()
-        Me.Button8 = New System.Windows.Forms.Button()
-        Me.models_list = New System.Windows.Forms.ListBox()
-        Me.inputdata = New System.Windows.Forms.TabControl()
         Me.diagnosis_page.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -1349,36 +1349,6 @@ Partial Class frmEcotroph
         Me.ETgridinput.Size = New System.Drawing.Size(878, 571)
         Me.ETgridinput.TabIndex = 10
         '
-        'Group_name
-        '
-        Me.Group_name.HeaderText = "Group name"
-        Me.Group_name.Name = "Group_name"
-        '
-        'TTL
-        '
-        Me.TTL.HeaderText = "Trophic Level"
-        Me.TTL.Name = "TTL"
-        '
-        'Biomass
-        '
-        Me.Biomass.HeaderText = "Biomass"
-        Me.Biomass.Name = "Biomass"
-        '
-        'Production
-        '
-        Me.Production.HeaderText = "Production"
-        Me.Production.Name = "Production"
-        '
-        'accessibilty
-        '
-        Me.accessibilty.HeaderText = "accessibilty"
-        Me.accessibilty.Name = "accessibilty"
-        '
-        'OI
-        '
-        Me.OI.HeaderText = "Omnivory index"
-        Me.OI.Name = "OI"
-        '
         'panel_webservi
         '
         Me.panel_webservi.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -1443,6 +1413,36 @@ Partial Class frmEcotroph
         Me.inputdata.Size = New System.Drawing.Size(902, 767)
         Me.inputdata.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight
         Me.inputdata.TabIndex = 0
+        '
+        'Group_name
+        '
+        Me.Group_name.HeaderText = "Group name"
+        Me.Group_name.Name = "Group_name"
+        '
+        'TTL
+        '
+        Me.TTL.HeaderText = "Trophic Level"
+        Me.TTL.Name = "TTL"
+        '
+        'Biomass
+        '
+        Me.Biomass.HeaderText = "Biomass"
+        Me.Biomass.Name = "Biomass"
+        '
+        'Production
+        '
+        Me.Production.HeaderText = "P/B"
+        Me.Production.Name = "Production"
+        '
+        'accessibilty
+        '
+        Me.accessibilty.HeaderText = "accessibilty"
+        Me.accessibilty.Name = "accessibilty"
+        '
+        'OI
+        '
+        Me.OI.HeaderText = "Omnivory index"
+        Me.OI.Name = "OI"
         '
         'frmEcotroph
         '
@@ -1622,15 +1622,15 @@ Partial Class frmEcotroph
     Friend WithEvents Load_from_ecopath As System.Windows.Forms.Button
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents ETgridinput As System.Windows.Forms.DataGridView
+    Friend WithEvents panel_webservi As System.Windows.Forms.Panel
+    Friend WithEvents site_eco As System.Windows.Forms.WebBrowser
+    Friend WithEvents Button8 As System.Windows.Forms.Button
+    Friend WithEvents models_list As System.Windows.Forms.ListBox
+    Friend WithEvents inputdata As System.Windows.Forms.TabControl
     Friend WithEvents Group_name As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents TTL As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Biomass As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Production As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents accessibilty As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents OI As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents panel_webservi As System.Windows.Forms.Panel
-    Friend WithEvents site_eco As System.Windows.Forms.WebBrowser
-    Friend WithEvents Button8 As System.Windows.Forms.Button
-    Friend WithEvents models_list As System.Windows.Forms.ListBox
-    Friend WithEvents inputdata As System.Windows.Forms.TabControl
 End Class
