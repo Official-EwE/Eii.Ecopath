@@ -68,9 +68,6 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub Add(ds As ISpatialDataSet)
 
-            ' JS 140125: disabled indexing for now until it no longer interferes with running the spatial temporal data framework
-            Return
-
             ' Check if there is work to do
             If (ds IsNot Nothing) Then
                 ' Check if we really need to do this

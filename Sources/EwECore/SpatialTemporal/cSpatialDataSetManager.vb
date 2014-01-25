@@ -327,6 +327,14 @@ Namespace SpatialData
                 Return Me.m_indexer.Current
             End Get
             Set(ds As ISpatialDataSet)
+                ' JS 25jan14: Disabled indexing until it no longer interfers with running the spatial temporal framework.
+                ' A fundamental weakness in the indexing process is that it's ability to index, and more 
+                ' importantly, to stop indexing when needed, totally relies in a robust implementation of the
+                ' indexing logic within datasets. If a dataset deadlocks, the indexing process will stall
+                ' the ability to run, and may lock up user interfaces etc. This is not good.
+
+                ' As a solution, the spatial dataset indexer should be able to abort stalled indexing processes:
+                'Me.m_indexer.Add(ds, 5000) ' add with timeout
                 Me.m_indexer.Add(ds)
             End Set
         End Property
