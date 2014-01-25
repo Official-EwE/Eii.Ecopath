@@ -646,32 +646,32 @@ Namespace SpatialData
                         f = Me.m_lFiles(i Mod Me.m_lFiles.Count)
                         If (f.IndexStatus <> ISpatialDataSet.eIndexStatus.Indexed) Then
 
-                            ' Limit cache access
                             Dim bOldFlag = Me.ReadFromCache
-                            Me.ReadFromCache = False
-
-                            ' Assume the worst
-                            f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
-
                             Try
-                                ' Always tell the world
+                                ' Limit cache access
+                                Me.ReadFromCache = False
+
+                                ' Assume the worst
+                                f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
+
+                                ' Update progress
                                 dgt.Invoke(Me, CSng((i - iStart + 1) / (iEnd - iStart + 1)))
-                            Catch ex As Exception
-                                ' Khazaam
-                            End Try
 
-                            Try
                                 If Me.LockDataAtT(f.Date, 1.0!, ptfTL, ptfBR) Then
                                     Me.LoadSource()
                                     Me.UnlockData()
                                 End If
+                            Catch ex As Threading.ThreadAbortException
+                                ' Indexing thread is being aborted from elsewhere. Just make sure our
+                                ' internal admin is not screwed up before we go down.
+                                Me.m_bStopIndexing = True
+                                Me.ReadFromCache = bOldFlag
+                                Me.UnlockData()
                             Catch ex As Exception
                                 cLog.Write(ex, "cMultiFileDatasetPlugin::BuildIndex")
                             End Try
-
                             ' Restore cache access
                             Me.ReadFromCache = bOldFlag
-
                         End If
 
                         If Me.m_bStopIndexing Then Exit For
