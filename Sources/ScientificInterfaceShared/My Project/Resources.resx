@@ -2877,12 +2877,6 @@
   <data name="HEADER_FROM" xml:space="preserve">
     <value>From</value>
   </data>
-  <data name="HEADER_OVERLAP_SPATIAL" xml:space="preserve">
-    <value>Spatial overlap</value>
-  </data>
-  <data name="HEADER_OVERLAP_TEMPORAL" xml:space="preserve">
-    <value>Temp. overlap</value>
-  </data>
   <data name="HEADER_TO" xml:space="preserve">
     <value>To</value>
   </data>
@@ -2895,20 +2889,20 @@
   <data name="GENERIC_VALUE_UNKNOWN" xml:space="preserve">
     <value>(unknown)</value>
   </data>
-  <data name="COMPATIBILITY_FAILED" xml:space="preserve">
-    <value>Failed</value>
+  <data name="COMPATIBILITY_ERRORS" xml:space="preserve">
+    <value>Errors|||The data contains errors. Please check</value>
   </data>
   <data name="COMPATIBILITY_NOSPATIAL" xml:space="preserve">
-    <value>No spatial overlap</value>
+    <value>No spatial||No spatial overlap|Data does not spatially overlap with the scenario</value>
   </data>
   <data name="COMPATIBILITY_NOTEMPORAL" xml:space="preserve">
-    <value>No temporal overlap</value>
+    <value>No temporal||No temporal overlap|There is no data for the Ecospace run period</value>
   </data>
   <data name="COMPATIBILITY_PARTIALSPATIAL" xml:space="preserve">
-    <value>Partial spatial overlap</value>
+    <value>Partial||Partial spatial overlap|The data partially covers the Ecospace area</value>
   </data>
   <data name="COMPATIBILITY_TOTALOVERLAP" xml:space="preserve">
-    <value>Full spatial overlap</value>
+    <value>Full||Full spatial overlap|The data fully covers the Ecospace area</value>
   </data>
   <data name="VALUE_INDEXED_PERCENT" xml:space="preserve">
     <value>Indexed {0}%</value>
@@ -3052,5 +3046,14 @@
   </data>
   <data name="HEADER_ENVINPUT_ACTIVE" xml:space="preserve">
     <value>Acitve</value>
+  </data>
+  <data name="HEADER_OVERLAP_SPATIAL" xml:space="preserve">
+    <value>Spat. overlap</value>
+  </data>
+  <data name="HEADER_OVERLAP_TEMPORAL" xml:space="preserve">
+    <value>Temp. overlap</value>
+  </data>
+  <data name="COMPATIBILITY_NOTSET" xml:space="preserve">
+    <value>(Not indexed)|||Data has not been indexed yet</value>
   </data>
 </root>
