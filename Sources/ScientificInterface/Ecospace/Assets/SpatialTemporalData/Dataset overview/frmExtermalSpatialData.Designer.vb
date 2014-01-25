@@ -54,7 +54,7 @@ Namespace Ecospace
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tpConnections = New System.Windows.Forms.TabPage()
-            Me.m_gridApply = New ScientificInterface.Ecospace.gridApplyExternalSpatialData()
+            Me.m_gridApply = New ScientificInterface.Ecospace.gridExternalSpatialData()
             Me.m_tpMap = New System.Windows.Forms.TabPage()
             Me.m_tsMap = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tslZoom = New System.Windows.Forms.ToolStripLabel()
@@ -309,7 +309,7 @@ Namespace Ecospace
         Private WithEvents m_tcMain As System.Windows.Forms.TabControl
         Private WithEvents m_tpConnections As System.Windows.Forms.TabPage
         Private WithEvents m_tpMap As System.Windows.Forms.TabPage
-        Private WithEvents m_gridApply As gridApplyExternalSpatialData
+        Private WithEvents m_gridApply As gridExternalSpatialData
     End Class
 
 End Namespace

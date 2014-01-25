@@ -31,7 +31,7 @@ Imports ScientificInterface.Ecospace.Controls
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class gridApplyExternalSpatialData
+    Public Class gridExternalSpatialData
         Inherits EwEGrid
 
 #Region " Private classes "

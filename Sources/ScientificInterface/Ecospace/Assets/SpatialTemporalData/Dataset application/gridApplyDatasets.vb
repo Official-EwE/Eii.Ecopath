@@ -187,16 +187,8 @@ Namespace Ecospace.Controls
             If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
                 strVal = String.Format(SharedResources.VALUE_INDEXED_PERCENT, CInt(Math.Ceiling(100 * comp.NumIndexed / (comp.NumOverlappingTimeSteps + 1))))
             Else
-                If (comp.NumError > 0) Then
-                    strVal = String.Format("{0} errors", comp.NumError)
-                    style = style Or cStyleGuide.eStyleFlags.ErrorEncountered
-                ElseIf (comp.NumFullSpatialOverlap = comp.NumIndexed) Then
-                    strVal = SharedResources.GENERIC_VALUE_FULL
-                ElseIf (comp.NumPartialSpatialOverlap > 0) Then
-                    strVal = SharedResources.GENERIC_VALUE_PARTIAL
-                Else
-                    strVal = SharedResources.GENERIC_VALUE_NONE
-                End If
+                Dim fmt As New cSpatialDatasetCompatibilityFormatter()
+                strVal = fmt.GetDescriptor(comp, eDescriptorTypes.Abbreviation)
             End If
 
             Dim cell As EwECell = DirectCast(Me(iRow, eColumnTypes.SpatOverlap), EwECell)

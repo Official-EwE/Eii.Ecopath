@@ -119,7 +119,7 @@ Namespace Ecospace.Controls
             If (ds Is Nothing) Then Return
 
             Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
-            Dim img As Image = Nothing
+            Dim img As Image = cStyleGuide.GetImage(comp)
             Dim strStatus As String = ""
             Dim clrText As Color = e.ForeColor
             Dim fmt As New StringFormat()
@@ -135,25 +135,11 @@ Namespace Ecospace.Controls
             ' Render compatibility image
             If Me.m_manSets.IsIndexing(ds) Then
                 ' ToDo: globalize this
-                strStatus = String.Format("Indexing " & comp.PercentIndexed & "%")
+                strStatus = String.Format("indexing " & comp.PercentIndexed & "%")
                 img = SharedResources.Question
             Else
-                Select Case comp.Compatibility
-                    Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
-                         cDatasetCompatilibity.eCompatibilityTypes.NoSpatial, _
-                         cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                        img = SharedResources.database_NA
-                        strStatus = "Incompatible"
-                    Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                        img = SharedResources.Database
-                        strStatus = "Total overlap"
-                    Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                        img = SharedResources.database_warning
-                        strStatus = "Partial overlap"
-                    Case Else
-                        img = SharedResources.Question
-                        strStatus = "Unknown"
-                End Select
+                Dim sdcf As New cSpatialDatasetCompatibilityFormatter()
+                strStatus = sdcf.GetDescriptor(comp)
             End If
 
             If (img IsNot Nothing) Then
