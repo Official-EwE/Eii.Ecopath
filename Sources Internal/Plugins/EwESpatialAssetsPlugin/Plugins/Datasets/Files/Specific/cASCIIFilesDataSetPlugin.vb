@@ -63,30 +63,70 @@ Namespace SpatialData
             End Get
         End Property
 
-        Private Property Name As String
-
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cFileDataSetPlugin.LoadSource"/>
+        ''' -------------------------------------------------------------------
         Protected Overrides Function LoadSource() As Boolean
 
             Dim strFileName As String = Me.SourceFileName()
             Dim rs As IRaster = New DotSpatial.Data.Raster(Of Single)
+            Dim reader As StreamReader = Nothing
 
+            ' Already read? Ok!
             If (Me.m_raster IsNot Nothing) Then Return True
 
-            If (System.IO.File.Exists(strFileName)) Then
-                Dim reader As New StreamReader(strFileName)
-                Me.ReadHeader(reader, rs)
-                Me.ReadBody(reader, rs)
-                Me.StoreExtent(rs.Extent)
-                Me.m_raster = New cSpatialRaster(rs)
-
-                Me.LogMessage("Loaded ASCII " + Me.m_raster.ToString + cStringUtils.vbTab + strFileName, eStatusFlags.OK)
-            Else
-                Me.LogMessage("Failed to find ASCII raster" + cStringUtils.vbTab + strFileName, eStatusFlags.ErrorEncountered)
+            ' File missing?
+            If (Not System.IO.File.Exists(strFileName)) Then
+                ' #Yes: report error
+                Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.ErrorEncountered)
+                ' Run away
+                Return False
             End If
+
+            Try
+                ' Try to get reader
+                reader = New StreamReader(strFileName)
+            Catch ex As Exception
+                ' Panic!
+                Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+                Return False
+            End Try
+
+            Try
+                ' Able to read header?
+                If (Not Me.ReadHeader(reader, rs)) Then
+                    ' #No: log error
+                    Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED_ASCIIHEADER, strFileName), eStatusFlags.ErrorEncountered)
+                Else
+                    ' Able to read body?
+                    If (Not Me.ReadBody(reader, rs)) Then
+                        ' #No: log error
+                        Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED_ASCIIBODY, strFileName), eStatusFlags.ErrorEncountered)
+                    Else
+                        ' #Yes: create internal raster to wrap the data
+                        Me.m_raster = New cSpatialRaster(rs)
+                        ' Update index
+                        Me.StoreExtent(rs.Extent)
+                        ' Log success
+                        Me.LogMessage(String.Format(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
+                    End If
+                End If
+            Catch ex As Exception
+                ' Log generic panic message
+                Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+            End Try
+
+            ' Clean up
+            reader.Close()
+
+            ' Report all over success
             Return (Me.m_raster IsNot Nothing)
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cFileDataSetPlugin.UnlockData"/>
+        ''' -------------------------------------------------------------------
         Public Overrides Function UnlockData() As Boolean
             Me.m_raster = Nothing
             Return MyBase.UnlockData()
@@ -103,9 +143,13 @@ Namespace SpatialData
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cFileDataSetPlugin.ConversionFormat"/>
+        ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property ConversionFormat As String
             Get
-                Return ""
+                ' No conversion needed
+                Return String.Empty
             End Get
         End Property
 
@@ -113,68 +157,186 @@ Namespace SpatialData
 
 #Region " Internals "
 
-        Protected Sub ReadHeader(ByVal reader As TextReader, ByRef rs As IRaster)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Read the ASCII header from a text reader.
+        ''' </summary>
+        ''' <param name="reader">The open text reader to read from.</param>
+        ''' <param name="rs">The raster to read the data into.</param>
+        ''' <returns>True if successful.</returns>
+        ''' <remarks>
+        ''' This method aims to read a complete raster header as described in
+        ''' http://resources.esri.com/help/9.3/arcgisengine/com_cpp/GP_ToolRef/Spatial_Analyst_Tools/esri_ascii_raster_format.htm.
+        ''' If any of the header fields is missing the method will fail.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Protected Function ReadHeader(ByVal reader As StreamReader, ByRef rs As IRaster) As Boolean
 
             Dim nCols As Integer = 0
             Dim nRows As Integer = 0
-            Dim xllcorner As Single = 0.0
-            Dim yllcorner As Single = 0.0
+            Dim sXLLpos As Single = 0.0
+            Dim bIsCenterX As Boolean = False
+            Dim sYLLpos As Single = 0.0
+            Dim bIsCenterY As Boolean = False
             Dim sCellSize As Single = 0.0
             Dim sValueNone As Single = -9999
-            Dim strHeadName As String = ""
+
+            Dim strField As String = ""
             Dim strValue As String = ""
             Dim strLine As String
+            Dim bIsComplete As Boolean = False
+            Dim bIsError As Boolean = False
+            Dim checksum As Byte = 0
 
-            Do
+            ' Read the file until EOF or all header fields are read without any errors
+            While (Not reader.EndOfStream) And (Not bIsComplete) And (Not bIsError)
+
+
+                ' Read a line
                 strLine = reader.ReadLine()
-                If Not String.IsNullOrEmpty(strLine) Then
+
+                ' Be nice
+                If Not String.IsNullOrWhiteSpace(strLine) Then
+
+                    ' Remove all double spaces
                     While strLine.IndexOf("  ") > 0
                         strLine = strLine.Replace("  ", " ")
                     End While
 
+                    ' Split by space
                     Dim astrBits() As String = strLine.Split(" "c)
-                    strHeadName = astrBits(0).Trim().ToLower
-                    strValue = astrBits(1).Trim().ToLower
+                    strField = astrBits(0)
+                    strValue = astrBits(1)
+
+                    ' Check header field (eliminating tabs etc, lower case)
+                    Select Case strField.Trim().ToLower
+
+                        Case "ncols"
+                            bIsError = Not Integer.TryParse(strValue, nCols)
+                            bIsError = bIsError Or (nCols <= 0)
+                            checksum = CByte(checksum Or &H1)
+
+                        Case "nrows"
+                            bIsError = Not Integer.TryParse(strValue, nRows)
+                            bIsError = bIsError Or (nRows <= 0)
+                            checksum = CByte(checksum Or &H2)
+
+                        Case "xllcorner"
+                            bIsError = Not Single.TryParse(strValue, sXLLpos)
+                            bIsCenterX = False
+                            checksum = CByte(checksum Or &H4)
+
+                        Case "xllcenter"
+                            bIsError = Not Single.TryParse(strValue, sXLLpos)
+                            bIsCenterX = True
+                            checksum = CByte(checksum Or &H4)
+
+                        Case "yllcorner"
+                            bIsError = Not Single.TryParse(strValue, sYLLpos)
+                            bIsCenterY = False
+                            checksum = CByte(checksum Or &H8)
+
+                        Case "yllcenter"
+                            bIsError = Not Single.TryParse(strValue, sYLLpos)
+                            bIsCenterY = True
+                            checksum = CByte(checksum Or &H8)
+
+                        Case "cellsize"
+                            bIsError = Not Single.TryParse(strValue, sCellSize)
+                            bIsError = bIsError Or (sCellSize <= 0)
+                            checksum = CByte(checksum Or &H10)
+
+                        Case "nodatavalue", "nodata_value"
+                            bIsError = Not Single.TryParse(strValue, sValueNone)
+                            checksum = CByte(checksum Or &H20)
+
+                        Case Else
+                            ' Unexpected bogusness
+                            bIsError = True
+
+                    End Select
                 End If
 
-                Select Case strHeadName
+                ' Header is complete if all field have been read
+                bIsComplete = (checksum >= &H2F)
 
-                    Case "ncols" : nCols = CInt(strValue)
-                    Case "nrows" : nRows = CInt(strValue)
-                    Case "xllcorner" : xllcorner = CSng(strValue)
-                    Case "yllcorner" : yllcorner = CSng(strValue)
-                    Case "cellsize" : sCellSize = CSng(strValue)
-                    Case "nodatavalue", "nodata_value" : sValueNone = CSng(strValue)
-
-                End Select
-                ' Debug.Assert(Not String.IsNullOrEmpty(strLine), Me.ToString + ".ReadHeader() file contains no data.")
-            Loop Until (strHeadName = "nodatavalue" Or strHeadName = "nodata_value" Or String.IsNullOrEmpty(strLine))
-
-            rs = New Raster(Of Single)(nRows, nCols)
-            rs.Bounds = cDotSpatialUtils.EcospaceToBounds(New PointF(xllcorner, yllcorner + nRows * sCellSize), New PointF(xllcorner + nCols * sCellSize, yllcorner), sCellSize)
-            rs.NoDataValue = sValueNone
-
-        End Sub
-
-        Protected Sub ReadBody(ByVal reader As TextReader, ByRef rs As IRaster)
-
-            Dim nCells As Integer = rs.NumRows * rs.NumColumns
-            Dim iRow As Integer = 0
-            Dim strLine As String = ""
-
-            strLine = reader.ReadLine()
-            While Not String.IsNullOrEmpty(strLine) And iRow < rs.NumRows
-                Dim bits As String() = strLine.Split(" "c)
-                For iCol As Integer = 0 To Math.Min(bits.Length - 1, rs.NumColumns)
-                    If Not String.IsNullOrEmpty(bits(iCol).Trim) Then
-                        rs.Value(iRow, iCol) = CDbl(bits(iCol))
-                    End If
-                Next
-                iRow += 1
-                strLine = reader.ReadLine()
             End While
 
-        End Sub
+            ' All good?
+            If (bIsComplete = True) And (bIsError = False) Then
+                ' #Yes: offset header positions if need be
+                If (bIsCenterX) Then sXLLpos -= sCellSize / 2
+                If (bIsCenterY) Then sYLLpos -= sCellSize / 2
+
+                ' Generate raster
+                rs = New Raster(Of Single)(nRows, nCols)
+                rs.Bounds = cDotSpatialUtils.EcospaceToBounds(New PointF(sXLLpos, sYLLpos + nRows * sCellSize), New PointF(sXLLpos + nCols * sCellSize, sYLLpos), sCellSize)
+                rs.NoDataValue = sValueNone
+            Else
+                ' #No: trash raster
+                rs = Nothing
+            End If
+
+            ' Done
+            Return (rs IsNot Nothing)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Read the ASCII body from a text reader.
+        ''' </summary>
+        ''' <param name="reader">The open text reader to read from.</param>
+        ''' <param name="rs">The raster to read the data into.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Function ReadBody(ByVal reader As StreamReader, ByRef rs As IRaster) As Boolean
+
+            If (rs Is Nothing) Then Return False
+
+            Dim iCol As Integer = 0
+            Dim iRow As Integer = 0
+            Dim strLine As String = ""
+            Dim bSuccess As Boolean
+
+            Try
+                'Just incase it comes in here and the stream is already read
+                bSuccess = Not reader.EndOfStream
+
+                Do While Not reader.EndOfStream
+                    strLine = reader.ReadLine()
+                    Dim bits As String() = strLine.Split(" "c)
+                    If bits.Length <> rs.NumColumns Then
+                        bSuccess = False
+                        'Debug.Assert(False)' 'Could write the log message here?
+                        Exit Do
+                    End If
+
+                    'Raster is zero based
+                    For iCol = 0 To rs.NumColumns - 1
+                        bSuccess = bSuccess And Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
+                    Next iCol
+                    iRow += 1
+
+                    If iRow > rs.NumRows Then
+                        bSuccess = False
+                        'Debug.Assert(False)'Log message here?
+                        Exit Do
+                    End If
+                Loop 'Not reader.EndOfStream
+
+            Catch ex As Exception
+                bSuccess = False
+                'Debug.Assert(False)
+            End Try
+
+            If (Not bSuccess) Then
+                rs = Nothing
+            End If
+
+            Return bSuccess
+
+        End Function
 
 #End Region ' Internals
 
