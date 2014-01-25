@@ -106,15 +106,6 @@ Public Class cEcospaceLayerImportance
 
     End Property
 
-    Public Property Description() As String
-        Get
-            Return CStr(GetVariable(eVarNameFlags.Description))
-        End Get
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.Description, value)
-        End Set
-    End Property
-
 #End Region ' Properties by dot (.) operator
 
 End Class

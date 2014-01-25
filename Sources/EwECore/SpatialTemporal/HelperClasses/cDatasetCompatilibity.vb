@@ -291,40 +291,6 @@ Namespace SpatialData
             End Get
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Convert the dataset compatibility assessment to a string.
-        ''' </summary>
-        ''' <returns>The dataset compatibility assessment, converted to a string.</returns>
-        ''' -------------------------------------------------------------------
-        Public Overrides Function ToString() As String
-
-            ' Avoid divisions by zero
-            Dim iNumTS As Integer = Math.Max(Me.m_iNumTimeSteps, 1)
-            Dim iNumOverlap As Integer = Math.Max(Me.m_iNumTimeOverlap, 1)
-
-            Select Case Me.Compatibility
-
-                Case eCompatibilityTypes.NotSet
-                    Return My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOTSET
-
-                Case eCompatibilityTypes.Errors
-                    Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NODATA, CInt(Math.Ceiling(100 * Me.m_iNumError / iNumOverlap)))
-
-                Case eCompatibilityTypes.NoTemporal
-                    Return My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOTIMEOVERLAP
-
-                Case eCompatibilityTypes.NoSpatial
-                    Return My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOSPATIALOVERLAP
-
-            End Select
-
-            Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_COMPATIBILITY, _
-                                 CInt(Math.Ceiling(100 * Me.m_iNumTimeOverlap / iNumTS)), _
-                                 CInt(Math.Ceiling(100 * Me.m_iNumPartialSpatialOverlap / iNumOverlap)), _
-                                 CInt(Math.Ceiling(100 * Me.m_iNumFullSpatialOverlap / iNumOverlap)))
-        End Function
-
         Public ReadOnly Property NumIndexed As Integer
             Get
                 Return Me.m_iNumIndexed

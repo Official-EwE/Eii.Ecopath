@@ -1063,20 +1063,6 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Ecospace failed to update capacity maps. {0}</value>
     <comment>{0}=error message</comment>
   </data>
-  <data name="STATUS_SPATIALTEMPORAL_COMPATIBILITY" xml:space="preserve">
-    <value>{0}% temporal overlap with {1}% partial and {2}% total area overlap.</value>
-    <comment>{0}=% overlapping time steps, {1}=% steps with partial spatial overlap, {2}=% steps with full spatial overlap</comment>
-  </data>
-  <data name="STATUS_SPATIALTEMPORAL_NOSPATIALOVERLAP" xml:space="preserve">
-    <value>External data does not spatilly overlap with the model area</value>
-  </data>
-  <data name="STATUS_SPATIALTEMPORAL_NOTIMEOVERLAP" xml:space="preserve">
-    <value>No external data found for the Ecospace run time</value>
-  </data>
-  <data name="STATUS_SPATIALTEMPORAL_NODATA" xml:space="preserve">
-    <value>Data for {0}% time steps could not be loaded</value>
-    <comment>{0}=% of time step data that could not be loaded</comment>
-  </data>
   <data name="ECOPATH_GS_WARNING" xml:space="preserve">
     <value>WARNING: Please check your data Unassimilated Consumption (GS) cannot be greater than one. Your data has been modified!</value>
   </data>
@@ -1224,8 +1210,5 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="STATUS_INDEXING_DATASET" xml:space="preserve">
     <value>Indexing external data '{0}'</value>
     <comment>{0}=data set name</comment>
-  </data>
-  <data name="STATUS_SPATIALTEMPORAL_NOTSET" xml:space="preserve">
-    <value>(not indexed)</value>
   </data>
 </root>
