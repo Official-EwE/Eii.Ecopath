@@ -335,7 +335,7 @@ Namespace SpatialData
 
                 ' As a solution, the spatial dataset indexer should be able to abort stalled indexing processes:
                 'Me.m_indexer.Add(ds, 5000) ' add with timeout
-                Me.m_indexer.Add(ds)
+                'Me.m_indexer.Add(ds)
             End Set
         End Property
 
