@@ -107,12 +107,12 @@ Namespace SpatialData
                                 Try
                                     cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
 
-                                    If TypeOf (adt) Is cSpatialScalarDataAdapterBase Then
-                                        With DirectCast(adt, cSpatialScalarDataAdapterBase)
-                                            .DataScale(i, j) = cfg.Scale
-                                            .DataScaleType(i, j) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
-                                        End With
-                                    End If
+                                    'If TypeOf (adt) Is cSpatialScalarDataAdapterBase Then
+                                    '    With DirectCast(adt, cSpatialScalarDataAdapterBase)
+                                    '        .DataScale(i, j) = cfg.Scale
+                                    '        .DataScaleType(i, j) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
+                                    '    End With
+                                    'End If
 
                                     ' Properly initialuize
                                     If (TypeOf cv Is IPlugin) Then DirectCast(cv, IPlugin).Initialize(Me.m_core)
@@ -120,6 +120,14 @@ Namespace SpatialData
 
                                 End Try
                             End If
+                            'Convert not necessary for a scale value
+                            If TypeOf (adt) Is cSpatialScalarDataAdapterBase Then
+                                With DirectCast(adt, cSpatialScalarDataAdapterBase)
+                                    .DataScale(i, j) = cfg.Scale
+                                    .DataScaleType(i, j) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
+                                End With
+                            End If
+
                         End If
 
                         adt.Dataset(i, j) = ds
