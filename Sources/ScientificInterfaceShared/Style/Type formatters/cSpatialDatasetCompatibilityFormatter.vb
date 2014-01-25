@@ -52,7 +52,8 @@ Namespace Style
                 Return ""
             End Try
 
-            Dim strDescr As String = cResourceUtils.LoadString("COMPATIBILITY_" & comp.Compatibility.ToString().ToUpper, Me.GetType.Assembly)
+            Dim val As cDatasetCompatilibity.eCompatibilityTypes = comp.Compatibility
+            Dim strDescr As String = cResourceUtils.LoadString("COMPATIBILITY_" & val.ToString().ToUpper, Me.GetType.Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""
@@ -81,8 +82,43 @@ Namespace Style
                 End If
 
             Next
+
+            ' Special cases
+            If (val = cDatasetCompatilibity.eCompatibilityTypes.Errors) Then
+                strBit = String.Format(strBit, comp.NumError)
+            End If
+
             Return strBit
 
+        End Function
+
+        ''' <summary>
+        ''' Get a compatibility summary.
+        ''' </summary>
+        ''' <param name="comp"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function Summary(comp As cDatasetCompatilibity) As String
+
+            Dim iNumTS As Integer = comp.NumAssessedTimeSteps
+            Dim iNumOverlap As Integer = comp.NumOverlappingTimeSteps
+            Dim iNumPartial As Integer = comp.NumPartialSpatialOverlap
+            Dim iNumFull As Integer = comp.NumFullSpatialOverlap
+
+            Select Case comp.Compatibility
+
+                Case cDatasetCompatilibity.eCompatibilityTypes.NotSet, _
+                     cDatasetCompatilibity.eCompatibilityTypes.Errors, _
+                     cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
+                     cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
+                    Return Me.GetDescriptor(comp, eDescriptorTypes.Description)
+
+            End Select
+
+            Return String.Format(My.Resources.COMPATIBILITY_SUMMARY, _
+                                 CInt(Math.Ceiling(100 * iNumOverlap / Math.Max(1, iNumTS))), _
+                                 CInt(Math.Ceiling(100 * iNumPartial / Math.Max(1, iNumOverlap))), _
+                                 CInt(Math.Ceiling(100 * iNumFull / Math.Max(1, iNumOverlap))))
         End Function
 
     End Class
