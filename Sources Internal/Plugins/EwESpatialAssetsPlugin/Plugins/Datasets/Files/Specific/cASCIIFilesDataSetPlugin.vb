@@ -161,7 +161,7 @@ Namespace SpatialData
         ''' <summary>
         ''' Read the ASCII header from a text reader.
         ''' </summary>
-        ''' <param name="reader">The open text reader to read from.</param>
+        ''' <param name="reader">The open stream reader to read from.</param>
         ''' <param name="rs">The raster to read the data into.</param>
         ''' <returns>True if successful.</returns>
         ''' <remarks>
@@ -190,7 +190,6 @@ Namespace SpatialData
 
             ' Read the file until EOF or all header fields are read without any errors
             While (Not reader.EndOfStream) And (Not bIsComplete) And (Not bIsError)
-
 
                 ' Read a line
                 strLine = reader.ReadLine()
@@ -270,7 +269,9 @@ Namespace SpatialData
 
                 ' Generate raster
                 rs = New Raster(Of Single)(nRows, nCols)
-                rs.Bounds = cDotSpatialUtils.EcospaceToBounds(New PointF(sXLLpos, sYLLpos + nRows * sCellSize), New PointF(sXLLpos + nCols * sCellSize, sYLLpos), sCellSize)
+                rs.Bounds = cDotSpatialUtils.EcospaceToBounds(New PointF(sXLLpos, sYLLpos + nRows * sCellSize), _
+                                                              New PointF(sXLLpos + nCols * sCellSize, sYLLpos), _
+                                                              sCellSize)
                 rs.NoDataValue = sValueNone
             Else
                 ' #No: trash raster
@@ -286,7 +287,7 @@ Namespace SpatialData
         ''' <summary>
         ''' Read the ASCII body from a text reader.
         ''' </summary>
-        ''' <param name="reader">The open text reader to read from.</param>
+        ''' <param name="reader">The open stream reader to read from.</param>
         ''' <param name="rs">The raster to read the data into.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
@@ -297,44 +298,42 @@ Namespace SpatialData
             Dim iCol As Integer = 0
             Dim iRow As Integer = 0
             Dim strLine As String = ""
-            Dim bSuccess As Boolean
+            Dim bDataCorrect As Boolean = True
 
             Try
-                'Just incase it comes in here and the stream is already read
-                bSuccess = Not reader.EndOfStream
-
-                Do While Not reader.EndOfStream
+                While Not reader.EndOfStream And bDataCorrect
+                    ' Read line
                     strLine = reader.ReadLine()
+                    ' Split by space
                     Dim bits As String() = strLine.Split(" "c)
-                    If bits.Length <> rs.NumColumns Then
-                        bSuccess = False
-                        'Debug.Assert(False)' 'Could write the log message here?
-                        Exit Do
+                    ' Exact number of columns encountered?
+                    If (bits.Length <> rs.NumColumns) Then
+                        ' #No: do not accept this data
+                        bDataCorrect = False
+                    Else
+                        ' #Yes: process row data
+                        For iCol = 0 To rs.NumColumns - 1
+                            bDataCorrect = bDataCorrect And Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
+                        Next iCol
+                        iRow += 1
                     End If
 
-                    'Raster is zero based
-                    For iCol = 0 To rs.NumColumns - 1
-                        bSuccess = bSuccess And Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
-                    Next iCol
-                    iRow += 1
-
-                    If iRow > rs.NumRows Then
-                        bSuccess = False
-                        'Debug.Assert(False)'Log message here?
-                        Exit Do
+                    If (iRow > rs.NumRows) Then
+                        bDataCorrect = False
                     End If
-                Loop 'Not reader.EndOfStream
 
+                End While
+
+                bDataCorrect = bDataCorrect And (iRow = rs.NumRows)
             Catch ex As Exception
-                bSuccess = False
-                'Debug.Assert(False)
+                bDataCorrect = False
             End Try
 
-            If (Not bSuccess) Then
+            If (Not bDataCorrect) Then
                 rs = Nothing
             End If
 
-            Return bSuccess
+            Return bDataCorrect
 
         End Function
 
@@ -356,7 +355,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property PluginName As String
             Get
-                Return "DotSpatial.AAASFileSetPlugin"
+                Return "DotSpatial.cASCIIFilesDataSetPlugin"
             End Get
         End Property
 
