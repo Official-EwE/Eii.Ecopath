@@ -97,12 +97,18 @@ Namespace SpatialData
             Try
                 Debug.Assert(Me.DataScaleType(layer.Index, iConnection) = eScaleType.Relative, Me.ToString + ".SetCell() Warning scale type should be 'Relative'")
 
-                scalar = Me.m_scales(layer.Index, iConnection)
 
-                'Debug.Assert(sValueAtT = 0)
-                'External data is the pattern of biomass distribution relative to the Ecospace base biomass
-                'B = [B base at t=zero] * [B external] * [1/mean B external at t=zero]
-                layer.Cell(iRow, iCol) = CDbl(Me.m_baseLayers(layer.Index)(iRow, iCol)) * sValueAtT * scalar
+
+                If sValueAtT <> cCore.NULL_VALUE Then
+                    scalar = Me.m_scales(layer.Index, iConnection)
+
+                    'Debug.Assert(sValueAtT = 0)
+                    'External data is the pattern of biomass distribution relative to the Ecospace base biomass
+                    'B = [B base at t=zero] * [B external] * [1/mean B external at t=zero]
+                    layer.Cell(iRow, iCol) = CDbl(Me.m_baseLayers(layer.Index)(iRow, iCol)) * sValueAtT * scalar
+                Else
+                    layer.Cell(iRow, iCol) = sValueAtT
+                End If
 
                 Return True
 
