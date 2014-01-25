@@ -160,9 +160,9 @@ Namespace Style
 
             Me.m_dtApplicationColors.Clear()
 
-            If Me.m_img IsNot Nothing Then
-                Me.m_img.Dispose()
-                Me.m_img = Nothing
+            If Me.m_imgReference IsNot Nothing Then
+                Me.m_imgReference.Dispose()
+                Me.m_imgReference = Nothing
             End If
         End Sub
 
@@ -972,9 +972,9 @@ Namespace Style
             End Get
             Set(value As String)
                 If (String.Compare(Me.m_strMapRefLayerFile, value) <> 0) Then
-                    If (Me.m_img IsNot Nothing) Then
-                        Me.m_img.Dispose()
-                        Me.m_img = Nothing
+                    If (Me.m_imgReference IsNot Nothing) Then
+                        Me.m_imgReference.Dispose()
+                        Me.m_imgReference = Nothing
                     End If
                     Me.m_strMapRefLayerFile = value
                     Me.MapChanged()
@@ -1006,20 +1006,20 @@ Namespace Style
             End Set
         End Property
 
-        Private m_img As Image = Nothing
+        Private m_imgReference As Image = Nothing
 
         Public ReadOnly Property MapReferenceImage As Image
             Get
-                If (Me.m_img Is Nothing) Then
+                If (Me.m_imgReference Is Nothing) Then
                     Try
                         If (File.Exists(Me.MapReferenceLayerFile)) Then
-                            Me.m_img = Image.FromFile(Me.MapReferenceLayerFile)
+                            Me.m_imgReference = Image.FromFile(Me.MapReferenceLayerFile)
                         End If
                     Catch ex As Exception
 
                     End Try
                 End If
-                Return Me.m_img
+                Return Me.m_imgReference
             End Get
         End Property
 
@@ -2046,6 +2046,33 @@ Namespace Style
                     Return My.Resources.Info
                 Case eMessageImportance.Question
                     Return My.Resources.Question
+            End Select
+            Return Nothing
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return a standard image for a given <see cref="SpatialData.cDatasetCompatilibity"/>.
+        ''' </summary>
+        ''' <param name="comp">The <see cref="SpatialData.cDatasetCompatilibity"/> to find the image for.</param>
+        ''' <returns>A bitmap, or nothing if not applicable.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetImage(comp As SpatialData.cDatasetCompatilibity) As Bitmap
+            Select Case comp.Compatibility
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NotSet
+                    Return My.Resources.Question
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.Errors
+                    Return My.Resources.Critical
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
+                    Return My.Resources.database_NA
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
+                    Return My.Resources.database_warning
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
+                    Return My.Resources.database_warning
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
+                    Return My.Resources.Database
+                Case Else
+                    Debug.Assert(False)
             End Select
             Return Nothing
         End Function
