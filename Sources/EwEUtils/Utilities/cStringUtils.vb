@@ -550,7 +550,8 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Generic conversion helper, converts an integer value into a string using
-        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' the fixed EwE number format of decimal points, using custom decimal and
+        ''' thousands separators.
         ''' </summary>
         ''' <param name="iValue"></param>
         ''' <returns></returns>
@@ -572,7 +573,8 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Generic conversion helper, converts a single value into a string using
-        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' the fixed EwE number format of decimal points, using custom decimal and
+        ''' thousands separators.
         ''' </summary>
         ''' <param name="sValue"></param>
         ''' <returns></returns>
@@ -594,7 +596,8 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Generic conversion helper, converts a double value into a string using
-        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' the fixed EwE number format of decimal points, using custom decimal and
+        ''' thousands separators.
         ''' </summary>
         ''' <param name="dValue"></param>
         ''' <returns></returns>

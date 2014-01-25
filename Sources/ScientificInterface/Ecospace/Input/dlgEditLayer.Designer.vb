@@ -67,6 +67,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tpData.SuspendLayout()
@@ -157,9 +158,11 @@ Namespace Ecospace.Basemap.Layers
             Me.m_grid.AutoStretchRowsToFitHeight = False
             Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.FixedColumnWidths = True
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
             Me.m_grid.Layer = Nothing
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -177,7 +180,7 @@ Namespace Ecospace.Basemap.Layers
             'm_tsGrid
             '
             Me.m_tsGrid.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnImport, Me.m_tsbnExport})
+            Me.m_tsGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnImport, Me.m_tsbnExport, Me.ToolStripButton1})
             resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
             Me.m_tsGrid.Name = "m_tsGrid"
             Me.m_tsGrid.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -280,6 +283,12 @@ Namespace Ecospace.Basemap.Layers
             Me.m_hdrAppearance.IsCollapsed = False
             Me.m_hdrAppearance.Name = "m_hdrAppearance"
             '
+            'ToolStripButton1
+            '
+            Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.ToolStripButton1, "ToolStripButton1")
+            Me.ToolStripButton1.Name = "ToolStripButton1"
+            '
             'dlgEditLayer
             '
             resources.ApplyResources(Me, "$this")
@@ -337,6 +346,7 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_grid As ScientificInterface.gridLayerData
         Private WithEvents m_tsbnImport As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
+        Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
 
     End Class
 End Namespace
