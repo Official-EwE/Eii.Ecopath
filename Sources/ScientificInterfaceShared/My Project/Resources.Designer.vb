@@ -639,7 +639,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Errors|||The data contains errors. Please check.
+        '''  Looks up a localized string similar to {0} error(s)|||The data contains {0) error(s) for the Ecospace run period. Please check.
         '''</summary>
         Public ReadOnly Property COMPATIBILITY_ERRORS() As String
             Get
@@ -680,6 +680,15 @@ Namespace My.Resources
         Public ReadOnly Property COMPATIBILITY_PARTIALSPATIAL() As String
             Get
                 Return ResourceManager.GetString("COMPATIBILITY_PARTIALSPATIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0}% temporal overlap with {1}% partial and {2}% total area overlap..
+        '''</summary>
+        Public ReadOnly Property COMPATIBILITY_SUMMARY() As String
+            Get
+                Return ResourceManager.GetString("COMPATIBILITY_SUMMARY", resourceCulture)
             End Get
         End Property
         
