@@ -195,7 +195,7 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\gridApplyDatasets.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\gridApplyExternalSpatialData.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\gridExternalSpatialData.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">

@@ -51,28 +51,6 @@ Namespace Ecospace.Controls
         Implements IUIElement
         Implements IDisposable
 
-#Region " Private classes "
-
-        Private Class cConnectionInfo
-
-            Public Sub New(ds As ISpatialDataSet, cv As ISpatialDataConverter, _
-                           Optional scale As Double = 1, _
-                           Optional scaleType As cSpatialScalarDataAdapter.eScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative)
-                Me.Dataset = ds
-                Me.Converter = cv
-                Me.Scale = scale
-                Me.ScaleType = scaleType
-            End Sub
-
-            Public Property Dataset As ISpatialDataSet = Nothing
-            Public Property Converter As ISpatialDataConverter = Nothing
-            Public Property Scale As Double = 1.0
-            Public Property ScaleType As cSpatialScalarDataAdapter.eScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
-
-        End Class
-
-#End Region ' Private classes
-
 #Region " Private variables "
 
         Private m_uic As cUIContext = Nothing
@@ -81,16 +59,15 @@ Namespace Ecospace.Controls
 
         ''' <summary>Selected data adapter</summary>
         Private m_adt As cSpatialDataAdapter = Nothing
-        ''' <summary>Selected layer</summary>
-        Private m_layer As cEcospaceLayer = Nothing
+        ''' <summary>Selected layer index</summary>
+        Private m_iLayer As Integer = -1
 
         ''' <summary>Flag to break looped layer change updates/notifications</summary>
         Private m_bInUpdate As Boolean = False
         Private m_bIsChanged As Boolean = False
         Private m_bIsScaling As Boolean = False
 
-        ''' <summary>Configuration to operate onto</summary>
-        Private m_lconnections As New List(Of cConnectionInfo)
+        Private m_iNumConn As Integer = 0
 
 #End Region ' Private variables
 
@@ -100,28 +77,18 @@ Namespace Ecospace.Controls
 
             Me.InitializeComponent()
             Me.m_adt = adt
-            Me.m_layer = layer
+            Me.m_iLayer = layer.Index
 
             Me.m_bIsScaling = (TypeOf adt Is cSpatialScalarDataAdapterBase)
 
-            ' Copy configuration
-            Dim iConn As Integer = 0
-            Dim conn As cConnectionInfo = Nothing
-
-            Me.m_lconnections.Clear()
+            ' Count number of configured connections
             For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
                 If adt.Dataset(layer.Index, i) IsNot Nothing Then
-                    conn = New cConnectionInfo(adt.Dataset(layer.Index, i), adt.Converter(layer.Index, i))
-                    If (Me.m_bIsScaling) Then
-                        With DirectCast(adt, cSpatialScalarDataAdapterBase)
-                            conn.Scale = .DataScale(layer.Index, i)
-                            conn.ScaleType = .DataScaleType(layer.Index, i)
-                        End With
-                    End If
-                    Me.m_lconnections.Add(conn)
+                    Me.m_iNumConn += 1
                 End If
             Next
             Me.UIContext = uic
+            Me.Text = String.Format(Me.Text, layer.Name)
 
         End Sub
 
@@ -143,7 +110,7 @@ Namespace Ecospace.Controls
 
                     ' Disconnect from data objects first; we do not want disconnecting UI elements from screwing up the last configuration
                     Me.m_adt = Nothing
-                    Me.m_layer = Nothing
+                    Me.m_iLayer = Nothing
 
                     Me.m_lbSourceDatasets.UIContext = Nothing
                     Me.m_gridConnections.UIContext = Nothing
@@ -178,15 +145,14 @@ Namespace Ecospace.Controls
 
             ' Dynamic makeup
             Me.m_tsbnFilter.Image = SharedResources.FilterHS
-            Me.m_tsbnManage.Image = SharedResources.Database
-            Me.Text = String.Format(Me.Text, Me.m_layer.Name)
+            Me.m_tsbnDefineConnections.Image = SharedResources.Database
 
             ' Start listening to grid events
             AddHandler Me.m_gridConnections.OnSelectionChanged, AddressOf OnSelectDS
 
             ' Populate
-            For i As Integer = 0 To Me.m_lconnections.Count - 1
-                Me.m_gridConnections.Add(Me.m_lconnections(i).Dataset, (i = Me.m_lconnections.Count - 1))
+            For i As Integer = 1 To Me.m_iNumConn
+                Me.m_gridConnections.Add(Me.m_adt.Dataset(m_iLayer, i), (i = Me.m_iNumConn))
             Next
 
             Me.m_bInUpdate = False
@@ -196,10 +162,17 @@ Namespace Ecospace.Controls
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+
+            If Me.m_bIsChanged Then
+                Me.m_man.Update()
+                Me.m_uic.Core.onChanged(Me.m_uic.Core.EcospaceBasemap)
+                Me.m_bIsChanged = False
+            End If
+
             RemoveHandler Me.m_gridConnections.OnSelectionChanged, AddressOf OnSelectDS
             Me.UIContext = Nothing
             MyBase.OnFormClosed(e)
-            Me.UIContext = Nothing
+
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -220,7 +193,7 @@ Namespace Ecospace.Controls
 #Region " Manage datasets "
 
         Private Sub OnManageConnections(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnManage.Click
+            Handles m_tsbnDefineConnections.Click
             Try
                 Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditSpatialDatasets")
                 If (cmd IsNot Nothing) Then
@@ -250,44 +223,57 @@ Namespace Ecospace.Controls
         Private Sub OnAddDataset(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAdd.Click, m_lbSourceDatasets.DoubleClick
 
-            'Me.m_bInUpdate = True
-
+            Me.m_bInUpdate = True
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
             Try
                 Dim ds As ISpatialDataSet = Me.m_lbSourceDatasets.SelectedDataset
-                If (ds IsNot Nothing) And (Me.m_lconnections.Count < cSpatialDataStructures.cMAX_CONN) Then
-                    Dim conn As New cConnectionInfo(ds, Nothing)
-                    Me.m_lconnections.Add(conn)
-                    Me.m_gridConnections.Add(conn.Dataset, True)
+                If (ds IsNot Nothing) And (Me.m_iNumConn < cSpatialDataStructures.cMAX_CONN) Then
+                    Me.m_iNumConn += 1
+                    Me.m_adt.Dataset(m_iLayer, Me.m_iNumConn) = ds
+                    Me.LayerChanged()
 
-                    Me.updateConfig()
+                    Me.m_gridConnections.Add(ds, True)
                 End If
             Catch ex As Exception
 
             End Try
-
-
-
-            'Me.m_bInUpdate = False
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+            Me.m_bInUpdate = False
+            Me.UpdateControls()
 
         End Sub
 
         Private Sub OnRemoveDataset(sender As System.Object, e As System.EventArgs) _
             Handles m_btnRemove.Click
 
+            Dim iConn As Integer = Me.m_gridConnections.SelectedRow
+
+            If (iConn < 1 Or iConn > Me.m_iNumConn) Then Return
+
             Me.m_bInUpdate = True
-
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
             Try
-                Dim conn As cConnectionInfo = Me.SelectedConnection()
-                If (conn IsNot Nothing) Then
-                    Me.m_gridConnections.Remove(Me.m_gridConnections.SelectedDataset)
-                    Me.m_lconnections.Remove(conn)
+                For i As Integer = iConn To Me.m_iNumConn - 1
+                    Me.m_adt.Dataset(Me.m_iLayer, i) = Me.m_adt.Dataset(Me.m_iLayer, i + 1)
+                    Me.m_adt.Converter(Me.m_iLayer, i) = Me.m_adt.Converter(Me.m_iLayer, i + 1)
+                    If (TypeOf m_adt Is cSpatialScalarDataAdapterBase) Then
+                        With DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
+                            .DataScale(Me.m_iLayer, i) = .DataScale(Me.m_iLayer, i + 1)
+                            .DataScaleType(Me.m_iLayer, i) = .DataScaleType(Me.m_iLayer, i + 1)
+                        End With
+                    End If
+                Next
+                Me.m_adt.Dataset(Me.m_iLayer, Me.m_iNumConn) = Nothing
 
-                    Me.updateConfig()
-                End If
+                Me.m_iNumConn -= 1
+                Me.LayerChanged()
+
+                Me.m_gridConnections.Remove(Me.m_gridConnections.SelectedDataset)
             Catch ex As Exception
 
             End Try
-
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+            Me.UpdateControls()
             Me.m_bInUpdate = False
 
         End Sub
@@ -398,18 +384,22 @@ Namespace Ecospace.Controls
         Private Sub OnDatScaleTypeChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbAbsolute.CheckedChanged, m_rbRelative.CheckedChanged
 
-            If Me.m_bInUpdate Then Return
+            Dim iLayer As Integer = m_iLayer
+            Dim iConn As Integer = Me.SelectedConnectionIndex
+
+            If (Me.m_bInUpdate) Then Return
+            If (iConn = -1) Then Return
 
             Try
                 If (Me.m_bIsScaling) Then
-                    Dim conn As cConnectionInfo = Me.SelectedConnection()
-
-                    If (Me.m_rbAbsolute.Checked) Then
-                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Absolute
-                    Else
-                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
-                    End If
-                    Double.TryParse(Me.m_tbxScale.Text, conn.Scale)
+                    With DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
+                        If (Me.m_rbAbsolute.Checked) Then
+                            .DataScaleType(iLayer, iConn) = cSpatialScalarDataAdapterBase.eScaleType.Absolute
+                        Else
+                            .DataScaleType(iLayer, iConn) = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        End If
+                        Double.TryParse(Me.m_tbxScale.Text, .DataScale(iLayer, iConn))
+                    End With
 
                     ' Invalidate the cached data for this dataset
                     ' ToDo_JS: Make dataset clearing more sublte. 
@@ -442,8 +432,10 @@ Namespace Ecospace.Controls
 
             Try
                 If (Me.m_bIsScaling) Then
-                    Dim conn As cConnectionInfo = Me.SelectedConnection()
-                    Double.TryParse(Me.m_tbxScale.Text, conn.Scale)
+                    With DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
+                        ' ToDo: use format provider here
+                        Double.TryParse(Me.m_tbxScale.Text, .DataScale(Me.m_iLayer, Me.SelectedConnectionIndex))
+                    End With
                 End If
 
                 ' Invalidate the cached data for this dataset
@@ -466,27 +458,23 @@ Namespace Ecospace.Controls
                 Debug.Assert(Me.m_bIsScaling)
                 Debug.Assert(Me.SelectedConnectionIndex <> -1)
 
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'HACK This needs to be sorted out still 
-                'For now just plough ahead even if the dataset is indexing
-
                 ' Wait for indexing to stop
-                While Me.SelectedDataset.IsIndexing()
-                    Me.m_manSets.IndexDataset = Nothing
-                End While
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'While Me.SelectedDataset.IsIndexing()
+                ' JS: at least try to stop the indexing process
+                Me.m_manSets.IndexDataset = Nothing
+                'End While
 
                 Me.UpdateControls()
                 Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
-                Dim conn As cConnectionInfo = Me.SelectedConnection()
 
                 Dim iStartTimeStep As Integer = Math.Max(1, Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.SelectedDataset.TimeStart))
                 Dim dtStartDate As DateTime = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStartTimeStep)
                 Dim dScale As Double = 1.0
                 Dim msg As cMessage = Nothing
+                Dim iConn As Integer = Me.SelectedConnectionIndex
 
                 ' Perform calculation
-                Select Case ssda.CalculateScaleFromEcopathTimePeriod(Me.m_layer.Index, iStartTimeStep, Me.SelectedConnectionIndex + 1, dScale)
+                Select Case ssda.CalculateScaleFromEcopathTimePeriod(m_iLayer, iStartTimeStep, iConn, dScale)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
                         msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX), _
@@ -500,8 +488,10 @@ Namespace Ecospace.Controls
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case Else
                         ' Only when ok
-                        conn.Scale = dScale
-                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        With DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
+                            .DataScale(Me.m_iLayer, iConn) = dScale
+                            .DataScaleType(Me.m_iLayer, iConn) = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        End With
 
                 End Select
 
@@ -526,27 +516,7 @@ Namespace Ecospace.Controls
 
         Private Sub OnOK(sender As Object, e As System.EventArgs) Handles m_btnOK.Click
 
-            ' If Me.m_bIsChanged Then
-
-            ' Apply configuration changes
-            Me.updateConfig()
-
-            'Tell the core
-            Me.m_man.Update()
-            Me.m_uic.Core.onChanged(Me.m_uic.Core.EcospaceBasemap)
-            Me.m_bIsChanged = False
-            ' End If
-
-            'Close the dialogue
             Me.DialogResult = Windows.Forms.DialogResult.OK
-            Me.Close()
-
-        End Sub
-
-        Private Sub OnCancel(sender As Object, e As System.EventArgs) Handles m_btnCancel.Click
-
-            Me.m_bIsChanged = False
-            Me.DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
 
         End Sub
@@ -556,33 +526,6 @@ Namespace Ecospace.Controls
 #End Region ' Control events
 
 #Region " Internals "
-
-
-        Private Sub updateConfig()
-
-            Dim conn As cConnectionInfo = Nothing
-
-            ' Apply configuration changes
-            For i As Integer = 0 To cSpatialDataStructures.cMAX_CONN - 1
-                conn = Nothing
-                If (i < Me.m_lconnections.Count) Then
-                    conn = m_lconnections(i)
-                    Me.m_adt.Dataset(Me.m_layer.Index, i + 1) = conn.Dataset
-                    Me.m_adt.Converter(Me.m_layer.Index, i + 1) = conn.Converter
-                    If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
-                        With DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
-                            .DataScale(Me.m_layer.Index, i + 1) = conn.Scale
-                            .DataScaleType(Me.m_layer.Index, i + 1) = conn.ScaleType
-                        End With
-                    End If
-                Else
-                    Me.m_adt.Dataset(Me.m_layer.Index, i + 1) = Nothing
-                    Me.m_adt.Converter(Me.m_layer.Index, i + 1) = Nothing
-                End If
-            Next
-
-
-        End Sub
 
         Private Sub FillSourceDatasetBox()
 
@@ -596,21 +539,24 @@ Namespace Ecospace.Controls
 
         Private Sub UpdateControls()
 
-            Dim conn As cConnectionInfo = Me.SelectedConnection
-            Dim bHasConnectionSelected As Boolean = (conn IsNot Nothing)
+            Dim iLayer As Integer = m_iLayer
+            Dim iConn As Integer = Me.SelectedConnectionIndex
+            Dim bHasConnectionSelected As Boolean = (iConn <> -1)
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
             Dim bCanConfigDS As Boolean = False
             Dim bCanConfigCV As Boolean = False
+            Dim bCanCalcScaling As Boolean = False
             Dim bIsConfigured As Boolean = False
             Dim bNeedsConverter As Boolean = False
             Dim bNeedsScaling As Boolean = False
             Dim bCanAddDS As Boolean = False
             Dim bCanRemoveDS As Boolean = False
+            Dim comp As cDatasetCompatilibity.eCompatibilityTypes = cDatasetCompatilibity.eCompatibilityTypes.NotSet
 
             If (bHasConnectionSelected) Then
-                ds = conn.Dataset
-                cv = conn.Converter
+                ds = Me.m_adt.Dataset(iLayer, iConn)
+                cv = Me.m_adt.Converter(iLayer, iConn)
             End If
 
             If (ds IsNot Nothing) Then
@@ -620,20 +566,24 @@ Namespace Ecospace.Controls
                 bNeedsScaling = Me.m_bIsScaling
                 bCanRemoveDS = True
 
-                bIsConfigured = ds.IsConfigured
-                If (ds.IsConfigured) And (bNeedsConverter) Then
+                If (ds.IsConfigured) And (Not bNeedsConverter) Then
+                    bIsConfigured = True
+                Else
+                    bIsConfigured = False
                     If (cv IsNot Nothing) Then
                         If cv.IsCompatible(ds) Then
                             bIsConfigured = cv.IsConfigured
-                        Else
-                            bIsConfigured = False
-                        End If
-                    Else
-                        bIsConfigured = False
+                         End If
                     End If
                 End If
 
+                If (bIsConfigured And bNeedsScaling) Then
+                    Dim worker As New cDatasetCompatilibity(Me.m_uic.Core, ds)
+                    comp = worker.Compatibility
+                    bCanCalcScaling = (comp = cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial) Or (comp = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap)
+                End If
             End If
+
 
             bCanAddDS = (Me.m_gridConnections.RowsCount < cSpatialDataStructures.cMAX_CONN) And (Me.SourceDataset IsNot Nothing)
 
@@ -651,7 +601,7 @@ Namespace Ecospace.Controls
 
             Me.m_plScalarAdapter.Enabled = bHasConnectionSelected And bNeedsScaling
             Me.m_plScalarAdapter.Visible = bNeedsScaling
-            Me.m_btnCalculate.Enabled = bIsConfigured
+            Me.m_btnCalculate.Enabled = bNeedsScaling And bCanCalcScaling
 
             Me.m_btnAdd.Enabled = bCanAddDS
             Me.m_btnRemove.Enabled = bCanRemoveDS
@@ -660,14 +610,21 @@ Namespace Ecospace.Controls
 
         Private Sub UpdateDatasetPanel()
 
-            Dim conn As cConnectionInfo = Me.SelectedConnection
+            Dim iConn As Integer = Me.SelectedConnectionIndex
             Dim ds As ISpatialDataSet = Nothing
-            If (conn IsNot Nothing) Then
 
-                ds = conn.Dataset
-                Dim comp As New cDatasetCompatilibity(Me.UIContext.Core, ds)
+            If (iConn > 0) Then
+
+                ds = Me.m_adt.Dataset(Me.m_iLayer, iConn)
                 Me.m_lblDatasetInfo.Text = ds.DisplayName
-                Me.m_lblCompatibility.Text = comp.ToString
+
+                Dim comp As New cDatasetCompatilibity(Me.UIContext.Core, ds)
+                Dim fmt As New cSpatialDatasetCompatibilityFormatter()
+                Me.m_lblCompatibility.Text = fmt.Summary(comp)
+
+            Else
+                Me.m_lblDatasetInfo.Text = ""
+                Me.m_lblCompatibility.Text = ""
             End If
 
         End Sub
@@ -677,18 +634,18 @@ Namespace Ecospace.Controls
         ''' </summary>
         Private Sub UpdateConversionPanel()
 
-            Dim conn As cConnectionInfo = Me.SelectedConnection
+            Dim iConn As Integer = Me.SelectedConnectionIndex
             Dim ds As ISpatialDataSet = Nothing
 
             Me.m_cmbConverter.Items.Clear()
 
-            If (conn IsNot Nothing) Then
-                ds = conn.Dataset
+            If (iConn > 0) Then
+                ds = Me.m_adt.Dataset(Me.m_iLayer, iConn)
                 For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates(ds)
-                    If (conn.Converter Is Nothing) Then conn.Converter = cvTest
+                    If (Me.m_adt.Converter(Me.m_iLayer, iConn) Is Nothing) Then Me.m_adt.Converter(Me.m_iLayer, iConn) = cvTest
                     Me.m_cmbConverter.Items.Add(cvTest)
                 Next
-                Me.SelectConverter(conn.Converter)
+                Me.SelectConverter(Me.m_adt.Converter(Me.m_iLayer, iConn))
             End If
 
         End Sub
@@ -730,9 +687,9 @@ Namespace Ecospace.Controls
             Set(dataset As ISpatialDataSet)
 
                 ' Apply
-                Dim conn As cConnectionInfo = Me.SelectedConnection()
-                If (conn IsNot Nothing) Then
-                    conn.Dataset = dataset
+                Dim iConn As Integer = Me.SelectedConnectionIndex
+                If (iConn > 0) Then
+                    Me.m_adt.Dataset(Me.m_iLayer, iConn) = dataset
                     Me.m_manSets.IndexDataset = dataset
                 End If
 
@@ -744,19 +701,14 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
-        Private ReadOnly Property SelectedConnection As cConnectionInfo
-            Get
-                Dim iRow As Integer = Me.m_gridConnections.SelectedRow
-                If (iRow <= Me.m_lconnections.Count) And (iRow >= 1) Then Return Me.m_lconnections(iRow - 1)
-                Return Nothing
-            End Get
-        End Property
-
+        ''' <summary>
+        ''' Get the one-based connection index
+        ''' </summary>
         Private ReadOnly Property SelectedConnectionIndex As Integer
             Get
                 Dim iRow As Integer = Me.m_gridConnections.SelectedRow
-                If (iRow <= Me.m_lconnections.Count) And (iRow >= 1) Then Return iRow - 1
-                Return -1
+                If (iRow < 1) Or (iRow > Me.m_iNumConn) Then Return -1
+                Return iRow
             End Get
         End Property
 
@@ -776,20 +728,14 @@ Namespace Ecospace.Controls
 
         Private Property SelectedConverter As ISpatialDataConverter
             Get
-                Dim conn As cConnectionInfo = Me.SelectedConnection
-                If (conn Is Nothing) Then Return Nothing
-                Return conn.Converter
+                Return Me.m_adt.Converter(m_iLayer, Me.SelectedConnectionIndex)
             End Get
             Set(converter As ISpatialDataConverter)
-                Dim conn As cConnectionInfo = Me.SelectedConnection
-                If (conn Is Nothing) Then Return
 
                 ' Apply
-                If (Not Object.ReferenceEquals(conn.Converter, converter)) Then
-                    conn.Converter = converter
-                    If Not Me.m_bInUpdate Then
-                        Me.LayerChanged()
-                    End If
+                If (Not Object.ReferenceEquals(Me.m_adt.Converter(m_iLayer, Me.SelectedConnectionIndex), converter)) Then
+                    Me.m_adt.Converter(m_iLayer, Me.SelectedConnectionIndex) = converter
+                    Me.LayerChanged()
                 End If
 
             End Set
@@ -818,12 +764,8 @@ Namespace Ecospace.Controls
         End Function
 
         Private Sub LayerChanged()
-
-            If (Me.SelectedConnection Is Nothing) Then Return
             If (Me.m_bInUpdate) Then Return
-
             Me.m_bIsChanged = True
-
         End Sub
 
 #Region " Scalar data adapter "
@@ -832,20 +774,22 @@ Namespace Ecospace.Controls
 
             If (Not Me.m_bIsScaling) Then Return
 
-            Dim conn As cConnectionInfo = Me.SelectedConnection
-            If (conn Is Nothing) Then Return
+            Dim iConn As Integer = Me.SelectedConnectionIndex
+            If (iConn <= 0) Then Return
 
             Dim bInUpdate As Boolean = Me.m_bInUpdate
             Me.m_bInUpdate = True
 
-            Select Case conn.ScaleType
-                Case cSpatialScalarDataAdapterBase.eScaleType.Absolute
-                    Me.m_rbAbsolute.Checked = True
-                Case cSpatialScalarDataAdapterBase.eScaleType.Relative
-                    Me.m_rbRelative.Checked = True
-            End Select
-            ' ToDo: use format provider here
-            Me.m_tbxScale.Text = CStr(conn.Scale)
+            With DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
+                Select Case .DataScaleType(Me.m_iLayer, iConn)
+                    Case cSpatialScalarDataAdapterBase.eScaleType.Absolute
+                        Me.m_rbAbsolute.Checked = True
+                    Case cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        Me.m_rbRelative.Checked = True
+                End Select
+                ' ToDo: use format provider here
+                Me.m_tbxScale.Text = CStr(.DataScale(Me.m_iLayer, iConn))
+            End With
 
             Me.m_bInUpdate = bInUpdate
 
@@ -924,7 +868,7 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
 
         End Sub
-#End If
+#End If ' 0
 
 #End Region ' Disabled bits that may come in handy again
 

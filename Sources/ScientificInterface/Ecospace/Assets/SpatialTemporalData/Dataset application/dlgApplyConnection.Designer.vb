@@ -47,20 +47,20 @@ Namespace Ecospace.Controls
             Me.m_plDataset = New System.Windows.Forms.Panel()
             Me.m_lblCompatibility = New System.Windows.Forms.Label()
             Me.m_lblDatasetInfo = New System.Windows.Forms.Label()
+            Me.m_lblCompat = New System.Windows.Forms.Label()
             Me.m_lblDataset = New System.Windows.Forms.Label()
             Me.m_btnConfigDS = New System.Windows.Forms.Button()
             Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrConnections = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnFilter = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnManage = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnDefineConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_btnOK = New System.Windows.Forms.Button()
-            Me.m_btnCancel = New System.Windows.Forms.Button()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_plAvailable = New System.Windows.Forms.Panel()
+            Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_btnAdd = New System.Windows.Forms.Button()
-            Me.m_lbSourceDatasets = New cSpatialDatasetListbox()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
@@ -199,6 +199,7 @@ Namespace Ecospace.Controls
             '
             Me.m_plDataset.Controls.Add(Me.m_lblCompatibility)
             Me.m_plDataset.Controls.Add(Me.m_lblDatasetInfo)
+            Me.m_plDataset.Controls.Add(Me.m_lblCompat)
             Me.m_plDataset.Controls.Add(Me.m_lblDataset)
             Me.m_plDataset.Controls.Add(Me.m_btnConfigDS)
             Me.m_plDataset.Controls.Add(Me.m_hdrConfig)
@@ -214,6 +215,11 @@ Namespace Ecospace.Controls
             '
             resources.ApplyResources(Me.m_lblDatasetInfo, "m_lblDatasetInfo")
             Me.m_lblDatasetInfo.Name = "m_lblDatasetInfo"
+            '
+            'm_lblCompat
+            '
+            resources.ApplyResources(Me.m_lblCompat, "m_lblCompat")
+            Me.m_lblCompat.Name = "m_lblCompat"
             '
             'm_lblDataset
             '
@@ -245,7 +251,7 @@ Namespace Ecospace.Controls
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnFilter, Me.m_tsbnManage})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnFilter, Me.m_tsbnDefineConnections})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -257,22 +263,16 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_tsbnFilter, "m_tsbnFilter")
             Me.m_tsbnFilter.Name = "m_tsbnFilter"
             '
-            'm_tsbnManage
+            'm_tsbnDefineConnections
             '
-            resources.ApplyResources(Me.m_tsbnManage, "m_tsbnManage")
-            Me.m_tsbnManage.Name = "m_tsbnManage"
+            resources.ApplyResources(Me.m_tsbnDefineConnections, "m_tsbnDefineConnections")
+            Me.m_tsbnDefineConnections.Name = "m_tsbnDefineConnections"
             '
             'm_btnOK
             '
             resources.ApplyResources(Me.m_btnOK, "m_btnOK")
             Me.m_btnOK.Name = "m_btnOK"
             Me.m_btnOK.UseVisualStyleBackColor = True
-            '
-            'm_btnCancel
-            '
-            resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
-            Me.m_btnCancel.Name = "m_btnCancel"
-            Me.m_btnCancel.UseVisualStyleBackColor = True
             '
             'm_scMain
             '
@@ -296,6 +296,15 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_plAvailable, "m_plAvailable")
             Me.m_plAvailable.Name = "m_plAvailable"
             '
+            'm_lbSourceDatasets
+            '
+            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
+            Me.m_lbSourceDatasets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbSourceDatasets.Filter = EwEUtils.Core.eVarNameFlags.NotSet
+            Me.m_lbSourceDatasets.FormattingEnabled = True
+            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
+            Me.m_lbSourceDatasets.UIContext = Nothing
+            '
             'm_btnRemove
             '
             resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
@@ -308,19 +317,12 @@ Namespace Ecospace.Controls
             Me.m_btnAdd.Name = "m_btnAdd"
             Me.m_btnAdd.UseVisualStyleBackColor = True
             '
-            'm_lbSourceDatasets
-            '
-            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
-            Me.m_lbSourceDatasets.FormattingEnabled = True
-            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
-            '
             'dlgApplyConnection
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ControlBox = False
             Me.Controls.Add(Me.m_scMain)
-            Me.Controls.Add(Me.m_btnCancel)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_tsMain)
             Me.MinimizeBox = False
@@ -363,9 +365,8 @@ Namespace Ecospace.Controls
         Private WithEvents m_lblDataset As System.Windows.Forms.Label
         Private WithEvents m_btnConfigDS As System.Windows.Forms.Button
         Private WithEvents m_btnOK As System.Windows.Forms.Button
-        Private WithEvents m_btnCancel As System.Windows.Forms.Button
         Private WithEvents m_tsbnFilter As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsbnManage As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnDefineConnections As System.Windows.Forms.ToolStripButton
         Private WithEvents m_hdrConfig As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_plAvailable As System.Windows.Forms.Panel
@@ -377,6 +378,7 @@ Namespace Ecospace.Controls
         Private WithEvents m_btnRemove As System.Windows.Forms.Button
         Private WithEvents m_btnAdd As System.Windows.Forms.Button
         Private WithEvents m_lbSourceDatasets As cSpatialDatasetListbox
+        Private WithEvents m_lblCompat As System.Windows.Forms.Label
 
     End Class
 
