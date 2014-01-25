@@ -127,7 +127,7 @@ Namespace SpatialData
 
         ''' <summary>Compatibility levels.</summary>
         Public Enum eCompatibilityTypes As Integer
-            ''' <summary>Incomplete assessment.</summary>
+            ''' <summary>Assessment has not been performed yet.</summary>
             NotSet = 0
             ''' <summary>Errors occurred while assessing the compatibility.</summary>
             ''' <remarks>The number of erroneous data sets can be checked via <see cref="NumError"/>.</remarks>
@@ -355,7 +355,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Perform assessment.
+        ''' Perform the assessment of a dataset for a given number of time steps.
         ''' </summary>
         ''' <param name="iTimeStart"></param>
         ''' <param name="iNumTimeSteps"></param>
@@ -385,9 +385,11 @@ Namespace SpatialData
                 Select Case CompatibilityAt(iStep)
 
                     Case eCompatibilityTypes.NoTemporal
-                        ' NOP
+                        ' No temporal overlap.
 
                     Case eCompatibilityTypes.NotSet
+                        ' Compatibility for this time step has not been assessed.
+                        ' Just count the time step, make no other assumptions.
                         Me.m_iNumTimeOverlap += 1
 
                     Case eCompatibilityTypes.NoSpatial
