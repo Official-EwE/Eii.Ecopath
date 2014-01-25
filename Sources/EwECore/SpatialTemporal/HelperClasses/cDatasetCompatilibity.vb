@@ -305,6 +305,9 @@ Namespace SpatialData
 
             Select Case Me.Compatibility
 
+                Case eCompatibilityTypes.NotSet
+                    Return My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOTSET
+
                 Case eCompatibilityTypes.Errors
                     Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NODATA, CInt(Math.Ceiling(100 * Me.m_iNumError / iNumOverlap)))
 
