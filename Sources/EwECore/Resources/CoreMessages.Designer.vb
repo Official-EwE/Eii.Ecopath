@@ -2453,56 +2453,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}% temporal overlap with {1}% partial and {2}% total area overlap..
-        '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_COMPATIBILITY() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_COMPATIBILITY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Loading external data for &apos;{0}&apos; at time {1} ({2:yyyy/MM/dd}).
         '''</summary>
         Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_LOADING() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_LOADING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Data for {0}% time steps could not be loaded.
-        '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NODATA() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NODATA", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to External data does not spatilly overlap with the model area.
-        '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOSPATIALOVERLAP() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NOSPATIALOVERLAP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to No external data found for the Ecospace run time.
-        '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOTIMEOVERLAP() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NOTIMEOVERLAP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to (not indexed).
-        '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOTSET() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NOTSET", resourceCulture)
             End Get
         End Property
         
