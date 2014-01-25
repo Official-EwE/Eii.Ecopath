@@ -96,10 +96,12 @@ Namespace SpatialData
                     Me.m_dsCurrent = Me.m_dsNext
                     ' Is there more to do?
                     If (Me.m_dsCurrent IsNot Nothing) Then
-                        ' #Yes: start thread. Note that the dying thread will move the indexing queue forward
-                        Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
-                        Me.m_threadIndex.Priority = Threading.ThreadPriority.BelowNormal
-                        Me.m_threadIndex.Start()
+                        'jb Turn the indexing off until we sort out where the deadlock with the Apply Dialogue is
+                        'and I think it's indexing during a run
+                        '' #Yes: start thread. Note that the dying thread will move the indexing queue forward
+                        'Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
+                        'Me.m_threadIndex.Priority = Threading.ThreadPriority.BelowNormal
+                        'Me.m_threadIndex.Start()
                     End If
                 End If
 
