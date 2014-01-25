@@ -471,9 +471,9 @@ Namespace Ecospace.Controls
                 'For now just plough ahead even if the dataset is indexing
 
                 ' Wait for indexing to stop
-                'While Me.SelectedDataset.IsIndexing()
-                '    Me.m_manSets.IndexDataset = Nothing
-                'End While
+                While Me.SelectedDataset.IsIndexing()
+                    Me.m_manSets.IndexDataset = Nothing
+                End While
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 Me.UpdateControls()
