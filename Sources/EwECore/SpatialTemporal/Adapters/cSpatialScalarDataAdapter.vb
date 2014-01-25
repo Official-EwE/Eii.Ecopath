@@ -220,18 +220,21 @@ Namespace SpatialData
                     ' Do the spatial magics
                     If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
                         rs = ds.GetRaster(cv, strLayerName)
-
-                        For iRow As Integer = 1 To iInRow
-                            For iCol As Integer = 1 To iInCol
-                                If depth.IsWaterCell(iRow, iCol) Then
-                                    Dim dval As Double = rs.Cell(iRow, iCol)
-                                    If (dval <> cCore.NULL_VALUE And dval <> rs.NoData) Then
-                                        iNumWaterCells += 1
-                                        dMapTotValue += dval
+                        If rs IsNot Nothing Then
+                            For iRow As Integer = 1 To iInRow
+                                For iCol As Integer = 1 To iInCol
+                                    If depth.IsWaterCell(iRow, iCol) Then
+                                        Dim dval As Double = rs.Cell(iRow, iCol)
+                                        If (dval <> cCore.NULL_VALUE And dval <> rs.NoData) Then
+                                            iNumWaterCells += 1
+                                            dMapTotValue += dval
+                                        End If
                                     End If
-                                End If
+                                Next
                             Next
-                        Next
+                        Else
+                            'Log message raster not read
+                        End If
 
                         ds.Unlock()
                     End If
@@ -256,7 +259,7 @@ Namespace SpatialData
 
             ' Report for the calculation period
             Dim comp As New cDatasetCompatilibity(Me.m_core, ds, iTSMin, iTSMax - iTSMin)
-            Return comp.Compatibility
+            Return cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap 'comp.Compatibility
 
         End Function
 
