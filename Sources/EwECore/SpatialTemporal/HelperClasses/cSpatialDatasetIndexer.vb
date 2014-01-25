@@ -29,7 +29,7 @@ Namespace SpatialData
     ''' Helper class that performs the task of indexing one spatial dataset at the time.
     ''' The indexer has a queue of datasets to index.
     ''' </summary>
-    Public Class cSpatialDatasetIndexer
+    Friend Class cSpatialDatasetIndexer
 
 #Region " Private vars "
 
@@ -68,13 +68,16 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub Add(ds As ISpatialDataSet)
 
+            ' JS 140125: disabled indexing for now until it no longer interferes with running the spatial temporal data framework
+            Return
+
             ' Check if there is work to do
             If (ds IsNot Nothing) Then
                 ' Check if we really need to do this
                 Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
                 ' Is set full indexed?
                 If (comp.NumIndexed = comp.NumOverlappingTimeSteps) Then
-                    ' #Yes: nothing to index
+                    ' #Yes: nothing to index for the current scenario
                     ' JS: This could also stop the indexer. Not sure what is the best approach
                     Return
                 End If
@@ -96,12 +99,10 @@ Namespace SpatialData
                     Me.m_dsCurrent = Me.m_dsNext
                     ' Is there more to do?
                     If (Me.m_dsCurrent IsNot Nothing) Then
-                        'jb Turn the indexing off until we sort out where the deadlock with the Apply Dialogue is
-                        'and I think it's indexing during a run
-                        '' #Yes: start thread. Note that the dying thread will move the indexing queue forward
-                        'Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
-                        'Me.m_threadIndex.Priority = Threading.ThreadPriority.BelowNormal
-                        'Me.m_threadIndex.Start()
+                        ' #Yes: start thread. Note that the dying thread will move the indexing queue forward
+                        Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
+                        Me.m_threadIndex.IsBackground = True
+                        Me.m_threadIndex.Start()
                     End If
                 End If
 
@@ -115,6 +116,7 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub [Stop]()
+            ' JS140125: let's consider applying an abort timer here
             Me.Add(Nothing)
         End Sub
 
