@@ -25,6 +25,8 @@ Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports System.IO
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -342,6 +344,95 @@ Namespace Ecospace.Basemap.Layers
 
 #End Region ' Internal implementation
 
+        ''' <summary>
+        ''' OOH THIS IS HACK!
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Private Sub ToolStripButton1_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton1.Click
+
+            Dim sfd As New SaveFileDialog()
+            sfd.CheckPathExists = True
+            sfd.Title = "Pick output location for ASCII file (this is hack)"
+            sfd.Filter = "ASCII files|*.asc"
+            If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                Dim wr As New StreamWriter(sfd.FileName)
+                Me.SaveASCFile(wr)
+                wr.Close()
+
+            End If
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Write an entire ASCII file for a group, time step and variable.
+        ''' </summary>
+        ''' <param name="strm"></param>
+        ''' -----------------------------------------------------------------------
+        Protected Sub SaveASCFile(ByVal strm As StreamWriter)
+            Try
+                Me.WriteASCIIHeader(strm)
+                Me.WriteASCIIBody(strm)
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".WriteResults() Exception: " & ex.Message)
+            End Try
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Write ESRI ASCII header block.
+        ''' </summary>
+        ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
+        ''' -----------------------------------------------------------------------
+        Protected Sub WriteASCIIHeader(ByVal writer As StreamWriter)
+
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+            writer.WriteLine("ncols         " & bm.InCol)
+            writer.WriteLine("nrows         " & bm.InRow)
+            writer.WriteLine("xllcorner     " & bm.PosTopLeft.X)
+            writer.WriteLine("yllcorner     " & bm.PosBottomRight.Y)
+            writer.WriteLine("cellsize      " & bm.CellSize)
+            writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Write ESRI ASCII body block.
+        ''' </summary>
+        ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
+        ''' -----------------------------------------------------------------------
+        Protected Sub WriteASCIIBody(ByVal writer As StreamWriter)
+
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+            Dim value As Double = 0
+            Dim strValue As String = ""
+
+            For ir As Integer = 1 To bm.InRow
+                For ic As Integer = 1 To bm.InCol
+                    If ic > 1 Then writer.Write(" ")
+                    If depth.IsWaterCell(ir, ic) Or Me.m_layerWork.VarName = eVarNameFlags.LayerDepth Then
+                        value = CSng(Me.m_layerWork.Value(ir, ic))
+                    Else
+                        value = cCore.NULL_VALUE
+                    End If
+
+                    ' Fix #1321 - always make sure the first cell value is written as floating point
+                    strValue = cStringUtils.FormatNumber(value)
+                    If (ir = 1 And ic = 1) Then
+                        If (strValue.IndexOf("."c) = -1) Then
+                            strValue = strValue + ".0"
+                        End If
+                    End If
+
+                    writer.Write(strValue)
+                Next
+                writer.WriteLine("")
+            Next
+
+        End Sub
     End Class
 
 End Namespace

@@ -435,8 +435,8 @@ Namespace Controls.Map.Layers
         ''' <summary>
         ''' Get/set the value in the underlying data layer.
         ''' </summary>
-        ''' <param name="iRow"></param>
-        ''' <param name="iCol"></param>
+        ''' <param name="iRow">One-based row index</param>
+        ''' <param name="iCol">One-based column index</param>
         ''' -----------------------------------------------------------------------
         Public Overridable Property Value(ByVal iRow As Integer, ByVal iCol As Integer) As Object
             Get
