@@ -30,8 +30,6 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-' ToDo: perform indexing in a queue?
-
 Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
