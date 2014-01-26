@@ -53,6 +53,7 @@ Namespace SpatialData
         Private m_bReadOnly As Boolean = False
 
         Private m_indexer As cSpatialDatasetIndexer = Nothing
+        Private m_bIndexingAllowed As Boolean = False
 
 #End Region ' Private vars
 
@@ -71,7 +72,7 @@ Namespace SpatialData
             Me.m_fswSpy.Filter = "*.xml"
             Me.m_fswSpy.EnableRaisingEvents = True
 
-            Me.m_indexer = New cSpatialDatasetIndexer(Me.m_core)
+            Me.m_indexer = New cSpatialDatasetIndexer(core)
 
             AddHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
 
@@ -306,6 +307,23 @@ Namespace SpatialData
 
 #Region " Dataset indexing "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether spatial dataset indexing is allowed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property IsIndexingAllowed As Boolean
+            Get
+                Return m_bIndexingAllowed
+            End Get
+            Set(value As Boolean)
+                Me.m_bIndexingAllowed = value
+                If Not Me.m_bIndexingAllowed Then
+                    Me.m_indexer.Add(Nothing)
+                End If
+            End Set
+        End Property
+
         Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
             Dim result As Boolean = True
             Try
@@ -324,18 +342,23 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property IndexDataset As ISpatialDataSet
             Get
+                If (Not Me.IsIndexingAllowed) Then
+                    Return Nothing
+                End If
                 Return Me.m_indexer.Current
             End Get
             Set(ds As ISpatialDataSet)
-                ' JS 25jan14: Disabled indexing until it no longer interfers with running the spatial temporal framework.
-                ' A fundamental weakness in the indexing process is that it's ability to index, and more 
-                ' importantly, to stop indexing when needed, totally relies in a robust implementation of the
-                ' indexing logic within datasets. If a dataset deadlocks, the indexing process will stall
-                ' the ability to run, and may lock up user interfaces etc. This is not good.
+                If (Me.IsIndexingAllowed) Then
+                    ' JS 25jan14: Disabled indexing until it no longer interfers with running the spatial temporal framework.
+                    ' A fundamental weakness in the indexing process is that it's ability to index, and more 
+                    ' importantly, to stop indexing when needed, totally relies in a robust implementation of the
+                    ' indexing logic within datasets. If a dataset deadlocks, the indexing process will stall
+                    ' the ability to run, and may lock up user interfaces etc. This is not good.
 
-                ' As a solution, the spatial dataset indexer should be able to abort stalled indexing processes:
-                'Me.m_indexer.Add(ds, 5000) ' add with timeout
-                'Me.m_indexer.Add(ds)
+                    ' As a solution, the spatial dataset indexer should be able to abort stalled indexing processes:
+                    'Me.m_indexer.Add(ds, 5000) ' add with timeout
+                    Me.m_indexer.Add(ds)
+                End If
             End Set
         End Property
 
