@@ -186,7 +186,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the indexed spatial extent of data at a given time. Extent(s) should
-        ''' be gathered via <see cref="BuildIndex"/>
+        ''' be gathered via <see cref="UpdateIndexAtT"/>
         ''' </summary>
         ''' <param name="dateTime">The time to query data for. For practical
         ''' purposes, time is assumed to be rounded to months.</param>
@@ -203,27 +203,8 @@ Namespace SpatialData
         ''' Build the spatial extent index for the dataset for the Ecospace
         ''' run time.
         ''' </summary>
-        ''' <param name="dtStart">Index start date.</param>
-        ''' <param name="dtEnd">Index end date.</param>
-        ''' <param name="updatedelegate">Optional <see cref="BuildIndexUpdateDelegate">delegate</see> for reporting progress.</param>
         ''' -------------------------------------------------------------------
-        Sub BuildIndex(ByVal dtStart As DateTime, _
-                       ByVal dtEnd As DateTime, _
-                       Optional ByVal updatedelegate As BuildIndexUpdateDelegate = Nothing)
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Stop a running <see cref="BuildIndex"/> command.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Sub StopIndexing()
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Check whether a dataset is running a <see cref="BuildIndex"/> command.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Function IsIndexing() As Boolean
+        Sub UpdateIndexAtT(ByVal datetime As DateTime)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
