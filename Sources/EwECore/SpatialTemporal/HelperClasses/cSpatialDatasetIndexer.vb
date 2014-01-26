@@ -20,6 +20,7 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports System.Drawing
 
 #End Region ' Imports
 
@@ -88,12 +89,13 @@ Namespace SpatialData
 
                 ' Is indexing?
                 If (Me.m_dsCurrent IsNot Nothing) Then
-                    ' #Yes: tell current dataset to stop indexing graciously
-                    Me.m_dsCurrent.StopIndexing()
+                    ' #Yes: Stop processing current dataset
+                    Me.m_dsCurrent = Nothing
                 Else
                     ' #No: ah, ready for a new dataset to index
                     ' Get the dataset that is lined up next
                     Me.m_dsCurrent = Me.m_dsNext
+                    Me.m_dsNext = Nothing
                     ' Is there more to do?
                     If (Me.m_dsCurrent IsNot Nothing) Then
                         ' #Yes: start thread. Note that the dying thread will move the indexing queue forward
@@ -153,32 +155,60 @@ Namespace SpatialData
         Private Sub IndexDatasetThread()
 
             Dim ds As ISpatialDataSet = Me.m_dsCurrent
-            Debug.Assert(ds IsNot Nothing)
+            Dim iTS As Integer = 1
+            Dim nTS As Integer = Me.m_core.nEcospaceTimeSteps
+            Dim dt As DateTime
+            Dim ptfTL As New PointF(-180, 90)
+            Dim ptfBR As New PointF(180, -90)
+            Dim c As ISpatialDataCache = Nothing
+            Dim bDone As Boolean = False
 
-            Try
-                ' Start building index for the Ecospace run time
-                Me.m_dsCurrent.BuildIndex(Me.m_core.EcospaceTimestepToAbsoluteTime(1), _
-                                          Me.m_core.EcospaceTimestepToAbsoluteTime(Me.m_core.nEcospaceTimeSteps + 1), _
-                                          New ISpatialDataSet.BuildIndexUpdateDelegate(AddressOf OnSpatialIndexUpdated))
+            If (ds IsNot Nothing) Then
+                If (ds.IsConfigured) Then
 
-                Me.m_dsCurrent = Nothing
-                Me.m_threadIndex = Nothing
-                'Console.WriteLine("Done indexing " & ds.DisplayName)
+                    c = ds.Cache
 
-                ' Done (send just in case)
-                Me.OnSpatialIndexUpdated(ds, 1.0!)
+                    Try
 
-            Catch ex As Exception
-                cLog.Write(ex, "cSpatialDatasetIndexer::IndexDatasetThread(" & ds.DisplayName & ")")
-                'Console.WriteLine(ex.Message)
-            End Try
+                        While Not bDone
 
-            ' Next
+                            dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTS)
+                            If (ds.HasDataAtT(dt)) Then
+                                If (ds.IndexStatusAtT(dt) = ISpatialDataSet.eIndexStatus.NotIndexed) Then
+                                    ds.UpdateIndexAtT(dt)
+                                End If
+                                Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
+                                Me.OnSpatialIndexUpdated(ds, CSng(comp.NumIndexed / comp.NumOverlappingTimeSteps))
+                            End If
+
+                            ' Next
+                            iTS += 1
+                            bDone = (Not Object.ReferenceEquals(Me.m_dsCurrent, ds)) Or _
+                                    (iTS > Me.m_core.nEcospaceTimeSteps)
+                        End While
+
+                    Catch ex As Threading.ThreadAbortException
+                        ' NOP
+                    Catch ex As Exception
+                        cLog.Write(ex, "cSpatialDatasetIndexer::IndexDatasetThread(" & ds.DisplayName & ")")
+                        'Console.WriteLine(ex.Message)
+                    Finally
+                        ' Cleanup: restore cache
+                        ds.Cache = c
+                        ' Flag that this indexing is done
+                        Me.m_dsCurrent = Nothing
+                        ' Done threading
+                        Me.m_threadIndex = Nothing
+                        ' Done (send just in case)
+                        Me.OnSpatialIndexUpdated(ds, 1.0!)
+                    End Try
+                End If
+            End If
+
+            ' Next, if any
             Me.Add(Me.m_dsNext)
 
         End Sub
-
-        Private Delegate Sub OnSpatialIndexUpdatedDelegate(ByVal ds As ISpatialDataSet, ByVal sProgress As Single)
 
         Private Sub OnSpatialIndexUpdated(ByVal ds As ISpatialDataSet, ByVal sProgress As Single)
             If (Me.m_core IsNot Nothing) Then
