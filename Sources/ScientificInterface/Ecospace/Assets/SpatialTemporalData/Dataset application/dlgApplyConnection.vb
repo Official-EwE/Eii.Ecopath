@@ -546,7 +546,6 @@ Namespace Ecospace.Controls
             Dim cv As ISpatialDataConverter = Nothing
             Dim bCanConfigDS As Boolean = False
             Dim bCanConfigCV As Boolean = False
-            Dim bCanCalcScaling As Boolean = False
             Dim bIsConfigured As Boolean = False
             Dim bNeedsConverter As Boolean = False
             Dim bNeedsScaling As Boolean = False
@@ -580,7 +579,6 @@ Namespace Ecospace.Controls
                 If (bIsConfigured And bNeedsScaling) Then
                     Dim worker As New cDatasetCompatilibity(Me.m_uic.Core, ds)
                     comp = worker.Compatibility
-                    bCanCalcScaling = (comp = cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial) Or (comp = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap)
                 End If
             End If
 
@@ -601,7 +599,8 @@ Namespace Ecospace.Controls
 
             Me.m_plScalarAdapter.Enabled = bHasConnectionSelected And bNeedsScaling
             Me.m_plScalarAdapter.Visible = bNeedsScaling
-            Me.m_btnCalculate.Enabled = bNeedsScaling And bCanCalcScaling
+            ' Allow calc of scaling even if spatial compatibility has not been assessed yet, for indexing may have been turned off
+            Me.m_btnCalculate.Enabled = bNeedsScaling And bIsConfigured
 
             Me.m_btnAdd.Enabled = bCanAddDS
             Me.m_btnRemove.Enabled = bCanRemoveDS

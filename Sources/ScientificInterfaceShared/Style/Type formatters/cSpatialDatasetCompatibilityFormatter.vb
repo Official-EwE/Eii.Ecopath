@@ -113,6 +113,10 @@ Namespace Style
                      cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
                     Return Me.GetDescriptor(comp, eDescriptorTypes.Description)
 
+                Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
+                    Return String.Format(My.Resources.COMPATIBILITY_SUMMARY_NOINDEX, _
+                                         CInt(Math.Ceiling(100 * iNumOverlap / Math.Max(1, iNumTS))))
+
             End Select
 
             Return String.Format(My.Resources.COMPATIBILITY_SUMMARY, _

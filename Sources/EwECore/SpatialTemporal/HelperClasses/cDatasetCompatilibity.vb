@@ -134,6 +134,8 @@ Namespace SpatialData
             Errors
             ''' <summary>No temporal overlap.</summary>
             NoTemporal
+            ''' <summary>Temporal overlap, spatial unknown because indexing has not been performed.</summary>
+            TemporalNotIndexed
             ''' <summary>Temporal overlap, but no spatial overlap.</summary>
             NoSpatial
             ''' <summary>Temporal overlap, but patial overlap.</summary>
@@ -169,6 +171,7 @@ Namespace SpatialData
             Get
                 If (Me.m_iNumError > 0) Then Return eCompatibilityTypes.Errors
                 If (Me.m_iNumTimeOverlap = 0) Then Return eCompatibilityTypes.NoTemporal
+                If (Me.m_iNumIndexed = 0) Then Return eCompatibilityTypes.TemporalNotIndexed
                 If (Me.m_iNumFullSpatialOverlap = 0 And Me.m_iNumPartialSpatialOverlap = 0) Then Return eCompatibilityTypes.NoSpatial
                 If (Me.m_iNumFullSpatialOverlap < Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.PartialSpatial
                 Return eCompatibilityTypes.TotalOverlap
@@ -196,7 +199,7 @@ Namespace SpatialData
             Select Case Me.m_ds.IndexStatusAtT(tm)
 
                 Case ISpatialDataSet.eIndexStatus.NotIndexed
-                    Return eCompatibilityTypes.NotSet
+                    Return eCompatibilityTypes.TemporalNotIndexed
 
                 Case ISpatialDataSet.eIndexStatus.Failed
                     Return eCompatibilityTypes.Errors
@@ -356,7 +359,8 @@ Namespace SpatialData
                     Case eCompatibilityTypes.NoTemporal
                         ' No temporal overlap.
 
-                    Case eCompatibilityTypes.NotSet
+                    Case eCompatibilityTypes.NotSet, _
+                         eCompatibilityTypes.TemporalNotIndexed
                         ' Compatibility for this time step has not been assessed.
                         ' Just count the time step, make no other assumptions.
                         Me.m_iNumTimeOverlap += 1

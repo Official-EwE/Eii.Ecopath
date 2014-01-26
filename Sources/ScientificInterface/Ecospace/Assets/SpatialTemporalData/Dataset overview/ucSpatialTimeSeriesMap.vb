@@ -382,7 +382,9 @@ Namespace Ecospace
                      cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
                      cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
                     clrFillFull = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
-                    clrOutlineFull = clrFillFull
+                Case cDatasetCompatilibity.eCompatibilityTypes.NotSet, _
+                     cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
+                    clrFillFull = Color.LightGray
             End Select
 
             Dim clrFillLight As Color = cColorUtils.GetVariant(clrFillFull, 0.5!)
