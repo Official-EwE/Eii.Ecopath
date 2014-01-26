@@ -67,8 +67,6 @@ Namespace SpatialData
 
         ''' <summary>States whether the dataset is allowed to deliver data.</summary>
         Private m_bEnabled As Boolean = True
-        ''' <summary>Internal helper flag, determining if data can be read from the cache.</summary>
-        Private m_bReadFromCache As Boolean = True
 
 #End Region ' Private vars
 
@@ -249,7 +247,7 @@ Namespace SpatialData
             ' Get cache file name
             Dim strFileName As String = Me.CacheFileName(strLayerName)
             ' Does file exist in cache AND allowed to use it?
-            If (System.IO.File.Exists(strFileName)) And (Me.m_bReadFromCache = True) Then
+            If (System.IO.File.Exists(strFileName)) And (Me.ReadFromCache = True) Then
                 ' #Yes: grab file from cache
                 Dim ds As IDataSet = cDotSpatialUtils.OpenFile(strFileName)
                 ' Is loaded?
@@ -307,24 +305,10 @@ Namespace SpatialData
             Implements ISpatialDataSet.IndexStatusAtT
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataSet.BuildIndex"/>
+        ''' <inheritdocs cref="ISpatialDataSet.UpdateIndexAtT"/>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Sub BuildIndex(ByVal dateStart As DateTime, _
-                                              ByVal dateEnd As DateTime, _
-                                              Optional dgt As ISpatialDataSet.BuildIndexUpdateDelegate = Nothing) _
-            Implements ISpatialDataSet.BuildIndex
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataSet.StopIndexing"/>
-        ''' -------------------------------------------------------------------
-        Protected MustOverride Sub StopIndexing() _
-            Implements ISpatialDataSet.StopIndexing
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataSet.IsIndexing"/>
-        ''' -------------------------------------------------------------------
-        Protected MustOverride Function IsIndexing() As Boolean _
-            Implements EwEUtils.SpatialData.ISpatialDataSet.IsIndexing
+        Protected MustOverride Sub UpdateIndexAtT(dt As DateTime) _
+            Implements ISpatialDataSet.UpdateIndexAtT
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.IsLocked"/>
@@ -506,13 +490,10 @@ Namespace SpatialData
         ''' Internal helper to enable and disable cache access.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Property ReadFromCache As Boolean
+        Protected ReadOnly Property ReadFromCache As Boolean
             Get
-                Return Me.m_bReadFromCache
+                Return (Me.Cache IsNot Nothing)
             End Get
-            Set(value As Boolean)
-                Me.m_bReadFromCache = value
-            End Set
         End Property
 
         ''' -------------------------------------------------------------------

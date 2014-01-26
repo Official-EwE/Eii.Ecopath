@@ -267,6 +267,8 @@ Namespace SpatialData
                 If (bIsCenterX) Then sXLLpos -= sCellSize / 2
                 If (bIsCenterY) Then sYLLpos -= sCellSize / 2
 
+                Me.StoreExtent(New Extent(sXLLpos, sYLLpos, sXLLpos + sCellSize * nCols, sYLLpos + nRows * sCellSize))
+
                 ' Generate raster
                 rs = New Raster(Of Single)(nRows, nCols)
                 rs.Bounds = cDotSpatialUtils.EcospaceToBounds(New PointF(sXLLpos, sYLLpos + nRows * sCellSize), _

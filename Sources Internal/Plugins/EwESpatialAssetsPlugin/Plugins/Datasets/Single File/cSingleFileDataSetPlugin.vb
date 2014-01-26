@@ -366,56 +366,32 @@ Namespace SpatialData
             Return Me.m_indexstatus
         End Function
 
-        Private m_bIsIndexing As Boolean = False
-
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.BuildIndex"/>
+        ''' <inheritdocs cref="cFileDataSetPlugin.UpdateIndexAtT"/>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub BuildIndex(ByVal dateStart As DateTime, _
-                                           ByVal dateEnd As DateTime, _
-                                           Optional ByVal dgt As ISpatialDataSet.BuildIndexUpdateDelegate = Nothing)
+        Protected Overrides Sub UpdateIndexAtT(ByVal dateStart As DateTime)
 
             Dim ptfTL As New PointF(-180, 90)
             Dim ptfBR As New PointF(180, -90)
+            Dim c As ISpatialDataCache = Me.Cache
 
             If (Me.m_indexstatus <> ISpatialDataSet.eIndexStatus.Indexed) And (Me.IsConfigured) Then
-
-                Me.m_bIsIndexing = True
-
-                ' Build index from original data, bypass reading from cache
-                Dim bOldFlag As Boolean = Me.ReadFromCache
-                Me.ReadFromCache = False
                 Try
+                    Me.Cache = Nothing
                     If Me.LockDataAtT(Nothing, 1.0!, ptfTL, ptfBR) Then
                         Me.LoadSource()
-                        dgt.Invoke(Me, 1)
                         Me.UnlockData()
                     End If
+                Catch ex As Threading.ThreadAbortException
+                    ' OK
                 Catch ex As Exception
-                    cLog.Write(ex, "cSingleFileDatasetPlugin::BuildIndex")
+                    ' Not ok
+                Finally
+                    Me.UnlockData()
+                    Me.Cache = c
                 End Try
-
-                Me.m_bIsIndexing = False
-
-                ' Restore cache access
-                Me.ReadFromCache = bOldFlag
-
             End If
 
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.IsIndexing"/>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Function IsIndexing() As Boolean
-            Return Me.m_bIsIndexing
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.StopIndexing"/>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Sub StopIndexing()
-            ' NOP
         End Sub
 
         ''' -------------------------------------------------------------------

@@ -94,9 +94,6 @@ Namespace SpatialData
         Protected m_bSorted As Boolean = False
         Protected m_bCanSort As Boolean = True
 
-        Private m_bStopIndexing As Boolean = False
-        Private m_bIsIndexing As Boolean = False
-
 #End Region ' Private vars
 
 #Region " Construction / destruction "
@@ -497,7 +494,6 @@ Namespace SpatialData
 
             If (Me.m_iFileIndex < 0) Then Return False
             If (Me.m_iFileIndex >= Me.m_lFiles.Count) Then Return False
-            If (Me.m_bStopIndexing) Then Return False
 
             Dim f As cTemporalFile = Me.m_lFiles(Me.m_iFileIndex)
 
@@ -610,96 +606,28 @@ Namespace SpatialData
 
         End Function
 
-        Private m_lockObj As New Object()
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.BuildIndex"/>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Sub BuildIndex(ByVal dateStart As DateTime, _
-                                           ByVal dateEnd As DateTime, _
-                                           Optional ByVal dgt As ISpatialDataSet.BuildIndexUpdateDelegate = Nothing)
-
-            While Me.m_bIsIndexing
-                ' Spin wheels, waiting for other version of indexing to complete
-            End While
+        Protected Overrides Sub UpdateIndexAtT(dt As Date)
 
             Dim ptfTL As New PointF(-180, 90)
             Dim ptfBR As New PointF(180, -90)
-            Dim f As cTemporalFile = Nothing
+            Dim c As ISpatialDataCache = Me.Cache
 
-            SyncLock m_lockObj
-
-                Me.m_bStopIndexing = False
-                Me.m_bIsIndexing = True
+            If (Me.IndexStatusAtT(dt) = ISpatialDataSet.eIndexStatus.NotIndexed) And (Me.IsConfigured) Then
                 Try
-
-                    ' Truncate dates
-                    If (Me.m_lFiles.Count > 0) Then
-                        If dateStart < Me.m_lFiles(0).Date Then dateStart = Me.m_lFiles(0).Date
-                        If dateEnd > Me.m_lFiles(Me.m_lFiles.Count - 1).Date Then dateEnd = Me.m_lFiles(Me.m_lFiles.Count - 1).Date
+                    If Me.LockDataAtT(dt, 1.0!, ptfTL, ptfBR) Then
+                        Me.LoadSource()
                     End If
-
-                    Dim iStart As Integer = Math.Max(0, Me.FileIndex(dateStart))
-                    Dim iEnd As Integer = Math.Min(Me.m_lFiles.Count - 1, Me.FileIndex(dateEnd))
-
-                    For i As Integer = iStart To iEnd
-                        f = Me.m_lFiles(i Mod Me.m_lFiles.Count)
-                        If (f.IndexStatus <> ISpatialDataSet.eIndexStatus.Indexed) Then
-
-                            Dim bOldFlag = Me.ReadFromCache
-                            Try
-                                ' Limit cache access
-                                Me.ReadFromCache = False
-
-                                ' Assume the worst
-                                f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
-
-                                ' Update progress
-                                dgt.Invoke(Me, CSng((i - iStart + 1) / (iEnd - iStart + 1)))
-
-                                If Me.LockDataAtT(f.Date, 1.0!, ptfTL, ptfBR) Then
-                                    Me.LoadSource()
-                                    Me.UnlockData()
-                                End If
-                            Catch ex As Threading.ThreadAbortException
-                                ' Indexing thread is being aborted from elsewhere. Just make sure our
-                                ' internal admin is not screwed up before we go down.
-                                Me.m_bStopIndexing = True
-                                Me.ReadFromCache = bOldFlag
-                                Me.UnlockData()
-                            Catch ex As Exception
-                                cLog.Write(ex, "cMultiFileDatasetPlugin::BuildIndex")
-                            End Try
-                            ' Restore cache access
-                            Me.ReadFromCache = bOldFlag
-                        End If
-
-                        If Me.m_bStopIndexing Then Exit For
-
-                    Next
-
+                Catch ex As Threading.ThreadAbortException
+                    ' OK
                 Catch ex As Exception
-
+                    ' Not ok
+                Finally
+                    Me.UnlockData()
+                    Me.Cache = c
                 End Try
-                Me.m_bIsIndexing = False
-
-            End SyncLock
+            End If
 
         End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.StopIndexing"/>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Sub StopIndexing()
-            Me.m_bStopIndexing = True
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.IsIndexing"/>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Function IsIndexing() As Boolean
-            Return Me.m_bIsIndexing
-        End Function
 
 #End Region ' Internals
 
