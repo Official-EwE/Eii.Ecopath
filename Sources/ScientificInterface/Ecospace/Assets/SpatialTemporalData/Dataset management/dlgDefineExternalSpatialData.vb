@@ -99,6 +99,8 @@ Namespace Ecospace.Controls
             Me.FillTemplateDatasetBox()
             Me.m_gridDatasets.Fill()
 
+            Me.m_cbEnableIndexing.Checked = Me.m_manSets.IsIndexingAllowed
+
             ' Update cache state (will also update controls)
             Me.EvaluateCache()
 
@@ -182,7 +184,18 @@ Namespace Ecospace.Controls
 
         Private Sub OnGridSelectionChanged(sender As Object)
             Try
+                Me.m_manSets.IndexDataset = Me.SelectedDataset
                 Me.UpdateControls()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnEnableIndexingChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_cbEnableIndexing.CheckedChanged
+            Try
+                Me.m_manSets.IsIndexingAllowed = Me.m_cbEnableIndexing.Checked
+                Me.m_manSets.IndexDataset = Me.SelectedDataset
             Catch ex As Exception
 
             End Try

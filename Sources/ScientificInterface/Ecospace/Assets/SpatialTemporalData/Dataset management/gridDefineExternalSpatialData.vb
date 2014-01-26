@@ -73,8 +73,8 @@ Namespace Ecospace.Controls
             DateFrom
             DateTo
             Description
-            SpatOverlap
             TempOverlap
+            SpatOverlap
             CacheSize
         End Enum
 
@@ -140,8 +140,8 @@ Namespace Ecospace.Controls
             Me(0, eColumnTypes.DateFrom) = New EwEColumnHeaderCell(SharedResources.HEADER_FROM)
             Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
-            Me(0, eColumnTypes.SpatOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
             Me(0, eColumnTypes.TempOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_TEMPORAL)
+            Me(0, eColumnTypes.SpatOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
             Me(0, eColumnTypes.CacheSize) = New EwEColumnHeaderCell(SharedResources.HEADER_CACHESIZE)
 
             Me.Selection.SelectionMode = GridSelectionMode.Row
@@ -207,8 +207,8 @@ Namespace Ecospace.Controls
                 Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.DateFrom) = New EwECell(ds.TimeStart.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.DateTo) = New EwECell(ds.TimeEnd.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.CacheSize) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me.Rows(iRow).Tag = ds
                 hgc.AddChildRow(iRow)
@@ -257,6 +257,7 @@ Namespace Ecospace.Controls
             Dim iNumTS As Integer = Math.Max(Core.nEcospaceTimeSteps, 1)
             Dim strVal As String = ""
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
+            Dim fmt As New cSpatialDatasetCompatibilityFormatter()
 
             ' Temporal overlap
             Me(iRow, eColumnTypes.TempOverlap).Value = String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, CInt(Math.Ceiling(100 * comp.NumOverlappingTimeSteps / iNumTS)))
@@ -265,16 +266,7 @@ Namespace Ecospace.Controls
             If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
                 strVal = String.Format(SharedResources.VALUE_INDEXED_PERCENT, CInt(Math.Ceiling(100 * comp.NumIndexed / (comp.NumOverlappingTimeSteps + 1))))
             Else
-                If (comp.NumError > 0) Then
-                    strVal = String.Format("{0} errors", comp.NumError)
-                    style = style Or cStyleGuide.eStyleFlags.ErrorEncountered
-                ElseIf (comp.NumFullSpatialOverlap = comp.NumIndexed) Then
-                    strVal = SharedResources.GENERIC_VALUE_FULL
-                ElseIf (comp.NumPartialSpatialOverlap > 0) Then
-                    strVal = SharedResources.GENERIC_VALUE_PARTIAL
-                Else
-                    strVal = SharedResources.GENERIC_VALUE_NONE
-                End If
+                strVal = fmt.GetDescriptor(comp, eDescriptorTypes.Name)
             End If
 
             Dim cell As EwECell = DirectCast(Me(iRow, eColumnTypes.SpatOverlap), EwECell)

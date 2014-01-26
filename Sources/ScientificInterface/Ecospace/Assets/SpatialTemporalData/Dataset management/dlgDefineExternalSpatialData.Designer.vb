@@ -34,6 +34,7 @@ Namespace Ecospace.Controls
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_btnConfigure = New System.Windows.Forms.Button()
             Me.m_hdr = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbEnableIndexing = New System.Windows.Forms.CheckBox()
             Me.SuspendLayout()
             '
             'm_btnAdd
@@ -107,12 +108,19 @@ Namespace Ecospace.Controls
             Me.m_hdr.IsCollapsed = False
             Me.m_hdr.Name = "m_hdr"
             '
+            'm_cbEnableIndexing
+            '
+            resources.ApplyResources(Me.m_cbEnableIndexing, "m_cbEnableIndexing")
+            Me.m_cbEnableIndexing.Name = "m_cbEnableIndexing"
+            Me.m_cbEnableIndexing.UseVisualStyleBackColor = True
+            '
             'dlgDefineExternalSpatialData
             '
             Me.AcceptButton = Me.m_btnOK
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_cbEnableIndexing)
             Me.Controls.Add(Me.m_hdr)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_cmbNewDS)
@@ -126,6 +134,7 @@ Namespace Ecospace.Controls
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_btnAdd As System.Windows.Forms.Button
@@ -135,6 +144,7 @@ Namespace Ecospace.Controls
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_btnConfigure As System.Windows.Forms.Button
         Private WithEvents m_hdr As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_cbEnableIndexing As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace
