@@ -477,6 +477,7 @@ Namespace Ecospace.Controls
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim clrTextFill As Color = clrFill
             Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
+            Dim bSkip As Boolean = False
 
             If bSelected Then
                 clrText = SystemColors.HighlightText
@@ -505,8 +506,12 @@ Namespace Ecospace.Controls
                 Dim iStep As Integer = pos.m_liData(i)
                 rcTimeStep.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize - c_dotradius
 
+                bSkip = False
+
                 Select Case comp.CompatibilityAt(iStep)
-                    Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
+
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NotSet, _
+                         cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
                         clrOutline = Color.Black
                         clrFill = Color.White
 
@@ -519,12 +524,11 @@ Namespace Ecospace.Controls
                         clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                        clrOutline = Color.DarkGray
-                        clrFill = Color.Gray
+                        bSkip = True
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                        clrOutline = Color.Gray
-                        clrFill = Color.DarkGreen
+                        clrOutline = Color.Black
+                        clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
                         clrOutline = Color.Black
@@ -532,13 +536,15 @@ Namespace Ecospace.Controls
 
                 End Select
 
-                Using br As New SolidBrush(clrFill)
-                    g.FillEllipse(br, rcTimeStep)
-                End Using
+                If (Not bSkip) Then
+                    Using br As New SolidBrush(clrFill)
+                        g.FillEllipse(br, rcTimeStep)
+                    End Using
 
-                Using p As New Pen(clrOutline, 0.001)
-                    g.DrawEllipse(p, rcTimeStep)
-                End Using
+                    Using p As New Pen(clrOutline, 0.001)
+                        g.DrawEllipse(p, rcTimeStep)
+                    End Using
+                End If
 
             Next
 

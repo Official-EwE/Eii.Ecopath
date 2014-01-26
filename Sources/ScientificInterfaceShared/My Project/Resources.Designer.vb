@@ -693,6 +693,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0}% temporal overlap, area overlap has not been determined yet..
+        '''</summary>
+        Public ReadOnly Property COMPATIBILITY_SUMMARY_NOINDEX() As String
+            Get
+                Return ResourceManager.GetString("COMPATIBILITY_SUMMARY_NOINDEX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unknown spatial||Spatial overlap unknown|Spatial overlap has not yet been determined.
+        '''</summary>
+        Public ReadOnly Property COMPATIBILITY_TEMPORALNOTINDEXED() As String
+            Get
+                Return ResourceManager.GetString("COMPATIBILITY_TEMPORALNOTINDEXED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Full||Full spatial overlap|The data fully covers the Ecospace area.
         '''</summary>
         Public ReadOnly Property COMPATIBILITY_TOTALOVERLAP() As String

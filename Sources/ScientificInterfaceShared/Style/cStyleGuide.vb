@@ -2065,6 +2065,8 @@ Namespace Style
                     Return My.Resources.Critical
                 Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
                     Return My.Resources.database_NA
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
+                    Return My.Resources.Question
                 Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
                     Return My.Resources.database_warning
                 Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
