@@ -212,6 +212,7 @@ Namespace SpatialData
                         ElseIf rcfMap.IntersectsWith(Me.m_rcf) Then
                             Return eCompatibilityTypes.PartialSpatial
                         End If
+                        Return eCompatibilityTypes.NoSpatial
                     End If
             End Select
 
@@ -368,7 +369,6 @@ Namespace SpatialData
                     Case eCompatibilityTypes.NoSpatial
                         Me.m_iNumTimeOverlap += 1
                         Me.m_iNumIndexed += 1
-                        Me.m_iNumError += 1
 
                     Case eCompatibilityTypes.PartialSpatial
                         Me.m_iNumTimeOverlap += 1
@@ -379,6 +379,11 @@ Namespace SpatialData
                         Me.m_iNumTimeOverlap += 1
                         Me.m_iNumIndexed += 1
                         Me.m_iNumFullSpatialOverlap += 1
+
+                    Case eCompatibilityTypes.Errors
+                        Me.m_iNumTimeOverlap += 1
+                        Me.m_iNumIndexed += 1
+                        Me.m_iNumError += 1
 
                 End Select
 
