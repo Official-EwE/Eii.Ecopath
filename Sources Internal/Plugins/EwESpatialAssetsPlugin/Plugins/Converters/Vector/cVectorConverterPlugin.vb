@@ -171,7 +171,7 @@ Namespace SpatialData
                     End If
 
                     ' Rasterize the features
-                    rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, strFile, log, New cVectorTools.TranslateValueDelegate(AddressOf ToValue))
+                    rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, cCore.NULL_VALUE, strFile, log, New cVectorTools.TranslateValueDelegate(AddressOf ToValue))
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 
@@ -259,6 +259,8 @@ Namespace SpatialData
         End Sub
 
         Protected Overridable Function ToValue(drow As DataRow, dValueNone As Double) As Double
+
+            If (drow Is Nothing) Then Return dValueNone
 
             Dim dVal As Double = cCore.NULL_VALUE
             Dim objVal As Object = drow(Me.m_strAttributeName)

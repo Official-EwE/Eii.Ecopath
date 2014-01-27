@@ -26,17 +26,19 @@ Imports EwEUtils.SpatialData
 
 Namespace SpatialData
 
-    Public Class cVectorExclusionConverterPlugin
+    Public Class cCookieCutConverterPlugin
         Inherits cVectorConverterPlugin
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether cells are excluded when overlapping with the attached spatial data.
-        ''' If True, cells are excluded when they overlap with attached spatial data. If 
-        ''' False, cells are excluded when not overlapping with the spatial data.
+        ''' Get/set whether cells are excluded when inside the cookie cutter polygon.
+        ''' <para>If set to True, cells are excluded when they overlap with attached 
+        ''' vector data, and are included in the model area when they do NOT overlap.</para>
+        ''' <para>If set to False, cells are excluded when not overlapping with 
+        ''' attached vectors, and are included when overlapping with the spatial data.</para>
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ExcludeOverlap As Boolean = True
+        Public Property ExcludeInside As Boolean = True
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cVectorConverterPlugin.IsConfigured"/>.
@@ -55,7 +57,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' <see cref="cVectorTools.TranslateValueDelegate">Callback</see> to
-        ''' determine the value to set when rasterizing for spatial feature.
+        ''' determine the value to set when rasterizing
         ''' </summary>
         ''' <param name="drow">The datarow for the vector object.</param>
         ''' <param name="dValueNone">The nodata value for the underlying raster.</param>
@@ -63,9 +65,14 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Protected Overrides Function ToValue(drow As System.Data.DataRow, dValueNone As Double) As Double
 
-            ' No overlap?
-            If (drow Is Nothing) Then Return CDbl(Not Me.ExcludeOverlap)
-            Return CDbl(Me.ExcludeOverlap)
+            ' Has overlap?
+            If (drow IsNot Nothing) Then
+                ' #Yes: cell overlaps with cookie cutter polygon.
+                Return CDbl(Me.ExcludeInside)
+            Else
+                ' #No: cell does not overlap with cookie cutter polygon.
+                Return CDbl(Not Me.ExcludeInside)
+            End If
 
         End Function
 
@@ -74,11 +81,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayName As String
             Get
-                ' ToDo: globalize this
-                If Me.ExcludeOverlap Then
-                    Return "Excluding overlapping cells"
+                If Me.ExcludeInside Then
+                    Return "Ignoring cells inside"
                 Else
-                    Return "Including overlapping cells"
+                    Return "Ignoring cells outside"
                 End If
             End Get
         End Property
@@ -88,7 +94,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property PluginName As String
             Get
-                Return "DotSpatial.VectorExclusionConverter"
+                Return "DotSpatial.VectorCookieCutterPlugin"
             End Get
         End Property
     End Class

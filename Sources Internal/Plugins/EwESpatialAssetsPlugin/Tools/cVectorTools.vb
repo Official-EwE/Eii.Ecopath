@@ -49,6 +49,10 @@ Public Class cVectorTools
     ''' </summary>
     ''' <param name="fs">The polygon feature set to convert.</param>
     ''' <param name="dCellSize">Cell size, in decimal degrees, of the raster to create.</param>
+    ''' <param name="dValueNull">No data value</param>
+    ''' <param name="ptfBR"></param>
+    ''' <param name="ptfTL"></param>
+    ''' <param name="dgt"></param>
     ''' <param name="strFileName">The output file name to write the raster to.</param>
     ''' <param name="Log"><see cref="cSpatialOperationLog"/> for logging operations.</param>
     ''' <returns>A raster.</returns>
@@ -68,6 +72,7 @@ Public Class cVectorTools
                                      ByVal ptfTL As PointF, _
                                      ByVal ptfBR As PointF, _
                                      ByVal dCellSize As Double, _
+                                     ByVal dValueNull As Double, _
                                      ByVal strFileName As String,
                                      ByVal log As cSpatialOperationLog, _
                                      ByVal dgt As TranslateValueDelegate) As IRaster
@@ -87,10 +92,10 @@ Public Class cVectorTools
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
         rs.Projection = cDotSpatialUtils.EcospaceProjection
         rs.Bounds = bnds
-        rs.NoDataValue = cCore.NULL_VALUE
+        rs.NoDataValue = dValueNull
 
         ' Wipe array
-        dValClear = dgt.Invoke(Nothing, rs.NoDataValue)
+        dValClear = dgt.Invoke(Nothing, cCore.NULL_VALUE)
         For iRow As Integer = 0 To bnds.NumRows - 1
             For iCol As Integer = 0 To bnds.NumColumns - 1
                 rs.Value(iRow, iCol) = dValClear
@@ -150,25 +155,6 @@ Public Class cVectorTools
         Return rs
 
     End Function
-
-    'Private Shared Function ToValue(objValue As Object, dtMapping As Dictionary(Of Object, Object)) As Double
-    '    Dim dVal As Double = cCore.NULL_VALUE
-
-    '    If (dtMapping IsNot Nothing) Then
-    '        If dtMapping.ContainsKey(objValue) Then
-    '            objValue = dtMapping(objValue)
-    '        Else
-    '            objValue = cCore.NULL_VALUE
-    '        End If
-    '    End If
-
-    '    Try
-    '        dVal = Convert.ToDouble(objValue)
-    '    Catch ex As Exception
-    '        ' Whoah!
-    '    End Try
-    '    Return dVal
-    'End Function
 
     ''' <summary>
     ''' 
