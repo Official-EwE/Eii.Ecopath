@@ -215,7 +215,11 @@ Public Class cDepthDataAdapter
                     CellValue = dataExternal.Cell(iRow, iCol, dNoData)
 
                     Me.m_bChanged(iRow, iCol) = False
-                    If CellValue <> CDbl(layerDepth.Cell(iRow, iCol)) Then
+
+                    'The new depth has to be land (=0). 
+                    'We can only convert Water to Land not the other way around
+                    'And different than the old one
+                    If (CellValue = 0) And (CellValue <> CDbl(layerDepth.Cell(iRow, iCol))) Then
                         'Depth has changed
                         'Set the new depth
                         If Me.SetCell(layer, iConnection, iRow, iCol, CellValue) Then
