@@ -123,8 +123,8 @@ Namespace Controls.Map.Layers
                             End Using
                         End If
                     End If
-                    ' Draw value
-                    g.DrawString(String.Format("{0}", value), Me.Font, Me.ForeBrush, rc)
+                    '' Draw value
+                    'g.DrawString(String.Format("{0}", value), Me.Font, Me.ForeBrush, rc)
                 End If
             Catch ex As Exception
                 ' Boom
