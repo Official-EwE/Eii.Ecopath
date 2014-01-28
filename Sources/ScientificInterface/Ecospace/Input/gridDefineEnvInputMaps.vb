@@ -50,12 +50,11 @@ Namespace Ecospace
         ''' <summary>Enumerated type defining the columns in this grid.</summary>
         Private Enum eColumnTypes As Integer
             LayerIndex = 0
-            LayerIsActive
             LayerName
             LayerDescription
+            LayerIsActive
             LayerStatus
         End Enum
-
 
         Private m_isInInit As Boolean
 
@@ -77,18 +76,12 @@ Namespace Ecospace
 
             ''' <summary><see cref="cEcospaceBasemap">cEcospaceBasemap</see> associated with this Layer, if any.</summary>
             Private m_Layer As cEcospaceLayer = Nothing
-            ''' <summary>Name for this Layer.</summary>
-            Private m_strName As String = ""
-            ''' <summary>Description for this Layer.</summary>
-            Private m_strDescription As String = ""
             ''' <summary>Flag stating whether a user action is confirmed</summary>
             Private m_bConfirmed As Boolean = True
             ''' <summary>The status of a Layer in the interface.</summary>
             Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
-            Private m_isActive As Boolean
-
-            Private m_isEditable As Boolean
+            Private m_bEditable As Boolean
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -97,19 +90,21 @@ Namespace Ecospace
             ''' <param name="Layer">The <see cref="cEcospaceLayerDriver"/> to
             ''' initialize this instance from. If set, this instance represents a
             ''' Layer currently active in the EwE model.</param>
+            ''' <param name="bEditable">States if the layer can be edited.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal Layer As cEcospaceLayer, Optional LayerRemovable As Boolean = True)
+            Public Sub New(ByVal Layer As cEcospaceLayer, Optional bEditable As Boolean = True)
                 Debug.Assert(Layer IsNot Nothing)
                 Me.m_Layer = Layer
-                Me.m_strName = Layer.Name
-                If TypeOf Layer Is cEcospaceLayerDriver Then
-                    Me.m_strDescription = DirectCast(Layer, cEcospaceLayerDriver).Description
+                Me.Name = Layer.Name
+                If (TypeOf Layer Is cEcospaceLayerDriver) Then
+                    Me.Description = DirectCast(Layer, cEcospaceLayerDriver).Description
                 Else
-                    Me.m_strDescription = Layer.ToString
+                    ' No description available
+                    Me.Description = ""
                 End If
                 Me.m_status = eItemStatusTypes.Original
-                Me.m_isActive = True
-                Me.m_isEditable = LayerRemovable
+                Me.IsActive = True
+                Me.m_bEditable = bEditable
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -120,10 +115,10 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single)
                 Me.m_Layer = Nothing
-                Me.m_strName = strName
-                Me.m_strDescription = strDescription
+                Me.Name = strName
+                Me.Description = strDescription
                 Me.m_status = eItemStatusTypes.Added
-                Me.m_isActive = True
+                Me.IsActive = True
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -132,13 +127,6 @@ Namespace Ecospace
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public Property Name() As String
-                Get
-                    Return Me.m_strName
-                End Get
-                Set(ByVal value As String)
-                    Me.m_strName = value
-                End Set
-            End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -146,13 +134,6 @@ Namespace Ecospace
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public Property Description() As String
-                Get
-                    Return Me.m_strDescription
-                End Get
-                Set(ByVal value As String)
-                    Me.m_strDescription = value
-                End Set
-            End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -164,15 +145,6 @@ Namespace Ecospace
                 Get
                     Return Me.m_Layer
                 End Get
-            End Property
-
-            Public Property isActive() As Boolean
-                Get
-                    Return Me.m_isActive
-                End Get
-                Set(value As Boolean)
-                    Me.m_isActive = value
-                End Set
             End Property
 
             ''' -------------------------------------------------------------------
@@ -211,8 +183,8 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Function IsChanged() As Boolean
                 If (Me.IsNew()) Then Return False
-                Return (Me.m_Layer.Name <> Me.m_strName) Or _
-                       (Me.Layer.Description <> Me.m_strDescription)
+                Return (Me.m_Layer.Name <> Me.Name) Or _
+                       (Me.Layer.Description <> Me.Description)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -254,11 +226,26 @@ Namespace Ecospace
                 End Set
             End Property
 
-            Public ReadOnly Property isEditable As Boolean
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get whether the layer can be modified.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public ReadOnly Property IsEditable As Boolean
                 Get
-                    Return m_isEditable
+                    Return m_bEditable
                 End Get
             End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set whether the layer is active for capacity calculations.
+            ''' </summary>
+            ''' <remarks>
+            ''' This logic really belongs in a dedicated interface.
+            ''' </remarks>
+            ''' -------------------------------------------------------------------
+            Public Property IsActive() As Boolean
 
         End Class
 
@@ -298,10 +285,9 @@ Namespace Ecospace
 
             ' Layer index cell
             Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
-            Me(0, eColumnTypes.LayerIsActive) = New EwEColumnHeaderCell(SharedResources.HEADER_ENVINPUT_ACTIVE)
-            ' Layer name cell, editable this time
             Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
             Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+            Me(0, eColumnTypes.LayerIsActive) = New EwEColumnHeaderCell(SharedResources.HEADER_ENVINPUT_ACTIVE)
 
             ' Layer index cell
             Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
@@ -329,8 +315,8 @@ Namespace Ecospace
 
             Dim depth As cEcospaceLayer = Me.Core.EcospaceBasemap.LayerDepth
             'Depth layer cannot be deleted
-            li = New cLayerInfo(depth, LayerRemovable:=False)
-            li.isActive = CapManager.Map(depth).isLayerActive
+            li = New cLayerInfo(depth, bEditable:=False)
+            li.IsActive = CapManager.Map(depth).isLayerActive
             Me.m_alLayers.Add(li)
 
             ' Make snapshot of Layer configuration
@@ -342,7 +328,7 @@ Namespace Ecospace
                 Debug.Assert(EnviroMap IsNot Nothing, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer " + Layer.Name)
 
                 li = New cLayerInfo(Layer)
-                li.isActive = EnviroMap.isLayerActive
+                li.IsActive = EnviroMap.isLayerActive
                 Me.m_alLayers.Add(li)
             Next
 
@@ -355,9 +341,9 @@ Namespace Ecospace
             MyBase.FinishStyle()
 
             Me.Columns(eColumnTypes.LayerIndex).Width = 40
-            Me.Columns(eColumnTypes.LayerIsActive).Width = 50
             Me.Columns(eColumnTypes.LayerName).Width = 120
             Me.Columns(eColumnTypes.LayerDescription).Width = 200
+            Me.Columns(eColumnTypes.LayerIsActive).Width = 50
 
         End Sub
 
@@ -375,6 +361,10 @@ Namespace Ecospace
             Dim pos As SourceGrid2.Position = Nothing
             Dim vm As VisualModels.Common = Nothing
             Dim ewec As EwECell = Nothing
+            Dim style As cStyleGuide.eStyleFlags
+
+            vm = New VisualModels.Common()
+            vm.ImageAlignment = ContentAlignment.MiddleCenter
 
             Me.m_isInInit = True
 
@@ -382,38 +372,33 @@ Namespace Ecospace
             For iRow As Integer = Me.Rows.Count To Me.m_alLayers.Count
                 Me.AddRow()
 
+                li = DirectCast(Me.m_alLayers(iRow - iFIRSTDATAROW), cLayerInfo)
+
+                If (li.IsEditable) Then
+                    style = cStyleGuide.eStyleFlags.OK
+                Else
+                    style = cStyleGuide.eStyleFlags.NotEditable
+                End If
+
                 ewec = New EwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.LayerIndex) = ewec
 
+                Me(iRow, eColumnTypes.LayerName) = New EwECell("", GetType(String), style)
+                If li.IsEditable Then Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
+
+                Me(iRow, eColumnTypes.LayerDescription) = New EwECell("", GetType(String), style)
+                If li.IsEditable Then Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
+
                 Me(iRow, eColumnTypes.LayerIsActive) = New Cells.Real.CheckBox(False)
                 Me(iRow, eColumnTypes.LayerIsActive).Behaviors.Add(Me.EwEEditHandler)
 
-                If Me.m_alLayers(iRow - 1).isEditable Then
-                    Me(iRow, eColumnTypes.LayerName) = New Cells.Real.Cell("", GetType(String))
-                    Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
-
-                    Me(iRow, eColumnTypes.LayerDescription) = New Cells.Real.Cell("", GetType(String))
-                    Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
-
-                Else
-                    'Depth(Cell)
-                    ewec = New EwECell("", GetType(String))
-                    ewec.Style = cStyleGuide.eStyleFlags.NotEditable
-                    Me(iRow, eColumnTypes.LayerName) = ewec
-
-                    ewec = New EwECell("", GetType(String))
-                    ewec.Style = cStyleGuide.eStyleFlags.NotEditable
-                    Me(iRow, eColumnTypes.LayerDescription) = ewec
-                End If
-
                 ' Status
-                vm = New VisualModels.Common()
-                vm.ImageAlignment = ContentAlignment.MiddleCenter
-                Me(iRow, eColumnTypes.LayerStatus) = New Cells.Real.Cell()
+                Me(iRow, eColumnTypes.LayerStatus) = New EwECell("", GetType(String))
                 Dim dm As New DataModels.DataModelBase(GetType(String))
                 dm.EditableMode = EditableMode.None
                 Me(iRow, eColumnTypes.LayerStatus).DataModel = dm
+
             Next
 
             ' Delete obsolete rows
@@ -444,10 +429,10 @@ Namespace Ecospace
             Dim li As cLayerInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
+            Dim cell As EwECell = Nothing
             Dim pos As SourceGrid2.Position = Nothing
             Dim vm As VisualModels.IVisualModel = Nothing
             Dim strText As String = ""
-
             Me.AllowUpdates = False
 
             li = DirectCast(Me.m_alLayers(iRow - iFIRSTDATAROW), cLayerInfo)
@@ -456,17 +441,19 @@ Namespace Ecospace
             ri.Tag = li
             aCells = ri.GetCells()
 
+            Dim bEditable As Boolean = li.IsEditable
+
             pos = New Position(iRow, eColumnTypes.LayerIndex)
             aCells(eColumnTypes.LayerIndex).SetValue(pos, CInt(iRow))
-
-            pos = New Position(iRow, eColumnTypes.LayerIsActive)
-            aCells(eColumnTypes.LayerIsActive).SetValue(pos, CBool(li.isActive))
 
             pos = New Position(iRow, eColumnTypes.LayerName)
             aCells(eColumnTypes.LayerName).SetValue(pos, CStr(li.Name))
 
             pos = New Position(iRow, eColumnTypes.LayerDescription)
             aCells(eColumnTypes.LayerDescription).SetValue(pos, CStr(li.Description))
+
+            pos = New Position(iRow, eColumnTypes.LayerIsActive)
+            aCells(eColumnTypes.LayerIsActive).SetValue(pos, CBool(li.IsActive))
 
             Select Case li.Status
                 Case eItemStatusTypes.Original
@@ -480,7 +467,6 @@ Namespace Ecospace
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
 
-            aCells(eColumnTypes.LayerName).VisualModel = vm
             pos = New Position(iRow, eColumnTypes.LayerStatus)
             aCells(eColumnTypes.LayerStatus).VisualModel = vm
             aCells(eColumnTypes.LayerStatus).SetValue(pos, strText)
@@ -510,7 +496,7 @@ Namespace Ecospace
             Dim li As cLayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), cLayerInfo)
 
             'Depth row can't be edited
-            If Not li.isEditable Then Return True
+            If Not li.IsEditable Then Return True
 
             Select Case DirectCast(p.Column, eColumnTypes)
                 Case eColumnTypes.LayerIndex
@@ -549,7 +535,7 @@ Namespace Ecospace
                 Select Case DirectCast(p.Column, eColumnTypes)
 
                     Case eColumnTypes.LayerIsActive
-                        li.isActive = CBool(cell.GetValue(p))
+                        li.IsActive = CBool(cell.GetValue(p))
 
                 End Select
 
@@ -598,7 +584,7 @@ Namespace Ecospace
             li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
 
             'This is the Depth row it canot be deleted
-            If Not li.isEditable Then Return
+            If Not li.IsEditable Then Return
 
             ' Toggle 'flagged for deletion' flag
             li.FlaggedForDeletion = Not li.FlaggedForDeletion
@@ -640,7 +626,8 @@ Namespace Ecospace
 
         Public Function CanRemoveRow(Optional ByVal iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            Return Me.m_alLayers(iRow - 1).isEditable
+            If iRow = -1 Then Return False
+            Return Me.m_alLayers(iRow - 1).IsEditable
         End Function
 
         ''' <summary>
@@ -935,7 +922,7 @@ Namespace Ecospace
                         Debug.Assert(EnviroMap.Layer.getID = li.Layer.getID, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer.")
                     End If
                     Debug.Assert(EnviroMap IsNot Nothing, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer.")
-                    EnviroMap.isLayerActive = li.isActive
+                    EnviroMap.isLayerActive = li.IsActive
 
                 Catch ex As Exception
                     cLog.Write(ex, Me.ToString + " Failed to find CapacityMapInteractionManager.Map() for Enviromental Driver Layer.")
