@@ -1581,8 +1581,9 @@ Namespace Controls.EwEGrid
                                         ' Parse using UI default number formatting
                                         cell.Value = Integer.Parse(astrCells(iCol), nfi)
                                     ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
-                                        ' Parse using UI default number formatting
-                                        cell.Value = Boolean.Parse(astrCells(iCol))
+                                        'Boolean.Parse("-1") throws an exception on numeric bool values -1,1
+                                        'Convert the string to int then cast the int to bool... really
+                                        cell.Value = CBool(Integer.Parse(astrCells(iCol)))
                                     End If
                                 End If
                             End If
