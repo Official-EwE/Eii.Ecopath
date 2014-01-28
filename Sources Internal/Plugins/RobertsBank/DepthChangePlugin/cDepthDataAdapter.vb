@@ -216,10 +216,8 @@ Public Class cDepthDataAdapter
 
                     Me.m_bChanged(iRow, iCol) = False
 
-                    'The new depth has to be land (=0). 
-                    'We can only convert Water to Land not the other way around
-                    'And different than the old one
-                    If (CellValue = 0) And (CellValue <> CDbl(layerDepth.Cell(iRow, iCol))) Then
+                    'Original cell was not land
+                    If (CDbl(layerDepth.Cell(iRow, iCol)) > 0) And (CellValue <> CDbl(layerDepth.Cell(iRow, iCol))) Then
                         'Depth has changed
                         'Set the new depth
                         If Me.SetCell(layer, iConnection, iRow, iCol, CellValue) Then
