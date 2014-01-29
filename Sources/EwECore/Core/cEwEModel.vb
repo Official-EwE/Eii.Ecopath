@@ -15,10 +15,13 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 ''' <summary>
 ''' Class to encapsulate and expose ecopath model for a single model
@@ -170,15 +173,15 @@ Public Class cEwEModel
 
 #End Region
 
-#Region " Variable via dot(.) operator"
+#Region " Variable via dot(.) operator "
 
     Public Property Description() As String
         Get
-            Return CStr(getVariable(eVarNameFlags.Description))
+            Return CStr(GetVariable(eVarNameFlags.Description))
         End Get
 
         Set(ByVal str As String)
-            setVariable(eVarNameFlags.Description, str)
+            SetVariable(eVarNameFlags.Description, str)
         End Set
     End Property
 
@@ -214,7 +217,7 @@ Public Class cEwEModel
 
     Public Property NumDigits() As Integer
         Get
-            Return CInt(getVariable(eVarNameFlags.NumDigits))
+            Return CInt(GetVariable(eVarNameFlags.NumDigits))
         End Get
 
         Set(ByVal iNumDigits As Integer)
@@ -316,7 +319,7 @@ Public Class cEwEModel
     End Property
 
     ''' <summary>
-    ''' Get/set the southern extent of the model bounding box.
+    ''' Get/set the southern extent of the model bounding box in decimal degrees.
     ''' </summary>
     Public Property South() As Single
         Get
@@ -329,7 +332,7 @@ Public Class cEwEModel
     End Property
 
     ''' <summary>
-    ''' Get/set the northern extent of the model bounding box.
+    ''' Get/set the northern extent of the model bounding box in decimal degrees.
     ''' </summary>
     Public Property North() As Single
         Get
@@ -342,7 +345,7 @@ Public Class cEwEModel
     End Property
 
     ''' <summary>
-    ''' Get/set the western extent of the model bounding box.
+    ''' Get/set the western extent of the model bounding box in decimal degrees.
     ''' </summary>
     Public Property West() As Single
         Get
@@ -355,7 +358,7 @@ Public Class cEwEModel
     End Property
 
     ''' <summary>
-    ''' Get/set the eastern extent of the model bounding box.
+    ''' Get/set the eastern extent of the model bounding box in decimal degrees.
     ''' </summary>
     Public Property East() As Single
         Get
@@ -364,6 +367,32 @@ Public Class cEwEModel
 
         Set(ByVal value As Single)
             Me.SetVariable(eVarNameFlags.East, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the top left extent of the model bounding box in decimal degrees.
+    ''' </summary>
+    Public Property PosTopLeft As Drawing.PointF
+        Get
+            Return New Drawing.PointF(Me.West, Me.North)
+        End Get
+        Set(value As Drawing.PointF)
+            Me.West = value.X
+            Me.North = value.Y
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the bottom right extent of the model bounding box in decimal degrees.
+    ''' </summary>
+    Public Property PosBottomRight As Drawing.PointF
+        Get
+            Return New Drawing.PointF(Me.East, Me.South)
+        End Get
+        Set(value As Drawing.PointF)
+            Me.East = value.X
+            Me.South = value.Y
         End Set
     End Property
 
@@ -411,10 +440,10 @@ Public Class cEwEModel
     Public Property DescriptionStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.Description)
+            Return GetStatus(eVarNameFlags.Description)
         End Get
         Set(ByVal value As eStatusFlags)
-            setStatus(eVarNameFlags.Description, value)
+            SetStatus(eVarNameFlags.Description, value)
         End Set
 
     End Property
@@ -422,10 +451,10 @@ Public Class cEwEModel
     Public Property NumDigitsStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.NumDigits)
+            Return GetStatus(eVarNameFlags.NumDigits)
         End Get
         Set(ByVal value As eStatusFlags)
-            setStatus(eVarNameFlags.NumDigits, value)
+            SetStatus(eVarNameFlags.NumDigits, value)
         End Set
 
     End Property

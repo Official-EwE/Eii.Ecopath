@@ -39,22 +39,19 @@ Partial Class frmEwEPlugin
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.CEwEHeaderLabel2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btLoadDepthDataset = New System.Windows.Forms.Button()
         Me.m_btConfigDepth = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.m_lbConfigFile = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.m_lstDatasets = New System.Windows.Forms.ListBox()
-        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.CEwEHeaderLabel2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
-        Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.AutoSize = True
         Me.Panel1.BackColor = System.Drawing.SystemColors.Control
         Me.Panel1.Controls.Add(Me.CEwEHeaderLabel2)
@@ -65,16 +62,45 @@ Partial Class frmEwEPlugin
         Me.Panel1.Controls.Add(Me.m_lbConfigFile)
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.m_lstDatasets)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(702, 608)
+        Me.Panel1.Size = New System.Drawing.Size(713, 339)
         Me.Panel1.TabIndex = 6
+        '
+        'CEwEHeaderLabel2
+        '
+        Me.CEwEHeaderLabel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CEwEHeaderLabel2.CanCollapseParent = False
+        Me.CEwEHeaderLabel2.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel2.IsCollapsed = False
+        Me.CEwEHeaderLabel2.Location = New System.Drawing.Point(12, 133)
+        Me.CEwEHeaderLabel2.Name = "CEwEHeaderLabel2"
+        Me.CEwEHeaderLabel2.Size = New System.Drawing.Size(691, 22)
+        Me.CEwEHeaderLabel2.TabIndex = 7
+        Me.CEwEHeaderLabel2.Text = "Pick depth data set"
+        Me.CEwEHeaderLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'CEwEHeaderLabel1
+        '
+        Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CEwEHeaderLabel1.CanCollapseParent = False
+        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel1.IsCollapsed = False
+        Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(12, 9)
+        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(691, 24)
+        Me.CEwEHeaderLabel1.TabIndex = 6
+        Me.CEwEHeaderLabel1.Text = "Load spatial configuration file"
+        Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_btLoadDepthDataset
         '
-        Me.m_btLoadDepthDataset.Location = New System.Drawing.Point(242, 183)
+        Me.m_btLoadDepthDataset.Location = New System.Drawing.Point(20, 245)
         Me.m_btLoadDepthDataset.Name = "m_btLoadDepthDataset"
-        Me.m_btLoadDepthDataset.Size = New System.Drawing.Size(174, 25)
+        Me.m_btLoadDepthDataset.Size = New System.Drawing.Size(219, 23)
         Me.m_btLoadDepthDataset.TabIndex = 5
         Me.m_btLoadDepthDataset.Text = "Use selected dataset for Depth"
         Me.m_btLoadDepthDataset.UseVisualStyleBackColor = True
@@ -101,11 +127,11 @@ Partial Class frmEwEPlugin
         '
         Me.m_lbConfigFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lbConfigFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_lbConfigFile.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.m_lbConfigFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.m_lbConfigFile.Location = New System.Drawing.Point(20, 85)
         Me.m_lbConfigFile.Name = "m_lbConfigFile"
-        Me.m_lbConfigFile.Size = New System.Drawing.Size(664, 23)
+        Me.m_lbConfigFile.Size = New System.Drawing.Size(675, 23)
         Me.m_lbConfigFile.TabIndex = 1
         '
         'Label1
@@ -125,37 +151,11 @@ Partial Class frmEwEPlugin
         Me.m_lstDatasets.Size = New System.Drawing.Size(219, 56)
         Me.m_lstDatasets.TabIndex = 2
         '
-        'CEwEHeaderLabel1
-        '
-        Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CEwEHeaderLabel1.CanCollapseParent = False
-        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
-        Me.CEwEHeaderLabel1.IsCollapsed = False
-        Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(12, 9)
-        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(680, 24)
-        Me.CEwEHeaderLabel1.TabIndex = 6
-        Me.CEwEHeaderLabel1.Text = "Load spatial configuration file"
-        Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'CEwEHeaderLabel2
-        '
-        Me.CEwEHeaderLabel2.CanCollapseParent = False
-        Me.CEwEHeaderLabel2.CollapsedParentHeight = 0
-        Me.CEwEHeaderLabel2.IsCollapsed = False
-        Me.CEwEHeaderLabel2.Location = New System.Drawing.Point(12, 133)
-        Me.CEwEHeaderLabel2.Name = "CEwEHeaderLabel2"
-        Me.CEwEHeaderLabel2.Size = New System.Drawing.Size(680, 22)
-        Me.CEwEHeaderLabel2.TabIndex = 7
-        Me.CEwEHeaderLabel2.Text = "Pick depth data set"
-        Me.CEwEHeaderLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
         'frmEwEPlugin
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(704, 609)
+        Me.ClientSize = New System.Drawing.Size(713, 339)
         Me.ControlBox = False
         Me.Controls.Add(Me.Panel1)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
