@@ -123,13 +123,13 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_ucSlider.Location" type="System.Drawing.Point, System.Drawing">
-    <value>65, 19</value>
+    <value>68, 96</value>
   </data>
   <data name="m_ucSlider.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_ucSlider.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 20</value>
+    <value>129, 20</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_ucSlider.TabIndex" type="System.Int32, mscorlib">
@@ -139,19 +139,19 @@
     <value>m_ucSlider</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.3.922.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.10266.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>7</value>
   </data>
   <data name="m_lblCursor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblCursor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 22</value>
+    <value>4, 100</value>
   </data>
   <data name="m_lblCursor.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 13</value>
@@ -172,7 +172,166 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblCursor.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_lblName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 24</value>
+  </data>
+  <data name="m_lblName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 13</value>
+  </data>
+  <data name="m_lblName.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_lblName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="&gt;&gt;m_lblName.Name" xml:space="preserve">
+    <value>m_lblName</value>
+  </data>
+  <data name="&gt;&gt;m_lblName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblName.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblName.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_tbxName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>68, 21</value>
+  </data>
+  <data name="m_tbxName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 20</value>
+  </data>
+  <data name="m_tbxName.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_tbxName.Name" xml:space="preserve">
+    <value>m_tbxName</value>
+  </data>
+  <data name="&gt;&gt;m_tbxName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxName.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_lblMin.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblMin.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblMin.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 50</value>
+  </data>
+  <data name="m_lblMin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="m_lblMin.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_lblMin.Text" xml:space="preserve">
+    <value>Min value:</value>
+  </data>
+  <data name="&gt;&gt;m_lblMin.Name" xml:space="preserve">
+    <value>m_lblMin</value>
+  </data>
+  <data name="&gt;&gt;m_lblMin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblMin.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblMin.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_tbxMin.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxMin.Location" type="System.Drawing.Point, System.Drawing">
+    <value>68, 47</value>
+  </data>
+  <data name="m_tbxMin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 20</value>
+  </data>
+  <data name="m_tbxMin.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMin.Name" xml:space="preserve">
+    <value>m_tbxMin</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMin.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMin.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbxMax.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxMax.Location" type="System.Drawing.Point, System.Drawing">
+    <value>68, 73</value>
+  </data>
+  <data name="m_tbxMax.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 20</value>
+  </data>
+  <data name="m_tbxMax.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMax.Name" xml:space="preserve">
+    <value>m_tbxMax</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMax.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMax.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMax.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_lblMax.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblMax.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblMax.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 76</value>
+  </data>
+  <data name="m_lblMax.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 13</value>
+  </data>
+  <data name="m_lblMax.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_lblMax.Text" xml:space="preserve">
+    <value>Max value:</value>
+  </data>
+  <data name="&gt;&gt;m_lblMax.Name" xml:space="preserve">
+    <value>m_lblMax</value>
+  </data>
+  <data name="&gt;&gt;m_lblMax.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblMax.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblMax.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -181,12 +340,12 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 42</value>
+    <value>200, 119</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucLayerEditorDefault</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditor, EwE6, Version=6.3.922.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.5.10266.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

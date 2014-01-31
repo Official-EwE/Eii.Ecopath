@@ -140,12 +140,12 @@ Namespace Controls.Map.Layers
         Public Overridable Sub UpdateContent(ByVal editor As cLayerEditor) _
             Implements ILayerEditorGUI.UpdateContent
 
-            Dim strLabel As String = ""
+            'Dim strLabel As String = ""
             Dim img As Image = SharedResources.ProtectFormHS
 
             If (Me.IsAttached = True) Then
-                ' Get label text (could use diplay text?)
-                strLabel = String.Format(My.Resources.CAPTION_EDITING_LAYER, Me.Editor.Layer.DisplayText())
+                '' Get label text (could use diplay text?)
+                'strLabel = String.Format(My.Resources.CAPTION_EDITING_LAYER, Me.Editor.Layer.DisplayText())
                 ' Get layer image
                 If editor.IsReadOnly Then
                     img = SharedResources.ProtectFormHS
@@ -159,7 +159,7 @@ Namespace Controls.Map.Layers
             End If
 
             Me.m_lblCaption.Image = img
-            Me.m_lblCaption.Text = strLabel
+            'Me.m_lblCaption.Text = strLabel
 
         End Sub
 

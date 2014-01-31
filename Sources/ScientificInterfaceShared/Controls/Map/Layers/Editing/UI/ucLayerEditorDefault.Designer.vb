@@ -44,30 +44,82 @@ Namespace Controls.Map.Layers
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditorDefault))
             Me.m_ucSlider = New ScientificInterfaceShared.Controls.ucSlider()
             Me.m_lblCursor = New System.Windows.Forms.Label()
+            Me.m_lblName = New System.Windows.Forms.Label()
+            Me.m_tbxName = New System.Windows.Forms.TextBox()
+            Me.m_lblMin = New System.Windows.Forms.Label()
+            Me.m_tbxMin = New System.Windows.Forms.TextBox()
+            Me.m_tbxMax = New System.Windows.Forms.TextBox()
+            Me.m_lblMax = New System.Windows.Forms.Label()
             Me.SuspendLayout()
             '
             'm_ucSlider
             '
             resources.ApplyResources(Me.m_ucSlider, "m_ucSlider")
+            Me.m_ucSlider.CurrentKnob = 0
             Me.m_ucSlider.Maximum = 6
             Me.m_ucSlider.Minimum = 1
             Me.m_ucSlider.Name = "m_ucSlider"
-            Me.m_ucSlider.Value = 1
+            Me.m_ucSlider.NumKnobs = 1
             '
             'm_lblCursor
             '
             resources.ApplyResources(Me.m_lblCursor, "m_lblCursor")
             Me.m_lblCursor.Name = "m_lblCursor"
             '
+            'm_lblName
+            '
+            resources.ApplyResources(Me.m_lblName, "m_lblName")
+            Me.m_lblName.Name = "m_lblName"
+            '
+            'm_tbxName
+            '
+            resources.ApplyResources(Me.m_tbxName, "m_tbxName")
+            Me.m_tbxName.Name = "m_tbxName"
+            Me.m_tbxName.ReadOnly = True
+            '
+            'm_lblMin
+            '
+            resources.ApplyResources(Me.m_lblMin, "m_lblMin")
+            Me.m_lblMin.Name = "m_lblMin"
+            '
+            'm_tbxMin
+            '
+            resources.ApplyResources(Me.m_tbxMin, "m_tbxMin")
+            Me.m_tbxMin.Name = "m_tbxMin"
+            Me.m_tbxMin.ReadOnly = True
+            '
+            'm_tbxMax
+            '
+            resources.ApplyResources(Me.m_tbxMax, "m_tbxMax")
+            Me.m_tbxMax.Name = "m_tbxMax"
+            Me.m_tbxMax.ReadOnly = True
+            '
+            'm_lblMax
+            '
+            resources.ApplyResources(Me.m_lblMax, "m_lblMax")
+            Me.m_lblMax.Name = "m_lblMax"
+            '
             'ucLayerEditorDefault
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_tbxMax)
+            Me.Controls.Add(Me.m_tbxMin)
+            Me.Controls.Add(Me.m_tbxName)
+            Me.Controls.Add(Me.m_lblMax)
+            Me.Controls.Add(Me.m_lblMin)
+            Me.Controls.Add(Me.m_lblName)
             Me.Controls.Add(Me.m_lblCursor)
             Me.Controls.Add(Me.m_ucSlider)
             Me.Name = "ucLayerEditorDefault"
             Me.Controls.SetChildIndex(Me.m_ucSlider, 0)
             Me.Controls.SetChildIndex(Me.m_lblCursor, 0)
+            Me.Controls.SetChildIndex(Me.m_lblName, 0)
+            Me.Controls.SetChildIndex(Me.m_lblMin, 0)
+            Me.Controls.SetChildIndex(Me.m_lblMax, 0)
+            Me.Controls.SetChildIndex(Me.m_tbxName, 0)
+            Me.Controls.SetChildIndex(Me.m_tbxMin, 0)
+            Me.Controls.SetChildIndex(Me.m_tbxMax, 0)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -75,6 +127,12 @@ Namespace Controls.Map.Layers
 
         Private WithEvents m_ucSlider As ScientificInterfaceShared.Controls.ucSlider
         Private WithEvents m_lblCursor As System.Windows.Forms.Label
+        Private WithEvents m_lblName As System.Windows.Forms.Label
+        Private WithEvents m_tbxName As System.Windows.Forms.TextBox
+        Private WithEvents m_lblMin As System.Windows.Forms.Label
+        Private WithEvents m_tbxMin As System.Windows.Forms.TextBox
+        Private WithEvents m_tbxMax As System.Windows.Forms.TextBox
+        Private WithEvents m_lblMax As System.Windows.Forms.Label
 
     End Class
 

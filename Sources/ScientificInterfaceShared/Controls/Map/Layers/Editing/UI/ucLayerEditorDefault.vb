@@ -20,6 +20,8 @@
 
 Option Strict On
 
+Imports EwEUtils.Utilities
+
 #End Region ' Imports
 
 Namespace Controls.Map.Layers
@@ -48,6 +50,12 @@ Namespace Controls.Map.Layers
             Me.m_ucSlider.Value = editor.CursorSize
             Me.m_ucSlider.Enabled = bEnabled
             Me.m_lblCursor.Enabled = bEnabled
+
+            If (Me.Layer IsNot Nothing) Then
+                Me.m_tbxName.Text = Me.Layer.Name
+                Me.m_tbxMin.Text = cStringUtils.FormatNumber(Me.Layer.Data.MinValue)
+                Me.m_tbxMax.Text = cStringUtils.FormatNumber(Me.Layer.Data.MaxValue)
+            End If
 
         End Sub
 

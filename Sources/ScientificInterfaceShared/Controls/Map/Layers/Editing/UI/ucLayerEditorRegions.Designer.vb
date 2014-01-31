@@ -37,7 +37,7 @@ Namespace Controls.Map.Layers
             'm_lblRegion
             '
             Me.m_lblRegion.AutoSize = True
-            Me.m_lblRegion.Location = New System.Drawing.Point(3, 41)
+            Me.m_lblRegion.Location = New System.Drawing.Point(3, 121)
             Me.m_lblRegion.Name = "m_lblRegion"
             Me.m_lblRegion.Size = New System.Drawing.Size(44, 13)
             Me.m_lblRegion.TabIndex = 0
@@ -47,9 +47,9 @@ Namespace Controls.Map.Layers
             '
             Me.m_nudRegion.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudRegion.Location = New System.Drawing.Point(95, 39)
+            Me.m_nudRegion.Location = New System.Drawing.Point(68, 119)
             Me.m_nudRegion.Name = "m_nudRegion"
-            Me.m_nudRegion.Size = New System.Drawing.Size(102, 20)
+            Me.m_nudRegion.Size = New System.Drawing.Size(129, 20)
             Me.m_nudRegion.TabIndex = 1
             '
             'ucLayerEditorRegion
@@ -59,7 +59,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_lblRegion)
             Me.Controls.Add(Me.m_nudRegion)
             Me.Name = "ucLayerEditorRegion"
-            Me.Size = New System.Drawing.Size(200, 69)
+            Me.Size = New System.Drawing.Size(200, 149)
             Me.Controls.SetChildIndex(Me.m_nudRegion, 0)
             Me.Controls.SetChildIndex(Me.m_lblRegion, 0)
             CType(Me.m_nudRegion, System.ComponentModel.ISupportInitialize).EndInit()
