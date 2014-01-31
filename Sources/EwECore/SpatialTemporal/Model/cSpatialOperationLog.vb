@@ -199,9 +199,9 @@ Namespace SpatialData
             End If
 
             'Double seperators to keep the columns aligned when loading the data in Excel
-            sb.AppendLine("Message" + sep + sep + Me.m_msgCurrent.Message)
+            sb.AppendLine("Message" & sep & Me.m_msgCurrent.Importance.ToString & sep & Me.m_msgCurrent.Message)
             For Each vs As cVariableStatus In Me.m_msgCurrent.Variables
-                sb.AppendLine("Status" + sep + vs.Status.ToString + sep + vs.Message)
+                sb.AppendLine("Status" & sep & vs.Status.ToString & sep & vs.Message)
             Next
 
             If Not String.IsNullOrWhiteSpace(Me.m_msgCurrent.Hyperlink) Then
