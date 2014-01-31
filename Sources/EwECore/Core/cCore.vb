@@ -2685,14 +2685,15 @@ Public Class cCore
             ' Has Ecospace?
             If (savetype >= eAutosaveTypes.Ecospace) Then
                 ' #Yes: add ecospace scenario details
+                ' JS: 
                 sb.AppendLine("EcospaceScenario," & cStringUtils.ToCSVField(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name))
-                sb.AppendLine("Map rows," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow))
-                sb.AppendLine("Map cols," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol))
-                sb.AppendLine("Map cell length," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength))
-                sb.AppendLine("Map cell size," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.GetCellSize()))
-                sb.AppendLine("Map Latitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1))
-                sb.AppendLine("Map Longitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1))
-                sb.AppendLine("EcoSpace time step length," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep))
+                sb.AppendLine("MapRows," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow))
+                sb.AppendLine("MapCols," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol))
+                sb.AppendLine("MapCellLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength))
+                sb.AppendLine("MapCellSize," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.GetCellSize()))
+                sb.AppendLine("MapLatitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1))
+                sb.AppendLine("MapLongitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1))
+                sb.AppendLine("EcoSpaceTimeStepLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep))
             End If
 
             ' Has Ecotracer?
