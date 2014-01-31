@@ -1493,9 +1493,6 @@ Namespace Style
             Me.FireChangeEvent(eChangeType.Colours)
         End Sub
 
-        Private m_iAngle As Integer = cCore.NULL_VALUE
-        Private Const sFactor As Single = 180.0! / Math.PI
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns a random color.
@@ -1504,13 +1501,7 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NextRandomColor() As Color
             Get
-                If (Me.m_iAngle = cCore.NULL_VALUE) Or (Me.m_iAngle > 200000) Then
-                    Me.m_iAngle = New Random().Next(0, 31452)
-                End If
-                Me.m_iAngle += 33
-                Return Color.FromArgb(CInt(Math.Sin((Me.m_iAngle) * 1.412 / sFactor) * 115 + 115), _
-                                      CInt(Math.Sin((Me.m_iAngle) * 3.81 / sFactor) * 105 + 150), _
-                                      CInt(Math.Sin((Me.m_iAngle) * 2.1231 / sFactor) * 115 + 140))
+                Return cColorUtils.RandomColor(Color.Gray)
             End Get
         End Property
 

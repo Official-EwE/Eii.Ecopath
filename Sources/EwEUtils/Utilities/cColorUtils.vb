@@ -33,6 +33,8 @@ Namespace Utilities
     ''' -----------------------------------------------------------------------
     Public Class cColorUtils
 
+        Private Shared gRandom As New Random()
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Obtain a different shade of a <see cref="Color">color</see>.
@@ -79,6 +81,33 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         Public Shared Function ColorToInt(ByVal clr As Color) As Integer
             Return ((clr.A And &HFF) << 24) + ((clr.R And &HFF) << 16) + ((clr.G And &HFF) << 8) + (clr.B And &HFF)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generate a random colour.
+        ''' </summary>
+        ''' <param name="mix">The colour to mix with.</param>
+        ''' <returns>A random color.</returns>
+        ''' <remarks>
+        ''' From http://stackoverflow.com/questions/43044/algorithm-to-randomly-generate-an-aesthetically-pleasing-color-palette
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function RandomColor(mix As Color) As Color
+
+            Dim red As Integer = gRandom.Next(256)
+            Dim green As Integer = gRandom.Next(256)
+            Dim blue As Integer = gRandom.Next(256)
+
+            ' mix the color
+            If (mix <> Nothing) Then
+                red = CInt((red + mix.R) / 2)
+                green = CInt((green + mix.G) / 2)
+                blue = CInt((blue + mix.B) / 2)
+            End If
+
+            Return Color.FromArgb(255, red, green, blue)
+
         End Function
 
     End Class

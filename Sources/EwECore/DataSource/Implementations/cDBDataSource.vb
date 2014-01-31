@@ -7450,6 +7450,7 @@ Namespace DataSources
         ''' <param name="strAuthor">Author to assign to the new scenario.</param>
         ''' <param name="strContact">Contact info to assign to the new scenario.</param>
         ''' <param name="iScenarioID">Database ID assigned to the new scenario.</param>
+        ''' <param name="sCellLength">Length of cells, in km.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Public Function AppendEcospaceScenario(ByVal strScenarioName As String, ByVal strDescription As String, _
