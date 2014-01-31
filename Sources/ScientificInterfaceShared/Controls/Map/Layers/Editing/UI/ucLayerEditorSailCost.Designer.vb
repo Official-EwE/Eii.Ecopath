@@ -45,7 +45,6 @@ Namespace Controls.Map.Layers
             Me.m_cmbFleet = New System.Windows.Forms.ComboBox()
             Me.m_lblFleet = New System.Windows.Forms.Label()
             Me.m_btnCalculate = New System.Windows.Forms.Button()
-            CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_cmbFleet
@@ -74,11 +73,9 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_cmbFleet)
             Me.Controls.Add(Me.m_lblFleet)
             Me.Name = "ucLayerEditorSailCost"
-            Me.Controls.SetChildIndex(Me.m_pbPreview, 0)
             Me.Controls.SetChildIndex(Me.m_lblFleet, 0)
             Me.Controls.SetChildIndex(Me.m_cmbFleet, 0)
             Me.Controls.SetChildIndex(Me.m_btnCalculate, 0)
-            CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 

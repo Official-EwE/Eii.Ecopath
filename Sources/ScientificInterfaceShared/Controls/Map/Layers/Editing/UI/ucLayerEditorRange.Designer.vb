@@ -91,10 +91,10 @@ Namespace Controls.Map.Layers
 
         End Sub
         Private WithEvents m_lbValue As System.Windows.Forms.Label
-        Protected WithEvents m_pbPreview As System.Windows.Forms.PictureBox
         Private WithEvents m_btnSmooth As System.Windows.Forms.Button
         Private WithEvents m_nudValue As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_btnFill As System.Windows.Forms.Button
+        Private WithEvents m_pbPreview As System.Windows.Forms.PictureBox
 
     End Class
 

@@ -44,12 +44,15 @@ Namespace Controls.Map.Layers
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditor))
-            Me.m_lblCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_lblCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.SuspendLayout()
             '
             'm_lblCaption
             '
             resources.ApplyResources(Me.m_lblCaption, "m_lblCaption")
+            Me.m_lblCaption.CanCollapseParent = False
+            Me.m_lblCaption.CollapsedParentHeight = 0
+            Me.m_lblCaption.IsCollapsed = False
             Me.m_lblCaption.Name = "m_lblCaption"
             '
             'ucLayerEditor

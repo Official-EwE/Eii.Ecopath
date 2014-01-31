@@ -41,16 +41,16 @@ Namespace Controls.Map.Layers
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_lblScale = New System.Windows.Forms.Label
-            Me.m_nudValue = New cEwENumericUpDown
-            Me.m_lblUnits = New System.Windows.Forms.Label
+            Me.m_lblScale = New System.Windows.Forms.Label()
+            Me.m_nudValue = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblUnits = New System.Windows.Forms.Label()
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_lblScale
             '
             Me.m_lblScale.AutoSize = True
-            Me.m_lblScale.Location = New System.Drawing.Point(3, 44)
+            Me.m_lblScale.Location = New System.Drawing.Point(3, 114)
             Me.m_lblScale.Name = "m_lblScale"
             Me.m_lblScale.Size = New System.Drawing.Size(37, 13)
             Me.m_lblScale.TabIndex = 2
@@ -59,8 +59,8 @@ Namespace Controls.Map.Layers
             'm_nudValue
             '
             Me.m_nudValue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudValue.Location = New System.Drawing.Point(65, 42)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudValue.Location = New System.Drawing.Point(65, 112)
             Me.m_nudValue.Name = "m_nudValue"
             Me.m_nudValue.Size = New System.Drawing.Size(85, 20)
             Me.m_nudValue.TabIndex = 3
@@ -69,7 +69,7 @@ Namespace Controls.Map.Layers
             '
             Me.m_lblUnits.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_lblUnits.AutoSize = True
-            Me.m_lblUnits.Location = New System.Drawing.Point(156, 44)
+            Me.m_lblUnits.Location = New System.Drawing.Point(156, 114)
             Me.m_lblUnits.Name = "m_lblUnits"
             Me.m_lblUnits.Size = New System.Drawing.Size(41, 13)
             Me.m_lblUnits.TabIndex = 4
@@ -84,7 +84,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_lblScale)
             Me.Controls.Add(Me.m_lblUnits)
             Me.Name = "ucLayerEditorVector"
-            Me.Size = New System.Drawing.Size(200, 69)
+            Me.Size = New System.Drawing.Size(200, 140)
             Me.Controls.SetChildIndex(Me.m_lblUnits, 0)
             Me.Controls.SetChildIndex(Me.m_lblScale, 0)
             Me.Controls.SetChildIndex(Me.m_nudValue, 0)
@@ -93,9 +93,9 @@ Namespace Controls.Map.Layers
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_nudValue As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblUnits As System.Windows.Forms.Label
         Private WithEvents m_lblScale As System.Windows.Forms.Label
+        Private WithEvents m_nudValue As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
     End Class
 

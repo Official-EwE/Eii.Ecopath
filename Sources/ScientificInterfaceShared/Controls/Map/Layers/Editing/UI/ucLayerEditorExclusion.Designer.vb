@@ -39,7 +39,7 @@ Namespace Controls.Map.Layers
             'Label1
             '
             Me.Label1.AutoSize = True
-            Me.Label1.Location = New System.Drawing.Point(3, 47)
+            Me.Label1.Location = New System.Drawing.Point(3, 121)
             Me.Label1.Name = "Label1"
             Me.Label1.Size = New System.Drawing.Size(45, 13)
             Me.Label1.TabIndex = 0
@@ -49,18 +49,18 @@ Namespace Controls.Map.Layers
             '
             Me.m_nudDepth.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudDepth.Location = New System.Drawing.Point(65, 45)
+            Me.m_nudDepth.Location = New System.Drawing.Point(68, 119)
             Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudDepth.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudDepth.Name = "m_nudDepth"
-            Me.m_nudDepth.Size = New System.Drawing.Size(75, 20)
+            Me.m_nudDepth.Size = New System.Drawing.Size(73, 20)
             Me.m_nudDepth.TabIndex = 1
             Me.m_nudDepth.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
             'm_btnClear
             '
             Me.m_btnClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnClear.Location = New System.Drawing.Point(66, 71)
+            Me.m_btnClear.Location = New System.Drawing.Point(66, 145)
             Me.m_btnClear.Name = "m_btnClear"
             Me.m_btnClear.Size = New System.Drawing.Size(131, 23)
             Me.m_btnClear.TabIndex = 3
@@ -70,7 +70,7 @@ Namespace Controls.Map.Layers
             'm_btnSet
             '
             Me.m_btnSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSet.Location = New System.Drawing.Point(146, 42)
+            Me.m_btnSet.Location = New System.Drawing.Point(147, 119)
             Me.m_btnSet.Name = "m_btnSet"
             Me.m_btnSet.Size = New System.Drawing.Size(50, 23)
             Me.m_btnSet.TabIndex = 2
@@ -86,7 +86,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_btnClear)
             Me.Controls.Add(Me.m_nudDepth)
             Me.Name = "ucLayerEditorExclusion"
-            Me.Size = New System.Drawing.Size(200, 100)
+            Me.Size = New System.Drawing.Size(200, 175)
             Me.Controls.SetChildIndex(Me.m_nudDepth, 0)
             Me.Controls.SetChildIndex(Me.m_btnClear, 0)
             Me.Controls.SetChildIndex(Me.m_btnSet, 0)
