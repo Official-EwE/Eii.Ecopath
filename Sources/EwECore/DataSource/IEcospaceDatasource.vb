@@ -107,7 +107,7 @@ Namespace DataSources
         ''' <param name="InCol">Number of columns in new basemap.</param>
         ''' <param name="sOriginLat">Latitude of origin of basemap.</param>
         ''' <param name="sOriginLon">Longitude of origin of basemap.</param>
-        ''' <param name="sCellLength">Cell size, in kilometers.</param>
+        ''' <param name="sCellLength">Cell length, in kilometers.</param>
         ''' <param name="iDBID">Database ID assigned to the new scenario.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------

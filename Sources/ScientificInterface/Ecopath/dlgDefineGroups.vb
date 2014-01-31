@@ -65,7 +65,7 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
 
             ' Try to apply grid changes
@@ -80,43 +80,43 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles Cancel_Button.Click
             Me.DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnInsert(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnInsert.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnMoveUp(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnMoveUp.Click
             Me.m_grid.MoveRowUp()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnMoveDown(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnMoveDown.Click
             Me.m_grid.MoveRowDown()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDelete(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnDelete.Click
             Me.m_grid.ToggleDeleteRows()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnPreserve(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRows()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_GroupGrid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+        Private Sub OnGroupSelected(ByVal selection As SourceGrid2.CellVirtualCollection) _
             Handles m_grid.OnSelectionChanged
             Me.UpdateControls()
         End Sub
