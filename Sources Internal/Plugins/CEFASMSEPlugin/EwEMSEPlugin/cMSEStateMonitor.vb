@@ -47,6 +47,12 @@ Public Class cMSEStateMonitor
         HasResults
     End Enum
 
+    ''' <summary>
+    ''' Checks whether a state is available
+    ''' </summary>
+    ''' <param name="state"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function IsStateAvailable(state As eState) As Boolean
 
         Dim bHasState As Boolean = True

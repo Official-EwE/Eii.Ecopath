@@ -60,6 +60,8 @@ Public Class cMSE
     Private ChangeInEffortLimits() As Double
     Public Const NoHCR_F As Integer = cCore.NULL_VALUE
 
+    Private m_Survivability As New cSurvivability
+
     Private m_monitor As New cMSEStateMonitor(Me)
     Private m_bIsRunning As Boolean = False
 
@@ -82,7 +84,7 @@ Public Class cMSE
     Private m_rand As New Random()
 
     Public Enum DistributionType As Integer
-        Uniform = 0
+        Uniform = 1
         Triangular
     End Enum
 
@@ -143,6 +145,7 @@ Public Class cMSE
 
         For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
             bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
+            If bSuccess = False Then Stop
         Next
         Return bSuccess
 
@@ -295,33 +298,41 @@ Public Class cMSE
         Dim correct(mCore.nGroups - 1) As Integer
         Dim TotalFound As Integer = 0
         Dim bOK As Boolean = True
+        Dim nPrimaryProducers As Integer
 
         'initialise correct to all zeros
         For i = 1 To mCore.nGroups
             correct(i - 1) = 0
-            reader = cMSEUtils.GetReader(strPath)
-            If (reader IsNot Nothing) Then
-                csv = New CsvReader(reader, True)
-                Try
-                    'cycle through each of the living functional groups each time checking if it exists in the file
-                    While Not csv.EndOfStream
-                        If csv.ReadNextRecord() Then
-                            For xgrp = 1 To mCore.nGroups
-                                If String.Compare(cMSEUtils.FromCSVField(csv("GroupName")), _ecopath.EcopathData.GroupName(xgrp), True) = 0 Then
-                                    correct(xgrp - 1) += 1
-                                End If
-                            Next
-                        End If
-                    End While
-
-                Catch ex As Exception
-                    bOK = False
-                End Try
-                csv.Dispose()
-            End If
-
-            cMSEUtils.ReleaseReader(reader)
         Next
+
+        'Count the number of primary producers
+        For i = 1 To mCore.nGroups
+            If mCore.EcoPathGroupInputs(i).IsProducer And mCore.EcoPathGroupInputs(i).IsLiving Then nPrimaryProducers += 1
+        Next
+
+        reader = cMSEUtils.GetReader(strPath)
+        If (reader IsNot Nothing) Then
+            csv = New CsvReader(reader, True)
+            Try
+                'cycle through each of the living functional groups each time checking if it exists in the file
+                While Not csv.EndOfStream
+                    If csv.ReadNextRecord() Then
+                        For xgrp = 1 To mCore.nGroups
+                            If String.Compare(cMSEUtils.FromCSVField(csv("GroupName")), _ecopath.EcopathData.GroupName(xgrp), True) = 0 Then
+                                correct(xgrp - 1) += 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+                End While
+
+            Catch ex As Exception
+                bOK = False
+            End Try
+            csv.Dispose()
+        End If
+
+        cMSEUtils.ReleaseReader(reader)
 
         ' Report file read error
         If (bOK = False) Then
@@ -354,7 +365,7 @@ Public Class cMSE
             TotalFound += i
         Next
 
-        If TotalFound < mCore.nLivingGroups Then 'Check whether there are too few groups in the file
+        If TotalFound < mCore.nLivingGroups - nPrimaryProducers Then 'Check whether there are too few groups in the file
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
             Return False
         ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
@@ -913,17 +924,22 @@ Public Class cMSE
                     ecopathData.QB(igrp) = CSng(QB(iTrial - 1, igrp - 1))
                     ecopathData.EE(igrp) = CSng(EE(iTrial - 1, igrp - 1))
                     ecopathData.BA(igrp) = CSng(BA(iTrial - 1, igrp - 1))
-                    ecosimData.QmQo(igrp) = CSng(DenDepCatchability(iTrial - 1, igrp - 1))
-                    ecosimData.FtimeAdjust(igrp) = CSng(FeedingTimeAdjustRate(iTrial - 1, igrp - 1))
-                    ecosimData.FtimeMax(igrp) = CSng(MaxRelFeedingTime(iTrial - 1, igrp - 1))
-                    ecosimData.MoPred(igrp) = CSng(OtherMortFeedingTime(iTrial - 1, igrp - 1))
-                    ecosimData.RiskTime(igrp) = CSng(PredEffectFeedingTime(iTrial - 1, igrp - 1))
-                    ecosimData.CmCo(igrp) = CSng(QBMaxxQBio(iTrial - 1, igrp - 1))
-                    ecosimData.SwitchPower(igrp) = CSng(SwitchingPower(iTrial - 1, igrp - 1))
+                    If Not mCore.EcoPathGroupInputs(igrp).IsProducer Then
+                        ecosimData.QmQo(igrp) = CSng(DenDepCatchability(iTrial - 1, igrp - 1))
+                        ecosimData.FtimeAdjust(igrp) = CSng(FeedingTimeAdjustRate(iTrial - 1, igrp - 1))
+                        ecosimData.FtimeMax(igrp) = CSng(MaxRelFeedingTime(iTrial - 1, igrp - 1))
+                        ecosimData.MoPred(igrp) = CSng(OtherMortFeedingTime(iTrial - 1, igrp - 1))
+                        ecosimData.RiskTime(igrp) = CSng(PredEffectFeedingTime(iTrial - 1, igrp - 1))
+                        ecosimData.CmCo(igrp) = CSng(QBMaxxQBio(iTrial - 1, igrp - 1))
+                        ecosimData.SwitchPower(igrp) = CSng(SwitchingPower(iTrial - 1, igrp - 1))
+                        If mCore.EcoPathGroupInputs(igrp).IsProducer Then Stop
+                    End If
                 Else
                     Stop
                 End If
             Next
+
+
 
             For iPrey As Integer = 1 To mCore.nGroups
                 'For iPrey As Integer = 1 To Vulnerabilities.GetLength(1)
@@ -1115,6 +1131,7 @@ Public Class cMSE
         cMSEUtils.ReleaseWriter(swGroup)
         cMSEUtils.ReleaseWriter(swFleet)
 
+        'This should only be commented out for testing purposes!!!
         Me.RestoreOriginalState()
 
     End Sub
@@ -1470,6 +1487,7 @@ stepend:
         Dim iNumFound As Integer = 0
 
         'I am just altering the tolerance so that it can run faster; this needs deleting later
+        'MessageBox.Show("the default tolerance = " & MonteCarlo.EcopathEETolerance)
         MonteCarlo.EcopathEETolerance = Me.MassBalanceTol
         'Forces the same sequence of random numbers for each run. Used only for debugging runs
         'MonteCarlo.InitRandomSequence(666)
@@ -1996,7 +2014,7 @@ stepend:
             Me.Core.DiscardChanges()
 
             ' Just reload Ecosim
-            Me.Core.LoadEcosimScenario(Me.Core.ActiveEcosimScenarioIndex)
+            'Me.Core.LoadEcosimScenario(Me.Core.ActiveEcosimScenarioIndex)
 
         Catch ex As Exception
 
@@ -2097,7 +2115,7 @@ stepend:
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         If Not Me.HasUI Then
-            MSEForm = New frmMSE(Me, Me.m_uic)
+            MSEForm = New frmMSE(Me, Me.m_uic, Me.m_Survivability)
         End If
 
         ' Let EwE show the form

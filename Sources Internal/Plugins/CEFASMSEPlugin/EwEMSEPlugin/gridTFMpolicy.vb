@@ -150,9 +150,9 @@ Public Class gridTargetFishingMortalityPolicy
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.MaxF) = Cell
 
-            Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(Rule.CostFunction, cb)
-            cbCell.Behaviors.Add(Me.EwEEditHandler)
-            Me(iHCR, eColumnTypes.CostFunction) = cbCell
+            'Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(Rule.CostFunction, cb)
+            'cbCell.Behaviors.Add(Me.EwEEditHandler)
+            'Me(iHCR, eColumnTypes.CostFunction) = cbCell
 
             Me.Rows(iHCR).Tag = Rule
         Next
@@ -174,7 +174,7 @@ Public Class gridTargetFishingMortalityPolicy
                     DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = Units.Convert(eConvertTypes.ToDisplayBio, hcr.UpperLimit)
                     DirectCast(row.GetCells(eColumnTypes.MaxF), EwECell).Value = hcr.MaxF
 
-                    DirectCast(row.GetCells(eColumnTypes.CostFunction), ICell).Value = hcr.CostFunction
+                    'DirectCast(row.GetCells(eColumnTypes.CostFunction), ICell).Value = hcr.CostFunction
 
                 End If
 
@@ -249,8 +249,8 @@ Public Class gridTargetFishingMortalityPolicy
                 Case eColumnTypes.MaxF
                     Me.HarvestControlRule.MaxF = CDbl(cell.GetValue(p))
 
-                Case eColumnTypes.CostFunction
-                    Me.HarvestControlRule.CostFunction = DirectCast(cell.GetValue(p), HCRType)
+                    'Case eColumnTypes.CostFunction
+                    '    Me.HarvestControlRule.CostFunction = DirectCast(cell.GetValue(p), HCRType)
 
             End Select
 

@@ -135,12 +135,26 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cQuotaShares.vb" />
+    <Compile Include="gridMaxDecreaseEffort.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="gridSurviveDistParams.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="cMSE.vb" />
     <Compile Include="cMSEStateMonitor.vb" />
+    <Compile Include="cSurvivability.vb" />
     <Compile Include="frmEditDecreaseEffort.Designer.vb">
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
     </Compile>
     <Compile Include="frmEditDecreaseEffort.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEditSurvivabilites.Designer.vb">
+      <DependentUpon>frmEditSurvivabilites.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEditSurvivabilites.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTFMpolicy.designer.vb">
@@ -199,6 +213,9 @@
   <ItemGroup>
     <EmbeddedResource Include="frmEditDecreaseEffort.resx">
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEditSurvivabilites.resx">
+      <DependentUpon>frmEditSurvivabilites.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTFMpolicy.resx">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>

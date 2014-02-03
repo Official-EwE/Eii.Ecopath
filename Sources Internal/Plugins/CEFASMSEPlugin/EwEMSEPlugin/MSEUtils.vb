@@ -36,7 +36,6 @@ Public Class cMSEUtils
     Public Shared Function GetReader(strFile As String) As StreamReader
 
         Dim reader As StreamReader = Nothing
-
         ' Capture errors
         If String.IsNullOrWhiteSpace(strFile) Then Return reader
         If Not File.Exists(strFile) Then Return reader
@@ -127,8 +126,8 @@ Public Class cMSEUtils
         Root = 0
         ''' <summary>The Fleet subfolder under 'Root'.</summary>
         Fleet
-        ''' <summary>The NaturalMortaility subfolder under 'Root'.</summary>
-        NaturalMort
+        ' ''' <summary>The NaturalMortaility subfolder under 'Root'.</summary>
+        'NaturalMort
         ''' <summary>The Distributions subfolder under 'Root'.</summary>
         DistrParams
         ''' <summary>The ParametersOut subfolder under 'Root'.</summary>
@@ -180,7 +179,7 @@ Public Class cMSEUtils
             Case eMSEPaths.Root : Return ""
             Case eMSEPaths.DistrParams : Return "DistributionParameters"
             Case eMSEPaths.Fleet : Return "Fleet"
-            Case eMSEPaths.NaturalMort : Return "NaturalMortalities"
+                'Case eMSEPaths.NaturalMort : Return "NaturalMortalities"
             Case eMSEPaths.ParamsOut : Return "ParametersOut"
             Case eMSEPaths.Results : Return "Results"
             Case eMSEPaths.ResultsTrajectories : Return "Results\Trajectories"

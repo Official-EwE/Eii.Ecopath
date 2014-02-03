@@ -518,7 +518,7 @@ Public Class frmDistributionParameters
         Me.m_grid.DataName = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.CAPTION, strName)
     End Sub
 
-    Private Function SaveEcoSimParameters2CSV(ByVal parms As List(Of cDistributionParamsData), ByVal strFileName As String) As Boolean
+    Private Function SaveEcoSimParameters2CSV(ByVal params As List(Of cDistributionParamsData), ByVal strFileName As String) As Boolean
 
         Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFileName & ".csv"), False)
         Dim bSuccess As Boolean = False
@@ -528,7 +528,7 @@ Public Class frmDistributionParameters
         Try
             writer.WriteLine("GroupName,GroupNumber,DistributionType,Lower,Upper,Mid")
 
-            For Each entry As cDistributionParamsData In parms
+            For Each entry As cDistributionParamsData In params
                 If (TypeOf (entry) Is EcosimParam) Then
                     Dim param As EcosimParam = DirectCast(entry, EcosimParam)
                     writer.WriteLine(cStringUtils.ToCSVField(param.GroupName) & "," & _

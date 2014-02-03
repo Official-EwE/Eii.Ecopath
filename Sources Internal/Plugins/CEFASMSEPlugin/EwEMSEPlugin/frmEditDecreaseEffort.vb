@@ -33,6 +33,20 @@ Public Class frmEditDecreaseEffort
 
     Private m_plugin As cMSE = Nothing
 
+    Public Class cDecreaseInEffort
+
+        Public Sub New(ByVal FleetIndex As Integer, ByVal FleetName As String, ByVal MaxDecreaseInEffort As Double)
+            Me.FleetIndex = FleetIndex
+            Me.FleetName = FleetName
+            Me.MaxDecreaseInEffort = MaxDecreaseInEffort
+        End Sub
+
+        Public Property FleetIndex() As Integer
+        Public Property FleetName() As String
+        Public Property MaxDecreaseInEffort() As Double
+
+    End Class
+
     Public Sub New()
         MyBase.New()
         Me.InitializeComponent()
@@ -40,6 +54,7 @@ Public Class frmEditDecreaseEffort
 
     Public Sub Init(ByVal uic As cUIContext, ByVal Plugin As cMSE)
         Me.m_plugin = Plugin
+        'Me.Grid = m_grid
         Me.UIContext = uic
     End Sub
 

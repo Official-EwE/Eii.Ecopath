@@ -38,6 +38,7 @@ Public Class frmMSE
 #Region " Private vars "
 
     Private m_plugin As cMSE = Nothing
+    Private m_survivability As cSurvivability = Nothing
 
     Private m_fpArea As cEwEFormatProvider = Nothing
     Private m_fpNModelsToRun As cEwEFormatProvider = Nothing
@@ -51,11 +52,12 @@ Public Class frmMSE
 
 #End Region ' Private vars
 
-    Public Sub New(MSE As cMSE, uic As cUIContext)
+    Public Sub New(MSE As cMSE, uic As cUIContext, Survivability As cSurvivability)
 
         Me.InitializeComponent()
         Me.UIContext = uic
         Me.m_plugin = MSE
+        Me.m_survivability = Survivability
 
     End Sub
 

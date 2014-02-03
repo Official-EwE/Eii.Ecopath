@@ -186,10 +186,10 @@ Public Class dlgHarvestControlRule
         End If
 
         ' Cost function
-        If (Me.m_cbCostFunctions.SelectedItem IsNot Nothing) Then
-            Dim item As cHCRTypeItem = DirectCast(Me.m_cbCostFunctions.SelectedItem, cHCRTypeItem)
-            Me.m_HRC.CostFunction = item.[Function]
-        End If
+        'If (Me.m_cbCostFunctions.SelectedItem IsNot Nothing) Then
+        '    Dim item As cHCRTypeItem = DirectCast(Me.m_cbCostFunctions.SelectedItem, cHCRTypeItem)
+        '    Me.m_HRC.CostFunction = item.[Function]
+        'End If
 
         ' Oooh
         Me.m_tbxRule.Text = Me.m_HRC.ToString()

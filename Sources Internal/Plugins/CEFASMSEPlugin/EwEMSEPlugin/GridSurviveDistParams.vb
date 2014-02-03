@@ -40,7 +40,7 @@ Imports ScientificInterfaceShared.Style
 ''' </summary>
 ''' ===========================================================================
 <CLSCompliant(False)> _
-Public Class gridDistributionParameters
+Public Class gridSurviveDistParameters
     Inherits EwEGrid
 
 #Region " Internal defs "
@@ -211,7 +211,7 @@ Public Class gridDistributionParameters
                         Me(iRow, eEcopathColumnTypes.Upper) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
                     End If
 
-                     Me.Rows(iRow).Tag = data
+                    Me.Rows(iRow).Tag = data
 
                 Case frmDistributionParameters.eParameterSet.Ecosim
                     Dim data As frmDistributionParameters.EcosimParam = DirectCast(Me.m_data(i), frmDistributionParameters.EcosimParam)
@@ -303,7 +303,7 @@ Public Class gridDistributionParameters
                 Debug.Assert(TypeOf tag Is frmDistributionParameters.EcosimParam)
 
                 Dim data As frmDistributionParameters.EcosimParam = DirectCast(tag, frmDistributionParameters.EcosimParam)
- 
+
                 Select Case DirectCast(p.Column, eEcosimColumnTypes)
                     Case eEcosimColumnTypes.DistrType
                         data.DistributionType = DirectCast(cell.GetValue(p), cMSE.DistributionType)

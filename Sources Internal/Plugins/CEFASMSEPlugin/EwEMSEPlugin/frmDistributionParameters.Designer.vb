@@ -156,6 +156,7 @@ Partial Class frmDistributionParameters
         Me.PerformLayout()
 
     End Sub
+
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_btnOK As System.Windows.Forms.Button
     Private WithEvents m_grid As gridDistributionParameters
@@ -164,4 +165,5 @@ Partial Class frmDistributionParameters
     Private WithEvents m_tscmParamName As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_tslModel As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tslVariable As System.Windows.Forms.ToolStripLabel
+
 End Class

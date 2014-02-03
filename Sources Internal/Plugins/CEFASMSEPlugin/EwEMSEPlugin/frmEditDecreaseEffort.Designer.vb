@@ -52,6 +52,7 @@ Partial Class frmEditDecreaseEffort
         Me.MaxDecrease = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnOK = New System.Windows.Forms.Button()
+        Me.GridMaxDecreaseEffort1 = New EwEMSEPlugin.gridMaxDecreaseEffort()
         CType(Me.dgvMaxDecreaseEffort, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -94,6 +95,38 @@ Partial Class frmEditDecreaseEffort
         Me.btnOK.Name = "btnOK"
         Me.btnOK.UseVisualStyleBackColor = True
         '
+        'GridMaxDecreaseEffort1
+        '
+        Me.GridMaxDecreaseEffort1.AllowBlockSelect = False
+        Me.GridMaxDecreaseEffort1.AutoSizeMinHeight = 10
+        Me.GridMaxDecreaseEffort1.AutoSizeMinWidth = 10
+        Me.GridMaxDecreaseEffort1.AutoStretchColumnsToFitWidth = False
+        Me.GridMaxDecreaseEffort1.AutoStretchRowsToFitHeight = False
+        Me.GridMaxDecreaseEffort1.BackColor = System.Drawing.Color.White
+        Me.GridMaxDecreaseEffort1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.GridMaxDecreaseEffort1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.GridMaxDecreaseEffort1.CustomSort = False
+        Me.GridMaxDecreaseEffort1.Data = Nothing
+        Me.GridMaxDecreaseEffort1.DataName = "grid content"
+        Me.GridMaxDecreaseEffort1.FixedColumnWidths = False
+        Me.GridMaxDecreaseEffort1.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.GridMaxDecreaseEffort1.GridToolTipActive = True
+        Me.GridMaxDecreaseEffort1.IsLayoutSuspended = False
+        resources.ApplyResources(Me.GridMaxDecreaseEffort1, "GridMaxDecreaseEffort1")
+        Me.GridMaxDecreaseEffort1.Name = "GridMaxDecreaseEffort1"
+        Me.GridMaxDecreaseEffort1.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.GridMaxDecreaseEffort1.UIContext = Nothing
+        '
         'frmEditDecreaseEffort
         '
         Me.AcceptButton = Me.btnOK
@@ -101,6 +134,7 @@ Partial Class frmEditDecreaseEffort
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ControlBox = False
+        Me.Controls.Add(Me.GridMaxDecreaseEffort1)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.dgvMaxDecreaseEffort)
@@ -118,4 +152,6 @@ Partial Class frmEditDecreaseEffort
     Private WithEvents btnCancel As System.Windows.Forms.Button
     Private WithEvents btnOK As System.Windows.Forms.Button
     Private WithEvents dgvMaxDecreaseEffort As System.Windows.Forms.DataGridView
+    Friend WithEvents GridMaxDecreaseEffort1 As EwEMSEPlugin.gridMaxDecreaseEffort
+    Private WithEvents m_grid As gridDistributionParameters
 End Class
