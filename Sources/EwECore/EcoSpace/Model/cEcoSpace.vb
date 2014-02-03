@@ -3730,10 +3730,10 @@ exitline:
                             'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
                             If Me.m_Data.IsFished(iFlt, i, j) Then
 
-                                'm_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract 
                                 'Effort distribution scaled by Effort Zone
-                                m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * (Me.m_Data.EffZones(i, j)) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
-
+                                '3-Feb-2014 Villy changed this to use Me.m_Data.EffZones(i, j) which is the index of the zone not the effort in the zone???
+                                'm_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * Me.m_Data.EffZones(i, j) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
+                                m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.m_Data.EffZones(i, j)) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
                                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                                 'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
                                 'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
@@ -6627,9 +6627,6 @@ exitline:
                             End If 'Me.m_Data.PrefHab(K, 0) = 0.0
                         End If 'm_Data.Depth(i, j) > 0.0
 
-                        'get max for rescaling to 0-1 range
-                        m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
-
                     Next j
                 Next i
             End If ' Me.m_Data.bHasHabitatChanged(K)
@@ -7023,17 +7020,18 @@ exitline:
             If Me.m_Data.isGroupHabCapChanged(iGrp) Then
 
                 Me.m_Data.TotHabCap(iGrp) = 0.0
-
                 Me.m_Data.MaxHabCap(iGrp) = 0
-                For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
+                For ir = 1 To Me.m_Data.InRow
+                    For ic = 1 To Me.m_Data.InCol
                         If Me.m_Data.Depth(ir, ic) > 0 Then
                             m_Data.MaxHabCap(iGrp) = Math.Max(Me.m_Data.HabCap(ir, ic, iGrp), m_Data.MaxHabCap(iGrp))
                         End If
                     Next
                 Next
                 Dim tempmax As Single = 0
-                'rescale and sum up over cells
-                For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
+                'Normalize and get the total cap by group
+                For ir = 1 To Me.m_Data.InRow
+                    For ic = 1 To Me.m_Data.InCol
                         If Me.m_Data.Depth(ir, ic) > 0 Then
                             'normalized capacity
                             Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / Me.m_Data.MaxHabCap(iGrp)
@@ -7042,9 +7040,9 @@ exitline:
                             'sum of capacity
                             Me.m_Data.TotHabCap(iGrp) += Me.m_Data.HabCap(ir, ic, iGrp)
                             tempmax = Math.Max(Me.m_Data.HabCap(ir, ic, iGrp), tempmax)
-                        End If
-                    Next
-                Next
+                        End If 'Me.m_Data.Depth(ir, ic) > 0 
+                    Next ic
+                Next ir
 
                 'set habcaps for cells across grid boundaries
                 Dim bMultiStanza As Boolean = False
@@ -7071,7 +7069,7 @@ exitline:
                         Me.m_Data.HabCap(ir, Me.m_Data.InCol + 1, iGrp) = Me.m_Data.HabCap(ir, Me.m_Data.InCol, iGrp)
                     Next ir
                 End If
-            End If
+            End If ' Me.m_Data.isGroupHabCapChanged(iGrp)
         Next iGrp
     End Sub
 
@@ -7166,8 +7164,8 @@ exitline:
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
                             'Yep Layer is Active
-                            'Habitat for group has change
-                            'There response function is configured
+                            'Habitat for group has changed
+                            'There is a response function
                             For irow = 1 To Me.m_Data.InRow
                                 For icol = 1 To Me.m_Data.InCol
                                     If Me.m_Data.Depth(irow, icol) > 0 Then
