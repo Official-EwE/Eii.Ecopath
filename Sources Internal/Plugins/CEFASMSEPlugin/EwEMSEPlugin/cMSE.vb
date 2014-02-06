@@ -145,7 +145,6 @@ Public Class cMSE
 
         For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
             bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
-            If bSuccess = False Then Stop
         Next
         Return bSuccess
 
@@ -1489,6 +1488,7 @@ stepend:
         'I am just altering the tolerance so that it can run faster; this needs deleting later
         'MessageBox.Show("the default tolerance = " & MonteCarlo.EcopathEETolerance)
         MonteCarlo.EcopathEETolerance = Me.MassBalanceTol
+        'MonteCarlo.EcopathEETolerance = 0.05 'commenting out and above line uncommenting!!! just a test
         'Forces the same sequence of random numbers for each run. Used only for debugging runs
         'MonteCarlo.InitRandomSequence(666)
 
@@ -2006,6 +2006,8 @@ stepend:
     ''' <remarks>In some cases you may want to save changes you made to the model.</remarks>
     Private Sub RestoreOriginalState()
         Try
+            Core.CloseEcosimScenario()
+
             'Have the MonteCarloManager restore it's variables to the original state
             Me.RestoreParameters()
             Me._ecosim.TimeStepDelegate = Me._EcosimTimeStepDelegate
@@ -2014,7 +2016,7 @@ stepend:
             Me.Core.DiscardChanges()
 
             ' Just reload Ecosim
-            'Me.Core.LoadEcosimScenario(Me.Core.ActiveEcosimScenarioIndex)
+            Me.Core.LoadEcosimScenario(Me.Core.ActiveEcosimScenarioIndex)
 
         Catch ex As Exception
 
@@ -2854,5 +2856,59 @@ stepend:
     End Property
 
 #End Region ' Configurable settings
+
+
+    Public Sub CreateRCode()
+        Dim writer As StreamWriter = New StreamWriter("C:\Users\Mark\Desktop\vbcreatedRcode.txt", False)
+        Dim bSuccess As Boolean = False
+        Dim firstpreyfound As Boolean
+        Dim tempname As String
+
+        For iPred = 1 To mCore.nLivingGroups
+            tempname = mCore.EcoPathGroupInputs(iPred).Name
+            tempname = tempname.Replace(" ", "")
+            writer.Write("dietmeans[[" & iPred & "]] = c(")
+            firstpreyfound = False
+            For iPrey = 1 To mCore.nGroups
+                If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) <> 0 Then
+                    If firstpreyfound = False Then
+                        writer.Write(mCore.EcoPathGroupInputs(iPred).DietComp(iPrey))
+                        firstpreyfound = True
+                    Else
+                        writer.Write(", " & mCore.EcoPathGroupInputs(iPred).DietComp(iPrey))
+                    End If
+                End If
+            Next
+            writer.WriteLine(")")
+
+            writer.Write("preynames[[" & iPred & "]] = c(")
+            firstpreyfound = False
+            For iPrey = 1 To mCore.nGroups
+                If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) <> 0 Then
+                    If firstpreyfound = False Then
+                        writer.Write("""" & mCore.EcoPathGroupInputs(iPrey).Name & """")
+                        firstpreyfound = True
+                    Else
+                        writer.Write(", """ & mCore.EcoPathGroupInputs(iPrey).Name & """")
+                    End If
+                End If
+            Next
+            writer.WriteLine(")")
+
+        Next
+
+        writer.Write("prednames = c(")
+        For iPred = 1 To mCore.nLivingGroups
+            If iPred = 1 Then
+                writer.Write("""" & mCore.EcoPathGroupInputs(iPred).Name & """")
+            Else
+                writer.Write(", """ & mCore.EcoPathGroupInputs(iPred).Name & """")
+            End If
+        Next
+        writer.WriteLine(")")
+
+        cMSEUtils.ReleaseWriter(writer)
+
+    End Sub
 
 End Class
