@@ -1581,9 +1581,15 @@ Namespace Controls.EwEGrid
                                         ' Parse using UI default number formatting
                                         cell.Value = Integer.Parse(astrCells(iCol), nfi)
                                     ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
-                                        'Boolean.Parse("-1") throws an exception on numeric bool values -1,1
-                                        'Convert the string to int then cast the int to bool... really
-                                        cell.Value = CBool(Integer.Parse(astrCells(iCol)))
+                                        ' Booleans can occur as string or integer representations, 
+                                        ' which both require separate conversion strategies
+                                        Dim strVal As String = astrCells(iCol).Trim
+                                        Dim iValTest As Integer
+                                        If Integer.TryParse(strVal, iValTest) Then
+                                            cell.Value = Convert.ToBoolean(iValTest)
+                                        Else
+                                            cell.Value = Boolean.Parse(strVal)
+                                        End If
                                     End If
                                 End If
                             End If
@@ -1623,7 +1629,7 @@ Namespace Controls.EwEGrid
                             cellValue = cell.Value
                             If (cellValue IsNot Nothing) Then
                                 If TypeOf (cellValue) Is String Then
-                                    sw.Write(cell.DisplayText)
+                                    sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
                                 Else
                                     strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
                                     sw.Write(strValue)
