@@ -118,7 +118,8 @@ Namespace SpatialData
             Dim xa As XmlAttribute = Nothing
             Dim ds As ISpatialDataSet = Nothing
             Dim an As AssemblyName = Nothing
-            Dim bReturn As Boolean = False
+            Dim msgWarning As cMessage = Nothing
+            Dim bSuccess As Boolean = False
 
             If (bClearFirst) Then Me.Clear()
             If (String.IsNullOrEmpty(strFile)) Then strFile = cSpatialDataSetManager.ConfigFileName()
@@ -131,7 +132,7 @@ Namespace SpatialData
 
             For Each xnRoot In doc.GetElementsByTagName("Datasets")
                 'Found a "Datasets" tag in the file
-                bReturn = True
+                bSuccess = True
                 For Each xn As XmlNode In xnRoot.ChildNodes
                     ds = Nothing
                     If (xn.Name = "Dataset") Then
@@ -155,14 +156,22 @@ Namespace SpatialData
                                     If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
 
                                 Else '(t IsNot Nothing)
-                                    'Failed to convert the Dataset.Type node into a dataset
-                                    Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATASET, _
-                                                                               eMessageType.ErrorEncountered, eCoreComponentType.External, eMessageImportance.Information))
+                                    cLog.Write("Unable to instantiate data set " & strTypeName)
+
+                                    If (msgWarning Is Nothing) Then
+                                        msgWarning = New cMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_GENERIC, _
+                                                                  eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
+                                                                  eMessageImportance.Information)
+                                    End If
+                                    Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
+                                                                  String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_DETAIL, strTypeName), _
+                                                                  eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSpace, 0)
+                                    msgWarning.AddVariable(vs)
                                 End If
 
                             Catch ex As Exception
                                 ds = Nothing
-                                bReturn = False
+                                bSuccess = False
                                 cLog.Write(ex, "Exception loading Spatial Configuration file " + strFile)
                             End Try
 
@@ -179,7 +188,11 @@ Namespace SpatialData
                 Next ' xn
             Next ' xnRoot
 
-            Return bReturn
+            If (msgWarning IsNot Nothing) Then
+                Me.m_core.Messages.SendMessage(msgWarning)
+            End If
+
+            Return bSuccess
 
         End Function
 

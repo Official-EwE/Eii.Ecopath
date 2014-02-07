@@ -2282,11 +2282,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to External Data Connections. Failed to read external data set..
+        '''  Looks up a localized string similar to Unable to create data set &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_MISSINGDATASET() As String
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_DETAIL() As String
             Get
-                Return ResourceManager.GetString("SPATIALTEMPORAL_MISSINGDATASET", resourceCulture)
+                Return ResourceManager.GetString("SPATIALTEMPORAL_LOAD_ERROR_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to reload one or more spatial temporal data connections. Are you missing a required plug-in?.
+        '''</summary>
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_GENERIC() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_LOAD_ERROR_GENERIC", resourceCulture)
             End Get
         End Property
         
