@@ -1204,11 +1204,15 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Error running the Monte Carlo trials. {0}</value>
     <comment>{0}=exception message</comment>
   </data>
-  <data name="SPATIALTEMPORAL_MISSINGDATASET" xml:space="preserve">
-    <value>External Data Connections. Failed to read external data set.</value>
-  </data>
   <data name="STATUS_INDEXING_DATASET" xml:space="preserve">
     <value>Indexing external data '{0}'</value>
     <comment>{0}=data set name</comment>
+  </data>
+  <data name="SPATIALTEMPORAL_LOAD_ERROR_DETAIL" xml:space="preserve">
+    <value>Unable to create data set '{0}'</value>
+    <comment>{0}=dataset type name</comment>
+  </data>
+  <data name="SPATIALTEMPORAL_LOAD_ERROR_GENERIC" xml:space="preserve">
+    <value>Failed to reload one or more spatial temporal data connections. Are you missing a required plug-in?</value>
   </data>
 </root>
