@@ -270,12 +270,16 @@ Public Class frmTFMpolicy
                 End If
             Next
 
+            Me.m_bStrategiesSaved = True
+
             If msg IsNot Nothing Then
                 Me.Core.Messages.SendMessage(msg)
             End If
         Catch ex As Exception
 
         End Try
+
+        Me.UpdateControls()
 
     End Sub
 
@@ -354,11 +358,15 @@ Public Class frmTFMpolicy
             'add the newly created harvest control rule to the current strategy
             Me.m_SelectedStrategy.Add(HRCDialogue.HarvestControlRule)
             Me.m_grid.RefreshContent()
+
+            Me.m_bStrategiesSaved = False
         End If
+
+        Me.UpdateControls()
 
     End Sub
 
-    Private Sub OnDeleteHCR(sender As System.Object, e As System.EventArgs) Handles m_tsbnAddHCR.Click
+    Private Sub OnDeleteHCR(sender As System.Object, e As System.EventArgs) Handles m_tsbnDeleteHCR.Click
         Dim selHCRIndex As Integer = Me.m_grid.SelectedRow
         Dim curStratIndex As Integer = Me.m_tscmStrategies.SelectedIndex
 
@@ -367,10 +375,15 @@ Public Class frmTFMpolicy
                 'ToDo Like the Deleted Strategy this should be handled by the Strategy object
                 'that way there can be an isDirty flag
                 Me.m_SelectedStrategy.RemoveAt(selHCRIndex - 1)
-                Me.UpdateControls()
                 If curStratIndex > -1 And curStratIndex < Me.m_tscmStrategies.Items.Count Then
                     Me.m_tscmStrategies.SelectedIndex = curStratIndex
                 End If
+
+                Me.m_grid.RefreshContent()
+                Me.HCRGroup = Me.m_grid.HarvestControlRule
+                Me.m_bStrategiesSaved = False
+                Me.UpdateControls()
+
             End If
         End If
 
@@ -463,7 +476,7 @@ Public Class frmTFMpolicy
         Me.m_tsbnAddHCR.Enabled = bHasStrategy
         Me.m_tsbnDeleteHCR.Enabled = bHasHCR
 
-        Me.m_btnOK.Enabled = Not Me.m_bStrategiesSaved
+        Me.m_btnOK.Enabled = Me.m_bStrategiesSaved
 
     End Sub
 
