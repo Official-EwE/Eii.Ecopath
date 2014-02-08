@@ -60,8 +60,6 @@ Public Class gridTargetFishingMortalityPolicy
     Public Event onEdited()
     Private m_strategy As Strategy = Nothing
 
-    Private m_HCR As HCR_Group
-
 #Region " Constructor "
 
     Public Sub New()
@@ -74,23 +72,11 @@ Public Class gridTargetFishingMortalityPolicy
 
     Public ReadOnly Property HarvestControlRule() As HCR_Group
         Get
-            Return Me.m_HCR
-            'jb 7-Feb-2014 the selection mechanism in the grid is not working 
-            'At least it's never has a selected row or rows. Not sure why
-            'Swap this to mantain the HCR when the selection changes.
-            'The original code was better if it worked.
-            'If Me.Selection.SelectedRows.Length = 1 Then
-            '    Return DirectCast(Me.Selection.SelectedRows(0).Tag, HCR_Group)
-            'End If
+            If Me.Selection.SelectedRows.Length = 1 Then
+                Return DirectCast(Me.Selection.SelectedRows(0).Tag, HCR_Group)
+            End If
             Return Nothing
         End Get
-        'Set(ByVal value As HCR_Group)
-        '    'Me.Selection.Clear()
-        '    'If value IsNot Nothing Then
-        '    '    Me.Selection.Add(New Position(value.Index, 0))
-        '    'End If
-        '    'Me.RaiseSelectionChangeEvent()
-        'End Set
     End Property
 
 #End Region ' Public interfaces
@@ -163,8 +149,6 @@ Public Class gridTargetFishingMortalityPolicy
 
             Me.Rows(iHCR).Tag = Rule
         Next
-
-        Me.m_HCR = Nothing
 
     End Sub
 
@@ -275,22 +259,6 @@ Public Class gridTargetFishingMortalityPolicy
 
         Return True
     End Function
-
-    Private Sub gridTargetFishingMortalityPolicy_CellGotFocus(sender As Object, e As SourceGrid2.PositionCancelEventArgs) Handles Me.CellGotFocus
-        'HACK the selection mechanism does not seem to be working
-        'So check the HCR on every cell change
-        If e.Position.Row > 0 Then
-            If e.Grid.Rows(e.Position.Row).Tag IsNot Nothing Then
-                Dim hcr As HCR_Group = DirectCast(e.Grid.Rows(e.Position.Row).Tag, HCR_Group)
-                If Not ReferenceEquals(hcr, Me.m_HCR) Then
-                    Me.m_HCR = hcr
-                End If
-            End If
-        End If
-    End Sub
-
-   
-
 
 End Class
 
