@@ -546,7 +546,7 @@ Public Class cMSE
                 Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), HCRFileName)
 
                 Try
-                    Do Until Not csv.EndOfStream
+                    Do Until csv.EndOfStream
                         If csv.ReadNextRecord() Then
                             'Read all fields from csv and then add to the list that makes up the whole strategy
                             'csv.ReadNextRecord()
@@ -582,7 +582,7 @@ Public Class cMSE
             End If
 
             'End While
-            csv.Dispose()
+            'csv.Dispose()
             cMSEUtils.ReleaseReader(reader)
         Next
 
@@ -1488,7 +1488,7 @@ stepend:
         'I am just altering the tolerance so that it can run faster; this needs deleting later
         'MessageBox.Show("the default tolerance = " & MonteCarlo.EcopathEETolerance)
         MonteCarlo.EcopathEETolerance = Me.MassBalanceTol
-        'MonteCarlo.EcopathEETolerance = 0.05 'commenting out and above line uncommenting!!! just a test
+        'MonteCarlo.EcopathEETolerance = 0.05 'comment out and uncomment above line!!! this line just a test
         'Forces the same sequence of random numbers for each run. Used only for debugging runs
         'MonteCarlo.InitRandomSequence(666)
 
@@ -2006,7 +2006,8 @@ stepend:
     ''' <remarks>In some cases you may want to save changes you made to the model.</remarks>
     Private Sub RestoreOriginalState()
         Try
-            Core.CloseEcosimScenario()
+
+            Dim iscenario As Integer = Me.mCore.ActiveEcosimScenarioIndex
 
             'Have the MonteCarloManager restore it's variables to the original state
             Me.RestoreParameters()
@@ -2016,7 +2017,9 @@ stepend:
             Me.Core.DiscardChanges()
 
             ' Just reload Ecosim
-            Me.Core.LoadEcosimScenario(Me.Core.ActiveEcosimScenarioIndex)
+            Core.CloseEcosimScenario()
+
+            Me.Core.LoadEcosimScenario(iscenario)
 
         Catch ex As Exception
 

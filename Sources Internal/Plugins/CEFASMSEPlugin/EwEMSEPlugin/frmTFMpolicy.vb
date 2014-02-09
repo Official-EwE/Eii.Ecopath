@@ -263,7 +263,8 @@ Public Class frmTFMpolicy
                                                   cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
                                                   cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
                                                   cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
-                                                  cStringUtils.ToCSVField(iHCR.MaxF))
+                                                  cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
+                                                  cStringUtils.ToCSVField(iHCR.CostFunction))
                     Next
                     cMSEUtils.ReleaseWriter(csvStrategyFile)
 
