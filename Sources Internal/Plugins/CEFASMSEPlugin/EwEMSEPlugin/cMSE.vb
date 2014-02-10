@@ -2758,7 +2758,8 @@ stepend:
 
     Public Property NModels As Integer
         Get
-            Return Math.Max(1, Math.Min(My.Settings.NTrials, 100))
+            'Return Math.Max(1, Math.Min(My.Settings.NTrials, 100))
+            Return My.Settings.NTrials
         End Get
         Set(value As Integer)
             If (value <> My.Settings.NTrials) Then
