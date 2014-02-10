@@ -70,13 +70,23 @@ Public Class gridTargetFishingMortalityPolicy
 
 #Region " Public interfaces "
 
-    Public ReadOnly Property HarvestControlRule() As HCR_Group
+    Public Property HarvestControlRule() As HCR_Group
         Get
-            If Me.Selection.SelectedRows.Length = 1 Then
-                Return DirectCast(Me.Selection.SelectedRows(0).Tag, HCR_Group)
+            Dim iRow As Integer = Me.SelectedRow
+            If (iRow > 0) Then
+                Return DirectCast(Me.Rows(iRow).Tag, HCR_Group)
             End If
             Return Nothing
         End Get
+        Set(ByVal value As HCR_Group)
+            For iRow As Integer = 1 To Me.RowsCount - 1
+                If Object.ReferenceEquals(Me.Rows(iRow).Tag, value) Then
+                    Me.SelectRow(iRow)
+                    Return
+                End If
+            Next
+            Me.SelectRow(-1)
+        End Set
     End Property
 
 #End Region ' Public interfaces
@@ -261,5 +271,3 @@ Public Class gridTargetFishingMortalityPolicy
     End Function
 
 End Class
-
-

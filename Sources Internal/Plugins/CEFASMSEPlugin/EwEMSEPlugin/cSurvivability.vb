@@ -181,6 +181,8 @@ Public Class cSurvivability
         'TODO MP add validation code to check whether distribution file is okay
 
         'what checks need doing?
+        Throw New NotImplementedException("DistFileValid not implemented")
+        Return False
 
     End Function
 
@@ -254,13 +256,13 @@ Public Class cSurvivability
 
     End Function
 
-    ''' <summary>
-    ''' Reads the survivability distribution parameters of GroupName as fished by FleetName
-    ''' </summary>
-    ''' <param name="FleetName"></param>
-    ''' <param name="GroupName"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ' ''' <summary>
+    ' ''' Reads the survivability distribution parameters of GroupName as fished by FleetName
+    ' ''' </summary>
+    ' ''' <param name="FleetName"></param>
+    ' ''' <param name="GroupName"></param>
+    ' ''' <returns></returns>
+    ' ''' <remarks></remarks>
     'Public Function ReadFleetGroupNamesDist(FleetName As String, GroupName As String) As cSurvivabilityDistributonParam
 
     '    For iRow As Integer = 0 To mListofSuriveDistParams.Count - 1

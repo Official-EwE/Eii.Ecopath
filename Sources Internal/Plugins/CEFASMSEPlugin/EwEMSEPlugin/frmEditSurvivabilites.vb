@@ -40,14 +40,14 @@ Public Class frmEditSurvivabilites
 
     End Sub
 
-    ''' <summary>
-    ''' Extracts information about the distribution of a survivability
-    ''' from one line in the csv file
-    ''' </summary>
-    ''' <param name="csv">The csv file that the parameter information
-    ''' will be extracted from</param>
-    ''' <returns>SurvivabilityDistributionParam object</returns>
-    ''' <remarks></remarks>
+    ' ''' <summary>
+    ' ''' Extracts information about the distribution of a survivability
+    ' ''' from one line in the csv file
+    ' ''' </summary>
+    ' ''' <param name="csv">The csv file that the parameter information
+    ' ''' will be extracted from</param>
+    ' ''' <returns>SurvivabilityDistributionParam object</returns>
+    ' ''' <remarks></remarks>
     'Private Function ExtractSurvivabilityParameter(csv) As cSurvivability.cSurvivabilityDistributonParam
 
     '    If csv = Nothing Then Return Nothing

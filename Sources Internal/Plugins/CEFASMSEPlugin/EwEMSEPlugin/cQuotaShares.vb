@@ -61,10 +61,9 @@ Public Class cQuotaShares
     ''' <summary>
     ''' Checks whether the quota file is valid
     ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Private Function QuotaFileValid() As Boolean
-
+        Throw New NotImplementedException("QuotaFileValid not implemented")
+        Return False
     End Function
 
     Public ReadOnly Property GetLstGrpShares As List(Of QuotaShare)
@@ -103,9 +102,9 @@ Public Class cQuotaShares
     ''' </summary>
     Private Function QuotaShareFileValid() As Boolean
         'TODO MP add validation code to check whether distribution file is okay
-
         'what checks need doing?
-
+        Throw New NotImplementedException("QuotaShareFileValid not implemented")
+        Return False
     End Function
 
     ''' <summary>
