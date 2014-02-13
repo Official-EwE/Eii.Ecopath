@@ -41,6 +41,27 @@ Namespace SpatialData
         Public Property ExcludeInside As Boolean = True
 
         ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether cells are excluded when outside the cookie cutter polygon.
+        ''' <para>If set to True, cells are excluded when they do not overlap with attached 
+        ''' vector data, and are included in the model area when they do overlap.</para>
+        ''' <para>If set to False, cells are included when overlapping with 
+        ''' attached vectors, and are excluded when not overlapping with the spatial data.</para>
+        ''' </summary>
+        ''' <remarks>
+        ''' The inverse of <see cref="ExcludeInside"/>.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Property ExcludeOutside As Boolean
+            Get
+                Return Not Me.ExcludeInside
+            End Get
+            Set(value As Boolean)
+                Me.ExcludeInside = Not value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cVectorConverterPlugin.IsConfigured"/>.
         ''' -------------------------------------------------------------------
         Public Overrides Function IsConfigured() As Boolean
