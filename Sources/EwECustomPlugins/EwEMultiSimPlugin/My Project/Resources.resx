@@ -169,6 +169,6 @@
     <comment>{0} = function name, {1} {2}=type names</comment>
   </data>
   <data name="ERROR_DUPLICATE_FUNCTIONS" xml:space="preserve">
-    <value>Not all function names are unique! You should fix this before running the plug-in</value>
+    <value>Your Ecosim scenario contains duplicate function names. MultiSim will not know which functions to modify. You should fix this before running MultiSim.</value>
   </data>
 </root>
