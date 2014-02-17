@@ -1439,7 +1439,7 @@ Namespace Ecosim
             'average biomass and loss to a monthly value for SplitUpdate
             avgMonthlyStanzaVars(B, UpdateStanzaGroups)
 
-            'only update biomass for stanza groups and Ftime() on the last sub timestep
+            'only update biomass for stanza groups and feeding time (Ftime()) on the last sub timestep
             If UpdateStanzaGroups Then
 
                 'SplitUpdate(,,) updates Biomass of the current timestep via the last B(ngroups) argument
@@ -2295,12 +2295,15 @@ Namespace Ecosim
                 '    m_Data.NoIntegrate(i) = 0 'VC following CJWs email of 05dec97
                 'End If
 
-                rrate = Math.Abs(m_Data.loss(i)) / m_Data.StartBiomass(i)
+                '17-Feb-2014 Added reset of NoIntegrate if integration of non-stanza group is turned off (NoIntegrate(i) = 0)
+                'Stanza groups have a NoIntegrate(group) value < 0. That can never be set to zero.
+                'This fixes a bug that prevents the integration from being turn back On once it gets Off 
+                If m_Data.NoIntegrate(i) = 0 Then m_Data.NoIntegrate(i) = i
 
-                'jb changed the logic
-                'If rrate > 24 And m_Data.NoIntegrate(i) = i Or m_Data.NoIntegrate(i) = 0 Then m_Data.NoIntegrate(i) = 0
+                rrate = Math.Abs(m_Data.loss(i)) / m_Data.StartBiomass(i)
+                ' Debug.Assert(i <> 42)
                 If rrate > 24 And m_Data.NoIntegrate(i) = i Then
-                    'if the rate of loss [loss biomass]/[ecopath biomass]is greater then 24(?) then turn off the numeric integration 
+                    'if the rate of loss [total biomass loss]/[ecopath biomass]is greater then 24(?) then turn off the numeric integration 
                     m_Data.NoIntegrate(i) = 0
                 End If
             Next
@@ -2515,7 +2518,7 @@ Namespace Ecosim
                             m_Data.FishTime(i) = m_RefData.PoolForceZ(i, 0) - m_Data.Eatenof(i) / Biomass(i) - (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i))
                             If m_Data.FishTime(i) < 0 Then m_Data.FishTime(i) = 0
                         End If
-
+                        ' Debug.Assert(i <> 42)
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
 
                         'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
@@ -2805,11 +2808,7 @@ Namespace Ecosim
             'Routine modified 290597 VC to follow ESimII
             Dim i As Integer ', ii As Integer
             'set predator abundance measure used for predation
-            'rate calculations; this is just biomass for
-            'simple pools, or predator numbers for pools that
-            'are split into Juv-Adult pairs
-            'note below that biomass(ii) for ii>n contains
-            'numbers in pools iad, iju rather than biomasses
+            'rate calculations; this is just biomass for simple pools
             For i = 1 To nGroups
                 'If i > N And biomass(i) = 0 Then biomass(i) = 1
                 If Biomass(i) < 1.0E-20 Then Biomass(i) = 1.0E-20 '0.00000001
@@ -2826,9 +2825,6 @@ Namespace Ecosim
         Private Sub SplitInitialize(ByVal B() As Single)
             ' intiializes dynamic state variables for multistanza species
             Dim isp As Integer, ist As Integer, ieco As Integer, ia As Integer
-
-            'jb PredS is not used anywhere
-            'ReDim mParams.PredS(nGroups)
 
             'VERIFY_JS: 060918 remote m_stanza ReDim should NOT be necessary!
             ReDim m_stanza.NumSplit(m_stanza.Nsplit, m_stanza.MaxAgeSplit)
