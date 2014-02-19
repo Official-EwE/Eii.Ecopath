@@ -2746,7 +2746,8 @@ stepend:
 
     Public Property NModels2Run As Integer
         Get
-            Return Math.Max(1, Math.Min(My.Settings.NModels2Run, 100))
+            'Return Math.Max(1, Math.Min(My.Settings.NModels2Run, 100))
+            Return My.Settings.NModels2Run
         End Get
         Set(value As Integer)
             If (value <> My.Settings.NModels2Run) Then
