@@ -63,7 +63,6 @@ Public Class cMSE
     Private m_Survivability As New cSurvivability
 
     Private m_monitor As New cMSEStateMonitor(Me)
-    Private m_bIsRunning As Boolean = False
 
     Private BTemp() As Double
     Private PBTemp() As Double
@@ -108,7 +107,7 @@ Public Class cMSE
         Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
- 
+
         Me.m_monitor.Invalidate()
 
         If Me.HasUI Then
@@ -478,6 +477,14 @@ Public Class cMSE
 
 #End Region ' EwE app flow plugins
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether the MSE is running. This flag is used to know when to 
+    ''' suppress core messages in order not to disrupt the MSE run flow.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property IsRunning As Boolean = False
+
     Public ReadOnly Property DataPath As String
         Get
             If Me.UseEwEPath Then
@@ -776,7 +783,7 @@ Public Class cMSE
 
     Public Sub LoadSampledParams()
 
-        Me.m_bIsRunning = True
+        Me.IsRunning = True
         Me.ChangeEffortFlag = True
         cApplicationStatusNotifier.StartProgress(Me.Core, "", -1)
 
@@ -789,7 +796,7 @@ Public Class cMSE
 
         cApplicationStatusNotifier.EndProgress(Me.Core)
         Me.ChangeEffortFlag = False
-        Me.m_bIsRunning = False
+        Me.IsRunning = False
 
     End Sub
 
@@ -1563,7 +1570,7 @@ stepend:
         'Next i
         'nLivingMinusPPers = mCore.nLivingGroups - nPPers
 
-        Me.m_bIsRunning = True
+        Me.IsRunning = True
         cApplicationStatusNotifier.StartProgress(Me.Core, "", -1)
         Try
 
@@ -1671,7 +1678,7 @@ stepend:
         End Try
 
         cApplicationStatusNotifier.EndProgress(Me.Core)
-        Me.m_bIsRunning = False
+        Me.IsRunning = False
 
         Me.RestoreOriginalState()
 
@@ -2722,7 +2729,7 @@ stepend:
         Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
 
         ' JS 03Oct13: ONLY SUPPRESS MESSAGES WHEN MSE IS RUNNING! 
-        If Not Me.m_bIsRunning Then Return
+        If Not Me.IsRunning Then Return
 
         'Plugin Point called to cancel a message
         Select Case msg.Type
