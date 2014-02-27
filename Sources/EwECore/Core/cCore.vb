@@ -10050,7 +10050,7 @@ Public Class cCore
 
         Dim src As cEcospaceLayerDriver = Nothing
 
-        For i As Integer = 1 To Me.m_EcoSpaceData.nImportanceLayers
+        For i As Integer = 1 To Me.m_EcoSpaceData.nEnvironmentalDriverLayers
             src = Me.m_EcospaceBasemap.LayerDriver(i)
             Me.m_EcoSpaceData.EnvironmentalLayerName(i) = src.Name
             Me.m_EcoSpaceData.EnvironmentalLayerDescription(i) = src.Description
