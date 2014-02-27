@@ -748,7 +748,14 @@ Public Class cMSEStats
         Next keyvalue
         Return True
 
-    End Function
+        End Function
+
+
+        Public Overrides Sub Clear()
+            MyBase.Clear()
+            Me.m_MSEStats = Nothing
+
+        End Sub
 
 #End Region
 

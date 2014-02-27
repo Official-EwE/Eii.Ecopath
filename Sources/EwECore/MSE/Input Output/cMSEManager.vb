@@ -865,6 +865,8 @@ Namespace MSE
                 Me.m_output.Clear()
                 Me.m_parameters.Clear()
 
+                Me.m_TotFleetValue.Clear()
+
                 ' JS: 03Jan01: do not destroy objects only created in the constructor. Clear() is not a Destructor!
                 'Me.m_output = Nothing
                 'Me.m_parameters = Nothing
