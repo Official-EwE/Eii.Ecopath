@@ -104,7 +104,7 @@ Public Class cHabitatCapacityPluginPoint
 
             'Get a Enviromental Driver Layer by Name
             'The names must match or getLayerByName() will assert and this will Explode
-            Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Layer 2")
+            Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Salinity")
 
             Dim inR As Integer = m_core.EcospaceBasemap.InRow
             Dim inC As Integer = m_core.EcospaceBasemap.InCol
