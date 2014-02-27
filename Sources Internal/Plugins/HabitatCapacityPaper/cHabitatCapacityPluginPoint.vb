@@ -89,79 +89,86 @@ Public Class cHabitatCapacityPluginPoint
     Public Sub HabitatCapacityModel()
         Dim nRuns As Integer = 10
 
-        ClearMessages()
-        PostMessage("Starting run")
+        Try
 
-        'Run Ecospace to get the base line TRUE biomass distributions
-        m_core.RunEcoSpace(Nothing, False)
+            ClearMessages()
+            PostMessage("Starting run")
 
-        ' Load model, load sim, load space, run, etc
-        Dim l As cEcospaceLayerRelPP = m_core.EcospaceBasemap.LayerRelPP
-        Dim d As cEcospaceLayerDepth = m_core.EcospaceBasemap.LayerDepth
-
-        Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Salinity")
-
-
-        Dim inR As Integer = m_core.EcospaceBasemap.InRow
-        Dim inC As Integer = m_core.EcospaceBasemap.InCol
-        Dim iCells As Integer = inR * inC
-
-        Dim TrueDepth(iCells) As Integer
-        Dim TrueTemp(iCells) As Double
-        Dim TrueSand(iCells) As Double
-        Dim TrueSal(iCells) As Double
-        Dim TrueO2(iCells) As Double
-        Dim TrueBio(m_core.nGroups, iCells) As Double
-
-
-        For ir As Integer = 1 To inR
-            For ic As Integer = 1 To inC
-                Dim iNo As Integer = (ir - 1) * inR + ic
-
-                For igrp As Integer = 1 To m_core.nGroups
-                    TrueBio(igrp, iNo) = Me.m_EcoSpaceData.Bcell(ir, ic, igrp)
-                Next igrp
-
-                'Read from the habitat capacity environmental layers:
-                'TrueDepth(iNo) = CInt(d.Cell(ir, ic))
-                'TrueTemp(iNo) =
-                'TrueSand(iNo) = 1 ' sandbottom
-                TrueSal(iNo) = CSng(lyrSalinity.Cell(ir, ic))
-                ' TrueO2(iNo) = 1 'Oxygen DO
-
-            Next ic
-        Next ir
-
-
-        'After some fiddling around we're going to change the environmental preference function, one by one based on sampling with uncertainty
-
-        'set env func no X = value
-
-
-        Dim SampleDepth(iCells) As Integer
-        Dim SampleTemp(iCells) As Double
-        Dim SampleSand(iCells) As Double
-        Dim SampleSal(iCells) As Double
-        Dim SampleO2(iCells) As Double
-        Dim SampleBio(iCells) As Double
-        'sample similar parameters as above (
-
-        'run ecospace
-        For irun As Integer = 1 To nRuns
-            PostMessage("Ecospace run " + irun.ToString)
-
-
-            'Set inputs
-
+            PostMessage("Running Ecospace to get the baseline values")
+            'Run Ecospace to get the base line TRUE biomass distributions
             m_core.RunEcoSpace(Nothing, False)
 
-            'Save Biomass
+            ' Load model, load sim, load space, run, etc
+            Dim l As cEcospaceLayerRelPP = m_core.EcospaceBasemap.LayerRelPP
+            Dim d As cEcospaceLayerDepth = m_core.EcospaceBasemap.LayerDepth
+
+            'Get a Enviromental Driver Layer by Name
+            'The names must match or getLayerByName() will assert and this will Explode
+            Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Salinity")
+
+            Dim inR As Integer = m_core.EcospaceBasemap.InRow
+            Dim inC As Integer = m_core.EcospaceBasemap.InCol
+            Dim iCells As Integer = inR * inC
+
+            Dim TrueDepth(iCells) As Integer
+            Dim TrueTemp(iCells) As Double
+            Dim TrueSand(iCells) As Double
+            Dim TrueSal(iCells) As Double
+            Dim TrueO2(iCells) As Double
+            Dim TrueBio(m_core.nGroups, iCells) As Double
 
 
+            For ir As Integer = 1 To inR
+                For ic As Integer = 1 To inC
+                    Dim iNo As Integer = (ir - 1) * inR + ic
 
-        Next
+                    For igrp As Integer = 1 To m_core.nGroups
+                        TrueBio(igrp, iNo) = Me.m_EcoSpaceData.Bcell(ir, ic, igrp)
+                    Next igrp
 
-      
+                    'Read from the habitat capacity environmental layers:
+                    'TrueDepth(iNo) = CInt(d.Cell(ir, ic))
+                    'TrueTemp(iNo) =
+                    'TrueSand(iNo) = 1 ' sandbottom
+                    TrueSal(iNo) = CSng(lyrSalinity.Cell(ir, ic))
+                    ' TrueO2(iNo) = 1 'Oxygen DO
+
+                Next ic
+            Next ir
+
+
+            'After some fiddling around we're going to change the environmental preference function, one by one based on sampling with uncertainty
+
+            'set env func no X = value
+
+
+            Dim SampleDepth(iCells) As Integer
+            Dim SampleTemp(iCells) As Double
+            Dim SampleSand(iCells) As Double
+            Dim SampleSal(iCells) As Double
+            Dim SampleO2(iCells) As Double
+            Dim SampleBio(iCells) As Double
+            'sample similar parameters as above (
+
+            'run ecospace
+            For irun As Integer = 1 To nRuns
+                PostMessage("Ecospace run " + irun.ToString)
+
+                'Set inputs
+
+                m_core.RunEcoSpace(Nothing, False)
+
+                'Save Biomass
+
+            Next
+
+
+        Catch ex As Exception
+
+            PostMessage("WARNING: Exception some place in HabitatCapacityModel " + ex.Message)
+
+        End Try
+
 
     End Sub
 
