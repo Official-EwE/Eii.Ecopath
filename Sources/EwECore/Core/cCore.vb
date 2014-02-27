@@ -12477,6 +12477,9 @@ Public Class cCore
                     'Update all the underlying core data
                     Me.MSEBatchManager.Update(dtAffected, value.varName)
 
+                Case eDataTypes.EcospaceLayerDriver
+                    If bValidatedOk Then Me.UpdateEcospaceDriverLayers()
+
 
             End Select
 
