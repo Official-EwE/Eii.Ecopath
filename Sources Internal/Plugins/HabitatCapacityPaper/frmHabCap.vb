@@ -49,7 +49,7 @@ Public Class frmHabCap
     End Sub
 
 
-    Private Sub onRunClicked(sender As Object, e As System.EventArgs)
+    Private Sub onRunClicked(sender As Object, e As System.EventArgs) Handles m_btRun.Click
 
         Me.m_plugin.HabitatCapacityModel()
 

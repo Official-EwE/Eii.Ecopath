@@ -104,7 +104,7 @@ Public Class cHabitatCapacityPluginPoint
 
             'Get a Enviromental Driver Layer by Name
             'The names must match or getLayerByName() will assert and this will Explode
-            Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Salinity")
+            Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Layer 2")
 
             Dim inR As Integer = m_core.EcospaceBasemap.InRow
             Dim inC As Integer = m_core.EcospaceBasemap.InCol
@@ -147,7 +147,7 @@ Public Class cHabitatCapacityPluginPoint
             Dim SampleSand(iCells) As Double
             Dim SampleSal(iCells) As Double
             Dim SampleO2(iCells) As Double
-            Dim SampleBio(iCells) As Double
+            Dim SampleBio(m_core.nGroups, iCells) As Double
             'sample similar parameters as above (
 
             'run ecospace
@@ -158,7 +158,12 @@ Public Class cHabitatCapacityPluginPoint
 
                 m_core.RunEcoSpace(Nothing, False)
 
-                'Save Biomass
+                'Get biomass from the last time step of Ecospace
+                getEcospaceBiomass(SampleBio)
+
+                'Get the fit to TrueBio
+
+                'Save results
 
             Next
 
@@ -169,6 +174,25 @@ Public Class cHabitatCapacityPluginPoint
 
         End Try
 
+
+    End Sub
+
+
+    Private Sub getEcospaceBiomass(ByVal biomass(,) As Double)
+        Dim inR As Integer = m_core.EcospaceBasemap.InRow
+        Dim inC As Integer = m_core.EcospaceBasemap.InCol
+        Dim iCells As Integer = inR * inC
+
+        For ir As Integer = 1 To inR
+            For ic As Integer = 1 To inC
+                Dim iNo As Integer = (ir - 1) * inR + ic
+
+                For igrp As Integer = 1 To m_core.nGroups
+                    biomass(igrp, iNo) = CDbl(Me.m_EcoSpaceData.Bcell(ir, ic, igrp))
+                Next igrp
+
+            Next ic
+        Next ir
 
     End Sub
 
