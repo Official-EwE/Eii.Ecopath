@@ -105,6 +105,8 @@ Public Class cHabitatCapacityPluginPoint
             'Get a Enviromental Driver Layer by Name
             'The names must match or getLayerByName() will assert and this will Explode
             Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Salinity")
+            Dim lyrO2 As cEcospaceLayerDriver = Me.getLayerByName("O2")
+            Dim lyrBottom As cEcospaceLayerDriver = Me.getLayerByName("BottomType")
 
             Dim inR As Integer = m_core.EcospaceBasemap.InRow
             Dim inC As Integer = m_core.EcospaceBasemap.InCol
@@ -129,9 +131,9 @@ Public Class cHabitatCapacityPluginPoint
                     'Read from the habitat capacity environmental layers:
                     'TrueDepth(iNo) = CInt(d.Cell(ir, ic))
                     'TrueTemp(iNo) =
-                    'TrueSand(iNo) = 1 ' sandbottom
+                    TrueSand(iNo) = CSng(lyrBottom.Cell(ir, ic))
                     TrueSal(iNo) = CSng(lyrSalinity.Cell(ir, ic))
-                    ' TrueO2(iNo) = 1 'Oxygen DO
+                    TrueO2(iNo) = CSng(lyrO2.Cell(ir, ic))
 
                 Next ic
             Next ir
