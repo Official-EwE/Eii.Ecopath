@@ -90,186 +90,203 @@ Public Class cHabitatCapacityPluginPoint
 
     Public Sub HabitatCapacityModel()
 
-        Try
-            Me.bStopRun = False
+        'Try
+        Me.bStopRun = False
 
-            PostMessage("Running Ecospace to get the baseline values")
-            'Run Ecospace to get the base line TRUE biomass distributions
-            m_core.RunEcoSpace(Nothing, False)
+        PostMessage("Running Ecospace to get the baseline values")
+        'Run Ecospace to get the base line TRUE biomass distributions
+        m_core.RunEcoSpace(Nothing, False)
 
-            ' Load model, load sim, load space, run, etc
-            Dim l As cEcospaceLayerRelPP = m_core.EcospaceBasemap.LayerRelPP
-            Dim d As cEcospaceLayerDepth = m_core.EcospaceBasemap.LayerDepth
+        ' Load model, load sim, load space, run, etc
+        Dim l As cEcospaceLayerRelPP = m_core.EcospaceBasemap.LayerRelPP
+        Dim d As cEcospaceLayerDepth = m_core.EcospaceBasemap.LayerDepth
 
-            'Get a Enviromental Driver Layer by Name
-            'The names must match or getLayerByName() will assert and this will Assert
-            Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Salinity")
-            Dim lyrO2 As cEcospaceLayerDriver = Me.getLayerByName("Oxygen")
-            Dim lyrSandy As cEcospaceLayerDriver = Me.getLayerByName("Sandy")
-            Dim lyrTemp As cEcospaceLayerDriver = Me.getLayerByName("Temperature")
+        'Get a Enviromental Driver Layer by Name
+        'The names must match or getLayerByName() will assert and this will Assert
+        Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Salinity")
+        Dim lyrO2 As cEcospaceLayerDriver = Me.getLayerByName("Oxygen")
+        Dim lyrSandy As cEcospaceLayerDriver = Me.getLayerByName("Sandy")
+        Dim lyrTemp As cEcospaceLayerDriver = Me.getLayerByName("Temperature")
 
-            'Get the following environmental preference functions:
-            Dim EnvDepth As cEnviroResponseFunction = Me.getEnviroResponseFunction(2) ' No 2 "Depth whiting"
-            Dim EnvTemp As cEnviroResponseFunction = Me.getEnviroResponseFunction(6) '= No 6 "Temp warm"
-            Dim EnvSand As cEnviroResponseFunction = Me.getEnviroResponseFunction(12) '= No 12 "Whiting sand bottom"
-            Dim EnvSal As cEnviroResponseFunction = Me.getEnviroResponseFunction(11) ' = No 11 "Salinity cod"
-            Dim EnvO2 As cEnviroResponseFunction = Me.getEnviroResponseFunction(13) ' = No 13 "DO higher"
+        'Get the following environmental preference functions:
+        Dim EnvDepth As cEnviroResponseFunction = Me.getEnviroResponseFunction(2) ' No 2 "Depth whiting"
+        Dim EnvTemp As cEnviroResponseFunction = Me.getEnviroResponseFunction(6) '= No 6 "Temp warm"
+        Dim EnvSand As cEnviroResponseFunction = Me.getEnviroResponseFunction(12) '= No 12 "Whiting sand bottom"
+        Dim EnvSal As cEnviroResponseFunction = Me.getEnviroResponseFunction(11) ' = No 11 "Salinity cod"
+        Dim EnvO2 As cEnviroResponseFunction = Me.getEnviroResponseFunction(13) ' = No 13 "DO higher"
 
-            Dim inR As Integer = m_core.EcospaceBasemap.InRow
-            Dim inC As Integer = m_core.EcospaceBasemap.InCol
-            Dim iCells As Integer = inR * inC
+        Dim inR As Integer = m_core.EcospaceBasemap.InRow
+        Dim inC As Integer = m_core.EcospaceBasemap.InCol
+        Dim iCells As Integer = inR * inC
 
-            Dim TrueDepth(iCells) As Integer
-            Dim TrueTemp(iCells) As Double
-            Dim TrueSand(iCells) As Double
-            Dim TrueSal(iCells) As Double
-            Dim TrueO2(iCells) As Double
-            Dim TrueBio(m_core.nGroups, iCells) As Double
+        'Dim TrueDepth(iCells) As Integer
+        'Dim TrueTemp(iCells) As Double
+        'Dim TrueSand(iCells) As Double
+        'Dim TrueSal(iCells) As Double
+        'Dim TrueO2(iCells) As Double
+        Dim TrueEnv(iCells, 5) As Double
+        Dim TrueBio(m_core.nGroups, iCells) As Double
 
-            'Biomass after the Ecospace run
-            Dim RunBio(m_core.nGroups, iCells) As Double
-
-
-            For ir As Integer = 1 To inR
-                For ic As Integer = 1 To inC
-                    Dim iNo As Integer = (ir - 1) * inR + ic
-                    For igrp As Integer = 1 To m_core.nGroups
-                        TrueBio(igrp, iNo) = Me.m_EcoSpaceData.Bcell(ir, ic, igrp)
-                    Next igrp
-                    'Read from the habitat capacity environmental layers:
-                    TrueDepth(iNo) = CInt(d.Cell(ir, ic))
-                    TrueTemp(iNo) = CDbl(lyrTemp.Cell(ir, ic))
-                    TrueSand(iNo) = CDbl(lyrSandy.Cell(ir, ic))
-                    TrueSal(iNo) = CDbl(lyrSalinity.Cell(ir, ic))
-                    TrueO2(iNo) = CDbl(lyrO2.Cell(ir, ic))
-                Next ic
-            Next ir
-
-            'After some fiddling around we're going to change the environmental preference function, one by one based on sampling with uncertainty
-
-            'set env func no X = value
-            'sample similar parameters as above (
-            Dim RandomClass As New Random()
-
-            PostMessage("Starting run")
-            For iSampleError As Integer = 1 To 1    '4
-                For iSampleSize As Integer = 400 To 400 Step 100
-
-                    If Me.bStopRun Then Exit For
-                    'Dim SampleDepth(iSampleSize) As Double
-                    'Dim SampleTemp(iSampleSize) As Double
-                    'Dim SampleSand(iSampleSize) As Double
-                    'Dim SampleSal(iSampleSize) As Double
-                    'Dim SampleO2(iSampleSize) As Double
-                    'Dim SampleBio(iSampleSize) As Double
-                    Dim Sample(iSampleSize, 5) As Double
-
-                    'Take the right number of samples:
-                    For iRun As Integer = 1 To iSampleSize
-                        'Pick a random cell
-                        Dim Cell As Integer = RandomClass.Next(1, 400)
-                        Dim dV As Double = Normal(iSampleError / 10, 1)    ' [0,1]
-                        dV = 1
-                        Sample(iRun, 1) = TrueDepth(Cell) * dV
-                        'Carl's advice: initially don't use error on env parameters, so:
-                        'dV = Normal(iSampleError / 10, 1)
-                        Sample(iRun, 2) = TrueTemp(Cell) * dV
-                        'dV = Normal(iSampleError / 10, 1)
-                        Sample(iRun, 3) = TrueSand(Cell) * dV
-                        'dV = Normal(iSampleError / 10, 1)
-                        Sample(iRun, 4) = TrueSal(Cell) * dV
-                        'dV = Normal(iSampleError / 10, 1)
-                        Sample(iRun, 5) = TrueO2(Cell) * dV
-
-                        'dV = Normal(iSampleError / 10, 1)
-                        'Biomass for Whiting the 4th group
-                        Sample(iRun, 0) = TrueBio(4, Cell) * dV
-                    Next
-                    'Get sample error for each environmental parameter
-                    'Dim CVdepth As Double = CV(SampleDepth)
-                    'Dim CVtemp As Double = CV(SampleTemp)
-                    'Dim CVsand As Double = CV(SampleSand)
-                    'Dim CVsal As Double = CV(SampleSal)
-
-                    'Generate a new environmental preference function for these parameters
-                    'Depth
-                    'Make 20 bins distributed over the sample size
-                    Dim iBins As Integer = CInt(iSampleSize / 20)
-                    Dim Left(5) As Double
-                    Dim Range(5) As Double
-                    'Dim Right As Double = EnvDepth.ResponseRightLimit '= max of SampleDepth()
-                    Left(1) = EnvDepth.ResponseLeftLimit '= Min of SampleDepth() 
-                    Range(1) = EnvDepth.ResponseRightLimit - EnvDepth.ResponseLeftLimit
-                    Left(2) = EnvTemp.ResponseLeftLimit '= Min of SampleDepth() 
-                    Range(2) = EnvTemp.ResponseRightLimit - EnvTemp.ResponseLeftLimit
-                    Left(3) = EnvSand.ResponseLeftLimit '= Min of SampleDepth() 
-                    Range(3) = EnvSand.ResponseRightLimit - EnvSand.ResponseLeftLimit
-                    Left(4) = EnvSal.ResponseLeftLimit '= Min of SampleDepth() 
-                    Range(4) = EnvSal.ResponseRightLimit - EnvSal.ResponseLeftLimit
-                    Left(5) = EnvO2.ResponseLeftLimit '= Min of SampleDepth() 
-                    Range(5) = EnvO2.ResponseRightLimit - EnvO2.ResponseLeftLimit
-
-                    'bin the samplebio 
-                    Dim EnvBinSumB(iBins, 5) As Double
-                    For i As Integer = 1 To 5
-                        For iRun As Integer = 1 To iSampleSize
-                            'What bin = Floor((Depth * NoBins / Range)+1)?
-                            Dim BinNo As Integer = CInt(Math.Floor((Sample(iRun, i) - Left(i)) * iBins / Range(i)))
-                            EnvBinSumB(BinNo, i) = Sample(iRun, 0)
-                        Next
-                    Next
-
-                    Dim EnvFunc(1200, 5) As Double
-                    'How many steps per bin?
-                    Dim iStep As Integer = CInt(1200 / iBins)
-                    Dim iCount As Integer = 0
-
-                    For iPar As Integer = 1 To 5
-                        For i As Integer = 1 To iBins
-                            For j As Integer = 1 To iStep
-                                iCount += 1
-                                EnvFunc(iCount, iPar) = EnvBinSumB(i, iPar)
-                            Next
-                        Next
-                    Next
-
-                    If iCount < 1200 Then
-                        For iPar As Integer = 1 To 5
-                            For i As Integer = iCount To 1200
-                                EnvFunc(i, iPar) = EnvFunc(iCount, iPar)
-                            Next
-                        Next
-                    End If
-
-                    'How to set Environment/Foraging Response function shape
-                    For ipt As Integer = 1 To EnvDepth.nPoints
-                        'Set the Range of the response funciton
-                        'set the response multiplier to the environmental map input
-                        EnvDepth.ShapeData(ipt) = CSng(EnvFunc(ipt, 1))
-                        EnvTemp.ShapeData(ipt) = CSng(EnvFunc(ipt, 2))
-                        EnvSand.ShapeData(ipt) = CSng(EnvFunc(ipt, 3))
-                        EnvSal.ShapeData(ipt) = CSng(EnvFunc(ipt, 4))
-                        EnvO2.ShapeData(ipt) = CSng(EnvFunc(ipt, 5))
-                    Next
-
-                    'Run Ecospace
-                    m_core.RunEcoSpace(Nothing, False)
-
-                    'Get biomass for all the groups from this Ecospace run
-                    Me.getEcospaceBiomass(RunBio)
+        'Biomass after the Ecospace run
+        Dim RunBio(m_core.nGroups, iCells) As Double
 
 
-                    PostMessage("Done Sample Size = " + iSampleSize.ToString + " Error = " + iSampleError.ToString)
-                Next iSampleSize
+        For ir As Integer = 1 To inR
+            For ic As Integer = 1 To inC
+                Dim iNo As Integer = (ir - 1) * inR + ic
+                For igrp As Integer = 1 To m_core.nGroups
+                    TrueBio(igrp, iNo) = Me.m_EcoSpaceData.Bcell(ir, ic, igrp)
+                Next igrp
+                'Read from the habitat capacity environmental layers:
+                TrueEnv(iNo, 1) = CInt(d.Cell(ir, ic))
+                TrueEnv(iNo, 2) = CDbl(lyrTemp.Cell(ir, ic))
+                TrueEnv(iNo, 3) = CDbl(lyrSandy.Cell(ir, ic))
+                TrueEnv(iNo, 4) = CDbl(lyrSalinity.Cell(ir, ic))
+                TrueEnv(iNo, 5) = CDbl(lyrO2.Cell(ir, ic))
+            Next ic
+        Next ir
+
+        'Save the truebio
+        WriteBioToCSV(False, TrueBio, 0, 0)
+       
+        WriteEnvOrigToCSV(1, EnvDepth.ShapeData(), 0, 0)
+        WriteEnvOrigToCSV(2, EnvTemp.ShapeData(), 0, 0)
+        WriteEnvOrigToCSV(3, EnvSand.ShapeData(), 0, 0)
+        WriteEnvOrigToCSV(4, EnvSal.ShapeData(), 0, 0)
+        WriteEnvOrigToCSV(5, EnvO2.ShapeData(), 0, 0)
+
+
+        'After some fiddling around we're going to change the environmental preference function, one by one based on sampling with uncertainty
+
+        'set env func no X = value
+        'sample similar parameters as above (
+        Dim RandomClass As New Random()
+
+        PostMessage("Starting run")
+        For iSampleError As Integer = 1 To 1    '4
+            For iSampleSize As Integer = 400 To 400 Step 100
+
                 If Me.bStopRun Then Exit For
-            Next iSampleError
+                'Dim SampleDepth(iSampleSize) As Double
+                'Dim SampleTemp(iSampleSize) As Double
+                'Dim SampleSand(iSampleSize) As Double
+                'Dim SampleSal(iSampleSize) As Double
+                'Dim SampleO2(iSampleSize) As Double
+                'Dim SampleBio(iSampleSize) As Double
+                Dim Sample(iSampleSize, 5) As Double
+
+                'Take the right number of samples:
+                For iRun As Integer = 1 To iSampleSize
+                    'Pick a random cell
+                    Dim Cell As Integer = RandomClass.Next(1, 400)
+                    Dim dV As Double = Normal(iSampleError / 10, 1)    ' [0,1]
+                    dV = 1
+                    Sample(iRun, 1) = TrueEnv(Cell, 1) * dV
+                    'Carl's advice: initially don't use error on env parameters, so:
+                    'dV = Normal(iSampleError / 10, 1)
+                    Sample(iRun, 2) = TrueEnv(Cell, 2) * dV
+                    'dV = Normal(iSampleError / 10, 1)
+                    Sample(iRun, 3) = TrueEnv(Cell, 3) * dV
+                    'dV = Normal(iSampleError / 10, 1)
+                    Sample(iRun, 4) = TrueEnv(Cell, 4) * dV
+                    'dV = Normal(iSampleError / 10, 1)
+                    Sample(iRun, 5) = TrueEnv(Cell, 5) * dV
+
+                    'dV = Normal(iSampleError / 10, 1)
+                    'Biomass for Whiting the 4th group
+                    Sample(iRun, 0) = TrueBio(4, Cell) * dV
+                Next
+                'Get sample error for each environmental parameter
+                'Dim CVdepth As Double = CV(SampleDepth)
+                'Dim CVtemp As Double = CV(SampleTemp)
+                'Dim CVsand As Double = CV(SampleSand)
+                'Dim CVsal As Double = CV(SampleSal)
+
+                'Generate a new environmental preference function for these parameters
+                'Depth
+                'Make 20 bins distributed over the sample size
+                Dim iBins As Integer = CInt(iSampleSize / 20)
+                Dim Left(5) As Double
+                Dim Range(5) As Double
+                'Dim Right As Double = EnvDepth.ResponseRightLimit '= max of SampleDepth()
+                Left(1) = EnvDepth.ResponseLeftLimit '= Min of SampleDepth() 
+                Range(1) = EnvDepth.ResponseRightLimit - EnvDepth.ResponseLeftLimit
+                Left(2) = EnvTemp.ResponseLeftLimit '= Min of SampleDepth() 
+                Range(2) = EnvTemp.ResponseRightLimit - EnvTemp.ResponseLeftLimit
+                Left(3) = EnvSand.ResponseLeftLimit '= Min of SampleDepth() 
+                Range(3) = EnvSand.ResponseRightLimit - EnvSand.ResponseLeftLimit
+                Left(4) = EnvSal.ResponseLeftLimit '= Min of SampleDepth() 
+                Range(4) = EnvSal.ResponseRightLimit - EnvSal.ResponseLeftLimit
+                Left(5) = EnvO2.ResponseLeftLimit '= Min of SampleDepth() 
+                Range(5) = EnvO2.ResponseRightLimit - EnvO2.ResponseLeftLimit
+
+                'bin the samplebio 
+                Dim EnvBinSumB(iBins, 5) As Double
+                For i As Integer = 1 To 5
+                    For iRun As Integer = 1 To iSampleSize
+                        'What bin = Floor((Depth * NoBins / Range)+1)?
+                        Dim BinNo As Integer = CInt(Math.Floor((Sample(iRun, i) - Left(i)) * iBins / Range(i)) + 1)
+                        If BinNo < 1 Then BinNo = 1
+                        If BinNo > iBins Then BinNo = iBins
+                        EnvBinSumB(BinNo, i) += Sample(iRun, 0)
+                    Next
+                Next
+
+                Dim EnvFunc(1200, 5) As Double
+                'How many steps per bin?
+                Dim iStep As Integer = CInt(1200 / iBins)
+                Dim iCount As Integer = 0
+
+                For iPar As Integer = 1 To 5
+                    iCount = 0
+                    For i As Integer = 1 To iBins
+                        For j As Integer = 1 To iStep
+                            iCount += 1
+                            EnvFunc(iCount, iPar) = EnvBinSumB(i, iPar)
+                        Next
+                    Next
+                Next
+
+                If iCount < 1200 Then
+                    For iPar As Integer = 1 To 5
+                        For i As Integer = iCount To 1200
+                            EnvFunc(i, iPar) = EnvFunc(iCount, iPar)
+                        Next
+                    Next
+                End If
+
+                'How to set Environment/Foraging Response function shape
+                For ipt As Integer = 1 To EnvDepth.nPoints
+                    'Set the Range of the response funciton
+                    'set the response multiplier to the environmental map input
+                    EnvDepth.ShapeData(ipt) = CSng(EnvFunc(ipt, 1))
+                    EnvTemp.ShapeData(ipt) = CSng(EnvFunc(ipt, 2))
+                    EnvSand.ShapeData(ipt) = CSng(EnvFunc(ipt, 3))
+                    EnvSal.ShapeData(ipt) = CSng(EnvFunc(ipt, 4))
+                    EnvO2.ShapeData(ipt) = CSng(EnvFunc(ipt, 5))
+                Next
+
+                'Run Ecospace
+                m_core.RunEcoSpace(Nothing, False)
+
+                'Get biomass for all the groups from this Ecospace run
+                Me.getEcospaceBiomass(RunBio)
+
+                WriteBioToCSV(True, RunBio, iSampleError / 10, iBins)
+                WriteEnvFuncToCSV(True, EnvFunc, iSampleError / 10, iBins)
 
 
-        Catch ex As Exception
+                PostMessage("Done Sample Size = " + iSampleSize.ToString + " Error = " + iSampleError.ToString)
+            Next iSampleSize
+            If Me.bStopRun Then Exit For
+        Next iSampleError
 
-            PostMessage("WARNING: Exception some place in HabitatCapacityModel " + ex.Message)
 
-        End Try
+        'Catch ex As Exception
+
+        'PostMessage("WARNING: Exception some place in HabitatCapacityModel " + ex.Message)
+
+        'End Try
 
         If Me.bStopRun Then
             PostMessage("Run stopped before completion")
@@ -280,7 +297,7 @@ Public Class cHabitatCapacityPluginPoint
 
     End Sub
 
-    Private Function getEnviroResponseFunction(iFunctionIndex As Integer) As cEnviroResponseFunction
+    Private Function getEnviroResponseFunction(ByVal iFunctionIndex As Integer) As cEnviroResponseFunction
         Dim shape As cEnviroResponseFunction
         Try
             'Foraging response functions are in a zero base list
@@ -311,7 +328,7 @@ Public Class cHabitatCapacityPluginPoint
 
     End Sub
 
-    Private Function getLayerByName(LayerName As String) As cEcospaceLayerDriver
+    Private Function getLayerByName(ByVal LayerName As String) As cEcospaceLayerDriver
         Dim layer As cEcospaceLayerDriver
 
         For iLayer As Integer = 1 To m_core.nEnvironmentalDriverLayers
@@ -325,7 +342,7 @@ Public Class cHabitatCapacityPluginPoint
 
     End Function
 
-    Private Sub PostMessage(MessageToPost As String)
+    Private Sub PostMessage(ByVal MessageToPost As String)
         Me.Message = MessageToPost
         Me.m_form.WorkerThread.ReportProgress(100)
     End Sub
@@ -394,6 +411,63 @@ Public Class cHabitatCapacityPluginPoint
         End If
     End Function
 
+    Private Sub WriteBioToCSV(ByVal Append As Boolean, ByVal bio(,) As Double, ByVal sd As Double, ByVal SampleSize As Integer)
+        'make a file with cell number and LME no
+        Using sw As StreamWriter = New StreamWriter("c:\Ecopath\HabitatCapacity\Runs.csv", Append)  'true makes it append
+            'sw.WriteLine("Cell,LME,Area")
+            Dim sStr As String = sd & "," & SampleSize
+            For iC As Integer = 1 To 400
+                sStr += "," & bio(4, iC)
+            Next
+            sw.WriteLine(sStr)
+            sw.Close()
+        End Using
+    End Sub
+
+    Private Sub WriteEnvOrigToCSV(ByVal iPar As Integer, ByVal env() As Single, ByVal sd As Double, ByVal SampleSize As Integer)
+        'make a file with cell number and LME no
+        Dim Filen As String = ""
+        Select Case iPar
+            Case 1 : Filen = "Depth"
+            Case 2 : Filen = "Temperature"
+            Case 3 : Filen = "Salinity"
+            Case 4 : Filen = "Sand"
+            Case 5 : Filen = "Oxygen"
+        End Select
+        Using sw As StreamWriter = New StreamWriter("c:\Ecopath\HabitatCapacity\" & Filen & ".csv", False)  'true makes it append
+            'sw.WriteLine("Cell,LME,Area")
+            Dim sStr As String = sd & "," & SampleSize
+            For iC As Integer = 1 To 1200
+                sStr += "," & env(iC)
+            Next
+            sw.WriteLine(sStr)
+            sw.Close()
+        End Using
+    End Sub
+
+    Private Sub WriteEnvFuncToCSV(ByVal Append As Boolean, ByVal env(,) As Double, ByVal sd As Double, ByVal SampleSize As Integer)
+        'make a file with cell number and LME no
+        For iPar As Integer = 1 To 5
+            Dim Filen As String = ""
+            Select Case iPar
+                Case 1 : Filen = "Depth"
+                Case 2 : Filen = "Temperature"
+                Case 3 : Filen = "Salinity"
+                Case 4 : Filen = "Sand"
+                Case 5 : Filen = "Oxygen"
+            End Select
+            Using sw As StreamWriter = New StreamWriter("c:\Ecopath\HabitatCapacity\" & Filen & ".csv", Append)  'true makes it append
+                'sw.WriteLine("Cell,LME,Area")
+                Dim sStr As String = sd & "," & SampleSize
+                For iC As Integer = 1 To 1200
+                    sStr += "," & env(iC, iPar)
+                Next
+                sw.WriteLine(sStr)
+                sw.Close()
+            End Using
+        Next
+
+    End Sub
 
 #End Region
 
@@ -420,7 +494,7 @@ Public Class cHabitatCapacityPluginPoint
     ''' for later use.
     ''' </summary>
     ''' <param name="CoreAsObject">The core, casted to a generic object</param>
-    Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(ByVal CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
         Try
             m_core = DirectCast(CoreAsObject, cCore)
         Catch ex As Exception
@@ -457,7 +531,7 @@ Public Class cHabitatCapacityPluginPoint
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
+    Public Function LoadModel(ByVal dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
         Try
 
             'Cast the datasource 
@@ -479,7 +553,7 @@ Public Class cHabitatCapacityPluginPoint
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
+    Public Function SaveModel(ByVal dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
         System.Console.WriteLine(Me.ToString + ".SaveModel()")
 
         Return True
@@ -516,14 +590,14 @@ Public Class cHabitatCapacityPluginPoint
     ''' <param name="EcopathDataAsObject"></param>
     ''' <param name="TaxonDataAsObject"></param>
     ''' <param name="StanzaDataAsObject"></param>
-    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
+    Public Sub EcopathRunInitialized(ByVal EcopathDataAsObject As Object, ByVal TaxonDataAsObject As Object, ByVal StanzaDataAsObject As Object) Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
 
         Me.m_EcoPathData = TryCast(EcopathDataAsObject, cEcopathDataStructures)
         Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathRunInitialized() Failed to get EcopathDataStructures.")
 
     End Sub
 
-    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+    Public Sub EcosimInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         System.Console.WriteLine(Me.ToString + ".EcosimInitialized()")
 
         Me.m_EcoSimData = TryCast(EcosimDatastructures, cEcosimDatastructures)
@@ -531,7 +605,7 @@ Public Class cHabitatCapacityPluginPoint
 
     End Sub
 
-    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
+    Public Sub EcospaceInitialized(ByVal EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
         System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
 
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
@@ -539,7 +613,7 @@ Public Class cHabitatCapacityPluginPoint
     End Sub
 
 
-    Public Sub onEcospaceBeginTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements EwEPlugin.IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep
+    Public Sub onEcospaceBeginTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep
 
     End Sub
 
@@ -587,7 +661,7 @@ Public Class cHabitatCapacityPluginPoint
     ''' </summary>
     ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(ByVal uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
 
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
