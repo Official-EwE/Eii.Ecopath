@@ -288,9 +288,12 @@ Namespace Forms
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             If (Me.UIContext IsNot Nothing) Then
-                ' Release style guide event
+
+                ' JS28Feb14: this is one of the memleak culprits that is keeping forms alive
+                ' Explicitly detach from help
+                Me.UIContext.Help.HelpTopic(Me) = ""
+
                 RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                ' Release UI context
                 Me.UIContext = Nothing
             End If
 
@@ -556,7 +559,7 @@ Namespace Forms
                 ' Detach
                 If Me.m_aMessageSources IsNot Nothing Then
                     For Each ms As eCoreComponentType In Me.m_aMessageSources
-                        If ms <> eCoreComponentType.NotSet Then
+                        If (ms <> eCoreComponentType.NotSet) Then
                             frmEwE.s_refresh.UnregisterForm(Me, ms)
                         End If
                     Next
@@ -568,7 +571,7 @@ Namespace Forms
                 ' Attach
                 If Me.m_aMessageSources IsNot Nothing Then
                     For Each ms As eCoreComponentType In Me.m_aMessageSources
-                        If ms <> eCoreComponentType.NotSet Then
+                        If (ms <> eCoreComponentType.NotSet) Then
                             frmEwE.s_refresh.RegisterForm(Me, ms)
                         End If
                     Next
