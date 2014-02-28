@@ -107,6 +107,17 @@ Public Class cHabitatCapacityPluginPoint
             Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Salinity")
             Dim lyrO2 As cEcospaceLayerDriver = Me.getLayerByName("O2")
             Dim lyrBottom As cEcospaceLayerDriver = Me.getLayerByName("BottomType")
+            Dim lyrTemp As cEcospaceLayerDriver = Me.getLayerByName("Temperature")
+
+            'Get the following environmental preference functions:
+            Dim EnvDepth As cEnviroResponseFunction = something  '= No 2 "Depth whiting"
+            Dim EnvTemp As cEnviroResponseFunction '= No 6 "Temp warm"
+            Dim EnvSand As cEnviroResponseFunction '= No 12 "Whiting sand bottom"
+            Dim EnvSal As cEnviroResponseFunction  ' = No 11 "Salinity cod"
+            Dim EnvO2 As cEnviroResponseFunction   ' = No 13 "DO higher"
+
+            'I also need to write to these later 
+
 
             Dim inR As Integer = m_core.EcospaceBasemap.InRow
             Dim inC As Integer = m_core.EcospaceBasemap.InCol
@@ -123,52 +134,67 @@ Public Class cHabitatCapacityPluginPoint
             For ir As Integer = 1 To inR
                 For ic As Integer = 1 To inC
                     Dim iNo As Integer = (ir - 1) * inR + ic
-
                     For igrp As Integer = 1 To m_core.nGroups
                         TrueBio(igrp, iNo) = Me.m_EcoSpaceData.Bcell(ir, ic, igrp)
                     Next igrp
-
                     'Read from the habitat capacity environmental layers:
-                    'TrueDepth(iNo) = CInt(d.Cell(ir, ic))
-                    'TrueTemp(iNo) =
-                    TrueSand(iNo) = CSng(lyrBottom.Cell(ir, ic))
-                    TrueSal(iNo) = CSng(lyrSalinity.Cell(ir, ic))
-                    TrueO2(iNo) = CSng(lyrO2.Cell(ir, ic))
-
+                    TrueDepth(iNo) = CInt(d.Cell(ir, ic))
+                    TrueTemp(iNo) = CDbl(lyrTemp.Cell(ir, ic))
+                    TrueSand(iNo) = CDbl(lyrBottom.Cell(ir, ic))
+                    TrueSal(iNo) = CDbl(lyrSalinity.Cell(ir, ic))
+                    TrueO2(iNo) = CDbl(lyrO2.Cell(ir, ic))
                 Next ic
             Next ir
 
 
             'After some fiddling around we're going to change the environmental preference function, one by one based on sampling with uncertainty
-
             'set env func no X = value
-
-
-            Dim SampleDepth(iCells) As Integer
-            Dim SampleTemp(iCells) As Double
-            Dim SampleSand(iCells) As Double
-            Dim SampleSal(iCells) As Double
-            Dim SampleO2(iCells) As Double
-            Dim SampleBio(m_core.nGroups, iCells) As Double
             'sample similar parameters as above (
+            Dim RandomClass As New Random()
 
-            'run ecospace
-            For irun As Integer = 1 To nRuns
-                PostMessage("Ecospace run " + irun.ToString)
+            For iSampleError As Integer = 1 To 4
+                For iSampleSize As Integer = 100 To 400 Step 100
+                    Dim SampleDepth(iSampleSize) As Double
+                    Dim SampleTemp(iSampleSize) As Double
+                    Dim SampleSand(iSampleSize) As Double
+                    Dim SampleSal(iSampleSize) As Double
+                    Dim SampleO2(iSampleSize) As Double
+                    Dim SampleBio(iSampleSize) As Double
 
-                'Set inputs
+                    'Take the right number of samples:
+                    For iRun As Integer = 1 To iSampleSize
+                        'Pick a random cell
+                        Dim Cell As Integer = RandomClass.Next(1, 400)
+                        Dim dV As Double = Normal(iSampleError / 10, 1)    ' [0,1]
+                        SampleDepth(iRun) = TrueDepth(Cell) * dV
+                        dV = Normal(iSampleError / 10, 1)
+                        SampleTemp(iRun) = TrueTemp(Cell) * dV
+                        dV = Normal(iSampleError / 10, 1)
+                        SampleSand(iRun) = TrueSand(Cell) * dV
+                        dV = Normal(iSampleError / 10, 1)
+                        SampleSal(iRun) = TrueSal(Cell) * dV
+                        dV = Normal(iSampleError / 10, 1)
+                        SampleO2(iRun) = TrueO2(Cell) * dV
+                        dV = Normal(iSampleError / 10, 1)
+                        SampleO2(iRun) = TrueBio(Cell, 4) * dV
+                    Next
+                    'Get sample error for each environmental parameter
+                    Dim CVdepth As Double = CV(SampleDepth)
+                    Dim CVtemp As Double = CV(SampleTemp)
+                    Dim CVsand As Double = CV(SampleSand)
+                    Dim CVsal As Double = CV(SampleSal)
 
-                m_core.RunEcoSpace(Nothing, False)
+                    'Generate a new environmental preference function for these parameters
+                    'Depth
+                    'Make 20 bins distributed over the sample size
+                    Dim iStep As Integer = CInt(iSampleSize / 20)
 
-                'Get biomass from the last time step of Ecospace
-                getEcospaceBiomass(SampleBio)
 
-                'Get the fit to TrueBio
+                    m_core.RunEcoSpace()
 
-                'Save results
-
+                Next
             Next
-
+            '      getEcospaceBiomass(SampleBio)
 
         Catch ex As Exception
 
@@ -221,6 +247,70 @@ Public Class cHabitatCapacityPluginPoint
         Me.m_form.m_lstMessages.Items.Insert(0, message)
         Me.m_form.m_lstMessages.Refresh()
     End Sub
+
+
+    Private Function Normal(Optional ByVal Sigma As Double = 1, Optional ByVal Mean As Double = 0) As Double
+        Normal = GetGausse * Sigma + Mean
+    End Function
+
+    Private Function GetGausse() As Double
+        ' This Function returns a standard Gaussian random number
+        ' based upon the polar form of the Box-Muller transform.
+
+        ' since this calc is capable of returning two calculations per
+        ' call, it's been set up to save the second calc for the next
+        ' pass through the function, saving some time.
+
+        ' Call the randomize function once (and ONLY once) in the life of the project.
+
+        Static blReturn2 As Boolean  ' Flag to calc new values, or return
+        ' previously calculated value.  It defaults
+        ' to False on the first pass.
+        Static dblReturn2 As Double  ' Second return value
+
+        Dim Work1 As Double, Work2 As Double, Work3 As Double
+
+        Const Two = 2.0#, One = 1.0#
+
+        If blReturn2 Then  ' On odd numbered calls
+            GetGausse = dblReturn2
+        Else
+            Work3 = Two
+            Do Until Work3 < One
+                Work1 = Two * Rnd - One
+                Work2 = Two * Rnd - One
+                Work3 = Work1 * Work1 + Work2 * Work2
+            Loop
+            Work3 = Math.Sqrt((-(Two) * Math.Log(Work3)) / Work3)
+            GetGausse = Work1 * Work3
+            ' a second valid value will be returned by Work2 * Work3.
+            ' Calculate it for the next pass.  This will save some processing
+            dblReturn2 = Work2 * Work3
+        End If
+
+        blReturn2 = Not blReturn2 ' and toggle the return value flag
+
+    End Function
+
+    Private Function StdDev(ByVal elements As IEnumerable(Of Double)) As Double
+        If elements Is Nothing Then Return 0
+        Dim mean As Double = (Aggregate el As Double In elements Into Average(CDbl(el)))
+        Dim squares As IEnumerable(Of Double) = (From el As Double In elements Select (el - mean) ^ 2)
+        Dim variance As Double = (Aggregate square_el As Double In squares Into Average(square_el))
+        Return Math.Sqrt(variance)
+    End Function
+
+    Private Function CV(ByVal elements() As double) As Double
+        If elements Is Nothing Then Return 0
+        Dim mean As Double = (Aggregate el As Double In elements Into Average(CDbl(el)))
+        Dim squares As IEnumerable(Of Double) = (From el As Double In elements Select (el - mean) ^ 2)
+        Dim variance As Double = (Aggregate square_el As Double In squares Into Average(square_el))
+        If mean > 0 Then
+            Return Math.Sqrt(variance) / mean
+        Else
+            Return 0
+        End If
+    End Function
 
 
 #End Region
