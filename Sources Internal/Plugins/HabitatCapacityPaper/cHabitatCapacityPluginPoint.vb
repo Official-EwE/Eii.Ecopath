@@ -115,9 +115,6 @@ Public Class cHabitatCapacityPluginPoint
             Dim EnvSal As cEnviroResponseFunction = Me.getEnviroResponseFunction(11) ' = No 11 "Salinity cod"
             Dim EnvO2 As cEnviroResponseFunction = Me.getEnviroResponseFunction(13) ' = No 13 "DO higher"
 
-            'I also need to write to these later 
-
-
             Dim inR As Integer = m_core.EcospaceBasemap.InRow
             Dim inC As Integer = m_core.EcospaceBasemap.InCol
             Dim iCells As Integer = inR * inC
@@ -148,65 +145,111 @@ Public Class cHabitatCapacityPluginPoint
                 Next ic
             Next ir
 
-
             'After some fiddling around we're going to change the environmental preference function, one by one based on sampling with uncertainty
-
 
             'set env func no X = value
             'sample similar parameters as above (
             Dim RandomClass As New Random()
 
             PostMessage("Starting run")
-            For iSampleError As Integer = 1 To 4
-                For iSampleSize As Integer = 100 To 400 Step 100
+            For iSampleError As Integer = 1 To 1    '4
+                For iSampleSize As Integer = 400 To 400 Step 100
 
                     If Me.bStopRun Then Exit For
-                    Dim SampleDepth(iSampleSize) As Double
-                    Dim SampleTemp(iSampleSize) As Double
-                    Dim SampleSand(iSampleSize) As Double
-                    Dim SampleSal(iSampleSize) As Double
-                    Dim SampleO2(iSampleSize) As Double
-                    Dim SampleBio(iSampleSize) As Double
+                    'Dim SampleDepth(iSampleSize) As Double
+                    'Dim SampleTemp(iSampleSize) As Double
+                    'Dim SampleSand(iSampleSize) As Double
+                    'Dim SampleSal(iSampleSize) As Double
+                    'Dim SampleO2(iSampleSize) As Double
+                    'Dim SampleBio(iSampleSize) As Double
+                    Dim Sample(iSampleSize, 5) As Double
 
                     'Take the right number of samples:
                     For iRun As Integer = 1 To iSampleSize
                         'Pick a random cell
                         Dim Cell As Integer = RandomClass.Next(1, 400)
                         Dim dV As Double = Normal(iSampleError / 10, 1)    ' [0,1]
-                        SampleDepth(iRun) = TrueDepth(Cell) * dV
-                        dV = Normal(iSampleError / 10, 1)
-                        SampleTemp(iRun) = TrueTemp(Cell) * dV
-                        dV = Normal(iSampleError / 10, 1)
-                        SampleSand(iRun) = TrueSand(Cell) * dV
-                        dV = Normal(iSampleError / 10, 1)
-                        SampleSal(iRun) = TrueSal(Cell) * dV
-                        dV = Normal(iSampleError / 10, 1)
-                        SampleO2(iRun) = TrueO2(Cell) * dV
+                        dV = 1
+                        Sample(iRun, 1) = TrueDepth(Cell) * dV
+                        'Carl's advice: initially don't use error on env parameters, so:
+                        'dV = Normal(iSampleError / 10, 1)
+                        Sample(iRun, 2) = TrueTemp(Cell) * dV
+                        'dV = Normal(iSampleError / 10, 1)
+                        Sample(iRun, 3) = TrueSand(Cell) * dV
+                        'dV = Normal(iSampleError / 10, 1)
+                        Sample(iRun, 4) = TrueSal(Cell) * dV
+                        'dV = Normal(iSampleError / 10, 1)
+                        Sample(iRun, 5) = TrueO2(Cell) * dV
 
-                        dV = Normal(iSampleError / 10, 1)
-                        'Biomass for  Whiting the 4th groups  
-                        SampleBio(iRun) = TrueBio(4, Cell) * dV
+                        'dV = Normal(iSampleError / 10, 1)
+                        'Biomass for Whiting the 4th group
+                        Sample(iRun, 0) = TrueBio(4, Cell) * dV
                     Next
                     'Get sample error for each environmental parameter
-                    Dim CVdepth As Double = CV(SampleDepth)
-                    Dim CVtemp As Double = CV(SampleTemp)
-                    Dim CVsand As Double = CV(SampleSand)
-                    Dim CVsal As Double = CV(SampleSal)
+                    'Dim CVdepth As Double = CV(SampleDepth)
+                    'Dim CVtemp As Double = CV(SampleTemp)
+                    'Dim CVsand As Double = CV(SampleSand)
+                    'Dim CVsal As Double = CV(SampleSal)
 
                     'Generate a new environmental preference function for these parameters
                     'Depth
                     'Make 20 bins distributed over the sample size
-                    Dim iStep As Integer = CInt(iSampleSize / 20)
+                    Dim iBins As Integer = CInt(iSampleSize / 20)
+                    Dim Left(5) As Double
+                    Dim Range(5) As Double
+                    'Dim Right As Double = EnvDepth.ResponseRightLimit '= max of SampleDepth()
+                    Left(1) = EnvDepth.ResponseLeftLimit '= Min of SampleDepth() 
+                    Range(1) = EnvDepth.ResponseRightLimit - EnvDepth.ResponseLeftLimit
+                    Left(2) = EnvTemp.ResponseLeftLimit '= Min of SampleDepth() 
+                    Range(2) = EnvTemp.ResponseRightLimit - EnvTemp.ResponseLeftLimit
+                    Left(3) = EnvSand.ResponseLeftLimit '= Min of SampleDepth() 
+                    Range(3) = EnvSand.ResponseRightLimit - EnvSand.ResponseLeftLimit
+                    Left(4) = EnvSal.ResponseLeftLimit '= Min of SampleDepth() 
+                    Range(4) = EnvSal.ResponseRightLimit - EnvSal.ResponseLeftLimit
+                    Left(5) = EnvO2.ResponseLeftLimit '= Min of SampleDepth() 
+                    Range(5) = EnvO2.ResponseRightLimit - EnvO2.ResponseLeftLimit
+
+                    'bin the samplebio 
+                    Dim EnvBinSumB(iBins, 5) As Double
+                    For i As Integer = 1 To 5
+                        For iRun As Integer = 1 To iSampleSize
+                            'What bin = Floor((Depth * NoBins / Range)+1)?
+                            Dim BinNo As Integer = CInt(Math.Floor((Sample(iRun, i) - Left(i)) * iBins / Range(i)))
+                            EnvBinSumB(BinNo, i) = Sample(iRun, 0)
+                        Next
+                    Next
+
+                    Dim EnvFunc(1200, 5) As Double
+                    'How many steps per bin?
+                    Dim iStep As Integer = CInt(1200 / iBins)
+                    Dim iCount As Integer = 0
+
+                    For iPar As Integer = 1 To 5
+                        For i As Integer = 1 To iBins
+                            For j As Integer = 1 To iStep
+                                iCount += 1
+                                EnvFunc(iCount, iPar) = EnvBinSumB(i, iPar)
+                            Next
+                        Next
+                    Next
+
+                    If iCount < 1200 Then
+                        For iPar As Integer = 1 To 5
+                            For i As Integer = iCount To 1200
+                                EnvFunc(i, iPar) = EnvFunc(iCount, iPar)
+                            Next
+                        Next
+                    End If
 
                     'How to set Environment/Foraging Response function shape
                     For ipt As Integer = 1 To EnvDepth.nPoints
                         'Set the Range of the response funciton
-
-                        'EnvDepth.ResponseLeftLimit = Min of SampleDepth() 
-                        'EnvDepth.ResponseRightLimit = max of SampleDepth()
-
                         'set the response multiplier to the environmental map input
-                        EnvDepth.ShapeData(ipt) = CSng(ipt / EnvDepth.nPoints) 'just a linear response for testing
+                        EnvDepth.ShapeData(ipt) = CSng(EnvFunc(ipt, 1))
+                        EnvTemp.ShapeData(ipt) = CSng(EnvFunc(ipt, 2))
+                        EnvSand.ShapeData(ipt) = CSng(EnvFunc(ipt, 3))
+                        EnvSal.ShapeData(ipt) = CSng(EnvFunc(ipt, 4))
+                        EnvO2.ShapeData(ipt) = CSng(EnvFunc(ipt, 5))
                     Next
 
                     'Run Ecospace
