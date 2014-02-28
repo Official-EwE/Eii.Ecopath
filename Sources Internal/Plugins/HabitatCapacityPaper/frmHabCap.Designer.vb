@@ -39,9 +39,11 @@ Partial Class frmHabCap
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.m_btStop = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.m_lstMessages = New System.Windows.Forms.ListBox()
         Me.m_btRun = New System.Windows.Forms.Button()
+        Me.WorkerThread = New System.ComponentModel.BackgroundWorker()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -50,18 +52,28 @@ Partial Class frmHabCap
         Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.Controls.Add(Me.m_btStop)
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.m_lstMessages)
         Me.Panel1.Controls.Add(Me.m_btRun)
-        Me.Panel1.Location = New System.Drawing.Point(12, 12)
+        Me.Panel1.Location = New System.Drawing.Point(1, 12)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(678, 378)
+        Me.Panel1.Size = New System.Drawing.Size(689, 389)
         Me.Panel1.TabIndex = 3
+        '
+        'm_btStop
+        '
+        Me.m_btStop.Location = New System.Drawing.Point(12, 45)
+        Me.m_btStop.Name = "m_btStop"
+        Me.m_btStop.Size = New System.Drawing.Size(165, 27)
+        Me.m_btStop.TabIndex = 4
+        Me.m_btStop.Text = "Stop run"
+        Me.m_btStop.UseVisualStyleBackColor = True
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(9, 51)
+        Me.Label1.Location = New System.Drawing.Point(11, 89)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(55, 13)
         Me.Label1.TabIndex = 5
@@ -73,9 +85,9 @@ Partial Class frmHabCap
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_lstMessages.FormattingEnabled = True
-        Me.m_lstMessages.Location = New System.Drawing.Point(12, 67)
+        Me.m_lstMessages.Location = New System.Drawing.Point(12, 106)
         Me.m_lstMessages.Name = "m_lstMessages"
-        Me.m_lstMessages.Size = New System.Drawing.Size(647, 290)
+        Me.m_lstMessages.Size = New System.Drawing.Size(667, 264)
         Me.m_lstMessages.TabIndex = 4
         '
         'm_btRun
@@ -86,6 +98,11 @@ Partial Class frmHabCap
         Me.m_btRun.TabIndex = 3
         Me.m_btRun.Text = "Run Habitat Capacity Analysis"
         Me.m_btRun.UseVisualStyleBackColor = True
+        '
+        'm_bgw
+        '
+        Me.WorkerThread.WorkerReportsProgress = True
+        Me.WorkerThread.WorkerSupportsCancellation = True
         '
         'frmHabCap
         '
@@ -108,4 +125,6 @@ Partial Class frmHabCap
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents m_lstMessages As System.Windows.Forms.ListBox
     Friend WithEvents m_btRun As System.Windows.Forms.Button
+    Friend WithEvents m_btStop As System.Windows.Forms.Button
+    Friend WithEvents WorkerThread As System.ComponentModel.BackgroundWorker
 End Class

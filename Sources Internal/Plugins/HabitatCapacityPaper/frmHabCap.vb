@@ -51,8 +51,38 @@ Public Class frmHabCap
 
     Private Sub onRunClicked(sender As Object, e As System.EventArgs) Handles m_btRun.Click
 
-        Me.m_plugin.HabitatCapacityModel()
+        If Me.WorkerThread.IsBusy Then
+            MsgBox("Sorry already running.", MsgBoxStyle.Information)
+            Return
+        End If
+
+        Me.m_lstMessages.Items.Clear()
+        Me.WorkerThread.RunWorkerAsync()
 
     End Sub
+
+
+    Private Sub onStopClick(sender As Object, e As System.EventArgs) Handles m_btStop.Click
+        Me.m_plugin.bStopRun = True
+    End Sub
+
+    Private Sub RunHabCapModel(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles WorkerThread.DoWork
+        Me.m_plugin.HabitatCapacityModel()
+    End Sub
+
+    Private Sub onBGW_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles WorkerThread.ProgressChanged
+        Me.m_lstMessages.Items.Insert(0, Me.m_plugin.Message)
+    End Sub
+
+    Private Sub onBGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles WorkerThread.RunWorkerCompleted
+
+    End Sub
+
+
+    Public Overrides ReadOnly Property IsRunForm() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
 
 End Class

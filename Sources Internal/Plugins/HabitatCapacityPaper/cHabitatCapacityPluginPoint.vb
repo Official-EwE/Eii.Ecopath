@@ -85,14 +85,13 @@ Public Class cHabitatCapacityPluginPoint
 
 #Region "Run the Capacity Analysis"
 
+    Public bStopRun As Boolean
+    Public Message As String
 
     Public Sub HabitatCapacityModel()
-        Dim nRuns As Integer = 10
 
         Try
-
-            ClearMessages()
-            PostMessage("Starting run")
+            Me.bStopRun = False
 
             PostMessage("Running Ecospace to get the baseline values")
             'Run Ecospace to get the base line TRUE biomass distributions
@@ -157,8 +156,11 @@ Public Class cHabitatCapacityPluginPoint
             'sample similar parameters as above (
             Dim RandomClass As New Random()
 
+            PostMessage("Starting run")
             For iSampleError As Integer = 1 To 4
                 For iSampleSize As Integer = 100 To 400 Step 100
+
+                    If Me.bStopRun Then Exit For
                     Dim SampleDepth(iSampleSize) As Double
                     Dim SampleTemp(iSampleSize) As Double
                     Dim SampleSand(iSampleSize) As Double
@@ -216,6 +218,7 @@ Public Class cHabitatCapacityPluginPoint
 
                     PostMessage("Done Sample Size = " + iSampleSize.ToString + " Error = " + iSampleError.ToString)
                 Next iSampleSize
+                If Me.bStopRun Then Exit For
             Next iSampleError
 
 
@@ -224,6 +227,12 @@ Public Class cHabitatCapacityPluginPoint
             PostMessage("WARNING: Exception some place in HabitatCapacityModel " + ex.Message)
 
         End Try
+
+        If Me.bStopRun Then
+            PostMessage("Run stopped before completion")
+        Else
+            PostMessage("Run completed")
+        End If
 
 
     End Sub
@@ -273,19 +282,14 @@ Public Class cHabitatCapacityPluginPoint
 
     End Function
 
-    Private Sub ClearMessages()
-        Me.m_form.m_lstMessages.Items.Clear()
-    End Sub
-
-
-    Private Sub PostMessage(message As String)
-        Me.m_form.m_lstMessages.Items.Insert(0, message)
-        Me.m_form.m_lstMessages.Refresh()
+    Private Sub PostMessage(MessageToPost As String)
+        Me.Message = MessageToPost
+        Me.m_form.WorkerThread.ReportProgress(100)
     End Sub
 
 
     Private Function Normal(Optional ByVal Sigma As Double = 1, Optional ByVal Mean As Double = 0) As Double
-        Normal = GetGausse * Sigma + Mean
+        Normal = GetGausse() * Sigma + Mean
     End Function
 
     Private Function GetGausse() As Double
@@ -312,8 +316,8 @@ Public Class cHabitatCapacityPluginPoint
         Else
             Work3 = Two
             Do Until Work3 < One
-                Work1 = Two * Rnd - One
-                Work2 = Two * Rnd - One
+                Work1 = Two * Rnd() - One
+                Work2 = Two * Rnd() - One
                 Work3 = Work1 * Work1 + Work2 * Work2
             Loop
             Work3 = Math.Sqrt((-(Two) * Math.Log(Work3)) / Work3)
@@ -335,7 +339,7 @@ Public Class cHabitatCapacityPluginPoint
         Return Math.Sqrt(variance)
     End Function
 
-    Private Function CV(ByVal elements() As double) As Double
+    Private Function CV(ByVal elements() As Double) As Double
         If elements Is Nothing Then Return 0
         Dim mean As Double = (Aggregate el As Double In elements Into Average(CDbl(el)))
         Dim squares As IEnumerable(Of Double) = (From el As Double In elements Select (el - mean) ^ 2)
