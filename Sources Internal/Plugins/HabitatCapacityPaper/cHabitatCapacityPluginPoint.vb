@@ -103,18 +103,18 @@ Public Class cHabitatCapacityPluginPoint
             Dim d As cEcospaceLayerDepth = m_core.EcospaceBasemap.LayerDepth
 
             'Get a Enviromental Driver Layer by Name
-            'The names must match or getLayerByName() will assert and this will Explode
+            'The names must match or getLayerByName() will assert and this will Assert
             Dim lyrSalinity As cEcospaceLayerDriver = Me.getLayerByName("Salinity")
-            Dim lyrO2 As cEcospaceLayerDriver = Me.getLayerByName("O2")
-            Dim lyrBottom As cEcospaceLayerDriver = Me.getLayerByName("BottomType")
+            Dim lyrO2 As cEcospaceLayerDriver = Me.getLayerByName("Oxygen")
+            Dim lyrSandy As cEcospaceLayerDriver = Me.getLayerByName("Sandy")
             Dim lyrTemp As cEcospaceLayerDriver = Me.getLayerByName("Temperature")
 
             'Get the following environmental preference functions:
-            Dim EnvDepth As cEnviroResponseFunction = something  '= No 2 "Depth whiting"
-            Dim EnvTemp As cEnviroResponseFunction '= No 6 "Temp warm"
-            Dim EnvSand As cEnviroResponseFunction '= No 12 "Whiting sand bottom"
-            Dim EnvSal As cEnviroResponseFunction  ' = No 11 "Salinity cod"
-            Dim EnvO2 As cEnviroResponseFunction   ' = No 13 "DO higher"
+            Dim EnvDepth As cEnviroResponseFunction = Me.getEnviroResponseFunction(2) ' No 2 "Depth whiting"
+            Dim EnvTemp As cEnviroResponseFunction = Me.getEnviroResponseFunction(6) '= No 6 "Temp warm"
+            Dim EnvSand As cEnviroResponseFunction = Me.getEnviroResponseFunction(12) '= No 12 "Whiting sand bottom"
+            Dim EnvSal As cEnviroResponseFunction = Me.getEnviroResponseFunction(11) ' = No 11 "Salinity cod"
+            Dim EnvO2 As cEnviroResponseFunction = Me.getEnviroResponseFunction(13) ' = No 13 "DO higher"
 
             'I also need to write to these later 
 
@@ -130,6 +130,9 @@ Public Class cHabitatCapacityPluginPoint
             Dim TrueO2(iCells) As Double
             Dim TrueBio(m_core.nGroups, iCells) As Double
 
+            'Biomass after the Ecospace run
+            Dim RunBio(m_core.nGroups, iCells) As Double
+
 
             For ir As Integer = 1 To inR
                 For ic As Integer = 1 To inC
@@ -140,7 +143,7 @@ Public Class cHabitatCapacityPluginPoint
                     'Read from the habitat capacity environmental layers:
                     TrueDepth(iNo) = CInt(d.Cell(ir, ic))
                     TrueTemp(iNo) = CDbl(lyrTemp.Cell(ir, ic))
-                    TrueSand(iNo) = CDbl(lyrBottom.Cell(ir, ic))
+                    TrueSand(iNo) = CDbl(lyrSandy.Cell(ir, ic))
                     TrueSal(iNo) = CDbl(lyrSalinity.Cell(ir, ic))
                     TrueO2(iNo) = CDbl(lyrO2.Cell(ir, ic))
                 Next ic
@@ -148,6 +151,8 @@ Public Class cHabitatCapacityPluginPoint
 
 
             'After some fiddling around we're going to change the environmental preference function, one by one based on sampling with uncertainty
+
+
             'set env func no X = value
             'sample similar parameters as above (
             Dim RandomClass As New Random()
@@ -175,8 +180,10 @@ Public Class cHabitatCapacityPluginPoint
                         SampleSal(iRun) = TrueSal(Cell) * dV
                         dV = Normal(iSampleError / 10, 1)
                         SampleO2(iRun) = TrueO2(Cell) * dV
+
                         dV = Normal(iSampleError / 10, 1)
-                        SampleO2(iRun) = TrueBio(Cell, 4) * dV
+                        'Biomass for  Whiting the 4th groups  
+                        SampleBio(iRun) = TrueBio(4, Cell) * dV
                     Next
                     'Get sample error for each environmental parameter
                     Dim CVdepth As Double = CV(SampleDepth)
@@ -189,12 +196,28 @@ Public Class cHabitatCapacityPluginPoint
                     'Make 20 bins distributed over the sample size
                     Dim iStep As Integer = CInt(iSampleSize / 20)
 
+                    'How to set Environment/Foraging Response function shape
+                    For ipt As Integer = 1 To EnvDepth.nPoints
+                        'Set the Range of the response funciton
 
-                    m_core.RunEcoSpace()
+                        'EnvDepth.ResponseLeftLimit = Min of SampleDepth() 
+                        'EnvDepth.ResponseRightLimit = max of SampleDepth()
 
-                Next
-            Next
-            '      getEcospaceBiomass(SampleBio)
+                        'set the response multiplier to the environmental map input
+                        EnvDepth.ShapeData(ipt) = CSng(ipt / EnvDepth.nPoints) 'just a linear response for testing
+                    Next
+
+                    'Run Ecospace
+                    m_core.RunEcoSpace(Nothing, False)
+
+                    'Get biomass for all the groups from this Ecospace run
+                    Me.getEcospaceBiomass(RunBio)
+
+
+                    PostMessage("Done Sample Size = " + iSampleSize.ToString + " Error = " + iSampleError.ToString)
+                Next iSampleSize
+            Next iSampleError
+
 
         Catch ex As Exception
 
@@ -204,6 +227,18 @@ Public Class cHabitatCapacityPluginPoint
 
 
     End Sub
+
+    Private Function getEnviroResponseFunction(iFunctionIndex As Integer) As cEnviroResponseFunction
+        Dim shape As cEnviroResponseFunction
+        Try
+            'Foraging response functions are in a zero base list
+            shape = DirectCast(Me.m_core.CapacityShapeManager.Item(iFunctionIndex - 1), cEnviroResponseFunction)
+        Catch ex As Exception
+            PostMessage("WARNING: Failed to find Foraging Response Function #" + iFunctionIndex.ToString)
+        End Try
+        Debug.Assert(shape IsNot Nothing, "Failed to find Foraging Response Function #" + iFunctionIndex.ToString)
+        Return shape
+    End Function
 
 
     Private Sub getEcospaceBiomass(ByVal biomass(,) As Double)
