@@ -148,8 +148,9 @@ Public Class frmDistributionParameters
     Public Sub Init(ByVal uic As cUIContext, ByVal Plugin As cMSE)
 
         Me.m_plugin = Plugin
-        Me.Grid = m_grid
+        Me.m_grid.UIContext = uic
         Me.UIContext = uic
+
 
         For i As Integer = 1 To Me.Core.nGroups
             If Me.Core.EcoPathGroupInputs(i).IsProducer Then nPPers += 1
@@ -168,13 +169,13 @@ Public Class frmDistributionParameters
             Return MyBase.UIContext
         End Get
         Set(value As ScientificInterfaceShared.Controls.cUIContext)
-            If (Me.UIContext IsNot Nothing) Then
-                RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
-            End If
+            'If (Me.UIContext IsNot Nothing) Then
+            '    RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+            'End If
             MyBase.UIContext = value
-            If (Me.UIContext IsNot Nothing) Then
-                AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
-            End If
+            'If (Me.UIContext IsNot Nothing) Then
+            '    AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+            'End If
         End Set
     End Property
 
@@ -190,6 +191,9 @@ Public Class frmDistributionParameters
         If LoadEcosimParameters() = False Then
             Me.m_plugin.InformUser(My.Resources.ERROR_DISTRPAR_LOAD_ECOSIM, eMessageImportance.Warning)
         End If
+
+        AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+
 
         'initialises the dropdown box to the Ecopath parameters
         Me.m_tscmPathOrSim.SelectedIndex = eParameterSet.Ecopath
@@ -211,6 +215,8 @@ Public Class frmDistributionParameters
             Me.Core.Messages.SendMessage(fmsg)
             e.Cancel = (fmsg.Reply <> eMessageReply.YES)
         End If
+
+        RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
 
         MyBase.OnFormClosing(e)
 
