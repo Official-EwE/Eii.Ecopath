@@ -143,7 +143,9 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
         If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
             ' Write to "Ecospace output dir\ext\"
-            Me.m_OutputPath = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), Me.FileExtension())
+            Dim iStr As String = Me.FileExtension()
+            iStr = cStringUtils.ReplaceAll(iStr, ".", "")
+            Me.m_OutputPath = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), iStr)
         Else
             'Use the output directroy set by the user
             Me.m_OutputPath = Me.m_core.OutputPath
