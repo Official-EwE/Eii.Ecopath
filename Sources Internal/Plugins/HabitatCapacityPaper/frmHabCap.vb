@@ -26,11 +26,14 @@ Public Class frmHabCap
 
     Private m_plugin As cHabitatCapacityPluginPoint
 
+    Friend Delegate Sub MessageUpdaterDelegate()
+    Friend updater As MessageUpdaterDelegate
+
     Public Sub New()
 
         ' This call is required by the designer.
         Me.InitializeComponent()
-
+        updater = New MessageUpdaterDelegate(AddressOf Me.postMessage)
 
     End Sub
 
@@ -40,6 +43,8 @@ Public Class frmHabCap
     ''' </summary>
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
+
+        Me.WorkerThread.WorkerReportsProgress = True
 
     End Sub
 
@@ -62,6 +67,14 @@ Public Class frmHabCap
     End Sub
 
 
+    Friend Sub postMessage()
+
+        ' Me.EndInvoke()
+        Me.m_lstMessages.Items.Insert(0, Me.m_plugin.Message)
+        Me.m_lstMessages.Refresh()
+    End Sub
+
+
     Private Sub onStopClick(sender As Object, e As System.EventArgs) Handles m_btStop.Click
         Me.m_plugin.bStopRun = True
     End Sub
@@ -72,6 +85,7 @@ Public Class frmHabCap
 
     Private Sub onBGW_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles WorkerThread.ProgressChanged
         Me.m_lstMessages.Items.Insert(0, Me.m_plugin.Message)
+        Me.m_lstMessages.Refresh()
     End Sub
 
     Private Sub onBGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles WorkerThread.RunWorkerCompleted

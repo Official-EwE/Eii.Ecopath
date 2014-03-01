@@ -81,6 +81,9 @@ Public Class cHabitatCapacityPluginPoint
     Private m_uic As cUIContext = Nothing
     Private m_form As frmHabCap = Nothing
 
+    Private Const DEAFULT_DATAPATH As String = "c:\Ecopath\HabitatCapacity"
+    Private m_OutputDataPath As String
+
 #End Region
 
 #Region "Run the Capacity Analysis"
@@ -92,6 +95,8 @@ Public Class cHabitatCapacityPluginPoint
 
         'Try
         Me.bStopRun = False
+
+        Me.setOutputDataPath()
 
         PostMessage("Running Ecospace to get the baseline values")
         'Run Ecospace to get the base line TRUE biomass distributions
@@ -163,6 +168,9 @@ Public Class cHabitatCapacityPluginPoint
 
         'Save the truebio
         WriteBioToCSV(False, TrueBio, 0, 0, 0, iCells, KeyGrp)
+        'Other sampled variable
+        WriteSamplesToCSV(TrueEnv)
+
 
         WriteEnvOrigToCSV(1, EnvDepth.ShapeData(), 0, 0)
         WriteEnvOrigToCSV(2, EnvTemp.ShapeData(), 0, 0)
@@ -177,11 +185,12 @@ Public Class cHabitatCapacityPluginPoint
         'sample similar parameters as above (
         Dim RandomClass As New Random()
 
-        PostMessage("Starting run")
         For iSampleError As Integer = 1 To 7 Step 2
             For iSampleSize As Integer = 100 To 1600 Step 100
 
                 If Me.bStopRun Then Exit For
+                PostMessage("Starting trial: sample size = " + iSampleSize.ToString + " error = " + iSampleError.ToString)
+
                 Dim Sample(iSampleSize, 5) As Double
 
                 'Take the right number of samples:
@@ -197,7 +206,7 @@ Public Class cHabitatCapacityPluginPoint
                     '        Taken(Cell) = True
                     '    End If
                     'Loop
-                    Cell = iRun '= RandomClass.Next(1, 400)
+                    Cell = RandomClass.Next(1, 400)
                     Dim dV As Double = Normal(iSampleError / 10, 1)    ' [0,1]
                     dV = 1
                     Sample(iRun, 1) = TrueEnv(Cell, 1) * dV
@@ -223,10 +232,9 @@ Public Class cHabitatCapacityPluginPoint
 
                 'Generate a new environmental preference function for these parameters
                 'Depth
-                'Make 20 bins distributed over the sample size
+                'Make 50 bins distributed over the sample size
                 Dim iBins As Integer = CInt(iSampleSize / 50)
                 iBins = CInt(IIf(iBins < 10, 10, iBins))
-
                 Dim Left(5) As Double
                 Dim Range(5) As Double
                 'Dim Right As Double = EnvDepth.ResponseRightLimit '= max of SampleDepth()
@@ -246,11 +254,16 @@ Public Class cHabitatCapacityPluginPoint
                 'Keep track of how many samples per strata = bin
                 Dim BinCount(iBins, 5) As Integer
                 For iPar As Integer = 1 To 5
+
                     For iRun As Integer = 1 To iSampleSize
                         'What bin = Floor((Depth * NoBins / Range)+1)?
+
+                        'Find the bin number from the variable we are sampling
                         Dim BinNo As Integer = CInt(Math.Floor((Sample(iRun, iPar) - Left(iPar)) * iBins / Range(iPar)) + 1)
+
                         If BinNo < 1 Then BinNo = 1
                         If BinNo > iBins Then BinNo = iBins
+                        'Sum the Biomass into the bin number for this variable
                         EnvBinSumB(BinNo, iPar) += Sample(iRun, 0)
                         BinCount(BinNo, iPar) += 1
                     Next
@@ -281,16 +294,9 @@ Public Class cHabitatCapacityPluginPoint
                     Next
                 End If
 
-                'How to set Environment/Foraging Response function shape
-                For ipt As Integer = 1 To EnvDepth.nPoints
-                    'Set the Range of the response funciton
-                    'set the response multiplier to the environmental map input
-                    EnvDepth.ShapeData(ipt) = CSng(EnvFunc(ipt, 1))
-                    EnvTemp.ShapeData(ipt) = CSng(EnvFunc(ipt, 2))
-                    EnvSand.ShapeData(ipt) = CSng(EnvFunc(ipt, 3))
-                    EnvSal.ShapeData(ipt) = CSng(EnvFunc(ipt, 4))
-                    EnvO2.ShapeData(ipt) = CSng(EnvFunc(ipt, 5))
-                Next
+                'Update the environmental response shapes used by the core
+                'this also locks the updates then does the update in batch to make it faster
+                Me.UpdateEnvShapes(EnvFunc, EnvDepth, EnvTemp, EnvSand, EnvSal, EnvO2)
 
                 'Run Ecospace
                 m_core.RunEcoSpace(Nothing, False)
@@ -301,8 +307,6 @@ Public Class cHabitatCapacityPluginPoint
                 WriteBioToCSV(True, RunBio, iSampleError / 10, iBins, iSampleSize, iCells, KeyGrp)
                 WriteEnvFuncToCSV(True, EnvFunc, iSampleError / 10, iBins)
 
-
-                PostMessage("Done Sample Size = " + iSampleSize.ToString + " Error = " + iSampleError.ToString)
             Next iSampleSize
             If Me.bStopRun Then Exit For
         Next iSampleError
@@ -314,14 +318,51 @@ Public Class cHabitatCapacityPluginPoint
 
         'End Try
 
+        PostMessage("Reloading Ecospace scenario.")
+        Me.m_core.DiscardChanges()
+        Me.m_core.LoadEcosimScenario(1)
+        Me.m_core.LoadEcospaceScenario(1)
+
         If Me.bStopRun Then
-            PostMessage("Run stopped before completion")
+            PostMessage("Stopped before completion")
         Else
-            PostMessage("Run completed")
+            PostMessage("Completed")
         End If
 
+    End Sub
+
+
+    Private Sub UpdateEnvShapes(ByVal EnvFunc(,) As Double, ByVal EnvDepth As cEnviroResponseFunction, ByVal EnvTemp As cEnviroResponseFunction, _
+                                ByVal EnvSand As cEnviroResponseFunction, ByVal EnvSal As cEnviroResponseFunction, ByVal EnvO2 As cEnviroResponseFunction)
+
+        EnvDepth.LockUpdates()
+        EnvDepth.LockUpdates()
+        EnvTemp.LockUpdates()
+        EnvSand.LockUpdates()
+        EnvSal.LockUpdates()
+        EnvO2.LockUpdates()
+
+
+        'How to set Environment/Foraging Response function shape
+        For ipt As Integer = 1 To EnvDepth.nPoints
+            'Set the Range of the response funciton
+            'set the response multiplier to the environmental map input
+            EnvDepth.ShapeData(ipt) = CSng(EnvFunc(ipt, 1))
+            EnvTemp.ShapeData(ipt) = CSng(EnvFunc(ipt, 2))
+            EnvSand.ShapeData(ipt) = CSng(EnvFunc(ipt, 3))
+            EnvSal.ShapeData(ipt) = CSng(EnvFunc(ipt, 4))
+            EnvO2.ShapeData(ipt) = CSng(EnvFunc(ipt, 5))
+        Next
+
+        EnvDepth.UnlockUpdates()
+        EnvDepth.UnlockUpdates()
+        EnvTemp.UnlockUpdates()
+        EnvSand.UnlockUpdates()
+        EnvSal.UnlockUpdates()
+        EnvO2.UnlockUpdates()
 
     End Sub
+
 
     Private Function getEnviroResponseFunction(ByVal iFunctionIndex As Integer) As cEnviroResponseFunction
         Dim shape As cEnviroResponseFunction
@@ -370,7 +411,9 @@ Public Class cHabitatCapacityPluginPoint
 
     Private Sub PostMessage(ByVal MessageToPost As String)
         Me.Message = MessageToPost
-        Me.m_form.WorkerThread.ReportProgress(100)
+        ' Me.m_form.WorkerThread.ReportProgress(1)
+        Me.m_form.Invoke(Me.m_form.updater)
+        ' System.Windows.Forms.Application.DoEvents()
     End Sub
 
 
@@ -440,13 +483,32 @@ Public Class cHabitatCapacityPluginPoint
     Private Sub WriteBioToCSV(ByVal Append As Boolean, ByVal bio(,) As Double, ByVal sd As Double, ByVal Bins As Integer, _
                               ByVal SampleSize As Integer, ByVal iCells As Integer, ByVal KeyGrp As Integer)
         'make a file with cell number and LME no
-        Using sw As StreamWriter = New StreamWriter("c:\Ecopath\HabitatCapacity\Runs.csv", Append)  'true makes it append
+        Dim runsFile As String = Path.Combine(Me.m_OutputDataPath, "Runs.csv")
+        Using sw As StreamWriter = New StreamWriter(runsFile, Append)  'true makes it append
             'sw.WriteLine("Cell,LME,Area")
             Dim sStr As String = sd & "," & Bins & "," & SampleSize
             For iC As Integer = 1 To iCells
                 sStr += "," & bio(KeyGrp, iC)
             Next
             sw.WriteLine(sStr)
+            sw.Close()
+        End Using
+    End Sub
+
+    Private Sub WriteSamplesToCSV(ByVal samples(,) As Double)
+        Dim DataTypes() As String = New String(5) {"", "Depth", "Temperature", "Salinity", "Sand", "Oxygen"}
+        Dim runsFile As String = Path.Combine(Me.m_OutputDataPath, "Samples.csv")
+        Using sw As StreamWriter = New StreamWriter(runsFile, False)  'true makes it append
+            'sw.WriteLine("Cell,LME,Area")
+            For itype As Integer = 1 To 5
+
+                Dim sStr As String = DataTypes(itype)
+                For iC As Integer = 1 To 400
+                    sStr += "," & samples(iC, itype)
+                Next
+
+                sw.WriteLine(sStr)
+            Next
             sw.Close()
         End Using
     End Sub
@@ -461,7 +523,8 @@ Public Class cHabitatCapacityPluginPoint
             Case 4 : Filen = "Sand"
             Case 5 : Filen = "Oxygen"
         End Select
-        Using sw As StreamWriter = New StreamWriter("c:\Ecopath\HabitatCapacity\" & Filen & ".csv", False)  'true makes it append
+        Dim outfile As String = Path.Combine(Me.m_OutputDataPath, Filen + ".csv")
+        Using sw As StreamWriter = New StreamWriter(outfile, False)  'true makes it append
             'sw.WriteLine("Cell,LME,Area")
             Dim sStr As String = sd & "," & SampleSize
             For iC As Integer = 1 To 1200
@@ -483,7 +546,8 @@ Public Class cHabitatCapacityPluginPoint
                 Case 4 : Filen = "Sand"
                 Case 5 : Filen = "Oxygen"
             End Select
-            Using sw As StreamWriter = New StreamWriter("c:\Ecopath\HabitatCapacity\" & Filen & ".csv", Append)  'true makes it append
+            Dim outfile As String = Path.Combine(Me.m_OutputDataPath, Filen + ".csv")
+            Using sw As StreamWriter = New StreamWriter(outfile, Append)  'true makes it append
                 'sw.WriteLine("Cell,LME,Area")
                 Dim sStr As String = sd & "," & SampleSize
                 For iC As Integer = 1 To 1200
@@ -494,6 +558,17 @@ Public Class cHabitatCapacityPluginPoint
             End Using
         Next
 
+    End Sub
+
+    Private Sub setOutputDataPath()
+
+        If Directory.Exists(DEAFULT_DATAPATH) Then
+            Me.m_OutputDataPath = DEAFULT_DATAPATH
+        Else
+            Me.m_OutputDataPath = Me.m_core.DataSource.Directory
+        End If
+
+        Me.PostMessage("Output data will be written to '" + Me.m_OutputDataPath + "'")
     End Sub
 
 #End Region
