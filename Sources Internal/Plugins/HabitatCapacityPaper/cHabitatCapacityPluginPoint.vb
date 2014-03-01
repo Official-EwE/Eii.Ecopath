@@ -97,6 +97,8 @@ Public Class cHabitatCapacityPluginPoint
         'Run Ecospace to get the base line TRUE biomass distributions
         m_core.RunEcoSpace(Nothing, False)
 
+        Dim KeyGrp As Integer = 4
+
         ' Load model, load sim, load space, run, etc
         Dim l As cEcospaceLayerRelPP = m_core.EcospaceBasemap.LayerRelPP
         Dim d As cEcospaceLayerDepth = m_core.EcospaceBasemap.LayerDepth
@@ -109,21 +111,34 @@ Public Class cHabitatCapacityPluginPoint
         Dim lyrTemp As cEcospaceLayerDriver = Me.getLayerByName("Temperature")
 
         'Get the following environmental preference functions:
-        Dim EnvDepth As cEnviroResponseFunction = Me.getEnviroResponseFunction(2) ' No 2 "Depth whiting"
-        Dim EnvTemp As cEnviroResponseFunction = Me.getEnviroResponseFunction(6) '= No 6 "Temp warm"
-        Dim EnvSand As cEnviroResponseFunction = Me.getEnviroResponseFunction(12) '= No 12 "Whiting sand bottom"
-        Dim EnvSal As cEnviroResponseFunction = Me.getEnviroResponseFunction(11) ' = No 11 "Salinity cod"
-        Dim EnvO2 As cEnviroResponseFunction = Me.getEnviroResponseFunction(13) ' = No 13 "DO higher"
+        Dim EnvDepth As cEnviroResponseFunction
+        Dim EnvTemp As cEnviroResponseFunction
+        Dim EnvSand As cEnviroResponseFunction
+        Dim EnvSal As cEnviroResponseFunction
+        Dim EnvO2 As cEnviroResponseFunction
+        If KeyGrp = 4 Then
+            EnvDepth = Me.getEnviroResponseFunction(2) ' No 2 "Depth whiting"
+            EnvTemp = Me.getEnviroResponseFunction(6) '= No 6 "Temp warm"
+            EnvSand = Me.getEnviroResponseFunction(12) '= No 12 "Whiting sand bottom"
+            EnvSal = Me.getEnviroResponseFunction(11) ' = No 11 "Salinity cod"
+            EnvO2 = Me.getEnviroResponseFunction(13) ' = No 13 "DO higher"
+        ElseIf KeyGrp = 3 Then
+            EnvDepth = Me.getEnviroResponseFunction(3)
+            EnvTemp = Me.getEnviroResponseFunction(5)
+            EnvSand = Me.getEnviroResponseFunction(10)
+            EnvSal = Me.getEnviroResponseFunction(11)
+            EnvO2 = Me.getEnviroResponseFunction(13)
+        ElseIf KeyGrp = 5 Then
+            EnvDepth = Me.getEnviroResponseFunction(4)
+            EnvTemp = Me.getEnviroResponseFunction(5)
+            EnvSand = Me.getEnviroResponseFunction(10)
+            EnvSal = Me.getEnviroResponseFunction(11)
+            EnvO2 = Me.getEnviroResponseFunction(13)
 
+        End If
         Dim inR As Integer = m_core.EcospaceBasemap.InRow
         Dim inC As Integer = m_core.EcospaceBasemap.InCol
         Dim iCells As Integer = inR * inC
-
-        'Dim TrueDepth(iCells) As Integer
-        'Dim TrueTemp(iCells) As Double
-        'Dim TrueSand(iCells) As Double
-        'Dim TrueSal(iCells) As Double
-        'Dim TrueO2(iCells) As Double
         Dim TrueEnv(iCells, 5) As Double
         Dim TrueBio(m_core.nGroups, iCells) As Double
 
@@ -147,8 +162,8 @@ Public Class cHabitatCapacityPluginPoint
         Next ir
 
         'Save the truebio
-        WriteBioToCSV(False, TrueBio, 0, 0, iCells)
-       
+        WriteBioToCSV(False, TrueBio, 0, 0, 0, iCells, KeyGrp)
+
         WriteEnvOrigToCSV(1, EnvDepth.ShapeData(), 0, 0)
         WriteEnvOrigToCSV(2, EnvTemp.ShapeData(), 0, 0)
         WriteEnvOrigToCSV(3, EnvSand.ShapeData(), 0, 0)
@@ -163,31 +178,25 @@ Public Class cHabitatCapacityPluginPoint
         Dim RandomClass As New Random()
 
         PostMessage("Starting run")
-        For iSampleError As Integer = 1 To 1    '4
-            For iSampleSize As Integer = 400 To 400 Step 100
+        For iSampleError As Integer = 1 To 7 Step 2
+            For iSampleSize As Integer = 100 To 1600 Step 100
 
                 If Me.bStopRun Then Exit For
-                'Dim SampleDepth(iSampleSize) As Double
-                'Dim SampleTemp(iSampleSize) As Double
-                'Dim SampleSand(iSampleSize) As Double
-                'Dim SampleSal(iSampleSize) As Double
-                'Dim SampleO2(iSampleSize) As Double
-                'Dim SampleBio(iSampleSize) As Double
                 Dim Sample(iSampleSize, 5) As Double
 
                 'Take the right number of samples:
-                Dim Taken(iSampleSize) As Boolean
+                Dim Taken(iCells) As Boolean
                 For iRun As Integer = 1 To iSampleSize
                     'Pick a random cell, but only once
                     Dim FoundOne As Boolean = False
                     Dim Cell As Integer
-                    Do While FoundOne = False
-                        Cell = RandomClass.Next(1, iCells)
-                        If Taken(Cell) = False Then
-                            FoundOne = True
-                            Taken(Cell) = True
-                        End If
-                    Loop
+                    'Do While FoundOne = False
+                    '    Cell = RandomClass.Next(1, iCells)
+                    '    If Taken(Cell) = False Then
+                    '        FoundOne = True
+                    '        Taken(Cell) = True
+                    '    End If
+                    'Loop
                     Cell = iRun '= RandomClass.Next(1, 400)
                     Dim dV As Double = Normal(iSampleError / 10, 1)    ' [0,1]
                     dV = 1
@@ -204,7 +213,7 @@ Public Class cHabitatCapacityPluginPoint
 
                     'dV = Normal(iSampleError / 10, 1)
                     'Biomass for Whiting the 4th group
-                    Sample(iRun, 0) = TrueBio(4, Cell) * dV
+                    Sample(iRun, 0) = TrueBio(KeyGrp, Cell) * dV
                 Next
                 'Get sample error for each environmental parameter
                 'Dim CVdepth As Double = CV(SampleDepth)
@@ -215,7 +224,9 @@ Public Class cHabitatCapacityPluginPoint
                 'Generate a new environmental preference function for these parameters
                 'Depth
                 'Make 20 bins distributed over the sample size
-                Dim iBins As Integer = CInt(iSampleSize / 20)
+                Dim iBins As Integer = CInt(iSampleSize / 50)
+                iBins = CInt(IIf(iBins < 10, 10, iBins))
+
                 Dim Left(5) As Double
                 Dim Range(5) As Double
                 'Dim Right As Double = EnvDepth.ResponseRightLimit '= max of SampleDepth()
@@ -255,7 +266,7 @@ Public Class cHabitatCapacityPluginPoint
                     For i As Integer = 1 To iBins
                         For j As Integer = 1 To iStep
                             iCount += 1
-                            If BinCount(i, iPar) > 0 Then
+                            If BinCount(i, iPar) > 0 And iCount < 1201 Then
                                 EnvFunc(iCount, iPar) = EnvBinSumB(i, iPar) / BinCount(i, iPar)
                             End If
                         Next
@@ -287,7 +298,7 @@ Public Class cHabitatCapacityPluginPoint
                 'Get biomass for all the groups from this Ecospace run
                 Me.getEcospaceBiomass(RunBio)
 
-                WriteBioToCSV(True, RunBio, iSampleError / 10, iBins, iCells)
+                WriteBioToCSV(True, RunBio, iSampleError / 10, iBins, iSampleSize, iCells, KeyGrp)
                 WriteEnvFuncToCSV(True, EnvFunc, iSampleError / 10, iBins)
 
 
@@ -426,13 +437,14 @@ Public Class cHabitatCapacityPluginPoint
         End If
     End Function
 
-    Private Sub WriteBioToCSV(ByVal Append As Boolean, ByVal bio(,) As Double, ByVal sd As Double, ByVal SampleSize As Integer, ByVal iCells As Integer)
+    Private Sub WriteBioToCSV(ByVal Append As Boolean, ByVal bio(,) As Double, ByVal sd As Double, ByVal Bins As Integer, _
+                              ByVal SampleSize As Integer, ByVal iCells As Integer, ByVal KeyGrp As Integer)
         'make a file with cell number and LME no
         Using sw As StreamWriter = New StreamWriter("c:\Ecopath\HabitatCapacity\Runs.csv", Append)  'true makes it append
             'sw.WriteLine("Cell,LME,Area")
-            Dim sStr As String = sd & "," & SampleSize
+            Dim sStr As String = sd & "," & Bins & "," & SampleSize
             For iC As Integer = 1 To iCells
-                sStr += "," & bio(4, iC)
+                sStr += "," & bio(KeyGrp, iC)
             Next
             sw.WriteLine(sStr)
             sw.Close()

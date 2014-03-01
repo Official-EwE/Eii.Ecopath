@@ -164,7 +164,7 @@ Public Class cEcospaceASCMapResultsWriter
     Private Sub WriteRunInfoFile()
 
         Try
-            Dim strFN As String = Path.Combine(Me.OutputDirectory, ".Ecospace RunInfo.txt")
+            Dim strFN As String = Path.Combine(Me.OutputDirectory, "Ecospace RunInfo.txt")
             Dim strm As New StreamWriter(strFN, False)
 
             strm.WriteLine("EcoSpace .asc map output")
