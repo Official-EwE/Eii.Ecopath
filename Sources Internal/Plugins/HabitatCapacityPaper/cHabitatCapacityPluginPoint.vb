@@ -147,7 +147,7 @@ Public Class cHabitatCapacityPluginPoint
         Next ir
 
         'Save the truebio
-        WriteBioToCSV(False, TrueBio, 0, 0)
+        WriteBioToCSV(False, TrueBio, 0, 0, iCells)
        
         WriteEnvOrigToCSV(1, EnvDepth.ShapeData(), 0, 0)
         WriteEnvOrigToCSV(2, EnvTemp.ShapeData(), 0, 0)
@@ -176,9 +176,19 @@ Public Class cHabitatCapacityPluginPoint
                 Dim Sample(iSampleSize, 5) As Double
 
                 'Take the right number of samples:
+                Dim Taken(iSampleSize) As Boolean
                 For iRun As Integer = 1 To iSampleSize
-                    'Pick a random cell
-                    Dim Cell As Integer = RandomClass.Next(1, 400)
+                    'Pick a random cell, but only once
+                    Dim FoundOne As Boolean = False
+                    Dim Cell As Integer
+                    Do While FoundOne = False
+                        Cell = RandomClass.Next(1, iCells)
+                        If Taken(Cell) = False Then
+                            FoundOne = True
+                            Taken(Cell) = True
+                        End If
+                    Loop
+                    Cell = iRun '= RandomClass.Next(1, 400)
                     Dim dV As Double = Normal(iSampleError / 10, 1)    ' [0,1]
                     dV = 1
                     Sample(iRun, 1) = TrueEnv(Cell, 1) * dV
@@ -222,13 +232,16 @@ Public Class cHabitatCapacityPluginPoint
 
                 'bin the samplebio 
                 Dim EnvBinSumB(iBins, 5) As Double
-                For i As Integer = 1 To 5
+                'Keep track of how many samples per strata = bin
+                Dim BinCount(iBins, 5) As Integer
+                For iPar As Integer = 1 To 5
                     For iRun As Integer = 1 To iSampleSize
                         'What bin = Floor((Depth * NoBins / Range)+1)?
-                        Dim BinNo As Integer = CInt(Math.Floor((Sample(iRun, i) - Left(i)) * iBins / Range(i)) + 1)
+                        Dim BinNo As Integer = CInt(Math.Floor((Sample(iRun, iPar) - Left(iPar)) * iBins / Range(iPar)) + 1)
                         If BinNo < 1 Then BinNo = 1
                         If BinNo > iBins Then BinNo = iBins
-                        EnvBinSumB(BinNo, i) += Sample(iRun, 0)
+                        EnvBinSumB(BinNo, iPar) += Sample(iRun, 0)
+                        BinCount(BinNo, iPar) += 1
                     Next
                 Next
 
@@ -242,14 +255,16 @@ Public Class cHabitatCapacityPluginPoint
                     For i As Integer = 1 To iBins
                         For j As Integer = 1 To iStep
                             iCount += 1
-                            EnvFunc(iCount, iPar) = EnvBinSumB(i, iPar)
+                            If BinCount(i, iPar) > 0 Then
+                                EnvFunc(iCount, iPar) = EnvBinSumB(i, iPar) / BinCount(i, iPar)
+                            End If
                         Next
                     Next
                 Next
 
                 If iCount < 1200 Then
                     For iPar As Integer = 1 To 5
-                        For i As Integer = iCount To 1200
+                        For i As Integer = iCount + 1 To 1200
                             EnvFunc(i, iPar) = EnvFunc(iCount, iPar)
                         Next
                     Next
@@ -272,7 +287,7 @@ Public Class cHabitatCapacityPluginPoint
                 'Get biomass for all the groups from this Ecospace run
                 Me.getEcospaceBiomass(RunBio)
 
-                WriteBioToCSV(True, RunBio, iSampleError / 10, iBins)
+                WriteBioToCSV(True, RunBio, iSampleError / 10, iBins, iCells)
                 WriteEnvFuncToCSV(True, EnvFunc, iSampleError / 10, iBins)
 
 
@@ -411,12 +426,12 @@ Public Class cHabitatCapacityPluginPoint
         End If
     End Function
 
-    Private Sub WriteBioToCSV(ByVal Append As Boolean, ByVal bio(,) As Double, ByVal sd As Double, ByVal SampleSize As Integer)
+    Private Sub WriteBioToCSV(ByVal Append As Boolean, ByVal bio(,) As Double, ByVal sd As Double, ByVal SampleSize As Integer, ByVal iCells As Integer)
         'make a file with cell number and LME no
         Using sw As StreamWriter = New StreamWriter("c:\Ecopath\HabitatCapacity\Runs.csv", Append)  'true makes it append
             'sw.WriteLine("Cell,LME,Area")
             Dim sStr As String = sd & "," & SampleSize
-            For iC As Integer = 1 To 400
+            For iC As Integer = 1 To iCells
                 sStr += "," & bio(4, iC)
             Next
             sw.WriteLine(sStr)
