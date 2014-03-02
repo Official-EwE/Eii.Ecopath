@@ -309,6 +309,8 @@ Namespace Core
 
         Private Shared Sub WriteSessionStarted()
 
+            If Not AcquireWriterLock() Then Return
+
             Dim xmlStrm As cXMLLogWriter = Nothing
             Try
                 xmlStrm = cLog.getWriter()
@@ -330,6 +332,8 @@ Namespace Core
                 End If
             End Try
 
+            ReleaseWriterLock()
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -339,14 +343,15 @@ Namespace Core
         ''' </summary>
         ''' <returns>True if a lock was acquired.</returns>
         ''' <remarks>
-        ''' <para>ReaderWriterLock.AcquireWriterLock() will throw an exceptionif it 
+        ''' <para>ReaderWriterLock.AcquireWriterLock() will throw an exception if it 
         ''' times out! This keeps the exception handling out of the main code.</para>
         ''' <para>The writer lock must be released using <see cref="ReleaseWriterLock"/>.</para>
         ''' </remarks>
         ''' -----------------------------------------------------------------------
         Private Shared Function AcquireWriterLock() As Boolean
             Try
-                cLog.m_lock.AcquireWriterLock(1000)
+                'Wait 10 seconds for a lock
+                cLog.m_lock.AcquireWriterLock(10000)
                 Return True
             Catch ex As Exception
                 System.Console.WriteLine("Error trying to lock the Log file for writting! " & ex.Message)
