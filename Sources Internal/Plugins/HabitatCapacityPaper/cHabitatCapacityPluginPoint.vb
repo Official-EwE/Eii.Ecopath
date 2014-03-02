@@ -184,9 +184,16 @@ Public Class cHabitatCapacityPluginPoint
         'set env func no X = value
         'sample similar parameters as above (
         Dim RandomClass As New Random()
+        Dim UseThis(5) As Boolean
 
-        For iSampleError As Integer = 1 To 7 Step 2
-            For iSampleSize As Integer = 100 To 1600 Step 100
+        UseThis(1) = True
+        'UseThis(2) = True
+        'UseThis(3) = True
+        'UseThis(4) = True
+        'UseThis(5) = True
+
+        For iSampleError As Integer = 2 To 2 Step 2
+            For iSampleSize As Integer = 800 To 800 Step 200
 
                 If Me.bStopRun Then Exit For
                 PostMessage("Starting trial: sample size = " + iSampleSize.ToString + " error = " + iSampleError.ToString)
@@ -199,16 +206,21 @@ Public Class cHabitatCapacityPluginPoint
                     'Pick a random cell, but only once
                     Dim FoundOne As Boolean = False
                     Dim Cell As Integer
-                    'Do While FoundOne = False
-                    '    Cell = RandomClass.Next(1, iCells)
-                    '    If Taken(Cell) = False Then
-                    '        FoundOne = True
-                    '        Taken(Cell) = True
-                    '    End If
-                    'Loop
-                    Cell = RandomClass.Next(1, 400)
-                    Dim dV As Double = Normal(iSampleError / 10, 1)    ' [0,1]
-                    dV = 1
+                    If iSampleSize < iCells Then   'random but no repetitions
+                        Do While FoundOne = False
+                            Cell = RandomClass.Next(1, iCells)
+                            If Taken(Cell) = False Then
+                                FoundOne = True
+                                Taken(Cell) = True
+                            End If
+                        Loop
+                    ElseIf iSampleSize = iCells Then
+                        Cell = iRun   'just take them in sequence
+                    Else
+                        Cell = RandomClass.Next(1, iCells)
+                    End If
+                    Dim dV As Double = 1 ' Normal(iSampleError / 10, 1)    ' [0,1]
+                    'dV = 1
                     Sample(iRun, 1) = TrueEnv(Cell, 1) * dV
                     'Carl's advice: initially don't use error on env parameters, so:
                     'dV = Normal(iSampleError / 10, 1)
@@ -220,7 +232,7 @@ Public Class cHabitatCapacityPluginPoint
                     'dV = Normal(iSampleError / 10, 1)
                     Sample(iRun, 5) = TrueEnv(Cell, 5) * dV
 
-                    'dV = Normal(iSampleError / 10, 1)
+                    dV = Normal(iSampleError / 10, 1)
                     'Biomass for Whiting the 4th group
                     Sample(iRun, 0) = TrueBio(KeyGrp, Cell) * dV
                 Next
@@ -296,7 +308,7 @@ Public Class cHabitatCapacityPluginPoint
 
                 'Update the environmental response shapes used by the core
                 'this also locks the updates then does the update in batch to make it faster
-                Me.UpdateEnvShapes(EnvFunc, EnvDepth, EnvTemp, EnvSand, EnvSal, EnvO2)
+                Me.UpdateEnvShapes(EnvFunc, EnvDepth, EnvTemp, EnvSand, EnvSal, EnvO2, UseThis)
 
                 'Run Ecospace
                 m_core.RunEcoSpace(Nothing, False)
@@ -333,7 +345,8 @@ Public Class cHabitatCapacityPluginPoint
 
 
     Private Sub UpdateEnvShapes(ByVal EnvFunc(,) As Double, ByVal EnvDepth As cEnviroResponseFunction, ByVal EnvTemp As cEnviroResponseFunction, _
-                                ByVal EnvSand As cEnviroResponseFunction, ByVal EnvSal As cEnviroResponseFunction, ByVal EnvO2 As cEnviroResponseFunction)
+                                ByVal EnvSand As cEnviroResponseFunction, ByVal EnvSal As cEnviroResponseFunction, _
+                                ByVal EnvO2 As cEnviroResponseFunction, ByVal UseThis() As Boolean)
 
         EnvDepth.LockUpdates()
         EnvDepth.LockUpdates()
@@ -347,11 +360,11 @@ Public Class cHabitatCapacityPluginPoint
         For ipt As Integer = 1 To EnvDepth.nPoints
             'Set the Range of the response funciton
             'set the response multiplier to the environmental map input
-            EnvDepth.ShapeData(ipt) = CSng(EnvFunc(ipt, 1))
-            EnvTemp.ShapeData(ipt) = CSng(EnvFunc(ipt, 2))
-            EnvSand.ShapeData(ipt) = CSng(EnvFunc(ipt, 3))
-            EnvSal.ShapeData(ipt) = CSng(EnvFunc(ipt, 4))
-            EnvO2.ShapeData(ipt) = CSng(EnvFunc(ipt, 5))
+            If UseThis(1) Then EnvDepth.ShapeData(ipt) = CSng(EnvFunc(ipt, 1))
+            If UseThis(2) Then EnvTemp.ShapeData(ipt) = CSng(EnvFunc(ipt, 2))
+            If UseThis(3) Then EnvSand.ShapeData(ipt) = CSng(EnvFunc(ipt, 3))
+            If UseThis(4) Then EnvSal.ShapeData(ipt) = CSng(EnvFunc(ipt, 4))
+            If UseThis(5) Then EnvO2.ShapeData(ipt) = CSng(EnvFunc(ipt, 5))
         Next
 
         EnvDepth.UnlockUpdates()
@@ -480,8 +493,8 @@ Public Class cHabitatCapacityPluginPoint
         End If
     End Function
 
-    Private Sub WriteBioToCSV(ByVal Append As Boolean, ByVal bio(,) As Double, ByVal sd As Double, ByVal Bins As Integer, _
-                              ByVal SampleSize As Integer, ByVal iCells As Integer, ByVal KeyGrp As Integer)
+    Private Sub WriteBioToCSV(ByVal Append As Boolean, ByVal bio(,) As Double, ByVal sd As Double, _
+                              ByVal Bins As Integer, ByVal SampleSize As Integer, ByVal iCells As Integer, ByVal KeyGrp As Integer)
         'make a file with cell number and LME no
         Dim runsFile As String = Path.Combine(Me.m_OutputDataPath, "Runs.csv")
         Using sw As StreamWriter = New StreamWriter(runsFile, Append)  'true makes it append
