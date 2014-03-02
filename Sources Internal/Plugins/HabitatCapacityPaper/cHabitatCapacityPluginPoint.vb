@@ -150,6 +150,25 @@ Public Class cHabitatCapacityPluginPoint
         'Biomass after the Ecospace run
         Dim RunBio(m_core.nGroups, iCells) As Double
 
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'How to assign a response function to a Layer/Group
+        'The Response function must already be defined in the core and you need to know its Index
+        'Response functions are applied to the group index of a Map/Layer
+
+        'This will assign the first response function to the KeyGrp of the Depth layer
+
+        'Get the response function we want to assign to the Group in a Layer (first one for test)
+        Dim FunctToAssign As cEnviroResponseFunction = Me.getEnviroResponseFunction(1)
+        'Index of the function
+        Dim iFunctionIndex As Integer = FunctToAssign.Index
+        'Name of the Depth layer
+        Dim LayerName As String = d.Name
+
+        'Response functions are applied to the group index(KeyGrp) of a map/layer(LayerName)
+        Me.assignResponseFunctToGroupAndLayer(iFunctionIndex, KeyGrp, LayerName)
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
         For ir As Integer = 1 To inR
             For ic As Integer = 1 To inC
@@ -405,6 +424,23 @@ Public Class cHabitatCapacityPluginPoint
 
             Next ic
         Next ir
+
+    End Sub
+
+    Private Sub assignResponseFunctToGroupAndLayer(ByVal iFunctionIndex As Integer, ByVal iGroupIndex As Integer, LayerName As String)
+        Dim map As IEnviroInputMap
+
+        Debug.Assert(iFunctionIndex <= Me.m_core.CapacityShapeManager.Count, "Functional Response Index out of bounds.")
+
+        'The environmental Maps are stored by index in the same order as they appear in the "Apply environmental response" grid
+        'Get the map by Index
+        'map = Me.m_core.CapacityMapInteractionManager.Map(iLayerIndex)
+        'Get the map by Name
+        map = Me.m_core.CapacityMapInteractionManager.Map(LayerName)
+        Debug.Assert(map IsNot Nothing, "Failed to find a Layer with the name '" + LayerName + "'")
+
+        'Apply the Response function to a GroupIndex on the Layer
+        map.ResponseIndexForGroup(iGroupIndex) = iFunctionIndex
 
     End Sub
 
