@@ -941,7 +941,7 @@ Public Class cEcoSpace
                 Dim SPSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
                 'Read any Spatial Temporal data into memory for this timestep
                 Me.SetSpatialTempData(itt)
-                System.Console.WriteLine("SetSpatialTempData() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - SPSt).ToString)
+                ' System.Console.WriteLine("SetSpatialTempData() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - SPSt).ToString)
 
                 'do external processing at the start of the time step i.e. Call Plugins or sub models
                 Me.BeginTimeStep(Fgear, its, m_Data.MonthNow, m_Data.YearNow, Btime, RelFopt, m_Data.TimeNow)
@@ -951,7 +951,7 @@ Public Class cEcoSpace
                     'set the Capacity maps if any of the inputs have changed
                     Me.SetHabCap()
 
-                    System.Console.WriteLine("SetHabCap() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - hcSt).ToString)
+                    'System.Console.WriteLine("SetHabCap() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - hcSt).ToString)
                 End If
 
                 'Tell Ecoseed that we are at the start of a timestep
@@ -1617,7 +1617,7 @@ Public Class cEcoSpace
             End If
 
             stpTotRun.Stop()
-            System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            'System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1709,7 +1709,7 @@ Public Class cEcoSpace
 
             stpTotRun.Stop()
             'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
-            System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            'System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
             'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
             'System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)
 
@@ -2863,9 +2863,9 @@ Public Class cEcoSpace
         Me.m_Data.restoreBaseRelPP()
 
         'Make sure we know the number of water cells
-        If Me.m_Data.nWaterCells <= 0 Then
-            Me.m_Data.setNWaterCells()
-        End If
+        ' If Me.m_Data.nWaterCells <= 0 Then
+        Me.m_Data.setNWaterCells()
+        ' End If
 
         'This function is used to scale the relative primary productivity _
         'so that the total primary productivity is the same in Ecospace and Ecopath
@@ -4124,7 +4124,7 @@ exitline:
         waitOb = Nothing
 
         stpwTotRunTime.Stop()
-        System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        ' System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
 
         'GC.Collect()
 
@@ -7169,7 +7169,11 @@ exitline:
                             For irow = 1 To Me.m_Data.InRow
                                 For icol = 1 To Me.m_Data.InCol
                                     If Me.m_Data.Depth(irow, icol) > 0 Then
+                                        'For debugging
+                                        'dumpCapacity(map, igrp, irow, icol)
+
                                         Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
+
                                     End If
                                 Next icol
                             Next irow
@@ -7184,6 +7188,19 @@ exitline:
         Return bReturn
 
     End Function
+
+    Private Sub dumpCapacity(map As IEnviroInputMap, igrp As Integer, row As Integer, col As Integer)
+        If map.Layer.DataType = eDataTypes.EcospaceLayerDriver Then
+            If row = 134 And col = 126 Then
+                Dim cellValue As Single = map.Layer.Cell(row, col)
+                Dim response As Single = map.ResponseFunction(igrp, row, col)
+                Dim cap As Single = Me.m_Data.HabCap(row, col, igrp)
+
+                System.Console.WriteLine("SST," + cellValue.ToString + ",Response," + response.ToString + ",Cap," + cap.ToString + ",NewCap," + (cap * response).ToString)
+
+            End If
+        End If
+    End Sub
 
     Private Sub SmoothCap(ByVal k As Integer)
 
