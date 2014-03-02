@@ -78,7 +78,7 @@ Public Class cMapResponseInteractionManager
         Get
 
             For Each envMap As cEnviroInputMap In Me.m_maps
-                If String.Compare(envMap.Layer.Name, LayerName) = 0 Then
+                If String.Compare(envMap.Layer.Name, LayerName, True) = 0 Then
                     Return envMap
                 End If
             Next
