@@ -983,43 +983,41 @@ Public Class gridDefineTaxonomy
 
         Dim sel As Selection = Me.Selection
         Dim ti As cTaxonInfo = Nothing
-        Dim aiRows As Integer() = Me.SelectedRows
+        Dim iRow As Integer = Me.SelectedRow
 
-        For i As Integer = aiRows.Count - 1 To 0 Step -1
+        If (iRow <= 0) Then Return
 
-            Dim iRow As Integer = aiRows(i)
-            ti = Me.TaxonInfo(iRow)
+        ti = Me.TaxonInfo(iRow)
 
-            If (ti IsNot Nothing) Then
-                ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
+        If (ti IsNot Nothing) Then
+            ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
 
-                ' Check to see what is to happen to the MPA now
-                Select Case ti.Status
+            ' Check to see what is to happen to the MPA now
+            Select Case ti.Status
 
-                    Case eItemStatusTypes.Original
-                        ' Clear removed status 
-                        Me.m_lTaxonInfoRemoved.Remove(ti)
-                        Me.UpdateRow(iRow)
+                Case eItemStatusTypes.Original
+                    ' Clear removed status 
+                    Me.m_lTaxonInfoRemoved.Remove(ti)
+                    Me.UpdateRow(iRow)
 
-                    Case eItemStatusTypes.Added
-                        ' Remove new item
-                        Me.m_lTaxonInfo.Remove(ti)
-                        Me.RemoveTaxonRow(iRow)
+                Case eItemStatusTypes.Added
+                    ' Remove new item
+                    Me.m_lTaxonInfo.Remove(ti)
+                    Me.RemoveTaxonRow(iRow)
 
-                    Case eItemStatusTypes.Removed
-                        ' Set removed status
-                        Me.m_lTaxonInfoRemoved.Add(ti)
-                        Me.UpdateRow(iRow)
+                Case eItemStatusTypes.Removed
+                    ' Set removed status
+                    Me.m_lTaxonInfoRemoved.Add(ti)
+                    Me.UpdateRow(iRow)
 
-                    Case eItemStatusTypes.Invalid
-                        ' Set removed status
-                        Me.m_lTaxonInfo.Remove(ti)
-                        Me.RemoveTaxonRow(iRow)
+                Case eItemStatusTypes.Invalid
+                    ' Set removed status
+                    Me.m_lTaxonInfo.Remove(ti)
+                    Me.RemoveTaxonRow(iRow)
 
-                End Select
+            End Select
 
-            End If
-        Next
+        End If
 
     End Sub
 
