@@ -865,7 +865,12 @@ Namespace MSE
                 Me.m_output.Clear()
                 Me.m_parameters.Clear()
 
-                Me.m_TotFleetValue.Clear()
+                If Me.m_TotFleetValue IsNot Nothing Then
+                    'm_TotFleetValue gets created during Init() which gets called when an Ecosim scenario is loaded
+                    'Clear can be called by the Core BEFORE Init().
+                    'When the core is initialized before an Ecosim scenario is loaded
+                    Me.m_TotFleetValue.Clear()
+                End If
 
                 ' JS: 03Jan01: do not destroy objects only created in the constructor. Clear() is not a Destructor!
                 'Me.m_output = Nothing
