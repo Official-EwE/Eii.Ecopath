@@ -44,6 +44,12 @@ Namespace Core
         Private Shared m_lock As New ReaderWriterLock()
         Private Shared m_verboselevel As eVerboseLevel = eVerboseLevel.Standard
 
+        ''' <summary>
+        ''' Max size of the log file in bytes. One megabyte
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Shared MAX_LOG_SIZE As Integer = 1048576
+
 #End Region
 
 #Region " Log methods "
@@ -301,7 +307,13 @@ Namespace Core
                 If String.IsNullOrWhiteSpace(cLog.m_logFilename) Then
                     cLog.m_logFilename = Path.Combine(cSystemUtils.ApplicationSettingsPath(), "EwELog.xml")
                 End If
+
+                'Before we create the new XMLLogWriter for this file
+                'Check the size of the file and delete if it's to big > MAX_LOG_SIZE
+                cLog.DeleteLargeLogFiles()
+
                 cLog.m_xmlWriter = New cXMLLogWriter(cLog.m_logFilename, cLog.m_modelname)
+
             End If
             Return cLog.m_xmlWriter
 
@@ -372,6 +384,28 @@ Namespace Core
             Catch ex As Exception
                 System.Console.WriteLine("Error trying to unlock the Log file after writting! " & ex.Message)
             End Try
+        End Sub
+
+        ''' <summary>
+        ''' Delete log files greater than MAX_LOG_SIZE (1mb).
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Shared Sub DeleteLargeLogFiles()
+            Try
+
+                Dim fn As String = cLog.m_logFilename
+                If File.Exists(cFileUtils.ToValidFileName(fn, True)) Then
+                    Dim fi As FileInfo = New FileInfo(fn)
+                    If fi.Length > MAX_LOG_SIZE Then
+                        System.Console.WriteLine("cLog.DeleteLargeLogFiles() Deleting log file " + cLog.m_logFilename)
+                        File.Delete(fn)
+                    End If 'fi.Length > MAX_LOG_SIZE
+                End If 'File.Exists(cFileUtils.ToValidFileName(fn, True))
+
+            Catch ex As Exception
+                System.Console.WriteLine("cLog.DeleteLargeLogFiles() Exception while deleting old log file: " & ex.Message)
+            End Try
+
         End Sub
 
 #End Region ' Internals
