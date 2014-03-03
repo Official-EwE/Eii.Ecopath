@@ -162,10 +162,11 @@ Public Class cHabitatCapacityPluginPoint
         'Index of the function
         Dim iFunctionIndex As Integer = FunctToAssign.Index
         'Name of the Depth layer
-        Dim LayerName As String = d.Name
+        Dim LayerName(5) As String
+        LayerName(1) = d.Name
 
         'Response functions are applied to the group index(KeyGrp) of a map/layer(LayerName)
-        Me.assignResponseFunctToGroupAndLayer(iFunctionIndex, KeyGrp, LayerName)
+        Me.assignResponseFunctToGroupAndLayer(iFunctionIndex, KeyGrp, LayerName(1))
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -206,10 +207,10 @@ Public Class cHabitatCapacityPluginPoint
         Dim UseThis(5) As Boolean
 
         UseThis(1) = True
-        'UseThis(2) = True
-        'UseThis(3) = True
-        'UseThis(4) = True
-        'UseThis(5) = True
+        UseThis(2) = True
+        UseThis(3) = True
+        UseThis(4) = True
+        UseThis(5) = True
 
         For iSampleError As Integer = 2 To 2 Step 2
             For iSampleSize As Integer = 800 To 800 Step 200
@@ -341,7 +342,6 @@ Public Class cHabitatCapacityPluginPoint
             Next iSampleSize
             If Me.bStopRun Then Exit For
         Next iSampleError
-
 
         'Catch ex As Exception
 
