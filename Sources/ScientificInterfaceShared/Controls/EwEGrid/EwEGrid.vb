@@ -1475,32 +1475,6 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return the indices of the current selected rows, sorted in 
-        ''' ascending order.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Public Function SelectedRows() As Integer()
-
-            Dim selection As SourceGrid2.Selection = Me.Selection
-            Dim lSelectedRows As New List(Of Integer)
-
-            If (selection Is Nothing) Then Return lSelectedRows.ToArray
-            If (selection.Count = 0) Then Return lSelectedRows.ToArray
-
-            For Each ri As RowInfo In selection.SelectedRows
-                lSelectedRows.Add(ri.Index)
-            Next
-
-            ' Sort asc
-            lSelectedRows.Sort()
-            ' Done
-            Return lSelectedRows.ToArray()
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Set the current selected row to a specific row index.
         ''' </summary>
         ''' <param name="iRow">The index of the row to select.</param>

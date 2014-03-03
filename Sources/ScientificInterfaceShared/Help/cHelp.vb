@@ -116,7 +116,11 @@ Public Class cHelp
     Public WriteOnly Property HelpTopic(ByVal ctl As Control, _
                                         Optional ByVal strAltURL As String = "") As String
         Set(ByVal strURL As String)
+            ' Safety check
+            If (ctl Is Nothing) Then Return
+            ' Clear
             If Me.m_dtHelpTopics.ContainsKey(ctl) Then Me.m_dtHelpTopics.Remove(ctl)
+            If Object.ReferenceEquals(ctl, Me.ActiveHelpControl) Then Me.ActiveHelpControl = Nothing
             If Not String.IsNullOrEmpty(strURL) Then Me.m_dtHelpTopics.Add(ctl, New cHelpTopic(strURL, strAltURL))
         End Set
     End Property

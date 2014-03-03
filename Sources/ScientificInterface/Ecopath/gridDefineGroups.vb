@@ -1231,51 +1231,49 @@ Public Class gridDefineGroups
     ''' -----------------------------------------------------------------------
     Public Sub ToggleDeleteRows()
 
-        For Each iRow As Integer In Me.SelectedRows
+        Dim iRow As Integer = Me.SelectedRow
+        Dim iGroup As Integer = iRow - iFIRSTGROUPROW
+        Dim gi As cGroupInfo = Nothing
+        Dim si As cStanzaInfo = Nothing
 
-            Dim iGroup As Integer = iRow - iFIRSTGROUPROW
-            Dim gi As cGroupInfo = Nothing
-            Dim si As cStanzaInfo = Nothing
+        ' Validate
+        If iGroup < 0 Then Return
 
-            ' Validate
-            If iGroup < 0 Then Return
+        ' Check if need to update a stanza configuration
+        gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
+        ' Toggle 'flagged for deletion' flag
+        gi.FlaggedForDeletion = Not gi.FlaggedForDeletion
 
-            ' Check if need to update a stanza configuration
-            gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
-            ' Toggle 'flagged for deletion' flag
-            gi.FlaggedForDeletion = Not gi.FlaggedForDeletion
+        ' Check to see what is to happen to the group now
+        Select Case gi.Status
 
-            ' Check to see what is to happen to the group now
-            Select Case gi.Status
+            Case eItemStatusTypes.Original, eItemStatusTypes.Added
+                ' Clear removed status of the group, if any
+                Me.m_lgiGroupsRemoved.Remove(gi)
 
-                Case eItemStatusTypes.Original, eItemStatusTypes.Added
-                    ' Clear removed status of the group, if any
-                    Me.m_lgiGroupsRemoved.Remove(gi)
-
-                Case eItemStatusTypes.Removed, eItemStatusTypes.Invalid
-                    ' Get connected stanza info, if any
-                    si = gi.Stanza
-                    ' Part of a stanza config?
-                    If si IsNot Nothing Then
-                        ' #Yes: Remove the group from stanza config
-                        si.RemoveGroup(gi)
-                        gi.Stanza = Nothing
-                        ' Stanza config empty?
-                        If (si.HasGroups = False) Then
-                            ' #Yes: Remove stanza config
-                            Me.m_lsiStanza.Remove(si)
-                            ' Flag stanza config for deletion if not new
-                            If (Not si.IsNew()) Then Me.m_lsiStanzaRemoved.Add(si)
-                        End If
+            Case eItemStatusTypes.Removed, eItemStatusTypes.Invalid
+                ' Get connected stanza info, if any
+                si = gi.Stanza
+                ' Part of a stanza config?
+                If si IsNot Nothing Then
+                    ' #Yes: Remove the group from stanza config
+                    si.RemoveGroup(gi)
+                    gi.Stanza = Nothing
+                    ' Stanza config empty?
+                    If (si.HasGroups = False) Then
+                        ' #Yes: Remove stanza config
+                        Me.m_lsiStanza.Remove(si)
+                        ' Flag stanza config for deletion if not new
+                        If (Not si.IsNew()) Then Me.m_lsiStanzaRemoved.Add(si)
                     End If
+                End If
 
-                    ' Remove group from org group list if group is New, there is no need to preserve it.
-                    If gi.IsNew() Then Me.m_lgiGroups.Remove(gi)
-                    ' Add to removed group list if group is not new
-                    If Not gi.IsNew() Then Me.m_lgiGroupsRemoved.Add(gi)
+                ' Remove group from org group list if group is New, there is no need to preserve it.
+                If gi.IsNew() Then Me.m_lgiGroups.Remove(gi)
+                ' Add to removed group list if group is not new
+                If Not gi.IsNew() Then Me.m_lgiGroupsRemoved.Add(gi)
 
-            End Select
-        Next
+        End Select
 
         Me.UpdateGrid()
 
