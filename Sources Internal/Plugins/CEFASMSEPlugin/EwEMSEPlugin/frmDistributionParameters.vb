@@ -168,13 +168,7 @@ Public Class frmDistributionParameters
             Return MyBase.UIContext
         End Get
         Set(value As ScientificInterfaceShared.Controls.cUIContext)
-            If (Me.UIContext IsNot Nothing) Then
-                RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
-            End If
             MyBase.UIContext = value
-            If (Me.UIContext IsNot Nothing) Then
-                AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
-            End If
         End Set
     End Property
 
@@ -182,6 +176,8 @@ Public Class frmDistributionParameters
 
         ' JS 30Sep13: globalized this method
         MyBase.OnLoad(e)
+
+        AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
 
         If LoadEcopathParameters() = False Then
             Me.m_plugin.InformUser(My.Resources.ERROR_DISTRPAR_LOAD_ECOPATH, eMessageImportance.Warning)
@@ -213,6 +209,16 @@ Public Class frmDistributionParameters
         End If
 
         MyBase.OnFormClosing(e)
+
+    End Sub
+
+
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+
+        RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        Me.m_grid.UIContext = Nothing
+
+        MyBase.OnFormClosed(e)
 
     End Sub
 
