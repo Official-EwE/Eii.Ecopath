@@ -300,6 +300,9 @@ Public Class frmMSE
             Dim frmDisParams As New frmDistributionParameters()
             frmDisParams.Init(Me.UIContext, Me.m_plugin)
             frmDisParams.ShowDialog(Me)
+            'Hack because the form is getting stuck in memory
+            'clear out any memory
+            frmDisParams.Clear()
         Catch ex As Exception
 
         End Try

@@ -33,6 +33,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 #End Region ' Imports
 
 Public Class frmDistributionParameters
+    Implements IDisposable
+
 
     Public Enum eParameterSet As Integer
         Ecopath = 0
@@ -227,6 +229,31 @@ Public Class frmDistributionParameters
         ' Me.m_btnOK.Enabled = Me.m_bIsDirty
     End Sub
 
+    Public Sub Clear()
+        'HACK Should not have to do this. 
+        'Clear out the data created when the form loaded this will release the memory
+        'For some reason the framework is not releasing the form and allowing it to cleanup its memory
+        'So do it manually
+        Try
+            B.Clear()
+            BA.Clear()
+            QB.Clear()
+            EE.Clear()
+            PB.Clear()
+            DenDepCatchability.Clear()
+            SwitchingPower.Clear()
+            QBMaxxQBio.Clear()
+            PredEffectFeedingTime.Clear()
+            OtherMortFeedingTime.Clear()
+            MaxRelFeedingTime.Clear()
+            FeedingTimeAdjustRate.Clear()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+  
 #End Region ' Overrides
 
 #Region " Internals "
@@ -696,5 +723,7 @@ Public Class frmDistributionParameters
     End Sub
 
 #End Region ' Control events
+
+
 
 End Class
