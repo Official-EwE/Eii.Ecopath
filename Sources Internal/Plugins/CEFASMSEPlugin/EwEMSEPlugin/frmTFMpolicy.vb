@@ -128,6 +128,7 @@ Public Class frmTFMpolicy
         If m_bStrategiesSaved = False Then
             e.Cancel = (Me.m_plugin.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) = eMessageReplyStyle.OK)
         End If
+        Me.m_qeh.Detach()
 
         MyBase.OnFormClosing(e)
 
