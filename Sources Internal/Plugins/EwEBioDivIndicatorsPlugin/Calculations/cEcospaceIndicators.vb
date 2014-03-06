@@ -64,9 +64,10 @@ Public Class cEcospaceIndicators
                    ByVal ecospaceDS As cEcospaceDataStructures, _
                    ByVal ptLocation As Point, _
                    ByVal stanzaDS As cStanzaDatastructures, _
-                   ByVal taxonDS As cTaxonDataStructures)
+                   ByVal taxonDS As cTaxonDataStructures, _
+                   ByVal lookup As cTaxonAnalysis)
 
-        MyBase.New(core, ecopathDS, stanzaDS, taxonDS)
+        MyBase.New(core, ecopathDS, stanzaDS, taxonDS, lookup)
 
         'Sanity check
         Debug.Assert(ecospaceDS IsNot Nothing, "Aargh!")

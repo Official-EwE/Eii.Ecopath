@@ -56,9 +56,10 @@ Public Class cMCIndicators
                     ByVal iIter As Integer, _
                     ByVal iTime As Integer, _
                     ByVal stanzaDS As cStanzaDatastructures, _
-                    ByVal taxonDS As cTaxonDataStructures)
+                    ByVal taxonDS As cTaxonDataStructures, _
+                    ByVal lookup As cTaxonAnalysis)
 
-        MyBase.New(core, ecopathDS, ecosimDS, iTime, stanzaDS, taxonDS)
+        MyBase.New(core, ecopathDS, ecosimDS, iTime, stanzaDS, taxonDS, lookup)
         Me.m_iIteration = iTime
 
     End Sub

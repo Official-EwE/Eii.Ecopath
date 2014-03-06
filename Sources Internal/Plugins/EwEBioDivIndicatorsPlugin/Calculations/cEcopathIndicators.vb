@@ -43,8 +43,9 @@ Public Class cEcopathIndicators
     Public Sub New(ByVal core As cCore, _
                    ByVal ecopathDS As cEcopathDataStructures, _
                    ByVal stanzaDS As cStanzaDatastructures, _
-                   ByVal taxonDS As cTaxonDataStructures)
-        MyBase.New(core, ecopathDS, stanzaDS, taxonDS)
+                   ByVal taxonDS As cTaxonDataStructures, _
+                   ByVal lookup As cTaxonAnalysis)
+        MyBase.New(core, ecopathDS, stanzaDS, taxonDS, lookup)
     End Sub
 
     ''' -----------------------------------------------------------------------

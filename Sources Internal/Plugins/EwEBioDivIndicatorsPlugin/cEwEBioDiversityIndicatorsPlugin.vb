@@ -256,7 +256,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         If (Me.m_core.StateMonitor.IsSearching()) Then Return
 
         ' Compute
-        Me.m_indEcopath = New cEcopathIndicators(Me.m_core, Me.m_ecopathDS, Me.m_stanzaDS, Me.m_taxonDS)
+        Me.m_indEcopath = New cEcopathIndicators(Me.m_core, Me.m_ecopathDS, Me.m_stanzaDS, Me.m_taxonDS, Me.m_core.TaxonAnalysis)
         Me.m_indEcopath.Compute()
 
         ' Has UI?
@@ -341,8 +341,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
         ' Get ready to calculate
         Me.m_lIndEcosim.Clear()
+        Dim lookup As cTaxonAnalysis = Me.m_core.TaxonAnalysis
         For iTime As Integer = 1 To Me.m_ecosimDS.NTimes
-            Dim ind As New cEcosimIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecosimDS, iTime, Me.m_stanzaDS, Me.m_taxonDS)
+            Dim ind As New cEcosimIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecosimDS, iTime, Me.m_stanzaDS, Me.m_taxonDS, lookup)
             Me.m_lIndEcosim.Add(ind)
             ind.Compute()
         Next
@@ -434,13 +435,14 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
         Dim man As cMonteCarloManager = Me.m_core.EcosimMonteCarlo
         Dim lIter As New List(Of cMCIndicators)
+        Dim lookup As cTaxonAnalysis = Me.m_core.TaxonAnalysis
 
         ' Calculate only if supposed to run with MC
         If (Not Me.m_bRunWithMonteCarlo) Then Return
 
         ' Get ready to calculate
         For iTime As Integer = 1 To Me.m_ecosimDS.NTimes
-            Dim ind As New cMCIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecosimDS, CInt(man.nTrialIterations), iTime, Me.m_stanzaDS, Me.m_taxonDS)
+            Dim ind As New cMCIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecosimDS, CInt(man.nTrialIterations), iTime, Me.m_stanzaDS, Me.m_taxonDS, lookup)
             ind.Compute()
             lIter.Add(ind)
         Next
@@ -514,12 +516,13 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim depth As cEcospaceLayerDepth = bm.LayerDepth
         Dim ptCell As Point = Nothing
+        Dim lookup As cTaxonAnalysis = Me.m_core.TaxonAnalysis
 
         For iRow As Integer = 1 To bm.InRow
             For iCol As Integer = 1 To bm.InCol
                 If (depth.IsWaterCell(iRow, iCol)) Then
                     ptCell = New Point(iCol, iRow)
-                    Me.m_dtIndEcospace(ptCell) = New cEcospaceIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecospaceDS, New Point(iCol, iRow), Me.m_stanzaDS, Me.m_taxonDS)
+                    Me.m_dtIndEcospace(ptCell) = New cEcospaceIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecospaceDS, New Point(iCol, iRow), Me.m_stanzaDS, Me.m_taxonDS, lookup)
                 End If
             Next iCol
         Next iRow

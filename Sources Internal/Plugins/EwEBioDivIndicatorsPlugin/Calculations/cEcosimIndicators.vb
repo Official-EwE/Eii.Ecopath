@@ -52,13 +52,15 @@ Public Class cEcosimIndicators
     ''' <param name="iTime">The Ecosim time to calculate the indicators for.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal core As cCore, _
-                    ByVal ecopathDS As cEcopathDataStructures, _
-                    ByVal ecosimDS As cEcosimDatastructures, _
-                    ByVal iTime As Integer, _
-                    ByVal stanzaDS As cStanzaDatastructures, _
-                    ByVal taxonDS As cTaxonDataStructures)
+                   ByVal ecopathDS As cEcopathDataStructures, _
+                   ByVal ecosimDS As cEcosimDatastructures, _
+                   ByVal iTime As Integer, _
+                   ByVal stanzaDS As cStanzaDatastructures, _
+                   ByVal taxonDS As cTaxonDataStructures, _
+                   ByVal lookup As cTaxonAnalysis)
 
-        MyBase.New(core, ecopathDS, stanzaDS, taxonDS)
+        MyBase.New(core, ecopathDS, stanzaDS, taxonDS, lookup)
+
         Me.m_iTime = iTime
         Me.m_ecosimDS = ecosimDS
 

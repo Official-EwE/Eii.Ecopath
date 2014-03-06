@@ -33,6 +33,7 @@ Imports EwEUtils.Core
 Public Class cTaxonAnalysis
 
     Private m_taxonDS As cTaxonDataStructures = Nothing
+    Private m_dt As New Dictionary(Of String, Single)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -110,38 +111,55 @@ Public Class cTaxonAnalysis
         Dim comp As cOperatorBase = cOperatorManager.getOperator(op)
         Dim avals As Array = Nothing
         Dim sVal As Single = CSng(value)
+        Dim strKey As String = Me.Key(bBiomass, iGroup, sVal, op)
 
-        If TypeOf (value) Is eOrganismTypes Then
-            avals = Me.m_taxonDS.TaxonOrganismType
-        ElseIf TypeOf (value) Is eIUCNConservationStatusTypes Then
-            avals = Me.m_taxonDS.TaxonIUCNConservationStatus
-        ElseIf TypeOf (value) Is eEcologyTypes Then
-            avals = Me.m_taxonDS.TaxonEcologyType
-        ElseIf TypeOf (value) Is eOccurrenceStatusTypes Then
-            avals = m_taxonDS.TaxonOccurrenceStatus
-        End If
+        If (Not Me.m_dt.ContainsKey(strKey)) Then
 
-        Debug.Assert(avals IsNot Nothing)
+            If TypeOf (value) Is eOrganismTypes Then
+                avals = Me.m_taxonDS.TaxonOrganismType
+            ElseIf TypeOf (value) Is eIUCNConservationStatusTypes Then
+                avals = Me.m_taxonDS.TaxonIUCNConservationStatus
+            ElseIf TypeOf (value) Is eEcologyTypes Then
+                avals = Me.m_taxonDS.TaxonEcologyType
+            ElseIf TypeOf (value) Is eOccurrenceStatusTypes Then
+                avals = m_taxonDS.TaxonOccurrenceStatus
+            End If
 
-        For i As Integer = 1 To Me.m_taxonDS.NumGroupTaxa(iGroup)
-            iTaxon = Me.m_taxonDS.GroupTaxa(iGroup, i)
-            If (comp.Compare(CSng(avals.GetValue(iTaxon)), sVal)) Then
-                If bBiomass Then
-                    sProportion += Me.m_taxonDS.TaxonProp(iTaxon)
-                Else
-                    sProportion += Me.m_taxonDS.TaxonPropCatch(iTaxon)
+            Debug.Assert(avals IsNot Nothing)
+
+            For i As Integer = 1 To Me.m_taxonDS.NumGroupTaxa(iGroup)
+                iTaxon = Me.m_taxonDS.GroupTaxa(iGroup, i)
+                If (comp.Compare(CSng(avals.GetValue(iTaxon)), sVal)) Then
+                    If bBiomass Then
+                        sProportion += Me.m_taxonDS.TaxonProp(iTaxon)
+                    Else
+                        sProportion += Me.m_taxonDS.TaxonPropCatch(iTaxon)
+                    End If
                 End If
-            End If
-            If bBiomass Then
-                sPropTot += Me.m_taxonDS.TaxonProp(iTaxon)
+                If bBiomass Then
+                    sPropTot += Me.m_taxonDS.TaxonProp(iTaxon)
+                Else
+                    sPropTot += Me.m_taxonDS.TaxonPropCatch(iTaxon)
+                End If
+            Next
+
+            If (sPropTot = 0) Then
+                sVal = 0
             Else
-                sPropTot += Me.m_taxonDS.TaxonPropCatch(iTaxon)
+                sVal = sProportion / sPropTot
             End If
-        Next
+            Me.m_dt(strKey) = sVal
 
-        If (sPropTot = 0) Then Return 0
-        Return sProportion / sPropTot
+        End If
+        Return Me.m_dt(strKey)
 
+    End Function
+
+    Private Function Key(ByVal bBiomass As Boolean, _
+                         ByVal iGroup As Integer, _
+                         ByVal sVal As Single, _
+                         ByVal op As eOperators) As String
+        Return iGroup & "_" & sVal & "_" & op & "_" & bBiomass
     End Function
 
 #End Region ' Internals

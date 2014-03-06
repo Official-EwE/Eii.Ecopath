@@ -148,7 +148,8 @@ Public MustInherit Class cIndicators
     Public Sub New(ByVal core As cCore, _
                    ByVal ecopathDS As cEcopathDataStructures, _
                    ByVal stanzaDS As cStanzaDatastructures, _
-                   ByVal taxonDS As cTaxonDataStructures)
+                   ByVal taxonDS As cTaxonDataStructures, _
+                   ByVal lookup As cTaxonAnalysis)
 
         ' Sanity checks
         Debug.Assert(core IsNot Nothing, "aargh")
@@ -270,9 +271,9 @@ Public MustInherit Class cIndicators
     ''' -----------------------------------------------------------------------
     Public Function Compute() As Boolean
 
-        Dim taxonanalysis As cTaxonAnalysis = Me.m_core.TaxonAnalysis
         Dim group As cEcoPathGroupInput = Nothing
         Dim taxon As cTaxon = Nothing
+        Dim ta As cTaxonAnalysis = Me.m_core.TaxonAnalysis
 
         ' Biomass computations
         Dim sTotalB As Single = 0
@@ -338,62 +339,67 @@ Public MustInherit Class cIndicators
 
             group = Me.m_core.EcoPathGroupInputs(iGroup)
 
-            sTotalB = sTotalB + Me.ModelBiomass(iGroup)
-            sTLiBi = sTLiBi + (Me.ModelBiomass(iGroup) * Me.ModelTL(iGroup))
-            sCT = sCT + Me.ModelCatch(iGroup)
-            sDT = sDT + Me.ModelDiscards(iGroup)
+            Dim sC As Single = Me.ModelCatch(iGroup)
+            Dim sB As Single = Me.ModelBiomass(iGroup)
+            Dim sTL As Single = Me.ModelTL(iGroup)
+            Dim sD As Single = Me.ModelDiscards(iGroup)
 
-            If Me.ModelTL(iGroup) >= 2.0 Then
-                sTotalB2 = sTotalB2 + Me.ModelBiomass(iGroup)
-                sTLi2Bi = sTLi2Bi + (Me.ModelBiomass(iGroup) * Me.ModelTL(iGroup))
+            sTotalB = sTotalB + sB
+            sTLiBi = sTLiBi + (sB * sTL)
+            sCT = sCT + sC
+            sDT = sDT + sD
+
+            If sTL >= 2.0 Then
+                sTotalB2 = sTotalB2 + sB
+                sTLi2Bi = sTLi2Bi + (sB * sTL)
             End If
 
-            If Me.ModelTL(iGroup) >= 3.25 Then
-                sTotalB325 = sTotalB325 + Me.ModelBiomass(iGroup)
-                sTLi325Bi = sTLi325Bi + (Me.ModelBiomass(iGroup) * Me.ModelTL(iGroup))
-                sC325 = sC325 + Me.ModelCatch(iGroup)
-                sMTI = sMTI + (Me.ModelTL(iGroup) * Me.ModelCatch(iGroup))
+            If sTL >= 3.25 Then
+                sTotalB325 = sTotalB325 + sB
+                sTLi325Bi = sTLi325Bi + (sB * sTL)
+                sC325 = sC325 + sC
+                sMTI = sMTI + (sTL * sC)
             End If
 
-            If Me.ModelTL(iGroup) >= 4 Then
-                sTotalB4 = sTotalB4 + Me.ModelBiomass(iGroup)
-                sTLi4Bi = sTLi4Bi + (Me.ModelBiomass(iGroup) * Me.ModelTL(iGroup))
-                sC4 = sC4 + Me.ModelCatch(iGroup)
+            If sTL >= 4 Then
+                sTotalB4 = sTotalB4 + sB
+                sTLi4Bi = sTLi4Bi + (sB * sTL)
+                sC4 = sC4 + sC
 
             End If
 
-            sInveB = sInveB + (Me.ModelBiomass(iGroup) * taxonanalysis.GroupBiomassProportion(iGroup, eOrganismTypes.Invertebrates))
-            sFishB = sFishB + (Me.ModelBiomass(iGroup) * taxonanalysis.GroupBiomassProportion(iGroup, eOrganismTypes.Fishes))
-            sFishC = sFishC + (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eOrganismTypes.Fishes))
-            sInveC = sInveC + (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eOrganismTypes.Invertebrates))
-            sEndemicC = sEndemicC + (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eOccurrenceStatusTypes.Endemic))
-            sEndemicB = sEndemicB + (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eOccurrenceStatusTypes.Endemic))
-            sIUCNC = sIUCNC + (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
-            sIUCNB = sIUCNB + (Me.ModelBiomass(iGroup) * taxonanalysis.GroupBiomassProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
-            sMSRC = sMSRC + ((Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eOrganismTypes.Birds)) + _
-                             (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eOrganismTypes.Mammals)) + _
-                             (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eOrganismTypes.Reptiles)))
-            sMSRB = sMSRB + ((Me.ModelBiomass(iGroup) * taxonanalysis.GroupBiomassProportion(iGroup, eOrganismTypes.Birds)) + _
-                             (Me.ModelBiomass(iGroup) * taxonanalysis.GroupBiomassProportion(iGroup, eOrganismTypes.Mammals)) + _
-                             (Me.ModelBiomass(iGroup) * taxonanalysis.GroupBiomassProportion(iGroup, eOrganismTypes.Reptiles)))
-            sDemB = sDemB + (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
-                (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.Bethic)) +
-                (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.BathyDemersal))
-            sPelB = sPelB + (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.Pelagic)) +
-                (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.BathyPelagic)) +
-                (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.BenthoPelagic)) +
-                (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.PelagicNeritic)) +
-                (Me.ModelBiomass(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.PelagicOceanic))
+            sInveB = sInveB + (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Invertebrates))
+            sFishB = sFishB + (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Fishes))
+            sFishC = sFishC + (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Fishes))
+            sInveC = sInveC + (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Invertebrates))
+            sEndemicB = sEndemicB + (sB * ta.GroupBiomassProportion(iGroup, eOccurrenceStatusTypes.Endemic))
+            sEndemicC = sEndemicC + (sC * ta.GroupCatchProportion(iGroup, eOccurrenceStatusTypes.Endemic))
+            sIUCNB = sIUCNB + (sB * ta.GroupBiomassProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
+            sIUCNC = sIUCNC + (sC * ta.GroupCatchProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
+            sMSRB = sMSRB + ((sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Birds)) + _
+                             (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Mammals)) + _
+                             (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Reptiles)))
+            sMSRC = sMSRC + ((sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Birds)) + _
+                             (sB * ta.GroupCatchProportion(iGroup, eOrganismTypes.Mammals)) + _
+                             (sB * ta.GroupCatchProportion(iGroup, eOrganismTypes.Reptiles)))
+            sDemB = sDemB + (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
+                (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Bethic)) +
+                (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyDemersal))
+            sPelB = sPelB + (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Pelagic)) +
+                (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyPelagic)) +
+                (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.BenthoPelagic)) +
+                (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.PelagicNeritic)) +
+                (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.PelagicOceanic))
 
-            sDemC = sDemC + (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
-                (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.Bethic)) +
-                (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.BathyDemersal))
+            sDemC = sDemC + (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
+                (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Bethic)) +
+                (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyDemersal))
 
-            sPelC = sPelC + (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.Pelagic)) +
-                (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.BathyPelagic)) +
-                (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.BenthoPelagic)) +
-                (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.PelagicNeritic)) +
-                (Me.ModelCatch(iGroup) * taxonanalysis.GroupCatchProportion(iGroup, eEcologyTypes.PelagicOceanic))
+            sPelC = sPelC + (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Pelagic)) +
+                (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyPelagic)) +
+                (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.BenthoPelagic)) +
+                (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.PelagicNeritic)) +
+                (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.PelagicOceanic))
 
 
             For i As Integer = 1 To group.NTaxon
@@ -401,36 +407,36 @@ Public MustInherit Class cIndicators
                 taxon = Me.Core.Taxon(iTaxon)
 
                 If taxon.OrganismType = eOrganismTypes.Fishes Then
-                    sIVIiCi = sIVIiCi + (taxon.VulnerabilityIndex * taxon.ProportionCatch * Me.ModelCatch(iGroup))
+                    sIVIiCi = sIVIiCi + (taxon.VulnerabilityIndex * taxon.ProportionCatch * sC)
 
                     If (taxon.MeanLifespan > 0) Then
-                        sMLifeSSC = sMLifeSSC + (taxon.MeanLifespan * taxon.ProportionCatch * Me.ModelCatch(iGroup))
-                        sMLifeSC = sMLifeSC + (taxon.ProportionCatch * Me.ModelCatch(iGroup))
+                        sMLifeSSC = sMLifeSSC + (taxon.MeanLifespan * taxon.ProportionCatch * sC)
+                        sMLifeSC = sMLifeSC + (taxon.ProportionCatch * sC)
                     End If
 
                     If (taxon.MeanLifespan > 0) Then
-                        sMLifeSSB = sMLifeSSB + (taxon.MeanLifespan * taxon.Proportion * Me.ModelBiomass(iGroup))
-                        sMLifeSB = sMLifeSB + (taxon.Proportion * Me.ModelBiomass(iGroup))
+                        sMLifeSSB = sMLifeSSB + (taxon.MeanLifespan * taxon.Proportion * sB)
+                        sMLifeSB = sMLifeSB + (taxon.Proportion * sB)
                     End If
 
                     If (taxon.MeanWeight > 0) Then
-                        sMWeightSC = sMWeightSC + (taxon.MeanWeight * taxon.ProportionCatch * Me.ModelCatch(iGroup))
-                        sMWeightC = sMWeightC + (taxon.ProportionCatch * Me.ModelCatch(iGroup))
+                        sMWeightSC = sMWeightSC + (taxon.MeanWeight * taxon.ProportionCatch * sC)
+                        sMWeightC = sMWeightC + (taxon.ProportionCatch * sC)
                     End If
 
                     If (taxon.MeanWeight > 0) Then
-                        sMWeightSB = sMWeightSB + (taxon.MeanWeight * taxon.Proportion * Me.ModelBiomass(iGroup))
-                        sMWeightB = sMWeightB + (taxon.Proportion * Me.ModelBiomass(iGroup))
+                        sMWeightSB = sMWeightSB + (taxon.MeanWeight * taxon.Proportion * sB)
+                        sMWeightB = sMWeightB + (taxon.Proportion * sB)
                     End If
 
                     If (taxon.MeanLength > 0) Then
-                        sMLengthSC = sMLengthSC + (taxon.MeanLength * taxon.ProportionCatch * Me.ModelCatch(iGroup))
-                        sMLengthC = sMLengthC + (taxon.ProportionCatch * Me.ModelCatch(iGroup))
+                        sMLengthSC = sMLengthSC + (taxon.MeanLength * taxon.ProportionCatch * sC)
+                        sMLengthC = sMLengthC + (taxon.ProportionCatch * sC)
                     End If
 
                     If (taxon.MeanLength > 0) Then
-                        sMLengthSB = sMLengthSB + (taxon.MeanLength * taxon.Proportion * Me.ModelBiomass(iGroup))
-                        sMLengthB = sMLengthB + (taxon.Proportion * Me.ModelBiomass(iGroup))
+                        sMLengthSB = sMLengthSB + (taxon.MeanLength * taxon.Proportion * sB)
+                        sMLengthB = sMLengthB + (taxon.Proportion * sB)
                     End If
 
                 End If ' fishes
@@ -445,7 +451,7 @@ Public MustInherit Class cIndicators
 
             If (bIsLanded) Then
                 ' Sum biomass for all landed groups
-                sCommB = sCommB + Me.ModelBiomass(iGroup)
+                sCommB = sCommB + sB
             End If
 
         Next iGroup
