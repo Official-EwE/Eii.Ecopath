@@ -117,14 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ERROR_UNKNOWN_FUNCTION" xml:space="preserve">
-    <value>Forcing function '{0}' not found in Ecosim.</value>
-    <comment>{0} = function name</comment>
-  </data>
-  <data name="ERROR_UNKNOWN_FUNCTIONS" xml:space="preserve">
-    <value>File '{0}' contains forcing functions not found in the scenario. Aborting run.</value>
-    <comment>{0} = file name</comment>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="logo_canada" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\logo_canada.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -164,11 +156,42 @@
     <value>Multi-sim completeded successfully, see '{0}' for details</value>
     <comment>{0} = file name</comment>
   </data>
-  <data name="ERROR_DUPLICATE_FUNCTION" xml:space="preserve">
-    <value>Function name '{0}', type {1} has a duplicate of type {2}</value>
-    <comment>{0} = function name, {1} {2}=type names</comment>
+  <data name="VAL_CSV_FN_MISSING" xml:space="preserve">
+    <value>CSV {0} refers to unknown function '{1}'</value>
+    <comment>{0} = CSV file, {1} = function name</comment>
   </data>
-  <data name="ERROR_DUPLICATE_FUNCTIONS" xml:space="preserve">
-    <value>Your Ecosim scenario contains duplicate function names. MultiSim will not know which functions to modify. You should fix this before running MultiSim.</value>
+  <data name="VAL_CSV_READ" xml:space="preserve">
+    <value>Reading CSV file {0}</value>
+    <comment>{0} = file name</comment>
+  </data>
+  <data name="VAL_CSV_READ_ERROR" xml:space="preserve">
+    <value>Error: something went wrong while reading CSV file {0}: {1}</value>
+    <comment>{0} = file name, {1} = exception</comment>
+  </data>
+  <data name="VAL_CSV_READ_MISSING" xml:space="preserve">
+    <value>Error: unable to find CSV file {0}</value>
+    <comment>{0} = file name</comment>
+  </data>
+  <data name="VAL_CSV_SUMMARY_MISSING" xml:space="preserve">
+    <value>CSV file {0} refers to {1} unknown function(s)</value>
+    <comment>{0} = file name, {1} = function count</comment>
+  </data>
+  <data name="VAL_CSV_SUMMARY_OK" xml:space="preserve">
+    <value>All functions found in Ecosim</value>
+  </data>
+  <data name="VAL_FN_DUPLICATE" xml:space="preserve">
+    <value>There are multiple functions with the name '{0}' in Ecosim. Multi-sim cannot run until this has been resolved.</value>
+  </data>
+  <data name="VAL_RESULT_FAILED" xml:space="preserve">
+    <value>Multi-sim cannot run, there are errors in your setup that you will need to resolve. Please check the status panel or '{0}' for details</value>
+    <comment>{0} = file name</comment>
+  </data>
+  <data name="VAL_RESULT_SUCCESS" xml:space="preserve">
+    <value>Multi-sim is ready to run; Ecosim scenario {0} and all selected CSV files are in order</value>
+    <comment>{0} = scenario name</comment>
+  </data>
+  <data name="VAL_RESULT_WARNING" xml:space="preserve">
+    <value>Multi-sim could run but there are problems in your setup that you may want to resolve first. Please check the status panel or '{0}' for details</value>
+    <comment>{0} = file name</comment>
   </data>
 </root>
