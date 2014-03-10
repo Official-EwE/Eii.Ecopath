@@ -64,6 +64,7 @@ Public Class frmMain
         Me.m_cbFF.Checked = (My.Settings.FFtypes And cEngine.eFunctionTypes.Forcing) = cEngine.eFunctionTypes.Forcing
         Me.m_cbEffort.Checked = (My.Settings.FFtypes And cEngine.eFunctionTypes.Effort) = cEngine.eFunctionTypes.Effort
         Me.m_cbMort.Checked = (My.Settings.FFtypes And cEngine.eFunctionTypes.Mortality) = cEngine.eFunctionTypes.Mortality
+        Me.m_cbEggProduction.Checked = (My.Settings.FFtypes And cEngine.eFunctionTypes.Eggsies) = cEngine.eFunctionTypes.Eggsies
 
         If My.Settings.ReadAsMonth Then
             Me.m_rbMonthly.Checked = True
@@ -201,15 +202,11 @@ Public Class frmMain
                 lFiles.Add(CStr(item))
             Next
 
-            Dim fft As cEngine.eFunctionTypes = cEngine.eFunctionTypes.Forcing
-            If Me.m_cbEffort.Checked Then fft = fft Or cEngine.eFunctionTypes.Effort
-            If Me.m_cbMort.Checked Then fft = fft Or cEngine.eFunctionTypes.Mortality
-
             Me.m_engine.ValidateFiles(New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
                                       New cEngine.DisableFileDelegate(AddressOf DisableFileCallback), _
                                       lFiles.ToArray(), _
                                       Me.m_tbxDest.Text, _
-                                      fft)
+                                      Me.SelectedApplications)
 
         Catch ex As Exception
             ' Whoah
@@ -239,13 +236,9 @@ Public Class frmMain
                 lOptions.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
             Next
 
-            Dim fft As cEngine.eFunctionTypes = cEngine.eFunctionTypes.Forcing
-            If Me.m_cbEffort.Checked Then fft = fft Or cEngine.eFunctionTypes.Effort
-            If Me.m_cbMort.Checked Then fft = fft Or cEngine.eFunctionTypes.Mortality
-
             Me.m_engine.Run(New cEngine.RunProgressDelegate(AddressOf RunProgressCallback), _
                             New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
-                            lFiles.ToArray(), Me.m_tbxDest.Text, fft, _
+                            lFiles.ToArray(), Me.m_tbxDest.Text, Me.SelectedApplications, _
                             Me.m_rbMonthly.Checked, lOptions.ToArray())
 
         Catch ex As Exception
@@ -255,20 +248,15 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnFFTypeChecked(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbEffort.CheckedChanged, m_cbMort.CheckedChanged
+    Private Sub OnFFTypeChecked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_cbEffort.CheckedChanged, m_cbMort.CheckedChanged, m_cbEggProduction.CheckedChanged
 
         ' Premature event work-around
         If (Me.m_engine Is Nothing) Then Return
         If (Me.m_engine.IsRunning) Then Return
 
         Try
-
-            Dim fft As cEngine.eFunctionTypes = cEngine.eFunctionTypes.Forcing
-            If Me.m_cbEffort.Checked Then fft = fft Or cEngine.eFunctionTypes.Effort
-            If Me.m_cbMort.Checked Then fft = fft Or cEngine.eFunctionTypes.Mortality
-            My.Settings.FFtypes = fft
-
+            My.Settings.FFtypes = Me.SelectedApplications
         Catch ex As Exception
             ' Whoah
             cLog.Write(ex, "OnFFTypeChecked")
@@ -374,19 +362,34 @@ Public Class frmMain
 
 #Region " Internals "
 
+    Private Property SelectedApplications() As cEngine.eFunctionTypes
+        Get
+            Dim appl As cEngine.eFunctionTypes = cEngine.eFunctionTypes.Forcing
+            If (Me.UIContext IsNot Nothing) Then
+                If Me.m_cbEffort.Checked Then appl = appl Or cEngine.eFunctionTypes.Effort
+                If Me.m_cbMort.Checked Then appl = appl Or cEngine.eFunctionTypes.Mortality
+                If Me.m_cbEggProduction.Checked Then appl = appl Or cEngine.eFunctionTypes.Eggsies
+            End If
+            Return appl
+        End Get
+        Set(ByVal value As cEngine.eFunctionTypes)
+
+        End Set
+    End Property
+
     Private Sub StoreSettings()
 
-        My.Settings.PathIn = Me.m_tbxSource.Text
-        My.Settings.PathOut = Me.m_tbxDest.Text
-        My.Settings.ReadAsMonth = Me.m_rbMonthly.Checked
-        My.Settings.CreateUniqueRunFolder = Me.m_cbCreateRunFolder.Checked
+        Try
+            My.Settings.PathIn = Me.m_tbxSource.Text
+            My.Settings.PathOut = Me.m_tbxDest.Text
+            My.Settings.ReadAsMonth = Me.m_rbMonthly.Checked
+            My.Settings.CreateUniqueRunFolder = Me.m_cbCreateRunFolder.Checked
+            My.Settings.FFtypes = Me.SelectedApplications
+            My.Settings.Save()
+        Catch ex As Exception
+            cLog.Write(ex, "cMultiSim::frmMain.StoreSettings")
+        End Try
 
-        Dim fft As cEngine.eFunctionTypes = cEngine.eFunctionTypes.Forcing
-        If Me.m_cbEffort.Checked Then fft = fft Or cEngine.eFunctionTypes.Effort
-        If Me.m_cbMort.Checked Then fft = fft Or cEngine.eFunctionTypes.Mortality
-        My.Settings.FFtypes = fft
-
-        My.Settings.Save()
     End Sub
 
     Private Sub UpdateSourceFiles()

@@ -87,6 +87,7 @@ Friend Class cEngine
     Private m_uic As cUIContext = Nothing
     Private m_core As cCore = Nothing
     Private m_lManagers As New List(Of cBaseShapeManager)
+    Private m_types As eFunctionTypes = eFunctionTypes.Forcing
 
     Private m_astrFiles As String()
     Private m_strOutFolder As String = ""
@@ -105,6 +106,11 @@ Friend Class cEngine
     Private m_iNumSteps As Integer
     Private m_iStep As Integer
 
+    Private m_valDetails As New List(Of cVariableStatus)
+    Private m_valStatus As eStatusFlags = eStatusFlags.OK
+
+    Private m_log As cMultiSimLog = Nothing
+
 #End Region ' Privates
 
 #Region " Public bits "
@@ -116,6 +122,7 @@ Friend Class cEngine
         Forcing = 0
         Effort = 1
         Mortality = 2
+        Eggsies = 4
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -128,6 +135,7 @@ Friend Class cEngine
 
         Me.m_uic = uic
         Me.m_core = uic.Core
+        Me.m_log = New cMultiSimLog(Me.m_core, Me)
 
     End Sub
 
@@ -171,18 +179,17 @@ Friend Class cEngine
                              ByVal strOutFolder As String, _
                              ByVal types As eFunctionTypes)
 
-        If Me.IsRunning Then Return
-
-        Me.BuildFFNameCache(True, types)
+        If (Me.IsRunning) Then Return
 
         Me.m_strOutFolder = strOutFolder
         Me.m_astrFiles = astrFiles
+        Me.m_types = types
 
         Me.m_dgtProgress = Nothing
         Me.m_dgtComplete = dgtComplete
         Me.m_dgtDisableFile = dgtDisableFile
 
-        If Not cFileUtils.IsDirectoryAvailable(strOutFolder, True) Then
+        If Not cFileUtils.IsDirectoryAvailable(Me.m_strOutFolder, True) Then
             ' ToDo: panic
             Return
         End If
@@ -220,25 +227,24 @@ Friend Class cEngine
                    ByVal bReadMonthly As Boolean, _
                    ByVal options As cEcosimResultWriter.eResultTypes())
 
-        If Me.IsRunning Then Return
-        If Not Me.m_core.SaveChanges() Then Return
-
-        Me.m_bReadMonthly = bReadMonthly
-        Me.m_astrFiles = astrFiles
-        Me.m_options = options
-        Me.m_iStep = 1
-        Me.m_iNumSteps = Me.m_astrFiles.Length
+        If (Me.IsRunning) Then Return
+        If (Not Me.m_core.SaveChanges()) Then Return
 
         Dim strDate As String = Date.Now.ToString("yy-MM-dd hh-mm")
         Dim strScope As String = cSystemUtils.IIF(bReadMonthly, "monthly", "annual")
+
+        Me.m_bReadMonthly = bReadMonthly
+        Me.m_astrFiles = astrFiles
+        Me.m_types = types
+        Me.m_options = options
+        Me.m_iStep = 1
+        Me.m_iNumSteps = Me.m_astrFiles.Length
 
         If Me.m_bCreateRunFolder Then
             Me.m_strOutFolder = Path.Combine(strOutFolder, cFileUtils.ToValidFileName(String.Format("Run {0} {1}", strDate, strScope), False))
         Else
             Me.m_strOutFolder = strOutFolder
         End If
-
-        Me.BuildFFNameCache(False, types)
 
         Me.m_dgtProgress = dgtProgress
         Me.m_dgtComplete = dgtComplete
@@ -274,27 +280,26 @@ Friend Class cEngine
     ''' Build the cache of forcing function names (lower-case).
     ''' </summary>
     ''' <param name="bCheckDuplicates">Flag to check for duplicate function names.</param>
-    ''' <param name="types"><see cref="eFunctionTypes">Bitwise flag</see> of the 
-    ''' function types to include in the assessment.</param>
     ''' <returns>True if no duplicates found.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function BuildFFNameCache(ByVal bCheckDuplicates As Boolean, _
-                                      ByVal types As eFunctionTypes) As Boolean
+    Private Function BuildFFNameCache(ByVal bCheckDuplicates As Boolean) As Boolean
 
         Dim strKey As String = ""
         Dim dupl As cFFCache = Nothing
-        Dim msgStatus As cMessage = Nothing
 
         Me.m_FFCache.Clear()
         Me.m_lManagers.Clear()
 
         ' Build manager list
         Me.m_lManagers.Add(Me.m_core.ForcingShapeManager)
-        If ((types And eFunctionTypes.Effort) = eFunctionTypes.Effort) Then
+        If ((Me.m_types And eFunctionTypes.Effort) = eFunctionTypes.Effort) Then
             Me.m_lManagers.Add(Me.m_core.FishingEffortShapeManager)
         End If
-        If ((types And eFunctionTypes.Mortality) = eFunctionTypes.Mortality) Then
+        If ((Me.m_types And eFunctionTypes.Mortality) = eFunctionTypes.Mortality) Then
             Me.m_lManagers.Add(Me.m_core.FishMortShapeManager)
+        End If
+        If ((Me.m_types And eFunctionTypes.Eggsies) = eFunctionTypes.Eggsies) Then
+            Me.m_lManagers.Add(Me.m_core.EggProdShapeManager)
         End If
 
         ' Explore all functions
@@ -307,20 +312,11 @@ Friend Class cEngine
 
                     dupl = Me.m_FFCache(strKey)
 
-                    ' Create status message if not there already
-                    If (msgStatus Is Nothing) Then
-                        msgStatus = New cMessage(My.Resources.ERROR_DUPLICATE_FUNCTIONS, _
-                                                 eMessageType.DataValidation, _
-                                                 eCoreComponentType.External, _
-                                                 eMessageImportance.Warning)
-                    End If
-
-                    ' Add warning
-                    msgStatus.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                              String.Format(My.Resources.ERROR_DUPLICATE_FUNCTION, ff.Name, dupl.FF.DataType, ff.DataType), _
-                                                              eVarNameFlags.NotSet, _
-                                                              eDataTypes.External, _
-                                                              eCoreComponentType.External, 0))
+                    ' Add error
+                    Me.m_valDetails.Add(New cVariableStatus(eStatusFlags.FailedValidation, _
+                                                            String.Format(My.Resources.VAL_FN_DUPLICATE, ff.Name), _
+                                                            eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0))
+                    Me.m_valStatus = Me.m_valStatus Or eStatusFlags.ErrorEncountered
                 End If
 
                 ' Add function
@@ -329,12 +325,8 @@ Friend Class cEngine
             Next
         Next
 
-        If (msgStatus IsNot Nothing) Then
-            Me.m_core.Messages.SendMessage(msgStatus)
-            Return False
-        End If
-
-        Return True
+        ' Return whether there are no errors
+        Return ((Me.m_valStatus And eStatusFlags.ErrorEncountered) = 0)
 
     End Function
 
@@ -353,7 +345,6 @@ Friend Class cEngine
         Dim value As Single = 0.0!
         Dim lff As New List(Of cFFCache)
         Dim ff As cForcingFunction = Nothing
-        Dim msgStatus As cMessage = Nothing
         Dim iRepetitions As Integer = 0
 
         If Me.m_bReadMonthly Then iRepetitions = 1 Else iRepetitions = cCore.N_MONTHS
@@ -378,82 +369,64 @@ Friend Class cEngine
                     lff.Add(Me.m_FFCache(strName))
                 Else
                     lff.Add(Nothing)
-                    If (msgStatus Is Nothing) Then
-                        msgStatus = New cMessage(String.Format(My.Resources.ERROR_UNKNOWN_FUNCTIONS, Path.GetFileNameWithoutExtension(strFileName)), _
-                                                 eMessageType.DataValidation, _
-                                                 eCoreComponentType.External, _
-                                                 eMessageImportance.Warning)
-                        msgStatus.Hyperlink = strFileName
-                    End If
-                    msgStatus.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                              String.Format(My.Resources.ERROR_UNKNOWN_FUNCTION, strName), _
-                                                              eVarNameFlags.NotSet, _
-                                                              eDataTypes.External, _
-                                                              eCoreComponentType.External, 0))
                 End If
             Next
 
-            If (msgStatus IsNot Nothing) Then
-                Me.m_core.Messages.SendMessage(msgStatus)
-            Else
+            ' Check if the end of the file is not reached, the peek would return 0 if at the end of the file
+            'From While to end While is a loop that runs if certain conditions are true (as long as there are characters to read left in the file.
+            While reader.Peek() > 0
 
-                ' Check if the end of the file is not reached, the peek would return 0 if at the end of the file
-                'From While to end While is a loop that runs if certain conditions are true (as long as there are characters to read left in the file.
-                While reader.Peek() > 0
+                'split the line into individual values (seperated by commas)
+                values = cStringUtils.SplitQualified(reader.ReadLine, ","c)
 
-                    'split the line into individual values (seperated by commas)
-                    values = cStringUtils.SplitQualified(reader.ReadLine, ","c)
+                For j As Integer = 1 To iRepetitions
 
-                    For j As Integer = 1 To iRepetitions
+                    'month from above +1 for the output of months and also to input for forcing functions
+                    month = month + 1
 
-                        'month from above +1 for the output of months and also to input for forcing functions
-                        month = month + 1
+                    For i As Integer = 0 To Math.Min(values.Length, lff.Count) - 1
 
-                        For i As Integer = 0 To Math.Min(values.Length, lff.Count) - 1
-
-                            If lff(i) IsNot Nothing Then
-                                ' Get a FF from the FF manager
-                                ff = lff(i).FF
-                                ' By default, do not force a value
-                                value = 0.0
-                                ' Is a value?
-                                If Not String.IsNullOrWhiteSpace(values(i)) Then
-                                    ' Try to convert this value and set it into the FF
-                                    Try
-                                        ' Convert a value from string to a floating point number
-                                        value = Single.Parse(values(i))
-                                    Catch ex As Exception
-                                        ' Alert that CSV is somehow malformed
-                                        Debug.Assert(False, "Value '" & values(i) & "' unreadable, a number was expected")
-                                    End Try
-                                End If
-
-                                ' Does still fit?
-                                If (month < ff.ShapeData.Length) Then
-                                    ' Set value into FF for a given month
-                                    ff.ShapeData(month) = value
-                                End If
+                        If lff(i) IsNot Nothing Then
+                            ' Get a FF from the FF manager
+                            ff = lff(i).FF
+                            ' By default, do not force a value
+                            value = 0.0
+                            ' Is a value?
+                            If Not String.IsNullOrWhiteSpace(values(i)) Then
+                                ' Try to convert this value and set it into the FF
+                                Try
+                                    ' Convert a value from string to a floating point number
+                                    value = Single.Parse(values(i))
+                                Catch ex As Exception
+                                    ' Alert that CSV is somehow malformed
+                                    Debug.Assert(False, "Value '" & values(i) & "' unreadable, a number was expected")
+                                End Try
                             End If
-                        Next
+
+                            ' Does still fit?
+                            If (month < ff.ShapeData.Length) Then
+                                ' Set value into FF for a given month
+                                ff.ShapeData(month) = value
+                            End If
+                        End If
                     Next
-
-                End While
-
-                ' CSV has been read, now release the update lock on FFs and apply the content of FFs to Ecosim
-                For Each ffc As cFFCache In m_FFCache.Values
-                    ffc.EndEdit()
                 Next
 
-                For Each man As cBaseShapeManager In Me.m_lManagers
-                    man.Update()
-                Next
+            End While
 
-            End If
+            ' CSV has been read, now release the update lock on FFs and apply the content of FFs to Ecosim
+            For Each ffc As cFFCache In m_FFCache.Values
+                ffc.EndEdit()
+            Next
 
-            ' Close reader to release the csv file
-            reader.Close()
+            For Each man As cBaseShapeManager In Me.m_lManagers
+                man.Update()
+            Next
 
         End If
+
+        ' Close reader to release the csv file
+        reader.Close()
 
     End Sub
 
@@ -467,6 +440,19 @@ Friend Class cEngine
         Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
         Me.m_core.SetStopRunDelegate(AddressOf StopRun)
         cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_INITIALIZING, -1)
+
+        Me.m_log.Open()
+
+        ' Abort if an error occurred!
+        If Not Me.BuildFFNameCache(False) Then
+            Dim msg As New cMessage(My.Resources.VAL_RESULT_FAILED, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+            For Each vs As cVariableStatus In Me.m_valDetails
+                msg.AddVariable(vs)
+            Next
+            Me.m_core.Messages.SendMessage(msg)
+            Me.m_log.Add(msg)
+            Return
+        End If
 
         Try
             Dim iNum As Integer = Me.m_astrFiles.Length
@@ -522,12 +508,19 @@ Friend Class cEngine
         Me.m_core.SetStopRunDelegate(Nothing)
         Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
         cApplicationStatusNotifier.EndProgress(Me.m_core)
+        Me.m_log.Close()
 
         '= agk ='
         Me.ReleaseWait()
         If (Me.m_dgtComplete IsNot Nothing) Then Me.m_dgtComplete.Invoke()
 
     End Sub
+
+    Public ReadOnly Property OutputPath As String
+        Get
+            Return Me.m_strOutFolder
+        End Get
+    End Property
 
 #End Region ' Running
 
@@ -540,49 +533,27 @@ Friend Class cEngine
     ''' </summary>
     Private Sub ValidateFilesThreaded()
 
-        Dim sw As StreamWriter = Nothing
-        Dim strLogFileName As String = Path.Combine(Me.m_strOutFolder, cFileUtils.ToValidFileName("MultiSim_validation_log.txt", False))
+        Dim scenario As cEwEScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
         Dim msg As cMessage = Nothing
-        Dim bAllGood As Boolean = True
+
+        Me.m_valStatus = eStatusFlags.OK
+        Me.m_valDetails.Clear()
+        Me.m_log.Open()
+
+        Me.BuildFFNameCache(True)
 
         Me.m_bStopRun = False
-
         Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
         Me.m_core.SetStopRunDelegate(AddressOf StopRun)
 
+
         Try
-            sw = New StreamWriter(strLogFileName)
-            If Me.m_core.SaveWithFileHeader Then
-                sw.WriteLine(m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                sw.WriteLine()
-            End If
+            For Each strFileName As String In Me.m_astrFiles
+                Me.m_valStatus = Me.m_valStatus Or Me.ValidateFile(strFileName)
+            Next
         Catch ex As Exception
+            ' Panic
         End Try
-
-        If (sw IsNot Nothing) Then
-            Try
-                For Each strFileName As String In Me.m_astrFiles
-                    bAllGood = bAllGood And Me.ValidateFile(strFileName, sw)
-                Next
-            Catch ex As Exception
-                ' Panic
-            End Try
-
-            sw.Flush()
-            sw.Close()
-            sw.Dispose()
-
-            If bAllGood Then
-                msg = New cMessage(String.Format(My.Resources.STATUS_SUCCESS, strLogFileName), _
-                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-            Else
-                msg = New cMessage(String.Format(My.Resources.STATUS_FAILED, strLogFileName), _
-                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-            End If
-            msg.Hyperlink = Me.m_strOutFolder
-            Me.m_core.Messages.SendMessage(msg)
-
-        End If
 
         GC.Collect()
 
@@ -594,27 +565,59 @@ Friend Class cEngine
         Me.ReleaseWait()
         If (Me.m_dgtComplete IsNot Nothing) Then Me.m_dgtComplete.Invoke()
 
+        Me.m_log.Close()
+
+        ' == Prepare result message ==
+
+        If (Me.m_valStatus = eStatusFlags.OK) Then
+            msg = New cFeedbackMessage(String.Format(My.Resources.VAL_RESULT_SUCCESS, scenario.Name), _
+                                       eCoreComponentType.External, eMessageType.DataExport, _
+                                       eMessageImportance.Information, eMessageReplyStyle.OK)
+        ElseIf ((Me.m_valStatus And eStatusFlags.ErrorEncountered) = 0) Then
+            msg = New cMessage(String.Format(My.Resources.VAL_RESULT_WARNING, Me.m_log.FileName), _
+                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+        Else
+            msg = New cMessage(String.Format(My.Resources.VAL_RESULT_FAILED, Me.m_log.FileName), _
+                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+        End If
+
+        ' Attach details
+        For Each vs As cVariableStatus In Me.m_valDetails
+            msg.AddVariable(vs)
+        Next
+        msg.Hyperlink = Me.m_strOutFolder
+
+        ' Send!
+        Me.m_core.Messages.SendMessage(msg)
+        Me.m_log.Add(msg)
+
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Validate a single CSV file.
     ''' </summary>
-    ''' <param name="strFileName"></param>
-    Private Function ValidateFile(strFileName As String, sw As StreamWriter) As Boolean
+    ''' <param name="strFileName">The CSV file to validate.</param>
+    ''' -----------------------------------------------------------------------
+    Private Function ValidateFile(ByVal strFileName As String) As eStatusFlags
 
         Dim reader As StreamReader = Nothing
         Dim values() As String = Nothing
         Dim strName As String = ""
-        Dim iNumErrors As Integer = 0
-        Dim bResult As Boolean = True
+        Dim iNumMissing As Integer = 0
+        Dim status As eStatusFlags = eStatusFlags.OK
+        Dim vsInfo As cVariableStatus = Nothing
 
-        sw.WriteLine("Validating file '" & strFileName & "'")
+        Me.m_log.Add(String.Format(My.Resources.VAL_CSV_READ, strFileName))
 
         If File.Exists(strFileName) Then
 
             Try
                 ' Open the CSV file for reading
-                reader = New StreamReader(strFileName) 'read in csv files x1,x2,x3 etc
+                reader = New StreamReader(strFileName)
+
+                ' Chop off the path for status message purposes
+                strFileName = Path.GetFileNameWithoutExtension(strFileName)
 
                 ' First line holds FF names
                 values = cStringUtils.SplitQualified(reader.ReadLine(), ","c)
@@ -624,10 +627,15 @@ Friend Class cEngine
                     strName = values(i).Trim()
                     ' Does exist?
                     If Not Me.m_FFCache.ContainsKey(strName.ToLower()) Then
-                        ' #No: count error
-                        iNumErrors += 1
+                        ' #No: count missing
+                        iNumMissing += 1
                         ' Log event
-                        sw.WriteLine("! Cannot find forcing function '" & strName & "'")
+                        vsInfo = New cVariableStatus(eStatusFlags.MissingParameter, _
+                                                     String.Format(My.Resources.VAL_CSV_FN_MISSING, strFileName, strName), _
+                                                     eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+                        Me.m_valDetails.Add(vsInfo)
+                        status = status Or vsInfo.Status
+
                         ' Can call home?
                         If (Me.m_dgtDisableFile IsNot Nothing) Then
                             ' #Yes: call home
@@ -636,22 +644,35 @@ Friend Class cEngine
                     End If
                 Next
 
-                If (iNumErrors = 0) Then
-                    sw.WriteLine("  OK: all forcing functions found")
+                ' Log summary
+                If (iNumMissing = 0) Then
+                    vsInfo = New cVariableStatus(eStatusFlags.OK, _
+                                                 My.Resources.VAL_CSV_SUMMARY_OK, _
+                                                 eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+                    Me.m_valDetails.Add(vsInfo)
                 Else
-                    sw.WriteLine("! File is missing " & iNumErrors & " function(s)")
-                    bResult = False
+                    vsInfo = New cVariableStatus(eStatusFlags.MissingParameter, _
+                                                 String.Format(My.Resources.VAL_CSV_SUMMARY_MISSING, strFileName, iNumMissing), _
+                                                 eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+                    Me.m_valDetails.Add(vsInfo)
                 End If
+
             Catch ex As Exception
-                sw.WriteLine("! error reading: " & ex.Message)
-                bResult = False
+                vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered, _
+                                             String.Format(My.Resources.VAL_CSV_READ_ERROR, strFileName, ex.Message), _
+                                             eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+                Me.m_valDetails.Add(vsInfo)
+                status = status Or vsInfo.Status
             End Try
         Else
-            sw.WriteLine("! File not found")
-            bResult = False
+            vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered, _
+                                         String.Format(My.Resources.VAL_CSV_READ_MISSING, strFileName), _
+                                         eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+            Me.m_valDetails.Add(vsInfo)
+            status = status Or vsInfo.Status
         End If
 
-        Return bResult
+        Return status
 
     End Function
 

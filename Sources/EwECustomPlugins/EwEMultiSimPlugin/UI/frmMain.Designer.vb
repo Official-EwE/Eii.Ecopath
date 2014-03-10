@@ -67,6 +67,7 @@ Partial Class frmMain
         Me.m_btnChooseOut = New System.Windows.Forms.Button()
         Me.m_lblVars = New System.Windows.Forms.Label()
         Me.m_pbLogo = New System.Windows.Forms.PictureBox()
+        Me.m_cbEggProduction = New System.Windows.Forms.CheckBox()
         CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_csMain.Panel1.SuspendLayout()
         Me.m_csMain.Panel2.SuspendLayout()
@@ -81,6 +82,7 @@ Partial Class frmMain
         '
         'm_csMain.Panel1
         '
+        Me.m_csMain.Panel1.Controls.Add(Me.m_cbEggProduction)
         Me.m_csMain.Panel1.Controls.Add(Me.m_cbMort)
         Me.m_csMain.Panel1.Controls.Add(Me.m_cbEffort)
         Me.m_csMain.Panel1.Controls.Add(Me.m_cbFF)
@@ -265,6 +267,12 @@ Partial Class frmMain
         Me.m_pbLogo.Name = "m_pbLogo"
         Me.m_pbLogo.TabStop = False
         '
+        'm_cbEggProduction
+        '
+        resources.ApplyResources(Me.m_cbEggProduction, "m_cbEggProduction")
+        Me.m_cbEggProduction.Name = "m_cbEggProduction"
+        Me.m_cbEggProduction.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AcceptButton = Me.m_btnRun
@@ -312,4 +320,5 @@ Partial Class frmMain
     Private WithEvents m_cbEffort As System.Windows.Forms.CheckBox
     Private WithEvents m_cbFF As System.Windows.Forms.CheckBox
     Private WithEvents m_lblApply As System.Windows.Forms.Label
+    Private WithEvents m_cbEggProduction As System.Windows.Forms.CheckBox
 End Class
