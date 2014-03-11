@@ -91,7 +91,10 @@ Public Class cWebLinks
         Dim ub As New UrlBuilder(cStart)
 
         For Each an As AssemblyName In aAssemblyNames
-            If Not ub.QueryString.ContainsKey(an.Name) Then ub.QueryString(an.Name) = an.Version.ToString
+            ' Keep ewe component list really short; it's the plug-ins we're interested in
+            If ((String.Compare(an.Name, "ewecore", True) = 0) Or (String.Compare(an.Name, "ewe6", True) = 0)) Then
+                If Not ub.QueryString.ContainsKey(an.Name) Then ub.QueryString(an.Name) = an.Version.ToString
+            End If
         Next an
 
         If (Not Object.ReferenceEquals(pm, Nothing)) Then
