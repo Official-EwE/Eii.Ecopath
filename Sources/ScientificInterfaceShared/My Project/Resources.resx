@@ -3068,4 +3068,7 @@
     <value>{0}% temporal overlap, area overlap has not been determined yet.</value>
     <comment>{0}=% overlapping time steps</comment>
   </data>
+  <data name="VARIABLE_LAYERBIOMASSRELATIVEFORCING" xml:space="preserve">
+    <value>Biomass(rel) map||Relative Biomass forcing|Relative Biomass forcing map</value>
+  </data>
 </root>
