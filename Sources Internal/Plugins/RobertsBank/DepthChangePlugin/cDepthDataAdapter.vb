@@ -168,8 +168,6 @@ Public Class cDepthDataAdapter
             'If a cell has been converted to water it needs habitats, PP and capacity set
             'This has no way of knowing what these data should be
             If Me.setDepthCells(bm, layer, iConnection, iTime, dt, dataExternal, dNoData) Then
-                'Test set the capacity of adjacent cells 
-                'Me.AdjustCapacity()
                 Me.InitSpatialChanges()
                 bReturn = True
             End If
@@ -270,32 +268,6 @@ Public Class cDepthDataAdapter
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
-
-    End Sub
-
-    Private Sub AdjustCapacity()
-
-        'JUST PROOF OF CONCEPT
-        'This needs to have a distance weighting scheme
-        For irow As Integer = 1 To Me.SpaceData.InRow
-            For icol As Integer = 1 To Me.SpaceData.InCol
-                If Me.m_bChanged(irow, icol) Then
-                    'set capacity for all the groups
-                    For igrp As Integer = 1 To Me.SpaceData.NGroups
-                        'Me.SpaceData.HabCap() contains boundry cells 
-                        'so don't worry about being out of bounds
-                        For iirow As Integer = irow - 1 To irow + 1
-                            For iicol As Integer = icol - 1 To icol + 1
-                                'set the Habitat Capacity on the input map
-                                'this will get transfered to the HabCap by the Capacity Model
-                                Me.SpaceData.HabCapInput(iirow, iicol, igrp) = 0 'Me.SpaceData.HabCapInput(iirow, iicol, igrp) * 0.5F
-                            Next iicol
-                        Next iirow
-                    Next igrp
-                End If
-
-            Next icol
-        Next irow
 
     End Sub
 
