@@ -34,7 +34,7 @@ Public Class cQuotaShares
 #End Region
 
 #Region " Internal Variables "
-    Private mlstQuotaShares As List(Of QuotaShare)
+    Private mlstQuotaShares As New List(Of QuotaShare)
     Private mcore As cCore
     Private mMSE As cMSE
     Private mQuotaShareFileExists As Boolean
@@ -44,15 +44,10 @@ Public Class cQuotaShares
 #Region " Construction "
 
     Public Sub New(core As EwECore.cCore, MSE As cMSE)
-        Me.New()
         mcore = core
         mMSE = MSE
     End Sub
 
-    Sub New()
-        ' TODO: Complete member initialization 
-        SetDefault()
-    End Sub
 
 #End Region
 
