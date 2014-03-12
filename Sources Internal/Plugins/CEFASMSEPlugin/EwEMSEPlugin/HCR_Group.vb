@@ -69,7 +69,7 @@ Public Class HCR_Group
     Public Property UpperLimit As Double = cCore.NULL_VALUE
     Public Property MaxF As Double = cCore.NULL_VALUE
 
-    Public Property CostFunction As HCRType
+    Public Property TypeOfHCR As HCRType
 
     Public Overrides Function ToString() As String
 
@@ -80,7 +80,7 @@ Public Class HCR_Group
 
         sb.AppendLine(String.Format(My.Resources.HCR_GROUP_BIOMASS, fmt.GetDescriptor(Me.GroupB)))
         sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FISHMORT, fmt.GetDescriptor(Me.GroupF)))
-        sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FUNCTION, fmtC.GetDescriptor(Me.CostFunction)))
+        sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FUNCTION, fmtC.GetDescriptor(Me.TypeOfHCR)))
 
         Return sb.ToString
 

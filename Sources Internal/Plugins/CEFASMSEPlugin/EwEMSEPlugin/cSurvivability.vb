@@ -395,7 +395,7 @@ Public Class cSurvivability
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function ParamFileValid() As Boolean
-
+        Return True
     End Function
 
     ''' <summary>

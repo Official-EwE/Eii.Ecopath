@@ -384,10 +384,5 @@ Public Class frmMSE
 
 #End Region ' Plug-in callback
 
-    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs)
 
-        m_plugin.CreateRCode()
-
-
-    End Sub
 End Class

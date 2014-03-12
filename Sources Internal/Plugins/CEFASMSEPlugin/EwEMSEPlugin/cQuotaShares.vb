@@ -111,7 +111,7 @@ Public Class cQuotaShares
     ''' Adds a quota share value to the list of quota shares
     ''' and if it can't returns FALSE
     ''' </summary>
-    Public Function AddDist(GroupNo As Integer, FleetNo As Integer, Share As Double) As Boolean
+    Public Function AddQuotaShare(GroupNo As Integer, FleetNo As Integer, Share As Double) As Boolean
 
         'Check Fleet Number
         If FleetNo < 0 Or FleetNo > mcore.nFleets Then Return False
@@ -185,7 +185,7 @@ Public Class cQuotaShares
                         iQuotaShare = ExtractQuotaShare(csv)
                         If Not iQuotaShare.IsNull Then
                             'TODO Ask Jeroen - how do I check whether iQuotaShare is equal to nothing
-                            AddDist(iQuotaShare.mGroupNo, iQuotaShare.mFleetNo, iQuotaShare.mShare)
+                            AddQuotaShare(iQuotaShare.mGroupNo, iQuotaShare.mFleetNo, iQuotaShare.mShare)
                         End If
                     End While
                     csv.Dispose()
@@ -233,6 +233,11 @@ Public Class cQuotaShares
         Return New QuotaShare(TGroupNumber, TFleetNumber, TShare)
 
     End Function
+
+    Public Sub CreateDefaultCSV()
+        SetDefault()
+        SaveQuotaSharesToCSV()
+    End Sub
 
     ''' <summary>
     ''' Saves quota shares to CSV
@@ -326,7 +331,7 @@ Public Class cQuotaShares
 
             For iFleet = 1 To mcore.nFleets
                 If mcore.FleetInputs(iFleet).Landings(iGroup) > 0 Then
-                    AddDist(iGroup, iFleet, 1 / nFleetsCatch)
+                    AddQuotaShare(iGroup, iFleet, 1 / nFleetsCatch)
                 End If
             Next
 

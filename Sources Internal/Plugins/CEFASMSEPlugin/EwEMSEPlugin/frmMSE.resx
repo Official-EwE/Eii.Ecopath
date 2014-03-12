@@ -930,6 +930,9 @@
   <data name="m_lblArea.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 109</value>
   </data>
+  <data name="m_lblArea.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>100, 0</value>
+  </data>
   <data name="m_lblArea.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 13</value>
   </data>
@@ -1816,6 +1819,9 @@
   <data name="m_lblAreaUnit.Location" type="System.Drawing.Point, System.Drawing">
     <value>475, 109</value>
   </data>
+  <data name="m_lblAreaUnit.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>100, 0</value>
+  </data>
   <data name="m_lblAreaUnit.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 13</value>
   </data>
@@ -1971,6 +1977,9 @@
   </data>
   <data name="m_lblInputParams.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 83</value>
+  </data>
+  <data name="m_lblInputParams.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>100, 0</value>
   </data>
   <data name="m_lblInputParams.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 13</value>
@@ -2139,6 +2148,9 @@
   </data>
   <data name="m_tlpLayout.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
+  </data>
+  <data name="m_tlpLayout.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>450, 500</value>
   </data>
   <data name="m_tlpLayout.RowCount" type="System.Int32, mscorlib">
     <value>5</value>

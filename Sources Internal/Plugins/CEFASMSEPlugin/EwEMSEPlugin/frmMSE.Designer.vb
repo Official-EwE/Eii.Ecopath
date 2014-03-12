@@ -280,7 +280,6 @@ Partial Class frmMSE
         'm_lblArea
         '
         resources.ApplyResources(Me.m_lblArea, "m_lblArea")
-        Me.m_lblArea.MaximumSize = New System.Drawing.Size(100, 0)
         Me.m_lblArea.Name = "m_lblArea"
         '
         'm_pbCefas
@@ -293,7 +292,6 @@ Partial Class frmMSE
         'm_lblAreaUnit
         '
         resources.ApplyResources(Me.m_lblAreaUnit, "m_lblAreaUnit")
-        Me.m_lblAreaUnit.MaximumSize = New System.Drawing.Size(100, 0)
         Me.m_lblAreaUnit.Name = "m_lblAreaUnit"
         '
         'm_btnReviewDistParms
@@ -310,7 +308,6 @@ Partial Class frmMSE
         Me.m_tlpLayout.Controls.Add(Me.m_plStep4, 0, 3)
         Me.m_tlpLayout.Controls.Add(Me.m_pbCefas, 0, 4)
         Me.m_tlpLayout.Controls.Add(Me.m_plStep1, 0, 0)
-        Me.m_tlpLayout.MinimumSize = New System.Drawing.Size(450, 500)
         Me.m_tlpLayout.Name = "m_tlpLayout"
         '
         'm_plStep1
@@ -352,7 +349,6 @@ Partial Class frmMSE
         'm_lblInputParams
         '
         resources.ApplyResources(Me.m_lblInputParams, "m_lblInputParams")
-        Me.m_lblInputParams.MaximumSize = New System.Drawing.Size(100, 0)
         Me.m_lblInputParams.Name = "m_lblInputParams"
         '
         'm_rbEwEDefault

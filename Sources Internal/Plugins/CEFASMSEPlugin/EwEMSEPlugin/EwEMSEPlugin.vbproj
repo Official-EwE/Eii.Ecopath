@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cQuotaShares.vb" />
+    <Compile Include="cRegulation.vb" />
     <Compile Include="gridMaxDecreaseEffort.vb">
       <SubType>Component</SubType>
     </Compile>
