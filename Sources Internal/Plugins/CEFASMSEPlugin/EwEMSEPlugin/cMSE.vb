@@ -60,10 +60,10 @@ Public Class cMSE
     Private ChangeInEffortLimits() As Double
     Public Const NoHCR_F As Integer = cCore.NULL_VALUE
 
-    Private TechnologyCreep(mCore.nFleets) As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
+    Private TechnologyCreep() As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
 
     Private FleetsThatFishHCRGrp As List(Of Integer) = New List(Of Integer)
-    Private mQuota As New cQuotaShares
+    Private mQuota As New cQuotaShares(Me.Core, Me)
     Private m_Survivability As New cSurvivability
 
     Dim Regulations As cRegulation
@@ -842,6 +842,9 @@ Public Class cMSE
         ' JS 20Oct13: Applied standard EwE headers. Mark, please don't kill me
 
         Debug.Assert(Me.IsInputDataCompatible)
+
+        'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
+        ReDim Me.TechnologyCreep(mCore.nFleets)
 
         Dim B(,) As Double 'All basic Ecopath and Ecosim parameters X(a,b) a = iteration b = the functional group
         Dim PB(,) As Double
