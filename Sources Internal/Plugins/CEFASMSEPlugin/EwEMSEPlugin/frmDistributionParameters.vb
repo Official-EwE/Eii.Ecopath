@@ -124,7 +124,7 @@ Public Class frmDistributionParameters
 
     End Class
 
-    Private m_plugin As cMSE = Nothing
+    Private m_plugin As cMSEPluginPoint = Nothing
 
     Private B As New List(Of cDistributionParamsData)
     Private BA As New List(Of cDistributionParamsData)
@@ -147,7 +147,7 @@ Public Class frmDistributionParameters
         Me.InitializeComponent()
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext, ByVal Plugin As cMSE)
+    Public Sub Init(ByVal uic As cUIContext, ByVal Plugin As cMSEPluginPoint)
 
         Me.m_plugin = Plugin
         Me.m_grid.UIContext = uic
@@ -162,6 +162,12 @@ Public Class frmDistributionParameters
         Me.m_tscmPathOrSim.Items.Add(SharedResources.HEADER_ECOSIM)
 
     End Sub
+
+    Private ReadOnly Property MSE As cMSE
+        Get
+            Return Me.m_plugin.MSE
+        End Get
+    End Property
 
 #Region " Overrides "
 
@@ -253,7 +259,7 @@ Public Class frmDistributionParameters
 
     End Sub
 
-  
+
 #End Region ' Overrides
 
 #Region " Internals "
@@ -440,13 +446,13 @@ Public Class frmDistributionParameters
     Private Function LoadEcosimParameters() As Boolean
 
         'loads all the ecosim csv files up and creates instances of lists of structures that hold it all in memory
-        Return LoadEcosimParamX(DenDepCatchability, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DenDepCatchability.csv"), eParamName.DenDepCatchability) And _
-               LoadEcosimParamX(SwitchingPower, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "SwitchingPower.csv"), eParamName.SwitchingPower) And _
-               LoadEcosimParamX(QBMaxxQBio, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QBMaxxQBio.csv"), eParamName.QBMaxxQBio) And _
-               LoadEcosimParamX(PredEffectFeedingTime, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PredEffectFeedingTime.csv"), eParamName.PredEffectFeedingTime) And _
-               LoadEcosimParamX(OtherMortFeedingTime, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "OtherMortFeedingTime.csv"), eParamName.OtherMortFeedingTime) And _
-               LoadEcosimParamX(MaxRelFeedingTime, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "MaxRelFeedingTime.csv"), eParamName.MaxRelFeedingTime) And _
-               LoadEcosimParamX(FeedingTimeAdjustRate, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "FeedingTimeAdjustRate.csv"), eParamName.FeedingTimeAdjustRate)
+        Return LoadEcosimParamX(DenDepCatchability, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DenDepCatchability.csv"), eParamName.DenDepCatchability) And _
+               LoadEcosimParamX(SwitchingPower, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "SwitchingPower.csv"), eParamName.SwitchingPower) And _
+               LoadEcosimParamX(QBMaxxQBio, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QBMaxxQBio.csv"), eParamName.QBMaxxQBio) And _
+               LoadEcosimParamX(PredEffectFeedingTime, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PredEffectFeedingTime.csv"), eParamName.PredEffectFeedingTime) And _
+               LoadEcosimParamX(OtherMortFeedingTime, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "OtherMortFeedingTime.csv"), eParamName.OtherMortFeedingTime) And _
+               LoadEcosimParamX(MaxRelFeedingTime, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "MaxRelFeedingTime.csv"), eParamName.MaxRelFeedingTime) And _
+               LoadEcosimParamX(FeedingTimeAdjustRate, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "FeedingTimeAdjustRate.csv"), eParamName.FeedingTimeAdjustRate)
 
     End Function
 
@@ -537,11 +543,11 @@ Public Class frmDistributionParameters
 
     Private Function LoadEcopathParameters() As Boolean
 
-        Return LoadEcopathParamX(B, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "B_Dist.csv"), eParamName.B) And _
-               LoadEcopathParamX(PB, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PB_Dist.csv"), eParamName.PB) And _
-               LoadEcopathParamX(QB, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QB_Dist.csv"), eParamName.QB) And _
-               LoadEcopathParamX(EE, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "EE_Dist.csv"), eParamName.EE) And _
-               LoadEcopathParamX(BA, cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, "BA_Dist.csv"), eParamName.BA)
+        Return LoadEcopathParamX(B, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "B_Dist.csv"), eParamName.B) And _
+               LoadEcopathParamX(PB, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PB_Dist.csv"), eParamName.PB) And _
+               LoadEcopathParamX(QB, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QB_Dist.csv"), eParamName.QB) And _
+               LoadEcopathParamX(EE, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "EE_Dist.csv"), eParamName.EE) And _
+               LoadEcopathParamX(BA, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "BA_Dist.csv"), eParamName.BA)
 
     End Function
 
@@ -553,7 +559,7 @@ Public Class frmDistributionParameters
 
     Private Function SaveEcoSimParameters2CSV(ByVal params As List(Of cDistributionParamsData), ByVal strFileName As String) As Boolean
 
-        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFileName & ".csv"), False)
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFileName & ".csv"), False)
         Dim bSuccess As Boolean = False
 
         If (writer Is Nothing) Then Return bSuccess
@@ -585,7 +591,7 @@ Public Class frmDistributionParameters
 
     Private Function SaveEcopathParameters2CSV(ByVal parms As List(Of cDistributionParamsData), ByVal strFileName As String) As Boolean
 
-        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFileName & ".csv"), False)
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFileName & ".csv"), False)
         Dim bSuccess As Boolean = False
 
         If (writer Is Nothing) Then Return bSuccess
@@ -689,9 +695,9 @@ Public Class frmDistributionParameters
         Handles m_btnOK.Click
 
         Dim lstrSubMessages As New List(Of String)
-        Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.DistrParams)
+        Dim strFolder As String = cMSEUtils.MSEFolder(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams)
 
-        If Not Me.m_plugin.IsInputStructureAvailable(True) Then
+        If Not Me.mse.IsInputStructureAvailable(True) Then
             ' ToDo: report error
             Return
         End If
@@ -711,7 +717,7 @@ Public Class frmDistributionParameters
         If SaveEcoSimParameters2CSV(MaxRelFeedingTime, "MaxRelFeedingTime") Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "MaxRelFeedingTime.csv"))
         If SaveEcoSimParameters2CSV(FeedingTimeAdjustRate, "FeedingTimeAdjustRate") Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "FeedingTimeAdjustRate.csv"))
 
-        Me.m_plugin.GenerateEmptyDietCSVs()
+        Me.MSE.GenerateEmptyDietCSVs()
         Me.m_bIsDirty = False
 
         Me.m_plugin.InformUser(String.Format(My.Resources.STATUS_SAVED_DISTPARMS, My.Resources.CAPTION, strFolder), _

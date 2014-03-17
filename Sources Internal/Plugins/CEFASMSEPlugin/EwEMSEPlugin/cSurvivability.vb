@@ -14,7 +14,6 @@ Imports EwECore
 
 Public Class cSurvivability
 
-
 #Region " Internal Variables "
 
     ''' <summary>
@@ -625,12 +624,6 @@ Public Class cSurvivability
     End Sub
 
 #End Region
-
-
-
-
-
-
 
 End Class
 

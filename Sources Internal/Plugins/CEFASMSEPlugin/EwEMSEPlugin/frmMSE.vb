@@ -37,7 +37,7 @@ Public Class frmMSE
 
 #Region " Private vars "
 
-    Private m_plugin As cMSE = Nothing
+    Private m_plugin As cMSEPluginPoint = Nothing
     Private m_survivability As cSurvivability = Nothing
 
     Private m_fpArea As cEwEFormatProvider = Nothing
@@ -52,14 +52,34 @@ Public Class frmMSE
 
 #End Region ' Private vars
 
-    Public Sub New(MSE As cMSE, uic As cUIContext, Survivability As cSurvivability)
+
+    Private ReadOnly Property Plugin As cMSEPluginPoint
+        Get
+            Return Me.m_plugin
+        End Get
+    End Property
+    Private ReadOnly Property MSE As cMSE
+        Get
+            Return Me.m_plugin.MSE
+        End Get
+    End Property
+
+
+#Region "Construction"
+
+    Public Sub New(MSEPluginPoint As cMSEPluginPoint, uic As cUIContext)
 
         Me.InitializeComponent()
         Me.UIContext = uic
-        Me.m_plugin = MSE
-        Me.m_survivability = Survivability
+        Me.m_plugin = MSEPluginPoint
+        Me.m_survivability = Me.MSE.Survivabilities
 
     End Sub
+
+
+
+#End Region
+
 
 #Region " Form overrides "
 
@@ -81,7 +101,7 @@ Public Class frmMSE
         Me.m_fpNModelsToRun.Value = Me.m_plugin.NModels2Run
         AddHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
 
-        Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNTrials, GetType(Integer), New cVariableMetaData(0, Me.m_plugin.NumModelsAvailable, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
+        Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNTrials, GetType(Integer), New cVariableMetaData(0, Me.MSE.NumModelsAvailable, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         Me.m_fpNTrials.Value = Me.m_plugin.NModels
         AddHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
 
@@ -100,8 +120,8 @@ Public Class frmMSE
         Me.m_fpMaxTime = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMaxTime, GetType(Single), New cVariableMetaData(0.08, 48, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         AddHandler Me.m_fpMaxTime.OnValueChanged, AddressOf OnMaxTimeChanged
 
-        Me.m_rbEwEDefault.Checked = Me.m_plugin.UseEwEPath
-        Me.m_rbCustomPath.Checked = Not Me.m_plugin.UseEwEPath
+        Me.m_rbEwEDefault.Checked = Me.MSE.UseEwEPath
+        Me.m_rbCustomPath.Checked = Not Me.MSE.UseEwEPath
 
         Me.m_hdrStep2.IsCollapsed = True
 
@@ -155,8 +175,8 @@ Public Class frmMSE
         Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_plStep4.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
 
-        Me.m_lblPathValue.Text = cStringUtils.CompactString(Me.m_plugin.DataPath, Me.m_lblPathValue.ClientRectangle.Width, Me.m_lblPathValue.Font, TextFormatFlags.PathEllipsis)
-        cToolTipShared.GetInstance().SetToolTip(Me.m_lblPathValue, Me.m_plugin.DataPath)
+        Me.m_lblPathValue.Text = cStringUtils.CompactString(Me.MSE.DataPath, Me.m_lblPathValue.ClientRectangle.Width, Me.m_lblPathValue.Font, TextFormatFlags.PathEllipsis)
+        cToolTipShared.GetInstance().SetToolTip(Me.m_lblPathValue, Me.MSE.DataPath)
 
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
             Me.m_tbxParamStatus.Text = My.Resources.STATUS_AVAILABLE
@@ -176,14 +196,14 @@ Public Class frmMSE
 
         ' Provide feedback about available models
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
-            If String.IsNullOrWhiteSpace(Me.m_plugin.ModelCompatibilityInfo) Then
-                Me.m_tbxNumAvailableModels.Text = CStr(Me.m_plugin.NumModelsAvailable)
+            If String.IsNullOrWhiteSpace(Me.MSE.ModelCompatibilityInfo) Then
+                Me.m_tbxNumAvailableModels.Text = CStr(Me.MSE.NumModelsAvailable)
             Else
                 Me.m_tbxNumAvailableModels.Text = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
-                                                                Me.m_plugin.NumModelsAvailable, _
-                                                                Me.m_plugin.ModelCompatibilityInfo)
+                                                                Me.MSE.NumModelsAvailable, _
+                                                                Me.MSE.ModelCompatibilityInfo)
             End If
-            Me.m_tbxNumAvailableFishingStrategies.Text = CStr(Me.m_plugin.NumStrategiesAvailable)
+            Me.m_tbxNumAvailableFishingStrategies.Text = CStr(Me.MSE.NumStrategiesAvailable)
         Else
             Me.m_tbxNumAvailableModels.Text = ""
             Me.m_tbxNumAvailableFishingStrategies.Text = ""
@@ -200,19 +220,11 @@ Public Class frmMSE
 
         If (Me.m_plugin Is Nothing) Then Return
 
-        Try
-            Me.m_plugin.GenerateEcosimParameters("MaxRelFeedingTime")
-            Me.m_plugin.GenerateEcosimParameters("FeedingTimeAdjustRate")
-            Me.m_plugin.GenerateEcosimParameters("OtherMortFeedingTime")
-            Me.m_plugin.GenerateEcosimParameters("PredEffectFeedingTime")
-            Me.m_plugin.GenerateEcosimParameters("DenDepCatchability")
-            Me.m_plugin.GenerateEcosimParameters("QBMaxxQBio")
-            Me.m_plugin.GenerateEcosimParameters("SwitchingPower")
-            Me.m_plugin.CreateVulnerabilities()
-            Me.m_plugin.GenerateEcopathParamaters()
-        Catch ex As Exception
+        If Not Me.MSE.CreateModels() Then
+            'Failed to create the new models
+            'better tell the user 
 
-        End Try
+        End If
 
     End Sub
 
@@ -224,9 +236,9 @@ Public Class frmMSE
         Try
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            cmd.Invoke(Me.m_plugin.DataPath)
+            cmd.Invoke(Me.MSE.DataPath)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE.frmMSE::OnPathClicked(" & Me.m_plugin.DataPath & ")")
+            cLog.Write(ex, "CefasMSE.frmMSE::OnPathClicked(" & Me.MSE.DataPath & ")")
         End Try
 
     End Sub
@@ -237,7 +249,7 @@ Public Class frmMSE
         If Me.m_bInUpdate Then Return
 
         Try
-            Me.m_plugin.UseEwEPath = Me.m_rbEwEDefault.Checked
+            Me.MSE.UseEwEPath = Me.m_rbEwEDefault.Checked
         Catch ex As Exception
 
         End Try
@@ -246,7 +258,7 @@ Public Class frmMSE
     Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnRun.Click
         Try
-            Me.m_plugin.LoadSampledParams()
+            Me.MSE.LoadSampledParams()
         Catch ex As Exception
 
         End Try
@@ -259,15 +271,15 @@ Public Class frmMSE
         Try
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
 
-            If Me.m_plugin.UseEwEPath Then
+            If Me.MSE.UseEwEPath Then
                 Dim cmd As cShowOptionsCommand = DirectCast(cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
                 cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.FileLocations)
                 ' Do not set path; let core deal with it
             Else
                 Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
-                cmd.Invoke(Me.m_plugin.CustomPath, My.Resources.PROMPT_DATAPATH)
+                cmd.Invoke(Me.MSE.CustomPath, My.Resources.PROMPT_DATAPATH)
                 If (cmd.Result = Windows.Forms.DialogResult.OK) Then
-                    Me.m_plugin.CustomPath = cmd.Directory
+                    Me.MSE.CustomPath = cmd.Directory
                 End If
             End If
 
@@ -285,10 +297,10 @@ Public Class frmMSE
 
         ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
         '             From the UI point of view, we just want strategies. The plug-in does the optimizating
-        m_plugin.ExtractHCR()
+        Me.MSE.ExtractHCR()
 
         Dim frm As New frmTFMpolicy()
-        frm.Init(Me.UIContext, Me.m_plugin)
+        frm.Init(Me.UIContext, Me.MSE)
         frm.ShowDialog(Me)
 
     End Sub
@@ -298,7 +310,7 @@ Public Class frmMSE
 
         Try
             Dim frmDisParams As New frmDistributionParameters()
-            frmDisParams.Init(Me.UIContext, Me.m_plugin)
+            frmDisParams.Init(Me.UIContext, Me.Plugin)
             frmDisParams.ShowDialog(Me)
             'Hack because the form is getting stuck in memory
             'clear out any memory
@@ -361,7 +373,7 @@ Public Class frmMSE
 
         Try
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
-            frmMaxDecreaseEfforts.Init(Me.UIContext, Me.m_plugin)
+            frmMaxDecreaseEfforts.Init(Me.UIContext, Me.MSE)
             frmMaxDecreaseEfforts.ShowDialog(Me)
         Catch ex As Exception
 

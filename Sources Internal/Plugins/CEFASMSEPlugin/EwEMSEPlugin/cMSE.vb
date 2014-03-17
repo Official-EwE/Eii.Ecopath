@@ -34,14 +34,6 @@ Imports Troschuetz.Random
 #End Region ' Imports
 
 Public Class cMSE
-    Implements EwEPlugin.IMenuItemPlugin
-    Implements EwEPlugin.ICorePlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IEcosimInitializedPlugin
-    Implements EwEPlugin.IEcosimBeginTimestepPlugin
-    Implements EwEPlugin.IMessageFilterPlugin
-    Implements EwEPlugin.IEcopathPlugin
-    Implements EwEPlugin.IEcosimPlugin
 
 #Region " Internal vars "
 
@@ -63,12 +55,10 @@ Public Class cMSE
     Private TechnologyCreep() As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
 
     Private FleetsThatFishHCRGrp As List(Of Integer) = New List(Of Integer)
-    Private mQuota As New cQuotaShares(Me.Core, Me)
-    Private m_Survivability As New cSurvivability
+    Private mQuota As cQuotaShares
+    Private m_Survivability As cSurvivability
 
     Dim Regulations As cRegulation
-
-    Private m_monitor As New cMSEStateMonitor(Me)
 
     Private BTemp() As Double
     Private PBTemp() As Double
@@ -101,12 +91,42 @@ Public Class cMSE
     Private m_mhSettings As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
 
+
+    Private m_iNumModelsAvailable As Integer = cCore.NULL_VALUE
+    Private m_iNumStrategiesAvailable As Integer = cCore.NULL_VALUE
+    Private m_tsInputDataCompatibility As TriState = TriState.UseDefault
+
+
 #End Region ' Internal vars
+
+#Region "Public Properties"
+
+    Public Property IsRunning As Boolean = False
+
+    Public ReadOnly Property Survivabilities As cSurvivability
+        Get
+            Return Me.m_Survivability
+        End Get
+    End Property
+
+    Public ReadOnly Property QuotaShares As cQuotaShares
+        Get
+            Return Me.mQuota
+        End Get
+    End Property
+
+#End Region
 
 #Region " Construction "
 
     Public Sub New()
         Me.InvalidateConfiguration()
+    End Sub
+
+    Public Sub onCoreInitialized(EwECore As cCore, Ecopath As Ecopath.cEcoPathModel, Ecosim As Ecosim.cEcoSimModel)
+        Me.mCore = EwECore
+        Me._ecopath = Ecopath
+        Me._ecosim = Ecosim
     End Sub
 
 #End Region ' Construction
@@ -119,24 +139,8 @@ Public Class cMSE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
 
-        Me.m_monitor.Invalidate()
-
-        If Me.HasUI Then
-            MSEForm.UpdateState()
-        End If
-
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the <see cref="cMSEStateMonitor">MSE state monitor</see>.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Controller As cMSEStateMonitor
-        Get
-            Return Me.m_monitor
-        End Get
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -159,8 +163,6 @@ Public Class cMSE
         Return bSuccess
 
     End Function
-
-    Private m_tsInputDataCompatibility As TriState = TriState.UseDefault
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -385,7 +387,6 @@ Public Class cMSE
 
     End Function
 
-    Private m_iNumModelsAvailable As Integer = cCore.NULL_VALUE
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -420,7 +421,6 @@ Public Class cMSE
 
     End Function
 
-    Private m_iNumStrategiesAvailable As Integer = cCore.NULL_VALUE
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -457,43 +457,35 @@ Public Class cMSE
 
 #End Region ' Diagnostics and state management
 
-#Region " EwE app flow plugins "
+#Region "File I/O"
 
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
-        ' NOP
-        Return True
+
+    Public Function CreateModels() As Boolean
+        Dim bsuccess As Boolean = True
+        Try
+            Me.GenerateEcosimParameters("MaxRelFeedingTime")
+            Me.GenerateEcosimParameters("FeedingTimeAdjustRate")
+            Me.GenerateEcosimParameters("OtherMortFeedingTime")
+            Me.GenerateEcosimParameters("PredEffectFeedingTime")
+            Me.GenerateEcosimParameters("DenDepCatchability")
+            Me.GenerateEcosimParameters("QBMaxxQBio")
+            Me.GenerateEcosimParameters("SwitchingPower")
+            Me.CreateVulnerabilities()
+            Me.GenerateEcopathParamaters()
+        Catch ex As Exception
+            bsuccess = False
+        End Try
+
+        Return bsuccess
     End Function
 
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-        Me.InvalidateConfiguration()
-        Return True
-    End Function
 
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
-        Return True
-    End Function
-
-    Public Sub CloseEcosimScenario() Implements EwEPlugin.IEcosimPlugin.CloseEcosimScenario
-        ' NOP
-    End Sub
-
-    Public Sub LoadEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.LoadEcosimScenario
-        Me.InvalidateConfiguration()
-    End Sub
-
-    Public Sub SaveEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.SaveEcosimScenario
-        ' NOP
-    End Sub
-
-#End Region ' EwE app flow plugins
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set whether the MSE is running. This flag is used to know when to 
-    ''' suppress core messages in order not to disrupt the MSE run flow.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property IsRunning As Boolean = False
+    ' ''' -----------------------------------------------------------------------
+    ' ''' <summary>
+    ' ''' Get/set whether the MSE is running. This flag is used to know when to 
+    ' ''' suppress core messages in order not to disrupt the MSE run flow.
+    ' ''' </summary>
+    ' ''' -----------------------------------------------------------------------
 
     Public ReadOnly Property DataPath As String
         Get
@@ -720,6 +712,8 @@ Public Class cMSE
 
     'End Function
 
+#End Region 'File I/O
+
     Private Sub SaveOriginalParameters()
 
         Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
@@ -882,9 +876,6 @@ Public Class cMSE
         ' JS 30Sep13: Use local properties
         Dim NYearsProject = Me.NYearsProject
         Dim BiomassProjected(NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
-
-        Regulations = New cRegulation(Me, mCore)
-        mQuota = New cQuotaShares(mCore, Me)
 
         'TODO WAITING - remove this once we have the interface for creating quota shares
         mQuota.CreateDefaultCSV()
@@ -2082,112 +2073,20 @@ stepend:
 
     End Sub
 
-    Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return My.Resources.CAPTION
-        End Get
-    End Property
+   
 
-    Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
-        Get
-            Return My.Resources.CAPTION_TOOLTIP
-        End Get
-    End Property
+    Public Sub onEcosimInitialized(ByVal EcosimDatastructures As cEcosimDatastructures)
+        _simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
-    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
-        Get
-            'Return EwEUtils.Core.eCoreExecutionState.EcosimCompleted
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
-        End Get
-    End Property
+        Me.Regulations = New cRegulation(Me, mCore)
+        Me.mQuota = New cQuotaShares(mCore, Me)
+        Me.m_Survivability = New cSurvivability
 
-    Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
-        Get
-            Return "MenuTools"
-        End Get
-    End Property
-
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "Mark Platts CEFAS"
-        End Get
-    End Property
-
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "ewedevlowestoft@gmail.com"
-        End Get
-    End Property
-
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
-        Get
-            Return "Plug-in to run CEFAS MSE"
-        End Get
-    End Property
-
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        Me.mCore = CType(core, cCore)
-        Units.Init(mCore)
-    End Sub
-
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
-        Get
-            Return "ndCefasMSE"
-        End Get
-    End Property
-
-    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
-
-        _ecopath = CType(objEcoPath, Ecopath.cEcoPathModel)
-        _ecosim = CType(objEcoSim, Ecosim.cEcoSimModel)
-
-        Debug.Assert(Me.m_uic IsNot Nothing)
-
-        ' Set message handlers
-
-        Me.m_mhSettings = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
-        Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
-
-#If DEBUG Then
-        Me.m_mhSettings.Name = "CefasMSE_mhSettings"
-        Me.m_mhEcosim.Name = "CefasMSE_mhEcosim"
-#End If
+        Me.mQuota.onEcosimInitialized()
 
     End Sub
 
-    Public Sub UIContext(ByVal uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
-        Me.m_uic = DirectCast(uic, cUIContext)
-    End Sub
-
-    Public Sub EcosimInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
-        Debug.Assert(TypeOf EcosimDatastructures Is cEcosimDatastructures, "EcosimInitialized() failed to pass in valid Ecosim Data!")
-        If TypeOf EcosimDatastructures Is cEcosimDatastructures Then
-            _simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
-        End If
-    End Sub
-
-    Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
-        Get
-            Return Nothing
-        End Get
-    End Property
-
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
-
-        If Not Me.HasUI Then
-            MSEForm = New frmMSE(Me, Me.m_uic, Me.m_Survivability)
-        End If
-
-        ' Let EwE show the form
-        frmPlugin = MSEForm
-
-    End Sub
-
-    Private Function HasUI() As Boolean
-        If Me.MSEForm Is Nothing Then Return False
-        Return Not Me.MSEForm.IsDisposed
-    End Function
-
+    
     'Commented out because redundant 3-9-13
 
     'Public Sub Create2DimParams(ByVal ParamName As String)
@@ -2431,7 +2330,7 @@ stepend:
 
     End Function
 
-    Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
+    Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
 
         ' JS 13Oct13: Fixed CurDir vulnerability in lpsolve
         ' JS 13Oct13: Globalized this method
@@ -2456,111 +2355,111 @@ stepend:
         Dim iCatch As Single
 
 
-            If ChangeEffortFlag = True And iTime > OriginalNTimesteps Then 'Flag is only set to true when the button on the form is clicked
-                'this is so that its only executed when ecosim is run from mseform
+        If ChangeEffortFlag = True And iTime > OriginalNTimesteps Then 'Flag is only set to true when the button on the form is clicked
+            'this is so that its only executed when ecosim is run from mseform
 
-                If (iTime - 1) Mod 12 = 0 Then TargConsQuota = DetermineQuotas(BiomassAtTimestep)
+            If (iTime - 1) Mod 12 = 0 Then TargConsQuota = DetermineQuotas(BiomassAtTimestep)
 
-                'if there are no fleets to optimise for skip all this
-                If FleetsThatFishHCRGrp.Count > 0 Then
+            'if there are no fleets to optimise for skip all this
+            If FleetsThatFishHCRGrp.Count > 0 Then
 
-                    'Not quite sure what QMult is but it is needed to calculate what F is in the optimised routine
-                    For indexgrp As Integer = 1 To _ecosim.EcosimData.nGroups
-                        QMult(indexgrp - 1) = _ecosim.EcosimData.QmQo(indexgrp) / (1 + (_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / _ecosim.EcosimData.StartBiomass(indexgrp))
-                    Next
-
-                    For Each iFleet In FleetsThatFishHCRGrp
-                        Select Case Regulations.GetReg(iFleet)
-                            Case cRegulation.eRegMethod.HighestValue, cRegulation.eRegMethod.SelectiveFishing
-                                'Find out the highest value species
-                                'Calculate the effort that would catch all quota of highest value species
-                                'Set it for this fleet
-                                'If selective
-                                'Calculate what selectivity would prevent any other stock going over quota
-                                'Set selectivity variables
-
-                                Emax = 0
-                                Dim vmax As Single = 0
-                                Dim imax As Integer = 0
-                                Dim v As Single
-                                For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                    If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
-                                        'find the stock with the biggest economic value
-                                        v = CSng(mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * _ecopath.EcopathData.Market(iGrp, iFleet))
-                                        If v > vmax Then
-                                            vmax = v
-                                            imax = iGrp
-                                        End If
-                                    End If
-                                Next iGrp
-
-                                'get the effort limit for the stock with the biggest value
-                                Emax = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * _ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
-
-                                'Limit the effort if it is greater than the max allowable 
-                                If Emax < _ecosim.EcosimData.FishRateGear(iFleet, iTime) Then _ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
-
-                                For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                    If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
-                                        iCatch = CSng(_ecosim.EcosimData.FishRateGear(iFleet, iTime) * QMult(iGrp) * _ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
-
-                                        If iCatch > mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
-                                            'fishing mortality exceeds quota
-                                            _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
-                                            If Regulations.GetReg(iFleet) = cRegulation.eRegMethod.HighestValue Then
-                                                'QuotaType = Strongest
-                                                'excess catch discarded and included in the fishing mortailtiy
-                                                _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - _ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * _ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
-                                            Else
-                                                'QuotaType = Selective 
-                                                'excess catch is NOT included in fishing mortaility all discards survive
-                                                _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = 0
-                                            End If
-
-                                        Else
-                                            'iCatch < Quota
-                                            _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = _ecopath.EcopathData.PropLanded(iFleet, iGrp)
-                                            _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = _ecopath.EcopathData.PropDiscard(iFleet, iGrp)
-                                        End If
-
-                                    End If
-                                Next iGrp
-                            Case cRegulation.eRegMethod.WeakestStock
-                                'Find the weakest stock
-                                'Calculate effort that would catch all weakest stock quota
-                                'Set it for this fleet
-                                For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                    If (_ecopath.EcopathData.Landing(iFleet, iGrp) + _ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> NoHCR_F Then
-                                        'Calculate the effort limitation, has quota been exceeded?
-                                        'QYear is omitted from following equation because it is assumed that technological creep is zero
-                                        Elim = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
-                                        Debug.Assert(Elim >= 0)
-                                        If _simdata.FishRateGear(iFleet, iTime) > Elim Then
-                                            _simdata.FishRateGear(iFleet, iTime) = Elim
-                                        End If
-                                    End If
-                                Next iGrp
-
-                            Case cRegulation.eRegMethod.NoQuota
-                                'TODO
-                            Case cRegulation.eRegMethod.None
-                                'TODO
-                        End Select
-                    Next
-
-                End If
-
-                'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
-                For iFleet = 1 To mCore.nFleets
-                    If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
-                        _ecosim.EcosimData.FishRateGear(iFleet, iTime) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
-                    End If
+                'Not quite sure what QMult is but it is needed to calculate what F is in the optimised routine
+                For indexgrp As Integer = 1 To _ecosim.EcosimData.nGroups
+                    QMult(indexgrp - 1) = _ecosim.EcosimData.QmQo(indexgrp) / (1 + (_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / _ecosim.EcosimData.StartBiomass(indexgrp))
                 Next
 
-                'Calculates what the F's are for each species given the effort
-                _ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
+                For Each iFleet In FleetsThatFishHCRGrp
+                    Select Case Regulations.GetReg(iFleet)
+                        Case cRegulation.eRegMethod.HighestValue, cRegulation.eRegMethod.SelectiveFishing
+                            'Find out the highest value species
+                            'Calculate the effort that would catch all quota of highest value species
+                            'Set it for this fleet
+                            'If selective
+                            'Calculate what selectivity would prevent any other stock going over quota
+                            'Set selectivity variables
+
+                            Emax = 0
+                            Dim vmax As Single = 0
+                            Dim imax As Integer = 0
+                            Dim v As Single
+                            For iGrp = 1 To _ecopath.EcopathData.NumGroups
+                                If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
+                                    'find the stock with the biggest economic value
+                                    v = CSng(mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * _ecopath.EcopathData.Market(iGrp, iFleet))
+                                    If v > vmax Then
+                                        vmax = v
+                                        imax = iGrp
+                                    End If
+                                End If
+                            Next iGrp
+
+                            'get the effort limit for the stock with the biggest value
+                            Emax = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * _ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
+
+                            'Limit the effort if it is greater than the max allowable 
+                            If Emax < _ecosim.EcosimData.FishRateGear(iFleet, iTime) Then _ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
+
+                            For iGrp = 1 To _ecopath.EcopathData.NumGroups
+                                If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
+                                    iCatch = CSng(_ecosim.EcosimData.FishRateGear(iFleet, iTime) * QMult(iGrp) * _ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
+
+                                    If iCatch > mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
+                                        'fishing mortality exceeds quota
+                                        _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
+                                        If Regulations.GetReg(iFleet) = cRegulation.eRegMethod.HighestValue Then
+                                            'QuotaType = Strongest
+                                            'excess catch discarded and included in the fishing mortailtiy
+                                            _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - _ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * _ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
+                                        Else
+                                            'QuotaType = Selective 
+                                            'excess catch is NOT included in fishing mortaility all discards survive
+                                            _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = 0
+                                        End If
+
+                                    Else
+                                        'iCatch < Quota
+                                        _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = _ecopath.EcopathData.PropLanded(iFleet, iGrp)
+                                        _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = _ecopath.EcopathData.PropDiscard(iFleet, iGrp)
+                                    End If
+
+                                End If
+                            Next iGrp
+                        Case cRegulation.eRegMethod.WeakestStock
+                            'Find the weakest stock
+                            'Calculate effort that would catch all weakest stock quota
+                            'Set it for this fleet
+                            For iGrp = 1 To _ecopath.EcopathData.NumGroups
+                                If (_ecopath.EcopathData.Landing(iFleet, iGrp) + _ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> NoHCR_F Then
+                                    'Calculate the effort limitation, has quota been exceeded?
+                                    'QYear is omitted from following equation because it is assumed that technological creep is zero
+                                    Elim = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+                                    Debug.Assert(Elim >= 0)
+                                    If _simdata.FishRateGear(iFleet, iTime) > Elim Then
+                                        _simdata.FishRateGear(iFleet, iTime) = Elim
+                                    End If
+                                End If
+                            Next iGrp
+
+                        Case cRegulation.eRegMethod.NoQuota
+                            'TODO
+                        Case cRegulation.eRegMethod.None
+                            'TODO
+                    End Select
+                Next
 
             End If
+
+            'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
+            For iFleet = 1 To mCore.nFleets
+                If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
+                    _ecosim.EcosimData.FishRateGear(iFleet, iTime) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
+                End If
+            Next
+
+            'Calculates what the F's are for each species given the effort
+            _ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
+
+        End If
 
     End Sub
 
@@ -2689,27 +2588,6 @@ stepend:
 
     End Sub
 
-    Private Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) _
-        Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
-
-        ' JS 03Oct13: ONLY SUPPRESS MESSAGES WHEN MSE IS RUNNING! 
-        If Not Me.IsRunning Then Return
-
-        'Plugin Point called to cancel a message
-        Select Case msg.Type
-
-            Case eMessageType.Estimate_BA, _
-                 eMessageType.Estimate_Net_Migration, _
-                 eMessageType.EE
-                Console.WriteLine("! MSE suppressed message " & msg.Message)
-                bCancelMessage = True
-
-            Case Else
-                bCancelMessage = False
-
-        End Select
-
-    End Sub
 
 #End Region ' Helper methods
 

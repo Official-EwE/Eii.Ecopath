@@ -20,15 +20,16 @@
 ' ===============================================================================
 '
 Option Strict On
+Option Explicit On
 
 Imports EwEUtils.Core
 
 Public Class cMSEStateMonitor
 
-    Private m_plugin As cMSE = Nothing
+    Private m_plugin As cMSEPluginPoint = Nothing
     Private m_StateCache([Enum].GetValues(GetType(eState)).Length) As TriState
 
-    Public Sub New(plugin As cMSE)
+    Public Sub New(plugin As cMSEPluginPoint)
         Me.m_plugin = plugin
         Me.Invalidate()
     End Sub
@@ -71,12 +72,12 @@ Public Class cMSEStateMonitor
 
             Case eState.HasParams
                 bHasState = Me.IsStateAvailable(eState.Idle) And _
-                    Me.m_plugin.IsInputStructureAvailable(False) And _
-                    Me.m_plugin.IsInputDataCompatible()
+                    Me.MSE.IsInputStructureAvailable(False) And _
+                    Me.MSE.IsInputDataCompatible()
 
             Case eState.HasModels
                 bHasState = Me.IsStateAvailable(eState.HasParams) And _
-                    (Me.m_plugin.NumModelsAvailable > 0)
+                    (Me.MSE.NumModelsAvailable > 0)
 
             Case eState.HasResults
                 bHasState = Me.IsStateAvailable(eState.HasModels) And _
@@ -98,5 +99,12 @@ Public Class cMSEStateMonitor
             Me.m_StateCache(i) = TriState.UseDefault
         Next
     End Sub
+
+
+    Private ReadOnly Property MSE As cMSE
+        Get
+            Return Me.m_plugin.MSE
+        End Get
+    End Property
 
 End Class

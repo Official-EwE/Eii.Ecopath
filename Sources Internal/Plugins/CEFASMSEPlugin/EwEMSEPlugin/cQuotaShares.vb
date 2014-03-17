@@ -41,14 +41,20 @@ Public Class cQuotaShares
     Private mQuotaShareFileValid As Boolean
 #End Region
 
-#Region " Construction "
+#Region " Construction initialiaztion"
 
     Public Sub New(core As EwECore.cCore, MSE As cMSE)
         mcore = core
         mMSE = MSE
         mlstQuotaShares = New List(Of QuotaShare)
+
+    End Sub
+
+
+    Public Sub onEcosimInitialized()
         SetDefault()
-End Sub
+    End Sub
+
 
 #End Region
 

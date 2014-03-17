@@ -135,6 +135,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cMSEPluginPoint.vb" />
     <Compile Include="cQuotaShares.vb" />
     <Compile Include="cRegulation.vb" />
     <Compile Include="gridMaxDecreaseEffort.vb">
