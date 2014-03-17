@@ -46,8 +46,9 @@ Public Class cQuotaShares
     Public Sub New(core As EwECore.cCore, MSE As cMSE)
         mcore = core
         mMSE = MSE
-    End Sub
-
+        mlstQuotaShares = New List(Of QuotaShare)
+        SetDefault()
+End Sub
 
 #End Region
 
@@ -118,7 +119,7 @@ Public Class cQuotaShares
         If Share < 0 Or Share > 1 Then Return False
 
         'Add it to the list
-        mlstQuotaShares.Add(New QuotaShare(FleetNo, GroupNo, Share))
+        mlstQuotaShares.Add(New QuotaShare(GroupNo, FleetNo, Share))
 
         Return True
 
@@ -174,6 +175,7 @@ Public Class cQuotaShares
             reader = cMSEUtils.GetReader(filePath)
             If (reader IsNot Nothing) Then
                 Try
+                    mlstQuotaShares.Clear()
                     csv = New CsvReader(reader, True)
                     mQuotaShareFileExists = True
                     While Not csv.EndOfStream
@@ -314,7 +316,7 @@ Public Class cQuotaShares
     Public Sub SetDefault()
         Dim nFleetsCatch As Integer
 
-        mlstQuotaShares.Clear()
+        If Not mlstQuotaShares Is Nothing Then mlstQuotaShares.Clear()
 
         For iGroup = 1 To mcore.nLivingGroups
 

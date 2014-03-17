@@ -44,6 +44,7 @@ Public Class cRegulation
     Sub New(MSE As cMSE, Core As cCore)
         mMSE = MSE
         mCore = Core
+        ListofRegs = New List(Of cReg)
         RegulationsLoaded = LoadRegFromCSV()
     End Sub
 
@@ -51,8 +52,8 @@ Public Class cRegulation
         Dim FoundFleet As Boolean = False
 
         For FleetListPointer = 1 To ListofRegs.Count
-            If iFleet = ListofRegs(FleetListPointer).mFleetID Then
-                Return ListofRegs(FleetListPointer).mRegMethod
+            If iFleet = ListofRegs(FleetListPointer - 1).mFleetID Then
+                Return ListofRegs(FleetListPointer - 1).mRegMethod
             End If
         Next
 

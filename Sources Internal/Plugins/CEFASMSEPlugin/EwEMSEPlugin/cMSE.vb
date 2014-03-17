@@ -322,7 +322,7 @@ Public Class cMSE
         reader = cMSEUtils.GetReader(strPath)
         If (reader IsNot Nothing) Then
             csv = New CsvReader(reader, True)
-			
+
             Try
                 'cycle through each of the living functional groups each time checking if it exists in the file
                 While Not csv.EndOfStream
@@ -599,8 +599,8 @@ Public Class cMSE
             End If
 
             'End While
-            
-			
+
+
             cMSEUtils.ReleaseReader(reader)
         Next
 
@@ -761,6 +761,8 @@ Public Class cMSE
             DietImpTemp(x) = mCore.EcoPathGroupInputs(x + 1).ImpDiet
         Next
 
+        OriginalNTimesteps = _ecosim.EcosimData.NTimes
+
     End Sub
 
     Private Sub RestoreParameters()
@@ -882,6 +884,7 @@ Public Class cMSE
         Dim BiomassProjected(NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
         Regulations = New cRegulation(Me, mCore)
+        mQuota = New cQuotaShares(mCore, Me)
 
         'TODO WAITING - remove this once we have the interface for creating quota shares
         mQuota.CreateDefaultCSV()
@@ -889,23 +892,9 @@ Public Class cMSE
         Dim msgReport As New cFeedbackMessage("?", eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Information, eMessageReplyStyle.OK)
         msgReport.Hyperlink = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Results)
 
-        OriginalNTimesteps = _ecosim.EcosimData.NTimes
-
-        'Get a list of all fleets that fish the groups that have HCRs
-        For iFleet As Integer = 1 To mCore.nFleets
-            For Each iHCRGroup In CurrentStrategy
-                If mCore.FleetInputs(iFleet).Landings(iHCRGroup.GroupF.Index) + mCore.FleetInputs(iFleet).Discards(iHCRGroup.GroupF.Index) > 0 Then
-                    'If Not Fleets2Fit.Contains(iFleet) And Not ZeroEffortFleetsList.Contains(iFleet) Then
-                    If Not FleetsThatFishHCRGrp.Contains(iFleet) Then
-                        FleetsThatFishHCRGrp.Add(iFleet)
-                    End If
-                    Exit For
-                End If
-            Next
-        Next
-
         'Initialise the TechnologyCreep array. Change this variable into a class level variable and set it only once.
-        For iTechCreep As Integer = 1 To TechnologyCreep.Length - 1
+        ReDim TechnologyCreep(mCore.nFleets)
+        For iTechCreep As Integer = 1 To mCore.nFleets
             TechnologyCreep(iTechCreep) = 1
         Next
 
@@ -981,7 +970,7 @@ Public Class cMSE
         nTrials = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
         For iTrial = 1 To nTrials
 
-            ResetEffortToMax(OriginalNTimesteps, mCore.EcoSimModelParameters.NumberYears * _ecosim.EcosimData.NumStepsPerYear)
+            ResetEffortToMax(OriginalNTimesteps + 1, mCore.EcoSimModelParameters.NumberYears * _ecosim.EcosimData.NumStepsPerYear)
 
             'Console.WriteLine("Trial = " & iTrial)
             cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iTrial), CSng(iTrial / nTrials))
@@ -1085,15 +1074,47 @@ Public Class cMSE
                     For Each iStrategy In Strategies
 
                         CurrentStrategy = iStrategy
+
+                        'Get a list of all fleets that fish the groups that have HCRs
+                        For iFleet As Integer = 1 To mCore.nFleets
+                            For Each iHCRGroup In CurrentStrategy
+                                If mCore.FleetInputs(iFleet).Landings(iHCRGroup.GroupF.Index) + mCore.FleetInputs(iFleet).Discards(iHCRGroup.GroupF.Index) > 0 Then
+                                    'If Not Fleets2Fit.Contains(iFleet) And Not ZeroEffortFleetsList.Contains(iFleet) Then
+                                    If Not FleetsThatFishHCRGrp.Contains(iFleet) Then
+                                        FleetsThatFishHCRGrp.Add(iFleet)
+                                    End If
+                                    Exit For
+                                End If
+                            Next
+                        Next
+
                         'Run Ecosim
                         Me._ecosim.Init(True)   'causes it to reset the f's to the base
                         Me._ecosim.Run()
+
+                        Dim BadDynamics As StreamWriter = New StreamWriter(DataPath & "Results/diagnostics/BadDynamicsTrajectories.csv", True)
+                        BadDynamics.WriteLine("iTrial, Group")
+                        'diag!!! saves the biomass trajectory for groups with bad dynamics to csv
+                        For iGrp As Integer = 1 To mCore.nLivingGroups
+                            For iTimeStep As Integer = 1 To OriginalNTimesteps
+                                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) <= 1 * 10 ^ -20 Then GoodDynamics = False
+                                If GoodDynamics = False Then Exit For
+                            Next
+                            If GoodDynamics = False Then
+                                'Extract the diet matrix
+                                For iTimeStep As Integer = 1 To OriginalNTimesteps - 1
+                                    BadDynamics.Write(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) & ",")
+                                Next
+                                BadDynamics.Write(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, OriginalNTimesteps))
+                            End If
+                        Next iGrp
+
 
                         'Check whether the biomass for any species goes beneath or hits zero
                         For iGrp As Integer = 1 To mCore.nLivingGroups
                             For iTimeStep As Integer = 1 To OriginalNTimesteps
                                 'Console.Write(mCore.EcoSimGroupOutputs(iGrp).Biomass(iTimeStep).ToString & " ")
-                                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) <= 0 Then GoodDynamics = False
+                                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) <= 1 * 10 ^ -20 Then GoodDynamics = False
                                 'If mCore.EcoSimGroupOutputs(iGrp).Biomass(iTimeStep) <= 0 Then GoodDynamics = False
                                 'Test
                                 If GoodDynamics = False Then Exit For
@@ -1214,41 +1235,6 @@ Public Class cMSE
             'alpha(i) = alpha(i) * TempDietMultiplier
             alpha(i) = CSng(alpha(i) * DietMultiplier)
         Next
-
-        'ALGORITHM 1 From A Convenient Way of Generating Gamma
-        'Random Variables Using Generalized
-        'Exponential(Distribution)
-        'Debasis Kundu1 & Rameshwar D. Gupta2
-        'For i As Integer = 0 To nDimensions - 1
-        '    Do
-        '        U = Rnd()
-        '        X = -2 * Math.Log(1 - U ^ (1 / alpha(i)))
-        '        V = Rnd()
-        '    Loop Until V <= (X ^ (alpha(i) - 1) * Math.E ^ (-X / 2)) / (2 ^ (alpha(i) - 1) * (1 - Math.E ^ (-X / 2)) ^ (alpha(i) - 1))
-        '    gamma(i) = X
-        'Next
-
-        'ALGORITHM 2 FROM ABOVE
-        'For i As Integer = 0 To nDimensions - 1
-        '    FoundX = False
-        '    Do
-        '        a = ((1 - Math.Exp(-1 / 2)) ^ alpha(i)) / ((1 - Math.Exp(-1 / 2)) ^ alpha(i) + (alpha(i) * Math.Exp(-1)) / (2 ^ alpha(i)))
-        '        b = (1 - Math.Exp(-1 / 2)) ^ alpha(i) + (alpha(i) * Math.Exp(-1)) / (2 ^ alpha(i))
-        '        U = Rnd()
-        '        If U <= a Then
-        '            X = -2 * Math.Log(1 - (U * b) ^ (1 / alpha(i)))
-        '        Else
-        '            X = -Math.Log((2 ^ alpha(i) / alpha(i)) * b * (1 - U))
-        '        End If
-        '        V = Rnd()
-        '        If X <= 1 And V <= (X ^ (alpha(i) - 1) * Math.Exp(-X / 2)) / (2 ^ (alpha(i) - 1) * (1 - Math.Exp(-X / 2)) ^ (alpha(i) - 1)) Then
-        '            FoundX = True
-        '        ElseIf X > 1 And V <= X ^ (alpha(i) - 1) Then
-        '            FoundX = True
-        '        End If
-        '    Loop Until FoundX = True
-        '    gamma(i) = X
-        'Next
 
         For i As Integer = 0 To nDimensions - 1
             GammaGenerator.Alpha = alpha(i)
@@ -2445,7 +2431,7 @@ stepend:
 
     End Function
 
-      Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
+    Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
 
         ' JS 13Oct13: Fixed CurDir vulnerability in lpsolve
         ' JS 13Oct13: Globalized this method
@@ -2469,111 +2455,112 @@ stepend:
         Dim Emax As Single 'the effort that will catch the entire quota of the most valuable species
         Dim iCatch As Single
 
-        If ChangeEffortFlag = True And iTime > OriginalNTimesteps Then 'Flag is only set to true when the button on the form is clicked
-            'this is so that its only executed when ecosim is run from mseform
 
-            If (iTime - 1) Mod 12 = 0 Then TargConsQuota = DetermineQuotas(BiomassAtTimestep)
+            If ChangeEffortFlag = True And iTime > OriginalNTimesteps Then 'Flag is only set to true when the button on the form is clicked
+                'this is so that its only executed when ecosim is run from mseform
 
-            'if there are no fleets to optimise for skip all this
-            If FleetsThatFishHCRGrp.Count > 0 Then
+                If (iTime - 1) Mod 12 = 0 Then TargConsQuota = DetermineQuotas(BiomassAtTimestep)
 
-                'Not quite sure what QMult is but it is needed to calculate what F is in the optimised routine
-                For indexgrp As Integer = 1 To _ecosim.EcosimData.nGroups
-                    QMult(indexgrp - 1) = _ecosim.EcosimData.QmQo(indexgrp) / (1 + (_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / _ecosim.EcosimData.StartBiomass(indexgrp))
-                Next
+                'if there are no fleets to optimise for skip all this
+                If FleetsThatFishHCRGrp.Count > 0 Then
 
-                For Each iFleet In FleetsThatFishHCRGrp
-                    Select Case Regulations.GetReg(iFleet)
-                        Case cRegulation.eRegMethod.HighestValue, cRegulation.eRegMethod.SelectiveFishing
-                            'Find out the highest value species
-                            'Calculate the effort that would catch all quota of highest value species
-                            'Set it for this fleet
-                            'If selective
-                            'Calculate what selectivity would prevent any other stock going over quota
-                            'Set selectivity variables
+                    'Not quite sure what QMult is but it is needed to calculate what F is in the optimised routine
+                    For indexgrp As Integer = 1 To _ecosim.EcosimData.nGroups
+                        QMult(indexgrp - 1) = _ecosim.EcosimData.QmQo(indexgrp) / (1 + (_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / _ecosim.EcosimData.StartBiomass(indexgrp))
+                    Next
 
-                            Emax = 0
-                            Dim vmax As Single = 0
-                            Dim imax As Integer = 0
-                            Dim v As Single
-                            For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
-                                    'find the stock with the biggest economic value
-                                    v = CSng(mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp, 0) * _ecopath.EcopathData.Market(iGrp, iFleet))
-                                    If v > vmax Then
-                                        vmax = v
-                                        imax = iGrp
+                    For Each iFleet In FleetsThatFishHCRGrp
+                        Select Case Regulations.GetReg(iFleet)
+                            Case cRegulation.eRegMethod.HighestValue, cRegulation.eRegMethod.SelectiveFishing
+                                'Find out the highest value species
+                                'Calculate the effort that would catch all quota of highest value species
+                                'Set it for this fleet
+                                'If selective
+                                'Calculate what selectivity would prevent any other stock going over quota
+                                'Set selectivity variables
+
+                                Emax = 0
+                                Dim vmax As Single = 0
+                                Dim imax As Integer = 0
+                                Dim v As Single
+                                For iGrp = 1 To _ecopath.EcopathData.NumGroups
+                                    If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
+                                        'find the stock with the biggest economic value
+                                        v = CSng(mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * _ecopath.EcopathData.Market(iGrp, iFleet))
+                                        If v > vmax Then
+                                            vmax = v
+                                            imax = iGrp
+                                        End If
                                     End If
-                                End If
-                            Next iGrp
+                                Next iGrp
 
-                            'get the effort limit for the stock with the biggest value
-                            Emax = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax, 0)) / (1.0E-20 + QMult(imax) * _ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
+                                'get the effort limit for the stock with the biggest value
+                                Emax = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * _ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
 
-                            'Limit the effort if it is greater than the max allowable 
-                            If Emax < _ecosim.EcosimData.FishRateGear(iFleet, iTime) Then _ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
+                                'Limit the effort if it is greater than the max allowable 
+                                If Emax < _ecosim.EcosimData.FishRateGear(iFleet, iTime) Then _ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
 
-                            For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
-                                    iCatch = CSng(_ecosim.EcosimData.FishRateGear(iFleet, iTime) * QMult(iGrp) * _ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
+                                For iGrp = 1 To _ecopath.EcopathData.NumGroups
+                                    If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
+                                        iCatch = CSng(_ecosim.EcosimData.FishRateGear(iFleet, iTime) * QMult(iGrp) * _ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
 
-                                    If iCatch > mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp, 0) Then
-                                        'fishing mortality exceeds quota
-                                        _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp, 0)) / (iCatch + 1.0E-20))
-                                        If Regulations.GetReg(iFleet) = cRegulation.eRegMethod.HighestValue Then
-                                            'QuotaType = Strongest
-                                            'excess catch discarded and included in the fishing mortailtiy
-                                            _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - _ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * _ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
+                                        If iCatch > mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
+                                            'fishing mortality exceeds quota
+                                            _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
+                                            If Regulations.GetReg(iFleet) = cRegulation.eRegMethod.HighestValue Then
+                                                'QuotaType = Strongest
+                                                'excess catch discarded and included in the fishing mortailtiy
+                                                _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - _ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * _ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
+                                            Else
+                                                'QuotaType = Selective 
+                                                'excess catch is NOT included in fishing mortaility all discards survive
+                                                _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = 0
+                                            End If
+
                                         Else
-                                            'QuotaType = Selective 
-                                            'excess catch is NOT included in fishing mortaility all discards survive
-                                            _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = 0
+                                            'iCatch < Quota
+                                            _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = _ecopath.EcopathData.PropLanded(iFleet, iGrp)
+                                            _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = _ecopath.EcopathData.PropDiscard(iFleet, iGrp)
                                         End If
 
-                                    Else
-                                        'iCatch < Quota
-                                        _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = _ecopath.EcopathData.PropLanded(iFleet, iGrp)
-                                        _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = _ecopath.EcopathData.PropDiscard(iFleet, iGrp)
                                     End If
-
-                                End If
-                            Next iGrp
-                        Case cRegulation.eRegMethod.WeakestStock
-                            'Find the weakest stock
-                            'Calculate effort that would catch all weakest stock quota
-                            'Set it for this fleet
-                            For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                If (_ecopath.EcopathData.Landing(iFleet, iGrp) + _ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 Then
-                                    'Calculate the effort limitation, has quota been exceeded?
-                                    'QYear is omitted from following equation because it is assumed that technological creep is zero
-                                    Elim = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
-                                    Debug.Assert(Elim >= 0)
-                                    If _simdata.FishRateGear(iFleet, iTime) > Elim Then
-                                        _simdata.FishRateGear(iFleet, iTime) = Elim
+                                Next iGrp
+                            Case cRegulation.eRegMethod.WeakestStock
+                                'Find the weakest stock
+                                'Calculate effort that would catch all weakest stock quota
+                                'Set it for this fleet
+                                For iGrp = 1 To _ecopath.EcopathData.NumGroups
+                                    If (_ecopath.EcopathData.Landing(iFleet, iGrp) + _ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> NoHCR_F Then
+                                        'Calculate the effort limitation, has quota been exceeded?
+                                        'QYear is omitted from following equation because it is assumed that technological creep is zero
+                                        Elim = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+                                        Debug.Assert(Elim >= 0)
+                                        If _simdata.FishRateGear(iFleet, iTime) > Elim Then
+                                            _simdata.FishRateGear(iFleet, iTime) = Elim
+                                        End If
                                     End If
-                                End If
-                            Next iGrp
+                                Next iGrp
 
-                        Case cRegulation.eRegMethod.NoQuota
-                            'TODO
-                        Case cRegulation.eRegMethod.None
-                            'TODO
-                    End Select
+                            Case cRegulation.eRegMethod.NoQuota
+                                'TODO
+                            Case cRegulation.eRegMethod.None
+                                'TODO
+                        End Select
+                    Next
+
+                End If
+
+                'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
+                For iFleet = 1 To mCore.nFleets
+                    If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
+                        _ecosim.EcosimData.FishRateGear(iFleet, iTime) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
+                    End If
                 Next
 
+                'Calculates what the F's are for each species given the effort
+                _ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
+
             End If
-
-            'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
-            For iFleet = 1 To mCore.nFleets
-                If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
-                    _ecosim.EcosimData.FishRateGear(iFleet, iTime) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
-                End If
-            Next
-
-            'Calculates what the F's are for each species given the effort
-            _ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
-
-        End If
 
     End Sub
 
