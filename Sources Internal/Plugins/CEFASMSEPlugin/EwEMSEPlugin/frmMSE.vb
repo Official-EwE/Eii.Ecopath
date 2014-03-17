@@ -98,23 +98,23 @@ Public Class frmMSE
         'Me.m_fpArea.Style = cStyleGuide.eStyleFlags.NotEditable
 
         Me.m_fpNModelsToRun = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNModels2Run, GetType(Integer))
-        Me.m_fpNModelsToRun.Value = Me.m_plugin.NModels2Run
+        Me.m_fpNModelsToRun.Value = Me.MSE.NModels2Run
         AddHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
 
         Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNTrials, GetType(Integer), New cVariableMetaData(0, Me.MSE.NumModelsAvailable, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
-        Me.m_fpNTrials.Value = Me.m_plugin.NModels
+        Me.m_fpNTrials.Value = Me.MSE.NModels
         AddHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
 
         Me.m_fpNYearsToProject = New cEwEFormatProvider(Me.UIContext, m_tbxNYearsProject, GetType(Integer))
-        Me.m_fpNYearsToProject.Value = Me.m_plugin.NYearsProject
+        Me.m_fpNYearsToProject.Value = Me.MSE.NYearsProject
         AddHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf OnNYearsToProjectChanged
 
         Me.m_fpMassBalanceTol = New cEwEFormatProvider(Me.UIContext, Me.m_tbxTolerance, GetType(Single), New cVariableMetaData(0, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
-        Me.m_fpMassBalanceTol.Value = Me.m_plugin.MassBalanceTol
+        Me.m_fpMassBalanceTol.Value = Me.MSE.MassBalanceTol
         AddHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf OnMassBalanceTolChanged
 
         Me.m_fpMaxAttempts = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMaxAttempts, GetType(Integer), New cVariableMetaData(1, 1000000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
-        Me.m_fpMaxAttempts.Value = Me.m_plugin.NMaxAttempts
+        Me.m_fpMaxAttempts.Value = Me.MSE.NMaxAttempts
         AddHandler Me.m_fpMaxAttempts.OnValueChanged, AddressOf OnMaxAttemptsChanged
 
         Me.m_fpMaxTime = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMaxTime, GetType(Single), New cVariableMetaData(0.08, 48, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
@@ -323,7 +323,7 @@ Public Class frmMSE
 
     Private Sub OnNModels2RunChanged(sender As Object, args As EventArgs)
         Try
-            Me.m_plugin.NModels2Run = CInt(Me.m_fpNModelsToRun.Value)
+            Me.MSE.NModels2Run = CInt(Me.m_fpNModelsToRun.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnNModels2RunChanged")
         End Try
@@ -331,7 +331,7 @@ Public Class frmMSE
 
     Private Sub OnNTrialsChanged(sender As Object, args As EventArgs)
         Try
-            Me.m_plugin.NModels = CInt(Me.m_fpNTrials.Value)
+            Me.MSE.NModels = CInt(Me.m_fpNTrials.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnNTrialsChanged")
         End Try
@@ -339,7 +339,7 @@ Public Class frmMSE
 
     Private Sub OnNYearsToProjectChanged(sender As Object, args As EventArgs)
         Try
-            Me.m_plugin.NYearsProject = CInt(Me.m_fpNYearsToProject.Value)
+            Me.MSE.NYearsProject = CInt(Me.m_fpNYearsToProject.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnNYearsToProjectChanged")
         End Try
@@ -347,7 +347,7 @@ Public Class frmMSE
 
     Private Sub OnMassBalanceTolChanged(sender As Object, args As EventArgs)
         Try
-            Me.m_plugin.MassBalanceTol = CSng(Me.m_fpMassBalanceTol.Value)
+            Me.MSE.MassBalanceTol = CSng(Me.m_fpMassBalanceTol.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnMassBalanceTolChanged")
         End Try
@@ -355,7 +355,7 @@ Public Class frmMSE
 
     Private Sub OnMaxAttemptsChanged(sender As Object, args As EventArgs)
         Try
-            Me.m_plugin.NMaxAttempts = CInt(Me.m_fpMaxAttempts.Value)
+            Me.MSE.NMaxAttempts = CInt(Me.m_fpMaxAttempts.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnMaxAttemptsChanged")
         End Try
@@ -363,7 +363,7 @@ Public Class frmMSE
 
     Private Sub OnMaxTimeChanged(sender As Object, args As EventArgs)
         Try
-            Me.m_plugin.NMaxTime = CSng(Me.m_fpMaxTime.Value)
+            Me.MSE.NMaxTime = CSng(Me.m_fpMaxTime.Value)
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnMaxAttemptsChanged")
         End Try
