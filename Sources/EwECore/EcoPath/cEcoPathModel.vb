@@ -1613,6 +1613,7 @@ LoopCalc:
                     If ExitSen Then
                         'GoTo NextSensL ' Couldn't est parameters
                         '    Debug.Assert(False)
+                        Result = eStatusFlags.ErrorEncountered
                         Return False
                     End If
 
@@ -1699,6 +1700,7 @@ LoopCalc:
             End Try
 
             Result = eStatusFlags.OK
+            Debug.Assert(Result <> eStatusFlags.Null)
             Return True
         End Function
 
@@ -2108,6 +2110,7 @@ nextJ:
                         ElseIf EstimateFor = eEstimateParameterFor.Sensitivity Then
                             'the calling model is the Sensitivity routine 
                             'this will cause it to exit the parameter estimation
+                            cLog.Write("Ecopath.EstimateB() parameter estimation error. There maybe to much cannibalism.")
                             SenExit = True
                         End If
                     End If
