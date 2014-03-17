@@ -31,9 +31,6 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
-Imports LumenWorks.Framework.IO.Csv
-
-
 #End Region ' Imports
 
 
@@ -50,9 +47,6 @@ Public Class cMSEPluginPoint
 #Region " Internal vars "
 
     Private m_MSE As cMSE
-
-    Friend Strategies As New Strategies
-    Private CurrentStrategy As Strategy
 
     Private MSEForm As frmMSE = Nothing
     Private mCore As cCore = Nothing
