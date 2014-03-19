@@ -9466,6 +9466,8 @@ Namespace DataSources
             Dim strConverterCfg As String = ""
             Dim bSucces As Boolean = True
 
+            If (reader Is Nothing) Then Return Me.IsReadOnly
+
             While reader.Read()
                 Try
                     var = cin.GetVarName(CStr(reader("VarName")))
