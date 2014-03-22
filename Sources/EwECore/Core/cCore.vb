@@ -11070,6 +11070,8 @@ Public Class cCore
             'data validation is turned off for stanza groups
             'stanza.AllowValidation = True
 
+            Me.updateStanzaLeadingGroups(stanza)
+
             Return True
 
         Catch ex As Exception
@@ -11094,9 +11096,9 @@ Public Class cCore
 
         Try
             Dim iStanza As Integer = stanza.Index
-            Dim nStanzas As Integer = stanza.nLifeStages
+            Dim nLifeStages As Integer = stanza.nLifeStages
 
-            If (nStanzas <= 0) Then
+            If (nLifeStages <= 0) Then
                 ' Fail calculations without making any changes
                 Return False
             End If
@@ -11114,12 +11116,12 @@ Public Class cCore
             'maybe not the correct messagetype but it seems to work
             Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, stanza.Name), _
                                             eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.Stanza)
-            ReDim Bio(nStanzas)
-            ReDim Bat(nStanzas) 'in this case the Bat() is ignored so no need to populate it
-            ReDim Z(nStanzas)
-            ReDim cb(nStanzas)
-            ReDim FirstAge(nStanzas)
-            ReDim SecondAge(nStanzas) 'last month of age by spp, stanza (set in ecopath)
+            ReDim Bio(nLifeStages)
+            ReDim Bat(nLifeStages) 'in this case the Bat() is ignored so no need to populate it
+            ReDim Z(nLifeStages)
+            ReDim cb(nLifeStages)
+            ReDim FirstAge(nLifeStages)
+            ReDim SecondAge(nLifeStages) 'last month of age by spp, stanza (set in ecopath)
 
             If Not stanza.OkToCalculate(msg) Then
                 'this stanza group has not had it parameters set B CB and Mort
@@ -11132,7 +11134,7 @@ Public Class cCore
             rp = stanza.RecruitmentPower
             ba = stanza.BiomassAccumulationRate
 
-            For i = 1 To nStanzas
+            For i = 1 To nLifeStages
                 Bio(i) = stanza.Biomass(i)
                 Z(i) = stanza.Mortality(i)
                 cb(i) = stanza.CB(i)
@@ -11141,21 +11143,21 @@ Public Class cCore
             leadingB = stanza.LeadingB
             leadingCB = stanza.LeadingCB
 
-            If SecondAge(nStanzas) = 0 Then
-                For i = 2 To nStanzas
+            If SecondAge(nLifeStages) = 0 Then
+                For i = 2 To nLifeStages
                     SecondAge(i - 1) = FirstAge(i) - 1
                 Next
-                SecondAge(nStanzas) = CInt(Math.Log(1 - 0.9 ^ (1 / 3)) / (-orgVBK / 12))
-                If SecondAge(nStanzas) > cCore.MAX_AGE Then SecondAge(nStanzas) = cCore.MAX_AGE
+                SecondAge(nLifeStages) = CInt(Math.Log(1 - 0.9 ^ (1 / 3)) / (-orgVBK / 12))
+                If SecondAge(nLifeStages) > cCore.MAX_AGE Then SecondAge(nLifeStages) = cCore.MAX_AGE
             End If
 
             'CalculateStanzaParameters() will update cStanzaDatastructure.SplitWage() and SplitNo() for this iStanza (as well a a bunch of other variables)
-            bSuccess = m_EcoSim.CalculateStanzaParameters(iStanza, nStanzas, stanza.LeadingB, FirstAge, SecondAge, Bio, orgVBK, Z, _
+            bSuccess = m_EcoSim.CalculateStanzaParameters(iStanza, nLifeStages, stanza.LeadingB, FirstAge, SecondAge, Bio, orgVBK, Z, _
                                                 stanza.LeadingCB, cb, stanza.BiomassAccumulationRate, Bat)
 
             'set Age2() for the last life stage of this stanza group to the value calculated here and CalculateStanzaParameters()
             'In EwE5 this only happens in InitStanza here we need the value from Age2() for the interface EwE5 uses SecondAge()
-            m_Stanza.Age2(iStanza, nStanzas) = SecondAge(nStanzas)
+            m_Stanza.Age2(iStanza, nLifeStages) = SecondAge(nLifeStages)
 
 
             'LoadStanza() will update WeightAtAge (SplitWage), NumberAtAge (SplitNo), BiomassAtAge (SplitWage*SplitNo)
@@ -11172,7 +11174,7 @@ Public Class cCore
             ' Restore group
             stanza.AllowValidation = False
 
-            For i = 1 To nStanzas
+            For i = 1 To nLifeStages
                 stanza.Biomass(i) = Bio(i)
                 stanza.Mortality(i) = Z(i)
                 stanza.CB(i) = cb(i)
@@ -11212,6 +11214,24 @@ Public Class cCore
 
     End Function
 
+    Private Sub updateStanzaLeadingGroups(ByVal stanza As cStanzaGroup)
+
+        For iLF As Integer = 1 To stanza.nLifeStages
+            Dim iEcopath As Integer = stanza.iGroups(iLF)
+            m_EcoPathData.isGroupLeadingB(iEcopath) = False
+            m_EcoPathData.isGroupLeadingCB(iEcopath) = False
+            'is this LifeStage index the leading B or QB for this MultiStanza Group
+            If iLF = stanza.LeadingB Then
+                m_EcoPathData.isGroupLeadingB(iEcopath) = True
+            End If
+
+            If iLF = stanza.LeadingCB Then
+                m_EcoPathData.isGroupLeadingCB(iEcopath) = True
+            End If
+        Next
+
+    End Sub
+
     Private Function UpdateStanza(ByVal iDBID As Integer) As Boolean
 
         Dim stanza As cStanzaGroup = Nothing
@@ -11248,6 +11268,8 @@ Public Class cCore
             m_EcoPathData.BA(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.Biomass(iLifeStage) * stanza.BiomassAccumulationRate
 
         Next iLifeStage
+
+
 
         Return bSucces
 
