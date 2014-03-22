@@ -87,6 +87,7 @@ Public Class frmMSE
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
+        If (Me.m_plugin Is Nothing) Then Return
 
         Me.m_bInUpdate = True
 
@@ -127,6 +128,9 @@ Public Class frmMSE
 
         Me.m_bInUpdate = False
 
+        Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
+        AddHandler mon.OnInvalidated, AddressOf OnMSEStateChanged
+
         Me.UpdateControls()
 
     End Sub
@@ -154,6 +158,9 @@ Public Class frmMSE
 
             RemoveHandler Me.m_fpMaxTime.OnValueChanged, AddressOf OnMaxTimeChanged
             Me.m_fpMaxTime.Release()
+
+            Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
+            RemoveHandler mon.OnInvalidated, AddressOf OnMSEStateChanged
 
         End If
 
@@ -390,7 +397,7 @@ Public Class frmMSE
     ''' in idle time.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Sub UpdateState()
+    Private Sub OnMSEStateChanged(ByVal man As cMSEStateMonitor)
         Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
     End Sub
 

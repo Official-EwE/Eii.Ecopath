@@ -95,11 +95,26 @@ Public Class cMSEStateMonitor
     End Function
 
     Public Sub Invalidate()
+
+        Dim bInvalidated As Boolean = False
         For i As Integer = 0 To Me.m_StateCache.Count - 1
-            Me.m_StateCache(i) = TriState.UseDefault
+            If (Me.m_StateCache(i) <> TriState.UseDefault) Then
+                Me.m_StateCache(i) = TriState.UseDefault
+                bInvalidated = True
+            End If
         Next
+
+        If bInvalidated Then
+            Try
+                RaiseEvent OnInvalidated(Me)
+            Catch ex As Exception
+                cLog.Write(ex, "cMSEStateMonitor::Invalidate")
+            End Try
+        End If
+
     End Sub
 
+    Public Event OnInvalidated(mon As cMSEStateMonitor)
 
     Private ReadOnly Property MSE As cMSE
         Get
