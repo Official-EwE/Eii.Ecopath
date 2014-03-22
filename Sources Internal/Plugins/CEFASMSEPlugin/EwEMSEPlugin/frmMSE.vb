@@ -128,7 +128,7 @@ Public Class frmMSE
 
         Me.m_bInUpdate = False
 
-        Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
+        Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
         AddHandler mon.OnInvalidated, AddressOf OnMSEStateChanged
 
         Me.UpdateControls()
@@ -159,7 +159,7 @@ Public Class frmMSE
             RemoveHandler Me.m_fpMaxTime.OnValueChanged, AddressOf OnMaxTimeChanged
             Me.m_fpMaxTime.Release()
 
-            Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
+            Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
             RemoveHandler mon.OnInvalidated, AddressOf OnMSEStateChanged
 
         End If
@@ -174,7 +174,7 @@ Public Class frmMSE
         If (Me.m_plugin Is Nothing) Then Return
         If (Me.IsDisposed) Then Return
 
-        Dim mon As cMSEStateMonitor = Me.m_plugin.Controller
+        Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
         Dim img As Image = Nothing
 
         Me.m_plStep1.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.Idle)

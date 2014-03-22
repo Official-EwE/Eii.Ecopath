@@ -294,7 +294,7 @@ Public Class frmTFMpolicy
         Try
             Me.m_plugin.Strategies.Clear()
             Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
-            Me.m_plugin.InvalidateConfiguration()
+            Me.m_plugin.InvalidateData()
 
             Me.m_bStrategiesSaved = True
             Me.DialogResult = Windows.Forms.DialogResult.OK

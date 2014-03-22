@@ -43,6 +43,8 @@ Public Class cMSEPluginPoint
     Implements EwEPlugin.IMessageFilterPlugin
     Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcosimPlugin
+    Implements EwEPlugin.IEcopathRunInitializedPlugin
+
 
 #Region " Internal vars "
 
@@ -51,10 +53,12 @@ Public Class cMSEPluginPoint
     Private MSEForm As frmMSE = Nothing
     Private mCore As cCore = Nothing
     Private m_uic As cUIContext = Nothing
-    Private _ecosim As EwECore.Ecosim.cEcoSimModel = Nothing
-    Private _simdata As cEcosimDatastructures
-    Private _ecopath As Ecopath.cEcoPathModel
-    Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
+    Private m_ecosim As EwECore.Ecosim.cEcoSimModel = Nothing
+    Private m_ecopath As Ecopath.cEcoPathModel
+    Private m_simdata As cEcosimDatastructures
+    Private m_pathdata As cEcopathDataStructures
+
+    Private m_EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
 
     Private m_monitor As New cMSEStateMonitor(Me)
 
@@ -70,7 +74,7 @@ Public Class cMSEPluginPoint
     ''' Get the <see cref="cMSEStateMonitor">MSE state monitor</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Controller As cMSEStateMonitor
+    Public ReadOnly Property Monitor As cMSEStateMonitor
         Get
             Return Me.m_monitor
         End Get
@@ -97,7 +101,7 @@ Public Class cMSEPluginPoint
 #Region " Construction "
 
     Public Sub New()
-        m_MSE = New cMSE
+        m_MSE = New cMSE(m_monitor)
         Me.InvalidateConfiguration()
     End Sub
 
@@ -107,12 +111,8 @@ Public Class cMSEPluginPoint
 
     Friend Sub InvalidateConfiguration()
 
-        Me.MSE.InvalidateConfiguration()
+        Me.MSE.InvalidateData()
         Me.m_monitor.Invalidate()
-
-        If Me.HasUI Then
-            MSEForm.UpdateState()
-        End If
 
     End Sub
 
@@ -164,13 +164,12 @@ Public Class cMSEPluginPoint
 
     Public Sub onCoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
 
-        _ecopath = CType(objEcoPath, Ecopath.cEcoPathModel)
-        _ecosim = CType(objEcoSim, Ecosim.cEcoSimModel)
+        m_ecopath = CType(objEcoPath, Ecopath.cEcoPathModel)
+        m_ecosim = CType(objEcoSim, Ecosim.cEcoSimModel)
 
         Debug.Assert(Me.m_uic IsNot Nothing)
 
-        Me.m_MSE = New cMSE
-        Me.MSE.onCoreInitialized(Me.mCore, _ecopath, _ecosim)
+        Me.MSE.onCoreInitialized(Me.mCore, m_ecopath, m_ecosim)
 
         ' Set message handlers
 
@@ -185,13 +184,22 @@ Public Class cMSEPluginPoint
     End Sub
 
 
+    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) _
+                Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
+
+        Me.m_pathdata = DirectCast(EcopathDataAsObject, cEcopathDataStructures)
+        Me.MSE.onEcopathInitialized(Me.m_pathdata)
+
+    End Sub
+
+
     Public Sub onEcosimInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Debug.Assert(TypeOf EcosimDatastructures Is cEcosimDatastructures, "EcosimInitialized() failed to pass in valid Ecosim Data!")
 
         If TypeOf EcosimDatastructures Is cEcosimDatastructures Then
 
-            Me._simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
-            Me.MSE.onEcosimInitialized(Me._simdata)
+            Me.m_simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
+            Me.MSE.onEcosimInitialized(Me.m_simdata)
 
         End If
 
