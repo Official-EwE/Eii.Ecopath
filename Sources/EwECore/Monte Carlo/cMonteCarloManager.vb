@@ -917,8 +917,11 @@ Public Class cMonteCarloManager
                     If (sg.iGroups(sg.LeadingB) = grp.Index) Then status = eStatusFlags.OK
                 Case eVarNameFlags.QBInput
                     If (sg.iGroups(sg.LeadingCB) = grp.Index) Then status = eStatusFlags.OK
-                    'Case Else
-                    '    status = eStatusFlags.OK
+
+                Case eVarNameFlags.PBInput
+                    'PB needs to be supplied for all stages in a Multistanza group
+                    'so it can be varied
+                    status = eStatusFlags.OK
             End Select
         End If
 

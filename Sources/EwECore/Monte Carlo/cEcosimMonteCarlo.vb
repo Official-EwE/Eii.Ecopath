@@ -180,6 +180,8 @@ Friend Class cEcosimMonteCarlo
 
     Private m_rand As Random
 
+    Private m_isVariable(,) As Boolean
+
     Public Sub New(ByRef theCore As cCore)
 
         m_core = theCore
@@ -213,7 +215,11 @@ Friend Class cEcosimMonteCarlo
             'Debug.Assert(False, "Include F Penalty has been set for debugging.")
             'IncludeFpenalty = True
 
-            redimVariables()
+            'set if a parameter can be varied
+            'redimVariables() needs m_isVariable(group,parameter) to be set before it is called
+            Me.setIsVariable()
+
+            Me.redimVariables()
             m_pluginmanager = Me.m_core.PluginManager
 
             'vc sep 2008: adding vulnerability to MC: changed first dimension from 5 to 6
@@ -253,6 +259,31 @@ Friend Class cEcosimMonteCarlo
 
 
     End Function
+
+    ''' <summary>
+    ''' Set the isVariable(group,parameter) boolean flag
+    ''' </summary>
+    ''' <remarks>Can the MonteCarlo vary an Ecopath parameter </remarks>
+    Private Sub setIsVariable()
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'jb 22-Mar-2014 
+        'Added the isVariable() to check if a parameter can be varied
+        ReDim m_isVariable(m_core.nGroups, Me.NumParams())
+        For iGrp As Integer = 1 To m_core.nGroups
+
+            Me.m_isVariable(iGrp, eMCParams.Biomass) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass)
+            'Use the B index in missing(group,variable) from Ecopath for BA
+            Me.m_isVariable(iGrp, eMCParams.BA) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.BA)
+
+            Me.m_isVariable(iGrp, eMCParams.PB) = (Not Me.m_ecopath.missing(iGrp, 2))
+            'QB needs to check the input variable
+            Me.m_isVariable(iGrp, eMCParams.QB) = ((Not Me.m_ecopath.missing(iGrp, 3)) And Me.isStanzaGroupVariable(iGrp, eMCParams.QB)) And (Me.m_epdata.QBinput(iGrp) > 0)
+            Me.m_isVariable(iGrp, eMCParams.EE) = (Not Me.m_ecopath.missing(iGrp, 4))
+
+        Next
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    End Sub
 
     Public Sub Clear()
 
@@ -365,6 +396,7 @@ Friend Class cEcosimMonteCarlo
                 'Pmean(eMCParams.Vulnerability, iGrp) = m_esdata.VulnerabilityPredator(iGrp)
                 'js feb 2011: added other mort
                 Pmean(eMCParams.OtherMort, iGrp) = m_epdata.OtherMortinput(iGrp)
+
             Next
 
             'make a copy for the best fitting data 
@@ -764,37 +796,39 @@ Friend Class cEcosimMonteCarlo
                 For igrp = 1 To m_core.nLivingGroups
 
                     'B and BA
-                    If m_ecopath.missing(igrp, 1) = False Then
+                    If Me.m_isVariable(igrp, eMCParams.Biomass) Then
+
 
                         m_epdata.B(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.Biomass, igrp), _
                                                              CVpar(eMCParams.Biomass, igrp), _
                                                              ParLimit(0, eMCParams.Biomass, igrp), _
                                                              ParLimit(1, eMCParams.Biomass, igrp))
+                    End If ' Me.m_isVariable(igrp, eMCParams.Biomass)
 
+                    If Me.m_isVariable(igrp, eMCParams.BA) Then
                         m_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp), _
                                                              ParCurVal(eMCParams.BA, igrp), _
                                                              CVpar(eMCParams.BA, igrp), _
                                                              ParLimit(0, eMCParams.BA, igrp), _
                                                              ParLimit(1, eMCParams.BA, igrp))
-                    End If
+                    End If 'Me.m_isVariable(igrp, eMCParams.BA)
+
                     'PB
-                    If m_ecopath.missing(igrp, 2) = False Then
+                    If Me.m_isVariable(igrp, eMCParams.PB) Then
                         m_epdata.PB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.PB, igrp), _
                                                               CVpar(eMCParams.PB, igrp), _
                                                               ParLimit(0, eMCParams.PB, igrp), _
                                                               ParLimit(1, eMCParams.PB, igrp))
                     End If
 
-                    ' JS13feb12 added
-                    'QB
-                    If m_ecopath.missing(igrp, 3) = False Then
+                    If Me.m_isVariable(igrp, eMCParams.QB) Then
                         m_epdata.QB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.QB, igrp), _
                                                               CVpar(eMCParams.QB, igrp), _
                                                               ParLimit(0, eMCParams.QB, igrp), _
                                                               ParLimit(1, eMCParams.QB, igrp))
                     End If
                     'EE
-                    If m_ecopath.missing(igrp, 4) = False Then
+                    If Me.m_isVariable(igrp, eMCParams.EE) Then
                         m_epdata.EE(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.EE, igrp), _
                                                               CVpar(4, igrp), _
                                                               ParLimit(0, eMCParams.EE, igrp), _
@@ -805,7 +839,7 @@ Friend Class cEcosimMonteCarlo
                 m_ecosim.InitStanza()
 
                 'For debugging
-                'dumpEcopathPars()
+                dumpEcopathPars()
 
                 'Estimate basic params
                 If Not m_ecopath.Run() Then
@@ -859,12 +893,40 @@ Friend Class cEcosimMonteCarlo
 
     End Function
 
+
+    Private Function isStanzaGroupVariable(igrp As Integer, varType As eMCParams) As Boolean
+
+        'Not a multistanza group so OK to vary
+        If Not m_epdata.StanzaGroup(igrp) Then Return True
+
+        'Optimistic this group can be varied
+        Dim bReturn As Boolean = True
+        Select Case varType
+
+            Case eMCParams.BA
+                'BA is never variable for Stanza groups
+                If varType = eMCParams.BA Then bReturn = False
+
+            Case eMCParams.Biomass
+                'For B and QB only the leading group can be varied
+                If Not Me.m_epdata.isGroupLeadingB(igrp) Then bReturn = False
+
+            Case eMCParams.QB
+                'For B and QB only the leading group can be varied
+                If Not Me.m_epdata.isGroupLeadingCB(igrp) Then bReturn = False
+
+        End Select
+
+        Return bReturn
+
+    End Function
+
     Private Sub dumpEcopathPars()
         Try
             Dim strm As New System.IO.StreamWriter("EcopathPars.csv", True)
             strm.WriteLine("iter")
             For igrp As Integer = 1 To Me.m_epdata.NumGroups
-                strm.WriteLine(Me.m_epdata.GroupName(igrp) + "," + Me.m_epdata.B(igrp).ToString + "," + Me.m_epdata.PB(igrp).ToString + "," + Me.m_epdata.QB(igrp).ToString + "," + Me.m_epdata.EE(igrp).ToString)
+                strm.WriteLine(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.m_epdata.GroupName(igrp)) + "," + Me.m_epdata.B(igrp).ToString + "," + Me.m_epdata.PB(igrp).ToString + "," + Me.m_epdata.QB(igrp).ToString + "," + Me.m_epdata.EE(igrp).ToString)
             Next
             strm.Close()
         Catch ex As Exception
@@ -927,17 +989,20 @@ Friend Class cEcosimMonteCarlo
         Try
 
             ReDim ParLimit(1, 6, m_core.nGroups)
-            ReDim CVpar(6, m_core.nGroups)
+            ReDim CVpar(Me.NumParams, m_core.nGroups)
 
             For i As Integer = 1 To m_core.nGroups
-                For j As Integer = 0 To 4
-                    CVpar(j, i) = 0.1
-                Next
-                'BA
-                CVpar(5, i) = 0.05
-                'Vulnerability
-                CVpar(6, i) = 0.1
-            Next
+                For ivar As Integer = 1 To Me.NumParams
+                    'Only set the default CV if the parameter is variable
+                    If Me.m_isVariable(i, ivar) Then
+                        CVpar(ivar, i) = 0.1
+                        If ivar = CInt(eMCParams.BA) Then
+                            'BA gets a different default CV
+                            CVpar(ivar, i) = 0.05
+                        End If
+                    End If
+                Next ivar
+            Next i
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1012,13 +1077,14 @@ Friend Class cEcosimMonteCarlo
 
     Private Function ChooseFeasiblePar(ByVal xbar As Single, ByVal CV As Single, ByVal ParMin As Single, ByVal ParMax As Single) As Single
         Dim X As Single, ict As Integer
-
+        Debug.Assert(CV = 0)
         Do
             'jb 7-Dec-2010 ChooseFeasiblePar() changed application of CV 
             ' X = xbar * (1 + 0.02 * CV * RandomNormal())
             X = xbar * (1 + CV * RandomNormal())
 
             If X >= ParMin And X <= ParMax Then
+                ' Debug.Assert(X = xbar)
                 Return X
             End If
             ict = ict + 1
