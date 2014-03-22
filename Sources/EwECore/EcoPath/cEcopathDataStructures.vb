@@ -347,6 +347,9 @@ Public Class cEcopathDataStructures
     ''' </remarks>
     Public isEcospaceModelCoupled As Boolean
 
+    Public isGroupLeadingB() As Boolean
+    Public isGroupLeadingCB() As Boolean
+
 #End Region
 
 #Region " Borrowed from EcoRanger "
@@ -483,6 +486,10 @@ Public Class cEcopathDataStructures
         ReDim StanzaGroup(NumGroups)
 
         ReDim mis(NumGroups)
+
+        'is the Ecopath group the leading B or QB for a MultiStanza group
+        ReDim isGroupLeadingB(NumGroups)
+        ReDim isGroupLeadingCB(NumGroups)
 
         ' GearVariables(True)
         '   CinfoDeclare()    'The variables for Ecotracer: all using numgroups
