@@ -15,8 +15,14 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
 
-Namespace Controls
+Option Strict On
+Imports System.Drawing
+
+#End Region ' Imports
+
+Namespace Core
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -26,7 +32,6 @@ Namespace Controls
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Interface IFlowDiagramData
-        Inherits IUIElement
 
         ''' -------------------------------------------------------------------
         ''' <summary>

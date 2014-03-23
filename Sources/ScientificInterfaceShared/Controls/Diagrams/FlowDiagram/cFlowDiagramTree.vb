@@ -271,7 +271,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private ReadOnly Property UIContext() As cUIContext
             Get
-                Return Me.m_data.UIContext
+                Return DirectCast(Me.m_data, IUIElement).UIContext
             End Get
         End Property
 

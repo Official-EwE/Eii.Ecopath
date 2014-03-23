@@ -1129,15 +1129,15 @@ Namespace Ecopath
 
             For i = 1 To m_Data.NumLiving
                 If m_Data.QB(i) < 0 And m_Data.PP(i) = 1 Then m_Data.QB(i) = 0
-                missing(i, 1) = CBool(IIF(m_Data.BH(i) <= 0, True, False))
-                missing(i, 2) = CBool(IIF(m_Data.PB(i) < 0 And m_Data.GE(i) < 0, True, False))
-                missing(i, 3) = CBool(IIF(m_Data.QB(i) < 0 And m_Data.GE(i) < 0, True, False))
+                missing(i, 1) = (m_Data.BH(i) <= 0)
+                missing(i, 2) = (m_Data.PB(i) < 0 And m_Data.GE(i) < 0)
+                missing(i, 3) = (m_Data.QB(i) < 0 And m_Data.GE(i) < 0)
 
                 'If i = 1 And m_Data.EE(i) > 0 Then
                 '    System.Console.WriteLine("EE ")
                 'End If
 
-                missing(i, 4) = CBool(IIF(m_Data.EE(i) < 0, True, False))
+                missing(i, 4) = (m_Data.EE(i) < 0)
             Next i
         End Function
 

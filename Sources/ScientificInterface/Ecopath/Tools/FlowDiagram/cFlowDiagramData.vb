@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -32,6 +33,7 @@ Namespace Ecopath.Controls.FlowDiagram
     ''' -----------------------------------------------------------------------
     Public Class cFlowDiagramData
         Implements IFlowDiagramData
+        Implements IUIElement
 
 #Region " Internals "
 
@@ -56,10 +58,10 @@ Namespace Ecopath.Controls.FlowDiagram
 #Region " Properties "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.UIContext"/>
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
         ''' -------------------------------------------------------------------
         Friend Property UIContext() As cUIContext _
-            Implements IFlowDiagramData.UIContext
+            Implements IUIElement.UIContext
             Get
                 Return Me.m_uic
             End Get
@@ -147,7 +149,7 @@ Namespace Ecopath.Controls.FlowDiagram
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.UIContext"/>
+        ''' <inheritdocs cref="IFlowDiagramData.LinkValue"/>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
                Implements IFlowDiagramData.LinkValue
@@ -215,7 +217,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' <inheritdocs cref="IFlowDiagramData.Title"/>
         ''' -------------------------------------------------------------------
         Public Property Title As String _
-            Implements ScientificInterfaceShared.Controls.IFlowDiagramData.Title
+            Implements IFlowDiagramData.Title
 
 #End Region ' Properties
 
