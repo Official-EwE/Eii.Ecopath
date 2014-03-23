@@ -19,6 +19,12 @@
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+#Region " Imports "
+
+Option Strict On
+Option Explicit On
+
+#End Region ' Imports 
 
 ''' <summary>
 ''' Class to group a list of Harvest Control Rules into an object

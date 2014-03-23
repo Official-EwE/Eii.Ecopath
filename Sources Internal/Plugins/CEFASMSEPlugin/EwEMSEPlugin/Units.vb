@@ -19,10 +19,14 @@
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Strict On
 Option Explicit On
 
 Imports EwECore
+
+#End Region ' Imports 
 
 Public Enum eConvertTypes
     ''' <summary>

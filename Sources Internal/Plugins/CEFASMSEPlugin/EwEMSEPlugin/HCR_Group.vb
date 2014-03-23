@@ -19,12 +19,15 @@
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 Imports System.Text
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+#End Region ' Imports
 
 Public Enum HCRType
     Target = 0

@@ -19,8 +19,13 @@
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+#Region " Imports "
 
+Option Strict On
+Option Explicit On
 Imports System.IO
+
+#End Region ' Imports 
 
 ''' <summary>
 ''' Class to wrap a list of Strategies into an object

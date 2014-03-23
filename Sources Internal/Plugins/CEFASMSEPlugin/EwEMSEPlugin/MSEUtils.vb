@@ -19,10 +19,16 @@
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Strict On
+Option Explicit On
+
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+
+#End Region ' Imports 
 
 Public Class cMSEUtils
 
