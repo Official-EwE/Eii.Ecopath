@@ -2452,9 +2452,6 @@ stepend:
 
 
     Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
-
-        Return
-
         ' JS 13Oct13: Fixed CurDir vulnerability in lpsolve
         ' JS 13Oct13: Globalized this method
         ' JS 13Oct13: Fixed path usage
