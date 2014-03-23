@@ -22,7 +22,7 @@ Imports System.Drawing
 
 #End Region ' Imports
 
-Namespace Core
+Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

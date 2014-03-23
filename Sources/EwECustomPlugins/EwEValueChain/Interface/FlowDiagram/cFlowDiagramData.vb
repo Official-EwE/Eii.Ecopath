@@ -20,7 +20,6 @@
 option Strict on
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style

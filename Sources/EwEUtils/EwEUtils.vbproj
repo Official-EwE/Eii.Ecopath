@@ -132,7 +132,6 @@
     <Compile Include="Core\IFeedbackMessage.vb" />
     <Compile Include="Core\IEcospaceResultsWriter.vb" />
     <Compile Include="Core\IExternalDataSource.vb" />
-    <Compile Include="Core\IFlowDiagramData.vb" />
     <Compile Include="Core\ILPSolver.vb" />
     <Compile Include="Core\IMessage.vb" />
     <Compile Include="Core\ITaxonDetailData.vb" />
