@@ -1,5 +1,4 @@
-﻿Imports EwECore
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -16,13 +15,21 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
+option Strict on
+Imports System.IO
+Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports System.IO
-Imports EwEUtils.Utilities
+
+#End Region ' Imports
 
 Public Class cFlowDiagramData
     Implements IFlowDiagramData
+    Implements IUIElement
 
 #Region " Private vars "
 
@@ -224,7 +231,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
-    ''' <inheritdocs cref="IFlowDiagramData.UIContext"/>
+    ''' <inheritdocs cref="IUIElement.UIContext"/>
     Public Property UIContext As cUIContext _
         Implements IUIElement.UIContext
         Get
@@ -237,7 +244,7 @@ Public Class cFlowDiagramData
 
     ''' <inheritdocs cref="IFlowDiagramData.Title"/>
     Public Property Title As String _
-        Implements ScientificInterfaceShared.Controls.IFlowDiagramData.Title
+        Implements IFlowDiagramData.Title
 
 #End Region ' Properties
 
