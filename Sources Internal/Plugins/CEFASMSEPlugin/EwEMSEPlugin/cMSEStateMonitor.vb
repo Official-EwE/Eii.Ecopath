@@ -34,13 +34,22 @@ Public Class cMSEStateMonitor
 
 #Region " Private vars "
 
+    ''' <summary>The <see cref="cMSEPluginPoint"/> this monitor keeps an eye on.</summary>
     Private m_plugin As cMSEPluginPoint = Nothing
-    Private m_StateCache([Enum].GetValues(GetType(eState)).Length) As TriState
+    ''' <summary>Cache of pre-determined states.</summary>
+    Private m_statecache([Enum].GetValues(GetType(eState)).Length) As TriState
 
 #End Region ' Private vars
 
 #Region " Constructor "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Constructor.
+    ''' </summary>
+    ''' <param name="plugin">The <see cref="cMSEPluginPoint"/> this monitor
+    ''' will keep an eye on.</param>
+    ''' -----------------------------------------------------------------------
     Public Sub New(plugin As cMSEPluginPoint)
         Me.m_plugin = plugin
         Me.Invalidate()
@@ -100,8 +109,9 @@ Public Class cMSEStateMonitor
         ''Diagnostics MP
         'Return True
 
-        If Me.m_StateCache(state) <> TriState.UseDefault Then
-            Return Me.m_StateCache(state) = TriState.True
+        ' Optimization: return pre-determined state if available.
+        If (Me.m_statecache(state) <> TriState.UseDefault) Then
+            Return (Me.m_statecache(state) = TriState.True)
         End If
 
         Select Case state
@@ -123,10 +133,11 @@ Public Class cMSEStateMonitor
                     True ' ToDo_JS: determine this properly
         End Select
 
+        ' Update state cache once state has been determined.
         If bHasState Then
-            Me.m_StateCache(state) = TriState.True
+            Me.m_statecache(state) = TriState.True
         Else
-            Me.m_StateCache(state) = TriState.False
+            Me.m_statecache(state) = TriState.False
         End If
 
         Return bHasState
@@ -144,9 +155,9 @@ Public Class cMSEStateMonitor
     Public Sub Invalidate()
 
         Dim bInvalidated As Boolean = False
-        For i As Integer = 0 To Me.m_StateCache.Count - 1
-            If (Me.m_StateCache(i) <> TriState.UseDefault) Then
-                Me.m_StateCache(i) = TriState.UseDefault
+        For i As Integer = 0 To Me.m_statecache.Count - 1
+            If (Me.m_statecache(i) <> TriState.UseDefault) Then
+                Me.m_statecache(i) = TriState.UseDefault
                 bInvalidated = True
             End If
         Next
