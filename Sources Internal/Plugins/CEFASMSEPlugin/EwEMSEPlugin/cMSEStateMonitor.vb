@@ -24,19 +24,37 @@ Option Explicit On
 
 Imports EwEUtils.Core
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Helper class that monitors the run and data state of the MSE engine, and its
+''' compatibility with the model loaded in EwE.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cMSEStateMonitor
+
+#Region " Private vars "
 
     Private m_plugin As cMSEPluginPoint = Nothing
     Private m_StateCache([Enum].GetValues(GetType(eState)).Length) As TriState
+
+#End Region ' Private vars
+
+#Region " Constructor "
 
     Public Sub New(plugin As cMSEPluginPoint)
         Me.m_plugin = plugin
         Me.Invalidate()
     End Sub
 
+#End Region ' Constructor
+
+#Region " Public bits "
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Possible execution states for the MSE plug-in.
+    ''' Possible states for the MSE plug-in.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Enum eState As Byte
         ''' <summary>MSE is ready to operate. The default state, and always true.</summary>
         Idle = 0
@@ -48,12 +66,33 @@ Public Class cMSEStateMonitor
         HasResults
     End Enum
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Checks whether a state is available
+    ''' Event that will be thrown when the state monitor is invalidated.
+    ''' In response, user interfaces may want to re-assess their content.
+    ''' </summary>
+    ''' <param name="mon">The <see cref="cMSEStateMonitor">monitor</see>
+    ''' that sent the event.</param>
+    ''' -----------------------------------------------------------------------
+    Public Event OnInvalidated(mon As cMSEStateMonitor)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Checks whether a <see cref="eState">state</see> is met.
     ''' </summary>
     ''' <param name="state"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>True if the requested state has been met.</returns>
+    ''' <remarks>
+    ''' <para>Checks cascade recursively, starting at the foundation state.
+    ''' A state can only be met if its preceeding states are met. Each
+    ''' state may involve a combination of MSE configuration checks, 
+    ''' core data validations, and MSE - core compatibility checks.</para>
+    ''' <para>For performance reasons the states are cached once determined.
+    ''' This will lead to bugs if the state monitor is not explicitly 
+    ''' cleared by outside managing code when needed by calling
+    ''' <see cref="Invalidate"/>.</para>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Function IsStateAvailable(state As eState) As Boolean
 
         Dim bHasState As Boolean = True
@@ -94,6 +133,14 @@ Public Class cMSEStateMonitor
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Forget the cached states in the monitor, requiring new state assessments.
+    ''' </summary>
+    ''' <remarks>
+    ''' In response, the monitor may broadcast an <see cref="OnInvalidated"/> event.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Sub Invalidate()
 
         Dim bInvalidated As Boolean = False
@@ -114,12 +161,16 @@ Public Class cMSEStateMonitor
 
     End Sub
 
-    Public Event OnInvalidated(mon As cMSEStateMonitor)
+#End Region ' Public bits
+
+#Region " Internals "
 
     Private ReadOnly Property MSE As cMSE
         Get
             Return Me.m_plugin.MSE
         End Get
     End Property
+
+#End Region ' Internals
 
 End Class
