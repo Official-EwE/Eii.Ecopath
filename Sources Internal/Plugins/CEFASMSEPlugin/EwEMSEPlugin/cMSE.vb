@@ -1357,12 +1357,7 @@ Public Class cMSE
         Dim swGroup As StreamWriter
         Dim swFleet As StreamWriter
 
-        Me._ecopath.Run()
-        Me.RunEcosim()
-
-        ' JS 30Sep13: Use local properties
-        Dim NYearsProject As Integer = Me.NYearsProject
-        Dim BiomassProjected(NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
+        Dim BiomassProjected(Me.NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
         Dim msgReport As New cFeedbackMessage("?", eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Information, eMessageReplyStyle.OK)
         msgReport.Hyperlink = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Results)
@@ -1391,6 +1386,12 @@ Public Class cMSE
         'Prepare the trajectory csv with the column headings
         Trajectory2Csv = New List(Of StreamWriter)
         Me.initTrajectoryByGroupFiles(msgReport, Trajectory2Csv)
+
+        'increase the number of years for the projection
+        mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject)
+
+        'Tell Ecopath not to send out messages
+        Me._ecopath.suppressMessages = True
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Run The Trials 
@@ -1424,7 +1425,7 @@ Public Class cMSE
                         CurrentStrategy = curStrategy
 
                         'Get a list of all fleets that fish the groups that have HCRs
-                        'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loop over
+                        'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
                         Me.initFishedByHCR(curStrategy)
 
                         Me.RunEcosim()
@@ -1502,7 +1503,12 @@ Public Class cMSE
 
     End Sub
 
-
+    ''' <summary>
+    ''' Read the DietMatrix file for this trial and populte the Ecopath diet matrix
+    ''' </summary>
+    ''' <param name="iTrial"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function updateDietMatrixFromCSVFile(ByVal iTrial As Integer) As Boolean
 
         Dim GoodDynamics As Boolean = True
@@ -1654,7 +1660,8 @@ Public Class cMSE
 
     Private Function updateEcopathEcosimParameters(iTrial As Integer) As Boolean
 
-        'Update the Ecopath and Ecosim parameters that are in m
+
+        'Update the Ecopath and Ecosim parameters from the data read into memory by Me.readEcopathEcosimParameters()
         Me.updateParametersFromMemory(iTrial)
 
         'Diet matrix parameters are stored in file by iTrial
@@ -1663,6 +1670,12 @@ Public Class cMSE
 
     End Function
 
+
+    ''' <summary>
+    ''' Populte the Ecopath and Ecosim parameter with values read into memory by Me.readEcopathEcosimParameters()
+    ''' </summary>
+    ''' <param name="itrial"></param>
+    ''' <remarks></remarks>
     Private Sub updateParametersFromMemory(itrial As Integer)
 
         For igrp = 1 To mCore.nLivingGroups
@@ -1686,6 +1699,8 @@ Public Class cMSE
             End If 'Not B(iTrial - 1, igrp - 1) = cCore.NULL_VALUE 
         Next igrp
 
+
+        'Vulnerabilities
         For iPrey As Integer = 1 To mCore.nGroups
 
             For iPred As Integer = 1 To mCore.nLivingGroups
@@ -1697,6 +1712,7 @@ Public Class cMSE
                 End If
             Next
         Next
+
     End Sub
 
 
@@ -2126,7 +2142,7 @@ Public Class cMSE
 
         Try
             'increase the number of years for the projection
-            mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject)
+            ' mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject)
 
             'make sure Ecosim computes the output data
             Me._ecosim.EcosimData.bTimestepOutput = True
