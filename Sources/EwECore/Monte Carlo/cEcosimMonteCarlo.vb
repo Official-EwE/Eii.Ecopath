@@ -1077,7 +1077,6 @@ Friend Class cEcosimMonteCarlo
 
     Private Function ChooseFeasiblePar(ByVal xbar As Single, ByVal CV As Single, ByVal ParMin As Single, ByVal ParMax As Single) As Single
         Dim X As Single, ict As Integer
-        Debug.Assert(CV = 0)
         Do
             'jb 7-Dec-2010 ChooseFeasiblePar() changed application of CV 
             ' X = xbar * (1 + 0.02 * CV * RandomNormal())
