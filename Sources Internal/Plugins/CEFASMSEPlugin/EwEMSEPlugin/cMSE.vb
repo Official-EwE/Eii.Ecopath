@@ -76,7 +76,7 @@ Public Class cMSE
     Private mQuota As cQuotaShares
     Private m_Survivability As cSurvivability
 
-    Dim Regulations As cRegulation
+    Dim Regulations As cRegulations
 
     Private BTemp() As Double
     Private PBTemp() As Double
@@ -564,7 +564,7 @@ Public Class cMSE
 
         If (Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE) Then
             SyncLock Me
-                Me.ExtractHCR()
+                Me.Strategies.LoadHCRsFromCSV()
                 Me.m_iNumStrategiesAvailable = Me.Strategies.Count
             End SyncLock
         End If
@@ -639,75 +639,9 @@ Public Class cMSE
 
     End Sub
 
-    Public Function ExtractHCR() As Boolean
-
-        Dim StrategiesFileNames As String()
-        Dim csv As CsvReader
-        Dim tempHCRGroup As HCR_Group
-        Dim Strategy As Strategy = Nothing
-        Dim datadir As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Strategies)
-        Dim strVal As String = ""
-
-        Strategies.DataDirectory = datadir
-
-        'Get an array of strings giving the path to each HCR
-        ' JS 30Sep13: Only read CSV files
-        StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
-
-        For Each HCRFileName As String In StrategiesFileNames 'loop through reading each HCR file
-
-            ' ToDo_JS: make robust
-            Dim reader As StreamReader = cMSEUtils.GetReader(HCRFileName)
-            If (reader IsNot Nothing) Then
-                csv = New CsvReader(reader, True)
-                'Create the new Strategy with the Filename as the strategy name
-                Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), HCRFileName)
-
-                Try
-                    Do Until csv.EndOfStream
-                        If csv.ReadNextRecord() Then
-                            'Read all fields from csv and then add to the list that makes up the whole strategy
-                            'csv.ReadNextRecord()
-                            'Each HCR Group needs to be a new object
-                            tempHCRGroup = New HCR_Group(Me.Core)
-
-                            ' Resolve group
-                            tempHCRGroup.GroupB = Me.ResolveGroup(csv(0), cStringUtils.ConvertToInteger(csv(1)))
-                            tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(csv(2))
-                            tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(csv(3))
-                            tempHCRGroup.GroupF = Me.ResolveGroup(csv(4), cStringUtils.ConvertToInteger(csv(5)))
-                            tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(csv(6))
-                            'tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
-
-                            'tempHCRGroup.GroupName4Biomass = csv(0)
-                            'tempHCRGroup.GroupNumber4Biomass = csv(1)
-                            'tempHCRGroup.GroupName4F = csv(4)
-                            'tempHCRGroup.GroupNumber4F = csv(5)
-                            'tempHCRGroup.CostFunctionOrg = csv(7)
-
-                            ' Only add valid strategies!
-                            If tempHCRGroup.isValid(strVal) Then
-                                Strategy.Add(tempHCRGroup)
-                            End If
-                        End If
-                    Loop
-                    Strategies.Add(Strategy)
-
-                Catch ex As Exception
-                    ' ToDo: decide what to do when CSV data is malformed
-                End Try
-                csv.Dispose()
-            End If
-
-            'End While
 
 
-            cMSEUtils.ReleaseReader(reader)
-        Next
 
-        Return True
-
-    End Function
 
     Private Function ExtractParamsCSV(ByRef param_name As String) As Double(,)
 
@@ -811,9 +745,6 @@ Public Class cMSE
         Return True
 
     End Function
-
-
-
 
     Private Function InitMonteCarloParamX(ByVal strPath As String, ByVal ParamName As eParamName) As Boolean
         Dim csvParamX As CsvReader
@@ -1125,9 +1056,6 @@ Public Class cMSE
     End Sub
 
 
-
-
-
     'Private Function LoadCostFunctionsCSV()
     '    Dim CostFunctionReader As CsvReader
     '    Dim CostFunctionArray(,) As String
@@ -1350,6 +1278,9 @@ Public Class cMSE
         Dim nTrials As Integer
         Dim GoodDynamics As Boolean
 
+        Strategies = New Strategies(Me, mCore)
+
+        Dim diet_matrix As CsvReader
         Dim nResultIters As Integer
         Dim nFleetIters As Integer
         Dim nFailedParameterisations As Integer
@@ -1366,8 +1297,6 @@ Public Class cMSE
         'so the model can be restored at the end of the run
         Me.SaveOriginalParameters()
 
-        'TODO WAITING - remove this once we have the interface for creating quota shares
-        mQuota.CreateDefaultCSV()
 
         'Set the TechnologyCreep(nfleets) to one for all fleets
         'No technology creep for us
@@ -2453,7 +2382,7 @@ stepend:
     Public Sub onEcosimInitialized(ByVal EcosimDatastructures As cEcosimDatastructures)
         _simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
-        Me.Regulations = New cRegulation(Me, mCore)
+        Me.Regulations = New cRegulations(Me, mCore)
         Me.mQuota = New cQuotaShares(mCore, Me)
         Me.m_Survivability = New cSurvivability
 
@@ -2506,7 +2435,7 @@ stepend:
 
                 For Each iFleet In FleetsThatFishHCRGrp
                     Select Case Regulations.GetReg(iFleet)
-                        Case cRegulation.eRegMethod.HighestValue, cRegulation.eRegMethod.SelectiveFishing
+                        Case cRegulations.eRegMethod.HighestValue, cRegulations.eRegMethod.SelectiveFishing
                             'Find out the highest value species
                             'Calculate the effort that would catch all quota of highest value species
                             'Set it for this fleet
@@ -2544,7 +2473,7 @@ stepend:
                                     If iCatch > mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
                                         'fishing mortality exceeds quota
                                         _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
-                                        If Regulations.GetReg(iFleet) = cRegulation.eRegMethod.HighestValue Then
+                                        If Regulations.GetReg(iFleet) = cRegulations.eRegMethod.HighestValue Then
                                             'QuotaType = Strongest
                                             'excess catch discarded and included in the fishing mortailtiy
                                             _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - _ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * _ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
@@ -2562,7 +2491,7 @@ stepend:
 
                                 End If
                             Next iGrp
-                        Case cRegulation.eRegMethod.WeakestStock
+                        Case cRegulations.eRegMethod.WeakestStock
                             'Find the weakest stock
                             'Calculate effort that would catch all weakest stock quota
                             'Set it for this fleet
@@ -2578,10 +2507,6 @@ stepend:
                                 End If
                             Next iGrp
 
-                        Case cRegulation.eRegMethod.NoQuota
-                            'TODO
-                        Case cRegulation.eRegMethod.None
-                            'TODO
                     End Select
                 Next
 
@@ -2604,25 +2529,6 @@ stepend:
 #End Region 'EwE Events onEcosimInitialized()...
 
 #Region " Helper methods "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Resolve a name and index to a <see cref="cEcoPathGroupInput"/> instance.
-    ''' </summary>
-    ''' <param name="strName">The name to resolve.</param>
-    ''' <param name="iIndex">The index to resolve.</param>
-    ''' <returns>A <see cref="cEcoPathGroupInput"/> instance, or Nothing if
-    ''' the index or name did not match any of the present groups.</returns>
-    ''' <remarks>Note that name comparison is not case sensitive.</remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
-        If (iIndex < 1) Or (iIndex > Me.Core.nGroups) Then Return Nothing
-        Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iIndex)
-        If String.Compare(grp.Name, strName, True) <> 0 Then
-            Return Nothing
-        End If
-        Return grp
-    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

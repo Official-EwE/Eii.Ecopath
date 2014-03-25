@@ -304,7 +304,7 @@ Public Class frmMSE
 
         ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
         '             From the UI point of view, we just want strategies. The plug-in does the optimizating
-        Me.MSE.ExtractHCR()
+        Me.MSE.Strategies.LoadHCRsFromCSV()
 
         Dim frm As New frmTFMpolicy()
         frm.Init(Me.UIContext, Me.MSE)

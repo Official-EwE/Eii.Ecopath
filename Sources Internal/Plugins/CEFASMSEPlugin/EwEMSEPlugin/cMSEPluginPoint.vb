@@ -156,7 +156,6 @@ Public Class cMSEPluginPoint
         ' NOP
     End Sub
 
-
     Public Sub onInitialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
         Me.mCore = CType(core, cCore)
         Units.Init(mCore)
@@ -182,7 +181,6 @@ Public Class cMSEPluginPoint
 #End If
 
     End Sub
-
 
     Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) _
                 Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized

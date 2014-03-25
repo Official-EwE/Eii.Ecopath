@@ -174,7 +174,8 @@ Public Class frmTFMpolicy
 
             'Build the filename out of the strategy name
             Dim StartFilename As String = Path.Combine(Me.m_plugin.Strategies.DataDirectory, cFileUtils.ToValidFileName(StratName + ".csv", False))
-            Dim strategy As Strategy = New Strategy(StratName, StartFilename)
+            Dim NumberOfStrategies As Integer = Me.m_strategies.Count
+            Dim strategy As Strategy = New Strategy(StratName, NumberOfStrategies + 1, StartFilename)
 
             ' JS 30Sep13: Strategies class validates both strategy name and file. VERY GOOD!!
             If (Not Me.m_strategies.Contains(strategy)) Then

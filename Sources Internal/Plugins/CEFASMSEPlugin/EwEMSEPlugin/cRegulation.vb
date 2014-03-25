@@ -31,7 +31,7 @@ Imports LumenWorks.Framework.IO.Csv
 
 #End Region ' Imports
 
-Public Class cRegulation
+Public Class cRegulations
 
     Enum eRegMethod
         None = 0
@@ -69,8 +69,10 @@ Public Class cRegulation
         mMSE = MSE
         mCore = Core
         ListofRegs = New List(Of cReg)
-        RegulationsLoaded = LoadRegFromCSV()
+        RegulationsFileExists = False
+        RegulationsLoaded = False
     End Sub
+
 
     Public Function GetReg(iFleet As Integer) As eRegMethod
         Dim FoundFleet As Boolean = False
@@ -85,13 +87,13 @@ Public Class cRegulation
 
     End Function
 
-    Public Function LoadRegFromCSV() As Boolean
+    Public Function LoadRegsFromCSV(StrategyNumber As Integer) As Boolean
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
         Dim bSuccess As Boolean = True
         Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "Regulations.csv")
-        Dim reg As cReg
+        Dim Reg As cReg
 
         If File.Exists(filePath) Then
 
@@ -100,14 +102,17 @@ Public Class cRegulation
                 Try
                     csv = New CsvReader(reader, True)
                     RegulationsFileExists = True
-                    While Not csv.EndOfStream
-                        reg = ExtractRegulationForiFleet(csv)
-                        If (reg IsNot Nothing) Then
-                            ListofRegs.Add(reg)
-                        End If
-                    End While
-                    csv.Dispose()
+                    If CInt(csv.Item(StrategyNumber - 1, 0)) <> StrategyNumber Then Return False
 
+                    For iFleet = 1 To mCore.nFleets
+                        Reg = New cReg
+                        Reg.mFleetID = iFleet
+                        Reg.mRegMethod = CType(csv.Item(StrategyNumber - 1, iFleet), eRegMethod)
+                        ListofRegs.Add(Reg)
+                    Next
+
+                    Return True
+                    csv.Dispose()
                 Catch ex As Exception
                     'Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
                     bSuccess = False
@@ -119,39 +124,6 @@ Public Class cRegulation
         End If
 
         Return bSuccess
-
-    End Function
-
-    Private Function ExtractRegulationForiFleet(ByVal csv As CsvReader) As cReg
-        ' Sanity checks
-        If (csv Is Nothing) Then Return Nothing
-        If (Not csv.ReadNextRecord()) Then Return Nothing
-
-        Dim TFleetIndex As Integer
-        Dim TNoQuota As Boolean
-        Dim TWeakestStock As Boolean
-        Dim THighestStock As Boolean
-        Dim TSelectiveFishing As Boolean
-        Dim RegType As eRegMethod
-
-        Try
-            TFleetIndex = cStringUtils.ConvertToInteger(csv(0))
-            TNoQuota = Convert.ToBoolean(csv(2))
-            TWeakestStock = Convert.ToBoolean(csv(3))
-            THighestStock = Convert.ToBoolean(csv(4))
-            TSelectiveFishing = Convert.ToBoolean(csv(5))
-            If TNoQuota = True Then RegType = eRegMethod.NoQuota
-            If TWeakestStock = True Then RegType = eRegMethod.WeakestStock
-            If THighestStock = True Then RegType = eRegMethod.HighestValue
-            If TSelectiveFishing = True Then RegType = eRegMethod.SelectiveFishing
-
-        Catch ex As Exception
-            ' ToDo_JS: respond to error
-            Return Nothing
-        End Try
-
-        Return New cReg(TFleetIndex, RegType)
-
 
     End Function
 

@@ -24,6 +24,9 @@
 Option Strict On
 Option Explicit On
 Imports System.IO
+Imports LumenWorks.Framework.IO.Csv
+Imports EwECore
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -36,15 +39,26 @@ Public Class Strategies
     'ToDo All the code to read and save Strategies could go here instead of scattered around.
     'So the Strategies could load and save them selves
 
-    Private m_dataDir As String
-    Private m_Name As String
+    Private mdataDir As String
+    Private mName As String
+    Private mMSE As cMSE
+    Private mCore As cCore
+
+    Public Sub New()
+
+    End Sub
+
+    Sub New(MSE As cMSE, Core As cCore)
+        mMSE = MSE
+        mCore = Core
+    End Sub
 
     Public Property DataDirectory As String
         Get
-            Return m_dataDir
+            Return mdataDir
         End Get
         Set(value As String)
-            Me.m_dataDir = value
+            Me.mdataDir = value
         End Set
     End Property
 
@@ -66,6 +80,97 @@ Public Class Strategies
         End Try
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Resolve a name and index to a <see cref="cEcoPathGroupInput"/> instance.
+    ''' </summary>
+    ''' <param name="strName">The name to resolve.</param>
+    ''' <param name="iIndex">The index to resolve.</param>
+    ''' <returns>A <see cref="cEcoPathGroupInput"/> instance, or Nothing if
+    ''' the index or name did not match any of the present groups.</returns>
+    ''' <remarks>Note that name comparison is not case sensitive.</remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
+        If (iIndex < 1) Or (iIndex > Me.mCore.nGroups) Then Return Nothing
+        Dim grp As cEcoPathGroupInput = Me.mCore.EcoPathGroupInputs(iIndex)
+        If String.Compare(grp.Name, strName, True) <> 0 Then
+            Return Nothing
+        End If
+        Return grp
+    End Function
+
+
+
+    Public Function LoadHCRsFromCSV() As Boolean
+
+        Dim StrategiesFileNames As String()
+        Dim csvHCR As CsvReader
+        Dim tempHCRGroup As HCR_Group
+        Dim Strategy As Strategy = Nothing
+        Dim datadir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
+        Dim strVal As String = ""
+        Dim StratCounter As Integer = 1
+
+        'Get an array of strings giving the path to each HCR
+        ' JS 30Sep13: Only read CSV files
+        StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
+
+        For Each HCRFileName As String In StrategiesFileNames 'loop through reading each HCR file
+
+            ' ToDo_JS: make robust
+            Dim reader As StreamReader = cMSEUtils.GetReader(HCRFileName)
+            If (reader IsNot Nothing) Then
+                csvHCR = New CsvReader(reader, True)
+                'Create the new Strategy with the Filename as the strategy name
+                Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), StratCounter, HCRFileName, mCore, mMSE)
+                StratCounter += 1
+                Try
+                    Do Until csvHCR.EndOfStream
+                        If csvHCR.ReadNextRecord() Then
+                            'Read all fields from csv and then add to the list that makes up the whole strategy
+                            'csv.ReadNextRecord()
+                            'Each HCR Group needs to be a new object
+                            tempHCRGroup = New HCR_Group(mCore)
+
+                            ' Resolve group
+                            tempHCRGroup.GroupB = Me.ResolveGroup(csvHCR(0), cStringUtils.ConvertToInteger(csvHCR(1)))
+                            tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(csvHCR(2))
+                            tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(csvHCR(3))
+                            tempHCRGroup.GroupF = Me.ResolveGroup(csvHCR(4), cStringUtils.ConvertToInteger(csvHCR(5)))
+                            tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(csvHCR(6))
+                            'tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
+
+                            'tempHCRGroup.GroupName4Biomass = csv(0)
+                            'tempHCRGroup.GroupNumber4Biomass = csv(1)
+                            'tempHCRGroup.GroupName4F = csv(4)
+                            'tempHCRGroup.GroupNumber4F = csv(5)
+                            'tempHCRGroup.CostFunctionOrg = csv(7)
+
+                            ' Only add valid strategies!
+                            If tempHCRGroup.isValid(strVal) Then
+                                Strategy.Add(tempHCRGroup)
+                            End If
+                        End If
+                    Loop
+                    Me.Add(Strategy)
+
+                Catch ex As Exception
+                    ' ToDo: decide what to do when CSV data is malformed
+                End Try
+                csvHCR.Dispose()
+            End If
+
+            'End While
+
+
+            cMSEUtils.ReleaseReader(reader)
+        Next
+
+        Return True
+
+    End Function
+
+
     Public Shadows Sub Add(StrategyToAdd As Strategy)
 
         If Not Me.Contains(StrategyToAdd) Then
@@ -85,5 +190,6 @@ Public Class Strategies
         Return False
 
     End Function
+
 
 End Class

@@ -1,4 +1,7 @@
-﻿' ===============================================================================
+﻿Option Strict On
+Option Explicit On
+
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -21,8 +24,7 @@
 '
 #Region " Imports "
 
-Option Strict On
-Option Explicit On
+Imports EwECore
 
 #End Region ' Imports 
 
@@ -32,37 +34,50 @@ Option Explicit On
 Public Class Strategy
     Implements IList(Of HCR_Group)
 
-    Private m_list As New List(Of HCR_Group)
-
-    Public Sub New()
-        ' Hm
-    End Sub
-
-    Public Sub New(StrategyName As String)
-        Me.New()
-        Me.Name = StrategyName
-    End Sub
-
-    Public Sub New(ByVal StrategyName As String, ByVal theFilename As String)
-        Me.New(StrategyName)
-        Me.FileName = theFilename
-    End Sub
+    Private mHCRsList As New List(Of HCR_Group)
+    Private mRegulateMethods As cRegulations
+    Private mStrategyNumber As Integer
 
     Public Property Name As String
     Public Property FileName As String
+
+    Public Sub New()
+        ' Hm 
+    End Sub
+
+    Public Sub New(ByVal StrategyName As String, StrategyNumber As Integer, ByVal theFilename As String, Core As cCore, MSE As cMSE)
+        Me.New()
+        Me.Name = StrategyName
+        Me.FileName = theFilename
+        mRegulateMethods = New cRegulations(MSE, Core)
+        mStrategyNumber = StrategyNumber
+    End Sub
+
+    Public Property StrategyNumber() As Integer
+        Get
+            Return mStrategyNumber
+        End Get
+        Set(ByVal value As Integer)
+            mStrategyNumber = value
+        End Set
+    End Property
 
     Public Overrides Function ToString() As String
         Return MyBase.ToString() & ":" & Me.Name
     End Function
 
+    Public Function LoadRegulations() As Boolean
+        Return mRegulateMethods.LoadRegsFromCSV(mStrategyNumber)
+    End Function
+
     Public Sub Add(item As HCR_Group) Implements System.Collections.Generic.ICollection(Of HCR_Group).Add
         If Not Me.Contains(item) Then
-            Me.m_list.Add(item)
+            Me.mHCRsList.Add(item)
         End If
     End Sub
 
     Public Sub Clear() Implements System.Collections.Generic.ICollection(Of HCR_Group).Clear
-        Me.m_list.Clear()
+        Me.mHCRsList.Clear()
     End Sub
 
     Public Function Contains(item As HCR_Group) As Boolean Implements System.Collections.Generic.ICollection(Of HCR_Group).Contains
@@ -78,9 +93,18 @@ Public Class Strategy
         ' NOP
     End Sub
 
+    Public Property RegMethods As cRegulations
+        Get
+            Return mRegulateMethods
+        End Get
+        Set(value As cRegulations)
+            mRegulateMethods = value
+        End Set
+    End Property
+
     Public ReadOnly Property Count As Integer Implements System.Collections.Generic.ICollection(Of HCR_Group).Count
         Get
-            Return Me.m_list.Count
+            Return Me.mHCRsList.Count
         End Get
     End Property
 
@@ -91,32 +115,32 @@ Public Class Strategy
     End Property
 
     Public Function Remove(item As HCR_Group) As Boolean Implements System.Collections.Generic.ICollection(Of HCR_Group).Remove
-        Return Me.m_list.Remove(item)
+        Return Me.mHCRsList.Remove(item)
     End Function
 
     Public Function GetEnumerator() As System.Collections.Generic.IEnumerator(Of HCR_Group) Implements System.Collections.Generic.IEnumerable(Of HCR_Group).GetEnumerator
-        Return Me.m_list.GetEnumerator()
+        Return Me.mHCRsList.GetEnumerator()
     End Function
 
     Public Function IndexOf(item As HCR_Group) As Integer Implements System.Collections.Generic.IList(Of HCR_Group).IndexOf
-        Return Me.m_list.IndexOf(item)
+        Return Me.mHCRsList.IndexOf(item)
     End Function
 
     Public Sub Insert(index As Integer, item As HCR_Group) Implements System.Collections.Generic.IList(Of HCR_Group).Insert
-        Me.m_list.Insert(index, item)
+        Me.mHCRsList.Insert(index, item)
     End Sub
 
     Default Public Property Item(index As Integer) As HCR_Group Implements System.Collections.Generic.IList(Of HCR_Group).Item
         Get
-            Return Me.m_list.Item(index)
+            Return Me.mHCRsList.Item(index)
         End Get
         Set(value As HCR_Group)
-            Me.m_list(index) = value
+            Me.mHCRsList(index) = value
         End Set
     End Property
 
     Public Sub RemoveAt(index As Integer) Implements System.Collections.Generic.IList(Of HCR_Group).RemoveAt
-        Me.m_list.RemoveAt(index)
+        Me.mHCRsList.RemoveAt(index)
     End Sub
 
     Private Function Bogus() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
