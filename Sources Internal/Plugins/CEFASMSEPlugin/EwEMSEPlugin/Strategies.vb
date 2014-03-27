@@ -275,12 +275,4 @@ Public Class Strategies
 
     End Function
 
-
-    'Public Shared Function StrategyFactory(ByVal StrategyName As String, StrategyNumber As Integer, ByVal theFilename As String) As Strategy
-    '    Dim strategy As New Strategy(Guid.NewGuid, StrategyName, StrategyNumber, theFilename)
-    '    Return strategy
-    'End Function
-
-
-
 End Class
