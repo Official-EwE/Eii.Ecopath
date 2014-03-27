@@ -49,12 +49,12 @@ Public Class Strategy
     Public Property Name As String
     Public Property FileName As String
 
-    Public Sub New()
-        ' Hm 
-    End Sub
+    'Public Sub New()
+    '    ' Hm 
+    'End Sub
 
     Public Sub New(ByVal StrategyName As String, StrategyNumber As Integer, ByVal theFilename As String, Core As cCore, MSE As cMSE)
-        Me.New()
+        'Me.New()
 
         Me.mCore = Core
         Me.Name = StrategyName
@@ -64,20 +64,19 @@ Public Class Strategy
 
     End Sub
 
-    Public Function Read(filename As String) As Boolean
+    Public Function Read() As Boolean
         Dim buff As String
         Dim recs() As String
         Dim breturn As Boolean = False
 
-        If Not File.Exists(filename) Then
+        If Not File.Exists(Me.FileName) Then
             'message of some sort
             Return False
         End If
 
         Try
 
-
-            Dim reader As StreamReader = cMSEUtils.GetReader(filename)
+            Dim reader As StreamReader = cMSEUtils.GetReader(Me.FileName)
             If (reader IsNot Nothing) Then
                 '  csvHCR = New CsvReader(reader, False)
 
@@ -115,11 +114,11 @@ Public Class Strategy
                         End If
 
                     Loop
-                End If
+                End If 'cMSEUtils.readToTag(reader, START_TAG)
 
                 cMSEUtils.ReleaseReader(reader)
 
-            End If
+            End If 'reader IsNot Nothing
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
@@ -133,6 +132,7 @@ Public Class Strategy
 
     Public Function Save() As Boolean
         Dim strm As StreamWriter
+        'Create a new file
         strm = cMSEUtils.GetWriter(Me.FileName, False)
         If (strm IsNot Nothing) Then
 

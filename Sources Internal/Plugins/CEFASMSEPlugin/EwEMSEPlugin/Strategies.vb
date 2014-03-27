@@ -37,18 +37,11 @@ Imports EwEUtils.Core
 ''' <remarks>Strategies "Is A" list of Strategy objects</remarks>
 Public Class Strategies
     Inherits List(Of Strategy)
-    'ToDo All the code to read and save Strategies could go here instead of scattered around.
-    'So the Strategies could load and save them selves
-
 
     Private mdataDir As String
     Private mName As String
     Private mMSE As cMSE
     Private mCore As cCore
-
-    Public Sub New()
-
-    End Sub
 
     Sub New(MSE As cMSE, Core As cCore)
         mMSE = MSE
@@ -109,52 +102,34 @@ Public Class Strategies
         Dim breturn As Boolean = True
         Try
 
-            For Each iStrategy In Me
+            For Each Strategy In Me
 
                 If msg Is Nothing Then
-                    strPath = Path.GetDirectoryName(iStrategy.FileName)
+                    strPath = Path.GetDirectoryName(Strategy.FileName)
                     msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_STRATEGIES, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = strPath
                 End If
+                'Save the Strategy to file
+                'The filename was passed into the Strategy in its constructor
+                Strategy.Save()
 
-                iStrategy.Save()
-                iStrategy.Regulations.Save(iStrategy.FileName)
+                'Save the Regulations that are part of the Strategy
+                'Done here instead of inside the Strategy.Save() for clarity 
+                Strategy.Regulations.Save(Strategy.FileName)
 
-
-                'csvStrategyFile = cMSEUtils.GetWriter(iStrategy.FileName, False)
-                'If (csvStrategyFile IsNot Nothing) Then
-
-                '    msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
-                '                                        String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
-                '                                        eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
-
-                '    csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
-                '    For Each iHCR In iStrategy
-                '        csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
-                '                                  cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
-                '                                  cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
-                '                                  cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
-                '                                  cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
-                '                                  cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
-                '                                  cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
-                '                                  cStringUtils.ToCSVField(iHCR.TypeOfHCR))
-                '    Next
-                '    cMSEUtils.ReleaseWriter(csvStrategyFile)
-
-                ' End If
             Next
-
-            If msg IsNot Nothing Then
-                Me.mCore.Messages.SendMessage(msg)
-            End If
-
         Catch ex As Exception
             breturn = False
+            'Both the Strategy.Save() and  Strategy.Regulations.Save() will throw exceptions out to here
+            Me.mCore.Messages.SendMessage(New cMessage("Exception saving Strategies to file.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
         End Try
+
+        If msg IsNot Nothing Then
+            Me.mCore.Messages.SendMessage(msg)
+        End If
 
         Return breturn
     End Function
-
 
 
     Public Function LoadHCRsFromCSV() As Boolean
@@ -164,7 +139,9 @@ Public Class Strategies
         Dim datadir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
         Dim strVal As String = ""
         Dim StratCounter As Integer = 1
-
+        Dim bReadStrat As Boolean
+        Dim bReadReg As Boolean
+        Dim lstFailedFiles As New List(Of String)
         'Get an array of strings giving the path to each HCR
         ' JS 30Sep13: Only read CSV files
         StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
@@ -173,13 +150,29 @@ Public Class Strategies
 
             Strategy = New Strategy(Path.GetFileNameWithoutExtension(StrategyFile), StratCounter, StrategyFile, mCore, mMSE)
 
-            If Strategy.Read(StrategyFile) Then
-                Strategy.Regulations.Read(StrategyFile)
+            'Save the Strategy to the file pass into its constructor
+            bReadStrat = Strategy.Read()
+            bReadReg = Strategy.Regulations.Read(Strategy.FileName)
 
+            If bReadStrat And bReadReg Then
+                'Only add the Strategy if it read both strategy and regulations from file
                 Me.Add(Strategy)
+            Else
+                'keep track for the files that failed to read
+                lstFailedFiles.Add(StrategyFile)
             End If
             StratCounter += 1
         Next StrategyFile
+
+        'Warn the user if anything failed
+        If lstFailedFiles.Count > 0 Then
+            Me.mCore.Messages.SetMessageLock()
+            For Each File In lstFailedFiles
+                Me.mCore.Messages.SendMessage(New cMessage("Cefas MSE Failed to read strategy file '" + File + "'",
+                                                          eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
+            Next
+            Me.mCore.Messages.RemoveMessageLock()
+        End If
 
         Return True
 

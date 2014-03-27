@@ -195,6 +195,7 @@ Public Class cRegulations
 
     Public Function Save(filename As String) As Boolean
         Dim strm As StreamWriter
+        'Append onto the end of an existing file
         strm = cMSEUtils.GetWriter(filename, True)
         If (strm IsNot Nothing) Then
 
