@@ -27,6 +27,7 @@ Option Explicit On
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports LumenWorks.Framework.IO.Csv
 
 #End Region ' Imports 
 
@@ -195,6 +196,27 @@ Public Class cMSEUtils
                 Debug.Assert(False)
         End Select
         Return ""
+    End Function
+
+
+    Public Shared Function readToTag(strm As StreamReader, Tag As String) As Boolean
+        Dim buff As String
+        Dim recs() As String
+
+        Try
+            Do Until strm.EndOfStream
+                buff = strm.ReadLine
+                recs = buff.Split(","c)
+                If recs(0).Contains(Tag) Then
+                    Return True
+                End If
+            Loop
+        Catch ex As Exception
+            Debug.Assert(False, "cMSEUtils.readToTag(" + Tag + ") Exception: " + ex.Message)
+        End Try
+
+        'Failed to find the tag in the stream
+        Return False
     End Function
 
 End Class

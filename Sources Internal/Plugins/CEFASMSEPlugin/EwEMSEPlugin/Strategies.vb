@@ -27,6 +27,7 @@ Imports System.IO
 Imports LumenWorks.Framework.IO.Csv
 Imports EwECore
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 
 #End Region ' Imports 
 
@@ -38,6 +39,7 @@ Public Class Strategies
     Inherits List(Of Strategy)
     'ToDo All the code to read and save Strategies could go here instead of scattered around.
     'So the Strategies could load and save them selves
+
 
     Private mdataDir As String
     Private mName As String
@@ -99,14 +101,66 @@ Public Class Strategies
         Return grp
     End Function
 
+    Public Function SaveHCRs() As Boolean
+        Dim csvStrategyFile As StreamWriter = Nothing
+        Dim strFile As String = ""
+        Dim strPath As String = ""
+        Dim msg As cMessage = Nothing
+        Dim breturn As Boolean = True
+        Try
+
+            For Each iStrategy In Me
+
+                If msg Is Nothing Then
+                    strPath = Path.GetDirectoryName(iStrategy.FileName)
+                    msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_STRATEGIES, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = strPath
+                End If
+
+                iStrategy.Save()
+                iStrategy.Regulations.Save(iStrategy.FileName)
+
+
+                'csvStrategyFile = cMSEUtils.GetWriter(iStrategy.FileName, False)
+                'If (csvStrategyFile IsNot Nothing) Then
+
+                '    msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
+                '                                        String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
+                '                                        eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+                '    csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
+                '    For Each iHCR In iStrategy
+                '        csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
+                '                                  cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
+                '                                  cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
+                '                                  cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
+                '                                  cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
+                '                                  cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
+                '                                  cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
+                '                                  cStringUtils.ToCSVField(iHCR.TypeOfHCR))
+                '    Next
+                '    cMSEUtils.ReleaseWriter(csvStrategyFile)
+
+                ' End If
+            Next
+
+            If msg IsNot Nothing Then
+                Me.mCore.Messages.SendMessage(msg)
+            End If
+
+        Catch ex As Exception
+            breturn = False
+        End Try
+
+        Return breturn
+    End Function
+
 
 
     Public Function LoadHCRsFromCSV() As Boolean
 
         Dim StrategiesFileNames As String()
-        Dim csvHCR As CsvReader
-        Dim tempHCRGroup As HCR_Group
-        Dim Strategy As Strategy = Nothing
+        Dim Strategy As Strategy
         Dim datadir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
         Dim strVal As String = ""
         Dim StratCounter As Integer = 1
@@ -115,61 +169,91 @@ Public Class Strategies
         ' JS 30Sep13: Only read CSV files
         StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
 
-        For Each HCRFileName As String In StrategiesFileNames 'loop through reading each HCR file
+        For Each StrategyFile As String In StrategiesFileNames 'loop through reading each HCR file
 
-            ' ToDo_JS: make robust
-            Dim reader As StreamReader = cMSEUtils.GetReader(HCRFileName)
-            If (reader IsNot Nothing) Then
-                csvHCR = New CsvReader(reader, True)
-                'Create the new Strategy with the Filename as the strategy name
-                Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), StratCounter, HCRFileName, mCore, mMSE)
-                StratCounter += 1
-                Try
-                    Do Until csvHCR.EndOfStream
-                        If csvHCR.ReadNextRecord() Then
-                            'Read all fields from csv and then add to the list that makes up the whole strategy
-                            'csv.ReadNextRecord()
-                            'Each HCR Group needs to be a new object
-                            tempHCRGroup = New HCR_Group(mCore)
+            Strategy = New Strategy(Path.GetFileNameWithoutExtension(StrategyFile), StratCounter, StrategyFile, mCore, mMSE)
 
-                            ' Resolve group
-                            tempHCRGroup.GroupB = Me.ResolveGroup(csvHCR(0), cStringUtils.ConvertToInteger(csvHCR(1)))
-                            tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(csvHCR(2))
-                            tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(csvHCR(3))
-                            tempHCRGroup.GroupF = Me.ResolveGroup(csvHCR(4), cStringUtils.ConvertToInteger(csvHCR(5)))
-                            tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(csvHCR(6))
-                            'tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
+            If Strategy.Read(StrategyFile) Then
+                Strategy.Regulations.Read(StrategyFile)
 
-                            'tempHCRGroup.GroupName4Biomass = csv(0)
-                            'tempHCRGroup.GroupNumber4Biomass = csv(1)
-                            'tempHCRGroup.GroupName4F = csv(4)
-                            'tempHCRGroup.GroupNumber4F = csv(5)
-                            'tempHCRGroup.CostFunctionOrg = csv(7)
-
-                            ' Only add valid strategies!
-                            If tempHCRGroup.isValid(strVal) Then
-                                Strategy.Add(tempHCRGroup)
-                            End If
-                        End If
-                    Loop
-                    Me.Add(Strategy)
-
-                Catch ex As Exception
-                    ' ToDo: decide what to do when CSV data is malformed
-                End Try
-                csvHCR.Dispose()
+                Me.Add(Strategy)
             End If
-
-            'End While
-
-
-            cMSEUtils.ReleaseReader(reader)
-        Next
+            StratCounter += 1
+        Next StrategyFile
 
         Return True
 
-    End Function
 
+        'Dim StrategiesFileNames As String()
+        'Dim csvHCR As CsvReader
+        'Dim tempHCRGroup As HCR_Group
+        'Dim Strategy As Strategy = Nothing
+        'Dim datadir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
+        'Dim strVal As String = ""
+        'Dim StratCounter As Integer = 1
+
+        ''Get an array of strings giving the path to each HCR
+        '' JS 30Sep13: Only read CSV files
+        'StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
+
+        'For Each HCRFileName As String In StrategiesFileNames 'loop through reading each HCR file
+
+        '    ' ToDo_JS: make robust
+        '    Dim reader As StreamReader = cMSEUtils.GetReader(HCRFileName)
+        '    If (reader IsNot Nothing) Then
+        '        csvHCR = New CsvReader(reader, True)
+        '        'Create the new Strategy with the Filename as the strategy name
+        '        Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), StratCounter, HCRFileName, mCore, mMSE)
+        '        StratCounter += 1
+        '        Try
+        '            Do Until csvHCR.EndOfStream
+        '                If csvHCR.ReadNextRecord() Then
+
+        '                    'Data row
+
+        '                    'Read all fields from csv and then add to the list that makes up the whole strategy
+        '                    'csv.ReadNextRecord()
+        '                    'Each HCR Group needs to be a new object
+        '                    tempHCRGroup = New HCR_Group(mCore)
+
+        '                    ' Resolve group
+        '                    tempHCRGroup.GroupB = Me.ResolveGroup(csvHCR(0), cStringUtils.ConvertToInteger(csvHCR(1)))
+        '                    tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(csvHCR(2))
+        '                    tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(csvHCR(3))
+        '                    tempHCRGroup.GroupF = Me.ResolveGroup(csvHCR(4), cStringUtils.ConvertToInteger(csvHCR(5)))
+        '                    tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(csvHCR(6))
+        '                    'tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
+
+        '                    'tempHCRGroup.GroupName4Biomass = csv(0)
+        '                    'tempHCRGroup.GroupNumber4Biomass = csv(1)
+        '                    'tempHCRGroup.GroupName4F = csv(4)
+        '                    'tempHCRGroup.GroupNumber4F = csv(5)
+        '                    'tempHCRGroup.CostFunctionOrg = csv(7)
+
+        '                    ' Only add valid strategies!
+        '                    If tempHCRGroup.isValid(strVal) Then
+        '                        Strategy.Add(tempHCRGroup)
+        '                    End If
+
+        '                End If
+        '            Loop
+        '            Me.Add(Strategy)
+
+        '        Catch ex As Exception
+        '            ' ToDo: decide what to do when CSV data is malformed
+        '        End Try
+        '        csvHCR.Dispose()
+        '    End If
+
+        '    'End While
+
+
+        '    cMSEUtils.ReleaseReader(reader)
+        'Next
+
+        'Return True
+
+    End Function
 
     Public Shadows Sub Add(StrategyToAdd As Strategy)
 
@@ -190,6 +274,13 @@ Public Class Strategies
         Return False
 
     End Function
+
+
+    'Public Shared Function StrategyFactory(ByVal StrategyName As String, StrategyNumber As Integer, ByVal theFilename As String) As Strategy
+    '    Dim strategy As New Strategy(Guid.NewGuid, StrategyName, StrategyNumber, theFilename)
+    '    Return strategy
+    'End Function
+
 
 
 End Class

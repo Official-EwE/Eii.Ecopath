@@ -37,7 +37,7 @@ Public Class cMSE
 
 #Region " Internal vars "
 
-    Friend Strategies As New Strategies
+    Friend Strategies As Strategies
     Private CurrentStrategy As Strategy
     Private m_Monitor As cMSEStateMonitor
 
@@ -155,6 +155,8 @@ Public Class cMSE
         Me.mCore = EwECore
         Me._ecopath = Ecopath
         Me._ecosim = Ecosim
+
+        Strategies = New Strategies(Me, mCore)
     End Sub
 
 #End Region ' Construction
@@ -1278,7 +1280,7 @@ Public Class cMSE
         Dim nTrials As Integer
         Dim GoodDynamics As Boolean
 
-        Strategies = New Strategies(Me, mCore)
+        ' Strategies = New Strategies(Me, mCore)
 
         Dim diet_matrix As CsvReader
         Dim nResultIters As Integer

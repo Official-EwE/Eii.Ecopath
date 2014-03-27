@@ -33,6 +33,9 @@ Imports LumenWorks.Framework.IO.Csv
 
 Public Class cRegulations
 
+    Public Const START_TAG As String = "<REGULATIONS_START>"
+    Public Const END_TAG As String = "<REGULATIONS_END>"
+
     Enum eRegMethod
         None = 0
         NoQuota = 1
@@ -44,15 +47,18 @@ Public Class cRegulations
     Public Class cReg
         Public mFleetID As Integer
         Public mRegMethod As eRegMethod
+        Public mFleetName As String
 
         Public Sub New()
 
         End Sub
 
-        Public Sub New(FleetID As Integer, regMethod As eRegMethod)
+        Public Sub New(FleetName As String, FleetID As Integer, regMethod As eRegMethod)
 
             Me.New()
-            mFleetID = FleetID : mRegMethod = regMethod
+            mFleetID = FleetID
+            mFleetName = FleetName
+            mRegMethod = regMethod
 
         End Sub
 
@@ -68,9 +74,19 @@ Public Class cRegulations
     Sub New(MSE As cMSE, Core As cCore)
         mMSE = MSE
         mCore = Core
-        ListofRegs = New List(Of cReg)
+
+        Me.initDefaultRegs()
         RegulationsFileExists = False
         RegulationsLoaded = False
+    End Sub
+
+    Private Sub initDefaultRegs()
+
+        ListofRegs = New List(Of cReg)
+        For iFleet = 1 To mCore.nFleets
+            ListofRegs.Add(New cReg(mCore.FleetInputs(iFleet).Name, iFleet, eRegMethod.None))
+        Next
+
     End Sub
 
 
@@ -123,6 +139,80 @@ Public Class cRegulations
         End If
 
         Return bSuccess
+
+    End Function
+
+    Public Function Read(Filename As String) As Boolean
+        Dim buff As String
+        Dim recs() As String
+        Dim breturn As Boolean = False
+
+        Try
+
+            Dim reader As StreamReader = cMSEUtils.GetReader(Filename)
+            If (reader IsNot Nothing) Then
+
+                'Find the tag in the file
+                If cMSEUtils.readToTag(reader, START_TAG) Then
+                    'read the header line
+                    reader.ReadLine()
+                    Do Until reader.EndOfStream
+
+                        buff = reader.ReadLine()
+                        recs = buff.Split(","c)
+                        If Not recs(0).Contains(END_TAG) Then
+                            Dim iflt As Integer
+                            Dim reg As cReg
+
+                            iflt = cStringUtils.ConvertToInteger(recs(1))
+                            'get the reg object out of the list based on the fleet index
+                            reg = Me.ListofRegs.Item(iflt - 1)
+                            Debug.Assert(reg.mFleetName = cMSEUtils.FromCSVField(recs(0)), "Oppss Fleetname in file does not match Core Fleetname for fleet." + iflt.ToString)
+                            reg.mRegMethod = CType(cStringUtils.ConvertToInteger(recs(2)), eRegMethod)
+
+                            breturn = True
+
+                        Else
+                            'end of the data bump out
+                            Exit Do
+                        End If 'Not recs(0).Contains(END_TAG)
+                    Loop
+                End If 'cMSEUtils.readToTag(reader, START_TAG)
+
+                cMSEUtils.ReleaseReader(reader)
+
+            End If '(reader IsNot Nothing)
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
+        End Try
+
+        Debug.Assert(breturn, Me.ToString + ".Read() Failed to read regulations from file.")
+
+        Return breturn
+
+    End Function
+
+    Public Function Save(filename As String) As Boolean
+        Dim strm As StreamWriter
+        strm = cMSEUtils.GetWriter(filename, True)
+        If (strm IsNot Nothing) Then
+
+            'msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
+            '                                    String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
+            '                                    eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+            strm.WriteLine(START_TAG)
+            strm.WriteLine("FleetName,FleetIndex,Regulation")
+            For Each reg In Me.ListofRegs
+                strm.WriteLine(cStringUtils.ToCSVField(reg.mFleetName) & "," & _
+                                          cStringUtils.ToCSVField(reg.mFleetID) & "," & _
+                                          cStringUtils.ToCSVField(reg.mRegMethod))
+            Next
+            strm.WriteLine(END_TAG)
+            cMSEUtils.ReleaseWriter(strm)
+        End If
+
+        Return True
 
     End Function
 

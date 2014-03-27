@@ -67,7 +67,7 @@ Public Class frmTFMpolicy
     Private m_SelectedStrategy As Strategy
     Private m_HCR As HCR_Group
 
-    Private m_strategies As New List(Of Strategy)
+    Private m_strategies As Strategies
     Private m_bStrategiesSaved As Boolean = True
 
 #End Region ' Internals
@@ -83,7 +83,7 @@ Public Class frmTFMpolicy
         Me.UIContext = UI
         Me.m_plugin = Plugin
         ' Make copy of strategies
-        Me.m_strategies.AddRange(Me.m_plugin.Strategies.ToArray())
+        Me.m_strategies = Plugin.Strategies
     End Sub
 
 #End Region
@@ -173,9 +173,10 @@ Public Class frmTFMpolicy
             If String.IsNullOrWhiteSpace(StratName) Then Return
 
             'Build the filename out of the strategy name
-            Dim StartFilename As String = Path.Combine(Me.m_plugin.Strategies.DataDirectory, cFileUtils.ToValidFileName(StratName + ".csv", False))
+            Dim StartFilename As String = Path.Combine(cMSEUtils.MSEFolder(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.Strategies), cFileUtils.ToValidFileName(StratName + ".csv", False))
             Dim NumberOfStrategies As Integer = Me.m_strategies.Count
-            Dim strategy As Strategy = New Strategy(StratName, NumberOfStrategies + 1, StartFilename)
+            'Dim strategy As Strategy = New Strategy(StratName, NumberOfStrategies + 1, StartFilename)
+            Dim strategy As Strategy = New Strategy(StratName, NumberOfStrategies + 1, StartFilename, Me.Core, Me.m_plugin)
 
             ' JS 30Sep13: Strategies class validates both strategy name and file. VERY GOOD!!
             If (Not Me.m_strategies.Contains(strategy)) Then
@@ -234,55 +235,59 @@ Public Class frmTFMpolicy
     Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnSaveToCSV.Click
 
+        Me.m_bStrategiesSaved = Me.m_strategies.SaveHCRs()
+        Me.UpdateControls()
+
         ' JS 30Sep13: CSV file written in fixed digit format
         ' JS 30Sep13: Uses safe streamwriter
-        Try
-            Dim csvStrategyFile As StreamWriter = Nothing
-            Dim strFile As String = ""
-            Dim strPath As String = ""
-            Dim msg As cMessage = Nothing
+        'Try
+        '    Dim csvStrategyFile As StreamWriter = Nothing
+        '    Dim strFile As String = ""
+        '    Dim strPath As String = ""
+        '    Dim msg As cMessage = Nothing
 
-            For Each iStrategy In Me.m_strategies
+        '    For Each iStrategy In Me.m_strategies
 
-                If msg Is Nothing Then
-                    strPath = Path.GetDirectoryName(iStrategy.FileName)
-                    msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_STRATEGIES, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                    msg.Hyperlink = strPath
-                End If
+        '        If msg Is Nothing Then
+        '            strPath = Path.GetDirectoryName(iStrategy.FileName)
+        '            msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_STRATEGIES, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+        '            msg.Hyperlink = strPath
+        '        End If
 
-                csvStrategyFile = cMSEUtils.GetWriter(iStrategy.FileName, False)
-                If (csvStrategyFile IsNot Nothing) Then
+        '        csvStrategyFile = cMSEUtils.GetWriter(iStrategy.FileName, False)
+        '        If (csvStrategyFile IsNot Nothing) Then
 
-                    msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
-                                                        String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
-                                                        eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+        '            msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
+        '                                                String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
+        '                                                eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
-                    csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
-                    For Each iHCR In iStrategy
-                        csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
-                                                  cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
-                                                  cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
-                                                  cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
-                                                  cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
-                                                  cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
-                                                  cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
-                                                  cStringUtils.ToCSVField(iHCR.TypeOfHCR))
-                    Next
-                    cMSEUtils.ReleaseWriter(csvStrategyFile)
+        '            csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
+        '            csvStrategyFile.WriteLine(Strategies.GUID_TAG + "," + iStrategy.ID.ToString)
+        '            For Each iHCR In iStrategy
+        '                csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
+        '                                          cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
+        '                                          cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
+        '                                          cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
+        '                                          cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
+        '                                          cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
+        '                                          cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
+        '                                          cStringUtils.ToCSVField(iHCR.TypeOfHCR))
+        '            Next
+        '            cMSEUtils.ReleaseWriter(csvStrategyFile)
 
-                End If
-            Next
+        '        End If
+        '    Next
 
-            Me.m_bStrategiesSaved = True
+        '    Me.m_bStrategiesSaved = True
 
-            If msg IsNot Nothing Then
-                Me.Core.Messages.SendMessage(msg)
-            End If
-        Catch ex As Exception
+        '    If msg IsNot Nothing Then
+        '        Me.Core.Messages.SendMessage(msg)
+        '    End If
+        'Catch ex As Exception
 
-        End Try
+        'End Try
 
-        Me.UpdateControls()
+
 
     End Sub
 
