@@ -110,7 +110,6 @@ Public Class cRegulations
                         Reg.mRegMethod = CType(csv.Item(StrategyNumber - 1, iFleet), eRegMethod)
                         ListofRegs.Add(Reg)
                     Next
-
                     Return True
                     csv.Dispose()
                 Catch ex As Exception
