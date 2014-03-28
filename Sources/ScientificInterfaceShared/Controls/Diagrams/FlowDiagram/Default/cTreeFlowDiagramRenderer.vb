@@ -32,10 +32,12 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper class, implements building of a flow diagram tree.
+    ''' Helper class, implements the actual display of an EwE flow diagram using
+    ''' a simple layout of nodes connected via arched lines.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cFlowDiagramTree
+    Public Class cTreeFlowDiagramRenderer
+        Implements IFlowDiagramRenderer
 
 #Region " Helper classes "
 
@@ -103,7 +105,7 @@ Namespace Controls
                                  ByVal strText As String)
 
                 Using br As New SolidBrush(clrFont)
-                    g.DrawString(strText, font, br, ptf, cFlowDiagramTree.g_fmt)
+                    g.DrawString(strText, font, br, ptf, cTreeFlowDiagramRenderer.g_fmt)
                 End Using
 
             End Sub
@@ -217,7 +219,7 @@ Namespace Controls
         Private m_iLineWidth As Integer = 1
         Private m_nodetype As cFlowDiagramNode.eNodeTypes = cFlowDiagramNode.eNodeTypes.Circle
         Private m_connectiontype As cFlowDiagramConnector.eConnectionType = cFlowDiagramConnector.eConnectionType.Arch
-        Private m_colorusagetype As eColorUsageTypes = eColorUsageTypes.None
+        Private m_colorusagetype As cFlowDiagramManager.eColorUsageTypes = cFlowDiagramManager.eColorUsageTypes.None
         Private m_tsShowLegend As TriState = TriState.UseDefault
 
         Private Shared g_fmt As New StringFormat()
@@ -225,22 +227,7 @@ Namespace Controls
 
 #End Region ' Privates
 
-        Public Enum eColorUsageTypes As Integer
-            None
-            EwE
-            Value
-            Flow
-        End Enum
-
-        Public Enum eHighlightType As Integer
-            None
-            Hidden
-            Selected
-            LinkIn
-            LinkOut
-        End Enum
-
-        Public Event OnChanged(ByVal sender As cFlowDiagramTree)
+        Public Event OnChanged(ByVal sender As cTreeFlowDiagramRenderer)
 
 #Region " Constructor "
 
@@ -259,7 +246,7 @@ Namespace Controls
             ' Elminate near-white colours
             Me.m_colorramp.ColorOffsetStart = 0.2!
 
-            cFlowDiagramTree.g_fmt.Alignment = StringAlignment.Center
+            cTreeFlowDiagramRenderer.g_fmt.Alignment = StringAlignment.Center
             Me.InitNodePositions()
 
         End Sub
@@ -277,11 +264,11 @@ Namespace Controls
 
 #Region " Drawing "
 
-        Friend Sub DrawBackground(ByVal g As Graphics, ByVal rc As Rectangle)
+        Friend Sub DrawBackground(ByVal g As Graphics, ByVal rc As Rectangle) _
+            Implements IFlowDiagramRenderer.DrawBackground
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim iUnitHeight As Integer = CInt(rc.Height / Me.m_iNumTrophicLevels)
-            Dim tsShowLegend As TriState = Me.ShowLegend
 
             Using brBack As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND))
                 g.FillRectangle(brBack, rc)
@@ -296,21 +283,10 @@ Namespace Controls
                 End Using
             End Using
 
-            If (tsShowLegend = TriState.UseDefault) Then
-                Select Case Me.m_colorusagetype
-                    Case eColorUsageTypes.Value, eColorUsageTypes.Flow
-                        tsShowLegend = TriState.True
-                End Select
-            End If
-
-            If (tsShowLegend = TriState.True) Then
-                Me.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), Me.m_data.Title)
-            End If
-
         End Sub
 
-        Friend Sub DrawTitle(ByVal g As Graphics, _
-                             ByVal rc As Rectangle)
+        Friend Sub DrawTitle(ByVal g As Graphics, ByVal rc As Rectangle) _
+            Implements IFlowDiagramRenderer.DrawTitle
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim strTitle As String = Me.m_data.Title
@@ -329,7 +305,8 @@ Namespace Controls
         Friend Sub DrawNode(ByVal g As Graphics, _
                             ByVal rc As Rectangle, _
                             ByVal iGroup As Integer, _
-                            ByVal highlight As eHighlightType)
+                            ByVal highlight As cFlowDiagramManager.eHighlightType) _
+            Implements IFlowDiagramRenderer.DrawNode
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim strLabel As String = Me.FormatLabelText(iGroup)
@@ -343,29 +320,29 @@ Namespace Controls
 
             Select Case highlight
 
-                Case eHighlightType.Hidden
+                Case cFlowDiagramManager.eHighlightType.Hidden
                     clrPen = Color.LightGray
                     clrFill = Color.White
                     clrLabel = cColorUtils.GetVariant(Me.TextColor, 0.5!)
 
-                Case eHighlightType.None
-                    Select Case m_colorusagetype
-                        Case eColorUsageTypes.EwE
+                Case cFlowDiagramManager.eHighlightType.None
+                    Select Case Me.m_colorusagetype
+                        Case cFlowDiagramManager.eColorUsageTypes.EwE
                             clrFill = Me.m_data.GroupColor(iGroup)
-                        Case eColorUsageTypes.Value
+                        Case cFlowDiagramManager.eColorUsageTypes.Value
                             clrFill = Me.m_colorramp.GetColor(sValue, sValueMax)
                         Case Else
                             clrFill = Me.m_clrNode
                     End Select
 
-                Case eHighlightType.Selected
+                Case cFlowDiagramManager.eHighlightType.Selected
                     clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
 
-                Case eHighlightType.LinkIn
+                Case cFlowDiagramManager.eHighlightType.LinkIn
                     clrPen = Me.InLinkColor
                     clrLabel = clrPen
 
-                Case eHighlightType.LinkOut
+                Case cFlowDiagramManager.eHighlightType.LinkOut
                     clrPen = Me.OutLinkColor
                     clrLabel = clrPen
 
@@ -389,7 +366,8 @@ Namespace Controls
                                   ByVal rc As Rectangle, _
                                   ByVal iPred As Integer, _
                                   ByVal iPrey As Integer, _
-                                  ByVal highlight As eHighlightType)
+                                  ByVal highlight As cFlowDiagramManager.eHighlightType) _
+            Implements IFlowDiagramRenderer.DrawConnection
 
             Dim clrLine As Color = Me.m_clrLine
             Dim sDiet As Single = Me.m_data.LinkValue(iPred, iPrey)
@@ -400,22 +378,22 @@ Namespace Controls
 
             Select Case highlight
 
-                Case eHighlightType.None
+                Case cFlowDiagramManager.eHighlightType.None
                     Select Case Me.m_colorusagetype
-                        Case eColorUsageTypes.Flow
+                        Case cFlowDiagramManager.eColorUsageTypes.Flow
                             clrLine = Me.m_colorramp.GetColor(sDiet, sDietMax)
                         Case Else
                             ' Normal
                     End Select
 
-                Case eHighlightType.Hidden
+                Case cFlowDiagramManager.eHighlightType.Hidden
                     Return ' clrLine = Color.FromArgb(255, 240, 240, 240)
 
-                Case eHighlightType.LinkIn
+                Case cFlowDiagramManager.eHighlightType.LinkIn
                     clrLine = Me.InLinkColor
                     sLineWidth = 2.0!
 
-                Case eHighlightType.LinkOut
+                Case cFlowDiagramManager.eHighlightType.LinkOut
                     clrLine = Me.OutLinkColor
                     sLineWidth = 2.0!
             End Select
@@ -432,11 +410,23 @@ Namespace Controls
 
         Friend Sub DrawLegend(ByVal g As Graphics, _
                               ByVal sValMax As Single, ByVal ptTopLeft As Point, _
-                              ByVal strTitle As String)
+                              ByVal strTitle As String) _
+            Implements IFlowDiagramRenderer.DrawLegend
 
-            Dim lgd As New cLegend(Me.UIContext, strTitle)
-            lgd.AddGradient("", 0, sValMax)
-            lgd.Draw(g, ptTopLeft)
+            Dim tsShowLegend As TriState = Me.ShowLegend
+            If (tsShowLegend = TriState.UseDefault) Then
+                Select Case Me.m_colorusagetype
+                    Case cFlowDiagramManager.eColorUsageTypes.Value, _
+                         cFlowDiagramManager.eColorUsageTypes.Flow
+                        tsShowLegend = TriState.True
+                End Select
+            End If
+
+            If (tsShowLegend = TriState.True) Then
+                Dim lgd As New cLegend(Me.UIContext, strTitle)
+                lgd.AddGradient("", 0, sValMax)
+                lgd.Draw(g, ptTopLeft)
+            End If
 
         End Sub
 
@@ -444,12 +434,18 @@ Namespace Controls
 
 #Region " SetPosition "
 
-        Public Sub MoveNode(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer)
+        Public Sub MoveNode(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer) _
+            Implements IFlowDiagramRenderer.MoveNode
+
             Me.NodeLocation(iNode, rc) = ptNew
+
         End Sub
 
-        Public Sub MoveLabel(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer)
+        Public Sub MoveLabel(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer) _
+            Implements IFlowDiagramRenderer.MoveLabel
+
             Me.LabelLocation(iNode, rc) = ptNew
+
         End Sub
 
         Friend Sub InitNodePositions()
@@ -522,12 +518,12 @@ Namespace Controls
         <Browsable(True), _
             Category("Appearance"), _
             cLocalizedDisplayName("GENERIC_COLOUR_USAGE"), _
-            DefaultValue(eColorUsageTypes.None)> _
-        Public Property AutoColorUsage() As eColorUsageTypes
+            DefaultValue(cFlowDiagramManager.eColorUsageTypes.None)> _
+        Public Property AutoColorUsage() As cFlowDiagramManager.eColorUsageTypes
             Get
                 Return Me.m_colorusagetype
             End Get
-            Set(ByVal value As eColorUsageTypes)
+            Set(ByVal value As cFlowDiagramManager.eColorUsageTypes)
                 Me.m_colorusagetype = value
                 RaiseEvent OnChanged(Me)
             End Set
@@ -692,7 +688,8 @@ Namespace Controls
 
 #Region " Public properties "
 
-        Public Property NodeLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF
+        Public Property NodeLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF _
+            Implements IFlowDiagramRenderer.NodeLocation
             Get
                 Dim pt As PointF
                 pt.X = CSng(Me.m_sAngle(i) / 360 * (rc.Width - 40)) + 20
@@ -705,7 +702,8 @@ Namespace Controls
             End Set
         End Property
 
-        Public Property LabelLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF
+        Public Property LabelLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF _
+            Implements IFlowDiagramRenderer.LabelLocation
             Get
                 Dim ptfNode As PointF = Me.NodeLocation(i, rc)
                 Return New PointF(ptfNode.X + Me.m_asLabelOffsetX(i), ptfNode.Y + Me.m_asLabelOffsetY(i))
@@ -718,7 +716,8 @@ Namespace Controls
         End Property
 
         Public Function IsNodeAtPoint(ByVal rc As Rectangle, ByVal ptfTest As PointF, _
-                                      ByVal i As Integer, ByVal sValue As Single) As Boolean
+                                      ByVal i As Integer, ByVal sValue As Single) As Boolean _
+            Implements IFlowDiagramRenderer.IsNodeAtPoint
 
             Dim ptfNodeLocation As PointF = Me.NodeLocation(i, rc)
             Dim sNodeSize As Single = CSng(Me.CalcNodeSize(sValue, Me.m_data.ValueMax))
@@ -736,10 +735,11 @@ Namespace Controls
                                        ByVal i As Integer, _
                                        ByVal strLabel As String, _
                                        ByVal g As Graphics, _
-                                       ByVal font As Font) As Boolean
+                                       ByVal font As Font) As Boolean _
+            Implements IFlowDiagramRenderer.IsLabelAtPoint
 
             Dim ptfLabelLocation As PointF = Me.LabelLocation(i, rc)
-            Dim szfLabel As SizeF = Me.m_node.CalcLabelSize(g, font, strLabel, cFlowDiagramTree.g_fmt, cFlowDiagramTree.g_wrapwidth)
+            Dim szfLabel As SizeF = Me.m_node.CalcLabelSize(g, font, strLabel, cTreeFlowDiagramRenderer.g_fmt, cTreeFlowDiagramRenderer.g_wrapwidth)
             Dim rcf As New RectangleF(ptfLabelLocation.X - szfLabel.Width / 2, ptfLabelLocation.Y, szfLabel.Width, szfLabel.Height)
 
             Return rcf.Contains(ptfTest)
@@ -750,32 +750,48 @@ Namespace Controls
 
 #Region " EwE styling "
 
-        Public Function RenderFont() As Font
+        Public Function RenderFont() As Font _
+            Implements IFlowDiagramRenderer.RenderFont
+
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Return sg.Font(cStyleGuide.eApplicationFontType.Scale)
+
         End Function
 
-        Public Function TextColor() As Color
+        Public Function TextColor() As Color _
+            Implements IFlowDiagramRenderer.TextColor
+
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Return sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+
         End Function
 
-        Public Function InLinkColor() As Color
+        Public Function InLinkColor() As Color _
+            Implements IFlowDiagramRenderer.InLinkColor
+
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Return sg.ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
+
         End Function
 
-        Public Function OutLinkColor() As Color
+        Public Function OutLinkColor() As Color _
+            Implements IFlowDiagramRenderer.OutLinkColor
+
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Return sg.ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
+
         End Function
 
-        Public Function HighlightColor() As Color
+        Public Function HighlightColor() As Color _
+            Implements IFlowDiagramRenderer.HighlightColor
+
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Return sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+
         End Function
 
-        Public Function FormatLabelText(iGroup As Integer) As String
+        Public Function FormatLabelText(iGroup As Integer) As String _
+            Implements IFlowDiagramRenderer.FormatLabelText
 
             Dim sb As New StringBuilder()
             Dim sValue As Single = Me.m_data.Value(iGroup)

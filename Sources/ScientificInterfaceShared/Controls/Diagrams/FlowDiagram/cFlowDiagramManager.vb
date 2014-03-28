@@ -33,19 +33,34 @@ Namespace Controls
     ''' Class that renderes a <see cref="IFlowDiagramData">flow diagram</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cFlowDiagramRenderer
+    Public Class cFlowDiagramManager
 
 #Region " Private vars "
 
         Private m_iHighlight As Integer = 0
         Private m_bIsMouseDown As Boolean = False
-        Private m_tree As cFlowDiagramTree = Nothing
+        Private m_tree As IFlowDiagramRenderer = Nothing
         Private m_data As IFlowDiagramData = Nothing
 
         Private Enum eDragMode As Integer
             None
             Label
             Node
+        End Enum
+
+        Public Enum eColorUsageTypes As Integer
+            None
+            EwE
+            Value
+            Flow
+        End Enum
+
+        Public Enum eHighlightType As Integer
+            None
+            Hidden
+            Selected
+            LinkIn
+            LinkOut
         End Enum
 
         Private m_dragMode As eDragMode = eDragMode.None
@@ -60,10 +75,11 @@ Namespace Controls
         ''' Constructor for a flow diagram renderer.
         ''' </summary>
         ''' <param name="data">The <see cref="IFlowDiagramData">data</see> for the flow diagram.</param>
-        ''' <param name="tree">The <see cref="cFlowDiagramTree"/> tree to tie it all together.</param>
+        ''' <param name="tree">The <see cref="IFlowDiagramRenderer"/> tree to do 
+        ''' the actual rendering and UI interactions.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal data As IFlowDiagramData, _
-                       ByVal tree As cFlowDiagramTree)
+                       ByVal tree As IFlowDiagramRenderer)
 
             Me.m_data = data
             Me.m_tree = tree
@@ -105,21 +121,22 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Sub DrawFlowDiagram(ByVal g As Graphics, ByVal rc As Rectangle)
 
-            Dim hl As cFlowDiagramTree.eHighlightType = cFlowDiagramTree.eHighlightType.None
+            Dim hl As eHighlightType = eHighlightType.None
 
             Me.m_tree.DrawBackground(g, rc)
             Me.m_tree.DrawTitle(g, rc)
+            Me.m_tree.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), Me.m_data.Title)
 
             ' Draw the connections
             For iPred As Integer = 1 To Me.m_data.NumLivingGroups()
                 For iPrey As Integer = 1 To Me.m_data.NumGroups()
                     ' Determine highlight state
-                    hl = cFlowDiagramTree.eHighlightType.None
+                    hl = eHighlightType.None
                     If Me.m_data.IsGroupVisible(iPred) And Me.m_data.IsGroupVisible(iPrey) Then
-                        If (Me.HighlightNode = iPred) Then hl = cFlowDiagramTree.eHighlightType.LinkIn
-                        If (Me.HighlightNode = iPrey) Then hl = cFlowDiagramTree.eHighlightType.LinkOut
+                        If (Me.HighlightNode = iPred) Then hl = eHighlightType.LinkIn
+                        If (Me.HighlightNode = iPrey) Then hl = eHighlightType.LinkOut
                     Else
-                        hl = cFlowDiagramTree.eHighlightType.Hidden
+                        hl = eHighlightType.Hidden
                     End If
                     Me.m_tree.DrawConnection(g, rc, iPred, iPrey, hl)
                 Next
@@ -129,9 +146,9 @@ Namespace Controls
             For j As Integer = 1 To Me.m_data.NumGroups()
 
                 ' Determine node highlight state
-                hl = cFlowDiagramTree.eHighlightType.None
-                If Not Me.m_data.IsGroupVisible(j) Then hl = cFlowDiagramTree.eHighlightType.Hidden
-                If (Me.HighlightNode = j) Then hl = cFlowDiagramTree.eHighlightType.Selected
+                hl = eHighlightType.None
+                If Not Me.m_data.IsGroupVisible(j) Then hl = eHighlightType.Hidden
+                If (Me.HighlightNode = j) Then hl = eHighlightType.Selected
 
                 ' ToDo: check if node is a prey or pred of the selected node
 

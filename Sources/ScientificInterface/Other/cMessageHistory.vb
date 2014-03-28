@@ -565,7 +565,7 @@ Public Class cMessageHistory
                 ' Assume to repeat the question
                 Dim bChecked As Boolean = False
                 ' Show dialog
-                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, AppLauncher.GetInstance().Text, _
+                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text, _
                                              mbb, mbi, _
                                              bChecked, My.Resources.PROMPT_MESSAGE_HIDE)
                 ' Auto-reply requested?
@@ -578,7 +578,7 @@ Public Class cMessageHistory
             ' Invoke message box
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
             Try
-                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, AppLauncher.GetInstance().Text, mbb, mbi)
+                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text, mbb, mbi)
             Catch ex As Exception
                 cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
             End Try
@@ -650,7 +650,7 @@ Public Class cMessageHistory
                     ' Assume message will not be suppressed
                     Dim bSuppress As Boolean = False
                     ' Invoke the special message box
-                    cCustomMessageBox.Show(Me.UIContext, strMessage, AppLauncher.GetInstance().Text, _
+                    cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text, _
                                            mbb, mbi, _
                                            bSuppress, My.Resources.PROMPT_MESSAGE_HIDE)
                     ' Set suppressed state in administration
@@ -661,7 +661,7 @@ Public Class cMessageHistory
             Else
                 ' #No: show the message
                 ' The one and only static popup message box in EwE
-                MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
+                MessageBox.Show(strMessage, frmEwE6.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
             End If
         End If
 

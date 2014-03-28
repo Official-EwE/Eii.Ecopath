@@ -56,7 +56,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 ''' The main form of the EwE6 Scientific Interface
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class AppLauncher
+Friend Class frmEwE6
     Implements IUIElement
 
 #Region " Variables "
@@ -98,30 +98,59 @@ Public Class AppLauncher
 
 #Region " Presentation mode "
 
-    Private Class sFormStatePrevious
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class to toggle the EwE main form between a normal state
+    ''' and a 'presentation mode' state.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Class cPresentationMode
 
 #Region " Private vars "
 
-        Private m_frm As AppLauncher = Nothing
+        Private m_frm As frmEwE6 = Nothing
         Private m_bActive As Boolean = False
-        Public Property ShowMenu As Boolean
-        Public Property ShowModelBar As Boolean
-        Public Property ShowStatusBar As Boolean
-        Public Property ShowNavPanel As Boolean
-        Public Property FormState As FormWindowState
-        Public Property BorderStyle As FormBorderStyle
-        Public Property ControlBox As Boolean
-        Public Property Bounds As Rectangle
+
+        ' -- cached main form states  --
+        Private m_bShowMenu As Boolean
+        Private m_bShowModelBar As Boolean
+        Private m_bShowStatusBar As Boolean
+        Private m_bShowNavPanel As Boolean
+        Private m_bFormState As FormWindowState
+        Private m_bBorderStyle As FormBorderStyle
+        Private m_bControlBox As Boolean
+        Private m_bBounds As Rectangle
+        Private m_bUseOpacity As Boolean = False
 
 #End Region ' Private vars
 
-        Public Sub New()
-
-        End Sub
-        Public Sub New(frm As AppLauncher)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor.
+        ''' </summary>
+        ''' <param name="frm">The <see cref="frmApplication"/> to toggle presentation mode for.</param>
+        ''' <param name="bUseOpacity">If set to true, the main form will be totally 
+        ''' opaque during a presentation mode switch.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(frm As frmEwE6, Optional bUseOpacity As Boolean = False)
             Me.m_frm = frm
+            Me.m_bUseOpacity = bUseOpacity
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Toggle between presentation mode and regular mode.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Toggle()
+            Me.Active = Not Me.Active
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether presentation mode is active.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property Active As Boolean
             Get
                 Return Me.m_bActive
@@ -130,39 +159,44 @@ Public Class AppLauncher
                 If (value = Me.m_bActive) Then Return
                 Me.m_bActive = value
 
+                If (Me.m_bUseOpacity) Then Me.m_frm.Opacity = 0
+
                 ' Presentation mode active?
                 If (Me.m_bActive) Then
                     ' #Yes: hide bits and stretch form
-
-                    Me.ShowMenu = Me.m_frm.m_menuMain.Visible : Me.m_frm.m_menuMain.Visible = Not My.Settings.PresentationModeHideMainMenu
-                    Me.ShowModelBar = Me.m_frm.m_tsModel.Visible : Me.m_frm.m_tsModel.Visible = Not My.Settings.PresentationModeHideModelBar
-                    Me.ShowStatusBar = Me.m_frm.m_ssMain.Visible : Me.m_frm.m_ssMain.Visible = Not My.Settings.PresentationModeHideStatusBar
-                    Me.ShowNavPanel = Me.m_frm.Panel(cPANEL_NAV).IsHiding : Me.m_frm.Panel(cPANEL_NAV).AutoHide = My.Settings.PresentationModeCollapseNavPanel
+                    Me.m_bShowMenu = Me.m_frm.m_menuMain.Visible : Me.m_frm.m_menuMain.Visible = Not My.Settings.PresentationModeHideMainMenu
+                    Me.m_bShowModelBar = Me.m_frm.m_tsModel.Visible : Me.m_frm.m_tsModel.Visible = Not My.Settings.PresentationModeHideModelBar
+                    Me.m_bShowStatusBar = Me.m_frm.m_ssMain.Visible : Me.m_frm.m_ssMain.Visible = Not My.Settings.PresentationModeHideStatusBar
+                    Me.m_bShowNavPanel = Me.m_frm.Panel(cPANEL_NAV).IsHiding : Me.m_frm.Panel(cPANEL_NAV).AutoHide = My.Settings.PresentationModeCollapseNavPanel
 
                     ' JS 28Mar14: This now works
                     ' - Using screen bounds works better than maximizing AppLauncher
                     ' - TopMost is not needed anymore
                     ' - Do not change the order of the next three statements!
-                    Me.FormState = Me.m_frm.WindowState : Me.m_frm.WindowState = FormWindowState.Normal
-                    Me.BorderStyle = Me.m_frm.FormBorderStyle : Me.m_frm.FormBorderStyle = Windows.Forms.FormBorderStyle.None
-                    Me.Bounds = Me.m_frm.Bounds : Me.Bounds = Screen.GetBounds(Me.m_frm)
+                    Me.m_bFormState = Me.m_frm.WindowState : Me.m_frm.WindowState = FormWindowState.Normal
+                    Me.m_bBorderStyle = Me.m_frm.FormBorderStyle : Me.m_frm.FormBorderStyle = Windows.Forms.FormBorderStyle.None
+                    Me.m_bBounds = Me.m_frm.Bounds : Me.m_frm.Bounds = Screen.GetBounds(Me.m_frm)
+                    Me.m_bControlBox = Me.m_frm.ControlBox : Me.m_frm.ControlBox = False
                     '.TopMost = Me.TopMost : Me.TopMost = True
                 Else
-                    Me.m_frm.FormBorderStyle = Me.BorderStyle
-                    Me.m_frm.WindowState = Me.FormState
+                    Me.m_frm.FormBorderStyle = Me.m_bBorderStyle
+                    Me.m_frm.WindowState = Me.m_bFormState
                     'Me.TopMost = .TopMost
-                    Me.m_frm.Bounds = Me.Bounds
-                    Me.m_frm.m_menuMain.Visible = Me.ShowMenu
-                    Me.m_frm.m_tsModel.Visible = Me.ShowModelBar
-                    Me.m_frm.m_ssMain.Visible = Me.ShowStatusBar
-                    Me.m_frm.Panel(cPANEL_NAV).AutoHide = Me.ShowNavPanel
-                    Me.m_frm.ControlBox = Me.ControlBox
+                    Me.m_frm.Bounds = Me.m_bBounds
+                    Me.m_frm.m_menuMain.Visible = Me.m_bShowMenu
+                    Me.m_frm.m_tsModel.Visible = Me.m_bShowModelBar
+                    Me.m_frm.m_ssMain.Visible = Me.m_bShowStatusBar
+                    Me.m_frm.Panel(cPANEL_NAV).AutoHide = Me.m_bShowNavPanel
+                    Me.m_frm.ControlBox = Me.m_bControlBox
                 End If
+
+                If (Me.m_bUseOpacity) Then Me.m_frm.Opacity = 1
+
             End Set
         End Property
     End Class
 
-    Private m_fspPresentationMode As New sFormStatePrevious()
+    Private m_presentationmode As cPresentationMode = Nothing
 
 #End Region ' Presentation mode
 
@@ -259,10 +293,10 @@ Public Class AppLauncher
 
 #Region " Singleton "
 
-    Private Shared __inst__ As AppLauncher = Nothing
+    Private Shared __inst__ As frmEwE6 = Nothing
 
-    Public Shared Function GetInstance() As AppLauncher
-        Return AppLauncher.__inst__
+    Public Shared Function GetInstance() As frmEwE6
+        Return frmEwE6.__inst__
     End Function
 
 #End Region ' Singleton
@@ -273,11 +307,12 @@ Public Class AppLauncher
 
         Me.InitializeComponent()
 
-        Debug.Assert(AppLauncher.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
-        AppLauncher.__inst__ = Me
+        Debug.Assert(frmEwE6.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
+        frmEwE6.__inst__ = Me
         cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
 
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+        Me.m_presentationmode = New cPresentationMode(Me)
 
     End Sub
 
@@ -2915,45 +2950,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnViewPresentationMode(ByVal cmd As cCommand) Handles m_cmdViewPresentationMode.OnInvoke
 
-        cmd.Checked = Not cmd.Checked
-
-        Dim bPresMode As Boolean = cmd.Checked
-
-        ' JS 28Mar14: Opacity not needed
-        'Me.Opacity = 0
-
-        If (bPresMode) Then
-            With Me.m_fspPresentationMode
-                .ShowMenu = Me.m_menuMain.Visible : Me.m_menuMain.Visible = Not My.Settings.PresentationModeHideMainMenu
-                .ShowModelBar = Me.m_tsModel.Visible : Me.m_tsModel.Visible = Not My.Settings.PresentationModeHideModelBar
-                .ShowStatusBar = Me.m_ssMain.Visible : Me.m_ssMain.Visible = Not My.Settings.PresentationModeHideStatusBar
-                .ShowNavPanel = Me.Panel(cPANEL_NAV).IsHiding : Me.Panel(cPANEL_NAV).AutoHide = My.Settings.PresentationModeCollapseNavPanel
-                ' Order matters!
-                ' JS 28Mar14: Using screen bounds works better than maximizing AppLauncher
-                .FormState = Me.WindowState : Me.WindowState = FormWindowState.Normal
-                .BorderStyle = Me.FormBorderStyle : Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
-                .Bounds = Me.Bounds : Me.Bounds = Screen.GetBounds(Me)
-                '.TopMost = Me.TopMost : Me.TopMost = True
-            End With
-            Me.ControlBox = False
-        Else
-            With Me.m_fspPresentationMode
-                Me.FormBorderStyle = .BorderStyle
-                Me.WindowState = .FormState
-                'Me.TopMost = .TopMost
-                Me.Bounds = .Bounds
-                Me.m_menuMain.Visible = .ShowMenu
-                Me.m_tsModel.Visible = .ShowModelBar
-                Me.m_ssMain.Visible = .ShowStatusBar
-                Me.Panel(cPANEL_NAV).AutoHide = .ShowNavPanel
-            End With
-            'Me.TopMost = False
-            Me.ControlBox = True
-        End If
-
-        ' BorderStyle screws up dockpanel when there it contains panels.
-        ' JS 28Mar14: Opacity not needed
-        'Me.Opacity = 1
+        Me.m_presentationmode.Toggle()
 
     End Sub
 
@@ -2963,7 +2960,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateViewPresentationMode(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdViewPresentationMode.OnUpdate
-        ' NOP
+        Me.m_cmdViewPresentationMode.Checked = Me.m_presentationmode.Active
     End Sub
 
     ''' <summary>

@@ -45,9 +45,9 @@ Namespace Ecopath.Controls.FlowDiagram
 #Region " Private variables "
 
         Private components As System.ComponentModel.IContainer = Nothing
-        Private m_data As cFlowDiagramData = Nothing
-        Private m_doodler As cFlowDiagramRenderer = Nothing
-        Private m_tree As cFlowDiagramTree = Nothing
+        Private m_data As cFlowDiagramGroupData = Nothing
+        Private m_doodler As cFlowDiagramManager = Nothing
+        Private m_tree As cTreeFlowDiagramRenderer = Nothing
 
         Private m_bMouseDown As Boolean = False
         Private WithEvents m_pbFlowDiagram As System.Windows.Forms.PictureBox
@@ -98,9 +98,9 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = Nothing
 
-            Me.m_data = New cFlowDiagramData(Me.UIContext)
-            Me.m_tree = New cFlowDiagramTree(Me.m_data)
-            Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
+            Me.m_data = New cFlowDiagramGroupData(Me.UIContext)
+            Me.m_tree = New cTreeFlowDiagramRenderer(Me.m_data)
+            Me.m_doodler = New cFlowDiagramManager(Me.m_data, Me.m_tree)
 
             Me.m_pgFlowDiagram.SelectedObject = Me.m_tree
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath}
@@ -215,7 +215,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Tree events (wouldn't that be nice?)"
 
-        Private Sub OnTreeChanged(ByVal sender As cFlowDiagramTree)
+        Private Sub OnTreeChanged(ByVal sender As cTreeFlowDiagramRenderer)
             Me.m_pbFlowDiagram.Invalidate(True)
         End Sub
 

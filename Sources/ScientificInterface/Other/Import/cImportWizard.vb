@@ -326,7 +326,7 @@ Namespace Import
         ''' -------------------------------------------------------------------
         Public Function Import(ByVal setting As cImportSettings) As Boolean
 
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
+            Dim appl As frmEwE6 = frmEwE6.GetInstance()
             Dim db As cEwEDatabase = Nothing
             Dim strModel As String = Me.EwE6ModelName(setting, Me.OutputFormat)
             Dim strLogFile As String = ""

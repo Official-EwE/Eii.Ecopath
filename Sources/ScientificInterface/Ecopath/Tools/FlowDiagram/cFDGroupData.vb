@@ -28,12 +28,11 @@ Namespace Ecopath.Controls.FlowDiagram
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Data for the Ecopath flow diagram.
+    ''' Data for rendering the Ecopath groups and trophic links as a flow diagram.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cFlowDiagramData
+    Public Class cFlowDiagramGroupData
         Implements IFlowDiagramData
-        Implements IUIElement
 
 #Region " Internals "
 
@@ -58,10 +57,10 @@ Namespace Ecopath.Controls.FlowDiagram
 #Region " Properties "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' <inheritdocs cref="IFlowDiagramData.UIContext"/>
         ''' -------------------------------------------------------------------
         Friend Property UIContext() As cUIContext _
-            Implements IUIElement.UIContext
+            Implements IFlowDiagramData.UIContext
             Get
                 Return Me.m_uic
             End Get

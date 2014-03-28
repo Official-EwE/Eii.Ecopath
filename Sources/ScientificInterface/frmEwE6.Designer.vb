@@ -18,7 +18,7 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-Partial Public Class AppLauncher
+Partial Friend Class frmEwE6
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -40,7 +40,7 @@ Partial Public Class AppLauncher
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim m_tssHelp2 As System.Windows.Forms.ToolStripSeparator
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AppLauncher))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEwE6))
         Dim m_tssFile1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssFile2 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssFile3 As System.Windows.Forms.ToolStripSeparator

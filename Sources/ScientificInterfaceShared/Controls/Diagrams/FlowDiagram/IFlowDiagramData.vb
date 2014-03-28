@@ -32,6 +32,7 @@ Namespace Controls
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Interface IFlowDiagramData
+        Inherits IUIElement
 
         ''' -------------------------------------------------------------------
         ''' <summary>
