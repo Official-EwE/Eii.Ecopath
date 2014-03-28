@@ -183,7 +183,7 @@ Namespace Controls
                 End If
 
                 ' Display shape ID (=index in manager list) + 1
-                strLabel = String.Format(My.Resources.GENERIC_LABEL_INDEXED, (DirectCast(Me.Shape, cForcingFunction).ID + 1), Me.Shape.Name)
+                strLabel = String.Format(My.Resources.GENERIC_LABEL_INDEXED, (DirectCast(Me.Shape, cShapeData).Index), Me.Shape.Name)
                 g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
 
                 ' Dispose the pen, brush and font we created and let the system garbage collect them.

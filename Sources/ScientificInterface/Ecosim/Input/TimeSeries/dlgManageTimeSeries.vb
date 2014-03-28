@@ -706,8 +706,8 @@ Public Class dlgManageTimeSeries
 
                         If Not bSuppressed Then
                             fmsg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_TIMESERIES_IMPORT_AS_MONTHLY, ts.Name), _
-                                                        eCoreComponentType.NotSet, _
-                                                        eMessageType.NotSet, _
+                                                        eCoreComponentType.External, _
+                                                        eMessageType.DataImport, _
                                                         eMessageImportance.Warning, _
                                                         eMessageReplyStyle.YES_NO_CANCEL, _
                                                         eDataTypes.NotSet, _
