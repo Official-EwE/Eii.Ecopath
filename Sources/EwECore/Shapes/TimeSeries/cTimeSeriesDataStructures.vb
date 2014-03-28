@@ -94,6 +94,8 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>Max number of years across all applied time series.</summary>
     Public NdatYear As Integer
 
+    Public nAICTimeSeries As Integer
+
     'ToDo_jb change DatType to eTimeSeriesType
     ''' <summary><see cref="eTimeSeriesType">Type</see> of each applied time series.</summary>
     Public DatType() As eTimeSeriesType
@@ -313,6 +315,7 @@ Public Class cTimeSeriesDataStructures
 
         NdatType = 0
         NdatYear = nMaxYears
+        nAICTimeSeries = 0
 
         ' Determine no. of time series to enable
         For iTS = 1 To nTimeSeries
@@ -332,6 +335,12 @@ Public Class cTimeSeriesDataStructures
                 If Me.bEnable(iTS) Then
                     iTSEnable += 1
                     Me.LoadEnabledTS(iTS, iTSEnable)
+
+                    'count up the number of time series use for the AIC
+                    If Me.useForAIC(Me.DatType(iTSEnable)) Then
+                        nAICTimeSeries += 1
+                    End If
+
                 End If
             Next iTS
 
@@ -350,6 +359,21 @@ Public Class cTimeSeriesDataStructures
         Next iYear
 
     End Sub
+
+    ''' <summary>
+    ''' Is this timeseries type use for the AIC Calculations
+    ''' </summary>
+    ''' <param name="TimeSeriesType"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function useForAIC(TimeSeriesType As eTimeSeriesType) As Boolean
+        If TimeSeriesType = eTimeSeriesType.BiomassAbs Or TimeSeriesType = eTimeSeriesType.BiomassRel _
+            Or TimeSeriesType = eTimeSeriesType.Catches Or TimeSeriesType = eTimeSeriesType.CatchesForcing _
+            Or TimeSeriesType = eTimeSeriesType.TotalMortality Then
+            Return True
+        End If
+        Return False
+    End Function
 
     Friend Sub Update()
 
