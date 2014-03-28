@@ -98,15 +98,69 @@ Public Class AppLauncher
 
 #Region " Presentation mode "
 
-    Private Structure sFormStatePrevious
-        Public ShowMenu As Boolean
-        Public ShowModelBar As Boolean
-        Public ShowStatusBar As Boolean
-        Public ShowNavPanel As Boolean
-        Public FormState As FormWindowState
-        Public BorderStyle As FormBorderStyle
-        Public TopMost As Boolean
-    End Structure
+    Private Class sFormStatePrevious
+
+#Region " Private vars "
+
+        Private m_frm As AppLauncher = Nothing
+        Private m_bActive As Boolean = False
+        Public Property ShowMenu As Boolean
+        Public Property ShowModelBar As Boolean
+        Public Property ShowStatusBar As Boolean
+        Public Property ShowNavPanel As Boolean
+        Public Property FormState As FormWindowState
+        Public Property BorderStyle As FormBorderStyle
+        Public Property ControlBox As Boolean
+        Public Property Bounds As Rectangle
+
+#End Region ' Private vars
+
+        Public Sub New()
+
+        End Sub
+        Public Sub New(frm As AppLauncher)
+            Me.m_frm = frm
+        End Sub
+
+        Public Property Active As Boolean
+            Get
+                Return Me.m_bActive
+            End Get
+            Set(value As Boolean)
+                If (value = Me.m_bActive) Then Return
+                Me.m_bActive = value
+
+                ' Presentation mode active?
+                If (Me.m_bActive) Then
+                    ' #Yes: hide bits and stretch form
+
+                    Me.ShowMenu = Me.m_frm.m_menuMain.Visible : Me.m_frm.m_menuMain.Visible = Not My.Settings.PresentationModeHideMainMenu
+                    Me.ShowModelBar = Me.m_frm.m_tsModel.Visible : Me.m_frm.m_tsModel.Visible = Not My.Settings.PresentationModeHideModelBar
+                    Me.ShowStatusBar = Me.m_frm.m_ssMain.Visible : Me.m_frm.m_ssMain.Visible = Not My.Settings.PresentationModeHideStatusBar
+                    Me.ShowNavPanel = Me.m_frm.Panel(cPANEL_NAV).IsHiding : Me.m_frm.Panel(cPANEL_NAV).AutoHide = My.Settings.PresentationModeCollapseNavPanel
+
+                    ' JS 28Mar14: This now works
+                    ' - Using screen bounds works better than maximizing AppLauncher
+                    ' - TopMost is not needed anymore
+                    ' - Do not change the order of the next three statements!
+                    Me.FormState = Me.m_frm.WindowState : Me.m_frm.WindowState = FormWindowState.Normal
+                    Me.BorderStyle = Me.m_frm.FormBorderStyle : Me.m_frm.FormBorderStyle = Windows.Forms.FormBorderStyle.None
+                    Me.Bounds = Me.m_frm.Bounds : Me.Bounds = Screen.GetBounds(Me.m_frm)
+                    '.TopMost = Me.TopMost : Me.TopMost = True
+                Else
+                    Me.m_frm.FormBorderStyle = Me.BorderStyle
+                    Me.m_frm.WindowState = Me.FormState
+                    'Me.TopMost = .TopMost
+                    Me.m_frm.Bounds = Me.Bounds
+                    Me.m_frm.m_menuMain.Visible = Me.ShowMenu
+                    Me.m_frm.m_tsModel.Visible = Me.ShowModelBar
+                    Me.m_frm.m_ssMain.Visible = Me.ShowStatusBar
+                    Me.m_frm.Panel(cPANEL_NAV).AutoHide = Me.ShowNavPanel
+                    Me.m_frm.ControlBox = Me.ControlBox
+                End If
+            End Set
+        End Property
+    End Class
 
     Private m_fspPresentationMode As New sFormStatePrevious()
 
@@ -222,6 +276,8 @@ Public Class AppLauncher
         Debug.Assert(AppLauncher.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
         AppLauncher.__inst__ = Me
         cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
+
+        Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
     End Sub
 
@@ -2863,7 +2919,8 @@ Public Class AppLauncher
 
         Dim bPresMode As Boolean = cmd.Checked
 
-        Me.SuspendLayout()
+        ' JS 28Mar14: Opacity not needed
+        'Me.Opacity = 0
 
         If (bPresMode) Then
             With Me.m_fspPresentationMode
@@ -2872,16 +2929,19 @@ Public Class AppLauncher
                 .ShowStatusBar = Me.m_ssMain.Visible : Me.m_ssMain.Visible = Not My.Settings.PresentationModeHideStatusBar
                 .ShowNavPanel = Me.Panel(cPANEL_NAV).IsHiding : Me.Panel(cPANEL_NAV).AutoHide = My.Settings.PresentationModeCollapseNavPanel
                 ' Order matters!
+                ' JS 28Mar14: Using screen bounds works better than maximizing AppLauncher
+                .FormState = Me.WindowState : Me.WindowState = FormWindowState.Normal
                 .BorderStyle = Me.FormBorderStyle : Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
-                .FormState = Me.WindowState : Me.WindowState = FormWindowState.Maximized
-                .TopMost = Me.TopMost : Me.TopMost = True
+                .Bounds = Me.Bounds : Me.Bounds = Screen.GetBounds(Me)
+                '.TopMost = Me.TopMost : Me.TopMost = True
             End With
             Me.ControlBox = False
         Else
             With Me.m_fspPresentationMode
                 Me.FormBorderStyle = .BorderStyle
                 Me.WindowState = .FormState
-                Me.TopMost = .TopMost
+                'Me.TopMost = .TopMost
+                Me.Bounds = .Bounds
                 Me.m_menuMain.Visible = .ShowMenu
                 Me.m_tsModel.Visible = .ShowModelBar
                 Me.m_ssMain.Visible = .ShowStatusBar
@@ -2892,8 +2952,8 @@ Public Class AppLauncher
         End If
 
         ' BorderStyle screws up dockpanel when there it contains panels.
-
-        Me.ResumeLayout()
+        ' JS 28Mar14: Opacity not needed
+        'Me.Opacity = 1
 
     End Sub
 
@@ -2901,7 +2961,8 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdViewPresentationMode">View Presentation Mode command</see>.
     ''' </summary>
-    Private Sub OnUpdateViewPresentationMode(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewPresentationMode.OnUpdate
+    Private Sub OnUpdateViewPresentationMode(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdViewPresentationMode.OnUpdate
         ' NOP
     End Sub
 
