@@ -752,7 +752,24 @@ Namespace FitToTimeSeries
         ''' </summary>
         Public Sub setAIC(ByVal nPars As Single, ByVal nData As Single, ByVal SS As Single)
 
+            'Up to 20140328 this was:
             Me.m_data.AIC = 2.0F * nPars + nData * CSng(Math.Log(SS))
+            'but VC changed this to a more standard derivation of AIC (see Peru Ecosim paper)
+            'based on advice from Steve Mackinson in 2011:
+            '            "AIC = nlog(RSS/n) + 2k + constant*n   (ref: Venables and Riley 2002) 
+            'where k is the number of parameters estimated and n is the number of observations being fitted to (i.e. n is the number of time series values, this being number of series used multiplied by the number of years for each). The constant*n can be ignored if n is the same (i.e. the observation data to be fitted to is the same) and we are comparing between alternative hypotheses.
+            'So, using AIC to compare among alternative hypotheses (model parameterizations) in Ecosim, we need to calculate:
+            'AIC = nlog(minSS (from ecosim)/n) + 2k
+            'AICc is AIC with a second order correction for small sample sizes, to start with:
+            'AICc = AIC + 2k(k-1)/n-k-1   where n is the number of observations
+            'Since AICc converges to AIC as n gets large, AICc should be employed regardless of sample size (Burnham and Anderson, 2004)."
+
+            If nData > 0 Then
+                Me.m_data.AIC = 2.0F * nPars + nData * CSng(Math.Log(SS / nData))
+                If nData - nPars > 1 Then
+                    m_data.AIC += 2 * nPars * (nPars + 1) / (nData - nPars - 1)
+                End If
+            End If
 
         End Sub
 
