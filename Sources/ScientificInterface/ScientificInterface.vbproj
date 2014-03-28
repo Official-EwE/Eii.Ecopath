@@ -162,10 +162,10 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppLauncher.Designer.vb">
-      <DependentUpon>AppLauncher.vb</DependentUpon>
+    <Compile Include="frmEwE6.Designer.vb">
+      <DependentUpon>frmEwE6.vb</DependentUpon>
     </Compile>
-    <Compile Include="AppLauncher.vb">
+    <Compile Include="frmEwE6.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\ImportExport\gridExportLayerMappings.vb">
@@ -220,7 +220,7 @@
     <Compile Include="Ecopath\gridDefineFleets.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Tools\FlowDiagram\cFlowDiagramData.vb" />
+    <Compile Include="Ecopath\Tools\FlowDiagram\cFDGroupData.vb" />
     <Compile Include="Ecopath\Tools\FlowDiagram\frmFlowDiagram.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -825,8 +825,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AppLauncher.resx">
-      <DependentUpon>AppLauncher.vb</DependentUpon>
+    <EmbeddedResource Include="frmEwE6.resx">
+      <DependentUpon>frmEwE6.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFDetritus.resx">

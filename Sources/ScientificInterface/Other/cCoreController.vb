@@ -213,7 +213,7 @@ Public Class cCoreController
     Private Function TryLoadEcosimScenario() As Boolean
 
         Dim bSuccess As Boolean = False
-        Dim appl As AppLauncher = AppLauncher.GetInstance()
+        Dim appl As frmEwE6 = frmEwE6.GetInstance()
 
         If Me.LoadState(eCoreExecutionState.EcopathCompleted) Then
             ' Let AppLauncher perform the load as it sees fit
@@ -232,14 +232,14 @@ Public Class cCoreController
     Private Function TryLoadEcospaceScenario() As Boolean
 
         Dim bSuccess As Boolean = False
-        Dim appl As AppLauncher = AppLauncher.GetInstance()
+        Dim appl As frmEwE6 = frmEwE6.GetInstance()
 
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
         If LoadState(eCoreExecutionState.EcosimLoaded) Then
             ' Let AppLauncher perform the load as it sees fit
             bSuccess = appl.LoadEcospaceScenario()
         End If
- 
+
         Return bSuccess
     End Function
 
@@ -253,7 +253,7 @@ Public Class cCoreController
     Private Function TryLoadEcotracerScenario() As Boolean
 
         Dim bSuccess As Boolean = False
-        Dim appl As AppLauncher = AppLauncher.GetInstance()
+        Dim appl As frmEwE6 = frmEwE6.GetInstance()
 
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecotracer model to load.
         If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then

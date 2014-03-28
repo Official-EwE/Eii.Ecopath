@@ -48,8 +48,8 @@ Public Class ucFlowDiagram
     Private m_uic As cUIContext = Nothing
     Private m_data As cFlowDiagramData = Nothing
 
-    Private m_doodler As cFlowDiagramRenderer = Nothing
-    Private m_tree As cFlowDiagramTree = Nothing
+    Private m_doodler As cFlowDiagramManager = Nothing
+    Private m_tree As cTreeFlowDiagramRenderer = Nothing
 
     'Private m_hovermenu As ucHoverMenu = Nothing
 
@@ -87,8 +87,8 @@ Public Class ucFlowDiagram
         Me.m_result = result
 
         Me.m_data = New cFlowDiagramData(uic, model, data, result)
-        Me.m_tree = New cFlowDiagramTree(Me.m_data)
-        Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
+        Me.m_tree = New cTreeFlowDiagramRenderer(Me.m_data)
+        Me.m_doodler = New cFlowDiagramManager(Me.m_data, Me.m_tree)
 
     End Sub
 

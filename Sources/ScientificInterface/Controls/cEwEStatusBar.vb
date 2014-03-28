@@ -152,7 +152,7 @@ Public Class cEwEStatusBar
     ''' -----------------------------------------------------------------------
     Public Sub UpdateModelPanes()
 
-        Dim appl As AppLauncher = AppLauncher.GetInstance()
+        Dim appl As frmEwE6 = frmEwE6.GetInstance()
         Dim core As cCore = Me.m_uic.Core
         Dim eweModel As cEwEModel = Me.m_uic.Core.EwEModel
         Dim simScenario As cEcoSimScenario = Nothing

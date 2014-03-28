@@ -50,7 +50,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.ScientificInterface.AppLauncher
+            Me.MainForm = Global.ScientificInterface.frmEwE6
         End Sub
     End Class
 End Namespace
