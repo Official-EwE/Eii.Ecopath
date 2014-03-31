@@ -100,7 +100,7 @@ Public Class Strategy
                             tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(recs(6))
                             ' tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
 
-                            Dim strMsg As String
+                            Dim strMsg As String = ""
                             ' Only add valid strategies!
                             If tempHCRGroup.isValid(strMsg) Then
                                 Me.Add(tempHCRGroup)

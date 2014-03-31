@@ -2436,7 +2436,7 @@ stepend:
                 Next
 
                 For Each iFleet In FleetsThatFishHCRGrp
-                    Select Case Regulations.GetReg(iFleet)
+                    Select Case CurrentStrategy.Regulations.GetReg(iFleet)
                         Case cRegulations.eRegMethod.HighestValue, cRegulations.eRegMethod.SelectiveFishing
                             'Find out the highest value species
                             'Calculate the effort that would catch all quota of highest value species

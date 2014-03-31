@@ -103,44 +103,45 @@ Public Class cRegulations
 
     End Function
 
-    Public Function LoadRegsFromCSV(StrategyNumber As Integer) As Boolean
+    'Commented out 31-3-14 if still not required and commented out by 5-14 then delete
+    'Public Function LoadRegsFromCSV(StrategyNumber As Integer) As Boolean
 
-        Dim reader As StreamReader = Nothing
-        Dim csv As CsvReader = Nothing
-        Dim bSuccess As Boolean = True
-        Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "Regulations.csv")
-        Dim Reg As cReg
+    '    Dim reader As StreamReader = Nothing
+    '    Dim csv As CsvReader = Nothing
+    '    Dim bSuccess As Boolean = True
+    '    Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies, "Regulations.csv")
+    '    Dim Reg As cReg
 
-        If File.Exists(filePath) Then
+    '    If File.Exists(filePath) Then
 
-            reader = cMSEUtils.GetReader(filePath)
-            If (reader IsNot Nothing) Then
-                Try
-                    csv = New CsvReader(reader, True)
-                    RegulationsFileExists = True
-                    If CInt(csv.Item(StrategyNumber - 1, 0)) <> StrategyNumber Then Return False
+    '        reader = cMSEUtils.GetReader(filePath)
+    '        If (reader IsNot Nothing) Then
+    '            Try
+    '                csv = New CsvReader(reader, True)
+    '                RegulationsFileExists = True
+    '                If CInt(csv.Item(StrategyNumber - 1, 0)) <> StrategyNumber Then Return False
 
-                    For iFleet = 1 To mCore.nFleets
-                        Reg = New cReg
-                        Reg.mFleetID = iFleet
-                        Reg.mRegMethod = CType(csv.Item(StrategyNumber - 1, iFleet), eRegMethod)
-                        ListofRegs.Add(Reg)
-                    Next
-                    Return True
-                    csv.Dispose()
-                Catch ex As Exception
-                    'Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
-                    bSuccess = False
-                End Try
-                cMSEUtils.ReleaseReader(reader)
-            End If
-        Else
-            bSuccess = False
-        End If
+    '                For iFleet = 1 To mCore.nFleets
+    '                    Reg = New cReg
+    '                    Reg.mFleetID = iFleet
+    '                    Reg.mRegMethod = CType(csv.Item(StrategyNumber - 1, iFleet), eRegMethod)
+    '                    ListofRegs.Add(Reg)
+    '                Next
+    '                Return True
+    '                csv.Dispose()
+    '            Catch ex As Exception
+    '                'Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
+    '                bSuccess = False
+    '            End Try
+    '            cMSEUtils.ReleaseReader(reader)
+    '        End If
+    '    Else
+    '        bSuccess = False
+    '    End If
 
-        Return bSuccess
+    '    Return bSuccess
 
-    End Function
+    'End Function
 
     Public Function Read(Filename As String) As Boolean
         Dim buff As String
