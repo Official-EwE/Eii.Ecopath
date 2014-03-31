@@ -90,7 +90,7 @@ Partial Class frmInvokeR
         'm_btnChooseR
         '
         Me.m_btnChooseR.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnChooseR.Location = New System.Drawing.Point(464, 26)
+        Me.m_btnChooseR.Location = New System.Drawing.Point(361, 26)
         Me.m_btnChooseR.Margin = New System.Windows.Forms.Padding(4)
         Me.m_btnChooseR.Name = "m_btnChooseR"
         Me.m_btnChooseR.Size = New System.Drawing.Size(29, 28)
@@ -115,13 +115,13 @@ Partial Class frmInvokeR
         Me.m_tbxScriptFile.Location = New System.Drawing.Point(127, 64)
         Me.m_tbxScriptFile.Margin = New System.Windows.Forms.Padding(4)
         Me.m_tbxScriptFile.Name = "m_tbxScriptFile"
-        Me.m_tbxScriptFile.Size = New System.Drawing.Size(328, 22)
+        Me.m_tbxScriptFile.Size = New System.Drawing.Size(225, 22)
         Me.m_tbxScriptFile.TabIndex = 5
         '
         'm_btnChooseScript
         '
         Me.m_btnChooseScript.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnChooseScript.Location = New System.Drawing.Point(464, 62)
+        Me.m_btnChooseScript.Location = New System.Drawing.Point(361, 62)
         Me.m_btnChooseScript.Margin = New System.Windows.Forms.Padding(4)
         Me.m_btnChooseScript.Name = "m_btnChooseScript"
         Me.m_btnChooseScript.Size = New System.Drawing.Size(29, 28)
@@ -132,7 +132,7 @@ Partial Class frmInvokeR
         'm_btnOK
         '
         Me.m_btnOK.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.m_btnOK.Location = New System.Drawing.Point(379, 4)
+        Me.m_btnOK.Location = New System.Drawing.Point(276, 4)
         Me.m_btnOK.Margin = New System.Windows.Forms.Padding(4)
         Me.m_btnOK.Name = "m_btnOK"
         Me.m_btnOK.Size = New System.Drawing.Size(115, 28)
@@ -148,13 +148,13 @@ Partial Class frmInvokeR
         Me.m_tbxSCORFile.Margin = New System.Windows.Forms.Padding(4)
         Me.m_tbxSCORFile.Name = "m_tbxSCORFile"
         Me.m_tbxSCORFile.ReadOnly = True
-        Me.m_tbxSCORFile.Size = New System.Drawing.Size(332, 22)
+        Me.m_tbxSCORFile.Size = New System.Drawing.Size(229, 22)
         Me.m_tbxSCORFile.TabIndex = 11
         '
         'm_btnChooseSCOR
         '
         Me.m_btnChooseSCOR.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnChooseSCOR.Location = New System.Drawing.Point(464, 155)
+        Me.m_btnChooseSCOR.Location = New System.Drawing.Point(361, 155)
         Me.m_btnChooseSCOR.Margin = New System.Windows.Forms.Padding(4)
         Me.m_btnChooseSCOR.Name = "m_btnChooseSCOR"
         Me.m_btnChooseSCOR.Size = New System.Drawing.Size(29, 28)
@@ -170,7 +170,7 @@ Partial Class frmInvokeR
         Me.m_tbxOutFile.Margin = New System.Windows.Forms.Padding(4)
         Me.m_tbxOutFile.MaxLength = 24
         Me.m_tbxOutFile.Name = "m_tbxOutFile"
-        Me.m_tbxOutFile.Size = New System.Drawing.Size(366, 22)
+        Me.m_tbxOutFile.Size = New System.Drawing.Size(263, 22)
         Me.m_tbxOutFile.TabIndex = 8
         Me.m_tbxOutFile.Text = "%FILENAME%"
         '
@@ -201,7 +201,7 @@ Partial Class frmInvokeR
         Me.m_tlpContent.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.m_tlpContent.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36.0!))
         Me.m_tlpContent.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpContent.Size = New System.Drawing.Size(503, 453)
+        Me.m_tlpContent.Size = New System.Drawing.Size(400, 425)
         Me.m_tlpContent.TabIndex = 0
         '
         'm_plOptions
@@ -224,7 +224,7 @@ Partial Class frmInvokeR
         Me.m_plOptions.Location = New System.Drawing.Point(0, 0)
         Me.m_plOptions.Margin = New System.Windows.Forms.Padding(0)
         Me.m_plOptions.Name = "m_plOptions"
-        Me.m_plOptions.Size = New System.Drawing.Size(503, 209)
+        Me.m_plOptions.Size = New System.Drawing.Size(400, 209)
         Me.m_plOptions.TabIndex = 0
         '
         'm_cmbR
@@ -236,7 +236,7 @@ Partial Class frmInvokeR
         Me.m_cmbR.Location = New System.Drawing.Point(127, 28)
         Me.m_cmbR.Margin = New System.Windows.Forms.Padding(4)
         Me.m_cmbR.Name = "m_cmbR"
-        Me.m_cmbR.Size = New System.Drawing.Size(328, 24)
+        Me.m_cmbR.Size = New System.Drawing.Size(225, 24)
         Me.m_cmbR.TabIndex = 2
         '
         'm_hdrSCOR
@@ -249,7 +249,7 @@ Partial Class frmInvokeR
         Me.m_hdrSCOR.Location = New System.Drawing.Point(5, 129)
         Me.m_hdrSCOR.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrSCOR.Name = "m_hdrSCOR"
-        Me.m_hdrSCOR.Size = New System.Drawing.Size(488, 22)
+        Me.m_hdrSCOR.Size = New System.Drawing.Size(385, 22)
         Me.m_hdrSCOR.TabIndex = 9
         Me.m_hdrSCOR.Text = "SCOR file for R"
         Me.m_hdrSCOR.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -287,7 +287,7 @@ Partial Class frmInvokeR
         Me.m_hdrSettings.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrSettings.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.m_hdrSettings.Name = "m_hdrSettings"
-        Me.m_hdrSettings.Size = New System.Drawing.Size(503, 22)
+        Me.m_hdrSettings.Size = New System.Drawing.Size(400, 22)
         Me.m_hdrSettings.TabIndex = 0
         Me.m_hdrSettings.Text = "Settings"
         Me.m_hdrSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -299,7 +299,7 @@ Partial Class frmInvokeR
         Me.m_plRun.Location = New System.Drawing.Point(0, 209)
         Me.m_plRun.Margin = New System.Windows.Forms.Padding(0)
         Me.m_plRun.Name = "m_plRun"
-        Me.m_plRun.Size = New System.Drawing.Size(503, 36)
+        Me.m_plRun.Size = New System.Drawing.Size(400, 36)
         Me.m_plRun.TabIndex = 1
         '
         'm_plResult
@@ -310,7 +310,7 @@ Partial Class frmInvokeR
         Me.m_plResult.Location = New System.Drawing.Point(4, 249)
         Me.m_plResult.Margin = New System.Windows.Forms.Padding(4)
         Me.m_plResult.Name = "m_plResult"
-        Me.m_plResult.Size = New System.Drawing.Size(495, 200)
+        Me.m_plResult.Size = New System.Drawing.Size(392, 172)
         Me.m_plResult.TabIndex = 2
         '
         'm_tcDebug
@@ -323,7 +323,7 @@ Partial Class frmInvokeR
         Me.m_tcDebug.Margin = New System.Windows.Forms.Padding(4)
         Me.m_tcDebug.Name = "m_tcDebug"
         Me.m_tcDebug.SelectedIndex = 0
-        Me.m_tcDebug.Size = New System.Drawing.Size(495, 178)
+        Me.m_tcDebug.Size = New System.Drawing.Size(392, 150)
         Me.m_tcDebug.TabIndex = 1
         '
         'm_tpgScript
@@ -344,6 +344,7 @@ Partial Class frmInvokeR
         Me.m_tbxScriptOut.Margin = New System.Windows.Forms.Padding(4)
         Me.m_tbxScriptOut.Multiline = True
         Me.m_tbxScriptOut.Name = "m_tbxScriptOut"
+        Me.m_tbxScriptOut.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.m_tbxScriptOut.Size = New System.Drawing.Size(487, 149)
         Me.m_tbxScriptOut.TabIndex = 0
         Me.m_tbxScriptOut.WordWrap = False
@@ -366,6 +367,7 @@ Partial Class frmInvokeR
         Me.m_tbxOutput.Margin = New System.Windows.Forms.Padding(4)
         Me.m_tbxOutput.Multiline = True
         Me.m_tbxOutput.Name = "m_tbxOutput"
+        Me.m_tbxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.m_tbxOutput.Size = New System.Drawing.Size(487, 149)
         Me.m_tbxOutput.TabIndex = 1
         Me.m_tbxOutput.WordWrap = False
@@ -376,7 +378,7 @@ Partial Class frmInvokeR
         Me.m_tpgErrors.Location = New System.Drawing.Point(4, 25)
         Me.m_tpgErrors.Margin = New System.Windows.Forms.Padding(4)
         Me.m_tpgErrors.Name = "m_tpgErrors"
-        Me.m_tpgErrors.Size = New System.Drawing.Size(487, 149)
+        Me.m_tpgErrors.Size = New System.Drawing.Size(384, 121)
         Me.m_tpgErrors.TabIndex = 2
         Me.m_tpgErrors.Text = "Errors"
         Me.m_tpgErrors.UseVisualStyleBackColor = True
@@ -388,7 +390,8 @@ Partial Class frmInvokeR
         Me.m_tbxErrors.Margin = New System.Windows.Forms.Padding(4)
         Me.m_tbxErrors.Multiline = True
         Me.m_tbxErrors.Name = "m_tbxErrors"
-        Me.m_tbxErrors.Size = New System.Drawing.Size(487, 149)
+        Me.m_tbxErrors.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.m_tbxErrors.Size = New System.Drawing.Size(384, 121)
         Me.m_tbxErrors.TabIndex = 1
         Me.m_tbxErrors.WordWrap = False
         '
@@ -401,7 +404,7 @@ Partial Class frmInvokeR
         Me.m_hdrResults.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrResults.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.m_hdrResults.Name = "m_hdrResults"
-        Me.m_hdrResults.Size = New System.Drawing.Size(495, 22)
+        Me.m_hdrResults.Size = New System.Drawing.Size(392, 22)
         Me.m_hdrResults.TabIndex = 0
         Me.m_hdrResults.Text = "Results"
         Me.m_hdrResults.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -410,14 +413,16 @@ Partial Class frmInvokeR
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(535, 483)
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.ClientSize = New System.Drawing.Size(432, 455)
         Me.Controls.Add(Me.m_tlpContent)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(370, 400)
         Me.Name = "frmInvokeR"
         Me.ShowInTaskbar = False
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Invoke R NETWRK"
         Me.m_tlpContent.ResumeLayout(False)
         Me.m_plOptions.ResumeLayout(False)

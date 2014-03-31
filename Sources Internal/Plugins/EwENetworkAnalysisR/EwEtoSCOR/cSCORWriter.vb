@@ -140,14 +140,37 @@ Public Class cSCORWriter
 
         ' c) Export
         sw.WriteLine("{0,3}\EXPORTS", -1)
-        For i As Integer = 1 To Me.m_epData.NumGroups
-            Dim sDetEx As Single = 1.0
-            ' JS 10Nov11: Include detritus fate exports
-            For j As Integer = 1 To Me.m_epData.NumDetrit
-                sDetEx -= Me.m_epData.DF(i, j)
+        For j As Integer = 1 To Me.m_epData.NumGroups
+            Dim Q As Single = 0
+            Dim R As Single = 0
+            Dim Flow As Single = 0
+            Dim Ex As Single = 0
+
+            For i As Integer = 1 To Me.m_epData.NumGroups
+                If j <= m_epData.NumLiving Then
+                    Q += CSng(m_epData.B(j) * m_epData.QB(j) * m_epData.DC(j, i))
+                Else
+                    Q += CSng(m_epData.det(i, j))
+                End If
+                If i <= m_epData.NumLiving Then
+                    Flow += CSng(m_epData.B(i) * m_epData.QB(i) * m_epData.DC(i, j))
+                Else
+                    Flow += CSng(m_epData.det(j, i))
+                End If
             Next
-            sw.WriteLine("{0,3} {1}", i, cStringUtils.FormatNumber(Me.m_epData.Ex(i) + sDetEx))
-        Next i
+            Q += Me.m_epData.DC(j, 0) * m_epData.B(j) * m_epData.QB(j)
+            R = Me.m_epData.Resp(j)
+
+            ' PP fudge
+            If (m_epData.PP(j) = 1) Then
+                Q = Flow
+            End If
+
+            ' Export = Qi - Ri - (Sum of flows i>j)
+            Ex = Q - R - Flow
+
+            sw.WriteLine("{0,3} {1}", j, cStringUtils.FormatNumber(Math.Max(0, Ex)))
+        Next j
 
         ' d) Respiration
         sw.WriteLine("{0,3}\RESPIRATION", -1)
@@ -157,8 +180,8 @@ Public Class cSCORWriter
 
         'e) Diet
         sw.WriteLine("{0,3}\FLOWS", -1)
-        For iPrey As Integer = 1 To m_epData.NumLiving
-            For iPred As Integer = 1 To m_epData.NumLiving
+        For iPrey As Integer = 1 To m_epData.NumGroups
+            For iPred As Integer = 1 To m_epData.NumGroups
                 Dim cons As Single = Me.CalcConsumption(iPred, iPrey)
                 If (cons > 0) Then
                     sw.WriteLine("{0,3}{1,3} {2}", iPrey, iPred, cStringUtils.FormatNumber(cons))

@@ -275,7 +275,10 @@ Public Class frmInvokeR
         ' Run Ecopath
         Dim sm As cCoreStateMonitor = Me.m_uic.Core.StateMonitor
         If Not sm.HasEcopathRan Then
-            If Not Me.m_uic.Core.RunEcoPath() Then Return
+            If Not Me.m_uic.Core.RunEcoPath() Then
+                ' Send message!
+                Return
+            End If
         End If
 
         Debug.Assert(Me.m_dad.m_epData IsNot Nothing)
