@@ -88,26 +88,25 @@ Public Class frmInvokeR
 
         Me.m_fpR = New cEwEFormatProvider(Me.m_uic, Me.m_cmbR, GetType(String), lstrPaths.ToArray())
         Me.m_fpR.Value = My.Settings.RPath
+        AddHandler Me.m_fpR.OnValueChanged, AddressOf OnValueChanged
 
         Me.m_fpScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScriptFile, GetType(String))
-        Me.m_fpScript.Style = cStyleGuide.eStyleFlags.NotEditable
         Me.m_fpScript.Value = My.Settings.RScript
+        AddHandler Me.m_fpScript.OnValueChanged, AddressOf OnValueChanged
 
         Me.m_fpSCOR = New cEwEFormatProvider(Me.m_uic, Me.m_tbxSCORFile, GetType(String))
         Me.m_fpSCOR.Value = My.Settings.SCORFileCustom
+        AddHandler Me.m_fpSCOR.OnValueChanged, AddressOf OnValueChanged
 
         Me.m_fpOutFile = New cEwEFormatProvider(Me.m_uic, Me.m_tbxOutFile, GetType(String))
-        Me.m_fpOutFile.Style = cStyleGuide.eStyleFlags.NotEditable
         Me.m_fpOutFile.Value = Path.Combine(Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecopath), "enaR_out.txt")
+        AddHandler Me.m_fpOutFile.OnValueChanged, AddressOf OnValueChanged
 
         Me.m_fpOutScript = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScriptOut, GetType(String))
-        Me.m_fpOutScript.Style = cStyleGuide.eStyleFlags.NotEditable
 
         Me.m_fpOutput = New cEwEFormatProvider(Me.m_uic, Me.m_tbxOutput, GetType(String))
-        Me.m_fpOutput.Style = cStyleGuide.eStyleFlags.NotEditable
-
+  
         Me.m_fpOutError = New cEwEFormatProvider(Me.m_uic, Me.m_tbxErrors, GetType(String))
-        Me.m_fpOutError.Style = cStyleGuide.eStyleFlags.NotEditable
 
         Me.m_ilTabs.Images.Add(cStyleGuide.GetImage(eMessageImportance.Information))
         Me.m_ilTabs.Images.Add(cStyleGuide.GetImage(eMessageImportance.Warning))
@@ -126,9 +125,13 @@ Public Class frmInvokeR
 
         Me.SaveSettings()
 
+        RemoveHandler Me.m_fpR.OnValueChanged, AddressOf OnValueChanged
         Me.m_fpR.Release()
+        RemoveHandler Me.m_fpScript.OnValueChanged, AddressOf OnValueChanged
         Me.m_fpScript.Release()
+        RemoveHandler Me.m_fpSCOR.OnValueChanged, AddressOf OnValueChanged
         Me.m_fpSCOR.Release()
+        RemoveHandler Me.m_fpOutFile.OnValueChanged, AddressOf OnValueChanged
         Me.m_fpOutFile.Release()
         Me.m_fpOutScript.Release()
         Me.m_fpOutput.Release()
@@ -150,7 +153,6 @@ Public Class frmInvokeR
         cmd.Invoke(CStr(Me.m_fpR.Value), My.Resources.FILEFILTER_R_EXE, 0, My.Resources.PROMPT_SELECT_R_EXE)
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
             Me.m_fpR.Value = cmd.FileName
-            Me.UpdateControls()
         End If
 
     End Sub
@@ -162,8 +164,7 @@ Public Class frmInvokeR
         cmd.Invoke(Me.m_tbxScriptFile.Text, My.Resources.FILEFILTER_R_SCRIPT, 0, My.Resources.PROMPT_SELECT_R_SCRIPT)
 
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
-            Me.m_tbxScriptFile.Text = cmd.FileName
-            Me.UpdateControls()
+            Me.m_fpScript.Value = Path.Combine(cmd.Directory, cmd.FileName)
         End If
 
     End Sub
@@ -175,7 +176,7 @@ Public Class frmInvokeR
         cmd.Invoke(Me.m_tbxSCORFile.Text, My.Resources.FILFILTER_SCOR, 0, My.Resources.PROMPT_SELECT_SCOR_FILE)
 
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
-            Me.m_tbxSCORFile.Text = cmd.FileName
+            Me.m_fpSCOR.Value = Path.Combine(cmd.Directory, cmd.FileName)
             Me.m_rbCustomSCOR.Checked = True
             Me.UpdateControls()
         End If
@@ -204,9 +205,14 @@ Public Class frmInvokeR
 
     End Sub
 
-    Private Sub OnInputText(sender As System.Object, e As System.EventArgs) _
-        Handles m_tbxOutFile.TextChanged, m_tbxSCORFile.TextChanged, m_tbxScriptFile.TextChanged
-        Me.UpdateControls()
+    Private Sub OnValueChanged(sender As Object, args As EventArgs)
+        Try
+            If (Me.m_bInUpdate) Then Return
+            Me.SaveSettings()
+            BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 #End Region ' Events
@@ -224,22 +230,25 @@ Public Class frmInvokeR
         Dim bHasSCOR As Boolean = Me.m_rbManagedSCOR.Checked Or (Not String.IsNullOrWhiteSpace(Me.m_tbxSCORFile.Text))
 
         If bHasR Then
-            Me.m_fpR.Style = Me.m_fpR.Style And Not cStyleGuide.eStyleFlags.FailedValidation
+            Me.m_fpR.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Else
-            Me.m_fpR.Style = Me.m_fpR.Style Or cStyleGuide.eStyleFlags.FailedValidation
+            Me.m_fpR.Style = cStyleGuide.eStyleFlags.FailedValidation Or cStyleGuide.eStyleFlags.NotEditable
         End If
-
         If bHasScript Then
-            Me.m_fpScript.Style = Me.m_fpScript.Style And Not cStyleGuide.eStyleFlags.FailedValidation
+            Me.m_fpScript.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Else
-            Me.m_fpScript.Style = Me.m_fpScript.Style Or cStyleGuide.eStyleFlags.FailedValidation
+            Me.m_fpScript.Style = cStyleGuide.eStyleFlags.FailedValidation Or cStyleGuide.eStyleFlags.NotEditable
         End If
 
         If bHasSCOR Then
-            Me.m_fpSCOR.Style = Me.m_fpSCOR.Style And Not cStyleGuide.eStyleFlags.FailedValidation
+            Me.m_fpSCOR.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Else
-            Me.m_fpSCOR.Style = Me.m_fpSCOR.Style Or cStyleGuide.eStyleFlags.FailedValidation
+            Me.m_fpSCOR.Style = cStyleGuide.eStyleFlags.FailedValidation Or cStyleGuide.eStyleFlags.NotEditable
         End If
+
+        Me.m_fpOutScript.Style = cStyleGuide.eStyleFlags.NotEditable
+        Me.m_fpOutput.Style = cStyleGuide.eStyleFlags.NotEditable
+        Me.m_fpOutError.Style = cStyleGuide.eStyleFlags.NotEditable
 
         Me.m_btnChooseR.Enabled = bHasUIC
         Me.m_btnChooseSCOR.Enabled = bHasUIC
@@ -250,7 +259,6 @@ Public Class frmInvokeR
     End Sub
 
     Private Sub SaveSettings()
-        ' Save settings
         My.Settings.RPath = CStr(Me.m_fpR.Value)
         My.Settings.RScript = CStr(Me.m_fpScript.Value)
         My.Settings.SCORFileCustom = CStr(Me.m_fpSCOR.Value)

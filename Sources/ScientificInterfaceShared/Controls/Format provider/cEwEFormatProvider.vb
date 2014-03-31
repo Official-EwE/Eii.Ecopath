@@ -682,15 +682,13 @@ Namespace Controls
 
 #Region " Private variables "
 
-            ''' <summary>UI context for this wrapper.</summary>
-            Private m_uic As cUIContext = Nothing
             ''' <summary>The wrapped combo box.</summary>
             Private m_cmb As ComboBox = Nothing
             ''' <summary></summary>
             Private m_provider As cEwEFormatProvider = Nothing
             Private m_tValue As Type = Nothing
             ''' <summary>Optional combo box items.</summary>
-            Private m_aItems As Object() = Nothing
+            Private m_lItems As New List(Of Object)
 
             Private m_md As cVariableMetaData = Nothing
 
@@ -705,13 +703,6 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Property UIContext() As cUIContext _
                 Implements IUIElement.UIContext
-                Get
-                    Return Me.m_uic
-                End Get
-                Set(ByVal value As cUIContext)
-                    Me.m_uic = value
-                End Set
-            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -814,6 +805,13 @@ Namespace Controls
                 Dim objItem As Object = Nothing
                 Dim iValue As Integer = -1
 
+                If (Not Me.m_lItems.Contains(objValue)) Then
+                    Me.m_lItems.Add(objValue)
+                    Me.m_lItems.Sort()
+                    ' Hmm
+                    Me.Items = Me.Items
+                End If
+
                 If Me.m_provider.ValueType Is GetType(Integer) Then
                     For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
                         objItem = Me.m_cmb.Items(iItem)
@@ -853,13 +851,15 @@ Namespace Controls
 
             Public Property Items() As Object() Implements IControlWrapper.Items
                 Get
-                    Return Me.m_aItems
+                    Return Me.m_lItems.ToArray
                 End Get
                 Set(ByVal aItems As Object())
                     ' Eradicate content
+                    Me.m_lItems.Clear()
                     Me.m_cmb.Items.Clear()
                     ' Populate if new items given
                     If (Not Object.ReferenceEquals(aItems, Nothing)) Then
+                        Me.m_lItems.AddRange(aItems)
                         ' Populate
                         For iItem As Integer = 0 To aItems.Length - 1
                             ' Wrap item
@@ -867,7 +867,6 @@ Namespace Controls
                         Next
                     End If
                     ' Done
-                    Me.m_aItems = aItems
                     Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
                 End Set
             End Property
