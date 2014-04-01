@@ -112,6 +112,8 @@ Namespace Controls
 
 #Region " Public access "
 
+        Private Shared s_draworder As eHighlightType() = New eHighlightType() {eHighlightType.Hidden, eHighlightType.None, eHighlightType.Selected}
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Master draw instruction. There can be only one.
@@ -121,28 +123,57 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Sub DrawFlowDiagram(ByVal g As Graphics, ByVal rc As Rectangle)
 
-            Dim hl As eHighlightType = eHighlightType.None
 
             Me.m_tree.DrawBackground(g, rc)
             Me.m_tree.DrawTitle(g, rc)
             Me.m_tree.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), Me.m_data.Title)
 
-            ' Draw the connections
+            For Each hl As eHighlightType In s_draworder
+                DrawFlow(g, rc, hl)
+            Next
+
+        End Sub
+
+        Private Sub DrawFlow(ByVal g As Graphics, ByVal rc As Rectangle, ByVal focus As eHighlightType)
+
+            Dim hl As eHighlightType = eHighlightType.None
+            Dim bDraw As Boolean = False
+
+            ' Draw connections
             For iPred As Integer = 1 To Me.m_data.NumLivingGroups()
                 For iPrey As Integer = 1 To Me.m_data.NumGroups()
-                    ' Determine highlight state
-                    hl = eHighlightType.None
-                    If Me.m_data.IsGroupVisible(iPred) And Me.m_data.IsGroupVisible(iPrey) Then
-                        If (Me.HighlightNode = iPred) Then hl = eHighlightType.LinkIn
-                        If (Me.HighlightNode = iPrey) Then hl = eHighlightType.LinkOut
-                    Else
-                        hl = eHighlightType.Hidden
+
+                    Dim sDiet As Single = Me.m_data.LinkValue(iPred, iPrey)
+                    If (sDiet > 0) Then
+
+                        ' Determine highlight state
+                        hl = eHighlightType.None
+
+                        If (Me.HighlightNode > 0) Then hl = eHighlightType.Hidden
+
+                        If Me.m_data.IsGroupVisible(iPred) And Me.m_data.IsGroupVisible(iPrey) Then
+                            If (Me.HighlightNode = iPred) Then hl = eHighlightType.LinkIn
+                            If (Me.HighlightNode = iPrey) Then hl = eHighlightType.LinkOut
+                        End If
+
+                        Select Case focus
+                            Case eHighlightType.Hidden
+                                bDraw = (hl = eHighlightType.Hidden)
+                            Case eHighlightType.None
+                                bDraw = (hl = eHighlightType.None)
+                            Case eHighlightType.Selected
+                                bDraw = (hl = eHighlightType.LinkIn) Or (hl = eHighlightType.LinkOut)
+                        End Select
+
+                        If bDraw Then
+                            Me.m_tree.DrawConnection(g, rc, iPred, iPrey, hl)
+                        End If
+
                     End If
-                    Me.m_tree.DrawConnection(g, rc, iPred, iPrey, hl)
                 Next
             Next
 
-            ' Draw the nodes
+            ' Draw nodes
             For j As Integer = 1 To Me.m_data.NumGroups()
 
                 ' Determine node highlight state
@@ -150,10 +181,9 @@ Namespace Controls
                 If Not Me.m_data.IsGroupVisible(j) Then hl = eHighlightType.Hidden
                 If (Me.HighlightNode = j) Then hl = eHighlightType.Selected
 
-                ' ToDo: check if node is a prey or pred of the selected node
-
-                ' Draw each node
-                Me.m_tree.DrawNode(g, rc, j, hl)
+                If (hl = focus) Then
+                    Me.m_tree.DrawNode(g, rc, j, hl)
+                End If
             Next j
 
         End Sub
