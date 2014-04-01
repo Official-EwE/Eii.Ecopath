@@ -84,6 +84,14 @@ Namespace Interop
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether R should run as an elevated proecss. Set this to true
+        ''' if your R script needs to install or update packages.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property RunElevated As Boolean = False
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Clean up left-overs from previous R runs.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -334,6 +342,11 @@ Namespace Interop
 
             ' Suppress R user interface
             Rwrapper.StartInfo.CreateNoWindow = True
+
+            ' Do the elevation bit if needed
+            If (Me.RunElevated) Then
+                Rwrapper.StartInfo.Verb = "runas"
+            End If
 
             ' The process is ready to run
             Try

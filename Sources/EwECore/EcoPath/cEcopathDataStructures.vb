@@ -211,7 +211,8 @@ Public Class cEcopathDataStructures
     ''' <summary>All non-usable 'model currency' that leaves the box represented by a group.</summary>
     Public Resp() As Single
     Public PP() As Single           'TM Trophic Mode
-    Public det(,) As Single '(50, 50)  
+    ''' <summary>Detritus flow (#groups + #fleet,#groups + #fleet)</summary>
+    Public det(,) As Single
     ''' <summary>Diet Composition of Detritus  for fishery.</summary>
     Public DCDet(,) As Single
     Public DetEaten() As Single                 ' For multiple detritus
