@@ -144,32 +144,19 @@ Public Class cSCORWriter
             Dim Q As Single = 0
             Dim R As Single = 0
             Dim Flow As Single = 0
-            Dim Ex As Single = 0
 
             For i As Integer = 1 To Me.m_epData.NumGroups
-                If j <= m_epData.NumLiving Then
-                    Q += CSng(m_epData.B(j) * m_epData.QB(j) * m_epData.DC(j, i))
-                Else
-                    Q += CSng(m_epData.det(i, j))
-                End If
-                If i <= m_epData.NumLiving Then
-                    Flow += CSng(m_epData.B(i) * m_epData.QB(i) * m_epData.DC(i, j))
-                Else
-                    Flow += CSng(m_epData.det(j, i))
-                End If
+                Q += Me.CalcConsumption(j, i)
+                Flow += Me.CalcConsumption(i, j)
             Next
-            Q += Me.m_epData.DC(j, 0) * m_epData.B(j) * m_epData.QB(j)
+            Q += Me.CalcConsumption(j, 0)
             R = Me.m_epData.Resp(j)
 
-            ' PP fudge
-            If (m_epData.PP(j) = 1) Then
-                Q = Flow
-            End If
+            ' PP fudge - not correct
+            If (m_epData.PP(j) = 1) Then Q = Flow
 
             ' Export = Qi - Ri - (Sum of flows i>j)
-            Ex = Q - R - Flow
-
-            sw.WriteLine("{0,3} {1}", j, cStringUtils.FormatNumber(Math.Max(0, Ex)))
+            sw.WriteLine("{0,3} {1}", j, cStringUtils.FormatNumber(Math.Max(0, Q - R - Flow)))
         Next j
 
         ' d) Respiration
@@ -213,11 +200,17 @@ Public Class cSCORWriter
     End Sub
 
     Private Function CalcConsumption(ByVal iPred As Integer, ByVal iPrey As Integer) As Single
-        If (iPred <= m_epData.NumLiving) Then
-            Return CSng(m_epData.B(iPred) * m_epData.QB(iPred) * m_epData.DC(iPred, iPrey))
-        Else
-            Return CSng(m_epData.det(iPrey, iPred))
+
+        If (iPrey = 0) Then
+            Return Me.m_epData.DC(iPred, iPrey) * Me.m_epData.B(iPred) * m_epData.QB(iPred)
         End If
+
+        If (iPred <= Me.m_epData.NumLiving) Then
+            Return CSng(Me.m_epData.B(iPred) * Me.m_epData.QB(iPred) * Me.m_epData.DC(iPred, iPrey))
+        Else
+            Return CSng(Me.m_epData.det(iPrey, iPred))
+        End If
+
     End Function
 
     Private Function CalcImport(ByVal iGroup As Integer) As Single

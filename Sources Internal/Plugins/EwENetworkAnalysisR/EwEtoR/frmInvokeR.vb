@@ -307,6 +307,7 @@ Public Class frmInvokeR
         Dim bridge As New cRBridge(CStr(Me.m_fpR.Value))
         bridge.Field(My.Settings.SCORPlaceholder) = cFileUtils.DosToUnix(strSCOR)
         bridge.Field(My.Settings.OUTPlaceholder) = cFileUtils.DosToUnix(CStr(Me.m_fpOutFile.Value))
+        ' bridge.RunElevated = True
         bridge.ExecuteFile(Me.m_tbxScriptFile.Text)
 
         Me.UpdateOutput(Me.m_fpOutScript, bridge.Input)
