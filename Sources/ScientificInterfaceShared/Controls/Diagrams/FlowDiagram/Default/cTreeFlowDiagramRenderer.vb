@@ -387,7 +387,7 @@ Namespace Controls
                     End Select
 
                 Case cFlowDiagramManager.eHighlightType.Hidden
-                    Return ' clrLine = Color.FromArgb(255, 240, 240, 240)
+                    clrLine = cColorUtils.GetVariant(clrLine, 0.75)
 
                 Case cFlowDiagramManager.eHighlightType.LinkIn
                     clrLine = Me.InLinkColor
