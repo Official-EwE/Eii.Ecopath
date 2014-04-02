@@ -1174,40 +1174,46 @@ Public Class cMSE
         Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
         Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
 
-        ReDim BTemp(mCore.nGroups - 1)
-        ReDim PBTemp(mCore.nGroups - 1)
-        ReDim QBTemp(mCore.nGroups - 1)
-        ReDim EETemp(mCore.nGroups - 1)
-        ReDim BATemp(mCore.nGroups - 1)
-        ReDim DenDepCatchabilityTemp(mCore.nGroups - 1)
-        ReDim FeedingTimeAdjustRateTemp(mCore.nGroups - 1)
-        ReDim MaxRelFeedingTimeTemp(mCore.nGroups - 1)
-        ReDim OtherMortFeedingTimeTemp(mCore.nGroups - 1)
-        ReDim PredEffectFeedingTimeTemp(mCore.nGroups - 1)
-        ReDim QBMaxxQBioTemp(mCore.nGroups - 1)
-        ReDim SwitchingPowerTemp(mCore.nGroups - 1)
-        ReDim VulnerabilitiesTemp(mCore.nGroups - 1, mCore.nGroups - 1)
-        ReDim DietMatrixTemp(mCore.nGroups - 1, mCore.nGroups - 1)
+        ReDim BTemp(ecopathData.B.Length - 1)
+        ReDim PBTemp(ecopathData.PB.Length - 1)
+        ReDim QBTemp(ecopathData.QB.Length - 1)
+        ReDim EETemp(ecopathData.EE.Length - 1)
+        ReDim BATemp(ecopathData.BA.Length - 1)
+        ReDim DenDepCatchabilityTemp(ecosimData.QmQo.Length - 1)
+        ReDim FeedingTimeAdjustRateTemp(ecosimData.FtimeAdjust.Length - 1)
+        ReDim MaxRelFeedingTimeTemp(ecosimData.FtimeMax.Length - 1)
+        ReDim OtherMortFeedingTimeTemp(ecosimData.MoPred.Length - 1)
+        ReDim PredEffectFeedingTimeTemp(ecosimData.RiskTime.Length - 1)
+        ReDim QBMaxxQBioTemp(ecosimData.CmCo.Length - 1)
+        ReDim SwitchingPowerTemp(ecosimData.SwitchPower.Length - 1)
+        ReDim VulnerabilitiesTemp(ecosimData.VulMult.GetLength(0) - 1, ecosimData.VulMult.GetLength(1) - 1)
+        ReDim DietMatrixTemp(ecopathData.DC.GetLength(0) - 1, ecopathData.DC.GetLength(1) - 1)
         ReDim DietImpTemp(mCore.nGroups - 1)
 
-        For x = 0 To mCore.nGroups - 1
-            BTemp(x) = ecopathData.B(x + 1)
-            PBTemp(x) = ecopathData.PB(x + 1)
-            QBTemp(x) = ecopathData.QB(x + 1)
-            EETemp(x) = ecopathData.EE(x + 1)
-            BATemp(x) = ecopathData.BA(x + 1)
-            DenDepCatchabilityTemp(x) = ecosimData.QmQo(x + 1)
-            FeedingTimeAdjustRateTemp(x) = ecosimData.FtimeAdjust(x + 1)
-            MaxRelFeedingTimeTemp(x) = ecosimData.FtimeMax(x + 1)
-            OtherMortFeedingTimeTemp(x) = ecosimData.MoPred(x + 1)
-            PredEffectFeedingTimeTemp(x) = ecosimData.RiskTime(x + 1)
-            QBMaxxQBioTemp(x) = ecosimData.CmCo(x + 1)
-            SwitchingPowerTemp(x) = ecosimData.SwitchPower(x + 1)
-            For y = 0 To mCore.nGroups - 1
-                VulnerabilitiesTemp(x, y) = ecosimData.VulMult(x + 1, y + 1)
-                DietMatrixTemp(x, y) = ecopathData.DC(x + 1, y + 1)
+        For x = 0 To ecopathData.B.Length - 1
+            BTemp(x) = ecopathData.B(x)
+            PBTemp(x) = ecopathData.PB(x)
+            QBTemp(x) = ecopathData.QB(x)
+            EETemp(x) = ecopathData.EE(x)
+            BATemp(x) = ecopathData.BA(x)
+            DenDepCatchabilityTemp(x) = ecosimData.QmQo(x)
+            FeedingTimeAdjustRateTemp(x) = ecosimData.FtimeAdjust(x)
+            MaxRelFeedingTimeTemp(x) = ecosimData.FtimeMax(x)
+            OtherMortFeedingTimeTemp(x) = ecosimData.MoPred(x)
+            PredEffectFeedingTimeTemp(x) = ecosimData.RiskTime(x)
+            QBMaxxQBioTemp(x) = ecosimData.CmCo(x)
+            SwitchingPowerTemp(x) = ecosimData.SwitchPower(x)
+        Next
+        For x = 0 To ecopathData.DC.GetLength(0) - 1
+            For y = 0 To ecopathData.DC.GetLength(1) - 1
+                DietMatrixTemp(x, y) = ecopathData.DC(x, y)
             Next
-            DietImpTemp(x) = mCore.EcoPathGroupInputs(x + 1).ImpDiet
+            'DietImpTemp(x) = mCore.EcoPathGroupInputs(x + 1).ImpDiet
+        Next
+        For x = 1 To ecosimData.VulMult.GetLength(0) - 1
+            For y = 0 To ecosimData.VulMult.GetLength(1) - 1
+                VulnerabilitiesTemp(x, y) = ecosimData.VulMult(x, y)
+            Next
         Next
 
         OriginalNTimesteps = _ecosim.EcosimData.NTimes
@@ -1219,24 +1225,32 @@ Public Class cMSE
         Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
         Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
 
-        For x = 0 To mCore.nGroups - 1
-            ecopathData.B(x + 1) = CSng(BTemp(x))
-            ecopathData.PB(x + 1) = CSng(PBTemp(x))
-            ecopathData.QB(x + 1) = CSng(QBTemp(x))
-            ecopathData.EE(x + 1) = CSng(EETemp(x))
-            ecopathData.BA(x + 1) = CSng(BATemp(x))
-            ecosimData.QmQo(x + 1) = CSng(DenDepCatchabilityTemp(x))
-            ecosimData.FtimeAdjust(x + 1) = CSng(FeedingTimeAdjustRateTemp(x))
-            ecosimData.FtimeMax(x + 1) = CSng(MaxRelFeedingTimeTemp(x))
-            ecosimData.MoPred(x + 1) = CSng(OtherMortFeedingTimeTemp(x))
-            ecosimData.RiskTime(x + 1) = CSng(PredEffectFeedingTimeTemp(x))
-            ecosimData.CmCo(x + 1) = CSng(QBMaxxQBioTemp(x))
-            ecosimData.SwitchPower(x + 1) = CSng(SwitchingPowerTemp(x))
-            For y = 0 To mCore.nGroups - 1
-                ecosimData.VulMult(x + 1, y + 1) = CSng(VulnerabilitiesTemp(x, y))
-                ecopathData.DC(x + 1, y + 1) = CSng(DietMatrixTemp(x, y))
+        For x = 0 To ecopathData.B.Length - 1
+            ecopathData.B(x) = CSng(BTemp(x))
+            ecopathData.PB(x) = CSng(PBTemp(x))
+            ecopathData.QB(x) = CSng(QBTemp(x))
+            ecopathData.EE(x) = CSng(EETemp(x))
+            ecopathData.BA(x) = CSng(BATemp(x))
+            ecosimData.QmQo(x) = CSng(DenDepCatchabilityTemp(x))
+            ecosimData.FtimeAdjust(x) = CSng(FeedingTimeAdjustRateTemp(x))
+            ecosimData.FtimeMax(x) = CSng(MaxRelFeedingTimeTemp(x))
+            ecosimData.MoPred(x) = CSng(OtherMortFeedingTimeTemp(x))
+            ecosimData.RiskTime(x) = CSng(PredEffectFeedingTimeTemp(x))
+            ecosimData.CmCo(x) = CSng(QBMaxxQBioTemp(x))
+            ecosimData.SwitchPower(x) = CSng(SwitchingPowerTemp(x))
+        Next
+
+        For x = 0 To ecopathData.DC.GetLength(0) - 1
+            For y = 0 To ecopathData.DC.GetLength(1) - 1
+
+                ecopathData.DC(x, y) = CSng(DietMatrixTemp(x, y))
             Next
-            mCore.EcoPathGroupInputs(x + 1).ImpDiet = CSng(DietImpTemp(x))
+            'mCore.EcoPathGroupInputs(x + 1).ImpDiet = CSng(DietImpTemp(x))
+        Next
+        For x = 1 To ecosimData.VulMult.GetLength(0) - 1
+            For y = 0 To ecosimData.VulMult.GetLength(1) - 1
+                ecosimData.VulMult(x, y) = CSng(VulnerabilitiesTemp(x, y))
+            Next
         Next
         Me.Core.DiscardChanges()
 
@@ -1451,6 +1465,7 @@ Public Class cMSE
             If csvDietMatrix.ReadNextRecord() Then
                 For iPred As Integer = 1 To mCore.nLivingGroups
                     mCore.EcoPathGroupInputs(iPred).ImpDiet() = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                    '_ecopath.EcopathData.DC(iPred - 1, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                 Next
             Else
                 ' Unable to read predator header line! We have a problem
@@ -1460,6 +1475,7 @@ Public Class cMSE
                 If (Not csvDietMatrix.EndOfStream) And (csvDietMatrix.ReadNextRecord()) Then
                     For iPred As Integer = 1 To mCore.nLivingGroups
                         mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                        '_ecopath.EcopathData.DC(iPred - 1, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                     Next
                 Else
                     ' Unable to read prey line! We have a problem
@@ -1508,7 +1524,9 @@ Public Class cMSE
         For iGrp As Integer = 1 To mCore.nLivingGroups
             For iTimeStep As Integer = 1 To OriginalNTimesteps
                 'Console.Write(mCore.EcoSimGroupOutputs(iGrp).Biomass(iTimeStep).ToString & " ")
-                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) <= 1 * 10 ^ -20 Then GoodDynamics = False
+                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) <= 1 * 10 ^ -20 Then
+                    GoodDynamics = False
+                End If
                 'If mCore.EcoSimGroupOutputs(iGrp).Biomass(iTimeStep) <= 0 Then GoodDynamics = False
                 'Test
                 If GoodDynamics = False Then Exit For
@@ -1598,6 +1616,8 @@ Public Class cMSE
         'Diet matrix parameters are stored in file by iTrial
         'Read the file and update the dietmatrix parameters
         Return Me.updateDietMatrixFromCSVFile(iTrial)
+        'Return True
+
 
     End Function
 
