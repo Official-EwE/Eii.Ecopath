@@ -131,7 +131,7 @@ Public MustInherit Class cNavTreeControlPlugin
     Public MustOverride Function FormPage() As frmMain.eValueChainPageTypes
 
     Protected Function NavTreeNodeRoot() As String
-        Return "ndParameterization|ndEcopathOutputTools"
+        Return "ndParameterization|ndEcopathOutput|ndEcopathOutputTools"
     End Function
 
     ''' -----------------------------------------------------------------------
