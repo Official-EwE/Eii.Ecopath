@@ -120,8 +120,6 @@ Public Class frmNetworkAnalysis
         Me.m_tlpInfo.Visible = True
         Me.m_tlpInfo.Dock = DockStyle.Fill
 
-        Me.ShowOptions(False)
-
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
@@ -549,8 +547,9 @@ Public Class frmNetworkAnalysis
             ' Hide info panel
             Me.m_tlpInfo.Visible = False
         Else
-            ' Show toolbar
+            ' Only show options
             Me.m_toolstrip.Visible = False
+            Me.ShowOptions(True)
             ' Show credits
             Me.m_tlpInfo.Visible = True
             Me.m_hdrPage.Text = My.Resources.PAGE_CREDITS
@@ -578,19 +577,16 @@ Public Class frmNetworkAnalysis
 
         If (bShow = True) Then
 
-            ctrlOptions = New ucOptions(Me.m_uic, Me.m_networkmanager)
-            iWidth = ctrlOptions.Width
-            ctrlOptions.Dock = DockStyle.Fill
-            Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 0)
-
             If (Me.m_contentmanager IsNot Nothing) Then
                 ctrlOptions = Me.m_contentmanager.OptionsControl
-                If (ctrlOptions IsNot Nothing) Then
+            Else
+                ctrlOptions = New ucOptions(Me.m_uic, Me.m_networkmanager)
+            End If
 
-                    iWidth = Math.Max(iWidth, ctrlOptions.Width)
-                    ctrlOptions.Dock = DockStyle.Fill
-                    Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 1)
-                End If
+            If (ctrlOptions IsNot Nothing) Then
+                iWidth = ctrlOptions.Width
+                ctrlOptions.Dock = DockStyle.Fill
+                Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 1)
             End If
 
             Me.m_scMain.Panel2Collapsed = False
