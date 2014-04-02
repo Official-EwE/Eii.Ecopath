@@ -313,7 +313,7 @@ Namespace Controls
             Dim sValue As Single = Me.m_data.Value(iGroup)
             Dim sValueMax As Single = Me.m_data.ValueMax
             Dim clrPen As Color = sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
-            Dim clrLabel As Color = clrPen
+            Dim clrLabel As Color = Me.TextColor()
 
             Dim clrFill As Color = Color.LightGray
             Dim iSize As Integer = Me.CalcNodeSize(sValue, sValueMax)
@@ -323,7 +323,7 @@ Namespace Controls
                 Case cFlowDiagramManager.eHighlightType.Hidden
                     clrPen = Color.LightGray
                     clrFill = Color.White
-                    clrLabel = cColorUtils.GetVariant(Me.TextColor, 0.5!)
+                    clrLabel = cColorUtils.GetVariant(clrLabel, 0.5!)
 
                 Case cFlowDiagramManager.eHighlightType.None
                     Select Case Me.m_colorusagetype
@@ -340,24 +340,22 @@ Namespace Controls
 
                 Case cFlowDiagramManager.eHighlightType.LinkIn
                     clrPen = Me.InLinkColor
-                    clrLabel = clrPen
 
                 Case cFlowDiagramManager.eHighlightType.LinkOut
                     clrPen = Me.OutLinkColor
-                    clrLabel = clrPen
 
             End Select
 
             If (sValue = 0) Then
                 clrPen = sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
                 clrFill = Color.White
-            Else
+                clrLabel = clrPen
             End If
 
             Me.m_node.DrawNode(g, Me.NodeLocation(iGroup, rc), Me.NodeType, iSize, clrPen, clrFill)
 
             If (Me.m_bIsDrawLabel) Then
-                Me.m_node.DrawLabel(g, Me.LabelLocation(iGroup, rc), Me.RenderFont, clrPen, Me.FormatLabelText(iGroup))
+                Me.m_node.DrawLabel(g, Me.LabelLocation(iGroup, rc), Me.RenderFont, clrLabel, Me.FormatLabelText(iGroup))
             End If
 
         End Sub
