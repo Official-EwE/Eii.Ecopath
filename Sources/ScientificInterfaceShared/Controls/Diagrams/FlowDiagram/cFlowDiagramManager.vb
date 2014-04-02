@@ -149,12 +149,12 @@ Namespace Controls
                         ' Determine highlight state
                         hl = eHighlightType.None
 
-                        If (Me.HighlightNode > 0) Then hl = eHighlightType.Hidden
-
-                        If Me.m_data.IsGroupVisible(iPred) And Me.m_data.IsGroupVisible(iPrey) Then
-                            If (Me.HighlightNode = iPred) Then hl = eHighlightType.LinkIn
-                            If (Me.HighlightNode = iPrey) Then hl = eHighlightType.LinkOut
+                        If (Not Me.m_data.IsGroupVisible(iPred)) Or (Not Me.m_data.IsGroupVisible(iPrey)) Or (Me.HighlightNode > 0) Then
+                            hl = eHighlightType.Hidden
                         End If
+
+                        If (Me.HighlightNode = iPred) Then hl = eHighlightType.LinkIn
+                        If (Me.HighlightNode = iPrey) Then hl = eHighlightType.LinkOut
 
                         Select Case focus
                             Case eHighlightType.Hidden
@@ -162,7 +162,7 @@ Namespace Controls
                             Case eHighlightType.None
                                 bDraw = (hl = eHighlightType.None)
                             Case eHighlightType.Selected
-                                bDraw = (hl = eHighlightType.LinkIn) Or (hl = eHighlightType.LinkOut)
+                                bDraw = (hl = eHighlightType.LinkIn) Or (hl = eHighlightType.LinkOut) Or (hl = eHighlightType.Selected)
                         End Select
 
                         If bDraw Then
@@ -174,16 +174,32 @@ Namespace Controls
             Next
 
             ' Draw nodes
-            For j As Integer = 1 To Me.m_data.NumGroups()
+            For j As Integer = 1 To Me.m_data.NumGroups
 
                 ' Determine node highlight state
                 hl = eHighlightType.None
-                If Not Me.m_data.IsGroupVisible(j) Then hl = eHighlightType.Hidden
-                If (Me.HighlightNode = j) Then hl = eHighlightType.Selected
+                If (Not Me.m_data.IsGroupVisible(j) Or Me.HighlightNode > 0) Then hl = eHighlightType.Hidden
+                If (Me.HighlightNode = j) Then
+                    hl = eHighlightType.Selected
+                ElseIf (Me.HighlightNode > 0) Then
+                    If Me.m_data.LinkValue(Me.HighlightNode, j) > 0 Then hl = eHighlightType.LinkIn
+                    If Me.m_data.LinkValue(j, Me.HighlightNode) > 0 Then hl = eHighlightType.LinkOut
+                End If
 
-                If (hl = focus) Then
+                bDraw = False
+                Select Case focus
+                    Case eHighlightType.Hidden
+                        bDraw = (hl = eHighlightType.Hidden)
+                    Case eHighlightType.None
+                        bDraw = (hl = eHighlightType.None)
+                    Case eHighlightType.Selected
+                        bDraw = (hl = eHighlightType.LinkIn) Or (hl = eHighlightType.LinkOut) Or (hl = eHighlightType.Selected)
+                End Select
+
+                If (bDraw) Then
                     Me.m_tree.DrawNode(g, rc, j, hl)
                 End If
+
             Next j
 
         End Sub
