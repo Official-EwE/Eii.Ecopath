@@ -47,7 +47,8 @@ Partial Class frmNetworkAnalysis
         Me.m_scNetworkAnalysis = New System.Windows.Forms.SplitContainer()
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_pbCredits = New System.Windows.Forms.PictureBox()
+        Me.m_pbSponsors = New System.Windows.Forms.PictureBox()
+        Me.m_lblSponsors = New System.Windows.Forms.Label()
         Me.m_plot = New EwENetworkAnalysis.ucPlot()
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_datagrid = New System.Windows.Forms.DataGridView()
@@ -74,7 +75,7 @@ Partial Class frmNetworkAnalysis
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
         Me.m_tlpInfo.SuspendLayout()
-        CType(Me.m_pbCredits, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_toolstrip.SuspendLayout()
         Me.SuspendLayout()
@@ -127,15 +128,20 @@ Partial Class frmNetworkAnalysis
         'm_tlpInfo
         '
         resources.ApplyResources(Me.m_tlpInfo, "m_tlpInfo")
-        Me.m_tlpInfo.Controls.Add(Me.m_pbCredits, 1, 1)
+        Me.m_tlpInfo.Controls.Add(Me.m_pbSponsors, 1, 2)
+        Me.m_tlpInfo.Controls.Add(Me.m_lblSponsors, 1, 1)
         Me.m_tlpInfo.Name = "m_tlpInfo"
         '
-        'm_pbCredits
+        'm_pbSponsors
         '
-        resources.ApplyResources(Me.m_pbCredits, "m_pbCredits")
-        Me.m_pbCredits.Image = Global.EwENetworkAnalysis.My.Resources.Resources.N_Asponsors
-        Me.m_pbCredits.Name = "m_pbCredits"
-        Me.m_pbCredits.TabStop = False
+        resources.ApplyResources(Me.m_pbSponsors, "m_pbSponsors")
+        Me.m_pbSponsors.Name = "m_pbSponsors"
+        Me.m_pbSponsors.TabStop = False
+        '
+        'm_lblSponsors
+        '
+        resources.ApplyResources(Me.m_lblSponsors, "m_lblSponsors")
+        Me.m_lblSponsors.Name = "m_lblSponsors"
         '
         'm_plot
         '
@@ -257,7 +263,8 @@ Partial Class frmNetworkAnalysis
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
         Me.m_tlpInfo.ResumeLayout(False)
-        CType(Me.m_pbCredits, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tlpInfo.PerformLayout()
+        CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_toolstrip.ResumeLayout(False)
         Me.m_toolstrip.PerformLayout()
@@ -269,7 +276,6 @@ Partial Class frmNetworkAnalysis
     Private WithEvents tslblSelection2 As System.Windows.Forms.ToolStripLabel
     Private WithEvents tscmbSelection2 As System.Windows.Forms.ToolStripComboBox
     Private WithEvents tslblSelection1 As System.Windows.Forms.ToolStripLabel
-    Private WithEvents m_pbCredits As System.Windows.Forms.PictureBox
     Private WithEvents tsbtnOutputIndicesCSV As System.Windows.Forms.ToolStripButton
     Private WithEvents tsbtnOutputGraphEMF As System.Windows.Forms.ToolStripButton
     Private WithEvents m_toolstrip As cEwEToolstrip
@@ -283,4 +289,6 @@ Partial Class frmNetworkAnalysis
     Private WithEvents tsbtnOptions As System.Windows.Forms.ToolStripButton
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Friend WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents m_pbSponsors As System.Windows.Forms.PictureBox
+    Private WithEvents m_lblSponsors As System.Windows.Forms.Label
 End Class
