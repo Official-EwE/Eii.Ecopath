@@ -171,7 +171,7 @@
   <data name="m_pbSponsors.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAM0AAACuCAYAAACV3ImdAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAGYktHRAD/AP8A/6C9p5MAAJOdSURBVHhe7X0FeFRn9j4R
+        YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAGYktHRAD/AP8A/6C9p5MAAJOdSURBVHhe7X0FeFRn9j4R
         3N1LS1237Va3XevuVrbeUiCuE3d3gTjBHYoXd/fgxV2DQxIIMeIe3v97bmbKMARISOjub/85z3OeSWbu
         3Hvn3vOe857zne+7TdAojdIodZJG0DRKo9RRGkHTKI1SR2kETaM0Sh2lETSN0ih1lEbQNEqj1FEaQdMo
         jVJHaQRNozRKHaURNI3SKHWURtA0SqPUURpB0yiNUkdpBE2jNEodpRE0jdIodZQnCpryqju4UVKOrZl5
@@ -805,7 +805,7 @@
 </value>
   </data>
   <data name="m_pbSponsors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 165</value>
+    <value>84, 159</value>
   </data>
   <data name="m_pbSponsors.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -835,13 +835,16 @@
     <value>Fill</value>
   </data>
   <data name="m_lblSponsors.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 14.25pt, style=Bold</value>
+    <value>Microsoft Sans Serif, 12pt, style=Bold</value>
   </data>
   <data name="m_lblSponsors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>87, 93</value>
+    <value>84, 99</value>
+  </data>
+  <data name="m_lblSponsors.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 20</value>
   </data>
   <data name="m_lblSponsors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 72</value>
+    <value>205, 40</value>
   </data>
   <data name="m_lblSponsors.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
