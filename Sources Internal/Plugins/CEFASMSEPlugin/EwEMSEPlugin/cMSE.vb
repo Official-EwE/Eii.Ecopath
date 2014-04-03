@@ -173,6 +173,7 @@ Public Class cMSE
             Me.Run()
         Catch ex As Exception
             ' Whoah!
+            'This shouldn't happen, really....
             cLog.Write(ex, "CefasMSE:LoadSampledParameters")
         End Try
 
@@ -1162,7 +1163,7 @@ Public Class cMSE
             Me.Core.LoadEcosimScenario(iscenario)
 
         Catch ex As Exception
-
+            cLog.Write(ex)
         End Try
 
     End Sub
@@ -1242,16 +1243,24 @@ Public Class cMSE
 
         For x = 0 To ecopathData.DC.GetLength(0) - 1
             For y = 0 To ecopathData.DC.GetLength(1) - 1
-
                 ecopathData.DC(x, y) = CSng(DietMatrixTemp(x, y))
             Next
-            'mCore.EcoPathGroupInputs(x + 1).ImpDiet = CSng(DietImpTemp(x))
         Next
+
+        'I don't think we should do this 
+        'We never changed the input/output dietmatrix
+        'For x = 1 To mCore.nGroups
+        '    For y = 1 To mCore.nLivingGroups
+        '        mCore.EcoPathGroupInputs(x).DietComp(y) = CSng(DietMatrixTemp(x - 1, y - 1))
+        '    Next
+        'Next
+
         For x = 1 To ecosimData.VulMult.GetLength(0) - 1
             For y = 0 To ecosimData.VulMult.GetLength(1) - 1
                 ecosimData.VulMult(x, y) = CSng(VulnerabilitiesTemp(x, y))
             Next
         Next
+
         Me.Core.DiscardChanges()
 
     End Sub
@@ -1293,10 +1302,7 @@ Public Class cMSE
         Debug.Assert(Me.IsInputDataCompatible)
         Dim nTrials As Integer
         Dim GoodDynamics As Boolean
-
-        ' Strategies = New Strategies(Me, mCore)
-
-        Dim diet_matrix As CsvReader
+        ' Dim diet_matrix As CsvReader
         Dim nResultIters As Integer
         Dim nFleetIters As Integer
         Dim nFailedParameterisations As Integer
@@ -1304,117 +1310,131 @@ Public Class cMSE
         Dim swGroup As StreamWriter
         Dim swFleet As StreamWriter
 
-        Dim BiomassProjected(Me.NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
+        Try
 
-        Dim msgReport As New cFeedbackMessage("?", eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Information, eMessageReplyStyle.OK)
-        msgReport.Hyperlink = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Results)
+            Dim BiomassProjected(Me.NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
-        'Save the original Ecopath and Ecosim parameter values 
-        'so the model can be restored at the end of the run
-        Me.SaveOriginalParameters()
+            Dim msgReport As New cFeedbackMessage("?", eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Information, eMessageReplyStyle.OK)
+            msgReport.Hyperlink = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Results)
+
+            'Save the original Ecopath and Ecosim parameter values 
+            'so the model can be restored at the end of the run
+            Me.SaveOriginalParameters()
 
 
-        'Set the TechnologyCreep(nfleets) to one for all fleets
-        'No technology creep for us
-        Me.initTechnologyCreep()
+            'Set the TechnologyCreep(nfleets) to one for all fleets
+            'No technology creep for us
+            Me.initTechnologyCreep()
 
-        'Open the "Results.csv" and "Fleet.cvs" file and write the header info
-        Me.initResultFiles(msgReport, swGroup, swFleet)
+            'Open the "Results.csv" and "Fleet.cvs" file and write the header info
+            Me.initResultFiles(msgReport, swGroup, swFleet)
 
-        'Extract the maximum percentage change in effort for each fleet from csv and put into array ChangeInEffortLimits
-        'to be used by the optim to determine effort is beyond maximum change in effort
-        Me.ExtractChangeInEffortLimits()
+            'Extract the maximum percentage change in effort for each fleet from csv and put into array ChangeInEffortLimits
+            'to be used by the optim to determine effort is beyond maximum change in effort
+            Me.ExtractChangeInEffortLimits()
 
-        'Read all the parameters from the <parameter name>_out.csv files into memory
-        Me.readEcopathEcosimParameters()
+            'Read all the parameters from the <parameter name>_out.csv files into memory
+            Me.readEcopathEcosimParameters()
 
-        'Prepare the trajectory csv with the column headings
-        Trajectory2Csv = New List(Of StreamWriter)
-        Me.initTrajectoryByGroupFiles(msgReport, Trajectory2Csv)
+            'Prepare the trajectory csv with the column headings
+            Trajectory2Csv = New List(Of StreamWriter)
+            Me.initTrajectoryByGroupFiles(msgReport, Trajectory2Csv)
 
-        'increase the number of years for the projection
-        mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject)
+            'increase the number of years for the projection
+            mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject)
 
-        'Tell Ecopath not to send out messages
-        Me._ecopath.suppressMessages = True
+            'Tell Ecopath not to send out messages
+            Me._ecopath.suppressMessages = True
 
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'Run The Trials 
-        'load parameter values into ecopath and ecosim to be used
-        nTrials = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
-        For iTrial = 1 To nTrials
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Run The Trials 
+            'load parameter values into ecopath and ecosim to be used
+            nTrials = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
+            For iTrial = 1 To nTrials
 
-            ResetEffortToMax(OriginalNTimesteps + 1, mCore.EcoSimModelParameters.NumberYears * _ecosim.EcosimData.NumStepsPerYear)
+                ResetEffortToMax(OriginalNTimesteps + 1, mCore.EcoSimModelParameters.NumberYears * _ecosim.EcosimData.NumStepsPerYear)
 
-            cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iTrial), CSng(iTrial / nTrials))
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iTrial), CSng(iTrial / nTrials))
 
-            'Only run the Strategies if the parameters loaded
-            If Me.updateEcopathEcosimParameters(iTrial) Then
-                'Yep loaded all the parameters from file or memory
+                'Only run the Strategies if the parameters loaded
+                If Me.updateEcopathEcosimParameters(iTrial) Then
+                    'Yep loaded all the parameters from file or memory
 
-                Try
-                    'Run Ecopath with the parameters updated above
-                    Dim bEcopathRan As Boolean
-                    bEcopathRan = Me._ecopath.Run()
-                    'this should not happen 
-                    Debug.Assert(bEcopathRan, Me.ToString + ".Run() Ecopath failed to run from balanced parameter set.")
+                    Try
+                        'Run Ecopath with the parameters updated above
+                        Dim bEcopathRan As Boolean
+                        bEcopathRan = Me._ecopath.Run()
+                        'this should not happen 
+                        Debug.Assert(bEcopathRan, Me.ToString + ".Run() Ecopath failed to run from balanced parameter set.")
 
-                    'This creates the files we will write the biomass trajectories to
-                    TrajectoryCsv = Me.initTrialTrajectoryFile(msgReport, iTrial)
+                        'This creates the files we will write the biomass trajectories to
+                        TrajectoryCsv = Me.initTrialTrajectoryFile(msgReport, iTrial)
 
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'Loop over all the strategies for this trial
-                    For Each curStrategy As Strategy In Strategies
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'Loop over all the strategies for this trial
+                        For Each curStrategy As Strategy In Strategies
 
-                        'Set the CurrentStrategy used by onEcosimTimeStep()
-                        CurrentStrategy = curStrategy
+                            'Set the CurrentStrategy used by onEcosimTimeStep()
+                            CurrentStrategy = curStrategy
 
-                        'Get a list of all fleets that fish the groups that have HCRs
-                        'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
-                        Me.initFishedByHCR(curStrategy)
+                            'Get a list of all fleets that fish the groups that have HCRs
+                            'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
+                            Me.initFishedByHCR(curStrategy)
 
-                        Me.RunEcosim()
+                            Me.RunEcosim()
 
-                        'Save the Ecosim results
-                        GoodDynamics = Me.SaveBiomassTrajectories(iTrial, nResultIters, nFleetIters, swGroup, swFleet)
+                            'Save the Ecosim results
+                            GoodDynamics = Me.SaveBiomassTrajectories(iTrial, nResultIters, nFleetIters, swGroup, swFleet)
 
-                        'If one of the groups colapsed during the Ecosim run 
-                        'Reject this parameter set
-                        If GoodDynamics = False Then Exit For
-                    Next curStrategy
-                    'End of Strategy loop
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            'If one of the groups colapsed during the Ecosim run 
+                            'Reject this parameter set
+                            If GoodDynamics = False Then Exit For
+                        Next curStrategy
+                        'End of Strategy loop
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                    cMSEUtils.ReleaseWriter(TrajectoryCsv)
+                        cMSEUtils.ReleaseWriter(TrajectoryCsv)
 
-                Catch ex As Exception
-                    Debug.Assert(False, Me.ToString & ".Run() Exception: " & ex.Message)
-                End Try
-            End If
+                    Catch ex As Exception
+                        Debug.Assert(False, Me.ToString & ".Run() Exception: " & ex.Message)
+                    End Try
+                End If
 
-            'BadDynamics:  ' This is so that if the dynamics of a parameterisation are bad that we can skip out of the loops and onto the the next Trial
-            GoodDynamics = True
+                'BadDynamics:  ' This is so that if the dynamics of a parameterisation are bad that we can skip out of the loops and onto the the next Trial
+                GoodDynamics = True
 
-        Next iTrial
-        'End of trials loop
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            Next iTrial
+            'End of trials loop
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-        For Each strmWriter As StreamWriter In Trajectory2Csv
-            cMSEUtils.ReleaseWriter(strmWriter)
-        Next
-        Trajectory2Csv.Clear()
+            'ecosimData.NTimes is the number of months so 17 years = 204 timesteps
+            mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear)
 
-        'ecosimData.NTimes is the number of months so 17 years = 204 timesteps
-        mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear)
+            'Provide user with a message stating how many of the Trials produced reasonable dynamics
+            msgReport.Message = String.Format(My.Resources.PROMPT_TRIAL_REPORT, (nTrials - nFailedParameterisations), nTrials, CInt((nTrials - nFailedParameterisations) * 100 / nTrials))
+            Me.Core.Messages.SendMessage(msgReport)
 
-        'Provide user with a message stating how many of the Trials produced reasonable dynamics
-        msgReport.Message = String.Format(My.Resources.PROMPT_TRIAL_REPORT, (nTrials - nFailedParameterisations), nTrials, CInt((nTrials - nFailedParameterisations) * 100 / nTrials))
-        Me.Core.Messages.SendMessage(msgReport)
+        Catch ex As Exception
+            cLog.Write(ex)
+            'Warn the user
+            Me.Core.Messages.SendMessage(New cMessage("CEFAS MSE Failed to run MSE trials due to exception " + ex.Message, _
+                                                      eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
+        End Try
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'Cleanup even if there has been an exception
+        If Trajectory2Csv IsNot Nothing Then
+            For Each strmWriter As StreamWriter In Trajectory2Csv
+                cMSEUtils.ReleaseWriter(strmWriter)
+            Next
+            Trajectory2Csv.Clear()
+        End If
 
         cMSEUtils.ReleaseWriter(swGroup)
         cMSEUtils.ReleaseWriter(swFleet)
 
         Me.RestoreOriginalState()
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     End Sub
 
@@ -1464,18 +1484,23 @@ Public Class cMSE
             csvDietMatrix = New CsvReader(strmReader, False)
             If csvDietMatrix.ReadNextRecord() Then
                 For iPred As Integer = 1 To mCore.nLivingGroups
-                    mCore.EcoPathGroupInputs(iPred).ImpDiet() = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
-                    '_ecopath.EcopathData.DC(iPred - 1, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                    _ecopath.EcopathData.DC(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                 Next
             Else
                 ' Unable to read predator header line! We have a problem
                 GoodDynamics = False
             End If
+
+            'Me.dumpDietMatrix()
             For iPrey As Integer = 1 To mCore.nGroups
                 If (Not csvDietMatrix.EndOfStream) And (csvDietMatrix.ReadNextRecord()) Then
                     For iPred As Integer = 1 To mCore.nLivingGroups
-                        mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
-                        '_ecopath.EcopathData.DC(iPred - 1, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+
+                        If _ecopath.EcopathData.DC(iPred, iPrey) > 0 Then
+                            'Debug.Assert(cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) > 0)
+                            _ecopath.EcopathData.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                        End If
+
                     Next
                 Else
                     ' Unable to read prey line! We have a problem
@@ -1487,12 +1512,30 @@ Public Class cMSE
             GoodDynamics = False
         End If
 
+        Me.NormalizeDiet()
+
         cMSEUtils.ReleaseReader(strmReader)
         If csvDietMatrix IsNot Nothing Then csvDietMatrix.Dispose()
+
+        'Me.dumpDietMatrix()
 
         Return GoodDynamics
 
     End Function
+
+
+    Private Sub dumpDietMatrix()
+
+        System.Console.WriteLine("-----------------Start Diet Matrix-----------------------")
+        For iprey As Integer = 1 To mCore.nGroups
+            For ipred As Integer = 1 To mCore.nLivingGroups
+                System.Console.Write(Me._pathdata.DC(ipred, iprey).ToString() + ",")
+            Next
+            System.Console.WriteLine()
+        Next
+        System.Console.WriteLine("-----------------End Diet Matrix------------------------")
+
+    End Sub
 
 
     Private Function SaveBiomassTrajectories(ByVal iTrial As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
@@ -1613,6 +1656,9 @@ Public Class cMSE
         'Update the Ecopath and Ecosim parameters from the data read into memory by Me.readEcopathEcosimParameters()
         Me.updateParametersFromMemory(iTrial)
 
+        ' Me.updateDietRandom()
+        'Return Me.readDietMatrix(iTrial)
+        ' Return True
         'Diet matrix parameters are stored in file by iTrial
         'Read the file and update the dietmatrix parameters
         Return Me.updateDietMatrixFromCSVFile(iTrial)
@@ -1899,7 +1945,7 @@ Public Class cMSE
 
                         'Write code here that generates a whole set of diet parameters to be used in combination with new ecopath parameters
                         'to be tested for the mass-balance criteria
-                        'SampleDietMatrix(Interacts, MeanProportions, DietPropMultipliers)
+                        SampleDietMatrix(Interacts, MeanProportions, DietPropMultipliers)
 
                         Console.WriteLine("Iteration = " & i)
                         If MonteCarlo.selectNewEcopathParameters(1) Then
@@ -2118,6 +2164,28 @@ Public Class cMSE
         Return False
 
     End Function
+
+
+    Private Sub NormalizeDiet()
+        Dim dietsum As Single
+        Dim tol As Single = 0.001
+
+        For iPred = 1 To Me._pathdata.NumLiving
+            If Me._pathdata.PP(iPred) < 1 Then
+                dietsum = 0
+                For iPrey = 0 To Me._pathdata.NumGroups
+                    dietsum = dietsum + Me._pathdata.DC(iPred, iPrey)
+                Next
+                If dietsum <> 0 And Math.Abs(dietsum - 1) > tol Then
+                    For iPrey = 0 To Me._pathdata.NumGroups
+                        Me._pathdata.DC(iPred, iPrey) = Me._pathdata.DC(iPred, iPrey) / dietsum
+                    Next
+                    'm_Data.DietsModified = True
+                End If
+            End If
+        Next
+
+    End Sub
 
 
     Public Sub CreateRCode()
@@ -2764,6 +2832,75 @@ stepend:
 #End Region ' Configurable settings
 
 #Region "Dead Code"
+
+#If 0 Then
+
+    'JB 3-April-2014 
+    'Code used to create, save and reload a dietmatrix file for debugging
+
+    ''' <summary>
+    ''' Reads a known dietmatrix file
+    ''' </summary>
+    ''' <param name="iTrial"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function readDietMatrix(ByVal iTrial As Integer) As Boolean
+        Dim buff As String
+        Dim data() As String
+        Dim strmReader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrix.csv"))
+
+        If (strmReader IsNot Nothing) Then
+
+            For iprey As Integer = 1 To mCore.nGroups
+                buff = strmReader.ReadLine
+                data = buff.Split(","c)
+                Debug.Assert(data.Length = mCore.nLivingGroups)
+                For ipred As Integer = 1 To mCore.nLivingGroups
+                    If _ecopath.EcopathData.DC(ipred, iprey) > 0 And cStringUtils.ConvertToSingle(data(ipred - 1)) > 0 Then
+                        _ecopath.EcopathData.DC(ipred, iprey) = cStringUtils.ConvertToSingle(data(ipred - 1))
+                    End If
+                Next ipred
+
+            Next iprey
+        End If
+
+        Me.NormalizeDiet()
+
+        cMSEUtils.ReleaseReader(strmReader)
+        Me.dumpDietMatrix()
+
+        Return True
+
+    End Function
+
+    ''' <summary>
+    ''' Sample the diet matrix
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub updateDietRandom()
+
+        Dim rnd As New Random(666)
+        Dim dist As New Troschuetz.Random.NormalDistribution
+
+        For iPred = 1 To Me._pathdata.NumLiving
+            If Me._pathdata.PP(iPred) < 1 Then
+                For iPrey = 0 To Me._pathdata.NumGroups
+                    If Me._pathdata.DC(iPred, iPrey) > 0 Then
+                        dist.Mu = Me._pathdata.DC(iPred, iPrey)
+                        dist.Sigma = dist.Mu * 0.1
+                        Me._pathdata.DC(iPred, iPrey) = CSng(dist.NextDouble)
+                    End If
+                Next
+            End If
+        Next
+
+        Me.NormalizeDiet()
+
+        Me.dumpDietMatrix()
+
+    End Sub
+
+#End If
 
     'Commented out because redundant 3-9-13
 
