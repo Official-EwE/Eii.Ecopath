@@ -1429,6 +1429,7 @@ Public Class cEnviroResponseFunction
 
         'tell the manager that a shape has changed its data
         ShapeChanged()
+        Return True
 
     End Function
 

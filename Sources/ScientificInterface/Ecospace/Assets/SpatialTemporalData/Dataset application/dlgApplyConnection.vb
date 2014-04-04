@@ -156,8 +156,12 @@ Namespace Ecospace.Controls
             Next
 
             Me.m_bInUpdate = False
-            Me.UpdateControls()
             Me.CenterToParent()
+
+            Me.UpdateDatasetPanel()
+            Me.UpdateConversionPanel()
+            Me.UpdateScalingPanel()
+            Me.UpdateControls()
 
         End Sub
 
@@ -165,7 +169,6 @@ Namespace Ecospace.Controls
 
             If Me.m_bIsChanged Then
                 Me.m_man.Update()
-                Me.m_uic.Core.onChanged(Me.m_uic.Core.EcospaceBasemap)
                 Me.m_bIsChanged = False
             End If
 
@@ -295,9 +298,12 @@ Namespace Ecospace.Controls
         ''' User has selected a dataset for the current adapter and layer.
         ''' </summary>
         Private Sub OnSelectDS(selection As SourceGrid2.CellVirtualCollection)
+
+            If Me.m_bInUpdate Then Return
             Try
+                Me.m_bInUpdate = True
                 Me.SelectedDataset = Me.m_gridConnections.SelectedDataset
-                Me.LayerChanged()
+                Me.m_bInUpdate = False
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -572,7 +578,7 @@ Namespace Ecospace.Controls
                     If (cv IsNot Nothing) Then
                         If cv.IsCompatible(ds) Then
                             bIsConfigured = cv.IsConfigured
-                         End If
+                        End If
                     End If
                 End If
 
@@ -620,10 +626,11 @@ Namespace Ecospace.Controls
                 Dim comp As New cDatasetCompatilibity(Me.UIContext.Core, ds)
                 Dim fmt As New cSpatialDatasetCompatibilityFormatter()
                 Me.m_lblCompatibility.Text = fmt.Summary(comp)
-
+                Me.m_pbCompat.Image = cStyleGuide.GetImage(comp)
             Else
                 Me.m_lblDatasetInfo.Text = ""
                 Me.m_lblCompatibility.Text = ""
+                Me.m_pbCompat.Image = Nothing
             End If
 
         End Sub
@@ -763,7 +770,6 @@ Namespace Ecospace.Controls
         End Function
 
         Private Sub LayerChanged()
-            If (Me.m_bInUpdate) Then Return
             Me.m_bIsChanged = True
         End Sub
 

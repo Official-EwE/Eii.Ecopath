@@ -50,7 +50,7 @@ Namespace Controls.Map.Layers
             'm_lblScale
             '
             Me.m_lblScale.AutoSize = True
-            Me.m_lblScale.Location = New System.Drawing.Point(3, 114)
+            Me.m_lblScale.Location = New System.Drawing.Point(3, 126)
             Me.m_lblScale.Name = "m_lblScale"
             Me.m_lblScale.Size = New System.Drawing.Size(37, 13)
             Me.m_lblScale.TabIndex = 2
@@ -60,7 +60,7 @@ Namespace Controls.Map.Layers
             '
             Me.m_nudValue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudValue.Location = New System.Drawing.Point(65, 112)
+            Me.m_nudValue.Location = New System.Drawing.Point(65, 124)
             Me.m_nudValue.Name = "m_nudValue"
             Me.m_nudValue.Size = New System.Drawing.Size(85, 20)
             Me.m_nudValue.TabIndex = 3
@@ -69,7 +69,7 @@ Namespace Controls.Map.Layers
             '
             Me.m_lblUnits.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_lblUnits.AutoSize = True
-            Me.m_lblUnits.Location = New System.Drawing.Point(156, 114)
+            Me.m_lblUnits.Location = New System.Drawing.Point(156, 126)
             Me.m_lblUnits.Name = "m_lblUnits"
             Me.m_lblUnits.Size = New System.Drawing.Size(41, 13)
             Me.m_lblUnits.TabIndex = 4
@@ -84,7 +84,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_lblScale)
             Me.Controls.Add(Me.m_lblUnits)
             Me.Name = "ucLayerEditorVector"
-            Me.Size = New System.Drawing.Size(200, 140)
+            Me.Size = New System.Drawing.Size(200, 154)
             Me.Controls.SetChildIndex(Me.m_lblUnits, 0)
             Me.Controls.SetChildIndex(Me.m_lblScale, 0)
             Me.Controls.SetChildIndex(Me.m_nudValue, 0)

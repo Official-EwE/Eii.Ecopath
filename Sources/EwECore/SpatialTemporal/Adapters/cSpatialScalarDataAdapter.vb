@@ -171,11 +171,15 @@ Namespace SpatialData
                                                             ByVal iConnection As Integer, _
                                                             ByRef dScale As Double) As cDatasetCompatilibity.eCompatibilityTypes
 
+            Dim manConn As cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
+            Dim manSets As cSpatialDataSetManager = manConn.DatasetManager
             Dim result As cDatasetCompatilibity.eCompatibilityTypes = cDatasetCompatilibity.eCompatibilityTypes.Errors
-
 
             ' Early bail-out
             If Not Me.IsConnected(iLayerIndex, iConnection) Then Return result
+
+            ' Terminate indexing
+            manSets.StopIndexing()
 
             Dim ds As ISpatialDataSet = Me.Dataset(iLayerIndex, iConnection)
             Dim cv As ISpatialDataConverter = Me.Converter(iLayerIndex, iConnection)

@@ -238,8 +238,6 @@ Namespace Forms
          ''' <summary>States whether the form is running. Only valid for forms 
         ''' that are flagged as <see cref="IsRunForm"/>.</summary>
         Private m_bIsRunning As Boolean = False
-        ''' <summary>Misc. form settings.</summary>
-        Private m_strSettings As String = ""
 
         Private m_printDoc As PrintDocument = Nothing
         Private m_iPrintPage As Integer = 0
@@ -438,14 +436,7 @@ Namespace Forms
         ''' Get/set local settings for this form.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overridable Property Settings() As String
-            Get
-                Return Me.m_strSettings
-            End Get
-            Set(ByVal value As String)
-                Me.m_strSettings = value
-            End Set
-        End Property
+        Public Overridable Property Settings() As String = ""
 
         ''' -------------------------------------------------------------------
         ''' <summary>

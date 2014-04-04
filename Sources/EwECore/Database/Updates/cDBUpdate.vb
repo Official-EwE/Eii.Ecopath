@@ -86,6 +86,7 @@ Friend MustInherit Class cDBUpdate
     ''' not use it at all.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
+    <Obsolete("Method discontinued")> _
     Public Overridable ReadOnly Property RunAlways As Boolean
         Get
             Return False

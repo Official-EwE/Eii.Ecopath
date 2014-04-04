@@ -6329,7 +6329,7 @@ Namespace DataSources
 
                 drow = writerShape.NewRow()
                 drow("ShapeID") = iShapeID
-                drow("Title") = strShapeName
+                drow("Title") = strShapeName.Substring(0, Math.Min(strShapeName.Length, 50))
 
                 If Object.ReferenceEquals(asData, Nothing) Then
                     drow("zScale") = ""
@@ -7244,7 +7244,7 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
-            bSucces = bSucces And Me.LoadEcospaceDataAdapters(iScenarioID)
+            bSucces = bSucces And Me.LoadEcospaceDataConnections(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
 
             Me.ClearChanged(s_EcospaceComponents)
@@ -7431,7 +7431,7 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcospaceFleets(idm)
             bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
             bSucces = bSucces And Me.SaveEcospaceCapacityMaps(idm)
-            bSucces = bSucces And Me.SaveEcospaceDataAdapters(idm)
+            bSucces = bSucces And Me.SaveEcospaceDataConnections(idm)
 
             Return bSucces
 
@@ -7564,7 +7564,7 @@ Namespace DataSources
 
             Try
                 ' Delete tables not linked by cascading rules
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataAdapters WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
@@ -8369,9 +8369,21 @@ Namespace DataSources
         Private Function RemoveEcospaceGroup(ByVal iGroupID As Integer) As Boolean
             Dim bSucces As Boolean = True
             Try
+                Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+                Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+                Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
+                Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
+                ' Delete habitat assignments
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE GroupID={0}", iGroupID))
+
+                ' Do not worry about explicitly deleting layer data connections; there are no
+                ' referential integrity links between maps and their connections. The loading logic
+                ' implemented in this class will deal with missing map links.
+
+                ' Delete capacity drivers
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE GroupID={0}", iGroupID))
+                ' Finally delete group
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroup WHERE GroupID={0}", iGroupID))
 
             Catch ex As Exception
@@ -9434,9 +9446,14 @@ Namespace DataSources
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim bSucces As Boolean = True
 
             Try
+                ' Cascading delete any data assignments
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0}) AND (LayerID={1}) AND (VarName='{2}')", _
+                                              iScenarioID, iDBID, cin.GetVarName(eVarNameFlags.LayerDriver)))
+                ' Delete the layer
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iDBID))
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace driver layer ID {1}", ex.Message, iDBID))
@@ -9450,41 +9467,51 @@ Namespace DataSources
 
 #End Region ' Driver layers
 
-#Region " Data adapters "
+#Region " Data connections "
 
-        Private Function LoadEcospaceDataAdapters(iScenarioID As Integer) As Boolean
+        Private Function LoadEcospaceDataConnections(iScenarioID As Integer) As Boolean
 
+            Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
-            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDataAdapters WHERE (ScenarioID={0})", iScenarioID))
+
+            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim var As eVarNameFlags = eVarNameFlags.NotSet
-            Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
-            Dim iIndex As Integer = 0
-            Dim iConnection As Integer = 0
-            Dim strDatasetGUID As String = ""
-            Dim strConverterType As String = ""
-            Dim strConverterCfg As String = ""
             Dim bSucces As Boolean = True
 
             If (reader Is Nothing) Then Return Me.IsReadOnly
 
             While reader.Read()
                 Try
-                    var = cin.GetVarName(CStr(reader("VarName")))
-                    iIndex = CInt(reader("LayerIndex"))
-                    iConnection = CInt(Me.m_db.ReadSafe(reader, "ConnectionIndex", 1))
-                    cfg = spatialDS.Item(var, iIndex, iConnection)
+                    Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
+                    Dim iLayer As Integer = Array.IndexOf(spaceDS.getLayerIDs(var), CInt(Me.m_db.ReadSafe(reader, "LayerID", 1)))
+                    Dim iConn As Integer = -1
 
-                    If (cfg IsNot Nothing) Then
-                        cfg.DatasetGUID = CStr(reader("Dataset"))
-                        cfg.Converter = CStr(reader("Converter"))
-                        cfg.ConverterConfig = CStr(reader("ConverterCfg"))
-                        cfg.Scale = CSng(Me.m_db.ReadSafe(reader, "Scale", 1.0!))
-                        cfg.ScaleType = CByte(Me.m_db.ReadSafe(reader, "ScaleType", 0))
+                    ' May link to unknown layer
+                    If (iLayer > 0) Then
+                        For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                            Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, i)
+                            If (item IsNot Nothing) And (iConn = -1) Then
+                                If String.IsNullOrWhiteSpace(item.DatasetGUID) Then
+                                    iConn = i
+                                End If
+                            End If
+                        Next
+
+                        If (iConn > 0) Then
+                            Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, iConn)
+                            item.DatasetGUID = CStr(Me.m_db.ReadSafe(reader, "DatasetGUID", ""))
+                            item.DatasetTypeName = CStr(Me.m_db.ReadSafe(reader, "DatasetTypeName", ""))
+                            item.DatasetConfig = CStr(Me.m_db.ReadSafe(reader, "DatasetCfg", ""))
+                            item.ConverterTypeName = CStr(Me.m_db.ReadSafe(reader, "ConverterTypeName", ""))
+                            item.ConverterConfig = CStr(Me.m_db.ReadSafe(reader, "ConverterCfg", ""))
+                            item.Scale = CSng(Me.m_db.ReadSafe(reader, "Scale", 1.0!))
+                            item.ScaleType = CType(Me.m_db.ReadSafe(reader, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
+                        End If
                     End If
+
                 Catch ex As Exception
                     bSucces = False
-                    cLog.Write(ex, "DBDataSource::LoadDataAdapters")
+                    cLog.Write(ex, "DBDataSource::LoadEcospaceDataConnections")
                 End Try
             End While
 
@@ -9493,27 +9520,29 @@ Namespace DataSources
 
         End Function
 
-        Private Function SaveEcospaceDataAdapters(idm As cIDMappings) As Boolean
+        Private Function SaveEcospaceDataConnections(idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim iLayerID As Integer = -1
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
+            Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
+            Dim iSequence As Integer = 1
 
             ' Get mapped scenario ID, in case saving to a different scenario
             iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
 
             ' Kaboom
-            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataAdapters WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0})", iScenarioID))
 
             Try
-
-                writer = Me.m_db.GetWriter("EcospaceScenarioDataAdapters")
+                writer = Me.m_db.GetWriter("EcospaceScenarioDataConnection")
                 dt = writer.GetDataTable()
 
                 For Each adt As cSpatialDataAdapter In spatialDS.DataAdapters
@@ -9522,24 +9551,49 @@ Namespace DataSources
                             cfg = spatialDS.Item(adt.VarName, i, j)
                             If (cfg IsNot Nothing) Then
                                 Dim strDataset As String = cfg.DatasetGUID
-                                Dim strConverter As String = cfg.Converter
-                                'Don't need a converter to be a valid config
-                                'If Not String.IsNullOrWhiteSpace(strDataset) Or Not String.IsNullOrWhiteSpace(strConverter) Then
                                 If Not String.IsNullOrWhiteSpace(strDataset) Then
                                     drow = writer.NewRow()
                                     drow("ScenarioID") = iScenarioID
                                     drow("VarName") = cin.GetVarName(adt.VarName)
-                                    drow("LayerIndex") = i
-                                    drow("ConnectionIndex") = j
-                                    drow("Dataset") = strDataset
-                                    drow("Converter") = strConverter
+                                    iLayerID = ecospaceDS.getLayerID(adt.VarName, i)
+
+                                    ' ID linkages
+                                    Select Case adt.VarName
+                                        Case eVarNameFlags.LayerPort, eVarNameFlags.SailCost
+                                            ' Map id-ed by fleet
+                                            iLayerID = idm.GetID(eDataTypes.EcospaceFleet, iLayerID)
+                                        Case eVarNameFlags.LayerBiomassForcing, eVarNameFlags.LayerBiomassRelativeForcing, _
+                                             eVarNameFlags.LayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacityInput, _
+                                             eVarNameFlags.LayerMigration
+                                            ' Map id-ed by group
+                                            iLayerID = idm.GetID(eDataTypes.EcospaceGroup, iLayerID)
+                                        Case eVarNameFlags.LayerDriver
+                                            ' Map id-ed uniquely
+                                            iLayerID = idm.GetID(eDataTypes.EcospaceLayerDriver, iLayerID)
+                                        Case eVarNameFlags.LayerHabitat
+                                            ' Map id-ed by habitat
+                                            iLayerID = idm.GetID(eDataTypes.EcospaceHabitat, iLayerID)
+                                        Case eVarNameFlags.LayerImportance
+                                            ' Map id-ed uniquely
+                                            iLayerID = idm.GetID(eDataTypes.EcospaceLayerImportance, iLayerID)
+                                        Case eVarNameFlags.LayerMPA
+                                            ' Map id-ed with mpa
+                                            iLayerID = idm.GetID(eDataTypes.EcospaceLayerMPA, iLayerID)
+                                    End Select
+
+                                    drow("LayerID") = iLayerID
+                                    drow("Sequence") = iSequence
+                                    drow("DatasetGUID") = strDataset
+                                    drow("DatasetTypeName") = cfg.DatasetTypeName
+                                    drow("DatasetCfg") = cfg.DatasetConfig
+                                    drow("ConverterTypeName") = cfg.ConverterTypeName
                                     drow("ConverterCfg") = cfg.ConverterConfig
                                     drow("Scale") = cfg.Scale
                                     drow("ScaleType") = cfg.ScaleType
                                     writer.AddRow(drow)
+
+                                    iSequence += 1
                                 End If
-                            Else
-                                cfg = cfg
                             End If
                         Next j
                     Next i

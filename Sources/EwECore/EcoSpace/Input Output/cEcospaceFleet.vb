@@ -65,8 +65,8 @@ Public Class cEcospaceFleet
             ResetStatusFlags()
 
         Catch ex As Exception
-            Debug.Assert(False, "Error creating new cEcospaceGroup.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcospaceGroup. Error: " & ex.Message)
+            Debug.Assert(False, "Error creating new cEcospaceFleet.")
+            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcospaceFleet. Error: " & ex.Message)
         End Try
 
     End Sub

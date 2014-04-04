@@ -55,17 +55,17 @@ Namespace Controls.Map.Layers
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbGroups.FormattingEnabled = True
-            Me.m_cmbGroups.Location = New System.Drawing.Point(68, 174)
+            Me.m_cmbGroups.Location = New System.Drawing.Point(68, 180)
             Me.m_cmbGroups.MaxDropDownItems = 12
             Me.m_cmbGroups.Name = "m_cmbGroups"
-            Me.m_cmbGroups.Size = New System.Drawing.Size(125, 21)
+            Me.m_cmbGroups.Size = New System.Drawing.Size(127, 21)
             Me.m_cmbGroups.TabIndex = 8
             '
             'm_lblFleet
             '
             Me.m_lblFleet.AutoSize = True
             Me.m_lblFleet.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblFleet.Location = New System.Drawing.Point(3, 177)
+            Me.m_lblFleet.Location = New System.Drawing.Point(3, 183)
             Me.m_lblFleet.Name = "m_lblFleet"
             Me.m_lblFleet.Size = New System.Drawing.Size(39, 13)
             Me.m_lblFleet.TabIndex = 7
@@ -75,9 +75,9 @@ Namespace Controls.Map.Layers
             '
             Me.m_btnAllDefault.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnAllDefault.Location = New System.Drawing.Point(68, 245)
+            Me.m_btnAllDefault.Location = New System.Drawing.Point(68, 251)
             Me.m_btnAllDefault.Name = "m_btnAllDefault"
-            Me.m_btnAllDefault.Size = New System.Drawing.Size(124, 23)
+            Me.m_btnAllDefault.Size = New System.Drawing.Size(127, 23)
             Me.m_btnAllDefault.TabIndex = 12
             Me.m_btnAllDefault.Text = "Reset &all layers"
             Me.m_btnAllDefault.UseVisualStyleBackColor = True
@@ -86,9 +86,9 @@ Namespace Controls.Map.Layers
             '
             Me.m_btnLayerDefault.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnLayerDefault.Location = New System.Drawing.Point(68, 216)
+            Me.m_btnLayerDefault.Location = New System.Drawing.Point(68, 222)
             Me.m_btnLayerDefault.Name = "m_btnLayerDefault"
-            Me.m_btnLayerDefault.Size = New System.Drawing.Size(125, 23)
+            Me.m_btnLayerDefault.Size = New System.Drawing.Size(127, 23)
             Me.m_btnLayerDefault.TabIndex = 11
             Me.m_btnLayerDefault.Text = "Reset &this layer"
             Me.m_btnLayerDefault.UseVisualStyleBackColor = True
@@ -108,9 +108,9 @@ Namespace Controls.Map.Layers
             Me.m_hdDefaults.CanCollapseParent = False
             Me.m_hdDefaults.CollapsedParentHeight = 0
             Me.m_hdDefaults.IsCollapsed = False
-            Me.m_hdDefaults.Location = New System.Drawing.Point(0, 198)
+            Me.m_hdDefaults.Location = New System.Drawing.Point(3, 204)
             Me.m_hdDefaults.Name = "m_hdDefaults"
-            Me.m_hdDefaults.Size = New System.Drawing.Size(202, 18)
+            Me.m_hdDefaults.Size = New System.Drawing.Size(195, 18)
             Me.m_hdDefaults.TabIndex = 9
             Me.m_hdDefaults.Text = "Defaults"
             Me.m_hdDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -126,7 +126,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_lblFleet)
             Me.Controls.Add(Me.m_btnAllDefault)
             Me.Name = "ucLayerEditorHabitatCapacity"
-            Me.Size = New System.Drawing.Size(205, 274)
+            Me.Size = New System.Drawing.Size(203, 282)
             Me.Controls.SetChildIndex(Me.m_btnAllDefault, 0)
             Me.Controls.SetChildIndex(Me.m_lblFleet, 0)
             Me.Controls.SetChildIndex(Me.m_cmbGroups, 0)

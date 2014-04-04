@@ -28,6 +28,8 @@ Imports EwECore
 Imports ScientificInterface.Other
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared
 
 #End Region ' Imports
 
@@ -47,11 +49,10 @@ Namespace Ecospace
             Map
         End Enum
 
-        Private m_uic As cUIContext = Nothing
-        Private m_ShapeManager As cBaseShapeManager
+        Private m_shapeManager As cBaseShapeManager
         Private m_lFFs As New List(Of cForcingFunction)
         Private m_map As EwECore.IEnviroInputMap
-        Private m_ShapeGUI As cShapeGUIHandler
+        Private m_shapeGUI As cShapeGUIHandler
         Private m_iSelGrp As Integer = cCore.NULL_VALUE
         Private m_iSelMap As Integer = cCore.NULL_VALUE
 
@@ -61,8 +62,8 @@ Namespace Ecospace
         Private m_ilLarge As New ImageList()
 
         Private m_nGroups As Integer = 0
-        Private m_SelType As eSelectionType = eSelectionType.MapGroup
-        Private m_MapManager As cMapResponseInteractionManager = Nothing
+        Private m_seltype As eSelectionType = eSelectionType.MapGroup
+        Private m_mapmanager As cMapResponseInteractionManager = Nothing
 
 #Region " Construction "
 
@@ -74,28 +75,25 @@ Namespace Ecospace
         ''' <param name="MapIntManager">Manager providing available environmental response maps.</param>
         ''' <param name="iMap">Index of selected map in the <paramref name="Manager">manager</paramref>.</param>
         ''' <param name="iSelGroup"></param>
-        ''' <param name="WhatIsSelected">Indicator <see cref="eSelectionType">how the dialog was invoked</see>.</param>
+        ''' <param name="selection">Flag indicating <see cref="eSelectionType">how the dialog was invoked</see>.</param>
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal Manager As cBaseShapeManager, _
                        ByVal MapIntManager As cMapResponseInteractionManager, _
                        ByVal iMap As Integer, _
                        ByVal iSelGroup As Integer, _
-                       ByVal WhatIsSelected As eSelectionType)
+                       ByVal selection As eSelectionType)
 
-            Me.m_SelType = WhatIsSelected
-            Me.m_uic = uic
-            Me.m_ShapeManager = Manager
-            Me.m_MapManager = MapIntManager
-            Me.m_ShapeGUI = cShapeGUIHandler.GetShapeUIHandler(Me.m_ShapeManager.DataType)
+            Me.UIContext = uic
+            Me.m_seltype = selection
+            Me.m_shapeManager = Manager
+            Me.m_mapmanager = MapIntManager
+            Me.m_shapeGUI = cShapeGUIHandler.GetShapeUIHandler(Me.m_shapeManager.DataType)
 
             Me.m_iSelMap = iMap
             Me.m_iSelGrp = iSelGroup
 
             Me.InitializeComponent()
             Me.Init()
-
-            Me.LoadAvailableShapes()
-            Me.LoadAppliedShapes()
 
         End Sub
 
@@ -106,14 +104,56 @@ Namespace Ecospace
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            If (Me.m_uic Is Nothing) Then Return
-            Me.UpdateControls()
+            If (Me.UIContext Is Nothing) Then Return
+
+            Me.m_tslbFilter.Image = SharedResources.FilterHS
+
+            Dim p As New cSettingsParser(Me.Settings)
+            Me.m_tstbFilter.Text = p("filter")
+            Me.m_tsbnCaseSensitive.Checked = (p("casesensitive") = "1")
+
+            Me.LoadAvailableShapes()
+            Me.LoadAppliedShapes()
+
+        End Sub
+
+        Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
+
+            Dim p As New cSettingsParser()
+            p("filter") = Me.m_tstbFilter.Text
+            p("casesensitive") = cSystemUtils.IIF(Me.m_tsbnCaseSensitive.Checked, "1", "0")
+            Me.Settings = p
+            MyBase.OnClosing(e)
 
         End Sub
 
 #End Region ' Overrides
 
 #Region " Control Event handlers "
+
+        Private Sub OnFilterChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_tstbFilter.TextChanged
+
+            Try
+                Me.LoadAvailableShapes()
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+        Private Sub OnCaseSensitiveFilterChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnCaseSensitive.Click
+
+            Try
+                If Not String.IsNullOrWhiteSpace(Me.m_tstbFilter.Text) Then
+                    Me.LoadAvailableShapes()
+                End If
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
 
         Private Sub OnAdd(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_btnAdd.Click, m_lvAllShapes.DoubleClick
@@ -177,35 +217,42 @@ Namespace Ecospace
         Private Sub Init()
 
             If Me.m_iSelMap > 0 Then
-                Me.m_map = Me.m_MapManager.Map(Me.m_iSelMap)
+                Me.m_map = Me.m_mapmanager.Map(Me.m_iSelMap)
             End If
 
             ' Get the available shapes that can be applied
-            For Each shape As cForcingFunction In Me.m_ShapeManager
+            For Each shape As cForcingFunction In Me.m_shapeManager
                 Me.m_lFFs.Add(shape)
             Next
 
             ' Generate thumbnails from shapes
             Me.m_ilSmall.ImageSize = New Size(SmallIconSize, SmallIconSize)
-            Me.m_ilLarge.ImageSize = New Size(LargeIconSize, LargeIconSize)
             Me.GenerateShapeThumbnails(Me.m_ilSmall, SmallIconSize)
+
+            Me.m_ilLarge.ImageSize = New Size(LargeIconSize, LargeIconSize)
             Me.GenerateShapeThumbnails(Me.m_ilLarge, LargeIconSize)
 
-            Me.m_nGroups = Me.m_uic.Core.nGroups
+            Me.m_lvAllShapes.LargeImageList = Me.m_ilLarge
+            Me.m_lvAllShapes.SmallImageList = Me.m_ilSmall
+
+            Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
+            Me.m_lvAppliedShapes.SmallImageList = Me.m_ilSmall
+
+            Me.m_nGroups = Me.UIContext.Core.nGroups
 
         End Sub
 
         Private ReadOnly Property LargeIconSize() As Integer
             Get
-                Debug.Assert(Me.m_uic.StyleGuide IsNot Nothing)
-                Return CInt(Me.m_uic.StyleGuide.ThumbnailSize)
+                Debug.Assert(Me.UIContext.StyleGuide IsNot Nothing)
+                Return CInt(Me.UIContext.StyleGuide.ThumbnailSize)
             End Get
         End Property
 
         Private ReadOnly Property SmallIconSize() As Integer
             Get
-                Debug.Assert(Me.m_uic.StyleGuide IsNot Nothing)
-                Return CInt(Math.Ceiling(Me.m_uic.StyleGuide.ThumbnailSize / 3))
+                Debug.Assert(Me.UIContext.StyleGuide IsNot Nothing)
+                Return CInt(Math.Ceiling(Me.UIContext.StyleGuide.ThumbnailSize / 3))
             End Get
         End Property
 
@@ -260,9 +307,6 @@ Namespace Ecospace
                     itemSrc.Tag = shapeSelected
 
                     Me.m_lvAppliedShapes.Items.Add(itemSrc)
-                    Me.m_lvAppliedShapes.View = View.LargeIcon
-                    Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
-
                     Me.m_lvAppliedShapes.Items(0).Selected = True
 
                 End If
@@ -289,7 +333,7 @@ Namespace Ecospace
         ''' Limit user interactions.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             ' Can add only one shape
             Me.m_btnAdd.Enabled = (Me.m_lvAllShapes.SelectedItems.Count = 1)
@@ -314,12 +358,12 @@ Namespace Ecospace
 
         Private Sub GenerateShapeThumbnails(ByVal Icons As ImageList, ByVal IconSize As Integer)
 
-            Dim xMax As Integer = Me.m_ShapeGUI.XAxisMaxValue
+            Dim xMax As Integer = Me.m_shapeGUI.XAxisMaxValue
 
             ' For all selectable shapes
             For Each shape As cForcingFunction In Me.m_lFFs
                 ' Create and Add the thumbnail image
-                Icons.Images.Add(cShapeImage.IconImage(Me.m_uic, shape, Me.m_ShapeGUI.Color, eSketchDrawModeTypes.Fill, _
+                Icons.Images.Add(cShapeImage.IconImage(Me.UIContext, shape, Me.m_shapeGUI.Color, eSketchDrawModeTypes.Fill, _
                                                        xMax, DirectCast(shape, cEnviroResponseFunction).YMax, False))
             Next
 
@@ -328,25 +372,38 @@ Namespace Ecospace
         Private Sub LoadAvailableShapes()
 
             Dim item As ListViewItem = Nothing
+            Dim bUseShape As Boolean = True
+            Dim strFilter As String = Me.m_tstbFilter.Text
             Dim i As Integer = 0
 
             Me.m_lvAllShapes.Items.Clear()
 
-            If Me.m_lFFs.Count > 0 Then
+            For Each ff As cForcingFunction In Me.m_lFFs
 
-                For Each ff As cForcingFunction In Me.m_lFFs
+                If Not String.IsNullOrWhiteSpace(strFilter) Then
+                    If (Me.m_tsbnCaseSensitive.Checked) Then
+                        bUseShape = (ff.Name.IndexOf(strFilter, StringComparison.CurrentCulture) > -1)
+                    Else
+                        bUseShape = (ff.Name.IndexOf(strFilter, StringComparison.CurrentCultureIgnoreCase) > -1)
+                    End If
+                Else
+                    bUseShape = True
+                End If
+
+                If (bUseShape) Then
                     item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name))
                     item.ImageIndex = Me.m_lFFs.IndexOf(ff)
                     item.Tag = ff
                     Me.m_lvAllShapes.Items.Add(item)
                     i += 1
-                Next
+                End If
+            Next
 
-                Me.m_lvAllShapes.View = View.SmallIcon
+            If Me.m_lvAllShapes.Items.Count > 0 Then
                 Me.m_lvAllShapes.Items(0).Selected = True
-                Me.m_lvAllShapes.SmallImageList = Me.m_ilSmall
-
             End If
+
+            Me.UpdateControls()
 
         End Sub
 
@@ -360,7 +417,7 @@ Namespace Ecospace
 
                 'Only populate the selected shapes if the user selected a cell
                 'If it's a row or col then there is potentially more than one shape selected
-                If Me.m_SelType = eSelectionType.MapGroup Then
+                If Me.m_seltype = eSelectionType.MapGroup Then
 
                     isp = Me.m_map.ResponseIndexForGroup(Me.m_iSelGrp)
                     If isp < 1 Then
@@ -368,36 +425,25 @@ Namespace Ecospace
                         Exit Sub
                     End If
 
-                    Me.addShapeToApplied(isp)
+                    Me.AddShapeToApplied(isp)
 
-                    'Dim shape As cForcingFunction = Me.m_lFFs.Item(isp - 1)
-                    'Dim item As ListViewItem
-                    'item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
-                    'item.ImageIndex = Me.m_lFFs.IndexOf(shape)
-                    'item.Tag = shape
-                    'Me.m_lvAppliedShapes.Items.Add(item)
-
-                    'Me.m_lvAppliedShapes.View = View.LargeIcon
-                    'Me.m_lvAppliedShapes.Items(0).Selected = True
-                    'Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
-
-                ElseIf Me.m_SelType = eSelectionType.Map Then
+                ElseIf Me.m_seltype = eSelectionType.Map Then
 
                     For igrp As Integer = 1 To Me.m_nGroups
                         isp = Me.m_map.ResponseIndexForGroup(igrp)
                         If (isp > 0) And (Not lShapes.Contains(isp)) Then
-                            Me.addShapeToApplied(isp)
+                            Me.AddShapeToApplied(isp)
                             lShapes.Add(isp)
                         End If
                     Next
 
-                ElseIf Me.m_SelType = eSelectionType.Group Then
+                ElseIf Me.m_seltype = eSelectionType.Group Then
 
                     'update all the maps with this selected shape
-                    For imap As Integer = 1 To Me.m_MapManager.nMaps
-                        isp = Me.m_MapManager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp)
+                    For imap As Integer = 1 To Me.m_mapmanager.nMaps
+                        isp = Me.m_mapmanager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp)
                         If (isp > 0) And (Not lShapes.Contains(isp)) Then
-                            Me.addShapeToApplied(isp)
+                            Me.AddShapeToApplied(isp)
                             lShapes.Add(isp)
                         End If
                     Next
@@ -411,7 +457,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub addShapeToApplied(ByVal isp As Integer)
+        Private Sub AddShapeToApplied(ByVal isp As Integer)
 
             Try
 
@@ -422,9 +468,9 @@ Namespace Ecospace
                 item.Tag = shape
                 Me.m_lvAppliedShapes.Items.Add(item)
 
-                Me.m_lvAppliedShapes.View = View.LargeIcon
                 ' Me.m_lvAppliedShapes.Items(0).Selected = True
                 Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
+                Me.m_lvAppliedShapes.SmallImageList = Me.m_ilSmall
 
             Catch ex As Exception
                 Debug.Assert(False)
@@ -435,23 +481,23 @@ Namespace Ecospace
         Private Function UpdateSelectedResponseMap() As Boolean
 
             Try
-                If Me.m_SelType = eSelectionType.MapGroup Then
+                If Me.m_seltype = eSelectionType.MapGroup Then
                     If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_nGroups Then
-                        m_map.ResponseIndexForGroup(m_iSelGrp) = Me.getAppliedResponseIndex
+                        m_map.ResponseIndexForGroup(m_iSelGrp) = Me.AppliedResponseIndex
                         Return True
                     End If
-                ElseIf Me.m_SelType = eSelectionType.Map Then
+                ElseIf Me.m_seltype = eSelectionType.Map Then
                     'Apply the same shape to all the groups of the current map
-                    Dim iSelResponseShape As Integer = Me.getAppliedResponseIndex
+                    Dim iSelResponseShape As Integer = Me.AppliedResponseIndex
                     For igrp As Integer = 1 To Me.m_nGroups
                         m_map.ResponseIndexForGroup(igrp) = iSelResponseShape
                     Next
 
-                ElseIf Me.m_SelType = eSelectionType.Group Then
+                ElseIf Me.m_seltype = eSelectionType.Group Then
                     'Apply the selected shape to the same group for all the maps
-                    Dim iSelResponseShape As Integer = Me.getAppliedResponseIndex
-                    For imap As Integer = 1 To Me.m_MapManager.nMaps
-                        Me.m_MapManager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
+                    Dim iSelResponseShape As Integer = Me.AppliedResponseIndex
+                    For imap As Integer = 1 To Me.m_mapmanager.nMaps
+                        Me.m_mapmanager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
                     Next
                 End If
 
@@ -463,12 +509,13 @@ Namespace Ecospace
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the index of the shape in the Applied Shapes list view control
+        ''' Returns the index of the shape in the Applied Shapes list view control
         ''' </summary>
-        ''' <returns>Index of the Applied shape or cCore.NULL_VALUE if nothing is Applied</returns>
-        ''' <remarks></remarks>
-        Private Function getAppliedResponseIndex() As Integer
+        ''' <returns>Index of the Applied shape, or cCore.NULL_VALUE if nothing is Applied</returns>
+        ''' -------------------------------------------------------------------
+        Private Function AppliedResponseIndex() As Integer
             'response index < 0 clears out the selected response index for this group
             Dim index As Integer = cCore.NULL_VALUE
             Try

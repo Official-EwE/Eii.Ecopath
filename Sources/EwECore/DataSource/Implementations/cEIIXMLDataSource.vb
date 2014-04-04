@@ -2019,7 +2019,7 @@ Public Class cEIIXMLDataSource
         bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
-        bSucces = bSucces And Me.LoadEcospaceDataAdapters(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceDataConnections(iScenarioID)
         'bSucces = bSucces And Me.LoadAuxillaryData()
 
         dtScenario.Clear()
@@ -2470,15 +2470,13 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceDataAdapters(iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceDataConnections(iScenarioID As Integer) As Boolean
 
+        Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
-        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDataAdapters")
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDataConnection")
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-        Dim var As eVarNameFlags = eVarNameFlags.NotSet
         Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
-        Dim iIndex As Integer = 0
-        Dim iConnection As Integer = 1
         Dim strDatasetGUID As String = ""
         Dim strConverterType As String = ""
         Dim strConverterCfg As String = ""
@@ -2487,19 +2485,31 @@ Public Class cEIIXMLDataSource
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
             Try
-                var = cin.GetVarName(CStr(drow("VarName")))
-                iIndex = CInt(drow("LayerIndex"))
-                iConnection = CInt(Me.ReadSafe(drow, "ConnectionIndex", 1))
-                cfg = spatialDS.Item(var, iIndex, iConnection)
+                Dim var As eVarNameFlags = cin.GetVarName(CStr(drow("VarName")))
+                Dim iLayer As Integer = Array.IndexOf(spaceDS.getLayerIDs(var), CInt(Me.ReadSafe(drow, "LayerID", 1)))
+                Dim iConn As Integer = -1
 
-                If (cfg IsNot Nothing) Then
-                    cfg.DatasetGUID = CStr(drow("Dataset"))
-                    cfg.Converter = CStr(drow("Converter"))
-                    cfg.ConverterConfig = CStr(drow("ConverterCfg"))
-                    cfg.Scale = CSng(Me.ReadSafe(drow, "Scale", 1.0!))
-                    cfg.ScaleType = CByte(Me.ReadSafe(drow, "ScaleType", 0))
+                For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                    Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, i)
+                    If (item IsNot Nothing) And (iConn = -1) Then
+                        If String.IsNullOrWhiteSpace(item.DatasetGUID) Then
+                            iConn = i
+                        End If
+                    End If
+                Next
+
+                If (iConn > 0) Then
+                    Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, iConn)
+                    item.DatasetGUID = CStr(Me.ReadSafe(drow, "DatasetGUID", ""))
+                    item.DatasetTypeName = CStr(Me.ReadSafe(drow, "DatasetTypeName", ""))
+                    item.DatasetConfig = CStr(Me.ReadSafe(drow, "DatasetCfg", ""))
+                    item.ConverterTypeName = CStr(Me.ReadSafe(drow, "ConverterTypeName", ""))
+                    item.ConverterConfig = CStr(Me.ReadSafe(drow, "ConverterCfg", ""))
+                    item.Scale = CSng(Me.ReadSafe(drow, "Scale", 1.0!))
+                    item.ScaleType = CType(Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
                 End If
-            Catch ex As Exception
+
+             Catch ex As Exception
                 bSucces = False
                 cLog.Write(ex, "DBDataSource::LoadDataAdapters")
             End Try

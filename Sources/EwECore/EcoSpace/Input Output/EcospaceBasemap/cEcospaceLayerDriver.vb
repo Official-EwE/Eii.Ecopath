@@ -32,11 +32,11 @@ Public Class cEcospaceLayerDriver
 
 #Region " Constructor "
 
-    Sub New(ByRef theCore As cCore, ByVal idBID As Integer, ByRef manager As cEcospaceBasemap, ByVal iIndex As Integer)
+    Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
 
         ' Layer has no name, because this layer is user-defined and users 
         ' are responsible for naming a layer of this type. There will be no default name.
-        MyBase.New(theCore, idBID, manager, "", eVarNameFlags.LayerDriver, iIndex)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerDriver, iIndex)
 
         Dim val As cValue
         Dim meta As cVariableMetaData
@@ -67,6 +67,10 @@ Public Class cEcospaceLayerDriver
         End Try
 
     End Sub
+
+    Protected Overrides Function DefaultName() As String
+        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_DRIVER, Me.Index)
+    End Function
 
 #End Region ' Constructor
 

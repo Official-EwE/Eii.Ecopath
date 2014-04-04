@@ -281,7 +281,6 @@ Public Class cCore
                     Return Me.MSEBatchManager.BatchData.nTAC
                 Case eCoreCounterTypes.nMSEBatchTFM
                     Return Me.MSEBatchManager.BatchData.nTFM
-
                 Case Else
                     'Debug.Assert(False, String.Format("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
                     Return NULL_VALUE
@@ -629,12 +628,11 @@ Public Class cCore
         Me.m_EcoPathData = New cEcopathDataStructures(Me.Messages)
         Me.m_EcoSimData = New cEcosimDatastructures
         Me.m_EcoSpaceData = New cEcospaceDataStructures(Me.Messages)
-        Me.m_SpatialData = New cSpatialDataStructures()
+        Me.m_SpatialData = New cSpatialDataStructures(Me.m_EcoPathData, Me.m_EcoSpaceData)
         Me.m_Stanza = New cStanzaDatastructures(Me.Messages)
         Me.m_tracerData = New cContaminantTracerDataStructures
         Me.m_TSData = New cTimeSeriesDataStructures
         Me.m_MPAOptData = New cMPAOptDataStructures
-        'Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
         Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
         Me.m_TaxonData = New cTaxonDataStructures(Me.m_EcoPathData, Me.m_Stanza)
 
@@ -2922,19 +2920,19 @@ Public Class cCore
                 ' Run updates
                 If Not dbUpd.UpdateDatabase(db) Then
                     ' Database update failed
-                    msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, _
-                                            eMessageType.DataImport, _
-                                            eCoreComponentType.DataSource, _
-                                            eMessageImportance.Critical)
+                    msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, Version.ToString), _
+                                       eMessageType.DataImport, _
+                                       eCoreComponentType.DataSource, _
+                                       eMessageImportance.Critical)
 
                     Me.m_publisher.SendMessage(msg)
                     Return False
                 Else
                     ' Database update failed
-                    msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, _
-                                            eMessageType.DataImport, _
-                                            eCoreComponentType.DataSource, _
-                                            eMessageImportance.Information)
+                    msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, Version.ToString), _
+                                       eMessageType.DataImport, _
+                                       eCoreComponentType.DataSource, _
+                                       eMessageImportance.Information)
                     Me.m_publisher.SendMessage(msg)
                 End If
             End If

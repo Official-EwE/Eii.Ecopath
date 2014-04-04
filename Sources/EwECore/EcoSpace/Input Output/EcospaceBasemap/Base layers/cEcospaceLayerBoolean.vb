@@ -24,9 +24,11 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base layer providing access to Ecospace data as cells of Boolean values.
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cEcospaceLayerBoolean
     Inherits cEcospaceLayer
 
@@ -37,58 +39,37 @@ Public Class cEcospaceLayerBoolean
     ''' Constructor for a NxN layer of Boolean values that derives its data and 
     ''' identity from a manager.
     ''' </summary>
-    ''' <param name="theCore"></param>
+    ''' <param name="core"></param>
     ''' <param name="manager"></param>
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal theCore As cCore, _
+    Public Sub New(ByVal core As cCore, _
                    ByVal manager As IEcospaceLayerManager, _
                    ByVal strName As String, _
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, strName, varName, iIndex, GetType(Boolean))
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Constructor for a NxN layer of Boolean values that derives its data and 
-    ''' identity from a manager, but that is a unique data entity in the EwE core.
-    ''' </summary>
-    ''' <param name="theCore"></param>
-    ''' <param name="iDBID"></param>
-    ''' <param name="manager"></param>
-    ''' <param name="varName"></param>
-    ''' <param name="iIndex"></param>
-    ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal theCore As cCore, _
-                   ByVal iDBID As Integer, _
-                   ByVal manager As IEcospaceLayerManager, _
-                   ByVal strName As String, _
-                   ByVal varName As eVarNameFlags, _
-                   Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
-
-        MyBase.New(theCore, iDBID, manager, strName, varName, iIndex, GetType(Boolean))
+        MyBase.New(core, core.m_EcoSpaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Boolean))
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Constructor for a NxN layer that is hard-linked to an array of data.
     ''' </summary>
-    ''' <param name="theCore"></param>
+    ''' <param name="core"></param>
     ''' <param name="strName">Display name for the layer.</param>
     ''' <param name="data">Data to attach to the layer, if any.</param>
     ''' <param name="meta">Optional metadata for contraining data interactions.</param>
     ''' <param name="vn">Optional varname for the layer, if <paramref name="data"/>
     ''' was left empty.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal theCore As cCore, _
+    Public Sub New(ByVal core As cCore, _
                    ByVal data As Boolean(,), _
                    ByVal strName As String, _
                    Optional ByVal meta As cVariableMetaData = Nothing, _
                    Optional ByVal vn As eVarNameFlags = eVarNameFlags.NotSet)
 
-        MyBase.New(theCore, CObj(data), strName, GetType(Boolean), meta, vn)
+        MyBase.New(core, CObj(data), strName, GetType(Boolean), meta, vn)
 
     End Sub
 

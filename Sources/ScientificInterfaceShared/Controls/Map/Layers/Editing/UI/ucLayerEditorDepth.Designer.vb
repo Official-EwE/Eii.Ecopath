@@ -43,7 +43,7 @@ Namespace Controls.Map.Layers
             'm_rbWater
             '
             Me.m_rbWater.AutoSize = True
-            Me.m_rbWater.Location = New System.Drawing.Point(7, 148)
+            Me.m_rbWater.Location = New System.Drawing.Point(7, 153)
             Me.m_rbWater.Name = "m_rbWater"
             Me.m_rbWater.Size = New System.Drawing.Size(54, 17)
             Me.m_rbWater.TabIndex = 1
@@ -54,7 +54,7 @@ Namespace Controls.Map.Layers
             'm_rbLand
             '
             Me.m_rbLand.AutoSize = True
-            Me.m_rbLand.Location = New System.Drawing.Point(8, 123)
+            Me.m_rbLand.Location = New System.Drawing.Point(8, 128)
             Me.m_rbLand.Name = "m_rbLand"
             Me.m_rbLand.Size = New System.Drawing.Size(49, 17)
             Me.m_rbLand.TabIndex = 0
@@ -66,7 +66,7 @@ Namespace Controls.Map.Layers
             '
             Me.m_nudDepth.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudDepth.Location = New System.Drawing.Point(68, 148)
+            Me.m_nudDepth.Location = New System.Drawing.Point(68, 153)
             Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudDepth.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudDepth.Name = "m_nudDepth"
@@ -79,7 +79,7 @@ Namespace Controls.Map.Layers
             Me.m_pbPreviewWater.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_pbPreviewWater.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_pbPreviewWater.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_pbPreviewWater.Location = New System.Drawing.Point(167, 148)
+            Me.m_pbPreviewWater.Location = New System.Drawing.Point(167, 153)
             Me.m_pbPreviewWater.Name = "m_pbPreviewWater"
             Me.m_pbPreviewWater.Size = New System.Drawing.Size(27, 20)
             Me.m_pbPreviewWater.TabIndex = 5
@@ -90,7 +90,7 @@ Namespace Controls.Map.Layers
             Me.m_pbPreviewLand.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_pbPreviewLand.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_pbPreviewLand.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_pbPreviewLand.Location = New System.Drawing.Point(167, 121)
+            Me.m_pbPreviewLand.Location = New System.Drawing.Point(167, 126)
             Me.m_pbPreviewLand.Name = "m_pbPreviewLand"
             Me.m_pbPreviewLand.Size = New System.Drawing.Size(27, 21)
             Me.m_pbPreviewLand.TabIndex = 5
@@ -101,7 +101,7 @@ Namespace Controls.Map.Layers
             Me.m_cbProtectCoastline.AutoSize = True
             Me.m_cbProtectCoastline.Checked = True
             Me.m_cbProtectCoastline.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_cbProtectCoastline.Location = New System.Drawing.Point(68, 172)
+            Me.m_cbProtectCoastline.Location = New System.Drawing.Point(68, 177)
             Me.m_cbProtectCoastline.Name = "m_cbProtectCoastline"
             Me.m_cbProtectCoastline.Size = New System.Drawing.Size(120, 17)
             Me.m_cbProtectCoastline.TabIndex = 3
@@ -119,7 +119,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_nudDepth)
             Me.Controls.Add(Me.m_cbProtectCoastline)
             Me.Name = "ucLayerEditorDepth"
-            Me.Size = New System.Drawing.Size(200, 196)
+            Me.Size = New System.Drawing.Size(200, 201)
             Me.Controls.SetChildIndex(Me.m_cbProtectCoastline, 0)
             Me.Controls.SetChildIndex(Me.m_nudDepth, 0)
             Me.Controls.SetChildIndex(Me.m_rbLand, 0)

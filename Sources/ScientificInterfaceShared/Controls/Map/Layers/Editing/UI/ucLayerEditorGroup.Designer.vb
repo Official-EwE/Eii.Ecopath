@@ -19,7 +19,6 @@
 Namespace Controls.Map.Layers
 
     Partial Class ucLayerEditorGroup
-        Inherits ucLayerEditor
 
         'UserControl overrides dispose to clean up the component list.
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)

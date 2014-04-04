@@ -155,7 +155,6 @@ Namespace Database
                     For Each drow As DataRow In adrows
                         If drow.RowState = DataRowState.Added Or drow.RowState = DataRowState.Modified Then
                             Me.FixUnwantedDBNulls(drow)
-                            'Me.FixStringLength(drow)
                         End If
                     Next
                 End If
@@ -232,6 +231,7 @@ Namespace Database
             ''' </remarks>
             ''' ---------------------------------------------------------------
             Public Sub AddRow(ByVal drow As DataRow)
+                'Me.FixStringLengths(drow)
                 Me.m_dt.Rows.Add(drow)
             End Sub
 
@@ -371,40 +371,41 @@ Namespace Database
                 Next
             End Sub
 
-            '    ''' ---------------------------------------------------------------
-            '    ''' <summary>
-            '    ''' Helper method; replaces DBNull values that are specified as not 
-            '    ''' Nullable in the underlying Access database schema with the default 
-            '    ''' value in the schema.
-            '    ''' </summary>
-            '    ''' <param name="drow">The row to fix.</param>
-            '    ''' ---------------------------------------------------------------
-            '    Private Sub FixStringLength(ByRef drow As DataRow)
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Helper method; replaces DBNull values that are specified as not 
+            ''' Nullable in the underlying Access database schema with the default 
+            ''' value in the schema.
+            ''' </summary>
+            ''' <param name="drow">The row to fix.</param>
+            ''' ---------------------------------------------------------------
+            Private Sub FixStringLengths(ByVal drow As DataRow)
 
-            '        Dim columnDataType As Data.OleDb.OleDbType = OleDbType.IUnknown
-            '        Dim strColumnName As String = ""
-            '        Dim iMaxLen As Integer = 0
-            '        Dim iLen As Integer = 0
+                Debug.Assert(False, "This code does not work. iMaxLen will always be unknown due to a bug in Access according to MSDN")
+                Dim columnDataType As Data.OleDb.OleDbType = OleDbType.IUnknown
+                Dim strColumnName As String = ""
+                Dim iMaxLen As Integer = 0
+                Dim iLen As Integer = 0
 
-            '        For Each drowSchema As DataRow In Me.m_dtSchema.Rows
+                For Each drowSchema As DataRow In Me.m_dtSchema.Rows
 
-            '            strColumnName = CStr(drowSchema("COLUMN_NAME"))
-            '            columnDataType = CType(drowSchema("DATA_TYPE"), Data.OleDb.OleDbType)
+                    strColumnName = CStr(drowSchema("COLUMN_NAME"))
+                    columnDataType = CType(drowSchema("DATA_TYPE"), Data.OleDb.OleDbType)
 
-            '            Select Case columnDataType
-            '                Case OleDbType.WChar, OleDbType.VarWChar, OleDbType.LongVarChar
-            '                    Dim strVal As String = CStr(drow(strColumnName))
+                    Select Case columnDataType
+                        Case OleDbType.WChar, OleDbType.VarWChar, OleDbType.LongVarChar
+                            Dim strVal As String = CStr(drow(strColumnName))
 
-            '                    iMaxLen = CInt(drowSchema("CHARACTER_MAXIMUM_LENGTH"))
-            '                    iLen = strVal.Length
+                            iMaxLen = CInt(drowSchema("CHARACTER_MAXIMUM_LENGTH"))
+                            iLen = strVal.Length
 
-            '                    If (iLen > iMaxLen) Then
-            '                        drow(strColumnName) = strVal.Substring(0, iMaxLen)
-            '                    End If
+                            If (iLen > iMaxLen) Then
+                                drow(strColumnName) = strVal.Substring(0, iMaxLen)
+                            End If
 
-            '            End Select
-            '        Next
-            '    End Sub
+                    End Select
+                Next
+            End Sub
 
         End Class
 

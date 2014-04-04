@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lblFleet.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 24</value>
+    <value>3, 128</value>
   </data>
   <data name="m_lblFleet.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 13</value>
@@ -151,13 +151,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>49, 21</value>
+    <value>68, 125</value>
   </data>
   <data name="m_cmbGroup.MaxDropDownItems" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
   <data name="m_cmbGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 21</value>
+    <value>129, 21</value>
   </data>
   <data name="m_cmbGroup.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -181,12 +181,12 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 46</value>
+    <value>200, 152</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucLayerEditorGroup</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditor, EwE6, Version=6.3.922.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.5.10311.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

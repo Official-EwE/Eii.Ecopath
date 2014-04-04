@@ -28,6 +28,8 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Properties
+Imports System.Reflection
+Imports System.Security.Permissions
 
 #End Region ' Imports
 
@@ -233,32 +235,37 @@ Namespace Controls.Map
 
             If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
-            ' Needs new bitmap?
-            If (Me.m_bmp Is Nothing) Then
-                ' #Yes: create new bitmap
-                Me.m_bmp = New Bitmap(Me.Width, Me.Height)
-                Me.BackgroundImage = Me.m_bmp
-                Me.m_bRefreshMap = True
-            End If
+            Try
 
-            If (Me.m_bRefreshMap) Then
-                Me.m_bRefreshMap = False
-                Try
-#If DRAW_THREADED Then
-                If (Me.m_thread Is Nothing) Then
-                    Me.m_thread = New Threading.Thread(AddressOf RedrawMapThreaded)
-                    Me.m_thread.Start()
+                ' Needs new bitmap?
+                If (Me.m_bmp Is Nothing) Then
+                    ' #Yes: create new bitmap
+                    Me.m_bmp = New Bitmap(Me.Width, Me.Height)
+                    Me.BackgroundImage = Me.m_bmp
+                    Me.m_bRefreshMap = True
                 End If
+
+                If (Me.m_bRefreshMap) Then
+                    Me.m_bRefreshMap = False
+                    Try
+#If DRAW_THREADED Then
+                        If (Me.m_thread Is Nothing) Then
+                            Me.m_thread = New Threading.Thread(AddressOf RedrawMapThreaded)
+                            Me.m_thread.Start()
+                        End If
 #Else
-                    Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
+                        Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
 #End If
-                Catch ex As Exception
+                    Catch ex As Exception
 
-                End Try
+            End Try
 
-            End If
+                End If
 
-            MyBase.OnPaint(e)
+                MyBase.OnPaint(e)
+            Catch ex As Exception
+                ResetExceptionState(Me)
+            End Try
 
         End Sub
 
@@ -699,6 +706,14 @@ Namespace Controls.Map
             If (DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.IsEditable = False) Then Return False
             Return True
         End Function
+
+        <ReflectionPermission(SecurityAction.Demand, MemberAccess:=True)> _
+        Private Sub ResetExceptionState(ByVal control As Control)
+            Dim args() As Object = {&H400000, False}
+            GetType(Control).InvokeMember("SetState", _
+                                          BindingFlags.NonPublic Or BindingFlags.InvokeMethod Or BindingFlags.Instance, _
+                                          Nothing, control, args)
+        End Sub
 
 #End Region ' Internals
 

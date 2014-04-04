@@ -49,7 +49,6 @@ Namespace Controls.Map.Layers
 
             Me.m_ucSlider.Value = editor.CursorSize
             Me.m_ucSlider.Enabled = bEnabled
-            Me.m_lblCursor.Enabled = bEnabled
 
             If (Me.Layer IsNot Nothing) Then
                 Me.m_tbxName.Text = Me.Layer.Name

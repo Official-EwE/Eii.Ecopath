@@ -34,9 +34,7 @@ Public Class cEcospaceLayerHabitatCapacity
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal dt As eDataTypes, ByVal vn As eVarNameFlags, iIndex As Integer)
-        MyBase.New(theCore, manager, _
-                   String.Format(CStr(IIf(vn = eVarNameFlags.LayerHabitatCapacity, DefaultRes.CORE_DEFAULT_HABCAP, DefaultRes.CORE_DEFAULT_HABCAP_INPUT)), iIndex), _
-                   vn, iIndex)
+        MyBase.New(theCore, manager, "", vn, iIndex)
         Me.m_dataType = dt
     End Sub
 
@@ -61,5 +59,15 @@ Public Class cEcospaceLayerHabitatCapacity
     End Property
 
 #End Region ' Cell interaction
+
+    Protected Overrides Function DefaultName() As String
+        Dim strMask As String = ""
+        If (Me.VarName = eVarNameFlags.LayerHabitatCapacityInput) Then
+            strMask = My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP_INPUT
+        Else
+            strMask = My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP
+        End If
+        Return String.Format(strMask, Me.Index, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
+    End Function
 
 End Class

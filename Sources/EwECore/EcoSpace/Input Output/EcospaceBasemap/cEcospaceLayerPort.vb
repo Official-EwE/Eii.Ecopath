@@ -31,9 +31,7 @@ Public Class cEcospaceLayerPort
     Inherits cEcospaceLayerBoolean
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, _
-                   String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_PORT, iIndex), _
-                   eVarNameFlags.LayerPort, iIndex)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerPort, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerPort
     End Sub
 
@@ -65,5 +63,16 @@ Public Class cEcospaceLayerPort
     End Property
 
 #End Region ' Cell interaction
+
+#Region " Overrides "
+
+    Protected Overrides Function DefaultName() As String
+        If (Me.Index = 0) Then
+            Return My.Resources.CoreDefaults.CORE_DEFAULT_PORT_ALL
+        End If
+        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_PORT, Me.Index, Me.m_core.FleetInputs(Me.Index).Name)
+    End Function
+
+#End Region ' Overrides
 
 End Class

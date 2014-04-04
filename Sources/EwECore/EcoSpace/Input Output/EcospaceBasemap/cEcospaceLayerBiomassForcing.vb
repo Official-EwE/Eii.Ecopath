@@ -23,12 +23,16 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Layer providing access to Ecospace biomass forcing data.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cEcospaceLayerBiomassForcing
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
-        MyBase.New(theCore, manager, theCore.m_EcoPathData.GroupName(iIndex) + " " + iIndex.ToString, EwEUtils.Core.eVarNameFlags.LayerBiomassForcing, iIndex)
+        MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerBiomassForcing, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerBiomassForcing
     End Sub
 
@@ -41,8 +45,6 @@ Public Class cEcospaceLayerBiomassForcing
 
             End Try
             Return cCore.NULL_VALUE
-            ' Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
-            ' If Me.ValidateCellPosition(iRow, iCol) Then Return d(iRow, iCol, Me.Index) Else Return cCore.NULL_VALUE
         End Get
         Set(ByVal value As Object)
             Try
@@ -53,16 +55,17 @@ Public Class cEcospaceLayerBiomassForcing
             Catch ex As Exception
 
             End Try
-            'Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
-            'Dim s As Single = Convert.ToSingle(value)
-            'If Me.ValidateCellValue(value) Then
-            '    If Me.ValidateCellPosition(iRow, iCol) Then
-            '        d(iRow, iCol, Me.Index) = s
-            '        Me.Invalidate()
-            '    End If
-            'End If
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Overriden to include the group name into this layer's name
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Function DefaultName() As String
+        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_BIOMASSFORCING, Me.Index, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
+    End Function
 
 End Class
 

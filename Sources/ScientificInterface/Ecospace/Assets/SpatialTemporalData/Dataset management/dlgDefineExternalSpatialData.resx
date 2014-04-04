@@ -123,10 +123,13 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>697, 10</value>
+    <value>656, 13</value>
+  </data>
+  <data name="m_btnAdd.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 30</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
@@ -151,10 +154,13 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>697, 86</value>
+    <value>656, 112</value>
+  </data>
+  <data name="m_btnDelete.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_btnDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 30</value>
   </data>
   <data name="m_btnDelete.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -178,10 +184,13 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_gridDatasets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 57</value>
+    <value>16, 75</value>
+  </data>
+  <data name="m_gridDatasets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_gridDatasets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>679, 339</value>
+    <value>632, 293</value>
   </data>
   <data name="m_gridDatasets.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -190,7 +199,7 @@
     <value>m_gridDatasets</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.10236.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.10291.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Parent" xml:space="preserve">
     <value>$this</value>
@@ -202,10 +211,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbNewDS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
+    <value>16, 16</value>
+  </data>
+  <data name="m_cmbNewDS.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_cmbNewDS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>679, 21</value>
+    <value>631, 25</value>
   </data>
   <data name="m_cmbNewDS.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -226,10 +238,13 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>672, 402</value>
+    <value>623, 376</value>
+  </data>
+  <data name="m_btnOK.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
+    <value>133, 30</value>
   </data>
   <data name="m_btnOK.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -256,10 +271,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConfigure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>697, 57</value>
+    <value>656, 75</value>
+  </data>
+  <data name="m_btnConfigure.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_btnConfigure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 30</value>
   </data>
   <data name="m_btnConfigure.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -283,10 +301,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_hdr.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 36</value>
+    <value>16, 47</value>
+  </data>
+  <data name="m_hdr.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="m_hdr.Size" type="System.Drawing.Size, System.Drawing">
-    <value>679, 18</value>
+    <value>632, 24</value>
   </data>
   <data name="m_hdr.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -301,7 +322,7 @@
     <value>m_hdr</value>
   </data>
   <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10236.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10291.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
     <value>$this</value>
@@ -316,13 +337,13 @@
     <value>True</value>
   </data>
   <data name="m_cbEnableIndexing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 406</value>
+    <value>16, 382</value>
   </data>
   <data name="m_cbEnableIndexing.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_cbEnableIndexing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 17</value>
+    <value>181, 21</value>
   </data>
   <data name="m_cbEnableIndexing.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -346,13 +367,16 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>8, 17</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>784, 437</value>
+    <value>772, 421</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Define external spatial temporal data connections</value>
@@ -361,6 +385,6 @@
     <value>dlgDefineExternalSpatialData</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10236.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10291.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

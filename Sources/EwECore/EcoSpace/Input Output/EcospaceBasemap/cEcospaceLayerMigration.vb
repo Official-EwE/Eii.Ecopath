@@ -41,9 +41,7 @@ Public Class cEcospaceLayerMigration
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, _
-                   String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MIGRATION, iIndex), _
-                   eVarNameFlags.LayerMigration, iIndex, Nothing)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, "", eVarNameFlags.LayerMigration, iIndex, Nothing)
         Me.m_dataType = eDataTypes.EcospaceLayerMigration
     End Sub
 
@@ -92,6 +90,14 @@ Public Class cEcospaceLayerMigration
     End Property
 
 #End Region ' Cell interaction
+
+#Region " Overrides "
+
+    Protected Overrides Function DefaultName() As String
+        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MIGRATION, Me.Index, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
+    End Function
+
+#End Region ' Overrides
 
 #Region " Private bits "
 

@@ -31,8 +31,12 @@ Public Class cEcospaceLayerUpwelling
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, 1, manager, My.Resources.CoreDefaults.CORE_DEFAULT_UPWELLING, EwEUtils.Core.eVarNameFlags.LayerUpwelling, 1)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerUpwelling, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerUpwelling
     End Sub
+
+    Protected Overrides Function DefaultName() As String
+        Return My.Resources.CoreDefaults.CORE_DEFAULT_UPWELLING
+    End Function
 
 End Class

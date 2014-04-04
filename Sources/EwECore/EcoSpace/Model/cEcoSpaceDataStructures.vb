@@ -1138,8 +1138,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Set the Map to its default size
     ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub DefaultBasemapDimensions()
+     Public Sub DefaultBasemapDimensions()
 
         If InRow = 0 Then InRow = 20 'number of map cell rows
         If InCol = 0 Then InCol = 20 'number of map cell columns
@@ -2123,7 +2122,73 @@ Public Class cEcospaceDataStructures
         Next
 
     End Function
-    
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Return the <see cref="cCoreInputOutputBase.DBID">unique database ID</see>
+    ''' for any Ecospace map layer.
+    ''' </summary>
+    ''' <param name="varname">The <see cref="eVarNameFlags"/> of the layer to find the database ID for.</param>
+    ''' <param name="iIndex">The <see cref="cCoreInputOutputBase.Index"/> of the layer to find the database ID for.</param>
+    ''' <returns>An integer, or <see cref="cCore.NULL_VALUE"/> if the requested
+    ''' layer was not found.</returns>
+    ''' <remarks>
+    ''' This method is robust to any type of abuse; non-registered <paramref name="varname">variables</paramref>
+    ''' and <paramref name="iIndex">indexes</paramref> are dealt with properly.
+    ''' </remarks>
+    ''' -------------------------------------------------------------------
+    Public Function getLayerID(varname As eVarNameFlags, iIndex As Integer) As Integer
+        Dim arr As Integer() = Me.getLayerIDs(varname)
+        If ((iIndex < 0) Or (iIndex >= arr.Length)) Then Return cCore.NULL_VALUE
+        Return arr(iIndex)
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Obtain a layer DBID for any varname and index.
+    ''' </summary>
+    ''' <param name="varname"></param>
+    ''' <remarks>
+    ''' This method is robust to any type of abuse; non-registered <paramref name="varname">variables</paramref>
+    ''' and <paramref name="iIndex">indexes</paramref> are dealt with properly.
+    ''' </remarks>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property getLayerIDs(varname As eVarNameFlags) As Integer()
+        Get
+            Select Case varname
+                Case eVarNameFlags.LayerBiomassForcing : Return Me.GroupDBID
+                Case eVarNameFlags.LayerBiomassRelativeForcing : Return Me.GroupDBID
+                Case eVarNameFlags.LayerDriver : Return Me.EnvironmentalLayerDBID
+                Case eVarNameFlags.LayerHabitat : Return Me.HabitatDBID
+                Case eVarNameFlags.LayerHabitatCapacity : Return Me.GroupDBID
+                Case eVarNameFlags.LayerHabitatCapacityInput : Return Me.GroupDBID
+                Case eVarNameFlags.LayerImportance : Return Me.ImportanceLayerDBID
+                Case eVarNameFlags.LayerMigration : Return Me.GroupDBID
+                Case eVarNameFlags.LayerMPA : Return Me.MPADBID
+                Case eVarNameFlags.LayerPort : Return Me.FleetDBID
+                Case eVarNameFlags.LayerSail : Return Me.FleetDBID
+            End Select
+            Return New Integer() {0, 1}
+        End Get
+    End Property
+
+    'Public ReadOnly Property MapCoreCounters(varname As eVarNameFlags) As eCoreCounterTypes
+    '    Get
+    '        Select Case varname
+    '            Case eVarNameFlags.LayerBiomassForcing : Return eCoreCounterTypes.nGroups
+    '            Case eVarNameFlags.LayerBiomassRelativeForcing : Return eCoreCounterTypes.nGroups
+    '            Case eVarNameFlags.LayerDriver : Return eCoreCounterTypes.nEnvironmentalDriverLayers
+    '            Case eVarNameFlags.LayerHabitat : Return eCoreCounterTypes.nHabitats
+    '            Case eVarNameFlags.LayerHabitatCapacityInput : Return eCoreCounterTypes.nGroups
+    '            Case eVarNameFlags.LayerImportance : Return eCoreCounterTypes.nImportanceLayers
+    '            Case eVarNameFlags.LayerMigration : Return eCoreCounterTypes.nGroups
+    '            Case eVarNameFlags.LayerMPA : Return eCoreCounterTypes.nMPAs
+    '            Case eVarNameFlags.LayerPort : Return eCoreCounterTypes.nFleets
+    '            Case eVarNameFlags.LayerSail : Return eCoreCounterTypes.nFleets
+    '        End Select
+    '        Return eCoreCounterTypes.NotSet
+    '    End Get
+    'End Property
 
 #End Region
 

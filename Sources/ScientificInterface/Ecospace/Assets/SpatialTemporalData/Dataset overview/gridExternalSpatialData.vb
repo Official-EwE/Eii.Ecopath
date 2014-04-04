@@ -59,7 +59,8 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
-            Connected
+            Enabled
+            Status
         End Enum
 
         Public Sub New()
@@ -91,11 +92,14 @@ Namespace Ecospace
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
+            'ToDo: Globalize this
+
             Me.Redim(1, Me.m_nBaseCols + cSpatialDataStructures.cMAX_CONN)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.Connected) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+            Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell("Enabled")
+            Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
                 Me(0, Me.m_nBaseCols + i - 1) = New EwEColumnHeaderCell(CStr(i))
@@ -151,7 +155,12 @@ Namespace Ecospace
                         Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(layer.Index))
                         Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(layer.Name)
                         Me(iRow, eColumnTypes.Name).VisualModel = vizChild
-                        Me(iRow, eColumnTypes.Connected) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+
+                        Me(iRow, eColumnTypes.Enabled) = New SourceGrid2.Cells.Real.CheckBox(adt.IsEnabled(layer.Index))
+                        Me(iRow, eColumnTypes.Enabled).Behaviors.Add(Me.EwEEditHandler)
+
+                        Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+
                         For j As Integer = Me.m_nBaseCols To Me.ColumnsCount - 1
                             Me(iRow, j) = New Cells.Real.Cell("")
                             Me(iRow, j).Behaviors.Add(Me.m_bmCell)
@@ -207,7 +216,7 @@ Namespace Ecospace
             Else
                 strText = "OK"
             End If
-            Me(iRow, eColumnTypes.Connected).Value = strText
+            Me(iRow, eColumnTypes.Status).Value = strText
 
         End Sub
 
@@ -223,6 +232,14 @@ Namespace Ecospace
                 ' Whoah
             End Try
         End Sub
+
+        Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+            If p.Column = eColumnTypes.Enabled Then
+                Dim iRow As Integer = p.Row
+                Dim conn As cConnectionInfo = Me.ConnectionAtRow(iRow)
+                conn.Adapter.IsEnabled(conn.Layer.Index) = CBool(cell.GetValue(p))
+            End If
+        End Function
 
         Public Property Filter As eVarNameFlags
             Get

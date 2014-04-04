@@ -30,9 +30,7 @@ Public Class cEcospaceLayerSail
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, _
-                   String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, iIndex), _
-                   eVarNameFlags.LayerSail, iIndex)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerSail, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerSail
     End Sub
 
@@ -65,5 +63,16 @@ Public Class cEcospaceLayerSail
     End Property
 
 #End Region ' Cell interaction
+
+#Region " Overrides "
+
+     Protected Overrides Function DefaultName() As String
+        If (Me.Index = 0) Then
+            Return My.Resources.CoreDefaults.CORE_DEFAULT_SAIL_ALL
+        End If
+        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, Me.Index, Me.m_core.FleetInputs(Me.Index).Name)
+    End Function
+
+#End Region ' Overrides
 
 End Class

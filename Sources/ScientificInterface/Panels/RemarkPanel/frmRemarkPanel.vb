@@ -92,7 +92,7 @@ Public Class frmRemarkPanel
             Me.m_mon.Detach()
             Me.m_uic = Nothing
 
-            Me.Icon.destroy()
+            Me.Icon.Destroy()
         End If
         MyBase.OnFormClosed(e)
 

@@ -67,21 +67,21 @@ Namespace My.Resources
                 Return resourceMan
             End Get
         End Property
-        
+
         '''<summary>
         '''  Overrides the current thread's CurrentUICulture property for all
         '''  resource lookups using this strongly typed resource class.
         '''</summary>
-        <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
+        <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
         Friend Shared Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
-            Set
+            Set(value As Global.System.Globalization.CultureInfo)
                 resourceCulture = value
             End Set
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to An error occurred running the advection computations: {0}.
         '''</summary>
@@ -90,7 +90,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ADVECTION_ERROR", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Area must be greater then zero and less than or equal to one ( &gt; 0 and &lt;= 1)..
         '''</summary>
@@ -99,7 +99,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("AREA_RANGE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to B missing for group &apos;{0}&apos;.
         '''</summary>
@@ -108,7 +108,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("B_MISSING_GROUP", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to BioAccum must be greater than or equal to zero..
         '''</summary>
@@ -117,7 +117,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("BIOACCUM_RANGE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Biomass must be greater than or equal to zero..
         '''</summary>
@@ -126,7 +126,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("BIOMASS_RANGE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to BiomassArea must be greater then zero..
         '''</summary>
@@ -135,7 +135,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("BIOMASSAREA_RANGE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Only one computation can run at a time..
         '''</summary>
@@ -144,7 +144,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("COMPUTATION_ALREADY_RUNNING", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to The EWE6 Core could not be initialized. The following critical error occurred: {0}.
         '''</summary>
@@ -153,7 +153,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("CORE_INIT_CRITICAL_GENERIC", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to The EWE6 Core could not be initialized. The following critical error occurred while creating validators: {0}.
         '''</summary>
@@ -162,7 +162,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("CORE_INIT_CRITICAL_VALIDATORS", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Data validation for &apos;{0}&apos; was unsuccessful..
         '''</summary>
@@ -171,7 +171,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DATA_INVALID", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Data validation for &apos;{0}&apos; was successful..
         '''</summary>
@@ -180,7 +180,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DATA_VALID", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Data validation for &apos;{0}&apos;..
         '''</summary>
@@ -189,7 +189,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DATA_VALIDATION", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Failed to make a backup copy of your database to &apos;{0}&apos;.
         '''</summary>
@@ -198,7 +198,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DATABASE_BACKUP_FAILED", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to The database &apos;{0}&apos; was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?.
         '''</summary>
@@ -207,7 +207,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DATABASE_BACKUP_PROMPT", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to A backup copy of your database was made to &apos;{0}&apos;.
         '''</summary>
@@ -216,7 +216,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DATABASE_BACKUP_SUCCESS", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Database update {0} failed.
         '''</summary>
@@ -225,7 +225,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DATABASE_UPDATE_FAILED", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Database update {0} failed: {1}.
         '''</summary>
@@ -234,7 +234,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DATABASE_UPDATE_FAILED_DETAIL", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Imported Detritus must be greater than or equal to zero..
         '''</summary>
@@ -243,7 +243,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DETIMP_RANGE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Diet Comp does not sum to one..
         '''</summary>
@@ -252,7 +252,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DIETCOMP_NOT_SUM_ONE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; gets {1}% of it&apos;s diet from higher TL groups. Do you want to reduce it to 15%? (Doing so will not change your input data).
         '''</summary>
@@ -261,7 +261,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DIETCOMP_PROMPT_CORRECTTO15PERC", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Diet for one or more groups does not sum to 1. Do you want to normalize diets to 1 for ALL predator groups?.
         '''</summary>
@@ -270,7 +270,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DIETCOMP_PROMPT_SUMTOONE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Diet Comp must be greater than or equal to zero..
         '''</summary>
@@ -279,7 +279,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DIETCOMP_RANGE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Diet for predator &apos;{0}&apos; does not sum to 1.
         '''</summary>
@@ -288,7 +288,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DIETCOMP_SUMTOONE_PRED", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Error during validation of &apos;DietComp&apos;. &apos;DietComp&apos; will not be valid..
         '''</summary>
@@ -297,7 +297,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DIETCOMP_VALIDATION_ERROR", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to The file &apos;{0}&apos; could not be found..
         '''</summary>
@@ -306,7 +306,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DLLFACTORY_FILENOTFOUND", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Error loading &apos;{0}&apos; from file &apos;{1}&apos;. Error: {2}.
         '''</summary>
@@ -315,7 +315,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DLLFACTORY_LOAD_ERROR", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Component &apos;{0}&apos; could not be found in &apos;{1}&apos;..
         '''</summary>
@@ -324,7 +324,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DLLFACTORY_TYPE_NOT_FOUND", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to DC does not sum to one for group {0}..
         '''</summary>
@@ -333,7 +333,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_DIETCOMP_NOTSUMTOONE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Diet composition (DC) does not sum to one for one or more groups..
         '''</summary>
@@ -342,7 +342,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_DIETCOMP_NOTSUMTOONE_GENERIC", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Failed to run EcoPath, a model has not yet been initialized..
         '''</summary>
@@ -351,7 +351,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_ERROR_NOMODEL", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to The following variables were estimated:.
         '''</summary>
@@ -360,7 +360,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Biomass Accumulation for group &apos;{0}&apos;.
         '''</summary>
@@ -369,7 +369,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED_BA", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to EE for group &apos;{0}&apos;.
         '''</summary>
@@ -378,7 +378,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED_EE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Emigration for group &apos;{0}&apos;.
         '''</summary>
@@ -387,7 +387,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED_EMIGRATION", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Immigration for group &apos;{0}&apos;.
         '''</summary>
@@ -396,7 +396,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED_IMMIGRATION", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to WARNING: Please check your data Unassimilated Consumption (GS) cannot be greater than one. Your data has been modified!.
         '''</summary>
@@ -405,7 +405,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_GS_WARNING", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Your model has {0} group(s) for which the Detritus fate (DF) sum to more than 1.You should go back to your input data, and make sure the DF&apos;s sum to max 1 only..
         '''</summary>
@@ -414,7 +414,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_DFLARGERTHANONE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; has Detritus Fate larger than one..
         '''</summary>
@@ -423,7 +423,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Your model has {0} group(s) that have a diet with imports only. Such groups are not well defined, will have trophic levels of 1, and will not show any flow on trophic level decomposition interfaces..
         '''</summary>
@@ -432,7 +432,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_DIETIMPORTONLY", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; has an import-only diet.
         '''</summary>
@@ -441,7 +441,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Computed EE value {1} invalid for group &apos;{0}&apos;.
         '''</summary>
@@ -450,7 +450,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_EE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Your model is NOT mass-balanced!
         '''Computed Ecotrophic Efficiencies (EE) invalid for one or more group(s)..
@@ -460,7 +460,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_EE_GENERIC", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Insufficient data, please edit your model..
         '''</summary>
@@ -469,7 +469,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_INSUFFICIENTDATA", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Aborting, missing B and QB for group &apos;{0}&apos;. Please edit your data..
         '''</summary>
@@ -478,7 +478,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_MISSING_B_QB", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Your model has {0} gear(s) for which the Discard fate is not specified. You should go back to your input data and make sure to specify what happens to the discards. Discards must be directed to a detritus group, if this  is not the case in your case, you should perhaps treat  the discards from the given fleet as landings with zero value..
         '''</summary>
@@ -487,7 +487,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Fleet &apos;{0}&apos; is missing Discard fate.
         '''</summary>
@@ -496,16 +496,16 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
-        '''  Looks up a localized string similar to Estimated PB = 0 for group &apos;{0}&apos;..
+        '''  Looks up a localized string similar to Estimated PB=0 for group &apos;{0}&apos;..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_PB0() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_PB0", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to The program has estimated the production / biomass (P/B) ratio for one or more groups to be 0. Please edit your data.
         '''
@@ -516,9 +516,9 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_PB0_GENERIC", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
-        '''  Looks up a localized string similar to Estimated QB = 0 for group &apos;{0}&apos;..
+        '''  Looks up a localized string similar to Estimated QB=0 for group &apos;{0}&apos;..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_QB0() As String
             Get
@@ -608,7 +608,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Model failed to update to the latest version!.
+        '''  Looks up a localized string similar to Model failed to update to EwE version {0}!.
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_MODEL_UPDATE_FAILED() As String
             Get
@@ -617,7 +617,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Model was updated to the lastest version..
+        '''  Looks up a localized string similar to Model was updated to EwE version {0}..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_MODEL_UPDATE_SUCCESS() As String
             Get

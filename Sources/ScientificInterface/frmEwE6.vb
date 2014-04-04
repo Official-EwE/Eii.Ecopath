@@ -900,14 +900,13 @@ Friend Class frmEwE6
         ' Prepare icon
         Select Case cDateUtils.GetNextEvent(15)
             Case cDateUtils.eNextEvent.Easter
-                ' EGG
                 Me.Icon = My.Resources.Ecopath3_easter
             Case cDateUtils.eNextEvent.Xmas
-                ' EGG
                 Me.Icon = My.Resources.Ecopath4_hohoho
             Case cDateUtils.eNextEvent.Conf30
-                ' EGG
                 Me.Icon = My.Resources.ecopath5_30
+            Case cDateUtils.eNextEvent.DagVanDeLiefde
+                Me.Icon = My.Resources.Ecopath6_joepie
             Case Else
 #If BETA = 1 Then
                 Me.Icon = My.Resources.Ecopath2_beta

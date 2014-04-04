@@ -74,7 +74,7 @@ Namespace SpatialData
         ''' Optional mappings for rasterizing features
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property AttributeValueMappings() As Dictionary(Of Object, Object)
+        ReadOnly Property AttributeValueMappings() As Dictionary(Of Object, Object)
 
         ''' -------------------------------------------------------------------
         ''' <summary>

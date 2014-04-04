@@ -180,7 +180,7 @@ Namespace SpatialData
                     strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
                 Else
                     ' #No: use base output directory
-                    Me.m_strLogFileName = Me.m_core.OutputPath
+                    strPath = Me.m_core.OutputPath
                 End If
                 Me.m_strLogFileName = Path.Combine(strPath, "SpatialOperations.txt")
 

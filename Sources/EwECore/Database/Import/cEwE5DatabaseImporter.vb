@@ -3203,7 +3203,7 @@ Namespace Database
                 drow("HabitatID") = iHabitatID
                 ' Sequence determines habitat order
                 drow("Sequence") = iHabitatID
-                drow("HabitatName") = My.Resources.CoreDefaults.CORE_ALL_HABITAT
+                drow("HabitatName") = My.Resources.CoreDefaults.CORE_DEFAULT_HABITAT_ALL
                 ' There
                 writer.AddRow(drow)
                 ' Remember 'All' Habitat mapping

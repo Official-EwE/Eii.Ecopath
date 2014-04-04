@@ -30,9 +30,7 @@ Public Class cEcospaceLayerHabitat
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
-        MyBase.New(theCore, manager, _
-                   String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_HABITAT, iIndex), _
-                   eVarNameFlags.LayerHabitat, iIndex)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerHabitat, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerHabitat
     End Sub
 
@@ -53,14 +51,9 @@ Public Class cEcospaceLayerHabitat
         End Set
     End Property
 
-    Public Overrides Property Name As String
-        Get
-            If (Me.Index = 0) Then Return My.Resources.CoreDefaults.CORE_ALL_HABITAT
-            Return Me.m_core.EcospaceHabitats(Me.Index).Name
-        End Get
-        Set(value As String)
-            ' NOPE! Me.m_core.EcospaceHabitats(Me.Index).Name = value
-        End Set
-    End Property
+    Protected Overrides Function DefaultName() As String
+        If (Me.Index = 0) Then Return My.Resources.CoreDefaults.CORE_DEFAULT_HABITAT_ALL
+        Return Me.m_core.EcospaceHabitats(Me.Index).Name
+    End Function
 
 End Class

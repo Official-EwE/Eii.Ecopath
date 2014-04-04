@@ -39,6 +39,7 @@ Partial Class frmCapacityFunction
     'Do not modify it using the code editor.
     '<System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCapacityFunction))
         Me.m_tlpSketchPad = New System.Windows.Forms.TableLayoutPanel()
         Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
@@ -81,6 +82,7 @@ Partial Class frmCapacityFunction
         '
         'm_sketchPad
         '
+        Me.m_sketchPad.AllowDragXMark = False
         resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
         Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
         Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
@@ -144,8 +146,8 @@ Partial Class frmCapacityFunction
         'm_shapeToolBox
         '
         Me.m_shapeToolBox.AllowCheckboxes = False
-        Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
         resources.ApplyResources(Me.m_shapeToolBox, "m_shapeToolBox")
+        Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
         Me.m_shapeToolBox.Handler = Nothing
         Me.m_shapeToolBox.Name = "m_shapeToolBox"
         Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
@@ -177,7 +179,7 @@ Partial Class frmCapacityFunction
         Me.m_assignments.UIContext = Nothing
         Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Line
         Me.m_assignments.XAxisLabel = "Input"
-        Me.m_assignments.YAxisLabel = ScientificInterfaceShared.My.Resources.RESPONSE_GRAPH_YLABEL
+        Me.m_assignments.YAxisLabel = "Response"
         '
         'm_assignmentsToolbar
         '
@@ -204,6 +206,7 @@ Partial Class frmCapacityFunction
         CType(Me.m_scBottomBits, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scBottomBits.ResumeLayout(False)
         Me.m_tlpToolbox.ResumeLayout(False)
+        Me.m_tlpToolbox.PerformLayout()
         Me.m_tlpAssingments.ResumeLayout(False)
         Me.m_tlpAssingments.PerformLayout()
         Me.ResumeLayout(False)

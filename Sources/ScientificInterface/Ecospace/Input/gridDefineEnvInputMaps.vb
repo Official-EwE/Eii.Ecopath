@@ -76,12 +76,10 @@ Namespace Ecospace
 
             ''' <summary><see cref="cEcospaceBasemap">cEcospaceBasemap</see> associated with this Layer, if any.</summary>
             Private m_Layer As cEcospaceLayer = Nothing
-            ''' <summary>Flag stating whether a user action is confirmed</summary>
-            Private m_bConfirmed As Boolean = True
             ''' <summary>The status of a Layer in the interface.</summary>
             Private m_status As eItemStatusTypes = eItemStatusTypes.Original
-
-            Private m_bEditable As Boolean
+            ''' <summary>Think positive</summary>
+            Private m_bEditable As Boolean = True
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -99,12 +97,13 @@ Namespace Ecospace
                 If (TypeOf Layer Is cEcospaceLayerDriver) Then
                     Me.Description = DirectCast(Layer, cEcospaceLayerDriver).Description
                 Else
-                    ' No description available
-                    Me.Description = ""
+                    ' Fixed description
+                    Dim fmt As New cVarnameTypeFormatter()
+                    Me.Description = fmt.GetDescriptor(Layer.VarName, eDescriptorTypes.Description)
                 End If
-                Me.m_status = eItemStatusTypes.Original
+                Me.Status = eItemStatusTypes.Original
                 Me.IsActive = True
-                Me.m_bEditable = bEditable
+                Me.IsEditable = bEditable
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -117,8 +116,9 @@ Namespace Ecospace
                 Me.m_Layer = Nothing
                 Me.Name = strName
                 Me.Description = strDescription
-                Me.m_status = eItemStatusTypes.Added
+                Me.Status = eItemStatusTypes.Added
                 Me.IsActive = True
+                Me.IsEditable = True
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -153,10 +153,13 @@ Namespace Ecospace
             ''' for the layer object.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Status() As eItemStatusTypes
+            Public Property Status() As eItemStatusTypes
                 Get
                     Return Me.m_status
                 End Get
+                Private Set(value As eItemStatusTypes)
+                    Me.m_status = value
+                End Set
             End Property
 
             ''' -------------------------------------------------------------------
@@ -165,13 +168,6 @@ Namespace Ecospace
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public Property Confirmed() As Boolean
-                Get
-                    Return Me.m_bConfirmed
-                End Get
-                Set(ByVal value As Boolean)
-                    Me.m_bConfirmed = value
-                End Set
-            End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -231,10 +227,13 @@ Namespace Ecospace
             ''' Get whether the layer can be modified.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property IsEditable As Boolean
+            Public Property IsEditable As Boolean
                 Get
                     Return m_bEditable
                 End Get
+                Private Set(value As Boolean)
+                    Me.m_bEditable = value
+                End Set
             End Property
 
             ''' -------------------------------------------------------------------

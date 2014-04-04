@@ -147,8 +147,8 @@ Public MustInherit Class cEcospaceBaseResultsWriter
             iStr = cStringUtils.ReplaceAll(iStr, ".", "")
             Me.m_OutputPath = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), iStr)
         Else
-            'Use the output directroy set by the user
-            Me.m_OutputPath = Me.m_core.OutputPath
+        'Use the output directroy set by the user
+        Me.m_OutputPath = Me.m_core.OutputPath
         End If
 
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then

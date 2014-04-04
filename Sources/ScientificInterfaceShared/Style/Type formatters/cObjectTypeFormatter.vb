@@ -12,15 +12,16 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
 
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.SpatialData
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwECore
 
 #End Region ' Imports
 
@@ -28,47 +29,33 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="ISpatialDataConverter"/>.
+    ''' Class for providing a textual description of <see cref="Object">objects</see>.
     ''' </summary>
+    ''' <remarks>
+    ''' <para>This class tries to obtain a string from the ScientificShared resources.
+    ''' The resource string is expected to be named and formatted as follows:</para>
+    ''' <para>AUTOSAVE_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
+    ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Class cSpatialConverterFormatter
+    Public Class cTypeTypeFormatter
         Implements ITypeFormatter
-
-        Public Function GetDescribedType() As System.Type _
-            Implements ITypeFormatter.GetDescribedType
-            Return GetType(ISpatialDataConverter)
-        End Function
 
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
-            Try
-                If (value IsNot Nothing) Then
-                    Dim obj As ISpatialDataConverter = DirectCast(value, ISpatialDataConverter)
-                    If (descriptor = eDescriptorTypes.Description) Then Return obj.Description
+            If (value Is Nothing) Then Return My.Resources.GENERIC_VALUE_NONE
 
-                    Dim strName As String = obj.DisplayName
-                    Dim strDetails As String = ""
+            Dim strValue As String = value.ToString
+            Return strValue.Substring(Math.Max(0, strValue.LastIndexOf("."c) + 1))
 
-                    If (Not String.IsNullOrWhiteSpace(obj.AttributeName)) Then
-                        Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strName, obj.AttributeName)
-                    End If
+        End Function
 
-                    If (Not String.IsNullOrWhiteSpace(obj.AttributeFilter)) Then
-                        Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strName, obj.AttributeFilter)
-                    End If
-                    Return strName
-                End If
-
-            Catch ex As Exception
-                Debug.Assert(False)
-            End Try
-
-            Return My.Resources.GENERIC_VALUE_NONE
-
+        Public Function GetDescribedType() As System.Type _
+            Implements ITypeFormatter.GetDescribedType
+            Return GetType(Object)
         End Function
 
     End Class
 
-End Namespace
+End Namespace ' Style

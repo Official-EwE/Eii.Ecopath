@@ -234,15 +234,23 @@ Namespace SpatialData
         ''' <summary>
         ''' Returns the names of all attributes for <see cref="LockDataAtT">locked</see> data. 
         ''' </summary>
-        ''' <returns></returns>
+        ''' <returns>The names of all attributes for <see cref="LockDataAtT">locked</see> data.</returns>
         ''' -------------------------------------------------------------------
         Function GetAttributes() As String()
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Returns the data types of all attributes for <see cref="LockDataAtT">locked</see> data. 
+        ''' </summary>
+        ''' <returns>The data types of all attributes for <see cref="LockDataAtT">locked</see> data.</returns>
+        ''' -------------------------------------------------------------------
+        Function GetAttributeDataTypes() As Type()
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the attribute <see cref="DataTable"/> for the <see cref="LockDataAtT">locked</see> data.
         ''' </summary>
-        ''' <returns></returns>
+        ''' <returns>The attribute <see cref="DataTable"/> for the <see cref="LockDataAtT">locked</see> data.</returns>
         ''' -------------------------------------------------------------------
         Function GetAttributeValues() As DataTable
 

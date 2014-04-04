@@ -450,7 +450,7 @@ Public Class cPluginManager
         ' Sanity checks - load only once
         If (Me.m_bLoaded) Then Return
 
-        Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
+        Dim pluginAssembly As Assembly = Assembly.GetAssembly(GetType(cPluginManager))
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
         Dim bLoadPlugin As Boolean = True
@@ -518,12 +518,33 @@ Public Class cPluginManager
         End If
 
         Try
-            ' Get assembly info
-            clsAssembly = Assembly.LoadFrom(strFileName)
-            nameAssembly = clsAssembly.GetName
 
-            ' Test if valid
+            ' Load assembly in the regular way
+            Try
+                clsAssembly = Assembly.LoadFrom(strFileName)
+            Catch ex As Exception
+                cLog.Write(ex, eVerboseLevel.Detailed, "LoadPluginAssembly")
+            End Try
+
+            ' Unable to load?
+            If (clsAssembly Is Nothing) Then
+                ' #YesP: load assembly Unsafe
+                Try
+                    ' To test this any assembly can be flagged as unsafe, see http://www.howtogeek.com/70012/what-causes-the-file-downloaded-from-the-internet-warning-and-how-can-i-easily-remove-it/
+                    ' notepad [filename]:Zone.Identifier 
+                    '    [ZoneTransfer]
+                    '    ZoneId = 3
+                    clsAssembly = Assembly.UnsafeLoadFrom(strFileName)
+                Catch ex As Exception
+                    cLog.Write(ex, eVerboseLevel.Detailed, "LoadPluginAssembly Unsafe")
+                End Try
+            End If
+
+            ' Test if loaded at all
             If (clsAssembly Is Nothing) Then Return False
+
+            ' Get name
+            nameAssembly = clsAssembly.GetName
 
             ' Create plugin assembly and set initial enabled state
             plugAssem = New cPluginAssembly(nameAssembly, bEnable)
@@ -537,8 +558,8 @@ Public Class cPluginManager
                 ' Only look at types we can create
                 If (clsType.IsPublic = True) Then
                     ' Ignore abstract classes
-                    If Not ((clsType.Attributes And System.Reflection.TypeAttributes.Abstract) = _
-                     System.Reflection.TypeAttributes.Abstract) Then
+                    If Not ((clsType.Attributes And TypeAttributes.Abstract) = _
+                     TypeAttributes.Abstract) Then
                         ' Check for the implementation of the specified interface
                         clsInterface = clsType.GetInterface("EwEPlugin.IPlugin", True)
                         If Not (clsInterface Is Nothing) Then
@@ -635,14 +656,17 @@ Public Class cPluginManager
                 cLog.Write("LoadPlugin " & strFileName & " is not recognized as a valid plug-in", eVerboseLevel.Detailed)
             End If
 
-        Catch exRefl As System.Reflection.ReflectionTypeLoadException
+        Catch exRefl As ReflectionTypeLoadException
 
             ' A few things can have happened here, but for sure the DLL that the accessed module
             ' cannot be examined for types. This means that the module is incompatible with the
             ' current assembly file set. Since type detection has failed it cannot be determined
             ' whether the assembly is actually a plug-in or any other file.
 
-            cLog.Write(exRefl, eVerboseLevel.Detailed, "LoadPlugin " & strFileName)
+            cLog.Write(exRefl, "LoadPlugin " & strFileName)
+            For Each exSub As Exception In exRefl.LoaderExceptions
+                cLog.Write(exSub, eVerboseLevel.Detailed, "LoadPlugin " & strFileName & " detail")
+            Next
 
             ' JS 29nov08: only assert when this is a confirmed plug-in assembly.
             '             (which will very likely not be the case since the manager could not access 
@@ -2314,11 +2338,30 @@ Public Class cPluginManager
                                 Optional ByVal args() As Object = Nothing) As IPlugin
 
         Dim clsRet As Object = Nothing
-        Dim clsAssembly As System.Reflection.Assembly = Nothing
+        Dim clsAssembly As Assembly = Nothing
 
         Try
+            clsAssembly = Assembly.LoadFrom(strAssemblyPath)
+        Catch ex As Exception
+            cLog.Write(ex, eVerboseLevel.Detailed, "LoadPlugin")
+            clsAssembly = Nothing
+        End Try
 
-            clsAssembly = System.Reflection.Assembly.LoadFrom(strAssemblyPath)
+        If (clsAssembly Is Nothing) Then
+            Try
+                clsAssembly = Assembly.UnsafeLoadFrom(strAssemblyPath)
+            Catch ex As Exception
+                cLog.Write(ex, eVerboseLevel.Detailed, "UnsafeLoadPlugin")
+                clsAssembly = Nothing
+            End Try
+        End If
+
+        If (clsAssembly Is Nothing) Then
+            cLog.Write("Unable to load assembly " & strAssemblyPath)
+            Return Nothing
+        End If
+
+        Try
             If args Is Nothing Then
                 clsRet = clsAssembly.CreateInstance(strClassName)
             Else

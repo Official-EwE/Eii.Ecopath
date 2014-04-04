@@ -1234,7 +1234,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Bathymetry.
+        '''  Looks up a localized string similar to Basemap.
         '''</summary>
         Public ReadOnly Property ECOSPACE_LAYERGROUP_DEPTH() As String
             Get
@@ -8396,6 +8396,15 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_LAYERDRIVER() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_LAYERDRIVER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to HabCap map (comp)||Habitat capacity map (computed).
+        '''</summary>
+        Public ReadOnly Property VARIABLE_LAYERHABITATCAPACITY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERHABITATCAPACITY", resourceCulture)
             End Get
         End Property
         

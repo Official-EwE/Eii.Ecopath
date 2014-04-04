@@ -29,12 +29,10 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerDepth
     Inherits cEcospaceLayerInteger
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal meta As cVariableMetaData)
-        MyBase.New(theCore, 1, manager, _
-                   My.Resources.CoreDefaults.CORE_DEFAULT_DEPTH, _
-                   EwEUtils.Core.eVarNameFlags.LayerDepth, 1)
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer, ByVal meta As cVariableMetaData)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerDepth, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerDepth
-     End Sub
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -97,6 +95,13 @@ Public Class cEcospaceLayerDepth
             Next
         Next
         Return iNumCells
+    End Function
+
+    ''' <summary>
+    ''' This paves the way to allow a custom depth layer name
+    ''' </summary>
+    Protected Overrides Function DefaultName() As String
+        Return My.Resources.CoreDefaults.CORE_DEFAULT_DEPTH
     End Function
 
 End Class
