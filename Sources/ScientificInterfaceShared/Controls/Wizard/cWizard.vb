@@ -135,6 +135,7 @@ Namespace Controls.Wizard
                 ' #No: just update the navigation
                 Me.m_nav.UpdateNavigation()
             End If
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -222,6 +223,13 @@ Namespace Controls.Wizard
             ' Optimization
             If (iPage = Me.m_iPageActive) Then Return
 
+            Dim page As IWizardPage = Me.ActivePage()
+            If (page IsNot Nothing) Then
+                If (TypeOf page Is IOptionsPage) Then
+                    DirectCast(page, IOptionsPage).Apply()
+                End If
+            End If
+
             ' Hold layout while switching
             Me.m_parent.Cursor = Cursors.WaitCursor
             Me.m_content.SuspendLayout()
@@ -256,6 +264,10 @@ Namespace Controls.Wizard
                 ctrl.Dock = DockStyle.Fill
                 Me.m_content.Controls.Add(ctrl)
                 ctrl.Show()
+
+                If (TypeOf ctrl Is IOptionsPage) Then
+                    AddHandler DirectCast(ctrl, IOptionsPage).OnChanged, AddressOf OnOptionsChanged
+                End If
             End If
 
             Return True
@@ -266,6 +278,11 @@ Namespace Controls.Wizard
 
             If (Me.m_page IsNot Nothing) Then
                 Me.m_page.Close()
+
+                If (TypeOf Me.m_page Is IOptionsPage) Then
+                    RemoveHandler DirectCast(Me.m_page, IOptionsPage).OnChanged, AddressOf OnOptionsChanged
+                End If
+
                 Try
                     DirectCast(Me.m_page, Control).Dispose()
                 Catch ex As Exception
@@ -274,6 +291,14 @@ Namespace Controls.Wizard
             End If
 
         End Function
+
+        Private Sub OnOptionsChanged(sender As Object, args As EventArgs)
+            Try
+                Me.m_nav.UpdateNavigation()
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>

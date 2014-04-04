@@ -153,7 +153,13 @@ Namespace SpatialData
             End If
 
             Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
+
+            ' Set dynamic properties
+            Me.m_hdrDescription.CollapsedParentHeight = Me.m_tbxDescription.Location.Y + (Me.m_plDescription.Height - Me.m_cmbVarName.Location.Y)
             Me.m_hdrDescription.IsCollapsed = False
+
+            ' Set dynamic properties
+            Me.m_hdrTime.CollapsedParentHeight = Me.m_rbFromDate.Location.Y
             Me.m_hdrTime.IsCollapsed = True
 
         End Sub
@@ -324,6 +330,15 @@ Namespace SpatialData
             End Try
         End Sub
 
+        Private Sub OnCollapsed(sender As Object, args As cEwEHeaderLabel.cCollapsedEventArgs) _
+            Handles m_hdrDescription.OnCollapsed
+            Try
+                Me.UpdateControls()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
 #End Region ' Control events
 
 #Region " Internals "
@@ -405,6 +420,7 @@ Namespace SpatialData
             Dim bHasFolder As Boolean = False
 
             Me.m_mtbSeasonalEnd.Enabled = Me.m_cbSeasonal.Checked
+            Me.m_lblDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
 
             Try
                 If Not String.IsNullOrWhiteSpace(strPath) Then

@@ -2205,20 +2205,11 @@ Namespace Core
         ''' <summary>The number of supported capacity maps.</summary>
         nCapacityMaps
 
-        ''' <summary>
-        ''' Number of Target Fishing Mort iterations
-        ''' </summary>
-        ''' <remarks></remarks>
+        ''' <summary>Number of Target Fishing Mort iterations.</summary>
         nMSEBatchTFM
-        ''' <summary>
-        ''' Number of Fixed F iterations
-        ''' </summary>
-        ''' <remarks></remarks>
+        ''' <summary>Number of Fixed F iterations.</summary>
         nMSEBATCHFixedF
-        ''' <summary>
-        ''' Number of TAC iterations
-        ''' </summary>
-        ''' <remarks></remarks>
+        ''' <summary>Number of TAC iterations.</summary>
         nMSEBATCHTAC
 
     End Enum

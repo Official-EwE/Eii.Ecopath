@@ -51,40 +51,20 @@ Public Class cEcospaceLayerInteger
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Constructor for a NxN layer of integer values that derives its data and 
-    ''' identity from a manager.
-    ''' </summary>
-    ''' <param name="theCore"></param>
-    ''' <param name="manager"></param>
-    ''' <param name="varName"></param>
-    ''' <param name="iIndex"></param>
-    ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal theCore As cCore, _
-                   ByVal manager As IEcospaceLayerManager, _
-                   ByVal strName As String, _
-                   ByVal varName As eVarNameFlags, _
-                   Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, strName, varName, iIndex, GetType(Integer))
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Constructor for a NxN layer of integer values that derives its data and 
     ''' identity from a manager, but that is a unique data entity in the EwE core.
     ''' </summary>
-    ''' <param name="theCore"></param>
-    ''' <param name="iDBID"></param>
+    ''' <param name="core"></param>
     ''' <param name="manager"></param>
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal theCore As cCore, _
-                   ByVal iDBID As Integer, _
+    Public Sub New(ByVal core As cCore, _
                    ByVal manager As IEcospaceLayerManager, _
                    ByVal strName As String, _
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
 
-        MyBase.New(theCore, iDBID, manager, strName, varName, iIndex, GetType(Integer))
+        MyBase.New(core, core.m_EcoSpaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Integer))
 
     End Sub
 

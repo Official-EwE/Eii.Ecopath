@@ -26,7 +26,7 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-''' ===========================================================================
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base class for providing cell-based interaction with Ecospace data.
 ''' </summary>
@@ -39,7 +39,7 @@ Imports EwEUtils.Core
 ''' case the manager is obsolete.</description></item>
 ''' </list></para>
 ''' </remarks>
-''' ===========================================================================
+''' ---------------------------------------------------------------------------
 Public MustInherit Class cEcospaceLayer
     Inherits cCoreInputOutputBase
 
@@ -293,10 +293,57 @@ Public MustInherit Class cEcospaceLayer
 
 #End Region ' Cell manipulation
 
+#Region " Overrides "
+
     Public Overrides Function ToString() As String
         Return "cEcospaceLayer " & Me.m_vnData.ToString() ' Cannot show any variables here - may cause deadlocks
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Overridden to make sure there is always a name returned for a layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function GetVariable(VarName As eVarNameFlags, _
+                                          Optional iIndex As Integer = -9999, _
+                                          Optional iIndex2 As Integer = -9999, _
+                                          Optional iIndex3 As Integer = -9999) As Object
+
+        If (VarName = eVarNameFlags.Name) Then
+            Dim strName As String = CStr(MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3))
+            If Not String.IsNullOrWhiteSpace(strName) Then
+                Return strName
+            Else
+                Return Me.DefaultName
+            End If
+        End If
+        Return MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3)
+
+    End Function
+
+    Public Overrides Function SetVariable(VarName As eVarNameFlags, _
+                                          newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
+        If (VarName = eVarNameFlags.Name) Then
+            If (Me.Index > 0) Then
+                Try
+                    Dim strName As String = CStr(newValue)
+                    If String.Compare(strName, Me.DefaultName, True) = 0 Then
+                        newValue = ""
+                    End If
+                Catch ex As Exception
+                    ' FAll through to default handling
+                End Try
+            End If
+        End If
+        Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
+    End Function
+
+    Protected Overridable Function DefaultName() As String
+        ' ToDO: globalize this
+        Return "Layer " & Me.Index
+    End Function
+
+#End Region ' Overrides
 
 End Class
 

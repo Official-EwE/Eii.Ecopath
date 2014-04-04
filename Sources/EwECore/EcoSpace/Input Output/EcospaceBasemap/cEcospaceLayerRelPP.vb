@@ -30,8 +30,12 @@ Public Class cEcospaceLayerRelPP
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, 1, manager, My.Resources.CoreDefaults.CORE_DEFAULT_RELPP, EwEUtils.Core.eVarNameFlags.LayerRelPP, 1)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerRelPP, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerRelPP
     End Sub
+
+    Protected Overrides Function DefaultName() As String
+        Return My.Resources.CoreDefaults.CORE_DEFAULT_RELPP
+    End Function
 
 End Class

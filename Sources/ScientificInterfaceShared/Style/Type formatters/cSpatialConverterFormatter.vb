@@ -47,14 +47,25 @@ Namespace Style
                 If (value IsNot Nothing) Then
                     Dim obj As ISpatialDataConverter = DirectCast(value, ISpatialDataConverter)
                     If (descriptor = eDescriptorTypes.Description) Then Return obj.Description
-                    Return obj.DisplayName
+
+                    Dim strName As String = obj.DisplayName
+                    Dim strDetails As String = ""
+
+                    If (Not String.IsNullOrWhiteSpace(obj.AttributeName)) Then
+                        Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strName, obj.AttributeName)
+                    End If
+
+                    If (Not String.IsNullOrWhiteSpace(obj.AttributeFilter)) Then
+                        Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strName, obj.AttributeFilter)
+                    End If
+                    Return strName
                 End If
-                Return My.Resources.GENERIC_VALUE_NONE
+
             Catch ex As Exception
                 Debug.Assert(False)
             End Try
 
-            Return ""
+            Return My.Resources.GENERIC_VALUE_NONE
 
         End Function
 

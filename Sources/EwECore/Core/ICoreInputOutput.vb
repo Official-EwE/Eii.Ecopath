@@ -701,10 +701,11 @@ Public MustInherit Class cCoreInputOutputBase
     ''' each <see cref="eDataTypes">class of object</see>; names merely serve
     ''' to help identify objects in a user interface. Underneath, every object
     ''' in the EwE6 core has a unique <see cref="eVarNameFlags.DBID">database
-    ''' ID</see> for a given datatype. The database ID is exposed to the core 
-    ''' via <see cref="DBID">DBID</see>, but is invisible outside the EwE core.
+    ''' ID</see> for a given datatype.
     ''' </remarks>
-    Public Overridable Property Name() As String Implements ICoreInterface.Name
+    ''' <seealso cref="DBID"/>
+    ''' <seealso cref="Index"/>
+    Public Property Name() As String Implements ICoreInterface.Name
         Get
             Return DirectCast(GetVariable(eVarNameFlags.Name), String)
         End Get
@@ -722,10 +723,10 @@ Public MustInherit Class cCoreInputOutputBase
     ''' In EwE5, indexes were used to link objects together. In EwE6, this 
     ''' linkage system has been replaced with unique 
     ''' <see cref="eVarNameFlags.DBID">database IDs</see> values per 
-    ''' <see cref="eDataTypes">object data type (or object class)</see>. The
-    ''' database ID is exposed to the core via <see cref="DBID">DBID</see>,
-    ''' but is invisible outside the EwE core.
+    ''' <see cref="eDataTypes">object data type (or object class)</see>.
     ''' </remarks>
+    ''' <seealso cref="DBID"/>
+    ''' <seealso cref="Name"/>
     Public Property Index() As Integer Implements ICoreInterface.Index
         Get
             Return DirectCast(GetVariable(eVarNameFlags.Index), Integer)

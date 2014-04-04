@@ -41,6 +41,16 @@ Namespace Utilities
     ''' ---------------------------------------------------------------------------
     Public Class cStringUtils
 
+        ''' <summary><para>If true, CSV formatting is more restrictive than usual.
+        ''' <list type="bullet"><item>headers will 
+        ''' only be allowed to contain characters, numbers and underscores. All 
+        ''' characters not matching this criteria will be replaced by underscores. 
+        ''' Tools such as ArcGIS require this type of CSV formatting.</item>
+        ''' </list>
+        ''' </para>
+        ''' </summary>
+        Public Shared Property StrictCSVFormatting As Boolean = False
+
         ''' ---------------------------------------------------------------------------
         ''' <summary>
         ''' Split function that supports text qualifiers.
@@ -104,7 +114,7 @@ Namespace Utilities
                     j = strExpression.IndexOf(cQualifier, j + 1)
                     If (j > -1) Then j = strExpression.IndexOfAny(chrs, j + 1)
                 Else
-                    lstr.Add(strExpression.Substring(i, j - i).Replace(cQualifier, ""))
+                    lstr.Add(strExpression.Substring(i, j - i))
                     i = j + 1
                     j = strExpression.IndexOfAny(chrs, i)
                 End If
@@ -773,6 +783,18 @@ Namespace Utilities
 
             If (TypeOf (objValue) Is String) Then
                 strValue = CStr(objValue)
+                If (cStringUtils.StrictCSVFormatting) Then
+                    Dim sb As New StringBuilder()
+                    For i As Integer = 0 To strValue.Length - 1
+                        Dim c As Char = strValue(i)
+                        If (Not Char.IsNumber(c)) And Not (Char.IsLetter(c)) And (Not c = "_"c) Then
+                            sb.Append("_"c)
+                        Else
+                            sb.Append(c)
+                        End If
+                    Next
+                    strValue = sb.ToString()
+                End If
             ElseIf (TypeOf (objValue) Is DateTime) Then
                 strValue = cStringUtils.FormatDate(DirectCast(objValue, DateTime))
             Else
@@ -1010,6 +1032,51 @@ Namespace Utilities
                 Debug.Assert(False, exKaboom.Message)
             End Try
             Return sb.ToString
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Converts a string to proper title case, honouring 
+        ''' </summary>
+        ''' <param name="strExpression">The string to convert.</param>
+        ''' <returns>A string in proper title case.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToTitlecase(ByVal strExpression As String) As String
+
+            Dim bR2L As Boolean = cSystemUtils.IsRightToLeft()
+            Dim astrBits() As String
+            Dim sbOUt As New StringBuilder()
+
+            ' ALl lower case first
+            strExpression = strExpression.ToLower()
+
+            If bR2L Then
+                astrBits = strExpression.Split(New String() {" ."}, System.StringSplitOptions.RemoveEmptyEntries)
+            Else
+                astrBits = strExpression.Split(New String() {". "}, System.StringSplitOptions.RemoveEmptyEntries)
+            End If
+
+            For i As Integer = 0 To astrBits.Length - 1
+                astrBits(i) = astrBits(i).Trim
+                If Not String.IsNullOrWhiteSpace(astrBits(i)) Then
+                    Dim c As Char() = astrBits(i).Trim.ToCharArray
+                    If bR2L Then
+                        c(c.Length - 1) = Char.ToUpper(c(c.Length - 1))
+                        If (i > 0) Then
+                            sbOUt.Append(" .")
+                        End If
+                    Else
+                        c(0) = Char.ToUpper(c(0))
+                        If (i > 0) Then
+                            sbOUt.Append(". ")
+                        End If
+                    End If
+                    sbOUt.Append(c)
+                End If
+            Next
+
+            Return sbOUt.ToString()
 
         End Function
 

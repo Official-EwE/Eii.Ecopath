@@ -122,8 +122,9 @@ Namespace Ecospace.Controls
             Dim img As Image = cStyleGuide.GetImage(comp)
             Dim strStatus As String = ""
             Dim clrText As Color = e.ForeColor
-            Dim fmt As New StringFormat()
+            Dim fmt As New StringFormat(StringFormatFlags.NoWrap)
             fmt.LineAlignment = StringAlignment.Center
+            fmt.Trimming = StringTrimming.EllipsisWord
 
             If Not Me.Enabled Then
                 clrText = SystemColors.GrayText

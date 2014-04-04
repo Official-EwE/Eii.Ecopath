@@ -208,7 +208,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   </data>
   <data name="ECOPATH_LOAD_FAILED" xml:space="preserve">
     <value>Ecopath model '{0}' failed to load. {1}</value>
-    <comment>{0} = scenario name, {1} = text explaining the reason for the failure</comment>
+    <comment>{0}=scenario name, {1} = text explaining the reason for the failure</comment>
   </data>
   <data name="ECOPATH_LOAD_SUCCESS" xml:space="preserve">
     <value>Ecopath model '{0}' loaded.</value>
@@ -219,7 +219,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   </data>
   <data name="ECOPATH_MISSINGPARAM_DISCARD" xml:space="preserve">
     <value>Discard information is missing for fleet {0}, group {1}.</value>
-    <comment>{0} = fleet name, {1}=group name</comment>
+    <comment>{0}=fleet name, {1}=group name</comment>
   </data>
   <data name="ECOPATH_PARAMESTIMATION_FAILED_EE_BA" xml:space="preserve">
     <value>Estimated Biomass Accumulation (BA) is negative for group {0}, which may be related to the failure to estimate EE.</value>
@@ -776,10 +776,12 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=backup file name</comment>
   </data>
   <data name="ECOPATH_MODEL_UPDATE_FAILED" xml:space="preserve">
-    <value>Model failed to update to the latest version!</value>
+    <value>Model failed to update to EwE version {0}!</value>
+    <comment>{0}=version number</comment>
   </data>
   <data name="ECOPATH_MODEL_UPDATE_SUCCESS" xml:space="preserve">
-    <value>Model was updated to the lastest version.</value>
+    <value>Model was updated to EwE version {0}.</value>
+    <comment>{0}=version number</comment>
   </data>
   <data name="MSE_VALIDATION_EFFORT" xml:space="preserve">
     <value>Effort for fleet(s) '{0}' may need to increased for the quota regulations to have an effect.</value>

@@ -120,9 +120,6 @@
   <data name="CORE_ALL_FLEETS" xml:space="preserve">
     <value>All fleets</value>
   </data>
-  <data name="CORE_ALL_HABITAT" xml:space="preserve">
-    <value>All</value>
-  </data>
   <data name="CORE_DEFAULT" xml:space="preserve">
     <value>(default)</value>
   </data>
@@ -130,14 +127,22 @@
     <value>Advection</value>
   </data>
   <data name="CORE_DEFAULT_BIOMASSFORCING" xml:space="preserve">
-    <value>Biomass forcing {0}</value>
-    <comment>{0} group index</comment>
+    <value>{0}: {1}</value>
+    <comment>{0} group index, {1} group name</comment>
+  </data>
+  <data name="CORE_DEFAULT_BIOMASSRELFORCING" xml:space="preserve">
+    <value>{0}: {1}</value>
+    <comment>{0} group index, {1} group name</comment>
   </data>
   <data name="CORE_DEFAULT_COMBINEDFLEETS" xml:space="preserve">
     <value>Combined fleets</value>
   </data>
   <data name="CORE_DEFAULT_DEPTH" xml:space="preserve">
     <value>Depth</value>
+  </data>
+  <data name="CORE_DEFAULT_DRIVER" xml:space="preserve">
+    <value>Environmental driver {0}</value>
+    <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_EXCLUSION" xml:space="preserve">
     <value>Excluded cells</value>
@@ -157,15 +162,22 @@
     <value>Group1</value>
   </data>
   <data name="CORE_DEFAULT_HABCAP" xml:space="preserve">
-    <value>Capacity {0} (computed)</value>
-    <comment>{0} group index</comment>
+    <value>Cap. computed ({0}: {1})</value>
+    <comment>{0} group index, {1} group name</comment>
   </data>
   <data name="CORE_DEFAULT_HABCAP_INPUT" xml:space="preserve">
-    <value>Capacity {0}</value>
-    <comment>{0} group index</comment>
+    <value>Cap. ({0}: {1})</value>
+    <comment>{0} group index, {1} group name</comment>
   </data>
   <data name="CORE_DEFAULT_HABITAT" xml:space="preserve">
     <value>Habitat {0}</value>
+    <comment>{0} sequential number</comment>
+  </data>
+  <data name="CORE_DEFAULT_HABITAT_ALL" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="CORE_DEFAULT_IMPORTANCE" xml:space="preserve">
+    <value>Importance {0)</value>
     <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_MEDIATIONSHAPE" xml:space="preserve">
@@ -173,7 +185,8 @@
     <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_MIGRATION" xml:space="preserve">
-    <value>Migration {0}</value>
+    <value>Migration ({0}: {1})</value>
+    <comment>{0} group index, {1} group name</comment>
   </data>
   <data name="CORE_DEFAULT_MIXEDLAYERDEPTH" xml:space="preserve">
     <value>Mixed layer depth</value>
@@ -185,7 +198,11 @@
     <value>Seed cells</value>
   </data>
   <data name="CORE_DEFAULT_PORT" xml:space="preserve">
-    <value>Port {0}</value>
+    <value>Port ({0}: {1})</value>
+    <comment>{0} fleet index, {1} fleet name</comment>
+  </data>
+  <data name="CORE_DEFAULT_PORT_ALL" xml:space="preserve">
+    <value>Port (all fleets)</value>
   </data>
   <data name="CORE_DEFAULT_REGION" xml:space="preserve">
     <value>Regions</value>
@@ -197,7 +214,11 @@
     <value>PP (relative)</value>
   </data>
   <data name="CORE_DEFAULT_SAILCOST" xml:space="preserve">
-    <value>Sailing cost {0}</value>
+    <value>Sailing cost ({0}: {1})</value>
+    <comment>{0} fleet index, {1} fleet name</comment>
+  </data>
+  <data name="CORE_DEFAULT_SAIL_ALL" xml:space="preserve">
+    <value>Sailing cost (all fleets)</value>
   </data>
   <data name="CORE_DEFAULT_SCENARIO" xml:space="preserve">
     <value>New Scenario</value>

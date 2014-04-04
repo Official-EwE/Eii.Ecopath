@@ -29,27 +29,27 @@ Namespace Controls.Map.Layers
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_lblDepth = New System.Windows.Forms.Label()
             Me.m_nudDepth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_btnClear = New System.Windows.Forms.Button()
             Me.m_btnSet = New System.Windows.Forms.Button()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
-            'Label1
+            'm_lblDepth
             '
-            Me.Label1.AutoSize = True
-            Me.Label1.Location = New System.Drawing.Point(3, 121)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(45, 13)
-            Me.Label1.TabIndex = 0
-            Me.Label1.Text = "&Depth >"
+            Me.m_lblDepth.AutoSize = True
+            Me.m_lblDepth.Location = New System.Drawing.Point(0, 128)
+            Me.m_lblDepth.Name = "m_lblDepth"
+            Me.m_lblDepth.Size = New System.Drawing.Size(62, 13)
+            Me.m_lblDepth.TabIndex = 0
+            Me.m_lblDepth.Text = "&Depth past:"
             '
             'm_nudDepth
             '
             Me.m_nudDepth.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudDepth.Location = New System.Drawing.Point(68, 119)
+            Me.m_nudDepth.Location = New System.Drawing.Point(68, 126)
             Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudDepth.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudDepth.Name = "m_nudDepth"
@@ -60,7 +60,7 @@ Namespace Controls.Map.Layers
             'm_btnClear
             '
             Me.m_btnClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnClear.Location = New System.Drawing.Point(66, 145)
+            Me.m_btnClear.Location = New System.Drawing.Point(66, 152)
             Me.m_btnClear.Name = "m_btnClear"
             Me.m_btnClear.Size = New System.Drawing.Size(131, 23)
             Me.m_btnClear.TabIndex = 3
@@ -70,7 +70,7 @@ Namespace Controls.Map.Layers
             'm_btnSet
             '
             Me.m_btnSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSet.Location = New System.Drawing.Point(147, 119)
+            Me.m_btnSet.Location = New System.Drawing.Point(147, 123)
             Me.m_btnSet.Name = "m_btnSet"
             Me.m_btnSet.Size = New System.Drawing.Size(50, 23)
             Me.m_btnSet.TabIndex = 2
@@ -81,25 +81,25 @@ Namespace Controls.Map.Layers
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.m_lblDepth)
             Me.Controls.Add(Me.m_btnSet)
             Me.Controls.Add(Me.m_btnClear)
             Me.Controls.Add(Me.m_nudDepth)
             Me.Name = "ucLayerEditorExclusion"
-            Me.Size = New System.Drawing.Size(200, 175)
+            Me.Size = New System.Drawing.Size(200, 183)
             Me.Controls.SetChildIndex(Me.m_nudDepth, 0)
             Me.Controls.SetChildIndex(Me.m_btnClear, 0)
             Me.Controls.SetChildIndex(Me.m_btnSet, 0)
-            Me.Controls.SetChildIndex(Me.Label1, 0)
+            Me.Controls.SetChildIndex(Me.m_lblDepth, 0)
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_nudDepth As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_btnClear As System.Windows.Forms.Button
         Private WithEvents m_btnSet As System.Windows.Forms.Button
+        Private WithEvents m_lblDepth As System.Windows.Forms.Label
 
     End Class
 

@@ -26,12 +26,25 @@ Imports EwEUtils.SpatialData
 
 Namespace SpatialData
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks>
+    ''' </remarks>
     Public Class cSpatialDataStructures
+
+        Private m_pathDS As cEcopathDataStructures
+        Private m_spaceDS As cEcospaceDataStructures
 
         ''' <summary>Availalable data adapters</summary>
         Public DataAdapters As New List(Of cSpatialDataAdapter)
         ''' <summary>Max. number of external data connections per layer.</summary>
         Public Const cMAX_CONN As Integer = 6
+
+        Public Sub New(pathDS As cEcopathDataStructures, spaceDS As cEcospaceDataStructures)
+            Me.m_pathDS = pathDS
+            Me.m_spaceDS = spaceDS
+        End Sub
 
         Public Sub SetDefaults()
 
@@ -52,13 +65,15 @@ Namespace SpatialData
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get a spatial data configuration for a given (layer, connection slot) combination.
         ''' </summary>
         ''' <param name="varname"></param>
         ''' <param name="iIndex">One-based layer index</param>
         ''' <param name="iConnection">One-based connection index</param>
-        Public ReadOnly Property Item(varname As eVarNameFlags, iIndex As Integer, iConnection As Integer) As cAdapaterConfiguration
+        ''' -------------------------------------------------------------------
+        Friend ReadOnly Property Item(varname As eVarNameFlags, iIndex As Integer, iConnection As Integer) As cAdapaterConfiguration
             Get
                 If Me.m_data.ContainsKey(varname) Then
                     Dim adata As cAdapaterConfiguration(,) = Me.m_data(varname)
@@ -70,23 +85,35 @@ Namespace SpatialData
             End Get
         End Property
 
-        Public ReadOnly Property NumItems(varname As eVarNameFlags) As Integer
-            Get
-                Debug.Assert(Me.m_data.ContainsKey(varname))
-                Return Me.m_data(varname).Length
-            End Get
-        End Property
-
 #Region " Internals "
 
-        Public Class cAdapaterConfiguration
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        Friend Class cAdapaterConfiguration
+            ''' <summary>GUID to locally defined dataset.</summary>
             Public DatasetGUID As String = ""
-            Public Converter As String = ""
+            ''' <summary>Typename to instantiate dataset.</summary>
+            Public DatasetTypeName As String = ""
+            ''' <summary>Configuration to set up dataset.</summary>
+            Public DatasetConfig As String = ""
+            ''' <summary>Typename to instantiate converter.</summary>
+            Public ConverterTypeName As String = ""
+            ''' <summary>Configuration to set up converter.</summary>
             Public ConverterConfig As String = ""
+            ''' <summary>Data scale, if any.</summary>
             Public Scale As Single = 1.0!
+            ''' <summary><see cref="cSpatialScalarDataAdapterBase.DataScaleType"/>.</summary>
             Public ScaleType As Byte = 0
         End Class
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks>
+        ''' Revamping; cannot make this an extending array because connections need to be 
+        ''' flexible to set up, add and remove.
+        ''' </remarks>
         Private m_data As New Dictionary(Of eVarNameFlags, cAdapaterConfiguration(,))
 
 #End Region ' Internals

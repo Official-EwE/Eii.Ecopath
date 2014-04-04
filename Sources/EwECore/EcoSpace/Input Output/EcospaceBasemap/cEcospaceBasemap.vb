@@ -216,7 +216,7 @@ Public Class cEcospaceBasemap
 
             ' Depth layer
             meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            Me.m_dictLayers(eVarNameFlags.LayerDepth) = New cEcospaceLayer() {New cEcospaceLayerDepth(theCore, Me, meta)}
+            Me.m_dictLayers(eVarNameFlags.LayerDepth) = New cEcospaceLayer() {New cEcospaceLayerDepth(theCore, Me, 1, meta)}
 
             For i As Integer = 1 To ecospaceDS.NoHabitats - 1
                 llayers.Add(New cEcospaceLayerHabitat(theCore, Me, i))
@@ -251,7 +251,6 @@ Public Class cEcospaceBasemap
             Next
             Me.m_dictLayers(eVarNameFlags.LayerBiomassRelativeForcing) = llayers.ToArray
 
-
             ' MPA layer
             Me.m_dictLayers(eVarNameFlags.LayerMPA) = New cEcospaceLayer() {New cEcospaceLayerMPA(theCore, Me)}
 
@@ -277,7 +276,7 @@ Public Class cEcospaceBasemap
             ' Driver
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.nEnvironmentalDriverLayers
-                llayers.Add(New cEcospaceLayerDriver(Me.m_core, ecospaceDS.EnvironmentalLayerDBID(i), Me, i))
+                llayers.Add(New cEcospaceLayerDriver(Me.m_core, Me, i))
             Next
             Me.m_dictLayers(eVarNameFlags.LayerDriver) = llayers.ToArray()
 

@@ -41,7 +41,7 @@ Public Module modExtensions
     ''' inheritable... Yuck!</remarks>
     ''' -----------------------------------------------------------------------
     <Extension()> _
-    Public Sub Destroy(icon As System.Drawing.Icon)
+    Public Sub Destroy(ByRef icon As System.Drawing.Icon)
         ' Encapsualted in Windows check until we have an idea how this were to behave on non-windows systems.
         If cSystemUtils.IsWindows Then
             ' Ugh! Urgh! Yuck! Blah!

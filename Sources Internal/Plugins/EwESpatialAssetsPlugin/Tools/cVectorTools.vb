@@ -116,10 +116,10 @@ Public Class cVectorTools
 
             Select Case f.FeatureType
                 Case FeatureType.Point
-                    ' To test
+                    ' JS17Feb14: tested OK
                     Dim pt As IPoint = New DotSpatial.Topology.Point(f.Coordinates(0))
                     If rs.ContainsFeature(f) Then
-                        Dim cellpos As RcIndex = rs.ProjToCell(CType(pt.Centroid, Coordinate))
+                        Dim cellpos As RcIndex = rs.ProjToCell(pt.X, pt.Y)
                         rs.Value(cellpos.Row, cellpos.Column) = dValSet
                     End If
 
@@ -135,15 +135,39 @@ Public Class cVectorTools
                     Next
 
                 Case FeatureType.Polygon
-                    Dim poly As IPolygon = New Polygon(f.Coordinates)
-                    For iRow As Integer = 0 To bnds.NumRows - 1
-                        For iCol As Integer = 0 To bnds.NumColumns - 1
-                            Dim pt As IPoint = New DotSpatial.Topology.Point(rs.CellToProj(iRow, iCol))
-                            If poly.Contains(pt) Then
-                                rs.Value(iRow, iCol) = dValSet
+
+                    ' 18Feb14: Only process cells overlapping with a valid polygon
+                    Dim poly As New Polygon(f.Coordinates)
+                    Dim ext As New Extent(poly.Envelope)
+                    Dim x0 As Integer = 0
+                    Dim x1 As Integer = bnds.NumColumns - 1
+                    Dim y0 As Integer = 0
+                    Dim y1 As Integer = bnds.NumRows
+
+                    If (Not poly.IsValid) Then
+                        ' ToDo: notify user 
+                    Else
+                        If (ext.Intersects(rs.Bounds.Extent)) Then
+                            ' Get intersection extent
+                            Dim extIntersect As Extent = ext.Intersection(rs.Extent)
+                            Dim tl As RcIndex = rs.ProjToCell(extIntersect.MinX, extIntersect.MaxY)
+                            Dim br As RcIndex = rs.ProjToCell(extIntersect.MaxX, extIntersect.MinY)
+
+                            If Not tl.IsEmpty And Not br.IsEmpty Then
+                                x0 = Math.Max(x0, tl.Column) : x1 = Math.Min(x1, br.Column)
+                                y0 = Math.Max(y0, tl.Row) : y1 = Math.Min(y1, br.Row)
                             End If
+                        End If
+
+                        For iRow As Integer = y0 To y1
+                            For iCol As Integer = x0 To x1
+                                Dim pt As New DotSpatial.Topology.Point(rs.CellToProj(iRow, iCol))
+                                If poly.Contains(pt) Then
+                                    rs.Value(iRow, iCol) = dValSet
+                                End If
+                            Next
                         Next
-                    Next
+                    End If
 
                 Case FeatureType.Line
                     ' Dunno how to process
@@ -171,27 +195,38 @@ Public Class cVectorTools
         If (fs Is Nothing) Then Return iNumRejected
 
         ' Merge all valid polygons to avoid double-counting areas when polygons overlap
-        For Each featTmp As IFeature In fs.Features.CloneList
-            If (featTmp.FeatureType = FeatureType.Polygon) Then
-                Dim polyTemp As New Polygon(featTmp.Coordinates)
-                Dim bUsePolygon As Boolean = True
+        For Each f As IFeature In fs.Features.CloneList
 
-                If (Not polyTemp.IsValid) Then
-                    If (bRejectInvalid) Then
-                        bUsePolygon = False
+            Select Case f.FeatureType
+                Case FeatureType.Point
+                    Dim pt As New DotSpatial.Topology.Point(f.Coordinates(0))
+                    If Not pt.IsValid Then
                         iNumRejected += 1
+                        fs.Features.Remove(f)
                     End If
-                ElseIf Not polyTemp.IsSimple Then
-                    If bRejectComplex Then
-                        bUsePolygon = False
-                        iNumRejected += 1
-                    End If
-                End If
+                Case FeatureType.MultiPoint
+                Case FeatureType.Line
 
-                If (Not bUsePolygon) Then
-                    fs.Features.Remove(featTmp)
-                End If
-            End If
+                Case FeatureType.Polygon
+                    Dim polyTemp As New Polygon(f.Coordinates)
+                    Dim bUsePolygon As Boolean = True
+
+                    If (Not polyTemp.IsValid) Then
+                        If (bRejectInvalid) Then
+                            bUsePolygon = False
+                            iNumRejected += 1
+                        End If
+                    ElseIf Not polyTemp.IsSimple Then
+                        If bRejectComplex Then
+                            bUsePolygon = False
+                            iNumRejected += 1
+                        End If
+                    End If
+
+                    If (Not bUsePolygon) Then
+                        fs.Features.Remove(f)
+                    End If
+            End Select
         Next
 
         Return iNumRejected

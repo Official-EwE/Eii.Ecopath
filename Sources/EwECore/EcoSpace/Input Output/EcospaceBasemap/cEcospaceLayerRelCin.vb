@@ -30,8 +30,12 @@ Public Class cEcospaceLayerRelCin
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, 1, manager, My.Resources.CoreDefaults.CORE_DEFAULT_RELCIN, EwEUtils.Core.eVarNameFlags.LayerRelCin, 0)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerRelCin, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerRelCin
     End Sub
+
+    Protected Overrides Function DefaultName() As String
+        Return My.Resources.CoreDefaults.CORE_DEFAULT_RELCIN
+    End Function
 
 End Class

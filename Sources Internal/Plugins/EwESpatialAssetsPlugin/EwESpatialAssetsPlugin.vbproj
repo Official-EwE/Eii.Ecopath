@@ -166,15 +166,16 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plugins\Converters\cSpatialDataConverter.vb" />
     <Compile Include="Plugins\Converters\Raster\cAreaRatioConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\Inclusion\cVectorCookieCutterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\Isobar conversion\cIsobarConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Raster\cRasterConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\Vector\cVectorConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\Vector\Isobar conversion\ucIsobarConverterConfigPage.Designer.vb">
-      <DependentUpon>ucIsobarConverterConfigPage.vb</DependentUpon>
+    <Compile Include="Plugins\Converters\Vector\Vector conversion by filter\cVectorConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\ucGenericVectorConverterConfigPage.Designer.vb">
+      <DependentUpon>ucGenericVectorConverterConfigPage.vb</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Converters\Vector\Isobar conversion\ucIsobarConverterConfigPage.vb">
+    <Compile Include="Plugins\Converters\Vector\ucGenericVectorConverterConfigPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Plugins\Datasets\Files\Specific\cASCIIFilesDataSetPlugin.vb" />
@@ -218,8 +219,8 @@
     <Compile Include="Utils\cDotSpatialUtils.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Plugins\Converters\Vector\Isobar conversion\ucIsobarConverterConfigPage.resx">
-      <DependentUpon>ucIsobarConverterConfigPage.vb</DependentUpon>
+    <EmbeddedResource Include="Plugins\Converters\Vector\ucGenericVectorConverterConfigPage.resx">
+      <DependentUpon>ucGenericVectorConverterConfigPage.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Datasets\Files\ucMultiFileDataSetConfigPage.resx">
       <DependentUpon>ucMultiFileDataSetConfigPage.vb</DependentUpon>

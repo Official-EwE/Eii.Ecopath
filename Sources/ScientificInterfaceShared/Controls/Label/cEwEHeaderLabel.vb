@@ -212,6 +212,30 @@ Namespace Controls
             End Set
         End Property
 
+        Public Class cCollapsedEventArgs
+            Inherits EventArgs
+
+            Private m_panel As Control = Nothing
+            Private m_bCollapsed As Boolean = False
+            Public Sub New(panel As Control, bIsCollapsed As Boolean)
+                MyBase.New()
+                Me.m_panel = panel
+                Me.m_bCollapsed = bIsCollapsed
+            End Sub
+            Public ReadOnly Property Panel As Control
+                Get
+                    Return Me.m_panel
+                End Get
+            End Property
+            Public ReadOnly Property IsCollapsed As Boolean
+                Get
+                    Return Me.m_bCollapsed
+                End Get
+            End Property
+        End Class
+
+        Public Event OnCollapsed(ByVal sender As Object, ByVal args As cCollapsedEventArgs)
+
         <Browsable(True), _
          Category("Expand/collapse")> _
         Public Property IsCollapsed() As Boolean
@@ -227,6 +251,11 @@ Namespace Controls
                     Me.Parent.Height = Me.m_iExpandedParentHeight
                 End If
                 Me.Invalidate()
+                Try
+                    RaiseEvent OnCollapsed(Me, New cCollapsedEventArgs(Me.Parent, Me.m_bIsCollapsed))
+                Catch ex As Exception
+
+                End Try
             End Set
         End Property
 

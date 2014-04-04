@@ -30,7 +30,7 @@ Public Class cEcospaceLayerRegion
     Inherits cEcospaceLayerInteger
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_REGION, EwEUtils.Core.eVarNameFlags.LayerRegion)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerRegion)
         Me.m_dataType = eDataTypes.EcospaceLayerRegion
     End Sub
 
@@ -42,5 +42,9 @@ Public Class cEcospaceLayerRegion
             Return Me.m_core.nRegions
         End Get
     End Property
+
+    Protected Overrides Function DefaultName() As String
+        Return My.Resources.CoreDefaults.CORE_DEFAULT_REGION
+    End Function
 
 End Class

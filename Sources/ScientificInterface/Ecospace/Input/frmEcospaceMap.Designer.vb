@@ -76,7 +76,6 @@ Namespace Ecospace.Basemap
             'm_zoomToolbar
             '
             resources.ApplyResources(Me.m_zoomToolbar, "m_zoomToolbar")
-            Me.m_zoomToolbar.MinimumSize = New System.Drawing.Size(100, 25)
             Me.m_zoomToolbar.Name = "m_zoomToolbar"
             Me.m_zoomToolbar.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
             Me.m_zoomToolbar.UIContext = Nothing
@@ -121,7 +120,6 @@ Namespace Ecospace.Basemap
             'm_plEditor
             '
             Me.m_plEditor.BackColor = System.Drawing.SystemColors.Window
-            Me.m_plEditor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_plEditor, "m_plEditor")
             Me.m_plEditor.Name = "m_plEditor"
             '

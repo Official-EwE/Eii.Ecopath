@@ -45,103 +45,43 @@ Namespace SpatialData
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Class cIsobarConverterPlugin
-        Implements ISpatialDataConverterPlugin
-        Implements IConfigurablePlugin
-
-        Private m_strAttributeName As String = ""
-        Private m_core As cCore = Nothing
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="EwEUtils.SpatialData.ISpatialDataConverter.Dataset"/>
-        ''' -----------------------------------------------------------------------
-        Public Property Dataset As EwEUtils.SpatialData.ISpatialDataSet _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.Dataset
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.Configuration"/>
-        ''' -----------------------------------------------------------------------
-        Public Property Configuration(ByVal doc As System.Xml.XmlDocument) As System.Xml.XmlNode _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.Configuration
-            Get
-                Return Me.ToXML(doc)
-            End Get
-            Set(ByVal value As XmlNode)
-                Me.FromXML(doc, value)
-            End Set
-        End Property
+        Inherits cSpatialDataConverter
+        Implements IConfigurable
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.IsConfigured"/>
         ''' -----------------------------------------------------------------------
-        Function IsConfigured() As Boolean _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured, EwEPlugin.IConfigurablePlugin.IsConfigured
-            Return Not String.IsNullOrWhiteSpace(Me.m_strAttributeName)
+        Public Overrides Function IsConfigured() As Boolean _
+            Implements IConfigurable.IsConfigured
+            Return Not String.IsNullOrWhiteSpace(Me.AttributeName)
         End Function
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="IConfigurablePlugin.GetConfigUI"/>
         ''' -----------------------------------------------------------------------
         Public Function GetConfigUI() As System.Windows.Forms.Control _
-            Implements EwEPlugin.IConfigurablePlugin.GetConfigUI
-            Dim pg As New ucIsobarConverterConfigPage()
+            Implements IConfigurable.GetConfigUI
+            Dim pg As New ucGenericVectorConverterConfigPage()
             pg.Converter = Me
             Return pg
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.IsCompatible"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.IsCompatible"/>
         ''' -----------------------------------------------------------------------
-        Public Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.IsCompatible
+        Public Overrides Function IsCompatible(ds As ISpatialDataSet) As Boolean 
             If (ds Is Nothing) Then Return False
             Return (ds.ConversionFormat = "DotSpatialVector") And (ds.VarName = eVarNameFlags.LayerDepth)
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.AttributeFilter"/>
-        ''' -----------------------------------------------------------------------
-        Public Property AttributeFilter As String Implements ISpatialDataConverter.AttributeFilter
-            Get
-                Return ""
-            End Get
-            Set(value As String)
-                ' Ignored
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.AttributeName"/>
-        ''' -----------------------------------------------------------------------
-        Public Property AttributeName As String Implements ISpatialDataConverter.AttributeName
-            Get
-                Return Me.m_strAttributeName
-            End Get
-            Set(value As String)
-                Me.m_strAttributeName = value
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.AttributeValueMappings"/>
-        ''' -----------------------------------------------------------------------
-        Public Property AttributeValueMappings As Dictionary(Of Object, Object) Implements ISpatialDataConverter.AttributeValueMappings
-            Get
-                Return Nothing
-            End Get
-            Set(value As System.Collections.Generic.Dictionary(Of Object, Object))
-                ' Ignored
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Convert"/>
         ''' -----------------------------------------------------------------------
-        Public Function Convert(ByVal data As Object, _
-                                ByVal ptfTL As PointF, _
-                                ByVal ptfBR As PointF, _
-                                ByVal dCellSize As Double, _
-                                ByVal strFile As String) As ISpatialRaster _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.Convert
+        Public Overrides Function Convert(ByVal data As Object, _
+                                          ByVal ptfTL As PointF, _
+                                          ByVal ptfBR As PointF, _
+                                          ByVal dCellSize As Double, _
+                                          ByVal strFile As String) As ISpatialRaster
 
             Dim log As cSpatialOperationLog = Nothing
             Dim rstResult As IRaster = Nothing
@@ -167,7 +107,7 @@ Namespace SpatialData
                 Try
                     ' Rasterize the features
                     Dim fs As IFeatureSet = CType(data, IFeatureSet)
-                    rstResult = cSurfaceTools.RasterizeIsobar(fs, ptfTL, ptfBR, dCellSize, Me.m_strAttributeName, strFile, log)
+                    rstResult = cSurfaceTools.RasterizeIsobar(fs, ptfTL, ptfBR, dCellSize, Me.AttributeName, strFile, log)
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 
@@ -184,142 +124,38 @@ Namespace SpatialData
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.DisplayName"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.DisplayName"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property DisplayName As String _
-            Implements ISpatialDataConverter.DisplayName
+        Public Overrides ReadOnly Property DisplayName As String 
             Get
-                If String.IsNullOrWhiteSpace(Me.m_strAttributeName) Then
+                If String.IsNullOrWhiteSpace(Me.AttributeName) Then
                     Return My.Resources.CONVERTER_ISOBAR_NAME
                 Else
                     ' ToDo: globalize this
                     Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
                                          My.Resources.CONVERTER_ISOBAR_NAME, _
-                                         String.Format(SharedResources.GENERIC_LABEL_DOUBLE, "Field", Me.m_strAttributeName))
+                                         String.Format(SharedResources.GENERIC_LABEL_DOUBLE, "Field", Me.AttributeName))
                 End If
             End Get
         End Property
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.Description"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.Description"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Description As String _
-            Implements ISpatialDataConverter.Description, EwEPlugin.IPlugin.Description
+        Public Overrides ReadOnly Property Description As String
             Get
                 Return My.Resources.CONVERTER_ISOBAR_DESCR
             End Get
         End Property
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverterPlugin.Author"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.pluginName"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Author As String _
-            Implements ISpatialDataConverterPlugin.Author
-            Get
-                Return "Jeroen Steenbeek, Ecopath International Initiative"
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverterPlugin.Contact"/>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Contact As String _
-            Implements ISpatialDataConverterPlugin.Contact
-            Get
-                Return "mailto:ewedevteam@gmail.com"
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverterPlugin.Initialize"/>
-        ''' -----------------------------------------------------------------------
-        Public Sub Initialize(ByVal core As Object) _
-            Implements ISpatialDataConverterPlugin.Initialize
-            Me.m_core = DirectCast(core, cCore)
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="IPlugin.Name"/>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property PlugingName As String _
-            Implements EwEPlugin.IPlugin.Name
+        Public Overrides ReadOnly Property PluginName As String
             Get
                 Return "DotSpatial.IsobarConverter"
             End Get
         End Property
-
-        Public Overrides Function ToString() As String
-            Return Me.DisplayName()
-        End Function
-
-        Private Sub LogMessage(strMessage As String, status As eStatusFlags)
-
-            If (Me.m_core IsNot Nothing) Then
-                Me.m_core.SpatialOperationLog.LogOperation(strMessage, status)
-            End If
-
-        End Sub
-
-#Region " Internals "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Write dataset configuration to XML.
-        ''' </summary>
-        ''' <param name="doc">The doc to generate nodes for.</param>
-        ''' <returns>
-        ''' An XML node that contains the content of the dataset.
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Protected Function ToXML(ByVal doc As XmlDocument) As XmlNode
-
-            Dim xnMaster As XmlNode = Nothing
-            Dim xn As XmlNode = Nothing
-
-            xnMaster = doc.CreateElement("Configuration")
-            xn = doc.CreateElement("Attribute")
-            xn.InnerText = Me.m_strAttributeName
-            xnMaster.AppendChild(xn)
-
-            Return xnMaster
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Read dataset configuration from XML.
-        ''' </summary>
-        ''' <param name="doc">The doc to read nodes from.</param>
-        ''' <param name="node">The configuration node that contains the content
-        ''' of the dataset. Happy, happy, happy.</param>
-        ''' <returns>
-        ''' True if successful.
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Protected Function FromXML(ByVal doc As XmlDocument, ByVal node As XmlNode) As Boolean
-
-            Dim xn As XmlNode = Nothing
-            Dim xnFile As XmlNode = Nothing
-            Dim xaFile As XmlAttribute = Nothing
-
-            If (String.Compare(node.Name, "Configuration") <> 0) Then Return False
-
-            Try
-                For Each xn In node.ChildNodes
-                    Select Case xn.Name
-                        Case "Attribute" : Me.m_strAttributeName = xn.InnerText
-                    End Select
-                Next
-
-            Catch ex As Exception
-                Return False
-            End Try
-
-            Return True
-
-        End Function
-
-#End Region ' Internals
 
     End Class
 

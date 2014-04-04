@@ -19,7 +19,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="EwECore.SpatialData.cSpatialDataConnectionManager" Collapsed="true">
+  <Class Name="EwECore.SpatialData.cAdapaterConfigurationManager" Collapsed="true">
     <Position X="5" Y="3.5" Width="2.5" />
     <AssociationLine Name="Adapter(EwEUtils.Core.eVarNameFlags)" Type="EwECore.SpatialData.cSpatialDataAdapter">
       <MemberNameLabel ManuallyPlaced="true">
@@ -38,7 +38,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AMQAkAAAQCIAAAYQIYAQgBYAACEAIAAABAECAABAAEA=</HashCode>
-      <FileName>SpatialTemporal\cSpatialDataConnectionManager.vb</FileName>
+      <FileName>SpatialTemporal\cAdapaterConfigurationManager.vb</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="m_data" />

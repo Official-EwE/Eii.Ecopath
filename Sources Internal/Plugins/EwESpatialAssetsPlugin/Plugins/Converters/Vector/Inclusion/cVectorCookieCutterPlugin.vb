@@ -29,6 +29,10 @@ Namespace SpatialData
     Public Class cCookieCutConverterPlugin
         Inherits cVectorConverterPlugin
 
+        Public Sub New()
+            MyBase.New()
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set whether cells are excluded when inside the cookie cutter polygon.
@@ -37,19 +41,22 @@ Namespace SpatialData
         ''' <para>If set to False, cells are excluded when not overlapping with 
         ''' attached vectors, and are included when overlapping with the spatial data.</para>
         ''' </summary>
+        ''' <remarks>
+        ''' This is the inverse of <see cref="ExcludeOutside"/>.
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Property ExcludeInside As Boolean = True
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set whether cells are excluded when outside the cookie cutter polygon.
-        ''' <para>If set to True, cells are excluded when they do not overlap with attached 
-        ''' vector data, and are included in the model area when they do overlap.</para>
-        ''' <para>If set to False, cells are included when overlapping with 
-        ''' attached vectors, and are excluded when not overlapping with the spatial data.</para>
+        ''' <para>If set to True, cells are included when they overlap with attached 
+        ''' vector data, and are excluded in the model area when they do NOT overlap.</para>
+        ''' <para>If set to False, cells are excluded when overlapping with 
+        ''' attached vectors, and are excluded when overlapping with the spatial data.</para>
         ''' </summary>
         ''' <remarks>
-        ''' The inverse of <see cref="ExcludeInside"/>.
+        ''' This is the inverse of <see cref="ExcludeInside"/>.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Property ExcludeOutside As Boolean
@@ -118,6 +125,7 @@ Namespace SpatialData
                 Return "DotSpatial.VectorCookieCutterPlugin"
             End Get
         End Property
+
     End Class
 
 End Namespace

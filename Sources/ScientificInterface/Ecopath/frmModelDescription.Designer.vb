@@ -84,8 +84,6 @@ Partial Class frmModelDescription
         Me.m_gbNumFormatting = New System.Windows.Forms.GroupBox()
         Me.m_cbGroupDigits = New System.Windows.Forms.CheckBox()
         Me.m_chkPSD = New System.Windows.Forms.CheckBox()
-        Me.m_tbContact = New System.Windows.Forms.RichTextBox()
-        Me.m_tbDescription = New System.Windows.Forms.RichTextBox()
         Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_nudFirstYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_lblLocation = New System.Windows.Forms.Label()
@@ -104,6 +102,8 @@ Partial Class frmModelDescription
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.m_chkIsCoupled = New System.Windows.Forms.CheckBox()
+        Me.m_tbDescription = New System.Windows.Forms.TextBox()
+        Me.m_tbContact = New System.Windows.Forms.TextBox()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -388,16 +388,6 @@ Partial Class frmModelDescription
         Me.m_chkPSD.Name = "m_chkPSD"
         Me.m_chkPSD.UseVisualStyleBackColor = True
         '
-        'm_tbContact
-        '
-        resources.ApplyResources(Me.m_tbContact, "m_tbContact")
-        Me.m_tbContact.Name = "m_tbContact"
-        '
-        'm_tbDescription
-        '
-        resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
-        Me.m_tbDescription.Name = "m_tbDescription"
-        '
         'm_hdrExecution
         '
         Me.m_hdrExecution.CanCollapseParent = False
@@ -472,6 +462,7 @@ Partial Class frmModelDescription
         '
         'm_plDescr
         '
+        Me.m_plDescr.Controls.Add(Me.m_tbContact)
         Me.m_plDescr.Controls.Add(Me.m_tbDescription)
         Me.m_plDescr.Controls.Add(Me.m_pbSearching)
         Me.m_plDescr.Controls.Add(Me.m_lbAuthor)
@@ -488,7 +479,6 @@ Partial Class frmModelDescription
         Me.m_plDescr.Controls.Add(Me.m_nudFirstYear)
         Me.m_plDescr.Controls.Add(Me.m_tbArea)
         Me.m_plDescr.Controls.Add(Me.m_cmbModelAreaName)
-        Me.m_plDescr.Controls.Add(Me.m_tbContact)
         Me.m_plDescr.Controls.Add(Me.m_lblFirstYear)
         Me.m_plDescr.Controls.Add(Me.m_lblLocation)
         Me.m_plDescr.Controls.Add(Me.m_lblNorth)
@@ -528,6 +518,16 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_chkIsCoupled, "m_chkIsCoupled")
         Me.m_chkIsCoupled.Name = "m_chkIsCoupled"
         Me.m_chkIsCoupled.UseVisualStyleBackColor = True
+        '
+        'm_tbDescription
+        '
+        resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
+        Me.m_tbDescription.Name = "m_tbDescription"
+        '
+        'm_tbContact
+        '
+        resources.ApplyResources(Me.m_tbContact, "m_tbContact")
+        Me.m_tbContact.Name = "m_tbContact"
         '
         'frmModelDescription
         '
@@ -599,8 +599,6 @@ Partial Class frmModelDescription
     Private WithEvents m_cbGroupDigits As System.Windows.Forms.CheckBox
     Private WithEvents m_gbMonetaryUnits As System.Windows.Forms.GroupBox
     Private WithEvents m_gbNumFormatting As System.Windows.Forms.GroupBox
-    Private WithEvents m_tbContact As System.Windows.Forms.RichTextBox
-    Private WithEvents m_tbDescription As System.Windows.Forms.RichTextBox
     Private WithEvents m_hdrExecution As cEwEHeaderLabel
     Private WithEvents m_lblLocation As System.Windows.Forms.Label
     Private WithEvents m_lblNorth As System.Windows.Forms.Label
@@ -621,5 +619,7 @@ Partial Class frmModelDescription
     Private WithEvents m_nudSouth As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudWest As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudEast As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_tbContact As System.Windows.Forms.TextBox
+    Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
 
 End Class

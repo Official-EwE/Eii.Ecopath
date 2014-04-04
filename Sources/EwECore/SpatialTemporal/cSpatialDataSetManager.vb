@@ -100,6 +100,19 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Returns the full path to the configuration file. This creates the directory if needed.
+        ''' </summary>
+        ''' <returns>The full path to the configuration file.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ConfigFileName() As String
+
+            Dim strFolder As String = cSystemUtils.ApplicationSettingsPath()
+            Return Path.Combine(strFolder, cCONFIG_FILE)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Initializes the manager with datasets, loaded from persistent storage.
         ''' </summary>
         ''' <param name="strFile">Optional file to load datasets from. If this 
@@ -107,7 +120,7 @@ Namespace SpatialData
         ''' is used.</param>
         ''' <param name="bClearFirst">Flag, stating that the content currently in 
         ''' the manager should be cleared first.</param>
-        ''' <returns>True if successful.</returns>
+        ''' <returns>False if the config file is corrupted, True otherwise.</returns>
         ''' <remarks>This method can also be used to import extra datasets.</remarks>
         ''' -------------------------------------------------------------------
         Public Function Load(Optional strFile As String = "", _
@@ -125,7 +138,9 @@ Namespace SpatialData
             If (String.IsNullOrEmpty(strFile)) Then strFile = cSpatialDataSetManager.ConfigFileName()
 
             'jb if it failed to find the config file shouldn't it return False
-            If Not File.Exists(strFile) Then Return False '  True
+            ' JS: No, it is fine if the file does not exist, which is the initial state of a new EwE installation.
+            '     bSuccess indicates whether the config file is corrupted, which is an error.
+            If Not File.Exists(strFile) Then Return True
 
             ' Load datasets
             doc.Load(strFile)
@@ -147,10 +162,10 @@ Namespace SpatialData
                                 If (t IsNot Nothing) Then
 
                                     ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
-
                                     ds.Configuration(doc) = xn.ChildNodes(0)
-                                    xa = xn.Attributes("GUID")
+
                                     ' Assign GUID
+                                    xa = xn.Attributes("GUID")
                                     ds.GUID = Guid.Parse(xa.InnerText)
 
                                     If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
@@ -172,14 +187,14 @@ Namespace SpatialData
                             Catch ex As Exception
                                 ds = Nothing
                                 bSuccess = False
-                                cLog.Write(ex, "Exception loading Spatial Configuration file " + strFile)
+                                cLog.Write(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
                             End Try
 
                             Dim bAdd As Boolean = False
                             If (ds IsNot Nothing) Then
                                 bAdd = True
                                 If (Not (ds.GUID.Equals(Guid.Empty))) Then
-                                    bAdd = (Me.ItemByGUID(ds.GUID) Is Nothing)
+                                    bAdd = (Me.Find(ds.GUID) Is Nothing)
                                 End If
                             End If
                             If bAdd Then Me.Add(ds)
@@ -243,11 +258,8 @@ Namespace SpatialData
             End Try
 
             If (xnRoot Is Nothing) Then
-                ' Wipe and recreate
-                doc.RemoveAll()
-                doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))
-                xnRoot = doc.CreateElement("Datasets")
-                doc.AppendChild(xnRoot)
+                ' Build new base doc
+                doc = Me.NewDoc(xnRoot)
             End If
 
             ' Remove all deleted or current datasets
@@ -362,14 +374,6 @@ Namespace SpatialData
             End Get
             Set(ds As ISpatialDataSet)
                 If (Me.IsIndexingAllowed) Then
-                    ' JS 25jan14: Disabled indexing until it no longer interfers with running the spatial temporal framework.
-                    ' A fundamental weakness in the indexing process is that it's ability to index, and more 
-                    ' importantly, to stop indexing when needed, totally relies in a robust implementation of the
-                    ' indexing logic within datasets. If a dataset deadlocks, the indexing process will stall
-                    ' the ability to run, and may lock up user interfaces etc. This is not good.
-
-                    ' As a solution, the spatial dataset indexer should be able to abort stalled indexing processes:
-                    'Me.m_indexer.Add(ds, 5000) ' add with timeout
                     Me.m_indexer.Add(ds)
                 End If
             End Set
@@ -386,6 +390,10 @@ Namespace SpatialData
         Public Function IsIndexing(Optional ds As ISpatialDataSet = Nothing) As Boolean
             Return Me.m_indexer.IsIndexing(ds)
         End Function
+
+        Public Sub StopIndexing()
+            Me.StopRun(5000)
+        End Sub
 
 #End Region ' Dataset indexing
 
@@ -510,21 +518,12 @@ Namespace SpatialData
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get a dataset with a given <see cref="GUID"/>
-        ''' </summary>
-        ''' <param name="guidDS"></param>
-        ''' <returns>A dataset, or nothing if no matching dataset could be found.</returns>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property ItemByGUID(ByVal guidDS As Guid) As ISpatialDataSet
-            Get
-                For Each ds As ISpatialDataSet In Me.m_lAvailable
-                    If (guidDS.Equals(ds.GUID)) Then Return ds
-                Next
-                Return Nothing
-            End Get
-        End Property
+        Public Function Find(ByVal guidDS As Guid) As ISpatialDataSet
+            For Each ds As ISpatialDataSet In Me.m_lAvailable
+                If (guidDS.Equals(ds.GUID)) Then Return ds
+            Next
+            Return Nothing
+        End Function
 
 #End Region ' Dataset list interface
 
@@ -532,15 +531,158 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the full path to the configuration file. This creates the directory if needed.
+        ''' Return an existing dataset if available. If not available, a dataset
+        ''' is dynamically created from provided configuration info.
         ''' </summary>
-        ''' <returns>The full path to the configuration file.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ConfigFileName() As String
+        Friend ReadOnly Property CreateDataset(ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As ISpatialDataSet
+            Get
+                If (String.IsNullOrWhiteSpace(cfg.DatasetGUID)) Then Return Nothing
 
-            Dim strFolder As String = cSystemUtils.ApplicationSettingsPath()
-            Return Path.Combine(strFolder, cCONFIG_FILE)
+                Dim guidDS As Guid = Guid.Empty
+                Guid.TryParse(cfg.DatasetGUID, guidDS)
 
+                Dim ds As ISpatialDataSet = Me.Find(guidDS)
+
+                If (ds Is Nothing) Then
+
+                    ' Abort if missing dataset creation info
+                    If (String.IsNullOrWhiteSpace(cfg.DatasetTypeName)) Then Return Nothing
+
+                    ' Abort if dataset cannot be instantiated
+                    ' yuck...
+                    Dim t As Type = cTypeUtils.StringToType(cfg.DatasetTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin"))
+                    If (t Is Nothing) Then Return Nothing
+
+                    Try
+                        ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
+                        If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
+
+                        ' This needs some restructuring. Perhaps it is easiest to add XML serializer classes
+                        ' for datasets and converters. This XML logic is becoming too fragmented
+
+                        If Not String.IsNullOrWhiteSpace(cfg.DatasetConfig) Then
+                            Dim xnRoot As XmlNode = Nothing
+                            Dim doc As XmlDocument = Me.NewDoc(xnRoot)
+                            Dim xnData As XmlElement = doc.CreateElement("Configuration")
+                            xnData.InnerXml = cfg.DatasetConfig
+                            ds.Configuration(doc) = xnData
+                        End If
+
+                    Catch ex As Exception
+                        cLog.Write(ex, "cSpatialDatasetManager.CreateDataset " & cfg.DatasetTypeName)
+                    End Try
+                End If
+
+                Return ds
+
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Store a dataset into provided configuration info.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Friend Function UpdateDataset(ByVal ds As ISpatialDataSet, _
+                                      ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
+
+            If (ds Is Nothing) Then
+                cfg.DatasetTypeName = ""
+                cfg.DatasetGUID = ""
+                cfg.DatasetConfig = ""
+                Return True
+            End If
+
+            Dim doc As XmlDocument = Nothing
+            Dim xnRoot As XmlNode = Nothing
+            Dim xnData As XmlNode = Nothing
+
+            Try
+                doc = Me.NewDoc(xnRoot)
+
+                cfg.DatasetTypeName = cTypeUtils.TypeToString(ds.GetType)
+                cfg.DatasetGUID = ds.GUID.ToString
+
+                xnData = ds.Configuration(doc)
+
+                If (xnData IsNot Nothing) Then
+                    cfg.DatasetConfig = xnData.InnerXml
+                Else
+                    cfg.DatasetConfig = ""
+                End If
+            Catch ex As Exception
+
+            End Try
+
+            Return True
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a converter from provided configuration info.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Friend ReadOnly Property CreateConverter(ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As ISpatialDataConverter
+            Get
+                If (String.IsNullOrWhiteSpace(cfg.ConverterTypeName)) Then Return Nothing
+
+                Dim cv As ISpatialDataConverter = Nothing
+                Dim t As Type = cTypeUtils.StringToType(cfg.ConverterTypeName)
+                If (t Is Nothing) Then Return Nothing
+
+                Try
+                    cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
+                    ' Properly initialize
+                    If (TypeOf cv Is IPlugin) Then
+                        DirectCast(cv, IPlugin).Initialize(Me.m_core)
+                    End If
+
+                    If Not String.IsNullOrWhiteSpace(cfg.ConverterConfig) Then
+                        Dim xnRoot As XmlNode = Nothing
+                        Dim doc As XmlDocument = Me.NewDoc(xnRoot)
+                        Dim xnData As XmlElement = doc.CreateElement("Configuration")
+                        xnData.InnerXml = cfg.ConverterConfig
+                        cv.Configuration(doc) = xnData
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+                Return cv
+
+            End Get
+        End Property
+
+        Friend Function UpdateConverter(ByVal cv As ISpatialDataConverter, _
+                                        ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
+
+            If (cv Is Nothing) Then
+                cfg.ConverterTypeName = ""
+                cfg.ConverterConfig = ""
+                Return True
+            End If
+
+            Dim doc As XmlDocument = Nothing
+            Dim xnRoot As XmlNode = Nothing
+            Dim xnData As XmlNode = Nothing
+
+            Try
+                doc = Me.NewDoc(xnRoot)
+
+                cfg.ConverterTypeName = cTypeUtils.TypeToString(cv.GetType)
+                xnData = cv.Configuration(doc)
+
+                If (xnData IsNot Nothing) Then
+                    cfg.ConverterConfig = xnData.InnerXml
+                Else
+                    cfg.ConverterConfig = ""
+                End If
+            Catch ex As Exception
+
+            End Try
+
+            Return True
         End Function
 
         ''' -------------------------------------------------------------------
@@ -556,6 +698,16 @@ Namespace SpatialData
             End If
 
         End Sub
+
+        Private Function NewDoc(ByRef xnRoot As XmlNode) As XmlDocument
+            Dim doc As New XmlDocument()
+            Dim xnData As XmlElement = Nothing
+            Dim xaData As XmlAttribute = Nothing
+            doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))
+            xnRoot = doc.CreateElement("Datasets")
+            doc.AppendChild(xnRoot)
+            Return doc
+        End Function
 
 #End Region ' Internals
 

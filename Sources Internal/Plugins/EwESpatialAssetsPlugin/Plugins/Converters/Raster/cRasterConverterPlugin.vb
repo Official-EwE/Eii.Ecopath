@@ -28,6 +28,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports DotSpatial.Topology
+Imports System.Xml
 
 #End Region ' Imports
 
@@ -42,95 +43,35 @@ Namespace SpatialData
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Class cRasterConverterPlugin
-        Implements ISpatialDataConverterPlugin
+        Inherits cSpatialDataConverter
 
-        ''' <summary>Filter for extracting features (vector set only).</summary>
-        Private m_strAttributeFilter As String = ""
-        ''' <summary>Name of attribute value to rasterize (vector set only).</summary>
-        Private m_strAttributeName As String = ""
-        Private m_core As cCore = Nothing
+        Public Sub New()
+            MyBase.New()
+        End Sub
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="EwEUtils.SpatialData.ISpatialDataConverter.Dataset"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.IsConfigured"/>
         ''' -----------------------------------------------------------------------
-        Public Property Dataset As EwEUtils.SpatialData.ISpatialDataSet _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.Dataset
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.Configuration"/>
-        ''' -----------------------------------------------------------------------
-        Public Property Configuration(ByVal doc As System.Xml.XmlDocument) As System.Xml.XmlNode _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.Configuration
-            Get
-                Return Nothing
-            End Get
-            Set(ByVal value As System.Xml.XmlNode)
-                ' NOP: nothing to configure
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.IsConfigured"/>
-        ''' -----------------------------------------------------------------------
-        Public Function IsConfigured() As Boolean _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.IsConfigured
+        Public Overrides Function IsConfigured() As Boolean
             Return True
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.IsCompatible"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.IsCompatible"/>
         ''' -----------------------------------------------------------------------
-        Public Function IsCompatible(ds As ISpatialDataSet) As Boolean _
-            Implements ISpatialDataConverter.IsCompatible
+        Public Overrides Function IsCompatible(ds As ISpatialDataSet) As Boolean
             If (ds Is Nothing) Then Return False
             Return (ds.ConversionFormat = "DotSpatialRaster")
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.AttributeName"/>
-        ''' -----------------------------------------------------------------------
-        Public Property AttributeName As String Implements ISpatialDataConverter.AttributeName
-            Get
-                Return Me.m_strAttributeName
-            End Get
-            Set(value As String)
-                Me.m_strAttributeName = value
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.AttributeFilter"/>
-        ''' -----------------------------------------------------------------------
-        Public Property AttributeFilter As String Implements ISpatialDataConverter.AttributeFilter
-            Get
-                Return Me.m_strAttributeFilter
-            End Get
-            Set(value As String)
-                Me.m_strAttributeFilter = value
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.AttributeValueMappings"/>
-        ''' -----------------------------------------------------------------------
-        Public Property AttributeValueMappings As Dictionary(Of Object, Object) Implements ISpatialDataConverter.AttributeValueMappings
-            Get
-                Return Nothing
-            End Get
-            Set(value As System.Collections.Generic.Dictionary(Of Object, Object))
-                ' Ignored
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataConverter.Convert"/>
         ''' -----------------------------------------------------------------------
-        Public Function Convert(ByVal data As Object, _
-                                ByVal ptfTL As PointF, _
-                                ByVal ptfBR As PointF, _
-                                ByVal dCellSize As Double, _
-                                ByVal strFile As String) As ISpatialRaster _
-            Implements EwEUtils.SpatialData.ISpatialDataConverter.Convert
+        Public Overrides Function Convert(ByVal data As Object, _
+                                          ByVal ptfTL As PointF, _
+                                          ByVal ptfBR As PointF, _
+                                          ByVal dCellSize As Double, _
+                                          ByVal strFile As String) As ISpatialRaster
 
             Dim rstResult As IRaster = Nothing
             Dim ext As Extent = cDotSpatialUtils.Extent(ptfTL, ptfBR)
@@ -255,74 +196,45 @@ Namespace SpatialData
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.DisplayName"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.DisplayName"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property DisplayName As String _
-            Implements ISpatialDataConverter.DisplayName
+        Public Overrides ReadOnly Property DisplayName As String
             Get
                 Return My.Resources.CONVERTER_DIRECTRASTER_NAME
             End Get
         End Property
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.Description"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.Description"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Description As String _
-            Implements ISpatialDataConverter.Description, EwEPlugin.IPlugin.Description
+        Public Overrides ReadOnly Property Description As String
             Get
                 Return My.Resources.CONVERTER_DIRECTRASTER_DESCR
             End Get
         End Property
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverterPlugin.Author"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.PluginName"/>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Author As String _
-            Implements ISpatialDataConverterPlugin.Author
-            Get
-                Return "Jeroen Steenbeek, UBC Fisheries Centre"
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverterPlugin.Contact"/>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Contact As String _
-            Implements ISpatialDataConverterPlugin.Contact
-            Get
-                Return "mailto:ewedevteam@gmail.com"
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverterPlugin.Initialize"/>
-        ''' -----------------------------------------------------------------------
-        Public Sub Initialize(ByVal core As Object) _
-            Implements ISpatialDataConverterPlugin.Initialize
-            Me.m_core = DirectCast(core, cCore)
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="IPlugin.Name"/>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property PlugingName As String _
-            Implements EwEPlugin.IPlugin.Name
+        Public Overrides ReadOnly Property PluginName As String
             Get
                 Return "DotSpatial.DefaultRasterConverter"
             End Get
         End Property
 
-        Public Overrides Function ToString() As String
-            Return Me.DisplayName()
+#Region " Configuration "
+
+        Protected Overrides Function FromXML(doc As XmlDocument, node As XmlNode) As Boolean
+            ' Not needed for this type of converter
+            Return True
         End Function
 
-        Private Sub LogMessage(strMessage As String, status As eStatusFlags)
+        Protected Overrides Function ToXML(doc As XmlDocument) As XmlNode
+            ' Not needed for this type of converter
+            Return Nothing
+        End Function
 
-            If (Me.m_core IsNot Nothing) Then
-                Me.m_core.SpatialOperationLog.LogOperation(strMessage, status)
-            End If
-
-        End Sub
+#End Region ' Configuration
 
     End Class
 

@@ -215,6 +215,9 @@
     <value>Resampled raster to {0}, {1}</value>
     <comment>{0}=grid, {1}=stats</comment>
   </data>
+  <data name="PROMPT_SELECTFILE" xml:space="preserve">
+    <value>Select file</value>
+  </data>
   <data name="PROMPT_SELECTFOLDER" xml:space="preserve">
     <value>Select folder with spatial/temporal files</value>
   </data>

@@ -27,6 +27,9 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+' ToDo_JS: Load and save converter configuration
+' ToDo_JS: Load and save dataset configuration
+
 Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
@@ -80,7 +83,6 @@ Namespace SpatialData
 
         Public Sub Load()
 
-            Dim guid As Guid
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
@@ -96,30 +98,9 @@ Namespace SpatialData
 
                         If (cfg IsNot Nothing) Then
 
-                            ' Try to resolve dataset
-                            If guid.TryParse(cfg.DatasetGUID, guid) Then
-                                ds = Me.m_datasetManager.ItemByGUID(guid)
-                            End If
+                            ds = Me.m_datasetManager.CreateDataset(cfg)
+                            cv = Me.m_datasetManager.CreateConverter(cfg)
 
-                            ' Try to create converter
-                            t = cTypeUtils.StringToType(cfg.Converter)
-                            If (t IsNot Nothing) Then
-                                Try
-                                    cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
-
-                                    'If TypeOf (adt) Is cSpatialScalarDataAdapterBase Then
-                                    '    With DirectCast(adt, cSpatialScalarDataAdapterBase)
-                                    '        .DataScale(i, j) = cfg.Scale
-                                    '        .DataScaleType(i, j) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
-                                    '    End With
-                                    'End If
-
-                                    ' Properly initialuize
-                                    If (TypeOf cv Is IPlugin) Then DirectCast(cv, IPlugin).Initialize(Me.m_core)
-                                Catch ex As Exception
-
-                                End Try
-                            End If
                             'Convert not necessary for a scale value
                             If TypeOf (adt) Is cSpatialScalarDataAdapterBase Then
                                 With DirectCast(adt, cSpatialScalarDataAdapterBase)
@@ -127,7 +108,6 @@ Namespace SpatialData
                                     .DataScaleType(i, j) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
                                 End With
                             End If
-
                         End If
 
                         adt.Dataset(i, j) = ds
@@ -156,18 +136,9 @@ Namespace SpatialData
                         cfg = Me.m_data.Item(adt.VarName, i, j)
 
                         If (cfg IsNot Nothing) Then
-                            If (ds IsNot Nothing) Then
-                                cfg.DatasetGUID = ds.GUID.ToString
-                            Else
-                                cfg.DatasetGUID = ""
-                            End If
 
-                            If (cv IsNot Nothing) Then
-                                cfg.Converter = cTypeUtils.TypeToString(cv.GetType)
-                            Else
-                                cfg.Converter = ""
-                            End If
-                            cfg.ConverterConfig = ""
+                            Me.m_datasetManager.UpdateDataset(ds, cfg)
+                            Me.m_datasetManager.UpdateConverter(cv, cfg)
 
                             If TypeOf adt Is cSpatialScalarDataAdapterBase Then
                                 With DirectCast(adt, cSpatialScalarDataAdapterBase)
@@ -250,23 +221,10 @@ Namespace SpatialData
             Try
                 Return Me.m_datasetManager.Load(strFile, False)
             Catch ex As Exception
-                cLog.Write(ex, "cSpatialDataConnectionManager.Load")
+                cLog.Write(ex, "cAdapaterConfigurationManager.Load")
             End Try
             Return False
         End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get a dataset with a given <see cref="GUID"/>
-        ''' </summary>
-        ''' <param name="guidDS"></param>
-        ''' <returns>A dataset, or nothing if no matching dataset could be found.</returns>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property Dataset(ByVal guidDS As Guid) As ISpatialDataSet
-            Get
-                Return Me.m_datasetManager.ItemByGUID(guidDS)
-            End Get
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>

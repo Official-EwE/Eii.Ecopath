@@ -35,7 +35,7 @@ Public Class cEcospaceLayerImportance
     Sub New(ByRef theCore As cCore, ByVal idBID As Integer, ByRef manager As cEcospaceBasemap, ByVal iIndex As Integer)
 
         ' Importance layers are user-defined, and will have user-provided names
-        MyBase.New(theCore, idBID, manager, "", eVarNameFlags.LayerImportance, iIndex)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerImportance, iIndex)
 
         Dim val As cValue
         Dim meta As cVariableMetaData
@@ -76,6 +76,10 @@ Public Class cEcospaceLayerImportance
 
 #Region " Overrides "
 
+    Protected Overrides Function DefaultName() As String
+        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_IMPORTANCE, Me.Index)
+    End Function
+
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
             If Me.ValidateCellPosition(iRow, iCol) Then
@@ -95,15 +99,12 @@ Public Class cEcospaceLayerImportance
 #Region " Properties by dot (.) operator "
 
     Public Property Weight() As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.ImportanceWeight))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.ImportanceWeight, value)
         End Set
-
     End Property
 
 #End Region ' Properties by dot (.) operator

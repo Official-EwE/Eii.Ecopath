@@ -69,6 +69,15 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub Add(ds As ISpatialDataSet)
 
+            ' JS 25jan14: A fundamental weakness in the earlier implementation of 
+            ' the indexing process is that its ability to index, and more importantly, 
+            ' its ability to abort indexing when needed, totally relies on the 
+            ' implementation of indexing logic within individual datasets. If the 
+            ' indexing process of a dataset somehow deadlocks, the ability to run the 
+            ' spatial temporal framework is stalled, and user interfaces may be 
+            ' deadlocked. This is not good. As a solution, control over the indexing 
+            ' process has been moved to this class. 
+
             ' Check if there is work to do
             If (ds IsNot Nothing) Then
                 ' Check if we really need to do this
@@ -161,6 +170,7 @@ Namespace SpatialData
             Dim ptfTL As New PointF(-180, 90)
             Dim ptfBR As New PointF(180, -90)
             Dim c As ISpatialDataCache = Nothing
+            Dim strMessage As String = ""
             Dim bDone As Boolean = False
 
             If (ds IsNot Nothing) Then
@@ -169,16 +179,19 @@ Namespace SpatialData
                     c = ds.Cache
 
                     Try
+                        strMessage = String.Format(My.Resources.CoreMessages.STATUS_INDEXING_DATASET, ds.DisplayName)
+                        Me.OnSpatialIndexUpdated(strMessage, eProgressState.Start, 0)
 
                         While Not bDone
 
                             dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTS)
                             If (ds.HasDataAtT(dt)) Then
                                 If (ds.IndexStatusAtT(dt) = ISpatialDataSet.eIndexStatus.NotIndexed) Then
+                                    ' ToDo: Every dataset call should be subject to a timeout
                                     ds.UpdateIndexAtT(dt)
                                 End If
                                 Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
-                                Me.OnSpatialIndexUpdated(ds, CSng(comp.NumIndexed / comp.NumOverlappingTimeSteps))
+                                Me.OnSpatialIndexUpdated(strMessage, eProgressState.Running, CSng(comp.NumIndexed / comp.NumOverlappingTimeSteps))
                             End If
 
                             ' Next
@@ -200,7 +213,7 @@ Namespace SpatialData
                         ' Done threading
                         Me.m_threadIndex = Nothing
                         ' Done (send just in case)
-                        Me.OnSpatialIndexUpdated(ds, 1.0!)
+                        Me.OnSpatialIndexUpdated("", eProgressState.Finished, 1.0!)
                     End Try
                 End If
             End If
@@ -210,25 +223,14 @@ Namespace SpatialData
 
         End Sub
 
-        Private Sub OnSpatialIndexUpdated(ByVal ds As ISpatialDataSet, ByVal sProgress As Single)
+        Private Sub OnSpatialIndexUpdated(ByVal strMessage As String, _
+                                          ByVal state As eProgressState, _
+                                          ByVal sProgress As Single)
+
             If (Me.m_core IsNot Nothing) Then
                 Try
-                    Dim state As eProgressState = eProgressState.Running
-                    Dim strMessage As String = ""
-
-                    If (ds IsNot Nothing) Then
-                        strMessage = String.Format(My.Resources.CoreMessages.STATUS_INDEXING_DATASET, ds.DisplayName)
-                    End If
-
-                    If sProgress = 0 Then
-                        state = eProgressState.Start
-                    ElseIf sProgress = 1.0 Then
-                        state = eProgressState.Finished
-                    End If
-
                     Dim msg As New cProgressMessage(state, 1, sProgress, strMessage, eMessageType.Progress, eDataTypes.EcospaceSpatialDataConnection)
                     msg.Source = eCoreComponentType.External
-
                     Me.m_core.Messages.SendMessage(msg)
 
                 Catch ex As Exception

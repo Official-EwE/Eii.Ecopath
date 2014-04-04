@@ -681,6 +681,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Settings\cFormSettings.vb" />
+    <Compile Include="Settings\cSettingsParser.vb" />
     <Compile Include="Settings\IXMLDocSettings.vb" />
     <Compile Include="Style\ColorRamps\cARGBColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cColorRamp.vb" />
@@ -703,6 +704,7 @@
     <Compile Include="Style\Type formatters\cCharFormatter.vb" />
     <Compile Include="Style\Type formatters\cDatasourceTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cCompatibilityTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cObjectTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cSpatialDatasetCompatibilityFormatter.vb" />
     <Compile Include="Style\Type formatters\cShapeDataFormatter.vb" />
     <Compile Include="Style\Type formatters\cStyleTypeFormatter.vb" />

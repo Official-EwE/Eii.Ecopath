@@ -208,22 +208,21 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Write content to XML.
+        ''' Write configuration to XML.
         ''' </summary>
         ''' <param name="doc">The doc to generate nodes for.</param>
         ''' <returns>
-        ''' An XML node that contains the content of the dataset.
+        ''' An XML node that contains the configuration of the dataset.
         ''' </returns>
         ''' -------------------------------------------------------------------
         Protected MustOverride Function ToXML(ByVal doc As XmlDocument) As XmlNode
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Read content from XML.
+        ''' Read configuration from XML.
         ''' </summary>
-        ''' <param name="doc">The doc to read nodes from.</param>
-        ''' <param name="node">The configuration node that contains the content
-        ''' of the dataset. Happy, happy, happy.</param>
+        ''' <param name="doc">The doc to read the configuration from.</param>
+        ''' <param name="node">The node that contains the configuration of the dataset.</param>
         ''' <returns>
         ''' True if successful.
         ''' </returns>
@@ -395,6 +394,36 @@ Namespace SpatialData
         End Function
 
         ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.GetAttributeDataTypes"/>
+        ''' -------------------------------------------------------------------
+        Public Function GetAttributeDataTypes() As Type() _
+             Implements ISpatialDataSet.GetAttributeDataTypes
+
+            Dim ltAttributes As New List(Of Type)
+            Dim fs As IFeatureSet = Nothing
+            Dim dt As DataTable = Nothing
+
+            Try
+
+                If (Me.LoadSource()) Then
+                    If (TypeOf Me.m_dsSourceData Is IFeatureSet) Then
+                        fs = DirectCast(Me.m_dsSourceData, IFeatureSet)
+                        dt = fs.DataTable
+                        For iCol As Integer = 0 To dt.Columns.Count - 1
+                            ltAttributes.Add(dt.Columns(iCol).DataType)
+                        Next
+                    End If
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex, "cFileDataSet::GetAttributeDataTypes")
+            End Try
+
+            Return ltAttributes.ToArray()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.GetAttributeValues"/>
         ''' -------------------------------------------------------------------
         Public Function GetAttributeValues() As DataTable _
@@ -478,6 +507,9 @@ Namespace SpatialData
 
             Catch ex As Exception
                 Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+                ' Log an error
+                Me.StoreExtent(Nothing)
+                ' Failed
                 Me.m_dsSourceData = Nothing
             End Try
 

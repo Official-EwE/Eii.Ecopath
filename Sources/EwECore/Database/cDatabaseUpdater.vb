@@ -182,7 +182,7 @@ Namespace Database
             If sDBVersion < sBaselineVersion Then Return False
 
             For Each update As cDBUpdate In cDatabaseUpdater.GetUpdates()
-                If (update.UpdateVersion > sDBVersion) Or (update.RunAlways) Then
+                If (update.UpdateVersion > sDBVersion) Then
                     Return True
                 End If
             Next
@@ -222,22 +222,18 @@ Namespace Database
                 update = aUpdates(iUpdate)
 
                 ' Version ok?
-                If (update.UpdateVersion > sDBVersion) Or (update.RunAlways) Then
+                If (update.UpdateVersion > sDBVersion) Then
                     ' #Yes: able to start transaction?
                     If db.BeginTransaction() Then
-                        Dim msgImportance As eMessageImportance = eMessageImportance.Maintenance
-                        If Not update.RunAlways Then
-                            msgImportance = eMessageImportance.Information
-                        End If
                         ' Do not publicly report updates that always run
                         Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion, update.UpdateDescription), _
-                                              msgImportance)
+                                              eMessageImportance.Maintenance)
 
                         Try
                             ' #Yes: run the update
                             bSucces = update.ApplyUpdate(db)
                             ' Update ran successful?
-                            If bSucces And (Not update.RunAlways) Then
+                            If bSucces Then
                                 ' #Yes: Update database version
                                 db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
                             Else

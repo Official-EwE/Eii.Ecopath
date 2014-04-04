@@ -64,7 +64,7 @@ Namespace Controls
                 Next
             End If
 
-            g.DrawImage(bmp, rc.X, rc.Y)
+            g.DrawImage(bmp, rc.X, rc.Y, rc.Width, rc.Height)
 
             gtmp.Dispose()
             bmp.Dispose()

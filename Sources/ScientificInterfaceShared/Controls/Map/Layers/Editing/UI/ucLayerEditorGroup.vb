@@ -28,6 +28,7 @@ Imports ScientificInterfaceShared.Style
 Namespace Controls.Map.Layers
 
     Public Class ucLayerEditorGroup
+        Inherits ucLayerEditorDefault
 
         Public Sub New()
             MyBase.New()

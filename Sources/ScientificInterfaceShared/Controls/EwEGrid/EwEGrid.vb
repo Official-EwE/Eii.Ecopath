@@ -828,10 +828,12 @@ Namespace Controls.EwEGrid
                         Me.Rows(0).Height = 45
                         Me.AutoStretchColumnsToFitWidth = False
                     Else
-                        For i As Integer = 2 To Me.ColumnsCount - 1
-                            Me.Columns(i).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                        Me.Columns(0).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+                        For i As Integer = 1 To Me.ColumnsCount - 1
+                            Me.Columns(i).AutoSizeMode = (SourceGrid2.AutoSizeMode.EnableStretch Or SourceGrid2.AutoSizeMode.EnableAutoSize)
                         Next
-                        Me.Rows(0).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                        Me.Rows(0).AutoSizeMode = (SourceGrid2.AutoSizeMode.EnableStretch Or SourceGrid2.AutoSizeMode.EnableAutoSize)
+                        Me.AutoStretchColumnsToFitWidth = True
                         Me.AutoSizeAll()
                     End If
                 End If

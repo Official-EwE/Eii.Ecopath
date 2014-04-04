@@ -258,10 +258,14 @@ Namespace Controls
             ' - Focus rect
             If Me.Focused Then ControlPaint.DrawFocusRectangle(e.Graphics, e.ClipRectangle)
 
+            Dim pen As Pen
+
             ' Draw track
             e.Graphics.DrawLine(SystemPens.ControlDark, CInt(Me.Margin.Left + cKNOBSIZE / 2), 9, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 9)
-            e.Graphics.DrawLine(SystemPens.ControlDarkDark, CInt(Me.Margin.Left + cKNOBSIZE / 2), 10, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 10)
-            e.Graphics.DrawLine(SystemPens.ControlLight, CInt(Me.Margin.Left + cKNOBSIZE / 2), 11, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 11)
+            If Me.Enabled Then pen = SystemPens.ControlDarkDark Else pen = SystemPens.Control
+            e.Graphics.DrawLine(pen, CInt(Me.Margin.Left + cKNOBSIZE / 2), 10, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 10)
+            If Me.Enabled Then pen = SystemPens.ControlLight Else pen = SystemPens.Control
+            e.Graphics.DrawLine(pen, CInt(Me.Margin.Left + cKNOBSIZE / 2), 11, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 11)
             e.Graphics.DrawLine(SystemPens.ControlLightLight, CInt(Me.Margin.Left + cKNOBSIZE / 2), 12, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 12)
 
             ' Draw knobs
