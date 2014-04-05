@@ -812,7 +812,9 @@ Namespace Controls
                     Me.Items = Me.Items
                 End If
 
-                If Me.m_provider.ValueType Is GetType(Integer) Then
+                iValue = Me.m_lItems.IndexOf(objValue)
+
+                If (Me.m_provider.ValueType Is GetType(Integer)) Then
                     For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
                         objItem = Me.m_cmb.Items(iItem)
                         If (TypeOf objItem Is cIndexedCollectionItem) Then
@@ -827,11 +829,11 @@ Namespace Controls
                             End If
                         End If
                     Next
-                    ' Truncate
-                    Me.m_cmb.SelectedIndex = Math.Max(-1, Math.Min(Me.m_cmb.Items.Count - 1, iValue))
-                Else
-                    Me.m_cmb.Text = objValue.ToString
                 End If
+
+                ' Truncate
+                Me.m_cmb.SelectedIndex = Math.Max(-1, Math.Min(Me.m_cmb.Items.Count - 1, iValue))
+
             End Sub
 
             Private Function SelectedIndex() As Integer
@@ -862,8 +864,12 @@ Namespace Controls
                         Me.m_lItems.AddRange(aItems)
                         ' Populate
                         For iItem As Integer = 0 To aItems.Length - 1
-                            ' Wrap item
-                            Me.m_cmb.Items.Add(New cIndexedCollectionItem(aItems(iItem)))
+                            If (Me.m_provider.ValueType Is GetType(Integer)) Then
+                                ' Wrap item
+                                Me.m_cmb.Items.Add(New cIndexedCollectionItem(aItems(iItem)))
+                            Else
+                                Me.m_cmb.Items.Add(aItems(iItem))
+                            End If
                         Next
                     End If
                     ' Done
@@ -896,7 +902,7 @@ Namespace Controls
             Private Sub OnControlValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 
                 ' Update internal value
-                If Me.m_provider.ValueType Is GetType(Integer) Then
+                If (Me.m_provider.ValueType Is GetType(Integer)) Then
                     ' #Integer? Set index
                     Me.m_provider.Value = Me.SelectedIndex()
                 ElseIf Me.m_provider.ValueType Is GetType(String) Then
