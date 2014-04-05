@@ -230,10 +230,11 @@ Public Class frmInvokeR
         Dim bHasSCOR As Boolean = Me.m_rbManagedSCOR.Checked Or (Not String.IsNullOrWhiteSpace(Me.m_tbxSCORFile.Text))
 
         If bHasR Then
-            Me.m_fpR.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
+            Me.m_fpR.Style = cStyleGuide.eStyleFlags.OK
         Else
-            Me.m_fpR.Style = cStyleGuide.eStyleFlags.FailedValidation Or cStyleGuide.eStyleFlags.NotEditable
+            Me.m_fpR.Style = cStyleGuide.eStyleFlags.FailedValidation
         End If
+
         If bHasScript Then
             Me.m_fpScript.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Else
