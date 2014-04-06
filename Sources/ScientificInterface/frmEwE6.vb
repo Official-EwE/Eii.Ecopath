@@ -423,7 +423,7 @@ Friend Class frmEwE6
         Me.m_cmdOpenOutput = New cCommand(cmdh, "OpenOutputLocation")
         Me.m_cmdOpenOutput.AddControl(Me.m_tsmiOpenOutput)
 
-        Me.m_cmdSave = New cCommand(cmdh, "SaveModel")
+        Me.m_cmdSave = New cCommand(cmdh, "SaveModel", My.Resources.COMMAND_SAVECHANGES)
         Me.m_cmdSave.AddControl(Me.m_tsmiFileSave)
         Me.m_cmdSave.AddControl(Me.m_tsbSave)
 

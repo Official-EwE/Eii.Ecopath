@@ -24082,4 +24082,7 @@ Description: {2}</value>
   <data name="COMMAND_AUTOSAVE" xml:space="preserve">
     <value>Configure which EwE components can automatically save results to file</value>
   </data>
+  <data name="COMMAND_SAVECHANGES" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
 </root>
