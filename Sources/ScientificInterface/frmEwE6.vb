@@ -557,7 +557,7 @@ Friend Class frmEwE6
         Me.m_cmdEditReferenceMap = New cCommand(cmdh, "EditRefMap")
 
         'Create and configure 'Autosave results' command
-        Me.m_cmdAutosaveResults = New cCommand(cmdh, "AutosaveResults")
+        Me.m_cmdAutosaveResults = New cCommand(cmdh, "AutosaveResults", My.Resources.COMMAND_AUTOSAVE)
         Me.m_cmdAutosaveResults.AddControl(Me.m_tsbnAutosaveResults)
 
         'Create and configure EditGroups command
@@ -3002,22 +3002,19 @@ Friend Class frmEwE6
     ''' </summary>
     Private Sub OnUpdateAutosaveResults(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdAutosaveResults.OnUpdate
         ' Check if any autosave option set
-        Dim bIsAutosaving As Boolean = False
+        Dim nAutoSaving As Integer = 0
         For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
             If Me.Core.Autosave(setting) Then
-                bIsAutosaving = True
-                Exit For
+                nAutoSaving += 1
             End If
         Next
-        If (Not bIsAutosaving) And (Me.m_pluginManager IsNot Nothing) Then
+        If (Me.m_pluginManager IsNot Nothing) Then
             For Each pi As IAutoSavePlugin In Me.m_pluginManager.GetPlugins(GetType(IAutoSavePlugin))
-                If pi.AutoSave Then
-                    bIsAutosaving = True
-                    Exit For
-                End If
+                If pi.AutoSave Then nAutoSaving += 1
             Next
         End If
-        cmd.Checked = bIsAutosaving
+        cmd.Checked = (nAutoSaving > 0)
+        cmd.Status = String.Format("{0} EwE component(s) are auto-saving results", nAutoSaving)
     End Sub
 
     ''' <summary>

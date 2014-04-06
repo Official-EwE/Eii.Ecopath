@@ -24,6 +24,7 @@ Imports System.Collections
 Imports System.Collections.Generic
 Imports System.Diagnostics
 Imports EwEUtils.Core
+Imports System.Text
 
 #End Region ' Imports
 
@@ -334,7 +335,10 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Public Overridable ReadOnly Property Description As String
             Get
-                Return Me.m_strDescription
+                Dim sb As New StringBuilder()
+                If Not String.IsNullOrWhiteSpace(Me.m_strDescription) Then sb.AppendLine(Me.m_strDescription)
+                If Not String.IsNullOrWhiteSpace(Me.Status) Then sb.AppendLine(Me.Status)
+                Return sb.ToString()
             End Get
         End Property
 
@@ -355,6 +359,13 @@ Namespace Commands
                 Return Me.m_bInvoking
             End Get
         End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Dyanmic status of the command.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property Status As String
 
 #End Region ' Public properties
 
