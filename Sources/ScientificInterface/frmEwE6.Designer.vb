@@ -753,7 +753,7 @@ Partial Friend Class frmEwE6
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
-        'AppLauncher
+        'frmEwE6
         '
         Me.AllowDrop = True
         resources.ApplyResources(Me, "$this")
@@ -763,7 +763,7 @@ Partial Friend Class frmEwE6
         Me.Controls.Add(Me.m_menuMain)
         Me.IsMdiContainer = True
         Me.MainMenuStrip = Me.m_menuMain
-        Me.Name = "AppLauncher"
+        Me.Name = "frmEwE6"
         Me.m_menuMain.ResumeLayout(False)
         Me.m_menuMain.PerformLayout()
         Me.m_tsModel.ResumeLayout(False)

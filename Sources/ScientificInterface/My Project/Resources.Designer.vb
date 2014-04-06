@@ -254,6 +254,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Save changes.
+        '''</summary>
+        Public ReadOnly Property COMMAND_SAVECHANGES() As String
+            Get
+                Return ResourceManager.GetString("COMMAND_SAVECHANGES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Only models stored in databases can be duplicated..
         '''</summary>
         Public ReadOnly Property DATASOURCE_DUPLICATE_ERROR_NODATABASE() As String
