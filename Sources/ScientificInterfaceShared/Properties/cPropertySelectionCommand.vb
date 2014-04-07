@@ -45,8 +45,6 @@ Namespace Properties
         Private m_lprop As New List(Of cProperty)
         ''' <summary>The event that occurred.</summary>
         Private m_event As SelectionChangeEventType = SelectionChangeEventType.Clear
-        ''' <summary>Auxillary status information.</summary>
-        Private m_strStatus As String = ""
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -96,7 +94,7 @@ Namespace Properties
         Public Overloads Sub Invoke()
             ' Clear list of props
             Me.m_lprop.Clear()
-            Me.m_strStatus = ""
+            Me.Status = ""
             ' Fire the command
             MyBase.Invoke()
         End Sub
@@ -115,7 +113,7 @@ Namespace Properties
             ' Clear list of props
             Me.m_lprop.Clear()
             Me.m_lprop.Add(prop)
-            Me.m_strStatus = strStatus
+            Me.Status = strStatus
             ' Fire the command
             MyBase.Invoke()
         End Sub
@@ -133,7 +131,7 @@ Namespace Properties
             ' Clear list of props
             Me.m_lprop.Clear()
             Me.m_lprop.AddRange(aprop)
-            Me.m_strStatus = strStatus
+            Me.Status = strStatus
             ' Fire the command
             MyBase.Invoke()
         End Sub
@@ -155,7 +153,7 @@ Namespace Properties
             ' Store prop
             Me.m_lprop.AddRange(lprop)
             Me.m_event = [event]
-            Me.m_strStatus = strStatus
+            Me.Status = strStatus
             ' Fire the command
             MyBase.Invoke()
         End Sub
@@ -198,17 +196,6 @@ Namespace Properties
         Public ReadOnly Property EventType() As SelectionChangeEventType
             Get
                 Return Me.m_event
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the status message associated with the selection.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Status As String
-            Get
-                Return Me.m_strStatus
             End Get
         End Property
 
