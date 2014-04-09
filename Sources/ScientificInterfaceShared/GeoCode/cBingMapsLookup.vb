@@ -21,6 +21,7 @@
 Option Strict On
 Imports System.Web
 Imports ScientificInterfaceShared.BingMapsGeoLocatorService
+Imports System.Net
 
 #End Region ' Imports
 
@@ -69,41 +70,30 @@ Namespace GeoCode
 
             Me.Term = strTerm
 
-            Dim key As String = "AhCiJySJPp8FDmpBjH1SRricNicRj302BRDp14TJBEWfI-3FG8irnYC2IjYMDpKY"
+            Dim strKey As String = "Ap_lhJ94cQGn56JsiXaxffd5O3HnAY6ug7BaaZap7zjBC-CBGjOnGrtyAK1442sr"
+            Dim strRequest As String = String.Format("http://dev.virtualearth.net/REST/v1/Locations/{0}?output=xml&key={1}", _
+                                                     strTerm, strKey)
+            Dim request As WebRequest = WebRequest.Create(strRequest)
+            Dim response As WebResponse = request.GetResponse()
             Dim lLocations As New List(Of cGeoCodeLocation)
-            Dim searchRequest As New SearchRequest()
 
-            ' Set the credentials using a valid Bing Maps key
-            searchRequest.Credentials = New Credentials()
-            searchRequest.Credentials.ApplicationId = key
+            ' http://msdn.microsoft.com/en-us/library/hh534080.aspx
 
-            ' Create the search query
-            Dim ssQuery As New StructuredSearchQuery()
-            ssQuery.Keyword = "water"""
-            ssQuery.Location = strTerm
-            searchRequest.StructuredQuery = ssQuery
+            '    Dim xmlDoc As New XmlDocument()
+            '    xmlDoc.Load(response.GetResponseStream())
+            'return (xmlDoc);
 
-            ' Define options on the search
-            searchRequest.SearchOptions = New SearchOptions()
-            searchRequest.SearchOptions.Filters = New FilterExpression()
-            'With searchRequest.SearchOptions.Filters
-            '    .
-            '    .PropertyId = 3
-            '    .CompareOperator = CompareOperator.GreaterThanOrEquals
-            '    FilterValue = 8.16
-            'End With
+            '' Make the search request 
+            'Dim searchService As New SearchServiceClient()
+            'Dim searchResponse As SearchResponse = searchService.Search(SearchRequest)
 
-            ' Make the search request 
-            Dim searchService As New SearchServiceClient()
-            Dim searchResponse As SearchResponse = searchService.Search(searchRequest)
-
-            ' Parse and format results
-            If (searchResponse.ResultSets(0).Results.Length > 0) Then
-                For i As Integer = 0 To searchResponse.ResultSets(0).Results.Length - 1
-                    'resultList.Append(String.Format("{0}. {1}\n", i+1, 
-                    '    searchResponse.ResultSets[0].Results[i].Name));                    
-                Next
-            End If
+            '' Parse and format results
+            'If (searchResponse.ResultSets(0).Results.Length > 0) Then
+            '    For i As Integer = 0 To searchResponse.ResultSets(0).Results.Length - 1
+            '        'resultList.Append(String.Format("{0}. {1}\n", i+1, 
+            '        '    searchResponse.ResultSets[0].Results[i].Name));                    
+            '    Next
+            'End If
 
             Return lLocations.ToArray
 
