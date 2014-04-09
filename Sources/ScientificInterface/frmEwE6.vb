@@ -128,7 +128,7 @@ Friend Class frmEwE6
         ''' <summary>
         ''' Constructor.
         ''' </summary>
-        ''' <param name="frm">The <see cref="frmApplication"/> to toggle presentation mode for.</param>
+        ''' <param name="frm">The <see cref="frmEwE6"/> to toggle presentation mode for.</param>
         ''' <param name="bUseOpacity">If set to true, the main form will be totally 
         ''' opaque during a presentation mode switch.</param>
         ''' -------------------------------------------------------------------
