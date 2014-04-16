@@ -52,6 +52,7 @@ Public Class cMSE
     Private OriginalNTimesteps As Integer
     Private ChangeInEffortLimits() As Double
     Public Const NoHCR_F As Integer = cCore.NULL_VALUE
+    Private TargConsQuota(,) As Double 'Stores the target and conservation f's for each species
 
     Private TechnologyCreep() As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
 
@@ -1340,6 +1341,8 @@ Public Class cMSE
             Trajectory2Csv = New List(Of StreamWriter)
             Me.initTrajectoryByGroupFiles(msgReport, Trajectory2Csv)
 
+            ReDim TargConsQuota(mCore.nGroups - 1, 1)
+
             'increase the number of years for the projection
             mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject)
 
@@ -1382,6 +1385,8 @@ Public Class cMSE
                             Me.initFishedByHCR(curStrategy)
 
                             Me.RunEcosim()
+
+                            OutputFishingMortalities(iTrial, CurrentStrategy.Name)
 
                             'Save the Ecosim results
                             GoodDynamics = Me.SaveBiomassTrajectories(iTrial, nResultIters, nFleetIters, swGroup, swFleet)
@@ -1438,6 +1443,39 @@ Public Class cMSE
 
     End Sub
 
+    Private Sub OutputFishingMortalities(iIteration As Integer, iStrategy As String)
+
+        Dim FishMortExists As Boolean = False
+        FishMortExists = File.Exists("C:\Users\Mark\Desktop\GAP\Data\Results\fishmorts.csv")
+
+        Dim TrajectoryF As New StreamWriter("C:\Users\Mark\Desktop\GAP\Data\Results\fishmorts.csv", append:=True)
+
+
+        Dim Groups As Integer()
+        Dim iFleet As Integer
+        'Dim Fleets As Integer()
+        Groups = New Integer() {14, 16, 18}
+        'Fleets = New Integer() {1, 2}
+
+        If Not FishMortExists Then
+            TrajectoryF.Write("Iteration,Strategy,FleetName")
+            For iTime = 1 To mCore.EcoSimModelParameters.NumberYears * _ecosim.EcosimData.NumStepsPerYear
+                TrajectoryF.Write("," & iTime.ToString)
+            Next
+            TrajectoryF.WriteLine()
+        End If
+
+        For iFleet = 1 To 2
+            TrajectoryF.Write(iIteration.ToString & "," & iStrategy & "," & mCore.FleetInputs(iFleet).Name)
+            For iTime = 1 To mCore.EcoSimModelParameters.NumberYears * _ecosim.EcosimData.NumStepsPerYear
+                TrajectoryF.Write("," & Me._simdata.FishRateGear(iFleet, iTime).ToString())
+            Next
+            TrajectoryF.WriteLine()
+        Next
+
+        TrajectoryF.Dispose()
+
+    End Sub
 
     Private Sub initFishedByHCR(curStrategy As Strategy)
         'Clear the data from the last Strategy
@@ -1537,7 +1575,7 @@ Public Class cMSE
 
     End Sub
 
-
+    'TODO does this need to be renamed because it doesn't just save the trajectories anymore
     Private Function SaveBiomassTrajectories(ByVal iTrial As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
                                         ByVal NumberIterationsAlreadyInFleets As Integer, ByVal swGroup As StreamWriter, ByVal swFleet As StreamWriter) As Boolean
 
@@ -2504,7 +2542,7 @@ stepend:
         Dim LastYearsEffort(_ecosim.EcopathData.NumFleet - 1) As Double
         'Dim variable_results() As Double
 
-        Dim TargConsQuota(mCore.nGroups - 1, 1) As Double 'Stores the target and conservation f's for each species
+        'Dim TargConsQuota(mCore.nGroups - 1, 1) As Double 'Stores the target and conservation f's for each species
         Dim Elim As Single 'the maximum effort that can be exerted without causing discards
         Dim Emax As Single 'the effort that will catch the entire quota of the most valuable species
         Dim iCatch As Single

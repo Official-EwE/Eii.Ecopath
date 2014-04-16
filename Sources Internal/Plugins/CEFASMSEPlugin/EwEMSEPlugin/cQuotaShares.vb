@@ -72,12 +72,17 @@ Public Class cQuotaShares
         mcore = core
         mMSE = MSE
         mlstQuotaShares = New List(Of QuotaShare)
-
     End Sub
 
 
     Public Sub onEcosimInitialized()
+
+        'If File.Exists("C:\Users\Mark\Desktop\GAP\Data\Fleet\QuotaShares.csv") Then
+        '    LoadQuotaFromCSV()
+        'Else
         SetDefault()
+        'End If
+
     End Sub
 
 
