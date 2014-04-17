@@ -18,7 +18,7 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-Partial Friend Class frmEwE6
+Partial Public Class frmEwE6
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
