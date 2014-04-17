@@ -56,7 +56,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 ''' The main form of the EwE6 Scientific Interface
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Friend Class frmEwE6
+Public Class frmEwE6
     Implements IUIElement
 
 #Region " Variables "
@@ -4456,3 +4456,13 @@ Friend Class frmEwE6
 #End Region  ' Big and evil event handlers
 
 End Class
+
+#Region " Deprecated "
+
+<Obsolete("Please use fmrEwE6 instead")> _
+Public Class AppLauncher
+    Inherits frmEwE6
+
+End Class
+
+#End Region ' Deprecated
