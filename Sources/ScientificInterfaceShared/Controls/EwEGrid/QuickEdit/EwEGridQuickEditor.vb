@@ -341,6 +341,15 @@ Namespace Controls.EwEGrid
                         vn = p.VarName
                         ' Update value
                         objValue = p.GetValue()
+                    Else
+                        ' Does this property hold a value other than found earlier?
+                        If (objValue IsNot Nothing) Then
+                            If (Not objValue.Equals(cell.Value)) Then
+                                ' #Yes: this is mixed value
+                                bIsMixedValue = True
+                            End If
+                        End If
+                        objValue = cell.Value
                     End If
                     ' There was at least one editable cell
                     bHasEditableCells = True
@@ -406,6 +415,7 @@ Namespace Controls.EwEGrid
 
             ' Get grid selection
             Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
+            Dim objValue As Object = Nothing
 
             ' To stop a flood of updates, and to halt any conflicting operations 
             ' while we're at it.
@@ -422,10 +432,26 @@ Namespace Controls.EwEGrid
                     End If
                 Else
                     If cell.DataModel.EnableEdit Then
-                        Try
-                            cell.SetValue(New SourceGrid2.Position(cell.Row, cell.Column), cell.DataModel.ObjectToValue(strValue))
-                        Catch ex As Exception
+                        If (cell.DataModel.ValueType Is GetType(String)) Then
+                            objValue = strValue
+                        ElseIf ((cell.DataModel.ValueType Is GetType(Single)) Or (cell.DataModel.ValueType Is GetType(Double))) Then
+                            Try
+                                objValue = cStringUtils.ConvertToSingle(strValue)
+                            Catch ex As Exception
+                            End Try
+                        ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                            Try
+                                objValue = cStringUtils.ConvertToInteger(strValue)
+                            Catch ex As Exception
+                            End Try
+                        ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
+                            objValue = (strValue = "1")
+                        End If
 
+                        Try
+                            cell.SetValue(New SourceGrid2.Position(cell.Row, cell.Column), objValue)
+                        Catch ex As Exception
+                            ' Whoah!
                         End Try
                     End If
                 End If
