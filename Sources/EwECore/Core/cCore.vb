@@ -9657,7 +9657,7 @@ Public Class cCore
     ''' <param name="scenario">The <see cref="cEcoSpaceScenario">Scenario</see> to remove.</param>
     ''' <returns>True if succesful.</returns>
     Public Function RemoveEcospaceScenario(ByVal scenario As cEcospaceScenario) As Boolean
-        Return Me.RemoveEcosimScenario(scenario.Index)
+        Return Me.RemoveEcospaceScenario(scenario.Index)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -11759,7 +11759,7 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveEcotracerScenario(ByVal scenario As cEcotracerScenario) As Boolean
-        Return Me.RemoveEcosimScenario(scenario.Index)
+        Return Me.RemoveEcotracerScenario(scenario.Index)
     End Function
 
     ''' -----------------------------------------------------------------------
