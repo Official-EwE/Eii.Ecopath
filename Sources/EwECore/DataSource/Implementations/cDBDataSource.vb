@@ -3810,9 +3810,6 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                ' Delete existing scenario with same name, if any
-                bSucces = Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE (ScenarioName='{0}')", strScenarioName))
-
                 iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcosimScenario", 0)) + 1
 
                 writer = Me.m_db.GetWriter("EcosimScenario")
@@ -7477,16 +7474,6 @@ Namespace DataSources
                 Next
             Next
 
-            ' Delete any existing scenario with the same name
-            Dim i As Integer = 1
-            While i <= ecopathDS.NumEcospaceScenarios
-                If (String.Compare(ecopathDS.EcospaceScenarioName(i), strScenarioName, True) = 0) Then
-                    bSucces = bSucces And Me.RemoveEcospaceScenario(ecopathDS.EcospaceScenarioDBID(i))
-                Else
-                    i += 1
-                End If
-            End While
-
             Try
                 iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcospaceScenario", 0)) + 1
                 writer = Me.m_db.GetWriter("EcospaceScenario")
@@ -7518,13 +7505,13 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
                 ' First duplicate all Ecospace 'objects'
-                For i = 1 To ecopathDS.NumGroups
+                For i As Integer = 1 To ecopathDS.NumGroups
                     ' Add group to the new scenario
                     bSucces = bSucces And Me.AddEcospaceGroup(ecopathDS.GroupDBID(i), iScenarioID, _
                                                               (ecopathDS.PP(i) = 2.0), iIDtmp)
                 Next
 
-                For i = 1 To ecopathDS.NumFleet
+                For i As Integer = 1 To ecopathDS.NumFleet
                     ' Add fleet to the new scenario
                     bSucces = bSucces And Me.AddEcospaceFleet(ecopathDS.FleetDBID(i), iScenarioID, iIDtmp)
                 Next
