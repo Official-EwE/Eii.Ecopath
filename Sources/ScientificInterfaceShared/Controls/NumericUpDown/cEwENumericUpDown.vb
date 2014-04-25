@@ -36,6 +36,8 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     Public Class cEwENumericUpDown
         Inherits NumericUpDown
+#If 0 Then
+
         Implements ISupportInitialize
 
 #Region " Private vars "
@@ -516,6 +518,7 @@ Namespace Controls
         End Sub
 
 #End Region
+#End If
 
     End Class
 

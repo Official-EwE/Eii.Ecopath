@@ -35,6 +35,8 @@ Namespace Controls.Map.Layers
     ''' =======================================================================
     Public Class ucLayerEditorRange
 
+        Private m_fpValue As cEwEFormatProvider = Nothing
+
 #Region " Construction / destruction "
 
         Public Sub New()
@@ -47,7 +49,10 @@ Namespace Controls.Map.Layers
                 If bDisposing Then
                     If (Me.UIContext Is Nothing) Then Return
 
+                    RemoveHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged
                     RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    Me.m_fpValue.Release()
+
                     If components IsNot Nothing Then
                         components.Dispose()
                     End If
@@ -64,19 +69,28 @@ Namespace Controls.Map.Layers
         Public Overrides Sub Initialize(ByVal editor As cLayerEditor)
             MyBase.Initialize(editor)
 
-            If Me.Editor.Layer.ValueType Is GetType(Integer) Then
+            Dim edt As cLayerEditor = Me.Editor
+            Dim md As New cVariableMetaData(Convert.ToDecimal(Math.Max(-100000, Me.Editor.CellValueMin)), _
+                                            Convert.ToDecimal(Math.Min(100000, Me.Editor.CellValueMax)), _
+                                            cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), _
+                                            cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+
+            Me.m_fpValue = New cEwEFormatProvider(Me.UIContext, Me.m_nudValue, edt.Layer.ValueType, md)
+            AddHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged
+
+            If edt.Layer.ValueType Is GetType(Integer) Then
                 Me.m_nudValue.DecimalPlaces = 0
             Else
                 Me.m_nudValue.DecimalPlaces = Me.UIContext.StyleGuide.NumDigits
             End If
 
-            Me.m_nudValue.Maximum = Convert.ToDecimal(Math.Min(100000, Me.Editor.CellValueMax))
-            Me.m_nudValue.Minimum = Convert.ToDecimal(Math.Max(-100000, Me.Editor.CellValueMin))
-
             ' Set increment
-            If (Me.m_nudValue.Maximum - Me.m_nudValue.Minimum) <= 1000 Then
-                Me.m_nudValue.Increment = (Me.m_nudValue.Maximum - Me.m_nudValue.Minimum) / 100
+            If (md.Max - md.Min) <= 1000 Then
+                Me.m_nudValue.Increment = CDec((md.Max - md.Min) / 100)
             End If
+
+            AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
         End Sub
 
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
@@ -141,18 +155,12 @@ Namespace Controls.Map.Layers
 
             If (Me.UIContext Is Nothing) Then Return
 
-            AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             Me.UpdateContent(Me.Editor)
+
         End Sub
 
-        Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_nudValue.ValueChanged
-
-            If Me.Editor.Layer.ValueType Is GetType(Integer) Then
-                Me.Editor.CellValue = Me.m_nudValue.Value
-            Else
-                Me.Editor.CellValue = Me.m_nudValue.Value
-            End If
+        Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) 
+            Me.Editor.CellValue = Me.m_fpValue.Value
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
@@ -171,7 +179,8 @@ Namespace Controls.Map.Layers
             Me.Editor.Fill()
         End Sub
 
-        Private Sub OnClickPreview(sender As System.Object, e As System.EventArgs) Handles m_pbPreview.Click
+        Private Sub OnClickPreview(sender As System.Object, e As System.EventArgs) _
+            Handles m_pbPreview.Click
             Me.EditLayer(eLayerEditTypes.EditVisuals)
         End Sub
 

@@ -206,8 +206,6 @@ Namespace Controls
 
 #Region " Private variables "
 
-            ''' <summary>UI context for this wrapper.</summary>
-            Private m_uic As cUIContext = Nothing
             ''' <summary>The wrapped text box</summary>
             Private m_tb As TextBoxBase = Nothing
             ''' <summary>The EwEFormatProvider that implements value and colour
@@ -227,13 +225,6 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Property UIContext() As cUIContext _
                 Implements IUIElement.UIContext
-                Get
-                    Return Me.m_uic
-                End Get
-                Set(ByVal value As cUIContext)
-                    Me.m_uic = value
-                End Set
-            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -447,11 +438,8 @@ Namespace Controls
         Private Class cNumericUpDownWrapper
             Implements IControlWrapper
 
-
 #Region " Private variables "
 
-            ''' <summary>UI context for this wrapper.</summary>
-            Private m_uic As cUIContext = Nothing
             ''' <summary></summary>
             Private m_ud As NumericUpDown = Nothing
             ''' <summary></summary>
@@ -472,13 +460,6 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Property UIContext() As cUIContext _
                 Implements IUIElement.UIContext
-                Get
-                    Return Me.m_uic
-                End Get
-                Set(ByVal value As cUIContext)
-                    Me.m_uic = value
-                End Set
-            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -512,8 +493,8 @@ Namespace Controls
                 Try
                     ' Store ref to control
                     Me.m_ud = DirectCast(ctrl, NumericUpDown)
-                    AddHandler Me.m_ud.ValueChanged, AddressOf OnSaveValue
-                    'AddHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
+                    AddHandler Me.m_ud.KeyDown, AddressOf OnKeyDown
+                    AddHandler Me.m_ud.LostFocus, AddressOf OnLostFocus
 
                     Me.m_sg = Me.UIContext.StyleGuide
                     AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -543,8 +524,8 @@ Namespace Controls
                     Implements IControlWrapper.Release
 
                 If (Me.m_ud IsNot Nothing) Then
-                    RemoveHandler Me.m_ud.ValueChanged, AddressOf OnSaveValue
-                    'RemoveHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
+                    RemoveHandler Me.m_ud.KeyDown, AddressOf OnKeyDown
+                    RemoveHandler Me.m_ud.LostFocus, AddressOf OnLostFocus
                     Me.m_ud = Nothing
                 End If
 
@@ -623,20 +604,28 @@ Namespace Controls
 
 #Region " NumericUpDown events "
 
+            Private Sub OnKeyDown(sender As Object, e As System.Windows.Forms.KeyEventArgs)
+                Try
+                    If (e.KeyCode = Keys.Enter) Then
+                        Me.Validate()
+                    End If
+                Catch ex As Exception
+                    cLog.Write(ex, eVerboseLevel.Detailed, "NumericUpDownWrapper:OnKeyDown")
+                End Try
+            End Sub
+
             ''' -----------------------------------------------------------------------
             ''' <summary>
             ''' Event handler, invoked when the numeric up down control value has changed. 
             ''' This will pass the control value back into the parent <see cref="cEwEFormatProvider"/>.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnSaveValue(ByVal sender As Object, ByVal e As System.EventArgs)
-
-                ' Update internal value
-                If Not Decimal.Equals(Me.m_provider.Value, Me.m_ud.Value) Then
-                    Me.m_provider.Value = Me.m_ud.Value
-                    Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
-                End If
-
+            Private Sub OnLostFocus(ByVal sender As Object, ByVal e As System.EventArgs)
+                Try
+                    Me.Validate()
+                Catch ex As Exception
+                    cLog.Write(ex, eVerboseLevel.Detailed, "NumericUpDownWrapper:OnKeyDown")
+                End Try
             End Sub
 
 #End Region ' NumericUpDown events
@@ -664,6 +653,18 @@ Namespace Controls
             End Sub
 
 #End Region ' Style guide events
+
+#Region " Internals "
+
+            Private Sub Validate()
+                ' Update internal value
+                If Not Decimal.Equals(Me.m_provider.Value, Me.m_ud.Value) Then
+                    Me.m_provider.Value = Me.m_ud.Value
+                    Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
+                End If
+            End Sub
+
+#End Region ' Internals
 
         End Class
 
@@ -937,8 +938,6 @@ Namespace Controls
 
 #Region " Private variables "
 
-            ''' <summary>UI context for this wrapper.</summary>
-            Private m_uic As cUIContext = Nothing
             ''' <summary>The wrapped check box.</summary>
             Private m_cb As CheckBox = Nothing
             ''' <summary></summary>
@@ -957,13 +956,6 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Property UIContext() As cUIContext _
                 Implements IUIElement.UIContext
-                Get
-                    Return Me.m_uic
-                End Get
-                Set(ByVal value As cUIContext)
-                    Me.m_uic = value
-                End Set
-            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -1114,8 +1106,6 @@ Namespace Controls
 
 #Region " Private variables "
 
-            ''' <summary>UI context for this wrapper.</summary>
-            Private m_uic As cUIContext = Nothing
             ''' <summary>The wrapped label control.</summary>
             Private m_lb As Label = Nothing
             ''' <summary>The EwEFormatProvider that implements value and colour
@@ -1135,13 +1125,6 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Property UIContext() As cUIContext _
                 Implements IUIElement.UIContext
-                Get
-                    Return Me.m_uic
-                End Get
-                Set(ByVal value As cUIContext)
-                    Me.m_uic = value
-                End Set
-            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -1151,7 +1134,10 @@ Namespace Controls
             ''' <param name="provider"></param>
             ''' <returns></returns>
             ''' -----------------------------------------------------------------------
-            Public Function Wrap(ByVal ctrl As Control, ByVal provider As cEwEFormatProvider, Optional ByVal aItems() As Object = Nothing, Optional ByVal metadata As EwECore.cVariableMetaData = Nothing) As Boolean _
+            Public Function Wrap(ByVal ctrl As Control, _
+                                 ByVal provider As cEwEFormatProvider, _
+                                 Optional ByVal aItems() As Object = Nothing, _
+                                 Optional ByVal metadata As EwECore.cVariableMetaData = Nothing) As Boolean _
                     Implements IControlWrapper.Wrap
 
                 Dim bSucces As Boolean = True
