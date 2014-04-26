@@ -518,7 +518,9 @@ Namespace Ecospace
                     li.Name = strName
 
                 Case eColumnTypes.LayerDescription
-                    li.Description = CStr(cell.GetValue(p))
+                    Dim val As Object = cell.GetValue(p)
+                    If (val Is Nothing) Then val = ""
+                    li.Description = CStr(val)
 
             End Select
 
