@@ -94,7 +94,7 @@ Namespace Controls
                        ByVal ctrl As Control, _
                        ByVal prop As cProperty, _
                        ByVal formatter As ITypeFormatter)
-            Me.New(uic, ctrl, prop, DirectCast(GetDescriptorContent(formatter), Object()))
+            Me.New(uic, ctrl, prop, DirectCast(ExtractEnumValues(formatter), Object()))
         End Sub
 
         ''' -----------------------------------------------------------------------
