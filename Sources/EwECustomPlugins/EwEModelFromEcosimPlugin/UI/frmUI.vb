@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls.EwEGrid
 
 #End Region ' Imports
 
@@ -41,6 +42,7 @@ Friend Class frmUI
     Private m_bReady As Boolean = False
     Private m_fmtBAType As New cBACalcTypeFormatter()
     Private m_fmtDatasourceType As New cDatasourceTypeFormatter()
+    Private m_qeh As cQuickEditHandler = Nothing
 
 #End Region ' Private vars
 
@@ -96,6 +98,9 @@ Friend Class frmUI
             Me.m_cmbBACalcType.SelectedItem = Me.m_data.BACalcMode
             Me.m_cmbFormat.SelectedItem = Me.m_data.OutputFormat
 
+            Me.m_qeh = New cQuickEditHandler()
+            Me.m_qeh.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
+
             ' UI initialized, release form for normal operation
             Me.m_grid.Data = Me.m_data
 
@@ -116,6 +121,9 @@ Friend Class frmUI
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        Me.m_qeh.Detach()
+        Me.m_qeh = Nothing
 
         Me.CoreComponents = Nothing
         MyBase.OnFormClosed(e)
@@ -227,6 +235,30 @@ Friend Class frmUI
             cLog.Write(ex, "frmUI::OnFormatDatabaseType")
         End Try
 
+    End Sub
+
+    Private Sub OnSelectAllTimeSteps(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnAll.Click
+        Try
+            For i As Integer = 1 To Me.m_data.NumYears
+                Me.m_data.CreateModel(i) = True
+            Next
+            Me.m_grid.RefreshContent()
+        Catch ex As Exception
+            cLog.Write(ex, "EwEModelFromEcosim.frmUI:SelectAll")
+        End Try
+    End Sub
+
+    Private Sub OnClearAllTimeSteps(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnNone.Click
+        Try
+            For i As Integer = 1 To Me.m_data.NumYears
+                Me.m_data.CreateModel(i) = False
+            Next
+            Me.m_grid.RefreshContent()
+        Catch ex As Exception
+            cLog.Write(ex, "EwEModelFromEcosim.frmUI:SelectNone")
+        End Try
     End Sub
 
 #End Region ' Control events
