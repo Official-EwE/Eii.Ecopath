@@ -77,6 +77,10 @@ Friend Class gridUI
         Me.FixedColumnWidths = False
         Me.AllowBlockSelect = False
 
+        Me.Columns(eColumnTypes.Year).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.Check).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+
     End Sub
 
     Protected Overrides Sub FillData()
@@ -107,6 +111,8 @@ Friend Class gridUI
 
         Next
 
+        Me.StretchColumnsToFitWidth()
+
     End Sub
 
     Protected Overrides Function OnCellValueChanged(ByVal p As Position, _
@@ -128,7 +134,7 @@ Friend Class gridUI
         End Select
 
         Me.InvalidateRange(New Range(p.Row, 0, p.Row, Me.RowsCount - 1))
-        Return True
+        Return MyBase.OnCellValueChanged(p, cell)
 
     End Function
 
@@ -146,9 +152,14 @@ Friend Class gridUI
         End Try
 
         Me.InvalidateRange(New Range(p.Row, 0, p.Row, Me.RowsCount - 1))
-        Return True
+        Return MyBase.OnCellEdited(p, cell)
 
     End Function
+
+    Protected Overrides Sub OnResize(e As System.EventArgs)
+        MyBase.OnResize(e)
+        Me.StretchColumnsToFitWidth()
+    End Sub
 
 #End Region ' Grid overrides
 
