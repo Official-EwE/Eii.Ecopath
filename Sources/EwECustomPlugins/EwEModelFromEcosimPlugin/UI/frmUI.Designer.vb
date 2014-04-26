@@ -16,8 +16,8 @@
 ' ===============================================================================
 '
 
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
-Imports ScientificInterfaceShared.Controls.EwEGrid
 
 Partial Class frmUI
     Inherits frmEwE
@@ -59,10 +59,14 @@ Partial Class frmUI
         Me.m_cmbFormat = New System.Windows.Forms.ComboBox()
         Me.m_lblFormat = New System.Windows.Forms.Label()
         Me.m_tabBA = New System.Windows.Forms.TabPage()
+        Me.m_ts = New cEwEToolstrip()
+        Me.m_tsbnAll = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnNone = New System.Windows.Forms.ToolStripButton()
         CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tcMain.SuspendLayout()
         Me.m_tabOutput.SuspendLayout()
         Me.m_tabBA.SuspendLayout()
+        Me.m_ts.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_cbEnable
@@ -77,15 +81,17 @@ Partial Class frmUI
         resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
         Me.m_grid.AutoStretchRowsToFitHeight = False
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
         Me.m_grid.CustomSort = False
         Me.m_grid.Data = Nothing
+        Me.m_grid.DataName = "EcopathModelsFromEcosim"
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = False
+        Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -194,11 +200,31 @@ Partial Class frmUI
         Me.m_tabBA.Name = "m_tabBA"
         Me.m_tabBA.UseVisualStyleBackColor = True
         '
+        'm_ts
+        '
+        resources.ApplyResources(Me.m_ts, "m_ts")
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAll, Me.m_tsbnNone})
+        Me.m_ts.Name = "m_ts"
+        Me.m_ts.Stretch = True
+        '
+        'm_tsbnAll
+        '
+        Me.m_tsbnAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnAll, "m_tsbnAll")
+        Me.m_tsbnAll.Name = "m_tsbnAll"
+        '
+        'm_tsbnNone
+        '
+        Me.m_tsbnNone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnNone, "m_tsbnNone")
+        Me.m_tsbnNone.Name = "m_tsbnNone"
+        '
         'frmUI
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_tcMain)
         Me.Controls.Add(Me.m_grid)
         Me.Name = "frmUI"
@@ -208,6 +234,8 @@ Partial Class frmUI
         Me.m_tabOutput.PerformLayout()
         Me.m_tabBA.ResumeLayout(False)
         Me.m_tabBA.PerformLayout()
+        Me.m_ts.ResumeLayout(False)
+        Me.m_ts.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -227,4 +255,7 @@ Partial Class frmUI
     Private WithEvents m_cmbFormat As System.Windows.Forms.ComboBox
     Private WithEvents m_lblFormat As System.Windows.Forms.Label
     Private WithEvents m_tabBA As System.Windows.Forms.TabPage
+    Private WithEvents m_ts As cEwEToolstrip
+    Private WithEvents m_tsbnAll As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnNone As System.Windows.Forms.ToolStripButton
 End Class
