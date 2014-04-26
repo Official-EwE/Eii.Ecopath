@@ -41,9 +41,9 @@ Namespace Controls.Map.Layers
             Me.m_lblDepth.AutoSize = True
             Me.m_lblDepth.Location = New System.Drawing.Point(0, 128)
             Me.m_lblDepth.Name = "m_lblDepth"
-            Me.m_lblDepth.Size = New System.Drawing.Size(62, 13)
+            Me.m_lblDepth.Size = New System.Drawing.Size(51, 13)
             Me.m_lblDepth.TabIndex = 0
-            Me.m_lblDepth.Text = "&Depth past:"
+            Me.m_lblDepth.Text = "&Depth >="
             '
             'm_nudDepth
             '
@@ -60,9 +60,9 @@ Namespace Controls.Map.Layers
             'm_btnClear
             '
             Me.m_btnClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnClear.Location = New System.Drawing.Point(66, 152)
+            Me.m_btnClear.Location = New System.Drawing.Point(68, 152)
             Me.m_btnClear.Name = "m_btnClear"
-            Me.m_btnClear.Size = New System.Drawing.Size(131, 23)
+            Me.m_btnClear.Size = New System.Drawing.Size(129, 23)
             Me.m_btnClear.TabIndex = 3
             Me.m_btnClear.Text = "&Reset excluded cells"
             Me.m_btnClear.UseVisualStyleBackColor = True
