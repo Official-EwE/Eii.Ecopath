@@ -9,6 +9,41 @@ Public Class frmEditSurvivabilites
     Private mMSE As cMSE
     Private mSurvivability As cSurvivability
 
+    Public Class cSurviveDistParamsData
+
+    End Class
+
+    Public Class SurviveParam
+        Inherits cSurviveDistParamsData
+
+        Public Sub New(ByVal Index As Integer, ByVal GroupNumber As Integer, ByVal GroupName As String, _
+                       ByVal FleetNumber As Integer, ByVal FleetName As String, ByVal DistributionType As cMSE.DistributionType, _
+                       ByVal LowerBound As Double, ByVal UpperBound As Double, ByVal MidPoint As Double)
+
+            Me.Index = Index
+            Me.GroupNumber = GroupNumber
+            Me.GroupName = GroupName
+            Me.FleetNumber = FleetNumber
+            Me.FleetName = FleetName
+            Me.DistrType = DistributionType
+            Me.Lower = LowerBound
+            Me.Upper = UpperBound
+            Me.MidPoint = MidPoint
+
+        End Sub
+
+        Public Property Index As Integer
+        Public Property GroupNumber As Integer
+        Public Property GroupName As String
+        Public Property FleetNumber As Integer
+        Public Property FleetName As String
+        Public Property DistrType As cMSE.DistributionType
+        Public Property Lower As Double
+        Public Property Upper As Double
+        Public Property MidPoint As Double
+
+    End Class
+
     Public Sub New(MSE As cMSE, Survivability As cSurvivability)
 
         Me.InitializeComponent()

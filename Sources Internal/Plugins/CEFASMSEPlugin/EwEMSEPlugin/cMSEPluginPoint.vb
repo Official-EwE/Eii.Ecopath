@@ -190,7 +190,6 @@ Public Class cMSEPluginPoint
 
     End Sub
 
-
     Public Sub onEcosimInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Debug.Assert(TypeOf EcosimDatastructures Is cEcosimDatastructures, "EcosimInitialized() failed to pass in valid Ecosim Data!")
 

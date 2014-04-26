@@ -175,7 +175,6 @@ Public Class frmTFMpolicy
             'Build the filename out of the strategy name
             Dim StartFilename As String = Path.Combine(cMSEUtils.MSEFolder(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.Strategies), cFileUtils.ToValidFileName(StratName + ".csv", False))
             Dim NumberOfStrategies As Integer = Me.m_strategies.Count
-            'Dim strategy As Strategy = New Strategy(StratName, NumberOfStrategies + 1, StartFilename)
             Dim strategy As Strategy = New Strategy(StratName, NumberOfStrategies + 1, StartFilename, Me.Core, Me.m_plugin)
 
             ' JS 30Sep13: Strategies class validates both strategy name and file. VERY GOOD!!
@@ -235,7 +234,7 @@ Public Class frmTFMpolicy
     Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnSaveToCSV.Click
 
-        Me.m_bStrategiesSaved = Me.m_strategies.SaveHCRs()
+        Me.m_bStrategiesSaved = Me.m_strategies.SaveStrategiesToCSV()
         Me.UpdateControls()
 
         ' JS 30Sep13: CSV file written in fixed digit format

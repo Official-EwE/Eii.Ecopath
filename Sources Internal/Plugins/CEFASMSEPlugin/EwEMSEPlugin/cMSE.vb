@@ -114,6 +114,7 @@ Public Class cMSE
     Private m_iNumModelsAvailable As Integer = cCore.NULL_VALUE
     Private m_iNumStrategiesAvailable As Integer = cCore.NULL_VALUE
     Private m_tsInputDataCompatibility As TriState = TriState.UseDefault
+    Private m_tsRunDataCompatibility As TriState = TriState.UseDefault
 
     Dim TrajectoryCsv As StreamWriter
     Dim Trajectory2Csv As List(Of StreamWriter)             'Trajectories2 is similar to trajectories apart from it each file contains only 1 group
@@ -270,6 +271,7 @@ Public Class cMSE
         Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
+        Me.m_tsRunDataCompatibility = TriState.UseDefault
 
         Me.m_Monitor.Invalidate()
 
@@ -295,6 +297,29 @@ Public Class cMSE
             bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
         Next
         Return bSuccess
+
+    End Function
+
+    Public Function IsRunDataCompatible() As Boolean
+
+        ' Would it not be nice if these file names were represented by enums as well?
+
+        Dim aFilesFleet As String() = New String() {"ChangesInEffortLimits", "QuotaShares"}
+        Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Fleet)
+
+        If (Me.m_tsRunDataCompatibility = TriState.UseDefault) Then
+
+            ' Hope for the best
+            Me.m_tsRunDataCompatibility = TriState.True
+
+            ' Make sure plug-in has empty CSV
+            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")) Or _
+                Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Then
+                Me.m_tsRunDataCompatibility = TriState.False
+            End If
+        End If
+
+        Return (Me.m_tsRunDataCompatibility = TriState.True)
 
     End Function
 
@@ -341,6 +366,77 @@ Public Class cMSE
         End If
 
         Return (Me.m_tsInputDataCompatibility = TriState.True)
+
+    End Function
+
+    Private Function Check_QuotaShares_File_Okay(strPath As String) As Boolean
+
+        '    Dim reader As StreamReader = Nothing
+        '    Dim csv As CsvReader = Nothing
+        '    'Dim correct(mCore.nGroups - 1) As Integer
+        '    'Dim TotalFound As Integer = 0
+        '    Dim bOK As Boolean = True
+
+        '    reader = cMSEUtils.GetReader(strPath)
+        '    If (reader Is Nothing) Then Return False
+
+        '    '' Initialise correct to all zeros
+        '    'For i = 1 To mCore.nGroups
+        '    '    correct(i - 1) = 0
+        '    'Next
+
+        '    csv = New CsvReader(reader, True)
+        '    Try
+        '        'cycle through each of the living functional groups each time checking if it exists in the file
+        '        ' JS 13Oct13: Changed the looping structure here. If csvreader fails to load a record it will repeat the last record!
+        '        '             This created double-counting when a CSV file did not contain enough records
+        '        While Not csv.EndOfStream
+        '            If csv.ReadNextRecord() Then
+        '                '            For xgrp = 1 To mCore.nGroups
+        '                '                If (cStringUtils.ConvertToInteger(csv(0)) = xgrp) And (String.Compare(cMSEUtils.FromCSVField(csv(1)), _ecopath.EcopathData.GroupName(xgrp), True) = 0) Then
+        '                '                    correct(xgrp - 1) += 1
+        '                '                    ' Exit For ' JS: keep on checking to find duplicates
+        '                '                End If
+        '                '            Next
+        '            End If
+        '        End While
+        '    Catch ex As Exception
+        '        bOK = False
+        '    End Try
+
+        '    'csv.Dispose()
+        '    'cMSEUtils.ReleaseReader(reader)
+
+        '    '' Report file read error
+        '    'If (bOK = False) Then
+        '    '    Me.InformUser(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
+        '    '    Return False
+        '    'End If
+
+        '    ''check that there are no replicates
+        '    'For igrp = 1 To mCore.nGroups
+        '    '    If correct(igrp - 1) > 1 Then
+        '    '        Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(strPath)), eMessageImportance.Warning)
+        '    '        Return False
+        '    '    End If
+        '    'Next
+
+        '    ''sum all the values in correct to be use to diagnose whether there are the correct number of groups in the file
+        '    'For Each i In correct
+        '    '    TotalFound += i
+        '    'Next
+
+        '    '' Check whether there are too few groups in the file
+        '    'If TotalFound < mCore.nLivingGroups Then
+        '    '    Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)), eMessageImportance.Warning)
+        '    '    Return False
+        '    'ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
+        '    '    Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)), eMessageImportance.Warning)
+        '    '    Return False
+        '    'End If
+
+        ' Phew
+        Return True
 
     End Function
 
@@ -568,7 +664,7 @@ Public Class cMSE
 
         If (Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE) Then
             SyncLock Me
-                Me.Strategies.LoadHCRsFromCSV()
+                Me.Strategies.LoadStrategiesFromCSV()
                 Me.m_iNumStrategiesAvailable = Me.Strategies.Count
             End SyncLock
         End If
@@ -1386,10 +1482,9 @@ Public Class cMSE
 
                             Me.RunEcosim()
 
-                            OutputFishingMortalities(iTrial, CurrentStrategy.Name)
 
                             'Save the Ecosim results
-                            GoodDynamics = Me.SaveBiomassTrajectories(iTrial, nResultIters, nFleetIters, swGroup, swFleet)
+                            GoodDynamics = Me.SaveResults(iTrial, nResultIters, nFleetIters, swGroup, swFleet)
 
                             'If one of the groups colapsed during the Ecosim run 
                             'Reject this parameter set
@@ -1443,39 +1538,6 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub OutputFishingMortalities(iIteration As Integer, iStrategy As String)
-
-        Dim FishMortExists As Boolean = False
-        FishMortExists = File.Exists("C:\Users\Mark\Desktop\GAP\Data\Results\fishmorts.csv")
-
-        Dim TrajectoryF As New StreamWriter("C:\Users\Mark\Desktop\GAP\Data\Results\fishmorts.csv", append:=True)
-
-
-        Dim Groups As Integer()
-        Dim iFleet As Integer
-        'Dim Fleets As Integer()
-        Groups = New Integer() {14, 16, 18}
-        'Fleets = New Integer() {1, 2}
-
-        If Not FishMortExists Then
-            TrajectoryF.Write("Iteration,Strategy,FleetName")
-            For iTime = 1 To mCore.EcoSimModelParameters.NumberYears * _ecosim.EcosimData.NumStepsPerYear
-                TrajectoryF.Write("," & iTime.ToString)
-            Next
-            TrajectoryF.WriteLine()
-        End If
-
-        For iFleet = 1 To 2
-            TrajectoryF.Write(iIteration.ToString & "," & iStrategy & "," & mCore.FleetInputs(iFleet).Name)
-            For iTime = 1 To mCore.EcoSimModelParameters.NumberYears * _ecosim.EcosimData.NumStepsPerYear
-                TrajectoryF.Write("," & Me._simdata.FishRateGear(iFleet, iTime).ToString())
-            Next
-            TrajectoryF.WriteLine()
-        Next
-
-        TrajectoryF.Dispose()
-
-    End Sub
 
     Private Sub initFishedByHCR(curStrategy As Strategy)
         'Clear the data from the last Strategy
@@ -1575,8 +1637,7 @@ Public Class cMSE
 
     End Sub
 
-    'TODO does this need to be renamed because it doesn't just save the trajectories anymore
-    Private Function SaveBiomassTrajectories(ByVal iTrial As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
+    Private Function SaveResults(ByVal iTrial As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
                                         ByVal NumberIterationsAlreadyInFleets As Integer, ByVal swGroup As StreamWriter, ByVal swFleet As StreamWriter) As Boolean
 
         Dim GoodDynamics As Boolean = True

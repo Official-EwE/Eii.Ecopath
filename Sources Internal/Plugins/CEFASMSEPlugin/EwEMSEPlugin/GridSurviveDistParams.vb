@@ -67,18 +67,12 @@ Public Class gridSurviveDistParameters
 
     End Class
 
-    Private Enum eEcopathColumnTypes As Integer
-        Index = 0
-        Name
-        Mean
-        CV
-        Upper
-        Lower
-    End Enum
-
-    Private Enum eEcosimColumnTypes As Integer
-        Index = 0
-        Name
+    Private Enum eSurviveColumnTypes As Integer
+        Index
+        GroupNumber
+        GroupName
+        FleetNumber
+        FleetName
         DistrType
         Lower
         Upper
@@ -88,9 +82,8 @@ Public Class gridSurviveDistParameters
 #End Region ' Internal defs
 
     ''' <summary>The cMSE Plugin that contains the data.</summary>
-    Private MSEPlugin As cMSE
-    Private m_data As frmDistributionParameters.cDistributionParamsData() = Nothing
-    Private m_mode As frmDistributionParameters.eParameterSet
+    Private mMSEPlugin As cMSE
+    Private m_data As frmEditSurvivabilites.cSurviveDistParamsData() = Nothing
 
 #Region " Constructor "
 
@@ -103,30 +96,31 @@ Public Class gridSurviveDistParameters
 #Region " Public access "
 
     Public Sub Init(Plugin As cMSE)
-        MSEPlugin = Plugin
+        mMSEPlugin = Plugin
     End Sub
 
-    Public Property Mode As frmDistributionParameters.eParameterSet
-        Get
-            Return Me.m_mode
-        End Get
-        Set(value As frmDistributionParameters.eParameterSet)
-            If (Me.m_mode <> value) Then
-                Me.m_mode = value
-                Me.m_data = Nothing
-                Me.RefreshContent()
-            End If
-        End Set
-    End Property
+    'Public Property Mode As frmDistributionParameters.eParameterSet
+    '    Get
+    '        Return Me.m_mode
+    '    End Get
+    '    Set(value As frmDistributionParameters.eParameterSet)
+    '        If (Me.m_mode <> value) Then
+    '            Me.m_mode = value
+    '            Me.m_data = Nothing
+    '            Me.RefreshContent()
+    '        End If
+    '    End Set
+    'End Property
 
-    Public Property Data As frmDistributionParameters.cDistributionParamsData()
+    Public Property Data As frmEditSurvivabilites.cSurviveDistParamsData()
         Get
             Return Me.m_data
         End Get
-        Set(value As frmDistributionParameters.cDistributionParamsData())
+        Set(value As frmEditSurvivabilites.cSurviveDistParamsData())
             Me.m_data = value
             Me.FillData()
         End Set
+
     End Property
 
     Public Event onEdited()
@@ -138,30 +132,15 @@ Public Class gridSurviveDistParameters
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        Select Case Me.m_mode
-            Case frmDistributionParameters.eParameterSet.Ecopath
-                Dim iNumCols As Integer = [Enum].GetValues(GetType(eEcopathColumnTypes)).Length
-                Me.Redim(1, iNumCols)
+        Dim iNumCols As Integer = [Enum].GetValues(GetType(eSurviveColumnTypes)).Length
+        Me.Redim(1, iNumCols)
 
-                Me(0, eEcopathColumnTypes.Index) = New EwEColumnHeaderCell("")
-                Me(0, eEcopathColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-                Me(0, eEcopathColumnTypes.Mean) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN)
-                Me(0, eEcopathColumnTypes.CV) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
-                Me(0, eEcopathColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
-                Me(0, eEcopathColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
-
-            Case frmDistributionParameters.eParameterSet.Ecosim
-                Dim iNumCols As Integer = [Enum].GetValues(GetType(eEcosimColumnTypes)).Length
-                Me.Redim(1, iNumCols)
-
-                Me(0, eEcosimColumnTypes.Index) = New EwEColumnHeaderCell("")
-                Me(0, eEcosimColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-                Me(0, eEcosimColumnTypes.DistrType) = New EwEColumnHeaderCell(My.Resources.HEADER_DISTRIBUTIONTYPE)
-                Me(0, eEcosimColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
-                Me(0, eEcosimColumnTypes.MidPoint) = New EwEColumnHeaderCell(My.Resources.HEADER_MIDPOINT)
-                Me(0, eEcosimColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
-
-        End Select
+        'Me(0, eSurviveColumnTypes.Index) = New EwEColumnHeaderCell("")
+        'Me(0, eSurviveColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        'Me(0, eEcosimColumnTypes.DistrType) = New EwEColumnHeaderCell(My.Resources.HEADER_DISTRIBUTIONTYPE)
+        'Me(0, eEcosimColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
+        'Me(0, eEcosimColumnTypes.MidPoint) = New EwEColumnHeaderCell(My.Resources.HEADER_MIDPOINT)
+        'Me(0, eEcosimColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -183,64 +162,30 @@ Public Class gridSurviveDistParameters
 
         For i As Integer = 0 To Me.m_data.Length - 1
             iRow = Me.AddRow()
-            Select Case Me.m_mode
-                Case frmDistributionParameters.eParameterSet.Ecopath
+            Dim data As frmEditSurvivabilites.SurviveParam = DirectCast(Me.m_data(i), frmEditSurvivabilites.SurviveParam)
 
-                    Dim data As frmDistributionParameters.EcopathParam = DirectCast(Me.m_data(i), frmDistributionParameters.EcopathParam)
-                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(data.GroupNo)
-                    Dim sg As cStanzaGroup = Nothing
-                    Dim bUse As Boolean = True
+            Me(iRow, eSurviveColumnTypes.Index) = New EwERowHeaderCell(CStr(data.Index))
+            Me(iRow, eSurviveColumnTypes.GroupNumber) = New EwERowHeaderCell(CStr(data.GroupNumber))
+            Me(iRow, eSurviveColumnTypes.GroupName) = New EwERowHeaderCell(CStr(data.GroupName))
+            Me(iRow, eSurviveColumnTypes.FleetNumber) = New EwERowHeaderCell(CStr(data.FleetNumber))
+            Me(iRow, eSurviveColumnTypes.FleetName) = New EwERowHeaderCell(CStr(data.FleetName))
 
-                    If group.isMultiStanza Then
-                        sg = Me.Core.StanzaGroups(group.iStanza)
-                        bUse = (sg.iGroups(sg.LeadingB) = data.GroupNo)
-                    End If
+            Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(data.DistrType, cb)
+            cbCell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iRow, eSurviveColumnTypes.DistrType) = cbCell
 
-                    Me(iRow, eEcopathColumnTypes.Index) = New EwERowHeaderCell(CStr(data.GroupNo))
-                    Me(iRow, eEcopathColumnTypes.Name) = New EwERowHeaderCell(CStr(data.GroupName))
-
-                    If (bUse) Then
-                        Me(iRow, eEcopathColumnTypes.CV) = DataCell(data.CV)
-                        Me(iRow, eEcopathColumnTypes.Mean) = DataCell(data.Mean)
-                        Me(iRow, eEcopathColumnTypes.Lower) = DataCell(data.LowerBound)
-                        Me(iRow, eEcopathColumnTypes.Upper) = DataCell(data.UpperBound)
-                    Else
-                        Me(iRow, eEcopathColumnTypes.CV) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
-                        Me(iRow, eEcopathColumnTypes.Mean) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
-                        Me(iRow, eEcopathColumnTypes.Lower) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
-                        Me(iRow, eEcopathColumnTypes.Upper) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
-                    End If
-
-                    Me.Rows(iRow).Tag = data
-
-                Case frmDistributionParameters.eParameterSet.Ecosim
-                    Dim data As frmDistributionParameters.EcosimParam = DirectCast(Me.m_data(i), frmDistributionParameters.EcosimParam)
-
-                    Me(iRow, eEcosimColumnTypes.Index) = New EwERowHeaderCell(CStr(data.GroupNo))
-                    Me(iRow, eEcosimColumnTypes.Name) = New EwERowHeaderCell(CStr(data.GroupName))
-
-                    Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(data.DistributionType, cb)
-                    cbCell.Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eEcosimColumnTypes.DistrType) = cbCell
-
-                    Me(iRow, eEcosimColumnTypes.Lower) = DataCell(data.LowerBound)
-                    Me(iRow, eEcosimColumnTypes.Upper) = DataCell(data.UpperBound)
-                    Me(iRow, eEcosimColumnTypes.MidPoint) = DataCell(data.MidPoint)
-                    Me.Rows(iRow).Tag = data
-
-            End Select
+            Me(iRow, eSurviveColumnTypes.Lower) = DataCell(data.Lower)
+            Me(iRow, eSurviveColumnTypes.Upper) = DataCell(data.Upper)
+            Me(iRow, eSurviveColumnTypes.MidPoint) = DataCell(data.MidPoint)
+            Me.Rows(iRow).Tag = data
         Next
 
-        Select Case Me.m_mode
-            Case frmDistributionParameters.eParameterSet.Ecopath
-                Me.Columns(eEcopathColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-                Me.Columns(eEcopathColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
-                Me.AutoSizeColumn(eEcopathColumnTypes.Name, 150)
-            Case frmDistributionParameters.eParameterSet.Ecosim
-                Me.Columns(eEcosimColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-                Me.Columns(eEcosimColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
-                Me.AutoSizeColumn(eEcosimColumnTypes.Name, 150)
-        End Select
+        Me.Columns(eSurviveColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eSurviveColumnTypes.GroupNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eSurviveColumnTypes.GroupName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
+        Me.Columns(eSurviveColumnTypes.FleetNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eSurviveColumnTypes.FleetName).AutoSizeMode =SourceGrid2.AutoSizeMode.EnableAutoSize or SourceGrid2.AutoSizeMode.EnableStretch
+        'Me.AutoSizeColumn(eSurviveColumnTypes.Name, 150)
 
     End Sub
 
@@ -271,51 +216,24 @@ Public Class gridSurviveDistParameters
 
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-        Select Case Me.Mode
+        Dim tag As Object = Me.Rows(p.Row).Tag
+        If (tag Is Nothing) Then Return False
 
-            Case frmDistributionParameters.eParameterSet.Ecopath
+        Debug.Assert(TypeOf tag Is frmEditSurvivabilites.SurviveParam)
 
-                Dim tag As Object = Me.Rows(p.Row).Tag
-                If (tag Is Nothing) Then Return False
+        Dim data As frmEditSurvivabilites.SurviveParam = DirectCast(tag, frmEditSurvivabilites.SurviveParam)
 
-                Debug.Assert(TypeOf tag Is frmDistributionParameters.EcopathParam)
-
-                Dim data As frmDistributionParameters.EcopathParam = DirectCast(tag, frmDistributionParameters.EcopathParam)
-
-                Select Case DirectCast(p.Column, eEcopathColumnTypes)
-                    Case eEcopathColumnTypes.CV
-                        data.CV = CDbl(cell.GetValue(p))
-                    Case eEcopathColumnTypes.Lower
-                        data.LowerBound = CDbl(cell.GetValue(p))
-                    Case eEcopathColumnTypes.Upper
-                        data.UpperBound = CDbl(cell.GetValue(p))
-                    Case eEcopathColumnTypes.Mean
-                        data.Mean = CDbl(cell.GetValue(p))
-                    Case Else
-                        ' NOP
-                End Select
-
-            Case frmDistributionParameters.eParameterSet.Ecosim
-
-                Dim tag As Object = Me.Rows(p.Row).Tag
-                If (tag Is Nothing) Then Return False
-
-                Debug.Assert(TypeOf tag Is frmDistributionParameters.EcosimParam)
-
-                Dim data As frmDistributionParameters.EcosimParam = DirectCast(tag, frmDistributionParameters.EcosimParam)
-
-                Select Case DirectCast(p.Column, eEcosimColumnTypes)
-                    Case eEcosimColumnTypes.DistrType
-                        data.DistributionType = DirectCast(cell.GetValue(p), cMSE.DistributionType)
-                    Case eEcosimColumnTypes.Lower
-                        data.LowerBound = CDbl(cell.GetValue(p))
-                    Case eEcosimColumnTypes.Upper
-                        data.UpperBound = CDbl(cell.GetValue(p))
-                    Case eEcosimColumnTypes.MidPoint
-                        data.MidPoint = CDbl(cell.GetValue(p))
-                    Case Else
-                        ' NOP
-                End Select
+        Select Case DirectCast(p.Column, eSurviveColumnTypes)
+            Case eSurviveColumnTypes.DistrType
+                data.DistrType = DirectCast(cell.GetValue(p), cMSE.DistributionType)
+            Case eSurviveColumnTypes.Lower
+                data.Lower = CDbl(cell.GetValue(p))
+            Case eSurviveColumnTypes.Upper
+                data.Upper = CDbl(cell.GetValue(p))
+            Case eSurviveColumnTypes.MidPoint
+                data.MidPoint = CDbl(cell.GetValue(p))
+            Case Else
+                ' NOP
         End Select
 
         Me.RaiseDataChangeEvent()

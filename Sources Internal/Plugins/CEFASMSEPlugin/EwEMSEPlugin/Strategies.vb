@@ -94,7 +94,7 @@ Public Class Strategies
         Return grp
     End Function
 
-    Public Function SaveHCRs() As Boolean
+    Public Function SaveStrategiesToCSV() As Boolean
         Dim csvStrategyFile As StreamWriter = Nothing
         Dim strFile As String = ""
         Dim strPath As String = ""
@@ -132,7 +132,7 @@ Public Class Strategies
     End Function
 
 
-    Public Function LoadHCRsFromCSV() As Boolean
+    Public Function LoadStrategiesFromCSV() As Boolean
 
         Dim StrategiesFileNames As String()
         Dim Strategy As Strategy

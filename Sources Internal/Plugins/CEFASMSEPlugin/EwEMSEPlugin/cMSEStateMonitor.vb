@@ -106,9 +106,6 @@ Public Class cMSEStateMonitor
 
         Dim bHasState As Boolean = True
 
-        ''Diagnostics MP
-        'Return True
-
         ' Optimization: return pre-determined state if available.
         If (Me.m_statecache(state) <> TriState.UseDefault) Then
             Return (Me.m_statecache(state) = TriState.True)
@@ -126,6 +123,7 @@ Public Class cMSEStateMonitor
 
             Case eState.HasModels
                 bHasState = Me.IsStateAvailable(eState.HasParams) And _
+                    Me.MSE.IsRunDataCompatible() And _
                     (Me.MSE.NumModelsAvailable > 0)
 
             Case eState.HasResults
