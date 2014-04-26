@@ -1441,6 +1441,20 @@ Public Class cCore
         Return obj
     End Function
 
+    Private Function FindObjectByName(ByVal lItems As cCoreInputOutputList(Of cCoreInputOutputBase), ByVal strName As String) As cCoreInputOutputBase
+        Dim obj As cCoreInputOutputBase = Nothing
+
+        For Each objTest As Object In lItems
+            If TypeOf (objTest) Is cCoreInputOutputBase Then
+                If (String.Compare(strName, DirectCast(objTest, cCoreInputOutputBase).Name, True) = 0) Then
+                    obj = DirectCast(objTest, cCoreInputOutputBase)
+                    Exit For
+                End If
+            End If
+        Next
+        Return obj
+    End Function
+
 #End Region ' Private and Friend Core Functions
 
 #Region " Time series "
@@ -6821,11 +6835,8 @@ Public Class cCore
         If (Not TypeOf (DataSource) Is IEcosimDatasource) Then Return bSucces
         If (Me.ActiveEcosimScenarioIndex <= 0) Then Return bSucces
 
-        ' Is this the current scenario?
-        If String.Compare(Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name, strName, True) = 0 Then
-            ' #Yes: save directly instead
-            Return Me.SaveEcosimScenario()
-        End If
+         ' Clear duplicates
+        Me.RemoveEcosimScenario(Me.FindObjectByName(Me.m_EcoSimScenarios, strName))
 
         ds = DirectCast(DataSource, IEcosimDatasource)
         ' Save ok?
@@ -6867,7 +6878,9 @@ Public Class cCore
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSimScenario">Scenario</see> to remove.</param>
     ''' <returns>True if succesful.</returns>
-    Public Function RemoveEcosimScenario(ByVal scenario As cEcoSimScenario) As Boolean
+    Public Function RemoveEcosimScenario(ByVal scenario As cCoreInputOutputBase) As Boolean
+        If (scenario Is Nothing) Then Return True
+        If (Not TypeOf (scenario) Is cEcoSimScenario) Then Return False
         Return Me.RemoveEcosimScenario(scenario.Index)
     End Function
 
@@ -9319,6 +9332,11 @@ Public Class cCore
             ds = DirectCast(DataSource, IEcospaceDatasource)
 
             ds.BeginTransaction()
+
+            ' Clear duplicates
+            Me.RemoveEcospaceScenario(Me.FindObjectByName(Me.m_EcoSpaceScenarios, strName))
+
+            ' Append
             If (ds.AppendEcospaceScenario(strName, strDescription, _
                     strAuthor, strContact, _
                     iNumRows, iNumCols, _
@@ -9614,11 +9632,8 @@ Public Class cCore
         iScenarioID = Me.m_EcoPathData.EcospaceScenarioDBID(Me.ActiveEcospaceScenarioIndex)
         If (iScenarioID <= 0) Then Return bSucces
 
-        ' Is this the current scenario?
-        If String.Compare(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name, strName, True) = 0 Then
-            ' #Yes: save directly instead
-            Return Me.SaveEcospaceScenario()
-        End If
+        ' Clear duplicates
+        Me.RemoveEcospaceScenario(Me.FindObjectByName(Me.m_EcoSpaceScenarios, strName))
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
         ' Save ok?
@@ -9656,7 +9671,9 @@ Public Class cCore
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSpaceScenario">Scenario</see> to remove.</param>
     ''' <returns>True if succesful.</returns>
-    Public Function RemoveEcospaceScenario(ByVal scenario As cEcospaceScenario) As Boolean
+    Public Function RemoveEcospaceScenario(ByVal scenario As cCoreInputOutputBase) As Boolean
+        If (scenario Is Nothing) Then Return True
+        If (Not TypeOf (scenario) Is cEcospaceScenario) Then Return False
         Return Me.RemoveEcospaceScenario(scenario.Index)
     End Function
 
@@ -11716,6 +11733,9 @@ Public Class cCore
         If (Not TypeOf (Me.DataSource) Is IEcotracerDatasource) Then Return False
         If (Me.m_EcoPathData.ActiveEcotracerScenario <= 0) Then Return False
 
+        ' Clear duplicates
+        Me.RemoveEcotracerScenario(Me.FindObjectByName(Me.m_EcotracerScenarios, strName))
+
         iScenarioID = Me.m_EcoPathData.EcotracerScenarioDBID(Me.m_EcoPathData.ActiveEcotracerScenario)
         If (iScenarioID <= 0) Then Return False
 
@@ -11758,7 +11778,9 @@ Public Class cCore
     ''' <param name="scenario">The <see cref="cEcotracerScenario">Scenario</see> to remove.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcotracerScenario(ByVal scenario As cEcotracerScenario) As Boolean
+    Public Function RemoveEcotracerScenario(ByVal scenario As cCoreInputOutputBase) As Boolean
+        If (scenario Is Nothing) Then Return True
+        If (Not TypeOf (scenario) Is cEcotracerScenario) Then Return False
         Return Me.RemoveEcotracerScenario(scenario.Index)
     End Function
 

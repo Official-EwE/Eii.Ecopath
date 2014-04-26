@@ -296,6 +296,13 @@
     <Compile Include="Taxon\cTaxonAnalysis.vb" />
     <Compile Include="Taxon\cTaxonSearchData.vb" />
     <Compile Include="Validators\cValidatorBase.vb" />
+    <Compile Include="Validators\cValidatorCore.vb" />
+    <Compile Include="Validators\cValidatorCounter.vb" />
+    <Compile Include="Validators\cValidatorEnum.vb" />
+    <Compile Include="Validators\cValidatorManager.vb" />
+    <Compile Include="Validators\cValidatorOddEven.vb" />
+    <Compile Include="Validators\cValidatorOutput.vb" />
+    <Compile Include="Validators\cValidatorNumericSetToNull.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CoreMessages.resx">

@@ -50,11 +50,6 @@ Namespace SpatialData
         ''' <summary>Core counter that this adapter operates onto.</summary>
         Protected m_coreCounter As eCoreCounterTypes = eCoreCounterTypes.NotSet
 
-        ''' <summary>Flag, indicating whether the content of input layers needs
-        ''' to be preserved: layer data is then preserved on first overwrite,
-        ''' and restored when a run finished. Preserved layer data is maintained
-        ''' in temporary files.</summary>
-        Private m_bRestoreLayerContent As Boolean = True
         ''' <summary>File names of preserved layers.</summary>
         Private m_astrLayerBackupFiles(,) As String
 
@@ -512,13 +507,6 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property RestoreLayerContent As Boolean
-            Get
-                Return Me.m_bRestoreLayerContent
-            End Get
-            Set(value As Boolean)
-                Me.m_bRestoreLayerContent = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
