@@ -296,6 +296,24 @@ Public Class frmMSE
 
     End Sub
 
+    Private Sub btnEditSurvivabilities_Click(sender As System.Object, e As System.EventArgs) Handles btnEditSurvivabilities.Click
+        'First make sure the Harvest Controls Rules have been loaded
+        'this is so the interface has some data
+
+        ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
+        '             From the UI point of view, we just want strategies. The plug-in does the optimizating
+        Me.MSE.Survivability.LoadDistFromCSV()
+
+        Try
+            Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
+            frmSurvivabilities.Init(Me.UIContext, Me.Plugin)
+            frmSurvivabilities.ShowDialog(Me)
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
     Private Sub OnShowTFM(sender As System.Object, e As System.EventArgs) _
         Handles m_btnReviewTFM.Click
 
@@ -402,6 +420,7 @@ Public Class frmMSE
     End Sub
 
 #End Region ' Plug-in callback
+
 
 
 End Class

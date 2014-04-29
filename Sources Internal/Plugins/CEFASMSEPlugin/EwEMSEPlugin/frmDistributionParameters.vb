@@ -149,9 +149,9 @@ Public Class frmDistributionParameters
 
     Public Sub Init(ByVal uic As cUIContext, ByVal Plugin As cMSEPluginPoint)
 
-        Me.m_plugin = Plugin
         Me.m_grid.UIContext = uic
         Me.UIContext = uic
+        Me.m_plugin = Plugin
 
         For i As Integer = 1 To Me.Core.nGroups
             If Me.Core.EcoPathGroupInputs(i).IsProducer Then nPPers += 1

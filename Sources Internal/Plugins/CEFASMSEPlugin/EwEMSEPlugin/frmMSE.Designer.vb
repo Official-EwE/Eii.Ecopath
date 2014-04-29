@@ -88,6 +88,7 @@ Partial Class frmMSE
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
+        Me.btnEditSurvivabilities = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -239,6 +240,7 @@ Partial Class frmMSE
         '
         'm_plStep3
         '
+        Me.m_plStep3.Controls.Add(Me.btnEditSurvivabilities)
         Me.m_plStep3.Controls.Add(Me.m_btnDecreaseEffort)
         Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
         Me.m_plStep3.Controls.Add(Me.m_btnReviewTFM)
@@ -378,6 +380,12 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
+        'btnEditSurvivabilities
+        '
+        resources.ApplyResources(Me.btnEditSurvivabilities, "btnEditSurvivabilities")
+        Me.btnEditSurvivabilities.Name = "btnEditSurvivabilities"
+        Me.btnEditSurvivabilities.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -442,4 +450,5 @@ Partial Class frmMSE
     Private WithEvents m_tbxMaxTime As System.Windows.Forms.TextBox
     Private WithEvents m_lblPathValue As System.Windows.Forms.Label
     Private WithEvents m_btnDecreaseEffort As System.Windows.Forms.Button
+    Friend WithEvents btnEditSurvivabilities As System.Windows.Forms.Button
 End Class

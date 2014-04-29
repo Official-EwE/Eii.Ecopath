@@ -86,6 +86,7 @@ Public Class cSurvivability
         mcore = core
         mMSE = MSE
         mSimData = EcosimDataStructures
+        mListofSuriveDistParams = New List(Of cSurvivabilityDistributonParam)
     End Sub
 
     Sub New()
@@ -102,21 +103,27 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Public Class cSurvivabilityDistributonParam
 
-        Public Sub New(ByVal FleetNumber As Integer, ByVal GroupNumber As Integer, _
+        Public Sub New(ByVal Index As Integer, FleetNumber As Integer, ByVal GroupNumber As Integer, _
                        ByVal Alpha As Double, ByVal Beta As Double)
+            Me.Index = Index
             Me.FleetNo = FleetNumber
-            'Me.FleetName = FleetName
             Me.GroupNo = GroupNumber
-            'Me.GroupName = GroupName
             Me.Alpha = Alpha
             Me.Beta = Beta
 
         End Sub
 
+        Public Sub New(ByVal FleetNumber As Integer, ByVal GroupNumber As Integer, _
+                       ByVal Alpha As Double, ByVal Beta As Double)
+            Me.FleetNo = FleetNumber
+            Me.GroupNo = GroupNumber
+            Me.Alpha = Alpha
+            Me.Beta = Beta
+        End Sub
+
+        Public Property Index As Integer
         Public Property FleetNo As Integer
-        'Public Property FleetName As String
         Public Property GroupNo As Integer
-        'Public Property GroupName As String
         Public Property Alpha As Double
         Public Property Beta As Double
 
@@ -130,18 +137,14 @@ Public Class cSurvivability
 
         Public Property Iteration As Integer
         Public Property FleetNo As Integer
-        'Public Property FleetName As String
         Public Property GroupNo As Integer
-        'Public Property GroupName As String
         Public Property Survivability As Double
 
         Public Sub New(ByVal Iteration As Integer, ByVal FleetNumber As Integer, ByVal GroupNumber As Integer, ByVal Survivability As Double)
 
             Me.Iteration = Iteration
             Me.FleetNo = FleetNumber
-            'Me.FleetName = FleetName
             Me.GroupNo = GroupNumber
-            'Me.GroupName = GroupName
             Me.Survivability = Survivability
 
         End Sub
@@ -213,6 +216,7 @@ Public Class cSurvivability
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function AddDist(param As cSurvivabilityDistributonParam) As Boolean
+        Dim nextIndex As Integer
 
         'Check Fleet Number
         If param.FleetNo < 0 Or param.FleetNo > mcore.nFleets Then Return False
@@ -237,7 +241,8 @@ Public Class cSurvivability
         'Check Alpha and Beta
         If param.Alpha <= 0 Or param.Beta <= 0 Then Return False
 
-        mListofSuriveDistParams.Add(New cSurvivabilityDistributonParam(param.FleetNo, param.GroupNo, param.Alpha, param.Beta))
+        nextIndex = mListofSuriveDistParams.Count + 1
+        mListofSuriveDistParams.Add(New cSurvivabilityDistributonParam(nextIndex, param.FleetNo, param.GroupNo, param.Alpha, param.Beta))
 
         Return True
 
@@ -303,7 +308,7 @@ Public Class cSurvivability
         Dim csv As CsvReader = Nothing
         Dim param As cSurvivabilityDistributonParam
         Dim bSuccess As Boolean = True
-        Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities.csv")
+        Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")
 
         If File.Exists(filePath) Then
 
@@ -312,12 +317,19 @@ Public Class cSurvivability
                 Try
                     csv = New CsvReader(reader, True)
                     SurvivabilityDistFileExists = True
-                    While Not csv.EndOfStream
-                        param = ExtractSurvivabilityDist(csv)
-                        If (param IsNot Nothing) Then
-                            AddDist(param)
-                        End If
-                    End While
+
+                    param = ExtractSurvivabilityDist(csv)
+                    For iFleet As Integer = 1 To mcore.nFleets
+                        For iGroup As Integer = 1 To mcore.nGroups
+                            If param.FleetNo = iFleet And param.GroupNo = iGroup Then
+                                AddDist(param)
+                                csv.ReadNextRecord()
+                            ElseIf mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
+                                    AddDist(New cSurvivabilityDistributonParam(iFleet, iGroup, Alpha:=2, beta:=2))
+                            End If
+                        Next
+                    Next
+
                     csv.Dispose()
 
                 Catch ex As Exception
@@ -327,7 +339,13 @@ Public Class cSurvivability
                 cMSEUtils.ReleaseReader(reader)
             End If
         Else
-            bSuccess = False
+            For iFleet = 1 To mcore.nFleets
+                For iGroup = 1 To mcore.nGroups
+                    If mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
+                        AddDist(New cSurvivabilityDistributonParam(iFleet, iGroup, Alpha:=2, beta:=2))
+                    End If
+                Next
+            Next
         End If
 
         Return bSuccess
@@ -373,7 +391,7 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Public Function SaveDistributionParamsToCSV() As Boolean
 
-        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities.csv"), False)
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv"), False)
         Dim bSuccess As Boolean = False
 
         If (writer Is Nothing) Then Return bSuccess
@@ -615,7 +633,7 @@ Public Class cSurvivability
 
         'Todo MP
         ' check file exists for surivability distribution parameters
-        If Not File.Exists(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities.csv")) Then
+        If Not File.Exists(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
             SurvivabilityDistFileExists = False
             mSurvDistFileValid = False
         Else

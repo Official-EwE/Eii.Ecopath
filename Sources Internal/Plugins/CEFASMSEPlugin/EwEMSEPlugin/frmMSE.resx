@@ -376,7 +376,7 @@
     <value>m_plStep3</value>
   </data>
   <data name="&gt;&gt;m_btnReviewTFM.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_pbCompatible.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -759,6 +759,30 @@
   <data name="&gt;&gt;m_plStep4.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="btnEditSurvivabilities.Location" type="System.Drawing.Point, System.Drawing">
+    <value>271, 47</value>
+  </data>
+  <data name="btnEditSurvivabilities.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 23</value>
+  </data>
+  <data name="btnEditSurvivabilities.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="btnEditSurvivabilities.Text" xml:space="preserve">
+    <value>Edit Survivabilities</value>
+  </data>
+  <data name="&gt;&gt;btnEditSurvivabilities.Name" xml:space="preserve">
+    <value>btnEditSurvivabilities</value>
+  </data>
+  <data name="&gt;&gt;btnEditSurvivabilities.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnEditSurvivabilities.Parent" xml:space="preserve">
+    <value>m_plStep3</value>
+  </data>
+  <data name="&gt;&gt;btnEditSurvivabilities.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_btnDecreaseEffort.Location" type="System.Drawing.Point, System.Drawing">
     <value>139, 47</value>
   </data>
@@ -781,7 +805,7 @@
     <value>m_plStep3</value>
   </data>
   <data name="&gt;&gt;m_btnDecreaseEffort.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_hdrStep3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -811,7 +835,7 @@
     <value>m_plStep3</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblAvailableStrategies.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -841,7 +865,7 @@
     <value>m_plStep3</value>
   </data>
   <data name="&gt;&gt;m_lblAvailableStrategies.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_tbxNumAvailableFishingStrategies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -868,7 +892,7 @@
     <value>m_plStep3</value>
   </data>
   <data name="&gt;&gt;m_tbxNumAvailableFishingStrategies.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_plStep3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>

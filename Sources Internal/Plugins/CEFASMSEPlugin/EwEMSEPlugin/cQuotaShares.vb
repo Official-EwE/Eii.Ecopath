@@ -132,11 +132,75 @@ Public Class cQuotaShares
     ''' <summary>
     ''' Checks whether the quota share file is valid
     ''' </summary>
-    Private Function QuotaShareFileValid() As Boolean
-        'TODO MP add validation code to check whether distribution file is okay
-        'what checks need doing?
-        Throw New NotImplementedException("QuotaShareFileValid not implemented")
-        Return False
+    Private Function Check_QuotaShares_File_Okay() As Boolean
+
+        '    Dim reader As StreamReader = Nothing
+        '    Dim csv As CsvReader = Nothing
+        '    'Dim correct(mCore.nGroups - 1) As Integer
+        '    'Dim TotalFound As Integer = 0
+        '    Dim bOK As Boolean = True
+
+        '    reader = cMSEUtils.GetReader(strPath)
+        '    If (reader Is Nothing) Then Return False
+
+        '    '' Initialise correct to all zeros
+        '    'For i = 1 To mCore.nGroups
+        '    '    correct(i - 1) = 0
+        '    'Next
+
+        '    csv = New CsvReader(reader, True)
+        '    Try
+        '        'cycle through each of the living functional groups each time checking if it exists in the file
+        '        ' JS 13Oct13: Changed the looping structure here. If csvreader fails to load a record it will repeat the last record!
+        '        '             This created double-counting when a CSV file did not contain enough records
+        '        While Not csv.EndOfStream
+        '            If csv.ReadNextRecord() Then
+        '                '            For xgrp = 1 To mCore.nGroups
+        '                '                If (cStringUtils.ConvertToInteger(csv(0)) = xgrp) And (String.Compare(cMSEUtils.FromCSVField(csv(1)), _ecopath.EcopathData.GroupName(xgrp), True) = 0) Then
+        '                '                    correct(xgrp - 1) += 1
+        '                '                    ' Exit For ' JS: keep on checking to find duplicates
+        '                '                End If
+        '                '            Next
+        '            End If
+        '        End While
+        '    Catch ex As Exception
+        '        bOK = False
+        '    End Try
+
+        '    'csv.Dispose()
+        '    'cMSEUtils.ReleaseReader(reader)
+
+        '    '' Report file read error
+        '    'If (bOK = False) Then
+        '    '    Me.InformUser(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
+        '    '    Return False
+        '    'End If
+
+        '    ''check that there are no replicates
+        '    'For igrp = 1 To mCore.nGroups
+        '    '    If correct(igrp - 1) > 1 Then
+        '    '        Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(strPath)), eMessageImportance.Warning)
+        '    '        Return False
+        '    '    End If
+        '    'Next
+
+        '    ''sum all the values in correct to be use to diagnose whether there are the correct number of groups in the file
+        '    'For Each i In correct
+        '    '    TotalFound += i
+        '    'Next
+
+        '    '' Check whether there are too few groups in the file
+        '    'If TotalFound < mCore.nLivingGroups Then
+        '    '    Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)), eMessageImportance.Warning)
+        '    '    Return False
+        '    'ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
+        '    '    Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)), eMessageImportance.Warning)
+        '    '    Return False
+        '    'End If
+
+        ' Phew
+        Return True
+
     End Function
 
     ''' <summary>
@@ -217,7 +281,6 @@ Public Class cQuotaShares
                     While Not csv.EndOfStream
                         iQuotaShare = ExtractQuotaShare(csv)
                         If Not iQuotaShare.IsNull Then
-                            'TODO Ask Jeroen - how do I check whether iQuotaShare is equal to nothing
                             AddQuotaShare(iQuotaShare.mGroupNo, iQuotaShare.mFleetNo, iQuotaShare.mShare)
                         End If
                     End While
@@ -316,14 +379,13 @@ Public Class cQuotaShares
     Public Sub PluginLoaded()
         Dim reader As StreamReader = Nothing
 
-        'Todo MP
         ' check file exists for surivability distribution parameters
         If Not File.Exists(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Then
             QuotaFileExists = False
             mQuotaShareFileValid = False
         Else
             ' check file is correct
-            If Not QuotaShareFileValid() Then
+            If Not Check_QuotaShares_File_Okay() Then
                 mQuotaShareFileValid = False
             Else
                 'If it is load the file into memory

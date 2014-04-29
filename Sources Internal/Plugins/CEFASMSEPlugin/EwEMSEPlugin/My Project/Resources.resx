@@ -207,6 +207,12 @@
     <value>Cost function: {0}</value>
     <comment>{0}=HCR cost function</comment>
   </data>
+  <data name="HEADER_ALPHA" xml:space="preserve">
+    <value>Alpha</value>
+  </data>
+  <data name="HEADER_BETA" xml:space="preserve">
+    <value>Beta</value>
+  </data>
   <data name="HEADER_BOUND_LOWER" xml:space="preserve">
     <value>Lower boundary</value>
   </data>
@@ -221,6 +227,9 @@
   </data>
   <data name="HEADER_FEEDTIMEADJUSTRATE" xml:space="preserve">
     <value>Feeding time adjust. rate</value>
+  </data>
+  <data name="HEADER_FLEETNO" xml:space="preserve">
+    <value>Fleet Number</value>
   </data>
   <data name="HEADER_FMORT_GROUP" xml:space="preserve">
     <value>Fishing Mort. Group</value>
@@ -247,6 +256,9 @@
   </data>
   <data name="HEADER_QBMAX_X_PBMAX" xml:space="preserve">
     <value>Q/B max x P/B max</value>
+  </data>
+  <data name="HEADER_SURVIVABILITIES" xml:space="preserve">
+    <value>Survivabilities</value>
   </data>
   <data name="LABEL_BIOMASS_UNIT" xml:space="preserve">
     <value>Biomass ({0})</value>

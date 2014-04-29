@@ -38,6 +38,7 @@ Public Class cMSE
 #Region " Internal vars "
 
     Friend Strategies As Strategies
+    Friend Survivability As cSurvivability
     Private CurrentStrategy As Strategy
     Private m_Monitor As cMSEStateMonitor
 
@@ -75,7 +76,7 @@ Public Class cMSE
 
     Private FleetsThatFishHCRGrp As List(Of Integer) = New List(Of Integer)
     Private mQuota As cQuotaShares
-    Private m_Survivability As cSurvivability
+    'Private m_Survivability As cSurvivability
 
     Dim Regulations As cRegulations
 
@@ -127,7 +128,7 @@ Public Class cMSE
 
     Public ReadOnly Property Survivabilities As cSurvivability
         Get
-            Return Me.m_Survivability
+            Return Me.Survivability
         End Get
     End Property
 
@@ -154,11 +155,14 @@ Public Class cMSE
     End Sub
 
     Public Sub onCoreInitialized(EwECore As cCore, Ecopath As Ecopath.cEcoPathModel, Ecosim As Ecosim.cEcoSimModel)
+
         Me.mCore = EwECore
         Me._ecopath = Ecopath
         Me._ecosim = Ecosim
 
         Strategies = New Strategies(Me, mCore)
+        Survivability = New cSurvivability(EwECore, Me, _simdata)
+
     End Sub
 
 #End Region ' Construction
@@ -369,76 +373,7 @@ Public Class cMSE
 
     End Function
 
-    Private Function Check_QuotaShares_File_Okay(strPath As String) As Boolean
 
-        '    Dim reader As StreamReader = Nothing
-        '    Dim csv As CsvReader = Nothing
-        '    'Dim correct(mCore.nGroups - 1) As Integer
-        '    'Dim TotalFound As Integer = 0
-        '    Dim bOK As Boolean = True
-
-        '    reader = cMSEUtils.GetReader(strPath)
-        '    If (reader Is Nothing) Then Return False
-
-        '    '' Initialise correct to all zeros
-        '    'For i = 1 To mCore.nGroups
-        '    '    correct(i - 1) = 0
-        '    'Next
-
-        '    csv = New CsvReader(reader, True)
-        '    Try
-        '        'cycle through each of the living functional groups each time checking if it exists in the file
-        '        ' JS 13Oct13: Changed the looping structure here. If csvreader fails to load a record it will repeat the last record!
-        '        '             This created double-counting when a CSV file did not contain enough records
-        '        While Not csv.EndOfStream
-        '            If csv.ReadNextRecord() Then
-        '                '            For xgrp = 1 To mCore.nGroups
-        '                '                If (cStringUtils.ConvertToInteger(csv(0)) = xgrp) And (String.Compare(cMSEUtils.FromCSVField(csv(1)), _ecopath.EcopathData.GroupName(xgrp), True) = 0) Then
-        '                '                    correct(xgrp - 1) += 1
-        '                '                    ' Exit For ' JS: keep on checking to find duplicates
-        '                '                End If
-        '                '            Next
-        '            End If
-        '        End While
-        '    Catch ex As Exception
-        '        bOK = False
-        '    End Try
-
-        '    'csv.Dispose()
-        '    'cMSEUtils.ReleaseReader(reader)
-
-        '    '' Report file read error
-        '    'If (bOK = False) Then
-        '    '    Me.InformUser(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
-        '    '    Return False
-        '    'End If
-
-        '    ''check that there are no replicates
-        '    'For igrp = 1 To mCore.nGroups
-        '    '    If correct(igrp - 1) > 1 Then
-        '    '        Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(strPath)), eMessageImportance.Warning)
-        '    '        Return False
-        '    '    End If
-        '    'Next
-
-        '    ''sum all the values in correct to be use to diagnose whether there are the correct number of groups in the file
-        '    'For Each i In correct
-        '    '    TotalFound += i
-        '    'Next
-
-        '    '' Check whether there are too few groups in the file
-        '    'If TotalFound < mCore.nLivingGroups Then
-        '    '    Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)), eMessageImportance.Warning)
-        '    '    Return False
-        '    'ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
-        '    '    Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)), eMessageImportance.Warning)
-        '    '    Return False
-        '    'End If
-
-        ' Phew
-        Return True
-
-    End Function
 
     ''' <summary>
     ''' Checks whether each of the Ecopath (not diet matrix) distribution files is has the correct functional groups in it
@@ -738,10 +673,6 @@ Public Class cMSE
         cMSEUtils.ReleaseReader(reader)
 
     End Sub
-
-
-
-
 
     Private Function ExtractParamsCSV(ByRef param_name As String) As Double(,)
 
@@ -2573,7 +2504,7 @@ stepend:
 
         Me.Regulations = New cRegulations(Me, mCore)
         Me.mQuota = New cQuotaShares(mCore, Me)
-        Me.m_Survivability = New cSurvivability
+        Me.Survivability = New cSurvivability(mCore, Me, EcosimDatastructures)
 
         Me.mQuota.onEcosimInitialized()
 

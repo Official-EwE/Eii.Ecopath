@@ -153,10 +153,10 @@
     <Compile Include="frmEditDecreaseEffort.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmEditSurvivabilites.Designer.vb">
-      <DependentUpon>frmEditSurvivabilites.vb</DependentUpon>
+    <Compile Include="frmEditSurvivabilities.Designer.vb">
+      <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmEditSurvivabilites.vb">
+    <Compile Include="frmEditSurvivabilities.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTFMpolicy.designer.vb">
@@ -216,8 +216,8 @@
     <EmbeddedResource Include="frmEditDecreaseEffort.resx">
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmEditSurvivabilites.resx">
-      <DependentUpon>frmEditSurvivabilites.vb</DependentUpon>
+    <EmbeddedResource Include="frmEditSurvivabilities.resx">
+      <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTFMpolicy.resx">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>

@@ -45,45 +45,22 @@ Public Class gridSurviveDistParameters
 
 #Region " Internal defs "
 
-    Private Class cDistributionTypeFormatter
-        Implements ITypeFormatter
-
-        Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
-            Return GetType(cMSE.DistributionType)
-        End Function
-
-        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-            Implements ITypeFormatter.GetDescriptor
-            Select Case (DirectCast(value, cMSE.DistributionType))
-                Case cMSE.DistributionType.Triangular
-                    Return My.Resources.DISTR_TYPE_TRIANGULAR
-                Case cMSE.DistributionType.Uniform
-                    Return My.Resources.DISTR_TYPE_UNIFORM
-                Case Else
-                    Debug.Assert(False)
-            End Select
-            Return "?"
-        End Function
-
-    End Class
-
+   
     Private Enum eSurviveColumnTypes As Integer
         Index
         GroupNumber
         GroupName
         FleetNumber
         FleetName
-        DistrType
-        Lower
-        Upper
-        MidPoint
+        Alpha
+        Beta
     End Enum
 
 #End Region ' Internal defs
 
     ''' <summary>The cMSE Plugin that contains the data.</summary>
     Private mMSEPlugin As cMSE
-    Private m_data As frmEditSurvivabilites.cSurviveDistParamsData() = Nothing
+    Private m_data As List(Of cSurvivability.cSurvivabilityDistributonParam) = Nothing
 
 #Region " Constructor "
 
@@ -95,28 +72,16 @@ Public Class gridSurviveDistParameters
 
 #Region " Public access "
 
-    Public Sub Init(Plugin As cMSE)
+    Public Sub Init(Plugin As cMSE, Survivability As cSurvivability)
         mMSEPlugin = Plugin
+        m_data = Survivability.ListofSurvDistParams
     End Sub
 
-    'Public Property Mode As frmDistributionParameters.eParameterSet
-    '    Get
-    '        Return Me.m_mode
-    '    End Get
-    '    Set(value As frmDistributionParameters.eParameterSet)
-    '        If (Me.m_mode <> value) Then
-    '            Me.m_mode = value
-    '            Me.m_data = Nothing
-    '            Me.RefreshContent()
-    '        End If
-    '    End Set
-    'End Property
-
-    Public Property Data As frmEditSurvivabilites.cSurviveDistParamsData()
+    Public Property Data As List(Of cSurvivability.cSurvivabilityDistributonParam)
         Get
             Return Me.m_data
         End Get
-        Set(value As frmEditSurvivabilites.cSurviveDistParamsData())
+        Set(value As List(Of cSurvivability.cSurvivabilityDistributonParam))
             Me.m_data = value
             Me.FillData()
         End Set
@@ -135,12 +100,13 @@ Public Class gridSurviveDistParameters
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eSurviveColumnTypes)).Length
         Me.Redim(1, iNumCols)
 
-        'Me(0, eSurviveColumnTypes.Index) = New EwEColumnHeaderCell("")
-        'Me(0, eSurviveColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-        'Me(0, eEcosimColumnTypes.DistrType) = New EwEColumnHeaderCell(My.Resources.HEADER_DISTRIBUTIONTYPE)
-        'Me(0, eEcosimColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
-        'Me(0, eEcosimColumnTypes.MidPoint) = New EwEColumnHeaderCell(My.Resources.HEADER_MIDPOINT)
-        'Me(0, eEcosimColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
+        Me(0, eSurviveColumnTypes.Index) = New EwEColumnHeaderCell("")
+        Me(0, eSurviveColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
+        Me(0, eSurviveColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eSurviveColumnTypes.FleetNumber) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNO)
+        Me(0, eSurviveColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, eSurviveColumnTypes.Alpha) = New EwEColumnHeaderCell(My.Resources.HEADER_ALPHA)
+        Me(0, eSurviveColumnTypes.Beta) = New EwEColumnHeaderCell(My.Resources.HEADER_BETA)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -154,37 +120,33 @@ Public Class gridSurviveDistParameters
 
         Dim iRow As Integer = -1
         Dim cell As EwECell = Nothing
-        Dim lstOptions As New List(Of cMSE.DistributionType)
-        lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(cMSE.DistributionType)), IEnumerable(Of cMSE.DistributionType)))
-        Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cDistributionTypeFormatter(), lstOptions)
+        'Dim lstOptions As New List(Of cMSE.DistributionType)
+        'lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(cMSE.DistributionType)), IEnumerable(Of cMSE.DistributionType)))
+        'Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cDistributionTypeFormatter(), lstOptions)
 
         Me.RowsCount = 1
 
-        For i As Integer = 0 To Me.m_data.Length - 1
+        For i As Integer = 0 To Me.m_data.Count - 1
+
             iRow = Me.AddRow()
-            Dim data As frmEditSurvivabilites.SurviveParam = DirectCast(Me.m_data(i), frmEditSurvivabilites.SurviveParam)
+            Dim data As cSurvivability.cSurvivabilityDistributonParam = DirectCast(Me.m_data(i), cSurvivability.cSurvivabilityDistributonParam)
 
             Me(iRow, eSurviveColumnTypes.Index) = New EwERowHeaderCell(CStr(data.Index))
-            Me(iRow, eSurviveColumnTypes.GroupNumber) = New EwERowHeaderCell(CStr(data.GroupNumber))
-            Me(iRow, eSurviveColumnTypes.GroupName) = New EwERowHeaderCell(CStr(data.GroupName))
-            Me(iRow, eSurviveColumnTypes.FleetNumber) = New EwERowHeaderCell(CStr(data.FleetNumber))
-            Me(iRow, eSurviveColumnTypes.FleetName) = New EwERowHeaderCell(CStr(data.FleetName))
-
-            Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(data.DistrType, cb)
-            cbCell.Behaviors.Add(Me.EwEEditHandler)
-            Me(iRow, eSurviveColumnTypes.DistrType) = cbCell
-
-            Me(iRow, eSurviveColumnTypes.Lower) = DataCell(data.Lower)
-            Me(iRow, eSurviveColumnTypes.Upper) = DataCell(data.Upper)
-            Me(iRow, eSurviveColumnTypes.MidPoint) = DataCell(data.MidPoint)
+            Me(iRow, eSurviveColumnTypes.FleetNumber) = New EwERowHeaderCell(CStr(data.FleetNo))
+            Me(iRow, eSurviveColumnTypes.FleetName) = New EwERowHeaderCell(CStr(mMSEPlugin.Core.FleetInputs(data.FleetNo).Name))
+            Me(iRow, eSurviveColumnTypes.GroupNumber) = New EwERowHeaderCell(CStr(data.GroupNo))
+            Me(iRow, eSurviveColumnTypes.GroupName) = New EwERowHeaderCell(CStr(mMSEPlugin.Core.EcoPathGroupInputs(data.GroupNo).Name))
+            Me(iRow, eSurviveColumnTypes.Alpha) = DataCell(data.Alpha)
+            Me(iRow, eSurviveColumnTypes.Beta) = DataCell(data.Beta)
             Me.Rows(iRow).Tag = data
         Next
 
         Me.Columns(eSurviveColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eSurviveColumnTypes.FleetNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eSurviveColumnTypes.FleetName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
         Me.Columns(eSurviveColumnTypes.GroupNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.None
         Me.Columns(eSurviveColumnTypes.GroupName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
-        Me.Columns(eSurviveColumnTypes.FleetNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-        Me.Columns(eSurviveColumnTypes.FleetName).AutoSizeMode =SourceGrid2.AutoSizeMode.EnableAutoSize or SourceGrid2.AutoSizeMode.EnableStretch
+
         'Me.AutoSizeColumn(eSurviveColumnTypes.Name, 150)
 
     End Sub
@@ -219,19 +181,15 @@ Public Class gridSurviveDistParameters
         Dim tag As Object = Me.Rows(p.Row).Tag
         If (tag Is Nothing) Then Return False
 
-        Debug.Assert(TypeOf tag Is frmEditSurvivabilites.SurviveParam)
+        Debug.Assert(TypeOf tag Is cSurvivability.cSurvivabilityDistributonParam)
 
-        Dim data As frmEditSurvivabilites.SurviveParam = DirectCast(tag, frmEditSurvivabilites.SurviveParam)
+        Dim data As cSurvivability.cSurvivabilityDistributonParam = DirectCast(tag, cSurvivability.cSurvivabilityDistributonParam)
 
         Select Case DirectCast(p.Column, eSurviveColumnTypes)
-            Case eSurviveColumnTypes.DistrType
-                data.DistrType = DirectCast(cell.GetValue(p), cMSE.DistributionType)
-            Case eSurviveColumnTypes.Lower
-                data.Lower = CDbl(cell.GetValue(p))
-            Case eSurviveColumnTypes.Upper
-                data.Upper = CDbl(cell.GetValue(p))
-            Case eSurviveColumnTypes.MidPoint
-                data.MidPoint = CDbl(cell.GetValue(p))
+            Case eSurviveColumnTypes.Alpha
+                data.Alpha = CDbl(cell.GetValue(p))
+            Case eSurviveColumnTypes.Beta
+                data.Beta = CDbl(cell.GetValue(p))
             Case Else
                 ' NOP
         End Select
