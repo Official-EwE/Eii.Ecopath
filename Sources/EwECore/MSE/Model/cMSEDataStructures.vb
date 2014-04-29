@@ -400,6 +400,7 @@ Namespace MSE
                 Me.ResultsStartYear = 1
                 Me.ResultsEndYear = theCore.nEcosimYears
                 Me.EffortSource = eMSEEffortSource.NoCap
+                '  Me.EffortSource = eMSEEffortSource.EcosimEffort
 
             Catch ex As Exception
                 cLog.Write(ex)
