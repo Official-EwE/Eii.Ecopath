@@ -839,7 +839,7 @@ Friend Class cEcosimMonteCarlo
                 m_ecosim.InitStanza()
 
                 'For debugging
-                dumpEcopathPars()
+                'dumpEcopathPars()
 
                 'Estimate basic params
                 If Not m_ecopath.Run() Then
