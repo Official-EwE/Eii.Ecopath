@@ -212,7 +212,8 @@ Public Class frmMSEOptions
     End Sub
 
 
-    Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_rbEffortNoCap.CheckedChanged, m_rbEffortEcosim.CheckedChanged, m_rbEffortPredicted.CheckedChanged
 
         Try
 
