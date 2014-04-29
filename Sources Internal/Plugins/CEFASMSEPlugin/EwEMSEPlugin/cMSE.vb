@@ -1500,7 +1500,7 @@ Public Class cMSE
     End Sub
 
     ''' <summary>
-    ''' Read the DietMatrix file for this trial and populte the Ecopath diet matrix
+    ''' Read the DietMatrix file for this trial and populate the Ecopath diet matrix
     ''' </summary>
     ''' <param name="iTrial"></param>
     ''' <returns></returns>
@@ -1543,7 +1543,7 @@ Public Class cMSE
             GoodDynamics = False
         End If
 
-        Me.NormalizeDiet()
+        'Me.NormalizeDiet(Me._pathdata.DC)
 
         cMSEUtils.ReleaseReader(strmReader)
         If csvDietMatrix IsNot Nothing Then csvDietMatrix.Dispose()
@@ -1557,14 +1557,18 @@ Public Class cMSE
 
     Private Sub dumpDietMatrix()
 
-        System.Console.WriteLine("-----------------Start Diet Matrix-----------------------")
+        Dim strm As New System.IO.StreamWriter("MSEDietMatrix.csv", True)
+        strm.WriteLine("iter")
+
+        strm.WriteLine("-----------------Start Diet Matrix-----------------------")
         For iprey As Integer = 1 To mCore.nGroups
             For ipred As Integer = 1 To mCore.nLivingGroups
-                System.Console.Write(Me._pathdata.DC(ipred, iprey).ToString() + ",")
+                strm.Write(Me._pathdata.DCInput(ipred, iprey).ToString() + ",")
             Next
-            System.Console.WriteLine()
+            strm.WriteLine()
         Next
-        System.Console.WriteLine("-----------------End Diet Matrix------------------------")
+        strm.WriteLine("-----------------End Diet Matrix------------------------")
+        strm.Close()
 
     End Sub
 
@@ -1975,7 +1979,9 @@ Public Class cMSE
 
                         'Write code here that generates a whole set of diet parameters to be used in combination with new ecopath parameters
                         'to be tested for the mass-balance criteria
-                        SampleDietMatrix(Interacts, MeanProportions, DietPropMultipliers)
+                        Me.SampleDietMatrix(Interacts, MeanProportions, DietPropMultipliers)
+                        Me.NormalizeDiet(Me._pathdata.DCInput)
+                        'Me.dumpDietMatrix()
 
                         Console.WriteLine("Iteration = " & i)
                         If MonteCarlo.selectNewEcopathParameters(1) Then
@@ -2196,24 +2202,30 @@ Public Class cMSE
     End Function
 
 
-    Private Sub NormalizeDiet()
+    Private Sub NormalizeDiet(ByRef DietMatrix(,) As Single)
         Dim dietsum As Single
         Dim tol As Single = 0.001
+        Dim bwarning As Boolean = False
 
         For iPred = 1 To Me._pathdata.NumLiving
+            bwarning = False
             If Me._pathdata.PP(iPred) < 1 Then
                 dietsum = 0
                 For iPrey = 0 To Me._pathdata.NumGroups
-                    dietsum = dietsum + Me._pathdata.DC(iPred, iPrey)
+                    dietsum = dietsum + DietMatrix(iPred, iPrey)
                 Next
                 If dietsum <> 0 And Math.Abs(dietsum - 1) > tol Then
+                    bwarning = True
                     For iPrey = 0 To Me._pathdata.NumGroups
-                        Me._pathdata.DC(iPred, iPrey) = Me._pathdata.DC(iPred, iPrey) / dietsum
+                        DietMatrix(iPred, iPrey) = DietMatrix(iPred, iPrey) / dietsum
                     Next
                     'm_Data.DietsModified = True
                 End If
             End If
         Next
+        If bwarning Then
+            System.Console.WriteLine("WARNING MSE Normalized Diet after sampling.")
+        End If
 
     End Sub
 

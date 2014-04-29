@@ -268,12 +268,16 @@ Namespace Ecopath
             ReDim SumCycDC(m_Data.NumGroups)
             ReDim Cons(m_Data.NumLiving)
 
-            setEstimateWhat()
+            'Dump parameter and dietmatrix to file for debugging
+            'Me.dumpInputPars()
+            'Me.dumpDietMatrix()
+
+            Me.setEstimateWhat()
 
             'jb clear out missing array and recompute it in FindMissing() this does not really need to happen every run
             'only if something changes
             ReDim missing(m_Data.NumGroups, 4)
-            FindMissing()
+            Me.FindMissing()
 
             Try
 
@@ -3030,6 +3034,38 @@ nextJ:
         End Function
 
 #End Region
+
+        Private Sub dumpDietMatrix()
+
+            Dim strm As New System.IO.StreamWriter("EcopathDietMatrix.csv", True)
+            strm.WriteLine("iter")
+
+            strm.WriteLine("-----------------Start Diet Matrix-----------------------")
+            For iprey As Integer = 1 To Me.m_Data.NumGroups
+                For ipred As Integer = 1 To Me.m_Data.NumLiving
+                    strm.Write(Me.m_Data.DC(ipred, iprey).ToString() + ",")
+                Next
+                strm.WriteLine()
+            Next
+            strm.WriteLine("-----------------End Diet Matrix------------------------")
+            strm.Close()
+
+        End Sub
+
+
+        Private Sub dumpInputPars()
+            Try
+                Dim strm As New System.IO.StreamWriter("EcopathPars.csv", True)
+                strm.WriteLine("iter")
+                For igrp As Integer = 1 To Me.m_Data.NumGroups
+                    strm.WriteLine(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.m_Data.GroupName(igrp)) + "," + Me.m_Data.B(igrp).ToString + "," + Me.m_Data.PB(igrp).ToString + "," + Me.m_Data.QB(igrp).ToString + "," + Me.m_Data.EE(igrp).ToString)
+                Next
+
+                strm.Close()
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
     End Class
 
