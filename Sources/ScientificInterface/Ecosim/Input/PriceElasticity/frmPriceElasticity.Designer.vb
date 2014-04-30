@@ -49,11 +49,11 @@ Namespace Ecosim
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
             Me.m_scBottom = New System.Windows.Forms.SplitContainer()
+            Me.m_tlpToolbox = New System.Windows.Forms.TableLayoutPanel()
             Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar()
             Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox()
             Me.m_assignments = New ScientificInterfaceShared.Controls.ucMediationAssignments()
             Me.m_assignmentsToolbar = New ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar()
-            Me.m_tlpToolbox = New System.Windows.Forms.TableLayoutPanel()
             Me.plSketchPad.SuspendLayout()
             Me.m_tlpSketchPad.SuspendLayout()
             CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -93,7 +93,7 @@ Namespace Ecosim
             '
             'm_sketchPad
             '
-            Me.m_sketchPad.AllowDragXMark = False
+            Me.m_sketchPad.AllowDragXMark = True
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
@@ -159,6 +159,13 @@ Namespace Ecosim
             Me.m_scBottom.Panel2.Controls.Add(Me.m_assignments)
             Me.m_scBottom.Panel2.Controls.Add(Me.m_assignmentsToolbar)
             '
+            'm_tlpToolbox
+            '
+            resources.ApplyResources(Me.m_tlpToolbox, "m_tlpToolbox")
+            Me.m_tlpToolbox.Controls.Add(Me.m_shapeToolboxToolbar, 0, 0)
+            Me.m_tlpToolbox.Controls.Add(Me.m_shapeToolBox, 0, 1)
+            Me.m_tlpToolbox.Name = "m_tlpToolbox"
+            '
             'm_shapeToolboxToolbar
             '
             resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
@@ -199,13 +206,6 @@ Namespace Ecosim
             Me.m_assignmentsToolbar.IsMenuVisible = True
             Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
             '
-            'm_tlpToolbox
-            '
-            resources.ApplyResources(Me.m_tlpToolbox, "m_tlpToolbox")
-            Me.m_tlpToolbox.Controls.Add(Me.m_shapeToolboxToolbar, 0, 0)
-            Me.m_tlpToolbox.Controls.Add(Me.m_shapeToolBox, 0, 1)
-            Me.m_tlpToolbox.Name = "m_tlpToolbox"
-            '
             'frmPriceElasticity
             '
             resources.ApplyResources(Me, "$this")
@@ -227,6 +227,7 @@ Namespace Ecosim
             CType(Me.m_scBottom, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scBottom.ResumeLayout(False)
             Me.m_tlpToolbox.ResumeLayout(False)
+            Me.m_tlpToolbox.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
