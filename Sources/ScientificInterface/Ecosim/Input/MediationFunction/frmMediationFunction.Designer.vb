@@ -40,6 +40,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediationFunction))
             Me.m_tlpSketchPad = New System.Windows.Forms.TableLayoutPanel()
             Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
@@ -146,8 +147,8 @@ Namespace Ecosim
             'm_shapeToolBox
             '
             Me.m_shapeToolBox.AllowCheckboxes = False
-            Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
             resources.ApplyResources(Me.m_shapeToolBox, "m_shapeToolBox")
+            Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
             Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
             Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
