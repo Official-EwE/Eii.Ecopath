@@ -348,6 +348,12 @@
   <data name="m_shapeToolBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="m_shapeToolBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_shapeToolBox.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <data name="m_shapeToolBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 25</value>
   </data>
