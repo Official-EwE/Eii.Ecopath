@@ -310,6 +310,8 @@ Public Class cSurvivability
         Dim bSuccess As Boolean = True
         Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")
 
+        If ListofSurvDistParams.Count > 0 Then ListofSurvDistParams.Clear()
+
         If File.Exists(filePath) Then
 
             reader = cMSEUtils.GetReader(filePath)
@@ -323,9 +325,9 @@ Public Class cSurvivability
                         For iGroup As Integer = 1 To mcore.nGroups
                             If param.FleetNo = iFleet And param.GroupNo = iGroup Then
                                 AddDist(param)
-                                csv.ReadNextRecord()
+                                param = ExtractSurvivabilityDist(csv)
                             ElseIf mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
-                                    AddDist(New cSurvivabilityDistributonParam(iFleet, iGroup, Alpha:=2, beta:=2))
+                                AddDist(New cSurvivabilityDistributonParam(iFleet, iGroup, Alpha:=2, beta:=2))
                             End If
                         Next
                     Next

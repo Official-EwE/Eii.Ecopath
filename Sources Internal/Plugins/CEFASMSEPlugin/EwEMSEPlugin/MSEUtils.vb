@@ -147,6 +147,8 @@ Public Class cMSEUtils
         ResultsTraj2
         ''' <summary>The Strategies subfolder under 'Root'.</summary>
         Strategies
+
+        BiomassLimits
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -192,6 +194,7 @@ Public Class cMSEUtils
             Case eMSEPaths.ResultsTrajectories : Return "Results\Trajectories"
             Case eMSEPaths.ResultsTraj2 : Return "Results\Trajectories2"
             Case eMSEPaths.Strategies : Return "Strategies"
+            Case eMSEPaths.BiomassLimits : Return "BiomassLimits"
             Case Else
                 Debug.Assert(False)
         End Select

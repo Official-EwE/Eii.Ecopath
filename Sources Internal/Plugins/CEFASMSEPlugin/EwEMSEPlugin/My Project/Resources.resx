@@ -298,6 +298,10 @@
     <value>{0} running trial {1}</value>
     <comment>{0}=plugin name, {1}=trial number</comment>
   </data>
+  <data name="STATUS_SAVED_BIOMASSLIMITS" xml:space="preserve">
+    <value>{0} saved biomass limits to {1}</value>
+    <comment>{0}=plugin name, {1}=folder</comment>
+  </data>
   <data name="STATUS_SAVED_DETAIL" xml:space="preserve">
     <value>Saved {0}</value>
     <comment>{0}=name of file</comment>

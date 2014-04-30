@@ -302,13 +302,14 @@ Public Class frmMSE
 
         ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
         '             From the UI point of view, we just want strategies. The plug-in does the optimizating
+
+        'check whether the survivability distribution parameters have been loaded from csv and if not then load them
         Me.MSE.Survivability.LoadDistFromCSV()
 
         Try
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
             frmSurvivabilities.Init(Me.UIContext, Me.Plugin)
             frmSurvivabilities.ShowDialog(Me)
-
         Catch ex As Exception
 
         End Try

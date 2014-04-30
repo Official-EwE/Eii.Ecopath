@@ -404,7 +404,6 @@ Public Class frmDistributionParameters
 
         ' Complement list with defaults for missing groups
         For igrp = 1 To Me.Core.nLivingGroups
-            ' ToDo_JS: Exclude primary producers here?
             If params(igrp) Is Nothing Then
                 If ParamName = eParamName.DenDepCatchability Then
                     TMean = Me.Core.EcoSimGroupInputs(igrp).DenDepCatchability

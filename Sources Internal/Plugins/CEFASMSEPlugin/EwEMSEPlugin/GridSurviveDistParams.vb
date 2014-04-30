@@ -48,10 +48,10 @@ Public Class gridSurviveDistParameters
    
     Private Enum eSurviveColumnTypes As Integer
         Index
-        GroupNumber
-        GroupName
         FleetNumber
         FleetName
+        GroupNumber
+        GroupName
         Alpha
         Beta
     End Enum
@@ -101,14 +101,14 @@ Public Class gridSurviveDistParameters
         Me.Redim(1, iNumCols)
 
         Me(0, eSurviveColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eSurviveColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
-        Me(0, eSurviveColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
         Me(0, eSurviveColumnTypes.FleetNumber) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNO)
         Me(0, eSurviveColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, eSurviveColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
+        Me(0, eSurviveColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
         Me(0, eSurviveColumnTypes.Alpha) = New EwEColumnHeaderCell(My.Resources.HEADER_ALPHA)
         Me(0, eSurviveColumnTypes.Beta) = New EwEColumnHeaderCell(My.Resources.HEADER_BETA)
 
-        Me.FixedColumns = 2
+        Me.FixedColumns = 5
         Me.FixedColumnWidths = False
         Me.AllowBlockSelect = False
 
@@ -141,11 +141,19 @@ Public Class gridSurviveDistParameters
             Me.Rows(iRow).Tag = data
         Next
 
-        Me.Columns(eSurviveColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-        Me.Columns(eSurviveColumnTypes.FleetNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-        Me.Columns(eSurviveColumnTypes.FleetName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
-        Me.Columns(eSurviveColumnTypes.GroupNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-        Me.Columns(eSurviveColumnTypes.GroupName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
+        Me.Columns(eSurviveColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eSurviveColumnTypes.FleetNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eSurviveColumnTypes.FleetName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eSurviveColumnTypes.GroupNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eSurviveColumnTypes.GroupName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        'Me.AutoSizeColumn(eSurviveColumnTypes.Index, 20)
+        'Me.AutoSizeColumn(eSurviveColumnTypes.FleetNumber, 50)
+        'Me.AutoSizeColumn(eSurviveColumnTypes.FleetName, 50)
+        'Me.AutoSizeColumn(eSurviveColumnTypes.GroupNumber, 50)
+        'Me.AutoSizeColumn(eSurviveColumnTypes.GroupName, 50)
+        'Me.AutoSizeColumn(eSurviveColumnTypes.Alpha, 50)
+        'Me.AutoSizeColumn(eSurviveColumnTypes.Beta, 50)
+
 
         'Me.AutoSizeColumn(eSurviveColumnTypes.Name, 150)
 

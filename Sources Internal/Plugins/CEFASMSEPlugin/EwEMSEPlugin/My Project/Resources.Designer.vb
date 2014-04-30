@@ -538,6 +538,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} saved biomass limits to {1}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_SAVED_BIOMASSLIMITS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SAVED_BIOMASSLIMITS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Saved {0}.
         '''</summary>
         Friend ReadOnly Property STATUS_SAVED_DETAIL() As String
