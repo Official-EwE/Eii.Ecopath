@@ -1554,7 +1554,13 @@ Public Class cMSE
 
     End Function
 
-
+    ''' <summary>
+    ''' Used for debugging to make sure the diet matrix created here is the same as the Ecopath diet matrix 
+    ''' </summary>
+    ''' <remarks>
+    ''' There is a equivalent method in Ecopath that dumps the diet matrix use for the current interation out to file. 
+    ''' These file can then be compared.
+    ''' </remarks>
     Private Sub dumpDietMatrix()
 
         Dim strm As New System.IO.StreamWriter("MSEDietMatrix.csv", True)
