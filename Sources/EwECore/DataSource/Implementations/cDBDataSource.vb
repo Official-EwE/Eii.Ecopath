@@ -6397,6 +6397,7 @@ Namespace DataSources
                 ' Delete mediation weights
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ShapeID={0})", iShapeID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioshapeMedWeightsLandings WHERE (ShapeID={0})", iShapeID))
 
                 ' Delete pred/prey interactions
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioPredPreyShape WHERE (ShapeID={0})", iShapeID))
