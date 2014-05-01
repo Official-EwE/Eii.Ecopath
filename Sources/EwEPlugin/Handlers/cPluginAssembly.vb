@@ -51,25 +51,17 @@ Public Class cPluginAssembly
 
 #Region " Private parts "
 
-    Private m_an As AssemblyName = Nothing
+    Private m_ass As Assembly = Nothing
     ''' <summary>All available plugins in this assembly.</summary>
     Private m_dictPlugins As New Dictionary(Of String, IPlugin)
-    ''' <summary>Assembly company name.</summary>
-    Private m_strCompany As String = ""
-    ''' <summary>Assembly version number.</summary>
-    Private m_strVersion As String = ""
-    ''' <summary>Assembly description.</summary>
-    Private m_strDescription As String = ""
-    ''' <summary>Assembly copyright notice.</summary>
-    Private m_strCopyright As String = ""
-    ''' <summary>Assembly file name.</summary>
-    Private m_strFileName As String = ""
     ''' <summary>Assembly enable state.</summary>
     Private m_bEnabled As Boolean = True
     ''' <summary>Assembly enabled state at startup.</summary>
     Private m_bEnabledInitially As Boolean = True
     ''' <summary>Assembly compatibility state.</summary>
     Private m_compatibility As ePluginCompatibilityTypes = ePluginCompatibilityTypes.VersionCompatible
+    ''' <summary>Name of the plug-in sandbox, if any.</summary>
+    Private m_strSandbox As String = ""
 
 #End Region ' Private parts
 
@@ -79,11 +71,12 @@ Public Class cPluginAssembly
     ''' <summary>
     ''' Create a new plugin assembly wrapper.
     ''' </summary>
-    ''' <param name="an">The wrapped <see cref="AssemblyName"/>.</param>
+    ''' <param name="ass">The wrapped <see cref="Assembly"/>.</param>
     ''' <param name="bEnabled">Flag stating that the plug-in assembly is allowed to load.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal an As AssemblyName, ByVal bEnabled As Boolean)
-        Me.m_an = an
+    Public Sub New(ByVal ass As Assembly, ByVal bEnabled As Boolean, strSandbox As String)
+        Me.m_ass = ass
+        Me.m_strSandbox = strSandbox
         Me.m_bEnabledInitially = bEnabled
         Me.m_bEnabled = bEnabled
     End Sub
@@ -284,41 +277,20 @@ Public Class cPluginAssembly
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Company() As String
-        Get
-            Return Me.m_strCompany
-        End Get
-        Friend Set(ByVal strValue As String)
-            Me.m_strCompany = strValue
-        End Set
-    End Property
-
+       
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set assembly version.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Version() As String
-        Get
-            Return Me.m_strVersion
-        End Get
-        Friend Set(ByVal strValue As String)
-            Me.m_strVersion = strValue
-        End Set
-    End Property
-
+       
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set assembly description.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Description() As String
-        Get
-            Return Me.m_strDescription
-        End Get
-        Friend Set(ByVal strValue As String)
-            Me.m_strDescription = strValue
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -326,37 +298,45 @@ Public Class cPluginAssembly
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Copyright() As String
-        Get
-            Return Me.m_strCopyright
-        End Get
-        Friend Set(ByVal strValue As String)
-            Me.m_strCopyright = strValue
-        End Set
-    End Property
-
+     
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set assembly file name.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Filename() As String
-        Get
-            Return Me.m_strFileName
-        End Get
-        Friend Set(ByVal strValue As String)
-            Me.m_strFileName = strValue
-        End Set
-    End Property
-
+       
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set <see cref="AssemblyName">AssemblyName</see> associated with this
+    ''' Get the <see cref="AssemblyName">AssemblyName</see> associated with this
     ''' plug-in assembly.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property AssemblyName() As AssemblyName
         Get
-            Return Me.m_an
+            Return Me.m_ass.GetName()
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the actual <see cref="Assembly">Assembly</see> of the plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Assembly() As Assembly
+        Get
+            Return Me.m_ass
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the name of the sandbox the plug-in was loaded in, if any.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Sandbox As String
+        Get
+            Return Me.m_strSandbox
         End Get
     End Property
 

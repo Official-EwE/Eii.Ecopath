@@ -24,6 +24,8 @@ Imports System.Reflection
 Imports System
 Imports System.Collections.Generic
 Imports EwEUtils.Core
+Imports System.Security.Policy
+Imports System.Security.Permissions
 
 #End Region ' Imports
 
@@ -414,6 +416,35 @@ Namespace Utilities
             End If
 
             Return (info.IsEwECore = TriState.True)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a StrongName that matches a specific assembly.
+        ''' </summary>
+        ''' <param name="an">Assembly name to create a StrongName for.</param>
+        ''' <returns>A StrongName that matches the given assembly, or Nothing
+        ''' if the assembly was not strongly named.</returns>
+        ''' <remarks>
+        ''' Adapted from http://blogs.msdn.com/b/shawnfa/archive/2005/08/08/449050.aspx
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetStrongName(an As AssemblyName) As StrongName
+
+            ' Test if assembly is present
+            If (an Is Nothing) Then Return Nothing
+
+            ' Get the public key blob
+            Dim publicKey As Byte() = an.GetPublicKey()
+
+            ' Test if assembly is strongly named
+            If (publicKey Is Nothing) Then Return Nothing
+            If (publicKey.Length = 0) Then Return Nothing
+
+            ' Create the StrongName
+            Dim keyBlob As New StrongNamePublicKeyBlob(publicKey)
+            Return New StrongName(keyBlob, an.Name, an.Version)
 
         End Function
 

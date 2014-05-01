@@ -3071,4 +3071,7 @@
   <data name="VARIABLE_LAYERBIOMASSRELATIVEFORCING" xml:space="preserve">
     <value>Biomass(rel) map||Relative Biomass forcing|Relative Biomass forcing map</value>
   </data>
+  <data name="GENERIC_VALUE_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
 </root>

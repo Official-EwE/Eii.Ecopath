@@ -39,21 +39,23 @@ Partial Class ucOptionsPluginAssemblyDetails
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.m_lblCopyright = New System.Windows.Forms.Label
-        Me.m_lblCompany = New System.Windows.Forms.Label
-        Me.m_lblVersion = New System.Windows.Forms.Label
-        Me.m_lblFile = New System.Windows.Forms.Label
-        Me.m_tbFile = New System.Windows.Forms.TextBox
-        Me.m_tbVersion = New System.Windows.Forms.TextBox
-        Me.m_tbCompany = New System.Windows.Forms.TextBox
-        Me.m_tbCopyright = New System.Windows.Forms.TextBox
-        Me.m_tbDescription = New System.Windows.Forms.TextBox
+        Me.m_lblCopyright = New System.Windows.Forms.Label()
+        Me.m_lblCompany = New System.Windows.Forms.Label()
+        Me.m_lblVersion = New System.Windows.Forms.Label()
+        Me.m_lblFile = New System.Windows.Forms.Label()
+        Me.m_tbFile = New System.Windows.Forms.TextBox()
+        Me.m_tbVersion = New System.Windows.Forms.TextBox()
+        Me.m_tbCompany = New System.Windows.Forms.TextBox()
+        Me.m_tbCopyright = New System.Windows.Forms.TextBox()
+        Me.m_tbDescription = New System.Windows.Forms.TextBox()
+        Me.m_lblTrusted = New System.Windows.Forms.Label()
+        Me.m_tbxTrusted = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'm_lblCopyright
         '
         Me.m_lblCopyright.AutoSize = True
-        Me.m_lblCopyright.Location = New System.Drawing.Point(3, 60)
+        Me.m_lblCopyright.Location = New System.Drawing.Point(3, 69)
         Me.m_lblCopyright.Name = "m_lblCopyright"
         Me.m_lblCopyright.Size = New System.Drawing.Size(54, 13)
         Me.m_lblCopyright.TabIndex = 6
@@ -62,7 +64,7 @@ Partial Class ucOptionsPluginAssemblyDetails
         'm_lblCompany
         '
         Me.m_lblCompany.AutoSize = True
-        Me.m_lblCompany.Location = New System.Drawing.Point(3, 41)
+        Me.m_lblCompany.Location = New System.Drawing.Point(3, 47)
         Me.m_lblCompany.Name = "m_lblCompany"
         Me.m_lblCompany.Size = New System.Drawing.Size(54, 13)
         Me.m_lblCompany.TabIndex = 4
@@ -71,7 +73,7 @@ Partial Class ucOptionsPluginAssemblyDetails
         'm_lblVersion
         '
         Me.m_lblVersion.AutoSize = True
-        Me.m_lblVersion.Location = New System.Drawing.Point(3, 22)
+        Me.m_lblVersion.Location = New System.Drawing.Point(3, 25)
         Me.m_lblVersion.Name = "m_lblVersion"
         Me.m_lblVersion.Size = New System.Drawing.Size(45, 13)
         Me.m_lblVersion.TabIndex = 2
@@ -89,7 +91,7 @@ Partial Class ucOptionsPluginAssemblyDetails
         'm_tbFile
         '
         Me.m_tbFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbFile.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.m_tbFile.Location = New System.Drawing.Point(66, 3)
         Me.m_tbFile.Name = "m_tbFile"
@@ -100,7 +102,7 @@ Partial Class ucOptionsPluginAssemblyDetails
         'm_tbVersion
         '
         Me.m_tbVersion.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.m_tbVersion.Location = New System.Drawing.Point(66, 22)
+        Me.m_tbVersion.Location = New System.Drawing.Point(66, 25)
         Me.m_tbVersion.Name = "m_tbVersion"
         Me.m_tbVersion.ReadOnly = True
         Me.m_tbVersion.Size = New System.Drawing.Size(93, 13)
@@ -110,9 +112,9 @@ Partial Class ucOptionsPluginAssemblyDetails
         'm_tbCompany
         '
         Me.m_tbCompany.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbCompany.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.m_tbCompany.Location = New System.Drawing.Point(66, 41)
+        Me.m_tbCompany.Location = New System.Drawing.Point(66, 47)
         Me.m_tbCompany.Name = "m_tbCompany"
         Me.m_tbCompany.ReadOnly = True
         Me.m_tbCompany.Size = New System.Drawing.Size(374, 13)
@@ -121,9 +123,9 @@ Partial Class ucOptionsPluginAssemblyDetails
         'm_tbCopyright
         '
         Me.m_tbCopyright.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbCopyright.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.m_tbCopyright.Location = New System.Drawing.Point(66, 60)
+        Me.m_tbCopyright.Location = New System.Drawing.Point(66, 69)
         Me.m_tbCopyright.Name = "m_tbCopyright"
         Me.m_tbCopyright.ReadOnly = True
         Me.m_tbCopyright.Size = New System.Drawing.Size(374, 13)
@@ -132,25 +134,47 @@ Partial Class ucOptionsPluginAssemblyDetails
         'm_tbDescription
         '
         Me.m_tbDescription.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbDescription.Location = New System.Drawing.Point(6, 78)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_tbDescription.Location = New System.Drawing.Point(6, 112)
         Me.m_tbDescription.Multiline = True
         Me.m_tbDescription.Name = "m_tbDescription"
         Me.m_tbDescription.ReadOnly = True
-        Me.m_tbDescription.Size = New System.Drawing.Size(434, 180)
+        Me.m_tbDescription.Size = New System.Drawing.Size(434, 146)
         Me.m_tbDescription.TabIndex = 8
         Me.m_tbDescription.Text = "Description"
+        '
+        'm_lblTrusted
+        '
+        Me.m_lblTrusted.AutoSize = True
+        Me.m_lblTrusted.Location = New System.Drawing.Point(3, 91)
+        Me.m_lblTrusted.Name = "m_lblTrusted"
+        Me.m_lblTrusted.Size = New System.Drawing.Size(46, 13)
+        Me.m_lblTrusted.TabIndex = 6
+        Me.m_lblTrusted.Text = "Trusted:"
+        '
+        'm_tbxTrusted
+        '
+        Me.m_tbxTrusted.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_tbxTrusted.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.m_tbxTrusted.Location = New System.Drawing.Point(66, 91)
+        Me.m_tbxTrusted.Name = "m_tbxTrusted"
+        Me.m_tbxTrusted.ReadOnly = True
+        Me.m_tbxTrusted.Size = New System.Drawing.Size(374, 13)
+        Me.m_tbxTrusted.TabIndex = 7
         '
         'ucOptionsPluginAssemblyDetails
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_tbxTrusted)
         Me.Controls.Add(Me.m_tbCopyright)
         Me.Controls.Add(Me.m_tbCompany)
         Me.Controls.Add(Me.m_tbVersion)
         Me.Controls.Add(Me.m_tbDescription)
         Me.Controls.Add(Me.m_tbFile)
+        Me.Controls.Add(Me.m_lblTrusted)
         Me.Controls.Add(Me.m_lblCopyright)
         Me.Controls.Add(Me.m_lblCompany)
         Me.Controls.Add(Me.m_lblVersion)
@@ -170,5 +194,7 @@ Partial Class ucOptionsPluginAssemblyDetails
     Friend WithEvents m_tbCompany As System.Windows.Forms.TextBox
     Friend WithEvents m_tbCopyright As System.Windows.Forms.TextBox
     Friend WithEvents m_tbDescription As System.Windows.Forms.TextBox
+    Private WithEvents m_lblTrusted As System.Windows.Forms.Label
+    Private WithEvents m_tbxTrusted As System.Windows.Forms.TextBox
 
 End Class
