@@ -31,6 +31,7 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Properties
 
 #End Region ' Imports
 
@@ -45,9 +46,8 @@ Public Class gridSurviveDistParameters
 
 #Region " Internal defs "
 
-   
-    Private Enum eSurviveColumnTypes As Integer
-        Index
+    Private Enum eColumnTypes As Integer
+        Index = 0
         FleetNumber
         FleetName
         GroupNumber
@@ -56,11 +56,11 @@ Public Class gridSurviveDistParameters
         Beta
     End Enum
 
-#End Region ' Internal defs
-
     ''' <summary>The cMSE Plugin that contains the data.</summary>
     Private mMSEPlugin As cMSE
     Private m_data As List(Of cSurvivability.cSurvivabilityDistributonParam) = Nothing
+
+#End Region ' Internal defs
 
 #Region " Constructor "
 
@@ -97,16 +97,16 @@ Public Class gridSurviveDistParameters
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        Dim iNumCols As Integer = [Enum].GetValues(GetType(eSurviveColumnTypes)).Length
+        Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
         Me.Redim(1, iNumCols)
 
-        Me(0, eSurviveColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eSurviveColumnTypes.FleetNumber) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNO)
-        Me(0, eSurviveColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-        Me(0, eSurviveColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
-        Me(0, eSurviveColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-        Me(0, eSurviveColumnTypes.Alpha) = New EwEColumnHeaderCell(My.Resources.HEADER_ALPHA)
-        Me(0, eSurviveColumnTypes.Beta) = New EwEColumnHeaderCell(My.Resources.HEADER_BETA)
+        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
+        Me(0, eColumnTypes.FleetNumber) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNO)
+        Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, eColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
+        Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eColumnTypes.Alpha) = New EwEColumnHeaderCell(My.Resources.HEADER_ALPHA)
+        Me(0, eColumnTypes.Beta) = New EwEColumnHeaderCell(My.Resources.HEADER_BETA)
 
         Me.FixedColumns = 5
         Me.FixedColumnWidths = False
@@ -117,9 +117,13 @@ Public Class gridSurviveDistParameters
     Protected Overrides Sub FillData()
 
         If (Me.m_data Is Nothing) Then Return
+        If (Me.UIContext Is Nothing) Then Return
 
+        Dim core As cCore = Me.UIContext.Core
+        Dim pm As cPropertyManager = Me.UIContext.PropertyManager
         Dim iRow As Integer = -1
         Dim cell As EwECell = Nothing
+
         'Dim lstOptions As New List(Of cMSE.DistributionType)
         'lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(cMSE.DistributionType)), IEnumerable(Of cMSE.DistributionType)))
         'Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cDistributionTypeFormatter(), lstOptions)
@@ -131,21 +135,23 @@ Public Class gridSurviveDistParameters
             iRow = Me.AddRow()
             Dim data As cSurvivability.cSurvivabilityDistributonParam = DirectCast(Me.m_data(i), cSurvivability.cSurvivabilityDistributonParam)
 
-            Me(iRow, eSurviveColumnTypes.Index) = New EwERowHeaderCell(CStr(data.Index))
-            Me(iRow, eSurviveColumnTypes.FleetNumber) = New EwERowHeaderCell(CStr(data.FleetNo))
-            Me(iRow, eSurviveColumnTypes.FleetName) = New EwERowHeaderCell(CStr(mMSEPlugin.Core.FleetInputs(data.FleetNo).Name))
-            Me(iRow, eSurviveColumnTypes.GroupNumber) = New EwERowHeaderCell(CStr(data.GroupNo))
-            Me(iRow, eSurviveColumnTypes.GroupName) = New EwERowHeaderCell(CStr(mMSEPlugin.Core.EcoPathGroupInputs(data.GroupNo).Name))
-            Me(iRow, eSurviveColumnTypes.Alpha) = DataCell(data.Alpha)
-            Me(iRow, eSurviveColumnTypes.Beta) = DataCell(data.Beta)
+            Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(data.Index))
+            Me(iRow, eColumnTypes.FleetNumber) = New EwERowHeaderCell(CStr(data.FleetNo))
+            ' To Mark: property cells automatically keep track of changing variable values
+            Me(iRow, eColumnTypes.FleetName) = New PropertyRowHeaderCell(pm, core.FleetInputs(data.FleetNo), eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.GroupNumber) = New EwERowHeaderCell(CStr(data.GroupNo))
+            ' To Mark: property cells automatically keep track of changing variable values
+            Me(iRow, eColumnTypes.GroupName) = New PropertyRowHeaderCell(pm, core.EcoPathGroupInputs(data.GroupNo), eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.Alpha) = DataCell(data.Alpha)
+            Me(iRow, eColumnTypes.Beta) = DataCell(data.Beta)
             Me.Rows(iRow).Tag = data
         Next
 
-        Me.Columns(eSurviveColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.Columns(eSurviveColumnTypes.FleetNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.Columns(eSurviveColumnTypes.FleetName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.Columns(eSurviveColumnTypes.GroupNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.Columns(eSurviveColumnTypes.GroupName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.FleetNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.FleetName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.GroupNumber).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.GroupName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
         'Me.AutoSizeColumn(eSurviveColumnTypes.Index, 20)
         'Me.AutoSizeColumn(eSurviveColumnTypes.FleetNumber, 50)
         'Me.AutoSizeColumn(eSurviveColumnTypes.FleetName, 50)
@@ -165,7 +171,8 @@ Public Class gridSurviveDistParameters
 
     Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
         Get
-            Return eCoreComponentType.EcoSim
+            ' To Mark: no need to respond to any core data changes
+            Return eCoreComponentType.NotSet
         End Get
     End Property
 
@@ -174,6 +181,9 @@ Public Class gridSurviveDistParameters
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
         Dim cell As EwECell = Nothing
 
+        ' To Mark: Ok, so when the data is NULL it will always be NULL and cannot be changed?! 
+        '          I suspect that you still want users to be able to change the cell value away from
+        '          cCore.NULL; in that case remove the 'NotEditable' style.
         If (dValue = cCore.NULL_VALUE) Then
             style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
         End If
@@ -193,17 +203,23 @@ Public Class gridSurviveDistParameters
 
         Dim data As cSurvivability.cSurvivabilityDistributonParam = DirectCast(tag, cSurvivability.cSurvivabilityDistributonParam)
 
-        Select Case DirectCast(p.Column, eSurviveColumnTypes)
-            Case eSurviveColumnTypes.Alpha
+        Select Case DirectCast(p.Column, eColumnTypes)
+            Case eColumnTypes.Alpha
                 data.Alpha = CDbl(cell.GetValue(p))
-            Case eSurviveColumnTypes.Beta
+            Case eColumnTypes.Beta
                 data.Beta = CDbl(cell.GetValue(p))
             Case Else
                 ' NOP
         End Select
 
-        Me.RaiseDataChangeEvent()
-        Return MyBase.OnCellEdited(p, cell)
+        ' To Mark: First complete the edit, then notify the world. It was the other way around
+        MyBase.OnCellEdited(p, cell)
+
+        ' To Mark: I've added a 'lazy notification' to be fired after the entire celll edit bit has completed.
+        'Me.RaiseDataChangeEvent()
+        Me.BeginInvoke(New MethodInvoker(AddressOf RaiseDataChangeEvent))
+
+        Return True
 
     End Function
 

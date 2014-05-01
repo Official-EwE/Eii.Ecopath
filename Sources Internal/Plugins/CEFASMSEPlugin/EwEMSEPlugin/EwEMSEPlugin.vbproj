@@ -139,6 +139,12 @@
     <Compile Include="cMSEPluginPoint.vb" />
     <Compile Include="cQuotaShares.vb" />
     <Compile Include="cRegulation.vb" />
+    <Compile Include="frmEditSurvivabilities.Designer.vb">
+      <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEditSurvivabilities.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="gridMaxDecreaseEffort.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -152,12 +158,6 @@
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
     </Compile>
     <Compile Include="frmEditDecreaseEffort.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEditSurvivabilities.Designer.vb">
-      <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmEditSurvivabilities.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTFMpolicy.designer.vb">
