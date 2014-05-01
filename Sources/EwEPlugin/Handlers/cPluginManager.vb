@@ -25,10 +25,13 @@ Imports System.Collections.Generic
 Imports System.Diagnostics
 Imports System.IO
 Imports System.Reflection
+Imports System.Security
+Imports System.Security.Policy
 Imports System.Threading
 Imports System.Windows.Forms
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -181,6 +184,8 @@ Public Class cPluginManager
     Private m_ThreadID As Integer = 0
     ''' <summary>Flag stating whether plug-ins have been loaded.</summary>
     Private m_bLoaded As Boolean = False
+
+    Private m_lsandboxes As New List(Of AppDomain)
 
 #End Region ' Private variables
 
@@ -451,11 +456,11 @@ Public Class cPluginManager
         If (Me.m_bLoaded) Then Return
 
         Dim pluginAssembly As Assembly = Assembly.GetAssembly(GetType(cPluginManager))
+        ' Get the location of the plugin manager assembly as the default plug-in path
+        Dim strPluginPath As String = Path.GetDirectoryName(pluginAssembly.Location)
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
         Dim bLoadPlugin As Boolean = True
-        'Get the location of the plugin manager assembly as the default plug-in path
-        Dim strPluginPath As String = Path.GetDirectoryName(pluginAssembly.Location)
 
         If Not String.IsNullOrWhiteSpace(strSubfolder) Then
             strPluginPath = Path.Combine(strPluginPath, strSubfolder)
@@ -464,8 +469,6 @@ Public Class cPluginManager
         If Not Directory.Exists(strPluginPath) Then
             cLog.Write("Plugin directory does not exist: " & strPluginPath, eVerboseLevel.Detailed)
             Return
-        Else
-            cLog.Write("Plugin directory expected at " & strPluginPath, eVerboseLevel.Detailed)
         End If
 
         Try
@@ -507,10 +510,10 @@ Public Class cPluginManager
         Dim clsType As Type = Nothing
         Dim clsInterface As Type = Nothing
         Dim clsAssembly As Assembly = Nothing
-        Dim nameAssembly As AssemblyName = Nothing
         Dim ip As IPlugin = Nothing
         Dim bHasPlugins As Boolean = False
         Dim plugAssem As cPluginAssembly = Nothing
+        Dim strSandbox As String = ""
 
         ' Sanity check
         If (Me.m_dictAssemblies.ContainsKey(strFileName)) Then
@@ -518,36 +521,21 @@ Public Class cPluginManager
         End If
 
         Try
-
-            ' Load assembly in the regular way
             Try
+                ' Try to load assembly
                 clsAssembly = Assembly.LoadFrom(strFileName)
+            Catch exLoad As FileLoadException
+                ' Try to load assembly in a sandbox
+                clsAssembly = Me.LoadAssemblySandboxed(strFileName, strSandbox)
             Catch ex As Exception
                 cLog.Write(ex, eVerboseLevel.Detailed, "LoadPluginAssembly")
             End Try
 
-            ' Unable to load?
-            If (clsAssembly Is Nothing) Then
-                ' #YesP: load assembly Unsafe
-                Try
-                    ' To test this any assembly can be flagged as unsafe, see http://www.howtogeek.com/70012/what-causes-the-file-downloaded-from-the-internet-warning-and-how-can-i-easily-remove-it/
-                    ' notepad [filename]:Zone.Identifier 
-                    '    [ZoneTransfer]
-                    '    ZoneId = 3
-                    clsAssembly = Assembly.UnsafeLoadFrom(strFileName)
-                Catch ex As Exception
-                    cLog.Write(ex, eVerboseLevel.Detailed, "LoadPluginAssembly Unsafe")
-                End Try
-            End If
-
             ' Test if loaded at all
             If (clsAssembly Is Nothing) Then Return False
 
-            ' Get name
-            nameAssembly = clsAssembly.GetName
-
             ' Create plugin assembly and set initial enabled state
-            plugAssem = New cPluginAssembly(nameAssembly, bEnable)
+            plugAssem = New cPluginAssembly(clsAssembly, bEnable, strSandbox)
             plugAssem.Filename = strFileName
 
             ' Set compatible flag for EwE assemblies
@@ -642,7 +630,7 @@ Public Class cPluginManager
                 Dim description As AssemblyDescriptionAttribute = DirectCast(ExtractAssemblyAttribute(clsAssembly, GetType(AssemblyDescriptionAttribute)), AssemblyDescriptionAttribute)
                 If description IsNot Nothing Then plugAssem.Description = description.Description.ToString
                 ' Okay, let's keep at least THIS one simple...
-                plugAssem.Version = nameAssembly.Version.ToString()
+                plugAssem.Version = plugAssem.AssemblyName.Version.ToString()
 
                 ' Connect to manager where applicable
                 For Each pi As IPlugin In plugAssem.Plugins(GetType(IDataProducerPlugin))
@@ -2338,28 +2326,7 @@ Public Class cPluginManager
                                 Optional ByVal args() As Object = Nothing) As IPlugin
 
         Dim clsRet As Object = Nothing
-        Dim clsAssembly As Assembly = Nothing
-
-        Try
-            clsAssembly = Assembly.LoadFrom(strAssemblyPath)
-        Catch ex As Exception
-            cLog.Write(ex, eVerboseLevel.Detailed, "LoadPlugin")
-            clsAssembly = Nothing
-        End Try
-
-        If (clsAssembly Is Nothing) Then
-            Try
-                clsAssembly = Assembly.UnsafeLoadFrom(strAssemblyPath)
-            Catch ex As Exception
-                cLog.Write(ex, eVerboseLevel.Detailed, "UnsafeLoadPlugin")
-                clsAssembly = Nothing
-            End Try
-        End If
-
-        If (clsAssembly Is Nothing) Then
-            cLog.Write("Unable to load assembly " & strAssemblyPath)
-            Return Nothing
-        End If
+        Dim clsAssembly As Assembly = assem.Assembly
 
         Try
             If args Is Nothing Then
@@ -2368,9 +2335,6 @@ Public Class cPluginManager
                 clsRet = clsAssembly.CreateInstance(strClassName, False, Nothing, Nothing, args, Nothing, Nothing)
             End If
         Catch ex As Exception
-
-            ' Generic catch for any type of exception
-
             ' JS 04Nov13: we'd really like to know this, actually...
             cLog.Write(ex, eVerboseLevel.Detailed, "LoadPlugin")
             ' Notify world
@@ -2473,5 +2437,62 @@ Public Class cPluginManager
     End Function
 
 #End Region ' Private helper methods
+
+#Region " Sandboxing "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load a sandboxed assembly
+    ''' </summary>
+    ''' <param name="strFile"></param>
+    ''' <param name="strSandbox">Name of the sandbox</param>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' See https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-i/
+    ''' See http://msdn.microsoft.com/en-us/library/bb763046%28v=vs.110%29.aspx
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadAssemblySandboxed(strFile As String, ByRef strSandbox As String) As Assembly
+
+#If 0 Then
+        ' To flag an assembly as unsafe, see http://www.howtogeek.com/70012/what-causes-the-file-downloaded-from-the-internet-warning-and-how-can-i-easily-remove-it/
+        ' In a command prompt, enter:
+        notepad [filename]:Zone.Identifier 
+
+        ' Create the file, and save the following content:
+        [ZoneTransfer]
+        ZoneId = 3
+#End If
+
+        ' First, explore the assembly to load
+
+        ' Abort if not a managed assembly
+        Dim an As AssemblyName = AssemblyName.GetAssemblyName(strFile)
+        If (an Is Nothing) Then Return Nothing
+
+        Dim sn As StrongName = cAssemblyUtils.GetStrongName(an)
+        If (sn Is Nothing) Then Return Nothing
+
+        ' Create the permission set to grant to other assemblies. 
+        Dim ev As New Evidence()
+        ev.AddHostEvidence(New Zone(SecurityZone.MyComputer))
+        Dim pset As PermissionSet = SecurityManager.GetStandardSandbox(ev)
+
+        Dim info As New AppDomainSetup()
+        ' Identify the folder to use for the sandbox.
+        info.ApplicationBase = Path.GetFullPath(strFile)
+
+        strSandbox = "Sandbox" & Path.GetFileNameWithoutExtension(strFile)
+
+        ' Create the sandboxed domain.
+        Dim sandbox As AppDomain = AppDomain.CreateDomain(strSandbox, ev, info, pset, sn)
+        Me.m_lsandboxes.Add(sandbox)
+
+        ' Done
+        Return sandbox.Load(an)
+
+    End Function
+
+#End Region ' Sandboxing
 
 End Class

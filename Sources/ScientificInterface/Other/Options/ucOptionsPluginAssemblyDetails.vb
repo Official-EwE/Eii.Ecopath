@@ -21,10 +21,9 @@
 Option Strict On
 Option Explicit On
 
-Imports System.IO
-Imports System.Text
-Imports EwECore
 Imports EwEPlugin
+Imports EwEUtils.SystemUtilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -47,6 +46,7 @@ Public Class ucOptionsPluginAssemblyDetails
         Me.m_tbDescription.Text = pa.Description
         Me.m_tbFile.Text = pa.Filename
         Me.m_tbVersion.Text = pa.Version
+        Me.m_tbxTrusted.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(pa.Sandbox), SharedResources.GENERIC_VALUE_YES, SharedResources.GENERIC_VALUE_NO)
 
         Me.m_pa = pa
 
