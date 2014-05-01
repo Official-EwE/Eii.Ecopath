@@ -3754,11 +3754,8 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcosimFleets(idm)
             bSucces = bSucces And Me.SaveEcosimVulnerabilities(idm)
 
-            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Then
+            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.EcoSim}) Then
                 bSucces = bSucces And Me.SaveShapes(idm)
-            End If
-
-            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.EcoSim}) Then
                 bSucces = bSucces And Me.SaveShapeAssignments(idm)
             End If
 
