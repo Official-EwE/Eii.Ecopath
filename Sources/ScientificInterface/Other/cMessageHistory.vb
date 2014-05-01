@@ -575,14 +575,14 @@ Public Class cMessageHistory
                 End If
             End If
         Else
-            ' Invoke message box
-            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
+            '' Invoke message box
+            'cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
             Try
                 dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text, mbb, mbi)
             Catch ex As Exception
                 cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
             End Try
-            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+            'cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         End If
 
         ' Translate .NET MessageBox result into reply
