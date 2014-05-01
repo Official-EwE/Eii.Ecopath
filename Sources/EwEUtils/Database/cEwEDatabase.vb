@@ -711,7 +711,7 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns an <see cref="IDbCommand">IDbCommand</see> for the current DBMS
+        ''' Returns an <see cref="IDbCommand"/> for the current DBMS
         ''' </summary>
         ''' <param name="strSQL">Query to create the IDbCommand with.</param>
         ''' <returns>Nothing if an error occurred.</returns>
@@ -737,12 +737,13 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns a <see cref="IDataReader">IDataReader</see> with a collection
+        ''' Returns a <see cref="IDataReader"/> with a collection
         ''' of readonly records from the currently open connection.
+        ''' <seealso cref="ReleaseReader"/>
         ''' </summary>
         ''' <param name="strSQL">The query to obtain the records.</param>
         ''' <returns></returns>
-        ''' <remarks>The obtained IDataReader should be released via <see cref="ReleaseReader">ReleaseReader</see>.</remarks>
+        ''' <remarks>The obtained IDataReader should be released via <see cref="ReleaseReader"/>.</remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Function GetReader(ByVal strSQL As String) As IDataReader
 
@@ -764,9 +765,10 @@ Namespace Database
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Releases the set of readonly records previously obtained by calling
-        ''' <see cref="GetReader">GetReader</see>.
+        ''' <see cref="GetReader"/>.
+        ''' <seealso cref="GetReader"/>
         ''' </summary>
-        ''' <param name="reader">The <see cref="IDataReader">IDataReader</see> to release.</param>
+        ''' <param name="reader">The <see cref="IDataReader"/> to release.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ReleaseReader(ByVal reader As IDataReader) As Boolean
@@ -781,8 +783,9 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns a <see cref="cEwEDbWriter">cEwEDbWriter</see> for
+        ''' Returns a <see cref="cEwEDbWriter"/> for
         ''' the given table in the database.
+        ''' <seealso cref="ReleaseWriter"/>
         ''' </summary>
         ''' <param name="strTable">The table to connect the EwEDbWriter to.</param>
         ''' -------------------------------------------------------------------
@@ -792,7 +795,8 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Releases a writer previously created via <see cref="GetWriter">GetWriter</see>.
+        ''' Releases a writer previously created via <see cref="GetWriter"/>.
+        ''' <seealso cref="GetWriter"/>
         ''' </summary>
         ''' <param name="writer">The writer to release</param>
         ''' <param name="bSaveChanges">States whether changes should be written (true) or discarded (false).</param>
@@ -830,15 +834,15 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Obtains an <see cref="IDataAdapter">IDataAdapter</see> for the
-        ''' current open connection.
+        ''' Obtains an <see cref="IDataAdapter"/> for the current open connection.
+        ''' <seealso cref="ReleaseAdapter"/>
         ''' </summary>
         ''' <param name="strSQL">The SQL query to obtain the adaper for.</param>
-        ''' <returns>An <see cref="IDataAdapter">IDataAdapter</see> if
-        ''' successful, or Nothing when an error occurred.</returns>
+        ''' <returns>An <see cref="IDataAdapter"/> if successful, or Nothing if 
+        ''' an error occurred.</returns>
         ''' <remarks>
         ''' <para>The obtained IDataAdapter should be released via 
-        ''' <see cref="ReleaseAdapter">ReleaseAdapter</see>.</para></remarks>
+        ''' <see cref="ReleaseAdapter"/>.</para></remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Function GetAdapter(ByVal strSQL As String) As IDataAdapter
 
@@ -859,11 +863,10 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Releases an <see cref="IDataAdapter">IDataAdapter</see> 
-        ''' previously obtained from <see cref="GetAdapter">GetAdapter</see>.
+        ''' Releases an <see cref="IDataAdapter"/> previously obtained via
+        ''' <see cref="GetAdapter"/>.
         ''' </summary>
-        ''' <param name="adapter">The <see cref="IDataAdapter">IDataAdapter</see> 
-        ''' to release.</param>
+        ''' <param name="adapter">The <see cref="IDataAdapter"/> to release.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ReleaseAdapter(ByRef adapter As IDataAdapter) As Boolean
