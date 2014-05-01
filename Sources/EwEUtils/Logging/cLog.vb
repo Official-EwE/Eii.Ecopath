@@ -149,6 +149,7 @@ Namespace Core
                     Dim thisEx As Exception = theException
                     Do While thisEx IsNot Nothing
                         xmlStrm.WriteStartElement("Exception")
+                        xmlStrm.WriteElementString("Type", thisEx.GetType().ToString)
                         xmlStrm.WriteElementString("Source", thisEx.Source)
                         xmlStrm.WriteElementString("Message", thisEx.Message)
                         xmlStrm.WriteElementString("StackTrace", thisEx.StackTrace)
