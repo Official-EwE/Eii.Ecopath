@@ -97,37 +97,6 @@ Namespace Controls
 
         End Class
 
-#Region " IndexedCollectionItem "
-
-        Private Class cIndexedCollectionItem
-
-            Private m_objItem As Object = Nothing
-            Private m_fmt As ITypeFormatter = Nothing
-
-            Public Sub New(ByVal objItem As Object)
-                Debug.Assert(objItem IsNot Nothing)
-                Me.m_objItem = objItem
-                Me.m_fmt = cTypeFormatterFactory.GetTypeFormatter(Me.m_objItem.GetType)
-            End Sub
-
-            Public Overrides Function ToString() As String
-                If (Me.m_fmt Is Nothing) Then
-                    Return Me.m_objItem.ToString()
-                End If
-                Return Me.m_fmt.GetDescriptor(Me.m_objItem, eDescriptorTypes.Name)
-            End Function
-
-            Public Function CoreIndex(idef As Integer) As Integer
-                If TypeOf Me.m_objItem Is ICoreInterface Then
-                    ' Always return TRUE index
-                    Return DirectCast(Me.m_objItem, ICoreInterface).Index
-                End If
-                Return idef
-            End Function
-        End Class
-
-#End Region ' IndexedCollectionItem
-
 #Region " Private helper classes "
 
 #Region " Interface IControlWrapper "
@@ -701,6 +670,8 @@ Namespace Controls
             Private m_md As cVariableMetaData = Nothing
             Private m_formatter As ITypeFormatter = Nothing
 
+            Private m_bIsCoreIOCollection As Boolean = False
+
 #End Region ' Private variables 
 
 #Region " Implementation "
@@ -735,9 +706,9 @@ Namespace Controls
                     Me.m_cmb = DirectCast(ctrl, ComboBox)
 
                     ' Add handlers
-                    AddHandler Me.m_cmb.SelectedIndexChanged, AddressOf OnControlValueChanged
-                    AddHandler Me.m_cmb.TextChanged, AddressOf OnControlValueChanged
-                    AddHandler Me.m_cmb.Format, AddressOf OnControlFormat
+                    AddHandler Me.m_cmb.SelectedIndexChanged, AddressOf OnComboBoxValueChanged
+                    AddHandler Me.m_cmb.TextChanged, AddressOf OnComboBoxValueChanged
+                    AddHandler Me.m_cmb.Format, AddressOf OnComboBoxFormat
 
                     ' Store refs
                     Me.m_provider = provider
@@ -770,13 +741,15 @@ Namespace Controls
                     Implements IControlWrapper.Release
 
                 If (Me.m_cmb IsNot Nothing) Then
-                    RemoveHandler Me.m_cmb.SelectedIndexChanged, AddressOf OnControlValueChanged
-                    RemoveHandler Me.m_cmb.TextChanged, AddressOf OnControlValueChanged
-                    RemoveHandler Me.m_cmb.Format, AddressOf OnControlFormat
+                    RemoveHandler Me.m_cmb.SelectedIndexChanged, AddressOf OnComboBoxValueChanged
+                    RemoveHandler Me.m_cmb.TextChanged, AddressOf OnComboBoxValueChanged
+                    RemoveHandler Me.m_cmb.Format, AddressOf OnComboBoxFormat
                     Me.m_cmb = Nothing
                 End If
 
             End Sub
+
+            Private m_bInUpdate As Boolean = False
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -792,6 +765,7 @@ Namespace Controls
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
                 ' ToDo: apply metadata
+                Me.m_bInUpdate = True
 
                 If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
 
@@ -817,42 +791,59 @@ Namespace Controls
 
                 End If
 
+                Me.m_bInUpdate = False
+
             End Sub
 
             Private Sub SelectItem(ByVal objValue As Object)
-                Dim objItem As Object = Nothing
                 Dim iValue As Integer = -1
 
-                If (Not Me.m_lItems.Contains(objValue) And (Me.m_formatter Is Nothing)) Then
-                    Me.m_lItems.Add(objValue)
-                    Me.m_lItems.Sort()
-                    ' Hmm
-                    Me.Items = Me.Items
-                End If
+                ' Collection item case
+                If Me.m_bIsCoreIOCollection Then
+                    Dim iIndex As Integer = CInt(objValue)
+                    Dim iNull As Integer = -1
 
-                iValue = Me.m_lItems.IndexOf(objValue)
-
-                If (Me.m_provider.ValueType Is GetType(Integer)) Then
                     For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
-                        objItem = Me.m_cmb.Items(iItem)
-                        If (TypeOf objItem Is cIndexedCollectionItem) Then
-                            If (CInt(objValue) = DirectCast(objItem, cIndexedCollectionItem).CoreIndex(iItem)) Then
-                                iValue = iItem : Exit For
-                            End If
-                        ElseIf (TypeOf objValue Is Integer) Then
-                            If (CInt(objValue) = CInt(objItem)) Then
-                                iValue = iItem : Exit For
-                            End If
-                        ElseIf (TypeOf objValue Is String) Then
-                            If (String.Compare(CStr(objValue), CStr(objItem), False) = 0) Then
+                        If (TypeOf Me.m_cmb.Items(iItem) Is ICoreInterface) Then
+                            If (iIndex = DirectCast(Me.m_cmb.Items(iItem), ICoreInterface).Index) Then
                                 iValue = iItem : Exit For
                             End If
                         Else
-                            If Convert.Equals(objItem, objValue) Then
-                                iValue = iItem : Exit For
-                            End If
+                            iNull = iItem
                         End If
                     Next
+                    If (iValue = -1) Then iValue = iNull
+                Else
+                    ' Other data case
+                    If (Not Me.m_lItems.Contains(objValue) And (Me.m_formatter Is Nothing)) Then
+                        Me.m_lItems.Add(objValue)
+                        Me.m_lItems.Sort()
+                        ' Hmm
+                        Me.Items = Me.Items
+                    End If
+
+                    ' Special enum resolve case
+                    If (Me.m_provider.ValueType Is GetType(Integer)) Then
+                        Dim objItem As Object = Nothing
+                        For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
+                            objItem = Me.m_cmb.Items(iItem)
+                            If (TypeOf objValue Is Integer) Then
+                                If (CInt(objValue) = CInt(objItem)) Then
+                                    iValue = iItem : Exit For
+                                End If
+                            ElseIf (TypeOf objValue Is String) Then
+                                If (String.Compare(CStr(objValue), CStr(objItem), False) = 0) Then
+                                    iValue = iItem : Exit For
+                                End If
+                            Else
+                                If Convert.Equals(objItem, objValue) Then
+                                    iValue = iItem : Exit For
+                                End If
+                            End If
+                        Next
+                    Else
+                        iValue = Me.m_lItems.IndexOf(objValue)
+                    End If
                 End If
 
                 ' Truncate
@@ -867,9 +858,8 @@ Namespace Controls
                 If (Me.m_cmb.SelectedIndex >= 0) Then
                     objItem = Me.m_cmb.SelectedItem()
                     iIndex = Me.m_cmb.SelectedIndex
-
-                    If (TypeOf objItem Is cIndexedCollectionItem) Then
-                        iIndex = DirectCast(objItem, cIndexedCollectionItem).CoreIndex(iIndex)
+                    If (TypeOf objItem Is ICoreInterface) Then
+                        iIndex = DirectCast(objItem, ICoreInterface).Index
                     End If
                 End If
                 Return iIndex
@@ -880,22 +870,26 @@ Namespace Controls
                     Return Me.m_lItems.ToArray
                 End Get
                 Set(ByVal aItems As Object())
+
                     ' Eradicate content
                     Me.m_lItems.Clear()
                     Me.m_cmb.Items.Clear()
+
                     ' Populate if new items given
                     If (Not Object.ReferenceEquals(aItems, Nothing)) Then
                         Me.m_lItems.AddRange(aItems)
                         ' Populate
                         For iItem As Integer = 0 To aItems.Length - 1
-                            ' Need to wrap indexed EwE item?
-                            If (Me.m_provider.ValueType Is GetType(Integer)) And (TypeOf (aItems(iItem)) Is cCoreInputOutputBase) Then
-                                Me.m_cmb.Items.Add(New cIndexedCollectionItem(aItems(iItem)))
-                            Else
-                                Me.m_cmb.Items.Add(aItems(iItem))
+                            If ((Me.m_provider.ValueType Is GetType(Integer)) And (TypeOf (aItems(iItem)) Is ICoreInterface)) Then
+                                If Not Me.m_bIsCoreIOCollection Then
+                                    Me.m_bIsCoreIOCollection = True
+                                    Me.m_formatter = New cCoreInterfaceFormatter()
+                                End If
                             End If
+                            Me.m_cmb.Items.Add(aItems(iItem))
                         Next
                     End If
+
                     ' Done
                     Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
                 End Set
@@ -919,11 +913,13 @@ Namespace Controls
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Event handler, invoked when the Text Box looses focus. This will pass the
-            ''' text box value back into the parent <see cref="cEwEFormatProvider">cEwEFormatProvider</see>.
+            ''' Event handler, invoked when the Combo box selection or tet have changed. 
+            ''' This will pass the combo box selection to the parent <see cref="cEwEFormatProvider"/>.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnControlValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+            Private Sub OnComboBoxValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+
+                If (Me.m_bInUpdate) Then Return
 
                 ' Update internal value
                 If (Me.m_provider.ValueType Is GetType(Integer)) Then
@@ -945,16 +941,15 @@ Namespace Controls
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Event handler, invoked when the Text Box looses focus. This will pass the
-            ''' text box value back into the parent <see cref="cEwEFormatProvider">cEwEFormatProvider</see>.
+            ''' Event handler, invoked when the combo box requires formatting.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnControlFormat(ByVal sender As Object, ByVal e As ListControlConvertEventArgs)
+            Private Sub OnComboBoxFormat(ByVal sender As Object, ByVal e As ListControlConvertEventArgs)
 
-                ' Update internal value
-                If (Me.m_formatter IsNot Nothing) Then
-                    e.Value = Me.m_formatter.GetDescriptor(e.ListItem, eDescriptorTypes.Name)
-                End If
+                If (Me.m_formatter Is Nothing) Then Return
+                If (Not Me.m_formatter.GetDescribedType().IsAssignableFrom(e.ListItem.GetType())) Then Return
+
+                e.Value = Me.m_formatter.GetDescriptor(e.ListItem, eDescriptorTypes.Name)
 
             End Sub
 
