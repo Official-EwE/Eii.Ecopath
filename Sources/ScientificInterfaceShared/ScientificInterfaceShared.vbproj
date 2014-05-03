@@ -170,8 +170,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Definitions\cWebLinks.vb" />
-    <Compile Include="GeoCode\cGeoCodeLookup.vb" />
-    <Compile Include="GeoCode\cGoogleMapsLookup.vb" />
     <Compile Include="Commands\cDirectoryOpenCommand.vb" />
     <Compile Include="Commands\cDisplayGroupsCommand.vb" />
     <Compile Include="Commands\cEditPedigreeCommand.vb" />
@@ -195,9 +193,6 @@
       <DependentUpon>cCustomToolstripComboBox.vb</DependentUpon>
     </Compile>
     <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ComboBox\cGeocodeLookupComboBox.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ComboBox\ucFieldPicker.Designer.vb">
@@ -640,7 +635,6 @@
     <Compile Include="Forms\frmEwEGrid.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GeoCode\cBingMapsLookup.vb" />
     <Compile Include="Help\cBugReporter.vb" />
     <Compile Include="Help\cHelp.vb" />
     <Compile Include="modExtensions.vb" />
