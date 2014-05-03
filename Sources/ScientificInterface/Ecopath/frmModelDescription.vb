@@ -21,7 +21,6 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.GeoCode
 
 #End Region ' Imports
 
@@ -74,7 +73,7 @@ Public Class frmModelDescription
         Me.m_fpNumDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_udNumDigits, eweModel, eVarNameFlags.NumDigits)
         Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
         Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
-        Me.m_fpAreaName = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbModelAreaName, eweModel, eVarNameFlags.AreaName)
+        Me.m_fpAreaName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxModelAreaName, eweModel, eVarNameFlags.AreaName)
         Me.m_fpNorth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNorth, eweModel, eVarNameFlags.North)
         Me.m_fpSouth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSouth, eweModel, eVarNameFlags.South)
         Me.m_fpWest = New cPropertyFormatProvider(Me.UIContext, Me.m_nudWest, eweModel, eVarNameFlags.West)
@@ -116,8 +115,6 @@ Public Class frmModelDescription
         Me.OnUnitTimeChanged(Me.m_propUnitTime, cProperty.eChangeFlags.All)
         Me.OnUnitTimeTextChanged(Me.m_propUnitTimeText, cProperty.eChangeFlags.All)
         Me.OnUnitMonetaryChanged(Me.m_propUnitMonetary, cProperty.eChangeFlags.All)
-
-        Me.m_cmbModelAreaName.LookupEngine = New cGoogleMapsLookup()
 
         Me.UpdateControls()
 
@@ -306,27 +303,5 @@ Public Class frmModelDescription
 #End Region ' Monetary
 
 #End Region ' Unit handling
-
-#Region " Events "
-
-    Private Sub OnLocationSearching(ByVal sender As ScientificInterfaceShared.Controls.cGeocodeLookupComboBox, ByVal bSearching As Boolean) _
-        Handles m_cmbModelAreaName.OnSeaching
-        Me.m_pbSearching.Visible = bSearching
-    End Sub
-
-    Private Sub OnLocationSelected(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles m_cmbModelAreaName.SelectedIndexChanged
-
-        Dim location As cGeoCodeLocation = Me.m_cmbModelAreaName.SelectedLocation
-        If location Is Nothing Then Return
-
-        Me.m_fpNorth.Value = location.North
-        Me.m_fpEast.Value = location.East
-        Me.m_fpSouth.Value = location.South
-        Me.m_fpWest.Value = location.West
-
-    End Sub
-
-#End Region ' Events
 
 End Class

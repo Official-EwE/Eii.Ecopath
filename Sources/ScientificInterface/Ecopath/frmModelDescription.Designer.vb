@@ -95,15 +95,14 @@ Partial Class frmModelDescription
         Me.m_lblWest = New System.Windows.Forms.Label()
         Me.m_lblEast = New System.Windows.Forms.Label()
         Me.m_lblSouth = New System.Windows.Forms.Label()
-        Me.m_cmbModelAreaName = New ScientificInterfaceShared.Controls.cGeocodeLookupComboBox()
-        Me.m_pbSearching = New System.Windows.Forms.PictureBox()
+        Me.m_tbxModelAreaName = New System.Windows.Forms.TextBox()
         Me.m_plDescr = New System.Windows.Forms.Panel()
+        Me.m_tbContact = New System.Windows.Forms.TextBox()
+        Me.m_tbDescription = New System.Windows.Forms.TextBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.m_chkIsCoupled = New System.Windows.Forms.CheckBox()
-        Me.m_tbDescription = New System.Windows.Forms.TextBox()
-        Me.m_tbContact = New System.Windows.Forms.TextBox()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -115,7 +114,6 @@ Partial Class frmModelDescription
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plDescr.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.m_tlpContent.SuspendLayout()
@@ -446,25 +444,15 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_lblSouth, "m_lblSouth")
         Me.m_lblSouth.Name = "m_lblSouth"
         '
-        'm_cmbModelAreaName
+        'm_tbxModelAreaName
         '
-        resources.ApplyResources(Me.m_cmbModelAreaName, "m_cmbModelAreaName")
-        Me.m_cmbModelAreaName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
-        Me.m_cmbModelAreaName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
-        Me.m_cmbModelAreaName.LookupEngine = Nothing
-        Me.m_cmbModelAreaName.Name = "m_cmbModelAreaName"
-        '
-        'm_pbSearching
-        '
-        resources.ApplyResources(Me.m_pbSearching, "m_pbSearching")
-        Me.m_pbSearching.Name = "m_pbSearching"
-        Me.m_pbSearching.TabStop = False
+        resources.ApplyResources(Me.m_tbxModelAreaName, "m_tbxModelAreaName")
+        Me.m_tbxModelAreaName.Name = "m_tbxModelAreaName"
         '
         'm_plDescr
         '
         Me.m_plDescr.Controls.Add(Me.m_tbContact)
         Me.m_plDescr.Controls.Add(Me.m_tbDescription)
-        Me.m_plDescr.Controls.Add(Me.m_pbSearching)
         Me.m_plDescr.Controls.Add(Me.m_lbAuthor)
         Me.m_plDescr.Controls.Add(Me.m_lblModel)
         Me.m_plDescr.Controls.Add(Me.m_lbScenarioName)
@@ -478,7 +466,7 @@ Partial Class frmModelDescription
         Me.m_plDescr.Controls.Add(Me.m_tbAuthor)
         Me.m_plDescr.Controls.Add(Me.m_nudFirstYear)
         Me.m_plDescr.Controls.Add(Me.m_tbArea)
-        Me.m_plDescr.Controls.Add(Me.m_cmbModelAreaName)
+        Me.m_plDescr.Controls.Add(Me.m_tbxModelAreaName)
         Me.m_plDescr.Controls.Add(Me.m_lblFirstYear)
         Me.m_plDescr.Controls.Add(Me.m_lblLocation)
         Me.m_plDescr.Controls.Add(Me.m_lblNorth)
@@ -489,6 +477,16 @@ Partial Class frmModelDescription
         Me.m_plDescr.Controls.Add(Me.m_lblSouth)
         resources.ApplyResources(Me.m_plDescr, "m_plDescr")
         Me.m_plDescr.Name = "m_plDescr"
+        '
+        'm_tbContact
+        '
+        resources.ApplyResources(Me.m_tbContact, "m_tbContact")
+        Me.m_tbContact.Name = "m_tbContact"
+        '
+        'm_tbDescription
+        '
+        resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
+        Me.m_tbDescription.Name = "m_tbDescription"
         '
         'Panel2
         '
@@ -519,16 +517,6 @@ Partial Class frmModelDescription
         Me.m_chkIsCoupled.Name = "m_chkIsCoupled"
         Me.m_chkIsCoupled.UseVisualStyleBackColor = True
         '
-        'm_tbDescription
-        '
-        resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
-        Me.m_tbDescription.Name = "m_tbDescription"
-        '
-        'm_tbContact
-        '
-        resources.ApplyResources(Me.m_tbContact, "m_tbContact")
-        Me.m_tbContact.Name = "m_tbContact"
-        '
         'frmModelDescription
         '
         resources.ApplyResources(Me, "$this")
@@ -550,7 +538,6 @@ Partial Class frmModelDescription
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_plDescr.ResumeLayout(False)
         Me.m_plDescr.PerformLayout()
         Me.Panel2.ResumeLayout(False)
@@ -605,14 +592,13 @@ Partial Class frmModelDescription
     Private WithEvents m_lblWest As System.Windows.Forms.Label
     Private WithEvents m_lblEast As System.Windows.Forms.Label
     Private WithEvents m_lblSouth As System.Windows.Forms.Label
-    Private WithEvents m_cmbModelAreaName As cGeocodeLookupComboBox
+    Private WithEvents m_tbxModelAreaName As TextBox
     Private WithEvents m_lblNote As System.Windows.Forms.Label
-    Private WithEvents m_pbSearching As System.Windows.Forms.PictureBox
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Private WithEvents Panel2 As System.Windows.Forms.Panel
     Private WithEvents m_plDescr As System.Windows.Forms.Panel
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Private WithEvents Panel1 As System.Windows.Forms.Panel
     Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents m_chkIsCoupled As System.Windows.Forms.CheckBox
+    Private WithEvents m_chkIsCoupled As System.Windows.Forms.CheckBox
     Private WithEvents m_udNumDigits As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudFirstYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudNorth As ScientificInterfaceShared.Controls.cEwENumericUpDown
