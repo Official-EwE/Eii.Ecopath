@@ -1217,4 +1217,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="SPATIALTEMPORAL_LOAD_ERROR_GENERIC" xml:space="preserve">
     <value>Failed to reload one or more spatial temporal data connections. Are you missing a required plug-in?</value>
   </data>
+  <data name="STATUS_PLUGIN_SANDBOXED" xml:space="preserve">
+    <value>Plug-in module '{0}' sandboxed</value>
+    <comment>{0}=plugin module name</comment>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>
