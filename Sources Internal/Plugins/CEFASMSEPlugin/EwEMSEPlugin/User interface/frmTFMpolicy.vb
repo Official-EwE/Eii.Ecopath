@@ -111,8 +111,6 @@ Public Class frmTFMpolicy
         AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
         AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
 
-        Me.m_tsbnSaveToCSV.Image = SharedResources.ExportXMLHS
-
         Me.UpdateStrategies()
 
         If (Me.m_tscmStrategies.Items.Count > 0) Then
@@ -231,88 +229,36 @@ Public Class frmTFMpolicy
 
     End Sub
 
-    Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsbnSaveToCSV.Click
-
-        Me.m_bStrategiesSaved = Me.m_strategies.SaveStrategiesToCSV()
-        Me.UpdateControls()
-
-        ' JS 30Sep13: CSV file written in fixed digit format
-        ' JS 30Sep13: Uses safe streamwriter
-        'Try
-        '    Dim csvStrategyFile As StreamWriter = Nothing
-        '    Dim strFile As String = ""
-        '    Dim strPath As String = ""
-        '    Dim msg As cMessage = Nothing
-
-        '    For Each iStrategy In Me.m_strategies
-
-        '        If msg Is Nothing Then
-        '            strPath = Path.GetDirectoryName(iStrategy.FileName)
-        '            msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_STRATEGIES, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-        '            msg.Hyperlink = strPath
-        '        End If
-
-        '        csvStrategyFile = cMSEUtils.GetWriter(iStrategy.FileName, False)
-        '        If (csvStrategyFile IsNot Nothing) Then
-
-        '            msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
-        '                                                String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
-        '                                                eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
-
-        '            csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
-        '            csvStrategyFile.WriteLine(Strategies.GUID_TAG + "," + iStrategy.ID.ToString)
-        '            For Each iHCR In iStrategy
-        '                csvStrategyFile.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
-        '                                          cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
-        '                                          cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
-        '                                          cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
-        '                                          cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
-        '                                          cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
-        '                                          cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
-        '                                          cStringUtils.ToCSVField(iHCR.TypeOfHCR))
-        '            Next
-        '            cMSEUtils.ReleaseWriter(csvStrategyFile)
-
-        '        End If
-        '    Next
-
-        '    Me.m_bStrategiesSaved = True
-
-        '    If msg IsNot Nothing Then
-        '        Me.Core.Messages.SendMessage(msg)
-        '    End If
-        'Catch ex As Exception
-
-        'End Try
-
-
-
-    End Sub
-
     ' -----------------------------
     ' Controls
     ' -----------------------------
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOK.Click
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnOK.Click
 
         Try
-            Me.m_plugin.Strategies.Clear()
-            Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
-            Me.m_plugin.InvalidateData()
+            If Me.m_strategies.SaveStrategiesToCSV() Then
+                Me.m_plugin.Strategies.Clear()
+                Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
+                Me.m_plugin.InvalidateData()
 
-            Me.m_bStrategiesSaved = True
-            Me.DialogResult = Windows.Forms.DialogResult.OK
-            Me.Close()
+                Me.m_bStrategiesSaved = True
+                Me.DialogResult = Windows.Forms.DialogResult.OK
+                Me.Close()
+            Else
+                ' ToDo: Failed to save?! Show some kind of error here
+            End If
+
         Catch ex As Exception
 
         End Try
 
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnCancel.Click
 
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = Windows.Forms.DialogResult.Cancel
         Me.Close()
 
     End Sub
@@ -483,7 +429,7 @@ Public Class frmTFMpolicy
         Me.m_tsbnAddHCR.Enabled = bHasStrategy
         Me.m_tsbnDeleteHCR.Enabled = bHasHCR
 
-        Me.m_btnOK.Enabled = Me.m_bStrategiesSaved
+        'Me.m_btnOK.Enabled = Me.m_bStrategiesSaved
 
     End Sub
 

@@ -69,8 +69,9 @@ Partial Class frmMSE
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblNModels = New System.Windows.Forms.Label()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
-        Me.btnEditSurvivabilities = New System.Windows.Forms.Button()
+        Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnDecreaseEffort = New System.Windows.Forms.Button()
+        Me.btnEditSurvivabilities = New System.Windows.Forms.Button()
         Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
@@ -89,15 +90,14 @@ Partial Class frmMSE
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
-        Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
         Me.m_plStep3.SuspendLayout()
+        Me.m_tlpFishingControls.SuspendLayout()
         CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpLayout.SuspendLayout()
         Me.m_plStep1.SuspendLayout()
-        Me.m_tlpFishingControls.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_tbxNModels2Run
@@ -250,17 +250,24 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_plStep3, "m_plStep3")
         Me.m_plStep3.Name = "m_plStep3"
         '
-        'btnEditSurvivabilities
+        'm_tlpFishingControls
         '
-        resources.ApplyResources(Me.btnEditSurvivabilities, "btnEditSurvivabilities")
-        Me.btnEditSurvivabilities.Name = "btnEditSurvivabilities"
-        Me.btnEditSurvivabilities.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_tlpFishingControls, "m_tlpFishingControls")
+        Me.m_tlpFishingControls.Controls.Add(Me.m_btnDecreaseEffort, 0, 0)
+        Me.m_tlpFishingControls.Controls.Add(Me.btnEditSurvivabilities, 2, 0)
+        Me.m_tlpFishingControls.Name = "m_tlpFishingControls"
         '
         'm_btnDecreaseEffort
         '
         resources.ApplyResources(Me.m_btnDecreaseEffort, "m_btnDecreaseEffort")
         Me.m_btnDecreaseEffort.Name = "m_btnDecreaseEffort"
         Me.m_btnDecreaseEffort.UseVisualStyleBackColor = True
+        '
+        'btnEditSurvivabilities
+        '
+        resources.ApplyResources(Me.btnEditSurvivabilities, "btnEditSurvivabilities")
+        Me.btnEditSurvivabilities.Name = "btnEditSurvivabilities"
+        Me.btnEditSurvivabilities.UseVisualStyleBackColor = True
         '
         'm_hdrStep3
         '
@@ -387,13 +394,6 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
-        'm_tlpFishingControls
-        '
-        resources.ApplyResources(Me.m_tlpFishingControls, "m_tlpFishingControls")
-        Me.m_tlpFishingControls.Controls.Add(Me.m_btnDecreaseEffort, 0, 0)
-        Me.m_tlpFishingControls.Controls.Add(Me.btnEditSurvivabilities, 2, 0)
-        Me.m_tlpFishingControls.Name = "m_tlpFishingControls"
-        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -408,11 +408,11 @@ Partial Class frmMSE
         Me.m_plStep4.PerformLayout()
         Me.m_plStep3.ResumeLayout(False)
         Me.m_plStep3.PerformLayout()
+        Me.m_tlpFishingControls.ResumeLayout(False)
         CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpLayout.ResumeLayout(False)
         Me.m_plStep1.ResumeLayout(False)
         Me.m_plStep1.PerformLayout()
-        Me.m_tlpFishingControls.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub

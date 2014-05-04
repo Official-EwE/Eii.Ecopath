@@ -316,11 +316,18 @@ Public Class cMSE
             ' Hope for the best
             Me.m_tsRunDataCompatibility = TriState.True
 
-            ' Make sure plug-in has empty CSV
-            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")) Or _
-                Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Then
-                Me.m_tsRunDataCompatibility = TriState.False
-            End If
+            ' JS 04May14: I would not test this; the data classes can work this out upon reload
+            '' Make sure plug-in has empty CSV
+            'If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")) Or _
+            '    Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Then
+            '    Me.m_tsRunDataCompatibility = TriState.False
+            'End If
+
+            ' Instead, test whether the data classes are populated with data:
+            ' - Has fishing strategies?
+            If (Me.NumStrategiesAvailable = 0) Then Me.m_tsRunDataCompatibility = TriState.False
+            ' - Has quota shares? etc
+
         End If
 
         Return (Me.m_tsRunDataCompatibility = TriState.True)

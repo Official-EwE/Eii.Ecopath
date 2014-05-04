@@ -56,7 +56,6 @@ Partial Class frmTFMpolicy
         Me.m_tscmStrategies = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tsbnAddStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteStrategy = New System.Windows.Forms.ToolStripButton()
-        Me.m_tsbnSaveToCSV = New System.Windows.Forms.ToolStripButton()
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         Me.m_tsHCR = New ScientificInterfaceShared.Controls.cEwEToolstrip()
@@ -90,7 +89,7 @@ Partial Class frmTFMpolicy
         'm_tsStrategy
         '
         Me.m_tsStrategy.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsStrategy.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslSelectStratagy, Me.m_tscmStrategies, Me.m_tsbnAddStrategy, Me.m_tsbnDeleteStrategy, Me.m_tsbnSaveToCSV})
+        Me.m_tsStrategy.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslSelectStratagy, Me.m_tscmStrategies, Me.m_tsbnAddStrategy, Me.m_tsbnDeleteStrategy})
         resources.ApplyResources(Me.m_tsStrategy, "m_tsStrategy")
         Me.m_tsStrategy.Name = "m_tsStrategy"
         Me.m_tsStrategy.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -117,13 +116,7 @@ Partial Class frmTFMpolicy
         Me.m_tsbnDeleteStrategy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_tsbnDeleteStrategy, "m_tsbnDeleteStrategy")
         Me.m_tsbnDeleteStrategy.Name = "m_tsbnDeleteStrategy"
-        '
-        'm_tsbnSaveToCSV
-        '
-        Me.m_tsbnSaveToCSV.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        resources.ApplyResources(Me.m_tsbnSaveToCSV, "m_tsbnSaveToCSV")
-        Me.m_tsbnSaveToCSV.Name = "m_tsbnSaveToCSV"
-        '
+         '
         'm_graph
         '
         resources.ApplyResources(Me.m_graph, "m_graph")
@@ -239,7 +232,6 @@ Partial Class frmTFMpolicy
     Private WithEvents m_tscmStrategies As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_tsbnAddStrategy As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnDeleteStrategy As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_tsbnSaveToCSV As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnAddHCR As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnDeleteHCR As System.Windows.Forms.ToolStripButton
     Private WithEvents m_btnOK As System.Windows.Forms.Button

@@ -1,11 +1,37 @@
-﻿Option Strict On
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
+' Aquaculture Science (Cefas). 
+'
+' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+' ===============================================================================
+'
+#Region " Imports "
+
+Option Strict On
 Option Explicit On
 
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Utilities
+Imports LumenWorks.Framework.IO.Csv
 Imports System.Text
 Imports EwEUtils.Core
+
+#End Region ' ImportsOption Strict On
 
 Public Class cBiomassLimits
     Implements IList(Of cBiomassLimit)
@@ -84,7 +110,7 @@ Public Class cBiomassLimits
         Return grp
     End Function
 
-    Public Sub Add(item As cBiomassLimit) Implements System.Collections.Generic.ICollection(Of cBiomassLimit).Add
+    Public Sub Add(item As cBiomassLimit) Implements ICollection(Of cBiomassLimit).Add
         If Not Me.Contains(item) Then
             Me.lstBiomassLimits.Add(item)
         End If
@@ -150,10 +176,9 @@ Public Class cBiomassLimits
 
         'Warn the user if anything failed
         If breturn = False Then
-            Me.mCore.Messages.SetMessageLock()
-            Me.mCore.Messages.SendMessage(New cMessage("Cefas MSE Failed to read the biomass limits file",
-                                                          eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
-            Me.mCore.Messages.RemoveMessageLock()
+            ' ToDo_JS: globalize this. Add delete prompt?
+            Me.mCore.Messages.SendMessage(New cMessage("Cefas MSE Failed to read the biomass limits file", _
+                                                       eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
         End If
 
         Return True
@@ -197,8 +222,7 @@ Public Class cBiomassLimits
         'Create a new file
         strm = cMSEUtils.GetWriter(Me.mFileName, False)
         If (strm IsNot Nothing) Then
-
-            strm.WriteLine("GroupIndex, LowerLimit, UpperLimit")
+            strm.WriteLine("GroupIndex,LowerLimit,UpperLimit")
             For Each iBiomassLimit In Me.lstBiomassLimits
                 strm.WriteLine(cStringUtils.ToCSVField(iBiomassLimit.mGroup.Name) & "," & _
                                           cStringUtils.ToCSVField(iBiomassLimit.mLowerLimit) & "," & _
@@ -233,11 +257,13 @@ Public Class cBiomassLimits
         Return False
     End Function
 
-    Public Sub Clear() Implements System.Collections.Generic.ICollection(Of cBiomassLimit).Clear
+    Public Sub Clear() _
+        Implements ICollection(Of cBiomassLimit).Clear
         Me.lstBiomassLimits.Clear()
     End Sub
 
-    Public Function Contains(item As cBiomassLimit) As Boolean Implements System.Collections.Generic.ICollection(Of cBiomassLimit).Contains
+    Public Function Contains(item As cBiomassLimit) As Boolean _
+        Implements ICollection(Of cBiomassLimit).Contains
         For Each iLimit As cBiomassLimit In Me.lstBiomassLimits
             If Object.ReferenceEquals(item.mGroup, iLimit.mGroup) Then
                 Return True
@@ -246,35 +272,42 @@ Public Class cBiomassLimits
         Return False
     End Function
 
-    Public Sub CopyTo(array() As cBiomassLimit, arrayIndex As Integer) Implements System.Collections.Generic.ICollection(Of cBiomassLimit).CopyTo
+    Public Sub CopyTo(array() As cBiomassLimit, arrayIndex As Integer) _
+        Implements ICollection(Of cBiomassLimit).CopyTo
         ' NOP
     End Sub
 
-    Public ReadOnly Property Count As Integer Implements System.Collections.Generic.ICollection(Of cBiomassLimit).Count
+    Public ReadOnly Property Count As Integer _
+        Implements ICollection(Of cBiomassLimit).Count
         Get
             Return lstBiomassLimits.Count
         End Get
     End Property
 
-    Public ReadOnly Property IsReadOnly As Boolean Implements System.Collections.Generic.ICollection(Of cBiomassLimit).IsReadOnly
+    Public ReadOnly Property IsReadOnly As Boolean _
+        Implements ICollection(Of cBiomassLimit).IsReadOnly
         Get
             Return False
         End Get
     End Property
 
-    Public Function Remove(item As cBiomassLimit) As Boolean Implements System.Collections.Generic.ICollection(Of cBiomassLimit).Remove
+    Public Function Remove(item As cBiomassLimit) As Boolean _
+        Implements ICollection(Of cBiomassLimit).Remove
         Return Me.lstBiomassLimits.Remove(item)
     End Function
 
-    Public Function IndexOf(item As cBiomassLimit) As Integer Implements System.Collections.Generic.IList(Of cBiomassLimit).IndexOf
+    Public Function IndexOf(item As cBiomassLimit) As Integer _
+        Implements IList(Of cBiomassLimit).IndexOf
         Return Me.lstBiomassLimits.IndexOf(item)
     End Function
 
-    Public Sub Insert(index As Integer, item As cBiomassLimit) Implements System.Collections.Generic.IList(Of cBiomassLimit).Insert
+    Public Sub Insert(index As Integer, item As cBiomassLimit) _
+        Implements IList(Of cBiomassLimit).Insert
         Me.lstBiomassLimits.Insert(index, item)
     End Sub
 
-    Default Public Property Item(index As Integer) As cBiomassLimit Implements System.Collections.Generic.IList(Of cBiomassLimit).Item
+    Default Public Property Item(index As Integer) As cBiomassLimit _
+        Implements IList(Of cBiomassLimit).Item
         Get
             Return Me.lstBiomassLimits.Item(index)
         End Get
@@ -283,16 +316,20 @@ Public Class cBiomassLimits
         End Set
     End Property
 
-    Public Sub RemoveAt(index As Integer) Implements System.Collections.Generic.IList(Of cBiomassLimit).RemoveAt
+    Public Sub RemoveAt(index As Integer) _
+        Implements IList(Of cBiomassLimit).RemoveAt
         Me.lstBiomassLimits.RemoveAt(index)
     End Sub
 
-    Public Function GetEnumerator() As System.Collections.Generic.IEnumerator(Of cBiomassLimit) Implements System.Collections.Generic.IEnumerable(Of cBiomassLimit).GetEnumerator
+    Public Function GetEnumerator() As IEnumerator(Of cBiomassLimit) _
+        Implements IEnumerable(Of cBiomassLimit).GetEnumerator
         Return Me.lstBiomassLimits.GetEnumerator()
     End Function
 
-    Public Function Bogus() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
+    Private Function Bogus() As IEnumerator _
+        Implements IEnumerable.GetEnumerator
         'NOP
+        Return Nothing
     End Function
 
 

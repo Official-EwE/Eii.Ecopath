@@ -781,7 +781,7 @@
     <value>1</value>
   </data>
   <data name="m_btnDecreaseEffort.Text" xml:space="preserve">
-    <value>Effort decrease</value>
+    <value>Effort decrease...</value>
   </data>
   <data name="&gt;&gt;m_btnDecreaseEffort.Name" xml:space="preserve">
     <value>m_btnDecreaseEffort</value>
@@ -811,7 +811,7 @@
     <value>4</value>
   </data>
   <data name="btnEditSurvivabilities.Text" xml:space="preserve">
-    <value>Edit Survivabilities</value>
+    <value>Survivabilities...</value>
   </data>
   <data name="&gt;&gt;btnEditSurvivabilities.Name" xml:space="preserve">
     <value>btnEditSurvivabilities</value>
