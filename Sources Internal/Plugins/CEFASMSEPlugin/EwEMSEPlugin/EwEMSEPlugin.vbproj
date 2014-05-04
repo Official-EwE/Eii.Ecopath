@@ -139,56 +139,56 @@
     <Compile Include="cMSEPluginPoint.vb" />
     <Compile Include="cQuotaShares.vb" />
     <Compile Include="cRegulation.vb" />
-    <Compile Include="frmEditSurvivabilities.Designer.vb">
+    <Compile Include="User interface\frmEditSurvivabilities.Designer.vb">
       <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmEditSurvivabilities.vb">
+    <Compile Include="User interface\frmEditSurvivabilities.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="gridMaxDecreaseEffort.vb">
+    <Compile Include="User interface\gridMaxDecreaseEffort.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="gridSurviveDistParams.vb">
+    <Compile Include="User interface\gridSurviveDistParams.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="cMSE.vb" />
     <Compile Include="cMSEStateMonitor.vb" />
     <Compile Include="cSurvivability.vb" />
-    <Compile Include="frmEditDecreaseEffort.Designer.vb">
+    <Compile Include="User interface\frmEditDecreaseEffort.Designer.vb">
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmEditDecreaseEffort.vb">
+    <Compile Include="User interface\frmEditDecreaseEffort.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmTFMpolicy.designer.vb">
+    <Compile Include="User interface\frmTFMpolicy.designer.vb">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmTFMpolicy.vb">
+    <Compile Include="User interface\frmTFMpolicy.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="gridDistributionParameters.vb">
+    <Compile Include="User interface\gridDistributionParameters.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MSEUtils.vb" />
-    <Compile Include="frmDistributionParameters.Designer.vb">
+    <Compile Include="User interface\frmDistributionParameters.Designer.vb">
       <DependentUpon>frmDistributionParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmDistributionParameters.vb">
+    <Compile Include="User interface\frmDistributionParameters.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgHarvestControlRule.Designer.vb">
+    <Compile Include="User interface\dlgHarvestControlRule.Designer.vb">
       <DependentUpon>dlgHarvestControlRule.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgHarvestControlRule.vb">
+    <Compile Include="User interface\dlgHarvestControlRule.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmMSE.Designer.vb">
+    <Compile Include="User interface\frmMSE.Designer.vb">
       <DependentUpon>frmMSE.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmMSE.vb">
+    <Compile Include="User interface\frmMSE.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="gridTFMpolicy.vb">
+    <Compile Include="User interface\gridTFMpolicy.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="HCR_Group.vb" />
@@ -214,24 +214,24 @@
     <Compile Include="xalglib.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmEditDecreaseEffort.resx">
+    <EmbeddedResource Include="User interface\frmEditDecreaseEffort.resx">
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmEditSurvivabilities.resx">
+    <EmbeddedResource Include="User interface\frmEditSurvivabilities.resx">
       <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmTFMpolicy.resx">
+    <EmbeddedResource Include="User interface\frmTFMpolicy.resx">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgHarvestControlRule.resx">
+    <EmbeddedResource Include="User interface\dlgHarvestControlRule.resx">
       <DependentUpon>dlgHarvestControlRule.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmDistributionParameters.resx">
+    <EmbeddedResource Include="User interface\frmDistributionParameters.resx">
       <DependentUpon>frmDistributionParameters.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmMSE.resx">
+    <EmbeddedResource Include="User interface\frmMSE.resx">
       <DependentUpon>frmMSE.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

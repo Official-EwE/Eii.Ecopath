@@ -273,6 +273,9 @@
   <data name="PROMPT_ENTERNAME_CAPTION" xml:space="preserve">
     <value>New Strategy</value>
   </data>
+  <data name="PROMPT_STRATEGY_REMOVE" xml:space="preserve">
+    <value>Cefas MSE failed to read strategy file {0}. The content is invalid. Do you wish to remove this file?</value>
+  </data>
   <data name="PROMPT_TRIAL_REPORT" xml:space="preserve">
     <value>{0} out of {1} ({2}%) parameterisations produced reasonable dynamics and were used to generate results.</value>
     <comment>{0}=good number of trials; {1}=total number of trials. {2}=good trial percentage</comment>

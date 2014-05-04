@@ -58,6 +58,7 @@ Public Class frmMSE
             Return Me.m_plugin
         End Get
     End Property
+
     Private ReadOnly Property MSE As cMSE
         Get
             Return Me.m_plugin.MSE
@@ -90,6 +91,8 @@ Public Class frmMSE
         If (Me.m_plugin Is Nothing) Then Return
 
         Me.m_bInUpdate = True
+
+        Me.TabText = Me.Text
 
         ' -- Set up control interactions --
 

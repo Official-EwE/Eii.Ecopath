@@ -142,6 +142,7 @@ Public Class Strategies
         Dim bReadStrat As Boolean
         Dim bReadReg As Boolean
         Dim lstFailedFiles As New List(Of String)
+
         'Get an array of strings giving the path to each HCR
         ' JS 30Sep13: Only read CSV files
         StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
@@ -161,18 +162,27 @@ Public Class Strategies
                 'keep track for the files that failed to read
                 lstFailedFiles.Add(StrategyFile)
             End If
+
+            ' ToDo: Consider if file needs to be removed?!
+
             StratCounter += 1
         Next StrategyFile
 
         'Warn the user if anything failed
-        If lstFailedFiles.Count > 0 Then
-            Me.mCore.Messages.SetMessageLock()
-            For Each File In lstFailedFiles
-                Me.mCore.Messages.SendMessage(New cMessage("Cefas MSE Failed to read strategy file '" + File + "'",
-                                                          eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
-            Next
-            Me.mCore.Messages.RemoveMessageLock()
-        End If
+        ' JS 04May14: changed message to prompt, localized
+        For Each strFile In lstFailedFiles
+            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_STRATEGY_REMOVE, strFile), _
+                                             eCoreComponentType.External, eMessageType.DataImport, eMessageImportance.Question, _
+                                             eMessageReplyStyle.YES_NO)
+            Me.mCore.Messages.SendMessage(fmsg)
+            If (fmsg.Reply = eMessageReply.YES) Then
+                Try
+                    File.Delete(strFile)
+                Catch ex As Exception
+                    cLog.Write(ex, "CefasMSE:cStrategies delete(" & strFile & ")")
+                End Try
+            End If
+        Next
 
         Return True
 
