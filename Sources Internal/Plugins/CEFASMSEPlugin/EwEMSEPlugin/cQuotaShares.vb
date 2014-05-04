@@ -49,8 +49,7 @@ Public Class cQuotaShares
 
         Public ReadOnly Property IsNull() As Boolean
             Get
-                If mGroupNo = 0 And mFleetNo = 0 And mShare = 0 Then Return True
-                Return False
+                return (mGroupNo = 0) Or (mFleetNo = 0) Or (mShare = 0) 
             End Get
         End Property
 
