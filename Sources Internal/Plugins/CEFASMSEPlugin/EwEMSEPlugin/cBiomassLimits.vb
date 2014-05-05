@@ -37,9 +37,10 @@ Public Class cBiomassLimits
     Implements IList(Of cBiomassLimit)
 
     Public lstBiomassLimits As List(Of cBiomassLimit)
-    Public mPlugin As cMSEPluginPoint
-    Public mMSE As cMSE
-    Public mCore As cCore
+
+    Private mPlugin As cMSEPluginPoint
+    Private mMSE As cMSE
+    Private mCore As cCore
     Private mFileName As String
     Const mFileNameOnly As String = "BiomassLimits.csv"
 
@@ -53,35 +54,6 @@ Public Class cBiomassLimits
 
         Private mCore As cCore
 
-        Private Function isIndexInBounds(group As cEcoPathGroupInput) As Boolean
-            If (group Is Nothing) Then Return False
-            Return group.IsFished
-        End Function
-
-        Public Function isValid(ByRef ValidationString As String) As Boolean
-
-            ' ToDo_JS: Globalize this method
-            Dim sb As New StringBuilder()
-            Dim breturn As Boolean = True
-            Debug.Assert(Me.mCore IsNot Nothing, Me.ToString + ".isValid() cCore has not been set. Validation cannot be run.")
-
-            Try
-                If Not Me.isIndexInBounds(Me.mGroup) Then
-                    breturn = False
-                    sb.AppendLine("Group number is not valid.")
-                End If
-
-            Catch ex As Exception
-                breturn = False
-                Debug.Assert(False, Me.ToString + ".isValid() Exception: " + ex.Message)
-            End Try
-
-            ValidationString = sb.ToString()
-
-            Return breturn
-
-        End Function
-
         Public Sub New(Core As cCore)
             'mPlugin = Plugin
             'mMSE = mPlugin.MSE
@@ -94,10 +66,17 @@ Public Class cBiomassLimits
 #End Region
 
     Public Sub New(Plugin As cMSEPluginPoint)
+
         mPlugin = Plugin
         mMSE = mPlugin.MSE
         mCore = mMSE.Core
         mFileName = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits, mFileNameOnly)
+        lstBiomassLimits = New List(Of cBiomassLimit)
+
+    End Sub
+
+    Public Sub Init()
+        LoadLimitsFromCSV()
     End Sub
 
     Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
@@ -140,7 +119,9 @@ Public Class cBiomassLimits
             Dim reader As StreamReader = cMSEUtils.GetReader(Me.mFileName)
             If (reader IsNot Nothing) Then
 
+                buff = reader.ReadLine()        'Skip the row of headers
                 buff = reader.ReadLine()
+
                 Do Until reader.EndOfStream
 
                     recs = buff.Split(","c)
@@ -155,9 +136,7 @@ Public Class cBiomassLimits
 
                     Dim strMsg As String = ""
                     ' Only add valid BiomassLimits!
-                    If tempBiomassLimit.isValid(strMsg) Then
-                        Me.Add(tempBiomassLimit)
-                    End If
+                    Me.Add(tempBiomassLimit)
 
                     breturn = True
                     buff = reader.ReadLine()
@@ -193,7 +172,6 @@ Public Class cBiomassLimits
         Dim msg As cMessage = Nothing
         Dim breturn As Boolean = True
         Try
-
 
             If msg Is Nothing Then
                 strPath = Path.GetDirectoryName(Me.mFileName)
@@ -234,7 +212,6 @@ Public Class cBiomassLimits
         Return True
     End Function
 
-
     Public Function GetUpperLimit(iGrp As Integer) As Double
         For Each iBiomassLimit In lstBiomassLimits
             If iBiomassLimit.mGroup.Index = iGrp Then Return iBiomassLimit.mUpperLimit
@@ -247,7 +224,7 @@ Public Class cBiomassLimits
         For Each iBiomassLimit In lstBiomassLimits
             If iBiomassLimit.mGroup.Index = iGrp Then Return iBiomassLimit.mLowerLimit
         Next
-        Return 0
+        Return 1.0E-20
     End Function
 
     Public Function Exist(iGrp As Integer) As Boolean
@@ -264,6 +241,7 @@ Public Class cBiomassLimits
 
     Public Function Contains(item As cBiomassLimit) As Boolean _
         Implements ICollection(Of cBiomassLimit).Contains
+        'If Me.lstBiomassLimits.Count = 0 Then Return False
         For Each iLimit As cBiomassLimit In Me.lstBiomassLimits
             If Object.ReferenceEquals(item.mGroup, iLimit.mGroup) Then
                 Return True
