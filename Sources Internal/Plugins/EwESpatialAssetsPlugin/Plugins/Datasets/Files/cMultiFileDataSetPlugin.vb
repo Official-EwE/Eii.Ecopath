@@ -390,7 +390,11 @@ Namespace SpatialData
                 xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("Date")
-                xaFile.Value = Convert.ToString(tf.Date.ToOADate)
+                xaFile.Value = Convert.ToString(tf.Date.ToOADate())
+                xnFile.Attributes.Append(xaFile)
+
+                xaFile = doc.CreateAttribute("DateRef")
+                xaFile.Value = Convert.ToString(tf.Date.ToShortDateString())
                 xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("Indexed")

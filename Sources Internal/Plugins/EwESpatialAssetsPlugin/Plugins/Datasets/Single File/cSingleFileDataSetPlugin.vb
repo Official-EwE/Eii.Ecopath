@@ -245,6 +245,10 @@ Namespace SpatialData
             xaFile.Value = Convert.ToString(Me.m_dtStart.ToOADate)
             xnFile.Attributes.Append(xaFile)
 
+            xaFile = doc.CreateAttribute("DateRef")
+            xaFile.Value = Convert.ToString(Me.m_dtStart.ToShortDateString())
+            xnFile.Attributes.Append(xaFile)
+
             xaFile = doc.CreateAttribute("Indexed")
             xaFile.Value = Convert.ToString(Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed)
             xnFile.Attributes.Append(xaFile)
