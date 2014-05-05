@@ -230,13 +230,6 @@ Public Class frmTFMpolicy
 
     End Sub
 
-    Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-
-
-
-    End Sub
-
     ' -----------------------------
     ' Controls
     ' -----------------------------
@@ -248,8 +241,9 @@ Public Class frmTFMpolicy
                 Me.m_plugin.Strategies.Clear()
                 Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
                 Me.m_plugin.InvalidateData()
+            End If
 
-            Me.m_bStrategiesSaved = Me.m_strategies.SaveStrategiesToCSV()
+            Me.m_bStrategiesSaved = Me.m_strategies.Save()
             Me.UpdateControls()
 
             Me.m_plugin.Strategies.Clear()

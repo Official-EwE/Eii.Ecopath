@@ -297,13 +297,6 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub Save_all_MSE_params()
-        MSE.Strategies.SaveStrategiesToCSV()
-        MSE.Survivability.SaveDistributionParamsToCSV()
-        MSE.Survivability.SaveSampledToCSV()
-        MSE.QuotaShares.SaveQuotaSharesToCSV()
-    End Sub
-
     Private Sub btnEditSurvivabilities_Click(sender As System.Object, e As System.EventArgs) Handles btnEditSurvivabilities.Click
         'First make sure the Harvest Controls Rules have been loaded
         'this is so the interface has some data

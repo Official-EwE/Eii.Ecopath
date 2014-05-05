@@ -387,18 +387,18 @@ Public Class cQuotaShares
     Public Sub SetDefault()
         Dim nFleetsCatch As Integer
 
-        If Not mlstQuotaShares Is Nothing Then mlstQuotaShares.Clear()
+        If Not m_lstQuotaShares Is Nothing Then m_lstQuotaShares.Clear()
 
-        For iGroup = 1 To mcore.nLivingGroups
+        For iGroup As Integer = 1 To m_core.nLivingGroups
 
             'Count how many fleets catch this group
             nFleetsCatch = 0
-            For iFleet = 1 To mcore.nFleets
-                If mcore.FleetInputs(iFleet).Landings(iGroup) > 0 Then nFleetsCatch += 1
+            For iFleet = 1 To m_core.nFleets
+                If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then nFleetsCatch += 1
             Next
 
-            For iFleet = 1 To mcore.nFleets
-                If mcore.FleetInputs(iFleet).Landings(iGroup) > 0 Then
+            For iFleet = 1 To m_core.nFleets
+                If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then
                     AddQuotaShare(iGroup, iFleet, 1 / nFleetsCatch)
                 End If
             Next

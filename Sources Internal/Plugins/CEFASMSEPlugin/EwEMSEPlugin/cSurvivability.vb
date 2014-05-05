@@ -612,10 +612,10 @@ Public Class cSurvivability
 
 #Region " General Elements "
 
-    ''' <summary>
-    ''' Runs when the MSE plugin has been loaded up
-    ''' </summary>
-    ''' <remarks></remarks>
+    ' ''' <summary>
+    ' ''' Runs when the MSE plugin has been loaded up
+    ' ''' </summary>
+    ' ''' <remarks></remarks>
     'Public Sub PluginLoaded()
     '    Dim reader As StreamReader = Nothing
 
