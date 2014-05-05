@@ -44,7 +44,6 @@ Public Class cMSE
     Private m_currentStrategy As Strategy = Nothing
     Private m_monitor As cMSEStateMonitor = Nothing
     Private m_effortlimits As cEffortLimits = Nothing
-
     Private m_ecosim As EwECore.Ecosim.cEcoSimModel
     Private _simdata As cEcosimDatastructures
     Private _pathdata As cEcopathDataStructures
@@ -54,6 +53,7 @@ Public Class cMSE
     Private OriginalNTimesteps As Integer
 
     Private TargConsQuota(,) As Double 'Stores the target and conservation f's for each species
+    Private nSuccessfullyProjectedModels As Integer
 
     Private TechnologyCreep() As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
 
@@ -106,14 +106,12 @@ Public Class cMSE
         NoDiscards_NonSelective
         NoDiscards_Selective
     End Enum
+
     Private m_mhSettings As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
-
-
     Private m_iNumModelsAvailable As Integer = cCore.NULL_VALUE
     Private m_tsInputDataCompatibility As TriState = TriState.UseDefault
     Private m_tsRunDataCompatibility As TriState = TriState.UseDefault
-
     Dim TrajectoryCsv As StreamWriter
     Dim Trajectory2Csv As List(Of StreamWriter)             'Trajectories2 is similar to trajectories apart from it each file contains only 1 group
 
@@ -157,8 +155,10 @@ Public Class cMSE
 
 #Region " Construction "
 
-    Public Sub New(ByVal Monitor As cMSEStateMonitor)
-        Me.m_monitor = Monitor
+    Public Sub New(ByVal Monitor As cMSEStateMonitor, pluginPoint As cMSEPluginPoint)
+        Me.m_Monitor = Monitor
+        mMSEPluginPoint = pluginPoint
+        Me.InvalidateData()
     End Sub
 
     Public Sub onCoreInitialized(EwECore As cCore, Ecopath As Ecopath.cEcoPathModel, Ecosim As Ecosim.cEcoSimModel)
@@ -199,6 +199,7 @@ Public Class cMSE
     Public Function CreateModels() As Boolean
         Dim bsuccess As Boolean = True
         Try
+
             Me.GenerateEcosimParameters("MaxRelFeedingTime")
             Me.GenerateEcosimParameters("FeedingTimeAdjustRate")
             Me.GenerateEcosimParameters("OtherMortFeedingTime")
@@ -330,14 +331,38 @@ Public Class cMSE
 
     Public Function IsRunDataCompatible() As Boolean
 
+        ' Would it not be nice if these file names were represented by enums as well?
+
+        'Dim aFilesFleet As String() = New String() {"ChangesInEffortLimits", "QuotaShares"}
+        'Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Fleet)
+        Dim outParamFiles As String() = New String() {"b_out", "ba_out", "ee_out", "pb_out", "qb_out", "DenDepCatchability_out", _
+                                                      "FeedingTimeAdjustRate_out", "MaxRelFeedingTime_out", "OtherMortFeedingTime_out", _
+                                                      "PredEffectFeedingTime_out", "QBMaxxQBio_out", "SwitchingPower_out"}
+
         If (Me.m_tsRunDataCompatibility = TriState.UseDefault) Then
 
             ' Hope for the best
             Me.m_tsRunDataCompatibility = TriState.True
 
+            ' Make sure plug-in has empty CSV
+            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")) Or _
+                Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Or _
+                Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Suvivabilities_out.csv")) Then
+                Me.m_tsRunDataCompatibility = TriState.False
+            End If
+
+            ' Instead, test whether the data classes are populated with data:
             ' - Has fishing strategies?
             If (Me.NumStrategiesAvailable = 0) Then Me.m_tsRunDataCompatibility = TriState.False
             ' - Has quota shares? etc
+
+            ' Assess Ecopath files
+            For Each strFile As String In outParamFiles
+                If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, strFile & ".csv")) Then
+                    Me.m_tsInputDataCompatibility = TriState.False
+                    Exit For
+                End If
+            Next strFile
 
         End If
 
@@ -365,7 +390,8 @@ Public Class cMSE
             Me.m_tsInputDataCompatibility = TriState.True
 
             ' Make sure plug-in has empty CSV
-            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Then
+            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Or _
+            Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
                 Me.m_tsInputDataCompatibility = TriState.False
             Else
                 ' Assess Ecopath files
@@ -1310,6 +1336,7 @@ Public Class cMSE
         Dim nResultIters As Integer
         Dim nFleetIters As Integer
         Dim nFailedParameterisations As Integer
+        Dim BiomassLimits As cBiomassLimits
 
         Dim swGroup As StreamWriter
         Dim swFleet As StreamWriter
@@ -1324,7 +1351,6 @@ Public Class cMSE
             'Save the original Ecopath and Ecosim parameter values 
             'so the model can be restored at the end of the run
             Me.SaveOriginalParameters()
-
 
             'Set the TechnologyCreep(nfleets) to one for all fleets
             'No technology creep for us
@@ -1347,6 +1373,10 @@ Public Class cMSE
 
             'Tell Ecopath not to send out messages
             Me.m_ecopath.suppressMessages = True
+
+            'Initialise and load from CSV the biomass limits
+            BiomassLimits = New cBiomassLimits(mMSEPluginPoint)
+            BiomassLimits.LoadLimitsFromCSV()
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Run The Trials 
@@ -1387,7 +1417,7 @@ Public Class cMSE
 
 
                             'Save the Ecosim results
-                            GoodDynamics = Me.SaveResults(iTrial, nResultIters, nFleetIters, swGroup, swFleet)
+                            GoodDynamics = Me.SaveResults(iTrial, nResultIters, nFleetIters, swGroup, swFleet, BiomassLimits)
 
                             'If one of the groups colapsed during the Ecosim run 
                             'Reject this parameter set
@@ -1551,11 +1581,13 @@ Public Class cMSE
     End Sub
 
     Private Function SaveResults(ByVal iTrial As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
-                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByVal swGroup As StreamWriter, ByVal swFleet As StreamWriter) As Boolean
+                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByVal swGroup As StreamWriter, ByVal swFleet As StreamWriter, ByRef BiomassLimits As cBiomassLimits) As Boolean
 
         Dim GoodDynamics As Boolean = True
 
         Dim BiomassProjected(NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Double
+
+        nSuccessfullyProjectedModels = 0
 
         'Dim BadDynamics As StreamWriter = New StreamWriter(DataPath & "Results/diagnostics/BadDynamicsTrajectories.csv", True)
         'BadDynamics.WriteLine("iTrial, Group")
@@ -1577,9 +1609,9 @@ Public Class cMSE
 
         'Check whether the biomass for any species goes beneath or hits zero
         For iGrp As Integer = 1 To m_core.nLivingGroups
-            For iTimeStep As Integer = 1 To OriginalNTimesteps
+            For iTimeStepHistoric As Integer = 1 To OriginalNTimesteps
                 'Console.Write(mCore.EcoSimGroupOutputs(iGrp).Biomass(iTimeStep).ToString & " ")
-                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) <= 1 * 10 ^ -20 Then
+                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStepHistoric) <= 1.0E-20 Then
                     GoodDynamics = False
                 End If
                 'If mCore.EcoSimGroupOutputs(iGrp).Biomass(iTimeStep) <= 0 Then GoodDynamics = False
@@ -1588,6 +1620,20 @@ Public Class cMSE
             Next
             If GoodDynamics = False Then Exit For
         Next iGrp
+
+        For Each iGrp In BiomassLimits.lstBiomassLimits
+            For iTimeStep As Integer = 1 To NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                'Check projection is above minimum biomass
+                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) < iGrp.mLowerLimit Then
+                    GoodDynamics = False
+                End If
+                'check the projection is above the max biomass
+                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) > iGrp.mUpperLimit Then
+                    GoodDynamics = False
+                End If
+            Next
+            If GoodDynamics = False Then Exit For
+        Next
 
         If GoodDynamics = False Then
             Console.WriteLine("This set of parameters is no good")
@@ -1604,42 +1650,42 @@ Public Class cMSE
                 Next
             Next
 
-            For igrp = 1 To m_core.nLivingGroups
+            For iGrp = 1 To mCore.nLivingGroups
                 'calculate what the minimum biomass was for each group
                 For iTime As Integer = 1 To NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                    BiomassProjected(iTime - 1) = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, OriginalNTimesteps + iTime)
+                    BiomassProjected(iTime - 1) = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, OriginalNTimesteps + iTime)
                 Next
 
                 'Output to csv the biomass trajectories
                 TrajectoryCsv.Write("{0},{1},{2}", _
-                                    cStringUtils.FormatNumber(igrp), _
-                                    cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(igrp).Name), _
+                                    cStringUtils.FormatNumber(iGrp), _
+                                    cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iGrp).Name), _
                                     cStringUtils.ToCSVField(m_currentStrategy.Name))
 
                 For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                    TrajectoryCsv.Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime)))
+                    TrajectoryCsv.Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTime)))
                 Next
                 TrajectoryCsv.WriteLine()
 
                 'Trajectory2Csv(igrp - 1).Write(iTrial & "," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(CurrentStrategy))))
-                Trajectory2Csv(igrp - 1).Write(iTrial & "," & cStringUtils.ToCSVField(m_currentStrategy.Name))
+                Trajectory2Csv(iGrp - 1).Write(iTrial & "," & cStringUtils.ToCSVField(m_currentStrategy.Name))
                 For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                    Trajectory2Csv(igrp - 1).Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime)))
+                    Trajectory2Csv(iGrp - 1).Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTime)))
                 Next
-                Trajectory2Csv(igrp - 1).WriteLine()
+                Trajectory2Csv(iGrp - 1).WriteLine()
 
                 swGroup.WriteLine("{0},{1},{2},{3},Biomass,{4}", _
                              cStringUtils.FormatNumber(NumberIterationsAlreadyInResults + iTrial), _
                              cStringUtils.ToCSVField(m_currentStrategy.Name), _
-                             cStringUtils.FormatNumber(igrp), _
-                             cStringUtils.ToCSVField(m_core.EcoPathGroupOutputs(igrp).Name), _
+                             cStringUtils.FormatNumber(iGrp), _
+                             cStringUtils.ToCSVField(mCore.EcoPathGroupOutputs(iGrp).Name), _
                              cStringUtils.FormatNumber(BiomassProjected.Min))
                 swGroup.WriteLine("{0},{1},{2},{3},BiomassEnd,{4}", _
                               cStringUtils.FormatNumber(NumberIterationsAlreadyInResults + iTrial), _
                               cStringUtils.ToCSVField(m_currentStrategy.Name), _
-                              cStringUtils.FormatNumber(igrp), _
+                              cStringUtils.FormatNumber(iGrp), _
                               cStringUtils.ToCSVField(m_core.EcoPathGroupOutputs(igrp).Name), _
-                              cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, Me._simdata.NTimes)))
+                              cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, Me._simdata.NTimes)))
                 'Results.Rows.Add(iIteration, HCRFiles(Strategies.IndexOf(CurrentStrategy)), mCore.EcoPathGroupOutputs(igrp).Name, "Catch", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, ecosimData.NTimes))
                 swGroup.WriteLine("{0},{1},{2},{3},Catch,{4}", _
                               (NumberIterationsAlreadyInResults + iTrial), _
