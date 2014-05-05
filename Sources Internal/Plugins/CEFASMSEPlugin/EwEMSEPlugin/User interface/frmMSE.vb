@@ -58,7 +58,6 @@ Public Class frmMSE
             Return Me.m_plugin
         End Get
     End Property
-
     Private ReadOnly Property MSE As cMSE
         Get
             Return Me.m_plugin.MSE
@@ -292,11 +291,17 @@ Public Class frmMSE
                     Me.MSE.CustomPath = cmd.Directory
                 End If
             End If
-
         Catch ex As Exception
             cLog.Write(ex, "CEFASMSE:OnSelectDataPath")
         End Try
 
+    End Sub
+
+    Private Sub Save_all_MSE_params()
+        MSE.Strategies.SaveStrategiesToCSV()
+        MSE.Survivability.SaveDistributionParamsToCSV()
+        MSE.Survivability.SaveSampledToCSV()
+        MSE.QuotaShares.SaveQuotaSharesToCSV()
     End Sub
 
     Private Sub btnEditSurvivabilities_Click(sender As System.Object, e As System.EventArgs) Handles btnEditSurvivabilities.Click
@@ -417,7 +422,6 @@ Public Class frmMSE
     End Sub
 
 #End Region ' Plug-in callback
-
 
 
 End Class

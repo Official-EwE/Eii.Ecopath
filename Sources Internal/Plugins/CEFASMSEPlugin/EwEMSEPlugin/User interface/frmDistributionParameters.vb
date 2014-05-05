@@ -691,12 +691,12 @@ Public Class frmDistributionParameters
     End Sub
 
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnOK.Click
+        Handles m_btnSave.Click
 
         Dim lstrSubMessages As New List(Of String)
         Dim strFolder As String = cMSEUtils.MSEFolder(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams)
 
-        If Not Me.mse.IsInputStructureAvailable(True) Then
+        If Not Me.MSE.IsInputStructureAvailable(True) Then
             ' ToDo: report error
             Return
         End If

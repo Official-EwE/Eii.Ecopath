@@ -61,7 +61,7 @@ Partial Class frmTFMpolicy
         Me.m_tsHCR = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnAddHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteHCR = New System.Windows.Forms.ToolStripButton()
-        Me.m_btnOK = New System.Windows.Forms.Button()
+        Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_scBigOne = New System.Windows.Forms.SplitContainer()
         Me.m_hdrRegulations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -197,11 +197,11 @@ Partial Class frmTFMpolicy
         resources.ApplyResources(Me.m_tsbnDeleteHCR, "m_tsbnDeleteHCR")
         Me.m_tsbnDeleteHCR.Name = "m_tsbnDeleteHCR"
         '
-        'm_btnOK
+        'm_btnSave
         '
-        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
-        Me.m_btnOK.Name = "m_btnOK"
-        Me.m_btnOK.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
+        Me.m_btnSave.Name = "m_btnSave"
+        Me.m_btnSave.UseVisualStyleBackColor = True
         '
         'm_btnCancel
         '
@@ -277,13 +277,13 @@ Partial Class frmTFMpolicy
         '
         'frmTFMpolicy
         '
-        Me.AcceptButton = Me.m_btnOK
+        Me.AcceptButton = Me.m_btnSave
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
         Me.Controls.Add(Me.m_scBigOne)
         Me.Controls.Add(Me.m_btnCancel)
-        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_btnSave)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmTFMpolicy"
@@ -320,7 +320,7 @@ Partial Class frmTFMpolicy
     Private WithEvents m_tsbnDeleteStrategy As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnAddHCR As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnDeleteHCR As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_btnOK As System.Windows.Forms.Button
+    Private WithEvents m_btnSave As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_scBigOne As System.Windows.Forms.SplitContainer
     Private WithEvents m_tlpStrategies As System.Windows.Forms.TableLayoutPanel

@@ -69,7 +69,7 @@ Partial Class frmMSE
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblNModels = New System.Windows.Forms.Label()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
-        Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
+        'Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnDecreaseEffort = New System.Windows.Forms.Button()
         Me.btnEditSurvivabilities = New System.Windows.Forms.Button()
         Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -94,7 +94,7 @@ Partial Class frmMSE
         CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
         Me.m_plStep3.SuspendLayout()
-        Me.m_tlpFishingControls.SuspendLayout()
+        'Me.m_tlpFishingControls.SuspendLayout()
         CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpLayout.SuspendLayout()
         Me.m_plStep1.SuspendLayout()
@@ -242,7 +242,7 @@ Partial Class frmMSE
         '
         'm_plStep3
         '
-        Me.m_plStep3.Controls.Add(Me.m_tlpFishingControls)
+        'Me.m_plStep3.Controls.Add(Me.m_tlpFishingControls)
         Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
         Me.m_plStep3.Controls.Add(Me.m_btnReviewTFM)
         Me.m_plStep3.Controls.Add(Me.m_lblAvailableStrategies)
@@ -252,10 +252,10 @@ Partial Class frmMSE
         '
         'm_tlpFishingControls
         '
-        resources.ApplyResources(Me.m_tlpFishingControls, "m_tlpFishingControls")
-        Me.m_tlpFishingControls.Controls.Add(Me.m_btnDecreaseEffort, 0, 0)
-        Me.m_tlpFishingControls.Controls.Add(Me.btnEditSurvivabilities, 2, 0)
-        Me.m_tlpFishingControls.Name = "m_tlpFishingControls"
+        'resources.ApplyResources(Me.m_tlpFishingControls, "m_tlpFishingControls")
+        'Me.m_tlpFishingControls.Controls.Add(Me.m_btnDecreaseEffort, 0, 0)
+        'Me.m_tlpFishingControls.Controls.Add(Me.btnEditSurvivabilities, 2, 0)
+        'Me.m_tlpFishingControls.Name = "m_tlpFishingControls"
         '
         'm_btnDecreaseEffort
         '
@@ -408,7 +408,7 @@ Partial Class frmMSE
         Me.m_plStep4.PerformLayout()
         Me.m_plStep3.ResumeLayout(False)
         Me.m_plStep3.PerformLayout()
-        Me.m_tlpFishingControls.ResumeLayout(False)
+        'Me.m_tlpFishingControls.ResumeLayout(False)
         CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpLayout.ResumeLayout(False)
         Me.m_plStep1.ResumeLayout(False)
@@ -460,5 +460,4 @@ Partial Class frmMSE
     Private WithEvents m_lblPathValue As System.Windows.Forms.Label
     Private WithEvents m_btnDecreaseEffort As System.Windows.Forms.Button
     Friend WithEvents btnEditSurvivabilities As System.Windows.Forms.Button
-    Private WithEvents m_tlpFishingControls As System.Windows.Forms.TableLayoutPanel
 End Class
