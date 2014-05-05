@@ -120,7 +120,8 @@ Public Class Strategies
 
         Dim StrategiesFileNames As String()
         Dim Strategy As Strategy
-        Dim datadir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
+        Dim strStategyDir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
+        Dim strRegulationDir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
         Dim strVal As String = ""
         Dim StratCounter As Integer = 1
         Dim bReadStrat As Boolean
@@ -129,7 +130,7 @@ Public Class Strategies
 
         'Get an array of strings giving the path to each HCR
         ' JS 30Sep13: Only read CSV files
-        StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
+        StrategiesFileNames = Directory.GetFiles(strStategyDir, "*.csv")
 
         Me.Defaults()
 
@@ -139,7 +140,7 @@ Public Class Strategies
 
             'Save the Strategy to the file pass into its constructor
             bReadStrat = Strategy.Read()
-            bReadReg = Strategy.Regulations.Load(Strategy.FileName)
+            bReadReg = Strategy.Regulations.Load(Path.Combine(strRegulationDir, Path.GetFileNameWithoutExtension(StrategyFile) & ".csv"))
 
             If bReadStrat And bReadReg Then
                 'Only add the Strategy if it read both strategy and regulations from file
@@ -149,7 +150,7 @@ Public Class Strategies
                 lstFailedFiles.Add(StrategyFile)
             End If
 
-            ' ToDo: Consider if file needs to be removed?!
+            ' ToDo: Consider if file(s) need to be removed if a disaster occurred?!
 
             StratCounter += 1
         Next StrategyFile
@@ -175,6 +176,7 @@ Public Class Strategies
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
 
+        Dim strRegulationDir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
         Dim csvStrategyFile As StreamWriter = Nothing
         Dim strFile As String = ""
         Dim strPath As String = ""
@@ -195,7 +197,7 @@ Public Class Strategies
 
                 'Save the Regulations that are part of the Strategy
                 'Done here instead of inside the Strategy.Save() for clarity 
-                Strategy.Regulations.Save(Strategy.FileName)
+                Strategy.Regulations.Save(Path.Combine(strRegulationDir, Path.GetFileName(Strategy.FileName)))
 
             Next
         Catch ex As Exception

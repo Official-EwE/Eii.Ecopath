@@ -2545,7 +2545,7 @@ stepend:
                 Next
 
                 For Each iFleet In FleetsThatFishHCRGrp
-                    Select Case m_currentStrategy.Regulations.GetReg(iFleet)
+                    Select Case m_currentStrategy.Regulations.Method(iFleet)
                         Case cRegulations.eRegMethod.HighestValue, cRegulations.eRegMethod.SelectiveFishing
                             'Find out the highest value species
                             'Calculate the effort that would catch all quota of highest value species
@@ -2584,7 +2584,7 @@ stepend:
                                     If iCatch > m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
                                         'fishing mortality exceeds quota
                                         m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
-                                        If m_regulations.GetReg(iFleet) = cRegulations.eRegMethod.HighestValue Then
+                                        If m_regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
                                             'QuotaType = Strongest
                                             'excess catch discarded and included in the fishing mortailtiy
                                             m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)

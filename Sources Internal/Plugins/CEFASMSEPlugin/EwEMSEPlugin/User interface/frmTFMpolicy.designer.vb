@@ -57,18 +57,33 @@ Partial Class frmTFMpolicy
         Me.m_tsbnAddStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_graph = New ZedGraph.ZedGraphControl()
+        Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         Me.m_tsHCR = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnAddHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
-        Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
+        Me.m_scBigOne = New System.Windows.Forms.SplitContainer()
+        Me.m_hdrRegulations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_gridRegulations = New gridRegulations()
+        Me.m_tlpStrategies = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_hdrStrategies = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tlpHCR = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_hdrHCR = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tlpRegulations = New System.Windows.Forms.TableLayoutPanel()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
         Me.m_tsStrategy.SuspendLayout()
         Me.m_tsHCR.SuspendLayout()
+        CType(Me.m_scBigOne, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_scBigOne.Panel1.SuspendLayout()
+        Me.m_scBigOne.Panel2.SuspendLayout()
+        Me.m_scBigOne.SuspendLayout()
+        Me.m_tlpStrategies.SuspendLayout()
+        Me.m_tlpHCR.SuspendLayout()
+        Me.m_tlpRegulations.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_scMain
@@ -78,19 +93,17 @@ Partial Class frmTFMpolicy
         '
         'm_scMain.Panel1
         '
-        Me.m_scMain.Panel1.Controls.Add(Me.m_tsStrategy)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_graph)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_tlpStrategies)
         '
         'm_scMain.Panel2
         '
-        Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_tsHCR)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tlpHCR)
         '
         'm_tsStrategy
         '
+        resources.ApplyResources(Me.m_tsStrategy, "m_tsStrategy")
         Me.m_tsStrategy.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsStrategy.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslSelectStratagy, Me.m_tscmStrategies, Me.m_tsbnAddStrategy, Me.m_tsbnDeleteStrategy})
-        resources.ApplyResources(Me.m_tsStrategy, "m_tsStrategy")
         Me.m_tsStrategy.Name = "m_tsStrategy"
         Me.m_tsStrategy.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
@@ -131,39 +144,6 @@ Partial Class frmTFMpolicy
         Me.m_graph.ScrollMinY2 = 0.0R
         Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
         '
-        'm_tsHCR
-        '
-        Me.m_tsHCR.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsHCR.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAddHCR, Me.m_tsbnDeleteHCR})
-        resources.ApplyResources(Me.m_tsHCR, "m_tsHCR")
-        Me.m_tsHCR.Name = "m_tsHCR"
-        Me.m_tsHCR.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        '
-        'm_tsbnAddHCR
-        '
-        Me.m_tsbnAddHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.m_tsbnAddHCR, "m_tsbnAddHCR")
-        Me.m_tsbnAddHCR.Name = "m_tsbnAddHCR"
-        '
-        'm_tsbnDeleteHCR
-        '
-        Me.m_tsbnDeleteHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.m_tsbnDeleteHCR, "m_tsbnDeleteHCR")
-        Me.m_tsbnDeleteHCR.Name = "m_tsbnDeleteHCR"
-        '
-        'm_btnOK
-        '
-        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
-        Me.m_btnOK.Name = "m_btnOK"
-        Me.m_btnOK.UseVisualStyleBackColor = True
-        '
-        'm_btnCancel
-        '
-        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
-        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.m_btnCancel.Name = "m_btnCancel"
-        Me.m_btnCancel.UseVisualStyleBackColor = True
-        '
         'm_grid
         '
         Me.m_grid.AllowBlockSelect = False
@@ -197,34 +177,138 @@ Partial Class frmTFMpolicy
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
+        'm_tsHCR
+        '
+        resources.ApplyResources(Me.m_tsHCR, "m_tsHCR")
+        Me.m_tsHCR.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsHCR.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAddHCR, Me.m_tsbnDeleteHCR})
+        Me.m_tsHCR.Name = "m_tsHCR"
+        Me.m_tsHCR.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        '
+        'm_tsbnAddHCR
+        '
+        Me.m_tsbnAddHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnAddHCR, "m_tsbnAddHCR")
+        Me.m_tsbnAddHCR.Name = "m_tsbnAddHCR"
+        '
+        'm_tsbnDeleteHCR
+        '
+        Me.m_tsbnDeleteHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnDeleteHCR, "m_tsbnDeleteHCR")
+        Me.m_tsbnDeleteHCR.Name = "m_tsbnDeleteHCR"
+        '
+        'm_btnOK
+        '
+        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+        Me.m_btnOK.Name = "m_btnOK"
+        Me.m_btnOK.UseVisualStyleBackColor = True
+        '
+        'm_btnCancel
+        '
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
+        '
+        'm_scBigOne
+        '
+        resources.ApplyResources(Me.m_scBigOne, "m_scBigOne")
+        Me.m_scBigOne.Name = "m_scBigOne"
+        '
+        'm_scBigOne.Panel1
+        '
+        Me.m_scBigOne.Panel1.Controls.Add(Me.m_scMain)
+        '
+        'm_scBigOne.Panel2
+        '
+        Me.m_scBigOne.Panel2.Controls.Add(Me.m_tlpRegulations)
+        '
+        'm_hdrRegulations
+        '
+        Me.m_hdrRegulations.CanCollapseParent = False
+        Me.m_hdrRegulations.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrRegulations, "m_hdrRegulations")
+        Me.m_hdrRegulations.IsCollapsed = False
+        Me.m_hdrRegulations.Name = "m_hdrRegulations"
+        '
+        'm_gridRegulations
+        '
+        resources.ApplyResources(Me.m_gridRegulations, "m_gridRegulations")
+        Me.m_gridRegulations.Name = "m_gridRegulations"
+        '
+        'm_tlpStrategies
+        '
+        resources.ApplyResources(Me.m_tlpStrategies, "m_tlpStrategies")
+        Me.m_tlpStrategies.Controls.Add(Me.m_tsStrategy, 0, 1)
+        Me.m_tlpStrategies.Controls.Add(Me.m_graph, 0, 2)
+        Me.m_tlpStrategies.Controls.Add(Me.m_hdrStrategies, 0, 0)
+        Me.m_tlpStrategies.Name = "m_tlpStrategies"
+        '
+        'm_hdrStrategies
+        '
+        Me.m_hdrStrategies.CanCollapseParent = False
+        Me.m_hdrStrategies.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrStrategies, "m_hdrStrategies")
+        Me.m_hdrStrategies.IsCollapsed = False
+        Me.m_hdrStrategies.Name = "m_hdrStrategies"
+        '
+        'm_tlpHCR
+        '
+        resources.ApplyResources(Me.m_tlpHCR, "m_tlpHCR")
+        Me.m_tlpHCR.Controls.Add(Me.m_grid, 0, 2)
+        Me.m_tlpHCR.Controls.Add(Me.m_tsHCR, 0, 1)
+        Me.m_tlpHCR.Controls.Add(Me.m_hdrHCR, 0, 0)
+        Me.m_tlpHCR.Name = "m_tlpHCR"
+        '
+        'm_hdrHCR
+        '
+        Me.m_hdrHCR.CanCollapseParent = False
+        Me.m_hdrHCR.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrHCR, "m_hdrHCR")
+        Me.m_hdrHCR.IsCollapsed = False
+        Me.m_hdrHCR.Name = "m_hdrHCR"
+        '
+        'm_tlpRegulations
+        '
+        resources.ApplyResources(Me.m_tlpRegulations, "m_tlpRegulations")
+        Me.m_tlpRegulations.Controls.Add(Me.m_hdrRegulations, 0, 0)
+        Me.m_tlpRegulations.Controls.Add(Me.m_gridRegulations, 0, 1)
+        Me.m_tlpRegulations.Name = "m_tlpRegulations"
+        '
         'frmTFMpolicy
         '
         Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_scBigOne)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
-        Me.Controls.Add(Me.m_scMain)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmTFMpolicy"
         Me.ShowIcon = False
         Me.m_scMain.Panel1.ResumeLayout(False)
-        Me.m_scMain.Panel1.PerformLayout()
         Me.m_scMain.Panel2.ResumeLayout(False)
-        Me.m_scMain.Panel2.PerformLayout()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
         Me.m_tsStrategy.ResumeLayout(False)
         Me.m_tsStrategy.PerformLayout()
         Me.m_tsHCR.ResumeLayout(False)
         Me.m_tsHCR.PerformLayout()
+        Me.m_scBigOne.Panel1.ResumeLayout(False)
+        Me.m_scBigOne.Panel2.ResumeLayout(False)
+        CType(Me.m_scBigOne, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_scBigOne.ResumeLayout(False)
+        Me.m_tlpStrategies.ResumeLayout(False)
+        Me.m_tlpStrategies.PerformLayout()
+        Me.m_tlpHCR.ResumeLayout(False)
+        Me.m_tlpHCR.PerformLayout()
+        Me.m_tlpRegulations.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
 
-    'Ecosim.gridTargetFishingMortalityPolicy
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tsHCR As cEwEToolstrip
@@ -238,6 +322,14 @@ Partial Class frmTFMpolicy
     Private WithEvents m_tsbnDeleteHCR As System.Windows.Forms.ToolStripButton
     Private WithEvents m_btnOK As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_scBigOne As System.Windows.Forms.SplitContainer
+    Private WithEvents m_tlpStrategies As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_hdrStrategies As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_tlpHCR As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_hdrHCR As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_tlpRegulations As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_hdrRegulations As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_gridRegulations As gridRegulations
 
 End Class
 

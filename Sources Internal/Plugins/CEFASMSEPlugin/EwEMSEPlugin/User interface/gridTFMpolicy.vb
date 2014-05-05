@@ -189,6 +189,7 @@ Public Class gridTargetFishingMortalityPolicy
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
         Me.Selection.SelectionMode = GridSelectionMode.Row
+        Me.Columns(eColumnTypes.Index).Width = 20
     End Sub
 
     Public Overrides ReadOnly Property MessageSource() As eCoreComponentType

@@ -31,13 +31,16 @@ Imports LumenWorks.Framework.IO.Csv
 
 #End Region ' Imports
 
+' TO MARK:
+' JS 05May14: Sorry, hijacked this file and simplified things a bit:
+' - Regulations are stored in a 'sister file' to a strategy rather than in the strategy 
+'   file itself, which greatly simplifies matters.
+' - The cReg object is gone since all we needed was a method flag for a given fleet
+
 Public Class cRegulations
     Implements IMSEData
 
-    Public Const START_TAG As String = "<REGULATIONS_START>"
-    Public Const END_TAG As String = "<REGULATIONS_END>"
-
-    Enum eRegMethod
+    Enum eRegMethod As Byte
         None = 0
         NoQuota = 1
         WeakestStock
@@ -45,64 +48,33 @@ Public Class cRegulations
         SelectiveFishing
     End Enum
 
-    Public Class cReg
-        Public mFleetID As Integer
-        Public mRegMethod As eRegMethod
-        Public mFleetName As String
+    Private m_methods As eRegMethod()
+    Private m_bIsChanged As Boolean = False
 
-        Public Sub New()
-
-        End Sub
-
-        Public Sub New(FleetName As String, FleetID As Integer, regMethod As eRegMethod)
-
-            Me.New()
-            mFleetID = FleetID
-            mFleetName = FleetName
-            mRegMethod = regMethod
-
-        End Sub
-
-    End Class
-
-    Public ListofRegs As List(Of cReg)
     Private mMSE As cMSE
     Private mCore As cCore
-    Public RegulationsFileExists As Boolean
-    Public RegulationsLoaded As Boolean
-
 
     Sub New(MSE As cMSE, Core As cCore)
-        mMSE = MSE
-        mCore = Core
-
-        Me.initDefaultRegs()
-        RegulationsFileExists = False
-        RegulationsLoaded = False
+        Me.mMSE = MSE
+        Me.mCore = Core
+        ReDim m_methods(Core.nFleets)
+        Me.Defaults()
     End Sub
 
-    Private Sub initDefaultRegs()
-
-        ListofRegs = New List(Of cReg)
-        For iFleet = 1 To mCore.nFleets
-            ListofRegs.Add(New cReg(mCore.FleetInputs(iFleet).Name, iFleet, eRegMethod.None))
-        Next
-
-    End Sub
-
-
-    Public Function GetReg(iFleet As Integer) As eRegMethod
-        Dim FoundFleet As Boolean = False
-
-        For FleetListPointer = 1 To ListofRegs.Count
-            If iFleet = ListofRegs(FleetListPointer - 1).mFleetID Then
-                Return ListofRegs(FleetListPointer - 1).mRegMethod
+    Public Property Method(iFleet As Integer) As eRegMethod
+        Get
+            If (iFleet < 1 Or iFleet > Me.mCore.nFleets) Then Return eRegMethod.None
+            Return Me.m_methods(iFleet)
+        End Get
+        Set(value As eRegMethod)
+            If (iFleet < 1 Or iFleet > Me.mCore.nFleets) Then Return
+            If (value <> Me.m_methods(iFleet)) Then
+                Me.m_methods(iFleet) = value
+                Me.m_bIsChanged = True
             End If
-        Next
+        End Set
+    End Property
 
-        Return eRegMethod.None
-
-    End Function
 
     'Commented out 31-3-14 if still not required and commented out by 5-14 then delete
     'Public Function LoadRegsFromCSV(StrategyNumber As Integer) As Boolean
@@ -149,49 +121,38 @@ Public Class cRegulations
 
         Dim buff As String
         Dim recs() As String
-        Dim breturn As Boolean = False
+        Dim breturn As Boolean = True
 
+        Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
         Try
-
-            Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
             If (reader IsNot Nothing) Then
 
-                'Find the tag in the file
-                If cMSEUtils.readToTag(reader, START_TAG) Then
-                    'read the header line
-                    reader.ReadLine()
-                    Do Until reader.EndOfStream
+                'read the header line
+                reader.ReadLine()
+                Do Until reader.EndOfStream
 
-                        buff = reader.ReadLine()
-                        recs = buff.Split(","c)
-                        If Not recs(0).Contains(END_TAG) Then
-                            Dim iflt As Integer
-                            Dim reg As cReg
+                    buff = reader.ReadLine()
+                    recs = buff.Split(","c)
+                    Dim iflt As Integer
 
-                            iflt = cStringUtils.ConvertToInteger(recs(1))
-                            'get the reg object out of the list based on the fleet index
-                            reg = Me.ListofRegs.Item(iflt - 1)
-                            Debug.Assert(reg.mFleetName = cMSEUtils.FromCSVField(recs(0)), "Oppss Fleetname in file does not match Core Fleetname for fleet." + iflt.ToString)
-                            reg.mRegMethod = CType(cStringUtils.ConvertToInteger(recs(2)), eRegMethod)
+                    iflt = cStringUtils.ConvertToInteger(recs(1))
+                    'get the reg object out of the list based on the fleet index
+                    'Debug.Assert(reg.mFleetName = cMSEUtils.FromCSVField(recs(0)), "Oppss Fleetname in file does not match Core Fleetname for fleet." + iflt.ToString)
+                    Me.m_methods(iflt) = CType(cStringUtils.ConvertToInteger(recs(2)), eRegMethod)
 
-                            breturn = True
-
-                        Else
-                            'end of the data bump out
-                            Exit Do
-                        End If 'Not recs(0).Contains(END_TAG)
-                    Loop
-                End If 'cMSEUtils.readToTag(reader, START_TAG)
-
-                cMSEUtils.ReleaseReader(reader)
+                Loop
 
             End If '(reader IsNot Nothing)
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
+            breturn = False
         End Try
+        cMSEUtils.ReleaseReader(reader)
 
         Debug.Assert(breturn, Me.ToString + ".Read() Failed to read regulations from file.")
+
+        Me.m_bIsChanged = False
 
         Return breturn
 
@@ -200,36 +161,33 @@ Public Class cRegulations
     Public Function Save(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Save
 
-        Dim strm As StreamWriter
-        'Append onto the end of an existing file
-        strm = cMSEUtils.GetWriter(strFilename, True)
+        Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
         If (strm IsNot Nothing) Then
 
-            'msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
-            '                                    String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
-            '                                    eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
-            strm.WriteLine(START_TAG)
             strm.WriteLine("FleetName,FleetIndex,Regulation")
-            For Each reg In Me.ListofRegs
-                strm.WriteLine(cStringUtils.ToCSVField(reg.mFleetName) & "," & _
-                                          cStringUtils.ToCSVField(reg.mFleetID) & "," & _
-                                          cStringUtils.ToCSVField(reg.mRegMethod))
+            For i As Integer = 1 To Me.mCore.nFleets
+                Dim flt As cFleetInput = Me.mCore.FleetInputs(i)
+                strm.WriteLine(cStringUtils.ToCSVField(flt.Name) & "," & _
+                                          cStringUtils.ToCSVField(flt.Index) & "," & _
+                                          cStringUtils.ToCSVField(Me.m_methods(i)))
             Next
-            strm.WriteLine(END_TAG)
             cMSEUtils.ReleaseWriter(strm)
         End If
-
         Return True
 
     End Function
 
     Public Function IsChanged() As Boolean _
         Implements IMSEData.IsChanged
-        ' ToDo: return something useful here
-        Return False
+        Return Me.m_bIsChanged
     End Function
 
     Public Sub Defaults() Implements IMSEData.Defaults
-
+        For iFleet = 1 To mCore.nFleets
+            Me.Method(iFleet) = eRegMethod.None
+        Next
+        Me.m_bIsChanged = False
     End Sub
+
+
 End Class

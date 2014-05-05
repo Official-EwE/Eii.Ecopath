@@ -151,6 +151,9 @@
     <Compile Include="User interface\gridMaxDecreaseEffort.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="User interface\gridRegulations.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="User interface\gridSurviveDistParams.vb">
       <SubType>Component</SubType>
     </Compile>

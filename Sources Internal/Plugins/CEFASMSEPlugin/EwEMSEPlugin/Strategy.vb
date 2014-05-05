@@ -19,31 +19,11 @@
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+
+#Region " Imports "
+
 Option Strict On
 Option Explicit On
-
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
-' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-#Region " Imports "
 
 Imports EwECore
 Imports LumenWorks.Framework.IO.Csv
@@ -57,9 +37,6 @@ Imports EwEUtils.Utilities
 ''' </summary>
 Public Class Strategy
     Implements IList(Of HCR_Group)
-
-    Public Const START_TAG As String = "<STRATEGY_START>"
-    Public Const END_TAG As String = "<STRATEGY_END>"
 
     Private mHCRsList As New List(Of HCR_Group)
     Private mRegulateMethods As cRegulations
@@ -99,47 +76,36 @@ Public Class Strategy
 
             Dim reader As StreamReader = cMSEUtils.GetReader(Me.FileName)
             If (reader IsNot Nothing) Then
-                '  csvHCR = New CsvReader(reader, False)
 
-                If cMSEUtils.readToTag(reader, START_TAG) Then
-                    reader.ReadLine()
-                    Do Until reader.EndOfStream
-                        buff = reader.ReadLine()
-                        recs = buff.Split(","c)
+                reader.ReadLine()
+                Do Until reader.EndOfStream
+                    buff = reader.ReadLine()
+                    recs = buff.Split(","c)
 
-                        'Read up to the END_TAG
-                        If Not recs(0).Contains(END_TAG) Then
-                            Dim tempHCRGroup As HCR_Group
-                            'Each HCR Group needs to be a new object
-                            tempHCRGroup = New HCR_Group(mCore)
+                    Dim tempHCRGroup As HCR_Group
+                    'Each HCR Group needs to be a new object
+                    tempHCRGroup = New HCR_Group(mCore)
 
-                            ' Resolve group
-                            tempHCRGroup.GroupB = Me.ResolveGroup(recs(0), cStringUtils.ConvertToInteger(recs(1)))
-                            tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(recs(2))
-                            tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(recs(3))
-                            tempHCRGroup.GroupF = Me.ResolveGroup(recs(4), cStringUtils.ConvertToInteger(recs(5)))
-                            tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(recs(6))
-                            ' tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
+                    ' Resolve group
+                    tempHCRGroup.GroupB = Me.ResolveGroup(recs(0), cStringUtils.ConvertToInteger(recs(1)))
+                    tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(recs(2))
+                    tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(recs(3))
+                    tempHCRGroup.GroupF = Me.ResolveGroup(recs(4), cStringUtils.ConvertToInteger(recs(5)))
+                    tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(recs(6))
+                    ' tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
 
-                            Dim strMsg As String = ""
-                            ' Only add valid strategies!
-                            If tempHCRGroup.isValid(strMsg) Then
-                                Me.Add(tempHCRGroup)
-                            End If
+                    Dim strMsg As String = ""
+                    ' Only add valid strategies!
+                    If tempHCRGroup.isValid(strMsg) Then
+                        Me.Add(tempHCRGroup)
+                    End If
 
-                            breturn = True
-                        Else 'recs(0).Contains(END_TAG)
-                            'Reached the END_TAG in the file
-                            'Bump out of the reading loop
-                            Exit Do
-                        End If
+                    breturn = True
 
-                    Loop
-                End If 'cMSEUtils.readToTag(reader, START_TAG)
+                Loop
+            End If 'cMSEUtils.readToTag(reader, START_TAG)
 
-                cMSEUtils.ReleaseReader(reader)
-
-            End If 'reader IsNot Nothing
+            cMSEUtils.ReleaseReader(reader)
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
@@ -160,7 +126,6 @@ Public Class Strategy
             'msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
             '                                    String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
             '                                    eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
-            strm.WriteLine(START_TAG)
             strm.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
             For Each iHCR In Me
                 strm.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
@@ -172,7 +137,6 @@ Public Class Strategy
                                           cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
                                           cStringUtils.ToCSVField(iHCR.TypeOfHCR))
             Next
-            strm.WriteLine(END_TAG)
             cMSEUtils.ReleaseWriter(strm)
         End If
 

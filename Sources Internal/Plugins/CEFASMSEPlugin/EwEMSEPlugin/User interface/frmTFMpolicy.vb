@@ -104,6 +104,7 @@ Public Class frmTFMpolicy
         Me.m_zgh.AllowEdit = True
 
         Me.m_grid.UIContext = Me.UIContext
+        Me.m_gridRegulations.UIContext = Me.UIContext
 
         Me.m_qeh = New cQuickEditHandler()
         Me.m_qeh.Attach(Me.m_grid, Me.UIContext, Me.m_tsHCR)
@@ -442,9 +443,18 @@ Public Class frmTFMpolicy
 
     Private Sub changeSelectedStrategy(iSelectedIndex As Integer)
 
-        Me.m_SelectedStrategy = Me.m_strategies(iSelectedIndex)
-        Me.m_tscmStrategies.SelectedIndex = iSelectedIndex
-        Me.m_grid.SelectedStrategy = Me.m_SelectedStrategy
+        Dim strat As Strategy = Nothing
+
+        If (0 <= iSelectedIndex And iSelectedIndex < Me.m_strategies.Count) Then
+            strat = Me.m_strategies(iSelectedIndex)
+            Me.m_tscmStrategies.SelectedIndex = iSelectedIndex
+        Else
+            Me.m_tscmStrategies.SelectedIndex = -1
+        End If
+
+        Me.m_SelectedStrategy = strat
+        Me.m_grid.SelectedStrategy = strat
+        Me.m_gridRegulations.SelectedStrategy = strat
         Me.UpdatePlot()
 
     End Sub
