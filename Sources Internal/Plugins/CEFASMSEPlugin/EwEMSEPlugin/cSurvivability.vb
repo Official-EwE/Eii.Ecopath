@@ -77,6 +77,8 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Private mSurvParamFileValid As Boolean
 
+    Private mChangesToSave As Boolean
+
 #End Region
 
 #Region " Construction "
@@ -161,6 +163,9 @@ Public Class cSurvivability
             Return mListofSuriveDistParams
         End Get
     End Property
+
+
+
 
     ''' <summary>
     ''' Returns whether the Survivability distribution file exists
@@ -602,6 +607,47 @@ Public Class cSurvivability
     End Sub
 
 #End Region
+
+#End Region
+
+#Region " General Elements "
+
+    ''' <summary>
+    ''' Runs when the MSE plugin has been loaded up
+    ''' </summary>
+    ''' <remarks></remarks>
+    'Public Sub PluginLoaded()
+    '    Dim reader As StreamReader = Nothing
+
+    '    'Todo MP
+    '    ' check file exists for surivability distribution parameters
+    '    If Not File.Exists(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
+    '        SurvivabilityDistFileExists = False
+    '        mSurvDistFileValid = False
+    '    Else
+    '        ' check file is correct
+    '        If Not DistFileValid() Then
+    '            mSurvDistFileValid = False
+    '        Else
+    '            'If it is load the file into memory
+    '            mSurvDistFileValid = True
+    '            LoadDistFromCSV()
+    '        End If
+    '    End If
+
+    '    If Not File.Exists(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilites_out.csv")) Then
+    '        SurvivabilityParamFileExists = False
+    '        mSurvParamFileValid = False
+    '    Else
+    '        If Not ParamFileValid() Then
+    '            mSurvParamFileValid = False
+    '        Else
+    '            mSurvParamFileValid = True
+    '            LoadParamFromCSV()
+    '        End If
+    '    End If
+
+    'End Sub
 
 #End Region
 
