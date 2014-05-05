@@ -101,7 +101,7 @@ Public Class cMSEPluginPoint
 #Region " Construction "
 
     Public Sub New()
-        m_MSE = New cMSE(m_monitor)
+        m_MSE = New cMSE(m_monitor, Me)
         Me.InvalidateConfiguration()
     End Sub
 
