@@ -307,11 +307,11 @@ Public Class frmMSE
         '             From the UI point of view, we just want strategies. The plug-in does the optimizating
 
         'check whether the survivability distribution parameters have been loaded from csv and if not then load them
-        Me.MSE.Survivability.LoadDistFromCSV()
+        Me.MSE.Survivabilities.LoadDistFromCSV()
 
         Try
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
-            frmSurvivabilities.Init(Me.UIContext, Me.Plugin)
+            frmSurvivabilities.Init(Me.UIContext)
             frmSurvivabilities.ShowDialog(Me)
         Catch ex As Exception
 
@@ -320,13 +320,6 @@ Public Class frmMSE
 
     Private Sub OnShowTFM(sender As System.Object, e As System.EventArgs) _
         Handles m_btnReviewTFM.Click
-
-        'First make sure the Harvest Controls Rules have been loaded
-        'this is so the interface has some data
-
-        ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
-        '             From the UI point of view, we just want strategies. The plug-in does the optimizating
-        Me.MSE.Strategies.LoadStrategiesFromCSV()
 
         Dim frm As New frmTFMpolicy()
         frm.Init(Me.UIContext, Me.MSE)

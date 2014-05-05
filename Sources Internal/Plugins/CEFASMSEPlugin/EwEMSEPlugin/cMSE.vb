@@ -37,22 +37,21 @@ Public Class cMSE
 
 #Region " Internal vars "
 
-    Friend Strategies As Strategies
-    Friend Survivability As cSurvivability
-    Private CurrentStrategy As Strategy
-    Private m_Monitor As cMSEStateMonitor
+    Private m_core As cCore = Nothing
+    Private m_strategies As Strategies = Nothing
+    Private m_survivability As cSurvivability = Nothing
+    Private m_regulations As cRegulations = Nothing
+    Private m_currentStrategy As Strategy = Nothing
+    Private m_monitor As cMSEStateMonitor = Nothing
+    Private m_effortlimits As cEffortLimits = Nothing
 
-    Private mCore As cCore
-    Private m_uic As cUIContext
-    Private _ecosim As EwECore.Ecosim.cEcoSimModel
+    Private m_ecosim As EwECore.Ecosim.cEcoSimModel
     Private _simdata As cEcosimDatastructures
     Private _pathdata As cEcopathDataStructures
-    Private _ecopath As Ecopath.cEcoPathModel
+    Private m_ecopath As Ecopath.cEcoPathModel
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer
-
-    Public Property ChangeInEffortLimits As cEffortLimits = Nothing
 
     Private TargConsQuota(,) As Double 'Stores the target and conservation f's for each species
 
@@ -76,10 +75,8 @@ Public Class cMSE
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     Private FleetsThatFishHCRGrp As List(Of Integer) = New List(Of Integer)
-    Private mQuota As cQuotaShares
+    Public Property m_quota As cQuotaShares
     'Private m_Survivability As cSurvivability
-
-    Dim Regulations As cRegulations
 
     Private BTemp() As Double
     Private PBTemp() As Double
@@ -114,7 +111,6 @@ Public Class cMSE
 
 
     Private m_iNumModelsAvailable As Integer = cCore.NULL_VALUE
-    Private m_iNumStrategiesAvailable As Integer = cCore.NULL_VALUE
     Private m_tsInputDataCompatibility As TriState = TriState.UseDefault
     Private m_tsRunDataCompatibility As TriState = TriState.UseDefault
 
@@ -127,42 +123,50 @@ Public Class cMSE
 
     Public Property IsRunning As Boolean = False
 
+    Public ReadOnly Property Core As cCore
+        Get
+            Return Me.m_core
+        End Get
+    End Property
+
     Public ReadOnly Property Survivabilities As cSurvivability
         Get
-            Return Me.Survivability
+            Return Me.m_survivability
         End Get
     End Property
 
     Public ReadOnly Property QuotaShares As cQuotaShares
         Get
-            Return Me.mQuota
+            Return Me.m_quota
         End Get
     End Property
 
-    Friend ReadOnly Property Core As cCore
+    Public ReadOnly Property Strategies As Strategies
         Get
-            Return Me.mCore
+            Return m_strategies
         End Get
     End Property
 
+    Public ReadOnly Property EffortLimits As cEffortLimits
+        Get
+            Return Me.m_effortlimits
+        End Get
+    End Property
 
 #End Region
 
 #Region " Construction "
 
     Public Sub New(ByVal Monitor As cMSEStateMonitor)
-        Me.m_Monitor = Monitor
+        Me.m_monitor = Monitor
     End Sub
 
     Public Sub onCoreInitialized(EwECore As cCore, Ecopath As Ecopath.cEcoPathModel, Ecosim As Ecosim.cEcoSimModel)
 
-        Me.mCore = EwECore
-        Me._ecopath = Ecopath
-        Me._ecosim = Ecosim
+        Me.m_core = EwECore
+        Me.m_ecopath = Ecopath
+        Me.m_ecosim = Ecosim
 
-        Strategies = New Strategies(Me, mCore)
-        Survivability = New cSurvivability(EwECore, Me, _simdata)
-        Me.ChangeInEffortLimits = New cEffortLimits(Me.mCore, Me)
         Me.InvalidateData()
 
     End Sub
@@ -226,20 +230,20 @@ Public Class cMSE
             writer.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
             writer.WriteLine()
 
-            For iPred As Integer = 1 To mCore.nLivingGroups
-                If mCore.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
-                    Dim mean As Single = mCore.EcoPathGroupInputs(iPred).ImpDiet
-                    writer.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,1," & cStringUtils.ToCSVField(mean))
+            For iPred As Integer = 1 To m_core.nLivingGroups
+                If m_core.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
+                    Dim mean As Single = m_core.EcoPathGroupInputs(iPred).ImpDiet
+                    writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,1," & cStringUtils.ToCSVField(mean))
                 Else
-                    writer.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,0,0")
+                    writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,0,0")
                 End If
 
-                For iPrey As Integer = 1 To mCore.nGroups
-                    If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
-                        Dim mean As Single = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey)
-                        writer.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",1," & cStringUtils.ToCSVField(mean))
+                For iPrey As Integer = 1 To m_core.nGroups
+                    If m_core.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
+                        Dim mean As Single = m_core.EcoPathGroupInputs(iPred).DietComp(iPrey)
+                        writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",1," & cStringUtils.ToCSVField(mean))
                     Else
-                        writer.WriteLine(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",0,0")
+                        writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",0,0")
                     End If
                 Next
             Next
@@ -252,10 +256,10 @@ Public Class cMSE
         writer = cMSEUtils.GetWriter(strPath, False)
         If (writer IsNot Nothing) Then
             writer.WriteLine("PredatorIndexNumber,PredatorIndexName,Multiplier")
-            For iPred As Integer = 1 To mCore.nLivingGroups
+            For iPred As Integer = 1 To m_core.nLivingGroups
                 writer.WriteLine("{0},{1},{2}", _
                                  cStringUtils.ToCSVField(iPred), _
-                                 cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iPred).Name), _
+                                 cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name), _
                                  1)
             Next
         Else
@@ -274,16 +278,30 @@ Public Class cMSE
 
     Friend Sub InvalidateData()
 
-        Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
         Me.m_tsRunDataCompatibility = TriState.UseDefault
-        Me.m_Monitor.Invalidate()
+        Me.m_monitor.Invalidate()
 
-        If (Me.mCore Is Nothing) Then Return
+        ' Test whether core is up and running
+        If (Me.m_core Is Nothing) Then Return
+        ' Test whether a scenarion is available
+        If (Me.m_core.ActiveEcosimScenarioIndex < 1) Then Return
+        ' Test whether MSE has been initialized
+        If (Me.m_survivability Is Nothing) Then Return
 
-        Me.ChangeInEffortLimits.Load("")
+        ' ToDo: globalize this
+        cApplicationStatusNotifier.StartProgress(Me.m_core, "Loading Cefas MSE...", -1)
+        Try
+            ' Reload possible data
+            Me.EffortLimits.Load()
+            Me.QuotaShares.Load()
+            Me.Strategies.Load()
 
+        Catch ex As Exception
+
+        End Try
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
 
     End Sub
 
@@ -390,7 +408,7 @@ Public Class cMSE
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
-        Dim correct(mCore.nGroups - 1) As Integer
+        Dim correct(m_core.nGroups - 1) As Integer
         Dim TotalFound As Integer = 0
         Dim bOK As Boolean = True
 
@@ -398,7 +416,7 @@ Public Class cMSE
         If (reader Is Nothing) Then Return False
 
         ' Initialise correct to all zeros
-        For i = 1 To mCore.nGroups
+        For i = 1 To m_core.nGroups
             correct(i - 1) = 0
         Next
 
@@ -409,8 +427,8 @@ Public Class cMSE
             '             This created double-counting when a CSV file did not contain enough records
             While Not csv.EndOfStream
                 If csv.ReadNextRecord() Then
-                    For xgrp = 1 To mCore.nGroups
-                        If (cStringUtils.ConvertToInteger(csv(0)) = xgrp) And (String.Compare(cMSEUtils.FromCSVField(csv(1)), _ecopath.EcopathData.GroupName(xgrp), True) = 0) Then
+                    For xgrp = 1 To m_core.nGroups
+                        If (cStringUtils.ConvertToInteger(csv(0)) = xgrp) And (String.Compare(cMSEUtils.FromCSVField(csv(1)), m_ecopath.EcopathData.GroupName(xgrp), True) = 0) Then
                             correct(xgrp - 1) += 1
                             ' Exit For ' JS: keep on checking to find duplicates
                         End If
@@ -431,7 +449,7 @@ Public Class cMSE
         End If
 
         'check that there are no replicates
-        For igrp = 1 To mCore.nGroups
+        For igrp = 1 To m_core.nGroups
             If correct(igrp - 1) > 1 Then
                 Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(strPath)), eMessageImportance.Warning)
                 Return False
@@ -444,10 +462,10 @@ Public Class cMSE
         Next
 
         ' Check whether there are too few groups in the file
-        If TotalFound < mCore.nLivingGroups Then
+        If TotalFound < m_core.nLivingGroups Then
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)), eMessageImportance.Warning)
             Return False
-        ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
+        ElseIf TotalFound > m_core.nLivingGroups Then 'Check whether there are too many groups in the file
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)), eMessageImportance.Warning)
             Return False
         End If
@@ -471,19 +489,19 @@ Public Class cMSE
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
-        Dim correct(mCore.nGroups - 1) As Integer
+        Dim correct(m_core.nGroups - 1) As Integer
         Dim TotalFound As Integer = 0
         Dim bOK As Boolean = True
         Dim nPrimaryProducers As Integer
 
         'initialise correct to all zeros
-        For i = 1 To mCore.nGroups
+        For i = 1 To m_core.nGroups
             correct(i - 1) = 0
         Next
 
         'Count the number of primary producers
-        For i = 1 To mCore.nGroups
-            If mCore.EcoPathGroupInputs(i).IsProducer And mCore.EcoPathGroupInputs(i).IsLiving Then nPrimaryProducers += 1
+        For i = 1 To m_core.nGroups
+            If m_core.EcoPathGroupInputs(i).IsProducer And m_core.EcoPathGroupInputs(i).IsLiving Then nPrimaryProducers += 1
         Next
 
         reader = cMSEUtils.GetReader(strPath)
@@ -494,8 +512,8 @@ Public Class cMSE
                 'cycle through each of the living functional groups each time checking if it exists in the file
                 While Not csv.EndOfStream
                     If csv.ReadNextRecord() Then
-                        For xgrp = 1 To mCore.nGroups
-                            If String.Compare(cMSEUtils.FromCSVField(csv("GroupName")), _ecopath.EcopathData.GroupName(xgrp), True) = 0 Then
+                        For xgrp = 1 To m_core.nGroups
+                            If String.Compare(cMSEUtils.FromCSVField(csv("GroupName")), m_ecopath.EcopathData.GroupName(xgrp), True) = 0 Then
                                 correct(xgrp - 1) += 1
                                 Exit For
                             End If
@@ -528,7 +546,7 @@ Public Class cMSE
         'Next
 
         'check that there are no replicates
-        For igrp = 1 To mCore.nGroups
+        For igrp = 1 To m_core.nGroups
             If correct(igrp - 1) > 1 Then
                 Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
                 Return False
@@ -540,10 +558,10 @@ Public Class cMSE
             TotalFound += i
         Next
 
-        If TotalFound < mCore.nLivingGroups - nPrimaryProducers Then 'Check whether there are too few groups in the file
+        If TotalFound < m_core.nLivingGroups - nPrimaryProducers Then 'Check whether there are too few groups in the file
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
             Return False
-        ElseIf TotalFound > mCore.nLivingGroups Then 'Check whether there are too many groups in the file
+        ElseIf TotalFound > m_core.nLivingGroups Then 'Check whether there are too many groups in the file
             Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOMANY, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
             Return False
         End If
@@ -596,15 +614,7 @@ Public Class cMSE
     ''' </returns>
     ''' -----------------------------------------------------------------------
     Public Function NumStrategiesAvailable() As Integer
-
-        If (Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE) Then
-            SyncLock Me
-                Me.Strategies.LoadStrategiesFromCSV()
-                Me.m_iNumStrategiesAvailable = Me.Strategies.Count
-            End SyncLock
-        End If
-        Return Me.m_iNumStrategiesAvailable
-
+        Return Me.Strategies.Count
     End Function
 
     Private m_strModelCompatibility As String = ""
@@ -680,7 +690,7 @@ Public Class cMSE
 
         Dim nIterations As Integer = Me.NModels2Run
         Dim csv As CsvReader
-        Dim vulnerabilities(nIterations - 1, _ecopath.EcopathData.NumGroups - 1, _ecopath.EcopathData.NumGroups - 1) As Double
+        Dim vulnerabilities(nIterations - 1, m_ecopath.EcopathData.NumGroups - 1, m_ecopath.EcopathData.NumGroups - 1) As Double
 
         For iIteration As Integer = 1 To nIterations
             Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration.ToString & "_out.csv"))
@@ -689,7 +699,7 @@ Public Class cMSE
                 Try
                     While Not csv.EndOfStream
                         If csv.ReadNextRecord() Then
-                            For iPrey As Integer = 1 To _ecopath.EcopathData.NumGroups
+                            For iPrey As Integer = 1 To m_ecopath.EcopathData.NumGroups
                                 vulnerabilities(iIteration - 1, CInt(csv.CurrentRecordIndex), iPrey - 1) = cStringUtils.ConvertToDouble(csv(iPrey - 1))
                             Next
                         End If
@@ -726,7 +736,7 @@ Public Class cMSE
 
             For igrp As Integer = 1 To Me.Core.nLivingGroups
                 If (igrp > 1) Then writer.Write(",")
-                writer.Write(cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(igrp).Name))
+                writer.Write(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(igrp).Name))
             Next
         Else
             writer = cMSEUtils.GetWriter(strPath, True)
@@ -745,7 +755,7 @@ Public Class cMSE
 
     Private Function InitMonteCarloParamX(ByVal strPath As String, ByVal ParamName As eParamName) As Boolean
         Dim csvParamX As CsvReader
-        Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
+        Dim MonteCarlo As cMonteCarloManager = m_core.EcosimMonteCarlo
         Dim MCGroup As cMonteCarloGroup
         Dim xgrp As Integer
 
@@ -755,7 +765,7 @@ Public Class cMSE
 
             csvParamX = New CsvReader(New StreamReader(strPath), True) ' I think this is to restart the reading of the csv
 
-            For igrp = 1 To mCore.nLivingGroups
+            For igrp = 1 To m_core.nLivingGroups
 
                 xgrp = 1
                 If (Not csvParamX.EndOfStream) And (csvParamX.ReadNextRecord()) Then
@@ -833,7 +843,7 @@ Public Class cMSE
         'loads the distribution parameters for the Ecopath parameters from csvs
 
         'Dim csv_B, csv_PB, csv_QB, csv_EE, csv_BA As CsvReader
-        Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
+        Dim MonteCarlo As cMonteCarloManager = m_core.EcosimMonteCarlo
         'Dim MCGroup As cMonteCarloGroup
         'Dim xgrp As Integer
         'Initialize Monte Carlo parameters for B, PB, QB, EE and BA
@@ -932,13 +942,13 @@ Public Class cMSE
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
-        Dim ParameterArray(mCore.nLivingGroups - 1, 3) As Single
+        Dim ParameterArray(m_core.nLivingGroups - 1, 3) As Single
 
         ' JS 30Sep13: Use local properties
         Dim nModels As Integer = Me.NModels
         Dim eDistributionType As DistributionType
-        Dim SampledParameters(nModels - 1, mCore.nLivingGroups - 1) As Double
-        Dim GroupNames(mCore.nLivingGroups - 1) As String
+        Dim SampledParameters(nModels - 1, m_core.nLivingGroups - 1) As Double
+        Dim GroupNames(m_core.nLivingGroups - 1) As String
 
         reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv"))
         If (reader IsNot Nothing) Then
@@ -963,7 +973,7 @@ Public Class cMSE
         cMSEUtils.ReleaseReader(reader)
 
         'Generate an array of sample parameters
-        For iGroup = 1 To mCore.nLivingGroups
+        For iGroup = 1 To m_core.nLivingGroups
 
             If Not ParameterArray(iGroup - 1, 1) = cCore.NULL_VALUE Then
 
@@ -991,14 +1001,14 @@ Public Class cMSE
         Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, ParamName & "_out.csv"))
         If (writer IsNot Nothing) Then
             Try
-                For igrp As Integer = 1 To mCore.nLivingGroups
+                For igrp As Integer = 1 To m_core.nLivingGroups
                     If (igrp > 1) Then writer.Write(",")
                     writer.Write(cStringUtils.ToCSVField(GroupNames(igrp - 1)))
                 Next
                 writer.WriteLine()
 
                 For iIteration = 1 To nModels
-                    For iGroup = 1 To mCore.nLivingGroups
+                    For iGroup = 1 To m_core.nLivingGroups
                         If (iGroup > 1) Then writer.Write(",")
                         writer.Write(cStringUtils.ToCSVField(SampledParameters(iIteration - 1, iGroup - 1)))
                     Next
@@ -1030,14 +1040,14 @@ Public Class cMSE
             writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "VulnerabilityIteration" & iIteration & "_out.csv"), False)
             If (writer IsNot Nothing) Then
                 'Create random values for the vulnerabilities and store in a csv
-                For igrppredator As Integer = 1 To _ecopath.EcopathData().NumLiving
-                    If mCore.EcoPathGroupInputs(igrppredator).IsProducer Then
-                        For igrpprey As Integer = 1 To _ecopath.EcopathData().NumGroups
+                For igrppredator As Integer = 1 To m_ecopath.EcopathData().NumLiving
+                    If m_core.EcoPathGroupInputs(igrppredator).IsProducer Then
+                        For igrpprey As Integer = 1 To m_ecopath.EcopathData().NumGroups
                             If (igrpprey > 1) Then writer.Write(",")
                             writer.Write(Convert.ToSingle(cCore.NULL_VALUE))
                         Next igrpprey
                     Else
-                        For igrpprey As Integer = 1 To _ecopath.EcopathData().NumGroups
+                        For igrpprey As Integer = 1 To m_ecopath.EcopathData().NumGroups
                             If (igrpprey > 1) Then writer.Write(",")
                             writer.Write(Convert.ToSingle(1 + Math.Exp(9 * (CSng(Me.m_rand.NextDouble()) - 0.5))))
                         Next igrpprey
@@ -1110,16 +1120,16 @@ Public Class cMSE
     Private Sub SaveOriginalState()
         Try
             'Have the MonteCarloManager save the values it will alter
-            mCore.EcosimMonteCarlo.SaveOriginalValues()
+            m_core.EcosimMonteCarlo.SaveOriginalValues()
 
             'Now store the variables that this app will change so they can be restored in RestoreOriginalState()
 
             'The makes sure Ecopath does not make a fuss, popping up message boxes, when it fails to balance a model
-            Me._ecopath.suppressMessages = True
+            Me.m_ecopath.suppressMessages = True
 
             'Make sure nothing is listening to Ecosim when we run it
-            Me._EcosimTimeStepDelegate = Me._ecosim.TimeStepDelegate
-            Me._ecosim.TimeStepDelegate = Nothing
+            Me._EcosimTimeStepDelegate = Me.m_ecosim.TimeStepDelegate
+            Me.m_ecosim.TimeStepDelegate = Nothing
 
             'Save any parameters that we are going to change 
             'This has not been implemented here but...
@@ -1142,11 +1152,11 @@ Public Class cMSE
     Private Sub RestoreOriginalState()
         Try
 
-            Dim iscenario As Integer = Me.mCore.ActiveEcosimScenarioIndex
+            Dim iscenario As Integer = Me.m_core.ActiveEcosimScenarioIndex
 
             'Have the MonteCarloManager restore it's variables to the original state
             Me.RestoreParameters()
-            Me._ecosim.TimeStepDelegate = Me._EcosimTimeStepDelegate
+            Me.m_ecosim.TimeStepDelegate = Me._EcosimTimeStepDelegate
 
             ' No database changes left, yippee
             Me.Core.DiscardChanges()
@@ -1166,8 +1176,8 @@ Public Class cMSE
 
     Private Sub SaveOriginalParameters()
 
-        Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
-        Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
+        Dim ecopathData As cEcopathDataStructures = Me.m_ecopath.EcopathData
+        Dim ecosimData As cEcosimDatastructures = Me.m_ecosim.EcosimData
 
         ReDim BTemp(ecopathData.B.Length - 1)
         ReDim PBTemp(ecopathData.PB.Length - 1)
@@ -1183,7 +1193,7 @@ Public Class cMSE
         ReDim SwitchingPowerTemp(ecosimData.SwitchPower.Length - 1)
         ReDim VulnerabilitiesTemp(ecosimData.VulMult.GetLength(0) - 1, ecosimData.VulMult.GetLength(1) - 1)
         ReDim DietMatrixTemp(ecopathData.DC.GetLength(0) - 1, ecopathData.DC.GetLength(1) - 1)
-        ReDim DietImpTemp(mCore.nGroups - 1)
+        ReDim DietImpTemp(m_core.nGroups - 1)
 
         For x = 0 To ecopathData.B.Length - 1
             BTemp(x) = ecopathData.B(x)
@@ -1211,14 +1221,14 @@ Public Class cMSE
             Next
         Next
 
-        OriginalNTimesteps = _ecosim.EcosimData.NTimes
+        OriginalNTimesteps = m_ecosim.EcosimData.NTimes
 
     End Sub
 
     Private Sub RestoreParameters()
 
-        Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
-        Dim ecosimData As cEcosimDatastructures = Me._ecosim.EcosimData
+        Dim ecopathData As cEcopathDataStructures = Me.m_ecopath.EcopathData
+        Dim ecosimData As cEcosimDatastructures = Me.m_ecosim.EcosimData
 
         For x = 0 To ecopathData.B.Length - 1
             ecopathData.B(x) = CSng(BTemp(x))
@@ -1272,11 +1282,11 @@ Public Class cMSE
 
         Try
 
-            For iflt As Integer = 1 To _ecopath.EcopathData.NumFleet
+            For iflt As Integer = 1 To m_ecopath.EcopathData.NumFleet
                 'Only if this fleet is regulated
 
                 For it As Integer = StartT To EndT
-                    _ecosim.EcosimData.FishRateGear(iflt, it) = MSEMaxEffort
+                    m_ecosim.EcosimData.FishRateGear(iflt, it) = MSEMaxEffort
                 Next it
 
             Next iflt
@@ -1306,7 +1316,7 @@ Public Class cMSE
 
         Try
 
-            Dim BiomassProjected(Me.NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
+            Dim BiomassProjected(Me.NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
             Dim msgReport As New cFeedbackMessage("?", eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Information, eMessageReplyStyle.OK)
             msgReport.Hyperlink = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Results)
@@ -1330,13 +1340,13 @@ Public Class cMSE
             Trajectory2Csv = New List(Of StreamWriter)
             Me.initTrajectoryByGroupFiles(msgReport, Trajectory2Csv)
 
-            ReDim TargConsQuota(mCore.nGroups - 1, 1)
+            ReDim TargConsQuota(m_core.nGroups - 1, 1)
 
             'increase the number of years for the projection
-            mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject)
+            m_core.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / m_ecosim.EcosimData.NumStepsPerYear + NYearsProject)
 
             'Tell Ecopath not to send out messages
-            Me._ecopath.suppressMessages = True
+            Me.m_ecopath.suppressMessages = True
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Run The Trials 
@@ -1344,7 +1354,7 @@ Public Class cMSE
             nTrials = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
             For iTrial = 1 To nTrials
 
-                ResetEffortToMax(OriginalNTimesteps + 1, mCore.EcoSimModelParameters.NumberYears * _ecosim.EcosimData.NumStepsPerYear)
+                ResetEffortToMax(OriginalNTimesteps + 1, m_core.EcoSimModelParameters.NumberYears * m_ecosim.EcosimData.NumStepsPerYear)
 
                 cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iTrial), CSng(iTrial / nTrials))
 
@@ -1355,7 +1365,7 @@ Public Class cMSE
                     Try
                         'Run Ecopath with the parameters updated above
                         Dim bEcopathRan As Boolean
-                        bEcopathRan = Me._ecopath.Run()
+                        bEcopathRan = Me.m_ecopath.Run()
                         'this should not happen 
                         Debug.Assert(bEcopathRan, Me.ToString + ".Run() Ecopath failed to run from balanced parameter set.")
 
@@ -1367,7 +1377,7 @@ Public Class cMSE
                         For Each curStrategy As Strategy In Strategies
 
                             'Set the CurrentStrategy used by onEcosimTimeStep()
-                            CurrentStrategy = curStrategy
+                            m_currentStrategy = curStrategy
 
                             'Get a list of all fleets that fish the groups that have HCRs
                             'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
@@ -1401,7 +1411,7 @@ Public Class cMSE
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             'ecosimData.NTimes is the number of months so 17 years = 204 timesteps
-            mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear)
+            m_core.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / m_ecosim.EcosimData.NumStepsPerYear)
 
             'Provide user with a message stating how many of the Trials produced reasonable dynamics
             msgReport.Message = String.Format(My.Resources.PROMPT_TRIAL_REPORT, (nTrials - nFailedParameterisations), nTrials, CInt((nTrials - nFailedParameterisations) * 100 / nTrials))
@@ -1437,9 +1447,9 @@ Public Class cMSE
         FleetsThatFishHCRGrp.Clear()
 
         'Get a list of all fleets that fish the groups that have HCRs
-        For iFleet As Integer = 1 To mCore.nFleets
+        For iFleet As Integer = 1 To m_core.nFleets
             For Each HCRGroup In curStrategy
-                If mCore.FleetInputs(iFleet).Landings(HCRGroup.GroupF.Index) + mCore.FleetInputs(iFleet).Discards(HCRGroup.GroupF.Index) > 0 Then
+                If m_core.FleetInputs(iFleet).Landings(HCRGroup.GroupF.Index) + m_core.FleetInputs(iFleet).Discards(HCRGroup.GroupF.Index) > 0 Then
                     If Not FleetsThatFishHCRGrp.Contains(iFleet) Then
                         FleetsThatFishHCRGrp.Add(iFleet)
                     End If
@@ -1454,8 +1464,8 @@ Public Class cMSE
     Private Sub initTechnologyCreep()
 
         'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
-        TechnologyCreep = New Single(mCore.nFleets) {}
-        For iTechCreep As Integer = 1 To mCore.nFleets
+        TechnologyCreep = New Single(m_core.nFleets) {}
+        For iTechCreep As Integer = 1 To m_core.nFleets
             TechnologyCreep(iTechCreep) = 1
         Next
 
@@ -1476,8 +1486,8 @@ Public Class cMSE
         If (strmReader IsNot Nothing) Then
             csvDietMatrix = New CsvReader(strmReader, False)
             If csvDietMatrix.ReadNextRecord() Then
-                For iPred As Integer = 1 To mCore.nLivingGroups
-                    _ecopath.EcopathData.DC(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                For iPred As Integer = 1 To m_core.nLivingGroups
+                    m_ecopath.EcopathData.DC(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                 Next
             Else
                 ' Unable to read predator header line! We have a problem
@@ -1485,13 +1495,13 @@ Public Class cMSE
             End If
 
             'Me.dumpDietMatrix()
-            For iPrey As Integer = 1 To mCore.nGroups
+            For iPrey As Integer = 1 To m_core.nGroups
                 If (Not csvDietMatrix.EndOfStream) And (csvDietMatrix.ReadNextRecord()) Then
-                    For iPred As Integer = 1 To mCore.nLivingGroups
+                    For iPred As Integer = 1 To m_core.nLivingGroups
 
-                        If _ecopath.EcopathData.DC(iPred, iPrey) > 0 Then
+                        If m_ecopath.EcopathData.DC(iPred, iPrey) > 0 Then
                             'Debug.Assert(cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) > 0)
-                            _ecopath.EcopathData.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                            m_ecopath.EcopathData.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                         End If
 
                     Next
@@ -1529,8 +1539,8 @@ Public Class cMSE
         strm.WriteLine("iter")
 
         strm.WriteLine("-----------------Start Diet Matrix-----------------------")
-        For iprey As Integer = 1 To mCore.nGroups
-            For ipred As Integer = 1 To mCore.nLivingGroups
+        For iprey As Integer = 1 To m_core.nGroups
+            For ipred As Integer = 1 To m_core.nLivingGroups
                 strm.Write(Me._pathdata.DCInput(ipred, iprey).ToString() + ",")
             Next
             strm.WriteLine()
@@ -1545,7 +1555,7 @@ Public Class cMSE
 
         Dim GoodDynamics As Boolean = True
 
-        Dim BiomassProjected(NYearsProject * _ecosim.EcosimData.NumStepsPerYear - 1) As Double
+        Dim BiomassProjected(NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
         'Dim BadDynamics As StreamWriter = New StreamWriter(DataPath & "Results/diagnostics/BadDynamicsTrajectories.csv", True)
         'BadDynamics.WriteLine("iTrial, Group")
@@ -1566,7 +1576,7 @@ Public Class cMSE
 
 
         'Check whether the biomass for any species goes beneath or hits zero
-        For iGrp As Integer = 1 To mCore.nLivingGroups
+        For iGrp As Integer = 1 To m_core.nLivingGroups
             For iTimeStep As Integer = 1 To OriginalNTimesteps
                 'Console.Write(mCore.EcoSimGroupOutputs(iGrp).Biomass(iTimeStep).ToString & " ")
                 If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) <= 1 * 10 ^ -20 Then
@@ -1583,69 +1593,69 @@ Public Class cMSE
             Console.WriteLine("This set of parameters is no good")
             ' nFailedParameterisations += 1
         Else
-            For iFleet = 1 To mCore.nFleets
-                For iGrp = 1 To mCore.nLivingGroups
+            For iFleet = 1 To m_core.nFleets
+                For iGrp = 1 To m_core.nLivingGroups
                     swFleet.WriteLine("{0},{1},{2},{3},{4},{5},{6}", _
                                       cStringUtils.FormatNumber(iTrial + NumberIterationsAlreadyInFleets), _
-                                      cStringUtils.ToCSVField(CurrentStrategy.Name), _
-                                      cStringUtils.FormatNumber(iFleet), cStringUtils.ToCSVField(mCore.FleetInputs(iFleet).Name), _
-                                      cStringUtils.FormatNumber(iGrp), cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(iGrp).Name), _
-                                      cStringUtils.FormatNumber(Me._simdata.ResultsSumCatchByGroupGear(iGrp, iFleet, OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear)))
+                                      cStringUtils.ToCSVField(m_currentStrategy.Name), _
+                                      cStringUtils.FormatNumber(iFleet), cStringUtils.ToCSVField(m_core.FleetInputs(iFleet).Name), _
+                                      cStringUtils.FormatNumber(iGrp), cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name), _
+                                      cStringUtils.FormatNumber(Me._simdata.ResultsSumCatchByGroupGear(iGrp, iFleet, OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear)))
                 Next
             Next
 
-            For igrp = 1 To mCore.nLivingGroups
+            For igrp = 1 To m_core.nLivingGroups
                 'calculate what the minimum biomass was for each group
-                For iTime As Integer = 1 To NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                For iTime As Integer = 1 To NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                     BiomassProjected(iTime - 1) = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, OriginalNTimesteps + iTime)
                 Next
 
                 'Output to csv the biomass trajectories
                 TrajectoryCsv.Write("{0},{1},{2}", _
                                     cStringUtils.FormatNumber(igrp), _
-                                    cStringUtils.ToCSVField(mCore.EcoPathGroupInputs(igrp).Name), _
-                                    cStringUtils.ToCSVField(CurrentStrategy.Name))
+                                    cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(igrp).Name), _
+                                    cStringUtils.ToCSVField(m_currentStrategy.Name))
 
-                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                     TrajectoryCsv.Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime)))
                 Next
                 TrajectoryCsv.WriteLine()
 
                 'Trajectory2Csv(igrp - 1).Write(iTrial & "," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(CurrentStrategy))))
-                Trajectory2Csv(igrp - 1).Write(iTrial & "," & cStringUtils.ToCSVField(CurrentStrategy.Name))
-                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                Trajectory2Csv(igrp - 1).Write(iTrial & "," & cStringUtils.ToCSVField(m_currentStrategy.Name))
+                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                     Trajectory2Csv(igrp - 1).Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime)))
                 Next
                 Trajectory2Csv(igrp - 1).WriteLine()
 
                 swGroup.WriteLine("{0},{1},{2},{3},Biomass,{4}", _
                              cStringUtils.FormatNumber(NumberIterationsAlreadyInResults + iTrial), _
-                             cStringUtils.ToCSVField(CurrentStrategy.Name), _
+                             cStringUtils.ToCSVField(m_currentStrategy.Name), _
                              cStringUtils.FormatNumber(igrp), _
-                             cStringUtils.ToCSVField(mCore.EcoPathGroupOutputs(igrp).Name), _
+                             cStringUtils.ToCSVField(m_core.EcoPathGroupOutputs(igrp).Name), _
                              cStringUtils.FormatNumber(BiomassProjected.Min))
                 swGroup.WriteLine("{0},{1},{2},{3},BiomassEnd,{4}", _
                               cStringUtils.FormatNumber(NumberIterationsAlreadyInResults + iTrial), _
-                              cStringUtils.ToCSVField(CurrentStrategy.Name), _
+                              cStringUtils.ToCSVField(m_currentStrategy.Name), _
                               cStringUtils.FormatNumber(igrp), _
-                              cStringUtils.ToCSVField(mCore.EcoPathGroupOutputs(igrp).Name), _
+                              cStringUtils.ToCSVField(m_core.EcoPathGroupOutputs(igrp).Name), _
                               cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, Me._simdata.NTimes)))
                 'Results.Rows.Add(iIteration, HCRFiles(Strategies.IndexOf(CurrentStrategy)), mCore.EcoPathGroupOutputs(igrp).Name, "Catch", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, ecosimData.NTimes))
                 swGroup.WriteLine("{0},{1},{2},{3},Catch,{4}", _
                               (NumberIterationsAlreadyInResults + iTrial), _
-                              cStringUtils.ToCSVField(CurrentStrategy.Name), _
-                              cStringUtils.FormatNumber(igrp), cStringUtils.ToCSVField(mCore.EcoPathGroupOutputs(igrp).Name), _
+                              cStringUtils.ToCSVField(m_currentStrategy.Name), _
+                              cStringUtils.FormatNumber(igrp), cStringUtils.ToCSVField(m_core.EcoPathGroupOutputs(igrp).Name), _
                               cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, Me._simdata.NTimes)))
 
             Next
 
-            For iFleet As Integer = 1 To mCore.nFleets
+            For iFleet As Integer = 1 To m_core.nFleets
                 swGroup.WriteLine("{0},{1},{2},{3},TotalEndValue,{4}", _
                              cStringUtils.FormatNumber(NumberIterationsAlreadyInResults + iTrial), _
-                             cStringUtils.ToCSVField(CurrentStrategy.Name), _
+                             cStringUtils.ToCSVField(m_currentStrategy.Name), _
                              cStringUtils.FormatNumber(iFleet), _
-                             cStringUtils.ToCSVField(mCore.FleetInputs(iFleet).Name), _
-                             cStringUtils.FormatNumber(Me._simdata.ResultsSumValueByGear(iFleet, _ecosim.EcosimData.NTimes)))
+                             cStringUtils.ToCSVField(m_core.FleetInputs(iFleet).Name), _
+                             cStringUtils.FormatNumber(Me._simdata.ResultsSumValueByGear(iFleet, m_ecosim.EcosimData.NTimes)))
             Next
         End If
 
@@ -1677,7 +1687,7 @@ Public Class cMSE
     ''' <remarks></remarks>
     Private Sub updateParametersFromMemory(itrial As Integer)
 
-        For igrp = 1 To mCore.nLivingGroups
+        For igrp = 1 To m_core.nLivingGroups
             Debug.Assert(Not B(itrial - 1, igrp - 1) = cCore.NULL_VALUE, "Oppss something is very wrong with the parameters read from file.")
             If Not B(itrial - 1, igrp - 1) = cCore.NULL_VALUE Then
                 Me._pathdata.B(igrp) = CSng(B(itrial - 1, igrp - 1))
@@ -1685,7 +1695,7 @@ Public Class cMSE
                 Me._pathdata.QB(igrp) = CSng(QB(itrial - 1, igrp - 1))
                 Me._pathdata.EE(igrp) = CSng(EE(itrial - 1, igrp - 1))
                 Me._pathdata.BA(igrp) = CSng(BA(itrial - 1, igrp - 1))
-                If Not mCore.EcoPathGroupInputs(igrp).IsProducer Then
+                If Not m_core.EcoPathGroupInputs(igrp).IsProducer Then
                     Me._simdata.QmQo(igrp) = CSng(DenDepCatchability(itrial - 1, igrp - 1))
                     Me._simdata.FtimeAdjust(igrp) = CSng(FeedingTimeAdjustRate(itrial - 1, igrp - 1))
                     Me._simdata.FtimeMax(igrp) = CSng(MaxRelFeedingTime(itrial - 1, igrp - 1))
@@ -1693,16 +1703,16 @@ Public Class cMSE
                     Me._simdata.RiskTime(igrp) = CSng(PredEffectFeedingTime(itrial - 1, igrp - 1))
                     Me._simdata.CmCo(igrp) = CSng(QBMaxxQBio(itrial - 1, igrp - 1))
                     Me._simdata.SwitchPower(igrp) = CSng(SwitchingPower(itrial - 1, igrp - 1))
-                    If mCore.EcoPathGroupInputs(igrp).IsProducer Then Stop
+                    If m_core.EcoPathGroupInputs(igrp).IsProducer Then Stop
                 End If
             End If 'Not B(iTrial - 1, igrp - 1) = cCore.NULL_VALUE 
         Next igrp
 
 
         'Vulnerabilities
-        For iPrey As Integer = 1 To mCore.nGroups
+        For iPrey As Integer = 1 To m_core.nGroups
 
-            For iPred As Integer = 1 To mCore.nLivingGroups
+            For iPred As Integer = 1 To m_core.nLivingGroups
                 'For iPred As Integer = 1 To Vulnerabilities.GetLength(2)
                 If Not Vulnerabilities(itrial - 1, iPred - 1, iPrey - 1) = cCore.NULL_VALUE Then
                     Me._simdata.VulMult(iPrey, iPred) = CSng(Vulnerabilities(itrial - 1, iPred - 1, iPrey - 1))
@@ -1726,13 +1736,13 @@ Public Class cMSE
 
         'Output the final results
         strmGroup = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Results.csv"), False)
-        If Me.mCore.SaveWithFileHeader Then strmGroup.WriteLine(Me.mCore.DefaultFileHeader(eAutosaveTypes.Ecosim))
+        If Me.m_core.SaveWithFileHeader Then strmGroup.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
         strmGroup.WriteLine("Iteration,Strategy,GroupNumber,GroupName,ResultName,Value")
         msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Results.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
         'Create the csv writer for writing out individual fleets catches of each group
         strmFleet = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Fleet.csv"), False)
-        If Me.mCore.SaveWithFileHeader Then strmFleet.WriteLine(Me.mCore.DefaultFileHeader(eAutosaveTypes.Ecosim))
+        If Me.m_core.SaveWithFileHeader Then strmFleet.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
         strmFleet.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
         msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Fleet.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
@@ -1741,11 +1751,11 @@ Public Class cMSE
     Private Function initTrialTrajectoryFile(msgReport As cMessage, iTrial As Integer) As StreamWriter
         Dim strm As StreamWriter
         strm = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv"), False)
-        If Me.mCore.SaveWithFileHeader Then strm.WriteLine(Me.mCore.DefaultFileHeader(eAutosaveTypes.Ecosim))
+        If Me.m_core.SaveWithFileHeader Then strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
         strm.Write("GroupNumber,Group,Strategy")
         msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Trial" & iTrial & ".csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
-        For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+        For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
             strm.Write("," & cStringUtils.FormatNumber(iTime))
         Next
         strm.WriteLine()
@@ -1755,18 +1765,18 @@ Public Class cMSE
 
     Private Sub initTrajectoryByGroupFiles(ByVal msgReport As cMessage, ByVal TrajectoryList As List(Of StreamWriter))
 
-        For igrp = 1 To mCore.nLivingGroups
+        For igrp = 1 To m_core.nLivingGroups
 
-            Dim strFile As String = cFileUtils.ToValidFileName(mCore.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False)
+            Dim strFile As String = cFileUtils.ToValidFileName(m_core.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False)
             Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTraj2, strFile))
             msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
             Debug.Assert(writer IsNot Nothing)
 
             TrajectoryList.Add(writer)
-            If Me.mCore.SaveWithFileHeader Then TrajectoryList(igrp - 1).WriteLine(Me.mCore.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            If Me.m_core.SaveWithFileHeader Then TrajectoryList(igrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
             TrajectoryList(igrp - 1).Write("Trial,Strategy")
-            For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+            For iTime = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                 TrajectoryList(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
             Next
             TrajectoryList(igrp - 1).WriteLine()
@@ -1816,9 +1826,9 @@ Public Class cMSE
         ' JS 12Oct13: Used standard CSV field reading/writing
         ' JS 12Oct13: Used standard readers/writers, and made robust
 
-        Dim nLiving As Integer = mCore.nLivingGroups
-        Dim nGroups As Integer = mCore.nGroups
-        Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
+        Dim nLiving As Integer = m_core.nLivingGroups
+        Dim nGroups As Integer = m_core.nGroups
+        Dim MonteCarlo As cMonteCarloManager = m_core.EcosimMonteCarlo
         Dim nTrials As Integer = Me.NModels
         Dim b(nTrials, nGroups) As Single
         Dim ba(nTrials, nLiving) As Single
@@ -1827,9 +1837,9 @@ Public Class cMSE
         Dim ee(nTrials, nLiving) As Single
         Dim TimeFindingBalanced As New Stopwatch
         Dim csv As CsvReader
-        Dim MeanProportions(mCore.nLivingGroups - 1, mCore.nGroups) As Single
-        Dim DietPropMultipliers(mCore.nLivingGroups - 1) As Double
-        Dim Interacts(mCore.nLivingGroups - 1, mCore.nGroups) As Integer
+        Dim MeanProportions(m_core.nLivingGroups - 1, m_core.nGroups) As Single
+        Dim DietPropMultipliers(m_core.nLivingGroups - 1) As Double
+        Dim Interacts(m_core.nLivingGroups - 1, m_core.nGroups) As Integer
         'Dim nPPers As Integer 'number of primary producers
         'Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
         'Const PQThreshold As Double = 0.5
@@ -1968,9 +1978,9 @@ Public Class cMSE
                                 Dim csv_dietout As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"), False)
                                 Try
                                     For iPrey = 0 To nGroups
-                                        For iPred = 1 To mCore.nLivingGroups
+                                        For iPred = 1 To m_core.nLivingGroups
                                             If iPred > 1 Then csv_dietout.Write(",")
-                                            csv_dietout.Write(cStringUtils.FormatNumber(Me._ecopath.EcopathData.DC(iPred, iPrey)))
+                                            csv_dietout.Write(cStringUtils.FormatNumber(Me.m_ecopath.EcopathData.DC(iPred, iPrey)))
                                         Next
                                         csv_dietout.WriteLine()
                                     Next
@@ -1980,11 +1990,11 @@ Public Class cMSE
                                 cMSEUtils.ReleaseWriter(csv_dietout)
 
                                 ' JS 30Sep13: greatly simplified :)
-                                WriteEcopathParms("b_out.csv", Me._ecopath.EcopathData.B)
-                                WriteEcopathParms("ba_out.csv", Me._ecopath.EcopathData.BA)
-                                WriteEcopathParms("pb_out.csv", Me._ecopath.EcopathData.PB)
-                                WriteEcopathParms("qb_out.csv", Me._ecopath.EcopathData.QB)
-                                WriteEcopathParms("ee_out.csv", Me._ecopath.EcopathData.EE)
+                                WriteEcopathParms("b_out.csv", Me.m_ecopath.EcopathData.B)
+                                WriteEcopathParms("ba_out.csv", Me.m_ecopath.EcopathData.BA)
+                                WriteEcopathParms("pb_out.csv", Me.m_ecopath.EcopathData.PB)
+                                WriteEcopathParms("qb_out.csv", Me.m_ecopath.EcopathData.QB)
+                                WriteEcopathParms("ee_out.csv", Me.m_ecopath.EcopathData.EE)
                                 ''This runs Ecosim without core support
                                 'If Me.RunEcosim() Then
                                 '    'dumps out some Ecosim results
@@ -2045,15 +2055,15 @@ Public Class cMSE
             'the Core output objects cCore.EcoSimGroupOutputs() will not be populated
             'Instead get the Ecosim results directly from the underlying arrays
             Dim sumb() As Single
-            ReDim sumb(mCore.nLivingGroups)
-            For igrp As Integer = 1 To mCore.nLivingGroups
+            ReDim sumb(m_core.nLivingGroups)
+            For igrp As Integer = 1 To m_core.nLivingGroups
                 'sum biomass over all the Ecosim timesteps
-                For itime As Integer = 1 To mCore.nEcosimTimeSteps
+                For itime As Integer = 1 To m_core.nEcosimTimeSteps
                     'see cEcosimModel.PopulateResults() for how ResultsOverTime(var,group,time) are stored
                     sumb(igrp) += Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, itime)
                 Next itime
 
-                System.Console.WriteLine("Average Biomass for " & Me._ecopath.EcopathData.GroupName(igrp) & " = " & (sumb(igrp) / mCore.nEcosimTimeSteps).ToString)
+                System.Console.WriteLine("Average Biomass for " & Me.m_ecopath.EcopathData.GroupName(igrp) & " = " & (sumb(igrp) / m_core.nEcosimTimeSteps).ToString)
 
             Next igrp
 
@@ -2082,10 +2092,10 @@ Public Class cMSE
     Private Function DetermineZeroEffortFleets(ByRef FTargCons(,) As Double) As Integer()
         Dim ZeroEffortFleets As New List(Of Integer)
 
-        For iGrp = 1 To mCore.nGroups
+        For iGrp = 1 To m_core.nGroups
             If FTargCons(iGrp - 1, HCRType.Conservation) = 0 Then
-                For iFleet = 1 To mCore.nFleets
-                    If mCore.FleetInputs(iFleet).Landings(iGrp) + mCore.FleetInputs(iFleet).Discards(iGrp) > 0 And _
+                For iFleet = 1 To m_core.nFleets
+                    If m_core.FleetInputs(iFleet).Landings(iGrp) + m_core.FleetInputs(iFleet).Discards(iGrp) > 0 And _
                         Not ZeroEffortFleets.Contains(iFleet) Then
                         ZeroEffortFleets.Add(iFleet)
                     End If
@@ -2101,15 +2111,15 @@ Public Class cMSE
         '!!! This is to simply the problem - it would have been difficult to include the regulation choices with both targ and cons
         '!!! at a later date we might want to change this to include conservation fs
 
-        Dim TargConsQuota(mCore.nGroups - 1, 1) As Double
+        Dim TargConsQuota(m_core.nGroups - 1, 1) As Double
 
         'Initialise FTargetandConservation
-        For i = 1 To mCore.nGroups
+        For i = 1 To m_core.nGroups
             TargConsQuota(i - 1, 0) = cEffortLimits.NoHCR_F
             TargConsQuota(i - 1, 1) = cEffortLimits.NoHCR_F
         Next
 
-        For Each iHCRGroup In CurrentStrategy
+        For Each iHCRGroup In m_currentStrategy
             ' Determines the F for each group
             If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
                 TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), 0, CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
@@ -2126,8 +2136,8 @@ Public Class cMSE
 
     'This is just a diagnostics routine that outputs to console the Biomass for each living group at a particular iteration
     Private Sub dumpEcopathParameters(ByVal iteration As Integer)
-        Dim nliving As Integer = Me.mCore.nLivingGroups
-        Dim MonteCarlo As cMonteCarloManager = Me.mCore.EcosimMonteCarlo
+        Dim nliving As Integer = Me.m_core.nLivingGroups
+        Dim MonteCarlo As cMonteCarloManager = Me.m_core.EcosimMonteCarlo
 
         System.Console.WriteLine("Iteration = " & iteration.ToString)
         For igrp = 1 To nliving
@@ -2146,20 +2156,20 @@ Public Class cMSE
             ' mCore.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / _ecosim.EcosimData.NumStepsPerYear + NYearsProject)
 
             'make sure Ecosim computes the output data
-            Me._ecosim.EcosimData.bTimestepOutput = True
+            Me.m_ecosim.EcosimData.bTimestepOutput = True
 
             'No timestep call back
-            Me._ecosim.TimeStepDelegate = Nothing
+            Me.m_ecosim.TimeStepDelegate = Nothing
 
             'Run on the same thread 
             'this means Me._ecosim.Run() will block until Ecosim has finished running
-            Me._ecosim.EcosimData.bMultiThreaded = False
+            Me.m_ecosim.EcosimData.bMultiThreaded = False
 
             'Run Ecosim without Core support 
             'This means Core Input/ouput objects will not be populate 
             'So you can not use cCore.EcoSimGroupOutputs() to retrieve the results
-            Me._ecosim.Init(True)
-            Return Me._ecosim.Run()
+            Me.m_ecosim.Init(True)
+            Return Me.m_ecosim.Run()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RunEcosim() Exception: " & ex.Message)
@@ -2204,18 +2214,18 @@ Public Class cMSE
         Dim firstpreyfound As Boolean
         Dim tempname As String
 
-        For iPred = 1 To mCore.nLivingGroups
-            tempname = mCore.EcoPathGroupInputs(iPred).Name
+        For iPred = 1 To m_core.nLivingGroups
+            tempname = m_core.EcoPathGroupInputs(iPred).Name
             tempname = tempname.Replace(" ", "")
             writer.Write("dietmeans[[" & iPred & "]] = c(")
             firstpreyfound = False
-            For iPrey = 1 To mCore.nGroups
-                If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) <> 0 Then
+            For iPrey = 1 To m_core.nGroups
+                If m_core.EcoPathGroupInputs(iPred).DietComp(iPrey) <> 0 Then
                     If firstpreyfound = False Then
-                        writer.Write(mCore.EcoPathGroupInputs(iPred).DietComp(iPrey))
+                        writer.Write(m_core.EcoPathGroupInputs(iPred).DietComp(iPrey))
                         firstpreyfound = True
                     Else
-                        writer.Write(", " & mCore.EcoPathGroupInputs(iPred).DietComp(iPrey))
+                        writer.Write(", " & m_core.EcoPathGroupInputs(iPred).DietComp(iPrey))
                     End If
                 End If
             Next
@@ -2223,13 +2233,13 @@ Public Class cMSE
 
             writer.Write("preynames[[" & iPred & "]] = c(")
             firstpreyfound = False
-            For iPrey = 1 To mCore.nGroups
-                If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) <> 0 Then
+            For iPrey = 1 To m_core.nGroups
+                If m_core.EcoPathGroupInputs(iPred).DietComp(iPrey) <> 0 Then
                     If firstpreyfound = False Then
-                        writer.Write("""" & mCore.EcoPathGroupInputs(iPrey).Name & """")
+                        writer.Write("""" & m_core.EcoPathGroupInputs(iPrey).Name & """")
                         firstpreyfound = True
                     Else
-                        writer.Write(", """ & mCore.EcoPathGroupInputs(iPrey).Name & """")
+                        writer.Write(", """ & m_core.EcoPathGroupInputs(iPrey).Name & """")
                     End If
                 End If
             Next
@@ -2238,11 +2248,11 @@ Public Class cMSE
         Next
 
         writer.Write("prednames = c(")
-        For iPred = 1 To mCore.nLivingGroups
+        For iPred = 1 To m_core.nLivingGroups
             If iPred = 1 Then
-                writer.Write("""" & mCore.EcoPathGroupInputs(iPred).Name & """")
+                writer.Write("""" & m_core.EcoPathGroupInputs(iPred).Name & """")
             Else
-                writer.Write(", """ & mCore.EcoPathGroupInputs(iPred).Name & """")
+                writer.Write(", """ & m_core.EcoPathGroupInputs(iPred).Name & """")
             End If
         Next
         writer.WriteLine(")")
@@ -2347,14 +2357,14 @@ stepend:
     Private Sub SampleDietMatrix(ByRef Interacts(,) As Integer, ByRef MeanProportions(,) As Single, ByRef DietPropMultipliers() As Double)
 
         Dim MeanPropMod() As Single
-        Dim SumInteractions(mCore.nLivingGroups - 1) As Single
+        Dim SumInteractions(m_core.nLivingGroups - 1) As Single
         Dim TempDirichlet() As Single
         Dim PreyIndex As Integer
         Dim DirichStopWatch As New Stopwatch
         Dim NormaliseStopWatch As New Stopwatch
         Dim EcopathStopWatch As New Stopwatch
         Dim EcopathInternalStopWatch As New Stopwatch
-        Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
+        Dim ecopathData As cEcopathDataStructures = Me.m_ecopath.EcopathData
         Dim iPointer As Integer = 0
 
         'Dim DirichletArray(mCore.nLivingGroups - 1, mCore.nLivingGroups - 1) As Single
@@ -2362,17 +2372,17 @@ stepend:
         'Array.Clear(DirichletArray, 0, DirichletArray.GetLength(1))
 
         'Generate a vector 'SumInteractions' that counts how many prey each predator has
-        For iPred As Integer = 0 To mCore.nLivingGroups - 1
-            For iPrey As Integer = 0 To mCore.nGroups
+        For iPred As Integer = 0 To m_core.nLivingGroups - 1
+            For iPrey As Integer = 0 To m_core.nGroups
                 SumInteractions(iPred) += Interacts(iPred, iPrey)
             Next
         Next
 
-        For iPred As Integer = 0 To mCore.nLivingGroups - 1
+        For iPred As Integer = 0 To m_core.nLivingGroups - 1
             'mCore.EcoPathGroupInputs(iPred + 1).DietComp(0) = 0
             If (SumInteractions(iPred) = 0) Then    'No need to do any of this unless there is at least 1 prey for this parameter
                 'Set all values to zero - if running slow might want to consider how this could be skipped - possibly setting whole array to zero at start
-                For iPrey = 0 To mCore.nGroups
+                For iPrey = 0 To m_core.nGroups
                     ecopathData.DCInput(iPred + 1, iPrey) = 0
                 Next
             Else
@@ -2380,7 +2390,7 @@ stepend:
 
                 ReDim MeanPropMod(CInt(SumInteractions(iPred) - 1))
                 iPointer = 0
-                For iPrey = 0 To mCore.nGroups
+                For iPrey = 0 To m_core.nGroups
                     If Interacts(iPred, iPrey) = 1 Then
                         MeanPropMod(iPointer) = MeanProportions(iPred, iPrey)
                         iPointer += 1
@@ -2482,18 +2492,19 @@ stepend:
     Public Sub onEcosimInitialized(ByVal EcosimDatastructures As cEcosimDatastructures)
         _simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
-        Me.Regulations = New cRegulations(Me, mCore)
-        Me.mQuota = New cQuotaShares(mCore, Me)
-        Me.Survivability = New cSurvivability(mCore, Me, EcosimDatastructures)
+        Me.m_regulations = New cRegulations(Me, Me.m_core)
+        Me.m_quota = New cQuotaShares(Me, Me.m_core)
+        Me.m_survivability = New cSurvivability(Me, Me.m_core, EcosimDatastructures)
+        Me.m_strategies = New Strategies(Me, Me.m_core)
+        Me.m_effortlimits = New cEffortLimits(Me, Me.m_core)
 
-        Me.mQuota.onEcosimInitialized()
+        Me.InvalidateData()
 
     End Sub
 
     Public Sub onEcopathInitialized(ByVal EcopathData As cEcopathDataStructures)
         Me._pathdata = EcopathData
     End Sub
-
 
 
     Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
@@ -2504,14 +2515,14 @@ stepend:
 
         'Must have nfleets+1 elements so for 10 fleets needs elements 0-10
         'This is because of the way code works in EwE
-        Dim TargetF(mCore.nGroups) As Double
+        Dim TargetF(m_core.nGroups) As Double
         'Dim CostFunctionType(mCore.nGroups) As String
         'Dim mincost As Double = 1000000
 
-        Dim QMult(_ecosim.EcosimData.nGroups) As Double
+        Dim QMult(m_ecosim.EcosimData.nGroups) As Double
         'Dim tempFConservation As Double
         'used so that we don't repeat same groups when cycling through HCRs
-        Dim LastYearsEffort(_ecosim.EcopathData.NumFleet - 1) As Double
+        Dim LastYearsEffort(m_ecosim.EcopathData.NumFleet - 1) As Double
         'Dim variable_results() As Double
 
         'Dim TargConsQuota(mCore.nGroups - 1, 1) As Double 'Stores the target and conservation f's for each species
@@ -2529,12 +2540,12 @@ stepend:
             If FleetsThatFishHCRGrp.Count > 0 Then
 
                 'Not quite sure what QMult is but it is needed to calculate what F is in the optimised routine
-                For indexgrp As Integer = 1 To _ecosim.EcosimData.nGroups
-                    QMult(indexgrp - 1) = _ecosim.EcosimData.QmQo(indexgrp) / (1 + (_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / _ecosim.EcosimData.StartBiomass(indexgrp))
+                For indexgrp As Integer = 1 To m_ecosim.EcosimData.nGroups
+                    QMult(indexgrp - 1) = m_ecosim.EcosimData.QmQo(indexgrp) / (1 + (m_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / m_ecosim.EcosimData.StartBiomass(indexgrp))
                 Next
 
                 For Each iFleet In FleetsThatFishHCRGrp
-                    Select Case CurrentStrategy.Regulations.GetReg(iFleet)
+                    Select Case m_currentStrategy.Regulations.GetReg(iFleet)
                         Case cRegulations.eRegMethod.HighestValue, cRegulations.eRegMethod.SelectiveFishing
                             'Find out the highest value species
                             'Calculate the effort that would catch all quota of highest value species
@@ -2547,10 +2558,10 @@ stepend:
                             Dim vmax As Single = 0
                             Dim imax As Integer = 0
                             Dim v As Single
-                            For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
+                            For iGrp = 1 To m_ecopath.EcopathData.NumGroups
+                                If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
                                     'find the stock with the biggest economic value
-                                    v = CSng(mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * _ecopath.EcopathData.Market(iGrp, iFleet))
+                                    v = CSng(m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * m_ecopath.EcopathData.Market(iGrp, iFleet))
                                     If v > vmax Then
                                         vmax = v
                                         imax = iGrp
@@ -2559,34 +2570,34 @@ stepend:
                             Next iGrp
 
                             'get the effort limit for the stock with the biggest value
-                            Emax = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * _ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
+                            Emax = CSng((m_quota.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * m_ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
 
                             'Limit the effort if it is greater than the max allowable 
-                            If Emax < _ecosim.EcosimData.FishRateGear(iFleet, iTime) Then _ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
+                            If Emax < m_ecosim.EcosimData.FishRateGear(iFleet, iTime) Then m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
 
-                            For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                If (_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
+                            For iGrp = 1 To m_ecopath.EcopathData.NumGroups
+                                If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
                                     'get the total catch at this effort
-                                    iCatch = CSng(_ecosim.EcosimData.FishRateGear(iFleet, iTime) * QMult(iGrp) * _ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
+                                    iCatch = CSng(m_ecosim.EcosimData.FishRateGear(iFleet, iTime) * QMult(iGrp) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
 
                                     'if the total catch exceeds the quota figure out what do do with the discards
-                                    If iCatch > mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
+                                    If iCatch > m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
                                         'fishing mortality exceeds quota
-                                        _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
-                                        If Regulations.GetReg(iFleet) = cRegulations.eRegMethod.HighestValue Then
+                                        m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
+                                        If m_regulations.GetReg(iFleet) = cRegulations.eRegMethod.HighestValue Then
                                             'QuotaType = Strongest
                                             'excess catch discarded and included in the fishing mortailtiy
-                                            _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - _ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * _ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
+                                            m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
                                         Else
                                             'QuotaType = Selective 
                                             'excess catch is NOT included in fishing mortaility all discards survive
-                                            _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = 0
+                                            m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = 0
                                         End If
 
                                     Else
                                         'iCatch < Quota
-                                        _ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = _ecopath.EcopathData.PropLanded(iFleet, iGrp)
-                                        _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = _ecopath.EcopathData.PropDiscard(iFleet, iGrp)
+                                        m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = m_ecopath.EcopathData.PropLanded(iFleet, iGrp)
+                                        m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = m_ecopath.EcopathData.PropDiscard(iFleet, iGrp)
                                     End If
 
                                 End If
@@ -2595,11 +2606,11 @@ stepend:
                             'Find the weakest stock
                             'Calculate effort that would catch all weakest stock quota
                             'Set it for this fleet
-                            For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                If (_ecopath.EcopathData.Landing(iFleet, iGrp) + _ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> cEffortLimits.NoHCR_F Then
+                            For iGrp = 1 To m_ecopath.EcopathData.NumGroups
+                                If (m_ecopath.EcopathData.Landing(iFleet, iGrp) + m_ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> cEffortLimits.NoHCR_F Then
                                     'Calculate the effort limitation, has quota been exceeded?
                                     'QYear is omitted from following equation because it is assumed that technological creep is zero
-                                    Elim = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+                                    Elim = CSng((m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
                                     Debug.Assert(Elim >= 0)
                                     If _simdata.FishRateGear(iFleet, iTime) > Elim Then
                                         _simdata.FishRateGear(iFleet, iTime) = Elim
@@ -2613,14 +2624,14 @@ stepend:
             End If
 
             'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
-            For iFleet = 1 To mCore.nFleets
+            For iFleet = 1 To m_core.nFleets
                 If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
-                    _ecosim.EcosimData.FishRateGear(iFleet, iTime) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
+                    m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
                 End If
             Next
 
             'Calculates what the F's are for each species given the effort
-            _ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
+            m_ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
 
         End If
 

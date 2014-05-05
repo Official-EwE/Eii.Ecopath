@@ -34,11 +34,11 @@ Imports EwEUtils.Core
 ''' <summary>
 ''' Class to wrap a list of Strategies into an object
 ''' </summary>
-''' <remarks>Strategies "Is A" list of Strategy objects</remarks>
+''' <remarks>Strategies "Is A" list of <see cref="Strategy">Strategy objects</see></remarks>
 Public Class Strategies
     Inherits List(Of Strategy)
+    Implements IMSEData
 
-    Private mdataDir As String
     Private mName As String
     Private mMSE As cMSE
     Private mCore As cCore
@@ -47,15 +47,6 @@ Public Class Strategies
         mMSE = MSE
         mCore = Core
     End Sub
-
-    Public Property DataDirectory As String
-        Get
-            Return mdataDir
-        End Get
-        Set(value As String)
-            Me.mdataDir = value
-        End Set
-    End Property
 
     ''' <summary>
     ''' Overwrite default behaviour to delete the Strategy file when removing a Strategy from the list
@@ -94,45 +85,38 @@ Public Class Strategies
         Return grp
     End Function
 
-    Public Function SaveStrategiesToCSV() As Boolean
-        Dim csvStrategyFile As StreamWriter = Nothing
-        Dim strFile As String = ""
-        Dim strPath As String = ""
-        Dim msg As cMessage = Nothing
-        Dim breturn As Boolean = True
-        Try
+    Public Shadows Sub Add(StrategyToAdd As Strategy)
 
-            For Each Strategy In Me
-
-                If msg Is Nothing Then
-                    strPath = Path.GetDirectoryName(Strategy.FileName)
-                    msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_STRATEGIES, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                    msg.Hyperlink = strPath
-                End If
-                'Save the Strategy to file
-                'The filename was passed into the Strategy in its constructor
-                Strategy.Save()
-
-                'Save the Regulations that are part of the Strategy
-                'Done here instead of inside the Strategy.Save() for clarity 
-                Strategy.Regulations.Save(Strategy.FileName)
-
-            Next
-        Catch ex As Exception
-            breturn = False
-            'Both the Strategy.Save() and  Strategy.Regulations.Save() will throw exceptions out to here
-            Me.mCore.Messages.SendMessage(New cMessage("Exception saving Strategies to file.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
-        End Try
-
-        If msg IsNot Nothing Then
-            Me.mCore.Messages.SendMessage(msg)
+        If Not Me.Contains(StrategyToAdd) Then
+            MyBase.Add(StrategyToAdd)
         End If
 
-        Return breturn
+    End Sub
+
+    Public Shadows Function Contains(Item As Strategy) As Boolean
+
+        For Each Strategy As Strategy In Me
+            ' JS 30Sep13: made comparison case-insensitive
+            If (String.Compare(Item.Name, Strategy.Name, True) = 0) And (String.Compare(Item.FileName, Strategy.FileName, True) = 0) Then
+                Return True
+            End If
+        Next
+        Return False
+
     End Function
 
+    Public Sub Defaults() Implements IMSEData.Defaults
+        Me.Clear()
+    End Sub
 
-    Public Function LoadStrategiesFromCSV() As Boolean
+    Public Function IsChanged() As Boolean _
+        Implements IMSEData.IsChanged
+        ' ToDo: return something useful here
+        Return False
+    End Function
+
+    Public Function Load(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.Load
 
         Dim StrategiesFileNames As String()
         Dim Strategy As Strategy
@@ -146,6 +130,8 @@ Public Class Strategies
         'Get an array of strings giving the path to each HCR
         ' JS 30Sep13: Only read CSV files
         StrategiesFileNames = Directory.GetFiles(datadir, "*.csv")
+
+        Me.Defaults()
 
         For Each StrategyFile As String In StrategiesFileNames 'loop through reading each HCR file
 
@@ -185,27 +171,44 @@ Public Class Strategies
         Next
 
         Return True
-
-
     End Function
 
-    Public Shadows Sub Add(StrategyToAdd As Strategy)
+    Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
 
-        If Not Me.Contains(StrategyToAdd) Then
-            MyBase.Add(StrategyToAdd)
+        Dim csvStrategyFile As StreamWriter = Nothing
+        Dim strFile As String = ""
+        Dim strPath As String = ""
+        Dim msg As cMessage = Nothing
+        Dim breturn As Boolean = True
+        Try
+
+            For Each Strategy In Me
+
+                If msg Is Nothing Then
+                    strPath = Path.GetDirectoryName(Strategy.FileName)
+                    msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_STRATEGIES, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = strPath
+                End If
+                'Save the Strategy to file
+                'The filename was passed into the Strategy in its constructor
+                Strategy.Save()
+
+                'Save the Regulations that are part of the Strategy
+                'Done here instead of inside the Strategy.Save() for clarity 
+                Strategy.Regulations.Save(Strategy.FileName)
+
+            Next
+        Catch ex As Exception
+            breturn = False
+            'Both the Strategy.Save() and  Strategy.Regulations.Save() will throw exceptions out to here
+            Me.mCore.Messages.SendMessage(New cMessage("Exception saving Strategies to file.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
+        End Try
+
+        If msg IsNot Nothing Then
+            Me.mCore.Messages.SendMessage(msg)
         End If
 
-    End Sub
-
-    Public Shadows Function Contains(Item As Strategy) As Boolean
-
-        For Each Strategy As Strategy In Me
-            ' JS 30Sep13: made comparison case-insensitive
-            If (String.Compare(Item.Name, Strategy.Name, True) = 0) And (String.Compare(Item.FileName, Strategy.FileName, True) = 0) Then
-                Return True
-            End If
-        Next
-        Return False
+        Return breturn
 
     End Function
 

@@ -44,7 +44,7 @@ Public Class cEffortLimits
 
 #Region " Construction "
 
-    Public Sub New(core As cCore, mse As cMSE)
+    Public Sub New(mse As cMSE, core As cCore)
         Me.m_core = core
         Me.m_mse = mse
         ReDim Me.m_data(core.nFleets - 1)

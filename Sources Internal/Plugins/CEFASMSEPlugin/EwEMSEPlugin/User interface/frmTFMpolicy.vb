@@ -237,7 +237,7 @@ Public Class frmTFMpolicy
         Handles m_btnOK.Click
 
         Try
-            If Me.m_strategies.SaveStrategiesToCSV() Then
+            If Me.m_strategies.Save() Then
                 Me.m_plugin.Strategies.Clear()
                 Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
                 Me.m_plugin.InvalidateData()

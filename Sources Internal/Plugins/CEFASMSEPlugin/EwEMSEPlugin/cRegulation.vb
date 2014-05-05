@@ -144,7 +144,7 @@ Public Class cRegulations
 
     'End Function
 
-    Public Function Load(Filename As String) As Boolean _
+    Public Function Load(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
         Dim buff As String
@@ -153,7 +153,7 @@ Public Class cRegulations
 
         Try
 
-            Dim reader As StreamReader = cMSEUtils.GetReader(Filename)
+            Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
             If (reader IsNot Nothing) Then
 
                 'Find the tag in the file
@@ -197,12 +197,12 @@ Public Class cRegulations
 
     End Function
 
-    Public Function Save(filename As String) As Boolean _
+    Public Function Save(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Save
 
         Dim strm As StreamWriter
         'Append onto the end of an existing file
-        strm = cMSEUtils.GetWriter(filename, True)
+        strm = cMSEUtils.GetWriter(strFilename, True)
         If (strm IsNot Nothing) Then
 
             'msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _

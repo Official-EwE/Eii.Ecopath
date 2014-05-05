@@ -73,7 +73,7 @@ Public Class frmEditDecreaseEffort
 
         Try
             ' Save to default location
-            If Me.m_mse.ChangeInEffortLimits.Save("") Then
+            If Me.m_mse.EffortLimits.Save("") Then
                 Me.DialogResult = Windows.Forms.DialogResult.OK
                 Me.Close()
             End If

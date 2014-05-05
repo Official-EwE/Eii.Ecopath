@@ -99,7 +99,7 @@ Public Class gridMaxDecreaseEffort
 
         Dim iRow As Integer = -1
         Dim cell As EwECell = Nothing
-        Dim data As cEffortLimits = Me.m_mse.ChangeInEffortLimits
+        Dim data As cEffortLimits = Me.m_mse.EffortLimits
 
         Me.RowsCount = 1
 
@@ -153,7 +153,7 @@ Public Class gridMaxDecreaseEffort
         If (Me.m_mse Is Nothing) Then Return False
         If (Not MyBase.OnCellEdited(p, cell)) Then Return False
 
-        Dim data As cEffortLimits = Me.m_mse.ChangeInEffortLimits
+        Dim data As cEffortLimits = Me.m_mse.EffortLimits
 
         ' Check column
         If (p.Column = eColumnTypes.MaxChangeEffort) Then

@@ -81,16 +81,11 @@ Public Class cSurvivability
 
 #Region " Construction "
 
-    Public Sub New(core As EwECore.cCore, MSE As cMSE, EcosimDataStructures As cEcosimDatastructures)
-        Me.New()
-        mcore = core
-        mMSE = MSE
-        mSimData = EcosimDataStructures
-        mListofSuriveDistParams = New List(Of cSurvivabilityDistributonParam)
-    End Sub
-
-    Sub New()
-        ' TODO: Complete member initialization 
+    Public Sub New(MSE As cMSE, core As EwECore.cCore, EcosimDataStructures As cEcosimDatastructures)
+        Me.mcore = core
+        Me.mMSE = MSE
+        Me.mSimData = EcosimDataStructures
+        Me.mListofSuriveDistParams = New List(Of cSurvivabilityDistributonParam)
     End Sub
 
 #End Region
@@ -193,20 +188,6 @@ Public Class cSurvivability
 #End Region
 
 #Region " Functions "
-
-    ''' <summary>
-    ''' Checks whether the survivability distribution file is valid
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Function DistFileValid() As Boolean
-        'TODO MP add validation code to check whether distribution file is okay
-
-        'what checks need doing?
-        Throw New NotImplementedException("DistFileValid not implemented")
-        Return False
-
-    End Function
 
     ''' <summary>
     ''' Adds a distribution parameter to the list of survivability distribution parameters
@@ -621,47 +602,6 @@ Public Class cSurvivability
     End Sub
 
 #End Region
-
-#End Region
-
-#Region " General Elements "
-
-    ''' <summary>
-    ''' Runs when the MSE plugin has been loaded up
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub PluginLoaded()
-        Dim reader As StreamReader = Nothing
-
-        'Todo MP
-        ' check file exists for surivability distribution parameters
-        If Not File.Exists(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
-            SurvivabilityDistFileExists = False
-            mSurvDistFileValid = False
-        Else
-            ' check file is correct
-            If Not DistFileValid() Then
-                mSurvDistFileValid = False
-            Else
-                'If it is load the file into memory
-                mSurvDistFileValid = True
-                LoadDistFromCSV()
-            End If
-        End If
-
-        If Not File.Exists(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilites_out.csv")) Then
-            SurvivabilityParamFileExists = False
-            mSurvParamFileValid = False
-        Else
-            If Not ParamFileValid() Then
-                mSurvParamFileValid = False
-            Else
-                mSurvParamFileValid = True
-                LoadParamFromCSV()
-            End If
-        End If
-
-    End Sub
 
 #End Region
 

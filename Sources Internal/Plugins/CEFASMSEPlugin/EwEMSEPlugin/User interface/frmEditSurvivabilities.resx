@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -172,16 +172,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
+    <value>12, 37</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>534, 281</value>
+    <value>534, 256</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -196,6 +196,39 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="m_ts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_ts.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_ts.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 9</value>
+  </data>
+  <data name="m_ts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>534, 25</value>
+  </data>
+  <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
+    <value>m_ts</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

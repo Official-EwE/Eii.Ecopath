@@ -32,10 +32,11 @@ Imports LumenWorks.Framework.IO.Csv
 #End Region ' Imports
 
 Public Class cQuotaShares
+    Implements IMSEData
 
 #Region " Internal Structure "
 
-    Public Structure QuotaShare
+    Public Class QuotaShare
 
         Public mGroupNo As Integer
         Public mFleetNo As Integer
@@ -47,43 +48,26 @@ Public Class cQuotaShares
             mShare = Share
         End Sub
 
-        Public ReadOnly Property IsNull() As Boolean
-            Get
-                return (mGroupNo = 0) Or (mFleetNo = 0) Or (mShare = 0) 
-            End Get
-        End Property
-
-    End Structure
+    End Class
 
 #End Region
 
 #Region " Internal Variables "
-    Private mlstQuotaShares As New List(Of QuotaShare)
-    Private mcore As cCore
-    Private mMSE As cMSE
+    Private m_lstQuotaShares As New List(Of QuotaShare)
+    Private m_core As cCore
+    Private m_MSE As cMSE
     Private mQuotaShareFileExists As Boolean
-    Private mQuotaShareFileValid As Boolean
+    Private m_bQuotaShareFileValid As Boolean
 #End Region
 
 #Region " Construction initialiaztion"
 
-    Public Sub New(core As EwECore.cCore, MSE As cMSE)
-        mcore = core
-        mMSE = MSE
-        mlstQuotaShares = New List(Of QuotaShare)
+    Public Sub New(MSE As cMSE, core As EwECore.cCore)
+        Me.m_core = core
+        Me.m_MSE = MSE
+        Me.m_lstQuotaShares = New List(Of QuotaShare)
+        Me.Defaults()
     End Sub
-
-
-    Public Sub onEcosimInitialized()
-
-        'If File.Exists("C:\Users\Mark\Desktop\GAP\Data\Fleet\QuotaShares.csv") Then
-        '    LoadQuotaFromCSV()
-        'Else
-        SetDefault()
-        'End If
-
-    End Sub
-
 
 #End Region
 
@@ -99,7 +83,7 @@ Public Class cQuotaShares
 
     Public ReadOnly Property GetLstGrpShares As List(Of QuotaShare)
         Get
-            Return mlstQuotaShares
+            Return m_lstQuotaShares
         End Get
     End Property
 
@@ -120,7 +104,7 @@ Public Class cQuotaShares
     ''' </summary>
     Public ReadOnly Property CountDist() As Integer
         Get
-            Return mlstQuotaShares.Count
+            Return m_lstQuotaShares.Count
         End Get
     End Property
 
@@ -209,16 +193,16 @@ Public Class cQuotaShares
     Public Function AddQuotaShare(GroupNo As Integer, FleetNo As Integer, Share As Double) As Boolean
 
         'Check Fleet Number
-        If FleetNo < 0 Or FleetNo > mcore.nFleets Then Return False
+        If FleetNo < 0 Or FleetNo > m_core.nFleets Then Return False
 
         'Check GroupNo
-        If GroupNo < 0 Or GroupNo > mcore.nGroups Then Return False
+        If GroupNo < 0 Or GroupNo > m_core.nGroups Then Return False
 
         'Check Alpha and Beta
         If Share < 0 Or Share > 1 Then Return False
 
         'Add it to the list
-        mlstQuotaShares.Add(New QuotaShare(GroupNo, FleetNo, Share))
+        m_lstQuotaShares.Add(New QuotaShare(GroupNo, FleetNo, Share))
 
         Return True
 
@@ -232,8 +216,8 @@ Public Class cQuotaShares
     ''' <remarks>iRow is zero-based</remarks>
     Public Function ReadRowDist(iRow As Integer) As QuotaShare
         If iRow < 0 Then Return Nothing
-        If iRow > mlstQuotaShares.Count - 1 Then Return Nothing
-        Return mlstQuotaShares(iRow)
+        If iRow > m_lstQuotaShares.Count - 1 Then Return Nothing
+        Return m_lstQuotaShares(iRow)
     End Function
 
     ''' <summary>
@@ -245,41 +229,75 @@ Public Class cQuotaShares
     ''' <remarks>iFleet and iGroup are zero-based</remarks>
     Public Function ReadiFleetiGroupQuota(iFleet As Integer, iGroup As Integer) As QuotaShare
 
-        If iFleet < 1 Or iFleet > mcore.nFleets Then Return Nothing
-        If iGroup < 1 Or iGroup > mcore.nGroups Then Return Nothing
+        If iFleet < 1 Or iFleet > m_core.nFleets Then Return Nothing
+        If iGroup < 1 Or iGroup > m_core.nGroups Then Return Nothing
 
-        For iRow As Integer = 0 To mlstQuotaShares.Count - 1
-            If mlstQuotaShares(iRow).mFleetNo = iFleet And mlstQuotaShares(iRow).mGroupNo = iGroup Then Return mlstQuotaShares(iRow)
+        For iRow As Integer = 0 To m_lstQuotaShares.Count - 1
+            If m_lstQuotaShares(iRow).mFleetNo = iFleet And m_lstQuotaShares(iRow).mGroupNo = iGroup Then Return m_lstQuotaShares(iRow)
         Next
 
         Return Nothing
 
     End Function
 
-    ''' <summary>
-    ''' Loads the quota shares from CSV
-    ''' </summary>
-    ''' <returns>True if successful, false otherwise</returns>
-    ''' <remarks></remarks>
-    Public Function LoadQuotaFromCSV() As Boolean
+    Public Sub CreateDefaultCSV()
+        Me.Defaults()
+        Me.Save()
+    End Sub
+
+#End Region
+
+    Public Sub Defaults() _
+        Implements IMSEData.Defaults
+
+        Dim nFleetsCatch As Integer
+
+        If Not m_lstQuotaShares Is Nothing Then m_lstQuotaShares.Clear()
+
+        For iGroup = 1 To m_core.nLivingGroups
+
+            'Count how many fleets catch this group
+            nFleetsCatch = 0
+            For iFleet = 1 To m_core.nFleets
+                If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then nFleetsCatch += 1
+            Next
+
+            For iFleet = 1 To m_core.nFleets
+                If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then
+                    AddQuotaShare(iGroup, iFleet, 1 / nFleetsCatch)
+                End If
+            Next
+
+        Next
+    End Sub
+
+    Public Function IsChanged() As Boolean Implements IMSEData.IsChanged
+        Return True
+    End Function
+
+    Public Function Load(Optional strFilename As String = "") As Boolean Implements IMSEData.Load
+
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFileName
+        End If
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
         Dim iQuotaShare As QuotaShare
         Dim bSuccess As Boolean = True
-        Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")
+        Dim filePath As String = strFilename
 
         If File.Exists(filePath) Then
 
             reader = cMSEUtils.GetReader(filePath)
             If (reader IsNot Nothing) Then
                 Try
-                    mlstQuotaShares.Clear()
+                    m_lstQuotaShares.Clear()
                     csv = New CsvReader(reader, True)
                     mQuotaShareFileExists = True
                     While Not csv.EndOfStream
                         iQuotaShare = ExtractQuotaShare(csv)
-                        If Not iQuotaShare.IsNull Then
+                        If (iQuotaShare IsNot Nothing) Then
                             AddQuotaShare(iQuotaShare.mGroupNo, iQuotaShare.mFleetNo, iQuotaShare.mShare)
                         End If
                     End While
@@ -304,7 +322,6 @@ Public Class cQuotaShares
     ''' </summary>
     ''' <param name="csv">The CSV object linking to the quota share file</param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Private Function ExtractQuotaShare(ByVal csv As CsvReader) As QuotaShare
 
         ' Sanity checks
@@ -329,19 +346,13 @@ Public Class cQuotaShares
 
     End Function
 
-    Public Sub CreateDefaultCSV()
-        SetDefault()
-        SaveQuotaSharesToCSV()
-    End Sub
+    Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
 
-    ''' <summary>
-    ''' Saves quota shares to CSV
-    ''' </summary>
-    ''' <returns>False if there was an error</returns>
-    ''' <remarks></remarks>
-    Public Function SaveQuotaSharesToCSV() As Boolean
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFileName
+        End If
 
-        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv"), False)
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
         Dim bSuccess As Boolean = False
 
         If (writer Is Nothing) Then Return bSuccess
@@ -349,11 +360,11 @@ Public Class cQuotaShares
         Try
             writer.WriteLine("GroupNumber,GroupName,FleetNumber,FleetName,QuotaShare")
 
-            For Each entry As QuotaShare In mlstQuotaShares
+            For Each entry As QuotaShare In m_lstQuotaShares
                 writer.WriteLine(cStringUtils.ToCSVField(entry.mGroupNo) & "," & _
-                                 cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.mGroupNo).Name) & "," & _
+                                 cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(entry.mGroupNo).Name) & "," & _
                                  cStringUtils.ToCSVField(entry.mFleetNo) & "," & _
-                                 cStringUtils.ToCSVField(mcore.FleetInputs(entry.mFleetNo).Name) & "," & _
+                                 cStringUtils.ToCSVField(m_core.FleetInputs(entry.mFleetNo).Name) & "," & _
                                  cStringUtils.ToCSVField(entry.mShare))
             Next
 
@@ -365,72 +376,11 @@ Public Class cQuotaShares
         cMSEUtils.ReleaseWriter(writer)
         Return bSuccess
 
+
     End Function
 
-#End Region
-
-#Region " Subroutines "
-
-    ''' <summary>
-    ''' Runs when the MSE plugin has been loaded up
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub PluginLoaded()
-        Dim reader As StreamReader = Nothing
-
-        ' check file exists for surivability distribution parameters
-        If Not File.Exists(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Then
-            QuotaFileExists = False
-            mQuotaShareFileValid = False
-        Else
-            ' check file is correct
-            If Not Check_QuotaShares_File_Okay() Then
-                mQuotaShareFileValid = False
-            Else
-                'If it is load the file into memory
-                mQuotaShareFileValid = True
-                LoadQuotaFromCSV()
-            End If
-        End If
-
-        If Not File.Exists(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilites_out.csv")) Then
-            QuotaFileExists = False
-            mQuotaShareFileValid = False
-        Else
-            If Not QuotaFileValid() Then
-                mQuotaShareFileValid = False
-            Else
-                mQuotaShareFileValid = True
-                LoadQuotaFromCSV()
-            End If
-        End If
-
-    End Sub
-
-#End Region
-
-    'Something that might only be used for testing purposes
-    Public Sub SetDefault()
-        Dim nFleetsCatch As Integer
-
-        If Not mlstQuotaShares Is Nothing Then mlstQuotaShares.Clear()
-
-        For iGroup = 1 To mcore.nLivingGroups
-
-            'Count how many fleets catch this group
-            nFleetsCatch = 0
-            For iFleet = 1 To mcore.nFleets
-                If mcore.FleetInputs(iFleet).Landings(iGroup) > 0 Then nFleetsCatch += 1
-            Next
-
-            For iFleet = 1 To mcore.nFleets
-                If mcore.FleetInputs(iFleet).Landings(iGroup) > 0 Then
-                    AddQuotaShare(iGroup, iFleet, 1 / nFleetsCatch)
-                End If
-            Next
-
-        Next
-
-    End Sub
+    Private Function DefaultFileName() As String
+        Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")
+    End Function
 
 End Class

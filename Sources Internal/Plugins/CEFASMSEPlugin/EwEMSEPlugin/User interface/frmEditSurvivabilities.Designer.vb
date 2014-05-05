@@ -24,7 +24,7 @@ Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmEditSurvivabilities
-    Inherits frmEwE
+    Inherits frmEwEGrid
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -50,6 +50,7 @@ Partial Class frmEditSurvivabilities
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_grid = New EwEMSEPlugin.gridSurviveDistParameters()
+        Me.m_ts = New System.Windows.Forms.ToolStrip()
         Me.SuspendLayout()
         '
         'm_btnOK
@@ -97,12 +98,18 @@ Partial Class frmEditSurvivabilities
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
+        'm_ts
+        '
+        resources.ApplyResources(Me.m_ts, "m_ts")
+        Me.m_ts.Name = "m_ts"
+        '
         'frmEditSurvivabilities
         '
         Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
@@ -118,4 +125,5 @@ Partial Class frmEditSurvivabilities
     Friend WithEvents m_btnOK As System.Windows.Forms.Button
     Friend WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_grid As EwEMSEPlugin.gridSurviveDistParameters
+    Private WithEvents m_ts As System.Windows.Forms.ToolStrip
 End Class

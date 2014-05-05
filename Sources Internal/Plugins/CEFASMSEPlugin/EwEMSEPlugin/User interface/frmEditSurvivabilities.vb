@@ -30,49 +30,33 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class frmEditSurvivabilities
     Implements IDisposable
 
-    Private m_plugin As cMSEPluginPoint = Nothing
-    Public mSurvivability As cSurvivability
+    Private m_mse As cMSE = Nothing
+    Public m_survivability As cSurvivability
     Private m_bIsDirty As Boolean
 
     Public Sub New(MSE As cMSE)
-
+        Me.m_mse = MSE
         Me.InitializeComponent()
-
+        Me.Grid = Me.m_grid
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext, Plugin As cMSEPluginPoint)
+    Public Sub Init(ByVal uic As cUIContext)
         Me.UIContext = uic
-        Me.m_plugin = Plugin
         Me.m_grid.UIContext = uic
-        Me.m_grid.Init(Plugin.MSE, Plugin.MSE.Survivabilities)
-        Me.mSurvivability = Plugin.MSE.Survivability
-        UpdateGrid(mSurvivability.ListofSurvDistParams, My.Resources.HEADER_SURVIVABILITIES)
+        Me.m_grid.Init(Me.m_mse, Me.m_mse.Survivabilities)
+        Me.m_survivability = Me.m_mse.Survivabilities
+        Me.UpdateGrid(Me.m_survivability.ListofSurvDistParams, My.Resources.HEADER_SURVIVABILITIES)
     End Sub
-
-    Private ReadOnly Property MSE As cMSE
-        Get
-            Return Me.m_plugin.MSE
-        End Get
-    End Property
-
-    Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
-        Get
-            Return MyBase.UIContext
-        End Get
-        Set(value As ScientificInterfaceShared.Controls.cUIContext)
-            MyBase.UIContext = value
-        End Set
-    End Property
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
-        ' JS 30Sep13: globalized this method
         MyBase.OnLoad(e)
+
+        Me.QuickEditHandler.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
 
         AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
 
         Me.m_bIsDirty = False
-        Me.CenterToParent()
         Me.UpdateControls()
 
     End Sub
@@ -95,6 +79,7 @@ Public Class frmEditSurvivabilities
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
+        Me.QuickEditHandler.Detach()
         RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
         Me.m_grid.UIContext = Nothing
 
@@ -114,19 +99,19 @@ Public Class frmEditSurvivabilities
 
     Private Sub m_btnOK_Click(sender As System.Object, e As System.EventArgs) Handles m_btnOK.Click
         Dim lstrSubMessages As New List(Of String)
-        Dim strFolder As String = cMSEUtils.MSEFolder(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams)
+        Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_mse.DataPath, cMSEUtils.eMSEPaths.DistrParams)
 
-        If Not Me.MSE.IsInputStructureAvailable(True) Then
+        If Not Me.m_mse.IsInputStructureAvailable(True) Then
             ' ToDo: report error
             Return
         End If
 
         'Saves all the parameters to csv when user clicks to save
-        If mSurvivability.SaveDistributionParamsToCSV() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "Survivabilities_dist.csv"))
+        If m_survivability.SaveDistributionParamsToCSV() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "Survivabilities_dist.csv"))
 
         Me.m_bIsDirty = False
 
-        Me.m_plugin.InformUser(String.Format(My.Resources.STATUS_SAVED_DISTPARMS, My.Resources.CAPTION, strFolder), _
+        Me.m_mse.InformUser(String.Format(My.Resources.STATUS_SAVED_DISTPARMS, My.Resources.CAPTION, strFolder), _
                                  eMessageImportance.Information, strFolder, lstrSubMessages.ToArray())
 
         Me.DialogResult = Windows.Forms.DialogResult.OK
