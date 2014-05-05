@@ -383,4 +383,28 @@ Public Class cQuotaShares
         Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")
     End Function
 
+    'Something that might only be used for testing purposes
+    Public Sub SetDefault()
+        Dim nFleetsCatch As Integer
+
+        If Not mlstQuotaShares Is Nothing Then mlstQuotaShares.Clear()
+
+        For iGroup = 1 To mcore.nLivingGroups
+
+            'Count how many fleets catch this group
+            nFleetsCatch = 0
+            For iFleet = 1 To mcore.nFleets
+                If mcore.FleetInputs(iFleet).Landings(iGroup) > 0 Then nFleetsCatch += 1
+            Next
+
+            For iFleet = 1 To mcore.nFleets
+                If mcore.FleetInputs(iFleet).Landings(iGroup) > 0 Then
+                    AddQuotaShare(iGroup, iFleet, 1 / nFleetsCatch)
+                End If
+            Next
+
+        Next
+
+    End Sub
+
 End Class
