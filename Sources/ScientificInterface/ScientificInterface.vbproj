@@ -1908,6 +1908,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\CEFASMSEPlugin\EwEMSEPlugin\EwEMSEPlugin.vbproj">
+      <Project>{19B57860-D7C5-479A-8979-E4DFE9A46B50}</Project>
+      <Name>EwEMSEPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{C1081265-6A9D-4087-8BB5-E907D86FD719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\RobertsBank\DepthChangePlugin\DepthChangePlugin.vbproj">
+      <Project>{28C34EA4-882E-4838-907F-C154C3E67719}</Project>
+      <Name>DepthChangePlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
