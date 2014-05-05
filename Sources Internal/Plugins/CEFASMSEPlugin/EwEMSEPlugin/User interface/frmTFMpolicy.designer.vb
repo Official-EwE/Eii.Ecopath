@@ -116,7 +116,7 @@ Partial Class frmTFMpolicy
         Me.m_tsbnDeleteStrategy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_tsbnDeleteStrategy, "m_tsbnDeleteStrategy")
         Me.m_tsbnDeleteStrategy.Name = "m_tsbnDeleteStrategy"
-         '
+        '
         'm_graph
         '
         resources.ApplyResources(Me.m_graph, "m_graph")
@@ -137,7 +137,7 @@ Partial Class frmTFMpolicy
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
         resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
         Me.m_grid.AutoStretchRowsToFitHeight = False
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -149,6 +149,7 @@ Partial Class frmTFMpolicy
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
+        Me.m_grid.HarvestControlRule = Nothing
         Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SelectedStrategy = Nothing
@@ -205,6 +206,7 @@ Partial Class frmTFMpolicy
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_scMain)
+        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmTFMpolicy"
         Me.ShowIcon = False

@@ -80,7 +80,7 @@ Partial Class frmDistributionParameters
         resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
         Me.m_grid.AutoStretchRowsToFitHeight = False
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -153,6 +153,7 @@ Partial Class frmDistributionParameters
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmDistributionParameters"
+        Me.ShowInTaskbar = False
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)

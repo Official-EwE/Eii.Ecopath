@@ -1,9 +1,29 @@
-﻿Imports LumenWorks.Framework.IO.Csv
-Imports System.IO
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
+' Aquaculture Science (Cefas). 
+'
+' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+' ===============================================================================
+'
+
+Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
@@ -22,20 +42,11 @@ Public Class frmEditSurvivabilities
 
     Public Sub Init(ByVal uic As cUIContext, Plugin As cMSEPluginPoint)
         Me.UIContext = uic
+        Me.m_plugin = Plugin
         Me.m_grid.UIContext = uic
         Me.m_grid.Init(Plugin.MSE, Plugin.MSE.Survivabilities)
-        Me.m_plugin = Plugin
         Me.mSurvivability = Plugin.MSE.Survivability
-        Me.m_grid.Left = 10
-        Me.m_grid.Top = 10
-        Me.m_grid.Height = 500
-        'Me.m_grid.Width = 1000
-
-
-        Dim bSave As Boolean = Me.m_bIsDirty
-
         UpdateGrid(mSurvivability.ListofSurvDistParams, My.Resources.HEADER_SURVIVABILITIES)
-
     End Sub
 
     Private ReadOnly Property MSE As cMSE

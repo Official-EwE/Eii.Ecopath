@@ -86,7 +86,7 @@ Public Class frmEditDecreaseEffort
     End Sub
 
     Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
-        Handles btnCancel.Click
+        Handles m_btnCancel.Click
 
         Try
             Me.DialogResult = Windows.Forms.DialogResult.Cancel
@@ -98,7 +98,7 @@ Public Class frmEditDecreaseEffort
     End Sub
 
     Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
-        Handles btnOK.Click
+        Handles m_btnOK.Click
 
         Try
 

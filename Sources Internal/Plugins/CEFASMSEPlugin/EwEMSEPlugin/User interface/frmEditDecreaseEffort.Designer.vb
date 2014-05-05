@@ -50,8 +50,8 @@ Partial Class frmEditDecreaseEffort
         Me.FleetNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.FleetName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MaxDecrease = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnCancel = New System.Windows.Forms.Button()
-        Me.btnOK = New System.Windows.Forms.Button()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_btnOK = New System.Windows.Forms.Button()
         Me.GridMaxDecreaseEffort1 = New EwEMSEPlugin.gridMaxDecreaseEffort()
         CType(Me.dgvMaxDecreaseEffort, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -82,25 +82,25 @@ Partial Class frmEditDecreaseEffort
         resources.ApplyResources(Me.MaxDecrease, "MaxDecrease")
         Me.MaxDecrease.Name = "MaxDecrease"
         '
-        'btnCancel
+        'm_btnCancel
         '
-        resources.ApplyResources(Me.btnCancel, "btnCancel")
-        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
         '
-        'btnOK
+        'm_btnOK
         '
-        resources.ApplyResources(Me.btnOK, "btnOK")
-        Me.btnOK.Name = "btnOK"
-        Me.btnOK.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+        Me.m_btnOK.Name = "m_btnOK"
+        Me.m_btnOK.UseVisualStyleBackColor = True
         '
         'GridMaxDecreaseEffort1
         '
         Me.GridMaxDecreaseEffort1.AllowBlockSelect = False
         Me.GridMaxDecreaseEffort1.AutoSizeMinHeight = 10
         Me.GridMaxDecreaseEffort1.AutoSizeMinWidth = 10
-        Me.GridMaxDecreaseEffort1.AutoStretchColumnsToFitWidth = False
+        Me.GridMaxDecreaseEffort1.AutoStretchColumnsToFitWidth = True
         Me.GridMaxDecreaseEffort1.AutoStretchRowsToFitHeight = False
         Me.GridMaxDecreaseEffort1.BackColor = System.Drawing.Color.White
         Me.GridMaxDecreaseEffort1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -129,19 +129,20 @@ Partial Class frmEditDecreaseEffort
         '
         'frmEditDecreaseEffort
         '
-        Me.AcceptButton = Me.btnOK
+        Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.btnCancel
+        Me.CancelButton = Me.m_btnCancel
         Me.ControlBox = False
         Me.Controls.Add(Me.GridMaxDecreaseEffort1)
-        Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.dgvMaxDecreaseEffort)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmEditDecreaseEffort"
+        Me.ShowInTaskbar = False
         CType(Me.dgvMaxDecreaseEffort, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -149,9 +150,9 @@ Partial Class frmEditDecreaseEffort
     Friend WithEvents FleetNumber As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents FleetName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents MaxDecrease As System.Windows.Forms.DataGridViewTextBoxColumn
-    Private WithEvents btnCancel As System.Windows.Forms.Button
-    Private WithEvents btnOK As System.Windows.Forms.Button
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_btnOK As System.Windows.Forms.Button
     Private WithEvents dgvMaxDecreaseEffort As System.Windows.Forms.DataGridView
-    Friend WithEvents GridMaxDecreaseEffort1 As EwEMSEPlugin.gridMaxDecreaseEffort
     Private WithEvents m_grid As gridDistributionParameters
+    Private WithEvents GridMaxDecreaseEffort1 As EwEMSEPlugin.gridMaxDecreaseEffort
 End Class
