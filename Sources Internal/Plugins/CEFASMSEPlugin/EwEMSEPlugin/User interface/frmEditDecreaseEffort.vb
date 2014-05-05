@@ -31,58 +31,29 @@ Imports EwEUtils.Utilities
 
 Public Class frmEditDecreaseEffort
 
-    Private m_plugin As cMSE = Nothing
-
-    Public Class cDecreaseInEffort
-
-        Public Sub New(ByVal FleetIndex As Integer, ByVal FleetName As String, ByVal MaxDecreaseInEffort As Double)
-            Me.FleetIndex = FleetIndex
-            Me.FleetName = FleetName
-            Me.MaxDecreaseInEffort = MaxDecreaseInEffort
-        End Sub
-
-        Public Property FleetIndex() As Integer
-        Public Property FleetName() As String
-        Public Property MaxDecreaseInEffort() As Double
-
-    End Class
+    Private m_mse As cMSE = Nothing
 
     Public Sub New()
         MyBase.New()
         Me.InitializeComponent()
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext, ByVal Plugin As cMSE)
-        Me.m_plugin = Plugin
-        'Me.Grid = m_grid
+    Public Sub Init(ByVal uic As cUIContext, ByVal mse As cMSE)
+        Me.m_mse = mse
+        Me.Grid = m_grid
         Me.UIContext = uic
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Dim csv As CsvReader
-        Dim reader As StreamReader = Nothing
-        Dim irow As Integer
-        Dim strPath As String = cMSEUtils.MSEFile(m_plugin.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")
+        Me.QuickEditHandler.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
+        Me.m_grid.Init(Me.m_mse)
+    End Sub
 
-        If File.Exists(strPath) Then
-
-            reader = cMSEUtils.GetReader(strPath)
-            csv = New CsvReader(reader, True)
-            While Not csv.EndOfStream
-                If csv.ReadNextRecord() Then
-                    irow = dgvMaxDecreaseEffort.Rows.Add()
-                    dgvMaxDecreaseEffort.Rows.Item(irow).Cells(0).Value = cStringUtils.ConvertToInteger(csv(0))
-                    dgvMaxDecreaseEffort.Rows.Item(irow).Cells(1).Value = cMSEUtils.FromCSVField(csv(1))
-                    dgvMaxDecreaseEffort.Rows.Item(irow).Cells(2).Value = cStringUtils.ConvertToDouble(csv(2))
-                End If
-            End While
-
-            csv.Dispose()
-            cMSEUtils.ReleaseReader(reader)
-        End If
-
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+        Me.QuickEditHandler.Detach()
+        MyBase.OnFormClosed(e)
     End Sub
 
     Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
@@ -101,24 +72,11 @@ Public Class frmEditDecreaseEffort
         Handles m_btnOK.Click
 
         Try
-
-            Dim csv_out As New StreamWriter(cMSEUtils.MSEFile(m_plugin.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv"), False)
-
-            ' JS 19Oct13: Avoid spaces in CSV headers, this may confuse readers
-            csv_out.WriteLine("FleetNumber,FleetName,MaxChangeEffort")
-            For irow = 0 To dgvMaxDecreaseEffort.Rows.Count - 1
-                Dim row As DataGridViewRow = dgvMaxDecreaseEffort.Rows.Item(irow)
-                csv_out.WriteLine("{0},{1},{2}", _
-                                  cStringUtils.FormatNumber(row.Cells(0).Value), _
-                                  cStringUtils.ToCSVField(row.Cells(1).Value), _
-                                  cStringUtils.FormatNumber(row.Cells(2).Value))
-            Next
-
-            csv_out.Dispose()
-
-            Me.DialogResult = Windows.Forms.DialogResult.OK
-            Me.Close()
-
+            ' Save to default location
+            If Me.m_mse.ChangeInEffortLimits.Save("") Then
+                Me.DialogResult = Windows.Forms.DialogResult.OK
+                Me.Close()
+            End If
         Catch ex As Exception
 
         End Try

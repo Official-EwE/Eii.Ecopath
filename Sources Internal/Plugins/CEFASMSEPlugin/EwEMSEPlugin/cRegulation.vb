@@ -32,6 +32,7 @@ Imports LumenWorks.Framework.IO.Csv
 #End Region ' Imports
 
 Public Class cRegulations
+    Implements IMSEData
 
     Public Const START_TAG As String = "<REGULATIONS_START>"
     Public Const END_TAG As String = "<REGULATIONS_END>"
@@ -143,7 +144,9 @@ Public Class cRegulations
 
     'End Function
 
-    Public Function Read(Filename As String) As Boolean
+    Public Function Load(Filename As String) As Boolean _
+        Implements IMSEData.Load
+
         Dim buff As String
         Dim recs() As String
         Dim breturn As Boolean = False
@@ -194,7 +197,9 @@ Public Class cRegulations
 
     End Function
 
-    Public Function Save(filename As String) As Boolean
+    Public Function Save(filename As String) As Boolean _
+        Implements IMSEData.Save
+
         Dim strm As StreamWriter
         'Append onto the end of an existing file
         strm = cMSEUtils.GetWriter(filename, True)
@@ -218,4 +223,13 @@ Public Class cRegulations
 
     End Function
 
+    Public Function IsChanged() As Boolean _
+        Implements IMSEData.IsChanged
+        ' ToDo: return something useful here
+        Return False
+    End Function
+
+    Public Sub Defaults() Implements IMSEData.Defaults
+
+    End Sub
 End Class

@@ -45,29 +45,7 @@ Public Class gridMaxDecreaseEffort
 
 #Region " Internal defs "
 
-    'Private Class cDistributionTypeFormatter
-    '    Implements ITypeFormatter
-
-    '    Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
-    '        Return GetType(cMSE.DistributionType)
-    '    End Function
-
-    '    Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-    '        Implements ITypeFormatter.GetDescriptor
-    '        Select Case (DirectCast(value, cMSE.DistributionType))
-    '            Case cMSE.DistributionType.Triangular
-    '                Return My.Resources.DISTR_TYPE_TRIANGULAR
-    '            Case cMSE.DistributionType.Uniform
-    '                Return My.Resources.DISTR_TYPE_UNIFORM
-    '            Case Else
-    '                Debug.Assert(False)
-    '        End Select
-    '        Return "?"
-    '    End Function
-
-    'End Class
-
-    Private Enum eMaxDecreaseColumnTypes As Integer
+    Private Enum eColumnTypes As Integer
         FleetIndex = 0
         FleetName
         MaxChangeEffort
@@ -76,8 +54,7 @@ Public Class gridMaxDecreaseEffort
 #End Region ' Internal defs
 
     ''' <summary>The cMSE Plugin that contains the data.</summary>
-    Private MSEPlugin As cMSE
-    Private m_data As frmEditDecreaseEffort.cDecreaseInEffort() = Nothing
+    Private m_mse As cMSE
 
 #Region " Constructor "
 
@@ -89,32 +66,10 @@ Public Class gridMaxDecreaseEffort
 
 #Region " Public access "
 
-    Public Sub Init(Plugin As cMSE)
-        MSEPlugin = Plugin
+    Public Sub Init(mse As cMSE)
+        Me.m_mse = mse
+        Me.FillData()
     End Sub
-
-    'Public Property Mode As frmDistributionParameters.eParameterSet
-    '    Get
-    '        Return Me.m_mode
-    '    End Get
-    '    Set(value As frmDistributionParameters.eParameterSet)
-    '        If (Me.m_mode <> value) Then
-    '            Me.m_mode = value
-    '            Me.m_data = Nothing
-    '            Me.RefreshContent()
-    '        End If
-    '    End Set
-    'End Property
-
-    Public Property Data As frmEditDecreaseEffort.cDecreaseInEffort()
-        Get
-            Return Me.m_data
-        End Get
-        Set(value As frmEditDecreaseEffort.cDecreaseInEffort())
-            Me.m_data = value
-            Me.FillData()
-        End Set
-    End Property
 
     Public Event onEdited()
 
@@ -125,13 +80,12 @@ Public Class gridMaxDecreaseEffort
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        Dim iNumCols As Integer = [Enum].GetValues(GetType(eMaxDecreaseColumnTypes)).Length
+        Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
         Me.Redim(1, iNumCols)
 
-        Me(0, eMaxDecreaseColumnTypes.FleetIndex) = New EwEColumnHeaderCell("")
-        'TODO change the strings for these headers into shareresources
-        Me(0, eMaxDecreaseColumnTypes.FleetName) = New EwEColumnHeaderCell("Fleet Name")
-        Me(0, eMaxDecreaseColumnTypes.MaxChangeEffort) = New EwEColumnHeaderCell("Max Change in Effort")
+        Me(0, eColumnTypes.FleetIndex) = New EwEColumnHeaderCell("")
+        Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, eColumnTypes.MaxChangeEffort) = New EwEColumnHeaderCell("Max Change in Effort")
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -141,45 +95,31 @@ Public Class gridMaxDecreaseEffort
 
     Protected Overrides Sub FillData()
 
-        If (Me.m_data Is Nothing) Then Return
+        If (Me.m_mse Is Nothing) Then Return
 
         Dim iRow As Integer = -1
         Dim cell As EwECell = Nothing
-        'Dim lstOptions As New List(Of cMSE.DistributionType)
-        'lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(cMSE.DistributionType)), IEnumerable(Of cMSE.DistributionType)))
-        'Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cDistributionTypeFormatter(), lstOptions)
+        Dim data As cEffortLimits = Me.m_mse.ChangeInEffortLimits
 
         Me.RowsCount = 1
 
-        For i As Integer = 0 To Me.m_data.Length - 1
+        For i As Integer = 1 To data.nFleets
             iRow = Me.AddRow()
 
-            Dim data As frmEditDecreaseEffort.cDecreaseInEffort = DirectCast(Me.m_data(i), frmEditDecreaseEffort.cDecreaseInEffort)
-            Dim fleet As cFleetInput = Me.Core.FleetInputs(data.FleetIndex)
-            'Dim sg As cStanzaGroup = Nothing
-            'Dim bUse As Boolean = True
+            Dim fleet As cFleetInput = Me.Core.FleetInputs(i)
+            Me(iRow, eColumnTypes.FleetIndex) = New EwERowHeaderCell(CStr(fleet.Index))
+            Me(iRow, eColumnTypes.FleetName) = New EwERowHeaderCell(CStr(fleet.Name))
+            Me(iRow, eColumnTypes.MaxChangeEffort) = Me.DataCell(data.Value(i))
 
-            'If group.isMultiStanza Then
-            '    sg = Me.Core.StanzaGroups(group.iStanza)
-            '    bUse = (sg.iGroups(sg.LeadingB) = data.GroupNo)
-            'End If
-
-            Me(iRow, eMaxDecreaseColumnTypes.FleetIndex) = New EwERowHeaderCell(CStr(data.FleetIndex))
-            Me(iRow, eMaxDecreaseColumnTypes.FleetName) = New EwERowHeaderCell(CStr(data.FleetName))
-            Me(iRow, eMaxDecreaseColumnTypes.MaxChangeEffort) = New EwERowHeaderCell(CStr(data.MaxDecreaseInEffort))
-
-
-            Me.Rows(iRow).Tag = data
+            ' No need to use tags here: row number = fleet number
+            ' Me.Rows(iRow).Tag = i
 
         Next
 
-        Me.Columns(eMaxDecreaseColumnTypes.FleetIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.Columns(eMaxDecreaseColumnTypes.FleetName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.AutoSizeColumn(eMaxDecreaseColumnTypes.MaxChangeEffort, 150)
-
-        'Me.Columns(eMaxDecreaseColumnTypes.FleetIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-        'Me.Columns(eMaxDecreaseColumnTypes.FleetName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
-        'Me.AutoSizeColumn(eMaxDecreaseColumnTypes.MaxChangeEffort, 150)
+        Me.Columns(eColumnTypes.FleetIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eColumnTypes.FleetName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.MaxChangeEffort).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch Or SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.AutoSizeColumn(eColumnTypes.MaxChangeEffort, 150)
 
     End Sub
 
@@ -189,7 +129,7 @@ Public Class gridMaxDecreaseEffort
 
     Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
         Get
-            Return eCoreComponentType.EcoSim
+            Return eCoreComponentType.NotSet
         End Get
     End Property
 
@@ -210,17 +150,22 @@ Public Class gridMaxDecreaseEffort
 
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-                Dim tag As Object = Me.Rows(p.Row).Tag
-                If (tag Is Nothing) Then Return False
+        If (Me.m_mse Is Nothing) Then Return False
+        If (Not MyBase.OnCellEdited(p, cell)) Then Return False
 
-                Debug.Assert(TypeOf tag Is frmDistributionParameters.EcopathParam)
+        Dim data As cEffortLimits = Me.m_mse.ChangeInEffortLimits
 
-        Dim data As frmEditDecreaseEffort.cDecreaseInEffort = DirectCast(tag, frmEditDecreaseEffort.cDecreaseInEffort)
+        ' Check column
+        If (p.Column = eColumnTypes.MaxChangeEffort) Then
+            ' Store value
+            data.Value(p.Row) = CDbl(cell.GetValue(p))
+        End If
 
-        data.MaxDecreaseInEffort = CDbl(cell.GetValue(p))
-
+        ' Yippee
         Me.RaiseDataChangeEvent()
-        Return MyBase.OnCellEdited(p, cell)
+
+        ' Done
+        Return True
 
     End Function
 

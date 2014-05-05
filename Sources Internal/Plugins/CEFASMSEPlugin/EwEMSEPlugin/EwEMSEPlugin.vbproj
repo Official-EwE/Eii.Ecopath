@@ -98,6 +98,7 @@
     <Reference Include="alglibnet2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>Includes\alglibnet2.dll</HintPath>
     </Reference>
+    <Reference Include="EwEMSEPlugin, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="LumenWorks.Framework.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL" />
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -136,9 +137,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cBiomassLimits.vb" />
+    <Compile Include="cEffortLimits.vb" />
     <Compile Include="cMSEPluginPoint.vb" />
     <Compile Include="cQuotaShares.vb" />
     <Compile Include="cRegulation.vb" />
+    <Compile Include="IMSEData.vb" />
     <Compile Include="User interface\frmEditSurvivabilities.Designer.vb">
       <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
     </Compile>
@@ -219,6 +222,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmEditSurvivabilities.resx">
       <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmTFMpolicy.resx">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>

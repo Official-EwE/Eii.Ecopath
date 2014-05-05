@@ -20,10 +20,11 @@
 ' ===============================================================================
 '
 Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Controls
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmEditDecreaseEffort
-    Inherits frmEwE
+    Inherits frmEwEGrid
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -46,41 +47,11 @@ Partial Class frmEditDecreaseEffort
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEditDecreaseEffort))
-        Me.dgvMaxDecreaseEffort = New System.Windows.Forms.DataGridView()
-        Me.FleetNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.FleetName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.MaxDecrease = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnOK = New System.Windows.Forms.Button()
-        Me.GridMaxDecreaseEffort1 = New EwEMSEPlugin.gridMaxDecreaseEffort()
-        CType(Me.dgvMaxDecreaseEffort, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_grid = New EwEMSEPlugin.gridMaxDecreaseEffort()
+        Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.SuspendLayout()
-        '
-        'dgvMaxDecreaseEffort
-        '
-        Me.dgvMaxDecreaseEffort.AllowUserToAddRows = False
-        Me.dgvMaxDecreaseEffort.AllowUserToDeleteRows = False
-        Me.dgvMaxDecreaseEffort.AllowUserToResizeRows = False
-        resources.ApplyResources(Me.dgvMaxDecreaseEffort, "dgvMaxDecreaseEffort")
-        Me.dgvMaxDecreaseEffort.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMaxDecreaseEffort.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.FleetNumber, Me.FleetName, Me.MaxDecrease})
-        Me.dgvMaxDecreaseEffort.Name = "dgvMaxDecreaseEffort"
-        Me.dgvMaxDecreaseEffort.RowHeadersVisible = False
-        '
-        'FleetNumber
-        '
-        resources.ApplyResources(Me.FleetNumber, "FleetNumber")
-        Me.FleetNumber.Name = "FleetNumber"
-        '
-        'FleetName
-        '
-        resources.ApplyResources(Me.FleetName, "FleetName")
-        Me.FleetName.Name = "FleetName"
-        '
-        'MaxDecrease
-        '
-        resources.ApplyResources(Me.MaxDecrease, "MaxDecrease")
-        Me.MaxDecrease.Name = "MaxDecrease"
         '
         'm_btnCancel
         '
@@ -95,28 +66,27 @@ Partial Class frmEditDecreaseEffort
         Me.m_btnOK.Name = "m_btnOK"
         Me.m_btnOK.UseVisualStyleBackColor = True
         '
-        'GridMaxDecreaseEffort1
+        'm_grid
         '
-        Me.GridMaxDecreaseEffort1.AllowBlockSelect = False
-        Me.GridMaxDecreaseEffort1.AutoSizeMinHeight = 10
-        Me.GridMaxDecreaseEffort1.AutoSizeMinWidth = 10
-        Me.GridMaxDecreaseEffort1.AutoStretchColumnsToFitWidth = True
-        Me.GridMaxDecreaseEffort1.AutoStretchRowsToFitHeight = False
-        Me.GridMaxDecreaseEffort1.BackColor = System.Drawing.Color.White
-        Me.GridMaxDecreaseEffort1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.GridMaxDecreaseEffort1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+        Me.m_grid.AllowBlockSelect = False
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.GridMaxDecreaseEffort1.CustomSort = False
-        Me.GridMaxDecreaseEffort1.Data = Nothing
-        Me.GridMaxDecreaseEffort1.DataName = "grid content"
-        Me.GridMaxDecreaseEffort1.FixedColumnWidths = False
-        Me.GridMaxDecreaseEffort1.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.GridMaxDecreaseEffort1.GridToolTipActive = True
-        Me.GridMaxDecreaseEffort1.IsLayoutSuspended = False
-        resources.ApplyResources(Me.GridMaxDecreaseEffort1, "GridMaxDecreaseEffort1")
-        Me.GridMaxDecreaseEffort1.Name = "GridMaxDecreaseEffort1"
-        Me.GridMaxDecreaseEffort1.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+        Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
             Or SourceGrid2.GridSpecialKeys.Arrows) _
@@ -125,7 +95,14 @@ Partial Class frmEditDecreaseEffort
             Or SourceGrid2.GridSpecialKeys.Enter) _
             Or SourceGrid2.GridSpecialKeys.Escape) _
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.GridMaxDecreaseEffort1.UIContext = Nothing
+        Me.m_grid.UIContext = Nothing
+        '
+        'm_ts
+        '
+        resources.ApplyResources(Me.m_ts, "m_ts")
+        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_ts.Name = "m_ts"
+        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'frmEditDecreaseEffort
         '
@@ -134,25 +111,21 @@ Partial Class frmEditDecreaseEffort
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
         Me.ControlBox = False
-        Me.Controls.Add(Me.GridMaxDecreaseEffort1)
+        Me.Controls.Add(Me.m_ts)
+        Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_btnCancel)
-        Me.Controls.Add(Me.dgvMaxDecreaseEffort)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmEditDecreaseEffort"
         Me.ShowInTaskbar = False
-        CType(Me.dgvMaxDecreaseEffort, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents FleetNumber As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents FleetName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents MaxDecrease As System.Windows.Forms.DataGridViewTextBoxColumn
+
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_btnOK As System.Windows.Forms.Button
-    Private WithEvents dgvMaxDecreaseEffort As System.Windows.Forms.DataGridView
-    Private WithEvents m_grid As gridDistributionParameters
-    Private WithEvents GridMaxDecreaseEffort1 As EwEMSEPlugin.gridMaxDecreaseEffort
+    Private WithEvents m_grid As gridMaxDecreaseEffort
+    Private WithEvents m_ts As cEwEToolstrip
 End Class

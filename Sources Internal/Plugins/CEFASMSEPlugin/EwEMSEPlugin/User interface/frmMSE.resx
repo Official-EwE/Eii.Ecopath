@@ -999,9 +999,6 @@
   <data name="m_lblArea.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 109</value>
   </data>
-  <data name="m_lblArea.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>100, 0</value>
-  </data>
   <data name="m_lblArea.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 13</value>
   </data>
@@ -2047,17 +2044,14 @@
   <data name="m_lblInputParams.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 83</value>
   </data>
-  <data name="m_lblInputParams.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>100, 0</value>
-  </data>
   <data name="m_lblInputParams.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 13</value>
+    <value>117, 13</value>
   </data>
   <data name="m_lblInputParams.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="m_lblInputParams.Text" xml:space="preserve">
-    <value>&amp;Input parameters:</value>
+    <value>&amp;Distribution parameters:</value>
   </data>
   <data name="&gt;&gt;m_lblInputParams.Name" xml:space="preserve">
     <value>m_lblInputParams</value>

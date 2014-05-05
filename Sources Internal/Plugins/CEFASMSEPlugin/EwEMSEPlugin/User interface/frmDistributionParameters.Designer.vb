@@ -109,9 +109,9 @@ Partial Class frmDistributionParameters
         '
         'm_tsMain
         '
+        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslModel, Me.m_tscmPathOrSim, Me.m_tslVariable, Me.m_tscmParamName})
-        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
@@ -157,7 +157,6 @@ Partial Class frmDistributionParameters
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 

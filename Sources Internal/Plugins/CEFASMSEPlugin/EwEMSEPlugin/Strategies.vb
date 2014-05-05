@@ -153,7 +153,7 @@ Public Class Strategies
 
             'Save the Strategy to the file pass into its constructor
             bReadStrat = Strategy.Read()
-            bReadReg = Strategy.Regulations.Read(Strategy.FileName)
+            bReadReg = Strategy.Regulations.Load(Strategy.FileName)
 
             If bReadStrat And bReadReg Then
                 'Only add the Strategy if it read both strategy and regulations from file

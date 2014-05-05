@@ -57,12 +57,12 @@ Partial Class frmTFMpolicy
         Me.m_tsbnAddStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_graph = New ZedGraph.ZedGraphControl()
-        Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         Me.m_tsHCR = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnAddHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -131,39 +131,6 @@ Partial Class frmTFMpolicy
         Me.m_graph.ScrollMinY2 = 0.0R
         Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
         '
-        'm_grid
-        '
-        Me.m_grid.AllowBlockSelect = False
-        Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.AutoStretchColumnsToFitWidth = True
-        Me.m_grid.AutoStretchRowsToFitHeight = False
-        Me.m_grid.BackColor = System.Drawing.Color.White
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_grid.CustomSort = False
-        Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = False
-        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_grid.GridToolTipActive = True
-        Me.m_grid.HarvestControlRule = Nothing
-        Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.Name = "m_grid"
-        Me.m_grid.SelectedStrategy = Nothing
-        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.UIContext = Nothing
-        '
         'm_tsHCR
         '
         Me.m_tsHCR.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -196,6 +163,39 @@ Partial Class frmTFMpolicy
         Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
+        '
+        'm_grid
+        '
+        Me.m_grid.AllowBlockSelect = False
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.HarvestControlRule = Nothing
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SelectedStrategy = Nothing
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.UIContext = Nothing
         '
         'frmTFMpolicy
         '

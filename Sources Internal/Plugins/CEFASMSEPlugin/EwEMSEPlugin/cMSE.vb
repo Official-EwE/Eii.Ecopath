@@ -51,8 +51,9 @@ Public Class cMSE
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer
-    Private ChangeInEffortLimits() As Double
-    Public Const NoHCR_F As Integer = cCore.NULL_VALUE
+
+    Public Property ChangeInEffortLimits As cEffortLimits = Nothing
+
     Private TargConsQuota(,) As Double 'Stores the target and conservation f's for each species
 
     Private TechnologyCreep() As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
@@ -151,7 +152,6 @@ Public Class cMSE
 
     Public Sub New(ByVal Monitor As cMSEStateMonitor)
         Me.m_Monitor = Monitor
-        Me.InvalidateData()
     End Sub
 
     Public Sub onCoreInitialized(EwECore As cCore, Ecopath As Ecopath.cEcoPathModel, Ecosim As Ecosim.cEcoSimModel)
@@ -162,6 +162,8 @@ Public Class cMSE
 
         Strategies = New Strategies(Me, mCore)
         Survivability = New cSurvivability(EwECore, Me, _simdata)
+        Me.ChangeInEffortLimits = New cEffortLimits(Me.mCore, Me)
+        Me.InvalidateData()
 
     End Sub
 
@@ -276,8 +278,12 @@ Public Class cMSE
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
         Me.m_tsRunDataCompatibility = TriState.UseDefault
-
         Me.m_Monitor.Invalidate()
+
+        If (Me.mCore Is Nothing) Then Return
+
+        Me.ChangeInEffortLimits.Load("")
+
 
     End Sub
 
@@ -306,24 +312,11 @@ Public Class cMSE
 
     Public Function IsRunDataCompatible() As Boolean
 
-        ' Would it not be nice if these file names were represented by enums as well?
-
-        Dim aFilesFleet As String() = New String() {"ChangesInEffortLimits", "QuotaShares"}
-        Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Fleet)
-
         If (Me.m_tsRunDataCompatibility = TriState.UseDefault) Then
 
             ' Hope for the best
             Me.m_tsRunDataCompatibility = TriState.True
 
-            ' JS 04May14: I would not test this; the data classes can work this out upon reload
-            '' Make sure plug-in has empty CSV
-            'If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")) Or _
-            '    Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Then
-            '    Me.m_tsRunDataCompatibility = TriState.False
-            'End If
-
-            ' Instead, test whether the data classes are populated with data:
             ' - Has fishing strategies?
             If (Me.NumStrategiesAvailable = 0) Then Me.m_tsRunDataCompatibility = TriState.False
             ' - Has quota shares? etc
@@ -646,40 +639,6 @@ Public Class cMSE
             Return Me.CustomPath
         End Get
     End Property
-
-    Private Sub ExtractChangeInEffortLimits()
-
-        ' JS 30Sep13: Standardized path access
-        ' JS 02Oct13: Used standard CSV field reading/writing
-
-        Dim strPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")
-        Dim reader As StreamReader = cMSEUtils.GetReader(strPath)
-
-        ReDim ChangeInEffortLimits(mCore.nFleets - 1)
-
-        If (reader IsNot Nothing) Then
-
-            Try
-                Dim EffortLimitsCSV As New CsvReader(reader, True)
-                For i = 1 To mCore.nFleets
-                    ChangeInEffortLimits(i - 1) = NoHCR_F
-                Next
-                While Not EffortLimitsCSV.EndOfStream
-                    If EffortLimitsCSV.ReadNextRecord() Then
-                        ChangeInEffortLimits(cStringUtils.ConvertToInteger(EffortLimitsCSV(0)) - 1) = cStringUtils.ConvertToDouble(EffortLimitsCSV(2))
-                    End If
-                End While
-                EffortLimitsCSV.Dispose()
-
-            Catch ex As Exception
-                ' CSV malformed, handle error?
-            End Try
-
-        End If
-
-        cMSEUtils.ReleaseReader(reader)
-
-    End Sub
 
     Private Function ExtractParamsCSV(ByRef param_name As String) As Double(,)
 
@@ -1363,10 +1322,6 @@ Public Class cMSE
 
             'Open the "Results.csv" and "Fleet.cvs" file and write the header info
             Me.initResultFiles(msgReport, swGroup, swFleet)
-
-            'Extract the maximum percentage change in effort for each fleet from csv and put into array ChangeInEffortLimits
-            'to be used by the optim to determine effort is beyond maximum change in effort
-            Me.ExtractChangeInEffortLimits()
 
             'Read all the parameters from the <parameter name>_out.csv files into memory
             Me.readEcopathEcosimParameters()
@@ -2150,13 +2105,13 @@ Public Class cMSE
 
         'Initialise FTargetandConservation
         For i = 1 To mCore.nGroups
-            TargConsQuota(i - 1, 0) = NoHCR_F
-            TargConsQuota(i - 1, 1) = NoHCR_F
+            TargConsQuota(i - 1, 0) = cEffortLimits.NoHCR_F
+            TargConsQuota(i - 1, 1) = cEffortLimits.NoHCR_F
         Next
 
         For Each iHCRGroup In CurrentStrategy
             ' Determines the F for each group
-            If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = NoHCR_F Then
+            If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
                 TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), 0, CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
             Else
                 Me.InformUser(String.Format(My.Resources.ERROR_HARVESTRUILE_DUPLICATE_F, iHCRGroup.GroupF.Name), eMessageImportance.Warning)
@@ -2641,7 +2596,7 @@ stepend:
                             'Calculate effort that would catch all weakest stock quota
                             'Set it for this fleet
                             For iGrp = 1 To _ecopath.EcopathData.NumGroups
-                                If (_ecopath.EcopathData.Landing(iFleet, iGrp) + _ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> NoHCR_F Then
+                                If (_ecopath.EcopathData.Landing(iFleet, iGrp) + _ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> cEffortLimits.NoHCR_F Then
                                     'Calculate the effort limitation, has quota been exceeded?
                                     'QYear is omitted from following equation because it is assumed that technological creep is zero
                                     Elim = CSng((mQuota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))

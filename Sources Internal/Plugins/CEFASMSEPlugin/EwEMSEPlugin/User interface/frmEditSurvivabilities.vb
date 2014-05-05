@@ -139,7 +139,7 @@ Public Class frmEditSurvivabilities
     End Sub
 
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-    Handles m_btnCancel.Click
+        Handles m_btnCancel.Click
 
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
         Me.Close()
