@@ -230,12 +230,18 @@ Public Class frmTFMpolicy
 
     End Sub
 
+    Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+
+
+
+    End Sub
+
     ' -----------------------------
     ' Controls
     ' -----------------------------
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnOK.Click
+    Private Sub OnSave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSave.Click
 
         Try
             If Me.m_strategies.Save() Then
@@ -243,12 +249,16 @@ Public Class frmTFMpolicy
                 Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
                 Me.m_plugin.InvalidateData()
 
-                Me.m_bStrategiesSaved = True
-                Me.DialogResult = Windows.Forms.DialogResult.OK
-                Me.Close()
-            Else
-                ' ToDo: Failed to save?! Show some kind of error here
-            End If
+            Me.m_bStrategiesSaved = Me.m_strategies.SaveStrategiesToCSV()
+            Me.UpdateControls()
+
+            Me.m_plugin.Strategies.Clear()
+            Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
+            Me.m_plugin.InvalidateData()
+
+            Me.m_bStrategiesSaved = True
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
 
         Catch ex As Exception
 
@@ -430,7 +440,7 @@ Public Class frmTFMpolicy
         Me.m_tsbnAddHCR.Enabled = bHasStrategy
         Me.m_tsbnDeleteHCR.Enabled = bHasHCR
 
-        'Me.m_btnOK.Enabled = Me.m_bStrategiesSaved
+        Me.m_btnSave.Enabled = Me.m_bStrategiesSaved
 
     End Sub
 
