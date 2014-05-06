@@ -67,7 +67,7 @@ Partial Class frmTFMpolicy
         Me.m_hdrHCR = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
-        Me.m_scBigOne = New System.Windows.Forms.SplitContainer()
+        Me.m_scDetails = New System.Windows.Forms.SplitContainer()
         Me.m_tlpRegulations = New System.Windows.Forms.TableLayoutPanel()
         Me.m_hdrRegulations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_gridRegulations = New EwEMSEPlugin.gridRegulations()
@@ -79,10 +79,10 @@ Partial Class frmTFMpolicy
         Me.m_tsStrategy.SuspendLayout()
         Me.m_tlpHCR.SuspendLayout()
         Me.m_tsHCR.SuspendLayout()
-        CType(Me.m_scBigOne, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_scBigOne.Panel1.SuspendLayout()
-        Me.m_scBigOne.Panel2.SuspendLayout()
-        Me.m_scBigOne.SuspendLayout()
+        CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_scDetails.Panel1.SuspendLayout()
+        Me.m_scDetails.Panel2.SuspendLayout()
+        Me.m_scDetails.SuspendLayout()
         Me.m_tlpRegulations.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -97,7 +97,7 @@ Partial Class frmTFMpolicy
         '
         'm_scMain.Panel2
         '
-        Me.m_scMain.Panel2.Controls.Add(Me.m_tlpHCR)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_scDetails)
         '
         'm_tlpStrategies
         '
@@ -242,18 +242,18 @@ Partial Class frmTFMpolicy
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
-        'm_scBigOne
+        'm_scDetails
         '
-        resources.ApplyResources(Me.m_scBigOne, "m_scBigOne")
-        Me.m_scBigOne.Name = "m_scBigOne"
+        resources.ApplyResources(Me.m_scDetails, "m_scDetails")
+        Me.m_scDetails.Name = "m_scDetails"
         '
-        'm_scBigOne.Panel1
+        'm_scDetails.Panel1
         '
-        Me.m_scBigOne.Panel1.Controls.Add(Me.m_scMain)
+        Me.m_scDetails.Panel1.Controls.Add(Me.m_tlpHCR)
         '
-        'm_scBigOne.Panel2
+        'm_scDetails.Panel2
         '
-        Me.m_scBigOne.Panel2.Controls.Add(Me.m_tlpRegulations)
+        Me.m_scDetails.Panel2.Controls.Add(Me.m_tlpRegulations)
         '
         'm_tlpRegulations
         '
@@ -308,7 +308,7 @@ Partial Class frmTFMpolicy
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
-        Me.Controls.Add(Me.m_scBigOne)
+        Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnSave)
         Me.MaximizeBox = False
@@ -327,10 +327,10 @@ Partial Class frmTFMpolicy
         Me.m_tlpHCR.PerformLayout()
         Me.m_tsHCR.ResumeLayout(False)
         Me.m_tsHCR.PerformLayout()
-        Me.m_scBigOne.Panel1.ResumeLayout(False)
-        Me.m_scBigOne.Panel2.ResumeLayout(False)
-        CType(Me.m_scBigOne, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_scBigOne.ResumeLayout(False)
+        Me.m_scDetails.Panel1.ResumeLayout(False)
+        Me.m_scDetails.Panel2.ResumeLayout(False)
+        CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_scDetails.ResumeLayout(False)
         Me.m_tlpRegulations.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -349,7 +349,7 @@ Partial Class frmTFMpolicy
     Private WithEvents m_tsbnDeleteHCR As System.Windows.Forms.ToolStripButton
     Private WithEvents m_btnSave As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
-    Private WithEvents m_scBigOne As System.Windows.Forms.SplitContainer
+    Private WithEvents m_scDetails As System.Windows.Forms.SplitContainer
     Private WithEvents m_tlpStrategies As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_hdrStrategies As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tlpHCR As System.Windows.Forms.TableLayoutPanel
