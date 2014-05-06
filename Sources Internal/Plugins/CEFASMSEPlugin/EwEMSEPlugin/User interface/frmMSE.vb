@@ -229,11 +229,15 @@ Public Class frmMSE
 
         If (Me.m_plugin Is Nothing) Then Return
 
-        If Not Me.MSE.CreateModels() Then
-            'Failed to create the new models
-            'better tell the user 
+        Try
+            If Not Me.MSE.CreateModels() Then
+                'Failed to create the new models
+                'better tell the user 
 
-        End If
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE.frmMSE::OnCreateModels")
+        End Try
 
     End Sub
 
@@ -255,13 +259,15 @@ Public Class frmMSE
     Private Sub OnPathPrefChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbEwEDefault.CheckedChanged, m_rbCustomPath.CheckedChanged
 
-        If Me.m_bInUpdate Then Return
+        If (Me.m_plugin Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
         Try
             Me.MSE.UseEwEPath = Me.m_rbEwEDefault.Checked
         Catch ex As Exception
-
+            cLog.Write(ex, "CEFASMSE:OnPathPrefChanged")
         End Try
+
     End Sub
 
     Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -269,7 +275,7 @@ Public Class frmMSE
         Try
             Me.MSE.LoadSampledParams()
         Catch ex As Exception
-
+            cLog.Write(ex, "CEFASMSE:OnRun")
         End Try
     End Sub
 
@@ -297,25 +303,29 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub btnEditSurvivabilities_Click(sender As System.Object, e As System.EventArgs) Handles btnEditSurvivabilities.Click
+    Private Sub OnEditSurvivabilities(sender As System.Object, e As System.EventArgs) _
+        Handles btnEditSurvivabilities.Click
 
-        ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
-        '             From the UI point of view, we just want strategies. The plug-in does the optimizating
         Try
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
             frmSurvivabilities.Init(Me.UIContext)
             frmSurvivabilities.ShowDialog(Me)
         Catch ex As Exception
-
+            cLog.Write(ex, "CefasMSE:OnShowTFM")
         End Try
+
     End Sub
 
     Private Sub OnShowTFM(sender As System.Object, e As System.EventArgs) _
         Handles m_btnReviewTFM.Click
 
-        Dim frm As New frmTFMpolicy()
-        frm.Init(Me.UIContext, Me.MSE)
-        frm.ShowDialog(Me)
+        Try
+            Dim frm As New frmTFMpolicy()
+            frm.Init(Me.UIContext, Me.MSE)
+            frm.ShowDialog(Me)
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE:OnShowTFM")
+        End Try
 
     End Sub
 
@@ -330,7 +340,7 @@ Public Class frmMSE
             'clear out any memory
             frmDisParams.Clear()
         Catch ex As Exception
-
+            cLog.Write(ex, "CefasMSE:OnReviewDistParams")
         End Try
 
     End Sub
@@ -390,8 +400,9 @@ Public Class frmMSE
             frmMaxDecreaseEfforts.Init(Me.UIContext, Me.MSE)
             frmMaxDecreaseEfforts.ShowDialog(Me)
         Catch ex As Exception
-
+            cLog.Write(ex, "CefasMSE:OnDecreaseEffort")
         End Try
+
     End Sub
 
 #End Region ' Control events
