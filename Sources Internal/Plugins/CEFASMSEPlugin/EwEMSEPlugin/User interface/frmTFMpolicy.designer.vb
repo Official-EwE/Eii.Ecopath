@@ -51,38 +51,38 @@ Partial Class frmTFMpolicy
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTFMpolicy))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.m_tlpStrategies = New System.Windows.Forms.TableLayoutPanel()
         Me.m_tsStrategy = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tslSelectStratagy = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmStrategies = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tsbnAddStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_graph = New ZedGraph.ZedGraphControl()
+        Me.m_hdrStrategies = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tlpHCR = New System.Windows.Forms.TableLayoutPanel()
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         Me.m_tsHCR = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnAddHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteHCR = New System.Windows.Forms.ToolStripButton()
+        Me.m_hdrHCR = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_scBigOne = New System.Windows.Forms.SplitContainer()
-        Me.m_hdrRegulations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_gridRegulations = New gridRegulations()
-        Me.m_tlpStrategies = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_hdrStrategies = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_tlpHCR = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_hdrHCR = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpRegulations = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_hdrRegulations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_gridRegulations = New EwEMSEPlugin.gridRegulations()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
+        Me.m_tlpStrategies.SuspendLayout()
         Me.m_tsStrategy.SuspendLayout()
+        Me.m_tlpHCR.SuspendLayout()
         Me.m_tsHCR.SuspendLayout()
         CType(Me.m_scBigOne, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scBigOne.Panel1.SuspendLayout()
         Me.m_scBigOne.Panel2.SuspendLayout()
         Me.m_scBigOne.SuspendLayout()
-        Me.m_tlpStrategies.SuspendLayout()
-        Me.m_tlpHCR.SuspendLayout()
         Me.m_tlpRegulations.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -98,6 +98,14 @@ Partial Class frmTFMpolicy
         'm_scMain.Panel2
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_tlpHCR)
+        '
+        'm_tlpStrategies
+        '
+        resources.ApplyResources(Me.m_tlpStrategies, "m_tlpStrategies")
+        Me.m_tlpStrategies.Controls.Add(Me.m_tsStrategy, 0, 1)
+        Me.m_tlpStrategies.Controls.Add(Me.m_graph, 0, 2)
+        Me.m_tlpStrategies.Controls.Add(Me.m_hdrStrategies, 0, 0)
+        Me.m_tlpStrategies.Name = "m_tlpStrategies"
         '
         'm_tsStrategy
         '
@@ -143,6 +151,22 @@ Partial Class frmTFMpolicy
         Me.m_graph.ScrollMinY = 0.0R
         Me.m_graph.ScrollMinY2 = 0.0R
         Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
+        '
+        'm_hdrStrategies
+        '
+        Me.m_hdrStrategies.CanCollapseParent = False
+        Me.m_hdrStrategies.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrStrategies, "m_hdrStrategies")
+        Me.m_hdrStrategies.IsCollapsed = False
+        Me.m_hdrStrategies.Name = "m_hdrStrategies"
+        '
+        'm_tlpHCR
+        '
+        resources.ApplyResources(Me.m_tlpHCR, "m_tlpHCR")
+        Me.m_tlpHCR.Controls.Add(Me.m_grid, 0, 2)
+        Me.m_tlpHCR.Controls.Add(Me.m_tsHCR, 0, 1)
+        Me.m_tlpHCR.Controls.Add(Me.m_hdrHCR, 0, 0)
+        Me.m_tlpHCR.Name = "m_tlpHCR"
         '
         'm_grid
         '
@@ -197,6 +221,14 @@ Partial Class frmTFMpolicy
         resources.ApplyResources(Me.m_tsbnDeleteHCR, "m_tsbnDeleteHCR")
         Me.m_tsbnDeleteHCR.Name = "m_tsbnDeleteHCR"
         '
+        'm_hdrHCR
+        '
+        Me.m_hdrHCR.CanCollapseParent = False
+        Me.m_hdrHCR.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrHCR, "m_hdrHCR")
+        Me.m_hdrHCR.IsCollapsed = False
+        Me.m_hdrHCR.Name = "m_hdrHCR"
+        '
         'm_btnSave
         '
         resources.ApplyResources(Me.m_btnSave, "m_btnSave")
@@ -223,6 +255,13 @@ Partial Class frmTFMpolicy
         '
         Me.m_scBigOne.Panel2.Controls.Add(Me.m_tlpRegulations)
         '
+        'm_tlpRegulations
+        '
+        resources.ApplyResources(Me.m_tlpRegulations, "m_tlpRegulations")
+        Me.m_tlpRegulations.Controls.Add(Me.m_hdrRegulations, 0, 0)
+        Me.m_tlpRegulations.Controls.Add(Me.m_gridRegulations, 0, 1)
+        Me.m_tlpRegulations.Name = "m_tlpRegulations"
+        '
         'm_hdrRegulations
         '
         Me.m_hdrRegulations.CanCollapseParent = False
@@ -233,47 +272,35 @@ Partial Class frmTFMpolicy
         '
         'm_gridRegulations
         '
+        Me.m_gridRegulations.AllowBlockSelect = False
+        Me.m_gridRegulations.AutoSizeMinHeight = 10
+        Me.m_gridRegulations.AutoSizeMinWidth = 10
+        Me.m_gridRegulations.AutoStretchColumnsToFitWidth = True
+        Me.m_gridRegulations.AutoStretchRowsToFitHeight = False
+        Me.m_gridRegulations.BackColor = System.Drawing.Color.White
+        Me.m_gridRegulations.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_gridRegulations.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_gridRegulations.CustomSort = False
+        Me.m_gridRegulations.DataName = "grid content"
         resources.ApplyResources(Me.m_gridRegulations, "m_gridRegulations")
+        Me.m_gridRegulations.FixedColumnWidths = False
+        Me.m_gridRegulations.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_gridRegulations.GridToolTipActive = True
+        Me.m_gridRegulations.IsLayoutSuspended = False
         Me.m_gridRegulations.Name = "m_gridRegulations"
-        '
-        'm_tlpStrategies
-        '
-        resources.ApplyResources(Me.m_tlpStrategies, "m_tlpStrategies")
-        Me.m_tlpStrategies.Controls.Add(Me.m_tsStrategy, 0, 1)
-        Me.m_tlpStrategies.Controls.Add(Me.m_graph, 0, 2)
-        Me.m_tlpStrategies.Controls.Add(Me.m_hdrStrategies, 0, 0)
-        Me.m_tlpStrategies.Name = "m_tlpStrategies"
-        '
-        'm_hdrStrategies
-        '
-        Me.m_hdrStrategies.CanCollapseParent = False
-        Me.m_hdrStrategies.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrStrategies, "m_hdrStrategies")
-        Me.m_hdrStrategies.IsCollapsed = False
-        Me.m_hdrStrategies.Name = "m_hdrStrategies"
-        '
-        'm_tlpHCR
-        '
-        resources.ApplyResources(Me.m_tlpHCR, "m_tlpHCR")
-        Me.m_tlpHCR.Controls.Add(Me.m_grid, 0, 2)
-        Me.m_tlpHCR.Controls.Add(Me.m_tsHCR, 0, 1)
-        Me.m_tlpHCR.Controls.Add(Me.m_hdrHCR, 0, 0)
-        Me.m_tlpHCR.Name = "m_tlpHCR"
-        '
-        'm_hdrHCR
-        '
-        Me.m_hdrHCR.CanCollapseParent = False
-        Me.m_hdrHCR.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrHCR, "m_hdrHCR")
-        Me.m_hdrHCR.IsCollapsed = False
-        Me.m_hdrHCR.Name = "m_hdrHCR"
-        '
-        'm_tlpRegulations
-        '
-        resources.ApplyResources(Me.m_tlpRegulations, "m_tlpRegulations")
-        Me.m_tlpRegulations.Controls.Add(Me.m_hdrRegulations, 0, 0)
-        Me.m_tlpRegulations.Controls.Add(Me.m_gridRegulations, 0, 1)
-        Me.m_tlpRegulations.Name = "m_tlpRegulations"
+        Me.m_gridRegulations.SelectedStrategy = Nothing
+        Me.m_gridRegulations.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_gridRegulations.UIContext = Nothing
         '
         'frmTFMpolicy
         '
@@ -292,18 +319,18 @@ Partial Class frmTFMpolicy
         Me.m_scMain.Panel2.ResumeLayout(False)
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
+        Me.m_tlpStrategies.ResumeLayout(False)
+        Me.m_tlpStrategies.PerformLayout()
         Me.m_tsStrategy.ResumeLayout(False)
         Me.m_tsStrategy.PerformLayout()
+        Me.m_tlpHCR.ResumeLayout(False)
+        Me.m_tlpHCR.PerformLayout()
         Me.m_tsHCR.ResumeLayout(False)
         Me.m_tsHCR.PerformLayout()
         Me.m_scBigOne.Panel1.ResumeLayout(False)
         Me.m_scBigOne.Panel2.ResumeLayout(False)
         CType(Me.m_scBigOne, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scBigOne.ResumeLayout(False)
-        Me.m_tlpStrategies.ResumeLayout(False)
-        Me.m_tlpStrategies.PerformLayout()
-        Me.m_tlpHCR.ResumeLayout(False)
-        Me.m_tlpHCR.PerformLayout()
         Me.m_tlpRegulations.ResumeLayout(False)
         Me.ResumeLayout(False)
 

@@ -131,222 +131,15 @@
   <data name="m_scMain.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
-  <metadata name="m_tsStrategy.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>107, 0</value>
-  </metadata>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tlpStrategies.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_tsStrategy.Name" xml:space="preserve">
-    <value>m_tsStrategy</value>
-  </data>
-  <data name="&gt;&gt;m_tsStrategy.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsStrategy.Parent" xml:space="preserve">
-    <value>m_tlpStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_tsStrategy.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
-    <value>m_graph</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
-    <value>m_tlpStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStrategies.Name" xml:space="preserve">
-    <value>m_hdrStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStrategies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStrategies.Parent" xml:space="preserve">
-    <value>m_tlpStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStrategies.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_tlpStrategies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_tlpStrategies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tlpStrategies.RowCount" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_tlpStrategies.Size" type="System.Drawing.Size, System.Drawing">
-    <value>499, 244</value>
-  </data>
-  <data name="m_tlpStrategies.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpStrategies.Name" xml:space="preserve">
-    <value>m_tlpStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_tlpStrategies.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpStrategies.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tlpStrategies.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tlpStrategies.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsStrategy" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_graph" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrStrategies" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="m_tsHCR.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 0</value>
-  </metadata>
-  <data name="m_tlpHCR.ColumnCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEMSEPlugin.gridTargetFishingMortalityPolicy, EwEMSEPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>m_tlpHCR</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsHCR.Name" xml:space="preserve">
-    <value>m_tsHCR</value>
-  </data>
-  <data name="&gt;&gt;m_tsHCR.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsHCR.Parent" xml:space="preserve">
-    <value>m_tlpHCR</value>
-  </data>
-  <data name="&gt;&gt;m_tsHCR.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrHCR.Name" xml:space="preserve">
-    <value>m_hdrHCR</value>
-  </data>
-  <data name="&gt;&gt;m_hdrHCR.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrHCR.Parent" xml:space="preserve">
-    <value>m_tlpHCR</value>
-  </data>
-  <data name="&gt;&gt;m_hdrHCR.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_tlpHCR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_tlpHCR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tlpHCR.RowCount" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_tlpHCR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>499, 246</value>
-  </data>
-  <data name="m_tlpHCR.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpHCR.Name" xml:space="preserve">
-    <value>m_tlpHCR</value>
-  </data>
-  <data name="&gt;&gt;m_tlpHCR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpHCR.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpHCR.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tlpHCR.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_grid" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tsHCR" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrHCR" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>499, 494</value>
-  </data>
-  <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>244</value>
-  </data>
-  <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
-    <value>m_scBigOne.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="m_tsStrategy.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>107, 0</value>
   </metadata>
   <data name="m_tsStrategy.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
-  </data>
-  <data name="m_tsStrategy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 18</value>
-  </data>
-  <data name="m_tsStrategy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>499, 25</value>
-  </data>
-  <data name="m_tsStrategy.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsStrategy.Name" xml:space="preserve">
-    <value>m_tsStrategy</value>
-  </data>
-  <data name="&gt;&gt;m_tsStrategy.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsStrategy.Parent" xml:space="preserve">
-    <value>m_tlpStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_tsStrategy.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tslSelectStratagy.Size" type="System.Drawing.Size, System.Drawing">
     <value>54, 22</value>
@@ -411,6 +204,27 @@
   <data name="m_tsbnDeleteStrategy.ToolTipText" xml:space="preserve">
     <value>Delete strategy</value>
   </data>
+  <data name="m_tsStrategy.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="m_tsStrategy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 25</value>
+  </data>
+  <data name="m_tsStrategy.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tsStrategy.Name" xml:space="preserve">
+    <value>m_tsStrategy</value>
+  </data>
+  <data name="&gt;&gt;m_tsStrategy.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10696.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsStrategy.Parent" xml:space="preserve">
+    <value>m_tlpStrategies</value>
+  </data>
+  <data name="&gt;&gt;m_tsStrategy.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_graph.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -421,7 +235,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>499, 201</value>
+    <value>476, 164</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -438,6 +252,81 @@
   <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_hdrStrategies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_hdrStrategies.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="m_hdrStrategies.Size" type="System.Drawing.Size, System.Drawing">
+    <value>470, 18</value>
+  </data>
+  <data name="m_hdrStrategies.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_hdrStrategies.Text" xml:space="preserve">
+    <value>Strategies</value>
+  </data>
+  <data name="m_hdrStrategies.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrStrategies.Name" xml:space="preserve">
+    <value>m_hdrStrategies</value>
+  </data>
+  <data name="&gt;&gt;m_hdrStrategies.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10696.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrStrategies.Parent" xml:space="preserve">
+    <value>m_tlpStrategies</value>
+  </data>
+  <data name="&gt;&gt;m_hdrStrategies.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tlpStrategies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpStrategies.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tlpStrategies.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_tlpStrategies.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 207</value>
+  </data>
+  <data name="m_tlpStrategies.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tlpStrategies.Name" xml:space="preserve">
+    <value>m_tlpStrategies</value>
+  </data>
+  <data name="&gt;&gt;m_tlpStrategies.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpStrategies.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_tlpStrategies.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpStrategies.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsStrategy" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_graph" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrStrategies" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
+    <value>m_scMain</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpHCR.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
   <data name="m_grid.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
@@ -451,7 +340,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>499, 203</value>
+    <value>476, 166</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -473,27 +362,6 @@
   </metadata>
   <data name="m_tsHCR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
-  </data>
-  <data name="m_tsHCR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 18</value>
-  </data>
-  <data name="m_tsHCR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>499, 25</value>
-  </data>
-  <data name="m_tsHCR.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsHCR.Name" xml:space="preserve">
-    <value>m_tsHCR</value>
-  </data>
-  <data name="&gt;&gt;m_tsHCR.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsHCR.Parent" xml:space="preserve">
-    <value>m_tlpHCR</value>
-  </data>
-  <data name="&gt;&gt;m_tsHCR.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tsbnAddHCR.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -534,34 +402,145 @@
   <data name="m_tsbnDeleteHCR.ToolTipText" xml:space="preserve">
     <value>Delete harvest control rule</value>
   </data>
-  <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
+  <data name="m_tsHCR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
   </data>
-  <data name="m_btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_tsHCR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 25</value>
   </data>
-  <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>551, 512</value>
-  </data>
-  <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="m_btnOK.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tsHCR.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_btnOK.Text" xml:space="preserve">
-    <value>OK</value>
+  <data name="&gt;&gt;m_tsHCR.Name" xml:space="preserve">
+    <value>m_tsHCR</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.Name" xml:space="preserve">
-    <value>m_btnOK</value>
+  <data name="&gt;&gt;m_tsHCR.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10696.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsHCR.Parent" xml:space="preserve">
+    <value>m_tlpHCR</value>
+  </data>
+  <data name="&gt;&gt;m_tsHCR.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_hdrHCR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_hdrHCR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="m_hdrHCR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>470, 18</value>
+  </data>
+  <data name="m_hdrHCR.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_hdrHCR.Text" xml:space="preserve">
+    <value>Harvest control rules (HCR)</value>
+  </data>
+  <data name="m_hdrHCR.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrHCR.Name" xml:space="preserve">
+    <value>m_hdrHCR</value>
+  </data>
+  <data name="&gt;&gt;m_hdrHCR.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10696.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrHCR.Parent" xml:space="preserve">
+    <value>m_tlpHCR</value>
+  </data>
+  <data name="&gt;&gt;m_hdrHCR.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tlpHCR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpHCR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tlpHCR.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_tlpHCR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 209</value>
+  </data>
+  <data name="m_tlpHCR.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tlpHCR.Name" xml:space="preserve">
+    <value>m_tlpHCR</value>
+  </data>
+  <data name="&gt;&gt;m_tlpHCR.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpHCR.Parent" xml:space="preserve">
+    <value>m_scMain.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_tlpHCR.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpHCR.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_grid" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tsHCR" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrHCR" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
+    <value>m_scMain.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
+    <value>m_scMain</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 420</value>
+  </data>
+  <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
+    <value>207</value>
+  </data>
+  <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
+    <value>m_scMain</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
+    <value>m_scBigOne.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_btnSave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="m_btnSave.Location" type="System.Drawing.Point, System.Drawing">
+    <value>520, 438</value>
+  </data>
+  <data name="m_btnSave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnSave.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="&gt;&gt;m_btnSave.Name" xml:space="preserve">
+    <value>m_btnSave</value>
+  </data>
+  <data name="&gt;&gt;m_btnSave.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnSave.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnSave.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -571,7 +550,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>632, 512</value>
+    <value>601, 438</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -622,7 +601,7 @@
     <value>3, 0</value>
   </data>
   <data name="m_hdrRegulations.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 18</value>
+    <value>178, 18</value>
   </data>
   <data name="m_hdrRegulations.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -637,7 +616,7 @@
     <value>m_hdrRegulations</value>
   </data>
   <data name="&gt;&gt;m_hdrRegulations.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10696.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRegulations.Parent" xml:space="preserve">
     <value>m_tlpRegulations</value>
@@ -655,7 +634,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridRegulations.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 476</value>
+    <value>184, 402</value>
   </data>
   <data name="m_gridRegulations.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -664,7 +643,7 @@
     <value>m_gridRegulations</value>
   </data>
   <data name="&gt;&gt;m_gridRegulations.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>EwEMSEPlugin.gridRegulations, EwEMSEPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridRegulations.Parent" xml:space="preserve">
     <value>m_tlpRegulations</value>
@@ -682,7 +661,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpRegulations.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 494</value>
+    <value>184, 420</value>
   </data>
   <data name="m_tlpRegulations.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -715,10 +694,10 @@
     <value>1</value>
   </data>
   <data name="m_scBigOne.Size" type="System.Drawing.Size, System.Drawing">
-    <value>695, 494</value>
+    <value>664, 420</value>
   </data>
   <data name="m_scBigOne.SplitterDistance" type="System.Int32, mscorlib">
-    <value>499</value>
+    <value>476</value>
   </data>
   <data name="m_scBigOne.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -735,66 +714,6 @@
   <data name="&gt;&gt;m_scBigOne.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_hdrStrategies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_hdrStrategies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="m_hdrStrategies.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 18</value>
-  </data>
-  <data name="m_hdrStrategies.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_hdrStrategies.Text" xml:space="preserve">
-    <value>Strategies</value>
-  </data>
-  <data name="m_hdrStrategies.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStrategies.Name" xml:space="preserve">
-    <value>m_hdrStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStrategies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStrategies.Parent" xml:space="preserve">
-    <value>m_tlpStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStrategies.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_hdrHCR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_hdrHCR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="m_hdrHCR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 18</value>
-  </data>
-  <data name="m_hdrHCR.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_hdrHCR.Text" xml:space="preserve">
-    <value>Harvest control rules (HCR)</value>
-  </data>
-  <data name="m_hdrHCR.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrHCR.Name" xml:space="preserve">
-    <value>m_hdrHCR</value>
-  </data>
-  <data name="&gt;&gt;m_hdrHCR.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrHCR.Parent" xml:space="preserve">
-    <value>m_tlpHCR</value>
-  </data>
-  <data name="&gt;&gt;m_hdrHCR.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -805,7 +724,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>719, 547</value>
+    <value>688, 473</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -853,6 +772,6 @@
     <value>frmTFMpolicy</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10696.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
