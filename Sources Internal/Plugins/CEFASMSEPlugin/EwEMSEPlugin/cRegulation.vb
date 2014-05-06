@@ -40,7 +40,7 @@ Imports LumenWorks.Framework.IO.Csv
 Public Class cRegulations
     Implements IMSEData
 
-    Enum eRegMethod As Byte
+    Public Enum eRegMethod As Byte
         None = 0
         NoQuota = 1
         WeakestStock
@@ -51,30 +51,29 @@ Public Class cRegulations
     Private m_methods As eRegMethod()
     Private m_bIsChanged As Boolean = False
 
-    Private mMSE As cMSE
-    Private mCore As cCore
+    Private m_MSE As cMSE = Nothing
+    Private m_Core As cCore = Nothing
 
     Sub New(MSE As cMSE, Core As cCore)
-        Me.mMSE = MSE
-        Me.mCore = Core
+        Me.m_MSE = MSE
+        Me.m_Core = Core
         ReDim m_methods(Core.nFleets)
         Me.Defaults()
     End Sub
 
     Public Property Method(iFleet As Integer) As eRegMethod
         Get
-            If (iFleet < 1 Or iFleet > Me.mCore.nFleets) Then Return eRegMethod.None
+            If (iFleet < 1 Or iFleet > Me.m_Core.nFleets) Then Return eRegMethod.None
             Return Me.m_methods(iFleet)
         End Get
         Set(value As eRegMethod)
-            If (iFleet < 1 Or iFleet > Me.mCore.nFleets) Then Return
+            If (iFleet < 1 Or iFleet > Me.m_Core.nFleets) Then Return
             If (value <> Me.m_methods(iFleet)) Then
                 Me.m_methods(iFleet) = value
                 Me.m_bIsChanged = True
             End If
         End Set
     End Property
-
 
     'Commented out 31-3-14 if still not required and commented out by 5-14 then delete
     'Public Function LoadRegsFromCSV(StrategyNumber As Integer) As Boolean
@@ -165,8 +164,8 @@ Public Class cRegulations
         If (strm IsNot Nothing) Then
 
             strm.WriteLine("FleetName,FleetIndex,Regulation")
-            For i As Integer = 1 To Me.mCore.nFleets
-                Dim flt As cFleetInput = Me.mCore.FleetInputs(i)
+            For i As Integer = 1 To Me.m_Core.nFleets
+                Dim flt As cFleetInput = Me.m_Core.FleetInputs(i)
                 strm.WriteLine(cStringUtils.ToCSVField(flt.Name) & "," & _
                                           cStringUtils.ToCSVField(flt.Index) & "," & _
                                           cStringUtils.ToCSVField(Me.m_methods(i)))
@@ -183,11 +182,10 @@ Public Class cRegulations
     End Function
 
     Public Sub Defaults() Implements IMSEData.Defaults
-        For iFleet = 1 To mCore.nFleets
+        For iFleet = 1 To m_Core.nFleets
             Me.Method(iFleet) = eRegMethod.None
         Next
         Me.m_bIsChanged = False
     End Sub
-
 
 End Class

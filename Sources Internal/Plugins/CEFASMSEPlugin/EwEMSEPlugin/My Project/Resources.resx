@@ -283,6 +283,21 @@
   <data name="PROMPT_UNSAVED_CHANGES" xml:space="preserve">
     <value>You have made changes that have not been saved. Are you sure that you want to close this form?</value>
   </data>
+  <data name="REGMETHOD_HIGHESTVALUE" xml:space="preserve">
+    <value>Highest value</value>
+  </data>
+  <data name="REGMETHOD_NONE" xml:space="preserve">
+    <value>(none)</value>
+  </data>
+  <data name="REGMETHOD_NOQUOTA" xml:space="preserve">
+    <value>No quota</value>
+  </data>
+  <data name="REGMETHOD_SELECTIVEFISHING" xml:space="preserve">
+    <value>Selective fishing</value>
+  </data>
+  <data name="REGMETHOD_WEAKESTSTOCK" xml:space="preserve">
+    <value>Weakest stock</value>
+  </data>
   <data name="STATUS_AVAILABLE" xml:space="preserve">
     <value>Available</value>
   </data>

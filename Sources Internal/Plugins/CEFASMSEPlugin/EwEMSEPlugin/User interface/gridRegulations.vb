@@ -30,7 +30,7 @@ Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
-Imports EwEMSEPlugin.cRegulations
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -45,7 +45,7 @@ Public Class gridRegulations
 
 #Region " Internal defs "
 
-    Private Enum eColumnTypes As Integer
+    Private Enum eColumnTypes As Byte
         FleetIndex = 0
         FleetName
         Method
@@ -56,14 +56,20 @@ Public Class gridRegulations
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(eRegMethod)
+            Return GetType(cRegulations.eRegMethod)
         End Function
 
         Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.GetDescriptor
-            ' Todo: do fancy resource stuff
-            If (value Is Nothing) Then Return SharedResources.GENERIC_VALUE_NONE
-            Return value.ToString()
+
+            Dim rm As cRegulations.eRegMethod = cRegulations.eRegMethod.None
+            Try
+                rm = DirectCast(value, cRegulations.eRegMethod)
+            Catch ex As Exception
+                rm = cRegulations.eRegMethod.None
+            End Try
+            Return cResourceUtils.LoadString("REGMETHOD_" & rm.ToString().ToUpper, Me.GetType.Assembly)
+  
         End Function
 
     End Class
@@ -127,7 +133,7 @@ Public Class gridRegulations
         Dim iRow As Integer = -1
         Dim cell As EwECell = Nothing
         Dim core As cCore = Me.Core
-        Dim reg As cRegulations = Me.m_strategy.RegMethods
+        Dim reg As cRegulations = Me.m_strategy.Regulations
         Dim bIsTargeted(Me.Core.nFleets) As Boolean
 
         Me.RowsCount = 1
@@ -186,15 +192,14 @@ Public Class gridRegulations
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
         If (Not MyBase.OnCellEdited(p, cell)) Then Return False
-
         If (Me.m_strategy Is Nothing) Then Return False
-
-        Dim reg As cRegulations = Me.m_strategy.RegMethods
+        Dim reg As cRegulations = Me.m_strategy.Regulations
+        If (reg Is Nothing) Then Return False
 
         ' Check column
         If (p.Column = eColumnTypes.Method) Then
             ' Store value
-            reg.Method(p.Row) = CType(cell.GetValue(p), eRegMethod)
+            reg.Method(p.Row) = CType(cell.GetValue(p), cRegulations.eRegMethod)
         End If
 
         ' Yippee

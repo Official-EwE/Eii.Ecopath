@@ -139,7 +139,7 @@ Public Class Strategies
             Strategy = New Strategy(Path.GetFileNameWithoutExtension(StrategyFile), StratCounter, StrategyFile, mCore, mMSE)
 
             'Save the Strategy to the file pass into its constructor
-            bReadStrat = Strategy.Read()
+            bReadStrat = Strategy.Load()
             bReadReg = Strategy.Regulations.Load(Path.Combine(strRegulationDir, Path.GetFileNameWithoutExtension(StrategyFile) & ".csv"))
 
             If bReadStrat And bReadReg Then

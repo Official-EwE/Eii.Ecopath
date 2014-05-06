@@ -37,35 +37,144 @@ Imports EwEUtils.Utilities
 ''' </summary>
 Public Class Strategy
     Implements IList(Of HCR_Group)
+    Implements IMSEData
 
-    Private mHCRsList As New List(Of HCR_Group)
-    Private mRegulateMethods As cRegulations
-    Private mStrategyNumber As Integer
-
-    Private mCore As cCore
-
-    Public Property Name As String
-    Public Property FileName As String
-
-    'Public Sub New()
-    '    ' Hm 
-    'End Sub
+    Private m_HCRsList As New List(Of HCR_Group)
+    Private m_core As cCore = Nothing
+    Public Property Name As String = ""
+    Public Property FileName As String = ""
 
     Public Sub New(ByVal StrategyName As String, StrategyNumber As Integer, ByVal theFilename As String, Core As cCore, MSE As cMSE)
-        'Me.New()
-
-        Me.mCore = Core
+        Me.m_core = Core
         Me.Name = StrategyName
         Me.FileName = theFilename
-        mRegulateMethods = New cRegulations(MSE, Core)
-        mStrategyNumber = StrategyNumber
-
+        Me.Regulations = New cRegulations(MSE, Core)
+        Me.StrategyNumber = StrategyNumber
     End Sub
 
-    Public Function Read() As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Resolve a name and index to a <see cref="cEcoPathGroupInput"/> instance.
+    ''' </summary>
+    ''' <param name="strName">The name to resolve.</param>
+    ''' <param name="iIndex">The index to resolve.</param>
+    ''' <returns>A <see cref="cEcoPathGroupInput"/> instance, or Nothing if
+    ''' the index or name did not match any of the present groups.</returns>
+    ''' <remarks>Note that name comparison is not case sensitive.</remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
+        If (iIndex < 1) Or (iIndex > Me.m_core.nGroups) Then Return Nothing
+        Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iIndex)
+        Dim grpName As String = cMSEUtils.FromCSVField(strName)
+        If String.Compare(grp.Name, grpName, True) <> 0 Then
+            Return Nothing
+        End If
+        Return grp
+    End Function
+
+    Public Property StrategyNumber() As Integer
+    Public Property Regulations As cRegulations
+
+    Public Overrides Function ToString() As String
+        Return MyBase.ToString() & ":" & Me.Name
+    End Function
+
+#Region " IList implementation "
+
+    Public Sub Add(item As HCR_Group) Implements ICollection(Of HCR_Group).Add
+        If Not Me.Contains(item) Then
+            Me.m_HCRsList.Add(item)
+        End If
+    End Sub
+
+    Public Sub Clear() Implements ICollection(Of HCR_Group).Clear
+        Me.m_HCRsList.Clear()
+    End Sub
+
+    Public Function Contains(item As HCR_Group) As Boolean Implements ICollection(Of HCR_Group).Contains
+        For Each Rule As HCR_Group In Me
+            If Object.ReferenceEquals(item.GroupB, Rule.GroupB) And Object.ReferenceEquals(item.GroupF, Rule.GroupF) Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
+
+    Public Sub CopyTo(array() As HCR_Group, arrayIndex As Integer) Implements ICollection(Of HCR_Group).CopyTo
+        ' NOP
+    End Sub
+
+    Public ReadOnly Property Count As Integer Implements ICollection(Of HCR_Group).Count
+        Get
+            Return Me.m_HCRsList.Count
+        End Get
+    End Property
+
+    Public ReadOnly Property IsReadOnly As Boolean Implements ICollection(Of HCR_Group).IsReadOnly
+        Get
+            Return False
+        End Get
+    End Property
+
+    Public Function Remove(item As HCR_Group) As Boolean Implements ICollection(Of HCR_Group).Remove
+        Return Me.m_HCRsList.Remove(item)
+    End Function
+
+    Public Function GetEnumerator() As IEnumerator(Of HCR_Group) Implements IEnumerable(Of HCR_Group).GetEnumerator
+        Return Me.m_HCRsList.GetEnumerator()
+    End Function
+
+    Public Function IndexOf(item As HCR_Group) As Integer Implements IList(Of HCR_Group).IndexOf
+        Return Me.m_HCRsList.IndexOf(item)
+    End Function
+
+    Public Sub Insert(index As Integer, item As HCR_Group) Implements IList(Of HCR_Group).Insert
+        Me.m_HCRsList.Insert(index, item)
+    End Sub
+
+    Default Public Property Item(index As Integer) As HCR_Group Implements IList(Of HCR_Group).Item
+        Get
+            Return Me.m_HCRsList.Item(index)
+        End Get
+        Set(value As HCR_Group)
+            Me.m_HCRsList(index) = value
+        End Set
+    End Property
+
+    Public Sub RemoveAt(index As Integer) Implements IList(Of HCR_Group).RemoveAt
+        Me.m_HCRsList.RemoveAt(index)
+    End Sub
+
+    Private Function Bogus() As IEnumerator Implements IEnumerable.GetEnumerator
+        ' NOP
+        Return Nothing
+    End Function
+
+#End Region ' IList implementation
+
+#Region " IMSEData implementation "
+
+    Public Sub Defaults() _
+        Implements IMSEData.Defaults
+        Me.Clear()
+    End Sub
+
+    Public Function IsChanged() As Boolean _
+        Implements IMSEData.IsChanged
+        ' ToDo: implement this properly
+        Return False
+    End Function
+
+    Public Function Load(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.Load
+
         Dim buff As String
         Dim recs() As String
         Dim breturn As Boolean = False
+
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.FileName
+        End If
 
         If Not File.Exists(Me.FileName) Then
             'message of some sort
@@ -84,7 +193,7 @@ Public Class Strategy
 
                     Dim tempHCRGroup As HCR_Group
                     'Each HCR Group needs to be a new object
-                    tempHCRGroup = New HCR_Group(mCore)
+                    tempHCRGroup = New HCR_Group(m_core)
 
                     ' Resolve group
                     tempHCRGroup.GroupB = Me.ResolveGroup(recs(0), cStringUtils.ConvertToInteger(recs(1)))
@@ -117,10 +226,14 @@ Public Class Strategy
         Return breturn
     End Function
 
-    Public Function Save() As Boolean
-        Dim strm As StreamWriter
-        'Create a new file
-        strm = cMSEUtils.GetWriter(Me.FileName, False)
+    Public Function Save(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.Save
+
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.FileName
+        End If
+
+        Dim strm As StreamWriter = cMSEUtils.GetWriter(Me.FileName, False)
         If (strm IsNot Nothing) Then
 
             'msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
@@ -141,128 +254,8 @@ Public Class Strategy
         End If
 
         Return True
-
     End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Resolve a name and index to a <see cref="cEcoPathGroupInput"/> instance.
-    ''' </summary>
-    ''' <param name="strName">The name to resolve.</param>
-    ''' <param name="iIndex">The index to resolve.</param>
-    ''' <returns>A <see cref="cEcoPathGroupInput"/> instance, or Nothing if
-    ''' the index or name did not match any of the present groups.</returns>
-    ''' <remarks>Note that name comparison is not case sensitive.</remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
-        If (iIndex < 1) Or (iIndex > Me.mCore.nGroups) Then Return Nothing
-        Dim grp As cEcoPathGroupInput = Me.mCore.EcoPathGroupInputs(iIndex)
-        Dim grpName As String = cMSEUtils.FromCSVField(strName)
-        If String.Compare(grp.Name, grpName, True) <> 0 Then
-            Return Nothing
-        End If
-        Return grp
-    End Function
-
-    Public ReadOnly Property Regulations As cRegulations
-        Get
-            Return mRegulateMethods
-        End Get
-    End Property
-
-    Public Property StrategyNumber() As Integer
-        Get
-            Return mStrategyNumber
-        End Get
-        Set(ByVal value As Integer)
-            mStrategyNumber = value
-        End Set
-    End Property
-
-    Public Overrides Function ToString() As String
-        Return MyBase.ToString() & ":" & Me.Name
-    End Function
-
-    'Public Function LoadRegulations() As Boolean
-    '    Return mRegulateMethods.LoadRegsFromCSV(mStrategyNumber)
-    'End Function
-
-    Public Sub Add(item As HCR_Group) Implements ICollection(Of HCR_Group).Add
-        If Not Me.Contains(item) Then
-            Me.mHCRsList.Add(item)
-        End If
-    End Sub
-
-    Public Sub Clear() Implements ICollection(Of HCR_Group).Clear
-        Me.mHCRsList.Clear()
-    End Sub
-
-    Public Function Contains(item As HCR_Group) As Boolean Implements ICollection(Of HCR_Group).Contains
-        For Each Rule As HCR_Group In Me
-            If Object.ReferenceEquals(item.GroupB, Rule.GroupB) And Object.ReferenceEquals(item.GroupF, Rule.GroupF) Then
-                Return True
-            End If
-        Next
-        Return False
-    End Function
-
-    Public Sub CopyTo(array() As HCR_Group, arrayIndex As Integer) Implements ICollection(Of HCR_Group).CopyTo
-        ' NOP
-    End Sub
-
-    Public Property RegMethods As cRegulations
-        Get
-            Return mRegulateMethods
-        End Get
-        Set(value As cRegulations)
-            mRegulateMethods = value
-        End Set
-    End Property
-
-    Public ReadOnly Property Count As Integer Implements ICollection(Of HCR_Group).Count
-        Get
-            Return Me.mHCRsList.Count
-        End Get
-    End Property
-
-    Public ReadOnly Property IsReadOnly As Boolean Implements ICollection(Of HCR_Group).IsReadOnly
-        Get
-            Return False
-        End Get
-    End Property
-
-    Public Function Remove(item As HCR_Group) As Boolean Implements ICollection(Of HCR_Group).Remove
-        Return Me.mHCRsList.Remove(item)
-    End Function
-
-    Public Function GetEnumerator() As IEnumerator(Of HCR_Group) Implements IEnumerable(Of HCR_Group).GetEnumerator
-        Return Me.mHCRsList.GetEnumerator()
-    End Function
-
-    Public Function IndexOf(item As HCR_Group) As Integer Implements IList(Of HCR_Group).IndexOf
-        Return Me.mHCRsList.IndexOf(item)
-    End Function
-
-    Public Sub Insert(index As Integer, item As HCR_Group) Implements IList(Of HCR_Group).Insert
-        Me.mHCRsList.Insert(index, item)
-    End Sub
-
-    Default Public Property Item(index As Integer) As HCR_Group Implements IList(Of HCR_Group).Item
-        Get
-            Return Me.mHCRsList.Item(index)
-        End Get
-        Set(value As HCR_Group)
-            Me.mHCRsList(index) = value
-        End Set
-    End Property
-
-    Public Sub RemoveAt(index As Integer) Implements IList(Of HCR_Group).RemoveAt
-        Me.mHCRsList.RemoveAt(index)
-    End Sub
-
-    Private Function Bogus() As IEnumerator Implements IEnumerable.GetEnumerator
-        ' NOP
-        Return Nothing
-    End Function
+#End Region ' IMSEData implementation
 
 End Class
