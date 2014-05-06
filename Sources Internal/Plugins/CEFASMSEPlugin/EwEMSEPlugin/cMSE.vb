@@ -208,6 +208,7 @@ Public Class cMSE
             Me.GenerateEcosimParameters("DenDepCatchability")
             Me.GenerateEcosimParameters("QBMaxxQBio")
             Me.GenerateEcosimParameters("SwitchingPower")
+            Me.GenerateSurvivabilities()
             Me.CreateVulnerabilities()
             Me.GenerateEcopathParamaters()
         Catch ex As Exception
@@ -216,6 +217,18 @@ Public Class cMSE
 
         Return bsuccess
     End Function
+
+    Public Sub GenerateSurvivabilities()
+
+        Dim TSurvivability As cSurvivability = New cSurvivability(Me, m_core, _simdata)
+
+        TSurvivability.Load_Distribution_Params()
+        TSurvivability.SampleParams(Me.NModels)
+        TSurvivability.SaveSampledToCSV()
+
+        Me.InvalidateData()
+
+    End Sub
 
 
     Public Function GenerateEmptyDietCSVs() As Boolean
@@ -299,7 +312,7 @@ Public Class cMSE
             Me.EffortLimits.Load()
             Me.QuotaShares.Load()
             Me.Strategies.Load()
-            Me.Survivability.Load()
+            Me.Survivability.Load_Distribution_Params()
         Catch ex As Exception
 
         End Try
@@ -348,7 +361,7 @@ Public Class cMSE
             ' Make sure plug-in has empty CSV
             If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")) Or _
                 Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Or _
-                Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Suvivabilities_out.csv")) Then
+                Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilities_out.csv")) Then
                 Me.m_tsRunDataCompatibility = TriState.False
             End If
 

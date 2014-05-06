@@ -45,7 +45,7 @@ Public Class cSurvivability
     ''' Stores a list of all the sampled survivabilities
     ''' </summary>
     ''' <remarks></remarks>
-    Private mSampledSurvivability As List(Of cSampledSurvivability)
+    Private m_ListOfSampledSurvivabilities As List(Of cSampledSurvivability)
     ''' <summary>
     ''' Reference to the EwE core
     ''' </summary>
@@ -89,6 +89,7 @@ Public Class cSurvivability
         Me.mMSE = MSE
         Me.mSimData = EcosimDataStructures
         Me.mListofSuriveDistParams = New List(Of cSurvivabilityDistributonParam)
+        Me.m_ListOfSampledSurvivabilities = New List(Of cSampledSurvivability)
         Me.Defaults()
     End Sub
 
@@ -101,6 +102,10 @@ Public Class cSurvivability
     ''' </summary>
     ''' <remarks></remarks>
     Public Class cSurvivabilityDistributonParam
+
+        Public Sub New()
+
+        End Sub
 
         Public Sub New(ByVal Index As Integer, FleetNumber As Integer, ByVal GroupNumber As Integer, _
                        ByVal Alpha As Double, ByVal Beta As Double)
@@ -319,7 +324,7 @@ Public Class cSurvivability
                     BetaGenerator.Alpha = TempSurvDistParam.Alpha
                     BetaGenerator.Beta = TempSurvDistParam.Beta
                     TempSampledParam = BetaGenerator.NextDouble()
-                    mSampledSurvivability.Add(New cSampledSurvivability(iParameter, TempSurvDistParam.FleetNo, _
+                    m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(iParameter, TempSurvDistParam.FleetNo, _
                                                                         TempSurvDistParam.GroupNo, _
                                                                         TempSampledParam))
                 Next
@@ -337,7 +342,7 @@ Public Class cSurvivability
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function LoadParamFromCSV() As Boolean
+    Public Function LoadSampledParams() As Boolean
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
@@ -352,10 +357,10 @@ Public Class cSurvivability
                     csv = New CsvReader(reader, True)
                     mSurvParamFileExists = False
                     While Not csv.EndOfStream
-                        param = ExtractSurvivabilityParam(csv)
+                        param = ExtractSampledParam(csv)
 
                         If (param IsNot Nothing) Then
-                            mSampledSurvivability.Add(New cSampledSurvivability(param.Iteration, param.FleetNo, param.GroupNo, _
+                            m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(param.Iteration, param.FleetNo, param.GroupNo, _
                                                           param.Survivability))
                         End If
                     End While
@@ -381,7 +386,7 @@ Public Class cSurvivability
     ''' <param name="csv">The csv object that links to the file</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function ExtractSurvivabilityParam(ByVal csv As CsvReader) As cSampledSurvivability
+    Private Function ExtractSampledParam(ByVal csv As CsvReader) As cSampledSurvivability
         ' Sanity checks
         If (csv Is Nothing) Then Return Nothing
         If (Not csv.ReadNextRecord()) Then Return Nothing
@@ -423,7 +428,7 @@ Public Class cSurvivability
         Try
             writer.WriteLine("Iteration,FleetNumber,FleetName,GroupNumber,GroupName,Survivability")
 
-            For Each entry As cSampledSurvivability In mSampledSurvivability
+            For Each entry As cSampledSurvivability In m_ListOfSampledSurvivabilities
                 writer.WriteLine(cStringUtils.ToCSVField(entry.Iteration) & "," & _
                                  cStringUtils.ToCSVField(entry.FleetNo) & "," & _
                                  cStringUtils.ToCSVField(mcore.FleetInputs(entry.FleetNo).Name) & "," & _
@@ -506,12 +511,12 @@ Public Class cSurvivability
         Return False
     End Function
 
-    Public Function Load(Optional strFilename As String = "") As Boolean _
+    Public Function Load_Distribution_Params(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
-        Dim param As cSurvivabilityDistributonParam
+        Dim param As cSurvivabilityDistributonParam = New cSurvivabilityDistributonParam()
         Dim bSuccess As Boolean = True
 
         If (String.IsNullOrWhiteSpace(strFilename)) Then
@@ -526,17 +531,10 @@ Public Class cSurvivability
             If (reader IsNot Nothing) Then
                 Try
                     csv = New CsvReader(reader, True)
-                    param = ExtractSurvivabilityDist(csv)
-                    If (param IsNot Nothing) Then
 
-                        For iFleet As Integer = 1 To mcore.nFleets
-                            For iGroup As Integer = 1 To mcore.nGroups
-                                If param.FleetNo = iFleet And param.GroupNo = iGroup Then
-                                    AddDist(param)
-                                End If
-                            Next
-                        Next
-                    End If
+                    While ExtractSurvivabilityDist(csv, param)
+                        Me.AddDist(param)
+                    End While
                     csv.Dispose()
 
                 Catch ex As Exception
@@ -548,27 +546,27 @@ Public Class cSurvivability
         End If
 
         ' Add defaults for all missing catches
-        If (Me.mListofSuriveDistParams.Count = 0) Then
-            For iFleet = 1 To mcore.nFleets
-                For iGroup = 1 To mcore.nGroups
-                    If mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
-                        Dim bFound As Boolean = False
-                        For iParam As Integer = 0 To Me.mListofSuriveDistParams.Count - 1
-                            param = Me.mListofSuriveDistParams(iParam)
-                            bFound = bFound Or ((param.FleetNo = iFleet) And (param.GroupNo = iGroup))
-                        Next
-                        If (Not bFound) Then
-                            AddDist(New cSurvivabilityDistributonParam(iFleet, iGroup, Alpha:=2, beta:=2))
-                        End If
-                    End If
-                Next
-            Next
-        End If
+        'If (Me.mListofSuriveDistParams.Count = 0) Then
+        '    For iFleet = 1 To mcore.nFleets
+        '        For iGroup = 1 To mcore.nGroups
+        '            If mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
+        '                Dim bFound As Boolean = False
+        '                For iParam As Integer = 0 To Me.mListofSuriveDistParams.Count - 1
+        '                    param = Me.mListofSuriveDistParams(iParam)
+        '                    bFound = bFound Or ((param.FleetNo = iFleet) And (param.GroupNo = iGroup))
+        '                Next
+        '                If (Not bFound) Then
+        '                    AddDist(New cSurvivabilityDistributonParam(iFleet, iGroup, Alpha:=2, beta:=2))
+        '                End If
+        '            End If
+        '        Next
+        '    Next
+        'End If
 
         Return bSuccess
     End Function
 
-    Public Function Save(Optional strFilename As String = "") As Boolean _
+    Public Function Save_Distribution_Params(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Save
 
         If (String.IsNullOrWhiteSpace(strFilename)) Then
@@ -609,11 +607,11 @@ Public Class cSurvivability
     ''' <param name="csv">The CSV object linking to the survivability distribution parameter file</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function ExtractSurvivabilityDist(ByVal csv As CsvReader) As cSurvivabilityDistributonParam
+    Private Function ExtractSurvivabilityDist(ByVal csv As CsvReader, ByRef param As cSurvivabilityDistributonParam) As Boolean
 
         ' Sanity checks
-        If (csv Is Nothing) Then Return Nothing
-        If (Not csv.ReadNextRecord()) Then Return Nothing
+        If (csv Is Nothing) Then Return False
+        If (Not csv.ReadNextRecord()) Then Return False
 
         Dim TFleetNumber As Integer
         Dim TGroupNumber As Integer
@@ -631,7 +629,8 @@ Public Class cSurvivability
             Return Nothing
         End Try
 
-        Return New cSurvivabilityDistributonParam(TFleetNumber, TGroupNumber, TAlpha, TBeta)
+        param = New cSurvivabilityDistributonParam(TFleetNumber, TGroupNumber, TAlpha, TBeta)
+        Return True
 
     End Function
 

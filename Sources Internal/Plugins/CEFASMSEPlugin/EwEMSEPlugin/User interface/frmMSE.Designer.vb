@@ -90,6 +90,7 @@ Partial Class frmMSE
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
+        Me.btnSampleSurvivabilities = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -150,6 +151,7 @@ Partial Class frmMSE
         '
         'm_plStep2
         '
+        Me.m_plStep2.Controls.Add(Me.btnSampleSurvivabilities)
         Me.m_plStep2.Controls.Add(Me.m_pbCompatible)
         Me.m_plStep2.Controls.Add(Me.m_lblMassBalanceTol)
         Me.m_plStep2.Controls.Add(Me.m_tbxTolerance)
@@ -394,6 +396,12 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
+        'btnSampleSurvivabilities
+        '
+        resources.ApplyResources(Me.btnSampleSurvivabilities, "btnSampleSurvivabilities")
+        Me.btnSampleSurvivabilities.Name = "btnSampleSurvivabilities"
+        Me.btnSampleSurvivabilities.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -461,4 +469,5 @@ Partial Class frmMSE
     Private WithEvents m_btnDecreaseEffort As System.Windows.Forms.Button
     Private WithEvents btnEditSurvivabilities As System.Windows.Forms.Button
     Private WithEvents m_tlpFishingControls As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents btnSampleSurvivabilities As System.Windows.Forms.Button
 End Class

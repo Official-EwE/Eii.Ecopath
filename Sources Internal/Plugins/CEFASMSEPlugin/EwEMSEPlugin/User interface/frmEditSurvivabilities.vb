@@ -102,7 +102,7 @@ Public Class frmEditSurvivabilities
         Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_mse.DataPath, cMSEUtils.eMSEPaths.DistrParams)
 
         'Saves all the parameters to csv when user clicks to save
-        If m_survivability.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "Survivabilities_dist.csv"))
+        If m_survivability.Save_Distribution_Params() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "Survivabilities_dist.csv"))
 
         Me.m_bIsDirty = False
 

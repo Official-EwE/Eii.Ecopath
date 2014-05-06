@@ -439,4 +439,7 @@ Public Class frmMSE
 
 #End Region ' Internals
 
+    Private Sub btnSampleSurvivabilities_Click(sender As System.Object, e As System.EventArgs) Handles btnSampleSurvivabilities.Click
+        MSE.GenerateSurvivabilities()
+    End Sub
 End Class
