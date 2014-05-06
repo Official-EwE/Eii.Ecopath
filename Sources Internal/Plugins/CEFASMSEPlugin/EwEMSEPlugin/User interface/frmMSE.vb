@@ -52,21 +52,16 @@ Public Class frmMSE
 
 #End Region ' Private vars
 
+#Region " Construction "
 
-    Private ReadOnly Property Plugin As cMSEPluginPoint
-        Get
-            Return Me.m_plugin
-        End Get
-    End Property
-    Private ReadOnly Property MSE As cMSE
-        Get
-            Return Me.m_plugin.MSE
-        End Get
-    End Property
-
-
-#Region "Construction"
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Constructor.
+    ''' </summary>
+    ''' <param name="MSEPluginPoint">The <see cref="cMSEPluginPoint"/> this form 
+    ''' is created for.</param>
+    ''' <param name="uic">The <see cref="cUIContext"/> of the current EwE instance.</param>
+    ''' -----------------------------------------------------------------------
     Public Sub New(MSEPluginPoint As cMSEPluginPoint, uic As cUIContext)
 
         Me.InitializeComponent()
@@ -76,10 +71,7 @@ Public Class frmMSE
 
     End Sub
 
-
-
-#End Region
-
+#End Region ' Construction
 
 #Region " Form overrides "
 
@@ -421,5 +413,30 @@ Public Class frmMSE
 
 #End Region ' Plug-in callback
 
+#Region " Internals "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cMSEPluginPoint"/> connected to this form.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private ReadOnly Property Plugin As cMSEPluginPoint
+        Get
+            Return Me.m_plugin
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cMSE"/> connected to this form.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private ReadOnly Property MSE As cMSE
+        Get
+            Return Me.m_plugin.MSE
+        End Get
+    End Property
+
+#End Region ' Internals
 
 End Class
