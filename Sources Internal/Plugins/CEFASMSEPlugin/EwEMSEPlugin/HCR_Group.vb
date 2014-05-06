@@ -65,14 +65,21 @@ Public Class HCR_Group
 
 #Region "Public variables and Properties"
 
+    ''' <summary>
+    ''' Biomass group.
+    ''' </summary>
     Public Property GroupB As cEcoPathGroupInput = Nothing
+
+    ''' <summary>
+    ''' Fishing mortality group.
+    ''' </summary>
     Public Property GroupF As cEcoPathGroupInput = Nothing
 
     Public Property LowerLimit As Double = cCore.NULL_VALUE
     Public Property UpperLimit As Double = cCore.NULL_VALUE
     Public Property MaxF As Double = cCore.NULL_VALUE
 
-    Public Property TypeOfHCR As HCRType
+    Public Property TypeOfHCR As HCRType = HCRType.Target
 
     Public Overrides Function ToString() As String
 
@@ -100,23 +107,6 @@ Public Class HCR_Group
 #End Region
 
 #Region "Public Methods"
-
-    Public Shared Function toCostFunctionString(eCostFunctionTypes As HCRType) As String
-        Select Case eCostFunctionTypes
-            Case HCRType.Target
-                Return "Target"
-            Case HCRType.Conservation
-                Return "Conservation"
-        End Select
-        Return "Target"
-    End Function
-
-    Public Shared Function toCostFunctionEnum(CostFunctionString As String) As HCRType
-        If String.Compare(CostFunctionString, "Conservation", True) = 0 Then
-            Return HCRType.Conservation
-        End If
-        Return HCRType.Target
-    End Function
 
     ''' <summary>
     ''' Validate the Harvest Control Rule against the core group indexes
