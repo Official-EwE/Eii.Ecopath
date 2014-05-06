@@ -59,11 +59,13 @@ Public Class gridTargetFishingMortalityPolicy
 
     Public Event onEdited()
     Private m_strategy As Strategy = Nothing
+    Private m_editorHCR As EwEComboBoxCellEditor = Nothing
 
 #Region " Constructor "
 
     Public Sub New()
         MyBase.new()
+        Me.m_editorHCR = New EwEComboBoxCellEditor(New cCostFunctionTypeFormatter())
     End Sub
 
 #End Region ' Constructor
@@ -117,19 +119,14 @@ Public Class gridTargetFishingMortalityPolicy
     End Sub
 
     Protected Overrides Sub FillData()
-        Dim iHCR As Integer
 
         If (Me.UIContext Is Nothing) Then Return
-
-        Dim Cell As EwECellBase
+        Me.RowsCount = 1
 
         If (Me.m_strategy Is Nothing) Then Return
 
-        Me.RowsCount = 1
-
-        Dim lstOptions As List(Of HCRType) = New List(Of HCRType)
-        lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(HCRType)), IEnumerable(Of HCRType)))
-        Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cCostFunctionTypeFormatter(), lstOptions)
+        Dim iHCR As Integer
+        Dim Cell As ICell
 
         For Each Rule As HCR_Group In Me.m_strategy
             iHCR = Me.AddRow()
@@ -153,7 +150,7 @@ Public Class gridTargetFishingMortalityPolicy
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.MaxF) = Cell
 
-            Cell = New EwECell(Rule.TypeOfHCR, GetType(HCRType))
+            Cell = New SourceGrid2.Cells.Real.Cell(Rule.TypeOfHCR, Me.m_editorHCR)
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.CostFunction) = Cell
 
