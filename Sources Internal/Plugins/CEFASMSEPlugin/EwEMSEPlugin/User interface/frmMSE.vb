@@ -67,7 +67,7 @@ Public Class frmMSE
         Me.InitializeComponent()
         Me.UIContext = uic
         Me.m_plugin = MSEPluginPoint
-        Me.m_survivability = Me.MSE.Survivabilities
+        Me.m_survivability = Me.MSE.Survivability
 
     End Sub
 

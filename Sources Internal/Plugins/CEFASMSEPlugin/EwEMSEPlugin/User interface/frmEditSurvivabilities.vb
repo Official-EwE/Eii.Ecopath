@@ -43,8 +43,8 @@ Public Class frmEditSurvivabilities
     Public Sub Init(ByVal uic As cUIContext)
         Me.UIContext = uic
         Me.m_grid.UIContext = uic
-        Me.m_grid.Init(Me.m_mse, Me.m_mse.Survivabilities)
-        Me.m_survivability = Me.m_mse.Survivabilities
+        Me.m_grid.Init(Me.m_mse, Me.m_mse.Survivability)
+        Me.m_survivability = Me.m_mse.Survivability
         Me.UpdateGrid(Me.m_survivability.ListofSurvDistParams, My.Resources.HEADER_SURVIVABILITIES)
     End Sub
 

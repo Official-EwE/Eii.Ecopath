@@ -76,7 +76,7 @@ Public Class cMSE
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     Private FleetsThatFishHCRGrp As List(Of Integer) = New List(Of Integer)
-    Public Property m_quota As cQuotaShares
+    Public Property m_quotashares As cQuotaShares
     'Private m_Survivability As cSurvivability
 
     Private BTemp() As Double
@@ -128,7 +128,7 @@ Public Class cMSE
         End Get
     End Property
 
-    Public ReadOnly Property Survivabilities As cSurvivability
+    Public ReadOnly Property Survivability As cSurvivability
         Get
             Return Me.m_survivability
         End Get
@@ -136,7 +136,7 @@ Public Class cMSE
 
     Public ReadOnly Property QuotaShares As cQuotaShares
         Get
-            Return Me.m_quota
+            Return Me.m_quotashares
         End Get
     End Property
 
@@ -299,7 +299,7 @@ Public Class cMSE
             Me.EffortLimits.Load()
             Me.QuotaShares.Load()
             Me.Strategies.Load()
-            Me.Survivabilities.Load()
+            Me.Survivability.Load()
         Catch ex As Exception
 
         End Try
@@ -2540,7 +2540,7 @@ stepend:
         _simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
         Me.m_regulations = New cRegulations(Me, Me.m_core)
-        Me.m_quota = New cQuotaShares(Me, Me.m_core)
+        Me.m_quotashares = New cQuotaShares(Me, Me.m_core)
         Me.m_survivability = New cSurvivability(Me, Me.m_core, EcosimDatastructures)
         Me.m_strategies = New Strategies(Me, Me.m_core)
         Me.m_effortlimits = New cEffortLimits(Me, Me.m_core)
@@ -2608,7 +2608,7 @@ stepend:
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
                                 If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
                                     'find the stock with the biggest economic value
-                                    v = CSng(m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * m_ecopath.EcopathData.Market(iGrp, iFleet))
+                                    v = CSng(m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * m_ecopath.EcopathData.Market(iGrp, iFleet))
                                     If v > vmax Then
                                         vmax = v
                                         imax = iGrp
@@ -2617,7 +2617,7 @@ stepend:
                             Next iGrp
 
                             'get the effort limit for the stock with the biggest value
-                            Emax = CSng((m_quota.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * m_ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
+                            Emax = CSng((m_quotashares.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * m_ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
 
                             'Limit the effort if it is greater than the max allowable 
                             If Emax < m_ecosim.EcosimData.FishRateGear(iFleet, iTime) Then m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
@@ -2628,9 +2628,9 @@ stepend:
                                     iCatch = CSng(m_ecosim.EcosimData.FishRateGear(iFleet, iTime) * QMult(iGrp) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
 
                                     'if the total catch exceeds the quota figure out what do do with the discards
-                                    If iCatch > m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
+                                    If iCatch > m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
                                         'fishing mortality exceeds quota
-                                        m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
+                                        m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
                                         If m_regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
                                             'QuotaType = Strongest
                                             'excess catch discarded and included in the fishing mortailtiy
@@ -2657,7 +2657,7 @@ stepend:
                                 If (m_ecopath.EcopathData.Landing(iFleet, iGrp) + m_ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> cEffortLimits.NoHCR_F Then
                                     'Calculate the effort limitation, has quota been exceeded?
                                     'QYear is omitted from following equation because it is assumed that technological creep is zero
-                                    Elim = CSng((m_quota.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+                                    Elim = CSng((m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
                                     Debug.Assert(Elim >= 0)
                                     If _simdata.FishRateGear(iFleet, iTime) > Elim Then
                                         _simdata.FishRateGear(iFleet, iTime) = Elim
