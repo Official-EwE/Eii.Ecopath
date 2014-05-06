@@ -155,21 +155,21 @@ Public Class Strategies
             StratCounter += 1
         Next StrategyFile
 
-        'Warn the user if anything failed
-        ' JS 04May14: changed message to prompt, localized
-        For Each strFile In lstFailedFiles
-            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_STRATEGY_REMOVE, strFile), _
-                                             eCoreComponentType.External, eMessageType.DataImport, eMessageImportance.Question, _
-                                             eMessageReplyStyle.YES_NO)
-            Me.mCore.Messages.SendMessage(fmsg)
-            If (fmsg.Reply = eMessageReply.YES) Then
-                Try
-                    File.Delete(strFile)
-                Catch ex As Exception
-                    cLog.Write(ex, "CefasMSE:cStrategies delete(" & strFile & ")")
-                End Try
-            End If
-        Next
+        ''Warn the user if anything failed
+        '' JS 04May14: changed message to prompt, localized
+        'For Each strFile In lstFailedFiles
+        '    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_STRATEGY_REMOVE, strFile), _
+        '                                     eCoreComponentType.External, eMessageType.DataImport, eMessageImportance.Question, _
+        '                                     eMessageReplyStyle.YES_NO)
+        '    Me.mCore.Messages.SendMessage(fmsg)
+        '    If (fmsg.Reply = eMessageReply.YES) Then
+        '        Try
+        '            File.Delete(strFile)
+        '        Catch ex As Exception
+        '            cLog.Write(ex, "CefasMSE:cStrategies delete(" & strFile & ")")
+        '        End Try
+        '    End If
+        'Next
 
         Return True
     End Function
