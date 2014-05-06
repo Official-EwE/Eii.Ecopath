@@ -6464,22 +6464,6 @@ exitline:
                     For iRow = 1 To m_Data.InRow
                         For iCol = 1 To m_Data.InCol
                             If Me.EcoSpaceData.Depth(iRow, iCol) > 0 Then 'water cell
-                                'From EwE5
-                                'Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / 2.0!)
-                                'Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / 2.0!)
-
-                                'jb 3-May-2011 CalDistance() needs distance to be in decimal degrees 
-                                'Lon1 and Lat1 are degrees CellLength is KM wtf is Longi
-                                'Longi = CSng(m_Data.Lon1 + (i * m_Data.CellLength))
-                                'Lati = CSng(m_Data.Lat1 - (j * m_Data.CellLength))
-
-                                'cell location in degrees
-                                'Longi = CSng(m_Data.Lon1 + (iRow * CellDegrees))
-                                'Lati = CSng(m_Data.Lat1 - (iCol * CellDegrees))
-
-                                'jb confused by the indexing yet...
-                                'm_Data.InRow = Y = Lat
-                                'm_Data.InCol = X = Lon
                                 Longi = CSng(m_Data.Lon1 + (iCol * CellDegrees))
                                 Lati = CSng(m_Data.Lat1 - (iRow * CellDegrees))
 
@@ -6490,9 +6474,6 @@ exitline:
                             End If
                         Next iCol
                     Next iRow
-                    'test the neighboring cells
-                    'Calc8Dist i, j
-                    'FindMinDistFor8Neighbors i, j
                 End If
             Next iFleet
         Next iPort
