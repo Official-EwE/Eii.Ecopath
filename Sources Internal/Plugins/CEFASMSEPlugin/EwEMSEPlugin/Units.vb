@@ -28,17 +28,10 @@ Imports EwECore
 
 #End Region ' Imports 
 
-Public Enum eConvertTypes
-    ''' <summary>
-    ''' Convert Biomass from interface Tonnes^3 (kt) to t/km2
-    ''' </summary>
-    ''' <remarks></remarks>
+Public Enum eConvertTypes As Integer
+    ''' <summary>Convert Biomass from interface Tonnes^3 (kt) to t/km2</summary>
     ToEcopathBio
-
-    ''' <summary>
-    ''' Convert Biomass from Ecopath t/km2 to Tonnes^3 (kt)
-    ''' </summary>
-    ''' <remarks></remarks>
+    ''' <summary>Convert Biomass from Ecopath t/km2 to Tonnes^3 (kt)</summary>
     ToDisplayBio
 End Enum
 
@@ -53,7 +46,6 @@ Public Class Units
     Public Shared Function Convert(ConversionType As eConvertTypes, Value As Double) As Double
 
         Try
-
             Select Case ConversionType
 
                 Case eConvertTypes.ToEcopathBio
@@ -69,7 +61,5 @@ Public Class Units
         Return Value
 
     End Function
-
-
 
 End Class
