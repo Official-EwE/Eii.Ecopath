@@ -33,6 +33,7 @@ Imports Troschuetz.Random
 #End Region
 
 Public Class cSurvivability
+    Implements IMSEData
 
 #Region " Internal Variables "
 
@@ -88,6 +89,7 @@ Public Class cSurvivability
         Me.mMSE = MSE
         Me.mSimData = EcosimDataStructures
         Me.mListofSuriveDistParams = New List(Of cSurvivabilityDistributonParam)
+        Me.Defaults()
     End Sub
 
 #End Region
@@ -162,22 +164,6 @@ Public Class cSurvivability
         Get
             Return mListofSuriveDistParams
         End Get
-    End Property
-
-
-
-
-    ''' <summary>
-    ''' Returns whether the Survivability distribution file exists
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Property SurvivabilityDistFileExists() As Boolean
-        Get
-            Return mSurvDistFileExists
-        End Get
-        Set(ByVal value As Boolean)
-            mSurvDistFileExists = value
-        End Set
     End Property
 
     ''' <summary>
@@ -263,146 +249,6 @@ Public Class cSurvivability
         Next
 
         Return Nothing
-
-    End Function
-
-    ' ''' <summary>
-    ' ''' Reads the survivability distribution parameters of GroupName as fished by FleetName
-    ' ''' </summary>
-    ' ''' <param name="FleetName"></param>
-    ' ''' <param name="GroupName"></param>
-    ' ''' <returns></returns>
-    ' ''' <remarks></remarks>
-    'Public Function ReadFleetGroupNamesDist(FleetName As String, GroupName As String) As cSurvivabilityDistributonParam
-
-    '    For iRow As Integer = 0 To mListofSuriveDistParams.Count - 1
-    '        If mListofSuriveDistParams(iRow).FleetName = FleetName And mListofSuriveDistParams(iRow).GroupName = GroupName Then Return mListofSuriveDistParams(iRow)
-    '    Next
-
-    '    Return Nothing
-
-    'End Function
-
-    ''' <summary>
-    ''' Loads the survivabilities distribution parameters from CSV
-    ''' </summary>
-    ''' <returns>True if successful, false otherwise</returns>
-    ''' <remarks></remarks>
-    Public Function LoadDistFromCSV() As Boolean
-
-        Dim reader As StreamReader = Nothing
-        Dim csv As CsvReader = Nothing
-        Dim param As cSurvivabilityDistributonParam
-        Dim bSuccess As Boolean = True
-        Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")
-
-        If ListofSurvDistParams.Count > 0 Then ListofSurvDistParams.Clear()
-
-        If File.Exists(filePath) Then
-
-            reader = cMSEUtils.GetReader(filePath)
-            If (reader IsNot Nothing) Then
-                Try
-                    csv = New CsvReader(reader, True)
-                    SurvivabilityDistFileExists = True
-
-                    param = ExtractSurvivabilityDist(csv)
-                    For iFleet As Integer = 1 To mcore.nFleets
-                        For iGroup As Integer = 1 To mcore.nGroups
-                            If param.FleetNo = iFleet And param.GroupNo = iGroup Then
-                                AddDist(param)
-                                param = ExtractSurvivabilityDist(csv)
-                            ElseIf mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
-                                AddDist(New cSurvivabilityDistributonParam(iFleet, iGroup, Alpha:=2, beta:=2))
-                            End If
-                        Next
-                    Next
-
-                    csv.Dispose()
-
-                Catch ex As Exception
-                    'Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
-                    bSuccess = False
-                End Try
-                cMSEUtils.ReleaseReader(reader)
-            End If
-        Else
-            For iFleet = 1 To mcore.nFleets
-                For iGroup = 1 To mcore.nGroups
-                    If mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
-                        AddDist(New cSurvivabilityDistributonParam(iFleet, iGroup, Alpha:=2, beta:=2))
-                    End If
-                Next
-            Next
-        End If
-
-        Return bSuccess
-
-    End Function
-
-    ''' <summary>
-    ''' Extracts a survivability distribution parameter + information from csv
-    ''' </summary>
-    ''' <param name="csv">The CSV object linking to the survivability distribution parameter file</param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Function ExtractSurvivabilityDist(ByVal csv As CsvReader) As cSurvivabilityDistributonParam
-
-        ' Sanity checks
-        If (csv Is Nothing) Then Return Nothing
-        If (Not csv.ReadNextRecord()) Then Return Nothing
-
-        Dim TFleetNumber As Integer
-        Dim TGroupNumber As Integer
-        Dim TAlpha As Double
-        Dim TBeta As Double
-
-        Try
-            TFleetNumber = cStringUtils.ConvertToInteger(csv(0))
-            TGroupNumber = cStringUtils.ConvertToInteger(csv(2))
-            TAlpha = cStringUtils.ConvertToDouble(csv(4))
-            TBeta = cStringUtils.ConvertToDouble(csv(5))
-
-        Catch ex As Exception
-            ' ToDo_JS: respond to error
-            Return Nothing
-        End Try
-
-        Return New cSurvivabilityDistributonParam(TFleetNumber, TGroupNumber, TAlpha, TBeta)
-
-    End Function
-
-    ''' <summary>
-    ''' Saves survivability distribution information to CSV
-    ''' </summary>
-    ''' <returns>False if there was an error</returns>
-    ''' <remarks></remarks>
-    Public Function SaveDistributionParamsToCSV() As Boolean
-
-        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv"), False)
-        Dim bSuccess As Boolean = False
-
-        If (writer Is Nothing) Then Return bSuccess
-
-        Try
-            writer.WriteLine("FleetNumber,FleetName,GroupNumber,GroupName,Alpha,Beta")
-
-            For Each entry As cSurvivabilityDistributonParam In mListofSuriveDistParams
-                writer.WriteLine(cStringUtils.ToCSVField(entry.FleetNo) & "," & _
-                                 cStringUtils.ToCSVField(mcore.FleetInputs(entry.FleetNo).Name) & "," & _
-                                 cStringUtils.ToCSVField(entry.GroupNo) & "," & _
-                                 cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," & _
-                                 cStringUtils.ToCSVField(entry.Alpha) & "," & _
-                                 cStringUtils.ToCSVField(entry.Beta))
-            Next
-
-            bSuccess = True
-
-        Catch ex As Exception
-
-        End Try
-        cMSEUtils.ReleaseWriter(writer)
-        Return bSuccess
 
     End Function
 
@@ -650,6 +496,148 @@ Public Class cSurvivability
     'End Sub
 
 #End Region
+
+    Public Sub Defaults() Implements IMSEData.Defaults
+        Me.ListofSurvDistParams.Clear()
+    End Sub
+
+    Public Function IsChanged() As Boolean _
+        Implements IMSEData.IsChanged
+        Return False
+    End Function
+
+    Public Function Load(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.Load
+
+        Dim reader As StreamReader = Nothing
+        Dim csv As CsvReader = Nothing
+        Dim param As cSurvivabilityDistributonParam
+        Dim bSuccess As Boolean = True
+
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFilePath()
+        End If
+
+        Me.Defaults()
+
+        If File.Exists(strFilename) Then
+
+            reader = cMSEUtils.GetReader(strFilename)
+            If (reader IsNot Nothing) Then
+                Try
+                    csv = New CsvReader(reader, True)
+                    param = ExtractSurvivabilityDist(csv)
+                    If (param IsNot Nothing) Then
+
+                        For iFleet As Integer = 1 To mcore.nFleets
+                            For iGroup As Integer = 1 To mcore.nGroups
+                                If param.FleetNo = iFleet And param.GroupNo = iGroup Then
+                                    AddDist(param)
+                                End If
+                            Next
+                        Next
+                    End If
+                    csv.Dispose()
+
+                Catch ex As Exception
+                    'Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
+                    bSuccess = False
+                End Try
+                cMSEUtils.ReleaseReader(reader)
+            End If
+        End If
+
+        ' Add defaults for all missing catches
+        If (Me.mListofSuriveDistParams.Count = 0) Then
+            For iFleet = 1 To mcore.nFleets
+                For iGroup = 1 To mcore.nGroups
+                    If mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
+                        Dim bFound As Boolean = False
+                        For iParam As Integer = 0 To Me.mListofSuriveDistParams.Count - 1
+                            param = Me.mListofSuriveDistParams(iParam)
+                            bFound = bFound Or ((param.FleetNo = iFleet) And (param.GroupNo = iGroup))
+                        Next
+                        If (Not bFound) Then
+                            AddDist(New cSurvivabilityDistributonParam(iFleet, iGroup, Alpha:=2, beta:=2))
+                        End If
+                    End If
+                Next
+            Next
+        End If
+
+        Return bSuccess
+    End Function
+
+    Public Function Save(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.Save
+
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFilePath()
+        End If
+
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(strFilename)
+        Dim bSuccess As Boolean = False
+
+        If (writer Is Nothing) Then Return bSuccess
+
+        Try
+            writer.WriteLine("FleetNumber,FleetName,GroupNumber,GroupName,Alpha,Beta")
+
+            For Each entry As cSurvivabilityDistributonParam In mListofSuriveDistParams
+                writer.WriteLine(cStringUtils.ToCSVField(entry.FleetNo) & "," & _
+                                 cStringUtils.ToCSVField(mcore.FleetInputs(entry.FleetNo).Name) & "," & _
+                                 cStringUtils.ToCSVField(entry.GroupNo) & "," & _
+                                 cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," & _
+                                 cStringUtils.ToCSVField(entry.Alpha) & "," & _
+                                 cStringUtils.ToCSVField(entry.Beta))
+            Next
+
+            bSuccess = True
+
+        Catch ex As Exception
+
+        End Try
+        cMSEUtils.ReleaseWriter(writer)
+        Return bSuccess
+
+    End Function
+
+
+    ''' <summary>
+    ''' Extracts a survivability distribution parameter + information from csv
+    ''' </summary>
+    ''' <param name="csv">The CSV object linking to the survivability distribution parameter file</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function ExtractSurvivabilityDist(ByVal csv As CsvReader) As cSurvivabilityDistributonParam
+
+        ' Sanity checks
+        If (csv Is Nothing) Then Return Nothing
+        If (Not csv.ReadNextRecord()) Then Return Nothing
+
+        Dim TFleetNumber As Integer
+        Dim TGroupNumber As Integer
+        Dim TAlpha As Double
+        Dim TBeta As Double
+
+        Try
+            TFleetNumber = cStringUtils.ConvertToInteger(csv(0))
+            TGroupNumber = cStringUtils.ConvertToInteger(csv(2))
+            TAlpha = cStringUtils.ConvertToDouble(csv(4))
+            TBeta = cStringUtils.ConvertToDouble(csv(5))
+
+        Catch ex As Exception
+            ' ToDo_JS: respond to error
+            Return Nothing
+        End Try
+
+        Return New cSurvivabilityDistributonParam(TFleetNumber, TGroupNumber, TAlpha, TBeta)
+
+    End Function
+
+    Private Function DefaultFilePath() As String
+        Return cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")
+    End Function
 
 End Class
 

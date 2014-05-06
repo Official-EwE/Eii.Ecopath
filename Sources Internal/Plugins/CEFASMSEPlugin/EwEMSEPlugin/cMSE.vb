@@ -299,7 +299,7 @@ Public Class cMSE
             Me.EffortLimits.Load()
             Me.QuotaShares.Load()
             Me.Strategies.Load()
-
+            Me.Survivabilities.Load()
         Catch ex As Exception
 
         End Try
