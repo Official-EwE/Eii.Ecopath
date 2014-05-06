@@ -21,6 +21,7 @@
 '
 
 Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Controls
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmEditSurvivabilities
@@ -47,17 +48,17 @@ Partial Class frmEditSurvivabilities
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEditSurvivabilities))
-        Me.m_btnOK = New System.Windows.Forms.Button()
+        Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_grid = New EwEMSEPlugin.gridSurviveDistParameters()
-        Me.m_ts = New System.Windows.Forms.ToolStrip()
+        Me.m_ts = New cEwEToolstrip()
         Me.SuspendLayout()
         '
-        'm_btnOK
+        'm_btnSave
         '
-        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
-        Me.m_btnOK.Name = "m_btnOK"
-        Me.m_btnOK.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
+        Me.m_btnSave.Name = "m_btnSave"
+        Me.m_btnSave.UseVisualStyleBackColor = True
         '
         'm_btnCancel
         '
@@ -105,14 +106,14 @@ Partial Class frmEditSurvivabilities
         '
         'frmEditSurvivabilities
         '
-        Me.AcceptButton = Me.m_btnOK
+        Me.AcceptButton = Me.m_btnSave
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_btnCancel)
-        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_btnSave)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmEditSurvivabilities"
@@ -122,8 +123,8 @@ Partial Class frmEditSurvivabilities
 
     End Sub
 
-    Friend WithEvents m_btnOK As System.Windows.Forms.Button
-    Friend WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_grid As EwEMSEPlugin.gridSurviveDistParameters
-    Private WithEvents m_ts As System.Windows.Forms.ToolStrip
+    Private WithEvents m_ts As cEwEToolstrip
+    Private WithEvents m_btnSave As System.Windows.Forms.Button
 End Class

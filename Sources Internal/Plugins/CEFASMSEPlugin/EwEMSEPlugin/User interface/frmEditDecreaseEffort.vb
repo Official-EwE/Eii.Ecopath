@@ -69,7 +69,7 @@ Public Class frmEditDecreaseEffort
     End Sub
 
     Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnOK.Click
+        Handles m_btnSave.Click
 
         Try
             ' Save to default location

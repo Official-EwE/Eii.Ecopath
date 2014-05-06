@@ -150,34 +150,34 @@
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnSave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="m_btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnSave.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnSave.Location" type="System.Drawing.Point, System.Drawing">
     <value>382, 392</value>
   </data>
-  <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnSave.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="m_btnOK.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnSave.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_btnOK.Text" xml:space="preserve">
-    <value>OK</value>
+  <data name="m_btnSave.Text" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.Name" xml:space="preserve">
-    <value>m_btnOK</value>
+  <data name="&gt;&gt;m_btnSave.Name" xml:space="preserve">
+    <value>m_btnSave</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnSave.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnSave.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnSave.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -229,7 +229,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10696.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
@@ -259,6 +259,6 @@
     <value>frmEditDecreaseEffort</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.10662.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.10696.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

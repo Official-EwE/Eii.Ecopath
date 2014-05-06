@@ -97,7 +97,7 @@ Public Class frmEditSurvivabilities
         Me.m_grid.DataName = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.CAPTION, strName)
     End Sub
 
-    Private Sub m_btnSave_Click(sender As System.Object, e As System.EventArgs) Handles m_btnOK.Click
+    Private Sub m_btnSave_Click(sender As System.Object, e As System.EventArgs) Handles m_btnSave.Click
         Dim lstrSubMessages As New List(Of String)
         Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_mse.DataPath, cMSEUtils.eMSEPaths.DistrParams)
 

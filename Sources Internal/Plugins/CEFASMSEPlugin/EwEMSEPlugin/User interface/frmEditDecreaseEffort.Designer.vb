@@ -48,7 +48,7 @@ Partial Class frmEditDecreaseEffort
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEditDecreaseEffort))
         Me.m_btnCancel = New System.Windows.Forms.Button()
-        Me.m_btnOK = New System.Windows.Forms.Button()
+        Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_grid = New EwEMSEPlugin.gridMaxDecreaseEffort()
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.SuspendLayout()
@@ -60,11 +60,11 @@ Partial Class frmEditDecreaseEffort
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
-        'm_btnOK
+        'm_btnSave
         '
-        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
-        Me.m_btnOK.Name = "m_btnOK"
-        Me.m_btnOK.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
+        Me.m_btnSave.Name = "m_btnSave"
+        Me.m_btnSave.UseVisualStyleBackColor = True
         '
         'm_grid
         '
@@ -106,14 +106,14 @@ Partial Class frmEditDecreaseEffort
         '
         'frmEditDecreaseEffort
         '
-        Me.AcceptButton = Me.m_btnOK
+        Me.AcceptButton = Me.m_btnSave
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
         Me.ControlBox = False
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_grid)
-        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_btnSave)
         Me.Controls.Add(Me.m_btnCancel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -125,7 +125,7 @@ Partial Class frmEditDecreaseEffort
     End Sub
 
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
-    Private WithEvents m_btnOK As System.Windows.Forms.Button
+    Private WithEvents m_btnSave As System.Windows.Forms.Button
     Private WithEvents m_grid As gridMaxDecreaseEffort
     Private WithEvents m_ts As cEwEToolstrip
 End Class
