@@ -58,7 +58,6 @@ Partial Class frmTFMpolicy
         Me.m_tsbnAddStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_graph = New ZedGraph.ZedGraphControl()
-        Me.m_hdrStrategies = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpHCR = New System.Windows.Forms.TableLayoutPanel()
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         Me.m_tsHCR = New ScientificInterfaceShared.Controls.cEwEToolstrip()
@@ -102,9 +101,8 @@ Partial Class frmTFMpolicy
         'm_tlpStrategies
         '
         resources.ApplyResources(Me.m_tlpStrategies, "m_tlpStrategies")
-        Me.m_tlpStrategies.Controls.Add(Me.m_tsStrategy, 0, 1)
-        Me.m_tlpStrategies.Controls.Add(Me.m_graph, 0, 2)
-        Me.m_tlpStrategies.Controls.Add(Me.m_hdrStrategies, 0, 0)
+        Me.m_tlpStrategies.Controls.Add(Me.m_tsStrategy, 0, 0)
+        Me.m_tlpStrategies.Controls.Add(Me.m_graph, 0, 1)
         Me.m_tlpStrategies.Name = "m_tlpStrategies"
         '
         'm_tsStrategy
@@ -151,14 +149,6 @@ Partial Class frmTFMpolicy
         Me.m_graph.ScrollMinY = 0.0R
         Me.m_graph.ScrollMinY2 = 0.0R
         Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
-        '
-        'm_hdrStrategies
-        '
-        Me.m_hdrStrategies.CanCollapseParent = False
-        Me.m_hdrStrategies.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrStrategies, "m_hdrStrategies")
-        Me.m_hdrStrategies.IsCollapsed = False
-        Me.m_hdrStrategies.Name = "m_hdrStrategies"
         '
         'm_tlpHCR
         '
@@ -351,7 +341,6 @@ Partial Class frmTFMpolicy
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_scDetails As System.Windows.Forms.SplitContainer
     Private WithEvents m_tlpStrategies As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_hdrStrategies As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tlpHCR As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_hdrHCR As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tlpRegulations As System.Windows.Forms.TableLayoutPanel
