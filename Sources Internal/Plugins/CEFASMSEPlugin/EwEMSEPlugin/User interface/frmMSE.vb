@@ -298,12 +298,9 @@ Public Class frmMSE
     End Sub
 
     Private Sub btnEditSurvivabilities_Click(sender As System.Object, e As System.EventArgs) Handles btnEditSurvivabilities.Click
-        'First make sure the Harvest Controls Rules have been loaded
-        'this is so the interface has some data
 
         ' JS 02Oct13: Moved Strategies extraction test flag to the plug-in, which does the actual work
         '             From the UI point of view, we just want strategies. The plug-in does the optimizating
-
         Try
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
             frmSurvivabilities.Init(Me.UIContext)
