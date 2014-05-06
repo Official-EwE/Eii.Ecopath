@@ -1640,6 +1640,58 @@ Namespace Controls.EwEGrid
 
 #End Region ' Updated (StyleGuide)
 
+#Region " Experimental "
+
+        Public Function AddRow(values As Object(), styles As cStyleGuide.eStyleFlags()) As Boolean
+
+            Dim bOK As Boolean = True
+
+            If (values Is Nothing) Then Return False
+            If (styles Is Nothing) Then Return False
+            If (values.Length <> Me.ColumnsCount) Then Return False
+            If (styles.Length <> values.Length) Then Return False
+
+            Dim iRow As Integer = Me.AddRow()
+            Dim cell As EwECellBase = Nothing
+
+            Try
+                For i As Integer = 0 To values.Length - 1
+                    If (TypeOf (values(i)) Is cProperty) Then
+                        Dim prop As cProperty = DirectCast(values(i), cProperty)
+                        If (i < Me.FixedRows) Then
+                            cell = New PropertyRowHeaderCell(prop)
+                        Else
+                            cell = New PropertyCell(prop)
+                            cell.Style = styles(i)
+                        End If
+                    Else
+                        If (i < Me.FixedRows) Then
+                            If (values(i) IsNot Nothing) Then
+                                If (TypeOf (values(i)) Is eVarNameFlags) Then
+                                    cell = New EwEColumnHeaderCell(DirectCast(values(i), eVarNameFlags))
+                                Else
+                                    cell = New EwEColumnHeaderCell(CStr(values(i)))
+                                End If
+                            Else
+                                cell = New EwEColumnHeaderCell("")
+                            End If
+                        Else
+                            cell = New EwECell(values(i), values(i).GetType(), styles(i))
+                            cell.Behaviors.Add(Me.EwEEditHandler)
+                        End If
+                    End If
+                    Me(iRow, i) = cell
+                Next
+            Catch ex As Exception
+                bOK = False
+            End Try
+
+            Return bOK
+
+        End Function
+
+#End Region ' Experimental
+
     End Class
 
 End Namespace
