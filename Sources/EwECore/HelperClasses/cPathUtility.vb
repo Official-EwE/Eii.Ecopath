@@ -60,8 +60,8 @@ Public Class cPathUtility
         MyDocuments
         ''' <summary>Place holder to receive the current application data directory.</summary>
         MyAppData
-        ''' <summary>Place holder to receive the shared application data directory.</summary>
-        SharedAppData
+        ' ''' <summary>Place holder to receive the shared application data directory.</summary>
+        'SharedAppData
         ''' <summary>Place holder to receive the current desktop directory.</summary>
         Desktop
         ''' <summary>Place holder to receive the temp directory.</summary>
@@ -127,14 +127,17 @@ Public Class cPathUtility
 
         ' loop-ti-loop
         For Each pht As ePathPlaceholderTypes In [Enum].GetValues(GetType(ePathPlaceholderTypes))
-            strPathOut = cStringUtils.Replace(strPathOut, _
-                                              "{" & pht.ToString & "}", _
-                                              ResolvePlaceholder(pht, strModelFile, strModelPath, strModelExt, strModelVersion), _
-                                              StringComparison.CurrentCultureIgnoreCase)
-            'strPathOut = Regex.Replace(strPathOut, _
-            '                           "{" & pht.ToString & "}", _
-            '                           ResolvePlaceholder(pht, strModelFile, strModelPath, strModelExt, strModelVersion), _
-            '                           RegexOptions.IgnoreCase Or RegexOptions.IgnorePatternWhitespace)
+            Dim strPattern As String = "{" & pht.ToString & "}"
+            If strPathOut.Contains(strPattern) Then
+                strPathOut = cStringUtils.Replace(strPathOut, _
+                                                  strPattern, _
+                                                  ResolvePlaceholder(pht, strModelFile, strModelPath, strModelExt, strModelVersion), _
+                                                  StringComparison.CurrentCultureIgnoreCase)
+                'strPathOut = Regex.Replace(strPathOut, _
+                '                           "{" & pht.ToString & "}", _
+                '                           ResolvePlaceholder(pht, strModelFile, strModelPath, strModelExt, strModelVersion), _
+                '                           RegexOptions.IgnoreCase Or RegexOptions.IgnorePatternWhitespace)
+            End If
         Next
 
         ' Remove invalid path chars
@@ -173,7 +176,7 @@ Public Class cPathUtility
                 Case ePathPlaceholderTypes.MyDocuments : strResolved = My.Computer.FileSystem.SpecialDirectories.MyDocuments
                 Case ePathPlaceholderTypes.MyAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
                 Case ePathPlaceholderTypes.Desktop : strResolved = My.Computer.FileSystem.SpecialDirectories.Desktop
-                Case ePathPlaceholderTypes.SharedAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.AllUsersApplicationData
+                    'Case ePathPlaceholderTypes.SharedAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.AllUsersApplicationData
                 Case ePathPlaceholderTypes.TempFiles : strResolved = My.Computer.FileSystem.SpecialDirectories.Temp
                 Case Else : Debug.Assert(False)
             End Select
