@@ -484,13 +484,18 @@ Public Class frmMSE
 
                 ' Try to create folder structure
                 If Me.MSE.IsInputStructureAvailable(True) Then
-                    ' #Created: force user to examine distribution params, and generate input files
+                    ' #Created: force user to examine distribution params
                     If (Me.ReviewDistParams) Then
-                        ' #User went along: create all other data files
-                        ' - Survivabilities
+                        ' #User went along so far: create all other essential input files
+
+                        ' --- BEGIN GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
+
                         MSE.GenerateSurvivabilities()
-                        ' - Diets
                         MSE.GenerateEmptyDietCSVs()
+                        ' .. add more
+
+                        ' --- END GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
+
                         ' Re-assess state
                         Me.MSE.InvalidateData(False)
                         bPathValid = Me.MSE.IsInputDataCompatible()
@@ -510,19 +515,25 @@ Public Class frmMSE
             Else
                 ' Input structure is there, but may be meant for a different model
                 If (Not Me.MSE.IsInputDataCompatible()) Then
+                    ' #Folder incompatible: notify user
                     Me.MSE.InformUser(String.Format(My.Resources.PROMPT_DATAPATH_INCOMPATIBLE, Me.MSE.DataPath), eMessageImportance.Warning)
+                    ' Sorry dude, you have to pick another folder
                     bPathValid = False
                 Else
+                    ' #Folder is compatible with current model
                     bPathValid = True
                 End If
             End If
 
+            ' Do we need to pick again?
             If (Not bPathValid) Then
-
+                ' #Yes: ask user to pick a folder
                 If Not Me.SelectDataPath() Then
+                    ' #Aborted: done for now
                     Return False
                 End If
 
+                ' Re-assess state
                 Me.MSE.InvalidateData()
                 bPathValid = (Me.MSE.IsInputStructureAvailable(False) And Me.MSE.IsInputDataCompatible())
 
