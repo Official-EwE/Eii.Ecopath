@@ -136,7 +136,7 @@
     <value>0</value>
   </data>
   <data name="m_lblDrop.Text" xml:space="preserve">
-    <value>Drop file(s) here</value>
+    <value>Drop AquaMaps HSPEN file(s) here</value>
   </data>
   <data name="m_lblDrop.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -211,7 +211,7 @@
     <value>m_hdrEnvelopes</value>
   </data>
   <data name="&gt;&gt;m_hdrEnvelopes.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10311.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10717.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEnvelopes.Parent" xml:space="preserve">
     <value>m_tlpOptions</value>
@@ -244,7 +244,7 @@
     <value>m_hdrSpecies</value>
   </data>
   <data name="&gt;&gt;m_hdrSpecies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10311.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10717.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSpecies.Parent" xml:space="preserve">
     <value>m_tlpOptions</value>
