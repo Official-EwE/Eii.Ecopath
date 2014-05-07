@@ -442,4 +442,8 @@ Public Class frmMSE
     Private Sub btnSampleSurvivabilities_Click(sender As System.Object, e As System.EventArgs) Handles btnSampleSurvivabilities.Click
         MSE.GenerateSurvivabilities()
     End Sub
+
+    Private Sub btnCreateDiet_Click(sender As System.Object, e As System.EventArgs) Handles btnCreateDiet.Click
+
+    End Sub
 End Class

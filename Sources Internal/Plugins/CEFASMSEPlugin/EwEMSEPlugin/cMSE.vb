@@ -1522,7 +1522,6 @@ Public Class cMSE
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function updateDietMatrixFromCSVFile(ByVal iTrial As Integer) As Boolean
-
         Dim GoodDynamics As Boolean = True
         Dim csvDietMatrix As CsvReader
         Dim strmReader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"))
@@ -1542,11 +1541,10 @@ Public Class cMSE
             For iPrey As Integer = 1 To m_core.nGroups
                 If (Not csvDietMatrix.EndOfStream) And (csvDietMatrix.ReadNextRecord()) Then
                     For iPred As Integer = 1 To m_core.nLivingGroups
-
-                        If m_ecopath.EcopathData.DC(iPred, iPrey) > 0 Then
-                            'Debug.Assert(cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) > 0)
-                            m_ecopath.EcopathData.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
-                        End If
+                        'If m_ecopath.EcopathData.DC(iPred, iPrey) > 0 Then
+                        'Debug.Assert(cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) > 0)
+                        m_ecopath.EcopathData.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                        'End If
 
                     Next
                 Else
@@ -1638,7 +1636,7 @@ Public Class cMSE
         For Each iGrp In BiomassLimits.lstBiomassLimits
             For iTimeStep As Integer = 1 To NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                 'Check projection is above minimum biomass
-                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) < iGrp.mLowerLimit Then
+                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) <= iGrp.mLowerLimit Then
                     GoodDynamics = False
                 End If
                 'check the projection is above the max biomass
@@ -2018,7 +2016,7 @@ Public Class cMSE
                         'Write code here that generates a whole set of diet parameters to be used in combination with new ecopath parameters
                         'to be tested for the mass-balance criteria
                         Me.SampleDietMatrix(Interacts, MeanProportions, DietPropMultipliers)
-                        Me.NormalizeDiet(Me._pathdata.DCInput)
+                        'Me.NormalizeDiet(Me._pathdata.DCInput)
                         'Me.dumpDietMatrix()
 
                         Console.WriteLine("Iteration = " & i)
@@ -2240,32 +2238,32 @@ Public Class cMSE
     End Function
 
 
-    Private Sub NormalizeDiet(ByRef DietMatrix(,) As Single)
-        Dim dietsum As Single
-        Dim tol As Single = 0.001
-        Dim bwarning As Boolean = False
+    'Private Sub NormalizeDiet(ByRef DietMatrix(,) As Single)
+    '    Dim dietsum As Single
+    '    Dim tol As Single = 0.001
+    '    Dim bwarning As Boolean = False
 
-        For iPred = 1 To Me._pathdata.NumLiving
-            bwarning = False
-            If Me._pathdata.PP(iPred) < 1 Then
-                dietsum = 0
-                For iPrey = 0 To Me._pathdata.NumGroups
-                    dietsum = dietsum + DietMatrix(iPred, iPrey)
-                Next
-                If dietsum <> 0 And Math.Abs(dietsum - 1) > tol Then
-                    bwarning = True
-                    For iPrey = 0 To Me._pathdata.NumGroups
-                        DietMatrix(iPred, iPrey) = DietMatrix(iPred, iPrey) / dietsum
-                    Next
-                    'm_Data.DietsModified = True
-                End If
-            End If
-        Next
-        If bwarning Then
-            System.Console.WriteLine("WARNING MSE Normalized Diet after sampling.")
-        End If
+    '    For iPred = 1 To Me._pathdata.NumLiving
+    '        bwarning = False
+    '        If Me._pathdata.PP(iPred) < 1 Then
+    '            dietsum = 0
+    '            For iPrey = 0 To Me._pathdata.NumGroups
+    '                dietsum = dietsum + DietMatrix(iPred, iPrey)
+    '            Next
+    '            If dietsum <> 0 And Math.Abs(dietsum - 1) > tol Then
+    '                bwarning = True
+    '                For iPrey = 0 To Me._pathdata.NumGroups
+    '                    DietMatrix(iPred, iPrey) = DietMatrix(iPred, iPrey) / dietsum
+    '                Next
+    '                'm_Data.DietsModified = True
+    '            End If
+    '        End If
+    '    Next
+    '    If bwarning Then
+    '        System.Console.WriteLine("WARNING MSE Normalized Diet after sampling.")
+    '    End If
 
-    End Sub
+    'End Sub
 
 
     Public Sub CreateRCode()
@@ -2462,6 +2460,8 @@ stepend:
                 'Samples a set of Dirichlet distributed parameters
                 TempDirichlet = DirichletSample2(CInt(SumInteractions(iPred)), MeanPropMod, DietPropMultipliers(iPred))
 
+
+
                 'Set all the diet values in ecopath to those sampled and checked to be within correct intervals
                 PreyIndex = 0
                 For i = 0 To TempDirichlet.GetLength(0) - 1
@@ -2472,6 +2472,13 @@ stepend:
                     ecopathData.DCInput(iPred + 1, PreyIndex) = TempDirichlet(i)
                     PreyIndex += 1
                 Next
+
+                'Testing code - remove when finished TODO
+                Dim SumAcrossPredator As Double = 0
+                For iPrey = 0 To m_core.nGroups
+                    SumAcrossPredator += ecopathData.DCInput(iPred + 1, iPrey)
+                Next
+                If Math.Abs(SumAcrossPredator - 1) > 0.001 Then Stop
 
                 ''Changes the output of TempDirichlet so that it is a vector of length mcore.nlivinggroups
                 'If Interacts(iPred, 0) = 1 Then
