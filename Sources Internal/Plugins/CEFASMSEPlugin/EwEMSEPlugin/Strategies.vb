@@ -128,6 +128,8 @@ Public Class Strategies
         Dim bReadReg As Boolean
         Dim lstFailedFiles As New List(Of String)
 
+        If Not Directory.Exists(strStategyDir) Then Return False
+
         'Get an array of strings giving the path to each HCR
         ' JS 30Sep13: Only read CSV files
         StrategiesFileNames = Directory.GetFiles(strStategyDir, "*.csv")
