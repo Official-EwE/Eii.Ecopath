@@ -89,7 +89,7 @@ Public Class gridDistributionParameters
 
     ''' <summary>The cMSE Plugin that contains the data.</summary>
     Private MSEPlugin As cMSE
-    Private m_data As frmDistributionParameters.cDistributionParamsData() = Nothing
+    Private m_data As cDistributionParamsData() = Nothing
     Private m_mode As frmDistributionParameters.eParameterSet
 
 #Region " Constructor "
@@ -119,11 +119,11 @@ Public Class gridDistributionParameters
         End Set
     End Property
 
-    Public Property Data As frmDistributionParameters.cDistributionParamsData()
+    Public Property Data As cDistributionParamsData()
         Get
             Return Me.m_data
         End Get
-        Set(value As frmDistributionParameters.cDistributionParamsData())
+        Set(value As cDistributionParamsData())
             Me.m_data = value
             Me.FillData()
         End Set
@@ -186,7 +186,7 @@ Public Class gridDistributionParameters
             Select Case Me.m_mode
                 Case frmDistributionParameters.eParameterSet.Ecopath
 
-                    Dim data As frmDistributionParameters.EcopathParam = DirectCast(Me.m_data(i), frmDistributionParameters.EcopathParam)
+                    Dim data As EcopathParam = DirectCast(Me.m_data(i), EcopathParam)
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(data.GroupNo)
                     Dim sg As cStanzaGroup = Nothing
                     Dim bUse As Boolean = True
@@ -214,7 +214,7 @@ Public Class gridDistributionParameters
                      Me.Rows(iRow).Tag = data
 
                 Case frmDistributionParameters.eParameterSet.Ecosim
-                    Dim data As frmDistributionParameters.EcosimParam = DirectCast(Me.m_data(i), frmDistributionParameters.EcosimParam)
+                    Dim data As EcosimParam = DirectCast(Me.m_data(i), EcosimParam)
 
                     Me(iRow, eEcosimColumnTypes.Index) = New EwERowHeaderCell(CStr(data.GroupNo))
                     Me(iRow, eEcosimColumnTypes.Name) = New EwERowHeaderCell(CStr(data.GroupName))
@@ -278,9 +278,9 @@ Public Class gridDistributionParameters
                 Dim tag As Object = Me.Rows(p.Row).Tag
                 If (tag Is Nothing) Then Return False
 
-                Debug.Assert(TypeOf tag Is frmDistributionParameters.EcopathParam)
+                Debug.Assert(TypeOf tag Is EcopathParam)
 
-                Dim data As frmDistributionParameters.EcopathParam = DirectCast(tag, frmDistributionParameters.EcopathParam)
+                Dim data As EcopathParam = DirectCast(tag, EcopathParam)
 
                 Select Case DirectCast(p.Column, eEcopathColumnTypes)
                     Case eEcopathColumnTypes.CV
@@ -300,9 +300,9 @@ Public Class gridDistributionParameters
                 Dim tag As Object = Me.Rows(p.Row).Tag
                 If (tag Is Nothing) Then Return False
 
-                Debug.Assert(TypeOf tag Is frmDistributionParameters.EcosimParam)
+                Debug.Assert(TypeOf tag Is EcosimParam)
 
-                Dim data As frmDistributionParameters.EcosimParam = DirectCast(tag, frmDistributionParameters.EcosimParam)
+                Dim data As EcosimParam = DirectCast(tag, EcosimParam)
  
                 Select Case DirectCast(p.Column, eEcosimColumnTypes)
                     Case eEcosimColumnTypes.DistrType

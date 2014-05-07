@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cBiomassLimits.vb" />
+    <Compile Include="cDistributionParameters.vb" />
     <Compile Include="cEffortLimits.vb" />
     <Compile Include="cMSE.vb" />
     <Compile Include="cMSEPluginPoint.vb" />

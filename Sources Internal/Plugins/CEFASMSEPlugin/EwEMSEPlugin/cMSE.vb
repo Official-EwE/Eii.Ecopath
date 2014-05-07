@@ -113,12 +113,12 @@ Public Class cMSE
     Private m_iNumModelsAvailable As Integer = cCore.NULL_VALUE
     Private m_tsInputDataCompatibility As TriState = TriState.UseDefault
     Private m_tsRunDataCompatibility As TriState = TriState.UseDefault
-    Dim TrajectoryCsv As StreamWriter
-    Dim Trajectory2Csv As List(Of StreamWriter)             'Trajectories2 is similar to trajectories apart from it each file contains only 1 group
+    Private TrajectoryCsv As StreamWriter
+    Private Trajectory2Csv As List(Of StreamWriter)             'Trajectories2 is similar to trajectories apart from it each file contains only 1 group
 
 #End Region ' Internal vars
 
-#Region "Public Properties"
+#Region " Public Properties "
 
     Public Property IsRunning As Boolean = False
 
@@ -291,7 +291,7 @@ Public Class cMSE
 
 #Region " Diagnostics and state management "
 
-    Friend Sub InvalidateData()
+    Friend Sub InvalidateData(Optional bReloadData As Boolean = True)
 
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
@@ -304,6 +304,10 @@ Public Class cMSE
         If (Me.m_core.ActiveEcosimScenarioIndex < 1) Then Return
         ' Test whether MSE has been initialized
         If (Me.m_survivability Is Nothing) Then Return
+
+        If (Not Me.IsInputStructureAvailable(False)) Then Return
+        If (Not Me.IsInputDataCompatible()) Then Return
+        If (Not bReloadData) Then Return
 
         ' ToDo: globalize this
         cApplicationStatusNotifier.StartProgress(Me.m_core, "Loading Cefas MSE...", -1)
@@ -339,9 +343,58 @@ Public Class cMSE
         For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
             bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
         Next
+
         Return bSuccess
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether all base data is available for building models
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsInputDataCompatible() As Boolean
+
+        ' Would it not be nice if these file names were represented by enums as well?
+
+        Dim aFilesEcopath As String() = New String() {"B_Dist", "BA_Dist", "PB_Dist", "QB_Dist", "EE_Dist"}
+        Dim aFilesEcosim As String() = New String() {"DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
+        Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams)
+
+        If (Me.m_tsInputDataCompatibility = TriState.UseDefault) Then
+
+            ' Hope for the best
+            Me.m_tsInputDataCompatibility = TriState.True
+
+            ' Make sure plug-in has empty CSV
+            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Or _
+               Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
+                Me.m_tsInputDataCompatibility = TriState.False
+            Else
+                ' Assess Ecopath files
+                For Each strFile As String In aFilesEcopath
+                    If Not CheckEcopathDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
+                        Me.m_tsInputDataCompatibility = TriState.False
+                        Exit For
+                    End If
+                Next strFile
+
+                ' Assess Ecopath files
+                For Each strFile As String In aFilesEcosim
+                    If Not CheckEcoSimDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
+                        Me.m_tsInputDataCompatibility = TriState.False
+                        Exit For
+                    End If
+                Next strFile
+
+            End If
+        End If
+
+        Return (Me.m_tsInputDataCompatibility = TriState.True)
+
+    End Function
+
 
     Public Function IsRunDataCompatible() As Boolean
 
@@ -383,55 +436,6 @@ Public Class cMSE
         Return (Me.m_tsRunDataCompatibility = TriState.True)
 
     End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns whether all base data is available for building models
-    ''' </summary>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Public Function IsInputDataCompatible() As Boolean
-
-        ' Would it not be nice if these file names were represented by enums as well?
-
-        Dim aFilesEcopath As String() = New String() {"B_Dist", "BA_Dist", "PB_Dist", "QB_Dist", "EE_Dist"}
-        Dim aFilesEcosim As String() = New String() {"DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
-        Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams)
-
-        If (Me.m_tsInputDataCompatibility = TriState.UseDefault) Then
-
-            ' Hope for the best
-            Me.m_tsInputDataCompatibility = TriState.True
-
-            ' Make sure plug-in has empty CSV
-            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Or _
-            Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
-                Me.m_tsInputDataCompatibility = TriState.False
-            Else
-                ' Assess Ecopath files
-                For Each strFile As String In aFilesEcopath
-                    If Not CheckEcopathDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
-                        Me.m_tsInputDataCompatibility = TriState.False
-                        Exit For
-                    End If
-                Next strFile
-
-                ' Assess Ecopath files
-                For Each strFile As String In aFilesEcosim
-                    If Not CheckEcoSimDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
-                        Me.m_tsInputDataCompatibility = TriState.False
-                        Exit For
-                    End If
-                Next strFile
-
-            End If
-        End If
-
-        Return (Me.m_tsInputDataCompatibility = TriState.True)
-
-    End Function
-
-
 
     ''' <summary>
     ''' Checks whether each of the Ecopath (not diet matrix) distribution files is has the correct functional groups in it

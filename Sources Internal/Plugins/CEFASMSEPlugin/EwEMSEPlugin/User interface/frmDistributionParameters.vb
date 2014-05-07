@@ -70,60 +70,6 @@ Public Class frmDistributionParameters
         End Function
     End Class
 
-    Public Class cDistributionParamsData
-
-    End Class
-
-    ''' <summary>
-    ''' This holds one item in the list of any Ecopath parameters. 
-    ''' Later in the code the entire list is grouped into a list of EcopathParam
-    ''' </summary>
-    Public Class EcopathParam
-        Inherits cDistributionParamsData
-
-        Public Sub New(ByVal GroupNumber As Integer, ByVal GroupName As String, ByVal Mean As Single, ByVal CV As Double, ByVal LowerBound As Double, ByVal UpperBound As Double)
-            Me.GroupNo = GroupNumber
-            Me.GroupName = GroupName
-            Me.Mean = Mean
-            Me.CV = CV
-            Me.LowerBound = LowerBound
-            Me.UpperBound = UpperBound
-        End Sub
-
-        Public Property CV() As Double
-        Public Property LowerBound() As Double
-        Public Property UpperBound() As Double
-        Public Property GroupNo As Integer
-        Public Property GroupName As String
-        Public Property Mean As Double
-
-    End Class
-
-    ''' <summary>
-    ''' Similar to <see cref="EcopathParam"/>, this holds one item 
-    ''' in the list of any Ecosim parameters
-    ''' </summary>
-    Public Class EcosimParam
-        Inherits cDistributionParamsData
-
-        Public Sub New(ByVal GroupNumber As Integer, ByVal GroupName As String, ByVal DistributionType As cMSE.DistributionType, ByVal LowerBound As Double, ByVal UpperBound As Double, ByVal MidPoint As Double)
-            Me.GroupNo = GroupNumber
-            Me.GroupName = GroupName
-            Me.DistributionType = DistributionType
-            Me.LowerBound = LowerBound
-            Me.UpperBound = UpperBound
-            Me.MidPoint = MidPoint
-        End Sub
-
-        Public Property GroupNo As Integer
-        Public Property GroupName As String
-        Public Property DistributionType As cMSE.DistributionType
-        Public Property LowerBound As Double
-        Public Property UpperBound As Double
-        Public Property MidPoint As Double
-
-    End Class
-
     Private m_plugin As cMSEPluginPoint = Nothing
 
     Private B As New List(Of cDistributionParamsData)
@@ -220,12 +166,23 @@ Public Class frmDistributionParameters
 
     End Sub
 
-
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+
+        B.Clear()
+        BA.Clear()
+        QB.Clear()
+        EE.Clear()
+        PB.Clear()
+        DenDepCatchability.Clear()
+        SwitchingPower.Clear()
+        QBMaxxQBio.Clear()
+        PredEffectFeedingTime.Clear()
+        OtherMortFeedingTime.Clear()
+        MaxRelFeedingTime.Clear()
+        FeedingTimeAdjustRate.Clear()
 
         RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
         Me.m_grid.UIContext = Nothing
-
         MyBase.OnFormClosed(e)
 
     End Sub
@@ -234,31 +191,6 @@ Public Class frmDistributionParameters
         MyBase.UpdateControls()
         ' Me.m_btnOK.Enabled = Me.m_bIsDirty
     End Sub
-
-    Public Sub Clear()
-        'HACK Should not have to do this. 
-        'Clear out the data created when the form loaded this will release the memory
-        'For some reason the framework is not releasing the form and allowing it to cleanup its memory
-        'So do it manually
-        Try
-            B.Clear()
-            BA.Clear()
-            QB.Clear()
-            EE.Clear()
-            PB.Clear()
-            DenDepCatchability.Clear()
-            SwitchingPower.Clear()
-            QBMaxxQBio.Clear()
-            PredEffectFeedingTime.Clear()
-            OtherMortFeedingTime.Clear()
-            MaxRelFeedingTime.Clear()
-            FeedingTimeAdjustRate.Clear()
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
 
 #End Region ' Overrides
 

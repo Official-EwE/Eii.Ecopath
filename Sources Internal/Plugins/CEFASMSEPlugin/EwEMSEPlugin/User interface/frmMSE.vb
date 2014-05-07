@@ -225,7 +225,6 @@ Public Class frmMSE
             If Not Me.MSE.CreateModels() Then
                 'Failed to create the new models
                 'better tell the user 
-
             End If
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE.frmMSE::OnCreateModels")
@@ -256,6 +255,7 @@ Public Class frmMSE
 
         Try
             Me.MSE.UseEwEPath = Me.m_rbEwEDefault.Checked
+            Me.ResolveMSEPathConflicts()
         Catch ex As Exception
             cLog.Write(ex, "CEFASMSE:OnPathPrefChanged")
         End Try
@@ -276,18 +276,8 @@ Public Class frmMSE
 
         ' JS 30Sep13: Use EwE dialog framework here
         Try
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-
-            If Me.MSE.UseEwEPath Then
-                Dim cmd As cShowOptionsCommand = DirectCast(cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
-                cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.FileLocations)
-                ' Do not set path; let core deal with it
-            Else
-                Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
-                cmd.Invoke(Me.MSE.CustomPath, My.Resources.PROMPT_DATAPATH)
-                If (cmd.Result = Windows.Forms.DialogResult.OK) Then
-                    Me.MSE.CustomPath = cmd.Directory
-                End If
+            If (Me.SelectDataPath()) Then
+                Me.ResolveMSEPathConflicts()
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFASMSE:OnSelectDataPath")
@@ -325,12 +315,7 @@ Public Class frmMSE
         Handles m_btnReviewDistParms.Click
 
         Try
-            Dim frmDisParams As New frmDistributionParameters()
-            frmDisParams.Init(Me.UIContext, Me.Plugin)
-            frmDisParams.ShowDialog(Me)
-            'Hack because the form is getting stuck in memory
-            'clear out any memory
-            frmDisParams.Clear()
+            Me.ReviewDistParams()
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:OnReviewDistParams")
         End Try
@@ -439,11 +424,123 @@ Public Class frmMSE
 
 #End Region ' Internals
 
-    Private Sub btnSampleSurvivabilities_Click(sender As System.Object, e As System.EventArgs) Handles m_btnSampleSurvivabilities.Click
+#Region " Path / model validation "
+
+    Private Function ReviewDistParams() As Boolean
+
+        Dim frmDisParams As New frmDistributionParameters()
+        frmDisParams.Init(Me.UIContext, Me.Plugin)
+
+        If frmDisParams.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            Me.MSE.InvalidateData()
+            Return True
+        End If
+        Return False
+
+    End Function
+
+    Private Function SelectDataPath() As Boolean
+
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        Dim bNeedsResolving As Boolean = False
+
+        If Me.MSE.UseEwEPath Then
+            Dim cmd As cShowOptionsCommand = DirectCast(cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
+            cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.FileLocations)
+            bNeedsResolving = cmd.UserHandled
+        Else
+            Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+            cmd.Invoke(Me.MSE.CustomPath, My.Resources.PROMPT_DATAPATH)
+            If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+                Me.MSE.CustomPath = cmd.Directory
+                bNeedsResolving = True
+            End If
+        End If
+
+        Return bNeedsResolving
+
+    End Function
+
+    ''' <summary>
+    ''' Interactively resolve MSE folder conflicts.
+    ''' </summary>
+    Private Function ResolveMSEPathConflicts() As Boolean
+
+        ' Assume the worst
+        Dim bPathValid As Boolean = False
+        ' .. and forget all we know
+        Me.MSE.InvalidateData(False)
+
+        While Not bPathValid
+
+            ' Check if input structure is missing
+            If Not Me.MSE.IsInputStructureAvailable(False) Then
+
+                ' Ask user to create folder structure
+                If Me.MSE.AskUser(String.Format(My.Resources.PROMPT_DATAPATH_MISSING, Me.MSE.DataPath), eMessageReplyStyle.YES_NO) <> eMessageReply.OK Then
+                    ' #User abort: abandon process
+                    Return False
+                End If
+
+                ' Try to create folder structure
+                If Me.MSE.IsInputStructureAvailable(True) Then
+                    ' #Created: force user to examine distribution params, and generate input files
+                    If (Me.ReviewDistParams) Then
+                        ' #User went along: create all other data files
+                        ' - Survivabilities
+                        MSE.GenerateSurvivabilities()
+                        ' - Diets
+                        MSE.GenerateEmptyDietCSVs()
+                        ' Re-assess state
+#If DEBUG Then
+                        Me.MSE.InvalidateData(False)
+                        Debug.Assert(Me.MSE.IsInputDataCompatible(), "Cefas MSE default data generation logic is not working")
+#End If
+                    Else
+                        ' #Not created. Now we're stuck with a messy folder structure that may not be used. Pollution!
+                        bPathValid = True
+                    End If
+                Else
+                    ' #No luck? Panic, and make the user try again
+                    Me.MSE.InformUser(String.Format(My.Resources.PROMPT_DATAPATH_INACCESSIBLE, Me.MSE.DataPath), eMessageImportance.Critical)
+                    bPathValid = Me.SelectDataPath()
+                End If
+            Else
+                ' Input structure is there, but may be meant for a different model
+                If (Not Me.MSE.IsInputDataCompatible()) Then
+                    Me.MSE.InformUser(String.Format(My.Resources.PROMPT_DATAPATH_INCOMPATIBLE, Me.MSE.DataPath), eMessageImportance.Warning)
+                    bPathValid = False
+                Else
+                    bPathValid = True
+                End If
+            End If
+
+            If (Not bPathValid) Then
+
+                If Not Me.SelectDataPath() Then
+                    Return False
+                End If
+
+                Me.MSE.InvalidateData()
+                bPathValid = (Me.MSE.IsInputStructureAvailable(False) And Me.MSE.IsInputDataCompatible())
+
+            End If
+
+        End While
+
+        Return True
+
+    End Function
+
+#End Region ' Path / model validation
+
+    Private Sub btnSampleSurvivabilities_Click(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnSampleSurvivabilities.Click
         MSE.GenerateSurvivabilities()
     End Sub
 
-    Private Sub btnCreateDiet_Click(sender As System.Object, e As System.EventArgs) Handles m_btnCreateDiet.Click
+    Private Sub btnCreateDiet_Click(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnCreateDiet.Click
 
     End Sub
 End Class

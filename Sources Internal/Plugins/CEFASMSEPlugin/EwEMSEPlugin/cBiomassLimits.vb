@@ -26,12 +26,10 @@ Option Explicit On
 
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Utilities
-Imports LumenWorks.Framework.IO.Csv
-Imports System.Text
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
-#End Region ' ImportsOption Strict On
+#End Region ' Imports
 
 Public Class cBiomassLimits
     Implements IList(Of cBiomassLimit)

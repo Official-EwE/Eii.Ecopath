@@ -457,6 +457,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The path {0}&apos; cannot be used. You must select another folder..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DATAPATH_INACCESSIBLE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DATAPATH_INACCESSIBLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The path {0}&apos; was used for a different model. You must select another folder..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DATAPATH_INCOMPATIBLE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DATAPATH_INCOMPATIBLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The path &apos;{0}&apos; does not contain the MSE file structure. Do you wish to create this?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DATAPATH_MISSING() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DATAPATH_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Select a name for the new Strategy.
         '''</summary>
         Friend ReadOnly Property PROMPT_ENTERNAME() As String
@@ -471,15 +498,6 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_ENTERNAME_CAPTION() As String
             Get
                 Return ResourceManager.GetString("PROMPT_ENTERNAME_CAPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Cefas MSE failed to read strategy file {0}. The content is invalid. Do you wish to remove this file?.
-        '''</summary>
-        Friend ReadOnly Property PROMPT_STRATEGY_REMOVE() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_STRATEGY_REMOVE", resourceCulture)
             End Get
         End Property
         
