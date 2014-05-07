@@ -492,10 +492,12 @@ Public Class frmMSE
                         ' - Diets
                         MSE.GenerateEmptyDietCSVs()
                         ' Re-assess state
-#If DEBUG Then
                         Me.MSE.InvalidateData(False)
+                        bPathValid = Me.MSE.IsInputDataCompatible()
+
+                        ' Panic in debug mode only
                         Debug.Assert(Me.MSE.IsInputDataCompatible(), "Cefas MSE default data generation logic is not working")
-#End If
+
                     Else
                         ' #Not created. Now we're stuck with a messy folder structure that may not be used. Pollution!
                         bPathValid = True
