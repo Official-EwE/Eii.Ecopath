@@ -25,6 +25,7 @@ Imports System.Text
 Imports System.Collections.Generic
 Imports System.Security.AccessControl
 Imports System.Diagnostics
+Imports System.Linq
 
 #End Region ' Imports
 
@@ -406,6 +407,17 @@ Namespace Utilities
 
             Return bExists
 
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether a directory does not have any files in it.
+        ''' </summary>
+        ''' <param name="strDirectory">The directory to check.</param>
+        ''' <returns>True if the indicated directory does not have any files in it/</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsDirectoryEmpty(ByVal strDirectory As String) As Boolean
+            Return Not Directory.EnumerateFileSystemEntries(strDirectory).Any()
         End Function
 
         ''' -----------------------------------------------------------------------
