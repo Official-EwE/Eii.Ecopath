@@ -367,6 +367,13 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Public Property Status As String
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the command was successfully handled by the user.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property UserHandled As Boolean
+
 #End Region ' Public properties
 
     End Class
