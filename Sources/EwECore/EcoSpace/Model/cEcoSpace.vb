@@ -7126,7 +7126,7 @@ exitline:
     ''' </remarks>
     Private Function SetHabCapFromMaps() As Boolean
         Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
-
+        'Dim orgCap As Single
         If (Me.m_Data.CapMaps Is Nothing) Then Return False
 
         'If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
@@ -7135,31 +7135,39 @@ exitline:
             Return False
         End If
 
+
         For Each map As IEnviroInputMap In Me.m_Data.CapMaps
 
             'Is this layer active
             If map.isLayerActive Then
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
-                    If Me.m_Data.isGroupHabCapChanged(igrp) Then
-                        'Does this group contain a response function for this map
-                        If map.ResponseIndexForGroup(igrp) > 0 Then
-                            'Yep Layer is Active
-                            'Habitat for group has changed
-                            'There is a response function
-                            For irow = 1 To Me.m_Data.InRow
-                                For icol = 1 To Me.m_Data.InCol
-                                    If Me.m_Data.Depth(irow, icol) > 0 Then
-                                        'For debugging
-                                        'dumpCapacity(map, igrp, irow, icol)
+                    'jb The isGroupHabCapChanged(igrp) was alway false with the RBT Model
+                    'so just disable it for now....until I sort out what happened
+                    'If Me.m_Data.isGroupHabCapChanged(igrp) Then
+                    'Does this group contain a response function for this map
+                    If map.ResponseIndexForGroup(igrp) > 0 Then
+                        'Yep Layer is Active
+                        'Habitat for group has changed
+                        'There is a response function
+                        For irow = 1 To Me.m_Data.InRow
+                            For icol = 1 To Me.m_Data.InCol
+                                If Me.m_Data.Depth(irow, icol) > 0 Then
+                                    'For debugging
+                                    'dumpCapacity(map, igrp, irow, icol)
+                                    'orgCap = Me.m_Data.HabCap(irow, icol, igrp)
 
-                                        Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
+                                    Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
 
-                                    End If
-                                Next icol
-                            Next irow
-                        End If ' map.ResponseIndexForGroup(igrp) > 0
-                    End If ' Me.m_Data.isGroupHabCapChanged(igrp)
+                                    'If orgCap <> Me.m_Data.HabCap(irow, icol, igrp) Then
+                                    '    'Debug.Assert(False)
+                                    'End If
+
+                                End If
+                            Next icol
+                        Next irow
+                    End If ' map.ResponseIndexForGroup(igrp) > 0
+                    '  End If ' Me.m_Data.isGroupHabCapChanged(igrp)
                 Next igrp
             End If ' map.isLayerActive
         Next map
