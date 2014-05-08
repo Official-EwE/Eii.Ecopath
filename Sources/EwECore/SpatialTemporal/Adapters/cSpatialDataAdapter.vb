@@ -275,8 +275,6 @@ Namespace SpatialData
             End Get
         End Property
 
-        Public Property IsReadonly As Boolean
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Populate the core data that this adapter is responsible for.
