@@ -83,7 +83,7 @@ Namespace SpatialData
 
             'Sets the bHasCapacityChanged for all the groups to False
             'Then ONLY turn On the groups that have a Response function
-            Me.m_spaceData.bHasCapacityChanged = False
+            Me.m_spaceData.bHasCapacityChanged = True
 
             breturnVal = MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
 
@@ -91,6 +91,8 @@ Namespace SpatialData
                 'Ok Turn on the groups that that were changed
                 If Me.m_spaceData.CapMapFunctions(layer.Index, iGroup) > 0 Then
                     Me.m_spaceData.bHasCapacityChanged(iGroup) = True
+                Else
+                    Me.m_spaceData.bHasCapacityChanged(iGroup) = False
                 End If
             Next
 
@@ -106,7 +108,8 @@ Namespace SpatialData
         Public Overrides Sub EndRun()
             MyBase.EndRun()
 
-            Me.m_spaceData.bHasCapacityChanged = False
+            'jb Maybe just leave Ecospace to deal with the state of the capacity model
+            ' Me.m_spaceData.bHasCapacityChanged = False
 
         End Sub
 

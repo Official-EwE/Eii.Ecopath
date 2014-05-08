@@ -717,12 +717,17 @@ Public Class cEcospaceDataStructures
         End Get
         Set(value As Boolean)
 
-            m_bHasCapacityChanged = value
+            ' m_bHasCapacityChanged = value
             If GroupIndex = cCore.NULL_VALUE Then
+
+                m_bHasCapacityChanged = value
                 For igrp As Integer = 1 To Me.NGroups
                     Me.isGroupHabCapChanged(igrp) = value
                 Next
             Else
+                'If we are setting one group to True
+                'Make sure the capacity routine gets called
+                If value Then m_bHasCapacityChanged = True
                 Me.isGroupHabCapChanged(GroupIndex) = value
             End If
 
