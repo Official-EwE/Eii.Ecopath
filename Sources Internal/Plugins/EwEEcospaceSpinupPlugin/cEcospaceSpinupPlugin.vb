@@ -139,10 +139,10 @@ Public Class cEcospaceSpinupPlugin
         End Set
     End Property
 
-    Public SSGroup() As Double
+    Public BtBtMinus1() As Double
     ' Public SS As Double
     Public nTimeSteps As Integer
-    Public PercentChange() As Double
+    Public BtB0() As Double
 
     Public BioAtTime() As Double
     Public BioAtBase() As Double
@@ -204,14 +204,14 @@ Public Class cEcospaceSpinupPlugin
 
         Try
             'Me.SS = 0
-            If SSGroup Is Nothing Then
-                Me.SSGroup = New Double(Me.EcoSpaceData.NGroups) {}
-                Me.PercentChange = New Double(Me.EcoSpaceData.NGroups) {}
+            If BtBtMinus1 Is Nothing Then
+                Me.BtBtMinus1 = New Double(Me.EcoSpaceData.NGroups) {}
+                Me.BtB0 = New Double(Me.EcoSpaceData.NGroups) {}
                 Me.BioAtTime = New Double(Me.EcoSpaceData.NGroups) {}
                 Me.BioAtBase = New Double(Me.EcoSpaceData.NGroups) {}
             Else
-                Array.Clear(Me.SSGroup, 0, Me.SSGroup.Length)
-                Array.Clear(Me.PercentChange, 0, Me.PercentChange.Length)
+                Array.Clear(Me.BtBtMinus1, 0, Me.BtBtMinus1.Length)
+                Array.Clear(Me.BtB0, 0, Me.BtB0.Length)
                 Array.Clear(Me.BioAtTime, 0, Me.BioAtTime.Length)
                 Array.Clear(Me.BioAtBase, 0, Me.BioAtBase.Length)
             End If
@@ -235,25 +235,35 @@ Public Class cEcospaceSpinupPlugin
                 Array.Clear(Me.BioAtTime, 0, Me.BioAtTime.Length)
                 Array.Clear(Me.BioAtBase, 0, Me.BioAtBase.Length)
 
+                Array.Clear(Me.BtBtMinus1, 0, Me.BtBtMinus1.Length)
+                Array.Clear(Me.BtB0, 0, Me.BtB0.Length)
+
                 'Squared log relative error
-                Dim slre As Double
+                Dim BtBt1 As Double
                 'Biomass at the current timestep
                 Dim Bt As Single
+                Dim BtMinus1 As Single = 1
                 'Biomass at base timestep
                 Dim B0 As Single
                 For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
                     'Biomass at the current time step
                     Bt = Me.EcoSpaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, igrp, iTime)
+                    If iTime > 1 Then
+                        BtMinus1 = Me.EcoSpaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, igrp, iTime - 1)
+                    Else
+                        BtMinus1 = Bt
+                    End If
                     'Biomass at zero time step
                     B0 = Me.EcoSpaceData.SpinUpBBase(igrp)
 
-                    Me.PercentChange(igrp) = (Bt - B0) / B0 * 100
-                    'SS Calculate the same way as the SS in the Ecosim interface see cEcosimModel.AccumulateDataInfo()
-                    slre = Math.Log(Bt / B0) ^ 2
-                    'Sum of square log relative error by group
-                    SSGroup(igrp) += slre
+                    Me.BtB0(igrp) = Bt / B0
+                    Me.BtB0(0) += Me.BtB0(igrp)
+
+                    BtBt1 = Bt / BtMinus1  'Math.Log(Bt / B0) ^ 2
+
+                    BtBtMinus1(igrp) += BtBt1
                     'slre summed across all the groups
-                    SSGroup(0) += slre
+                    BtBtMinus1(0) += BtBt1
 
                     BioAtBase(igrp) = B0
                     BioAtTime(igrp) = Bt
@@ -262,11 +272,12 @@ Public Class cEcospaceSpinupPlugin
                     BioAtBase(0) += B0
                     BioAtTime(0) += Bt
 
+
                 Next
 
                 'sum across all the groups into zero index
-                Me.PercentChange(0) = (BioAtTime(0) - BioAtBase(0)) / BioAtBase(0) * 100
-
+                Me.BtB0(0) = Me.BtB0(0) / Me.EcoSpaceData.NGroups ' (BioAtTime(0) - BioAtBase(0)) / BioAtBase(0) * 100
+                BtBtMinus1(0) = BtBtMinus1(0) / Me.EcoSpaceData.NGroups
                 Me.fireOnTimeStep()
 
             End If

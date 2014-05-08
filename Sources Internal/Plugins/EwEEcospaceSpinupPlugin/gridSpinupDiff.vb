@@ -56,16 +56,16 @@ Public Class gridSpinupDiff
             'Column headers
             Dim headercell As EwEColumnHeaderCell
 
-            headercell = New EwEColumnHeaderCell("SS")
-            headercell.ToolTipText = "=sumof(log(B(t)/B(0))^2)"
+            headercell = New EwEColumnHeaderCell("B(0)")
+            ' headercell.ToolTipText = "=sumof(log(B(t)/B(0))^2)"
             Me(0, 1) = headercell
 
-            headercell = New EwEColumnHeaderCell("Percentage change")
-            headercell.ToolTipText = "=(B(t)-B(0))/B(0)"
+            headercell = New EwEColumnHeaderCell("B(t)")
+            ' headercell.ToolTipText = "=(B(t)-B(0))/B(0)"
             Me(0, 2) = headercell
 
-            Me(0, 3) = New EwEColumnHeaderCell("B(0)")
-            Me(0, 4) = New EwEColumnHeaderCell("B(t)")
+            Me(0, 3) = New EwEColumnHeaderCell("B(t)/B(0)")
+            Me(0, 4) = New EwEColumnHeaderCell("B(t)/B(t-1)")
 
             For igrp As Integer = 0 To Me.Core.nGroups
                 Dim irow As Integer = igrp + m_nRowHeaders - 1
@@ -105,11 +105,11 @@ Public Class gridSpinupDiff
 
         For igrp As Integer = 0 To Me.Core.nGroups
             Dim irow As Integer = igrp + Me.m_nRowHeaders - 1
-            DirectCast(Me(irow, 1), EwECell).Value = Me.m_Plugin.SSGroup(igrp)
+            DirectCast(Me(irow, 1), EwECell).Value = Me.m_Plugin.BioAtBase(igrp)
 
-            DirectCast(Me(irow, 2), EwECell).Value = Me.m_Plugin.PercentChange(igrp)
-            DirectCast(Me(irow, 3), EwECell).Value = Me.m_Plugin.BioAtBase(igrp)
-            DirectCast(Me(irow, 4), EwECell).Value = Me.m_Plugin.BioAtTime(igrp)
+            DirectCast(Me(irow, 2), EwECell).Value = Me.m_Plugin.BioAtTime(igrp)
+            DirectCast(Me(irow, 3), EwECell).Value = Me.m_Plugin.BtB0(igrp)
+            DirectCast(Me(irow, 4), EwECell).Value = Me.m_Plugin.BtBtMinus1(igrp)
         Next
 
     End Sub

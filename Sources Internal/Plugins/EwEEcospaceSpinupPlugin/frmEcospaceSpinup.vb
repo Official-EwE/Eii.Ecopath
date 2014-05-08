@@ -27,6 +27,8 @@ Imports System.Windows.Forms
 ''' A very, very basic plug-in form.
 ''' </summary>
 Public Class frmEcospaceSpinup
+    'ToDo 8-May-2014
+    'Grid columns B(0), B(t), B(t)/B(0), B(t)/B(t-1)
 
     Private m_plugin As cEcospaceSpinupPlugin
     Private m_bInitializing As Boolean
