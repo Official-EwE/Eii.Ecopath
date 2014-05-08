@@ -556,4 +556,19 @@ Public Class frmMSE
         Handles m_btnCreateDiet.Click
 
     End Sub
+
+    Private Sub btnDeleteResults_Click(sender As System.Object, e As System.EventArgs) Handles btnDeleteResults.Click
+
+        File.Delete(m_plugin.MSE.DataPath & "\Results\Fleet.csv")
+        File.Delete(m_plugin.MSE.DataPath & "\Results\Results.csv")
+
+        For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories")
+            File.Delete(iFile)
+        Next
+        For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories2")
+            File.Delete(iFile)
+        Next
+
+
+    End Sub
 End Class

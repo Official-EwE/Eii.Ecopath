@@ -92,6 +92,7 @@ Partial Class frmMSE
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
+        Me.btnDeleteResults = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -152,6 +153,7 @@ Partial Class frmMSE
         '
         'm_plStep2
         '
+        Me.m_plStep2.Controls.Add(Me.btnDeleteResults)
         Me.m_plStep2.Controls.Add(Me.m_btnCreateDiet)
         Me.m_plStep2.Controls.Add(Me.m_btnSampleSurvivabilities)
         Me.m_plStep2.Controls.Add(Me.m_pbCompatible)
@@ -410,6 +412,12 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
+        'btnDeleteResults
+        '
+        resources.ApplyResources(Me.btnDeleteResults, "btnDeleteResults")
+        Me.btnDeleteResults.Name = "btnDeleteResults"
+        Me.btnDeleteResults.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -479,4 +487,5 @@ Partial Class frmMSE
     Private WithEvents m_tlpFishingControls As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_btnCreateDiet As System.Windows.Forms.Button
     Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
+    Friend WithEvents btnDeleteResults As System.Windows.Forms.Button
 End Class

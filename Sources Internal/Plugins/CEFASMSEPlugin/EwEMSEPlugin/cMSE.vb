@@ -1621,8 +1621,6 @@ Public Class cMSE
 
         Dim BiomassProjected(NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
-        nSuccessfullyProjectedModels = 0
-
         'Dim BadDynamics As StreamWriter = New StreamWriter(DataPath & "Results/diagnostics/BadDynamicsTrajectories.csv", True)
         'BadDynamics.WriteLine("iTrial, Group")
         ''diag!!! saves the biomass trajectory for groups with bad dynamics to csv
@@ -1656,8 +1654,7 @@ Public Class cMSE
         Next iGrp
 
         'Code to test whether the efforts are reasonable
-        DumpFishingEffort()
-
+        'DumpFishingEffort()
 
         'Only commented out for testing - uncomment when finished TODO_mp
         For Each iGrp In BiomassLimits.lstBiomassLimits
