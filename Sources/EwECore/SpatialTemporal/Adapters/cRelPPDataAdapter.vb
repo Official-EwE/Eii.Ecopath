@@ -72,7 +72,7 @@ Namespace SpatialData
         ''' Overridden to clear the PP scale factor.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub InitRun()
+        Public Overrides Sub InitRun()
             MyBase.InitRun()
 
             ' Reset preserved PP scale
@@ -123,7 +123,7 @@ Namespace SpatialData
         ''' Overridden to restore PP scale factor.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub EndRun()
+        Public Overrides Sub EndRun()
             MyBase.EndRun()
 
             ' Has preserved PP scale?

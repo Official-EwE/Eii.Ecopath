@@ -39,7 +39,6 @@ Public Class cDepthDataAdapter
 
 #Region "Private variables"
 
-    Private m_orgDepth(,) As Integer
     Private m_Ecospace As cEcoSpace
     Private m_SpaceData As cEcospaceDataStructures
 
@@ -138,24 +137,6 @@ Public Class cDepthDataAdapter
 #End Region
 
 #Region "Adapter Overrides "
-
-
-    ''' -------------------------------------------------------------------
-    ''' <inheritdocs cref="cSpatialDataAdapter.InitRun"/>
-    ''' <remarks>
-    ''' Overridden to clear the PP scale factor.
-    ''' </remarks>
-    ''' -------------------------------------------------------------------
-    Public Overrides Sub InitRun()
-        MyBase.InitRun()
-        'ToDo save the initial state
-        Try
-            Me.m_orgDepth = New Integer(Me.SpaceData.InRow + 1, Me.SpaceData.InCol + 1) {}
-            Array.Copy(Me.SpaceData.DepthInput, Me.m_orgDepth, Me.SpaceData.DepthInput.Length)
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-    End Sub
 
     Protected Overrides Function Adapt(bm As EwECore.cEcospaceBasemap, layer As EwECore.cEcospaceLayer, iConnection As Integer, _
                                        iTime As Integer, dt As Date, dataExternal As EwEUtils.SpatialData.ISpatialRaster, dNoData As Double) As Boolean
@@ -256,13 +237,10 @@ Public Class cDepthDataAdapter
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public Overrides Sub EndRun()
-        'EndRun Throws an exception in the base class for the Depth Layer
-        'MyBase.EndRun()
+        MyBase.EndRun()
         Try
-            'ToDo restore the initial state
-            Array.Copy(Me.m_orgDepth, Me.SpaceData.DepthInput, Me.SpaceData.Depth.Length)
-
-            '
+            'MyBase.EndRun() should have restored the Depth Basemap
+            'Restore the initial state
             Me.InitSpatialChanges()
 
         Catch ex As Exception
