@@ -551,6 +551,7 @@ Namespace SpatialData
             Dim iNumCol As Integer = bm.InCol
             Dim strFileName As String = ""
             Dim sw As StreamWriter = Nothing
+            Dim tData As Type = Nothing
 
             ' For all layers
             For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
@@ -561,13 +562,16 @@ Namespace SpatialData
                         ' #Yes: set up a temp file and save the layer content to the file
                         Try
                             strFileName = cFileUtils.MakeTempFile(".ewetmp")
+                            tData = layer.ValueType
                             sw = New StreamWriter(strFileName)
                             For iRow As Integer = 1 To iNumRow
                                 For iCol As Integer = 1 To iNumCol
                                     If (iCol > 1) Then sw.Write(",")
-
-                                    sw.Write(layer.Cell(iRow, iCol).ToString())
-
+                                    If tData Is GetType(Single) Or tData Is GetType(Integer) Then
+                                        sw.Write(cStringUtils.FormatNumber(layer.Cell(iRow, iCol)))
+                                    ElseIf tData Is GetType(Boolean) Then
+                                        sw.Write(layer.Cell(iRow, iCol).ToString())
+                                    End If
                                 Next iCol
                                 sw.WriteLine()
                             Next iRow
