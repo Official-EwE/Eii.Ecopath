@@ -1528,13 +1528,15 @@ Public Class cMSE
     Private Function updateDietMatrixFromCSVFile(ByVal iTrial As Integer) As Boolean
         Dim GoodDynamics As Boolean = True
         Dim csvDietMatrix As CsvReader
+        'Dim strmReader As StreamReader = New StreamReader
+        'strmReader()
         Dim strmReader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"))
 
         If (strmReader IsNot Nothing) Then
             csvDietMatrix = New CsvReader(strmReader, False)
             If csvDietMatrix.ReadNextRecord() Then
                 For iPred As Integer = 1 To m_core.nLivingGroups
-                    m_ecopath.EcopathData.DC(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                    _pathdata.DCInput(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                 Next
             Else
                 ' Unable to read predator header line! We have a problem
@@ -1547,7 +1549,7 @@ Public Class cMSE
                     For iPred As Integer = 1 To m_core.nLivingGroups
                         'If m_ecopath.EcopathData.DC(iPred, iPrey) > 0 Then
                         'Debug.Assert(cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) > 0)
-                        m_ecopath.EcopathData.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                        _pathdata.DCInput(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                         'End If
 
                     Next
@@ -1560,8 +1562,6 @@ Public Class cMSE
             ' Could not read diet matrix for this trial
             GoodDynamics = False
         End If
-
-        'Me.NormalizeDiet(Me._pathdata.DC)
 
         cMSEUtils.ReleaseReader(strmReader)
         If csvDietMatrix IsNot Nothing Then csvDietMatrix.Dispose()
@@ -1758,7 +1758,7 @@ Public Class cMSE
         ' Return True
         'Diet matrix parameters are stored in file by iTrial
         'Read the file and update the dietmatrix parameters
-        'Return Me.updateDietMatrixFromCSVFile(iTrial)
+        Return Me.updateDietMatrixFromCSVFile(iTrial)
         Return True
 
 
