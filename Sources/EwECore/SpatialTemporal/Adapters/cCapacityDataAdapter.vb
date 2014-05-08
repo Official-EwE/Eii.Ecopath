@@ -104,7 +104,7 @@ Namespace SpatialData
         ''' <summary>
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub EndRun()
+        Public Overrides Sub EndRun()
             MyBase.EndRun()
             'jb Maybe just leave Ecospace to deal with the state of the capacity model
             ' Me.m_spaceData.bHasCapacityChanged = False

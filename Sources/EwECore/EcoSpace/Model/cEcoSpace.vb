@@ -2308,7 +2308,7 @@ Public Class cEcoSpace
                 For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
                     If (src IsNot Nothing) Then
                         Try
-                            src.InitRunMaster()
+                            src.InitRun()
                         Catch ex As Exception
                             cLog.Write(ex, "cEcospace::Run.InitAdapters " & src.Name & "(" & src.Index & ")")
                         End Try
@@ -2328,7 +2328,7 @@ Public Class cEcoSpace
             For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
                 If (src IsNot Nothing) Then
                     Try
-                        src.EndRunMaster()
+                        src.EndRun()
                     Catch ex As Exception
                         cLog.Write(ex, "cEcospace::Run.CleanAdapters " & src.Name & "(" & src.Index & ")")
                     End Try

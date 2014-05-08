@@ -115,39 +115,6 @@ Namespace SpatialData
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Perform pre-run initializations for all adapters such as preserving
-        ''' layer data prior to a run. Individual adapters can perform their 
-        ''' own initialization in <see cref="InitRun"/>.
-        ''' <seealso cref="InitRun"/>
-        ''' <seealso cref="EndRun"/>
-        ''' <seealso cref="EndRunMaster"/>
-        ''' </summary>
-        ''' <remarks>
-        ''' <see cref="EndRunMaster"/> performs the accompanying cleanup.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Friend Sub InitRunMaster()
-            Me.SaveLayerData()
-            Me.InitRun()
-        End Sub
-
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Perform post-run cleanup for all adapters such as restoring
-        ''' layer data after to a run, as an accompanying method to <see cref="InitRunMaster"/>. 
-        ''' Individual adapters can perform their own cleanup in <see cref="EndRun"/>.
-        ''' <seealso cref="InitRun"/>
-        ''' <seealso cref="EndRun"/>
-        ''' <seealso cref="InitRunMaster"/>
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Friend Sub EndRunMaster()
-            Me.EndRun()
-            Me.RestoreLayerData()
-        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -400,18 +367,24 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Perform pre-run initializations. 
+        ''' Perform pre-run initializations for all adapters such as preserving
+        ''' layer data prior to a run. Individual adapters can perform their 
+        ''' own initialization in.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub InitRun()
+        Public Overridable Sub InitRun()
+            Me.SaveLayerData()
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Perform post-run cleanup. 
+        ''' Perform post-run cleanup for all adapters such as restoring
+        ''' layer data after to a run, as an accompanying method to.
+        ''' Individual adapters can perform their own cleanup in.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub EndRun()
+        Public Overridable Sub EndRun()
+            Me.RestoreLayerData()
         End Sub
 
 

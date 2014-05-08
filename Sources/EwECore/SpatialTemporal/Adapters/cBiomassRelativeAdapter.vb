@@ -60,7 +60,7 @@ Namespace SpatialData
 
 #Region " Overrides "
 
-        Protected Overrides Sub InitRun()
+        Public Overrides Sub InitRun()
             MyBase.InitRun()
 
             'Called at the start of each run
