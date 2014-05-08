@@ -976,6 +976,12 @@ Public Class frmEwE6
         e.Cancel = Not Me.CloseEcopathModel()
         ' Abort if Ecopath model did not close sucessfully
         If e.Cancel Then Return
+
+        ' Last-ditch cleanup
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_CLEANUP_TEMPFILES)
+        cFileUtils.PurgeTempFiles()
+        cApplicationStatusNotifier.EndProgress(Me.Core)
+
         ' Resume shutdown
         MyBase.OnFormClosing(e)
 
@@ -2159,10 +2165,6 @@ Public Class frmEwE6
             ' Take out the trash
             GC.Collect()
 
-            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_CLEANUP_TEMPFILES)
-            cFileUtils.PurgeTempFiles()
-            cApplicationStatusNotifier.EndProgress(Me.Core)
-
             ' Redraw everything immediately
             Me.Refresh()
         End If
@@ -3135,7 +3137,7 @@ Public Class frmEwE6
     Private Sub OnShowOptions(ByVal cmd As cCommand) Handles m_cmdShowOptions.OnInvoke
         Try
             Dim dlgOptions As New dlgOptions(Me.UIContext, Me.m_cmdShowOptions.Option)
-            dlgOptions.ShowDialog(Me)
+            cmd.UserHandled = (dlgOptions.ShowDialog(Me) = Windows.Forms.DialogResult.OK)
             Me.SaveSettings()
         Catch ex As Exception
 
