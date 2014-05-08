@@ -1572,6 +1572,24 @@ Public Class cMSE
 
     End Function
 
+    Private Sub DumpFishingEffort()
+
+        Dim strm As New System.IO.StreamWriter("C:\Users\Mark\Desktop\GAP\Data\Results\fishingEffort.csv", True)
+        strm.WriteLine("iter")
+
+        strm.WriteLine("-----------------Start Fishing Effort Matrix-----------------------")
+        For iFleet As Integer = 1 To m_core.nFleets
+            strm.Write("Fleet = " & m_core.EcosimFleetInputs(iFleet).Name & ",")
+            For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+                strm.Write(Me._simdata.ResultsEffort(iFleet, iTimeStep).ToString() + ",")
+            Next
+            strm.WriteLine()
+        Next
+        strm.WriteLine("-----------------Start Fishing Effort Matrix------------------------")
+        strm.Close()
+
+    End Sub
+
     ''' <summary>
     ''' Used for debugging to make sure the diet matrix created here is the same as the Ecopath diet matrix 
     ''' </summary>
@@ -1637,8 +1655,13 @@ Public Class cMSE
             If GoodDynamics = False Then Exit For
         Next iGrp
 
+        'Code to test whether the efforts are reasonable
+        DumpFishingEffort()
+
+
+        'Only commented out for testing - uncomment when finished TODO_mp
         For Each iGrp In BiomassLimits.lstBiomassLimits
-            For iTimeStep As Integer = 1 To NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+            For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                 'Check projection is above minimum biomass
                 If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) <= iGrp.mLowerLimit Then
                     GoodDynamics = False
@@ -1735,8 +1758,8 @@ Public Class cMSE
         ' Return True
         'Diet matrix parameters are stored in file by iTrial
         'Read the file and update the dietmatrix parameters
-        Return Me.updateDietMatrixFromCSVFile(iTrial)
-        'Return True
+        'Return Me.updateDietMatrixFromCSVFile(iTrial)
+        Return True
 
 
     End Function
@@ -2459,12 +2482,8 @@ stepend:
                     End If
                 Next
 
-
-
                 'Samples a set of Dirichlet distributed parameters
                 TempDirichlet = DirichletSample2(CInt(SumInteractions(iPred)), MeanPropMod, DietPropMultipliers(iPred))
-
-
 
                 'Set all the diet values in ecopath to those sampled and checked to be within correct intervals
                 PreyIndex = 0
@@ -2476,13 +2495,6 @@ stepend:
                     ecopathData.DCInput(iPred + 1, PreyIndex) = TempDirichlet(i)
                     PreyIndex += 1
                 Next
-
-                'Testing code - remove when finished TODO
-                Dim SumAcrossPredator As Double = 0
-                For iPrey = 0 To m_core.nGroups
-                    SumAcrossPredator += ecopathData.DCInput(iPred + 1, iPrey)
-                Next
-                If Math.Abs(SumAcrossPredator - 1) > 0.001 Then Stop
 
                 ''Changes the output of TempDirichlet so that it is a vector of length mcore.nlivinggroups
                 'If Interacts(iPred, 0) = 1 Then
@@ -2657,11 +2669,11 @@ stepend:
                                         m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
                                         If m_regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
                                             'QuotaType = Strongest
-                                            'excess catch discarded and included in the fishing mortailtiy
+                                            'excess catch discarded and included in the fishing mortality()
                                             m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
                                         Else
                                             'QuotaType = Selective 
-                                            'excess catch is NOT included in fishing mortaility all discards survive
+                                            'excess catch is NOT included in fishing mortality all discards survive
                                             m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = 0
                                         End If
 
@@ -2688,7 +2700,8 @@ stepend:
                                     End If
                                 End If
                             Next iGrp
-
+                        Case cRegulations.eRegMethod.None
+                            _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                     End Select
                 Next
 
@@ -2697,7 +2710,7 @@ stepend:
             'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
             For iFleet = 1 To m_core.nFleets
                 If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
-                    m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
+                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 End If
             Next
 
