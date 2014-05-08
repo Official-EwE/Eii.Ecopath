@@ -37,7 +37,6 @@ Namespace SpatialData
     Public Class cBiomassForcingAdapter
         Inherits cSpatialScalarDataAdapterBase
 
-
 #Region " Private vars "
 
         Private m_spaceData As cEcospaceDataStructures

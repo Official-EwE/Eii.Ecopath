@@ -117,6 +117,40 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Perform pre-run initializations for all adapters such as preserving
+        ''' layer data prior to a run. Individual adapters can perform their 
+        ''' own initialization in <see cref="InitRun"/>.
+        ''' <seealso cref="InitRun"/>
+        ''' <seealso cref="EndRun"/>
+        ''' <seealso cref="EndRunMaster"/>
+        ''' </summary>
+        ''' <remarks>
+        ''' <see cref="EndRunMaster"/> performs the accompanying cleanup.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Friend Sub InitRunMaster()
+            Me.SaveLayerData()
+            Me.InitRun()
+        End Sub
+
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Perform post-run cleanup for all adapters such as restoring
+        ''' layer data after to a run, as an accompanying method to <see cref="InitRunMaster"/>. 
+        ''' Individual adapters can perform their own cleanup in <see cref="EndRun"/>.
+        ''' <seealso cref="InitRun"/>
+        ''' <seealso cref="EndRun"/>
+        ''' <seealso cref="InitRunMaster"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Friend Sub EndRunMaster()
+            Me.EndRun()
+            Me.RestoreLayerData()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the maximum number of layers for this adapter.
         ''' </summary>
         ''' <returns>The number of layers for this adapter.</returns>
@@ -241,25 +275,7 @@ Namespace SpatialData
             End Get
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Perform pre-run initializations. 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overridable Sub InitRun()
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Me.SaveLayerData(bm)
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Perform post-run cleanup. 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overridable Sub EndRun()
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Me.RestoreLayerData(bm)
-        End Sub
+        Public Property IsReadonly As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -386,6 +402,23 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Perform pre-run initializations. 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub InitRun()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Perform post-run cleanup. 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub EndRun()
+        End Sub
+
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Load data from an external data raster into an Ecospace array.
         ''' </summary>
         ''' <param name="bm">The <see cref="cEcospaceBasemap"/> for the scenario to load data into.</param>
@@ -498,29 +531,15 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether the content of an externally driven layer should be
-        ''' preserved when external data is received, and should be restored
-        ''' after a run has completed. If set to true, the content of any layer 
-        ''' that is configured to receive external data will be preserved in a 
-        ''' temporary file, from which the content is restored at the end of a 
-        ''' run.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property RestoreLayerContent As Boolean
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Save the content of adapter-managed layers to a temporary file.
         ''' <seealso cref="RestoreLayerData"/>
-        ''' <seealso cref="RestoreLayerContent"/>
         ''' </summary>
-        ''' <param name="bm">Ecospace base map that states the size of the layer grid.</param>
         ''' <remarks>
         ''' Note that only the content of layers <see cref="cEcospaceLayer.IsExternalData">configured to receive external data</see>
         ''' will be preserved, and only for layers of type single, integer or boolean.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub SaveLayerData(bm As cEcospaceBasemap)
+        Friend Sub SaveLayerData()
 
             ' Wipe, just in case
             For i As Integer = 0 To Me.m_core.GetCoreCounter(Me.m_coreCounter)
@@ -529,9 +548,7 @@ Namespace SpatialData
                 Next
             Next
 
-            ' Early bail out
-            If (Not Me.RestoreLayerContent) Then Return
-
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim iNumRow As Integer = bm.InRow
             Dim iNumCol As Integer = bm.InCol
             Dim strFileName As String = ""
@@ -564,8 +581,10 @@ Namespace SpatialData
 
                             ' Store the name of the file where this layer's data was preserved
                             Me.m_astrLayerBackupFiles(layer.Index, iConnection) = strFileName
-
+#If DEBUG Then
                             Console.WriteLine("Adapter " & Me.ToString & " saved content of layer " & layer.ToString & ", connection " & iConnection & " to " & strFileName)
+#End If
+                            cLog.Write("cSpatialDataAdapter::SaveLayerData successful for " & layer.Name & " into " & strFileName, eVerboseLevel.Detailed)
 
                         Catch ex As Exception
                             ' Log failure, plod along
@@ -582,12 +601,11 @@ Namespace SpatialData
         ''' <summary>
         ''' Restore the content of layers from a temporary file.
         ''' <seealso cref="SaveLayerData"/>
-        ''' <seealso cref="RestoreLayerContent"/>
         ''' </summary>
-        ''' <param name="bm">Ecospace base map that states the size of the layer grid.</param>
         ''' -------------------------------------------------------------------
-        Private Sub RestoreLayerData(bm As cEcospaceBasemap)
+        Friend Sub RestoreLayerData()
 
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim iNumRow As Integer = bm.InRow
             Dim iNumCol As Integer = bm.InCol
             Dim tData As Type = Nothing
@@ -602,7 +620,9 @@ Namespace SpatialData
 
                     If (Not String.IsNullOrWhiteSpace(strFileName) And layer.IsExternalData(j)) Then
                         Try
+#If DEBUG Then
                             Console.WriteLine("Adapter " & Me.ToString & " restoring layer " & layer.ToString & " from " & strFileName)
+#End If
                             sr = New StreamReader(strFileName)
                             For iRow As Integer = 1 To iNumRow
                                 Dim strLine As String = sr.ReadLine
@@ -619,13 +639,15 @@ Namespace SpatialData
                             Next iRow
                             sr.Close()
                             sr = Nothing
+                            cLog.Write("cSpatialDataAdapter::RestoreLayerData successful for " & layer.Name & " from " & strFileName, eVerboseLevel.Detailed)
                         Catch ex As Exception
                             ' Whoah!
                             cLog.Write(ex, "cSpatialDataAdapter::RestoreLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
                         End Try
-                        Me.m_astrLayerBackupFiles(layer.Index, j) = String.Empty
+                        ' Remove this temp file
                         cFileUtils.PurgeTempFile(strFileName)
                     End If
+                    Me.m_astrLayerBackupFiles(layer.Index, j) = String.Empty
                 Next j
             Next layer
 

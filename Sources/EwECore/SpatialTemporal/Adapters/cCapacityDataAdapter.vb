@@ -59,7 +59,6 @@ Namespace SpatialData
         Friend Overrides Sub Initialize()
             MyBase.Initialize()
             Me.m_spaceData = Me.m_core.m_EcoSpaceData
-
         End Sub
 
      
@@ -105,12 +104,10 @@ Namespace SpatialData
         ''' <summary>
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub EndRun()
+        Protected Overrides Sub EndRun()
             MyBase.EndRun()
-
             'jb Maybe just leave Ecospace to deal with the state of the capacity model
             ' Me.m_spaceData.bHasCapacityChanged = False
-
         End Sub
 
 #End Region ' Overrides
