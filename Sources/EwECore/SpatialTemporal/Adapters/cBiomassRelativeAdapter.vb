@@ -60,7 +60,7 @@ Namespace SpatialData
 
 #Region " Overrides "
 
-        Public Overrides Sub InitRun()
+        Protected Overrides Sub InitRun()
             MyBase.InitRun()
 
             'Called at the start of each run
@@ -132,15 +132,14 @@ Namespace SpatialData
                     Me.InitializeBaseLayer(layer.Index)
                 End If
 
-                Return MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
-
             Catch ex As Exception
                 'Ok what now....
                 'I don't think this can happen. Really I promise...
                 Debug.Assert(False, Me.ToString + ".Adapt() Exception: " + ex.Message)
+                Return False
             End Try
 
-            Return False
+            Return MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
 
         End Function
 

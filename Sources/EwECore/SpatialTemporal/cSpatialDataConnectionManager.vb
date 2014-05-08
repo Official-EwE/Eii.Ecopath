@@ -404,6 +404,7 @@ Namespace SpatialData
             Me.AddAdapter(New cCapacityDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, eCoreCounterTypes.nEnvironmentalDriverLayers))
             Me.AddAdapter(New cBiomassForcingAdapter(Me.m_core, eVarNameFlags.LayerBiomassForcing, eCoreCounterTypes.nGroups))
             Me.AddAdapter(New cBiomassRelativeAdapter(Me.m_core, eVarNameFlags.LayerBiomassRelativeForcing, eCoreCounterTypes.nGroups))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerSail, eCoreCounterTypes.nFleets))
 
         End Sub
 
