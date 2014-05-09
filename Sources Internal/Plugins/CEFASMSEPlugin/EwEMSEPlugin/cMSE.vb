@@ -1439,7 +1439,11 @@ Public Class cMSE
 
                             'If one of the groups colapsed during the Ecosim run 
                             'Reject this parameter set
-                            If GoodDynamics = False Then Exit For
+                            If GoodDynamics = False Then
+                                nFailedParameterisations += 1
+                                Exit For
+                            End If
+
                         Next curStrategy
                         'End of Strategy loop
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1621,6 +1625,8 @@ Public Class cMSE
 
         Dim BiomassProjected(NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
+        nSuccessfullyProjectedModels = 0
+
         'Dim BadDynamics As StreamWriter = New StreamWriter(DataPath & "Results/diagnostics/BadDynamicsTrajectories.csv", True)
         'BadDynamics.WriteLine("iTrial, Group")
         ''diag!!! saves the biomass trajectory for groups with bad dynamics to csv
@@ -1662,10 +1668,12 @@ Public Class cMSE
                 'Check projection is above minimum biomass
                 If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) <= iGrp.mLowerLimit Then
                     GoodDynamics = False
+                    Exit For
                 End If
                 'check the projection is above the max biomass
                 If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) > iGrp.mUpperLimit Then
                     GoodDynamics = False
+                    Exit For
                 End If
             Next
             If GoodDynamics = False Then Exit For
@@ -1673,7 +1681,6 @@ Public Class cMSE
 
         If GoodDynamics = False Then
             Console.WriteLine("This set of parameters is no good")
-            ' nFailedParameterisations += 1
         Else
             For iFleet As Integer = 1 To m_core.nFleets
                 For iGrp As Integer = 1 To m_core.nLivingGroups
