@@ -107,6 +107,7 @@ Public Class frmTFMpolicy
         Me.m_gridRegulations.UIContext = Me.UIContext
 
         Me.m_qeh = New cQuickEditHandler()
+        Me.m_qeh.ShowImportExport = False
         Me.m_qeh.Attach(Me.m_grid, Me.UIContext, Me.m_tsHCR)
         Me.m_grid.DataName = "HarvestControlRules"
         AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged

@@ -47,8 +47,11 @@ Public Class frmEditDecreaseEffort
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Me.QuickEditHandler.ShowImportExport = False
         Me.QuickEditHandler.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
+
         Me.m_grid.Init(Me.m_mse)
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)

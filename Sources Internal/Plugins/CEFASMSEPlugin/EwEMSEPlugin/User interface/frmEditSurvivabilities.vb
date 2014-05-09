@@ -52,6 +52,7 @@ Public Class frmEditSurvivabilities
 
         MyBase.OnLoad(e)
 
+        Me.QuickEditHandler.ShowImportExport = False
         Me.QuickEditHandler.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
 
         AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
