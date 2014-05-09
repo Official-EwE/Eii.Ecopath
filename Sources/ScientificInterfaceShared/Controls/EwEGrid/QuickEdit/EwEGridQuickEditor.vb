@@ -61,6 +61,9 @@ Namespace Controls.EwEGrid
         Private m_btnSet As ToolStripButton = Nothing
         ''' <summary>Flag stating whether handler is attached.</summary>
         Private m_bAttached As Boolean = False
+        ''' <summary>Flag stating whether import/export controls can be shown.</summary>
+        Private m_bShowImportExport As Boolean = True
+
         ''' <summary>Set box original value.</summary>
         Private m_strValueOrg As String = ""
         ' Import Export
@@ -212,6 +215,18 @@ Namespace Controls.EwEGrid
 
         Public Property IsOutputGrid As Boolean
 
+        Public Property ShowImportExport As Boolean
+            Get
+                Return Me.m_bShowImportExport
+            End Get
+            Set(value As Boolean)
+                If (Me.m_bShowImportExport <> value) Then
+                    Me.m_bShowImportExport = value
+                    Me.UpdateControls()
+                End If
+            End Set
+        End Property
+
 #End Region ' Public interfaces
 
 #Region " Control events "
@@ -268,7 +283,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub OnImportGrid(ByVal sender As Object, ByVal e As EventArgs)
-            Me.ImportFromCSV()
+            Me.ImportGridFromCSV()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -278,7 +293,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub OnExportGrid(ByVal sender As Object, ByVal e As EventArgs)
-            Me.ExportToCSV()
+            Me.ExportGridToCSV()
         End Sub
 
 #End Region ' Control events
@@ -299,6 +314,8 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
+
+            If (Not Me.m_bAttached) Then Return
 
             Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
             Dim bIsInputGrid As Boolean = False
@@ -397,9 +414,14 @@ Namespace Controls.EwEGrid
                 Me.m_btnSet.Visible = bIsInputGrid
             End If
 
-            ' Enable import button only for input forms
+            ' Show import button only for input forms - and when allowed to show
             If Not Object.ReferenceEquals(Me.m_btnImport, Nothing) Then
-                Me.m_btnImport.Visible = bIsInputGrid
+                Me.m_btnImport.Visible = bIsInputGrid And Me.ShowImportExport
+            End If
+
+            ' Show export button only  allowed to show
+            If Not Object.ReferenceEquals(Me.m_btnExport, Nothing) Then
+                Me.m_btnExport.Visible = Me.ShowImportExport
             End If
 
         End Sub
@@ -495,7 +517,7 @@ Namespace Controls.EwEGrid
 
         End Function
 
-        Private Sub ImportFromCSV()
+        Public Sub ImportGridFromCSV()
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdOF As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
@@ -534,7 +556,7 @@ Namespace Controls.EwEGrid
 
         End Sub
 
-        Private Sub ExportToCSV()
+        Public Sub ExportGridToCSV()
 
             If (Me.m_uic Is Nothing) Then Return
 
