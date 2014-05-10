@@ -285,8 +285,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\cLayerFactoryInternal.vb" />
-    <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.designer.vb">
-      <DependentUpon>dlgExportLayerData.vb</DependentUpon>
+    <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerDataXYZ.designer.vb">
+      <DependentUpon>dlgExportLayerDataXYZ.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\frmExtermalSpatialData.Designer.vb">
       <DependentUpon>frmExtermalSpatialData.vb</DependentUpon>
@@ -845,8 +845,8 @@
     <EmbeddedResource Include="Ecosim\Tools\MSY\frmMSY.resx">
       <DependentUpon>frmMSY.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgExportLayerData.resx">
-      <DependentUpon>dlgExportLayerData.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgExportLayerDataXYZ.resx">
+      <DependentUpon>dlgExportLayerDataXYZ.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyConnection.resx">
       <DependentUpon>dlgApplyConnection.vb</DependentUpon>
@@ -1213,8 +1213,8 @@
       <DependentUpon>ucSuitabilityPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgImportLayerData.resx">
-      <DependentUpon>dlgImportLayerData.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgImportLayerDataXYZ.resx">
+      <DependentUpon>dlgImportLayerDataXYZ.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Import\dlgImportDatabase.resx">
@@ -1570,10 +1570,10 @@
     <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeriesGroup.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.vb">
+    <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerDataXYZ.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\ImportExport\dlgImportLayerData.vb">
+    <Compile Include="Ecospace\Assets\ImportExport\dlgImportLayerDataXYZ.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridDefineEnvInputMaps.vb">

@@ -38,7 +38,7 @@ Namespace Ecospace.Basemap
     ''' Dialogue for exporting layer data to CSV.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class dlgExportLayerData
+    Public Class dlgExportLayerDataXYZ
 
 #Region " Private vars "
 

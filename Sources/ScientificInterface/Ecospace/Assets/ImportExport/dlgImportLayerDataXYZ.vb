@@ -40,7 +40,7 @@ Namespace Ecospace.Basemap
     ''' 
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class dlgImportLayerData
+    Public Class dlgImportLayerDataXYZ
         Inherits Form
 
 #Region " Private vars "
@@ -275,7 +275,7 @@ Namespace Ecospace.Basemap
                                 Dim sVal As Single = sNoData
                                 If (val IsNot Nothing) Then
                                     sVal = cStringUtils.ConvertToSingle(CStr(val))
-                                    If (sVal = cCore.NULL_VALUE) then sVal = sNoData
+                                    If (sVal = cCore.NULL_VALUE) Then sVal = sNoData
                                 End If
                                 layer.Cell(iRow, iCol) = val
                             Next
@@ -352,7 +352,7 @@ Namespace Ecospace.Basemap
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImportLayerData))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImportLayerDataXYZ))
             Me.m_lblSource = New System.Windows.Forms.Label()
             Me.m_tbInput = New System.Windows.Forms.TextBox()
             Me.m_btnBrowseInput = New System.Windows.Forms.Button()

@@ -3861,7 +3861,7 @@ Public Class frmEwE6
     Private Sub OnImportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnInvoke
         Try
-            Dim dlg As New dlgImportLayerData(Me.UIContext)
+            Dim dlg As New dlgImportLayerDataXYZ(Me.UIContext)
             dlg.Layers = Me.m_cmdImportLayerData.Layers
             dlg.ShowDialog(Me)
         Catch ex As Exception
@@ -3879,12 +3879,12 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command handler; invokes the export layers dialog.
+    ''' Command handler; invokes the export layers dialog to export data in XYZ format.
     ''' </summary>
     Private Sub OnExportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportLayerData.OnInvoke
         Try
-            Dim dlg As New dlgExportLayerData(Me.UIContext)
+            Dim dlg As New dlgExportLayerDataXYZ(Me.UIContext)
             dlg.Layers = Me.m_cmdExportLayerData.Layers
             dlg.ShowDialog(Me)
         Catch ex As Exception

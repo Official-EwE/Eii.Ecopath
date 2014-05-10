@@ -54,8 +54,14 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tpData = New System.Windows.Forms.TabPage()
             Me.m_grid = New ScientificInterface.gridLayerData()
             Me.m_tsGrid = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsddImport = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmiImportCSV = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiImportXYZ = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiAsc = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsddExport = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmiExportCSV = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiExportXYZ = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiExportAsc = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tpAppearance = New System.Windows.Forms.TabPage()
             Me.m_scAppearance = New System.Windows.Forms.SplitContainer()
             Me.m_zoommap = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
@@ -67,7 +73,6 @@ Namespace Ecospace.Basemap.Layers
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tpData.SuspendLayout()
@@ -180,22 +185,54 @@ Namespace Ecospace.Basemap.Layers
             'm_tsGrid
             '
             Me.m_tsGrid.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnImport, Me.m_tsbnExport, Me.ToolStripButton1})
+            Me.m_tsGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddImport, Me.m_tsddExport})
             resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
             Me.m_tsGrid.Name = "m_tsGrid"
             Me.m_tsGrid.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
-            'm_tsbnImport
+            'm_tsddImport
             '
-            Me.m_tsbnImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnImport, "m_tsbnImport")
-            Me.m_tsbnImport.Name = "m_tsbnImport"
+            Me.m_tsddImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsddImport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiImportCSV, Me.m_tsmiImportXYZ, Me.m_tsmiAsc})
+            resources.ApplyResources(Me.m_tsddImport, "m_tsddImport")
+            Me.m_tsddImport.Name = "m_tsddImport"
             '
-            'm_tsbnExport
+            'm_tsmiImportCSV
             '
-            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
-            Me.m_tsbnExport.Name = "m_tsbnExport"
+            Me.m_tsmiImportCSV.Name = "m_tsmiImportCSV"
+            resources.ApplyResources(Me.m_tsmiImportCSV, "m_tsmiImportCSV")
+            '
+            'm_tsmiImportXYZ
+            '
+            Me.m_tsmiImportXYZ.Name = "m_tsmiImportXYZ"
+            resources.ApplyResources(Me.m_tsmiImportXYZ, "m_tsmiImportXYZ")
+            '
+            'm_tsmiAsc
+            '
+            Me.m_tsmiAsc.Name = "m_tsmiAsc"
+            resources.ApplyResources(Me.m_tsmiAsc, "m_tsmiAsc")
+            '
+            'm_tsddExport
+            '
+            Me.m_tsddExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsddExport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiExportCSV, Me.m_tsmiExportXYZ, Me.m_tsmiExportAsc})
+            resources.ApplyResources(Me.m_tsddExport, "m_tsddExport")
+            Me.m_tsddExport.Name = "m_tsddExport"
+            '
+            'm_tsmiExportCSV
+            '
+            Me.m_tsmiExportCSV.Name = "m_tsmiExportCSV"
+            resources.ApplyResources(Me.m_tsmiExportCSV, "m_tsmiExportCSV")
+            '
+            'm_tsmiExportXYZ
+            '
+            Me.m_tsmiExportXYZ.Name = "m_tsmiExportXYZ"
+            resources.ApplyResources(Me.m_tsmiExportXYZ, "m_tsmiExportXYZ")
+            '
+            'm_tsmiExportAsc
+            '
+            Me.m_tsmiExportAsc.Name = "m_tsmiExportAsc"
+            resources.ApplyResources(Me.m_tsmiExportAsc, "m_tsmiExportAsc")
             '
             'm_tpAppearance
             '
@@ -283,12 +320,6 @@ Namespace Ecospace.Basemap.Layers
             Me.m_hdrAppearance.IsCollapsed = False
             Me.m_hdrAppearance.Name = "m_hdrAppearance"
             '
-            'ToolStripButton1
-            '
-            Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.ToolStripButton1, "ToolStripButton1")
-            Me.ToolStripButton1.Name = "ToolStripButton1"
-            '
             'dlgEditLayer
             '
             resources.ApplyResources(Me, "$this")
@@ -344,9 +375,14 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_scAppearance As System.Windows.Forms.SplitContainer
         Private WithEvents m_tlpBits As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_grid As ScientificInterface.gridLayerData
-        Private WithEvents m_tsbnImport As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsddImport As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tsmiImportCSV As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiImportXYZ As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiAsc As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsddExport As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tsmiExportCSV As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiExportXYZ As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiExportAsc As System.Windows.Forms.ToolStripMenuItem
 
     End Class
 End Namespace
