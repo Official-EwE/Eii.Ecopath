@@ -104,8 +104,10 @@ Namespace Ecospace.Basemap.Layers
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Me.m_qehGrid = New cQuickEditHandler()
             Me.m_grid.DataName = Me.m_layerOriginal.Name
+
+            Me.m_qehGrid = New cQuickEditHandler()
+            Me.m_qehGrid.ShowImportExport = False
             Me.m_qehGrid.Attach(Me.m_grid, Me.m_uic, Me.m_tsGrid)
 
             ' Show your stuff
@@ -187,8 +189,19 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Private Sub OnImportLayer(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnImport.Click
+#Region " Import "
+
+        Private Sub OnImportCSV(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsmiImportCSV.Click
+            Try
+                Me.m_qehGrid.ImportGridFromCSV()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnImportXYZ(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsmiImportXYZ.Click
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
                 cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data})
@@ -198,8 +211,54 @@ Namespace Ecospace.Basemap.Layers
             End Try
         End Sub
 
-        Private Sub OnExportLayer(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnExport.Click
+        Private Sub OnImportAscii(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsmiAsc.Click
+            Try
+                Dim ofd As New OpenFileDialog()
+                ofd.Title = "Pick ASCII file to load"
+                ofd.Filter = "ASCII files|*.asc"
+                If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                    Dim rd As New StreamReader(ofd.FileName)
+                    Me.ReadASCFile(rd)
+                    rd.Close()
+                    Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
+                End If
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+#End Region ' Import
+
+#Region " Export "
+
+        Private Sub OnExportCSV(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsmiExportCSV.Click
+            Try
+                Me.m_qehGrid.ExportGridToCSV()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnExportAsc(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsmiExportAsc.Click
+            Try
+                Dim sfd As New SaveFileDialog()
+                sfd.CheckPathExists = True
+                sfd.Title = "Pick output location for ASCII file"
+                sfd.Filter = "ASCII files|*.asc"
+                If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                    Dim wr As New StreamWriter(sfd.FileName)
+                    Me.SaveASCFile(wr)
+                    wr.Close()
+                End If
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnExportLayer(sender As System.Object, e As System.EventArgs) Handles m_tsmiExportXYZ.Click
             Try
                 Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
                 cmd.Invoke(New cDisplayRasterLayer() {Me.m_layerWork})
@@ -207,7 +266,10 @@ Namespace Ecospace.Basemap.Layers
             Catch ex As Exception
 
             End Try
+
         End Sub
+
+#End Region ' Export
 
         Private Sub OnNameChanged(sender As Object, e As System.EventArgs) _
             Handles m_tbNameValue.TextChanged
@@ -299,7 +361,7 @@ Namespace Ecospace.Basemap.Layers
                 bEditable = (Me.m_layerOriginal.Editor.IsReadOnly = False)
             End If
 
-            Me.m_tsbnImport.Enabled = bEditable
+            Me.m_tsddImport.Enabled = bEditable
             Me.Text = String.Format(My.Resources.ECOSPACE_CAPTION_EDITLAYER, Me.m_tbNameValue.Text)
 
         End Sub
@@ -344,24 +406,60 @@ Namespace Ecospace.Basemap.Layers
 
 #End Region ' Internal implementation
 
+#Region " This should really live somewhere else... "
+
+        ' ToDo_JS: merge with core ASCII map logic, and build provisions to use spatial temporal framework
+
+        Protected Sub ReadASCFile(ByVal strm As StreamReader)
+            Try
+                Me.ReadASCIIHeader(strm)
+                Me.ReadASCIIBody(strm)
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' OOH THIS IS HACK!
+        ''' Too hack to be true
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Private Sub ToolStripButton1_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton1.Click
+        ''' -----------------------------------------------------------------------
+        Protected Sub ReadASCIIHeader(ByVal reader As StreamReader)
 
-            Dim sfd As New SaveFileDialog()
-            sfd.CheckPathExists = True
-            sfd.Title = "Pick output location for ASCII file (this is hack)"
-            sfd.Filter = "ASCII files|*.asc"
-            If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                Dim wr As New StreamWriter(sfd.FileName)
-                Me.SaveASCFile(wr)
-                wr.Close()
+            Dim strLine As String = ""
 
-            End If
+            While (String.IsNullOrWhiteSpace(strLine) Or (Not cStringUtils.BeginsWith(strLine, "NODATA_value", True))) And _
+                  (Not reader.EndOfStream)
+                strLine = reader.ReadLine
+            End While
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Too hack to be true
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Sub ReadASCIIBody(ByVal reader As StreamReader)
+
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+            Dim value As Single = 0
+            Dim strValue As String = ""
+
+            For ir As Integer = 1 To bm.InRow
+                Dim strLine As String = reader.ReadLine
+                Dim astrBits() As String = strLine.Split(" "c)
+                For ic As Integer = 1 To Math.Min(bm.InCol, astrBits.Length)
+                    If depth.IsWaterCell(ir, ic) Or Me.m_layerWork.VarName = eVarNameFlags.LayerDepth Then
+                        value = Single.Parse(astrBits(ic - 1))
+                    Else
+                        value = cCore.NULL_VALUE
+                    End If
+                    Me.m_layerWork.Value(ir, ic) = value
+                Next
+            Next
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -433,6 +531,9 @@ Namespace Ecospace.Basemap.Layers
             Next
 
         End Sub
+
+#End Region ' This should really live somewhere else...
+
     End Class
 
 End Namespace

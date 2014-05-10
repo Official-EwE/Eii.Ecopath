@@ -19,6 +19,7 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 ''' <summary>
 ''' Results from EcoPath for a single group.
@@ -109,8 +110,8 @@ Public Class cEcoPathGroupOutput
             'Set the Status Flags to ValueComputed for input/output pairs 
             'if the modeled value is different than the input value.
             'The original data structure is needed to perform this.
-            If (m_core.m_EcoPathData.EE(Me.Index) <> m_core.m_EcoPathData.EEinput(Me.Index)) And _
-               (m_core.m_EcoPathData.EE(Me.Index) <> (1 - m_core.m_EcoPathData.OtherMortinput(Me.Index))) Then
+            If (Not cNumberUtils.Approximates(Me.m_core.m_EcoPathData.EE(Me.Index), Me.m_core.m_EcoPathData.EEinput(Me.Index), 0.0001)) And _
+               (Me.m_core.m_EcoPathData.EE(Me.Index) <> (1 - Me.m_core.m_EcoPathData.OtherMortinput(Me.Index))) Then
                 Me.SetStatusFlags(eVarNameFlags.EEOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.EEOutput, eStatusFlags.ValueComputed)
