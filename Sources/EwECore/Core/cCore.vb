@@ -821,6 +821,8 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Function SetBatchLock(ByVal batchLockType As eBatchLockType) As Boolean
 
+        If (Me.m_DataSource Is Nothing) Then Return False
+
         ' Need to save prior to restructuring
         If (batchLockType = eBatchLockType.Restructure) Then
             If Not Me.SaveChanges() Then Return False
@@ -861,6 +863,8 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Function ReleaseBatchLock(ByVal batchChangeLevel As eBatchChangeLevelFlags, _
             Optional ByVal bCommit As Boolean = True) As Boolean
+
+        If (Me.m_DataSource Is Nothing) Then Return False
 
         ' Sanity checks: validate batch lock type
         Debug.Assert(Me.m_batchLockType <> eBatchLockType.NotSet, "Cannot release a batch lock; no current lock active")
