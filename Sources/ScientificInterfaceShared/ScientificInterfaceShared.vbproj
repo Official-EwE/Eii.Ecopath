@@ -138,6 +138,9 @@
     <Compile Include="Controls\Diagrams\FlowDiagram\IFlowDiagramRenderer.vb" />
     <Compile Include="Controls\EwEGrid\IEwECell.vb" />
     <Compile Include="Controls\EwEGrid\IPropertyCell.vb" />
+    <Compile Include="Controls\Label\cFileDropLabel.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\Label\ucLinkLabel.vb">
       <SubType>Component</SubType>
     </Compile>

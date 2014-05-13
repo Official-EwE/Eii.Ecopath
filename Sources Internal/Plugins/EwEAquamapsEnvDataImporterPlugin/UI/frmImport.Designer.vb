@@ -16,6 +16,9 @@
 '                 Joint Reseach Centre, Ispra, Italy.
 ' ===============================================================================
 '
+
+Imports ScientificInterfaceShared.Controls
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmImport
     Inherits System.Windows.Forms.Form
@@ -41,7 +44,7 @@ Partial Class frmImport
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmImport))
-        Me.m_lblDrop = New System.Windows.Forms.Label()
+        Me.m_lblDrop = New cFileDropLabel
         Me.m_btnImport = New System.Windows.Forms.Button()
         Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
         Me.m_hdrEnvelopes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -129,7 +132,7 @@ Partial Class frmImport
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents m_lblDrop As System.Windows.Forms.Label
+    Private WithEvents m_lblDrop As cFileDropLabel
     Private WithEvents m_btnImport As System.Windows.Forms.Button
     Private WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_hdrEnvelopes As ScientificInterfaceShared.Controls.cEwEHeaderLabel

@@ -69,42 +69,51 @@ Public Class frmImport
 
 #Region " Events "
 
-    Private Sub OnDragDropFiles(sender As Object, e As System.Windows.Forms.DragEventArgs) _
-        Handles m_lblDrop.DragDrop
+    'Private Sub OnDragDropFiles(sender As Object, e As System.Windows.Forms.DragEventArgs) _
+    '    Handles m_lblDrop.DragDrop
+    '    Try
+    '        If Not Me.m_bDragOver Then Return
+    '        Me.ReadFiles(CType(e.Data.GetData(DataFormats.FileDrop), String()))
+    '    Catch ex As Exception
+    '    End Try
+    '    Me.m_bDragOver = False
+    '    Me.UpdateControls()
+    'End Sub
+
+    'Private Sub OnDragEnterFiles(sender As Object, e As System.Windows.Forms.DragEventArgs) _
+    '    Handles m_lblDrop.DragEnter
+
+    '    Try
+    '        If (e.Data.GetDataPresent(DataFormats.FileDrop)) Then
+    '            e.Effect = DragDropEffects.All
+    '            Me.m_bDragOver = True
+    '        End If
+    '    Catch ex As Exception
+    '        Me.m_bDragOver = False
+    '    End Try
+    '    Me.UpdateControls()
+
+    'End Sub
+
+    'Private Sub OnDragLeaveFiles(sender As Object, e As System.EventArgs) _
+    '    Handles m_lblDrop.DragLeave
+
+    '    Try
+    '        Me.m_bDragOver = False
+    '    Catch ex As Exception
+
+    '    End Try
+    '    Me.UpdateControls()
+
+    'End Sub
+
+    Private Sub OnFilesDropped(sender As Object, files() As String) _
+        Handles m_lblDrop.OnFilesDropped
         Try
-            If Not Me.m_bDragOver Then Return
-            Me.ReadFiles(CType(e.Data.GetData(DataFormats.FileDrop), String()))
-        Catch ex As Exception
-        End Try
-        Me.m_bDragOver = False
-        Me.UpdateControls()
-    End Sub
-
-    Private Sub OnDragEnterFiles(sender As Object, e As System.Windows.Forms.DragEventArgs) _
-        Handles m_lblDrop.DragEnter
-
-        Try
-            If (e.Data.GetDataPresent(DataFormats.FileDrop)) Then
-                e.Effect = DragDropEffects.All
-                Me.m_bDragOver = True
-            End If
-        Catch ex As Exception
-            Me.m_bDragOver = False
-        End Try
-        Me.UpdateControls()
-
-    End Sub
-
-    Private Sub OnDragLeaveFiles(sender As Object, e As System.EventArgs) _
-        Handles m_lblDrop.DragLeave
-
-        Try
-            Me.m_bDragOver = False
+            Me.ReadFiles(files)
         Catch ex As Exception
 
         End Try
-        Me.UpdateControls()
-
     End Sub
 
     Private Sub OnImport(sender As System.Object, e As System.EventArgs) _
@@ -185,11 +194,11 @@ Public Class frmImport
     Private Sub UpdateControls()
 
         Me.m_btnImport.Enabled = (Me.m_data.Files.Length > 0)
-        If Me.m_bDragOver Then
-            Me.m_lblDrop.BackColor = SystemColors.Highlight
-        Else
-            Me.m_lblDrop.BackColor = Drawing.Color.Transparent
-        End If
+        'If Me.m_bDragOver Then
+        '    Me.m_lblDrop.BackColor = SystemColors.Highlight
+        'Else
+        '    Me.m_lblDrop.BackColor = Drawing.Color.Transparent
+        'End If
 
     End Sub
 
