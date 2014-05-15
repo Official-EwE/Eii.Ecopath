@@ -24,6 +24,10 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwECore
+Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Commands
+Imports System.IO
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -106,6 +110,7 @@ Namespace Ecospace.Controls
 
             AddHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
+            Me.CenterToParent()
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
@@ -120,13 +125,15 @@ Namespace Ecospace.Controls
             Dim ds As ISpatialDataSet = Me.m_gridDatasets.SelectedDataset
 
             Dim bHasTemplate As Boolean = (Me.m_cmbNewDS.SelectedItem IsNot Nothing)
-            Dim bHasDS As Boolean = (ds IsNot Nothing)
+            Dim bHasDS As Boolean = (Me.m_gridDatasets.RowsCount > 1)
+            Dim bHasSelection As Boolean = (ds IsNot Nothing)
             Dim bCanConfig As Boolean = (TypeOf ds Is IConfigurable)
 
             Me.m_cmbNewDS.Enabled = bHasTemplate
 
-            Me.m_btnDelete.Enabled = bHasDS
-            Me.m_btnConfigure.Enabled = bHasDS And bCanConfig
+            Me.m_btnDelete.Enabled = bHasSelection
+            Me.m_btnConfigure.Enabled = bHasSelection And bCanConfig
+            Me.m_btnExport.Enabled = bHasDS
 
         End Sub
 
@@ -152,6 +159,7 @@ Namespace Ecospace.Controls
                 Debug.Assert(False, ex.Message)
             End Try
             Me.Cursor = Cursors.Default
+            Me.UpdateControls()
         End Sub
 
         Private Sub OnDeleteDS(sender As System.Object, e As System.EventArgs) _
@@ -160,6 +168,16 @@ Namespace Ecospace.Controls
                 Me.DeleteDS(Me.SelectedDataset)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
+            End Try
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub OnExportAll(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnExport.Click
+            Try
+                Me.Export()
+            Catch ex As Exception
+                cLog.Write(ex, "")
             End Try
         End Sub
 
@@ -367,6 +385,28 @@ Namespace Ecospace.Controls
             Me.m_uic.Core.Messages.SendMessage(msg)
 
         End Sub
+
+        Private Sub Export()
+
+            ' ToDo_JS: globalize this method
+
+            Dim dlg As New frmInputBox()
+            Dim strPathOut As String = Path.Combine(Me.UIContext.Core.DefaultOutputPath(eAutosaveTypes.NotSet), "Export")
+            Dim strFile As String = ""
+
+            If (dlg.ShowDialog(Me, "Name for your export file", "Export datasets") <> DialogResult.OK) Then Return
+
+            strPathOut = cFileUtils.ToValidFileName(Path.Combine(strPathOut, dlg.Value), True)
+            strFile = Path.ChangeExtension(cFileUtils.ToValidFileName(dlg.Value, False), ".xml")
+
+            Try
+                Me.m_manSets.Save(Path.Combine(strPathOut, strFile))
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
 #End Region ' Internals 
 
     End Class

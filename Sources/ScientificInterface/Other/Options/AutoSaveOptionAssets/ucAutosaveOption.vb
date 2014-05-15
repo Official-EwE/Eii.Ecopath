@@ -243,7 +243,7 @@ Namespace Other
                 Me.m_lblPath.Visible = False
                 Me.m_btnVisitFolder.Visible = False
             Else
-                Dim strPath As String = Me.UIContext.Core.DefaultOutputPath(Me.m_autosavetype, Me.m_strOutputMask, True)
+                Dim strPath As String = Me.UIContext.Core.DefaultOutputPath(Me.m_autosavetype, Me.m_strOutputMask)
                 If (Me.m_pi IsNot Nothing) Then
                     strPath = Path.Combine(strPath, Me.m_pi.AutoSaveSubPath)
                 End If
