@@ -214,7 +214,7 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="strFile">Optional file to load dataset information from.
         ''' If this parameter is left empty the 
-        ''' <see cref="cSpatialDataSetManager.ConfigFileName">default file path</see> 
+        ''' <see cref="cSpatialDataSetManager.ConfigFile">default file path</see> 
         ''' is used.</param>
         ''' -------------------------------------------------------------------
         Public Function LoadSystemSettings(Optional strFile As String = "") As Boolean

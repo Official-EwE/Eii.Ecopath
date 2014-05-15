@@ -43,20 +43,27 @@ Namespace Controls
             Me.InitializeComponent()
         End Sub
 
-        Public Shadows Function Show(owner As IWin32Window, _
+        Public Shadows Function Show(ByVal owner As IWin32Window, _
                                      ByVal strPrompt As String, _
                                      Optional strCaption As String = "", _
                                      Optional strInitialValue As String = "") As DialogResult
-            Me.Text = strCaption
-            Me.m_lblPrompt.Text = strPrompt
-            Me.m_tbxValue.Text = strInitialValue
-            Return Me.ShowDialog(owner)
+            Me.ShowDialog(owner, strPrompt, strCaption, strInitialValue)
         End Function
 
         Public Shadows Function Show(ByVal strPrompt As String, _
                                      Optional strCaption As String = "", _
                                      Optional strInitialValue As String = "") As DialogResult
-            Return Me.Show(Nothing, strPrompt, strCaption, strInitialValue)
+            Me.ShowDialog(Nothing, strPrompt, strCaption, strInitialValue)
+        End Function
+
+        Public Shadows Function ShowDialog(owner As IWin32Window, _
+                              ByVal strPrompt As String, _
+                              Optional strCaption As String = "", _
+                              Optional strInitialValue As String = "") As DialogResult
+            Me.Text = strCaption
+            Me.m_lblPrompt.Text = strPrompt
+            Me.m_tbxValue.Text = strInitialValue
+            Return MyBase.ShowDialog(owner)
         End Function
 
 #Region " Events "
@@ -80,6 +87,11 @@ Namespace Controls
             Me.Close()
         End Sub
 
+        Private Sub OnInputTextChanged(sender As Object, e As System.EventArgs) _
+            Handles m_tbxValue.TextChanged
+            Me.UpdateControls()
+        End Sub
+
 #End Region ' Events
 
 #Region " Public properties "
@@ -96,6 +108,14 @@ Namespace Controls
         End Property
 
 #End Region ' Public properties
+
+#Region " Internals "
+
+        Private Sub UpdateControls()
+            Me.m_btnOk.Enabled = (Not String.IsNullOrWhiteSpace(Me.m_tbxValue.Text))
+        End Sub
+
+#End Region ' Internals
 
     End Class
 

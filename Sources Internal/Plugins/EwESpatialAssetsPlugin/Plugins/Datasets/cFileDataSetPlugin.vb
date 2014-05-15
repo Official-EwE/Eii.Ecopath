@@ -231,6 +231,64 @@ Namespace SpatialData
 
 #End Region ' Configuration
 
+#Region " Import / export "
+
+        Protected Property IsSourceRelative As Boolean = False
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.ExportTo"/>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function ExportTo(ByVal strPath As String) As ISpatialDataSet _
+            Implements ISpatialDataSet.ExportTo
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns an absolute version of a relative path.
+        ''' </summary>
+        ''' <param name="strPath"></param>
+        ''' <param name="strPathBase">The absolute path to resolve to. If not specified,
+        ''' the path to the current Dataset configuration file is obtained from the
+        ''' EwE ccore.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Protected Function ToAbsolutePath(ByVal strPath As String, _
+                                          Optional ByVal strPathBase As String = "") As String
+
+            If Not Me.IsSourceRelative Then Return strPath
+            If (String.IsNullOrWhiteSpace(strPathBase)) Then
+                Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
+                strPathBase = Path.GetDirectoryName(man.ConfigFile)
+            End If
+            Return cFileUtils.NormalizePath(Path.Combine(strPathBase, strPath))
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a relative version of an absolute path.
+        ''' </summary>
+        ''' <param name="strPath"></param>
+        ''' <param name="strPathBase">The absolute path to resolve from. If not specified,
+        ''' the path to the current Dataset configuration file is obtained from the
+        ''' EwE ccore.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Protected Function ToRelativePath(ByVal strPath As String, _
+                                          Optional ByVal strPathBase As String = "") As String
+
+            If Not Me.IsSourceRelative Then Return strPath
+
+            If (String.IsNullOrWhiteSpace(strPathBase)) Then
+                Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
+                strPathBase = Path.GetDirectoryName(man.ConfigFile)
+            End If
+
+            Return cFileUtils.RelativePath(strPathBase, strPath)
+
+        End Function
+
+#End Region ' Import / export
+
 #Region " Data "
 
         ''' -------------------------------------------------------------------
@@ -541,7 +599,7 @@ Namespace SpatialData
         ''' <summary>
         ''' Get the complete path to the external data file for the current timestep.
         ''' </summary>
-        ''' <returns></returns>
+        ''' <returns>The complete path to the external data file for the current timestep.</returns>
         ''' -------------------------------------------------------------------
         Protected MustOverride Function SourceFileName() As String
 

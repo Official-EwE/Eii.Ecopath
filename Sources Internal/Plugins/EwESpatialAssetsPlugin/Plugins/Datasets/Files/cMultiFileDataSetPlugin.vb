@@ -349,6 +349,10 @@ Namespace SpatialData
             Dim xnFile As XmlNode = Nothing
             Dim xaFile As XmlAttribute = Nothing
 
+            If (Me.IsSourceRelative) Then
+                Me.Source = Me.ToRelativePath(Me.Source)
+            End If
+
             xnMaster = doc.CreateElement("Configuration")
 
             xn = doc.CreateElement("Name")
@@ -367,6 +371,10 @@ Namespace SpatialData
             xn.InnerText = Me.Source
             xnMaster.AppendChild(xn)
 
+            xn = doc.CreateElement("IsSourceRelative")
+            xn.InnerText = Convert.ToString(Me.IsSourceRelative)
+            xnMaster.AppendChild(xn)
+
             xn = doc.CreateElement("Seasonal")
             xn.InnerText = Convert.ToString(Me.IsSeasonal)
             xnMaster.AppendChild(xn)
@@ -383,9 +391,6 @@ Namespace SpatialData
                 xnFile = doc.CreateElement("File")
 
                 xaFile = doc.CreateAttribute("Name")
-                'jb 3-May-2012 still need to confirm files are relative to the "Source" node
-                'not what-every it is that cFileUtils.RelativePath returns 
-                'so strip of the path part of the file
                 xaFile.Value = Path.GetFileName(tf.FileName)
                 xnFile.Attributes.Append(xaFile)
 
@@ -455,10 +460,10 @@ Namespace SpatialData
                         Case "Name" : Me.m_strName = xn.InnerText
                         Case "Description" : Me.DataDescription = xn.InnerText
                         Case "Source" : Me.Source = xn.InnerText
+                        Case "IsSourceRelative" : Me.IsSourceRelative = Convert.ToBoolean(xn.InnerText)
                         Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
                         Case "Seasonal" : Me.IsSeasonal = Convert.ToBoolean(xn.InnerText)
                         Case "SeasonsEnd" : Me.SeasonsEnd = DateTime.FromOADate(Convert.ToDouble(xn.InnerText))
-                        Case "Annual" : Convert.ToBoolean(xn.InnerText)
                         Case "Files"
                             For Each xnFile In xn.ChildNodes
                                 Dim strName As String = xnFile.Attributes("Name").InnerText
@@ -486,6 +491,10 @@ Namespace SpatialData
                 Me.Clear()
                 Return False
             End Try
+
+            If (Me.IsSourceRelative) Then
+                Me.Source = Me.ToAbsolutePath(Me.Source)
+            End If
 
             Return True
 
@@ -656,6 +665,46 @@ Namespace SpatialData
         End Property
 
 #End Region ' Plug-in implementation
+
+#Region " Import & export "
+
+        Public Overrides Function ExportTo(ByVal strPath As String) As EwEUtils.SpatialData.ISpatialDataSet
+
+            ' Sanity checks
+            Debug.Assert(Not Convert.Equals(Guid.Empty, Me.DBID), "Dataset has no valid ID yet")
+
+            ' Clone DS
+            Dim ds As cMultiFileDataSetPlugin = DirectCast(Me.MemberwiseClone, cMultiFileDataSetPlugin)
+            ds.IsSourceRelative = True
+
+            ' Export file content to a folder in strPath that is identified by the current GUID
+            ' Note that the exported dataset will inherit the same GUID. It makes sense but may cause confusion...
+            ds.Source = ds.ToAbsolutePath(Me.DBID.ToString(), strPath)
+
+            ' Make sure that the path exists
+            If Not cFileUtils.IsDirectoryAvailable(ds.Source, True) Then
+                ' ToDo: send some kind of message
+                Return Nothing
+            End If
+
+            ' Copy file
+            Try
+                For i As Integer = 0 To Me.m_lFiles.Count - 1
+                    Dim strSrc As String = Me.m_lFiles(i).FileName
+                    Dim strTgt As String = Path.Combine(ds.Source, Path.GetFileName(Me.m_lFiles(i).FileName))
+                    System.IO.File.Copy(strSrc, strTgt, True)
+                Next
+            Catch ex As Exception
+                ' ToDo: send some kind of message
+                Return Nothing
+            End Try
+
+            ' Return clone
+            Return ds
+
+        End Function
+
+#End Region ' Import & export
 
     End Class
 

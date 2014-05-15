@@ -92,7 +92,6 @@ Friend Class cEcospaceImportExportASCIIData
     ''' Read the ASCII header from a text reader.
     ''' </summary>
     ''' <param name="reader">The open stream reader to read from.</param>
-    ''' <param name="rs">The raster to read the data into.</param>
     ''' <returns>True if successful.</returns>
     ''' <remarks>
     ''' This method aims to read a complete raster header as described in
@@ -218,7 +217,6 @@ Friend Class cEcospaceImportExportASCIIData
     ''' Read the ASCII body from a text reader.
     ''' </summary>
     ''' <param name="reader">The open stream reader to read from.</param>
-    ''' <param name="rs">The raster to read the data into.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Protected Function ReadBody(ByVal reader As StreamReader) As Boolean

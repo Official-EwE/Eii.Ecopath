@@ -2463,18 +2463,19 @@ Public Class cCore
     ''' <summary>
     ''' Get the default output location for a given <see cref="eAutosaveTypes">autosaving component</see>.
     ''' </summary>
-    ''' <param name="type">The <see cref="eAutosaveTypes">autosaving component</see> to get return
-    ''' the default path for.</param>
+    ''' <param name="type">The <see cref="eAutosaveTypes">autosaving component</see>
+    ''' to get return the default path for.</param>
+    ''' <param name="strBasePath">The base directory to place the output folder under, 
+    ''' if any. if left empty the current <see cref="OutputPath"> is assumed.</see></param>
     ''' -------------------------------------------------------------------------
     Public ReadOnly Property DefaultOutputPath(ByVal type As eAutosaveTypes, _
-                                               Optional strBasePath As String = "", _
-                                               Optional bFillWithPlaceholders As Boolean = False) As String
+                                               Optional strBasePath As String = "") As String
         Get
             Dim strModel As String = ""
             Dim strScenario As String = ""
             Dim strPath As String = ""
 
-            If (Me.DataSource IsNot Nothing) Then
+            If (Me.DataSource IsNot Nothing) And (type <> eAutosaveTypes.NotSet) Then
                 strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName)
             End If
 

@@ -48,12 +48,14 @@ Namespace SpatialData
 
         Private m_lAvailable As List(Of ISpatialDataSet) = Nothing
         Private m_lDeleted As List(Of Guid) = Nothing
-        Private m_fswSpy As FileSystemWatcher = Nothing
+        'Private m_fswSpy As FileSystemWatcher = Nothing
         Private m_core As cCore = Nothing
         Private m_bReadOnly As Boolean = False
 
         Private m_indexer As cSpatialDatasetIndexer = Nothing
         Private m_bIndexingAllowed As Boolean = False
+
+        Private m_strConfigFile As String = ""
 
 #End Region ' Private vars
 
@@ -65,16 +67,16 @@ Namespace SpatialData
             Me.m_lDeleted = New List(Of Guid)
             Me.m_core = core
 
-            ' Create folder watcher
-            Me.m_fswSpy = New FileSystemWatcher()
-            Me.m_fswSpy.Path = Path.GetDirectoryName(cSpatialDataSetManager.ConfigFileName())
-            Me.m_fswSpy.NotifyFilter = NotifyFilters.LastWrite
-            Me.m_fswSpy.Filter = "*.xml"
-            Me.m_fswSpy.EnableRaisingEvents = True
+            '' Create folder watcher
+            'Me.m_fswSpy = New FileSystemWatcher()
+            'Me.m_fswSpy.Path = Path.GetDirectoryName(cSpatialDataSetManager.DefaultConfigFileName())
+            'Me.m_fswSpy.NotifyFilter = NotifyFilters.LastWrite
+            'Me.m_fswSpy.Filter = "*.xml"
+            'Me.m_fswSpy.EnableRaisingEvents = True
 
             Me.m_indexer = New cSpatialDatasetIndexer(core)
 
-            AddHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
+            'AddHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
 
         End Sub
 
@@ -84,10 +86,10 @@ Namespace SpatialData
             Me.IndexDataset = Nothing
 
             ' Cleanup
-            If (Me.m_fswSpy IsNot Nothing) Then
-                RemoveHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
-                Me.m_fswSpy = Nothing
-            End If
+            'If (Me.m_fswSpy IsNot Nothing) Then
+            '    RemoveHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
+            '    Me.m_fswSpy = Nothing
+            'End If
             Me.m_lAvailable = Nothing
             Me.m_lDeleted = Nothing
             GC.SuppressFinalize(Me)
@@ -104,7 +106,7 @@ Namespace SpatialData
         ''' </summary>
         ''' <returns>The full path to the configuration file.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ConfigFileName() As String
+        Public Shared Function DefaultConfigFile() As String
 
             Dim strFolder As String = cSystemUtils.ApplicationSettingsPath()
             Return Path.Combine(strFolder, cCONFIG_FILE)
@@ -113,10 +115,21 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get the full path to the current active config file.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property ConfigFile As String
+            Get
+                If (Not String.IsNullOrWhiteSpace(Me.m_strConfigFile)) Then Return Me.m_strConfigFile
+                Return DefaultConfigFile()
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Initializes the manager with datasets, loaded from persistent storage.
         ''' </summary>
-        ''' <param name="strFile">Optional file to load datasets from. If this 
-        ''' parameter is left empty the <see cref="cSpatialDataSetManager.ConfigFileName">default file path</see>
+        ''' parameter is left empty the <see cref="cSpatialDataSetManager.DefaultConfigFileName">default file path</see>
         ''' is used.</param>
         ''' <param name="bClearFirst">Flag, stating that the content currently in 
         ''' the manager should be cleared first.</param>
@@ -135,12 +148,15 @@ Namespace SpatialData
             Dim bSuccess As Boolean = False
 
             If (bClearFirst) Then Me.Clear()
-            If (String.IsNullOrEmpty(strFile)) Then strFile = cSpatialDataSetManager.ConfigFileName()
 
-            'jb if it failed to find the config file shouldn't it return False
+            If (String.IsNullOrWhiteSpace(strFile)) Then strFile = cSpatialDataSetManager.DefaultConfigFile()
+
+            ' jb if it failed to find the config file shouldn't it return False
             ' JS: No, it is fine if the file does not exist, which is the initial state of a new EwE installation.
             '     bSuccess indicates whether the config file is corrupted, which is an error.
             If Not File.Exists(strFile) Then Return True
+
+            Me.m_strConfigFile = strFile
 
             ' Load datasets
             doc.Load(strFile)
@@ -162,13 +178,13 @@ Namespace SpatialData
                                 If (t IsNot Nothing) Then
 
                                     ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
+                                    If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
                                     ds.Configuration(doc) = xn.ChildNodes(0)
 
                                     ' Assign GUID
                                     xa = xn.Attributes("GUID")
                                     ds.GUID = Guid.Parse(xa.InnerText)
 
-                                    If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
 
                                 Else '(t IsNot Nothing)
                                     cLog.Write("Unable to instantiate data set " & strTypeName)
@@ -185,10 +201,10 @@ Namespace SpatialData
                                 End If
 
                             Catch ex As Exception
-                                ds = Nothing
-                                bSuccess = False
-                                cLog.Write(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
-                            End Try
+                            ds = Nothing
+                            bSuccess = False
+                            cLog.Write(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
+                        End Try
 
                             Dim bAdd As Boolean = False
                             If (ds IsNot Nothing) Then
@@ -235,18 +251,22 @@ Namespace SpatialData
 
             ' Complete missing file name, if any
             If (String.IsNullOrWhiteSpace(strFile)) Then
-                strFile = cSpatialDataSetManager.ConfigFileName()
+                strFile = cSpatialDataSetManager.DefaultConfigFile()
             End If
 
+            Dim bExporting As Boolean = (cFileUtils.Equals(strFile, Me.ConfigFile) = False)
             ' Complete missing datasets, if any
             If (datasets Is Nothing) Then
                 datasets = Me.m_lAvailable.ToArray()
             End If
 
             ' Create dir
-            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile)) Then
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
                 Return False
             End If
+
+            Dim strConfigOld As String = Me.m_strConfigFile
+            Me.m_strConfigFile = strFile
 
             Try
                 If File.Exists(strFile) Then
@@ -288,41 +308,49 @@ Namespace SpatialData
             ' Gather dataset config nodes, but do not add to the doc until all done
             For Each ds As ISpatialDataSet In datasets
 
-                xnDataset = doc.CreateElement("Dataset")
+                If (bExporting) Then ds = ds.ExportTo(Path.GetDirectoryName(strFile))
+                If (ds IsNot Nothing) Then
 
-                xaDataset = doc.CreateAttribute("Type")
-                xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
-                xnDataset.Attributes.Append(xaDataset)
+                    xnDataset = doc.CreateElement("Dataset")
 
-                xaDataset = doc.CreateAttribute("GUID")
-                xaDataset.Value = Convert.ToString(ds.GUID)
-                xnDataset.Attributes.Append(xaDataset)
+                    xaDataset = doc.CreateAttribute("Type")
+                    xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
+                    xnDataset.Attributes.Append(xaDataset)
 
-                Try
-                    xnDetails = ds.Configuration(doc)
-                Catch ex As Exception
-                    xnDetails = Nothing
-                End Try
+                    xaDataset = doc.CreateAttribute("GUID")
+                    xaDataset.Value = Convert.ToString(ds.GUID)
+                    xnDataset.Attributes.Append(xaDataset)
 
-                If (xnDetails IsNot Nothing) Then
-                    xnDataset.AppendChild(xnDetails)
+                    Try
+                        xnDetails = ds.Configuration(doc)
+                    Catch ex As Exception
+                        xnDetails = Nothing
+                    End Try
+
+                    If (xnDetails IsNot Nothing) Then
+                        xnDataset.AppendChild(xnDetails)
+                    End If
+
+                    ' Add dataset nodes
+                    xnRoot.AppendChild(xnDataset)
+                    bChanged = True
+
                 End If
 
-                ' Add dataset nodes
-                xnRoot.AppendChild(xnDataset)
-                bChanged = True
             Next
 
             ' Save
-            Me.m_fswSpy.EnableRaisingEvents = False
+            'Me.m_fswSpy.EnableRaisingEvents = False
             Try
                 If bChanged Then
-                    doc.Save(ConfigFileName)
+                    doc.Save(Me.ConfigFile)
                 End If
             Catch ex As Exception
                 bSuccess = False
             End Try
-            Me.m_fswSpy.EnableRaisingEvents = True
+            'Me.m_fswSpy.EnableRaisingEvents = True
+
+            Me.m_strConfigFile = strConfigOld
 
             Return bSuccess
 
@@ -692,7 +720,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub OnConfigFileChanged(ByVal sender As Object, ByVal args As FileSystemEventArgs)
 
-            If Path.Equals(args.FullPath, cSpatialDataSetManager.ConfigFileName()) Then
+            If Path.Equals(args.FullPath, cSpatialDataSetManager.DefaultConfigFile()) Then
                 ' Lock up list
                 m_bReadOnly = True
             End If

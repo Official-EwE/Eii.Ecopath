@@ -1,11 +1,32 @@
-﻿Namespace Controls
+﻿Imports System.ComponentModel
+Imports System.IO
+
+Namespace Controls
 
     Public Class cFileDropLabel
         Inherits Label
 
         Private m_bDragOver As Boolean = False
 
+        Public Sub New()
+            Me.BorderStyle = Windows.Forms.BorderStyle.FixedSingle
+            Me.AutoSize = False
+            Me.Font = New Font(Me.Font.Name, 14.25, FontStyle.Bold)
+            Me.TextAlign = ContentAlignment.MiddleCenter
+            Me.AllowDrop = True
+        End Sub
+
         Public Event OnFilesDropped(sender As Object, astrFiles As String())
+
+        <Browsable(True)> _
+        <Description("Maximum number of files that can be dropped simultaenously. Set this value to 0 if there are no restrictions.")> _
+        <Category("Drag and drop")> _
+        Public Property MaxFiles As Integer = 0
+
+        <Browsable(True)> _
+        <Description("File extensions that can be dropped (semi-colon separated)")> _
+        <Category("Drag and drop")> _
+        Public Property FileExtensions As String = ""
 
         Protected Overrides Sub InitLayout()
             MyBase.InitLayout()
@@ -25,8 +46,11 @@
         Protected Overrides Sub OnDragEnter(e As System.Windows.Forms.DragEventArgs)
             Try
                 If (e.Data.GetDataPresent(DataFormats.FileDrop)) Then
-                    e.Effect = DragDropEffects.All
-                    Me.m_bDragOver = True
+                    Dim astrFiles As String() = CType(e.Data.GetData(DataFormats.FileDrop), String())
+                    If (Me.AcceptFiles(astrFiles)) Then
+                        e.Effect = DragDropEffects.All
+                        Me.m_bDragOver = True
+                    End If
                 End If
             Catch ex As Exception
                 Me.m_bDragOver = False
@@ -52,6 +76,29 @@
                 Me.ForeColor = SystemColors.ButtonShadow
             End If
         End Sub
+
+        Private Function AcceptFiles(astrFiles As String()) As Boolean
+
+            If (astrFiles Is Nothing) Then Return False
+            If (astrFiles.Length = 0) Then Return False
+            If (Me.MaxFiles > 0) Then
+                If (astrFiles.Length > Me.MaxFiles) Then Return False
+            End If
+            If (String.IsNullOrWhiteSpace(Me.FileExtensions)) Then Return True
+            Dim htExt As New HashSet(Of String)
+            For Each strExt As String In Me.FileExtensions.Split(";"c)
+                If (Not String.IsNullOrWhiteSpace(strExt)) Then
+                    htExt.Add(strExt.ToLower)
+                End If
+            Next
+            For Each strFile As String In astrFiles
+                If Not htExt.Contains(Path.GetExtension(strFile).ToLower) Then
+                    Return False
+                End If
+            Next
+            Return True
+
+        End Function
 
     End Class
 

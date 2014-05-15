@@ -19,18 +19,14 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports System.Drawing
 Imports System.IO
 Imports System.Windows.Forms
 Imports System.Xml
 Imports DotSpatial.Data
-Imports EwECore
-Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -65,16 +61,6 @@ Namespace SpatialData
         Public Sub New()
             MyBase.New()
             Me.VarName = eVarNameFlags.NotSet
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Quick constructor.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Sub New(strSource As String)
-            Me.New()
-            Me.Source = strSource
         End Sub
 
 #End Region ' Construction / destruction
@@ -220,6 +206,12 @@ Namespace SpatialData
             Dim xn As XmlNode = Nothing
             Dim xnFile As XmlNode = Nothing
             Dim xaFile As XmlAttribute = Nothing
+            Dim strSource As String = Me.Source
+
+            ' Create relative source path from current config file location
+            If (Me.IsSourceRelative) Then
+                strSource = Me.ToRelativePath(Me.Source)
+            End If
 
             xnMaster = doc.CreateElement("Configuration")
 
@@ -238,7 +230,11 @@ Namespace SpatialData
             xnFile = doc.CreateElement("File")
 
             xaFile = doc.CreateAttribute("Source")
-            xaFile.Value = Me.Source
+            xaFile.Value = strSource
+            xnFile.Attributes.Append(xaFile)
+
+            xaFile = doc.CreateAttribute("IsSourceRelative")
+            xaFile.Value = Convert.ToString(Me.IsSourceRelative)
             xnFile.Attributes.Append(xaFile)
 
             xaFile = doc.CreateAttribute("Date")
@@ -303,9 +299,14 @@ Namespace SpatialData
                         Case "Name" : Me.m_strName = xn.InnerText
                         Case "Description" : Me.DataDescription = xn.InnerText
                         Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
-                        Case "Annual" : Convert.ToBoolean(xn.InnerText)
                         Case "File"
                             Me.Source = xn.Attributes("Source").InnerText
+                            If (xn.Attributes.GetNamedItem("IsSourceRelative") IsNot Nothing) Then
+                                Me.IsSourceRelative = Boolean.Parse(xn.Attributes("IsSourceRelative").InnerText)
+                            Else
+                                Me.IsSourceRelative = False
+                            End If
+
                             Dim strDate As String = xn.Attributes("Date").InnerText
                             Dim dt As DateTime = DateTime.FromOADate(Convert.ToDouble(strDate))
                             If (dt = DateTime.MinValue) Or (dt = DateTime.MaxValue) Then
@@ -332,6 +333,11 @@ Namespace SpatialData
             Catch ex As Exception
                 Return False
             End Try
+
+            ' Resolve relative source path to the current config file location
+            If (Me.IsSourceRelative) Then
+                Me.Source = Me.ToAbsolutePath(Me.Source)
+            End If
 
             Return True
 
@@ -463,6 +469,43 @@ Namespace SpatialData
         End Property
 
 #End Region ' Plug-in implementation
+
+#Region " Import & export "
+
+        Public Overrides Function ExportTo(ByVal strPath As String) As EwEUtils.SpatialData.ISpatialDataSet
+
+            ' Sanity checks
+            Debug.Assert(Not Convert.Equals(Guid.Empty, Me.DBID), "Dataset has no valid ID yet")
+
+            ' Clone DS
+            Dim ds As cSingleFileDataSetPlugin = DirectCast(Me.MemberwiseClone, cSingleFileDataSetPlugin)
+            ds.IsSourceRelative = True
+
+            ' Export file content to a folder in strPath that is identified by the current GUID
+            ' Note that the exported dataset will inherit the same GUID. It makes sense but may cause confusion...
+            Dim strNewPath As String = ds.ToAbsolutePath(Me.DBID.ToString(), strPath)
+            ds.Source = Path.Combine(strNewPath, Path.GetFileName(Me.Source))
+
+            ' Make sure that the path exists
+            If Not cFileUtils.IsDirectoryAvailable(strNewPath, True) Then
+                ' ToDo: send some kind of message
+                Return Nothing
+            End If
+
+            ' Copy file
+            Try
+                File.Copy(Me.Source, ds.Source, True)
+            Catch ex As Exception
+                ' ToDo: send some kind of message
+                Return Nothing
+            End Try
+
+            ' Return clone
+            Return ds
+
+        End Function
+
+#End Region ' Import & export
 
     End Class
 

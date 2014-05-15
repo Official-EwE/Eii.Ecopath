@@ -52,6 +52,7 @@ Namespace Ecospace.Controls
             Me.m_btnConfigure = New System.Windows.Forms.Button()
             Me.m_hdr = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbEnableIndexing = New System.Windows.Forms.CheckBox()
+            Me.m_btnExport = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_btnAdd
@@ -131,6 +132,12 @@ Namespace Ecospace.Controls
             Me.m_cbEnableIndexing.Name = "m_cbEnableIndexing"
             Me.m_cbEnableIndexing.UseVisualStyleBackColor = True
             '
+            'm_btnExport
+            '
+            resources.ApplyResources(Me.m_btnExport, "m_btnExport")
+            Me.m_btnExport.Name = "m_btnExport"
+            Me.m_btnExport.UseVisualStyleBackColor = True
+            '
             'dlgDefineExternalSpatialData
             '
             Me.AcceptButton = Me.m_btnOK
@@ -143,6 +150,7 @@ Namespace Ecospace.Controls
             Me.Controls.Add(Me.m_cmbNewDS)
             Me.Controls.Add(Me.m_gridDatasets)
             Me.Controls.Add(Me.m_btnConfigure)
+            Me.Controls.Add(Me.m_btnExport)
             Me.Controls.Add(Me.m_btnDelete)
             Me.Controls.Add(Me.m_btnAdd)
             Me.MaximizeBox = False
@@ -162,6 +170,7 @@ Namespace Ecospace.Controls
         Private WithEvents m_btnConfigure As System.Windows.Forms.Button
         Private WithEvents m_hdr As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_cbEnableIndexing As System.Windows.Forms.CheckBox
+        Private WithEvents m_btnExport As System.Windows.Forms.Button
     End Class
 
 End Namespace

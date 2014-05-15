@@ -448,8 +448,8 @@ Namespace Utilities
         ''' -----------------------------------------------------------------------
         Shared Function RelativePath(ByVal strRoot As String, ByVal strAbs As String) As String
 
-            Dim astrRoot As String() = Path.GetFullPath(strRoot).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
-            Dim astrAbs As String() = Path.GetFullPath(strAbs).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
+            Dim astrRoot As String() = NormalizePath(strRoot).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
+            Dim astrAbs As String() = NormalizePath(strAbs).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
 
             Dim nShared As Integer = 0
             For i As Integer = 0 To Math.Min(astrRoot.Length, astrAbs.Length) - 1
@@ -579,6 +579,46 @@ Namespace Utilities
             If String.IsNullOrWhiteSpace(strDosPath) Then Return String.Empty
             Return strDosPath.Replace("\\", "/").Replace("\", "/")
 
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Normalize a path to a full path.
+        ''' </summary>
+        ''' <param name="strPath"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' After http://stackoverflow.com/questions/2281531/how-can-i-compare-directory-paths-in-c
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function NormalizePath(ByVal strPath As String) As String
+
+            ' Sanity checks
+            If (String.IsNullOrWhiteSpace(strPath)) Then Return String.Empty
+
+            ' Validate paths and folders
+            Return Path.GetFullPath(New Uri(strPath).LocalPath)
+            ' .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) _
+            ' .ToUpperInvariant()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether two paths refer to the same location.
+        ''' </summary>
+        ''' <param name="strPath1">The first path to compare.</param>
+        ''' <param name="strPath2">The second path to compare.</param>
+        ''' <param name="bIgnoreCase">Flag, stating comparison can exclude letter casing.</param>
+        ''' <returns>True if the two paths refer to the same location.</returns>
+        ''' <remarks>
+        ''' http://stackoverflow.com/questions/2281531/how-can-i-compare-directory-paths-in-c
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Shadows Function Equals(ByVal strPath1 As String, _
+                                              ByVal strPath2 As String, _
+                                              Optional bIgnoreCase As Boolean = True) As Boolean
+            Return String.Compare(NormalizePath(strPath1), NormalizePath(strPath2), bIgnoreCase) = 0
         End Function
 
     End Class
