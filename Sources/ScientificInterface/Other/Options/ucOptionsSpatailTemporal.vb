@@ -1,0 +1,208 @@
+' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Option Strict On
+Option Explicit On
+
+Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports System.IO
+Imports EwEUtils.Core
+Imports EwECore.SpatialData
+Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Utilities
+
+#End Region
+
+Namespace Other
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' User control; implements the Options > Spatail temporal data interface.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Class ucOptionsSpatialTemporal
+        Implements IOptionsPage
+        Implements IUIElement
+
+#Region " Constructors "
+
+        Public Sub New(ByVal uic As cUIContext)
+
+            Me.UIContext = uic
+            Me.InitializeComponent()
+
+        End Sub
+
+#End Region ' Constructors
+
+#Region " Event handlers "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Control's load event which gets called every time the control gets loaded. 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            Dim core As cCore = Me.UIContext.Core
+            Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
+            Dim strFile As String = man.ConfigFile
+
+            If String.IsNullOrWhiteSpace(strFile) Or cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) Then
+                Me.m_rbDefault.Checked = True
+            Else
+                Me.m_rbCustom.Checked = True
+                Me.m_tbxCustom.Text = strFile
+            End If
+
+        End Sub
+
+        Private Sub OnOptionChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_rbDefault.CheckedChanged, m_rbCustom.CheckedChanged
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub OnSelectFile(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnChoose.Click
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+            cmdFO.Title = My.Resources.PROMPT_SELECT_REFIMAGE
+            cmdFO.Invoke(Me.m_tbxCustom.Text, "Dataset config files|*.xml", 0)
+
+            If (cmdFO.Result = DialogResult.OK) Then
+                Me.m_tbxCustom.Text = cmdFO.FileName
+                Me.m_rbCustom.Checked = True
+                Me.UpdateControls()
+            End If
+
+        End Sub
+
+        Private Sub OnViewDefault(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnVisitFolder.Click
+
+            If (Me.UIContext IsNot Nothing) Then
+                Try
+                    Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                    Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                    cmd.Invoke(Path.GetDirectoryName(cSpatialDataSetManager.DefaultConfigFile))
+                Catch ex As Exception
+                    cLog.Write(ex, "ucOptionsSpatialTemporal::OnViewDefault")
+                End Try
+            End If
+
+        End Sub
+
+#End Region ' Event handlers
+
+#Region " Public methods "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
+        Public Property UIContext As cUIContext _
+                 Implements IUIElement.UIContext
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanApply"/>
+        ''' -------------------------------------------------------------------
+        Public Function CanApply() As Boolean _
+              Implements IOptionsPage.CanApply
+            Return True
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.OnChanged"/>
+        ''' -------------------------------------------------------------------
+        Public Event OnOptionsPedigreeChanged(sender As IOptionsPage, args As System.EventArgs) _
+              Implements IOptionsPage.OnChanged
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.Apply"/>
+        ''' -------------------------------------------------------------------
+        Public Function Apply() As IOptionsPage.eApplyResultType _
+            Implements IOptionsPage.Apply
+
+            Dim core As cCore = Me.UIContext.Core
+            Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
+            Dim strFile As String = ""
+            Dim bSuccess As Boolean = True
+
+            If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
+
+            Try
+
+                If (Me.m_rbCustom.Checked) Then
+                    strFile = Me.m_tbxCustom.Text
+                End If
+
+                Me.UIContext.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
+                Try
+                    bSuccess = man.Load(strFile, True)
+                Catch ex As Exception
+                    bSuccess = False
+                End Try
+                core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
+
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
+            End Try
+
+            If bSuccess Then Return IOptionsPage.eApplyResultType.Success
+            Return IOptionsPage.eApplyResultType.Failed
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
+        ''' -------------------------------------------------------------------
+        Public Sub SetDefaults() _
+                Implements IOptionsPage.SetDefaults
+
+            Try
+                Me.m_rbDefault.Checked = True
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+#End Region ' Public methods
+
+#Region " Internals "
+
+        Private Sub UpdateControls()
+
+        End Sub
+
+#End Region ' Internals
+
+    End Class
+
+End Namespace
+
+

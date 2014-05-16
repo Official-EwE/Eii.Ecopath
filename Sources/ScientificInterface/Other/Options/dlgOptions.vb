@@ -279,6 +279,7 @@ Namespace Other
                 Case "ndPlugins" : t = GetType(ucOptionsPlugins)
                 Case "ndMap" : t = GetType(ucOptionsMap)
                 Case "ndPedigree" : t = GetType(ucOptionsPedigree)
+                Case "ndSpatialTemporal" : t = GetType(ucOptionsSpatialTemporal)
                 Case Else
                     Debug.Assert(False, "Node name not recognized")
             End Select
@@ -318,6 +319,10 @@ Namespace Other
                 Case eApplicationOptionTypes.Plugins
                     t = GetType(ucOptionsPlugins)
                     strNode = "ndPlugins"
+
+                Case eApplicationOptionTypes.SpatialTemporal
+                    t = GetType(ucOptionsSpatialTemporal)
+                    strNode = "ndSpatialTemporal"
 
                 Case Else
                     Debug.Assert(False, "Option not recognized")

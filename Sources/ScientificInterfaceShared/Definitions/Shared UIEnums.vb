@@ -179,6 +179,8 @@ Namespace Definitions
         FileLocations = Autosave
         ''' <summary>Presentation mode options.</summary>
         PresentationMode
+        ''' <summary>Spatial-temporal options.</summary>
+        SpatialTemporal
     End Enum
 
     Public Enum eGroupFilter As Integer
