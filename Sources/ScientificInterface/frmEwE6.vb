@@ -953,7 +953,7 @@ Public Class frmEwE6
         Me.AutolaunchPlugins()
 
         ' Load spatial data sets
-        Me.Core.SpatialDataConnectionManager.LoadSystemSettings()
+        Me.Core.SpatialDataConnectionManager.DatasetManager.Load(My.Settings.SpatialTemporalConfigFile)
 
         Me.ProcessCommandLine()
         Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!
@@ -1541,6 +1541,7 @@ Public Class frmEwE6
     End Sub
 
     Private Sub SaveSettings()
+        My.Settings.SpatialTemporalConfigFile = Me.Core.SpatialDataConnectionManager.DatasetManager.ConfigFile
         My.Settings.Save()
     End Sub
 

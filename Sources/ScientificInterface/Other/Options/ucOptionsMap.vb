@@ -26,6 +26,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports System.IO
 Imports EwEUtils.Core
+Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 
@@ -133,10 +135,16 @@ Namespace Other
         Private Sub OnChooseImage(sender As System.Object, e As System.EventArgs) _
             Handles m_btnChoose.Click
 
-            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECT_REFIMAGE, Me.m_tbxFile.Text, My.Resources.FILEFILTER_IMAGE_TRANSPARENT)
+            If (Me.UIContext Is Nothing) Then Return
 
-            If (ofd.ShowDialog = DialogResult.OK) Then
-                Me.m_tbxFile.Text = ofd.FileName
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+            cmdFO.Title = My.Resources.PROMPT_SELECT_REFIMAGE
+            cmdFO.Invoke(Me.m_tbxFile.Text, My.Resources.FILEFILTER_IMAGE_TRANSPARENT, 0)
+
+            If (cmdFO.Result = DialogResult.OK) Then
+                Me.m_tbxFile.Text = cmdFO.FileName
                 Me.UpdatePreviewImage()
             End If
 
@@ -309,7 +317,7 @@ Namespace Other
 
 #End Region ' Helper methods
 
-     End Class
+    End Class
 
 End Namespace
 
