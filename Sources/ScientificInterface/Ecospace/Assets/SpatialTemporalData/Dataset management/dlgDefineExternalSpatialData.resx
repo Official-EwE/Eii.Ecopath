@@ -343,13 +343,13 @@
     <value>0</value>
   </data>
   <data name="m_btnExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
+    <value>Top, Bottom</value>
   </data>
   <data name="m_btnExport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnExport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>603, 417</value>
+    <value>603, 115</value>
   </data>
   <data name="m_btnExport.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
