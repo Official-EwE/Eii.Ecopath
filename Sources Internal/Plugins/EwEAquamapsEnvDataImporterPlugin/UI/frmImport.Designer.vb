@@ -57,10 +57,7 @@ Partial Class frmImport
         '
         'm_lblDrop
         '
-        Me.m_lblDrop.AllowDrop = True
         resources.ApplyResources(Me.m_lblDrop, "m_lblDrop")
-        Me.m_lblDrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_lblDrop.ForeColor = System.Drawing.SystemColors.AppWorkspace
         Me.m_lblDrop.Name = "m_lblDrop"
         '
         'm_btnImport
