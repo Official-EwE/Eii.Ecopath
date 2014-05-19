@@ -480,9 +480,6 @@ Public Class cEcoNetwork
         Dim strErr As String = ""
         Dim bSucces As Boolean = True
 
-        ' Where are variables properly cleared before a run?
-        Me.LossOfProd = cCore.NULL_VALUE
-
         Debug.Assert(m_epdata IsNot Nothing, Me.ToString & ".RunNetworkAnalysis() Ecopath data has not been initialized.")
         Try
 
