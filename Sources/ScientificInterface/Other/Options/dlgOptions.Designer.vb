@@ -103,7 +103,6 @@ Namespace Other
             Me.Controls.Add(Me.m_btnApply)
             Me.Controls.Add(Me.m_btnOk)
             Me.DoubleBuffered = True
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "dlgOptions"
