@@ -249,7 +249,7 @@ Namespace Other
                 End If
                 Me.m_strPath = String.Copy(strPath)
 
-                TextRenderer.MeasureText(strPath, Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), TextFormatFlags.ModifyString Or TextFormatFlags.PathEllipsis)
+                TextRenderer.MeasureText(strPath, Me.Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis)
                 Me.m_lblPath.Text = strPath
                 Me.m_lblPath.Visible = True
                 Me.m_btnVisitFolder.Visible = True

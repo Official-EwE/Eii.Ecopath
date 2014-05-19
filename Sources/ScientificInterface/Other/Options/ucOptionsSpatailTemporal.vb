@@ -210,7 +210,8 @@ Namespace Other
         Private Sub UpdateControls()
 
             Dim strPath As String = String.Copy(Me.m_strPath)
-            TextRenderer.MeasureText(strPath, Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), TextFormatFlags.ModifyString Or TextFormatFlags.PathEllipsis)
+            TextRenderer.MeasureText(strPath, Me.Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), _
+                                     TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis or )
             Me.m_lblPath.Text = strPath
 
         End Sub
