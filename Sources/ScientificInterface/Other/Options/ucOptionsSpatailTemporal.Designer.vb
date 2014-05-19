@@ -37,8 +37,8 @@ Namespace Other
             Me.m_rbDefault = New System.Windows.Forms.RadioButton()
             Me.m_btnVisitFolder = New System.Windows.Forms.Button()
             Me.m_rbCustom = New System.Windows.Forms.RadioButton()
-            Me.m_tbxCustom = New System.Windows.Forms.TextBox()
             Me.m_btnChoose = New System.Windows.Forms.Button()
+            Me.m_lblPath = New System.Windows.Forms.Label()
             Me.SuspendLayout()
             '
             'm_hdrCaption
@@ -74,25 +74,24 @@ Namespace Other
             Me.m_rbCustom.TabStop = True
             Me.m_rbCustom.UseVisualStyleBackColor = True
             '
-            'm_tbxCustom
-            '
-            resources.ApplyResources(Me.m_tbxCustom, "m_tbxCustom")
-            Me.m_tbxCustom.Name = "m_tbxCustom"
-            Me.m_tbxCustom.ReadOnly = True
-            '
             'm_btnChoose
             '
             resources.ApplyResources(Me.m_btnChoose, "m_btnChoose")
             Me.m_btnChoose.Name = "m_btnChoose"
             Me.m_btnChoose.UseVisualStyleBackColor = True
             '
+            'm_lblPath
+            '
+            resources.ApplyResources(Me.m_lblPath, "m_lblPath")
+            Me.m_lblPath.Name = "m_lblPath"
+            '
             'ucOptionsSpatialTemporal
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_lblPath)
             Me.Controls.Add(Me.m_btnChoose)
             Me.Controls.Add(Me.m_btnVisitFolder)
-            Me.Controls.Add(Me.m_tbxCustom)
             Me.Controls.Add(Me.m_rbCustom)
             Me.Controls.Add(Me.m_rbDefault)
             Me.Controls.Add(Me.m_lblCurrent)
@@ -107,8 +106,8 @@ Namespace Other
         Private WithEvents m_rbDefault As System.Windows.Forms.RadioButton
         Private WithEvents m_btnVisitFolder As System.Windows.Forms.Button
         Private WithEvents m_rbCustom As System.Windows.Forms.RadioButton
-        Private WithEvents m_tbxCustom As System.Windows.Forms.TextBox
         Private WithEvents m_btnChoose As System.Windows.Forms.Button
+        Private WithEvents m_lblPath As System.Windows.Forms.Label
 
     End Class
 End Namespace

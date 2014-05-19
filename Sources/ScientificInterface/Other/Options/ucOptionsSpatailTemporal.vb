@@ -44,6 +44,12 @@ Namespace Other
         Implements IOptionsPage
         Implements IUIElement
 
+#Region " Private vars "
+
+        Private m_strPath As String = ""
+
+#End Region ' Private vars
+
 #Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext)
@@ -67,14 +73,15 @@ Namespace Other
 
             Dim core As cCore = Me.UIContext.Core
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
-            Dim strFile As String = man.ConfigFile
 
-            If String.IsNullOrWhiteSpace(strFile) Or cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) Then
+            Me.m_strPath = man.ConfigFile
+
+            If String.IsNullOrWhiteSpace(Me.m_strPath) Or cFileUtils.Equals(Me.m_strPath, cSpatialDataSetManager.DefaultConfigFile) Then
                 Me.m_rbDefault.Checked = True
             Else
                 Me.m_rbCustom.Checked = True
-                Me.m_tbxCustom.Text = strFile
             End If
+            Me.UpdateControls()
 
         End Sub
 
@@ -92,10 +99,10 @@ Namespace Other
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Title = My.Resources.PROMPT_SELECT_REFIMAGE
-            cmdFO.Invoke(Me.m_tbxCustom.Text, "Dataset config files|*.xml", 0)
+            cmdFO.Invoke(Me.m_strPath, "Dataset config files|*.xml", 0)
 
             If (cmdFO.Result = DialogResult.OK) Then
-                Me.m_tbxCustom.Text = cmdFO.FileName
+                Me.m_strPath = cmdFO.FileName
                 Me.m_rbCustom.Checked = True
                 Me.UpdateControls()
             End If
@@ -115,6 +122,11 @@ Namespace Other
                 End Try
             End If
 
+        End Sub
+
+        Protected Overrides Sub OnResize(e As System.EventArgs)
+            MyBase.OnResize(e)
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Event handlers
@@ -157,7 +169,7 @@ Namespace Other
             Try
 
                 If (Me.m_rbCustom.Checked) Then
-                    strFile = Me.m_tbxCustom.Text
+                    strFile = Me.m_strPath
                 End If
 
                 Me.UIContext.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
@@ -196,6 +208,10 @@ Namespace Other
 #Region " Internals "
 
         Private Sub UpdateControls()
+
+            Dim strPath As String = String.Copy(Me.m_strPath)
+            TextRenderer.MeasureText(strPath, Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), TextFormatFlags.ModifyString Or TextFormatFlags.PathEllipsis)
+            Me.m_lblPath.Text = strPath
 
         End Sub
 
