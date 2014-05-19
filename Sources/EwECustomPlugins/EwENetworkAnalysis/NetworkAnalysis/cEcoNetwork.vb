@@ -16,15 +16,19 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
 Option Explicit On
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 
+#End Region ' Imports
+
 Public Class cEcoNetwork
 
-#Region "Private data"
+#Region " Private data "
 
     Private m_manager As cNetworkManager
 
@@ -125,7 +129,6 @@ Public Class cEcoNetwork
     Private Sel As Integer 'jb I don't think this is used anymore In EwE5 it is set from PrepareReqPPDetails()
     Private m_GroupsToShow() As Boolean
 
-
     Private m_AbortTimer As System.Timers.Timer
 
     ''' <summary>Abort Timer timed out. Used to post a message at the end of a run.</summary>
@@ -137,7 +140,7 @@ Public Class cEcoNetwork
     ''' <remarks>This is only effective if <see cref="bUseAbortTimer">bUseAbortTimer</see> = True. Default of 30 minutes</remarks> 
     Public Property TimeOutMilSecs As Long = 30 * 60 * 1000 '30min * 60sec * 1000milsec
 
-#Region "Private Ecosim Data"
+#Region " Ecosim "
 
     'biomass computed by Ecosim at the current time step
     'Ecoism.BB(ngroups) is private to access it from this plugin it gets passed as an agrument at each time step (see EcosimTimestep())
@@ -146,11 +149,11 @@ Public Class cEcoNetwork
     Private OrigKempton As Single
     Private OrigPPR(1) As Single
 
-#End Region
+#End Region ' Ecosim
 
-#End Region
+#End Region ' Private data
 
-#Region "Public data"
+#Region " Public data "
 
     ''' <summary>
     ''' Stop the network annalysis routine from running
@@ -160,7 +163,7 @@ Public Class cEcoNetwork
 
     Public PPRon As Boolean
 
-#Region "Public Flows (Trophic level decomposition) variables"
+#Region " Flows (Trophic level decomposition) "
 
     'See DisplayTransMatrix()
     Public AM(,) As Single 'Trophic level decomposition / Relative Flows tab
@@ -174,9 +177,10 @@ Public Class cEcoNetwork
     Public CbyTL() As Single 'Trophic level decomposition / Catch by trophic level
     'Public CbyGp() As Single 'Trophic level decomposition / Catch by group
     Public NoTL As Integer 'number of trophic levels
-#End Region
 
-#Region "Public Ascendancy variables"
+#End Region ' Flows (Trophic level decomposition)
+
+#Region " Ascendancy "
 
     'see EwE5 DisplayAscendency()
     Public Ao As Single
@@ -220,7 +224,7 @@ Public Class cEcoNetwork
     Public TruPut As Single, SumAc As Single, SumEc As Single, SumCc As Single
     Public SumEx As Single, SumResp As Single, Tc As Single, TCyc As Single, TcD As Single
 
-#End Region
+#End Region ' Ascendancy
 
 #Region " Keystoneness "
 
@@ -228,9 +232,9 @@ Public Class cEcoNetwork
     Public KeystoneIndex2() As Double
     Public RelTotalImpact() As Double
 
-#End Region
+#End Region ' Keystoneness
 
-#Region "Public Flows and Biomass variables"
+#Region " Flows and Biomass "
 
     'see EwE5 DisplayFlows
     'Flows and Biomass /From primary producer (tabs)
@@ -262,9 +266,11 @@ Public Class cEcoNetwork
     Public TotalTrp As Single
 
     Public MTI(,) As Single 'mixed trophic impact (tab)
-#End Region
 
-#Region "Public Required Primary Production varaibles"
+#End Region ' Flows and Biomass
+
+#Region " PPR "
+
     Public NumDetPath As Integer
     Public NumLivPath As Integer
 
@@ -283,18 +289,20 @@ Public Class cEcoNetwork
 
     Public Topic As Integer
 
-#End Region
+#End Region ' PPR
 
-#Region "Public Cycles and Pathways variables"
+#Region " Cycles and Pathways "
+
     Public lstPathways As New List(Of String)
     Public NoArrows As Long 'This declared NoArrows is used only in PathPrintReqPP()  joeh
     ' The NoArrows in FindCycles(), PrintPath(), PrintCycle() and PreyProd()
     ' is NOT the NoArrows above but a variable passed from its caller.  The NoArrows in 
     ' FindCycles() is exposed as NumberArrows below
     Public NumberArrows As Integer
-#End Region
 
-#Region "Public Ecosim Variables"
+#End Region ' Cycles and Pathways
+
+#Region " Ecosim "
 
     Private ByTL(,,) As Single
 
@@ -338,11 +346,11 @@ Public Class cEcoNetwork
     Public DetTransferEfficiency() As Single
     Public PPTransferEfficiency() As Single
 
-#End Region
+#End Region ' Ecosim
 
-#End Region
+#End Region ' Public data
 
-#Region "Constructors"
+#Region " Constructor "
 
     Public Sub New(ByRef Manager As cNetworkManager) 'joeh
         m_manager = Manager
@@ -350,7 +358,7 @@ Public Class cEcoNetwork
         OrigKempton = Single.Epsilon 'for /0 error
     End Sub
 
-#End Region
+#End Region ' Constructor
 
 #Region " Public Properties "
 
@@ -471,7 +479,9 @@ Public Class cEcoNetwork
         Dim i As Integer ', chk As Integer
         Dim strErr As String = ""
         Dim bSucces As Boolean = True
-        'ReadF:
+
+        ' Where are variables properly cleared before a run?
+        Me.LossOfProd = cCore.NULL_VALUE
 
         Debug.Assert(m_epdata IsNot Nothing, Me.ToString & ".RunNetworkAnalysis() Ecopath data has not been initialized.")
         Try
@@ -3444,240 +3454,6 @@ NextPivot:
         Return True
 
     End Function
-
-    ''Called during the intialization of Ecosim NA
-    'Private Sub EstimateTLofCatch(ByVal TimeStep As Integer, _
-    '                              ByVal bb() As Single, _
-    '                              ByRef CatchSim() As Single, _
-    '                              ByRef TL As Single, _
-    '                              ByRef Cat As Single, _
-    '                              ByVal DoAll As Boolean)
-
-    '    Dim i As Integer
-    '    Dim fCatch As Single
-    '    Dim totalTL As Single
-    '    'Static StartFIB As Single
-    '    'Static StartTL As Single
-    '    'Static StartCatch As Single
-    '    'Static MaxFactor As Single
-    '    'Static DecreaseMaxFactor As Boolean
-
-    '    Try
-    '        'BiomassFish = 0
-    '        'BiomassInvert = 0
-    '        CatchSim(TimeStep) = 0
-
-    '        For i = 1 To m_epdata.NumGroups
-    '            'jb all groups here
-    '            '        If GrpsToShow(i) Then 'only visible groups
-    '            fCatch = m_esdata.FishTime(i) * bb(i)
-    '            'If m_epdata.GroupIsFish(i) Then BiomassFish = BiomassFish + BB(i)
-    '            'If m_epdata.GroupIsInvert(i) Then BiomassInvert = BiomassInvert + BB(i)
-    '            CatchSim(TimeStep) = CatchSim(TimeStep) + fCatch
-    '            totalTL = totalTL + Me.m_epdata.TTLX(i) * fCatch
-    '            '      End If
-    '        Next
-    '        If CatchSim(0) > 0 Then
-    '            If DoAll Then
-    '                TLC(TimeStep) = totalTL / CatchSim(TimeStep)
-    '                'Calculate FIB-index:
-    '                If TimeStep = 0 Then
-    '                    'StartTL = TL
-    '                    'StartCatch = CatchSim
-    '                    'If DecreaseMaxFactor Then MaxFactor = MaxFactor / 2
-    '                    'If MaxFactor < 1 Then MaxFactor = 10
-    '                    FIB(0) = 1
-    '                    Cat = 0
-    '                    'jb what the fuck is this
-    '                    ' TL = TLC(0) - IIf(frmSim1.optTL, 0, 2) '=1
-    '                    Kemptons(0) = FunctionKemptonsQ(m_esdata.StartBiomass, 0.25)
-    '                    'DecreaseMaxFactor = False
-    '                    'TLC(0) = 2
-    '                    'CatchSim(0) = 1
-    '                Else
-    '                    'TL = MaxFactor * (TLC(TimeStep) - TLC(1)) + 1
-    '                    TL = TLC(TimeStep)
-    '                    'If Abs(TL) > 2 Then DecreaseMaxFactor = True
-    '                    'If TL < 0.1 Then Stop
-    '                    If TimeStep = 1 Then
-    '                        FIB(1) = 1 'CatchSim(1) * 10 ^ (TLC(1) - 1)
-    '                        Cat = 1
-    '                    Else
-    '                        FIB(TimeStep) = CSng((CatchSim(TimeStep) * 10 ^ (TLC(TimeStep) - 1)) / (CatchSim(1) * 10 ^ (TLC(1) - 1)))
-    '                        Cat = CatchSim(TimeStep) / CatchSim(1)
-    '                    End If
-    '                    'Debug.Print TimeStep, CatchSim(TimeStep), FIB(TimeStep), TLC(TimeStep)
-    '                    'FIB = log[(Catch(y) · 10TL(y)-1) / (Catch(0) · 10TL(0)-1)]
-    '                End If
-    '            Else
-    '                m_epdata.TLcatch = totalTL / CatchSim(TimeStep)
-    '            End If
-    '        End If
-
-    '    Catch ex As Exception
-    '        cLog.Write(ex)
-    '        Debug.Assert(False, ex.ToString)
-    '        Throw New ApplicationException(Me.ToString & ".EstimateTLofCatch() Error: " & ex.Message, ex)
-    '    End Try
-
-    'End Sub
-
-    'Private Sub EstimateTLsInEcosim(ByVal time As Integer, ByVal DoAll As Boolean)
-
-    '    Dim i As Integer
-    '    Dim j As Integer
-    '    Dim Diet(m_epdata.NumGroups, m_epdata.NumGroups) As Single
-    '    Dim SumDiet As Single
-    '    Dim SumR() As Single
-    '    Dim Alpha(,) As Single
-    '    Dim SumBio() As Single
-
-    '    Try
-
-    '        'Windows.Forms.Application.DoEvents()
-
-    '        For i = 1 To m_epdata.NumLiving  'consumer
-    '            If m_esdata.Eatenby(i) > 0 Then
-    '                SumDiet = 0
-    '                For j = 1 To m_epdata.NumGroups  'food
-    '                    Diet(i, j) = m_esdata.Consumpt(j, i) / m_esdata.Eatenby(i)
-    '                    SumDiet = SumDiet + Diet(i, j)
-    '                Next
-    '                If SumDiet > 0 Then
-    '                    For j = 1 To m_epdata.NumGroups  'food
-    '                        Diet(i, j) = Diet(i, j) / SumDiet
-    '                    Next
-    '                End If
-    '            End If
-    '        Next
-
-    '        EstimateTrophicLevels(Diet, Me.m_epdata.TTLX)
-
-    '        If DoAll Then
-    '            ReDim SumBio(m_epdata.NumLiving)
-    '            ReDim SumR(m_epdata.NumLiving)
-    '            ReDim Alpha(m_epdata.NumLiving, m_epdata.NumGroups)
-    '            For i = 1 To m_epdata.NumLiving
-    '                If m_epdata.QB(i) > 0 Then    'Estimate Chesson from Sim
-    '                    SumBio(i) = 0
-    '                    For j = 1 To m_epdata.NumGroups
-    '                        SumBio(i) = SumBio(i) + m_epdata.B(j)
-    '                    Next
-    '                    SumR(i) = 0
-    '                    For j = 1 To m_epdata.NumGroups              'FOLLOWING CHESSON (1983)
-    '                        If m_epdata.B(j) > 0 Then Alpha(i, j) = Diet(i, j) / (BB(j) / SumBio(i))
-    '                        SumR(i) = SumR(i) + Alpha(i, j)
-    '                    Next
-
-    '                    If SumR(i) > 0 Then
-    '                        For j = 1 To m_epdata.NumGroups
-    '                            Alpha(i, j) = Alpha(i, j) / SumR(i)
-    '                        Next                'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
-    '                    End If
-
-    '                    For j = 1 To m_epdata.NumGroups
-    '                        Elect(i, j, time) = Alpha(i, j) '(NumGroups * Alpha(j) - 1) / ((NumGroups - 2) * Alpha(j) + 1)
-    '                    Next
-    '                End If
-    '            Next
-    '        End If
-
-    '    Catch ex As Exception
-    '        cLog.Write(ex)
-    '        Debug.Assert(False, Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message)
-    '        Throw New ApplicationException(Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message, ex)
-    '    End Try
-
-    'End Sub
-
-    'Private Sub EstimateTrophicLevels(ByVal Diet(,) As Single, ByVal TLreturn() As Single)
-    '    Me.m_core.EcoFunction.EstimateTrophicLevels(Diet, TLreturn)
-    'End Sub
-
-    'Private Function FunctionKemptonsQ(ByVal Bio() As Single, ByVal Quan As Single) As Single
-    '    Return Me.m_core.EcoFunction.KemptonsQ(Bio, Quan)
-    'End Function
-
-    'Public Sub EstimateTL_Indices(ByVal Year As Integer)
-    '    Dim i As Integer
-    '    Dim j As Integer
-    '    Dim G As Integer
-    '    ' Dim col As Integer
-    '    '  Dim row As Integer
-    '    Try
-
-    '        For i = 1 To m_epdata.NumLiving
-    '            ' If GrpsToShow(i) Then
-    '            For j = 2 To 7  'use the first tl for the tl-plus group
-    '                If AM(j, i) > 0.01 Then
-    '                    ByTL(Year, j, 0) = ByTL(Year, j, 0) + AM(j, i) * BB(i)
-    '                    ByTL(Year, j, 1) = ByTL(Year, j, 1) + AM(j, i) * m_esdata.loss(i)
-    '                    ByTL(Year, j, 2) = ByTL(Year, j, 2) + AM(j, i) * m_esdata.Eatenby(i)
-    '                    ByTL(Year, j, 3) = ByTL(Year, j, 3) + AM(j, i) * m_esdata.FishTime(i) * BB(i)
-    '                    For G = 1 To m_epdata.NumFleet
-    '                        If m_epdata.Landing(G, i) + m_epdata.Discard(G, i) > 0 Then
-    '                            ByTL(Year, j, 4) = ByTL(Year, j, 4) + BB(i) * m_esdata.FishTime(i) * m_epdata.Market(G, i) * m_epdata.Landing(G, i) / (m_epdata.Landing(G, i) + m_epdata.Discard(G, i))
-    '                        End If
-    '                    Next
-    '                    'For row = 1 To Inrow : For col = 1 To Incol
-    '                    '        If Depth(row, col) > 0 Then
-    '                    '            ByTLspace(Year, j, 0, row, col) = ByTLspace(Year, j, 0, row, col) + AM(j, i) * BB(i) * HalfDegreeBcell(row, col, i)
-    '                    '            ByTLspace(Year, j, 1, row, col) = ByTLspace(Year, j, 1, row, col) + AM(j, i) * loss(i) * HalfDegreeBcell(row, col, i)
-    '                    '            ByTLspace(Year, j, 2, row, col) = ByTLspace(Year, j, 2, row, col) + AM(j, i) * Eatenby(i) * HalfDegreeBcell(row, col, i)
-    '                    '            ByTLspace(Year, j, 3, row, col) = ByTLspace(Year, j, 3, row, col) + AM(j, i) * FishTime(i) * BB(i) * HalfDegreeBcell(row, col, i)
-    '                    '        End If
-    '                    '    Next : Next
-    '                End If
-    '            Next j
-    '            '     If TL_cut_off > 0 Then
-    '            j = 1   'use the spot for the first trophic level for saving
-    '            'If m_epdata.TTLX(i) >= TL_cut_off Then
-    '            ByTL(Year, j, 0) = ByTL(Year, j, 0) + BB(i)
-    '            ByTL(Year, j, 1) = ByTL(Year, j, 1) + m_esdata.loss(i)
-    '            ByTL(Year, j, 2) = ByTL(Year, j, 2) + m_esdata.Eatenby(i)
-    '            ByTL(Year, j, 3) = ByTL(Year, j, 3) + m_esdata.FishTime(i) * BB(i)
-    '            For G = 1 To m_epdata.NumFleet
-    '                'If Landing(G, i) + Discard(G, i) > 0 Then
-    '                '040106 VC fixed below, wrong scaling
-    '                If m_epdata.fCatch(i) > 0 Then
-    '                    ByTL(Year, j, 4) = ByTL(Year, j, 4) + BB(i) * m_esdata.FishTime(i) * m_epdata.Market(G, i) * m_epdata.Landing(G, i) / m_epdata.fCatch(i) '(Landing(G, i) + Discard(G, i))
-    '                End If
-    '            Next
-    '            'For row = 1 To Inrow
-    '            '    For col = 1 To Incol
-    '            '        'If row = 29 And col = 23 Then Stop
-    '            '        If Depth(row, col) > 0 Then       'Here HalfDegreeBcell is the cell biomass relative to the average biomass, ie a scaling factor
-    '            '            ByTLspace(Year, j, 0, row, col) = ByTLspace(Year, j, 0, row, col) + BB(i) * HalfDegreeBcell(row, col, i)
-    '            '            ByTLspace(Year, j, 1, row, col) = ByTLspace(Year, j, 1, row, col) + loss(i) * HalfDegreeBcell(row, col, i)
-    '            '            ByTLspace(Year, j, 2, row, col) = ByTLspace(Year, j, 2, row, col) + Eatenby(i) * HalfDegreeBcell(row, col, i)
-    '            '            ByTLspace(Year, j, 3, row, col) = ByTLspace(Year, j, 3, row, col) + FishTime(i) * BB(i) * HalfDegreeBcell(row, col, i)
-    '            '        End If
-    '            '    Next
-    '            'Next
-    '            '  End If
-    '            '  End If
-    '            '  End If
-    '            '    'Sum up all catches by SAUP groupings
-    '            '    If m_epdata.fCatch(i) > 0 Then
-    '            '        For j = 1 To NumCatchCodes
-    '            '            If CatchCode(j, i) > 0 And CatchCode(0, i) > 0 Then 'then CatchCode(0,i) will also be > 0
-    '            '                For row = 1 To Inrow : For col = 1 To Incol
-    '            '                        If Depth(row, col) > 0 Then
-    '            '                            SAUP_C_Space(j, row, col) = SAUP_C_Space(j, row, col) + FishTime(i) * BB(i) * HalfDegreeBcell(row, col, i) * CatchCode(j, i) / CatchCode(0, i)
-    '            '                        End If
-    '            '                    Next : Next
-    '            '            End If
-    '            '        Next
-    '            '    End If
-    '        Next i
-
-    '    Catch ex As Exception
-    '        cLog.Write(ex)
-    '        Debug.Assert(False, Me.ToString & ".EstimateTL_Indices() Error: " & ex.Message)
-    '        Throw New ApplicationException(Me.ToString & ".EstimateTL_Indices() Error: " & ex.Message, ex)
-    '    End Try
-
-    'End Sub
 
     Private Sub PrepareUlanowForCallFromEcosim(ByVal Round As Integer)
         '040218VC for Sheila's Network in Ecosim calc's
