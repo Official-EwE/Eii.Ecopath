@@ -211,7 +211,7 @@ Namespace Other
 
             Dim strPath As String = String.Copy(Me.m_strPath)
             TextRenderer.MeasureText(strPath, Me.Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), _
-                                     TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis or )
+                                     TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis)
             Me.m_lblPath.Text = strPath
 
         End Sub
