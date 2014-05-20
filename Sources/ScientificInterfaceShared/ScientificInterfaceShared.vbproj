@@ -1012,6 +1012,7 @@
     <None Include="Resources\Raster.png" />
     <Content Include="Resources\bug.png" />
     <Content Include="Resources\CogHS.png" />
+    <Content Include="Resources\ExportDatabaseHS.PNG" />
     <Content Include="Resources\FilterHS.png" />
     <None Include="Resources\fish_dead.png" />
     <Content Include="Resources\SnapshotHS.png" />

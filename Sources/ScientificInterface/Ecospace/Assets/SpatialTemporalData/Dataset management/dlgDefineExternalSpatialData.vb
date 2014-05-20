@@ -63,7 +63,7 @@ Namespace Ecospace.Controls
 
 #End Region ' Constructor
 
-#Region " Standard bits "
+#Region " Form overrides "
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IUIElement.UIContext"/>
@@ -77,8 +77,6 @@ Namespace Ecospace.Controls
                 If (Me.m_uic IsNot Nothing) Then
                     ' Disconnect from data objects first; we do not want disconnecting UI elements from screwing up the last configuration
                     Me.m_gridDatasets.UIContext = Nothing
-
-                    Me.m_manSets.Save()
                     Me.m_manSets = Nothing
                     Me.m_man = Nothing
                 End If
@@ -97,6 +95,8 @@ Namespace Ecospace.Controls
         Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
+
+            Me.m_btnExport.Image = ScientificInterfaceShared.My.Resources.ExportDatabaseHS
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -124,12 +124,13 @@ Namespace Ecospace.Controls
 
             Dim ds As ISpatialDataSet = Me.m_gridDatasets.SelectedDataset
 
-            Dim bHasTemplate As Boolean = (Me.m_cmbNewDS.SelectedItem IsNot Nothing)
+            Dim bHasTemplate As Boolean = (Me.m_cmbNewDS.SelectedItem IsNot Nothing) And Me.m_bHasDatasetTemplates
             Dim bHasDS As Boolean = (Me.m_gridDatasets.RowsCount > 1)
             Dim bHasSelection As Boolean = (ds IsNot Nothing)
             Dim bCanConfig As Boolean = (TypeOf ds Is IConfigurable)
 
             Me.m_cmbNewDS.Enabled = bHasTemplate
+            Me.m_btnAdd.Enabled = bHasTemplate
 
             Me.m_btnDelete.Enabled = bHasSelection
             Me.m_btnConfigure.Enabled = bHasSelection And bCanConfig
@@ -137,7 +138,7 @@ Namespace Ecospace.Controls
 
         End Sub
 
-#End Region ' Standard bits
+#End Region ' Form overrides
 
 #Region " Event handlers "
 
@@ -260,7 +261,7 @@ Namespace Ecospace.Controls
             Next
 
             If (Me.m_cmbNewDS.Items.Count = 0) Then
-                Me.m_cmbNewDS.Items.Add("")
+                Me.m_cmbNewDS.Items.Add("(you do not have required components installed)")
                 Me.m_bHasDatasetTemplates = False
             Else
                 Me.m_bHasDatasetTemplates = True

@@ -129,7 +129,8 @@ Namespace SpatialData
         ''' <summary>
         ''' Initializes the manager with datasets, loaded from persistent storage.
         ''' </summary>
-        ''' parameter is left empty the <see cref="cSpatialDataSetManager.DefaultConfigFileName">default file path</see>
+        ''' <param name="strFile">The name of the file to load. If not specified, 
+        ''' the <see cref="cSpatialDataSetManager.DefaultConfigFile">default configuration file</see>
         ''' is used.</param>
         ''' <param name="bClearFirst">Flag, stating that the content currently in 
         ''' the manager should be cleared first.</param>
@@ -137,7 +138,7 @@ Namespace SpatialData
         ''' <remarks>This method can also be used to import extra datasets.</remarks>
         ''' -------------------------------------------------------------------
         Public Function Load(Optional strFile As String = "", _
-                             Optional bClearFirst As Boolean = False) As Boolean
+                             Optional bClearFirst As Boolean = True) As Boolean
 
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
@@ -201,10 +202,10 @@ Namespace SpatialData
                                 End If
 
                             Catch ex As Exception
-                            ds = Nothing
-                            bSuccess = False
-                            cLog.Write(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
-                        End Try
+                                ds = Nothing
+                                bSuccess = False
+                                cLog.Write(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
+                            End Try
 
                             Dim bAdd As Boolean = False
                             If (ds IsNot Nothing) Then
