@@ -123,10 +123,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>603, 10</value>
+    <value>594, 10</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
@@ -151,10 +151,10 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>603, 86</value>
+    <value>594, 86</value>
   </data>
   <data name="m_btnDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnDelete.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -181,7 +181,7 @@
     <value>12, 57</value>
   </data>
   <data name="m_gridDatasets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 383</value>
+    <value>576, 383</value>
   </data>
   <data name="m_gridDatasets.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -190,7 +190,7 @@
     <value>m_gridDatasets</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.10771.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.10787.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Parent" xml:space="preserve">
     <value>$this</value>
@@ -205,7 +205,7 @@
     <value>12, 12</value>
   </data>
   <data name="m_cmbNewDS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 21</value>
+    <value>576, 21</value>
   </data>
   <data name="m_cmbNewDS.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -226,7 +226,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>578, 446</value>
+    <value>594, 446</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -256,10 +256,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConfigure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>603, 57</value>
+    <value>594, 57</value>
   </data>
   <data name="m_btnConfigure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnConfigure.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -286,7 +286,7 @@
     <value>12, 36</value>
   </data>
   <data name="m_hdr.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 18</value>
+    <value>682, 18</value>
   </data>
   <data name="m_hdr.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -301,7 +301,7 @@
     <value>m_hdr</value>
   </data>
   <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10771.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10787.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
     <value>$this</value>
@@ -343,22 +343,25 @@
     <value>0</value>
   </data>
   <data name="m_btnExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom</value>
+    <value>Top, Right</value>
   </data>
   <data name="m_btnExport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnExport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>603, 115</value>
+    <value>594, 115</value>
   </data>
   <data name="m_btnExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnExport.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="m_btnExport.Text" xml:space="preserve">
     <value>&amp;Export...</value>
+  </data>
+  <data name="m_btnExport.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
   </data>
   <data name="&gt;&gt;m_btnExport.Name" xml:space="preserve">
     <value>m_btnExport</value>
@@ -379,7 +382,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>690, 480</value>
+    <value>706, 480</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -391,6 +394,6 @@
     <value>dlgDefineExternalSpatialData</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10771.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10787.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

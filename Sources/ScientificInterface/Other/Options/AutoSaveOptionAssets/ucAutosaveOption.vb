@@ -41,7 +41,7 @@ Namespace Other
     Friend Class ucAutosaveOption
         Implements IUIElement
 
-        Private Const cCHECKBOX_SIZE As Integer = 18
+        Private Const cINDENT_SIZE As Integer = 18
 
         Private m_uic As cUIContext = Nothing
         Private m_strOutputMask As String = ""
@@ -192,9 +192,9 @@ Namespace Other
 
             ' Apply indentation
             If cSystemUtils.IsRightToLeft Then
-                Me.m_cbOption.Location = New Point(Me.m_cbOption.Location.X - Me.m_iIndent * cCHECKBOX_SIZE, Me.m_cbOption.Location.Y)
+                Me.m_cbOption.Location = New Point(Me.m_cbOption.Location.X - Me.m_iIndent * cINDENT_SIZE, Me.m_cbOption.Location.Y)
             Else
-                Me.m_cbOption.Location = New Point(Me.m_cbOption.Location.X + Me.m_iIndent * cCHECKBOX_SIZE, Me.m_cbOption.Location.Y)
+                Me.m_cbOption.Location = New Point(Me.m_cbOption.Location.X + Me.m_iIndent * cINDENT_SIZE, Me.m_cbOption.Location.Y)
             End If
             Me.m_cbOption.Width -= Me.m_iIndent * 20
 

@@ -19,16 +19,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.SpatialData
-Imports EwEUtils.Core
-Imports System.Drawing
 Imports EwEPlugin
-Imports EwEUtils.Utilities
+Imports EwEUtils.Core
+Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 
 ' ToDo_JS: Load and save converter configuration
-' ToDo_JS: Load and save dataset configuration
 
 Namespace SpatialData
 
@@ -207,24 +204,6 @@ Namespace SpatialData
 #End Region ' Adapters
 
 #Region " Data sets "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Load the datasets.
-        ''' </summary>
-        ''' <param name="strFile">Optional file to load dataset information from.
-        ''' If this parameter is left empty the 
-        ''' <see cref="cSpatialDataSetManager.ConfigFile">default file path</see> 
-        ''' is used.</param>
-        ''' -------------------------------------------------------------------
-        Public Function LoadSystemSettings(Optional strFile As String = "") As Boolean
-            Try
-                Return Me.m_datasetManager.Load(strFile, False)
-            Catch ex As Exception
-                cLog.Write(ex, "cAdapaterConfigurationManager.Load")
-            End Try
-            Return False
-        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
