@@ -30,6 +30,7 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Controls.cTreeFlowDiagramRenderer
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -63,6 +64,8 @@ Namespace Ecopath.Controls.FlowDiagram
         Private WithEvents m_tslLayout As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tss2 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
+
+        Private m_bInUpdate As Boolean = False
 
 #End Region ' Private variables
 
@@ -116,7 +119,7 @@ Namespace Ecopath.Controls.FlowDiagram
             End If
 
             Me.LoadSettings()
- 
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -236,7 +239,8 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-            cmdFO.Invoke(SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
+            ' ToDo: Globalize this
+            cmdFO.Invoke(Me.FileName, SharedResources.FILEFILTER_FLOWDIAGRAM, 1, "Select flow diagram layout to load")
 
             If (cmdFO.Result = DialogResult.OK) Then
                 Try
@@ -258,7 +262,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke("flow_diagram", SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
+            cmdFS.Invoke(Me.FileName, SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
                 Try
@@ -291,7 +295,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
 
-            cmdFS.Invoke("flow_diagram", SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
+            cmdFS.Invoke(Me.FileName, SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
             If cmdFS.Result = DialogResult.OK Then
                 Select Case cmdFS.FilterIndex
                     Case 2
@@ -352,8 +356,15 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Internals "
 
+        Protected Function FileName() As String
+            Dim model As cEwEModel = Me.UIContext.Core.EwEModel
+            Return cFileUtils.ToValidFileName(model.Name & " " & Me.m_tree.Title, False)
+        End Function
+
         Protected Sub LoadSettings()
-            ' Style flow diagram 
+
+            Me.m_bInUpdate = True
+
             Me.m_tree.ShowTitle = My.Settings.FDShowTitle
             Me.m_tree.ShowLegend = CType(My.Settings.FDShowLegend, TriState)
             Me.m_tree.NumberOfTrophicLevels = My.Settings.FDNumTL
@@ -365,9 +376,16 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tree.AutoLineWidth = My.Settings.FDAutoLineWidth
             Me.m_tree.CustomLineWidth = My.Settings.FDCustomLineWidth
             Me.m_tree.CustomLineColor = My.Settings.FDCustomLineColor
+            Me.m_tree.ShowHiddenMode = CType(My.Settings.FDShowHiddenNodes, eFDShowHiddenType)
+
+            Me.m_bInUpdate = False
+
         End Sub
 
         Protected Sub SaveSettings()
+
+            If (Me.m_bInUpdate) Then Return
+
             My.Settings.FDShowTitle = Me.m_tree.ShowTitle
             My.Settings.FDShowLegend = Me.m_tree.ShowLegend
             My.Settings.FDNumTL = Me.m_tree.NumberOfTrophicLevels
@@ -379,6 +397,8 @@ Namespace Ecopath.Controls.FlowDiagram
             My.Settings.FDAutoLineWidth = Me.m_tree.AutoLineWidth
             My.Settings.FDCustomLineWidth = Me.m_tree.CustomLineWidth
             My.Settings.FDCustomLineColor = Me.m_tree.CustomLineColor
+            My.Settings.FDShowHiddenNodes = Me.m_tree.ShowHiddenMode
+
             My.Settings.Save()
         End Sub
 
