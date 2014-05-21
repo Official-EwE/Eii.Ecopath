@@ -15,6 +15,8 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+Imports ScientificInterfaceShared.Definitions
+
 Namespace Controls
 
     ' ToDo_JS: document this interface
@@ -26,13 +28,22 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     Public Interface IFlowDiagramRenderer
 
+        Enum eFDHighlightType As Integer
+            None
+            Selected
+            LinkIn
+            LinkOut
+            GrayedOut
+            Invisible
+        End Enum
+
         ''' <summary>Draw the background of the flow diagram. Here trophic level lines etc. should be rendered.</summary>
         ''' <param name="g"></param>
         ''' <param name="rc"></param>
         Sub DrawBackground(ByVal g As Graphics, ByVal rc As Rectangle)
         Sub DrawTitle(ByVal g As Graphics, ByVal rc As Rectangle)
-        Sub DrawNode(ByVal g As Graphics, ByVal rc As Rectangle, ByVal iGroup As Integer, ByVal highlight As cFlowDiagramManager.eHighlightType)
-        Sub DrawConnection(ByVal g As Graphics, ByVal rc As Rectangle, ByVal iPred As Integer, ByVal iPrey As Integer, ByVal highlight As cFlowDiagramManager.eHighlightType)
+        Sub DrawNode(ByVal g As Graphics, ByVal rc As Rectangle, ByVal iGroup As Integer, ByVal highlight As eFDHighlightType)
+        Sub DrawConnection(ByVal g As Graphics, ByVal rc As Rectangle, ByVal iPred As Integer, ByVal iPrey As Integer, ByVal highlight As eFDHighlightType)
         Sub DrawLegend(ByVal g As Graphics, ByVal sValMax As Single, ByVal ptTopLeft As Point, ByVal strTitle As String)
 
         Function RenderFont() As Font
@@ -43,6 +54,7 @@ Namespace Controls
         Function FormatLabelText(iGroup As Integer) As String
         Property NodeLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF
         Property LabelLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF
+        Property ShowHiddenNodes As eFDShowHiddenType
 
         Sub MoveNode(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer)
         Sub MoveLabel(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer)

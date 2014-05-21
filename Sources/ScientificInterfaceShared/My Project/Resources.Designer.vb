@@ -1964,6 +1964,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Show hidden nodes.
+        '''</summary>
+        Public ReadOnly Property GENERIC_SHOW_HIDDEN() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_SHOW_HIDDEN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Show labels.
         '''</summary>
         Public ReadOnly Property GENERIC_SHOW_LABELS() As String
@@ -6636,6 +6645,15 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_STEEPNESS() As String
             Get
                 Return ResourceManager.GetString("LABEL_STEEPNESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Title.
+        '''</summary>
+        Public ReadOnly Property LABEL_TITLE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_TITLE", resourceCulture)
             End Get
         End Property
         

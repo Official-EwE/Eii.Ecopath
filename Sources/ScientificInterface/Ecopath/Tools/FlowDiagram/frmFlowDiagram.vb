@@ -29,6 +29,7 @@ Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Controls.cTreeFlowDiagramRenderer
 
 #End Region ' Imports
 
@@ -114,6 +115,8 @@ Namespace Ecopath.Controls.FlowDiagram
                 cmd.AddControl(Me.m_tsbtnShowHideGroups)
             End If
 
+            Me.LoadSettings()
+ 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -127,6 +130,8 @@ Namespace Ecopath.Controls.FlowDiagram
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If
+
+            Me.SaveSettings()
 
             MyBase.OnFormClosed(e)
         End Sub
@@ -217,6 +222,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Private Sub OnTreeChanged(ByVal sender As cTreeFlowDiagramRenderer)
             Me.m_pbFlowDiagram.Invalidate(True)
+            Me.SaveSettings()
         End Sub
 
 #End Region ' Tree events
@@ -345,6 +351,36 @@ Namespace Ecopath.Controls.FlowDiagram
 #End Region ' Events
 
 #Region " Internals "
+
+        Protected Sub LoadSettings()
+            ' Style flow diagram 
+            Me.m_tree.ShowTitle = My.Settings.FDShowTitle
+            Me.m_tree.ShowLegend = CType(My.Settings.FDShowLegend, TriState)
+            Me.m_tree.NumberOfTrophicLevels = My.Settings.FDNumTL
+            Me.m_tree.AutoColorUsage = CType(My.Settings.FDAutoColorUsage, eFDColorUsageTypes)
+            Me.m_tree.NodeType = DirectCast(My.Settings.FDNodeType, eFDNodeTypes)
+            Me.m_tree.CustomNodeColor = My.Settings.FDCustomNodeColor
+            Me.m_tree.AutoNodeSize = My.Settings.FDNodeAutoSize
+            Me.m_tree.CustomNodeSize = My.Settings.FDNodeCustomSize
+            Me.m_tree.AutoLineWidth = My.Settings.FDAutoLineWidth
+            Me.m_tree.CustomLineWidth = My.Settings.FDCustomLineWidth
+            Me.m_tree.CustomLineColor = My.Settings.FDCustomLineColor
+        End Sub
+
+        Protected Sub SaveSettings()
+            My.Settings.FDShowTitle = Me.m_tree.ShowTitle
+            My.Settings.FDShowLegend = Me.m_tree.ShowLegend
+            My.Settings.FDNumTL = Me.m_tree.NumberOfTrophicLevels
+            My.Settings.FDAutoColorUsage = Me.m_tree.AutoColorUsage
+            My.Settings.FDNodeType = Me.m_tree.NodeType
+            My.Settings.FDCustomNodeColor = Me.m_tree.CustomNodeColor
+            My.Settings.FDNodeAutoSize = Me.m_tree.AutoNodeSize
+            My.Settings.FDNodeCustomSize = Me.m_tree.CustomNodeSize
+            My.Settings.FDAutoLineWidth = Me.m_tree.AutoLineWidth
+            My.Settings.FDCustomLineWidth = Me.m_tree.CustomLineWidth
+            My.Settings.FDCustomLineColor = Me.m_tree.CustomLineColor
+            My.Settings.Save()
+        End Sub
 
         Protected Overrides Sub UpdateControls()
             Me.m_scContent.Panel2Collapsed = Not Me.m_tsmiSettings.Checked

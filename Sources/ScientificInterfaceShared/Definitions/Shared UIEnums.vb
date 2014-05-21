@@ -190,5 +190,27 @@ Namespace Definitions
         Detritus
     End Enum
 
+    Public Enum eFDNodeTypes As Integer
+        Circle = 0
+        Rectangle = 1
+    End Enum
+
+    Public Enum eFDColorUsageTypes As Integer
+        None
+        EwE
+        Value
+        Flow
+    End Enum
+
+    Public Enum eFDShowHiddenType As Integer
+        GrayedOut
+        Invisible
+    End Enum
+
+    Public Enum eFDConnectionType As Integer
+        Straight = 1
+        Arch = 2
+    End Enum
+
 End Namespace
 
