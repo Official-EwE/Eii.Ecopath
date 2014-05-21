@@ -579,15 +579,15 @@ Public Class frmNetworkAnalysis
 
             If (Me.m_contentmanager IsNot Nothing) Then
                 ctrlOptions = Me.m_contentmanager.OptionsControl
-            Else
+            End If
+
+            If (ctrlOptions Is Nothing) Then
                 ctrlOptions = New ucOptions(Me.m_uic, Me.m_networkmanager)
             End If
 
-            If (ctrlOptions IsNot Nothing) Then
-                iWidth = ctrlOptions.Width
-                ctrlOptions.Dock = DockStyle.Fill
-                Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 1)
-            End If
+            iWidth = ctrlOptions.Width
+            ctrlOptions.Dock = DockStyle.Fill
+            Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 1)
 
             Me.m_scMain.Panel2Collapsed = False
             Me.m_scMain.SplitterDistance = Me.m_scMain.Width - Me.m_scMain.SplitterWidth - iWidth

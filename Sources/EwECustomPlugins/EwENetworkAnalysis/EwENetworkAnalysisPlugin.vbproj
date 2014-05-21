@@ -146,6 +146,9 @@
     <Compile Include="Interface\cContentManager.vb" />
     <Compile Include="Interface\Keystoneness\cKeystonenessTable.vb" />
     <Compile Include="Interface\Keystoneness\cKeystonenessGraph.vb" />
+    <Compile Include="Interface\Keystoneness\ucKeystonenessGraphOptions.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Interface\MixedTrophicImpact\cImpactData.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cGraphOfMixedTrophicImpact.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cPlotOfMixedTrophicImpact.vb" />
@@ -209,11 +212,8 @@
     <Compile Include="Plugin\NavTree plugins\cNavTree14FB_from_Combined.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree16FB_Lindeman.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree18FB_TransfEff.vb" />
-    <Compile Include="Plugin\NavTree plugins\cNavTree20FB_FlowPmd.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree22FB_BiomTL.vb" />
-    <Compile Include="Plugin\NavTree plugins\cNavTree24FB_BiomPmd.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree26FB_CatchTL.vb" />
-    <Compile Include="Plugin\NavTree plugins\cNavTree28FB_CatchPmd.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree30PPR.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree32PPR_Harvest.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree34PPR_Cons.vb" />
@@ -257,6 +257,10 @@
     <EmbeddedResource Include="Interface\frmNetworkAnalysis.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmNetworkAnalysis.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Keystoneness\ucKeystonenessGraphOptions.resx">
+      <DependentUpon>ucKeystonenessGraphOptions.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\MixedTrophicImpact\SummaryImpactData\ucPlotOfMTIOptions.resx">
       <DependentUpon>ucPlotOfMTIOptions.vb</DependentUpon>
