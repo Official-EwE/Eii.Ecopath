@@ -23,6 +23,7 @@ Option Strict On
 Imports System.Math
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -46,21 +47,6 @@ Namespace Controls
             None
             Label
             Node
-        End Enum
-
-        Public Enum eColorUsageTypes As Integer
-            None
-            EwE
-            Value
-            Flow
-        End Enum
-
-        Public Enum eHighlightType As Integer
-            None
-            Hidden
-            Selected
-            LinkIn
-            LinkOut
         End Enum
 
         Private m_dragMode As eDragMode = eDragMode.None
@@ -100,11 +86,9 @@ Namespace Controls
                 Return Me.m_iHighlight
             End Get
             Set(ByVal value As Integer)
-                'If Not Me.m_bIsMouseDown Then
                 If (Me.m_iHighlight <> value) Then
                     Me.m_iHighlight = value
                 End If
-                'End If
             End Set
         End Property
 
@@ -112,7 +96,8 @@ Namespace Controls
 
 #Region " Public access "
 
-        Private Shared s_draworder As eHighlightType() = New eHighlightType() {eHighlightType.Hidden, eHighlightType.None, eHighlightType.Selected}
+        Private Shared s_draworder As IFlowDiagramRenderer.eFDHighlightType() = _
+            New IFlowDiagramRenderer.eFDHighlightType() {IFlowDiagramRenderer.eFDHighlightType.GrayedOut, IFlowDiagramRenderer.eFDHighlightType.None, IFlowDiagramRenderer.eFDHighlightType.Selected}
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -128,15 +113,15 @@ Namespace Controls
             Me.m_tree.DrawTitle(g, rc)
             Me.m_tree.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), Me.m_data.Title)
 
-            For Each hl As eHighlightType In s_draworder
+            For Each hl As IFlowDiagramRenderer.eFDHighlightType In s_draworder
                 DrawFlow(g, rc, hl)
             Next
 
         End Sub
 
-        Private Sub DrawFlow(ByVal g As Graphics, ByVal rc As Rectangle, ByVal focus As eHighlightType)
+        Private Sub DrawFlow(ByVal g As Graphics, ByVal rc As Rectangle, ByVal focus As IFlowDiagramRenderer.eFDHighlightType)
 
-            Dim hl As eHighlightType = eHighlightType.None
+            Dim hl As IFlowDiagramRenderer.eFDHighlightType = IFlowDiagramRenderer.eFDHighlightType.None
             Dim bDraw As Boolean = False
 
             ' Draw connections
@@ -147,22 +132,32 @@ Namespace Controls
                     If (sDiet > 0) Then
 
                         ' Determine highlight state
-                        hl = eHighlightType.None
+                        hl = IFlowDiagramRenderer.eFDHighlightType.None
+                        bDraw = True
 
-                        If (Not Me.m_data.IsGroupVisible(iPred)) Or (Not Me.m_data.IsGroupVisible(iPrey)) Or (Me.HighlightNode > 0) Then
-                            hl = eHighlightType.Hidden
+                        If (Not Me.m_data.IsGroupVisible(iPred)) Or (Not Me.m_data.IsGroupVisible(iPrey)) Then
+                            bDraw = (Me.m_tree.ShowHiddenNodes = eFDShowHiddenType.GrayedOut)
+                            hl = IFlowDiagramRenderer.eFDHighlightType.GrayedOut
                         End If
 
-                        If (Me.HighlightNode = iPred) Then hl = eHighlightType.LinkIn
-                        If (Me.HighlightNode = iPrey) Then hl = eHighlightType.LinkOut
+                        If (Me.m_iHighlight > 0) Then
+                            If (Me.HighlightNode = iPred) Then
+                                hl = IFlowDiagramRenderer.eFDHighlightType.LinkIn
+                            ElseIf (Me.HighlightNode = iPrey) Then
+                                hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut
+                            End If
+                        Else
+                        End If
 
                         Select Case focus
-                            Case eHighlightType.Hidden
-                                bDraw = (hl = eHighlightType.Hidden)
-                            Case eHighlightType.None
-                                bDraw = (hl = eHighlightType.None)
-                            Case eHighlightType.Selected
-                                bDraw = (hl = eHighlightType.LinkIn) Or (hl = eHighlightType.LinkOut) Or (hl = eHighlightType.Selected)
+                            Case IFlowDiagramRenderer.eFDHighlightType.GrayedOut
+                                bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.GrayedOut)
+                            Case IFlowDiagramRenderer.eFDHighlightType.None
+                                bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.None)
+                            Case IFlowDiagramRenderer.eFDHighlightType.Selected
+                                bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.LinkIn) Or _
+                                                  (hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut) Or _
+                                                  (hl = IFlowDiagramRenderer.eFDHighlightType.Selected)
                         End Select
 
                         If bDraw Then
@@ -177,23 +172,33 @@ Namespace Controls
             For j As Integer = 1 To Me.m_data.NumGroups
 
                 ' Determine node highlight state
-                hl = eHighlightType.None
-                If (Not Me.m_data.IsGroupVisible(j) Or Me.HighlightNode > 0) Then hl = eHighlightType.Hidden
-                If (Me.HighlightNode = j) Then
-                    hl = eHighlightType.Selected
-                ElseIf (Me.HighlightNode > 0) Then
-                    If Me.m_data.LinkValue(Me.HighlightNode, j) > 0 Then hl = eHighlightType.LinkIn
-                    If Me.m_data.LinkValue(j, Me.HighlightNode) > 0 Then hl = eHighlightType.LinkOut
+                hl = IFlowDiagramRenderer.eFDHighlightType.None
+                bDraw = True
+
+                If (Not Me.m_data.IsGroupVisible(j)) Then
+                    bDraw = (Me.m_tree.ShowHiddenNodes = eFDShowHiddenType.GrayedOut)
+                    hl = IFlowDiagramRenderer.eFDHighlightType.GrayedOut
                 End If
 
-                bDraw = False
+                If (Me.m_iHighlight > 0) Then
+                    If (Me.m_data.LinkValue(Me.HighlightNode, j) > 0) Then
+                        hl = IFlowDiagramRenderer.eFDHighlightType.LinkIn
+                    ElseIf (Me.m_data.LinkValue(j, Me.HighlightNode) > 0) Then
+                        hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut
+                    ElseIf (Me.HighlightNode = j) Then
+                        hl = IFlowDiagramRenderer.eFDHighlightType.Selected
+                     End If
+                End If
+
                 Select Case focus
-                    Case eHighlightType.Hidden
-                        bDraw = (hl = eHighlightType.Hidden)
-                    Case eHighlightType.None
-                        bDraw = (hl = eHighlightType.None)
-                    Case eHighlightType.Selected
-                        bDraw = (hl = eHighlightType.LinkIn) Or (hl = eHighlightType.LinkOut) Or (hl = eHighlightType.Selected)
+                    Case IFlowDiagramRenderer.eFDHighlightType.GrayedOut
+                        bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.GrayedOut)
+                    Case IFlowDiagramRenderer.eFDHighlightType.None
+                        bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.None)
+                    Case IFlowDiagramRenderer.eFDHighlightType.Selected
+                        bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.LinkIn) Or _
+                                          (hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut) Or _
+                                          (hl = IFlowDiagramRenderer.eFDHighlightType.Selected)
                 End Select
 
                 If (bDraw) Then
@@ -228,13 +233,12 @@ Namespace Controls
                         iNode = Me.GetLabelAtPoint(rc, pt, g, ft)
                     End Using
 
-                    If iNode > 0 Then
-                        Me.HighlightNode = iNode
-                    Else
+                    If iNode = 0 Then
                         iNode = Me.GetNodeAtPoint(rc, pt)
-                        If iNode > 0 Then
-                            Me.HighlightNode = iNode
-                        End If
+                    End If
+
+                    If (iNode > 0) Then
+                        Me.HighlightNode = iNode
                     End If
 
                 Case eDragMode.Label
@@ -313,31 +317,27 @@ Namespace Controls
 
         Public Sub BeginDrag(ByVal rc As Rectangle, ByVal pt As PointF, ByVal g As Graphics)
 
-            If Me.IsDragging Then Return
+            If (Me.IsDragging) Then Return
+            If (Me.HighlightNode = 0) Then Return
 
-            ' Find the node under the cursor
-            Dim iNode As Integer = 0
+            Dim iNode As Integer = -1
             Dim ptItem As PointF
-
-            Me.HighlightNode = 0
 
             Using ft As Font = Me.m_tree.RenderFont
                 iNode = Me.GetLabelAtPoint(rc, pt, g, ft)
+                If (iNode = Me.HighlightNode) Then
+                    Me.m_dragMode = eDragMode.Label
+                    ptItem = Me.m_tree.LabelLocation(iNode, rc)
+                    Me.m_ptDragOffset = New PointF(pt.X - ptItem.X, pt.Y - ptItem.Y)
+                    Return
+                End If
             End Using
 
-            If iNode > 0 Then
-                Me.HighlightNode = iNode
-                Me.m_dragMode = eDragMode.Label
-                ptItem = Me.m_tree.LabelLocation(iNode, rc)
+            iNode = Me.GetNodeAtPoint(rc, pt)
+            If iNode = HighlightNode Then
+                Me.m_dragMode = eDragMode.Node
+                ptItem = Me.m_tree.NodeLocation(iNode, rc)
                 Me.m_ptDragOffset = New PointF(pt.X - ptItem.X, pt.Y - ptItem.Y)
-            Else
-                iNode = Me.GetNodeAtPoint(rc, pt)
-                If iNode > 0 Then
-                    Me.HighlightNode = iNode
-                    Me.m_dragMode = eDragMode.Node
-                    ptItem = Me.m_tree.NodeLocation(iNode, rc)
-                    Me.m_ptDragOffset = New PointF(pt.X - ptItem.X, pt.Y - ptItem.Y)
-                End If
             End If
 
         End Sub
@@ -356,53 +356,77 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get a node at a location.
+        ''' Return the index of a node at a given location.
+        ''' <seealso cref="GetLabelAtPoint"/>
         ''' </summary>
         ''' <param name="rc">Flow diagram area to find the node within.</param>
         ''' <param name="pt">Point to test for.</param>
-        ''' <returns></returns>
+        ''' <returns>
+        ''' Returns the index of a <see cref="IFlowDiagramData.IsGroupVisible">visible</see>
+        ''' node at the location, or, of not found, return a non-visible node at the
+        ''' location only if <see cref="IFlowDiagramRenderer.ShowHiddenNodes"/> is not set to 
+        ''' <see cref="eFDShowHiddenType.Invisible"/>. If no node was found, 0 
+        ''' is returned.
+        ''' </returns>
         ''' -------------------------------------------------------------------
         Private Function GetNodeAtPoint(ByVal rc As Rectangle, ByVal pt As PointF) As Integer
 
-            Dim iGroup As Integer = 1
-            Dim iNodeAtPoint As Integer = 0
+            Dim iNodeViz As Integer = 0
+            Dim iNodeHid As Integer = 0
+            Dim iNodeTmp As Integer = 1
 
-            While (iGroup <= Me.m_data.NumGroups) And (iNodeAtPoint = 0)
-                If Me.m_tree.IsNodeAtPoint(rc, pt, iGroup, Me.m_data.Value(iGroup)) Then
-                    iNodeAtPoint = iGroup
+            While (iNodeTmp <= Me.m_data.NumGroups) And (iNodeViz = 0)
+                If Me.m_tree.IsNodeAtPoint(rc, pt, iNodeTmp, Me.m_data.Value(iNodeTmp)) Then
+                    If (Me.m_data.IsGroupVisible(iNodeTmp)) Then
+                        iNodeViz = iNodeTmp
+                    Else
+                        If (Me.m_tree.ShowHiddenNodes <> eFDShowHiddenType.Invisible) Then
+                            iNodeHid = iNodeTmp
+                        End If
+                    End If
                 End If
-                iGroup += 1
+                iNodeTmp += 1
             End While
 
-            Return iNodeAtPoint
+            Return cSystemUtils.IIF(iNodeViz > 0, iNodeViz, iNodeHid)
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get a label at a location.
+        ''' Return the index of a visible node label at a given location.
+        ''' <seealso cref="GetLabelAtPoint"/>
         ''' </summary>
-        ''' <param name="rc">Flow diagram area to find the label within.</param>
+        ''' <param name="rc">Flow diagram area to find the node label within.</param>
         ''' <param name="pt">Point to test for.</param>
-        ''' <param name="g">Graphics to measure label dimensions with.</param>
-        ''' <param name="font">Font to measure label dimension with.</param>
-        ''' <returns></returns>
+        ''' <returns>
+        ''' Returns the index of a <see cref="IFlowDiagramData.IsGroupVisible">visible</see>
+        ''' node at the location, or 0 if no node was found.
+        ''' </returns>
         ''' -------------------------------------------------------------------
         Private Function GetLabelAtPoint(ByVal rc As Rectangle, _
                                          ByVal pt As PointF, _
                                          ByVal g As Graphics, _
                                          ByVal font As Font) As Integer
 
-            Dim iGroup As Integer = 1
-            Dim iLabelAtPoint As Integer = 0
+            Dim iNodeViz As Integer = 0
+            Dim iNodeHid As Integer = 0
+            Dim iNodeTmp As Integer = 1
 
-            While (iGroup <= Me.m_data.NumGroups) And (iLabelAtPoint = 0)
-                If Me.m_tree.IsLabelAtPoint(rc, pt, iGroup, Me.m_tree.FormatLabelText(iGroup), g, font) Then
-                    iLabelAtPoint = iGroup
+            While (iNodeTmp <= Me.m_data.NumGroups) And (iNodeViz = 0)
+                If Me.m_tree.IsLabelAtPoint(rc, pt, iNodeTmp, Me.m_tree.FormatLabelText(iNodeTmp), g, font) Then
+                    If (Me.m_data.IsGroupVisible(iNodeTmp)) Then
+                        iNodeViz = iNodeTmp
+                    Else
+                        If (Me.m_tree.ShowHiddenNodes <> eFDShowHiddenType.Invisible) Then
+                            iNodeHid = iNodeTmp
+                        End If
+                    End If
                 End If
-                iGroup += 1
+                iNodeTmp += 1
             End While
 
-            Return iLabelAtPoint
+            Return cSystemUtils.IIF(iNodeViz > 0, iNodeViz, iNodeHid)
+
         End Function
 
 #End Region ' Internals

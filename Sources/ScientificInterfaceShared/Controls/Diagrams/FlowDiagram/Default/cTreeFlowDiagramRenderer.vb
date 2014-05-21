@@ -21,10 +21,11 @@
 Option Strict On
 Imports System.ComponentModel
 Imports System.Text
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -39,6 +40,12 @@ Namespace Controls
     Public Class cTreeFlowDiagramRenderer
         Implements IFlowDiagramRenderer
 
+#Region " Public enums "
+
+
+
+#End Region ' Public enums
+
 #Region " Helper classes "
 
         ''' -------------------------------------------------------------------
@@ -48,25 +55,20 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Class cFlowDiagramNode
 
-            Enum eNodeTypes As Integer
-                Circle = 1
-                Rectangle = 2
-            End Enum
-
             '''--------------------------------------------------------------------
             ''' <summary>
             ''' Draw a flow diagram node.
             ''' </summary>
             ''' <param name="g">Graphics to render the node onto.</param>
             ''' <param name="ptf">Point of the node center.</param>
-            ''' <param name="nodetype"><see cref="eNodeTypes">Node render type</see>.</param>
+            ''' <param name="nodetype"><see cref="eFDNodeTypes">Node render type</see>.</param>
             ''' <param name="iSize">Node render size, in pixels.</param>
             ''' <param name="clrLine">Node line colour.</param>
             ''' <param name="clrFill">Node fill colour.</param>
             '''--------------------------------------------------------------------
             Public Sub DrawNode(ByVal g As Graphics, _
                                 ByVal ptf As PointF, _
-                                ByVal nodetype As eNodeTypes, _
+                                ByVal nodetype As eFDNodeTypes, _
                                 ByVal iSize As Integer, _
                                 ByVal clrLine As Color, _
                                 ByVal clrFill As Color)
@@ -74,10 +76,10 @@ Namespace Controls
                 Using br As New SolidBrush(clrFill)
                     Using p As New Pen(clrLine)
                         Select Case nodetype
-                            Case eNodeTypes.Circle
+                            Case eFDNodeTypes.Circle
                                 g.FillEllipse(br, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
                                 g.DrawEllipse(p, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
-                            Case eNodeTypes.Rectangle
+                            Case eFDNodeTypes.Rectangle
                                 g.FillRectangle(br, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
                                 g.DrawRectangle(p, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
                             Case Else
@@ -113,9 +115,8 @@ Namespace Controls
             Friend Function CalcLabelSize(ByVal g As Graphics, _
                                           ByVal font As Font, _
                                           ByVal strText As String, _
-                                          ByVal fmt As StringFormat, _
-                                          ByVal iMaxWidth As Integer) As SizeF
-                Return g.MeasureString(strText, font, iMaxWidth, fmt)
+                                          ByVal fmt As StringFormat) As SizeF
+                Return g.MeasureString(strText, font, 6000, fmt)
             End Function
 
         End Class
@@ -127,11 +128,6 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Class cFlowDiagramConnector
 
-            Enum eConnectionType As Integer
-                StraightLine = 1
-                Arch = 2
-            End Enum
-
 #Region " Rendering "
 
             Public Sub DrawConnection(ByVal g As Graphics, _
@@ -139,16 +135,16 @@ Namespace Controls
                                       ByVal ptTo As PointF, _
                                       ByVal clrLine As Color, _
                                       ByVal sWidth As Single, _
-                                      ByVal connectiontype As eConnectionType)
+                                      ByVal connectiontype As eFDConnectionType)
 
                 Dim pn As New Pen(clrLine, sWidth)
 
                 Select Case connectiontype
 
-                    Case eConnectionType.StraightLine
+                    Case eFDConnectionType.Straight
                         g.DrawLine(pn, ptFrom.X, ptFrom.Y, ptTo.X, ptTo.Y)
 
-                    Case eConnectionType.Arch
+                    Case eFDConnectionType.Arch
                         ' Test if on top of each other
                         ' ToDo: use range comparison here
                         If (ptFrom.X <> ptTo.X) And (ptFrom.Y <> ptTo.Y) Then
@@ -216,14 +212,16 @@ Namespace Controls
         Private m_clrLine As Color = Color.Gray
         Private m_bAutoLineWidth As Boolean = False
         Private m_bShowTitle As Boolean = True
-        Private m_iLineWidth As Integer = 1
-        Private m_nodetype As cFlowDiagramNode.eNodeTypes = cFlowDiagramNode.eNodeTypes.Circle
-        Private m_connectiontype As cFlowDiagramConnector.eConnectionType = cFlowDiagramConnector.eConnectionType.Arch
-        Private m_colorusagetype As cFlowDiagramManager.eColorUsageTypes = cFlowDiagramManager.eColorUsageTypes.None
+        Private m_sLineWidth As Single = 0.5
+        Private m_nodetype As eFDNodeTypes = eFDNodeTypes.Circle
+        Private m_connectiontype As eFDConnectionType = eFDConnectionType.Arch
+        Private m_colorusagetype As eFDColorUsageTypes = eFDColorUsageTypes.None
         Private m_tsShowLegend As TriState = TriState.UseDefault
+        Private m_nodeshowtype As eFDShowHiddenType = eFDShowHiddenType.GrayedOut
 
         Private Shared g_fmt As New StringFormat()
-        Private Shared g_wrapwidth As Integer = 150
+        ''' <summary>Minimum mouse hit area size</summary>
+        Private Shared g_minsize As Integer = 10
 
 #End Region ' Privates
 
@@ -305,7 +303,7 @@ Namespace Controls
         Friend Sub DrawNode(ByVal g As Graphics, _
                             ByVal rc As Rectangle, _
                             ByVal iGroup As Integer, _
-                            ByVal highlight As cFlowDiagramManager.eHighlightType) _
+                            ByVal highlight As IFlowDiagramRenderer.eFDHighlightType) _
             Implements IFlowDiagramRenderer.DrawNode
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
@@ -320,28 +318,31 @@ Namespace Controls
 
             Select Case highlight
 
-                Case cFlowDiagramManager.eHighlightType.Hidden
+                Case IFlowDiagramRenderer.eFDHighlightType.Invisible
+                    Return
+
+                Case IFlowDiagramRenderer.eFDHighlightType.GrayedOut
                     clrPen = Color.LightGray
                     clrFill = Color.White
                     clrLabel = cColorUtils.GetVariant(clrLabel, 0.5!)
 
-                Case cFlowDiagramManager.eHighlightType.None
+                Case IFlowDiagramRenderer.eFDHighlightType.None
                     Select Case Me.m_colorusagetype
-                        Case cFlowDiagramManager.eColorUsageTypes.EwE
+                        Case eFDColorUsageTypes.EwE
                             clrFill = Me.m_data.GroupColor(iGroup)
-                        Case cFlowDiagramManager.eColorUsageTypes.Value
+                        Case eFDColorUsageTypes.Value
                             clrFill = Me.m_colorramp.GetColor(sValue, sValueMax)
                         Case Else
                             clrFill = Me.m_clrNode
                     End Select
 
-                Case cFlowDiagramManager.eHighlightType.Selected
+                Case IFlowDiagramRenderer.eFDHighlightType.Selected
                     clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
 
-                Case cFlowDiagramManager.eHighlightType.LinkIn
+                Case IFlowDiagramRenderer.eFDHighlightType.LinkIn
                     clrPen = Me.InLinkColor
 
-                Case cFlowDiagramManager.eHighlightType.LinkOut
+                Case IFlowDiagramRenderer.eFDHighlightType.LinkOut
                     clrPen = Me.OutLinkColor
 
             End Select
@@ -364,7 +365,7 @@ Namespace Controls
                                   ByVal rc As Rectangle, _
                                   ByVal iPred As Integer, _
                                   ByVal iPrey As Integer, _
-                                  ByVal highlight As cFlowDiagramManager.eHighlightType) _
+                                  ByVal highlight As IFlowDiagramRenderer.eFDHighlightType) _
             Implements IFlowDiagramRenderer.DrawConnection
 
             Dim clrLine As Color = Me.m_clrLine
@@ -376,24 +377,28 @@ Namespace Controls
 
             Select Case highlight
 
-                Case cFlowDiagramManager.eHighlightType.None
+                Case IFlowDiagramRenderer.eFDHighlightType.None
                     Select Case Me.m_colorusagetype
-                        Case cFlowDiagramManager.eColorUsageTypes.Flow
+                        Case eFDColorUsageTypes.Flow
                             clrLine = Me.m_colorramp.GetColor(sDiet, sDietMax)
                         Case Else
                             ' Normal
                     End Select
 
-                Case cFlowDiagramManager.eHighlightType.Hidden
+                Case IFlowDiagramRenderer.eFDHighlightType.GrayedOut
                     clrLine = cColorUtils.GetVariant(clrLine, 0.75)
 
-                Case cFlowDiagramManager.eHighlightType.LinkIn
+                Case IFlowDiagramRenderer.eFDHighlightType.LinkIn
                     clrLine = Me.InLinkColor
                     sLineWidth = 2.0!
 
-                Case cFlowDiagramManager.eHighlightType.LinkOut
+                Case IFlowDiagramRenderer.eFDHighlightType.LinkOut
                     clrLine = Me.OutLinkColor
                     sLineWidth = 2.0!
+
+                Case IFlowDiagramRenderer.eFDHighlightType.Invisible
+                    Return
+
             End Select
 
             sLineWidth *= Me.CalcLineWidth(sDiet, sDietMax)
@@ -414,8 +419,8 @@ Namespace Controls
             Dim tsShowLegend As TriState = Me.ShowLegend
             If (tsShowLegend = TriState.UseDefault) Then
                 Select Case Me.m_colorusagetype
-                    Case cFlowDiagramManager.eColorUsageTypes.Value, _
-                         cFlowDiagramManager.eColorUsageTypes.Flow
+                    Case eFDColorUsageTypes.Value, _
+                         eFDColorUsageTypes.Flow
                         tsShowLegend = TriState.True
                 End Select
             End If
@@ -483,6 +488,20 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Appearance"), _
+            cLocalizedDisplayName("LABEL_TITLE"), _
+            DefaultValue("Flow diagram")> _
+        Public Property Title() As String
+            Get
+                Return Me.m_data.Title
+            End Get
+            Set(ByVal value As String)
+                Me.m_data.Title = value
+                RaiseEvent OnChanged(Me)
+            End Set
+        End Property
+
+        <Browsable(True), _
+            Category("Appearance"), _
             cLocalizedDisplayName("PROMPT_SHOWTITLE"), _
             cLocalizedDescription("PROMPT_SHOWTITLE_DESCR"), _
             DefaultValue(True)> _
@@ -499,7 +518,7 @@ Namespace Controls
         <Browsable(True), _
             Category("Appearance"), _
             cLocalizedDisplayName("GENERIC_SHOW_NUMTL"), _
-            DefaultValue(7)> _
+            DefaultValue(5)> _
         Public Property NumberOfTrophicLevels() As Integer
             Get
                 Return Me.m_iNumTrophicLevels - 1
@@ -516,12 +535,12 @@ Namespace Controls
         <Browsable(True), _
             Category("Appearance"), _
             cLocalizedDisplayName("GENERIC_COLOUR_USAGE"), _
-            DefaultValue(cFlowDiagramManager.eColorUsageTypes.None)> _
-        Public Property AutoColorUsage() As cFlowDiagramManager.eColorUsageTypes
+            DefaultValue(eFDColorUsageTypes.None)> _
+        Public Property AutoColorUsage() As eFDColorUsageTypes
             Get
                 Return Me.m_colorusagetype
             End Get
-            Set(ByVal value As cFlowDiagramManager.eColorUsageTypes)
+            Set(ByVal value As eFDColorUsageTypes)
                 Me.m_colorusagetype = value
                 RaiseEvent OnChanged(Me)
             End Set
@@ -586,12 +605,12 @@ Namespace Controls
         <Browsable(True), _
             Category("Node"), _
             cLocalizedDisplayName("HEADER_NODE_TYPE"), _
-            DefaultValue(cFlowDiagramNode.eNodeTypes.Circle)> _
-        Public Property NodeType() As cFlowDiagramNode.eNodeTypes
+            DefaultValue(eFDNodeTypes.Circle)> _
+        Public Property NodeType() As eFDNodeTypes
             Get
                 Return Me.m_nodetype
             End Get
-            Set(ByVal value As cFlowDiagramNode.eNodeTypes)
+            Set(ByVal value As eFDNodeTypes)
                 Me.m_nodetype = value
                 RaiseEvent OnChanged(Me)
             End Set
@@ -615,12 +634,12 @@ Namespace Controls
             Category("Line"), _
             cLocalizedDisplayName("HEADER_LINE_WIDTH"), _
             DefaultValue(1)> _
-        Public Property CustomLineWidth() As Integer
+        Public Property CustomLineWidth() As Single
             Get
-                Return Me.m_iLineWidth
+                Return Me.m_sLineWidth
             End Get
-            Set(ByVal value As Integer)
-                Me.m_iLineWidth = value
+            Set(ByVal value As Single)
+                Me.m_sLineWidth = value
                 RaiseEvent OnChanged(Me)
             End Set
         End Property
@@ -641,12 +660,12 @@ Namespace Controls
         <Browsable(True), _
             Category("Line"), _
             cLocalizedDisplayName("HEADER_LINE_TYPE"), _
-            DefaultValue(cFlowDiagramConnector.eConnectionType.Arch)> _
-        Public Property LineConnectionType() As cFlowDiagramConnector.eConnectionType
+            DefaultValue(eFDConnectionType.Arch)> _
+        Public Property LineConnectionType() As eFDConnectionType
             Get
                 Return Me.m_connectiontype
             End Get
-            Set(ByVal value As cFlowDiagramConnector.eConnectionType)
+            Set(ByVal value As eFDConnectionType)
                 If (value <> Me.m_connectiontype) Then
                     Me.m_connectiontype = value
                     RaiseEvent OnChanged(Me)
@@ -678,6 +697,21 @@ Namespace Controls
             End Get
             Set(ByVal value As Boolean)
                 Me.m_bIsDrawLabel = value
+                RaiseEvent OnChanged(Me)
+            End Set
+        End Property
+
+        <Browsable(True), _
+            Category("Node"), _
+            cLocalizedDisplayName("GENERIC_SHOW_HIDDEN"), _
+            DefaultValue(eFDShowHiddenType.GrayedOut)> _
+        Public Property NodeHiddenNodes() As eFDShowHiddenType _
+            Implements IFlowDiagramRenderer.ShowHiddenNodes
+            Get
+                Return Me.m_nodeshowtype
+            End Get
+            Set(ByVal value As eFDShowHiddenType)
+                Me.m_nodeshowtype = value
                 RaiseEvent OnChanged(Me)
             End Set
         End Property
@@ -718,7 +752,7 @@ Namespace Controls
             Implements IFlowDiagramRenderer.IsNodeAtPoint
 
             Dim ptfNodeLocation As PointF = Me.NodeLocation(i, rc)
-            Dim sNodeSize As Single = CSng(Me.CalcNodeSize(sValue, Me.m_data.ValueMax))
+            Dim sNodeSize As Single = CSng(Math.Max(g_minsize, Me.CalcNodeSize(sValue, Me.m_data.ValueMax)))
             Dim rcf As New RectangleF(ptfNodeLocation.X - sNodeSize / 2, _
                                       ptfNodeLocation.Y - sNodeSize / 2, _
                                       sNodeSize, _
@@ -737,7 +771,11 @@ Namespace Controls
             Implements IFlowDiagramRenderer.IsLabelAtPoint
 
             Dim ptfLabelLocation As PointF = Me.LabelLocation(i, rc)
-            Dim szfLabel As SizeF = Me.m_node.CalcLabelSize(g, font, strLabel, cTreeFlowDiagramRenderer.g_fmt, cTreeFlowDiagramRenderer.g_wrapwidth)
+            Dim szfLabel As SizeF = Me.m_node.CalcLabelSize(g, font, strLabel, cTreeFlowDiagramRenderer.g_fmt)
+
+            szfLabel.Width = Math.Max(szfLabel.Width, g_minsize)
+            szfLabel.Height = Math.Max(szfLabel.Height, g_minsize)
+
             Dim rcf As New RectangleF(ptfLabelLocation.X - szfLabel.Width / 2, ptfLabelLocation.Y, szfLabel.Width, szfLabel.Height)
 
             Return rcf.Contains(ptfTest)
@@ -831,7 +869,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private ReadOnly Property CalcLineWidth(ByVal sValue As Single, ByVal sValueMax As Single) As Integer
             Get
-                Dim sLineSize As Single = Me.m_iLineWidth
+                Dim sLineSize As Single = Me.m_sLineWidth
 
                 If Me.m_bAutoLineWidth Then
                     If sValueMax > 0 And sValue > 0 Then
