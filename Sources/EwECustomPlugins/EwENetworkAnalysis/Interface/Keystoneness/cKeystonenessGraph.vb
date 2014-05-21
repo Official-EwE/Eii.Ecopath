@@ -26,6 +26,7 @@ Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 Imports EwECore
 Imports System.Drawing
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -44,7 +45,7 @@ Public Class cKeystonenessGraph
     Private Const iMAX_SYMBOL_SIZE As Integer = 100
 
     ''' <summary>Graph representation styles.</summary>
-    Private Enum eRepresentationType As Byte
+    Public Enum eRepresentationType As Byte
         ''' <summary>Items reflected by black uni-sized circles.</summary>
         Circle
         ''' <summary>Items reflected by coloured circles scaled by biomass.</summary>
@@ -54,7 +55,7 @@ Public Class cKeystonenessGraph
     End Enum
 
     ''' <summary>Graph content styles.</summary>
-    Private Enum eContentType As Byte
+    Public Enum eContentType As Byte
         ''' <summary>Keystone index 1 is described in Libralato et al (2006)</summary>
         KeystoneIndex1
         ''' <summary>Keystone index 2 is described in Power et al (1996)</summary>
@@ -133,6 +134,7 @@ Public Class cKeystonenessGraph
         Me.Graph.Visible = bSucces
         Me.Toolstrip.Visible = bSucces
         Me.ToolstripShowOptionCSV()
+        Me.ToolstripShowDisplayGroups(True)
         Me.AddToolstripItems()
 
         Me.m_zgh = New cZedGraphHelper()
@@ -156,6 +158,8 @@ Public Class cKeystonenessGraph
 
     Public Overrides Sub DisplayData()
 
+        If (Me.UIContext Is Nothing) Then Return
+
         Dim pane As GraphPane = Nothing
         Dim li As LineItem = Nothing
         Dim curve As CurveItem = Nothing
@@ -163,6 +167,7 @@ Public Class cKeystonenessGraph
         Dim txt As ZedGraph.TextObj = Nothing
         Dim group As cCoreInputOutputBase = Nothing
         Dim sMaxB As Single = 0.0
+        Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
         ' UpdateControls will take care of axis labels
         pane = Me.m_zgh.ConfigurePane("", "", "", False)
@@ -176,7 +181,9 @@ Public Class cKeystonenessGraph
 
         ' Precalc max Biomass (for CircleScaled style)
         For iGroup As Integer = 1 To Me.NetworkManager.nLivingGroups
-            sMaxB = Math.Max(sMaxB, Me.NetworkManager.BiomassByGroup(iGroup))
+            If (sg.GroupVisible(iGroup)) Then
+                sMaxB = Math.Max(sMaxB, Me.NetworkManager.BiomassByGroup(iGroup))
+            End If
         Next
         ' Avoid division by zero
         If sMaxB = 0 Then sMaxB = 1.0
@@ -184,62 +191,65 @@ Public Class cKeystonenessGraph
         ' Create a unique line item for each group
         For iGroup As Integer = 1 To Me.NetworkManager.nLivingGroups
 
-            ' Build line item
-            ppl = New PointPairList()
-            Select Case Me.Content
+            If (sg.GroupVisible(iGroup)) Then
 
-                Case eContentType.KeystoneIndex1
-                    ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex(iGroup))
+                ' Build line item
+                ppl = New PointPairList()
+                Select Case Me.Content
 
-                Case eContentType.TotalEffectOverB
-                    ppl.Add(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB, Me.NetworkManager.RelativeTotalImpact(iGroup))
+                    Case eContentType.KeystoneIndex1
+                        ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex(iGroup))
 
-                Case eContentType.KeystoneIndex2
-                    ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.TotalImpactOverBiomass(iGroup))
+                    Case eContentType.TotalEffectOverB
+                        ppl.Add(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB, Me.NetworkManager.RelativeTotalImpact(iGroup))
 
-            End Select
+                    Case eContentType.KeystoneIndex2
+                        ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.TotalImpactOverBiomass(iGroup))
 
-            ' Get actual group
-            group = Me.NetworkManager.Core.EcoPathGroupInputs(iGroup)
+                End Select
 
-            ' Make things look purdy
-            Select Case Me.m_representation
+                ' Get actual group
+                group = Me.NetworkManager.Core.EcoPathGroupInputs(iGroup)
 
-                Case eRepresentationType.Circle
+                ' Make things look purdy
+                Select Case Me.m_representation
 
-                    ' Render values as uni-sized black circles
-                    li = New LineItem(group.Name, ppl, Color.Black, SymbolType.Circle)
-                    li.Line.Color = Color.Transparent
-                    pane.CurveList.Add(li)
+                    Case eRepresentationType.Circle
 
-                Case eRepresentationType.CircleScaled
+                        ' Render values as uni-sized black circles
+                        li = New LineItem(group.Name, ppl, Color.Black, SymbolType.Circle)
+                        li.Line.Color = Color.Transparent
+                        pane.CurveList.Add(li)
 
-                    ' Render values as group-coloured circles, scaled to biomass
-                    li = New LineItem(group.Name, ppl, Color.Black, SymbolType.Circle)
-                    li.Line.Color = Color.Transparent
-                    li.Symbol.Size = CSng(iMAX_SYMBOL_SIZE * Math.Sqrt(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB))
-                    li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.NetworkManager.Core, group.Index))
-                    pane.CurveList.Add(li)
+                    Case eRepresentationType.CircleScaled
 
-                Case eRepresentationType.Number
+                        ' Render values as group-coloured circles, scaled to biomass
+                        li = New LineItem(group.Name, ppl, Color.Black, SymbolType.Circle)
+                        li.Line.Color = Color.Transparent
+                        li.Symbol.Size = CSng(iMAX_SYMBOL_SIZE * Math.Sqrt(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB))
+                        li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.NetworkManager.Core, group.Index))
+                        pane.CurveList.Add(li)
 
-                    ' Render values as black texts reflecting numeric group indices
+                    Case eRepresentationType.Number
 
-                    ' Add hidden line for mouse value tracking
-                    li = New LineItem(group.Name, ppl, Color.Transparent, SymbolType.None)
-                    pane.CurveList.Add(li)
+                        ' Render values as black texts reflecting numeric group indices
 
-                    ' Add text label
-                    txt = New ZedGraph.TextObj(CStr(group.Index), ppl(0).X, ppl(0).Y)
-                    txt.ZOrder = ZOrder.A_InFront
-                    With txt.FontSpec
-                        .Fill.IsVisible = False
-                        .Border.IsVisible = False
-                        .FontColor = Color.Black
-                    End With
-                    pane.GraphObjList.Add(txt)
+                        ' Add hidden line for mouse value tracking
+                        li = New LineItem(group.Name, ppl, Color.Transparent, SymbolType.None)
+                        pane.CurveList.Add(li)
 
-            End Select
+                        ' Add text label
+                        txt = New ZedGraph.TextObj(CStr(group.Index), ppl(0).X, ppl(0).Y)
+                        txt.ZOrder = ZOrder.A_InFront
+                        With txt.FontSpec
+                            .Fill.IsVisible = False
+                            .Border.IsVisible = False
+                            .FontColor = Color.Black
+                        End With
+                        pane.GraphObjList.Add(txt)
+
+                End Select
+            End If
 
         Next iGroup
 
@@ -252,9 +262,13 @@ Public Class cKeystonenessGraph
 
     End Sub
 
+    Public Overrides Function OptionsControl() As System.Windows.Forms.UserControl
+        Return New ucKeystonenessGraphOptions(Me)
+    End Function
+
 #Region " Internals "
 
-    Private Property Representation() As eRepresentationType
+    Public Property Representation() As eRepresentationType
         Get
             Return Me.m_representation
         End Get
@@ -266,7 +280,7 @@ Public Class cKeystonenessGraph
         End Set
     End Property
 
-    Private Property Content() As eContentType
+    Public Property Content() As eContentType
         Get
             Return Me.m_content
         End Get
