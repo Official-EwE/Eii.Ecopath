@@ -705,7 +705,7 @@ Namespace Controls
             Category("Node"), _
             cLocalizedDisplayName("GENERIC_SHOW_HIDDEN"), _
             DefaultValue(eFDShowHiddenType.GrayedOut)> _
-        Public Property NodeHiddenNodes() As eFDShowHiddenType _
+        Public Property ShowHiddenMode() As eFDShowHiddenType _
             Implements IFlowDiagramRenderer.ShowHiddenNodes
             Get
                 Return Me.m_nodeshowtype
