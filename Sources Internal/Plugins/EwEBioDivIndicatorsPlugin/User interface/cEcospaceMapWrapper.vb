@@ -164,6 +164,9 @@ Public Class cEcospaceMapWrapper
         End If
 
         Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+
+        If (bm Is Nothing) Then Return
+
         Dim iInRow As Integer = bm.InRow
         Dim iInCol As Integer = bm.InCol
         Dim sg As cStyleGuide = Me.m_uic.StyleGuide
