@@ -43,7 +43,6 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Implements EwEPlugin.IEcopathRunCompleted2Plugin
     Implements EwEPlugin.IEcopathRunInvalidatedPlugin
     Implements EwEPlugin.IEcosimPlugin
-    Implements EwEPlugin.IEcosimDataInitializedPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
     Implements EwEPlugin.IEcosimRunInvalidatedPlugin
@@ -1068,13 +1067,4 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
 #End Region ' Autosave
 
-    Public Sub EcosimPreDataInitialized(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreDataInitialized
-
-    End Sub
-
-    Public Sub EcosimPreRunInitialized(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreRunInitialized
-
-    End Sub
 End Class
