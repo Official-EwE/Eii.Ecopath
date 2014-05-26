@@ -322,8 +322,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
         If (Not Me.m_bRunWithEcosim) Then Return
 
-        Me.m_bCalcExtrasOld = Me.m_ecosimDS.bCalcTL
-        Me.m_ecosimDS.bCalcTL = True
+        Me.m_bCalcExtrasOld = Me.m_ecosimDS.bAlwaysCalcTLc
+        Me.m_ecosimDS.bAlwaysCalcTLc = True
 
     End Sub
 
@@ -364,7 +364,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         End If
 
         ' Restore preservation flag
-        Me.m_ecosimDS.bCalcTL = Me.m_bCalcExtrasOld
+        Me.m_ecosimDS.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
 
     End Sub
 
@@ -424,8 +424,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         End If
 
         If (Me.m_bRunWithEcosim Or Me.m_bRunWithMonteCarlo) Then
-            Me.m_bCalcExtrasOld = Me.m_ecosimDS.bCalcTL
-            Me.m_ecosimDS.bCalcTL = True
+            Me.m_bCalcExtrasOld = Me.m_ecosimDS.bAlwaysCalcTLc
+            Me.m_ecosimDS.bAlwaysCalcTLc = True
         End If
 
     End Sub
@@ -475,7 +475,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Implements EwEPlugin.ISearchPlugin.SearchCompleted
 
         If (Me.m_bRunWithEcosim Or Me.m_bRunWithMonteCarlo) Then
-            Me.m_ecosimDS.bCalcTL = Me.m_bCalcExtrasOld
+            Me.m_ecosimDS.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
         End If
 
     End Sub
