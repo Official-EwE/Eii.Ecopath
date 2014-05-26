@@ -43,6 +43,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Implements EwEPlugin.IEcopathRunCompleted2Plugin
     Implements EwEPlugin.IEcopathRunInvalidatedPlugin
     Implements EwEPlugin.IEcosimPlugin
+    Implements EwEPlugin.IEcosimDataInitializedPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
     Implements EwEPlugin.IEcosimRunInvalidatedPlugin
@@ -322,8 +323,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
         If (Not Me.m_bRunWithEcosim) Then Return
 
-        Me.m_bCalcExtrasOld = Me.m_ecosimDS.bAlwaysCalcTLc
-        Me.m_ecosimDS.bAlwaysCalcTLc = True
+        Me.m_bCalcExtrasOld = Me.m_ecosimDS.bCalcTL
+        Me.m_ecosimDS.bCalcTL = True
 
     End Sub
 
@@ -364,7 +365,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         End If
 
         ' Restore preservation flag
-        Me.m_ecosimDS.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
+        Me.m_ecosimDS.bCalcTL = Me.m_bCalcExtrasOld
 
     End Sub
 
@@ -423,9 +424,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             Me.m_bRunWithMonteCarlo = False
         End If
 
-        If (m_bRunWithEcosim) Then
-            Me.m_bCalcExtrasOld = Me.m_ecosimDS.bAlwaysCalcTLc
-            Me.m_ecosimDS.bAlwaysCalcTLc = True
+        If (Me.m_bRunWithEcosim Or Me.m_bRunWithMonteCarlo) Then
+            Me.m_bCalcExtrasOld = Me.m_ecosimDS.bCalcTL
+            Me.m_ecosimDS.bCalcTL = True
         End If
 
     End Sub
@@ -474,8 +475,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Public Sub SearchCompleted(SearchDatastructures As Object) _
         Implements EwEPlugin.ISearchPlugin.SearchCompleted
 
-        If (m_bRunWithEcosim) Then
-            Me.m_ecosimDS.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
+        If (Me.m_bRunWithEcosim Or Me.m_bRunWithMonteCarlo) Then
+            Me.m_ecosimDS.bCalcTL = Me.m_bCalcExtrasOld
         End If
 
     End Sub
@@ -1067,4 +1068,13 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
 #End Region ' Autosave
 
+    Public Sub EcosimPreDataInitialized(EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreDataInitialized
+
+    End Sub
+
+    Public Sub EcosimPreRunInitialized(EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreRunInitialized
+
+    End Sub
 End Class
