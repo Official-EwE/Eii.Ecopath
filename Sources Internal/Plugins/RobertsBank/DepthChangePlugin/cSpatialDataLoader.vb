@@ -124,7 +124,7 @@ Public Class cSpatialDataLoader
                 Return False
             End If
 
-            If Me.m_core.SpatialDataConnectionManager.LoadSystemSettings(Me.SpatialConfigFile) Then
+            If Me.m_core.SpatialDataConnectionManager.DatasetManager.Load(Me.SpatialConfigFile) Then
                 Return True
             End If
             Return False
