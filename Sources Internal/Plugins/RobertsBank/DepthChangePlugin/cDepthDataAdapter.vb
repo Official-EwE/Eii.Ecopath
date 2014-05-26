@@ -202,6 +202,10 @@ Public Class cDepthDataAdapter
                         If Me.SetCell(layer, iConnection, iRow, iCol, CellValue) Then
                             'Keep track of which cells have changed
                             Me.m_bChanged(iRow, iCol) = True
+
+                            'Set the biomass in this cell to zero  
+                            '26-May-2014 Not debugged yet
+                            'Me.setBiomassToLand(iRow, iCol)
                         Else
                             'Failed to set the value of this cell because of an exception in SetCell()
                             Return False
@@ -223,6 +227,14 @@ Public Class cDepthDataAdapter
 
         Return bSuccess
     End Function
+
+    Private Sub setBiomassToLand(row As Integer, col As Integer)
+
+        For igrp As Integer = 1 To Me.m_core.nGroups
+            Me.m_SpaceData.Bcell(row, col, igrp) = 1.0E-20
+        Next
+
+    End Sub
 
     Private Sub initChangedArray(ByVal bm As cEcospaceBasemap)
         If Me.m_bChanged Is Nothing Then
