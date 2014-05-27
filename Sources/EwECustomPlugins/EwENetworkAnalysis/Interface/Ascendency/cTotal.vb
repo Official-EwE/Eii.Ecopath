@@ -71,52 +71,52 @@ Public Class cTotal
         Grid.Rows(0).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_IMPORT
-        astrRowContent(1) = NetworkManager.AscendancyImportTotal.ToString("F1")
-        astrRowContent(2) = NetworkManager.AscendancyImportPer.ToString("F1")
-        astrRowContent(3) = NetworkManager.OverheadImportTotal.ToString("F1")
-        astrRowContent(4) = NetworkManager.OverheadImportPer.ToString("F1")
-        astrRowContent(5) = NetworkManager.CapacityImportTotal.ToString("F1")
-        astrRowContent(6) = NetworkManager.CapacityImportPer.ToString("F1")
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyImportTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyImportPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadImportTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadImportPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityImportTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityImportPer)
         Grid.Rows(1).SetValues(astrRowContent)
         Grid.Rows(1).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_INTN_FLOW
-        astrRowContent(1) = NetworkManager.AscendancyInternalFlowTotal.ToString("F1")
-        astrRowContent(2) = NetworkManager.AscendancyInternalFlowPer.ToString("F1")
-        astrRowContent(3) = NetworkManager.OverheadFlowTotal.ToString("F1")
-        astrRowContent(4) = NetworkManager.OverheadFlowPer.ToString("F1")
-        astrRowContent(5) = NetworkManager.CapacityFlowTotal.ToString("F1")
-        astrRowContent(6) = NetworkManager.CapacityFlowPer.ToString("F1")
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyInternalFlowTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyInternalFlowPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadFlowTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadFlowPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityFlowTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityFlowPer)
         Grid.Rows(2).SetValues(astrRowContent)
         Grid.Rows(2).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_EXPORT
-        astrRowContent(1) = NetworkManager.AscendancyExportTotal.ToString("F1")
-        astrRowContent(2) = NetworkManager.AscendancyExportPer.ToString("F1")
-        astrRowContent(3) = NetworkManager.OverheadExportTotal.ToString("F1")
-        astrRowContent(4) = NetworkManager.OverheadExportPer.ToString("F1")
-        astrRowContent(5) = NetworkManager.CapacityExportTotal.ToString("F1")
-        astrRowContent(6) = NetworkManager.CapacityExportPer.ToString("F1")
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyExportTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyExportPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadExportTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadExportPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityExportTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityExportPer)
         Grid.Rows(3).SetValues(astrRowContent)
         Grid.Rows(3).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_RESP
-        astrRowContent(1) = NetworkManager.AscendancyRespTotal.ToString("F1")
-        astrRowContent(2) = NetworkManager.AscendancyRespPer.ToString("F1")
-        astrRowContent(3) = NetworkManager.OverheadRespTotal.ToString("F1")
-        astrRowContent(4) = NetworkManager.OverheadRespPer.ToString("F1")
-        astrRowContent(5) = NetworkManager.CapacityRespTotal.ToString("F1")
-        astrRowContent(6) = NetworkManager.CapacityRespPer.ToString("F1")
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyRespTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyRespPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadRespTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadRespPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityRespTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityRespPer)
         Grid.Rows(4).SetValues(astrRowContent)
         Grid.Rows(4).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_TOTAL
-        astrRowContent(1) = NetworkManager.AscendancyTotalsTotal.ToString("F1")
-        astrRowContent(2) = NetworkManager.AscendancyTotalsPer.ToString("F1")
-        astrRowContent(3) = NetworkManager.OverheadTotalsTotal.ToString("F1")
-        astrRowContent(4) = NetworkManager.OverheadTotalsPer.ToString("F1")
-        astrRowContent(5) = NetworkManager.CapacityTotalsTotal.ToString("F1")
-        astrRowContent(6) = NetworkManager.CapacityTotalsPer.ToString("F1")
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyTotalsTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyTotalsPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadTotalsTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadTotalsPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityTotalsTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityTotalsPer)
         Grid.Rows(5).SetValues(astrRowContent)
         Grid.Rows(5).Visible = True
 

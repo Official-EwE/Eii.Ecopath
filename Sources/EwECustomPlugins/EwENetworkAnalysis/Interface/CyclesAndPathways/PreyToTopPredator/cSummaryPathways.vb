@@ -81,7 +81,7 @@ Namespace PreyToPredator
             If NetworkManager.PathWays.Count = 0 Then
                 strRowContent(1) = My.Resources.ROW_HDR_NOT_APP
             Else
-                strRowContent(1) = (NetworkManager.NumArrows / NetworkManager.PathWays.Count).ToString("F2")
+                strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.NumArrows / NetworkManager.PathWays.Count)
             End If
             Grid.Rows(2).SetValues(strRowContent)
             Grid.Rows(2).Visible = True

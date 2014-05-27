@@ -54,6 +54,7 @@ Public Class cLossOfProductionIndex
     Public Overrides Sub DisplayData()
 
         Dim astrRowContent() As String
+        Dim LindexTot As Single = 0
 
         Me.NetworkManager.RunRequiredPrimaryProd()
 
@@ -61,7 +62,7 @@ Public Class cLossOfProductionIndex
 
         'Set up grid rows
         Grid.RowHeadersVisible = False
-        Grid.RowCount = NetworkManager.nGroups
+        Grid.RowCount = NetworkManager.nLivingGroups + 2
         Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
         Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
         Grid.Rows(0).Frozen = True
@@ -74,13 +75,19 @@ Public Class cLossOfProductionIndex
         Grid.Rows(0).SetValues(astrRowContent)
         Grid.Rows(0).Visible = True
 
-        For i As Integer = 1 To NetworkManager.nGroups - 1
+        For i As Integer = 1 To NetworkManager.nLivingGroups
             astrRowContent(0) = CStr(i)
             astrRowContent(1) = NetworkManager.GroupName(i)
             astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.Lindex(i))
+            LindexTot += NetworkManager.Lindex(i)
             Grid.Rows(i).SetValues(astrRowContent)
             Grid.Rows(i).Visible = True
         Next
+
+        astrRowContent(0) = ""
+        astrRowContent(1) = "Total"
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(LindexTot)
+        Grid.Rows(NetworkManager.nLivingGroups + 1).SetValues(astrRowContent)
 
         For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
             If NetworkManager.PPRCatchHarvest(i) <= 0.0 Or _
@@ -88,6 +95,8 @@ Public Class cLossOfProductionIndex
                 Grid.Rows(i).Visible = False
             End If
         Next
+
+
         Grid.ClearSelection()
 
     End Sub

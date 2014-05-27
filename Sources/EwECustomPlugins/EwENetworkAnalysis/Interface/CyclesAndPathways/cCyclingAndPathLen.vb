@@ -74,7 +74,7 @@ Public Class cCyclingAndPathLen
         'SetCellValue(Grid, 2, 1, Format(Tc, "0.00"))
         'SetCellText(Grid, 3, 1, GetUnits(2, 2))
         strRowContent(0) = My.Resources.ROW_HDR_THROUGHPUT_CYC_LIV
-        strRowContent(1) = NetworkManager.ThroughputCycledLiving.ToString("F2")
+        strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.ThroughputCycledLiving)
         strRowContent(2) = My.Resources.STR_T_KM2_YR
         Grid.Rows(1).SetValues(strRowContent)
         Grid.Rows(1).Visible = True
@@ -86,8 +86,8 @@ Public Class cCyclingAndPathLen
         'g_Recordset.Fields("PredatorCyclingIndex").value = 100 * Tc / TCyc
         strRowContent(0) = My.Resources.ROW_HDR_PRED_CYC_INDX
         If Math.Abs(NetworkManager.ThroughputCycledPredatory) > 0.0 Then
-            strRowContent(1) = (100.0 * NetworkManager.ThroughputCycledLiving / _
-                NetworkManager.ThroughputCycledPredatory).ToString("F2")
+            strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * NetworkManager.ThroughputCycledLiving / _
+                NetworkManager.ThroughputCycledPredatory)
         Else
             strRowContent(1) = ""
         End If
@@ -101,7 +101,7 @@ Public Class cCyclingAndPathLen
         'g_Recordset.Fields("TrputCyclInclDet").value = TcD
         strRowContent(0) = My.Resources.ROW_HDR_THROUGHPUT_CYC_TOTAL
         If Math.Abs(NetworkManager.ThroughputCycledAll) > 0.0 Then
-            strRowContent(1) = NetworkManager.ThroughputCycledAll.ToString("F2")
+            strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.ThroughputCycledAll)
         Else
             strRowContent(1) = ""
         End If
@@ -114,8 +114,8 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 4, "% of total throughput")
         'g_Recordset.Fields("FinnCyclingIndex").value = 100 * TcD / TruPut
         strRowContent(0) = My.Resources.ROW_HDR_FINN_CYC_INDX
-        strRowContent(1) = (100.0 * NetworkManager.ThroughputCycledAll / _
-            NetworkManager.ThroughputTotal).ToString("F2")
+        strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * NetworkManager.ThroughputCycledAll / _
+            NetworkManager.ThroughputTotal)
         strRowContent(2) = My.Resources.STR_PCT_TOTAL_THROUGHPUT
         Grid.Rows(4).SetValues(strRowContent)
         Grid.Rows(4).Visible = True

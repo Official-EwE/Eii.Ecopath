@@ -89,19 +89,19 @@ Public Class cForHarvestOfAllGp
             strRowContent(1) = NetworkManager.GroupName(i)
             strRowContent(2) = CStr(NetworkManager.NumerPaths(i))
             If NetworkManager.PPRCatchHarvest(i) > 0.0 Then lngSumPath = lngSumPath + NetworkManager.NumerPaths(i)
-            strRowContent(3) = NetworkManager.TrophicLevel(i).ToString("F2")
-            strRowContent(4) = NetworkManager.PPRRequiredHarvest(i).ToString("F2")
-            strRowContent(5) = NetworkManager.PPRRequiredDetHarvest(i).ToString("F2")
-            strRowContent(6) = NetworkManager.PPRRequiredSumHarvest(i).ToString("F2")
-            strRowContent(7) = NetworkManager.PPRCatchHarvest(i).ToString("F2")
+            strRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.TrophicLevel(i))
+            strRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequiredHarvest(i))
+            strRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequiredDetHarvest(i))
+            strRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequiredSumHarvest(i))
+            strRowContent(7) = Me.StyleGuide.FormatNumber(NetworkManager.PPRCatchHarvest(i))
             If NetworkManager.PPRCatchHarvest(i) > 0.0 Then
-                strRowContent(8) = NetworkManager.PPROverCatchHarvest(i).ToString("F2")
+                strRowContent(8) = Me.StyleGuide.FormatNumber(NetworkManager.PPROverCatchHarvest(i))
             Else
                 strRowContent(8) = ""
             End If
-            strRowContent(9) = NetworkManager.PPRTotPPHarvest(i).ToString("F2")
+            strRowContent(9) = Me.StyleGuide.FormatNumber(NetworkManager.PPRTotPPHarvest(i))
             If NetworkManager.PPRCatchHarvest(i) > 0.0 And NetworkManager.TotalPrimaryProduction > 0.0 Then
-                strRowContent(10) = NetworkManager.PPRUHarvest(i).ToString("F2")
+                strRowContent(10) = Me.StyleGuide.FormatNumber(NetworkManager.PPRUHarvest(i))
             Else
                 strRowContent(10) = ""
             End If
@@ -115,23 +115,23 @@ Public Class cForHarvestOfAllGp
         Next
         strRowContent(1) = My.Resources.ROW_HDR_TOTAL
         strRowContent(2) = CStr(lngSumPath)
-        strRowContent(3) = NetworkManager.TotalTL.ToString("F2")
-        strRowContent(4) = NetworkManager.TotalPPRPP.ToString("F2")
-        strRowContent(5) = NetworkManager.TotalPPRDet.ToString("F2")
-        strRowContent(6) = (NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet).ToString("F2")
-        strRowContent(7) = NetworkManager.TotalCatch.ToString("F2")
+        strRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.TotalTL)
+        strRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.TotalPPRPP)
+        strRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.TotalPPRDet)
+        strRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet)
+        strRowContent(7) = Me.StyleGuide.FormatNumber(NetworkManager.TotalCatch)
         If NetworkManager.TotalCatch > 0.0 Then
-            strRowContent(8) = ((NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet) / _
-                NetworkManager.TotalCatch).ToString("F2")
+            strRowContent(8) = Me.StyleGuide.FormatNumber((NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet) / _
+                NetworkManager.TotalCatch)
         Else
             strRowContent(8) = ""
         End If
-        strRowContent(9) = (100 * (NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet) / _
-            (NetworkManager.TotalPrimaryProduction + NetworkManager.DetThroughtput(1))).ToString("F2")
+        strRowContent(9) = Me.StyleGuide.FormatNumber(100 * (NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet) / _
+            (NetworkManager.TotalPrimaryProduction + NetworkManager.DetThroughtput(1)))
         If NetworkManager.TotalCatch > 0.0 Then
-            strRowContent(10) = ((NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet) / _
+            strRowContent(10) = Me.StyleGuide.FormatNumber((NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet) / _
                 (NetworkManager.TotalPrimaryProduction + NetworkManager.DetThroughtput(1)) / _
-                NetworkManager.TotalCatch).ToString("F2")
+                NetworkManager.TotalCatch)
         Else
             strRowContent(10) = ""
         End If
