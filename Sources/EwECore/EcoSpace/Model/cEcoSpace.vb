@@ -3714,8 +3714,17 @@ exitline:
                                     Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
                                 Next
 
+
                                 'VC Sail() above: to avoid dividing with zero
-                                Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+                                'Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+                                'jb 9-May-2014 change re Carls email
+                                'What this represents is attractiveness equal to exp(effpower*(I/C-1)), where I/C is profitability, -1 is subtracted to scale to exp(0)=1 for I/C=1.  
+                                'Effpower represents (as before) an effort concentration factor, low values implying less variation in valt with changes in I/C.
+                                'If you run this, should be nearly 2x faster than old code, and will concentrate effort a bit more in best fishing areas.  
+                                'I can also modify it further to force the attract’s to result in any observed effort map that we might enter, 
+                                'essentially by replacing the cost C with a simpler empirical cost scaler.
+                                Valt = Exp((Valt / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt)) - 1.0) * m_Data.EffPower(iFlt))
+
 
                                 Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
                                 'sum of attractivness by zone
@@ -3766,6 +3775,132 @@ exitline:
         'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
 
     End Sub
+
+    '    Sub InitSpaceCostThreaded(ByVal obParam As Object)
+    '        'this needs to be called before the first call 
+    '        ' to PredictEffortDistributionThreaded, but after initial estimates of 
+    '        ' Bcell(...) have been calculated using habitat info, etc.
+    '        'there needs to have been an array called SpaceCostCell(i,j,iflt) dimensioned
+    '        'with number of map rows, number of map columns(m_Data.InRow, m_Data.InCol), and 
+    '        ' number of fleets '(Me.m_Data.nFleets) that needs to be available within
+    '        'PredictEffortDistributionThreaded whenever it is called
+    '        'note many lines from PredictEffortDistributionThreaded have just been commented out for
+    '        'this routine
+    '        Dim i As Integer, j As Integer, TotAttract As Single
+    '        Dim Valt As Single, isp As Integer
+    '        Dim EffortCost As Single
+    '        Dim SailCost As Single
+    '        Dim TotE As Single
+    '        '    Dim Attract(,) As Single
+    '        Dim arguments As cThreadedCallArgs
+
+    '        Dim stpwtch As Stopwatch
+
+    '        Try
+
+    '            arguments = DirectCast(obParam, cThreadedCallArgs)
+    '            'Make sure the number of fleets is in bounds
+    '            'This could happen because of rounding error in the number of fleets per thread
+    '            If arguments.iFirst <= Me.m_Data.nFleets Then
+
+    '                'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+
+    '                'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
+    '                'Console.WriteLine("  N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
+    '                stpwtch = Stopwatch.StartNew
+
+    '                '           ReDim Attract(m_Data.InRow, m_Data.InCol)
+
+    '                For iFlt As Integer = arguments.iFirst To arguments.iLast
+    '                    'check the bounds
+    '                    If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit For
+    '                    'System.Console.WriteLine("  Fleet " & iFlt.ToString)
+    '                    TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
+
+    '                    'jb Attract() gets cleared out for each fleet
+    '                    '              Array.Clear(Attract, 0, Attract.Length)
+    '                    '              TotAttract = 0.0000000001
+
+    '                    'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
+    '                    If m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail) = 0 Then
+    '                        EffortCost = 0
+    '                        SailCost = 1
+    '                    Else
+    '                        EffortCost = m_EPdata.cost(iFlt, eCostIndex.CUPE) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
+    '                        SailCost = m_EPdata.cost(iFlt, eCostIndex.Sail) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
+    '                    End If
+
+    '                    '
+    '                    For i = 1 To m_Data.InRow
+    '                        For j = 1 To m_Data.InCol
+    '                            'Moved to InitSpatialEquilibrium
+    '                            If Me.m_Data.IsFished(iFlt, i, j) Then
+    '                                'Water and (Not closed by MPA) and (Fished by this gear)
+    '                                'mpamonth(Month, MPAType) is false if closed, True if open.
+    '                                Valt = 0
+    '                                For isp = 1 To m_Data.NGroups
+    '                                    Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
+    '                                Next
+
+    '                                'jb Move to InitSpatialEquilibrium()
+    '                                ' If m_Data.Sail(iFlt, i, j) = 0 Then m_Data.Sail(iFlt, i, j) = 0.000001
+    '                                ' here is the SpaceCostCell calculation
+    '                                SpaceCostCell(i, j, iFlt) = (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+
+    '                                'IN PredicteEffortDistributionThreaded, the Valt calculation in line below should be 
+    '                                'replaced by the following line:
+    'Valt=exp(-m_Data.EffPower(iFlt)*(spacecostcell(i,j,iflt)/(Valt+spacecostcell(i,j,iflt)/300)-1.))
+    '                                'in this calculation, the term spacecostcell(i,j,iflt)/300 is only there to prevent the
+    '                                'exponential from being less than -300 in case Valt is zero;
+    '                                'VC Sail() above: to avoid dividing with zero
+
+    '                                '  this line should be replaced:           Valt = (Valt ^ m_Data.EffPower(iFlt)) / ' '(EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+    '                                '                               Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
+    '                                '                               TotAttract = TotAttract + Valt * 'Me.m_Data.PAreaFished(i, j, iFlt)
+    '                            End If
+    '                        Next
+    '                    Next
+
+    '                    For i = 1 To m_Data.InRow
+    '                        For j = 1 To m_Data.InCol
+    '                            'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
+    '                            '                           If Me.m_Data.IsFished(iFlt, i, j) Then
+
+    '                            'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
+    '                            '                               m_Data.EffortSpace(iFlt, i, j) = 'm_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / 'TotAttract
+
+    '                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    '                            'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
+    '                            'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
+    '                            '        For isp = 1 To m_Data.NGroups
+    '                            '            'Fishing Mort
+    '                            '            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(iFlt, i, j) * m_SimData.relQ(iFlt, isp) / Me.m_Data.PAreaFished(i, j, iFlt)
+    '                            '        Next isp
+    '                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    '                            End If
+    '                        Next j
+    '                    Next i
+    '                Next iFlt
+
+    '            Else ' If arguments.iFirst <= Me.m_Data.nFleets Then
+    '            'First Fleet Index > Number of Fleets
+    '            'We still need to Decrement the Interlock counter
+    '            System.Console.WriteLine("Effort Dist No fleets to process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
+    '            End If
+
+    '        Catch ex As Exception
+    '            Debug.Assert(False, ex.Message)
+    '        End Try
+
+    '        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
+    '            arguments.WaitHandle.Set()
+    '        End If
+
+    '        'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
+
+    '    End Sub
+
     ''' <summary>
     ''' Threaded and Load Shared Version
     ''' This routine predicts spatial effort and fishing mortality rate
@@ -3848,8 +3983,13 @@ exitline:
                         For isp = 1 To m_Data.NGroups
                             Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(iRow, iCol, isp) * m_SimData.relQ(iFlt, isp)
                         Next
+                        'Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
 
-                        Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
+                        'What this represents is attractiveness equal to exp(effpower*(I/C-1)), where I/C is profitability, -1 is subtracted to scale to exp(0)=1 for I/C=1.  
+                        'Effpower represents (as before) an effort concentration factor, low values implying less variation in valt with changes in I/C.
+                        'If you run this, should be nearly 2x faster than old code, and will concentrate effort a bit more in best fishing areas.  
+                        'I can also modify it further to force the attract’s to result in any observed effort map that we might enter, essentially by replacing the cost C with a simpler empirical cost scaler.
+                        Valt = Exp((Valt / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)) - 1.0) * m_Data.EffPower(iFlt))
                         Attract(iRow, iCol) = Valt * Me.m_Data.PAreaFished(iRow, iCol, iFlt)  'may want to modify this by dividing by a site cost factor for cell i,j
                         'TotAttract += Attract(iRow, iCol)
                         'Total attractiveness by zone
@@ -7142,7 +7282,7 @@ exitline:
             If map.isLayerActive Then
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
-                    'jb The isGroupHabCapChanged(igrp) was alway false with the RBT Model
+                    'jb The isGroupHabCapChanged(igrp) was always false with the RBT Model
                     'so just disable it for now....until I sort out what happened
                     'If Me.m_Data.isGroupHabCapChanged(igrp) Then
                     'Does this group contain a response function for this map
@@ -7155,13 +7295,8 @@ exitline:
                                 If Me.m_Data.Depth(irow, icol) > 0 Then
                                     'For debugging
                                     'dumpCapacity(map, igrp, irow, icol)
-                                    'orgCap = Me.m_Data.HabCap(irow, icol, igrp)
 
                                     Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
-
-                                    'If orgCap <> Me.m_Data.HabCap(irow, icol, igrp) Then
-                                    '    'Debug.Assert(False)
-                                    'End If
 
                                 End If
                             Next icol
