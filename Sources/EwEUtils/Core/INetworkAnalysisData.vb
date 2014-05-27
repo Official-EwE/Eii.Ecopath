@@ -34,6 +34,9 @@ Namespace Core
 
         ReadOnly Property Ascendancy() As Single(,)
 
+        ''' <summary>L-index per group</summary>
+        ReadOnly Property LIndex As Single()
+
     End Interface
 
 End Namespace
