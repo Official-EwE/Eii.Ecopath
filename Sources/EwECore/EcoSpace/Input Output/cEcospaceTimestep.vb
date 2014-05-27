@@ -626,7 +626,8 @@ Public Class cEcospaceTimestep
         Dim lLayers As New List(Of cEcospaceLayer)
         Select Case varName
             Case eVarNameFlags.EcospaceMapBiomass, _
-                 eVarNameFlags.EcospaceMapCatch
+                 eVarNameFlags.EcospaceMapCatch, _
+                 eVarNameFlags.LayerHabitatCapacity
                 lLayers.Add(Nothing) ' Add 0-item emptyness
                 For igroup As Integer = 1 To Me.m_core.nGroups
                     lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
@@ -649,6 +650,11 @@ Public Class cEcospaceTimestep
     Public Function LayerData(varName As EwEUtils.Core.eVarNameFlags) As Object Implements Core.IEcospaceLayerManager.LayerData
 
         Select Case varName
+
+            Case eVarNameFlags.LayerHabitatCapacity
+                'This EcospaceTimestep object does not contain the Capacity map
+                'Fish it out of the Core Ecospace data
+                Return Me.m_spaceData.HabCap
             Case eVarNameFlags.EcospaceMapBiomass
                 Return Me.BiomassMap
             Case eVarNameFlags.EcospaceMapCatch
