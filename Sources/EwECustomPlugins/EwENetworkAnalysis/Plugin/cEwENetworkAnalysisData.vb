@@ -29,13 +29,17 @@ Friend Class cEwENetworkAnalysisData
     Implements EwEPlugin.Data.IPluginData
     Implements INetworkAnalysisData
 
+    Private m_man As cNetworkManager = Nothing
     Private m_strAssemblyName As String = ""
     Private m_strPluginName As String = ""
-    Private m_assAscendancy(6, 5) As Single
+    Private m_Ascendancy(6, 5) As Single
 
-    Public Sub New(ByVal strAssemblyName As String, ByVal strPluginName As String)
+    Public Sub New(ByVal strAssemblyName As String, _
+                   ByVal strPluginName As String, _
+                   ByVal man As cNetworkManager)
         Me.m_strAssemblyName = strAssemblyName
         Me.m_strPluginName = strPluginName
+        Me.m_man = man
     End Sub
 
     Public ReadOnly Property AssemblyName() As String _
@@ -55,7 +59,7 @@ Friend Class cEwENetworkAnalysisData
     Public ReadOnly Property Ascendancy() As Single(,) _
         Implements INetworkAnalysisData.Ascendancy
         Get
-            Return Me.m_assAscendancy
+            Return Me.m_Ascendancy
         End Get
     End Property
 
@@ -63,6 +67,18 @@ Friend Class cEwENetworkAnalysisData
         Implements IPluginData.RunType
         Get
             Return Nothing
+        End Get
+    End Property
+
+    Public ReadOnly Property LIndex As Single() _
+        Implements EwEUtils.Core.INetworkAnalysisData.LIndex
+        Get
+            Me.m_man.RunRequiredPrimaryProd()
+            Dim data(Me.m_man.nGroups) As Single
+            For i As Integer = 1 To Me.m_man.nGroups
+                data(i) = Me.m_man.Lindex(i)
+            Next
+            Return data
         End Get
     End Property
 

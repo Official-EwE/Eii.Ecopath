@@ -308,6 +308,7 @@ Public Class cEcoNetwork
 
     Public RelativeSumOfCatchPlot() As Single
     Public RelativeKemptonsPlot() As Single
+    Public RelativeLIndexPlot() As Single
 
     'Trophic level of catch
     Public TLCatchPlot() As Single
@@ -2573,6 +2574,7 @@ NextPivot:
         Dim numPaths As Integer, TabNo As Integer
         Dim bSucces As Boolean = True
 
+        cApplicationStatusNotifier.StartProgress(Me.m_core, "Calculating PPR...", -1)
         'this really has to change 
         Try
             TabNo = 1 'in EwE5 this is called from Tab number one
@@ -2585,6 +2587,7 @@ NextPivot:
         Finally
 
         End Try
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
 
         Return bSucces
 
@@ -3348,7 +3351,7 @@ NextPivot:
             ReDim RelativeKemptonsPlot(m_esdata.NTimes)
             ReDim TLSimPlot(m_epdata.NumGroups, m_esdata.NTimes)
             ReDim TLCatchPlot(m_esdata.NTimes)
-
+            ReDim RelativeLIndexPlot(m_esdata.NTimes)
 
             'ReDim Elect(m_epdata.NumLiving, m_epdata.NumGroups, m_esdata.NTimes)
             'ReDim TLSim(m_epdata.NumGroups)
@@ -3440,6 +3443,7 @@ NextPivot:
             If PPRon Then
                 RelativeCatchPPR(iTime) = RaiseToPP(0) / OrigPPR(0)
                 RelativeCatchDetReq(iTime) = RaiseToDet(0) / OrigPPR(1)
+                RelativeLIndexPlot(iTime) = 1
             End If
 
         Catch ex As Exception
