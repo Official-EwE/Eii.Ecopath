@@ -69,6 +69,7 @@ Public Class frmNetworkAnalysis
         SummaryOfPathways_all
         CyclingAndPathLength
         LindemanSpine
+        Lindex
         WithoutPrimaryProductionRequiredEstimate
         WithPrimaryProductionRequiredEstimate
     End Enum
@@ -489,6 +490,9 @@ Public Class frmNetworkAnalysis
 
                 Case eNetworkAnalysisPageTypes.LindemanSpine
                     Me.m_contentmanager = New cLindemanSpine()
+
+                Case eNetworkAnalysisPageTypes.Lindex
+                    Me.m_contentmanager = New cLossOfProductionIndex()
 
                 Case eNetworkAnalysisPageTypes.WithoutPrimaryProductionRequiredEstimate
                     Me.m_contentmanager = New cIndicesWithoutPPREst()

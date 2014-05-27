@@ -153,13 +153,14 @@ Public Class cEwENetworkAnalysisPlugin
         Try
             If TypeOf core Is EwECore.cCore Then
                 Me.m_core = DirectCast(core, EwECore.cCore)
-                Me.m_ddx = New cEwENetworkAnalysisData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
 
                 Me.m_manager = New cNetworkManager
                 Me.m_manager.Init(m_core)
 
                 Me.m_bInitOK = True
-                'System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
+                Me.m_ddx = New cEwENetworkAnalysisData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name, Me.m_manager)
+
+                'System.Console.WriteLine(Me.ToString & ".Initialize() successful.")
             Else
                 'some kind of a message
                 System.Console.WriteLine(Me.ToString & ".Initialize() Failed.")

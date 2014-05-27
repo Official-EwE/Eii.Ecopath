@@ -121,6 +121,7 @@
     <Compile Include="Interface\Ascendency\cByGroup.vb" />
     <Compile Include="Interface\Ascendency\cTotal.vb" />
     <Compile Include="Interface\cFlowFromDetritus.vb" />
+    <Compile Include="Interface\cLossOfProductionIndex.vb" />
     <Compile Include="Interface\CyclesAndPathways\cCyclingAndPathLen.vb" />
     <Compile Include="Interface\CyclesAndPathways\CyclesAll\cCyclesPathways.vb" />
     <Compile Include="Interface\CyclesAndPathways\CyclesAll\cSummaryCyclesPathways.vb" />
@@ -248,6 +249,7 @@
     <Compile Include="Plugin\NavTree plugins\cNavTree84Sim.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree86Sim_wo_PPR.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree88Sim_with_PPR.vb" />
+    <Compile Include="Plugin\NavTree plugins\cNavTree80Lindex.vb" />
     <Compile Include="Remote control\cNetworkAnalysisRemote.vb" />
   </ItemGroup>
   <ItemGroup>

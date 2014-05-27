@@ -1565,6 +1565,32 @@ Public Class cNetworkManager
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the L-index for a fished group.
+    ''' </summary>
+    ''' <param name="iGroup">The group index to retrieve the L-index for.</param>
+    ''' <remarks>If <paramref name="iGroup"/> does not refer to a fished group
+    ''' 0 will be returned.</remarks>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Lindex(iGroup As Integer) As Single
+        Get
+
+            Dim TE2 As Single = Me.TotTransferEfficiency(2)
+            Dim TE3 As Single = Me.TotTransferEfficiency(3)
+            Dim TE4 As Single = Me.TotTransferEfficiency(4)
+            Dim TE As Single = CSng((TE2 * TE3 * TE4) ^ (1 / 3))
+            
+            Dim PPRi As Single = Me.PPRTotPPHarvest(iGroup)
+
+            ' Loss of prod for entire system: -PPR*TE^(TLc-1) / (P . ln(TE))
+            ' Return CSng(-1 * (sPPR * TE ^ (Me.m_epdata.TTLX(iGroup) - 1)) / (Me.TotalPrimaryProduction * Math.Log(TE)))
+            ' Loss of prod for fn group:      -PPRi*TE^(TLi-1) / ln(TE)
+            Return CSng(-1 * (PPRi * TE ^ (Me.m_epdata.TTLX(iGroup) - 1)) / Math.Log(TE))
+
+        End Get
+    End Property
+
 #End Region ' Indicators
 
 #Region " Primary Production Required "
