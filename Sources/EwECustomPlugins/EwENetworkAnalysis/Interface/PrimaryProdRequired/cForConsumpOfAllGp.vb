@@ -85,20 +85,20 @@ Public Class cForConsumpOfAllGp
             strRowContent(0) = CStr(i)
             strRowContent(1) = NetworkManager.GroupName(i)
             strRowContent(2) = CStr(NetworkManager.NumerPaths(i))
-            strRowContent(3) = NetworkManager.TrophicLevel(i).ToString("F2")
-            strRowContent(4) = NetworkManager.PPRRequired(i).ToString("F2")
-            strRowContent(5) = NetworkManager.PPRRequiredDet(i).ToString("F2")
-            strRowContent(6) = NetworkManager.PPRRequiredSum(i).ToString("F2")
-            strRowContent(7) = NetworkManager.PPRCons(i).ToString("F2")
+            strRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.TrophicLevel(i))
+            strRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequired(i))
+            strRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequiredDet(i))
+            strRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequiredSum(i))
+            strRowContent(7) = Me.StyleGuide.FormatNumber(NetworkManager.PPRCons(i))
             sngTotalPPRCons = sngTotalPPRCons + NetworkManager.PPRCons(i)
             If NetworkManager.PPRCons(i) > 0.0 Then
-                strRowContent(8) = NetworkManager.PPROverCons(i).ToString("F2")
+                strRowContent(8) = Me.StyleGuide.FormatNumber(NetworkManager.PPROverCons(i))
             Else
                 strRowContent(8) = ""
             End If
-            strRowContent(9) = NetworkManager.PPRTotPP(i).ToString("F2")
+            strRowContent(9) = Me.StyleGuide.FormatNumber(NetworkManager.PPRTotPP(i))
             If NetworkManager.TotalPrimaryProduction > 0.0 Then
-                strRowContent(10) = NetworkManager.PPRU(i).ToString("F2")
+                strRowContent(10) = Me.StyleGuide.FormatNumber(NetworkManager.PPRU(i))
             Else
                 strRowContent(10) = ""
             End If
@@ -115,7 +115,7 @@ Public Class cForConsumpOfAllGp
         Next
         strRowContent(1) = My.Resources.ROW_HDR_TOTAL
         strRowContent(2) = CStr((NetworkManager.NumLivPath + NetworkManager.NumDetPath))
-        strRowContent(7) = sngTotalPPRCons.ToString("F2")
+        strRowContent(7) = Me.StyleGuide.FormatNumber(sngTotalPPRCons)
         Grid.Rows(Grid.Rows.Count - 1).SetValues(strRowContent)
         Grid.Rows(Grid.Rows.Count - 1).Visible = True
 
