@@ -60,7 +60,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
 
-    Implements EwEPlugin.IMonteCarlo
+    Implements EwEPlugin.IMonteCarloPlugin
 
     Implements EwEPlugin.IEcospaceEndTimestepPlugin
 
@@ -235,7 +235,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     End Sub
 
 
-    Public Sub MontCarloInitialized(MonteCarloAsObject As Object) Implements EwEPlugin.IMonteCarlo.MontCarloInitialized
+    Public Sub MontCarloInitialized(MonteCarloAsObject As Object) Implements EwEPlugin.IMonteCarloPlugin.MontCarloInitialized
         Try
             Me.m_MonteCarlo = DirectCast(MonteCarloAsObject, cEcosimMonteCarlo)
 
@@ -247,7 +247,7 @@ Public Class cEcospaceMonteCarloPluginPoint
         End Try
     End Sub
 
-    Public Sub MonteCarloBalancedEcopathModel(nIterations As Integer) Implements EwEPlugin.IMonteCarlo.MonteCarloBalancedEcopathModel
+    Public Sub MonteCarloBalancedEcopathModel(nIterations As Integer) Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
 
         Me.m_runManager.Run()
 
@@ -256,7 +256,7 @@ Public Class cEcospaceMonteCarloPluginPoint
         End If
     End Sub
 
-    Public Sub MonteCarloEcosimRunCompleted() Implements EwEPlugin.IMonteCarlo.MonteCarloEcosimRunCompleted
+    Public Sub MonteCarloEcosimRunCompleted() Implements EwEPlugin.IMonteCarloPlugin.MonteCarloEcosimRunCompleted
 
     End Sub
 
