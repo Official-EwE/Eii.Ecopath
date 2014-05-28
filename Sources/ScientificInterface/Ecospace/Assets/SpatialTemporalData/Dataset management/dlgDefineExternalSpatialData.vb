@@ -96,7 +96,7 @@ Namespace Ecospace.Controls
 
             MyBase.OnLoad(e)
 
-            Me.m_tsbnExport.Image = ScientificInterfaceShared.My.Resources.ExportDatabaseHS
+            'Me.m_tsbnExport.Image = ScientificInterfaceShared.My.Resources.ExportDatabaseHS
 
             If (Me.UIContext Is Nothing) Then Return
 
