@@ -52,28 +52,32 @@ Public Class cEwEModel
             meta = New cVariableMetaData(60000)
             val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Author
             meta = New cVariableMetaData(250)
             val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Contact
             meta = New cVariableMetaData(250)
             val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Area
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Single, eVarNameFlags.Area, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
+             m_values.Add(val.varName, val)
 
             ' NumDigits
             meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' FirstYear
@@ -105,55 +109,65 @@ Public Class cEwEModel
             meta = New cVariableMetaData(254)
             val = New cValue(New String(desc), eVarNameFlags.AreaName, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' GroupDigits
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.GroupDigits))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Time unit (enum)
             meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.UnitTime, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.UnitTime))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Time unit (text)
             meta = New cVariableMetaData(20)
             val = New cValue(New String(desc), eVarNameFlags.UnitTimeCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Currency unit (enum)
             meta = New cVariableMetaData(0, 9, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.UnitCurrency, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Currency unit (text)
             meta = New cVariableMetaData(20)
             val = New cValue(New String(desc), eVarNameFlags.UnitCurrencyCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Monetary unit (enum)
             meta = New cVariableMetaData(4)
             val = New cValue(New String(desc), eVarNameFlags.UnitMonetary, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Area unit (enum)
             meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.UnitArea, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Area unit (text)
             meta = New cVariableMetaData(20)
             val = New cValue(New String(desc), eVarNameFlags.UnitAreaCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Last saved julian date
             meta = New cVariableMetaData(0, Double.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' IsEcopaceCoupled
