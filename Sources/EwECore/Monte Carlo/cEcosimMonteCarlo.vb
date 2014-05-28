@@ -823,11 +823,11 @@ Public Class cEcosimMonteCarlo
                     End If ' Me.m_isVariable(igrp, eMCParams.Biomass)
 
                     If Me.m_isVariable(igrp, eMCParams.BA) Then
-                        'm_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp), _
-                        '                                     ParCurVal(eMCParams.BA, igrp), _
-                        '                                     CVpar(eMCParams.BA, igrp), _
-                        '                                     ParLimit(0, eMCParams.BA, igrp), _
-                        '                                     ParLimit(1, eMCParams.BA, igrp))
+                        m_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp), _
+                                                             ParCurVal(eMCParams.BA, igrp), _
+                                                             CVpar(eMCParams.BA, igrp), _
+                                                             ParLimit(0, eMCParams.BA, igrp), _
+                                                             ParLimit(1, eMCParams.BA, igrp))
                     End If 'Me.m_isVariable(igrp, eMCParams.BA)
 
                     'PB
