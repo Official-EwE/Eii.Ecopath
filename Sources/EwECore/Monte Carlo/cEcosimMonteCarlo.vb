@@ -59,7 +59,7 @@ Public Delegate Sub MonteCarloSendMessageDelegate(ByRef Message As cMessage)
 ''' <summary>
 ''' This class wraps the Ecosim monte carlo routines
 ''' </summary>
-Friend Class cEcosimMonteCarlo
+Public Class cEcosimMonteCarlo
 
     Public Const EE_TOL As Single = 0.0005
 
@@ -182,6 +182,17 @@ Friend Class cEcosimMonteCarlo
 
     Private m_isVariable(,) As Boolean
 
+
+    '<CLSCompliant(False)> _
+    'Public Property PluginManager() As cPluginManager
+    '    Get
+    '        Return Me.m_pluginManager
+    '    End Get
+    '    Set(ByVal pm As cPluginManager)
+    '        Me.m_pluginManager = pm
+    '    End Set
+    'End Property
+
     Public Sub New(ByRef theCore As cCore)
 
         m_core = theCore
@@ -249,6 +260,8 @@ Friend Class cEcosimMonteCarlo
                 Me.m_pluginmanager.SearchInitialized(Me.m_core.m_SearchData)
                 Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             End If
+
+            If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MontCarloInitialized(Me)
 
             Return True
         Catch ex As Exception
@@ -511,10 +524,14 @@ Friend Class cEcosimMonteCarlo
 
                 If BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
 
+                    If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MonteCarloBalancedEcopathModel(iter)
+
                     m_ecosim.Init(True)
 
                     'the ecosim time step delegate was set before the loop
                     m_ecosim.Run()
+
+                    If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MonteCarloEcosimRunCompleted()
 
                     'xxxxxxxxxxxxxxxxxxxx Below is for global Nereus model, June 2013 xxxxxxxxxxxxxxxxxx
                     'Calculate penalty for being away from reasonable fishing mortality
@@ -806,11 +823,11 @@ Friend Class cEcosimMonteCarlo
                     End If ' Me.m_isVariable(igrp, eMCParams.Biomass)
 
                     If Me.m_isVariable(igrp, eMCParams.BA) Then
-                        m_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp), _
-                                                             ParCurVal(eMCParams.BA, igrp), _
-                                                             CVpar(eMCParams.BA, igrp), _
-                                                             ParLimit(0, eMCParams.BA, igrp), _
-                                                             ParLimit(1, eMCParams.BA, igrp))
+                        'm_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp), _
+                        '                                     ParCurVal(eMCParams.BA, igrp), _
+                        '                                     CVpar(eMCParams.BA, igrp), _
+                        '                                     ParLimit(0, eMCParams.BA, igrp), _
+                        '                                     ParLimit(1, eMCParams.BA, igrp))
                     End If 'Me.m_isVariable(igrp, eMCParams.BA)
 
                     'PB
