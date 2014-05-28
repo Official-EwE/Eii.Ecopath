@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>594, 10</value>
+    <value>594, 26</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -151,7 +151,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>594, 86</value>
+    <value>594, 106</value>
   </data>
   <data name="m_btnDelete.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -178,10 +178,10 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_gridDatasets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 57</value>
+    <value>12, 77</value>
   </data>
   <data name="m_gridDatasets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 383</value>
+    <value>576, 363</value>
   </data>
   <data name="m_gridDatasets.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -190,19 +190,19 @@
     <value>m_gridDatasets</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.10787.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.10800.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_cmbNewDS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbNewDS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
+    <value>12, 28</value>
   </data>
   <data name="m_cmbNewDS.Size" type="System.Drawing.Size, System.Drawing">
     <value>576, 21</value>
@@ -220,7 +220,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cmbNewDS.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -247,7 +247,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_btnConfigure.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -256,7 +256,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConfigure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>594, 57</value>
+    <value>594, 77</value>
   </data>
   <data name="m_btnConfigure.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -277,16 +277,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnConfigure.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_hdr.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_hdr.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 36</value>
+    <value>9, 56</value>
   </data>
   <data name="m_hdr.Size" type="System.Drawing.Size, System.Drawing">
-    <value>682, 18</value>
+    <value>685, 18</value>
   </data>
   <data name="m_hdr.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -301,13 +301,13 @@
     <value>m_hdr</value>
   </data>
   <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10787.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10800.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdr.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_cbEnableIndexing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -340,44 +340,83 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbEnableIndexing.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
-  <data name="m_btnExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing">
+    <value>17, 17</value>
   </data>
-  <data name="m_btnExport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_tsbnSwitchConfig.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
   </data>
-  <data name="m_btnExport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>594, 115</value>
+  <data name="m_tsbnSwitchConfig.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="m_btnExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
+  <data name="m_tsbnSwitchConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
   </data>
-  <data name="m_btnExport.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="m_tsbnSwitchConfig.Text" xml:space="preserve">
+    <value>Change configuration file</value>
   </data>
-  <data name="m_btnExport.Text" xml:space="preserve">
-    <value>&amp;Export...</value>
+  <data name="m_tsbnExport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
   </data>
-  <data name="m_btnExport.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageBeforeText</value>
+  <data name="m_tsbnExport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="&gt;&gt;m_btnExport.Name" xml:space="preserve">
-    <value>m_btnExport</value>
+  <data name="m_tsbnExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 22</value>
   </data>
-  <data name="&gt;&gt;m_btnExport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_tsbnExport.Text" xml:space="preserve">
+    <value>Export</value>
   </data>
-  <data name="&gt;&gt;m_btnExport.Parent" xml:space="preserve">
+  <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_ts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>706, 25</value>
+  </data>
+  <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
+    <value>m_ts</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnExport.ZOrder" xml:space="preserve">
-    <value>6</value>
+  <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
@@ -390,10 +429,22 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Define external spatial temporal data connections</value>
   </data>
+  <data name="&gt;&gt;m_tsbnSwitchConfig.Name" xml:space="preserve">
+    <value>m_tsbnSwitchConfig</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnSwitchConfig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnExport.Name" xml:space="preserve">
+    <value>m_tsbnExport</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnExport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>dlgDefineExternalSpatialData</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10787.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10800.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

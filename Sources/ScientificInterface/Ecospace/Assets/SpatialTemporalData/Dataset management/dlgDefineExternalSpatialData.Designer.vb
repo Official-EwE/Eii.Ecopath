@@ -52,7 +52,10 @@ Namespace Ecospace.Controls
             Me.m_btnConfigure = New System.Windows.Forms.Button()
             Me.m_hdr = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbEnableIndexing = New System.Windows.Forms.CheckBox()
-            Me.m_btnExport = New System.Windows.Forms.Button()
+            Me.m_ts = New cEwEToolstrip()
+            Me.m_tsbnSwitchConfig = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
+            Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnAdd
@@ -132,11 +135,22 @@ Namespace Ecospace.Controls
             Me.m_cbEnableIndexing.Name = "m_cbEnableIndexing"
             Me.m_cbEnableIndexing.UseVisualStyleBackColor = True
             '
-            'm_btnExport
+            'm_ts
             '
-            resources.ApplyResources(Me.m_btnExport, "m_btnExport")
-            Me.m_btnExport.Name = "m_btnExport"
-            Me.m_btnExport.UseVisualStyleBackColor = True
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSwitchConfig, Me.m_tsbnExport})
+            resources.ApplyResources(Me.m_ts, "m_ts")
+            Me.m_ts.Name = "m_ts"
+            '
+            'm_tsbnSwitchConfig
+            '
+            Me.m_tsbnSwitchConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnSwitchConfig, "m_tsbnSwitchConfig")
+            Me.m_tsbnSwitchConfig.Name = "m_tsbnSwitchConfig"
+            '
+            'm_tsbnExport
+            '
+            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
+            Me.m_tsbnExport.Name = "m_tsbnExport"
             '
             'dlgDefineExternalSpatialData
             '
@@ -144,13 +158,13 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_ts)
             Me.Controls.Add(Me.m_cbEnableIndexing)
             Me.Controls.Add(Me.m_hdr)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_cmbNewDS)
             Me.Controls.Add(Me.m_gridDatasets)
             Me.Controls.Add(Me.m_btnConfigure)
-            Me.Controls.Add(Me.m_btnExport)
             Me.Controls.Add(Me.m_btnDelete)
             Me.Controls.Add(Me.m_btnAdd)
             Me.MaximizeBox = False
@@ -158,6 +172,8 @@ Namespace Ecospace.Controls
             Me.Name = "dlgDefineExternalSpatialData"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.m_ts.ResumeLayout(False)
+            Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -170,7 +186,9 @@ Namespace Ecospace.Controls
         Private WithEvents m_btnConfigure As System.Windows.Forms.Button
         Private WithEvents m_hdr As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_cbEnableIndexing As System.Windows.Forms.CheckBox
-        Private WithEvents m_btnExport As System.Windows.Forms.Button
+        Private WithEvents m_ts As cEwEToolstrip
+        Private WithEvents m_tsbnSwitchConfig As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace

@@ -96,27 +96,29 @@ Namespace Ecospace.Controls
 
             MyBase.OnLoad(e)
 
-            Me.m_btnExport.Image = ScientificInterfaceShared.My.Resources.ExportDatabaseHS
+            Me.m_tsbnExport.Image = ScientificInterfaceShared.My.Resources.ExportDatabaseHS
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.FillTemplateDatasetBox()
-            Me.m_gridDatasets.Fill()
-
             Me.m_cbEnableIndexing.Checked = Me.m_manSets.IsIndexingAllowed
-
-            ' Update cache state (will also update controls)
-            Me.EvaluateCache()
 
             AddHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
             Me.CenterToParent()
+            Me.Reload()
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             RemoveHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnGridSelectionChanged
             Me.UIContext = Nothing
             MyBase.OnFormClosed(e)
+        End Sub
+
+        Private Sub Reload()
+            Me.FillTemplateDatasetBox()
+            Me.m_gridDatasets.Fill()
+            ' Update cache state (will also update controls)
+            Me.EvaluateCache()
         End Sub
 
         Protected Overrides Sub UpdateControls()
@@ -134,7 +136,7 @@ Namespace Ecospace.Controls
 
             Me.m_btnDelete.Enabled = bHasSelection
             Me.m_btnConfigure.Enabled = bHasSelection And bCanConfig
-            Me.m_btnExport.Enabled = bHasDS
+            Me.m_tsbnExport.Enabled = bHasDS
 
         End Sub
 
@@ -174,7 +176,7 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub OnExportAll(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnExport.Click
+            Handles m_tsbnExport.Click
             Try
                 Me.Export()
             Catch ex As Exception
@@ -225,6 +227,19 @@ Namespace Ecospace.Controls
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.m_manSets.Save()
             Me.Close()
+        End Sub
+
+        Private Sub OnSwitchConfig(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnSwitchConfig.Click
+            Try
+                Dim cmd As cShowOptionsCommand = CType(Me.UIContext.CommandHandler.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
+                cmd.Invoke(eApplicationOptionTypes.SpatialTemporal)
+                If (cmd.UserHandled) Then
+                    Me.Reload()
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "dlgDefineExternalSpatialData.OnSwitchConfig")
+            End Try
         End Sub
 
 #End Region ' Event handlers 
