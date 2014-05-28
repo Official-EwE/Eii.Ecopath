@@ -52,7 +52,7 @@ Namespace Ecospace.Controls
             Me.m_btnConfigure = New System.Windows.Forms.Button()
             Me.m_hdr = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbEnableIndexing = New System.Windows.Forms.CheckBox()
-            Me.m_ts = New cEwEToolstrip()
+            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnSwitchConfig = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_ts.SuspendLayout()
@@ -137,9 +137,11 @@ Namespace Ecospace.Controls
             '
             'm_ts
             '
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSwitchConfig, Me.m_tsbnExport})
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnExport, Me.m_tsbnSwitchConfig})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
+            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbnSwitchConfig
             '
@@ -149,6 +151,7 @@ Namespace Ecospace.Controls
             '
             'm_tsbnExport
             '
+            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
             Me.m_tsbnExport.Name = "m_tsbnExport"
             '
