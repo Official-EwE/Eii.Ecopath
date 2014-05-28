@@ -1795,6 +1795,28 @@ Public Class cPluginManager
 
 #End Region ' MSE and MSY
 
+#Region "Monte Carlo"
+
+    Public Function MontCarloInitialized(ByVal MonteCarloAsObject As Object) As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MontCarloInitialized", New Object() {MonteCarloAsObject})
+
+    End Function
+
+    Public Function MonteCarloBalancedEcopathModel(ByVal nIterations As Integer) As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MonteCarloBalancedEcopathModel", New Object() {nIterations})
+
+    End Function
+
+    Public Function MonteCarloEcosimRunCompleted() As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MonteCarloEcosimRunCompleted")
+
+    End Function
+
+#End Region
+
 #End Region ' Plugin invocation
 
 #Region " Plugin access "

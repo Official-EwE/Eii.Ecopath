@@ -208,6 +208,7 @@
     <Compile Include="Plugin templates\Management Evaluation\IMSEInitialized.vb" />
     <Compile Include="Plugin templates\Management Evaluation\IMSERunPlugin.vb" />
     <Compile Include="Plugin templates\Management Evaluation\IMSYPlugin.vb" />
+    <Compile Include="Plugin templates\MonteCarlo\IMonteCarloPlugin.vb" />
     <Compile Include="Plugin templates\Search\ISearchPlugin.vb" />
     <Compile Include="Updating\cAutoUpdate.vb" />
     <Compile Include="Web References\EwEAutoUpdateRef\Reference.vb">
@@ -296,6 +297,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
