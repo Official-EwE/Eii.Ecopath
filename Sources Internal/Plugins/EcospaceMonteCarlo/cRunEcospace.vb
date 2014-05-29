@@ -36,6 +36,9 @@ Public Class cRunEcospace
 
     Private MonteCarlo As cEcosimMonteCarlo
 
+    Public nTimeStepPerYear As Integer
+    Public StartOfLastYear As Integer
+
     Public Sub Init(ByVal theCore As cCore, ByVal MonteCarloModel As cEcosimMonteCarlo, ByVal EcospaceModel As cEcoSpace)
 
         Me.Core = theCore
@@ -45,9 +48,12 @@ Public Class cRunEcospace
     End Sub
 
     Public Sub SetRunParameters(startYear As Integer, nYears As Integer)
-        Core.EwEModel.FirstYear = startYear
 
+        Core.EwEModel.FirstYear = startYear
         Core.EcospaceModelParameters.TotalTime = nYears
+
+        nTimeStepPerYear = CInt(Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+        StartOfLastYear = CInt((Core.EcospaceModelParameters.TotalTime - 1) * nTimeStepPerYear)
 
     End Sub
 

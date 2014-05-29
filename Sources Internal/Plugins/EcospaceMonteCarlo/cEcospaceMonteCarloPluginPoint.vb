@@ -59,16 +59,12 @@ Public Class cEcospaceMonteCarloPluginPoint
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
-
+    'Plugin points for running Ecospace with the Monte Carlo
     Implements EwEPlugin.IMonteCarloPlugin
+    Implements EwEPlugin.IEcospaceRunCompletedPlugin
+    'Not needed
+    'Implements EwEPlugin.IEcospaceEndTimestepPlugin
 
-    Implements EwEPlugin.IEcospaceEndTimestepPlugin
-
-
-
-    ' ToDo Add your own EwEPlugin interface implementations here
-    ' With the cursor at the end of the new Implements line press the enter key
-    ' and one or more empty place holder methods will be added to the bottom of the code
 
 #Region "Local variables"
 
@@ -260,13 +256,22 @@ Public Class cEcospaceMonteCarloPluginPoint
 
     End Sub
 
-    Public Sub EcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements EwEPlugin.IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
+    'Public Sub EcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements EwEPlugin.IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
+    '    Try
+    '        Me.m_runManager.OnEcospaceTimeStep(iTime)
+    '    Catch ex As Exception
+
+    '    End Try
+
+    'End Sub
+
+
+    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
         Try
-            Me.m_runManager.OnEcospaceTimeStep(iTime)
+            Me.m_runManager.OnEcospaceRunCompleted()
         Catch ex As Exception
 
         End Try
-
     End Sub
 
 #End Region
@@ -493,6 +498,6 @@ Public Class cEcospaceMonteCarloPluginPoint
 
 #End Region
 
-  
+
 End Class
 

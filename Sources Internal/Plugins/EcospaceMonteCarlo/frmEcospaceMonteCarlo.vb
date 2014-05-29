@@ -64,7 +64,7 @@ Public Class frmEcospaceMonteCarlo
         ''Call the Plugin with the Value from the text box
         'Me.m_plugin.DoSomething(ValueFromTextBox)
 
-        Me.m_plugin.RunManager.Run()
+        'Me.m_plugin.RunManager.Run()
 
     End Sub
 
