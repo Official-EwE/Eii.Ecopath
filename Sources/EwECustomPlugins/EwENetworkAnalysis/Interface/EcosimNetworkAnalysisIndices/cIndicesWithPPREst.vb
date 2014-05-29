@@ -128,6 +128,8 @@ Public Class cIndicesWithPPREst
         AddCurve(My.Resources.LBL_CATCH_PPR, Me.NetworkManager.RelativeCatchPPRPlot, pane, Color.Violet)
         'Catch detritus required
         AddCurve(My.Resources.LBL_CATCH_DET_REQ, Me.NetworkManager.RelativeDetritusReqPlot, pane, Color.Orange)
+        'L-index
+        AddCurve(My.Resources.LBL_LINDEX_REL, Me.NetworkManager.LIndexPlot, pane, Color.DarkKhaki)
 
         'Pane2
         pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_MONTHS, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 2)

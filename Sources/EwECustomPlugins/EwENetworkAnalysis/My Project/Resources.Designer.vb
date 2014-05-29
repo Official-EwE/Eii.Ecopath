@@ -1025,6 +1025,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Loss of production (relative).
+        '''</summary>
+        Friend ReadOnly Property LBL_LINDEX_REL() As String
+            Get
+                Return ResourceManager.GetString("LBL_LINDEX_REL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Months.
         '''</summary>
         Friend ReadOnly Property LBL_MONTHS() As String
