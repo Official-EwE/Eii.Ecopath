@@ -3714,16 +3714,15 @@ exitline:
                                     Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
                                 Next
 
-
                                 'VC Sail() above: to avoid dividing with zero
-                                'Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+                                Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
                                 'jb 9-May-2014 change re Carls email
                                 'What this represents is attractiveness equal to exp(effpower*(I/C-1)), where I/C is profitability, -1 is subtracted to scale to exp(0)=1 for I/C=1.  
                                 'Effpower represents (as before) an effort concentration factor, low values implying less variation in valt with changes in I/C.
                                 'If you run this, should be nearly 2x faster than old code, and will concentrate effort a bit more in best fishing areas.  
                                 'I can also modify it further to force the attract’s to result in any observed effort map that we might enter, 
                                 'essentially by replacing the cost C with a simpler empirical cost scaler.
-                                Valt = Exp((Valt / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt)) - 1.0) * m_Data.EffPower(iFlt))
+                                ' Valt = Exp((Valt / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt)) - 1.0) * m_Data.EffPower(iFlt))
 
 
                                 Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
@@ -3983,13 +3982,13 @@ exitline:
                         For isp = 1 To m_Data.NGroups
                             Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(iRow, iCol, isp) * m_SimData.relQ(iFlt, isp)
                         Next
-                        'Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+                        Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
 
                         'What this represents is attractiveness equal to exp(effpower*(I/C-1)), where I/C is profitability, -1 is subtracted to scale to exp(0)=1 for I/C=1.  
                         'Effpower represents (as before) an effort concentration factor, low values implying less variation in valt with changes in I/C.
                         'If you run this, should be nearly 2x faster than old code, and will concentrate effort a bit more in best fishing areas.  
                         'I can also modify it further to force the attract’s to result in any observed effort map that we might enter, essentially by replacing the cost C with a simpler empirical cost scaler.
-                        Valt = Exp((Valt / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)) - 1.0) * m_Data.EffPower(iFlt))
+                        'Valt = Exp((Valt / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)) - 1.0) * m_Data.EffPower(iFlt))
                         Attract(iRow, iCol) = Valt * Me.m_Data.PAreaFished(iRow, iCol, iFlt)  'may want to modify this by dividing by a site cost factor for cell i,j
                         'TotAttract += Attract(iRow, iCol)
                         'Total attractiveness by zone
@@ -7284,29 +7283,29 @@ exitline:
                     'Has the habitat for this group changed
                     'jb The isGroupHabCapChanged(igrp) was always false with the RBT Model
                     'so just disable it for now....until I sort out what happened
-                    'If Me.m_Data.isGroupHabCapChanged(igrp) Then
-                    'Does this group contain a response function for this map
-                    If map.ResponseIndexForGroup(igrp) > 0 Then
-                        'Yep Layer is Active
-                        'Habitat for group has changed
-                        'There is a response function
-                        For irow = 1 To Me.m_Data.InRow
-                            For icol = 1 To Me.m_Data.InCol
-                                If Me.m_Data.Depth(irow, icol) > 0 Then
-                                    'For debugging
-                                    'dumpCapacity(map, igrp, irow, icol)
+                    If Me.m_Data.isGroupHabCapChanged(igrp) Then
+                        'Does this group contain a response function for this map
+                        If map.ResponseIndexForGroup(igrp) > 0 Then
+                            'Yep Layer is Active
+                            'Habitat for group has changed
+                            'There is a response function
+                            For irow = 1 To Me.m_Data.InRow
+                                For icol = 1 To Me.m_Data.InCol
+                                    If Me.m_Data.Depth(irow, icol) > 0 Then
+                                        'For debugging
+                                        'dumpCapacity(map, igrp, irow, icol)
 
-                                    'jb 27-May-2014 Allow NULL Values in the base map
-                                    'Commented out until we sort out if it is OK to allow NULL Values in the basemap
-                                    'If CInt(map.Layer.Cell(irow, icol)) <> cCore.NULL_VALUE Then
-                                    Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
-                                    'End If
+                                        'jb 27-May-2014 Allow NULL Values in the base map
+                                        'Commented out until we sort out if it is OK to allow NULL Values in the basemap
+                                        'If CInt(map.Layer.Cell(irow, icol)) <> cCore.NULL_VALUE Then
+                                        Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
+                                        'End If
 
-                                End If
-                            Next icol
-                        Next irow
-                    End If ' map.ResponseIndexForGroup(igrp) > 0
-                    '  End If ' Me.m_Data.isGroupHabCapChanged(igrp)
+                                    End If
+                                Next icol
+                            Next irow
+                        End If ' map.ResponseIndexForGroup(igrp) > 0
+                    End If ' Me.m_Data.isGroupHabCapChanged(igrp)
                 Next igrp
             End If ' map.isLayerActive
         Next map
