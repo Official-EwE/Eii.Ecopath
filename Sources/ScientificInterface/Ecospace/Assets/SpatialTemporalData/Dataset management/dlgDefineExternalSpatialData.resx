@@ -345,56 +345,58 @@
   <metadata name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="m_tsbnExport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="m_tsbnExport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 22</value>
-  </data>
-  <data name="m_tsbnExport.Text" xml:space="preserve">
-    <value>Export...</value>
-  </data>
   <data name="m_tsbnSwitchConfig.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGESURBVDhPrZBLSwJhFIb9LVHRHyiK2rUqahW0DorEf9Eu
+        qBZJ2DShEmmUWhmpmYZmF7HJxhJHiGlSDDLKLtrNLtpb8zVFpqMteuDwcfjO+3A4in9jefMQv2vRy8Hk
+        2ofRxsBgY4al0dKIATm0Fh8a2vvKS6zrUWm8GI3RBbef+5Qs74xIkUIsa2FpvJixaScJf5UUKWR2ZY8M
+        643zqK6pw/ySg/QiuXwe9nUWFmdAXvCxGhmuqq4Fy7Lo6u4hvUY3BzVtADVlhsnhR31bb2mBfnGLBMxW
+        O5pbWuF0+0jPH5/ggBMQDB9Ba/bICyZNXhL4SS7/htuHZyRT9+AT19+3kCKFjM+4SSgUCkGlUiEWiyH7
+        9IrUzSPip2lEjlLQfWzQ2NFfWiDaRZRKJXkpikL67gmjEwYMqnUYGKKwsMqgqbOCQBAE0DSN84sUzq8e
+        wHJxbAd5eAI8DNYN+Rt8CUSeX3K4zmSROMsgenwJJpKEZzdBblBRIL7lqqxA/PxLSZH/QKF4B+Je2VRH
+        Y/ZxAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_tsbnSwitchConfig.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="m_tsbnSwitchConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 22</value>
+    <value>117, 22</value>
   </data>
   <data name="m_tsbnSwitchConfig.Text" xml:space="preserve">
-    <value>Change configuration file...</value>
+    <value>System options...</value>
   </data>
   <data name="m_tsbnSwitchConfig.ToolTipText" xml:space="preserve">
     <value>Switch configuration file...</value>
+  </data>
+  <data name="m_tsbnExport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALhSURBVDhPjZNrSNNRGMb3vU996ZMWmonhrbR1sVKooJuX
+        PiR0cbHyFrQ0zNAyrCTN27S5Nl3mBc1rzmtqs9lUTN2Gl00F2Wbm1JyTvI1pfzWezv4zMyjqgZf3nAPP
+        j+e8h8Mo7TW4FckNiKkbpcJLRyjvDAV14rmS8stWUb7ZairyjYYqUUzrigamtzH+pBvFwxYz9PMrMCx+
+        w+wSha8mCjOkf1mg0Kc3IUDYBz9+t2TD8ruc42UYmjJjYXmNmFdhXKRoyKyJrMl+cn4VeTIdtgcmS1gs
+        FoiFLg8PD0tnMNwft8KL24fy3hn0TyxBazRDPWmC8vMCFJ/miFmLffdrYcfibiZgs9k/QQQQL4VbYjfO
+        CFWIaxhFUoseYRVaXOR/xIVndfC6W4BTMYXYuQVAtJmE4fqwGQdSFPDPUSOqWovoGh2OZKrgEF0PG7YA
+        tiwubK+mwT4oZRPA4XBoM91dYhvATFUgQDSIR42jeCoZgw9/EK4PGuEYJsLu6zzYszOx63LiX4Z4T0wA
+        SviL1Eh9Pw6+bALeWeoNQA7qO0boatjo4tZBZBW1WO9v0d6oShrgl6MCVzoOYccUjm8B1MiGQes7sIoV
+        8jIr6OrX4tC5ECvE6U45POkZqJBOAIL2yS0AEaqkKtovHn2LW5X5YPOGkdTJQ620B8yzwWA4RZbAM1kO
+        XzJErlQPAUlwbAugrLmXBtyuzoJ3YSCCMoawP88HwrJ3VoBdWC6YKUoE5A4jjSTgtZEZ8C2AJgJ4ieL6
+        HhpwhTuNHelusM84jWtcDQSvJVbA+bRW2ESIcTS5CyFlGkTXj+OkSAuXuCY4BL9AvrgDy+vrqJEvI5Q/
+        B8dsJmLlT5BfJbMCIsS6SwnVKvhw5XBPaAczpgLOnAI4hAiw5+YriCo+wLy2jgnjPHR6IwY0BnQqx34l
+        +JeEJS3kb5jRPaBDTasSBeI2ZJOz/wbwi5px2DcUXv7hdB0kz2cxWisYPwBnx0a25/bijAAAAABJRU5E
+        rkJggg==
+</value>
+  </data>
+  <data name="m_tsbnExport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 22</value>
+  </data>
+  <data name="m_tsbnExport.Text" xml:space="preserve">
+    <value>Export...</value>
   </data>
   <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -432,16 +434,16 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Define external spatial temporal data connections</value>
   </data>
-  <data name="&gt;&gt;m_tsbnSwitchConfig.Name" xml:space="preserve">
-    <value>m_tsbnSwitchConfig</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSwitchConfig.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_tsbnExport.Name" xml:space="preserve">
     <value>m_tsbnExport</value>
   </data>
   <data name="&gt;&gt;m_tsbnExport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnSwitchConfig.Name" xml:space="preserve">
+    <value>m_tsbnSwitchConfig</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnSwitchConfig.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
