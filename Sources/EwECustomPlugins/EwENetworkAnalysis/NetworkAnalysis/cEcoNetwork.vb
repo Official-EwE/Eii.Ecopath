@@ -308,7 +308,9 @@ Public Class cEcoNetwork
 
     Public RelativeSumOfCatchPlot() As Single
     Public RelativeKemptonsPlot() As Single
-    Public RelativeLIndexPlot() As Single
+    Public RelativeLIndex() As Single
+    Public AbsoluteLIndex() As Single
+    Public AbsoluteLIndex2() As Single
 
     'Trophic level of catch
     Public TLCatchPlot() As Single
@@ -346,6 +348,7 @@ Public Class cEcoNetwork
     Public TotTransferEfficiency() As Single
     Public DetTransferEfficiency() As Single
     Public PPTransferEfficiency() As Single
+    Public TotTransferEfficiencyWeighted() As Single
 
 #End Region ' Ecosim
 
@@ -2595,6 +2598,9 @@ NextPivot:
 
     Private Sub FindPaths(ByRef NumOfPaths As Integer, ByRef B() As Single, ByRef PB() As Single, ByRef QB() As Single, ByRef EE() As Single, ByRef DC(,) As Single, ByRef fCatch() As Single)
 
+        NumDetPath = 0
+        NumLivPath = 0
+
         '*** DIM LastComp(1 TO m_epdata.NumGroups + 1)
         Dim Answer As Object = Nothing
         Dim Pass As Long  'Integer Found 290598 thanks to Eni / VC
@@ -3351,7 +3357,9 @@ NextPivot:
             ReDim RelativeKemptonsPlot(m_esdata.NTimes)
             ReDim TLSimPlot(m_epdata.NumGroups, m_esdata.NTimes)
             ReDim TLCatchPlot(m_esdata.NTimes)
-            ReDim RelativeLIndexPlot(m_esdata.NTimes)
+            ReDim RelativeLIndex(m_esdata.NTimes)
+            ReDim AbsoluteLIndex(m_esdata.NTimes)
+            ReDim AbsoluteLIndex2(m_esdata.NTimes)
 
             'ReDim Elect(m_epdata.NumLiving, m_epdata.NumGroups, m_esdata.NTimes)
             'ReDim TLSim(m_epdata.NumGroups)
@@ -3443,7 +3451,23 @@ NextPivot:
             If PPRon Then
                 RelativeCatchPPR(iTime) = RaiseToPP(0) / OrigPPR(0)
                 RelativeCatchDetReq(iTime) = RaiseToDet(0) / OrigPPR(1)
-                RelativeLIndexPlot(iTime) = 1
+
+                ' -PPRi*TE^(TLi-1) / ln(TE)
+                Dim PPR As Single = 0
+                Dim s As Single = 0
+                For i As Integer = 1 To Me.m_core.nLivingGroups
+                    s += Me.m_manager.LIndex(i)
+                    PPR += Me.m_manager.PPRTotPPHarvest(i)
+                Next
+
+                Dim TE As Single = TotTransferEfficiencyWeighted(iTime)
+                Dim TLC As Single = Me.m_esdata.TLC(iTime) - 1
+                Dim l As Single = -CSng(PPR * TE ^ TLC / Math.Log(TE))
+
+                AbsoluteLIndex(iTime) = s
+                'AbsoluteLIndex2(iTime) = s
+                RelativeLIndex(iTime) = s / AbsoluteLIndex(1)
+
             End If
 
         Catch ex As Exception
@@ -3604,6 +3628,7 @@ NextPivot:
             ReDim Preserve TotTransferEfficiency(Round)
             ReDim Preserve DetTransferEfficiency(Round)
             ReDim Preserve PPTransferEfficiency(Round)
+            ReDim Preserve TotTransferEfficiencyWeighted(Round)
             Throughput(Round) = TruPut
             CapacityEcosim(Round) = Capacity
             AscendImport(Round) = Aop
@@ -3633,6 +3658,8 @@ NextPivot:
                 PPTransferEfficiency(Round) += m_manager.PPTransferEfficiency(i)
                 TotTransferEfficiency(Round) += m_manager.TotTransferEfficiency(i)
             Next
+
+            TotTransferEfficiencyWeighted(Round) = CSng((m_manager.TotTransferEfficiency(2) * m_manager.TotTransferEfficiency(3) * m_manager.TotTransferEfficiency(4)) ^ (1 / 3))
 
             'If PPRon Then Write #FF, RaiseToPP(0), RaiseToDet(0) Else Write #FF,
             If PPRon Then

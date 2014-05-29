@@ -3368,4 +3368,7 @@ AIABAACAAQAAAAEAAAAAAAAAAAAAAAEAAIABAACAAQAAwAMAAMAHAADwDwAA/D8AAAs=</value>
   <data name="PAGE_LINDEX" xml:space="preserve">
     <value>Loss of Production index</value>
   </data>
+  <data name="LBL_LINDEX_REL" xml:space="preserve">
+    <value>Loss of production (relative)</value>
+  </data>
 </root>
