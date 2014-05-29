@@ -31,10 +31,7 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-' ToDo: implement create and delete in different tabs
 ' ToDo: add check on delete if dataset is applied in this model. Could also be applied to other models, have no idea
-' ToDo: add support for switching dataset files
-' ToDo: add import / export (package / unpackage) features
 ' ToDo: add indexing overview
 ' ToDo: add cache overview
 
@@ -115,7 +112,7 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub Reload()
-            Me.FillTemplateDatasetBox()
+            Me.FillTemplateDatasetDropdown()
             Me.m_gridDatasets.Fill()
             ' Update cache state (will also update controls)
             Me.EvaluateCache()
@@ -126,13 +123,12 @@ Namespace Ecospace.Controls
 
             Dim ds As ISpatialDataSet = Me.m_gridDatasets.SelectedDataset
 
-            Dim bHasTemplate As Boolean = (Me.m_cmbNewDS.SelectedItem IsNot Nothing) And Me.m_bHasDatasetTemplates
+            Dim bHasTemplate As Boolean = Me.m_bHasDatasetTemplates
             Dim bHasDS As Boolean = (Me.m_gridDatasets.RowsCount > 1)
             Dim bHasSelection As Boolean = (ds IsNot Nothing)
             Dim bCanConfig As Boolean = (TypeOf ds Is IConfigurable)
 
-            Me.m_cmbNewDS.Enabled = bHasTemplate
-            Me.m_btnAdd.Enabled = bHasTemplate
+            Me.m_tssbCreateNew.Enabled = bHasTemplate
 
             Me.m_btnDelete.Enabled = bHasSelection
             Me.m_btnConfigure.Enabled = bHasSelection And bCanConfig
@@ -144,20 +140,12 @@ Namespace Ecospace.Controls
 
 #Region " Event handlers "
 
-        Private Sub OnSelectDSTemplate(sender As System.Object, e As System.EventArgs) _
-            Handles m_cmbNewDS.SelectedIndexChanged
-            Try
-                Me.UpdateControls()
-            Catch ex As Exception
+        Private Sub OnCreateDataset(sender As System.Object, e As System.EventArgs)
 
-            End Try
-        End Sub
-
-        Private Sub OnAddDS(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnAdd.Click
             Me.Cursor = Cursors.WaitCursor
             Try
-                Me.CreateDS()
+                Dim item As ToolStripItem = DirectCast(sender, ToolStripMenuItem)
+                Me.CreateDS(DirectCast(item.Tag, ISpatialDataSet))
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -265,23 +253,22 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Fill UI with available dataset templates
         ''' </summary>
-        Private Sub FillTemplateDatasetBox()
+        ''' -------------------------------------------------------------------
+        Private Sub FillTemplateDatasetDropdown()
 
-            Me.m_cmbNewDS.Items.Clear()
+            Me.m_bHasDatasetTemplates = False
+
+            Me.m_tssbCreateNew.DropDown.Items.Clear()
             For Each ds As ISpatialDataSet In Me.m_man.DatasetTemplates
-                Me.m_cmbNewDS.Items.Add(ds)
-            Next
-
-            If (Me.m_cmbNewDS.Items.Count = 0) Then
-                Me.m_cmbNewDS.Items.Add("(you do not have required components installed)")
-                Me.m_bHasDatasetTemplates = False
-            Else
+                Dim item As New ToolStripMenuItem(ds.DisplayName, Nothing, AddressOf OnCreateDataset)
+                item.Tag = ds
+                Me.m_tssbCreateNew.DropDown.Items.Add(item)
                 Me.m_bHasDatasetTemplates = True
-            End If
-            Me.m_cmbNewDS.SelectedIndex = 0
+            Next
 
         End Sub
 
@@ -290,17 +277,19 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
         End Sub
 
-        Private Sub CreateDS()
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a new spatial data set
+        ''' </summary>
+        ''' <param name="dsTemplate">The template to create a new dataset from.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub CreateDS(dsTemplate As ISpatialDataSet)
 
-            Dim item As Object = Me.m_cmbNewDS.SelectedItem
-            If Not TypeOf (item) Is ISpatialDataSet Then Return
-
-            Dim dsSelected As ISpatialDataSet = DirectCast(item, ISpatialDataSet)
             Dim dsNew As ISpatialDataSet = Nothing
 
-            If (dsSelected Is Nothing) Then Return
+            If (dsTemplate Is Nothing) Then Return
 
-            dsNew = CType(Activator.CreateInstance(dsSelected.GetType()), ISpatialDataSet)
+            dsNew = CType(Activator.CreateInstance(dsTemplate.GetType()), ISpatialDataSet)
             If (dsNew Is Nothing) Then Return
 
             Try
@@ -359,6 +348,8 @@ Namespace Ecospace.Controls
             Me.m_gridDatasets.Fill()
             Me.UpdateControls()
         End Sub
+
+        ' TODO: MOVE TO OPTIONS
 
         ''' <summary>
         ''' User wants to clear the spatial data cache.

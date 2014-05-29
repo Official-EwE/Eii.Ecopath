@@ -44,31 +44,70 @@ Namespace Ecospace.Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineExternalSpatialData))
-            Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_btnDelete = New System.Windows.Forms.Button()
-            Me.m_gridDatasets = New ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData()
-            Me.m_cmbNewDS = New System.Windows.Forms.ComboBox()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_btnConfigure = New System.Windows.Forms.Button()
-            Me.m_hdr = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbEnableIndexing = New System.Windows.Forms.CheckBox()
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnSwitchConfig = New System.Windows.Forms.ToolStripButton()
+            Me.m_tssbCreateNew = New System.Windows.Forms.ToolStripSplitButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_gridDatasets = New ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
-            '
-            'm_btnAdd
-            '
-            resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
-            Me.m_btnAdd.Name = "m_btnAdd"
-            Me.m_btnAdd.UseVisualStyleBackColor = True
             '
             'm_btnDelete
             '
             resources.ApplyResources(Me.m_btnDelete, "m_btnDelete")
             Me.m_btnDelete.Name = "m_btnDelete"
             Me.m_btnDelete.UseVisualStyleBackColor = True
+            '
+            'm_btnOK
+            '
+            resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+            Me.m_btnOK.Name = "m_btnOK"
+            Me.m_btnOK.UseVisualStyleBackColor = True
+            '
+            'm_btnConfigure
+            '
+            resources.ApplyResources(Me.m_btnConfigure, "m_btnConfigure")
+            Me.m_btnConfigure.Name = "m_btnConfigure"
+            Me.m_btnConfigure.UseVisualStyleBackColor = True
+            '
+            'm_cbEnableIndexing
+            '
+            resources.ApplyResources(Me.m_cbEnableIndexing, "m_cbEnableIndexing")
+            Me.m_cbEnableIndexing.Name = "m_cbEnableIndexing"
+            Me.m_cbEnableIndexing.UseVisualStyleBackColor = True
+            '
+            'm_ts
+            '
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tssbCreateNew, Me.m_tsbnExport, Me.ToolStripSeparator1, Me.m_tsbnSwitchConfig})
+            resources.ApplyResources(Me.m_ts, "m_ts")
+            Me.m_ts.Name = "m_ts"
+            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnExport
+            '
+            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
+            Me.m_tsbnExport.Name = "m_tsbnExport"
+            '
+            'm_tsbnSwitchConfig
+            '
+            resources.ApplyResources(Me.m_tsbnSwitchConfig, "m_tsbnSwitchConfig")
+            Me.m_tsbnSwitchConfig.Name = "m_tsbnSwitchConfig"
+            '
+            'm_tssbCreateNew
+            '
+            resources.ApplyResources(Me.m_tssbCreateNew, "m_tssbCreateNew")
+            Me.m_tssbCreateNew.Name = "m_tssbCreateNew"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
             '
             'm_gridDatasets
             '
@@ -102,57 +141,6 @@ Namespace Ecospace.Controls
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatasets.UIContext = Nothing
             '
-            'm_cmbNewDS
-            '
-            resources.ApplyResources(Me.m_cmbNewDS, "m_cmbNewDS")
-            Me.m_cmbNewDS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbNewDS.FormattingEnabled = True
-            Me.m_cmbNewDS.Name = "m_cmbNewDS"
-            '
-            'm_btnOK
-            '
-            resources.ApplyResources(Me.m_btnOK, "m_btnOK")
-            Me.m_btnOK.Name = "m_btnOK"
-            Me.m_btnOK.UseVisualStyleBackColor = True
-            '
-            'm_btnConfigure
-            '
-            resources.ApplyResources(Me.m_btnConfigure, "m_btnConfigure")
-            Me.m_btnConfigure.Name = "m_btnConfigure"
-            Me.m_btnConfigure.UseVisualStyleBackColor = True
-            '
-            'm_hdr
-            '
-            resources.ApplyResources(Me.m_hdr, "m_hdr")
-            Me.m_hdr.CanCollapseParent = False
-            Me.m_hdr.CollapsedParentHeight = 0
-            Me.m_hdr.IsCollapsed = False
-            Me.m_hdr.Name = "m_hdr"
-            '
-            'm_cbEnableIndexing
-            '
-            resources.ApplyResources(Me.m_cbEnableIndexing, "m_cbEnableIndexing")
-            Me.m_cbEnableIndexing.Name = "m_cbEnableIndexing"
-            Me.m_cbEnableIndexing.UseVisualStyleBackColor = True
-            '
-            'm_ts
-            '
-            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSwitchConfig, Me.m_tsbnExport})
-            resources.ApplyResources(Me.m_ts, "m_ts")
-            Me.m_ts.Name = "m_ts"
-            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tsbnExport
-            '
-            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
-            Me.m_tsbnExport.Name = "m_tsbnExport"
-            '
-            'm_tsbnSwitchConfig
-            '
-            resources.ApplyResources(Me.m_tsbnSwitchConfig, "m_tsbnSwitchConfig")
-            Me.m_tsbnSwitchConfig.Name = "m_tsbnSwitchConfig"
-            '
             'dlgDefineExternalSpatialData
             '
             Me.AcceptButton = Me.m_btnOK
@@ -161,13 +149,10 @@ Namespace Ecospace.Controls
             Me.ControlBox = False
             Me.Controls.Add(Me.m_ts)
             Me.Controls.Add(Me.m_cbEnableIndexing)
-            Me.Controls.Add(Me.m_hdr)
             Me.Controls.Add(Me.m_btnOK)
-            Me.Controls.Add(Me.m_cmbNewDS)
             Me.Controls.Add(Me.m_gridDatasets)
             Me.Controls.Add(Me.m_btnConfigure)
             Me.Controls.Add(Me.m_btnDelete)
-            Me.Controls.Add(Me.m_btnAdd)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "dlgDefineExternalSpatialData"
@@ -179,17 +164,16 @@ Namespace Ecospace.Controls
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_btnAdd As System.Windows.Forms.Button
         Private WithEvents m_btnDelete As System.Windows.Forms.Button
         Private WithEvents m_gridDatasets As gridDefineExternalSpatialData
-        Private WithEvents m_cmbNewDS As System.Windows.Forms.ComboBox
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_btnConfigure As System.Windows.Forms.Button
-        Private WithEvents m_hdr As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_cbEnableIndexing As System.Windows.Forms.CheckBox
         Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_tsbnSwitchConfig As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tssbCreateNew As System.Windows.Forms.ToolStripSplitButton
+        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     End Class
 
 End Namespace
