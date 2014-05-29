@@ -217,10 +217,7 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Try
-
-                If Me.m_mcmanager.IsRunning Then
-                    Me.m_mcmanager.StopRun(0)
-                End If
+                Me.StopRun()
 
                 Me.m_qeB.Detach()
                 Me.m_qePB.Detach()
@@ -269,13 +266,7 @@ Namespace Ecosim
 
         Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_btnStop.Click
-            If Not Me.m_mcmanager Is Nothing Then
-                Try
-                    Me.m_mcmanager.StopRun(0)
-                Catch ex As Exception
-
-                End Try
-            End If
+            Me.StopRun()
         End Sub
 
         Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -572,6 +563,7 @@ Namespace Ecosim
             ' Clear out the old data
             Me.m_plothelper.Clear()
 
+            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopRun))
             Me.NewIteration()
             Me.m_mcmanager.Run()
 
@@ -630,6 +622,17 @@ Namespace Ecosim
         Private Sub m_lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_lbGroups.SelectedIndexChanged
             Me.UpdateGraphHighlights()
+        End Sub
+
+        Private Sub StopRun()
+            Try
+                If Me.m_mcmanager.IsRunning Then
+                    Me.m_mcmanager.StopRun(0)
+                    Me.Core.SetStopRunDelegate(Nothing)
+                End If
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         Private Sub UpdateGraphXAxis()
