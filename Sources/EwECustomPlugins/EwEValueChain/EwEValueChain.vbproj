@@ -350,9 +350,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\EU_50px.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Lenfest Logo_50px.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -414,6 +411,7 @@
   <ItemGroup>
     <Content Include="Resources\consumer_small.png" />
     <Content Include="Resources\distribution_small.png" />
+    <None Include="Resources\ecost_256x256.png" />
     <Content Include="Resources\factory_small.png" />
     <Content Include="Resources\producer.png" />
     <Content Include="Resources\producer_small.png" />

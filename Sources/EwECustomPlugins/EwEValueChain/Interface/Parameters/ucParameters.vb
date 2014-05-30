@@ -25,6 +25,8 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -94,6 +96,11 @@ Public Class ucParameters
                     ' Stop listening to parameter changes
                     RemoveHandler Me.m_params.OnChanged, AddressOf OnParametersChanged
 
+                    Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
+                    cmd.RemoveControl(Me.m_pbLenfest)
+                    cmd.RemoveControl(Me.m_pbSAUP)
+                    cmd.RemoveControl(Me.m_pbEcostProject)
+
                     ' Unplug Ecosim controls
                     Me.ConfigureEcosimControls(False)
                     Me.m_uic = Nothing
@@ -143,6 +150,11 @@ Public Class ucParameters
         AddHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
         ' Start listening to parameter changes
         AddHandler Me.m_params.OnChanged, AddressOf OnParametersChanged
+
+        Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
+        cmd.AddControl(Me.m_pbLenfest, New Object() {"http://www.lenfestocean.org/"})
+        cmd.AddControl(Me.m_pbSAUP, New Object() {"http://www.seaaroundus.org/"})
+        cmd.AddControl(Me.m_pbEcostProject, New Object() {"http://www.ird.fr/ecostproject/doku.php"})
 
         ' Force core state dependent initialization
         Me.OnCoreStateChanged(Me.m_uic.Core.StateMonitor)
