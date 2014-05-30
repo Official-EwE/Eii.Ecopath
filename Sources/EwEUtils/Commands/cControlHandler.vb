@@ -296,26 +296,26 @@ Namespace Commands
     Public Class cButtonControlHandler
         Inherits cControlHandler
 
-        Private WithEvents m_btn As Button = Nothing
+        Private WithEvents m_ctrl As Control = Nothing
 
         Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
             MyBase.New(objCmd, objGUI, fnparms)
-            Debug.Assert(TypeOf objGUI Is Button)
-            Me.m_btn = DirectCast(objGUI, Button)
+            Debug.Assert(TypeOf objGUI Is Control)
+            Me.m_ctrl = DirectCast(objGUI, Control)
         End Sub
 
         Public Overrides Sub Dispose()
-            Me.m_btn = Nothing
+            Me.m_ctrl = Nothing
             MyBase.Dispose()
         End Sub
 
         Public Overrides Sub Update()
-            Me.m_btn.Enabled = Me.Command.Enabled
+            Me.m_ctrl.Enabled = Me.Command.Enabled
             ' Buttons do not have tooltips, you silly
             'Me.m_btn.ToolTipText = Me.Command.Description
         End Sub
 
-        Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_btn.Click
+        Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_ctrl.Click
             Try
                 Me.Invoke()
             Catch ex As Exception

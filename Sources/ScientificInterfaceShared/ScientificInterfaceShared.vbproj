@@ -136,6 +136,7 @@
     <Compile Include="Controls\Diagrams\FlowDiagram\Default\cTreeFlowDiagramRenderer.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\IFlowDiagramData.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\IFlowDiagramRenderer.vb" />
+    <Compile Include="Controls\EwEGrid\EwEStatusCell.vb" />
     <Compile Include="Controls\EwEGrid\IEwECell.vb" />
     <Compile Include="Controls\EwEGrid\IPropertyCell.vb" />
     <Compile Include="Controls\Label\cFileDropLabel.vb">

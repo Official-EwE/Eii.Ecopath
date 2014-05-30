@@ -50,6 +50,7 @@ Namespace Controls.Map.Layers
             Me.m_tbxMin = New System.Windows.Forms.TextBox()
             Me.m_tbxMax = New System.Windows.Forms.TextBox()
             Me.m_lblMax = New System.Windows.Forms.Label()
+            Me.m_plLegend = New System.Windows.Forms.Panel()
             Me.SuspendLayout()
             '
             'm_ucSlider
@@ -99,10 +100,17 @@ Namespace Controls.Map.Layers
             resources.ApplyResources(Me.m_lblMax, "m_lblMax")
             Me.m_lblMax.Name = "m_lblMax"
             '
+            'm_plLegend
+            '
+            resources.ApplyResources(Me.m_plLegend, "m_plLegend")
+            Me.m_plLegend.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_plLegend.Name = "m_plLegend"
+            '
             'ucLayerEditorDefault
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_plLegend)
             Me.Controls.Add(Me.m_tbxMax)
             Me.Controls.Add(Me.m_tbxMin)
             Me.Controls.Add(Me.m_tbxName)
@@ -120,6 +128,7 @@ Namespace Controls.Map.Layers
             Me.Controls.SetChildIndex(Me.m_tbxName, 0)
             Me.Controls.SetChildIndex(Me.m_tbxMin, 0)
             Me.Controls.SetChildIndex(Me.m_tbxMax, 0)
+            Me.Controls.SetChildIndex(Me.m_plLegend, 0)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -133,6 +142,7 @@ Namespace Controls.Map.Layers
         Private WithEvents m_tbxMin As System.Windows.Forms.TextBox
         Private WithEvents m_tbxMax As System.Windows.Forms.TextBox
         Private WithEvents m_lblMax As System.Windows.Forms.Label
+        Private WithEvents m_plLegend As System.Windows.Forms.Panel
 
     End Class
 

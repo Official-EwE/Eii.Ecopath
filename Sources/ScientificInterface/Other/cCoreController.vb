@@ -38,6 +38,8 @@ Public Class cCoreController
 
 #Region " Private vars "
 
+    Private m_ui As frmEwE6 = Nothing
+
     ''' <summary>Core state monitor to query.</summary>
     Private m_monitor As cCoreStateMonitor = Nothing
     ''' <summary>Manager to use for bringing the core up to date.</summary>
@@ -54,9 +56,10 @@ Public Class cCoreController
     ''' Constructor, initializes a new instance of a EwECoreController.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Sub New(ByVal monitor As cCoreStateMonitor, ByVal manager As cCoreStateManager)
+    Public Sub New(ByVal monitor As cCoreStateMonitor, ByVal manager As cCoreStateManager, ui As frmEwE6)
         Me.m_manager = manager
         Me.m_monitor = monitor
+        Me.m_ui = ui
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -213,11 +216,10 @@ Public Class cCoreController
     Private Function TryLoadEcosimScenario() As Boolean
 
         Dim bSuccess As Boolean = False
-        Dim appl As frmEwE6 = frmEwE6.GetInstance()
 
         If Me.LoadState(eCoreExecutionState.EcopathCompleted) Then
             ' Let AppLauncher perform the load as it sees fit
-            bSuccess = appl.LoadEcosimScenario()
+            bSuccess = Me.m_ui.LoadEcosimScenario()
         End If
 
         Return bSuccess
@@ -232,12 +234,11 @@ Public Class cCoreController
     Private Function TryLoadEcospaceScenario() As Boolean
 
         Dim bSuccess As Boolean = False
-        Dim appl As frmEwE6 = frmEwE6.GetInstance()
 
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
         If LoadState(eCoreExecutionState.EcosimLoaded) Then
             ' Let AppLauncher perform the load as it sees fit
-            bSuccess = appl.LoadEcospaceScenario()
+            bSuccess = Me.m_ui.LoadEcospaceScenario()
         End If
 
         Return bSuccess
@@ -253,12 +254,11 @@ Public Class cCoreController
     Private Function TryLoadEcotracerScenario() As Boolean
 
         Dim bSuccess As Boolean = False
-        Dim appl As frmEwE6 = frmEwE6.GetInstance()
 
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecotracer model to load.
         If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then
             ' Let AppLauncher perform the load as it sees fit
-            bSuccess = appl.LoadEcotracerScenario()
+            bSuccess = Me.m_ui.LoadEcotracerScenario()
         End If
 
         Return bSuccess

@@ -3083,4 +3083,10 @@
   <data name="LABEL_TITLE" xml:space="preserve">
     <value>Title</value>
   </data>
+  <data name="GENERIC_VALUE_CREATE_PENDING" xml:space="preserve">
+    <value>(to create)</value>
+  </data>
+  <data name="GENERIC_VALUE_DELETE_PENDING" xml:space="preserve">
+    <value>(to delete)</value>
+  </data>
 </root>

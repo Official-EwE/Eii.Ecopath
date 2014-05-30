@@ -21,6 +21,7 @@
 Option Strict On
 
 Imports EwEUtils.Utilities
+Imports EwECore
 
 #End Region ' Imports
 
@@ -52,8 +53,21 @@ Namespace Controls.Map.Layers
 
             If (Me.Layer IsNot Nothing) Then
                 Me.m_tbxName.Text = Me.Layer.Name
-                Me.m_tbxMin.Text = cStringUtils.FormatNumber(Me.Layer.Data.MinValue)
-                Me.m_tbxMax.Text = cStringUtils.FormatNumber(Me.Layer.Data.MaxValue)
+
+                Dim sMin As Single = cCore.NULL_VALUE
+                Dim sMax As Single = cCore.NULL_VALUE
+                Dim r As cLayerRenderer = editor.Layer.Renderer
+
+                If (r IsNot Nothing) Then
+                    sMin = r.ScaleMin
+                    sMax = r.ScaleMax
+                End If
+
+                If sMin = cCore.NULL_VALUE Then sMin = Me.Layer.Data.MinValue
+                If sMax = cCore.NULL_VALUE Then sMax = Me.Layer.Data.MaxValue
+
+                Me.m_tbxMin.Text = cStringUtils.FormatNumber(sMin)
+                Me.m_tbxMax.Text = cStringUtils.FormatNumber(sMax)
             End If
 
         End Sub
@@ -65,6 +79,18 @@ Namespace Controls.Map.Layers
 
             Me.Editor.CursorSize = CInt(Me.m_ucSlider.Value)
             Me.RaiseChangedEvent()
+
+        End Sub
+
+        Private Sub m_plLegend_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
+            Handles m_plLegend.Paint
+
+            If (Me.Layer IsNot Nothing) Then
+                Dim r As cLayerRenderer = Editor.Layer.Renderer
+                If (r IsNot Nothing) Then
+                    r.RenderPreview(e.Graphics, e.ClipRectangle)
+                End If
+            End If
 
         End Sub
 

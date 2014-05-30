@@ -525,54 +525,6 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Visual model for reflecting 'Original' values.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(False)> _
-        Protected ReadOnly Property DefaultVisualOriginal() As VisualModels.IVisualModel
-            Get
-                Dim vm As VisualModels.Common = New VisualModels.Common(False)
-                vm.ForeColor = Color.FromArgb(255, 0, 0, 0)
-                vm.TextAlignment = ContentAlignment.MiddleCenter
-                vm.MakeReadOnly()
-                Return vm
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Visual model for reflecting 'Added' values.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(False)> _
-        Protected ReadOnly Property DefaultVisualAdded() As VisualModels.IVisualModel
-            Get
-                Dim vm As VisualModels.Common = New VisualModels.Common(False)
-                vm.ForeColor = Color.FromArgb(255, 8, 128, 12)
-                vm.TextAlignment = ContentAlignment.MiddleCenter
-                vm.MakeReadOnly()
-                Return vm
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Visual model for reflecting 'Removed' values.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(False)> _
-        Protected ReadOnly Property DefaultVisualRemoved() As VisualModels.IVisualModel
-            Get
-                Dim vm As VisualModels.Common = New VisualModels.Common(False)
-                vm.ForeColor = Color.FromArgb(255, 255, 22, 12)
-                vm.TextAlignment = ContentAlignment.MiddleCenter
-                vm.MakeReadOnly()
-                Return vm
-            End Get
-        End Property
-
 #End Region ' IUIElement implementation
 
 #Region " EwE events "
@@ -833,7 +785,6 @@ Namespace Controls.EwEGrid
                             Me.Columns(i).AutoSizeMode = (SourceGrid2.AutoSizeMode.EnableStretch Or SourceGrid2.AutoSizeMode.EnableAutoSize)
                         Next
                         Me.Rows(0).AutoSizeMode = (SourceGrid2.AutoSizeMode.EnableStretch Or SourceGrid2.AutoSizeMode.EnableAutoSize)
-                        Me.AutoStretchColumnsToFitWidth = True
                         Me.AutoSizeAll()
                     End If
                 End If

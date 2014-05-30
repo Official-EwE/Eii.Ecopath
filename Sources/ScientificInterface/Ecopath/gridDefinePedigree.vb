@@ -671,13 +671,7 @@ Imports SourceGrid2.Cells
             Me(iRow, eColumnTypes.LevelConfidenceInterval) = New EwECell(0, GetType(Integer))
             Me(iRow, eColumnTypes.LevelConfidenceInterval).Behaviors.Add(Me.EwEEditHandler)
 
-            ' Status
-            vm = New VisualModels.Common()
-            vm.ImageAlignment = ContentAlignment.MiddleCenter
-            Me(iRow, eColumnTypes.LevelStatus) = New Cells.Real.Cell()
-            Dim dm As New DataModels.DataModelBase(GetType(String))
-            dm.EditableMode = EditableMode.None
-            Me(iRow, eColumnTypes.LevelStatus).DataModel = dm
+            Me(iRow, eColumnTypes.LevelStatus) = New EwEStatusCell(eItemStatusTypes.Original)
         Next
 
         ' Delete obsolete rows
@@ -732,7 +726,6 @@ Imports SourceGrid2.Cells
         Dim lvlInfo As cPedigreeLevelInfo = Nothing
         Dim ri As RowInfo = Nothing
         Dim pos As SourceGrid2.Position = Nothing
-        Dim vm As VisualModels.IVisualModel = Nothing
         Dim strText As String = ""
         Dim ewec As ICell = Nothing
         Dim clr As Color
@@ -767,23 +760,7 @@ Imports SourceGrid2.Cells
         Me(iRow, eColumnTypes.LevelColor).Value = clr
         Me(iRow, eColumnTypes.LevelIndexValue).Value = lvlInfo.IndexValue
         Me(iRow, eColumnTypes.LevelConfidenceInterval).Value = lvlInfo.ConfidenceInterval
-
-        Select Case lvlInfo.Status
-            Case eItemStatusTypes.Original
-                vm = Me.DefaultVisualOriginal
-                strText = ""
-            Case eItemStatusTypes.Added
-                vm = Me.DefaultVisualAdded
-                strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-            Case eItemStatusTypes.Removed
-                vm = Me.DefaultVisualRemoved
-                strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
-        End Select
-
-        Me(iRow, eColumnTypes.LevelName).VisualModel = vm
-
-        Me(iRow, eColumnTypes.LevelStatus).VisualModel = vm
-        Me(iRow, eColumnTypes.LevelStatus).Value = strText
+        Me(iRow, eColumnTypes.LevelStatus).Value = lvlInfo.Status
 
         Me.AllowUpdates = True
 

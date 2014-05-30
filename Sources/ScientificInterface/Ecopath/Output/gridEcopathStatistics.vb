@@ -103,6 +103,13 @@ Namespace Ecopath.Output
 
         End Sub
 
+        Protected Overrides Sub FinishStyle()
+            Me.Columns(eColumnTypes.Header).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.Columns(eColumnTypes.Units).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.Columns(eColumnTypes.Value).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            MyBase.FinishStyle()
+        End Sub
+
         Private Overloads Sub AddRow(ByVal strHeader As String, ByVal source As cEcoPathStats, ByVal vnf As eVarNameFlags)
             Me.AddRow(strHeader, source, vnf, Nothing, "")
         End Sub

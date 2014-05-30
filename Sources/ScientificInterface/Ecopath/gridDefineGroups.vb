@@ -841,7 +841,6 @@ Public Class gridDefineGroups
         Dim astrStanzaNames As String() = Me.GetStanzaNames()
         Dim cells() As Cells.ICellVirtual = Nothing
         Dim pos As SourceGrid2.Position = Nothing
-        Dim vm As VisualModels.Common = Nothing
         Dim ewec As EwECell = Nothing
 
         ' Create missing rows
@@ -877,13 +876,7 @@ Public Class gridDefineGroups
             Me(iRow, eColumnTypes.StanzaAge) = New Cells.Real.Cell(0)
             Me(iRow, eColumnTypes.StanzaAge).Behaviors.Add(Me.EwEEditHandler)
 
-            ' Status
-            vm = New VisualModels.Common()
-            vm.ImageAlignment = ContentAlignment.MiddleCenter
-            Me(iRow, eColumnTypes.GroupStatus) = New Cells.Real.Cell()
-            Dim dm As New DataModels.DataModelBase(GetType(String))
-            dm.EditableMode = EditableMode.None
-            Me(iRow, eColumnTypes.GroupStatus).DataModel = dm
+            Me(iRow, eColumnTypes.GroupStatus) = New EwEStatusCell(eItemStatusTypes.Original)
         Next
 
         ' Delete obsolete rows
@@ -913,8 +906,6 @@ Public Class gridDefineGroups
         Dim ri As RowInfo = Nothing
         Dim ewec As EwECell = Nothing
         Dim pos As SourceGrid2.Position = Nothing
-        Dim vm As VisualModels.IVisualModel = Nothing
-        Dim strText As String = ""
 
         Me.AllowUpdates = False
 
@@ -950,23 +941,8 @@ Public Class gridDefineGroups
         If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(iRow, Me.m_lgiGroups.Count)
         Me(iRow, eColumnTypes.GroupColor).SetValue(pos, clr)
 
-        Select Case gi.Status
-            Case eItemStatusTypes.Original
-                vm = Me.DefaultVisualOriginal
-                strText = ""
-            Case eItemStatusTypes.Added
-                vm = Me.DefaultVisualAdded
-                strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-            Case eItemStatusTypes.Removed
-                vm = Me.DefaultVisualRemoved
-                strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
-        End Select
-
         pos = New Position(iRow, eColumnTypes.GroupStatus)
-        Me(iRow, eColumnTypes.GroupStatus).VisualModel = vm
-        Me(iRow, eColumnTypes.GroupStatus).SetValue(pos, strText)
-
-        Me(iRow, eColumnTypes.GroupName).VisualModel = vm
+        Me(iRow, eColumnTypes.GroupStatus).SetValue(pos, gi.Status)
 
         Me.UpdateStanzaCells(iRow)
 

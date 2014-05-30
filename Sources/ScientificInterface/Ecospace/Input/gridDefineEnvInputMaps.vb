@@ -358,12 +358,8 @@ Namespace Ecospace
             Dim ri As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim vm As VisualModels.Common = Nothing
             Dim ewec As EwECell = Nothing
             Dim style As cStyleGuide.eStyleFlags
-
-            vm = New VisualModels.Common()
-            vm.ImageAlignment = ContentAlignment.MiddleCenter
 
             Me.m_isInInit = True
 
@@ -392,12 +388,7 @@ Namespace Ecospace
                 Me(iRow, eColumnTypes.LayerIsActive) = New Cells.Real.CheckBox(False)
                 Me(iRow, eColumnTypes.LayerIsActive).Behaviors.Add(Me.EwEEditHandler)
 
-                ' Status
-                Me(iRow, eColumnTypes.LayerStatus) = New EwECell("", GetType(String))
-                Dim dm As New DataModels.DataModelBase(GetType(String))
-                dm.EditableMode = EditableMode.None
-                Me(iRow, eColumnTypes.LayerStatus).DataModel = dm
-
+                Me(iRow, eColumnTypes.LayerStatus) = New EwEStatusCell(eItemStatusTypes.Original)
             Next
 
             ' Delete obsolete rows
@@ -430,8 +421,6 @@ Namespace Ecospace
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim cell As EwECell = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim vm As VisualModels.IVisualModel = Nothing
-            Dim strText As String = ""
             Me.AllowUpdates = False
 
             li = DirectCast(Me.m_alLayers(iRow - iFIRSTDATAROW), cLayerInfo)
@@ -454,21 +443,8 @@ Namespace Ecospace
             pos = New Position(iRow, eColumnTypes.LayerIsActive)
             aCells(eColumnTypes.LayerIsActive).SetValue(pos, CBool(li.IsActive))
 
-            Select Case li.Status
-                Case eItemStatusTypes.Original
-                    vm = Me.DefaultVisualOriginal
-                    strText = ""
-                Case eItemStatusTypes.Added
-                    vm = Me.DefaultVisualAdded
-                    strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-                Case eItemStatusTypes.Removed
-                    vm = Me.DefaultVisualRemoved
-                    strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
-            End Select
-
             pos = New Position(iRow, eColumnTypes.LayerStatus)
-            aCells(eColumnTypes.LayerStatus).VisualModel = vm
-            aCells(eColumnTypes.LayerStatus).SetValue(pos, strText)
+            aCells(eColumnTypes.LayerStatus).SetValue(pos, li.Status)
 
             Me.AllowUpdates = True
 

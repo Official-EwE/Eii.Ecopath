@@ -356,7 +356,6 @@ Namespace Ecospace
             Dim ri As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim vm As VisualModels.Common = Nothing
             Dim ewec As EwECell = Nothing
 
             ' Create missing rows
@@ -378,13 +377,7 @@ Namespace Ecospace
                     Me(iRow, eColumnTypes.MPAJan - 1 + iMonth).Behaviors.Add(Me.EwEEditHandler)
                 Next iMonth
 
-                ' Status
-                vm = New VisualModels.Common()
-                vm.ImageAlignment = ContentAlignment.MiddleCenter
-                Me(iRow, eColumnTypes.MPAStatus) = New Cells.Real.Cell()
-                Dim dm As New DataModels.DataModelBase(GetType(String))
-                dm.EditableMode = EditableMode.None
-                Me(iRow, eColumnTypes.MPAStatus).DataModel = dm
+                Me(iRow, eColumnTypes.MPAStatus) = New EwEStatusCell(eItemStatusTypes.Original)
             Next
 
             ' Delete obsolete rows
@@ -445,23 +438,7 @@ Namespace Ecospace
             ' Display a check when the MPA is NOT open for fishing
             aCells(eColumnTypes.MPAAll).SetValue(pos, (iNumOpen = 0))
 
-            Select Case mi.Status
-                Case eItemStatusTypes.Original
-                    vm = Me.DefaultVisualOriginal
-                    strText = ""
-                Case eItemStatusTypes.Added
-                    vm = Me.DefaultVisualAdded
-                    strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-                Case eItemStatusTypes.Removed
-                    vm = Me.DefaultVisualRemoved
-                    strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
-            End Select
-
-            ' Set modification status
-            aCells(eColumnTypes.MPAName).VisualModel = vm
-            pos = New Position(iRow, eColumnTypes.MPAStatus)
-            aCells(eColumnTypes.MPAStatus).VisualModel = vm
-            aCells(eColumnTypes.MPAStatus).SetValue(pos, strText)
+            aCells(eColumnTypes.MPAStatus).SetValue(pos, mi.Status)
 
             Me.AllowUpdates = True
 

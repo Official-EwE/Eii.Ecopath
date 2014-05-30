@@ -2081,11 +2081,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (to create).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_CREATE_PENDING() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_CREATE_PENDING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (Custom).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_CUSTOM() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_CUSTOM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (to delete).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_DELETE_PENDING() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_DELETE_PENDING", resourceCulture)
             End Get
         End Property
         
