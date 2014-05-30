@@ -58,7 +58,7 @@ Namespace Commands
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor, initializes a new instance of the NavigationCommand class.
+        ''' Constructor, initializes a new instance of the <see cref="cBrowserCommand"/> class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal cmdh As cCommandHandler)
@@ -88,6 +88,7 @@ Namespace Commands
         Public Overloads Sub Invoke(link As cWebLinks.eLinkType)
             Me.m_type = link
             MyBase.Invoke()
+            Me.m_type = cWebLinks.eLinkType.NotSet
         End Sub
 
         ''' <summary>
