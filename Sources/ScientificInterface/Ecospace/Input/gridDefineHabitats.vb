@@ -314,7 +314,6 @@ Namespace Ecospace
             Dim ri As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim vm As VisualModels.Common = Nothing
             Dim ewec As EwECell = Nothing
 
             ' Create missing rows
@@ -328,13 +327,7 @@ Namespace Ecospace
                 Me(iRow, eColumnTypes.HabitatName) = New Cells.Real.Cell("", GetType(String))
                 Me(iRow, eColumnTypes.HabitatName).Behaviors.Add(Me.EwEEditHandler)
 
-                ' Status
-                vm = New VisualModels.Common()
-                vm.ImageAlignment = ContentAlignment.MiddleCenter
-                Me(iRow, eColumnTypes.HabitatStatus) = New Cells.Real.Cell()
-                Dim dm As New DataModels.DataModelBase(GetType(String))
-                dm.EditableMode = EditableMode.None
-                Me(iRow, eColumnTypes.HabitatStatus).DataModel = dm
+                Me(iRow, eColumnTypes.HabitatStatus) = New EwEStatusCell(eItemStatusTypes.Original)
             Next
 
             ' Delete obsolete rows
@@ -364,8 +357,6 @@ Namespace Ecospace
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim vm As VisualModels.IVisualModel = Nothing
-            Dim strText As String = ""
 
             Me.AllowUpdates = False
 
@@ -381,22 +372,7 @@ Namespace Ecospace
             pos = New Position(iRow, eColumnTypes.HabitatName)
             aCells(eColumnTypes.HabitatName).SetValue(pos, CStr(hi.Name))
 
-            Select Case hi.Status
-                Case eItemStatusTypes.Original
-                    vm = Me.DefaultVisualOriginal
-                    strText = ""
-                Case eItemStatusTypes.Added
-                    vm = Me.DefaultVisualAdded
-                    strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-                Case eItemStatusTypes.Removed
-                    vm = Me.DefaultVisualRemoved
-                    strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
-            End Select
-
-            aCells(eColumnTypes.HabitatName).VisualModel = vm
-            pos = New Position(iRow, eColumnTypes.HabitatStatus)
-            aCells(eColumnTypes.HabitatStatus).VisualModel = vm
-            aCells(eColumnTypes.HabitatStatus).SetValue(pos, strText)
+            aCells(eColumnTypes.HabitatStatus).SetValue(pos, hi.Status)
 
             Me.AllowUpdates = True
 

@@ -43,13 +43,6 @@ Namespace Controls.Map.Layers
         ''' <summary><see cref="cVisualStyle">Style</see> describing what colours
         ''' and font to use for rendering.</summary>
         Private m_vs As cVisualStyle = Nothing
-        ''' <summary>Core style flags to use when rendering.</summary>
-        Private m_styleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet
-        ''' <summary>States whether the underlying layer is visible.</summary>
-        Private m_bVisible As Boolean = True
-
-        Private m_sScaleMax As Single = cCore.NULL_VALUE
-        Private m_sScaleMin As Single = cCore.NULL_VALUE
 
 #End Region ' Private vars
 
@@ -65,7 +58,7 @@ Namespace Controls.Map.Layers
         Public Sub New(ByVal vs As cVisualStyle, _
                        Optional ByVal layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
             Me.m_vs = vs
-            Me.m_styleFlags = layerStyleFlags
+            Me.VisualStyleFlags = layerStyleFlags
             Me.Update()
         End Sub
 
@@ -114,14 +107,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property VisualStyleFlags() As cVisualStyle.eVisualStyleTypes
-            Get
-                Return Me.m_styleFlags
-            End Get
-            Set(ByVal styleFlags As cVisualStyle.eVisualStyleTypes)
-                Me.m_styleFlags = styleFlags
-            End Set
-        End Property
-
+            
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Update any cached data for this layer representation.
@@ -199,42 +185,21 @@ Namespace Controls.Map.Layers
         ''' Get/set whether the layer is visible.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property IsVisible() As Boolean
-            Get
-                Return Me.m_bVisible
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bVisible = value
-            End Set
-        End Property
-
+        Public Property IsVisible() As Boolean = True
+            
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the scale max value to render to.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property ScaleMax() As Single
-            Get
-                Return Me.m_sScaleMax
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sScaleMax = value
-            End Set
-        End Property
+        Public Property ScaleMax() As Single = cCore.NULL_VALUE
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the scale min value to render to.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property ScaleMin() As Single
-            Get
-                Return Me.m_sScaleMin
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sScaleMin = value
-            End Set
-        End Property
+        Public Property ScaleMin() As Single = cCore.NULL_VALUE
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

@@ -334,7 +334,6 @@ Imports EwEUtils.Core
         Dim ri As RowInfo = Nothing
         Dim cells() As Cells.ICellVirtual = Nothing
         Dim pos As SourceGrid2.Position = Nothing
-        Dim vm As VisualModels.Common = Nothing
         Dim ewec As EwECell = Nothing
 
         ' Create missing rows
@@ -352,13 +351,7 @@ Imports EwEUtils.Core
             Me(iRow, eColumnTypes.FleetColor).VisualModel = New cEwEGridColorVisualizer()
             Me(iRow, eColumnTypes.FleetColor).Behaviors.Add(Me.EwEEditHandler)
 
-            ' Status
-            vm = New VisualModels.Common()
-            vm.ImageAlignment = ContentAlignment.MiddleCenter
-            Me(iRow, eColumnTypes.FleetStatus) = New Cells.Real.Cell()
-            Dim dm As New DataModels.DataModelBase(GetType(String))
-            dm.EditableMode = EditableMode.None
-            Me(iRow, eColumnTypes.FleetStatus).DataModel = dm
+            Me(iRow, eColumnTypes.FleetStatus) = New EwEStatusCell(eItemStatusTypes.Original)
         Next
 
         ' Delete obsolete rows
@@ -416,23 +409,7 @@ Imports EwEUtils.Core
         If clr.A = 0 Then clr = Me.StyleGuide.FleetColorDefault(iRow, Me.m_lfiFleets.Count)
         aCells(eColumnTypes.FleetColor).SetValue(pos, clr)
 
-        Select Case fi.Status
-            Case eItemStatusTypes.Original
-                vm = Me.DefaultVisualOriginal
-                strText = ""
-            Case eItemStatusTypes.Added
-                vm = Me.DefaultVisualAdded
-                strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-            Case eItemStatusTypes.Removed
-                vm = Me.DefaultVisualRemoved
-                strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
-        End Select
-
-        aCells(eColumnTypes.FleetName).VisualModel = vm
-
-        pos = New Position(iRow, eColumnTypes.FleetStatus)
-        aCells(eColumnTypes.FleetStatus).VisualModel = vm
-        aCells(eColumnTypes.FleetStatus).SetValue(pos, strText)
+        aCells(eColumnTypes.FleetStatus).SetValue(pos, fi.Status)
 
         Me.AllowUpdates = True
 

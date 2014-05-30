@@ -183,7 +183,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
-                    renderer.ScaleMin = 0
+                    'renderer.ScaleMin = 0
                     editor = New cLayerEditorRange()
                     layer = New cDisplayRasterLayer(uic, bmd.LayerRelPP, renderer, editor, bmd, eVarNameFlags.LayerRelPP)
 

@@ -1771,6 +1771,18 @@ Namespace Style
             Me.FireChangeEvent(eChangeType.GroupVisibility Or eChangeType.FleetVisibility)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether any groups or fleets are hidden.
+        ''' <seealso cref="GroupVisible"/>
+        ''' <seealso cref="FleetVisible"/>
+        ''' </summary>
+        ''' <returns>True if any groups or fleets are hidden.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function HasHiddenItems() As Boolean
+            Return ((Me.m_lHiddenFleets.Count + Me.m_lHiddenGroups.Count) > 0)
+        End Function
+
 #End Region ' Item visibility
 
 #Region " Item order "

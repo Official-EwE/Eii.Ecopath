@@ -637,7 +637,6 @@ Public Class gridDefineTaxonomy
     Private Sub UpdateRow(ByVal iRow As Integer)
 
         Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)
-        Dim vm As VisualModels.IVisualModel = Nothing
         Dim dt As Date = Nothing
         Dim strText As String = ""
         Dim iNumOpen As Integer = 0
@@ -660,21 +659,7 @@ Public Class gridDefineTaxonomy
             Me(iRow, eColumnTypes.CodeLSID).Value = ti.CodeLSID
         End If
 
-        Select Case ti.Status
-            Case eItemStatusTypes.Original
-                vm = Me.DefaultVisualOriginal
-                strText = ""
-            Case eItemStatusTypes.Added
-                vm = Me.DefaultVisualAdded
-                strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-            Case eItemStatusTypes.Removed
-                vm = Me.DefaultVisualRemoved
-                strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
-        End Select
-
-        Me(iRow, eColumnTypes.Name).VisualModel = vm
-        Me(iRow, eColumnTypes.Status).VisualModel = vm
-        Me(iRow, eColumnTypes.Status).Value = strText
+        Me(iRow, eColumnTypes.Status).Value = ti.Status
 
     End Sub
 
@@ -715,7 +700,7 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Phylum).Behaviors.Add(Me.EwEEditHandler)
         Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
         Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+        Me(iRow, eColumnTypes.Status) = New EwEStatusCell(eItemStatusTypes.Original)
 
         If (Me.m_bShowCodes) Then
 

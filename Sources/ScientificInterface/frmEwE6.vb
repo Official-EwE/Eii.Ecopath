@@ -61,11 +61,6 @@ Public Class frmEwE6
 
 #Region " Variables "
 
-    ''' <summary>
-    ''' The UI Context that the entire EwE application will operate on.
-    ''' </summary>
-    Private m_uic As cUIContext = Nothing
-
     ' - Message handlers 
     Private m_mhProgress As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
@@ -322,13 +317,6 @@ Public Class frmEwE6
 
     Public Property UIContext() As cUIContext _
         Implements IUIElement.UIContext
-        Get
-            Return Me.m_uic
-        End Get
-        Private Set(ByVal value As cUIContext)
-            Me.m_uic = value
-        End Set
-    End Property
 
     Public ReadOnly Property Core() As cCore
         Get
@@ -395,7 +383,7 @@ Public Class frmEwE6
 
     Private Sub InitCommands()
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
 
         ' Create and configure File Open command
         Me.m_cmdFileOpen = New cFileOpenCommand(cmdh)
@@ -755,7 +743,7 @@ Public Class frmEwE6
         Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager, Me.UIContext.CommandHandler)
 
         ' Initialize core controller
-        Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager)
+        Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager, Me)
 
         ' Initialize style guide updater
         Me.m_styleguideupdater = New cStyleGuideUpdater(Me.UIContext)
@@ -937,7 +925,7 @@ Public Class frmEwE6
 #End If
 
         ' Start controlling the status strip
-        Me.m_ssMain.Attach(Me.UIContext)
+        Me.m_ssMain.Attach(Me.UIContext, Me)
         ' Start controlling forms
         Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_coreController, Me.m_DockPanel)
 
@@ -3047,7 +3035,7 @@ Public Class frmEwE6
         ElseIf cStringUtils.BeginsWith(strURL, "command:", True) Then
             ' #No: Is command?
             Dim strCommand As String = strURL.Substring(8)
-            cmd = Me.m_uic.CommandHandler.GetCommand(strCommand)
+            cmd = Me.UIContext.CommandHandler.GetCommand(strCommand)
             ' Invoke command without any parameters
             If (cmd IsNot Nothing) Then
                 cmd.Invoke()
@@ -3326,6 +3314,7 @@ Public Class frmEwE6
         Handles m_cmdShowHideItems.OnInvoke
         Dim dlg As New dlgShowHideItems(Me.UIContext, Me.m_cmdShowHideItems.GroupDisplayOptions)
         dlg.ShowDialog()
+        cmd.Checked = Me.UIContext.StyleGuide.HasHiddenItems()
     End Sub
 
     Private Sub OnUpdateShowHideItems(ByVal cmd As cCommand) _

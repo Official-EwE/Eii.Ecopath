@@ -49,6 +49,14 @@ Namespace Controls.EwEGrid
 
 #End Region ' Private bits 
 
+#Region " Constructor "
+
+        Public Sub New()
+            MyBase.New(False)
+        End Sub
+
+#End Region ' Constructor
+
 #Region " Public configuration bits "
 
         ''' -----------------------------------------------------------------------

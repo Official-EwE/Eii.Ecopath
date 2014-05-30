@@ -139,13 +139,13 @@
     <value>m_ucSlider</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.10311.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.10800.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_lblCursor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -172,7 +172,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblCursor.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_lblName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -199,7 +199,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblName.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_tbxName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -223,7 +223,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxName.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lblMin.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -253,13 +253,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblMin.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
+  </data>
+  <data name="m_tbxMin.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxMin.Location" type="System.Drawing.Point, System.Drawing">
     <value>68, 73</value>
   </data>
   <data name="m_tbxMin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 20</value>
+    <value>100, 20</value>
   </data>
   <data name="m_tbxMin.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -274,13 +277,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxMin.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
+  </data>
+  <data name="m_tbxMax.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxMax.Location" type="System.Drawing.Point, System.Drawing">
     <value>68, 47</value>
   </data>
   <data name="m_tbxMax.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 20</value>
+    <value>100, 20</value>
   </data>
   <data name="m_tbxMax.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -295,7 +301,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxMax.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lblMax.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -325,7 +331,31 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblMax.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
+  </data>
+  <data name="m_plLegend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_plLegend.Location" type="System.Drawing.Point, System.Drawing">
+    <value>174, 47</value>
+  </data>
+  <data name="m_plLegend.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 46</value>
+  </data>
+  <data name="m_plLegend.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_plLegend.Name" xml:space="preserve">
+    <value>m_plLegend</value>
+  </data>
+  <data name="&gt;&gt;m_plLegend.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_plLegend.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_plLegend.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -340,6 +370,6 @@
     <value>ucLayerEditorDefault</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.5.10311.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.5.10800.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

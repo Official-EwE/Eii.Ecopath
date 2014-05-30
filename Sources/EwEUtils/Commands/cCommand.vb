@@ -119,7 +119,7 @@ Namespace Commands
                 Debug.Assert(t IsNot Nothing, "Control type not supported for automatic command handling!")
                 objControlHandler = Activator.CreateInstance(t, objParms)
                 If (TypeOf objControlHandler Is cControlHandler) Then
-                    Me.m_dictControls.Add(objGUI, DirectCast(objControlHandler, cControlHandler))
+                    Me.m_dictControls(objGUI) = DirectCast(objControlHandler, cControlHandler)
                 End If
             Catch ex As Exception
                 ' Cannot log this!

@@ -38,9 +38,9 @@ Public Class cEwEStatusBar
 
     ''' <summary>The ui context to use.</summary>
     Private m_uic As cUIContext = Nothing
+    Private m_frmEwE6 As frmEwE6 = Nothing
     ''' <summary>The core state monitor offering events to observe.</summary>
     Private m_csm As cCoreStateMonitor = Nothing
-
     Private m_selmon As cSelectionMonitor = Nothing
 
     ''' -----------------------------------------------------------------------
@@ -70,12 +70,13 @@ Public Class cEwEStatusBar
         End If
     End Sub
 
-    Public Sub Attach(ByVal uic As cUIContext)
+    Public Sub Attach(ByVal uic As cUIContext, frm As frmEwE6)
 
         ' Sanity checks
         Debug.Assert(Me.m_uic Is Nothing)
 
         Me.m_uic = uic
+        Me.m_frmEwE6 = frm
         Me.m_csm = Me.m_uic.Core.StateMonitor
         Me.m_selmon.Attach(uic)
 
@@ -152,7 +153,6 @@ Public Class cEwEStatusBar
     ''' -----------------------------------------------------------------------
     Public Sub UpdateModelPanes()
 
-        Dim appl As frmEwE6 = frmEwE6.GetInstance()
         Dim core As cCore = Me.m_uic.Core
         Dim eweModel As cEwEModel = Me.m_uic.Core.EwEModel
         Dim simScenario As cEcoSimScenario = Nothing
@@ -171,7 +171,7 @@ Public Class cEwEStatusBar
             ' ----------------------
             strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP, _
                                        eweModel.Name, _
-                                       appl.SelectedFileName)
+                                       m_frmEwE6.SelectedFileName)
             Me.UpdateToolstripItem(Me.m_tsEcopathModel, eweModel.Name, strTooltip)
 
             ' -------
