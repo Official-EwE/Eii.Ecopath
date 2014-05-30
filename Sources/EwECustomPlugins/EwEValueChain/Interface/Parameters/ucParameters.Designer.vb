@@ -33,7 +33,7 @@ Partial Class ucParameters
         Me.m_tlpSponsors = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbLenfest = New System.Windows.Forms.PictureBox()
         Me.m_pbSAUP = New System.Windows.Forms.PictureBox()
-        Me.m_pbEU = New System.Windows.Forms.PictureBox()
+        Me.m_pbEcostProject = New System.Windows.Forms.PictureBox()
         Me.m_lblSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblBaseYear = New System.Windows.Forms.Label()
         Me.m_nudBaseYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
@@ -61,7 +61,7 @@ Partial Class ucParameters
         Me.m_tlpSponsors.SuspendLayout()
         CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbSAUP, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbEU, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbEcostProject, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudBaseYear, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudEffortMin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudEffortMax, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,7 +79,7 @@ Partial Class ucParameters
         Me.m_tlpSponsors.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.m_tlpSponsors.Controls.Add(Me.m_pbLenfest, 0, 0)
         Me.m_tlpSponsors.Controls.Add(Me.m_pbSAUP, 1, 0)
-        Me.m_tlpSponsors.Controls.Add(Me.m_pbEU, 2, 0)
+        Me.m_tlpSponsors.Controls.Add(Me.m_pbEcostProject, 2, 0)
         Me.m_tlpSponsors.Location = New System.Drawing.Point(3, 397)
         Me.m_tlpSponsors.Margin = New System.Windows.Forms.Padding(0)
         Me.m_tlpSponsors.Name = "m_tlpSponsors"
@@ -112,17 +112,18 @@ Partial Class ucParameters
         Me.m_pbSAUP.TabIndex = 1
         Me.m_pbSAUP.TabStop = False
         '
-        'm_pbEU
+        'm_pbEcostProject
         '
-        Me.m_pbEU.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_pbEU.Image = Global.EwEValueChainPlugin.My.Resources.Resources.EU_50px
-        Me.m_pbEU.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_pbEU.Location = New System.Drawing.Point(467, 3)
-        Me.m_pbEU.Name = "m_pbEU"
-        Me.m_pbEU.Size = New System.Drawing.Size(227, 70)
-        Me.m_pbEU.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        Me.m_pbEU.TabIndex = 2
-        Me.m_pbEU.TabStop = False
+        Me.m_pbEcostProject.BackgroundImage = Global.EwEValueChainPlugin.My.Resources.Resources.ecost_256x256
+        Me.m_pbEcostProject.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.m_pbEcostProject.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_pbEcostProject.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_pbEcostProject.Location = New System.Drawing.Point(467, 3)
+        Me.m_pbEcostProject.Name = "m_pbEcostProject"
+        Me.m_pbEcostProject.Size = New System.Drawing.Size(227, 70)
+        Me.m_pbEcostProject.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.m_pbEcostProject.TabIndex = 2
+        Me.m_pbEcostProject.TabStop = False
         '
         'm_lblSponsors
         '
@@ -414,7 +415,7 @@ Partial Class ucParameters
         Me.m_tlpSponsors.ResumeLayout(False)
         CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbSAUP, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbEU, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbEcostProject, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudBaseYear, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudEffortMin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudEffortMax, System.ComponentModel.ISupportInitialize).EndInit()
@@ -423,9 +424,8 @@ Partial Class ucParameters
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
-    Friend WithEvents m_pbSAUP As System.Windows.Forms.PictureBox
-    Friend WithEvents m_pbEU As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbSAUP As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbEcostProject As System.Windows.Forms.PictureBox
     Private WithEvents m_lblBaseYear As System.Windows.Forms.Label
     Private WithEvents m_hdrEcosimSettings As cEwEHeaderLabel
     Private WithEvents m_hdrExecution As cEwEHeaderLabel
@@ -451,5 +451,6 @@ Partial Class ucParameters
     Private WithEvents m_rbAggGroup As System.Windows.Forms.RadioButton
     Private WithEvents m_lblAgg As System.Windows.Forms.Label
     Private WithEvents m_cbAutoSave As System.Windows.Forms.CheckBox
+    Private WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
 
 End Class
