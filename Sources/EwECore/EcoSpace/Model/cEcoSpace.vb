@@ -574,6 +574,7 @@ Public Class cEcoSpace
                 Next
             Next
 
+             Me.UpdateDepthMap()
             '   Me.m_SpaceCatchSemaphor = New System.Threading.Semaphore(1, 1, "EcoSpaceMontlyCatch")
 
             Return True
@@ -583,8 +584,11 @@ Public Class cEcoSpace
             Return False
         End Try
 
-
     End Function
+
+    Public Sub Load()
+        Me.UpdateDepthMap()
+    End Sub
 
 #End Region
 
