@@ -39,6 +39,8 @@ Imports EwEUtils.Commands
 ''' ===========================================================================
 Public Class frmStartPanel
 
+    Private m_strURL As String = ""
+
 #Region " Constructor "
 
     ''' -----------------------------------------------------------------------
@@ -69,12 +71,7 @@ Public Class frmStartPanel
     ''' -----------------------------------------------------------------------
     Public Property URL() As String
         Get
-            Try
-                Return Me.m_browser.Url.AbsolutePath
-            Catch ex As Exception
-                cLog.Write(ex)
-            End Try
-            Return ""
+             Return Me.m_strURL
         End Get
         Set(ByVal strURL As String)
             Try
@@ -82,7 +79,11 @@ Public Class frmStartPanel
                     Dim link As New cWebLinks(Me.UIContext.Core)
                     strURL = link.GetURL(cWebLinks.eLinkType.Start)
                 End If
-                Me.m_browser.Navigate(strURL)
+
+                If (strURL <> Me.m_strURL) Then
+                    Me.m_strURL = strURL
+                    Me.m_browser.Navigate(strURL)
+                End If
             Catch ex As Exception
                 cLog.Write(ex)
             End Try
@@ -112,8 +113,8 @@ Public Class frmStartPanel
         AddHandler Me.m_browser.CanGoBackChanged, AddressOf OnUpdateNav
         AddHandler Me.m_browser.CanGoForwardChanged, AddressOf OnUpdateNav
 
-        ' Navigate to default URL
-        Me.URL = ""
+        ' Navigate to current URL
+        Me.URL = Me.URL
         Me.UpdateControls()
 
     End Sub
