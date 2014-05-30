@@ -344,9 +344,6 @@ Public Class cBaseWithInterfacePluginPoint
 
             End If
 
-            ' Activate the interface
-            Me.m_form.Show()
-
             ' Pass a reference to the new interface back to whomever invoked us
             form = Me.m_form
 
