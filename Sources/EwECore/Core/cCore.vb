@@ -9478,6 +9478,9 @@ Public Class cCore
             'you have to turn On the Contaminant tracer to edit the RelCin map
             'Me.m_mapInteractionManager.AddMap(Me.m_EcoSpaceData.RelCin, "Relative Contaminants")
 
+            ' Make sure Ecospace is ready to deal with further parameterization based on loaded data.
+            Me.m_Ecospace.Load()
+
             SendEcospaceLoadMessage(strScenarioName)
 
             ' Invoke plugin point

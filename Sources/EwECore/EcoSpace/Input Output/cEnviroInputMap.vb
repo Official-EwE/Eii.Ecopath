@@ -46,8 +46,6 @@ Public Class cEnviroInputMap
     Private m_manager As cMapResponseInteractionManager
     Private m_iLayerIndex As Integer
 
-    Private m_isLayerActive As Boolean
-
 #End Region ' Private vars
 
 #Region "Construction Initialization"
@@ -58,7 +56,6 @@ Public Class cEnviroInputMap
         ' Init to the data in the manager
         Me.Init(Me.m_manager.MediationData, Me.m_manager.SpaceData)
         m_iLayerIndex = cCore.NULL_VALUE
-        Me.m_isLayerActive = True
         Me.Update()
     End Sub
 
@@ -289,10 +286,14 @@ Public Class cEnviroInputMap
         Try
             For ir As Integer = 1 To Me.m_spaceData.InRow
                 For ic As Integer = 1 To Me.m_spaceData.InCol
-                    If Me.m_spaceData.Depth(ir, ic) > 0 Then
+                    ' JS 30May14: fixed #1343
+                    If Me.m_spaceData.Depth(ir, ic) > 0 And m_spaceData.Excluded(ir, ic) = False Then
                         Dim sCell As Single = CSng(Me.m_source.Cell(ir, ic))
-                        Me.m_min = Math.Min(sCell, Me.m_min)
-                        Me.m_max = Math.Max(sCell, Me.m_max)
+                        ' JS 30May14: fixed #1342
+                        If (sCell <> cCore.NULL_VALUE) Then
+                            Me.m_min = Math.Min(sCell, Me.m_min)
+                            Me.m_max = Math.Max(sCell, Me.m_max)
+                        End If
                     End If
                 Next
             Next
@@ -306,12 +307,7 @@ Public Class cEnviroInputMap
 
 #End Region
 
-    Public Property isLayerActive As Boolean Implements IEnviroInputMap.isLayerActive
-        Get
-            Return Me.m_isLayerActive
-        End Get
-        Set(value As Boolean)
-            Me.m_isLayerActive = value
-        End Set
-    End Property
+    Public Property isLayerActive As Boolean = True _
+        Implements IEnviroInputMap.isLayerActive
+
 End Class
