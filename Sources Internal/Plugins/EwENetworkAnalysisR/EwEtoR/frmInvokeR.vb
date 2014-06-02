@@ -296,7 +296,7 @@ Public Class frmInvokeR
         If writer.Write(strSCOR) Then
             Dim msg As New cMessage(String.Format(My.Resources.STATUS_SCOR_SAVED_SUCCESS, strSCOR), _
                                     eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Plugin, eMessageImportance.Information)
-            msg.Hyperlink = strSCOR
+            msg.Hyperlink = Path.GetDirectoryName(strSCOR)
             Me.m_uic.Core.Messages.SendMessage(msg)
         Else
             Dim msg As New cMessage(String.Format(My.Resources.STATUS_SCOR_SAVED_FAILED, strSCOR), _
