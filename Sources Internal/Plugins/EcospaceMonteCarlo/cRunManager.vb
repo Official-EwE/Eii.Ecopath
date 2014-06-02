@@ -19,6 +19,8 @@ End Class
 
 Public Class cRunParameters
 
+    Public OutputFileName As String
+
     Public BeforeRun As cRunPeriods
     Public AfterRun As cRunPeriods
 
@@ -31,8 +33,6 @@ End Class
 
 
 Public Class cRunManager
-
-    Public OutputFilename As String
 
     Private m_RunSpace As cRunEcospace
     Private m_plugin As cEcospaceMonteCarloPluginPoint
@@ -71,7 +71,7 @@ Public Class cRunManager
         Me.m_isConfig = True
 
         Dim msg As String
-        If Not Directory.Exists(Path.GetDirectoryName(OutputFilename)) Then
+        If Not Directory.Exists(Path.GetDirectoryName(Me.RunParameters.OutputFileName)) Then
             Me.m_isConfig = False
             msg = "No output file defined"
         End If
@@ -181,10 +181,10 @@ Public Class cRunManager
             If Me.m_bStop Then Return
 
             Dim strm As StreamWriter
-            strm = New StreamWriter(Me.OutputFilename, True)
+            strm = New StreamWriter(Me.RunParameters.OutputFileName, True)
             'filename for the output file
             'this allows a row of data to be recognised once all the data is merged into one file
-            Dim filename As String = Path.GetFileName(Me.OutputFilename)
+            Dim filename As String = Path.GetFileName(Me.RunParameters.OutputFileName)
 
             Dim sumB As Single
             strm.Write(filename + ", " + Me.m_TrialNumber.ToString + ", " + RunType)

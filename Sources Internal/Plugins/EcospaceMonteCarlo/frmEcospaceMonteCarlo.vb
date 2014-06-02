@@ -71,11 +71,17 @@ Public Class frmEcospaceMonteCarlo
             Me.m_txAfterStart.Text = Me.RunManager.RunParameters.AfterRun.StartYear.ToString
             Me.m_txAfterNYears.Text = Me.RunManager.RunParameters.AfterRun.nYears.ToString
 
+            If Not String.IsNullOrWhiteSpace(Me.RunManager.RunParameters.OutputFileName) Then
+                Me.m_lbOutputFile.Text = Path.GetFileName("'" + Me.RunManager.RunParameters.OutputFileName) + "' in directory '" + Path.GetDirectoryName(Me.RunManager.RunParameters.OutputFileName) + "'"
+            End If
+
             Me.m_inInit = False
 
         End If
 
     End Sub
+
+
 
 
     Private Sub UpdateParameters()
@@ -137,7 +143,10 @@ Public Class frmEcospaceMonteCarlo
                 End If
             End If
 
-            Me.m_plugin.RunManager.OutputFilename = filename
+            Me.m_plugin.RunManager.RunParameters.OutputFileName = filename
+
+            Me.UpdateControls()
+
         End If
 
     End Sub
