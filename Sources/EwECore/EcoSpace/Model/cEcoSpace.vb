@@ -133,7 +133,7 @@ Public Class cEcoSpace
 
     Private m_refdata As cEcospaceTimeSeriesDataStructures
 
-    Private m_StopRun As Boolean
+    Public m_StopRun As Boolean
 
     'new multiStanza stuff
     Private TotLoss() As Single

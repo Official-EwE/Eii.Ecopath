@@ -8675,10 +8675,12 @@ Public Class cCore
                             breturn = Me.m_Ecospace.RunThreaded()
                         Else
                             breturn = Me.m_Ecospace.Run()
-                            If EcospaceTimeStepHandler Is Nothing Then
-                                'if no RunCompleted call back then makes sure the onEcoSpaceRunCompleted() is called
-                                Me.onEcoSpaceRunCompleted(breturn)
-                            End If
+                            'jb 30-May-2014 onEcoSpaceRunCompleted() was called by Ecospace.Run()
+                            'Don't call it again
+                            'If EcospaceTimeStepHandler Is Nothing Then
+                            '    'if no RunCompleted call back then makes sure the onEcoSpaceRunCompleted() is called
+                            '    Me.onEcoSpaceRunCompleted(breturn)
+                            'End If
 
                         End If
                     End If ' If CheckSpatialDataTimeSteps() Then

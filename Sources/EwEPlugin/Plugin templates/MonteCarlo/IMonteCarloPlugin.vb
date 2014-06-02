@@ -16,7 +16,7 @@
 ' ===============================================================================
 '
 
-
+Imports System.Threading
 
 
 Public Interface IMonteCarloPlugin
@@ -26,7 +26,7 @@ Public Interface IMonteCarloPlugin
     Sub MontCarloInitialized(ByVal MonteCarloAsObject As Object)
 
 
-    Sub MonteCarloBalancedEcopathModel(ByVal nIterations As Integer)
+    Sub MonteCarloBalancedEcopathModel(ByVal WaitLock As ManualResetEvent, ByVal TrialNumber As Integer, ByVal nIterations As Integer)
 
 
     Sub MonteCarloEcosimRunCompleted()
