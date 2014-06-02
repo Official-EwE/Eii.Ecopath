@@ -26,6 +26,7 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports System.Threading
 
 #End Region
 
@@ -64,6 +65,9 @@ Public Class cEcospaceMonteCarloPluginPoint
     Implements EwEPlugin.IEcospaceRunCompletedPlugin
     'Not needed
     'Implements EwEPlugin.IEcospaceEndTimestepPlugin
+
+    Implements EwEPlugin.ISearchPlugin
+
 
 
 #Region "Local variables"
@@ -233,37 +237,32 @@ Public Class cEcospaceMonteCarloPluginPoint
 
     Public Sub MontCarloInitialized(MonteCarloAsObject As Object) Implements EwEPlugin.IMonteCarloPlugin.MontCarloInitialized
         Try
-            Me.m_MonteCarlo = DirectCast(MonteCarloAsObject, cEcosimMonteCarlo)
 
+            Me.m_MonteCarlo = DirectCast(MonteCarloAsObject, cEcosimMonteCarlo)
             Me.m_runManager.Init(Me)
 
+            Me.m_runManager.configMonteCarlo()
 
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Public Sub MonteCarloBalancedEcopathModel(nIterations As Integer) Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
+    Public Sub MonteCarloBalancedEcopathModel(ByVal WaitLock As ManualResetEvent, TrialNumber As Integer, nIterations As Integer) Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
 
-        Me.m_runManager.Run()
+        'WaitLock.Reset()
 
-        If Me.Core.EcoSimModelParameters.NumberYears <> 2 Then
-            Me.Core.EcoSimModelParameters.NumberYears = 2
+        If Me.m_runManager.Run(WaitLock, TrialNumber) Then
+
         End If
+
+        ' WaitLock.Set()
+
     End Sub
 
     Public Sub MonteCarloEcosimRunCompleted() Implements EwEPlugin.IMonteCarloPlugin.MonteCarloEcosimRunCompleted
 
     End Sub
-
-    'Public Sub EcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements EwEPlugin.IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
-    '    Try
-    '        Me.m_runManager.OnEcospaceTimeStep(iTime)
-    '    Catch ex As Exception
-
-    '    End Try
-
-    'End Sub
 
 
     Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
@@ -272,6 +271,24 @@ Public Class cEcospaceMonteCarloPluginPoint
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Public Sub SearchInitialized(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.SearchInitialized
+
+    End Sub
+
+
+    Public Sub PostRunSearchResults(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.PostRunSearchResults
+
+    End Sub
+
+    Public Sub SearchCompleted(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.SearchCompleted
+
+    End Sub
+
+
+    Public Sub SearchIterationsStarting() Implements EwEPlugin.ISearchPlugin.SearchIterationsStarting
+        Me.m_runManager.isConfigured()
     End Sub
 
 #End Region
@@ -413,9 +430,6 @@ Public Class cEcospaceMonteCarloPluginPoint
                 Me.m_form.UIContext = m_uic
 
             End If
-
-            ' Activate the interface
-            Me.m_form.Show()
 
             ' Pass a reference to the new interface back to whomever invoked us
             form = Me.m_form

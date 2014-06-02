@@ -18,6 +18,7 @@
 
 Imports EwECore
 Imports System.Windows.Forms
+Imports System.IO
 
 ''' <summary>
 ''' A very, very basic plug-in form.
@@ -26,6 +27,8 @@ Public Class frmEcospaceMonteCarlo
 
     Private m_plugin As cEcospaceMonteCarloPluginPoint
 
+    Private m_inInit As Boolean
+
     Public Sub New()
 
         ' This call is required by the designer.
@@ -33,6 +36,13 @@ Public Class frmEcospaceMonteCarlo
 
 
     End Sub
+
+
+    Public Overrides ReadOnly Property IsRunForm As Boolean
+        Get
+            Return True
+        End Get
+    End Property
 
     ''' <summary>
     ''' OnLoad is called when a form is about to go 'live'. It is the perfect place to
@@ -49,27 +59,101 @@ Public Class frmEcospaceMonteCarlo
 
     End Sub
 
+    Protected Overrides Sub UpdateControls()
+        MyBase.UpdateControls()
+
+        If Me.RunManager IsNot Nothing Then
+
+            Me.m_inInit = True
+
+            Me.m_txBeforeStart.Text = Me.RunManager.RunParameters.BeforeRun.StartYear.ToString
+            Me.m_txBeforeNYears.Text = Me.RunManager.RunParameters.BeforeRun.nYears.ToString
+            Me.m_txAfterStart.Text = Me.RunManager.RunParameters.AfterRun.StartYear.ToString
+            Me.m_txAfterNYears.Text = Me.RunManager.RunParameters.AfterRun.nYears.ToString
+
+            Me.m_inInit = False
+
+        End If
+
+    End Sub
+
+
+    Private Sub UpdateParameters()
+
+        If Me.m_inInit Then Return
+
+        If Me.RunManager IsNot Nothing Then
+            Me.RunManager.RunParameters.BeforeRun.StartYear = Me.toInt(Me.m_txBeforeStart)
+            Me.RunManager.RunParameters.BeforeRun.nYears = Me.toInt(Me.m_txBeforeNYears)
+            Me.RunManager.RunParameters.AfterRun.StartYear = Me.toInt(Me.m_txAfterStart)
+            Me.RunManager.RunParameters.AfterRun.nYears = Me.toInt(Me.m_txAfterNYears)
+        End If
+
+    End Sub
+
+    Private Function toInt(TextBox As TextBox) As Integer
+        Dim value As Integer
+        If Integer.TryParse(TextBox.Text, value) Then
+            Return value
+        End If
+        Return 0
+    End Function
+
+
+    Private ReadOnly Property RunManager As cRunManager
+        Get
+            Return Me.m_plugin.RunManager
+        End Get
+    End Property
 
     Public Sub Init(ByVal PluginPoint As cEcospaceMonteCarloPluginPoint)
         m_plugin = PluginPoint
-    End Sub
 
-    Private Sub m_btButton_Click(sender As System.Object, e As System.EventArgs) Handles m_btButton.Click
-        'Dim ValueFromTextBox As Single
-        ''Get the value form the textbox
-        ''textbox store values as a String 
-        ''We need to convert it to a Single
-        'Single.TryParse(Me.m_txtTextbox.Text, ValueFromTextBox)
-
-        ''Call the Plugin with the Value from the text box
-        'Me.m_plugin.DoSomething(ValueFromTextBox)
-
-        'Me.m_plugin.RunManager.Run()
+        UpdateControls()
 
     End Sub
 
-    Private Sub btnClickMe_Click(sender As System.Object, e As System.EventArgs) Handles btnClickMe.Click
-        'Me.m_plugin.OpenModel("")
+
+    Private Sub m_btOutput_Click(sender As System.Object, e As System.EventArgs) Handles m_btOutput.Click
+        Dim SFD As New SaveFileDialog
+
+        SFD.FileName = "RBT_Ecospace_MonteCarlo.csv"
+        SFD.Filter = "*.csv|*.csv|*.*|*.*"
+        SFD.FilterIndex = 0
+
+        SFD.OverwritePrompt = False
+
+        If SFD.ShowDialog = Windows.Forms.DialogResult.OK Then
+            Dim filename As String = SFD.FileName
+
+            If File.Exists(filename) Then
+                If MsgBox("Selected output file already exists. Do you want to overwrite it?" + vbCrLf + "Yes to overwrite." + vbCrLf + "No to append new results.", _
+                    MsgBoxStyle.YesNo, "Ecospace MonteCarlo.") = MsgBoxResult.Yes Then
+                    Try
+                        File.Delete(filename)
+                    Catch ex As Exception
+
+                    End Try
+                End If
+            End If
+
+            Me.m_plugin.RunManager.OutputFilename = filename
+        End If
+
     End Sub
 
+    Private Sub m_btStop_Click(sender As System.Object, e As System.EventArgs) Handles m_btStop.Click
+        Me.m_plugin.RunManager.StopRun()
+    End Sub
+
+    Private Sub m_txAfterNYears_TextChanged(sender As Object, e As System.EventArgs) _
+                Handles m_txAfterNYears.TextChanged, m_txAfterStart.TextChanged, m_txBeforeNYears.TextChanged, m_txBeforeStart.TextChanged
+
+        Me.UpdateParameters()
+
+    End Sub
+
+    Private Sub frmEcospaceMonteCarlo_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

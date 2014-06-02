@@ -24,6 +24,7 @@ Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEUtils.Core
 Imports EwEPlugin
+Imports System.Threading
 
 #End Region ' Imports
 
@@ -79,6 +80,8 @@ Public Class cEcosimMonteCarlo
     ''' F/M ratio for SRA 
     ''' </summary>
     Public Property FMratioForSRA As Single = 1
+
+    Public Property maxEcopathTries As Integer = MAX_ECOPATH_TRIES
 
     ''' <summary>
     ''' Optional <see cref="EcoSimTimeStepDelegate">delegate</see> that will be called after a 
@@ -143,6 +146,8 @@ Public Class cEcosimMonteCarlo
             Me.m_core.Autosave(eAutosaveTypes.MonteCarlo) = value
         End Set
     End Property
+
+    Private Const MAX_ECOPATH_TRIES As Integer = 10000
 
     Private m_core As cCore
     Private m_ecopath As cEcoPathModel
@@ -228,6 +233,8 @@ Public Class cEcosimMonteCarlo
 
             'set if a parameter can be varied
             'redimVariables() needs m_isVariable(group,parameter) to be set before it is called
+
+            Me.maxEcopathTries = MAX_ECOPATH_TRIES
             Me.setIsVariable()
 
             Me.redimVariables()
@@ -513,7 +520,6 @@ Public Class cEcosimMonteCarlo
                 SSBestFit = 0
             End If
 
-            Dim maxEcopathTries As Integer = 10000
             For iTrial = 1 To Ntrials 'PerThread
 
                 If StopTrial = True Then Exit For
@@ -524,7 +530,7 @@ Public Class cEcosimMonteCarlo
 
                 If BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
 
-                    If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MonteCarloBalancedEcopathModel(iter)
+                    Me.WaitForExternalProcess(iTrial, iter)
 
                     m_ecosim.Init(True)
 
@@ -604,6 +610,13 @@ Public Class cEcosimMonteCarlo
             m_ecopath.suppressMessages = False
             Throw New ApplicationException(Me.ToString & ".Run", ex)
         End Try
+    End Sub
+
+
+    Private Sub WaitForExternalProcess(ByVal iTrial As Integer, ByVal iter As Integer)
+        Dim WaitLock As ManualResetEvent = New ManualResetEvent(True)
+        If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MonteCarloBalancedEcopathModel(WaitLock, iTrial, iter)
+        WaitLock.WaitOne()
     End Sub
 
     Public Sub setDefaults()

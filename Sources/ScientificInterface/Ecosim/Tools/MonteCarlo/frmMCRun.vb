@@ -212,6 +212,8 @@ Namespace Ecosim
 
         End Sub
 
+
+        ' Public Overrides sub 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             If (Me.UIContext Is Nothing) Then Return

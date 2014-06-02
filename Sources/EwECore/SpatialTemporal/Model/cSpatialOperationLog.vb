@@ -124,12 +124,17 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Friend Sub EndLayerLog(Optional bSendMessage As Boolean = True)
 
-            If (Me.m_msgCurrent IsNot Nothing) And (bSendMessage = True) Then
-                Me.m_core.Messages.SendMessage(Me.m_msgCurrent)
-                Me.WriteMessage()
-            End If
+            Try
+                If (Me.m_msgCurrent IsNot Nothing) And (bSendMessage = True) Then
+                    Me.m_core.Messages.SendMessage(Me.m_msgCurrent)
+                    Me.WriteMessage()
+                End If
 
-            Me.m_msgCurrent = Nothing
+                Me.m_msgCurrent = Nothing
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
 
         End Sub
 
