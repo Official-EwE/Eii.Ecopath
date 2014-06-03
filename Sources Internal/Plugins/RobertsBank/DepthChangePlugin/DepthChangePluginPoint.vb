@@ -374,7 +374,7 @@ Public Class cDepthChangePluginPoint
             End If
 
             ' Activate the interface
-            Me.m_form.Show()
+            'Me.m_form.Show()
 
             ' Pass a reference to the new interface back to whomever invoked us
             form = Me.m_form

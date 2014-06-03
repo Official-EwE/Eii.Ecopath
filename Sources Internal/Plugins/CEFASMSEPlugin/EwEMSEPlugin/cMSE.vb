@@ -399,6 +399,8 @@ Public Class cMSE
     Public Function IsRunDataCompatible() As Boolean
 
         ' Would it not be nice if these file names were represented by enums as well?
+        Debug.Assert(False, "Oh my...")
+        Return True
 
         'Dim aFilesFleet As String() = New String() {"ChangesInEffortLimits", "QuotaShares"}
         'Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Fleet)
