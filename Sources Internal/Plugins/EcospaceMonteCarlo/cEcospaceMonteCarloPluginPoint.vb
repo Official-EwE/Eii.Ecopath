@@ -371,7 +371,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Ecospace MonteCarlo"
+            Return "Ecospace Monte Carlo"
         End Get
     End Property
 

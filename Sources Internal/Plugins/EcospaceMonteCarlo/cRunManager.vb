@@ -3,8 +3,6 @@ Imports EwECore
 Imports System.IO
 Imports System.Threading
 
-
-
 Public Class cRunPeriods
 
     Public StartYear As Integer
@@ -59,8 +57,6 @@ Public Class cRunManager
         End Set
     End Property
 
-
-
     Public Sub StopRun()
         Me.m_plugin.MonteCarlo.StopTrial = True
         Me.m_plugin.EcoSpace.m_StopRun = True
@@ -110,8 +106,6 @@ Public Class cRunManager
 
         m_TrialNumber = TrialNumber
         m_waitLock = WaitLock
-
-
 
         m_waitLock.Reset()
         Dim runthread As New Thread(AddressOf RunOnThread)
@@ -177,7 +171,7 @@ Public Class cRunManager
     Private Sub getResults()
 
         Try
-            'Don't save the results when the run was stopped
+            'Only save complete runs
             If Me.m_bStop Then Return
 
             Dim strm As StreamWriter

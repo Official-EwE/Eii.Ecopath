@@ -49,6 +49,7 @@ Partial Class frmEcospaceMonteCarlo
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.m_lbOutputFile = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'm_btOutput
@@ -143,12 +144,24 @@ Partial Class frmEcospaceMonteCarlo
         Me.m_lbOutputFile.Size = New System.Drawing.Size(519, 21)
         Me.m_lbOutputFile.TabIndex = 10
         '
+        'Label5
+        '
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(26, 215)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(250, 74)
+        Me.Label5.TabIndex = 11
+        Me.Label5.Text = "WARNING: Stop run will stop the current run, but the Monte Carlo form will still " & _
+    "not be enabled. To re-start the run close the Monte Carlo form and re-open it." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & _
+    ""
+        '
         'frmEcospaceMonteCarlo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(566, 334)
         Me.ControlBox = False
+        Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.m_lbOutputFile)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
@@ -180,4 +193,5 @@ Partial Class frmEcospaceMonteCarlo
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents m_lbOutputFile As System.Windows.Forms.Label
+    Friend WithEvents Label5 As System.Windows.Forms.Label
 End Class
