@@ -36,7 +36,36 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     Public Class cEwENumericUpDown
         Inherits NumericUpDown
+
+        Public Sub New()
+            MyBase.New()
+        End Sub
+
 #If 0 Then
+
+        Protected Overrides Sub OnGotFocus(e As System.EventArgs)
+            MyBase.OnGotFocus(e)
+            Me.Capture = True
+            Console.WriteLine(Me.Name & " captured")
+        End Sub
+
+        Protected Overrides Sub OnLostFocus(e As System.EventArgs)
+            Me.Capture = False
+            MyBase.OnLostFocus(e)
+            Console.WriteLine(Me.Name & " lost")
+        End Sub
+
+        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
+            Console.WriteLine(Me.Name & " heard click")
+            If Not Me.ClientRectangle.Contains(e.Location) Then
+                'If (Me.Capture = True) Then
+                Me.ValidateEditText()
+                Console.WriteLine(Me.Name & " validated")
+                'End If
+            End If
+            MyBase.OnMouseDown(e)
+        End Sub
+
 
         Implements ISupportInitialize
 

@@ -78,8 +78,10 @@ Public MustInherit Class gridForcingBase
         Dim iNumPoints As Integer = 0
         Dim iNumHeaders As Integer = 0
         Dim cell As SourceGrid2.Cells.ICell = Nothing
+        Dim bSeasonal As Boolean = Me.IsSeasonal
+        Dim bMonthly As Boolean = Me.IsMonthly
 
-        If Me.IsSeasonal Then
+        If bSeasonal Then
             iNumPoints = cCore.N_MONTHS
         Else
             iNumPoints = Me.XAxisMax
@@ -96,7 +98,7 @@ Public MustInherit Class gridForcingBase
         ' Create row header cells
         For i As Integer = 0 To iNumPoints - 1
             cell = New EwERowHeaderCell(Me.TimeLabel(i))
-            If (i Mod cCore.N_MONTHS) > 0 Then
+            If ((i Mod cCore.N_MONTHS) > 0) Or (Not bMonthly) Then
                 cell.VisualModel.TextAlignment = Drawing.ContentAlignment.MiddleCenter
             End If
             Me(eRowType.FirstTime + i, 0) = cell

@@ -77,6 +77,12 @@ Public MustInherit Class gridShapeBase
         End Set
     End Property
 
+    Public Overridable ReadOnly Property IsMonthly As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Public Overridable Property ShowAllData As Boolean
         Get
             Return True

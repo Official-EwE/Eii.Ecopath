@@ -347,6 +347,10 @@ Namespace Controls
             Return New eDataTypes() {eDataTypes.Mediation}
         End Function
 
+        Public Overrides Function XAxisMaxValue() As Integer
+            Return cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS
+        End Function
+
     End Class
 
 End Namespace ' Ecosim
