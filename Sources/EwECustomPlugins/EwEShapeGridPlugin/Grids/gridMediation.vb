@@ -36,4 +36,10 @@ Public MustInherit Class gridMediation
         Return CStr(iPoint + 1)
     End Function
 
+    Public Overrides ReadOnly Property IsMonthly As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
 End Class

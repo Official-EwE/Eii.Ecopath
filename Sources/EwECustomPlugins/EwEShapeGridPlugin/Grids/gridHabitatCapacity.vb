@@ -76,11 +76,7 @@ Public Class gridHabitatCapacity
         Dim iNumHeaders As Integer = 0
         Dim cell As SourceGrid2.Cells.ICell = Nothing
 
-        If Me.IsSeasonal Then
-            iNumPoints = cCore.N_MONTHS
-        Else
-            iNumPoints = Me.XAxisMax
-        End If
+        iNumPoints = Me.XAxisMax
         Me.Redim(iNumPoints + [Enum].GetValues(GetType(eRowType)).Length, iNumShapes + 1)
 
         cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, SharedResources.STATUS_UPDATING)
