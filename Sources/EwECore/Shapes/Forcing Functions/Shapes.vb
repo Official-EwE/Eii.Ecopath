@@ -1433,7 +1433,7 @@ Public Class cEnviroResponseFunction
 
     End Function
 
-#Region " Map interfaces "
+#Region " Response function "
 
     ''' <summary>
     ''' Minimum value of the input map that the response will be computed for. 
@@ -1481,37 +1481,7 @@ Public Class cEnviroResponseFunction
         End Get
     End Property
 
-    <Obsolete("Please use MinInputValue() instead")>
-    Public Property XAxisMin() As Single
-        Get
-            Return Me.ResponseLeftLimit
-        End Get
-        Set(ByVal value As Single)
-            Me.ResponseLeftLimit = value
-        End Set
-
-    End Property
-
-    <Obsolete("Please use MaxInputValue() instead")>
-    Public Property XAxisMax() As Single
-        Get
-            Return Me.ResponseRightLimit
-        End Get
-        Set(ByVal value As Single)
-            Me.ResponseRightLimit = value
-        End Set
-
-    End Property
-
-    <Obsolete("Please use MeanInputValue() instead")>
-    Public ReadOnly Property XAxisMean() As Single
-        Get
-            Return Me.ResponseMean ' (m_medData.XAxisMin(Me.Index) + m_medData.XAxisMax(Me.Index)) * 0.5F
-        End Get
-    End Property
-
-
-#End Region ' Map interfaces
+#End Region ' Response function
 
 #Region "Groups and Fleets interfaces not used by a cEnviroResponseFunction "
 

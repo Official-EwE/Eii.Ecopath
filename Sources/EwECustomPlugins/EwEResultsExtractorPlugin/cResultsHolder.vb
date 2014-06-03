@@ -143,7 +143,7 @@ Public Class cResultsHolder
         iYear = Int((iTime + 7) / 12) - 1
 
         'Check whether data exists for this year
-        For i = 1 To mTimeSeries.NdatYear
+        For i = 1 To mTimeSeries.nDatPoints
             If mTimeSeries.DatYear(i) - mTimeSeries.DatYear(1) = iYear Then iDyear = i : Exit For
         Next
 
@@ -202,7 +202,7 @@ Public Class cResultsHolder
 
         mDataStructure = EcosimDatastructures
 
-        For i = 1 To mTimeSeries.NdatYear
+        For i = 1 To mTimeSeries.nDatPoints
             iYear = mTimeSeries.DatYear(i) - mTimeSeries.DatYear(1)
             For j = 1 To mTimeSeries.NdatType
                 If mTimeSeries.DatVal(i, j) = 0 Then
@@ -218,8 +218,8 @@ Public Class cResultsHolder
 
 
     Public Sub EcosimRunInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
-        ReDim ZStat(mTimeSeries.NdatType, mTimeSeries.NdatYear)
-        ReDim logdiff(mTimeSeries.NdatType, mTimeSeries.NdatYear)
+        ReDim ZStat(mTimeSeries.NdatType, mTimeSeries.nDatPoints)
+        ReDim logdiff(mTimeSeries.NdatType, mTimeSeries.nDatPoints)
         ReDim sumSS(mTimeSeries.NdatType)
     End Sub
 

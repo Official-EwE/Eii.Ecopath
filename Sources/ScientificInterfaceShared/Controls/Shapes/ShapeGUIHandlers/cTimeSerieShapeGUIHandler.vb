@@ -690,6 +690,11 @@ Namespace Controls
                             ashapeSelect = New cShapeData() {Me.m_lShapes(Me.m_lShapes.Count - 1)}
                     End Select
                 End If
+            Else
+                ' JS 11Apr14: clear selected shape if no shapes present
+                If (Me.m_lShapes.Count = 0) Then
+                    ashapeSelect = Nothing
+                End If
             End If
 
             If (Me.ShapeToolBox IsNot Nothing) Then

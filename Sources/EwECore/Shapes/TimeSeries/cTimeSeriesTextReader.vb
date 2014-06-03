@@ -46,7 +46,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <summary>Start year of the time series.</summary>
     Private m_iFirstYear As Integer = 0
     ''' <summary>Number of years in the time series.</summary>
-    Private m_iNumYears As Integer = 0
+    Private m_iNumPoints As Integer = 0
 
     ''' <summary>Internal list of read time series objects.</summary>
     Private m_ts As New List(Of cTimeSeriesImport)
@@ -56,6 +56,8 @@ Public MustInherit Class cTimeSeriesTextReader
     Private m_strDelimiter As String = ""
     ''' <summary>Decimal separator to use when interpreting floating point values in the text.</summary>
     Private m_strDecimalSeparator As String = ""
+    ''' <summary>Dat apoint interval.</summary>
+    Private m_interval As eTSDataSetInterval = eTSDataSetInterval.Annual
 
 #End Region ' Private vars
 
@@ -233,7 +235,9 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' </param>
     ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Read(ByVal strDelimiter As String, ByVal strDecimalSeparator As String) As Boolean
+    Public Overridable Function Read(ByVal strDelimiter As String, _
+                                     ByVal strDecimalSeparator As String, _
+                                     ByVal interval As eTSDataSetInterval) As Boolean
 
         ' Reset reader to clear any previous read results.
         Me.Reset()
@@ -247,6 +251,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ' Store delimiter and decimal separator
         Me.m_strDelimiter = strDelimiter
         Me.m_strDecimalSeparator = strDecimalSeparator
+        Me.m_interval = interval
 
         ' Asses data validity and build preview
         If Not Me.AnalyzeData() Then Return False
@@ -290,7 +295,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ' Clear preview
         Me.m_tsPreview = Nothing
         Me.m_iFirstYear = 0
-        Me.m_iNumYears = 0
+        Me.m_iNumPoints = 0
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -423,16 +428,11 @@ Public MustInherit Class cTimeSeriesTextReader
                 Else
 
                     ' Fix Start year if not set
-                    If (Me.m_iFirstYear = 0) Then Me.m_iFirstYear = iYear
-
-                    ' Check year increment
-                    If iPrevYear <> 0 Then
-                        If iYear <> (iPrevYear + 1) Then
-                            Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARMISSING, iPrevYear + 1, iLineNumber))
-                            bSucces = False
-                        End If
-                        iPrevYear = iYear
+                    If (Me.m_iFirstYear = 0) Then
+                        Me.m_iNumPoints = 0
+                        Me.m_iFirstYear = iYear
                     End If
+                    Me.m_iNumPoints += 1
 
                     If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
                         Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARVALUEMISSING, iYear), iLineNumber)
@@ -455,10 +455,7 @@ Public MustInherit Class cTimeSeriesTextReader
 
         Me.ReleaseReader(reader)
 
-        If (bSucces) Then
-            ' Set number of years
-            Me.m_iNumYears = Math.Max(0, iYear - Me.m_iFirstYear + 1)
-        End If
+        If (Not bSucces) Then Me.m_iNumPoints = 0
 
         ' Bye!
         Return bSucces
@@ -575,7 +572,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ' Initialize time series objects
         For i As Integer = 0 To iNumSeries - 1
 
-            ts = New cTimeSeriesImport(Me.m_iNumYears, aiType(i))
+            ts = New cTimeSeriesImport(Me.m_iNumPoints, aiType(i))
 
             ' Configure time series
             With ts
@@ -583,7 +580,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 .WtType = asWeight(i)
                 .CV = asCV(i)
                 .DatPool = aiDatPool(i)
-                .ResizeData(Me.m_iNumYears)
+                .ResizeData(Me.m_iNumPoints)
             End With
 
             ' Add it
@@ -591,7 +588,7 @@ Public MustInherit Class cTimeSeriesTextReader
         Next
 
         ' Years
-        For iRow As Integer = 1 To Me.m_iNumYears
+        For iRow As Integer = 1 To Me.m_iNumPoints
 
             For iColumn As Integer = 1 To iNumSeries
 
@@ -939,9 +936,24 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' Returns the number of years of time series data found by the reader.
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    Public ReadOnly Property NumPoints() As Integer
+        Get
+            Return Me.m_iNumPoints
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the number of years of time series data found by the reader.
+    ''' </summary>
+    ''' <remarks>
+    ''' This method has been deprecated in favour of <see cref="NumPoints"/>.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    <Obsolete("Use NumPoints instead")> _
     Public ReadOnly Property NumYears() As Integer
         Get
-            Return Me.m_iNumYears
+            Return Me.NumPoints
         End Get
     End Property
 

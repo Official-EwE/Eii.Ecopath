@@ -799,7 +799,9 @@ Namespace Ecosim
             Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
 
             ' Draw timeseries 
-            Me.AddTimeSeriesLines(lLines)
+            If Me.Core.nTimeSeriesEnabled > 0 Then
+                Me.AddTimeSeriesLines(lLines)
+            End If
 
             ' Calculate the Axis Scale Ranges
             Me.UpdateControls()
@@ -835,19 +837,24 @@ Namespace Ecosim
             Dim group As cEcoPathGroupInput = Nothing
             Dim StartBio As Single = 0.0!
             Dim EDataQ As Single = 0.0!
+            Dim tsInterval As eTSDataSetInterval
 
             ' Only plot time series for biomass 
             If (Me.m_plotData <> eMSEPlotData.Biomass) Then Return
             ' Only plot data when NOT showing cumulative data
             If (Me.m_bIsCumulative) Then Return
+            ' Only if there is an Active Timeseries dataset
+            If Core.ActiveTimeSeriesDatasetIndex < 1 Then Return
+
+            'Get the time series interval for the currently loaded dataset
+            tsInterval = Core.TimeSeriesDataset(Core.ActiveTimeSeriesDatasetIndex).TimeSeriesInterval
 
             ' For all time series
             For iTS As Integer = 1 To Core.nTimeSeries
                 ' Get TS
                 ts = Core.EcosimTimeSeries(iTS)
                 ' Is ts usable?
-                If ((ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
-                    (ts.TimeSeriesType = eTimeSeriesType.BiomassAbs)) And _
+                If ((ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (ts.TimeSeriesType = eTimeSeriesType.BiomassAbs)) And _
                    (ts.Enabled = True) Then
 
                     ' Sanity check
@@ -868,11 +875,43 @@ Namespace Ecosim
                     End If
                     StartBio = Core.StartBiomass(gts.GroupIndex)
 
-                    For iYear As Integer = 1 To Core.EcoSimModelParameters.NumberYears
-                        If iYear < gts.ShapeData().Length Then
-                            If gts.ShapeData(iYear) > 0 Then
-                                ' Minus 1 because it should start with the first year
-                                ppl.Add(iYear + Core.EcosimFirstYear - 0.5, (gts.ShapeData()(iYear) / EDataQ) / StartBio)
+                    'delta t for the monthly data
+                    Dim Dt As Double = 1
+                    Dim halfDt As Double = 0.5
+                    Dim xpos As Double
+                    Dim ndatapoints As Integer = 0
+                    Dim iYear As Integer = Core.EcosimFirstYear
+
+                    'Set timestep variables based on the dataset interval
+                    'number of data points 
+                    'delta t 
+                    'half delta t 
+                    Select Case tsInterval
+                        Case eTSDataSetInterval.Annual
+                            ndatapoints = Core.EcoSimModelParameters.NumberYears
+                            Dt = 1
+                            halfDt = 0.5
+                        Case eTSDataSetInterval.Monthly
+                            ndatapoints = Core.nEcosimTimeSteps
+                            Dt = 1 / cCore.N_MONTHS
+                            halfDt = Dt * 0.5
+                        Case Else
+                            Debug.Assert(False)
+                    End Select
+
+                    For iDataPoint As Integer = 1 To ndatapoints
+                        If iDataPoint < gts.ShapeData().Length Then
+                            If gts.ShapeData(iDataPoint) > 0 Then
+                                'Select Case tsInterval
+                                '    Case eTSDataSetInterval.Annual
+                                '        'Shift the xpos to the middle of the timestep
+                                '        xpos = iYear + iDataPoint - 0.5
+                                '    Case eTSDataSetInterval.Monthly
+                                '        xpos = iYear + iDataPoint * dt - dt * 0.5
+                                'End Select
+                                xpos = iYear + iDataPoint * Dt - halfDt
+                                ppl.Add(xpos, (gts.ShapeData()(iDataPoint) / EDataQ) / StartBio)
+
                             End If
                         End If
                     Next

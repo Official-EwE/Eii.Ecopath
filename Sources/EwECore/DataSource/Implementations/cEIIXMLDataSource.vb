@@ -969,7 +969,7 @@ Public Class cEIIXMLDataSource
                 tsDS.strDatasetAuthor(iDataset) = CStr(Me.ReadSafe(drow, "Author", ""))
                 tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(drow, "Contact", ""))
                 tsDS.nDatasetFirstYear(iDataset) = CInt(drow("FirstYear"))
-                tsDS.nDatasetNumYears(iDataset) = CInt(drow("NumYears"))
+                tsDS.nDatasetNumPoints(iDataset) = CInt(drow("NumYears"))
                 tsDS.nDatasetNumTimeSeries(iDataset) = 0 ' CInt(Me.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(drow("DatasetID")))))
                 iDataset += 1
             Next
@@ -3103,19 +3103,14 @@ Public Class cEIIXMLDataSource
     End Function
 
     ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Adds an time series dataset to the datasource.
-    ''' </summary>
-    ''' <param name="strDatasetName">Name to assign to new dataset.</param>
-    ''' <param name="strDescription">Description to assign to new dataset.</param>
-    ''' <param name="strAuthor">Author to assign to the new dataset.</param>
-    ''' <param name="strContact">Contact info to assign to the new dataset.</param>
-    ''' <param name="iFirstYear">First year of the dataset.</param>
-    ''' <param name="iNumYears">Number of years in the dataset.</param>
-    ''' <param name="iDatasetID">Database ID assigned to the new dataset.</param>
+    ''' <inheritdocs cref="IEcosimDatasource.AppendTimeSeriesDataset"/>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String, ByVal iFirstYear As Integer, ByVal iNumYears As Integer, ByRef iDatasetID As Integer) As Boolean Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
+    Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String, _
+                                            ByVal strAuthor As String, ByVal strContact As String, _
+                                            ByVal iFirstYear As Integer, ByVal iNumPoints As Integer, ByVal interval As eTSDataSetInterval, _
+                                            ByRef iDatasetID As Integer) As Boolean _
+        Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
         Return False
     End Function
 

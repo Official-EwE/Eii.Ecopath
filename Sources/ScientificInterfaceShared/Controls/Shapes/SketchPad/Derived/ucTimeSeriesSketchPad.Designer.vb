@@ -19,7 +19,7 @@
 Namespace Controls
 
     Partial Class ucTimeSeriesSketchPad
-        Inherits ucSketchPad
+        Inherits ucForcingSketchPad
 
         'UserControl overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _

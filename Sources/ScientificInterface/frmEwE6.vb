@@ -1421,6 +1421,7 @@ Public Class frmEwE6
     Private Sub PopulateScenarioDropdowns()
 
         Dim tsmi As ToolStripMenuItem = Nothing
+        Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
 
         Me.ClearScenarioDropdowns()
 
@@ -1451,7 +1452,9 @@ Public Class frmEwE6
                 End If
 
                 tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.TimeSeriesDataset(i).Name
+                tsmi.Text = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                                          Me.Core.TimeSeriesDataset(i).Name, _
+                                          fmt.GetDescriptor(Me.Core.TimeSeriesDataset(i).TimeSeriesInterval).ToLower())
                 tsmi.Tag = Me.Core.TimeSeriesDataset(i)
                 tsmi.Checked = (Me.Core.ActiveTimeSeriesDatasetIndex = i)
 
@@ -4451,7 +4454,7 @@ End Class
 
 #Region " Deprecated "
 
-<Obsolete("Please use fmrEwE6 instead")> _
+<Obsolete("Please use frmEwE6 instead")> _
 Public Class AppLauncher
     Inherits frmEwE6
 

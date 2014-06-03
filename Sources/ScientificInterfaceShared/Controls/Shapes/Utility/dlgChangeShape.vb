@@ -67,30 +67,6 @@ Namespace Controls
 
 #End Region ' Private vars
 
-#Region " Private class "
-
-        Private Class cShapeFunctionTypeItem
-
-            Private m_sft As eShapeFunctionType = eShapeFunctionType.NotSet
-
-            Public Sub New(ByVal sft As eShapeFunctionType)
-                Me.m_sft = sft
-            End Sub
-
-            Public Overrides Function ToString() As String
-                Dim fmt As New cShapeFunctionTypeFormatter()
-                Return fmt.GetDescriptor(Me.m_sft)
-            End Function
-
-            ReadOnly Property ShapeFunctionType() As eShapeFunctionType
-                Get
-                    Return Me.m_sft
-                End Get
-            End Property
-
-        End Class
-#End Region ' Private class
-
 #Region " Constructor "
 
         Public Sub New(ByVal uic As cUIContext, ByVal shape As cForcingFunction, ByVal handler As cShapeGUIHandler)
@@ -136,7 +112,7 @@ Namespace Controls
             ' Show available options
             For Each sft As eShapeFunctionType In [Enum].GetValues(GetType(eShapeFunctionType))
                 If Me.IsRelevantShapeType(sft) Then
-                    Me.m_lbShapeFunctionTypes.Items.Add(New cShapeFunctionTypeItem(sft))
+                    Me.m_lbShapeFunctionTypes.Items.Add(sft)
                 End If
             Next
 
@@ -161,6 +137,7 @@ Namespace Controls
             MyBase.OnFormClosed(e)
 
         End Sub
+
 
         Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btDefaults.Click
             Dim sA As Single = 0.0
@@ -228,6 +205,12 @@ Namespace Controls
             Me.Close()
         End Sub
 
+        Private Sub m_lbShapeFunctionTypes_Format(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_lbShapeFunctionTypes.Format
+            Dim fmt As New cShapeFunctionTypeFormatter()
+            e.Value = fmt.GetDescriptor(e.ListItem)
+        End Sub
+
         Private Sub OnShapeFunctionTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_lbShapeFunctionTypes.SelectedIndexChanged
             Me.UpdateControls()
@@ -292,11 +275,11 @@ Namespace Controls
             Get
                 Dim item As Object = Me.m_lbShapeFunctionTypes.SelectedItem
                 If (item Is Nothing) Then Return eShapeFunctionType.NotSet
-                Return DirectCast(item, cShapeFunctionTypeItem).ShapeFunctionType
+                Return DirectCast(item, eShapeFunctionType)
             End Get
             Set(ByVal value As eShapeFunctionType)
                 For Each item As Object In Me.m_lbShapeFunctionTypes.Items
-                    If DirectCast(item, cShapeFunctionTypeItem).ShapeFunctionType = value Then
+                    If (DirectCast(item, eShapeFunctionType) = value) Then
                         Me.m_lbShapeFunctionTypes.SelectedItem = item
                         Return
                     End If
@@ -679,7 +662,6 @@ Namespace Controls
 
 #End Region ' Private method helpers
 
-        
     End Class
 
 End Namespace

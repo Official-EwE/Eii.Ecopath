@@ -141,6 +141,7 @@ Public MustInherit Class gridForcingBase
         If (Me.UIContext Is Nothing) Then Return
         If (Me.Handler.UIContext Is Nothing) Then Return
 
+        Me.Rows(eRowType.Thumbnail).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
         Me.Rows(eRowType.Thumbnail).Height = 48
         For i As Integer = 1 To Me.ColumnsCount - 1
             Me.Columns(i).Width = Math.Max(Me.Columns(i).Width, 48)

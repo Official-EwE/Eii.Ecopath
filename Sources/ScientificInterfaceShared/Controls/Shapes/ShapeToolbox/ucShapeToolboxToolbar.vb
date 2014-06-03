@@ -37,7 +37,6 @@ Namespace Controls
         Public Sub New()
             Me.InitializeComponent()
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.UserPaint, True)
-            Me.m_tslFilter.Image = My.Resources.FilterHS
         End Sub
 
 #End Region ' Constructors
@@ -86,7 +85,6 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.m_tsbSetTo0)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToEcopathBaseline, Me.m_tsbSetToBaseline)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToValue, Me.m_tsbSetToValue)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Filter, Me.m_tslFilter)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Filter, Me.m_tscmbFilter)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowExtraData, Me.m_tsbnShowExtraData)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DiscardExtraData, Me.m_tsbnDiscardExtraData)

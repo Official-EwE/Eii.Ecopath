@@ -104,6 +104,8 @@ Public Class frmNavigationPanel
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Me.Icon = Icon.FromHandle(ScientificInterfaceShared.My.Resources.NavHS.GetHicon)
+
         ' Put all the list here
         Me.m_nodeController = New cTreeViewNodeController()
         Me.m_nodeController.Attach(Me.m_uic, Me.m_tvNavigation)
@@ -276,6 +278,8 @@ Public Class frmNavigationPanel
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
+
+        Me.Icon.Dispose()
 
         Me.m_nodeController.Detach()
         Me.m_nodeController = Nothing

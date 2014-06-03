@@ -135,7 +135,14 @@ Public Class frmShapeValue
         If TypeOf (shape) Is cMediationBaseFunction Then
             Me.m_displayMode = frmShapeValue.eDisplayMode.Index
         ElseIf TypeOf (shape) Is cTimeSeries Then
-            Me.m_displayMode = frmShapeValue.eDisplayMode.Yearly
+            Select Case (DirectCast(shape, cTimeSeries)).Interval
+                Case eTSDataSetInterval.Annual
+                    Me.m_displayMode = frmShapeValue.eDisplayMode.Yearly
+                Case eTSDataSetInterval.Monthly
+                    Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
+                Case Else
+                    Debug.Assert(False)
+            End Select
         Else
             Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
         End If
@@ -233,7 +240,7 @@ Public Class frmShapeValue
     End Sub
 
     Private Sub AnyTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_txtWeight.TextChanged, m_lblNumYears.TextChanged, m_txtName.TextChanged
+        Handles m_txtWeight.TextChanged, m_lblNumPoints.TextChanged, m_txtName.TextChanged
         Me.UpdateControls()
     End Sub
 
@@ -260,7 +267,7 @@ Public Class frmShapeValue
         End Get
         Set(ByVal iNumpoints As Integer)
             Me.m_iNumPoints = iNumpoints
-            Me.m_lblNumYears.Text = CStr(Me.m_iNumPoints)
+            Me.m_lblNumPoints.Text = CStr(Me.m_iNumPoints)
         End Set
     End Property
 
@@ -313,8 +320,8 @@ Public Class frmShapeValue
         m_lblPoolCode.Visible = False
         m_cmbPoolCode.Visible = False
 
-        m_lblNoOfYears.Visible = False
-        m_lblNumYears.Visible = False
+        m_lblNoOfPoints.Visible = False
+        m_lblNumPoints.Visible = False
         m_btnSetNoOfYears.Visible = False
 
         m_lblXBase.Visible = bIsMediation

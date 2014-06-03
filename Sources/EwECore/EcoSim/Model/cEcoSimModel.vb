@@ -309,8 +309,7 @@ Namespace Ecosim
                 'jb 12-Feb-2010 Reloading of forcing data overwrites user edits of effort
                 'We just need to make sure the forcing data arrays are dimensioned big enough to handle the run length
                 Me.m_RefData.nGroups = Me.nGroups
-                Me.m_RefData.redimFocingData(Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
-                'Me.m_RefData.LoadForcingData(Me.m_Data, Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
+                Me.m_RefData.redimForcingData(Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.nDatPoints))
 
                 DefaultDF()
 
@@ -818,7 +817,7 @@ Namespace Ecosim
                                 '********following line stops gear overwrite for cases where
                                 'model has been fit to historical data by using species F forcing
                                 'for years 1 to NYRDAT (policy impact allowed only for future years)
-                                If m_Data.FisForced(j) And iyr < m_RefData.NdatYear Then m_search.FishYear(j) = m_Data.FishRateNo(j, 12 * iyr - 11)
+                                If m_Data.FisForced(j) And iyr < m_RefData.nYears Then m_search.FishYear(j) = m_Data.FishRateNo(j, 12 * iyr - 11)
                             Next j
                         Next iFlt
                     End If 'If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
@@ -838,9 +837,10 @@ Namespace Ecosim
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimBeginTimeStep(BB, m_Data, itime)
 
-                    If ipct = 6 Then AccumulateDataInfo(CInt(Math.Truncate(itime / 12)), BB, m_Data.loss)
+                    Me.AccumulateDataInfo(ipct, itime, iyf, BB, m_Data.loss)
+                    'If ipct = 6 Then AccumulateDataInfo(CInt(Math.Truncate(itime / 12)), BB, m_Data.loss)
 
-                    setEffortFromPlugin(QYear, itime, iyr)
+                    Me.setEffortFromPlugin(QYear, itime, iyr)
                     'Set FishTime() (fishing mort at timestep)
                     Me.setFishTime(itime, iyr)
 
@@ -891,7 +891,7 @@ Namespace Ecosim
                     'CJW email 04May00: in runmodel, m_refData.PoolForceBB loop has to be put in twice, 
                     'both before and after call to rk4 (otherwise Z calculation as loss/bb 
                     'is wrong later in time step
-                    Me.setBiomassForcing(iyr)
+                    Me.setBiomassForcing(itt)
 
                     Me.clearMonthlyStanzaVars()
                     For irk4 As Integer = 1 To Me.m_Data.StepsPerMonth
@@ -902,7 +902,7 @@ Namespace Ecosim
                         Dim UpdateStanza As Boolean = (irk4 = Me.m_Data.StepsPerMonth)
                         rk4(BB, nvar, t, DeltaT, UpdateStanza)
                         t += DeltaT
-                        Me.setBiomassForcing(iyr)
+                        Me.setBiomassForcing(itt)
 
                         If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimSubTimestepEnd(BB, t, DeltaT, irk4, m_Data)
 
@@ -913,6 +913,8 @@ Namespace Ecosim
                         'm_publisher.AddMessage(New cMessage("Ecosim run aborted.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
                         Exit Sub
                     End If
+
+                    'AccumulateDataInfo(ipct, itime, iyf, BB, m_Data.loss)
 
                     CheckIfSmall(1, nvar, BB)
 
@@ -1155,7 +1157,7 @@ Namespace Ecosim
                 ResetPred(iGrp) = False
             Next
 
-            If iYear <= m_RefData.NdatYear Then  'Force the biomass if such a dataseries exists
+            If iYear <= m_RefData.nDatPoints Then  'Force the biomass if such a dataseries exists
                 For iGrp = 1 To m_EPData.NumGroups
                     If m_RefData.PoolForceBB(iGrp, iYear) > 0 Then
                         ResetPred(iGrp) = True
@@ -1163,6 +1165,15 @@ Namespace Ecosim
                     End If
                 Next
             End If 'If iyr <= m_refData.NdatYear Then
+
+            'If iYear <= m_RefData.nYears Then  'Force the biomass if such a dataseries exists
+            '    For iGrp = 1 To m_EPData.NumGroups
+            '        If m_RefData.PoolForceBB(iGrp, iYear) > 0 Then
+            '            ResetPred(iGrp) = True
+            '            BB(iGrp) = m_RefData.PoolForceBB(iGrp, iYear)
+            '        End If
+            '    Next
+            'End If 'If iyr <= m_refData.NdatYear Then
 
         End Sub
 
@@ -1200,7 +1211,7 @@ Namespace Ecosim
                 For iGrp As Integer = 1 To nvar
 
                     'Catches forced or computed
-                    If iYear <= Me.m_RefData.NdatYear And Me.m_RefData.PoolForceCatch(iGrp, iYear) > 0 Then
+                    If iYear <= Me.m_RefData.nYears And Me.m_RefData.PoolForceCatch(iGrp, iYear) > 0 Then
                         'Forced catch rates
                         'Was up to Sep 2008:
                         m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
@@ -1224,7 +1235,7 @@ Namespace Ecosim
                     End If
 
                     'PoolForceZ(iGroup,0) is used in Derivt() to force mortality
-                    If iYear <= Me.m_RefData.NdatYear Then
+                    If iYear <= Me.m_RefData.nYears Then
                         Me.m_RefData.PoolForceZ(iGrp, 0) = IIF(Me.m_RefData.PoolForceZ(iGrp, iYear) > 0, Me.m_RefData.PoolForceZ(iGrp, iYear), 0)
                     End If
 
@@ -2136,7 +2147,7 @@ Namespace Ecosim
         ''' <param name="BB">Ecosim predicted biomass for this year</param>
         ''' <param name="loss">Ecosim predicted loss for this year</param>
         ''' <remarks>Called once a year in the middle of the year </remarks>
-        Public Sub AccumulateDataInfo(ByVal iyear As Integer, ByVal BB() As Single, ByRef loss() As Single)
+        Public Sub AccumulateDataInfo(ByVal iMonth As Integer, ByVal iTimeStep As Integer, iYear As Integer, ByVal BB() As Single, ByRef loss() As Single)
             'accumulates statistical information for comparing model to data
             'for simulation year iyear (0=first simulation year)
             'assumes first simulation year is first calendar year in data csv file
@@ -2145,113 +2156,118 @@ Namespace Ecosim
             'ToDo_jb AccumulateDataInfo eTimeSeriesType.AverageWeight is not computed by Ecospace 
 
             'ToDo_jb AccumulateDataInfo MakeTestData is only set to True from EwE5 Ecoranger EwE6 does not contain Ecoranger so MakeTestData is never True
-            Dim i As Integer, j As Integer, iDyear As Integer, Zstat As Single
+            Dim iDType As Integer, iDYear As Integer, Zstat As Single
             Dim Zest As Single, SDtest As Single
             SDtest = 0.05
 
             Try
 
-                'find the year index in the reference data for this Ecosim model year
-                'this assumes the first year in the reference data is the first year of the Ecosim run and ignores the Ecopath year
-                For i = 1 To m_RefData.NdatYear
-                    If m_RefData.DatYear(i) - m_RefData.DatYear(1) = iyear Then iDyear = i : Exit For
-                Next
-
-                If iDyear = 0 Then Exit Sub 'no data for this year, don't need to proceed
+                If Not Me.m_RefData.HasData(iTimeStep, iMonth, iYear) Then
+                    'Nope no reference data
+                    Return
+                End If
 
                 'now accumulate z statistics for any observations available this year
-                For j = 1 To m_RefData.NdatType
-                    If m_RefData.DatVal(iDyear, j) > 0 And _
-                                    (m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
-                                     m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or _
-                                     m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
-                                     m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Or _
-                                     m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
-                                     m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing) Then
+                For iDType = 1 To m_RefData.NdatType
 
-                        Zstat = 0
-                        m_RefData.Iobs += 1
+                    'If there is reference data for this timestep, month, year get the iDYear index(time step index of the data)
+                    If Me.m_RefData.setRefDataIndex(iDYear, iTimeStep, iMonth, iYear) Then
 
-                        'data type 0,1,5,6,-6,7
-                        Select Case m_RefData.DatType(j)
+                        Debug.Assert(iDYear <> cCore.NULL_VALUE, "Warning: Ecosim.AccumulateDataInfo() failed to find a valid reference data index.")
+                        'If m_RefData.DatVal(iDType)(iDYear) > 0 And _
+                        If m_RefData.DatVal(iDYear, iDType) > 0 And _
+                                        (m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or _
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or _
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or _
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Or _
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or _
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing) Then
 
-                            '0, 1 
-                            Case eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs '0, 1 Abundance Data
-                                If MakeTestData Then m_RefData.DatVal(iDyear, j) = CSng(BB(m_RefData.DatPool(j)) * Math.Exp(SDtest * RandomNormal())) ' to test with random error data
-                                Zstat = CSng(Math.Log(m_RefData.DatVal(iDyear, j) / BB(m_RefData.DatPool(j))))
-                                m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(BB(m_RefData.DatPool(j))))
+                            Zstat = 0
+                            m_RefData.Iobs += 1
 
-                            Case eTimeSeriesType.TotalMortality      '5 Total mortality Data
-                                'Zest = m_data.mo(m_refData.DatPool(j)) + Eatenof(m_refData.DatPool(j)) / bb(m_refData.DatPool(j))
-                                Zest = loss(m_RefData.DatPool(j)) / BB(m_RefData.DatPool(j))
-                                If MakeTestData Then m_RefData.DatVal(iDyear, j) = CSng(Zest * Math.Exp(SDtest * RandomNormal())) ' to test with random error data
-                                Zstat = CSng(Math.Log(m_RefData.DatVal(iDyear, j) / Zest))
-                                m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(Zest))
+                            'data type 0,1,5,6,-6,7
+                            Select Case m_RefData.DatType(iDType)
 
-                            Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing  '6, -6 Absolute Catch Data, Martell, Jan 02
+                                '0, 1 
+                                Case eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs '0, 1 Abundance Data
+                                    If MakeTestData Then m_RefData.DatVal(iDYear, iDType) = CSng(BB(m_RefData.DatPool(iDType)) * Math.Exp(SDtest * RandomNormal())) ' to test with random error data
+                                    Zstat = CSng(Math.Log(m_RefData.DatVal(iDYear, iDType) / BB(m_RefData.DatPool(iDType))))
+                                    m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(BB(m_RefData.DatPool(iDType))))
 
-                                If m_Data.FishTime(m_RefData.DatPool(j)) > 0 Then
-                                    Zstat = CSng(Math.Log(m_RefData.DatVal(iDyear, j) / (BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j)))))
-                                    If MakeTestData Then m_RefData.DatVal(iDyear, j) = BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j))
-                                    m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j))))
-                                End If
+                                Case eTimeSeriesType.TotalMortality      '5 Total mortality Data
+                                    Zest = loss(m_RefData.DatPool(iDType)) / BB(m_RefData.DatPool(iDType))
+                                    If MakeTestData Then m_RefData.DatVal(iDYear, iDType) = CSng(Zest * Math.Exp(SDtest * RandomNormal())) ' to test with random error data
+                                    Zstat = CSng(Math.Log(m_RefData.DatVal(iDYear, iDType) / Zest))
+                                    m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(Zest))
 
-                            Case eTimeSeriesType.AverageWeight    '7 Mean body weith data Martell, Jan 02
-                                'Assuming user knows this data type is for split pools only.
-                                'and is treated as a relative index
+                                Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing  '6, -6 Absolute Catch Data, Martell, iDatTypean 02
 
-                                If m_Data.ResultsOverTime IsNot Nothing Then
-                                    Dim iti As Integer = iDyear * 12 - 7
-
-                                    ' JS 11Aug10: EcopathCode maps a stanza group to a functional group, and is not related to the number of TS
-                                    '             Instead, the average weight of DatPool(j), the targer group, should be obtained here.
-                                    'Zest = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_stanza.EcopathCode(i, j), iti)
-                                    Zest = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_RefData.DatPool(j), iti)
-                                    If Zest > 0 Then
-                                        Zstat = CSng(Math.Log(m_RefData.DatVal(iDyear, j) / Zest))
-                                        m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(Zest))
+                                    If m_Data.FishTime(m_RefData.DatPool(iDType)) > 0 Then
+                                        Zstat = CSng(Math.Log(m_RefData.DatVal(iDYear, iDType) / (BB(m_RefData.DatPool(iDType)) * m_Data.FishTime(m_RefData.DatPool(iDType)))))
+                                        If MakeTestData Then m_RefData.DatVal(iDYear, iDType) = BB(m_RefData.DatPool(iDType)) * m_Data.FishTime(m_RefData.DatPool(iDType))
+                                        m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(BB(m_RefData.DatPool(iDType)) * m_Data.FishTime(m_RefData.DatPool(iDType))))
                                     End If
 
-                                    If MakeTestData Then
-                                        m_RefData.DatVal(iDyear, j) = CSng(Zest * Math.Exp(SDtest * RandomNormal()))
+                                Case eTimeSeriesType.AverageWeight    '7 Mean body weith data Martell, iDatTypean 02
+                                    'Assuming user knows this data type is for split pools only.
+                                    'and is treated as a relative index
+
+
+                                    If m_Data.ResultsOverTime IsNot Nothing Then
+                                        Dim iti As Integer = iDYear * 12 - 7
+
+                                        ' iDatTypeS 11Aug10: EcopathCode maps a stanza group to a functional group, and is not related to the number of TS
+                                        '             Instead, the average weight of DatPool(iDatType), the targer group, should be obtained here.
+                                        'Zest = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_stanza.EcopathCode(i, iDatType), iti)
+                                        Zest = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_RefData.DatPool(iDType), iti)
+                                        If Zest > 0 Then
+                                            Zstat = CSng(Math.Log(m_RefData.DatVal(iDYear, iDType) / Zest))
+                                            m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(Zest))
+                                        End If
+
+                                        If MakeTestData Then
+                                            m_RefData.DatVal(iDYear, iDType) = CSng(Zest * Math.Exp(SDtest * RandomNormal()))
+                                        End If
+
                                     End If
+                                Case Else
+                            End Select
 
-                                End If
+                            'increment counters
+                            NobsTime(iDYear) += 1
+                            DatNobs(iDType) = DatNobs(iDType) + 1
 
-                            Case Else
-                        End Select
+                            m_RefData.Wt(m_RefData.Iobs) = m_RefData.WtType(iDType)
+                            'log prediction error by observation
+                            m_RefData.Erpred(m_RefData.Iobs) = Zstat
+                            'sum of log prediction error by datatype
+                            DatSumZ(iDType) = DatSumZ(iDType) + Zstat
+                            'squared sum of log prediction error by datatype
+                            DatSumZ2(iDType) = DatSumZ2(iDType) + Zstat * Zstat
 
-                        'increment counters
-                        NobsTime(iDyear) += 1
-                        DatNobs(j) = DatNobs(j) + 1
+                            System.Console.WriteLine(iDType.ToString + "," + iDYear.ToString + "," + Zstat.ToString + "," + BB(m_RefData.DatPool(iDType)).ToString)
 
-                        m_RefData.Wt(m_RefData.Iobs) = m_RefData.WtType(j)
-                        'log prediction error by observation
-                        m_RefData.Erpred(m_RefData.Iobs) = Zstat
-                        'sum of log prediction error by datatype
-                        DatSumZ(j) = DatSumZ(j) + Zstat
-                        'squared sum of log prediction error by datatype
-                        DatSumZ2(j) = DatSumZ2(j) + Zstat * Zstat
+                        ElseIf (m_TracerData.EcoSimConSimOn And m_RefData.DatVal(iDYear, iDType) > 0) And _
+                                            (m_RefData.DatType(iDType) = eTimeSeriesType.EcotracerConcRel Or m_RefData.DatType(iDType) = eTimeSeriesType.EcotracerConcAbs) Then
 
-                    ElseIf (m_TracerData.EcoSimConSimOn And m_RefData.DatVal(iDyear, j) > 0) And _
-                           (m_RefData.DatType(j) = eTimeSeriesType.EcotracerConcRel Or m_RefData.DatType(j) = eTimeSeriesType.EcotracerConcAbs) Then
+                            'ToDo_iDatTypeb AccumulateDataInfo contaminant tracing
+                            'If TracerData.ConcTr(DatPool(iDatType)) > 0 Then
+                            '    TraceObs = TraceObs + 1
+                            '    'NobsTime(iDyear) = NobsTime(iDyear) + 1
+                            '    'NobsTime is for testing significance, don't need a similar one for tracer, for now at least
+                            '    'Wt(m_refdata.Iobs) = WtType(iDatType)
+                            '    Zstat = Log(DatVal(iDyear, iDatType) / ConcTr(DatPool(iDatType)))
+                            '    'YTraceHat(m_refdata.Iobs) = Log(ConcTr(DatPool(iDatType)))
+                            '    ErTrace(TraceObs) = Zstat
+                            '    DatTraceObs(iDatType) = DatTraceObs(iDatType) + 1
+                            '    DatTraceZ(iDatType) = DatTraceZ(iDatType) + Zstat
+                            '    DatTraceZ2(iDatType) = DatTraceZ2(iDatType) + Zstat * Zstat
+                            'End If
 
-                        'ToDo_jb AccumulateDataInfo contaminant tracing
-                        'If TracerData.ConcTr(DatPool(j)) > 0 Then
-                        '    TraceObs = TraceObs + 1
-                        '    'NobsTime(iDyear) = NobsTime(iDyear) + 1
-                        '    'NobsTime is for testing significance, don't need a similar one for tracer, for now at least
-                        '    'Wt(m_refdata.Iobs) = WtType(j)
-                        '    Zstat = Log(DatVal(iDyear, j) / ConcTr(DatPool(j)))
-                        '    'YTraceHat(m_refdata.Iobs) = Log(ConcTr(DatPool(j)))
-                        '    ErTrace(TraceObs) = Zstat
-                        '    DatTraceObs(j) = DatTraceObs(j) + 1
-                        '    DatTraceZ(j) = DatTraceZ(j) + Zstat
-                        '    DatTraceZ2(j) = DatTraceZ2(j) + Zstat * Zstat
-                        'End If
-
-                    End If
-                Next j
+                        End If
+                    End If 'HasData()
+                Next iDType
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -3184,10 +3200,10 @@ Namespace Ecosim
             ReDim DatSumZ(m_RefData.NdatType)
             ReDim DatSumZ2(m_RefData.NdatType)
             ReDim DatNobs(m_RefData.NdatType)
-            ReDim NobsTime(m_RefData.NdatYear)
-            ReDim m_RefData.Erpred(m_RefData.NdatType * m_RefData.NdatYear)
-            ReDim m_RefData.Yhat(m_RefData.NdatType * m_RefData.NdatYear)
-            ReDim DatDev(m_RefData.NdatType, m_RefData.NdatYear)
+            ReDim NobsTime(m_RefData.nDatPoints)
+            ReDim m_RefData.Erpred(m_RefData.NdatType * m_RefData.nDatPoints)
+            ReDim m_RefData.Yhat(m_RefData.NdatType * m_RefData.nDatPoints)
+            ReDim DatDev(m_RefData.NdatType, m_RefData.nDatPoints)
 
             m_RefData.Iobs = 0
 
@@ -3205,7 +3221,7 @@ Namespace Ecosim
             Dim bSSgrp As Boolean = (SSgroup IsNot Nothing)
 
             'ToDo_jb PlotDataInfo AverageBodyWeight
-            Dim i As Integer, j As Integer, iYear As Integer ', bplot As Single
+            Dim iDatPt As Integer, iDType As Integer, iYear As Integer ', bplot As Single
 
             ReDim m_RefData.DatSS(m_RefData.NdatType)
             ReDim m_RefData.DatQ(m_RefData.NdatType)
@@ -3213,25 +3229,25 @@ Namespace Ecosim
             '28-Aug-2011 Added SS prediction error by time series data type(set)
             ReDim m_RefData.SSPredErr(m_RefData.NdatType)
 
-            For j = 1 To m_RefData.NdatType
-                If DatNobs(j) > 0 Then
+            For iDType = 1 To m_RefData.NdatType
+                If DatNobs(iDType) > 0 Then
 
-                    If m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or m_RefData.DatType(j) = eTimeSeriesType.Catches Or m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Then
-                        m_RefData.DatSS(j) = DatSumZ2(j)
-                        m_RefData.DatQ(j) = 0
+                    If m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Then
+                        m_RefData.DatSS(iDType) = DatSumZ2(iDType)
+                        m_RefData.DatQ(iDType) = 0
                     End If
 
-                    If m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
-                       m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
-                       m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
-                       m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
-                        m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body weight here
+                    If m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or _
+                       m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or _
+                       m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or _
+                       m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Or _
+                        m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Then 'added mean body weight here
                         'VC Sep 2008 placed forced catches here, as it often is so that the catches can't be 
                         'replicated by ecosim.
 
-                        m_RefData.DatSS(j) = CSng(DatSumZ2(j) - DatSumZ(j) ^ 2 / DatNobs(j))
-                        m_RefData.DatQ(j) = DatSumZ(j) / DatNobs(j)
-                        m_RefData.eDatQ(j) = CSng(Math.Exp(m_RefData.DatQ(j)))
+                        m_RefData.DatSS(iDType) = CSng(DatSumZ2(iDType) - DatSumZ(iDType) ^ 2 / DatNobs(iDType))
+                        m_RefData.DatQ(iDType) = DatSumZ(iDType) / DatNobs(iDType)
+                        m_RefData.eDatQ(iDType) = CSng(Math.Exp(m_RefData.DatQ(iDType)))
 
                         'If m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then
                         '    Start_Wt = mean_BdyWt(m_RefData.DatPool(j), 6)
@@ -3248,16 +3264,17 @@ Namespace Ecosim
                 Array.Clear(SSgroup, 0, SSgroup.Length)
             End If
 
-            For i = 1 To m_RefData.NdatYear
-                iYear = m_RefData.DatYear(i) - m_RefData.DatYear(1)
-                For j = 1 To m_RefData.NdatType
-                    If m_RefData.DatVal(i, j) > 0 And iYear < m_Data.NumYears + 1 And _
-                            (m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
-                             m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or _
-                             m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
-                             m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
-                             m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
-                             m_RefData.DatType(j) = eTimeSeriesType.AverageWeight) Then
+            For iDatPt = 1 To m_RefData.nDatPoints
+                iYear = m_RefData.DatYear(iDatPt) - m_RefData.DatYear(1)
+                For iDType = 1 To m_RefData.NdatType
+                    ' If m_RefData.DatVal(iYr, iDType) > 0 And iYear < m_Data.NumYears + 1 And _
+                    If m_RefData.DatVal(iDatPt, iDType) > 0 And iYear < m_Data.NumYears + 1 And _
+                       (m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or _
+                        m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or _
+                        m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or _
+                        m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or _
+                        m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Or _
+                        m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight) Then
 
                         m_RefData.Iobs = m_RefData.Iobs + 1
                         'following debug.print checks to insure m_refdata.Iobs data alignment has been
@@ -3267,15 +3284,15 @@ Namespace Ecosim
                         'Debug.Print m_RefData.Erpred(m_refdata.Iobs) - Log(m_refData.DatVal(i, j)), -m_RefData.Yhat(m_refdata.Iobs)
                         'following remove conditional mle of q from prediction error, add to
                         'prediction of logN
-                        m_RefData.Erpred(m_RefData.Iobs) = m_RefData.Erpred(m_RefData.Iobs) - m_RefData.DatQ(j)
-                        DatDev(j, i) = m_RefData.Erpred(m_RefData.Iobs)
+                        m_RefData.Erpred(m_RefData.Iobs) = m_RefData.Erpred(m_RefData.Iobs) - m_RefData.DatQ(iDType)
+                        DatDev(iDType, iDatPt) = m_RefData.Erpred(m_RefData.Iobs)
                         Ss = CSng(Ss + m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2)
-                        m_RefData.SSPredErr(j) = CSng(m_RefData.SSPredErr(j) + (m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2))
+                        m_RefData.SSPredErr(iDType) = CSng(m_RefData.SSPredErr(iDType) + (m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2))
                         'Next is to calculate the SS by group:
                         If bSSgrp Then
-                            SSgroup(m_RefData.DatPool(j)) = CSng(SSgroup(m_RefData.DatPool(j)) + (m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2))
+                            SSgroup(m_RefData.DatPool(iDType)) = CSng(SSgroup(m_RefData.DatPool(iDType)) + (m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2))
                         End If
-                        m_RefData.Yhat(m_RefData.Iobs) = m_RefData.Yhat(m_RefData.Iobs) + m_RefData.DatQ(j)
+                        m_RefData.Yhat(m_RefData.Iobs) = m_RefData.Yhat(m_RefData.Iobs) + m_RefData.DatQ(iDType)
                     End If
 
                 Next

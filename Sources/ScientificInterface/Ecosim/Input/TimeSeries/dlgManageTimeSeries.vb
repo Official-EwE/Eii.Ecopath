@@ -12,7 +12,7 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
 
@@ -79,9 +79,6 @@ Public Class dlgManageTimeSeries
     Private m_strImportFileName As String = ""
     Private m_bLimitPreview As Boolean = True
 
-    ' Disabled sketch pad to preview TS
-    'Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
-
     Public Sub New(ByVal uic As cUIContext, ByVal mode As eModeType)
 
         Debug.Assert(uic IsNot Nothing)
@@ -102,10 +99,9 @@ Public Class dlgManageTimeSeries
         Me.m_tbImportAuthor.Text = Me.m_uic.Core.EwEModel.Author
         Me.m_tbImportContact.Text = Me.m_uic.Core.EwEModel.Contact
 
-        ' Disabled sketch pad to preview TS
-        'Me.m_spTimeSeriesPreview.UIContext = Me.m_uic
-        'Me.m_tsh = New cTimeSeriesShapeGUIHandler()
-        'Me.m_tsh.Attach(Me.m_uic, Nothing, Nothing, Me.m_spTimeSeriesPreview, Nothing)
+        Me.m_cmbImportInterval.Items.Add(eTSDataSetInterval.Annual)
+        Me.m_cmbImportInterval.Items.Add(eTSDataSetInterval.Monthly)
+        Me.m_cmbImportInterval.SelectedItem = eTSDataSetInterval.Annual
 
         Me.FillImportDatasetCombo()
         Me.ReloadTimeSeries()
@@ -127,10 +123,6 @@ Public Class dlgManageTimeSeries
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        ' Disabled sketch pad to preview TS
-        'Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
-        'Me.m_tsh.Detach()
-        'Me.m_tsh = Nothing
         MyBase.OnFormClosed(e)
     End Sub
 
@@ -267,6 +259,12 @@ Public Class dlgManageTimeSeries
         Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.Clipboard)
     End Sub
 
+    Private Sub OnImportFormatInterval(ByVal sender As System.Object, ByVal e As ListControlConvertEventArgs) _
+            Handles m_cmbImportInterval.Format
+        Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
+        e.Value = fmt.GetDescriptor(e.ListItem)
+    End Sub
+
     ' -- DESTINATION --
 
     Private Sub m_cmbImportDataset_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -286,22 +284,17 @@ Public Class dlgManageTimeSeries
         Me.ReloadTimeSeries()
     End Sub
 
-    ' -- Preview --
-
-    ' Disabled code: handler a combo box that shows the number of preview TS
-    'Private Sub OnSelectPreviewTS(ByVal sender As Object, ByVal e As System.EventArgs)
-    '    Dim iShape As Integer = Me.m_cmbTimeSeriesPreview.SelectedIndex
-    '    If (iShape = -1) Then
-    '        Me.m_tsh.SelectedShape = Nothing
-    '    Else
-    '        Me.m_tsh.SelectedShape = Me.m_tr(iShape)
-    '    End If
-    'End Sub
-
     Private Sub m_cbShowFirst50_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_cbShowFirst50.CheckedChanged
         Me.m_bLimitPreview = Me.m_cbShowFirst50.Checked
         Me.UpdatePreview()
+    End Sub
+
+    ' -- Interval --
+
+    Private Sub m_cmbIntervalChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_cmbImportInterval.SelectedIndexChanged
+        Me.ReloadTimeSeries()
     End Sub
 
 #End Region ' Import
@@ -437,6 +430,7 @@ Public Class dlgManageTimeSeries
         Dim item As ListViewItem = Nothing
         Dim strLoaded As String = ""
         Dim aitems(Me.m_uic.Core.nTimeSeriesDatasets - 1) As ListViewItem
+        Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
         Me.m_lvLoadDatasets.Items.Clear()
 
         cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PLEASE_WAIT)
@@ -450,7 +444,7 @@ Public Class dlgManageTimeSeries
             Else
                 strLoaded = ""
             End If
-            item = New ListViewItem(New String() {ds.Name, strLoaded, ds.nTimeSeries.ToString})
+            item = New ListViewItem(New String() {ds.Name, strLoaded, fmt.GetDescriptor(ds.TimeSeriesInterval), ds.nTimeSeries.ToString})
             item.Tag = ds
             item.Selected = (String.Compare(ds.Name, Me.DatasetName, False) = 0)
             aitems(iDS - 1) = item
@@ -598,12 +592,16 @@ Public Class dlgManageTimeSeries
 
         If (Not Me.m_bInitialized) Then Return
 
+        Dim del As String = CStr(Me.m_tbImportDelimiter.Character)
+        Dim sep As String = CStr(Me.m_tbImportSeparator.Character)
+        Dim inv As eTSDataSetInterval = DirectCast(Me.m_cmbImportInterval.SelectedItem, eTSDataSetInterval)
+
         cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PREVIEW_LOADING)
         Try
             If TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then
-                Me.m_tr.Read(CStr(Me.m_tbImportDelimiter.Character), CStr(Me.m_tbImportSeparator.Character))
+                Me.m_tr.Read(del, sep, inv)
             ElseIf TypeOf Me.m_tr Is cTimeSeriesCSVReader Then
-                DirectCast(Me.m_tr, cTimeSeriesCSVReader).Read(Me.m_strImportFileName, CStr(Me.m_tbImportDelimiter.Character), CStr(Me.m_tbImportSeparator.Character))
+                DirectCast(Me.m_tr, cTimeSeriesCSVReader).Read(Me.m_strImportFileName, del, sep, inv)
             End If
 
             Me.UpdatePreview()
@@ -635,7 +633,7 @@ Public Class dlgManageTimeSeries
         Me.m_dgvImportPreview.SuspendLayout()
 
         'vc had a model with 3000 years run & time series; takes forever to make the preview, so truncating it
-        Me.m_dgvImportPreview.RowCount = Math.Min(IIf(Me.m_bLimitPreview, 50, tsrPreview.RowCount), tsrPreview.RowCount)
+        Me.m_dgvImportPreview.RowCount = Math.Min(IIF(Me.m_bLimitPreview, 50, tsrPreview.RowCount), tsrPreview.RowCount)
         Me.m_dgvImportPreview.ColumnCount = tsrPreview.ColumnCount
 
         For iRow As Integer = 1 To Me.m_dgvImportPreview.RowCount
@@ -647,15 +645,6 @@ Public Class dlgManageTimeSeries
         Next
         Me.m_dgvImportPreview.ResumeLayout()
 
-        ' Disabled preview TS functionality
-        'Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
-        '' Populate TS combo box
-        'Me.m_cmbTimeSeriesPreview.Items.Clear()
-        'For iTS As Integer = 0 To Me.m_tr.Count - 1
-        '    Me.m_cmbTimeSeriesPreview.Items.Add(Me.m_tr(iTS).Name)
-        'Next
-        'Me.m_cmbTimeSeriesPreview.SelectedIndex = Me.m_tr.Count - 1
-
     End Sub
 
     Private Sub ImportDataset()
@@ -664,12 +653,20 @@ Public Class dlgManageTimeSeries
         Dim clf As cCore.eBatchChangeLevelFlags = cCore.eBatchChangeLevelFlags.TimeSeries
         Dim bCreateNewSet As Boolean = False
         Dim iDataset As Integer = 0
-        Dim fmsg As cFeedbackMessage = Nothing
-        Dim bSuppressed As Boolean = False
-        Dim reply As eMessageReply = eMessageReply.CANCEL
+        Dim interval As eTSDataSetInterval = DirectCast(Me.m_cmbImportInterval.SelectedItem, eTSDataSetInterval)
         Dim bSucces As Boolean = True
+        Dim iNumPoints As Integer = 0
 
         If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
+
+        Select Case interval
+            Case eTSDataSetInterval.Annual
+                iNumPoints = Math.Max(Me.m_tr.NumPoints, 1)
+            Case eTSDataSetInterval.Monthly
+                iNumPoints = CInt(cCore.N_MONTHS * Math.Ceiling(Math.Max(Me.m_tr.NumPoints, 1) / cCore.N_MONTHS))
+            Case Else
+                Debug.Assert(False)
+        End Select
 
         Try
 
@@ -683,7 +680,10 @@ Public Class dlgManageTimeSeries
             If (bCreateNewSet) Then
                 ' #Yes: do it
                 bSucces = Me.m_uic.Core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
-                            Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, Me.m_tr.FirstYear, Me.m_tr.NumYears, iDataset)
+                                                                Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, _
+                                                                Me.m_tr.FirstYear, iNumPoints, _
+                                                                interval, _
+                                                                iDataset)
             Else
                 ' #No: append to current
                 iDataset = Me.m_uic.Core.ActiveTimeSeriesDatasetIndex
@@ -697,39 +697,8 @@ Public Class dlgManageTimeSeries
         If (bSucces = True) Then
             ' #Yes: start importing
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, String.Format(My.Resources.STATUS_IMPORTING_DATASET, Me.DatasetName))
-
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
-
-                    If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Forcing) And _
-                       (Me.m_tr.FirstYear >= 1900) Then
-
-                        If Not bSuppressed Then
-                            fmsg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_TIMESERIES_IMPORT_AS_MONTHLY, ts.Name), _
-                                                        eCoreComponentType.External, _
-                                                        eMessageType.DataImport, _
-                                                        eMessageImportance.Warning, _
-                                                        eMessageReplyStyle.YES_NO_CANCEL, _
-                                                        eDataTypes.NotSet, _
-                                                        eMessageReply.YES)
-                            fmsg.Suppressable = True
-                            Me.m_uic.Core.Messages.SendMessage(fmsg)
-                            bSuppressed = fmsg.Suppressed
-                            reply = fmsg.Reply
-                        End If
-
-                        Select Case reply
-                            Case eMessageReply.YES
-                                ts.IsMonthly = True
-                            Case eMessageReply.NO
-                                ts.IsMonthly = False
-                            Case eMessageReply.CANCEL
-                                bSucces = False
-                                Exit For
-                        End Select
-
-                    End If
-
                     If Me.m_uic.Core.ImportEcosimTimeSeries(ts, iDataset) Then
                         Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
 
@@ -744,7 +713,6 @@ Public Class dlgManageTimeSeries
                     Else
                         bSucces = False
                     End If
-
                 Next
             Catch ex As Exception
                 bSucces = False

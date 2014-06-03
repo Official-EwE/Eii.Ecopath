@@ -45,6 +45,7 @@ Public Class gridTimeSeries
         Weight
         PoolCode
         Type
+        Interval
         FirstTime
     End Enum
 
@@ -68,7 +69,7 @@ Public Class gridTimeSeries
         Dim aGroupTSTypes As eTimeSeriesType() = Me.GroupTSTypes()
         Dim aFleetTSTypes As eTimeSeriesType() = Me.FleetTSTypes()
 
-        Dim nYears As Integer = Me.Core.nTimeSeriesYears
+        Dim nPoints As Integer = Me.Core.nTimeSeriesYears
         Dim ats As cShapeData() = Me.Shapes
         Dim nTS As Integer = ats.Length
         Dim ts As cTimeSeries = Nothing
@@ -87,8 +88,9 @@ Public Class gridTimeSeries
         Dim collDatTypes As ICollection = Nothing
         Dim selDatType As cCoreInputOutputBase = Nothing
         Dim aTypes As eTimeSeriesType() = Nothing
+        Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
 
-        Me.Redim(nYears + [Enum].GetValues(GetType(eRowType)).Length, nTS + 1)
+        Me.Redim(nPoints + [Enum].GetValues(GetType(eRowType)).Length, nTS + 1)
 
         ' Create row headers
         Me(eRowType.Header, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_INDEX)
@@ -97,9 +99,10 @@ Public Class gridTimeSeries
         Me(eRowType.PoolCode, 0) = New EwERowHeaderCell(SharedResources.HEADER_TARGET)
         Me(eRowType.Type, 0) = New EwERowHeaderCell(SharedResources.HEADER_TYPE)
         Me(eRowType.Weight, 0) = New EwERowHeaderCell(SharedResources.HEADER_WEIGHT)
+        Me(eRowType.Interval, 0) = New EwERowHeaderCell("Interval")
+        Me(eRowType.Type, 0) = New EwERowHeaderCell(SharedResources.HEADER_TYPE)
 
-        For i As Integer = 0 To nYears - 1
-            ' ToDo: format seasonal differently
+        For i As Integer = 0 To nPoints - 1
             Me(eRowType.FirstTime + i, 0) = New EwERowHeaderCell(Me.TimeLabel(i))
         Next
 
@@ -139,11 +142,14 @@ Public Class gridTimeSeries
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Type, i + 1) = cell
 
+            cell = New EwECell(fmt.GetDescriptor(ts.Interval), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            Me(eRowType.Interval, i + 1) = cell
+
             cell = New EwECell(ts.WtType, GetType(Single))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Weight, i + 1) = cell
 
-            For j As Integer = 0 To nYears - 1
+            For j As Integer = 0 To nPoints - 1
                 cell = New EwECell(ts.ShapeData(j + 1), GetType(Single))
                 DirectCast(cell, EwECell).SuppressZero = True
                 cell.Behaviors.Add(Me.EwEEditHandler)
@@ -157,6 +163,7 @@ Public Class gridTimeSeries
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
+        Me.Rows(eRowType.Thumbnail).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
         Me.Rows(eRowType.Thumbnail).Height = 48
         For i As Integer = 1 To Me.ColumnsCount - 1
             Me.Columns(i).Width = Math.Max(Me.Columns(i).Width, 48)
@@ -313,11 +320,22 @@ Public Class gridTimeSeries
     End Function
 
     Protected Overrides Function TimeLabel(ByVal iPoint As Integer) As String
-        If Me.IsSeasonal Then
-            Return cDateUtils.GetMonthName(iPoint + 1)
-        Else
-            Return CStr(iPoint + Me.Core.EcosimFirstYear)
-        End If
+        Dim ds As cTimeSeriesDataset = Nothing
+        If (Me.Core.ActiveTimeSeriesDatasetIndex = -1) Then Return "?"
+        ds = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
+        Select Case ds.TimeSeriesInterval
+            Case eTSDataSetInterval.Annual
+                Return CStr(iPoint + Me.Core.EcosimFirstYear)
+            Case eTSDataSetInterval.Monthly
+                Dim iMonth As Integer = (iPoint Mod 12) + 1
+                If Not Me.IsSeasonal And (iMonth = 1) Then
+                    Return CStr(Math.Floor(iPoint / cCore.N_MONTHS) + Me.Core.EcosimFirstYear)
+                End If
+                Return cDateUtils.GetMonthName(iMonth)
+            Case Else
+                Debug.Assert(False)
+        End Select
+        Return "?"
     End Function
 
 #End Region ' Helper methods

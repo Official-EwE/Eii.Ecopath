@@ -46,7 +46,7 @@ Namespace Ecosim
             Me.m_split = New System.Windows.Forms.SplitContainer()
             Me.m_tlpSketchpad = New System.Windows.Forms.TableLayoutPanel()
             Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
-            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucTimeSeriesSketchPad()
             Me.m_tlpShapeToolbox = New System.Windows.Forms.TableLayoutPanel()
             Me.m_shapeToolbox = New ScientificInterfaceShared.Controls.ucShapeToolbox()
             Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar()
@@ -162,7 +162,7 @@ Namespace Ecosim
         Private WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
         Private WithEvents m_tlpSketchpad As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_sketchPadToolbar As ucSketchPadToolbar
-        Private WithEvents m_sketchPad As ucForcingSketchPad
+        Private WithEvents m_sketchPad As ucTimeSeriesSketchPad
     End Class
 End Namespace
 

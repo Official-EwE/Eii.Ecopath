@@ -24,6 +24,8 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cTimeSeriesDataStructures
 
+    Public Const ANNUAL_DATA_MONTH As Integer = 6
+
     Public nGroups As Integer = 0
 
     ' ------------------------------------------------
@@ -46,7 +48,10 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>Number of time series contained in each dataset.</summary>
     Public nDatasetNumTimeSeries() As Integer
     Public nDatasetFirstYear() As Integer
-    Public nDatasetNumYears() As Integer
+    ''' <summary>The number of data points in the dataset.</summary>
+    Public nDatasetNumPoints() As Integer
+
+    Public DataSetIntervals() As eTSDataSetInterval
 
     ' ------------------------------------------------
     ' Interface structures
@@ -91,8 +96,13 @@ Public Class cTimeSeriesDataStructures
 
     ''' <summary>Number of applied time series.</summary>
     Public NdatType As Integer
-    ''' <summary>Max number of years across all applied time series.</summary>
-    Public NdatYear As Integer
+
+    ''' <summary>Number of datum points across all applied time series.</summary>
+    Public nDatPoints As Integer
+
+    ' ''' <summary>Max number of years across all applied time series.</summary>
+    'Public NdatYear As Integer
+
 
     Public nAICTimeSeries As Integer
 
@@ -104,11 +114,14 @@ Public Class cTimeSeriesDataStructures
     Public DatPool() As Integer
     ''' <summary>Weight type for each applied time series.</summary>
     Public WtType() As Single
-    ''' <summary>Annual values for each applied time series, indexed as (iYear, iSeries).</summary>
+    ' ''' <summary>Annual values for each applied time series, indexed as (iYear, iSeries).</summary>
     Public DatVal(,) As Single
-    ''' <summary>Start year for each applied time series.</summary>
+    ''' <summary>Year of the datum point.</summary>
     Public DatYear() As Integer
     Public DatSS() As Single
+
+    ''' <summary>Time interval of the currently selected dataset (monthly or annual).</summary>
+    Public DataSetInterval As eTSDataSetInterval
 
     ''' <summary>Sum of Squared Prediction Error by time series data set sumof(log(observed(i)/predicted(i))^2) * [timeseries weight(i)].</summary>
     Public SSPredErr() As Single
@@ -143,6 +156,30 @@ Public Class cTimeSeriesDataStructures
         Me.ClearTimeSeries()
     End Sub
 
+    ''' <summary>
+    ''' Number of years in the reference data set
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property nYears As Integer
+        Get
+            Dim n As Integer
+            Select Case Me.DataSetInterval
+                Case eTSDataSetInterval.Annual
+                    n = Me.nDatPoints
+                Case eTSDataSetInterval.Monthly
+                    n = Me.nDatPoints \ cCore.N_MONTHS
+                Case Else
+                    Debug.Assert(False, Me.ToString + " Undefined DataSetInterval type.")
+            End Select
+
+            Return n
+
+        End Get
+
+    End Property
+
     Private Sub ClearForcing()
 
         Array.Clear(Me.PoolForceBB, 0, Me.PoolForceBB.Length)
@@ -169,8 +206,10 @@ Public Class cTimeSeriesDataStructures
         ReDim Me.strDatasetAuthor(nDatasets)
         ReDim Me.strDatasetContact(nDatasets)
         ReDim Me.nDatasetFirstYear(nDatasets)
-        ReDim Me.nDatasetNumYears(nDatasets)
+        ReDim Me.nDatasetNumPoints(nDatasets)
         ReDim Me.nDatasetNumTimeSeries(nDatasets)
+
+        ReDim Me.DataSetIntervals(nDatasets)
 
     End Sub
 
@@ -178,7 +217,7 @@ Public Class cTimeSeriesDataStructures
 
         Me.nTimeSeries = 0
         Me.nMaxYears = 0
-        Me.NdatYear = 0
+        Me.nDatPoints = 0
         Me.NdatType = 0
 
         Me.RedimTimeSeries()
@@ -223,42 +262,119 @@ Public Class cTimeSeriesDataStructures
     Public Sub RedimEnabledTimeSeries()
 
         Debug.Assert(NdatType >= 0, Me.ToString & ".RedimAppliedTimeSeries() NdatType cannot be negative")
-        Debug.Assert(NdatYear >= 0, Me.ToString & ".RedimAppliedTimeSeries() NdatYear cannot be negative")
+        Debug.Assert(nDatPoints >= 0, Me.ToString & ".RedimAppliedTimeSeries() NdatYear cannot be negative")
 
         ' Redim applied time series arrays
         ReDim DatPool(NdatType)
         ReDim DatType(NdatType)
         ReDim WtType(NdatType)
-        ReDim DatVal(NdatYear + 1, NdatType)
-        ReDim DatYear(NdatYear)
         ReDim DatSS(NdatType)
         ReDim DatQ(NdatType)
         ReDim eDatQ(NdatType)
 
+        ReDim DatYear(nDatPoints)
+        ReDim DatVal(nDatPoints + 1, NdatType)
+
     End Sub
+
+    ''' <summary>
+    ''' Is there reference data for this model timestep
+    ''' </summary>
+    ''' <param name="iCumTimeStep"></param>
+    ''' <param name="iMonth"></param>
+    ''' <param name="iYear"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function HasData(ByVal iCumTimeStep As Integer, ByVal iMonth As Integer, ByVal iYear As Integer) As Boolean
+        Dim breturn As Boolean = False
+
+        If Me.DataSetInterval = eTSDataSetInterval.Annual Then
+            If iYear <= Me.nYears And iMonth = ANNUAL_DATA_MONTH Then
+                'Annual data
+                'Within the time period
+                'On the 6 month
+                breturn = True
+            End If
+
+        ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+
+            If iCumTimeStep <= Me.nDatPoints Then
+                breturn = True
+            End If
+        End If
+
+        Return breturn
+
+    End Function
+
+    ''' <summary>
+    ''' Get the reference data timestep index for this model timestep
+    ''' </summary>
+    ''' <param name="iIndexToSet"> Index of the data in DatVal(,)</param>
+    ''' <param name="iCumTimeStep">Model cumulative timestep 1 - n timestep</param>
+    ''' <param name="iMonth">Model month 1 - 12</param>
+    ''' <param name="iYear">Model year 1 - n years</param>
+    ''' <returns>True if there is reference data for this model timestep</returns>
+    ''' <remarks></remarks>
+    Public Function setRefDataIndex(ByRef iIndexToSet As Integer, ByVal iCumTimeStep As Integer, _
+                                    ByVal iMonth As Integer, ByVal iYear As Integer) As Boolean
+        Dim breturn As Boolean = False
+        iIndexToSet = cCore.NULL_VALUE
+
+        If Me.HasData(iCumTimeStep, iMonth, iYear) Then
+            If Me.DataSetInterval = eTSDataSetInterval.Annual Then
+                'Set the time step index to the data
+                iIndexToSet = iYear
+                breturn = True
+
+            ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+
+                iIndexToSet = iCumTimeStep
+                breturn = True
+            End If
+        End If
+
+        Return breturn
+
+    End Function
+
 
     ''' <summary>
     ''' Redim time series forcing data PoolForceBB(nGroups, nYears),PoolForceZ(nGroups, nYears) and PoolForceCatch(nGroups, nYears)
     ''' </summary>
-    ''' <param name="nYears"></param>
+    ''' <param name="nDatumPoints"></param>
     ''' <remarks></remarks>
-    Public Sub redimFocingData(ByVal nYears As Integer)
+    Public Sub redimForcingData(ByVal nDatumPoints As Integer)
 
         Try
-
             If PoolForceBB Is Nothing Then
-                ReDim PoolForceBB(nGroups, nYears)
-                ReDim PoolForceZ(nGroups, nYears)
-                ReDim PoolForceCatch(nGroups, nYears)
+                ReDim PoolForceBB(nGroups, nDatumPoints)
+                ReDim PoolForceZ(nGroups, nDatumPoints)
+                ReDim PoolForceCatch(nGroups, nDatumPoints)
+
+            ElseIf nDatumPoints > Me.nYears Then
+                'number of years the model is running for is greater then the forcing data
+                'preserve the existing forcing data 
+                ReDim Preserve PoolForceBB(nGroups, nDatumPoints)
+                ReDim Preserve PoolForceZ(nGroups, nDatumPoints)
+                ReDim Preserve PoolForceCatch(nGroups, nDatumPoints)
             End If
 
-            If Not PoolForceBB Is Nothing And nYears > Me.NdatYear Then
-                'number of years the model is running for is greater then the forcing data
-                'preserve the existing forcng data 
-                ReDim Preserve PoolForceBB(nGroups, nYears)
-                ReDim Preserve PoolForceZ(nGroups, nYears)
-                ReDim Preserve PoolForceCatch(nGroups, nYears)
-            End If
+            'If PoolForceBB Is Nothing Then
+            '    ReDim PoolForceBB(nGroups, nDatumPoints)
+            '    ReDim PoolForceZ(nGroups, nDatumPoints)
+            '    ReDim PoolForceCatch(nGroups, nDatumPoints)
+            'End If
+
+            'If Not PoolForceBB Is Nothing And nDatumPoints > Me.nYears Then
+            '    'number of years the model is running for is greater then the forcing data
+            '    'preserve the existing forcing data 
+            '    ReDim Preserve PoolForceBB(nGroups, nDatumPoints)
+            '    ReDim Preserve PoolForceZ(nGroups, nDatumPoints)
+            '    ReDim Preserve PoolForceCatch(nGroups, nDatumPoints)
+            'End If
+
+
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -314,7 +430,7 @@ Public Class cTimeSeriesDataStructures
         Dim iTSEnable As Integer = 0
 
         NdatType = 0
-        NdatYear = nMaxYears
+        nDatPoints = nMaxYears
         nAICTimeSeries = 0
 
         ' Determine no. of time series to enable
@@ -326,9 +442,13 @@ Public Class cTimeSeriesDataStructures
 
         If nTimeSeries > 0 Then
 
+            Dim dt As Double = 1
+            If Me.DataSetInterval = eTSDataSetInterval.Monthly Then dt = 1 / cCore.N_MONTHS
             DatYear(1) = Me.nDatasetFirstYear(Me.ActiveDatasetIndex)
-            For iYear = 2 To NdatYear
-                DatYear(iYear) = DatYear(iYear - 1) + 1
+            For iYear = 2 To nDatPoints
+                'DatYear(iYear) = DatYear(iYear - 1) + 1
+                'Year for each datum point
+                DatYear(iYear) = CInt(Math.Truncate(DatYear(1) + (iYear - 1) * dt))
             Next
 
             For iTS = 1 To nTimeSeries
@@ -354,7 +474,7 @@ Public Class cTimeSeriesDataStructures
         DatPool(iTSEnable) = iPool(iTS)
         DatType(iTSEnable) = TimeSeriesType(iTS)
         WtType(iTSEnable) = sWeight(iTS)
-        For iYear As Integer = 0 To NdatYear
+        For iYear As Integer = 0 To nDatPoints
             DatVal(iYear, iTSEnable) = sValues(iYear, iTS)
         Next iYear
 
@@ -398,14 +518,20 @@ Public Class cTimeSeriesDataStructures
     End Sub
 
 
-    Public Sub LoadForcingData(ByVal EcosimData As cEcosimDatastructures, ByVal nYears As Integer)
+    Public Sub LoadForcingData(ByVal EcosimData As cEcosimDatastructures)
         'Time series forcing data is stored the same way as other time series data
         'but is applied to fixed arrays i.e. PoolForceBB().....
         Try
             'jb do not load the timeseries data 
             'just the forcing data i.e. PoolForceB
             ' Me.loadEnabled()
-            Me.redimFocingData(nYears)
+
+            Dim npoints As Integer = Me.nYears
+            If Me.DataSetInterval = eTSDataSetInterval.Monthly Then npoints = Me.nDatPoints
+
+            npoints = Math.Max(npoints, EcosimData.NumYears)
+
+            Me.redimForcingData(npoints)
             Me.DoDatValCalculations(EcosimData)
         Catch ex As Exception
             cLog.Write(ex)
@@ -428,8 +554,8 @@ Public Class cTimeSeriesDataStructures
         'if this is moved to the interface SetFFromGear() will no longer be called
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-        Dim i As Integer
-        Dim j As Integer
+        Dim iDatPt As Integer
+        Dim iDType As Integer
         Dim K As Integer
         Dim Tim As Integer
         Dim ig As Integer
@@ -445,23 +571,24 @@ Public Class cTimeSeriesDataStructures
 
         Try
 
-            For i = 1 To Me.NdatYear
-                For j = 1 To NdatType
-                    Select Case DatType(j)
+            For iDatPt = 1 To Me.nDatPoints
+                For iDType = 1 To NdatType
+                    Select Case DatType(iDType)
 
                         Case eTimeSeriesType.BiomassRel
 
-                            If DatVal(i, j) > 0 Then Iobs = Iobs + 1
+                            If DatVal(iDatPt, iDType) > 0 Then Iobs = Iobs + 1
                             'PoolForceBB(DatPool(j), i) = 0
 
                         Case eTimeSeriesType.BiomassAbs
 
-                            If DatVal(i, j) > 0 Then Iobs = Iobs + 1
-                            PoolForceBB(DatPool(j), i) = 0
+                            If DatVal(iDatPt, iDType) > 0 Then Iobs = Iobs + 1
+                            PoolForceBB(DatPool(iDType), iDatPt) = 0
 
                         Case eTimeSeriesType.BiomassForcing 'pool biomass forcing
 
-                            PoolForceBB(DatPool(j), i) = DatVal(i, j)
+                            PoolForceBB(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+
 
                         Case eTimeSeriesType.TimeForcing 'time forcing data
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -484,23 +611,23 @@ Public Class cTimeSeriesDataStructures
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         Case eTimeSeriesType.FishingEffort 'effort data by gear type
 
-                            If DatPool(j) > 0 And DatPool(j) <= EcosimData.nGear Then
+                            If DatPool(iDType) > 0 And DatPool(iDType) <= EcosimData.nGear Then
                                 For K = 1 To 12
-                                    Tim = 12 * (DatYear(i) - DatYear(1)) + K    ': If Tim > 1200 Then Tim = 1200
-                                    ig = DatPool(j)
-                                    EcosimData.FishRateGear(ig, Tim) = DatVal(i, j)
+                                    Tim = 12 * (DatYear(iDatPt) - DatYear(1)) + K    ': If Tim > 1200 Then Tim = 1200
+                                    ig = DatPool(iDType)
+                                    EcosimData.FishRateGear(ig, Tim) = DatVal(iDatPt, iDType)
                                 Next
                             End If
 
                         Case eTimeSeriesType.FishingMortality 'F by pool
 
-                            If DatPool(j) > 0 And DatPool(j) <= nGroups Then
-                                EcosimData.FisForced(DatPool(j)) = True
+                            If DatPool(iDType) > 0 And DatPool(iDType) <= nGroups Then
+                                EcosimData.FisForced(DatPool(iDType)) = True
                                 For K = 1 To 12
-                                    Tim = 12 * (DatYear(i) - DatYear(1)) + K
-                                    EcosimData.FishRateNo(DatPool(j), Tim) = DatVal(i, j)
-                                    If EcosimData.FishRateMax(DatPool(j)) < EcosimData.FishRateNo(DatPool(j), Tim) Then
-                                        EcosimData.FishRateMax(DatPool(j)) = CSng(EcosimData.FishRateNo(DatPool(j), Tim) * 1.01)
+                                    Tim = 12 * (DatYear(iDatPt) - DatYear(1)) + K
+                                    EcosimData.FishRateNo(DatPool(iDType), Tim) = DatVal(iDatPt, iDType)
+                                    If EcosimData.FishRateMax(DatPool(iDType)) < EcosimData.FishRateNo(DatPool(iDType), Tim) Then
+                                        EcosimData.FishRateMax(DatPool(iDType)) = CSng(EcosimData.FishRateNo(DatPool(iDType), Tim) * 1.01)
                                     End If
                                 Next
                                 'Also check the fishratemax(pool):
@@ -508,42 +635,43 @@ Public Class cTimeSeriesDataStructures
 
                         Case eTimeSeriesType.TotalMortality, eTimeSeriesType.ConstantTotalMortality 'Z by pool
 
-                            If Math.Abs(DatVal(i, j)) > 0 Then Iobs = Iobs + 1 'now also with forced Z
-                            If DatType(j) = eTimeSeriesType.ConstantTotalMortality Then
-                                PoolForceZ(DatPool(j), i) = DatVal(i, j)
+                            If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 'now also with forced Z
+                            If DatType(iDType) = eTimeSeriesType.ConstantTotalMortality Then
+                                PoolForceZ(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+
                             Else
-                                PoolForceZ(DatPool(j), i) = 0
+                                PoolForceZ(DatPool(iDType), iDatPt) = 0
                             End If
 
                         Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing 'Catches, -6 is forced
-                            If Math.Abs(DatVal(i, j)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
-                            If DatType(j) = eTimeSeriesType.CatchesForcing Then
-                                PoolForceCatch(DatPool(j), i) = DatVal(i, j)
+                            If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
+                            If DatType(iDType) = eTimeSeriesType.CatchesForcing Then
+                                PoolForceCatch(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
                             Else
-                                PoolForceCatch(DatPool(j), i) = 0
+                                PoolForceCatch(DatPool(iDType), iDatPt) = 0
                             End If
 
                             'Martell playing here!
                         Case eTimeSeriesType.AverageWeight 'Mean Body Weight data for split pool groups
                             'jb EwE6 does not have split pools! I'm not sure if this also applies to multi stanza groups??
-                            If DatVal(i, j) > 0 Then Iobs = Iobs + 1
+                            If DatVal(iDatPt, iDType) > 0 Then Iobs = Iobs + 1
 
                         Case Else
                     End Select
                     '      End If 'If IsDatShown(j) = True Then
                 Next
             Next
-            j = 0
-            For i = 1 To NdatType
-                If WtType(i) > 0 Then j = j + 1
+            iDType = 0
+            For iDatPt = 1 To NdatType
+                If WtType(iDatPt) > 0 Then iDType = iDType + 1
             Next
 
             'jb was????? 
             ' If ReadingCsvFile Or j = 0 Then
-            If j = 0 Then
-                For i = 1 To NdatType
-                    If WtType(i) = 0 And (DatType(i) = 0 Or DatType(i) = 1 Or DatType(i) = 5 _
-                    Or Math.Abs(DatType(i)) = 6 Or DatType(i) = 7) Then WtType(i) = 1
+            If iDType = 0 Then
+                For iDatPt = 1 To NdatType
+                    If WtType(iDatPt) = 0 And (DatType(iDatPt) = 0 Or DatType(iDatPt) = 1 Or DatType(iDatPt) = 5 _
+                    Or Math.Abs(DatType(iDatPt)) = 6 Or DatType(iDatPt) = 7) Then WtType(iDatPt) = 1
                 Next
             End If
 

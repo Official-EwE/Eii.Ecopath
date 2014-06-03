@@ -104,6 +104,7 @@ Public Class frmRemarkUI
 
         ' Chop chop
         Me.Icon = Drawing.Icon.FromHandle(DirectCast(SharedResources.CommentHS, Bitmap).GetHicon)
+        Me.InvalidateGrid()
 
     End Sub
 

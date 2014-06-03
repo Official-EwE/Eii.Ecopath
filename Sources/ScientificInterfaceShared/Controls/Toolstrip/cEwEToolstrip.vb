@@ -110,7 +110,10 @@ Namespace Controls
                     iNumVisibleControl = 0
                 Else
                     ' #No: count number of visible regular controls
-                    If (tsi.Visible) Then iNumVisibleControl += 1
+                    If (tsi.Visible) Then
+                        iNumVisibleControl += 1
+                        iLastVisibleSeparator = 0
+                    End If
                 End If
             Next
 
