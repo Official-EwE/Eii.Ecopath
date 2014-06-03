@@ -65,11 +65,14 @@ Public Class cTimeSeriesCSVReader
     ''' </param>
     ''' <returns>True when succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overloads Function Read(ByVal strFileName As String, ByVal strDelimiter As String, ByVal strDecimalSeparator As String) As Boolean
+    Public Overloads Function Read(ByVal strFileName As String, _
+                                   ByVal strDelimiter As String, _
+                                   ByVal strDecimalSeparator As String, _
+                                   ByVal interval As eTSDataSetInterval) As Boolean
         ' Store file name
         Me.m_strFileName = strFileName
         ' Let the baseclass do the work
-        Return MyBase.Read(strDelimiter, strDecimalSeparator)
+        Return MyBase.Read(strDelimiter, strDecimalSeparator, interval)
     End Function
 
     ''' -----------------------------------------------------------------------

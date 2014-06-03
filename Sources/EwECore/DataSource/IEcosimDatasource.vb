@@ -179,14 +179,20 @@ Namespace DataSources
         ''' <param name="strAuthor">Author to assign to the new dataset.</param>
         ''' <param name="strContact">Contact info to assign to the new dataset.</param>
         ''' <param name="iFirstYear">First year of the dataset.</param>
-        ''' <param name="iNumYears">Number of years in the dataset.</param>
+        ''' <param name="iNumPoints">Number of data points in the dataset.</param>
+        ''' <param name="interval"><see cref="eTSDataSetInterval">Interval</see>
+        ''' between two points in the dataset.</param>
         ''' <param name="iDatasetID">Database ID assigned to the new dataset.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String, _
-                ByVal strAuthor As String, ByVal strContact As String, _
-                ByVal iFirstYear As Integer, ByVal iNumYears As Integer, _
-                ByRef iDatasetID As Integer) As Boolean
+        Function AppendTimeSeriesDataset(ByVal strDatasetName As String, _
+                                         ByVal strDescription As String, _
+                                         ByVal strAuthor As String, _
+                                         ByVal strContact As String, _
+                                         ByVal iFirstYear As Integer, _
+                                         ByVal iNumPoints As Integer, _
+                                         ByVal interval As eTSDataSetInterval, _
+                                         ByRef iDatasetID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

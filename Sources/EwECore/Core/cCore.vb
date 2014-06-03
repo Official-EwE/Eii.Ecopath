@@ -1502,7 +1502,8 @@ Public Class cCore
                 tsd.Index = iDS
                 tsd.Name = Me.m_TSData.strDatasetNames(iDS)
                 tsd.FirstYear = Me.m_TSData.nDatasetFirstYear(iDS)
-                tsd.NumYears = Me.m_TSData.nDatasetNumYears(iDS)
+                tsd.NumPoints = Me.m_TSData.nDatasetNumPoints(iDS)
+                tsd.TimeSeriesInterval = Me.m_TSData.DataSetIntervals(iDS)
                 tsd.AllowValidation = True
 
                 Me.m_timeSeriesDatasets.Add(tsd)
@@ -1568,7 +1569,7 @@ Public Class cCore
         Try
             If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
                 tsd = Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex)
-                iNumYears = Me.m_TSData.nDatasetNumYears(Me.ActiveTimeSeriesDatasetIndex)
+                iNumYears = Me.m_TSData.nDatasetNumPoints(Me.ActiveTimeSeriesDatasetIndex)
             End If
 
             For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
@@ -1583,10 +1584,10 @@ Public Class cCore
                 ts.WtType = Me.m_TSData.sWeight(ts.Index)
                 ts.CV = Me.m_TSData.sCV(ts.Index)
 
-                'DatSS and DatQ are not part of m_TSData yet
                 ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
                 ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
                 ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
+                ts.Interval = Me.m_TSData.DataSetInterval
 
                 ts.ResizeData(iNumYears)
                 For iYear As Integer = 1 To iNumYears
@@ -2009,7 +2010,7 @@ Public Class cCore
 
         'setEcosimRunLength() will call DoDatValCalculations to re-load forcing data
         If Me.ActiveTimeSeriesDatasetIndex > 0 Then
-            Me.setEcosimRunLength(Me.m_TSData.NdatYear, True)
+            Me.setEcosimRunLength(Me.m_TSData.nYears, True)
         Else
             Me.setEcosimRunLength(Me.m_EcoSimData.NumYears, True)
         End If
@@ -2156,7 +2157,8 @@ Public Class cCore
     ''' <param name="strAuthor"></param>
     ''' <param name="strContact"></param>
     ''' <param name="iFirstYear"></param>
-    ''' <param name="iNumYears"></param>
+    ''' <param name="iNumPoints">The number of data points in the dataset.</param>
+    ''' <param name="interval">The <see cref="eTSDataSetInterval">interval</see> between two points in the dataset.</param>
     ''' <param name="iDataset">Index of the new time series dataset if the 
     ''' operation completed succesfully.</param>
     ''' <returns>True if succesful.</returns>
@@ -2166,7 +2168,8 @@ Public Class cCore
                                             ByVal strAuthor As String, _
                                             ByVal strContact As String, _
                                             ByVal iFirstYear As Integer, _
-                                            ByVal iNumYears As Integer, _
+                                            ByVal iNumPoints As Integer, _
+                                            ByVal interval As eTSDataSetInterval, _
                                             ByRef iDataset As Integer) As Boolean
 
         Dim ds As IEcosimDatasource = Nothing
@@ -2185,7 +2188,7 @@ Public Class cCore
         Try
 
             ds = DirectCast(DataSource, IEcosimDatasource)
-            If ds.AppendTimeSeriesDataset(strName, strDescription, strAuthor, strContact, iFirstYear, iNumYears, iDatasetID) Then
+            If ds.AppendTimeSeriesDataset(strName, strDescription, strAuthor, strContact, iFirstYear, iNumPoints, interval, iDatasetID) Then
 
                 Me.InitAndLoadEcosimTimeSeriesDatasets()
                 Me.DataAddedOrRemovedMessage("Number of time series datasets has changed.", eCoreComponentType.TimeSeries, eDataTypes.TimeSeriesDataset)
@@ -7568,14 +7571,14 @@ Public Class cCore
 
             If newNumberOfYears = 0 Then Exit Sub
             'sets NumYears and NTimes and resize the underlying data to the new number of years
-            m_EcoSimData.RedimTime(newNumberOfYears, m_TSData.NdatYear, bOverwriteNewData)
+            m_EcoSimData.RedimTime(newNumberOfYears, m_TSData.nYears, bOverwriteNewData)
 
             'redim the cv vars to the new timesteps
             Me.m_MSEData.redimTime(orgNYears)
 
             'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
             'forcing data needs to be the max of Reference data years and Ecosim Years
-            Me.m_TSData.LoadForcingData(m_EcoSimData, Math.Max(m_TSData.NdatYear, m_EcoSimData.NumYears))
+            Me.m_TSData.LoadForcingData(m_EcoSimData)
 
             Me.m_SearchData.redimTime(m_EcoSimData.NumYears)
 

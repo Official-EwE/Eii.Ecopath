@@ -1276,14 +1276,14 @@ Namespace MSE
                     End If
 
                     'forced Catches
-                    If iyear <= Me.m_refData.NdatYear And Me.m_refData.PoolForceCatch(igrp, iyear) > 0 Then
+                    If iyear <= Me.m_refData.nYears And Me.m_refData.PoolForceCatch(igrp, iyear) > 0 Then
                         FishYear(igrp) = Me.m_refData.PoolForceCatch(igrp, iyear) / Biomass(igrp)
                         If FishYear(igrp) > 3 Then FishYear(igrp) = 3
                     End If
 
                     'Forced Mortality (Z)
                     'PoolForceZ(iGroup,0) is used in Derivt() to force mortality PoolForceZ(group, 0) = 0 is No forcng
-                    If iyear <= Me.m_refData.NdatYear Then
+                    If iyear <= Me.m_refData.nDatPoints Then
                         Me.m_refData.PoolForceZ(igrp, 0) = CSng(IIF(Me.m_refData.PoolForceZ(igrp, iyear) > 0, Me.m_refData.PoolForceZ(igrp, iyear), 0))
                     End If
 

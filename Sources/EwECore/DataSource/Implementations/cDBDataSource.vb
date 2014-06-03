@@ -2961,7 +2961,9 @@ Namespace DataSources
                         tsDS.strDatasetAuthor(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Author", ""))
                         tsDS.strDatasetContact(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
                         tsDS.nDatasetFirstYear(iDataset) = CInt(reader("FirstYear"))
-                        tsDS.nDatasetNumYears(iDataset) = CInt(reader("NumYears"))
+                        tsDS.nDatasetNumPoints(iDataset) = CInt(reader("NumPoints"))
+                        tsDS.DataSetIntervals(iDataset) = CType(CInt(Me.m_db.ReadSafe(reader, "DataInterval", eTSDataSetInterval.Annual)), eTSDataSetInterval)
+
                         tsDS.nDatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
                         iDataset += 1
                     End While
@@ -2984,14 +2986,17 @@ Namespace DataSources
         ''' <param name="strAuthor">Author to assign to the new dataset.</param>
         ''' <param name="strContact">Contact info to assign to the new dataset.</param>
         ''' <param name="iFirstYear">First year of the dataset.</param>
-        ''' <param name="iNumYears">Number of years in the dataset.</param>
+        ''' <param name="iNumPoints">Number of data points in the dataset.</param>
+        ''' <param name="interval"><see cref="eTSDataSetInterval">Interval</see> between
+        ''' to points in the dataset.</param>
         ''' <param name="iDatasetID">Database ID assigned to the new dataset.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String, _
                 ByVal strAuthor As String, ByVal strContact As String, _
-                ByVal iFirstYear As Integer, ByVal iNumYears As Integer, _
-                ByRef iDatasetID As Integer) As Boolean Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
+                ByVal iFirstYear As Integer, ByVal iNumPoints As Integer, interval As eTSDataSetInterval, _
+                ByRef iDatasetID As Integer) As Boolean _
+            Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -3026,7 +3031,8 @@ Namespace DataSources
                     drow("Author") = strAuthor
                     drow("Contact") = strContact
                     drow("FirstYear") = iFirstYear
-                    drow("NumYears") = iNumYears
+                    drow("NumPoints") = iNumPoints
+                    drow("DataInterval") = CInt(interval)
                     'drow("LastSaved") = cDateUtils.GetJulianDate()
                     writer.AddRow(drow)
 
@@ -6528,7 +6534,14 @@ Namespace DataSources
 
                 ' Assemble Zscale. 
                 ' JS 04april09: Time Series are most likely ANNUAL, FFs are MONTHLY
-                If ts.IsMonthly Then iRepetitions = 1 Else iRepetitions = cCore.N_MONTHS
+                Select Case ts.Interval
+                    Case eTSDataSetInterval.Annual
+                        iRepetitions = cCore.N_MONTHS
+                    Case eTSDataSetInterval.Monthly
+                        iRepetitions = 1
+                    Case Else
+                        Debug.Assert(False)
+                End Select
 
                 For iYear As Integer = 0 To ts.nPoints - 1
                     For iMonth As Integer = 1 To iRepetitions
@@ -6707,12 +6720,13 @@ Namespace DataSources
             Dim iTimeSeriesID As Integer = 0
             Dim iSeries As Integer = 1
             Dim iIndex As Integer = 0
-            Dim iYear As Integer = 0
+            Dim iPoint As Integer = 0
             Dim bSucces As Boolean = True
 
             tsDS.ClearTimeSeries()
             tsDS.ActiveDatasetIndex = iDataset
-            tsDS.nMaxYears = tsDS.nDatasetNumYears(iDataset)
+            tsDS.nMaxYears = tsDS.nDatasetNumPoints(iDataset)
+            tsDS.DataSetInterval = tsDS.DataSetIntervals(iDataset)
 
             ' JS 20oct07: data source should NOT do this; is responsibility of core logic
             tsDS.nGroups = ecopathDS.NumGroups
@@ -6789,9 +6803,9 @@ Namespace DataSources
 
                     'Debug.Assert((astrTimeValues.Length - 1) <= tsDS.nMaxYears)
 
-                    For iYear = 1 To Math.Min(tsDS.nDatasetNumYears(iDataset), astrTimeValues.Length)
+                    For iPoint = 1 To Math.Min(tsDS.nDatasetNumPoints(iDataset), astrTimeValues.Length)
                         Try
-                            tsDS.sValues(iYear, iSeries) = cStringUtils.ConvertToSingle(astrTimeValues(iYear - 1))
+                            tsDS.sValues(iPoint, iSeries) = cStringUtils.ConvertToSingle(astrTimeValues(iPoint - 1))
                         Catch ex As Exception
                             ex = ex
                             ' Woops
@@ -6855,9 +6869,9 @@ Namespace DataSources
 
                     ' Concoct time series memo
                     sbValues.Length = 0
-                    For iYear As Integer = 1 To tsDS.nDatasetNumYears(tsDS.ActiveDatasetIndex)
-                        If (iYear > 1) Then sbValues.Append(" ")
-                        sbValues.Append(cStringUtils.FormatSingle(tsDS.sValues(iYear, iTS)))
+                    For iPoint As Integer = 1 To tsDS.nDatasetNumPoints(tsDS.ActiveDatasetIndex)
+                        If (iPoint > 1) Then sbValues.Append(" ")
+                        sbValues.Append(cStringUtils.FormatSingle(tsDS.sValues(iPoint, iTS)))
                     Next
                     drow("TimeValues") = sbValues.ToString()
 
@@ -9261,9 +9275,8 @@ Namespace DataSources
                     Dim iGroup As Integer = Array.IndexOf(ecospaceDS.GroupDBID, CInt(reader("GroupID")))
                     Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ShapeID")))
                     Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(reader("VarDBID")))
-                    Dim varName As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
 
-                    If (iGroup > 0) And (iShape > 0) And (varName <> eVarNameFlags.NotSet) Then
+                    If (iGroup > 0) And (iShape > 0) Then
                         ' Map pos 0 indicates Depth, any other ID indicates a Driver map
                         ecospaceDS.CapMapFunctions(Math.Max(0, iMap), iGroup) = iShape
                     End If
@@ -9352,13 +9365,11 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim medDS As cMediationDataStructures = Me.m_core.CapacityMapInteractionManager.MediationData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
-            Dim layerType As eVarNameFlags
             ' Clear
             Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
             writer = Me.m_db.GetWriter("EcospaceScenarioCapacityDrivers")
@@ -9372,8 +9383,6 @@ Namespace DataSources
                             ' Referenced to Ecospace group DBIDs
                             drow("GroupID") = ecospaceDS.GroupDBID(iGroup)
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
-                            If iMap = 0 Then layerType = eVarNameFlags.LayerDepth Else layerType = eVarNameFlags.LayerDriver
-                            drow("VarName") = cin.GetVarName(layerType)
                             drow("VarDBID") = IIF(iMap = 0, 0, ecospaceDS.EnvironmentalLayerDBID(iMap))
                             writer.AddRow(drow)
                         End If

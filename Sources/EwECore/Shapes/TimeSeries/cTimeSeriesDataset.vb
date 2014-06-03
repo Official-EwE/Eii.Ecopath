@@ -34,6 +34,8 @@ Public Class cTimeSeriesDataset
     Private m_iNumYears As Integer = 0
     Private m_iNumTimeSeries As Integer = 0
 
+    Private m_TimeseriesInterval As eTSDataSetInterval
+
 #Region " Constructor "
 
     Public Sub New(ByVal core As cCore, ByVal nTimeSeries As Integer)
@@ -157,7 +159,7 @@ Public Class cTimeSeriesDataset
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the first year in the time series Dataset.
+    ''' Returns the first year in the time series dataset.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property FirstYear() As Integer
@@ -171,10 +173,13 @@ Public Class cTimeSeriesDataset
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the number of years in the time series Dataset.
+    ''' Returns the number of points in the time series dataset. Data points may
+    ''' be spaced <see cref="eTSDataSetInterval.Annual">annually</see> or 
+    ''' <see cref="eTSDataSetInterval.Monthly">monthly</see>. The size of the 
+    ''' interval can be checked via <see cref="TimeSeriesInterval"/>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property NumYears() As Integer
+    Public Property NumPoints() As Integer
         Get
             Return Me.m_iNumYears
         End Get
@@ -193,6 +198,15 @@ Public Class cTimeSeriesDataset
         Get
             Return Me.m_core.EcosimTimeSeries(iSeries)
         End Get
+    End Property
+
+    Public Property TimeSeriesInterval As eTSDataSetInterval
+        Get
+            Return Me.m_TimeseriesInterval
+        End Get
+        Set(value As eTSDataSetInterval)
+            Me.m_TimeseriesInterval = value
+        End Set
     End Property
 
 #End Region ' Variable via dot(.) operator

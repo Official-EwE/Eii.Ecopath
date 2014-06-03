@@ -148,10 +148,12 @@ Namespace Ecosim
                         ' ===============
                         ' Draw time series
                         ' ===============
+                        Dim dx As Double = cCore.N_MONTHS / m_NTimes
+                        If plot.TimeSeries.Interval = eTSDataSetInterval.Monthly Then dx = 1 / m_NTimes
                         data = plot.TimeSeries.ShapeData
                         For k As Integer = 1 To data.Length - 1
                             If Math.Abs(data(k)) > 0 Then
-                                Dim dotXRelPos As Single = CSng(m_sPlotWidth * (k - 0.5!) * (cCore.N_MONTHS / m_NTimes))
+                                Dim dotXRelPos As Single = CSng(m_sPlotWidth * (k - 0.5!) * dx)
                                 Dim dotYRelPos As Single = CSng(m_sPlotHeight * (1 - Math.Abs(data(k)) * plot.TSDataScale / plot.YMax))
                                 Dim dotPos As SizeF = toDeviceSize(New SizeF(dotXRelPos, dotYRelPos), iWidth, iHeight)
 

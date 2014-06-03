@@ -536,7 +536,7 @@
     <Compile Include="Controls\Shapes\ShapeValue\frmShapeValue.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeValue\ShapeValueGrid.vb">
+    <Compile Include="Controls\Shapes\ShapeValue\gridShapeValue.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Shapes\SketchPad\ucSketchPad.Designer.vb">
@@ -706,6 +706,7 @@
     <Compile Include="Style\Type formatters\cSpatialDatasetCompatibilityFormatter.vb" />
     <Compile Include="Style\Type formatters\cShapeDataFormatter.vb" />
     <Compile Include="Style\Type formatters\cStyleTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cTimeSeriesDatasetIntervalTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cVerboseLevelTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cSpatialDataAdapterFormatter.vb" />
     <Compile Include="Style\Type formatters\cSpatialConverterFormatter.vb" />
@@ -1016,6 +1017,7 @@
     <Content Include="Resources\ExportDatabaseHS.PNG" />
     <Content Include="Resources\FilterHS.png" />
     <None Include="Resources\fish_dead.png" />
+    <Content Include="Resources\NavHS.png" />
     <Content Include="Resources\SnapshotHS.png" />
     <Content Include="Resources\ExportPictureHS.png" />
     <Content Include="Resources\Refresh.png" />

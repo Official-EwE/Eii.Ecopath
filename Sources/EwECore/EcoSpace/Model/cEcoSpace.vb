@@ -1291,33 +1291,37 @@ Public Class cEcoSpace
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub AccumulateFitStats()
-        Try
 
-            'Don't gather stats during the Spin-Up
-            If m_Data.bInSpinUp Then Return
+        System.Console.WriteLine("Warning: Ecospace.AccumulateFitStats() not called for debugging Monthly Timeseries.")
+        Return
 
-            Static bNeedStatsForYear As Boolean
-            If iFitCurYear <> Me.m_Data.YearNow Then
-                'In a new year
-                'Keep track of this year
-                iFitCurYear = Me.m_Data.YearNow
-                'We need to gather stats for this year
-                bNeedStatsForYear = True
-            End If
+        'Try
 
-            'Make sure AccumulateDataInfo only gets called once a year
-            'If the user has set the time step to a value other the one month MonthNow may never = 6 or it may = 6 for multiple time steps
-            If m_Data.MonthNow >= 6 And bNeedStatsForYear Then
-                'Call Ecosim to gather the stats
-                m_Ecosim.AccumulateDataInfo(m_Data.YearNow - 1, Btime, loss)
-                'Ok we have the stats for this year 
-                'so turn off the boolean flag until the next year
-                bNeedStatsForYear = False
-            End If
+        '    'Don't gather stats during the Spin-Up
+        '    If m_Data.bInSpinUp Then Return
 
-        Catch ex As Exception
-            cLog.Write(ex, "cEcospace.AccumulateFitStats()")
-        End Try
+        '    Static bNeedStatsForYear As Boolean
+        '    If iFitCurYear <> Me.m_Data.YearNow Then
+        '        'In a new year
+        '        'Keep track of this year
+        '        iFitCurYear = Me.m_Data.YearNow
+        '        'We need to gather stats for this year
+        '        bNeedStatsForYear = True
+        '    End If
+
+        '    'Make sure AccumulateDataInfo only gets called once a year
+        '    'If the user has set the time step to a value other the one month MonthNow may never = 6 or it may = 6 for multiple time steps
+        '    If m_Data.MonthNow >= 6 And bNeedStatsForYear Then
+        '        'Call Ecosim to gather the stats
+        '        m_Ecosim.AccumulateDataInfo(m_Data.YearNow - 1, Btime, loss)
+        '        'Ok we have the stats for this year 
+        '        'so turn off the boolean flag until the next year
+        '        bNeedStatsForYear = False
+        '    End If
+
+        'Catch ex As Exception
+        '    cLog.Write(ex, "cEcospace.AccumulateFitStats()")
+        'End Try
 
     End Sub
 
@@ -5912,7 +5916,7 @@ exitline:
         Dim SpSumZ2() As Single
 
 
-        ReDim Erpred(m_refdata.NdatType * m_refdata.NdatYear)
+        ReDim Erpred(m_refdata.NdatType * m_refdata.nDatPoints)
         '  ReDim ErTrace(m_refdata.NdatType * m_refdata.NdatYear)
         'ReDim SpTraceObs(SpDat)
         'ReDim SpTraceZ(SpDat)
@@ -5934,173 +5938,173 @@ exitline:
         'm_refdata.Iobs = 0
         ''SpTraceObs = 0
         'Accumulate z statistics for observations:
-        For j = 1 To m_refdata.NdatType  'This time series is for region: m_refdata.spregion(j)
-            For iDyear = 1 To m_Data.TotalTime '- 1
-                If m_refdata.DatVal(iDyear, j) > 0 And _
-                    (m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Or m_refdata.DatType(j) = eTimeSeriesType.BiomassRel Or _
-                     m_refdata.DatType(j) = eTimeSeriesType.Catches Or m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Or _
-                     m_refdata.DatType(j) = eTimeSeriesType.FishingEffort) Then
+        'For j = 1 To m_refdata.NdatType  'This time series is for region: m_refdata.spregion(j)
+        '    For iDyear = 1 To m_Data.TotalTime '- 1
+        '        If m_refdata.DatVal(iDyear, j) > 0 And _
+        '            (m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Or m_refdata.DatType(j) = eTimeSeriesType.BiomassRel Or _
+        '             m_refdata.DatType(j) = eTimeSeriesType.Catches Or m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Or _
+        '             m_refdata.DatType(j) = eTimeSeriesType.FishingEffort) Then
 
-                    bCountStat = False
+        '            bCountStat = False
 
-                    'SWt(m_refdata.Iobs) = SpWt(j)
-                    Select Case m_refdata.DatType(j)
-                        Case eTimeSeriesType.BiomassAbs, eTimeSeriesType.BiomassRel 'Abundance Data
-                            If m_Data.SpaceBiomassByRegionCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) > 0 Then
-                                Zstat = Math.Log(m_refdata.DatVal(iDyear, j) / m_Data.SpaceBiomassByRegion(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) * m_Data.SpaceBiomassByRegionCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)))          'BB(DatPool(j)))
-                                bCountStat = True
-                            End If
-
-                        Case eTimeSeriesType.FishingEffort '3  'Effort data, In Ecospace only used for comparison, not to drive effort
-                            If m_Data.SpaceEffortByRegionFleetCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) > 0 Then
-                                Zstat = Math.Log(m_refdata.DatVal(iDyear, j) / m_Data.SpaceEffortByRegionFleet(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) * m_Data.SpaceEffortByRegionFleetCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)))          'BB(DatPool(j)))
-                                bCountStat = True
-                            End If
-
-                        Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing '-6, 6     'Absolute Catch Data, Martell, Jan 02
-                            If m_Data.SpaceCatchByRegion(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) > 0 Then
-                                Zstat = Math.Log(m_refdata.DatVal(iDyear, j) / m_Data.SpaceCatchByRegion(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) * m_Data.SpaceCatchByRegionCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)))
-                                bCountStat = True
-                            End If
-
-                        Case Else
-                    End Select
-
-                    If bCountStat Then
-                        m_refdata.Iobs = m_refdata.Iobs + 1
-
-                        Erpred(m_refdata.Iobs) = Zstat
-                        SpNObs(j) = SpNObs(j) + 1
-                        SpSumZ(j) = SpSumZ(j) + Zstat
-                        SpSumZ2(j) = SpSumZ2(j) + Zstat * Zstat
-                    End If
-
-                    'ElseIf ConSimOn And m_refdata.datVal(iDyear, j) > 0 And (m_refdata.datType(j) = 8 Or m_refdata.datType(j) = 9) Then
-                    '    'This is to add reference time series for Ecotracer runs
-                    '    If ConcTr(m_refdata.datpool(j)) > 0 Then
-                    '        'NobsTime(iDyear) = NobsTime(iDyear) + 1
-                    '        'NobsTime is for testing significance, don't need a similar one for tracer, for now at least
-                    '        'Wt(m_refdata.Iobs) = WtType(j)
-                    '        If SpaceTraceByRegionCount(iDyear, m_refdata.datpool(j), m_refdata.spregion(j)) > 0 Then
-                    '            Zstat = Log(m_refdata.datVal(iDyear, j) / SpaceTraceByRegion(iDyear, m_refdata.datpool(j), m_refdata.spregion(j)) * SpaceTraceByRegionCount(iDyear, m_refdata.datpool(j), m_refdata.spregion(j)))          'BB(DatPool(j)))
-                    '            Cnt = Cnt + 1
-                    '            ReDim Preserve ObsPred(2, Cnt)
-                    '            ReDim Preserve ObsName(Cnt)
-                    '            ReDim Preserve ObsUse(Cnt)
-                    '            ObsPred(0, Cnt) = m_refdata.datVal(iDyear, j)
-                    '            ObsName(Cnt) = SpName(j)   'name of the series
-                    '            ObsUse(Cnt) = True
-                    '            ObsPred(1, Cnt) = SpaceTraceByRegion(iDyear, m_refdata.datpool(j), m_refdata.spregion(j)) / SpaceTraceByRegionCount(iDyear, m_refdata.datpool(j), m_refdata.spregion(j))
-                    '            ObsPred(2, Cnt) = m_refdata.spregion(j)
-                    '            'ObsPred(1, Cnt) = ObsPred(0, Cnt) * (1 + Rnd())
-                    '            'save the biggest values for scaling
-                    '            If ObsPred(0, Cnt) > ObsPred(0, 0) Then ObsPred(0, 0) = ObsPred(0, Cnt)
-                    '            If ObsPred(1, Cnt) > ObsPred(1, 0) Then ObsPred(1, 0) = ObsPred(1, Cnt)
-                    '        End If
-                    '        'YTraceHat(m_refdata.Iobs) = Log(ConcTr(DatPool(j)))
-                    '        ErTrace(TraceObs) = Zstat
-                    '        SpTraceObs(j) = SpTraceObs(j) + 1
-                    '        SpTraceZ(j) = SpTraceZ(j) + Zstat
-                    '        SpTraceZ2(j) = SpTraceZ2(j) + Zstat * Zstat
-                    '    End If
-                End If
-            Next
-        Next j
-
-        '        '-----------------------------------
-        'ReDim m_refdata.DatSS(SpDat) As Single
-        'ReDim m_refdata.DatQ(SpDat) As Single
-
-        For j = 1 To m_refdata.NdatType
-            If SpNObs(j) > 0 Then
-                If m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Then
-                    m_refdata.DatSS(j) = SpSumZ2(j)
-                    m_refdata.DatQ(j) = 0
-
-                ElseIf m_refdata.DatType(j) = eTimeSeriesType.BiomassRel _
-                    Or m_refdata.DatType(j) = eTimeSeriesType.FishingEffort Or _
-                       m_refdata.DatType(j) = eTimeSeriesType.TotalMortality Or _
-                       m_refdata.DatType(j) = eTimeSeriesType.Catches Or _
-                       m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Or _
-                       m_refdata.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
-
-                    m_refdata.DatSS(j) = SpSumZ2(j) - SpSumZ(j) ^ 2 / SpNObs(j)
-                    m_refdata.DatQ(j) = SpSumZ(j) / SpNObs(j)
-                    ' SpeDatq(j) = Exp(m_refdata.DatQ(j))
-                End If
-            End If
-        Next
-
-        m_refdata.Iobs = 0
-        Ss = 0
-
-        For i = 1 To m_refdata.NdatYear
-            iDyear = m_refdata.DatYear(i) - m_refdata.DatYear(1)
-            For j = 1 To m_refdata.NdatType
-                If m_refdata.DatVal(i, j) > 0 And iDyear < m_Data.TotalTime + 1 And _
-                    (m_refdata.DatType(j) = eTimeSeriesType.BiomassRel Or _
-                     m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Or _
-                     m_refdata.DatType(j) = eTimeSeriesType.FishingEffort Or _
-                     m_refdata.DatType(j) = eTimeSeriesType.TotalMortality Or _
-                     m_refdata.DatType(j) = eTimeSeriesType.Catches Or _
-                     m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Or _
-                     m_refdata.DatType(j) = eTimeSeriesType.AverageWeight) Then
-
-                    m_refdata.Iobs = m_refdata.Iobs + 1
-                    Erpred(m_refdata.Iobs) = Erpred(m_refdata.Iobs) - m_refdata.DatQ(j)
-                    Ss = Ss + Erpred(m_refdata.Iobs) ^ 2 ' * Wt(m_refdata.Iobs)
-                End If
-
-            Next
-        Next
-
-
-        '        '--------------------------------------------------
-        '        'Trace SS Spatial:
-        '        TraceSS = 0
-        '        If ConSimOn Then
-        '    ReDim tDatSS(SpDat) As Single, tDatq(SpDat) As Single, teDatq(SpDat) As Single
-        '            'Dim i As Integer, j As Integer, iYear As Integer, bplot As Single
-
-        '            For j = 1 To SpDat
-        '                If SpTraceObs(j) > 0 Then
-        '                    If m_refdata.datType(j) = 9 Then      'absolute concentration
-        '                        tDatSS(j) = SpTraceZ2(j)
-        '                        tDatq(j) = 0
-        '                    ElseIf m_refdata.datType(j) = 8 Then  'relative concentration
-        '                        tDatSS(j) = SpTraceZ2(j) - SpTraceZ(j) ^ 2 / SpTraceObs(j)
-        '                        tDatq(j) = SpTraceZ(j) / SpTraceObs(j)
-        '                        teDatq(j) = Exp(tDatq(j))
-        '                    End If
-        '                End If
-        '            Next
-
-        '            TraceObs = 0
-        '            'Ss = 0
-
-        '            For i = 1 To SpDatYear
-        '                iDyear = SpYear(i) - SpYear(1)
-        '                For j = 1 To SpDat
-        '                    If (m_refdata.datType(j) = 8 Or m_refdata.datType(j) = 9) And Abs(m_refdata.datVal(i, j)) > 0 And iDyear < TotalTime + 1 Then
-        '                        TraceObs = TraceObs + 1
-        '                        ErTrace(TraceObs) = ErTrace(TraceObs) - tDatq(j)
-        '                        'DatDev(j, i) = ErTrace(TraceObs)
-        '                        TraceSS = TraceSS + ErTrace(TraceObs) ^ 2 '* Wt(m_refdata.Iobs) 'No weight on trace
-        '                        'YTraceHat(TraceObs) = YTraceHat(TraceObs) + Datq(j)
+        '            'SWt(m_refdata.Iobs) = SpWt(j)
+        '            Select Case m_refdata.DatType(j)
+        '                Case eTimeSeriesType.BiomassAbs, eTimeSeriesType.BiomassRel 'Abundance Data
+        '                    If m_Data.SpaceBiomassByRegionCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) > 0 Then
+        '                        Zstat = Math.Log(m_refdata.DatVal(iDyear, j) / m_Data.SpaceBiomassByRegion(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) * m_Data.SpaceBiomassByRegionCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)))          'BB(DatPool(j)))
+        '                        bCountStat = True
         '                    End If
 
-        '                Next
-        '            Next
+        '                Case eTimeSeriesType.FishingEffort '3  'Effort data, In Ecospace only used for comparison, not to drive effort
+        '                    If m_Data.SpaceEffortByRegionFleetCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) > 0 Then
+        '                        Zstat = Math.Log(m_refdata.DatVal(iDyear, j) / m_Data.SpaceEffortByRegionFleet(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) * m_Data.SpaceEffortByRegionFleetCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)))          'BB(DatPool(j)))
+        '                        bCountStat = True
+        '                    End If
+
+        '                Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing '-6, 6     'Absolute Catch Data, Martell, Jan 02
+        '                    If m_Data.SpaceCatchByRegion(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) > 0 Then
+        '                        Zstat = Math.Log(m_refdata.DatVal(iDyear, j) / m_Data.SpaceCatchByRegion(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)) * m_Data.SpaceCatchByRegionCount(iDyear, m_refdata.DatPool(j), m_refdata.SPRegion(j)))
+        '                        bCountStat = True
+        '                    End If
+
+        '                Case Else
+        '            End Select
+
+        '            If bCountStat Then
+        '                m_refdata.Iobs = m_refdata.Iobs + 1
+
+        '                Erpred(m_refdata.Iobs) = Zstat
+        '                SpNObs(j) = SpNObs(j) + 1
+        '                SpSumZ(j) = SpSumZ(j) + Zstat
+        '                SpSumZ2(j) = SpSumZ2(j) + Zstat * Zstat
+        '            End If
+
+        '            'ElseIf ConSimOn And m_refdata.datVal(iDyear, j) > 0 And (m_refdata.datType(j) = 8 Or m_refdata.datType(j) = 9) Then
+        '            '    'This is to add reference time series for Ecotracer runs
+        '            '    If ConcTr(m_refdata.datpool(j)) > 0 Then
+        '            '        'NobsTime(iDyear) = NobsTime(iDyear) + 1
+        '            '        'NobsTime is for testing significance, don't need a similar one for tracer, for now at least
+        '            '        'Wt(m_refdata.Iobs) = WtType(j)
+        '            '        If SpaceTraceByRegionCount(iDyear, m_refdata.datpool(j), m_refdata.spregion(j)) > 0 Then
+        '            '            Zstat = Log(m_refdata.datVal(iDyear, j) / SpaceTraceByRegion(iDyear, m_refdata.datpool(j), m_refdata.spregion(j)) * SpaceTraceByRegionCount(iDyear, m_refdata.datpool(j), m_refdata.spregion(j)))          'BB(DatPool(j)))
+        '            '            Cnt = Cnt + 1
+        '            '            ReDim Preserve ObsPred(2, Cnt)
+        '            '            ReDim Preserve ObsName(Cnt)
+        '            '            ReDim Preserve ObsUse(Cnt)
+        '            '            ObsPred(0, Cnt) = m_refdata.datVal(iDyear, j)
+        '            '            ObsName(Cnt) = SpName(j)   'name of the series
+        '            '            ObsUse(Cnt) = True
+        '            '            ObsPred(1, Cnt) = SpaceTraceByRegion(iDyear, m_refdata.datpool(j), m_refdata.spregion(j)) / SpaceTraceByRegionCount(iDyear, m_refdata.datpool(j), m_refdata.spregion(j))
+        '            '            ObsPred(2, Cnt) = m_refdata.spregion(j)
+        '            '            'ObsPred(1, Cnt) = ObsPred(0, Cnt) * (1 + Rnd())
+        '            '            'save the biggest values for scaling
+        '            '            If ObsPred(0, Cnt) > ObsPred(0, 0) Then ObsPred(0, 0) = ObsPred(0, Cnt)
+        '            '            If ObsPred(1, Cnt) > ObsPred(1, 0) Then ObsPred(1, 0) = ObsPred(1, Cnt)
+        '            '        End If
+        '            '        'YTraceHat(m_refdata.Iobs) = Log(ConcTr(DatPool(j)))
+        '            '        ErTrace(TraceObs) = Zstat
+        '            '        SpTraceObs(j) = SpTraceObs(j) + 1
+        '            '        SpTraceZ(j) = SpTraceZ(j) + Zstat
+        '            '        SpTraceZ2(j) = SpTraceZ2(j) + Zstat * Zstat
+        '            '    End If
         '        End If
-        '        '===================================================
+        '    Next
+        'Next j
 
-        '        'As a start using SS not LL
-        '        Dim LogL As Single
-        '        For j = 1 To SpDat
-        '            If m_refdata.DatSS(j) > 0 Then LogL = LogL + SpWt(j) * (SpNObs(j) - 1) * Log(m_refdata.DatSS(j))
-        '        Next
-        '        LogL = LogL / 2
-        '        If SetToLike = True Then Ss = LogL
+        ''        '-----------------------------------
+        ''ReDim m_refdata.DatSS(SpDat) As Single
+        ''ReDim m_refdata.DatQ(SpDat) As Single
+
+        'For j = 1 To m_refdata.NdatType
+        '    If SpNObs(j) > 0 Then
+        '        If m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Then
+        '            m_refdata.DatSS(j) = SpSumZ2(j)
+        '            m_refdata.DatQ(j) = 0
+
+        '        ElseIf m_refdata.DatType(j) = eTimeSeriesType.BiomassRel _
+        '            Or m_refdata.DatType(j) = eTimeSeriesType.FishingEffort Or _
+        '               m_refdata.DatType(j) = eTimeSeriesType.TotalMortality Or _
+        '               m_refdata.DatType(j) = eTimeSeriesType.Catches Or _
+        '               m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Or _
+        '               m_refdata.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
+
+        '            m_refdata.DatSS(j) = SpSumZ2(j) - SpSumZ(j) ^ 2 / SpNObs(j)
+        '            m_refdata.DatQ(j) = SpSumZ(j) / SpNObs(j)
+        '            ' SpeDatq(j) = Exp(m_refdata.DatQ(j))
+        '        End If
+        '    End If
+        'Next
+
+        'm_refdata.Iobs = 0
+        'Ss = 0
+
+        'For i = 1 To m_refdata.NdatYear
+        '    iDyear = m_refdata.DatYear(i) - m_refdata.DatYear(1)
+        '    For j = 1 To m_refdata.NdatType
+        '        If m_refdata.DatVal(i, j) > 0 And iDyear < m_Data.TotalTime + 1 And _
+        '            (m_refdata.DatType(j) = eTimeSeriesType.BiomassRel Or _
+        '             m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Or _
+        '             m_refdata.DatType(j) = eTimeSeriesType.FishingEffort Or _
+        '             m_refdata.DatType(j) = eTimeSeriesType.TotalMortality Or _
+        '             m_refdata.DatType(j) = eTimeSeriesType.Catches Or _
+        '             m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Or _
+        '             m_refdata.DatType(j) = eTimeSeriesType.AverageWeight) Then
+
+        '            m_refdata.Iobs = m_refdata.Iobs + 1
+        '            Erpred(m_refdata.Iobs) = Erpred(m_refdata.Iobs) - m_refdata.DatQ(j)
+        '            Ss = Ss + Erpred(m_refdata.Iobs) ^ 2 ' * Wt(m_refdata.Iobs)
+        '        End If
+
+        '    Next
+        'Next
+
+
+        ''        '--------------------------------------------------
+        ''        'Trace SS Spatial:
+        ''        TraceSS = 0
+        ''        If ConSimOn Then
+        ''    ReDim tDatSS(SpDat) As Single, tDatq(SpDat) As Single, teDatq(SpDat) As Single
+        ''            'Dim i As Integer, j As Integer, iYear As Integer, bplot As Single
+
+        ''            For j = 1 To SpDat
+        ''                If SpTraceObs(j) > 0 Then
+        ''                    If m_refdata.datType(j) = 9 Then      'absolute concentration
+        ''                        tDatSS(j) = SpTraceZ2(j)
+        ''                        tDatq(j) = 0
+        ''                    ElseIf m_refdata.datType(j) = 8 Then  'relative concentration
+        ''                        tDatSS(j) = SpTraceZ2(j) - SpTraceZ(j) ^ 2 / SpTraceObs(j)
+        ''                        tDatq(j) = SpTraceZ(j) / SpTraceObs(j)
+        ''                        teDatq(j) = Exp(tDatq(j))
+        ''                    End If
+        ''                End If
+        ''            Next
+
+        ''            TraceObs = 0
+        ''            'Ss = 0
+
+        ''            For i = 1 To SpDatYear
+        ''                iDyear = SpYear(i) - SpYear(1)
+        ''                For j = 1 To SpDat
+        ''                    If (m_refdata.datType(j) = 8 Or m_refdata.datType(j) = 9) And Abs(m_refdata.datVal(i, j)) > 0 And iDyear < TotalTime + 1 Then
+        ''                        TraceObs = TraceObs + 1
+        ''                        ErTrace(TraceObs) = ErTrace(TraceObs) - tDatq(j)
+        ''                        'DatDev(j, i) = ErTrace(TraceObs)
+        ''                        TraceSS = TraceSS + ErTrace(TraceObs) ^ 2 '* Wt(m_refdata.Iobs) 'No weight on trace
+        ''                        'YTraceHat(TraceObs) = YTraceHat(TraceObs) + Datq(j)
+        ''                    End If
+
+        ''                Next
+        ''            Next
+        ''        End If
+        ''        '===================================================
+
+        ''        'As a start using SS not LL
+        ''        Dim LogL As Single
+        ''        For j = 1 To SpDat
+        ''            If m_refdata.DatSS(j) > 0 Then LogL = LogL + SpWt(j) * (SpNObs(j) - 1) * Log(m_refdata.DatSS(j))
+        ''        Next
+        ''        LogL = LogL / 2
+        ''        If SetToLike = True Then Ss = LogL
 
         Return Ss
 

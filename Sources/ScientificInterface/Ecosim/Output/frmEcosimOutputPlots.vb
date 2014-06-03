@@ -82,6 +82,8 @@ Namespace Ecosim
         Private m_abPlotVisible([Enum].GetValues(GetType(ePlot)).Length) As Boolean
         Private m_bContainsAggregatedFleet As Boolean = False
 
+        Dim m_TSInterval As eTSDataSetInterval
+
         Private Enum ePlot As Integer
             Biomass
             ConsumptionBiomass
@@ -161,6 +163,12 @@ Namespace Ecosim
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
             Me.m_lbGroups.SelectedIndex = 0
+
+            If Me.Core.ActiveTimeSeriesDatasetIndex > 0 Then
+                Me.m_TSInterval = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex).TimeSeriesInterval
+            Else
+                Me.m_TSInterval = eTSDataSetInterval.Annual
+            End If
 
         End Sub
 
@@ -619,20 +627,28 @@ Namespace Ecosim
             Dim ppt As New PointPairList
             Dim dScale As Single = 1.0F
             Dim li As LineItem = Nothing
+            Dim xpos As Double = 0.0
+            Dim deltaT As Double = 1 / cCore.N_MONTHS
+            Dim da() As Single = gts.ShapeData()
+            Dim iYear As Integer = Me.UIContext.Core.EcosimFirstYear
 
-            If gts.TimeSeriesType = eTimeSeriesType.BiomassRel Or _
-                    gts.TimeSeriesType = eTimeSeriesType.AverageWeight Then
-                'VC091209; the totalmortality is absolute, not relative, so removed it from here
-                ' gts.TimeSeriesType = eTimeSeriesType.TotalMortality Or _
-                If gts.eDataQ > 0 Then
-                    dScale = 1.0F / gts.eDataQ
-                End If
+            If (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (gts.TimeSeriesType = eTimeSeriesType.AverageWeight) Then
+                'VC091209: totalmortality is absolute, not relative
+                If gts.eDataQ > 0 Then dScale = 1.0F / gts.eDataQ
             End If
 
-            Dim da() As Single = gts.ShapeData()
+            'Just in case...
+            Debug.Assert(Me.m_TSInterval = eTSDataSetInterval.Annual Or Me.m_TSInterval = eTSDataSetInterval.Monthly, "Plotting Ecosim Output unknown timeseries interval.")
+
             For j As Integer = 1 To da.Length - 1
                 If (da(j) > 0) Then
-                    ppt.Add(Me.UIContext.Core.EcosimFirstYear + j - 0.5, da(j) * dScale)
+                    Select Case Me.m_TSInterval
+                        Case eTSDataSetInterval.Monthly
+                            xpos = iYear + j * deltaT - deltaT * 0.5
+                        Case eTSDataSetInterval.Annual
+                            xpos = iYear + j - 0.5
+                    End Select
+                    ppt.Add(xpos, da(j) * dScale)
                 End If
             Next
             Return Me.m_zgh.CreateLineItem(gts.Name, eLineType.ReferenceData, clr, ppt)

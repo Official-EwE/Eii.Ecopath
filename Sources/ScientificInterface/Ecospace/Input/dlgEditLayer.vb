@@ -440,27 +440,36 @@ Namespace Ecospace.Basemap.Layers
         ''' Too hack to be true
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Sub ReadASCIIBody(ByVal reader As StreamReader)
+        Protected Function ReadASCIIBody(ByVal reader As StreamReader) As Boolean
 
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim depth As cEcospaceLayerDepth = bm.LayerDepth
             Dim value As Single = 0
             Dim strValue As String = ""
+            Dim bSuccess As Boolean = True
 
-            For ir As Integer = 1 To bm.InRow
-                Dim strLine As String = reader.ReadLine
-                Dim astrBits() As String = strLine.Split(" "c)
-                For ic As Integer = 1 To Math.Min(bm.InCol, astrBits.Length)
-                    If depth.IsWaterCell(ir, ic) Or Me.m_layerWork.VarName = eVarNameFlags.LayerDepth Then
-                        value = Single.Parse(astrBits(ic - 1))
-                    Else
-                        value = cCore.NULL_VALUE
-                    End If
-                    Me.m_layerWork.Value(ir, ic) = value
+            Try
+
+                For ir As Integer = 1 To bm.InRow
+                    'ASC files written by GDAL contain a space at the start of the line so strip it off
+                    'this should not affect other ASC file reading
+                    Dim strLine As String = reader.ReadLine.Trim
+                    Dim astrBits() As String = strLine.Split(" "c)
+                    For ic As Integer = 1 To Math.Min(bm.InCol, astrBits.Length)
+                        If depth.IsWaterCell(ir, ic) Or Me.m_layerWork.VarName = eVarNameFlags.LayerDepth Then
+                            bSuccess = bSuccess And Single.TryParse(astrBits(ic - 1), value)
+                        Else
+                            value = cCore.NULL_VALUE
+                        End If
+                        Me.m_layerWork.Value(ir, ic) = value
+                    Next
                 Next
-            Next
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+            Return bSuccess
 
-        End Sub
+        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

@@ -164,7 +164,7 @@ Public Class cTimeSeriesCSVWriter
                 sw.WriteLine()
 
                 ' Years
-                For iYear As Integer = 1 To ds.NumYears
+                For iYear As Integer = 1 To ds.NumPoints
                     sw.Write(ds.FirstYear + iYear - 1)
                     For iTS As Integer = 1 To Me.m_core.nTimeSeries
                         ts = Me.m_core.EcosimTimeSeries(iTS)

@@ -40,28 +40,28 @@ Partial Class frmShapeValue
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShapeValue))
-        Me.m_lblName = New System.Windows.Forms.Label
-        Me.m_lblPoolCode = New System.Windows.Forms.Label
-        Me.m_lblType = New System.Windows.Forms.Label
-        Me.m_txtName = New System.Windows.Forms.TextBox
-        Me.m_cmbType = New System.Windows.Forms.ComboBox
-        Me.m_cmbPoolCode = New System.Windows.Forms.ComboBox
-        Me.m_lblWeight = New System.Windows.Forms.Label
-        Me.m_txtWeight = New System.Windows.Forms.TextBox
-        Me.m_lblValues = New System.Windows.Forms.Label
-        Me.m_lblNoOfYears = New System.Windows.Forms.Label
-        Me.m_lblNumYears = New System.Windows.Forms.Label
-        Me.m_tlpAll = New System.Windows.Forms.TableLayoutPanel
-        Me.tlpNoOfYears = New System.Windows.Forms.TableLayoutPanel
-        Me.m_btnSetNoOfYears = New System.Windows.Forms.Button
-        Me.pnlValueGrid = New System.Windows.Forms.Panel
-        Me.m_grid = New ScientificInterfaceShared.ShapeValueGrid
-        Me.m_lblViewAs = New System.Windows.Forms.Label
-        Me.m_cmbViewAs = New System.Windows.Forms.ComboBox
-        Me.m_lblXBase = New System.Windows.Forms.Label
-        Me.m_txtXBase = New System.Windows.Forms.TextBox
-        Me.m_btnOK = New System.Windows.Forms.Button
-        Me.m_btnCancel = New System.Windows.Forms.Button
+        Me.m_lblName = New System.Windows.Forms.Label()
+        Me.m_lblPoolCode = New System.Windows.Forms.Label()
+        Me.m_lblType = New System.Windows.Forms.Label()
+        Me.m_txtName = New System.Windows.Forms.TextBox()
+        Me.m_cmbType = New System.Windows.Forms.ComboBox()
+        Me.m_cmbPoolCode = New System.Windows.Forms.ComboBox()
+        Me.m_lblWeight = New System.Windows.Forms.Label()
+        Me.m_txtWeight = New System.Windows.Forms.TextBox()
+        Me.m_lblValues = New System.Windows.Forms.Label()
+        Me.m_lblNoOfPoints = New System.Windows.Forms.Label()
+        Me.m_lblNumPoints = New System.Windows.Forms.Label()
+        Me.m_tlpAll = New System.Windows.Forms.TableLayoutPanel()
+        Me.tlpNoOfYears = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_btnSetNoOfYears = New System.Windows.Forms.Button()
+        Me.pnlValueGrid = New System.Windows.Forms.Panel()
+        Me.m_grid = New ScientificInterfaceShared.gridShapeValue()
+        Me.m_lblViewAs = New System.Windows.Forms.Label()
+        Me.m_cmbViewAs = New System.Windows.Forms.ComboBox()
+        Me.m_lblXBase = New System.Windows.Forms.Label()
+        Me.m_txtXBase = New System.Windows.Forms.TextBox()
+        Me.m_btnOK = New System.Windows.Forms.Button()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_tlpAll.SuspendLayout()
         Me.tlpNoOfYears.SuspendLayout()
         Me.pnlValueGrid.SuspendLayout()
@@ -114,15 +114,15 @@ Partial Class frmShapeValue
         resources.ApplyResources(Me.m_lblValues, "m_lblValues")
         Me.m_lblValues.Name = "m_lblValues"
         '
-        'm_lblNoOfYears
+        'm_lblNoOfPoints
         '
-        resources.ApplyResources(Me.m_lblNoOfYears, "m_lblNoOfYears")
-        Me.m_lblNoOfYears.Name = "m_lblNoOfYears"
+        resources.ApplyResources(Me.m_lblNoOfPoints, "m_lblNoOfPoints")
+        Me.m_lblNoOfPoints.Name = "m_lblNoOfPoints"
         '
-        'm_lblNumYears
+        'm_lblNumPoints
         '
-        resources.ApplyResources(Me.m_lblNumYears, "m_lblNumYears")
-        Me.m_lblNumYears.Name = "m_lblNumYears"
+        resources.ApplyResources(Me.m_lblNumPoints, "m_lblNumPoints")
+        Me.m_lblNumPoints.Name = "m_lblNumPoints"
         '
         'm_tlpAll
         '
@@ -136,7 +136,7 @@ Partial Class frmShapeValue
         Me.m_tlpAll.Controls.Add(Me.m_txtWeight, 1, 3)
         Me.m_tlpAll.Controls.Add(Me.m_lblName, 0, 0)
         Me.m_tlpAll.Controls.Add(Me.m_lblWeight, 0, 3)
-        Me.m_tlpAll.Controls.Add(Me.m_lblNoOfYears, 0, 7)
+        Me.m_tlpAll.Controls.Add(Me.m_lblNoOfPoints, 0, 7)
         Me.m_tlpAll.Controls.Add(Me.tlpNoOfYears, 1, 7)
         Me.m_tlpAll.Controls.Add(Me.pnlValueGrid, 1, 6)
         Me.m_tlpAll.Controls.Add(Me.m_lblViewAs, 0, 5)
@@ -148,7 +148,7 @@ Partial Class frmShapeValue
         'tlpNoOfYears
         '
         resources.ApplyResources(Me.tlpNoOfYears, "tlpNoOfYears")
-        Me.tlpNoOfYears.Controls.Add(Me.m_lblNumYears, 0, 0)
+        Me.tlpNoOfYears.Controls.Add(Me.m_lblNumPoints, 0, 0)
         Me.tlpNoOfYears.Controls.Add(Me.m_btnSetNoOfYears, 1, 0)
         Me.tlpNoOfYears.Name = "tlpNoOfYears"
         '
@@ -170,28 +170,30 @@ Partial Class frmShapeValue
         Me.m_grid.AllowBlockSelect = False
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
         Me.m_grid.AutoStretchRowsToFitHeight = False
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
         resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.TrackPropertySelection = False
         Me.m_grid.UIContext = Nothing
         '
@@ -262,8 +264,8 @@ Partial Class frmShapeValue
     Private WithEvents m_lblWeight As System.Windows.Forms.Label
     Private WithEvents m_txtWeight As System.Windows.Forms.TextBox
     Private WithEvents m_lblValues As System.Windows.Forms.Label
-    Private WithEvents m_lblNoOfYears As System.Windows.Forms.Label
-    Private WithEvents m_lblNumYears As Label
+    Private WithEvents m_lblNoOfPoints As System.Windows.Forms.Label
+    Private WithEvents m_lblNumPoints As Label
     Private WithEvents m_tlpAll As System.Windows.Forms.TableLayoutPanel
     Private WithEvents tlpNoOfYears As System.Windows.Forms.TableLayoutPanel
     Private WithEvents pnlValueGrid As System.Windows.Forms.Panel
@@ -274,7 +276,7 @@ Partial Class frmShapeValue
     Private WithEvents m_lblXBase As System.Windows.Forms.Label
     Private WithEvents m_txtXBase As System.Windows.Forms.TextBox
     Private WithEvents m_btnSetNoOfYears As System.Windows.Forms.Button
-    Private WithEvents m_grid As ScientificInterfaceShared.ShapeValueGrid
+    Private WithEvents m_grid As ScientificInterfaceShared.gridShapeValue
 
 End Class
 

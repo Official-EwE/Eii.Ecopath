@@ -458,6 +458,20 @@ Public Enum eTimeSeriesAliases As Integer
     ConcAbs = 9
 End Enum
 
+''' -----------------------------------------------------------------------
+''' <summary>
+''' Enumerated type, defining time series data point spacing types.
+''' </summary>
+''' <note>
+''' Enum are assigned fixed values because this enum is persistent in the
+''' EwE database.
+''' </note>
+''' -----------------------------------------------------------------------
+Public Enum eTSDataSetInterval
+    Annual = 0
+    Monthly = 1
+End Enum
+
 #End Region ' Time series types
 
 #Region " PSD mortality types "

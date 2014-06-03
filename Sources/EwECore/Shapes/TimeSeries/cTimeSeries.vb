@@ -40,27 +40,11 @@ Public MustInherit Class cTimeSeries
 
     ''' <summary>The <see cref="eTimeSeriesType">type</see> of a time series.</summary>
     Protected m_timeSeriesType As eTimeSeriesType = eTimeSeriesType.NotSet
-    ''' <summary>The weight of time for a time series.</summary>
-    Protected m_sWtType As Single = 1.0!
-    ''' <summary>Covariance.</summary>
-    Protected m_sCV As Single = 0
-    ''' <summary>The index of the target that a time series applies to.</summary>
-    Protected m_iDatPool As Integer = 0
     ''' <summary>Applied flag</summary>
     Protected m_bEnabled As Boolean = False
-    ''' <summary>Sum of squares for a TS.</summary>
-    Protected m_sDatSS As Single = 0.0!
-    ''' <summary>Average zstat sumof(Log(observed/predicted))/nobs.</summary>
-    Protected m_sDataQ As Single = 0.0!
-
-    ''' <summary>exp(DataQ)</summary>
-    Protected m_eDataQ As Single
 
     ''' <summary>The core a TS belongs to.</summary>
     Protected m_core As cCore = Nothing
-
-    Protected m_status As eStatusFlags = eStatusFlags.Null
-    Protected m_strStatus As String = ""
 
 #End Region ' Protected variables
 
@@ -110,32 +94,17 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the CV for a time series.
+    ''' Get/set the Covariance for a time series.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property CV As Single
-        Get
-            Return Me.m_sCV
-        End Get
-        Set(value As Single)
-            Me.m_sCV = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the weight of time for a time series.
+    ''' Get/set the weight of a time series.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property WtType() As Single
-        Get
-            Return Me.m_sWtType
-        End Get
-
-        Set(ByVal sWtType As Single)
-            Me.m_sWtType = sWtType
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -145,14 +114,6 @@ Public MustInherit Class cTimeSeries
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property DatPool() As Integer
-        Get
-            Return Me.m_iDatPool
-        End Get
-
-        Set(ByVal iDatPool As Integer)
-            Me.m_iDatPool = iDatPool
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -177,7 +138,7 @@ Public MustInherit Class cTimeSeries
     ''' -----------------------------------------------------------------------
     Public Property Enabled() As Boolean
         Get
-            Return (Me.m_bEnabled) And (Me.m_status = eStatusFlags.OK)
+            Return (Me.m_bEnabled) And (Me.ValidationStatus = eStatusFlags.OK)
         End Get
 
         Set(ByVal bEnable As Boolean)
@@ -195,29 +156,13 @@ Public MustInherit Class cTimeSeries
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Property DataSS() As Single
-        Get
-            Return Me.m_sDatSS
-        End Get
-
-        Friend Set(ByVal sValue As Single)
-            Me.m_sDatSS = sValue
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' average  zstat sumof(Log(observed/predicted))/nobs Datq
+    ''' Average zstat sumof(Log(observed/predicted))/nobs Datq
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property DataQ() As Single
-        Get
-            Return Me.m_sDataQ
-        End Get
-
-        Friend Set(ByVal sDataQ As Single)
-            Me.m_sDataQ = sDataQ
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -225,14 +170,6 @@ Public MustInherit Class cTimeSeries
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property eDataQ() As Single
-        Get
-            Return Me.m_eDataQ
-        End Get
-
-        Friend Set(ByVal eDataQ As Single)
-            Me.m_eDataQ = eDataQ
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -271,14 +208,7 @@ Public MustInherit Class cTimeSeries
     ''' <returns>A <see cref="eStatusFlags"/> stating whether the time series
     ''' can be used.</returns>
     ''' -----------------------------------------------------------------------
-    Public Property ValidationStatus() As eStatusFlags
-        Get
-            Return Me.m_status
-        End Get
-        Friend Set(ByVal value As eStatusFlags)
-            Me.m_status = value
-        End Set
-    End Property
+    Public Property ValidationStatus() As eStatusFlags = eStatusFlags.Null
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -286,12 +216,12 @@ Public MustInherit Class cTimeSeries
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property ValidationMessage() As String
-        Get
-            Return Me.m_strStatus
-        End Get
-        Friend Set(ByVal value As String)
-            Me.m_strStatus = value
-        End Set
-    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="eTSDataSetInterval">interval</see> for the time series.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property Interval As eTSDataSetInterval
 
 End Class

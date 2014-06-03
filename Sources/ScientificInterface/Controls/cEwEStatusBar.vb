@@ -159,6 +159,7 @@ Public Class cEwEStatusBar
         Dim tsds As cTimeSeriesDataset = Nothing
         Dim spaceScenario As cEcospaceScenario = Nothing
         Dim tracerScenario As cEcotracerScenario = Nothing
+        Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
         Dim strName As String = ""
         Dim strTooltip As String = ""
 
@@ -182,11 +183,12 @@ Public Class cEwEStatusBar
 
                 If core.ActiveTimeSeriesDatasetIndex > 0 Then
                     tsds = core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex)
+                    strName = tsds.Name
                     strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
                                                simScenario.Name, _
-                                               tsds.Name, _
+                                               strName, _
                                                Me.ToTooltipLabel(simScenario.Description))
-                    strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, simScenario.Name, tsds.Name)
+                    strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, simScenario.Name, strName)
                 Else
                     strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
                                                simScenario.Name, _

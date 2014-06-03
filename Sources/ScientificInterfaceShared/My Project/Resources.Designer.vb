@@ -6881,6 +6881,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Public ReadOnly Property NavHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("NavHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Public ReadOnly Property NewDocumentHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("NewDocumentHS", resourceCulture)
@@ -8001,6 +8011,24 @@ Namespace My.Resources
         Public ReadOnly Property TS_TYPE_TRACER_CONCREL() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_TRACER_CONCREL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Annual.
+        '''</summary>
+        Public ReadOnly Property TSDATASETINTERVAL_ANNUAL() As String
+            Get
+                Return ResourceManager.GetString("TSDATASETINTERVAL_ANNUAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monthly.
+        '''</summary>
+        Public ReadOnly Property TSDATASETINTERVAL_MONTHLY() As String
+            Get
+                Return ResourceManager.GetString("TSDATASETINTERVAL_MONTHLY", resourceCulture)
             End Get
         End Property
         

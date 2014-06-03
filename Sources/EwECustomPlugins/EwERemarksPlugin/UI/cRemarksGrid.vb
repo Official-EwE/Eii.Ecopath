@@ -41,9 +41,10 @@ Friend Class cRemarksGrid
     Private m_data As cProperty() = Nothing
 
     Private Enum eColumnTypes As Integer
-        Source1 = 0
+        SourceIndex = 0
+        Source
         Parameter
-        Source2
+        SourceSec
         Remark
     End Enum
 
@@ -75,9 +76,10 @@ Friend Class cRemarksGrid
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.Source1) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE)
+        Me(0, eColumnTypes.SourceIndex) = New EwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Source) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE)
         Me(0, eColumnTypes.Parameter) = New EwEColumnHeaderCell(My.Resources.HEADER_PARAMETER)
-        Me(0, eColumnTypes.Source2) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE_SEC)
+        Me(0, eColumnTypes.SourceSec) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE_SEC)
 
         Me(0, eColumnTypes.Remark) = New EwEColumnHeaderCell(SharedResources.HEADER_REMARK)
         Me(0, eColumnTypes.Remark).VisualModel.TextAlignment = Drawing.ContentAlignment.MiddleLeft
@@ -85,7 +87,7 @@ Friend Class cRemarksGrid
         Me.TrackPropertySelection = False
         Me.FixedColumnWidths = False
         Me.AllowBlockSelect = False
-        Me.FixedColumns = 3
+        Me.FixedColumns = 4
 
     End Sub
 
@@ -104,16 +106,21 @@ Friend Class cRemarksGrid
             Dim cell As EwECellBase = Nothing
             Dim iRow As Integer = Me.AddRow()
 
-            cell = New PropertyCell(Me.PropertyManager, prop.Source, eVarNameFlags.Name)
-            cell.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
-            Me(iRow, eColumnTypes.Source1) = cell
+            cell = New EwERowHeaderCell(CStr(prop.Source.Index))
+            cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
+            Me(iRow, eColumnTypes.SourceIndex) = cell
 
-            cell = New EwECell(vfm.GetDescriptor(prop.VarName), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            cell = New PropertyRowHeaderCell(Me.PropertyManager, prop.Source, eVarNameFlags.Name)
+            cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
+            Me(iRow, eColumnTypes.Source) = cell
+
+            cell = New EwERowHeaderCell(vfm.GetDescriptor(prop.VarName))
+            cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
             Me(iRow, eColumnTypes.Parameter) = cell
 
-            cell = New PropertyCell(Me.PropertyManager, prop.SourceSec, eVarNameFlags.Name)
-            cell.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
-            Me(iRow, eColumnTypes.Source2) = cell
+            cell = New PropertyRowHeaderCell(Me.PropertyManager, prop.SourceSec, eVarNameFlags.Name)
+            cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
+            Me(iRow, eColumnTypes.SourceSec) = cell
 
             Me(iRow, eColumnTypes.Remark) = New cRemarkCell(prop)
 
@@ -123,11 +130,11 @@ Friend Class cRemarksGrid
 
     Protected Overrides Sub FinishStyle()
 
-        Me.Columns(eColumnTypes.Source1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.Columns(eColumnTypes.Parameter).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.Columns(eColumnTypes.Source2).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.Columns(eColumnTypes.Remark).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+        Me.Columns(eColumnTypes.SourceIndex).Width = 20
+        Me.Columns(eColumnTypes.SourceIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+
         Me.AutoStretchColumnsToFitWidth = True
+        Me.StretchColumnsToFitWidth()
 
         MyBase.FinishStyle()
 

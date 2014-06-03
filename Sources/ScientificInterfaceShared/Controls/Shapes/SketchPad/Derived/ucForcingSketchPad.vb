@@ -61,7 +61,7 @@ Namespace Controls
         ''' <param name="iWidth">Width of the X axis for the labels.</param>
         ''' <param name="sScale">Label placement scale factor along the X axis.</param>
         ''' -------------------------------------------------------------------
-        Private Sub GetXAxisLabels(ByVal iWidth As Integer, ByRef astrLabels As String(), ByRef sScale As Single)
+        Protected Overridable Sub GetXAxisLabels(ByVal iWidth As Integer, ByRef astrLabels As String(), ByRef sScale As Single)
 
             Dim lstrLabels As New List(Of String)
 

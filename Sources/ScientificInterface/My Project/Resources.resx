@@ -15032,6 +15032,9 @@ Description: {1}</value>
   <data name="ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM" xml:space="preserve">
     <value>Prey biomass relative to Ecopath biomass</value>
   </data>
+  <data name="GENERIC_CAPTION" xml:space="preserve">
+    <value>Ecopath with Ecosim [monthly time series branch]</value>
+  </data>
   <data name="PROMPT_STATUS_FURTHERDETAILS" xml:space="preserve">
     <value>(for further details refer to the status panel)</value>
   </data>
