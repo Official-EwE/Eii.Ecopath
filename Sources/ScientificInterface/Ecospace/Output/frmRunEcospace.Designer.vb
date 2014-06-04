@@ -179,8 +179,8 @@ Namespace Ecospace
             Me.m_tlpOptions.Controls.Add(Me.m_plLabelOptions, 0, 2)
             Me.m_tlpOptions.Controls.Add(Me.m_plDistribution, 0, 0)
             Me.m_tlpOptions.Controls.Add(Me.m_plDisplayOptions, 0, 1)
-            Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 3)
-            Me.m_tlpOptions.Controls.Add(Me.m_plGraphTypes, 0, 4)
+            Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 5)
+            Me.m_tlpOptions.Controls.Add(Me.m_plGraphTypes, 0, 3)
             Me.m_tlpOptions.Name = "m_tlpOptions"
             '
             'm_plLabelOptions
@@ -550,8 +550,8 @@ Namespace Ecospace
         Friend WithEvents m_rbPredMortGraph As System.Windows.Forms.RadioButton
         Friend WithEvents m_rbFishMortGraph As System.Windows.Forms.RadioButton
         Friend WithEvents m_rbRelBiomassGraph As System.Windows.Forms.RadioButton
-        Friend WithEvents m_hdrGraphTypes As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Friend WithEvents m_rbCatchGraph As System.Windows.Forms.RadioButton
+        Private WithEvents m_hdrGraphTypes As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
 
     End Class
