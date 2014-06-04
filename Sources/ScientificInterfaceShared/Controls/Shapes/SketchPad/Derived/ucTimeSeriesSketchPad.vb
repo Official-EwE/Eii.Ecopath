@@ -83,7 +83,7 @@ Namespace Controls
                         iStepSize = Math.Max(1, CInt((iTSFinalYear - iTSFirstYear) / 10))
                     Case eTSDataSetInterval.Monthly
                         iTSFinalYear = iTSFirstYear + (Me.XAxisMaxValue \ cCore.N_MONTHS)
-                        iStepSize = Math.Max(1, CInt((iTSFinalYear - iTSFirstYear) / 10))
+                        iStepSize = Math.Max(1, CInt((iTSFinalYear - iTSFirstYear) / cCore.N_MONTHS))
                     Case Else
                         Debug.Assert(False)
                 End Select
