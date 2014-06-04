@@ -712,6 +712,13 @@ Namespace Controls
             Return New eDataTypes() {eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries}
         End Function
 
+        Public Overrides Function XAxisMaxValue() As Integer
+            Dim iDS As Integer = Me.Core.ActiveTimeSeriesDatasetIndex
+            If (iDS <= 0) Then Return 0
+            Dim ds As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(iDS)
+            Return ds.NumPoints
+        End Function
+
     End Class
 
 End Namespace
