@@ -167,7 +167,7 @@ Namespace Core
 
             Catch ex As Exception
 
-                Debug.Assert(False, ex.Message)
+                System.Console.WriteLine("CLog.Write() Exception: " + ex.Message)
                 If Not xmlStrm Is Nothing Then
                     xmlStrm.Close()
                 End If
@@ -227,7 +227,7 @@ Namespace Core
 
             Catch ex As Exception
 
-                Debug.Assert(False, ex.Message)
+                System.Console.WriteLine("CLog.Write() Exception: " + ex.Message)
                 If Not xmlStrm Is Nothing Then
                     xmlStrm.Close()
                 End If
@@ -279,7 +279,7 @@ Namespace Core
 
             Catch ex As Exception
 
-                Debug.Assert(False, ex.Message)
+                System.Console.WriteLine("CLog.Write() Exception: " + ex.Message)
                 If Not xmlStrm Is Nothing Then
                     xmlStrm.Close()
                 End If
@@ -339,7 +339,7 @@ Namespace Core
                 End If
 
             Catch ex As Exception
-                Debug.Assert(False, ex.Message)
+                System.Console.WriteLine("CLog.Write() Exception: " + ex.Message)
                 If Not xmlStrm Is Nothing Then
                     xmlStrm.Close()
                 End If
