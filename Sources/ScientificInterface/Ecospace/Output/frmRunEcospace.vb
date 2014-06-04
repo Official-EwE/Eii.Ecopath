@@ -363,6 +363,12 @@ Namespace Ecospace
             Me.m_rbConsumpGraph.Tag = ePlotTypes.ConsumpRateGraph
             Me.m_rbCatchGraph.Tag = ePlotTypes.CatchGraph
 
+            ' JS 04Jul14: we cannot show this until better implemented
+#If DEBUG Then
+            Me.m_plGraphTypes.Visible = True
+#Else
+            Me.m_plGraphTypes.Visible = False
+#End If
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
         End Sub
