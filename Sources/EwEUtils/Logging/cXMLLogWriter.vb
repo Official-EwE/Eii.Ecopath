@@ -111,7 +111,7 @@ Namespace Core
                 FindDocumentEnd()
 
             Catch ex As Exception
-                Debug.Assert(False, ex.Message)
+                System.Console.WriteLine("CLog.Open() Exception: " + ex.Message)
                 Return False
             End Try
 
@@ -154,7 +154,7 @@ Namespace Core
                 End If
 
             Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".CreateNew() Error: " & ex.Message)
+                System.Console.WriteLine("CLog.CreateNew() Exception: " + ex.Message)
                 Throw New ApplicationException(Me.ToString & ".CreateNew() Error: " & ex.Message)
             End Try
 
@@ -213,7 +213,7 @@ Namespace Core
                 End If
 
             Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".FindDocumentEnd() Error: " & ex.Message)
+                System.Console.WriteLine("CLog.FindDocumentEnd() Exception: " + ex.Message)
                 Throw New ApplicationException(Me.ToString & ".FindDocumentEnd() Error: " & ex.Message)
             End Try
 
@@ -278,7 +278,7 @@ Namespace Core
                 m_filestream.Close()
 
             Catch ex As Exception
-                Debug.Assert(False, "Error closing XML Log. Error: " & ex.Message)
+                System.Console.WriteLine("CLog.Close() Exception: " + ex.Message)
             End Try
 
         End Sub
