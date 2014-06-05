@@ -23,8 +23,8 @@ Public Class cRunParameters
     Public AfterRun As cRunPeriods
 
     Public Sub New()
-        BeforeRun = New cRunPeriods(2000, 10)
-        AfterRun = New cRunPeriods(2018, 12)
+        BeforeRun = New cRunPeriods(1995, 10)
+        AfterRun = New cRunPeriods(2015, 15)
     End Sub
 
 End Class
