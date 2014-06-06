@@ -137,6 +137,7 @@ Public Class frmEcospaceMonteCarlo
                     MsgBoxStyle.YesNo, "Ecospace MonteCarlo.") = MsgBoxResult.Yes Then
                     Try
                         File.Delete(filename)
+                        File.Delete(Me.RunManager.getEcopathParFile(filename))
                     Catch ex As Exception
 
                     End Try
