@@ -239,38 +239,31 @@ Namespace SpatialData
         ''' <para>Note that this method can also be used to export datasets.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function Save(Optional strFile As String = "", _
-                             Optional datasets As ISpatialDataSet() = Nothing) As Boolean
+        Public Function Save(Optional strFile As String = "") As Boolean
 
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
             Dim xnDataset As XmlNode = Nothing
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
+            Dim datasets As ISpatialDataSet() = Me.m_lAvailable.ToArray()
             Dim bChanged As Boolean = False
             Dim bSuccess As Boolean = True
 
             ' Complete missing file name, if any
             If (String.IsNullOrWhiteSpace(strFile)) Then
-                strFile = cSpatialDataSetManager.DefaultConfigFile()
+                strFile = Me.ConfigFile()
             End If
 
             Dim bExporting As Boolean = (cFileUtils.Equals(strFile, Me.ConfigFile) = False)
-            ' Complete missing datasets, if any
-            If (datasets Is Nothing) Then
-                datasets = Me.m_lAvailable.ToArray()
-            End If
 
             ' Create dir
             If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
                 Return False
             End If
 
-            Dim strConfigOld As String = Me.m_strConfigFile
-            Me.m_strConfigFile = strFile
-
             Try
-                If File.Exists(strFile) Then
+                If File.Exists(strFile) And Not bExporting Then
                     doc.Load(strFile)
                     xnRoot = doc.GetElementsByTagName("Datasets")(0)
                 End If
@@ -344,20 +337,18 @@ Namespace SpatialData
             'Me.m_fswSpy.EnableRaisingEvents = False
             Try
                 If bChanged Then
-                    doc.Save(Me.ConfigFile)
+                    doc.Save(strFile)
                 End If
             Catch ex As Exception
                 bSuccess = False
             End Try
             'Me.m_fswSpy.EnableRaisingEvents = True
 
-            Me.m_strConfigFile = strConfigOld
-
             Return bSuccess
 
         End Function
 
-#End Region ' Persistent storage
+#End Region ' Persistent storage    
 
 #Region " Dataset indexing "
 
