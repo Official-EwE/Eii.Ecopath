@@ -67,13 +67,16 @@ Namespace Controls
             'm_btnCancel
             '
             resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+            Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.m_btnCancel.Name = "m_btnCancel"
             Me.m_btnCancel.UseVisualStyleBackColor = True
             '
-            'frmInput
+            'frmInputBox
             '
+            Me.AcceptButton = Me.m_btnOk
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
             Me.Controls.Add(Me.m_btnCancel)
             Me.Controls.Add(Me.m_btnOk)
@@ -82,7 +85,7 @@ Namespace Controls
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "frmInput"
+            Me.Name = "frmInputBox"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.ResumeLayout(False)
