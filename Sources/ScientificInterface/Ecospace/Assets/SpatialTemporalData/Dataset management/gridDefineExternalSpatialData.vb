@@ -201,13 +201,18 @@ Namespace Ecospace.Controls
 
                 End If
 
+                Dim strTStart As String = ""
+                Dim strTEnd As String = ""
+                If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = ds.TimeStart.ToShortDateString
+                If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = ds.TimeEnd.ToShortDateString
+
                 iRow = Me.AddRow()
                 Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iDS))
                 Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Name).VisualModel = vizKiddo
                 Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.DateFrom) = New EwECell(ds.TimeStart.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.DateTo) = New EwECell(ds.TimeEnd.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.DateFrom) = New EwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.DateTo) = New EwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.CacheSize) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
@@ -327,6 +332,20 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
+        Public ReadOnly Property SelectedDatasets As ISpatialDataSet()
+            Get
+                Dim l As New List(Of ISpatialDataSet)
+                Dim ds As ISpatialDataSet = Nothing
+                For Each row As RowInfo In Me.Selection.SelectedRows
+                    If (row.Tag IsNot Nothing) Then
+                        If (TypeOf row.Tag Is ISpatialDataSet) Then
+                            l.Add(DirectCast(row.Tag, ISpatialDataSet))
+                        End If
+                    End If
+                Next
+                Return l.ToArray
+            End Get
+        End Property
     End Class
 
 End Namespace

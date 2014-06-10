@@ -15033,7 +15033,7 @@ Description: {1}</value>
     <value>Prey biomass relative to Ecopath biomass</value>
   </data>
   <data name="GENERIC_CAPTION" xml:space="preserve">
-    <value>Ecopath with Ecosim [monthly time series branch]</value>
+    <value>Ecopath with Ecosim</value>
   </data>
   <data name="PROMPT_STATUS_FURTHERDETAILS" xml:space="preserve">
     <value>(for further details refer to the status panel)</value>
@@ -15422,9 +15422,6 @@ Description: {1}</value>
   </data>
   <data name="EWE_forever" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ewe_forever.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="GENERIC_CAPTION" xml:space="preserve">
-    <value>Ecopath with Ecosim</value>
   </data>
   <data name="STATUS_PRINT_PREVIEW_FAILED" xml:space="preserve">
     <value>Unable to show print preview. {0}</value>
@@ -24090,5 +24087,20 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="Warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CAPTION_SPATIALTEMPORAL_EXPORT" xml:space="preserve">
+    <value>Exporting {0} data set(s)</value>
+    <comment>{0}=dataset count</comment>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_EXPORT" xml:space="preserve">
+    <value>Enter a folder name for this data</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_EXPORT_FAILED" xml:space="preserve">
+    <value>Failed to export data set(s) to {1}</value>
+    <comment>{0}=dataset count, {1}=folder</comment>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_EXPORT_SUCCESS" xml:space="preserve">
+    <value>{0} data set(s) exported to {1}</value>
+    <comment>{0}=dataset count, {1}=folder</comment>
   </data>
 </root>

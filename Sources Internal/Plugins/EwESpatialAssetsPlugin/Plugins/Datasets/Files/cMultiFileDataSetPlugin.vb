@@ -394,12 +394,12 @@ Namespace SpatialData
                 xaFile.Value = Path.GetFileName(tf.FileName)
                 xnFile.Attributes.Append(xaFile)
 
-                xaFile = doc.CreateAttribute("Date")
-                xaFile.Value = Convert.ToString(tf.Date.ToOADate())
-                xnFile.Attributes.Append(xaFile)
+                'xaFile = doc.CreateAttribute("Date")
+                'xaFile.Value = Convert.ToString(tf.Date.ToOADate())
+                'xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("DateRef")
-                xaFile.Value = Convert.ToString(tf.Date.ToShortDateString())
+                xaFile.Value = cStringUtils.FormatDate(tf.Date, "d")
                 xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("Indexed")
@@ -467,8 +467,8 @@ Namespace SpatialData
                         Case "Files"
                             For Each xnFile In xn.ChildNodes
                                 Dim strName As String = xnFile.Attributes("Name").InnerText
-                                Dim strDate As String = xnFile.Attributes("Date").InnerText
-                                Dim dt As DateTime = DateTime.FromOADate(Convert.ToDouble(strDate))
+                                Dim strDate As String = xnFile.Attributes("DateRef").InnerText
+                                Dim dt As DateTime = cStringUtils.ConvertToDate(strDate)
                                 Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
                                 If (xnFile.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
@@ -674,24 +674,24 @@ Namespace SpatialData
             Debug.Assert(Not Convert.Equals(Guid.Empty, Me.DBID), "Dataset has no valid ID yet")
 
             ' Clone DS
-            Dim ds As cMultiFileDataSetPlugin = DirectCast(Me.MemberwiseClone, cMultiFileDataSetPlugin)
-            ds.IsSourceRelative = True
-
-            ' Export file content to a folder in strPath that is identified by the current GUID
-            ' Note that the exported dataset will inherit the same GUID. It makes sense but may cause confusion...
-            ds.Source = ds.ToAbsolutePath(Me.DBID.ToString(), strPath)
+            Dim strFolder As String = cFileUtils.ToValidFileName(Me.DisplayName, False)
+            Dim strAbsPath As String = Path.Combine(strPath, strFolder)
 
             ' Make sure that the path exists
-            If Not cFileUtils.IsDirectoryAvailable(ds.Source, True) Then
+            If Not cFileUtils.IsDirectoryAvailable(strAbsPath, True) Then
                 ' ToDo: send some kind of message
                 Return Nothing
             End If
+
+            Dim ds As cMultiFileDataSetPlugin = DirectCast(Me.MemberwiseClone, cMultiFileDataSetPlugin)
+            ds.IsSourceRelative = True
+            ds.Source = strAbsPath
 
             ' Copy file
             Try
                 For i As Integer = 0 To Me.m_lFiles.Count - 1
                     Dim strSrc As String = Me.m_lFiles(i).FileName
-                    Dim strTgt As String = Path.Combine(ds.Source, Path.GetFileName(Me.m_lFiles(i).FileName))
+                    Dim strTgt As String = Path.Combine(strAbsPath, Path.GetFileName(Me.m_lFiles(i).FileName))
                     System.IO.File.Copy(strSrc, strTgt, True)
                 Next
             Catch ex As Exception

@@ -237,12 +237,12 @@ Namespace SpatialData
             xaFile.Value = Convert.ToString(Me.IsSourceRelative)
             xnFile.Attributes.Append(xaFile)
 
-            xaFile = doc.CreateAttribute("Date")
-            xaFile.Value = Convert.ToString(Me.m_dtStart.ToOADate)
-            xnFile.Attributes.Append(xaFile)
+            'xaFile = doc.CreateAttribute("Date")
+            'xaFile.Value = Convert.ToString(Me.m_dtStart.ToOADate)
+            'xnFile.Attributes.Append(xaFile)
 
             xaFile = doc.CreateAttribute("DateRef")
-            xaFile.Value = Convert.ToString(Me.m_dtStart.ToShortDateString())
+            xaFile.Value = cStringUtils.FormatDate(Me.m_dtStart, "d")
             xnFile.Attributes.Append(xaFile)
 
             xaFile = doc.CreateAttribute("Indexed")
@@ -307,8 +307,8 @@ Namespace SpatialData
                                 Me.IsSourceRelative = False
                             End If
 
-                            Dim strDate As String = xn.Attributes("Date").InnerText
-                            Dim dt As DateTime = DateTime.FromOADate(Convert.ToDouble(strDate))
+                            Dim strDate As String = xn.Attributes("DateRef").InnerText
+                            Dim dt As DateTime = cStringUtils.ConvertToDate(strDate)
                             If (dt = DateTime.MinValue) Or (dt = DateTime.MaxValue) Then
                                 Me.m_dtStart = DateTime.MinValue
                                 Me.m_dtEnd = DateTime.MaxValue

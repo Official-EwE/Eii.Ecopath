@@ -55,7 +55,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the source of the dataset.
+        ''' Get/set the absolute source of the dataset.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Property Source As String

@@ -239,14 +239,14 @@ Namespace SpatialData
         ''' <para>Note that this method can also be used to export datasets.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function Save(Optional strFile As String = "") As Boolean
+        Public Function Save(Optional strFile As String = "", _
+                             Optional datasets As ISpatialDataSet() = Nothing) As Boolean
 
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
             Dim xnDataset As XmlNode = Nothing
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
-            Dim datasets As ISpatialDataSet() = Me.m_lAvailable.ToArray()
             Dim bChanged As Boolean = False
             Dim bSuccess As Boolean = True
 
@@ -255,7 +255,19 @@ Namespace SpatialData
                 strFile = Me.ConfigFile()
             End If
 
-            Dim bExporting As Boolean = (cFileUtils.Equals(strFile, Me.ConfigFile) = False)
+            If (datasets Is Nothing) Then
+                datasets = Me.m_lAvailable.ToArray()
+            End If
+            If (datasets.Length = 0) Then Return False
+
+            ' Any switch of destination other than to the default location is considered as an export
+            Dim bExporting As Boolean = (cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) = False) And _
+                                        (cFileUtils.Equals(strFile, Me.ConfigFile()) = False)
+
+            If bExporting Then
+                Console.WriteLine("@@ Exporting from " & Me.ConfigFile & " to " & strFile)
+                'Stop
+            End If
 
             ' Create dir
             If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
@@ -263,7 +275,10 @@ Namespace SpatialData
             End If
 
             Try
-                If File.Exists(strFile) And Not bExporting Then
+                ' Load existing datasets from file if not exporting. This is done to ensure that
+                ' datasets that are defined but that could not be instantiated (for example due to
+                ' a missing plug-in) are not destroyed in the save process.
+                If ((Not bExporting) And (File.Exists(strFile))) Then
                     doc.Load(strFile)
                     xnRoot = doc.GetElementsByTagName("Datasets")(0)
                 End If
@@ -271,12 +286,14 @@ Namespace SpatialData
                 ' Plop
             End Try
 
+            ' Create a new XML doc if needed.
             If (xnRoot Is Nothing) Then
                 ' Build new base doc
                 doc = Me.NewDoc(xnRoot)
             End If
 
-            ' Remove all deleted or current datasets
+            ' Remove all deleted or current datasets from the XML nodes; these will be
+            ' recreated by the save process.
             Dim lDelete As New List(Of XmlNode)
             For Each xnDataset In xnRoot.ChildNodes
                 Dim guid As Guid
@@ -299,10 +316,17 @@ Namespace SpatialData
             Next
             lDelete.Clear()
 
+            ' During the export process the dataset manager has to set its config file to the export path
+            ' in order for file-based datasets to resolve absolute / relative paths. At the end of the
+            ' export process the path is restored
+            Dim strRescue As String = Me.ConfigFile
+            Me.m_strConfigFile = strFile
+
             ' Gather dataset config nodes, but do not add to the doc until all done
             For Each ds As ISpatialDataSet In datasets
 
                 If (bExporting) Then ds = ds.ExportTo(Path.GetDirectoryName(strFile))
+
                 If (ds IsNot Nothing) Then
 
                     xnDataset = doc.CreateElement("Dataset")
@@ -343,6 +367,9 @@ Namespace SpatialData
                 bSuccess = False
             End Try
             'Me.m_fswSpy.EnableRaisingEvents = True
+
+            ' Restore original config file name
+            Me.m_strConfigFile = strRescue
 
             Return bSuccess
 
@@ -729,6 +756,119 @@ Namespace SpatialData
             Return doc
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Saves all datasets currently loaded by the manager to persistent storage.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' <remarks>
+        ''' <para>If the manager is read-only, which is set when the datafile
+        ''' is externally modified, any save attempt will abort and fail.</para>
+        ''' <para>Note that this method can also be used to export datasets.</para>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function Save(strFile As String, bExport As Boolean) As Boolean
+
+            Dim doc As New XmlDocument()
+            Dim xnRoot As XmlNode = Nothing
+            Dim xnDataset As XmlNode = Nothing
+            Dim xnDetails As XmlNode = Nothing
+            Dim xaDataset As XmlAttribute = Nothing
+            Dim datasets As ISpatialDataSet() = Me.m_lAvailable.ToArray()
+            Dim bMustSave As Boolean = bExport
+            Dim bSuccess As Boolean = True
+
+            ' Create dir
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
+                Return False
+            End If
+
+            Try
+                ' To make sure that defined datasets for unknown providers (due to missing plug-ins) are not lost
+                If File.Exists(strFile) And Not bExport Then
+                    doc.Load(strFile)
+                    xnRoot = doc.GetElementsByTagName("Datasets")(0)
+                End If
+            Catch ex As Exception
+                ' Plop
+            End Try
+
+            If (xnRoot Is Nothing) Then
+                ' Build new base doc
+                doc = Me.NewDoc(xnRoot)
+            End If
+
+            ' Remove all deleted or current datasets
+            Dim lDelete As New List(Of XmlNode)
+            For Each xnDataset In xnRoot.ChildNodes
+                Dim guid As Guid
+                Dim xa As XmlAttribute = xnDataset.Attributes("GUID")
+                Dim bDelete As Boolean = False
+                If (xa IsNot Nothing) Then
+                    Try
+                        guid = guid.Parse(xa.InnerText)
+                    Catch ex As Exception
+                        guid = guid.Empty
+                    End Try
+                End If
+                For Each gTest As Guid In Me.m_lDeleted : bDelete = bDelete Or gTest.Equals(gTest) : Next
+                For Each ds As ISpatialDataSet In Me.m_lAvailable : bDelete = bDelete Or guid.Equals(ds.GUID) : Next
+                If bDelete Then lDelete.Add(xnDataset)
+            Next
+            For Each xnDataset In lDelete
+                xnRoot.RemoveChild(xnDataset)
+                bMustSave = True
+            Next
+            lDelete.Clear()
+
+            ' Gather dataset config nodes, but do not add to the doc until all done
+            For Each ds As ISpatialDataSet In datasets
+
+                If (bExport) Then ds = ds.ExportTo(Path.GetDirectoryName(strFile))
+                If (ds IsNot Nothing) Then
+
+                    xnDataset = doc.CreateElement("Dataset")
+
+                    xaDataset = doc.CreateAttribute("Type")
+                    xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
+                    xnDataset.Attributes.Append(xaDataset)
+
+                    xaDataset = doc.CreateAttribute("GUID")
+                    xaDataset.Value = Convert.ToString(ds.GUID)
+                    xnDataset.Attributes.Append(xaDataset)
+
+                    Try
+                        xnDetails = ds.Configuration(doc)
+                    Catch ex As Exception
+                        xnDetails = Nothing
+                    End Try
+
+                    If (xnDetails IsNot Nothing) Then
+                        xnDataset.AppendChild(xnDetails)
+                    End If
+
+                    ' Add dataset nodes
+                    xnRoot.AppendChild(xnDataset)
+                    bMustSave = True
+
+                End If
+
+            Next
+
+            ' Save
+            'Me.m_fswSpy.EnableRaisingEvents = False
+            Try
+                If bMustSave Then
+                    doc.Save(strFile)
+                End If
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+            'Me.m_fswSpy.EnableRaisingEvents = True
+
+            Return bSuccess
+
+        End Function
 #End Region ' Internals
 
     End Class
