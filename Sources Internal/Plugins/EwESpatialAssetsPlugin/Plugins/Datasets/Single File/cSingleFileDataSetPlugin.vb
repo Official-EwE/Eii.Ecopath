@@ -479,15 +479,19 @@ Namespace SpatialData
 
             ' Clone DS
             Dim ds As cSingleFileDataSetPlugin = DirectCast(Me.MemberwiseClone, cSingleFileDataSetPlugin)
-            ds.IsSourceRelative = True
 
             ' Export file content to a folder in strPath that is identified by the current GUID
             ' Note that the exported dataset will inherit the same GUID. It makes sense but may cause confusion...
-            Dim strNewPath As String = ds.ToAbsolutePath(Me.DBID.ToString(), strPath)
-            ds.Source = Path.Combine(strNewPath, Path.GetFileName(Me.Source))
+            Dim strFolder As String = cFileUtils.ToValidFileName(Me.DisplayName, False)
+            Dim strAbsPath As String = Path.Combine(strPath, strFolder)
+            Dim strAbsFile As String = Path.Combine(strAbsPath, Path.GetFileName(Me.Source))
+
+            ' Internally, source is ALWAYS absolute
+            ds.IsSourceRelative = True
+            ds.Source = strAbsFile
 
             ' Make sure that the path exists
-            If Not cFileUtils.IsDirectoryAvailable(strNewPath, True) Then
+            If Not cFileUtils.IsDirectoryAvailable(strAbsPath, True) Then
                 ' ToDo: send some kind of message
                 Return Nothing
             End If
