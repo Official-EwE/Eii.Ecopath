@@ -156,7 +156,7 @@ Namespace Ecospace.Controls
         Private Sub OnDeleteDS(sender As System.Object, e As System.EventArgs) _
             Handles m_btnDelete.Click
             Try
-                Me.DeleteDS(Me.SelectedDataset)
+                Me.Delete(Me.m_gridDatasets.SelectedDatasets)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -166,7 +166,7 @@ Namespace Ecospace.Controls
         Private Sub OnExportAll(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnExport.Click
             Try
-                Me.Export()
+                Me.Export(Me.m_gridDatasets.SelectedDatasets)
             Catch ex As Exception
                 cLog.Write(ex, "")
             End Try
@@ -329,25 +329,29 @@ Namespace Ecospace.Controls
 
         End Function
 
-        Public Sub DeleteDS(ds As ISpatialDataSet)
+        Private Function Delete(sets As ISpatialDataSet()) As Boolean
 
-            ' Ask for confirmation
+            If (sets Is Nothing) Then Return False
+            If (sets.Length = 0) Then Return False
+
             ' ToDo: globalize this
             Dim fmsg As New cFeedbackMessage("This operation cannot be undone. Are you sure?", _
                                              eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             fmsg.Reply = eMessageReply.NO
             Me.m_uic.Core.Messages.SendMessage(fmsg)
-            If (fmsg.Reply = eMessageReply.NO) Then Return
+            If (fmsg.Reply = eMessageReply.NO) Then Return False
+
+            For Each ds As ISpatialDataSet In sets
+                Me.m_manSets.Remove(ds)
+            Next
 
             Me.SelectedDataset = Nothing
-
-            ' Removing a dataset should automatically reload the dataset layout
-            Me.m_manSets.Remove(ds)
             Me.m_man.Load()
 
             Me.m_gridDatasets.Fill()
             Me.UpdateControls()
-        End Sub
+
+        End Function
 
         ' TODO: MOVE TO OPTIONS
 
@@ -355,7 +359,6 @@ Namespace Ecospace.Controls
         ''' User wants to clear the spatial data cache.
         ''' </summary>
         Private Sub OnClearCache(sender As System.Object, e As System.EventArgs)
-
 
             Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
             Dim dSizeTot As Double = cache.GetSize() / 1024
@@ -393,26 +396,49 @@ Namespace Ecospace.Controls
 
         End Sub
 
-        Private Sub Export()
+        Private Function Export(sets As ISpatialDataSet()) As Boolean
 
-            ' ToDo_JS: globalize this method
+            If (sets Is Nothing) Then Return False
+            If (sets.Length = 0) Then Return False
 
             Dim dlg As New frmInputBox()
             Dim strPathOut As String = Path.Combine(Me.UIContext.Core.DefaultOutputPath(eAutosaveTypes.NotSet), "Export")
             Dim strFile As String = ""
+            Dim msg As cMessage = Nothing
 
-            If (dlg.ShowDialog(Me, "Name for your export file", "Export datasets") <> DialogResult.OK) Then Return
+            If (dlg.ShowDialog(Me, My.Resources.PROMPT_SPATIALTEMPORAL_EXPORT, _
+                               String.Format(My.Resources.CAPTION_SPATIALTEMPORAL_EXPORT, sets.Length)) <> DialogResult.OK) Then Return False
 
             strPathOut = cFileUtils.ToValidFileName(Path.Combine(strPathOut, dlg.Value), True)
-            strFile = Path.ChangeExtension(cFileUtils.ToValidFileName(dlg.Value, False), ".xml")
+
+            '' ToDo_JS: globalize this method
+            'If (Directory.Exists(strPathOut)) Then
+            '    Dim fmsg As New cFeedbackMessage(String.Format("The directory {0} already exists and cannot be used.", strPathOut), _
+            '                                     eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Warning, eMessageReplyStyle.OK)
+            '    Me.Core.Messages.SendMessage(fmsg)
+            '    Return False
+            'End If
+
+            ' JS 10Jun14: use default file name
+            'strFile = Path.ChangeExtension(cFileUtils.ToValidFileName(dlg.Value, False), ".xml")
+            strFile = "ewe_datasets.xml"
 
             Try
-                Me.m_manSets.Save(Path.Combine(strPathOut, strFile))
+                If Me.m_manSets.Save(Path.Combine(strPathOut, strFile), sets) Then
+                    msg = New cMessage(String.Format(My.Resources.STATUS_SPATIALTEMPORAL_EXPORT_SUCCESS, sets.Length, strPathOut), _
+                                       eMessageType.NotSet, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = strPathOut
+                Else
+                    msg = New cMessage(String.Format(My.Resources.STATUS_SPATIALTEMPORAL_EXPORT_FAILED, sets.Length, strPathOut), _
+                                       eMessageType.NotSet, eCoreComponentType.External, eMessageImportance.Warning)
+                End If
+                Me.UIContext.Core.Messages.SendMessage(msg)
             Catch ex As Exception
 
             End Try
+            Return True
 
-        End Sub
+        End Function
 
 #End Region ' Internals 
 

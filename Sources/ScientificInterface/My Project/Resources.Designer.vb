@@ -236,6 +236,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Exporting {0} data set(s).
+        '''</summary>
+        Public ReadOnly Property CAPTION_SPATIALTEMPORAL_EXPORT() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_SPATIALTEMPORAL_EXPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Time step {0} ({1}).
         '''</summary>
         Public ReadOnly Property CAPTION_TIMESTEP() As String
@@ -3050,6 +3059,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Enter a folder name for this data.
+        '''</summary>
+        Public ReadOnly Property PROMPT_SPATIALTEMPORAL_EXPORT() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SPATIALTEMPORAL_EXPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to One or more stanza configurations do not have life stages assigned. Do you want to do this now?.
         '''</summary>
         Public ReadOnly Property PROMPT_STANZA_MISSING_LIFESTAGES() As String
@@ -3874,6 +3892,24 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_SPATIALTEMPORAL_CALCULATING() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_CALCULATING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to export data set(s) to {1}.
+        '''</summary>
+        Public ReadOnly Property STATUS_SPATIALTEMPORAL_EXPORT_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_EXPORT_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} data set(s) exported to {1}.
+        '''</summary>
+        Public ReadOnly Property STATUS_SPATIALTEMPORAL_EXPORT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_EXPORT_SUCCESS", resourceCulture)
             End Get
         End Property
         
