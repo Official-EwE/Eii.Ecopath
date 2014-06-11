@@ -1815,6 +1815,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} ({1} unused).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_CACHEMEMORY() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_CACHEMEMORY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Names cannot be empty..
         '''</summary>
         Public ReadOnly Property GENERIC_WARNING_EMPTY_NAME() As String

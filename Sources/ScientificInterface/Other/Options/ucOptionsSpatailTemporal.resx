@@ -151,7 +151,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>13</value>
   </data>
   <data name="m_lblCurrent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -184,7 +184,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblCurrent.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>12</value>
   </data>
   <data name="m_rbDefault.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -211,7 +211,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_rbDefault.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>11</value>
   </data>
   <data name="m_btnVisitFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -256,7 +256,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnVisitFolder.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>9</value>
   </data>
   <data name="m_rbCustom.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -286,7 +286,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_rbCustom.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>10</value>
   </data>
   <data name="m_btnChoose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -316,7 +316,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnChoose.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>7</value>
   </data>
   <data name="m_lblPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -331,7 +331,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>246, 23</value>
+    <value>243, 23</value>
   </data>
   <data name="m_lblPath.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -352,7 +352,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblPath.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="m_hdrCache.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -385,7 +385,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrCache.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="m_btnViewCache.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -430,7 +430,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnViewCache.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="m_btnClearCache.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -460,123 +460,63 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnClearCache.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>6</value>
   </data>
-  <data name="m_lblCacheTotal.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblCacheSize.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblCacheTotal.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblCacheSize.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 163</value>
   </data>
-  <data name="m_lblCacheTotal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 13</value>
+  <data name="m_lblCacheSize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>62, 13</value>
   </data>
-  <data name="m_lblCacheTotal.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblCacheSize.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="m_lblCacheTotal.Text" xml:space="preserve">
-    <value>Total size:</value>
+  <data name="m_lblCacheSize.Text" xml:space="preserve">
+    <value>Cache size:</value>
   </data>
-  <data name="&gt;&gt;m_lblCacheTotal.Name" xml:space="preserve">
-    <value>m_lblCacheTotal</value>
+  <data name="&gt;&gt;m_lblCacheSize.Name" xml:space="preserve">
+    <value>m_lblCacheSize</value>
   </data>
-  <data name="&gt;&gt;m_lblCacheTotal.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblCacheSize.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblCacheTotal.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblCacheSize.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblCacheTotal.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_lblCacheUnused.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblCacheUnused.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblCacheUnused.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 189</value>
-  </data>
-  <data name="m_lblCacheUnused.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 13</value>
-  </data>
-  <data name="m_lblCacheUnused.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_lblCacheUnused.Text" xml:space="preserve">
-    <value>Unused size:</value>
-  </data>
-  <data name="&gt;&gt;m_lblCacheUnused.Name" xml:space="preserve">
-    <value>m_lblCacheUnused</value>
-  </data>
-  <data name="&gt;&gt;m_lblCacheUnused.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblCacheUnused.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblCacheUnused.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblCacheSize.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_lblCacheUnusedVal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_lblCacheSizeValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblCacheUnusedVal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblCacheSizeValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblCacheUnusedVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 189</value>
-  </data>
-  <data name="m_lblCacheUnusedVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 13</value>
-  </data>
-  <data name="m_lblCacheUnusedVal.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_lblCacheUnusedVal.Text" xml:space="preserve">
-    <value>&lt;value&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_lblCacheUnusedVal.Name" xml:space="preserve">
-    <value>m_lblCacheUnusedVal</value>
-  </data>
-  <data name="&gt;&gt;m_lblCacheUnusedVal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblCacheUnusedVal.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblCacheUnusedVal.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_lblCacheTotalVal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblCacheTotalVal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblCacheTotalVal.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblCacheSizeValue.Location" type="System.Drawing.Point, System.Drawing">
     <value>101, 163</value>
   </data>
-  <data name="m_lblCacheTotalVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 13</value>
+  <data name="m_lblCacheSizeValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>243, 18</value>
   </data>
-  <data name="m_lblCacheTotalVal.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblCacheSizeValue.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="m_lblCacheTotalVal.Text" xml:space="preserve">
+  <data name="m_lblCacheSizeValue.Text" xml:space="preserve">
     <value>&lt;value&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lblCacheTotalVal.Name" xml:space="preserve">
-    <value>m_lblCacheTotalVal</value>
+  <data name="&gt;&gt;m_lblCacheSizeValue.Name" xml:space="preserve">
+    <value>m_lblCacheSizeValue</value>
   </data>
-  <data name="&gt;&gt;m_lblCacheTotalVal.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblCacheSizeValue.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblCacheTotalVal.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblCacheSizeValue.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblCacheTotalVal.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblCacheSizeValue.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_lblCacheLocation.AutoSize" type="System.Boolean, mscorlib">
@@ -607,7 +547,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblCacheLocation.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="m_lblCacheLocationValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -622,7 +562,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblCacheLocationValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>246, 23</value>
+    <value>243, 23</value>
   </data>
   <data name="m_lblCacheLocationValue.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -643,7 +583,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblCacheLocationValue.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

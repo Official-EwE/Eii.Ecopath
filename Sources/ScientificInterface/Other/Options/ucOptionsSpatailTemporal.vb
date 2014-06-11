@@ -284,8 +284,9 @@ Namespace Other
                                      TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis)
             Me.m_lblCacheLocationValue.Text = strPath
 
-            Me.m_lblCacheTotalVal.Text = sg.FormatMemory(cache.GetSize())
-            Me.m_lblCacheUnusedVal.Text = sg.FormatMemory(cache.GetUnusedSize(man))
+            Me.m_lblCacheSizeValue.Text = String.Format(My.Resources.GENERIC_VALUE_CACHEMEMORY, _
+                                                        sg.FormatMemory(cache.GetSize()), _
+                                                        sg.FormatMemory(cache.GetUnusedSize(man)))
 
             Me.m_btnViewCache.Enabled = Directory.Exists(cache.RootFolder)
             Me.m_btnClearCache.Enabled = (cache.GetSize() > 0)
