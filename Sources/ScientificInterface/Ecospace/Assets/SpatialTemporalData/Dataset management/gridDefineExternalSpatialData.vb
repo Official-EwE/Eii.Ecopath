@@ -74,8 +74,6 @@ Namespace Ecospace.Controls
             DateFrom
             DateTo
             Description
-            TempOverlap
-            SpatOverlap
         End Enum
 
 #End Region ' Private vars
@@ -140,8 +138,6 @@ Namespace Ecospace.Controls
             Me(0, eColumnTypes.DateFrom) = New EwEColumnHeaderCell(SharedResources.HEADER_FROM)
             Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
-            Me(0, eColumnTypes.TempOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_TEMPORAL)
-            Me(0, eColumnTypes.SpatOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
 
             Me.Selection.SelectionMode = GridSelectionMode.Row
             Me.Selection.EnableMultiSelection = False
@@ -199,7 +195,7 @@ Namespace Ecospace.Controls
 
                 End If
 
-                Dim strTStart As String = ""
+                Dim strTStart As String = SharedResources.GENERIC_VALUE_FIRSTTIMESTEP
                 Dim strTEnd As String = ""
                 If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = ds.TimeStart.ToShortDateString
                 If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = ds.TimeEnd.ToShortDateString
@@ -211,13 +207,10 @@ Namespace Ecospace.Controls
                 Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.DateFrom) = New EwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.DateTo) = New EwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me.Rows(iRow).Tag = ds
                 hgc.AddChildRow(iRow)
 
                 iDS += 1
-                Me.UpdateDatasetRow(ds)
             Next
 
         End Sub
@@ -249,33 +242,6 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
-        Private Sub UpdateDatasetRow(ds As ISpatialDataSet)
-
-            Dim iRow As Integer = Me.DatasetRowIndex(ds)
-            Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
-
-            If (iRow <= 1) Then Return
-
-            Dim comp As New cDatasetCompatilibity(Me.Core, ds)
-            Dim iNumTS As Integer = Math.Max(Core.nEcospaceTimeSteps, 1)
-            Dim strVal As String = ""
-            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
-            Dim fmt As New cSpatialDatasetCompatibilityFormatter()
-
-            ' Temporal overlap
-            Me(iRow, eColumnTypes.TempOverlap).Value = String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, CInt(Math.Ceiling(100 * comp.NumOverlappingTimeSteps / iNumTS)))
-
-            ' Spatial overlap col
-            If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
-                strVal = String.Format(SharedResources.VALUE_INDEXED_PERCENT, CInt(Math.Ceiling(100 * comp.NumIndexed / (comp.NumOverlappingTimeSteps + 1))))
-            Else
-                strVal = fmt.GetDescriptor(comp, eDescriptorTypes.Name)
-            End If
-
-            Me.InvalidateCells()
-
-        End Sub
-
         Private Function DatasetRowIndex(ds As ISpatialDataSet) As Integer
             For iRow As Integer = 1 To Me.RowsCount - 1
                 Dim ri As RowInfo = Me.Rows(iRow)
@@ -286,21 +252,6 @@ Namespace Ecospace.Controls
             Return -1
         End Function
 
-        Public Overrides Sub OnCoreMessage(ByRef msg As cMessage)
-
-            Try
-                ' May have been disposed already
-                If (msg.DataType = EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection) Then
-                    Me.UpdateDatasetRow(Me.m_manSets.IndexDataset)
-                End If
-                MyBase.OnCoreMessage(msg)
-
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
 #End Region ' Internals
 
         Public Sub Fill(Optional ByVal dsSelect As ISpatialDataSet = Nothing)
@@ -308,10 +259,6 @@ Namespace Ecospace.Controls
             Me.RefreshContent()
             Me.SelectedDataset = dsSelect
 
-        End Sub
-
-        Public Sub UpdateCacheInfo(ds As ISpatialDataSet)
-            Me.UpdateDatasetRow(ds)
         End Sub
 
         Public Property SelectedDataset As ISpatialDataSet
