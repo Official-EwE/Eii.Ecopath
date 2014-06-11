@@ -660,7 +660,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property PluginName As String
             Get
-                Return "DotSpatial.MultiFileSetPlugin"
+                Return "DotSpatial.DataSet.0020"
             End Get
         End Property
 

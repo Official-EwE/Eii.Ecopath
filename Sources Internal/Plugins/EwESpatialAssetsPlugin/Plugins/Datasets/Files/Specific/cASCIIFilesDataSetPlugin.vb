@@ -357,7 +357,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property PluginName As String
             Get
-                Return "DotSpatial.cASCIIFilesDataSetPlugin"
+                Return "DotSpatial.DataSet.0400"
             End Get
         End Property
 

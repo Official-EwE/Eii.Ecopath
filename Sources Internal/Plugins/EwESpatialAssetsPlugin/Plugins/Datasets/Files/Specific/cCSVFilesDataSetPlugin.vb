@@ -155,7 +155,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property PluginName As String
             Get
-                Return "EcospaceCSVFileSetPlugin"
+                Return "DotSpatial.DataSet.0410"
             End Get
         End Property
 
