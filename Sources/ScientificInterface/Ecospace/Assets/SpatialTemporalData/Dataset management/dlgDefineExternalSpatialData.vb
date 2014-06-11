@@ -48,7 +48,6 @@ Namespace Ecospace.Controls
         Private m_man As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
         Private m_bHasDatasetTemplates As Boolean = False
-        Private m_bHasCachedData As Boolean = False
 
 #End Region ' Private vars
 
@@ -114,8 +113,6 @@ Namespace Ecospace.Controls
         Private Sub Reload()
             Me.FillTemplateDatasetDropdown()
             Me.m_gridDatasets.Fill()
-            ' Update cache state (will also update controls)
-            Me.EvaluateCache()
         End Sub
 
         Protected Overrides Sub UpdateControls()
@@ -272,11 +269,6 @@ Namespace Ecospace.Controls
 
         End Sub
 
-        Private Sub EvaluateCache()
-            Me.m_bHasCachedData = (cSpatialDataCache.DefaultDataCache.GetSize > 0)
-            Me.UpdateControls()
-        End Sub
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Create a new spatial data set
@@ -322,8 +314,6 @@ Namespace Ecospace.Controls
             Dim dlg As New dlgConfig()
             dlg.UIContext = Me.UIContext
             dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
-
-            Me.EvaluateCache()
 
             Return (dsConf.IsConfigured)
 
