@@ -130,7 +130,7 @@
     <value>0, 18</value>
   </data>
   <data name="m_gridConnections.Size" type="System.Drawing.Size, System.Drawing">
-    <value>341, 158</value>
+    <value>470, 158</value>
   </data>
   <data name="m_gridConnections.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -139,7 +139,7 @@
     <value>m_gridConnections</value>
   </data>
   <data name="&gt;&gt;m_gridConnections.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridApplyDatasets, EwE6, Version=6.5.10308.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridApplyDatasets, EwE6, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridConnections.Parent" xml:space="preserve">
     <value>m_plConnection</value>
@@ -157,7 +157,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrSource.Size" type="System.Drawing.Size, System.Drawing">
-    <value>341, 18</value>
+    <value>470, 18</value>
   </data>
   <data name="m_hdrSource.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -172,7 +172,7 @@
     <value>m_hdrSource</value>
   </data>
   <data name="&gt;&gt;m_hdrSource.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10308.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSource.Parent" xml:space="preserve">
     <value>m_plConnection</value>
@@ -190,7 +190,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plConnection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>341, 176</value>
+    <value>470, 176</value>
   </data>
   <data name="m_plConnection.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -233,7 +233,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnCalculate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>266, 25</value>
+    <value>395, 25</value>
   </data>
   <data name="m_btnCalculate.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -293,7 +293,7 @@
     <value>178, 28</value>
   </data>
   <data name="m_tbxScale.Size" type="System.Drawing.Size, System.Drawing">
-    <value>81, 20</value>
+    <value>210, 20</value>
   </data>
   <data name="m_tbxScale.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -380,7 +380,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plScalarAdapter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>341, 49</value>
+    <value>470, 49</value>
   </data>
   <data name="m_plScalarAdapter.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -404,7 +404,7 @@
     <value>69, 7</value>
   </data>
   <data name="m_cmbConverter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 21</value>
+    <value>319, 21</value>
   </data>
   <data name="m_cmbConverter.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -458,7 +458,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConfigCV.Location" type="System.Drawing.Point, System.Drawing">
-    <value>266, 5</value>
+    <value>395, 5</value>
   </data>
   <data name="m_btnConfigCV.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -491,7 +491,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plConversion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>341, 28</value>
+    <value>470, 28</value>
   </data>
   <data name="m_plConversion.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -542,7 +542,7 @@
     <value>28, 50</value>
   </data>
   <data name="m_lblCompatibility.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 18</value>
+    <value>439, 18</value>
   </data>
   <data name="m_lblCompatibility.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -572,7 +572,7 @@
     <value>3, 29</value>
   </data>
   <data name="m_lblDatasetInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>251, 18</value>
+    <value>380, 18</value>
   </data>
   <data name="m_lblDatasetInfo.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -599,7 +599,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConfigDS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>266, 24</value>
+    <value>395, 24</value>
   </data>
   <data name="m_btnConfigDS.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -622,6 +622,9 @@
   <data name="&gt;&gt;m_btnConfigDS.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="m_hdrConfig.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="m_hdrConfig.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -629,7 +632,7 @@
     <value>0, 3</value>
   </data>
   <data name="m_hdrConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>338, 18</value>
+    <value>467, 18</value>
   </data>
   <data name="m_hdrConfig.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -644,7 +647,7 @@
     <value>m_hdrConfig</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10308.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
     <value>m_plDataset</value>
@@ -662,7 +665,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plDataset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>341, 70</value>
+    <value>470, 70</value>
   </data>
   <data name="m_plDataset.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -692,7 +695,7 @@
     <value>4</value>
   </data>
   <data name="m_tlpContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>341, 323</value>
+    <value>470, 323</value>
   </data>
   <data name="m_tlpContent.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -722,7 +725,7 @@
     <value>3, 0</value>
   </data>
   <data name="m_hdrConnections.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 18</value>
+    <value>171, 18</value>
   </data>
   <data name="m_hdrConnections.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -737,7 +740,7 @@
     <value>m_hdrConnections</value>
   </data>
   <data name="&gt;&gt;m_hdrConnections.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10308.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConnections.Parent" xml:space="preserve">
     <value>m_plAvailable</value>
@@ -800,7 +803,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>556, 25</value>
+    <value>703, 25</value>
   </data>
   <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -809,7 +812,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10308.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -824,7 +827,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>470, 358</value>
+    <value>617, 358</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -869,7 +872,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbSourceDatasets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 302</value>
+    <value>174, 302</value>
   </data>
   <data name="m_lbSourceDatasets.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -878,7 +881,7 @@
     <value>m_lbSourceDatasets</value>
   </data>
   <data name="&gt;&gt;m_lbSourceDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox, EwE6, Version=6.5.10308.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox, EwE6, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_lbSourceDatasets.Parent" xml:space="preserve">
     <value>m_plAvailable</value>
@@ -891,25 +894,25 @@
   </data>
   <data name="m_btnRemove.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        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
+        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
 </value>
   </data>
   <data name="m_btnRemove.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 164</value>
+    <value>176, 164</value>
   </data>
   <data name="m_btnRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>26, 23</value>
@@ -934,26 +937,26 @@
   </data>
   <data name="m_btnAdd.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvAAA
-        DrwBlbxySQAAAlJJREFUOE+Vkl1IU2EYx09DW8usWaNJLkhPM6tplGUgUQuV1U1QEpXQoFJDAwmjWV20
-        0OiDxnKQOSOii2VBqW3uQxxutZoylpXWNpkrlh93XWl008W/875jr52CqAf+h/c85/n/nofnPRwApsmZ
-        EO5F26ENaP8QycdnQ0LZQj0RO4STXuz1arE/rIMlfhXdCRMsHxphDB/ACX8xyuxK6FwVCE95hfLfAGnz
-        lVgLepJWWGMGXHtbg3PBcpwJlDDph4pQ+CBXBKFjE3Nb9DwexlthHq9nBteXThGAqNa/GRvv8hhOeiiE
-        exTtwi7fVnREmtH65hDOvt5BC8e++kgBpr9NiACNgWLsfrwGtpGOFIB0rxuuhGFkj6jw+uhhfP8xJ4LU
-        v9Sgxq/GER8PzS1+AdD0qlRkTuvZp5sUQGJqPkZzB4fyUTWowiqjlKQFwICWfmgfO0kL/xaf5yOoHMxD
-        +YASissykhIA9n8HuGefYLtHgS3uHMhbMkkqBdB7i9jYOq+K6phPjc6ogRpJ2Ge6qXmTawXWOpZiw6UC
-        khZuYbwLO21Kak4viQDuCNeaDmIuEbrm92dB5ZBhpVmK20/byCfhP5gOYZ+tAtUeHkd969mSEnMfmbnQ
-        uZx2zbVLkd0rgaJBjonJYApAHi/e94E3KVHlVrElNY8ex43IRdo1z7EEOX0ZkPVwyDzNIfjORc0MkIaU
-        mbahwLqMLkntzKbjrn6+GFm9iyC1cFDUyUVmInYgiiQCMDuNKDVqIGuQQForQYaeA39qHS7cb2Jj/yrR
-        y/8L3E9x7bNgz76F3AAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA68AAAOvAGVvHJJAAACUklE
+        QVQ4T5WSXUhTYRjHT0Nby6xZo0kuSE8zq2mUZSBRC5XVTVASldCgUkMDCaNZXbTQ6IPGcpA5I6KLZUGp
+        be5DHG61mjKWldY2mSuWH3ddaXTTxb/zvmOvnYKoB/6H9zzn+f+eh+c9HACmyZkQ7kXboQ1o/xDJx2dD
+        QtlCPRE7hJNe7PVqsT+sgyV+Fd0JEywfGmEMH8AJfzHK7EroXBUIT3mF8t8AafOVWAt6klZYYwZce1uD
+        c8FynAmUMOmHilD4IFcEoWMTc1v0PB7GW2Eer2cG15dOEYCo1r8ZG+/yGE56KIR7FO3CLt9WdESa0frm
+        EM6+3kELx776SAGmv02IAI2BYux+vAa2kY4UgHSvG66EYWSPqPD66GF8/zEngtS/1KDGr8YRHw/NLX4B
+        0PSqVGRO69mnmxRAYmo+RnMHh/JRNajCKqOUpAXAgJZ+aB87SQv/Fp/nI6gczEP5gBKKyzKSEgD2fwe4
+        Z59gu0eBLe4cyFsySSoF0HuL2Ng6r4rqmE+NzqiBGknYZ7qpeZNrBdY6lmLDpQKSFm5hvAs7bUpqTi+J
+        AO4I15oOYi4Ruub3Z0HlkGGlWYrbT9vIJ+E/mA5hn60C1R4eR33r2ZIScx+ZudC5nHbNtUuR3SuBokGO
+        iclgCkAeL973gTcpUeVWsSU1jx7HjchF2jXPsQQ5fRmQ9XDIPM0h+M5FzQyQhpSZtqHAuowuSe3MpuOu
+        fr4YWb2LILVwUNTJRWYidiCKJAIwO40oNWoga5BAWitBhp4Df2odLtxvYmP/KtHL/wvcT3Hts2DPvoXc
+        AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_btnAdd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 135</value>
+    <value>176, 135</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>26, 23</value>
@@ -983,7 +986,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plAvailable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 323</value>
+    <value>205, 323</value>
   </data>
   <data name="m_plAvailable.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1025,10 +1028,10 @@
     <value>1</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>532, 323</value>
+    <value>679, 323</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>187</value>
+    <value>205</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1055,10 +1058,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>556, 392</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+    <value>703, 392</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Apply spatial temporal data connections to {0}</value>

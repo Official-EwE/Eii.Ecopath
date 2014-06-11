@@ -2108,6 +2108,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (first time step).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_FIRSTTIMESTEP() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_FIRSTTIMESTEP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fleet {0} of {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_FLEET_OF_N() As String

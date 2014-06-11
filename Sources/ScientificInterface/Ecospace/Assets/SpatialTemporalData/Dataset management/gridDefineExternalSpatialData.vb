@@ -76,7 +76,6 @@ Namespace Ecospace.Controls
             Description
             TempOverlap
             SpatOverlap
-            CacheSize
         End Enum
 
 #End Region ' Private vars
@@ -143,7 +142,6 @@ Namespace Ecospace.Controls
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
             Me(0, eColumnTypes.TempOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_TEMPORAL)
             Me(0, eColumnTypes.SpatOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
-            Me(0, eColumnTypes.CacheSize) = New EwEColumnHeaderCell(SharedResources.HEADER_CACHESIZE)
 
             Me.Selection.SelectionMode = GridSelectionMode.Row
             Me.Selection.EnableMultiSelection = False
@@ -215,7 +213,6 @@ Namespace Ecospace.Controls
                 Me(iRow, eColumnTypes.DateTo) = New EwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.CacheSize) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me.Rows(iRow).Tag = ds
                 hgc.AddChildRow(iRow)
 
@@ -275,11 +272,6 @@ Namespace Ecospace.Controls
                 strVal = fmt.GetDescriptor(comp, eDescriptorTypes.Name)
             End If
 
-            Dim cell As EwECell = DirectCast(Me(iRow, eColumnTypes.SpatOverlap), EwECell)
-            cell.Value = strVal
-            cell.Style = style
-
-            Me(iRow, eColumnTypes.CacheSize).Value = Me.StyleGuide.FormatNumber(cache.GetSize(ds) / (1024 * 1024))
             Me.InvalidateCells()
 
         End Sub
