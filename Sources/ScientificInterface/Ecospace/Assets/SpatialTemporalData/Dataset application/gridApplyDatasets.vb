@@ -54,7 +54,6 @@ Namespace Ecospace.Controls
             Description
             TempOverlap
             SpatOverlap
-            CacheSize
         End Enum
 
 #End Region ' Private vars
@@ -122,7 +121,6 @@ Namespace Ecospace.Controls
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
             Me(0, eColumnTypes.SpatOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
             Me(0, eColumnTypes.TempOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_TEMPORAL)
-            Me(0, eColumnTypes.CacheSize) = New EwEColumnHeaderCell(SharedResources.HEADER_CACHESIZE)
 
             Me.Selection.SelectionMode = GridSelectionMode.Row
             Me.Selection.EnableMultiSelection = False
@@ -143,14 +141,19 @@ Namespace Ecospace.Controls
             For i As Integer = 0 To Me.m_lDatasets.Count - 1
                 ds = Me.m_lDatasets(i)
                 iRow = Me.AddRow()
+
+                Dim strTStart As String = SharedResources.GENERIC_VALUE_FIRSTTIMESTEP
+                Dim strTEnd As String = ""
+                If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = ds.TimeStart.ToShortDateString
+                If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = ds.TimeEnd.ToShortDateString
+
                 Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i + 1))
                 Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.DateFrom) = New EwECell(ds.TimeStart.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.DateTo) = New EwECell(ds.TimeEnd.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.DateFrom) = New EwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.DateTo) = New EwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.CacheSize) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me.Rows(iRow).Tag = ds
 
                 Me.UpdateDatasetRow(ds)
@@ -192,11 +195,6 @@ Namespace Ecospace.Controls
                 strVal = fmt.GetDescriptor(comp, eDescriptorTypes.Abbreviation)
             End If
 
-            Dim cell As EwECell = DirectCast(Me(iRow, eColumnTypes.SpatOverlap), EwECell)
-            cell.Value = strVal
-            cell.Style = style
-
-            Me(iRow, eColumnTypes.CacheSize).Value = Me.StyleGuide.FormatNumber(cache.GetSize(ds) / (1024 * 1024))
             Me.InvalidateCells()
 
         End Sub

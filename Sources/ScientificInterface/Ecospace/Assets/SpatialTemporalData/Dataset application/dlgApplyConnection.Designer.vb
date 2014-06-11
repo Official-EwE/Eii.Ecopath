@@ -32,6 +32,7 @@ Namespace Ecospace.Controls
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgApplyConnection))
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plConnection = New System.Windows.Forms.Panel()
+            Me.m_gridConnections = New ScientificInterface.Ecospace.Controls.gridApplyDatasets()
             Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plScalarAdapter = New System.Windows.Forms.Panel()
             Me.m_btnCalculate = New System.Windows.Forms.Button()
@@ -44,6 +45,7 @@ Namespace Ecospace.Controls
             Me.m_lblSelectCV = New System.Windows.Forms.Label()
             Me.m_btnConfigCV = New System.Windows.Forms.Button()
             Me.m_plDataset = New System.Windows.Forms.Panel()
+            Me.m_pbCompat = New System.Windows.Forms.PictureBox()
             Me.m_lblCompatibility = New System.Windows.Forms.Label()
             Me.m_lblDatasetInfo = New System.Windows.Forms.Label()
             Me.m_btnConfigDS = New System.Windows.Forms.Button()
@@ -55,23 +57,21 @@ Namespace Ecospace.Controls
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_plAvailable = New System.Windows.Forms.Panel()
+            Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_btnAdd = New System.Windows.Forms.Button()
-            Me.m_pbCompat = New System.Windows.Forms.PictureBox()
-            Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
-            Me.m_gridConnections = New ScientificInterface.Ecospace.Controls.gridApplyDatasets()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
             Me.m_plConversion.SuspendLayout()
             Me.m_plDataset.SuspendLayout()
+            CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tsMain.SuspendLayout()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
             Me.m_plAvailable.SuspendLayout()
-            CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_tlpContent
@@ -89,6 +89,37 @@ Namespace Ecospace.Controls
             Me.m_plConnection.Controls.Add(Me.m_hdrSource)
             resources.ApplyResources(Me.m_plConnection, "m_plConnection")
             Me.m_plConnection.Name = "m_plConnection"
+            '
+            'm_gridConnections
+            '
+            Me.m_gridConnections.AllowBlockSelect = False
+            Me.m_gridConnections.AutoSizeMinHeight = 10
+            Me.m_gridConnections.AutoSizeMinWidth = 10
+            Me.m_gridConnections.AutoStretchColumnsToFitWidth = True
+            Me.m_gridConnections.AutoStretchRowsToFitHeight = False
+            Me.m_gridConnections.BackColor = System.Drawing.Color.White
+            Me.m_gridConnections.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridConnections.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridConnections.CustomSort = False
+            Me.m_gridConnections.DataName = "grid content"
+            resources.ApplyResources(Me.m_gridConnections, "m_gridConnections")
+            Me.m_gridConnections.FixedColumnWidths = False
+            Me.m_gridConnections.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridConnections.GridToolTipActive = True
+            Me.m_gridConnections.IsLayoutSuspended = False
+            Me.m_gridConnections.Name = "m_gridConnections"
+            Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridConnections.UIContext = Nothing
             '
             'm_hdrSource
             '
@@ -174,6 +205,12 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_plDataset, "m_plDataset")
             Me.m_plDataset.Name = "m_plDataset"
             '
+            'm_pbCompat
+            '
+            resources.ApplyResources(Me.m_pbCompat, "m_pbCompat")
+            Me.m_pbCompat.Name = "m_pbCompat"
+            Me.m_pbCompat.TabStop = False
+            '
             'm_lblCompatibility
             '
             resources.ApplyResources(Me.m_lblCompatibility, "m_lblCompatibility")
@@ -193,9 +230,9 @@ Namespace Ecospace.Controls
             '
             'm_hdrConfig
             '
+            resources.ApplyResources(Me.m_hdrConfig, "m_hdrConfig")
             Me.m_hdrConfig.CanCollapseParent = False
             Me.m_hdrConfig.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrConfig, "m_hdrConfig")
             Me.m_hdrConfig.IsCollapsed = False
             Me.m_hdrConfig.Name = "m_hdrConfig"
             '
@@ -255,6 +292,15 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_plAvailable, "m_plAvailable")
             Me.m_plAvailable.Name = "m_plAvailable"
             '
+            'm_lbSourceDatasets
+            '
+            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
+            Me.m_lbSourceDatasets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbSourceDatasets.Filter = EwEUtils.Core.eVarNameFlags.NotSet
+            Me.m_lbSourceDatasets.FormattingEnabled = True
+            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
+            Me.m_lbSourceDatasets.UIContext = Nothing
+            '
             'm_btnRemove
             '
             resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
@@ -266,52 +312,6 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
             Me.m_btnAdd.Name = "m_btnAdd"
             Me.m_btnAdd.UseVisualStyleBackColor = True
-            '
-            'm_pbCompat
-            '
-            resources.ApplyResources(Me.m_pbCompat, "m_pbCompat")
-            Me.m_pbCompat.Name = "m_pbCompat"
-            Me.m_pbCompat.TabStop = False
-            '
-            'm_lbSourceDatasets
-            '
-            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
-            Me.m_lbSourceDatasets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.m_lbSourceDatasets.Filter = EwEUtils.Core.eVarNameFlags.NotSet
-            Me.m_lbSourceDatasets.FormattingEnabled = True
-            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
-            Me.m_lbSourceDatasets.UIContext = Nothing
-            '
-            'm_gridConnections
-            '
-            Me.m_gridConnections.AllowBlockSelect = False
-            Me.m_gridConnections.AutoSizeMinHeight = 10
-            Me.m_gridConnections.AutoSizeMinWidth = 10
-            Me.m_gridConnections.AutoStretchColumnsToFitWidth = True
-            Me.m_gridConnections.AutoStretchRowsToFitHeight = False
-            Me.m_gridConnections.BackColor = System.Drawing.Color.White
-            Me.m_gridConnections.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridConnections.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridConnections.CustomSort = False
-            Me.m_gridConnections.DataName = "grid content"
-            resources.ApplyResources(Me.m_gridConnections, "m_gridConnections")
-            Me.m_gridConnections.FixedColumnWidths = False
-            Me.m_gridConnections.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridConnections.GridToolTipActive = True
-            Me.m_gridConnections.IsLayoutSuspended = False
-            Me.m_gridConnections.Name = "m_gridConnections"
-            Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridConnections.UIContext = Nothing
             '
             'dlgApplyConnection
             '
@@ -332,6 +332,7 @@ Namespace Ecospace.Controls
             Me.m_plConversion.ResumeLayout(False)
             Me.m_plConversion.PerformLayout()
             Me.m_plDataset.ResumeLayout(False)
+            CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
             Me.m_scMain.Panel1.ResumeLayout(False)
@@ -339,7 +340,6 @@ Namespace Ecospace.Controls
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.m_plAvailable.ResumeLayout(False)
-            CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
