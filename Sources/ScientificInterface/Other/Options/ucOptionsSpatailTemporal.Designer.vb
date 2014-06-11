@@ -39,6 +39,15 @@ Namespace Other
             Me.m_rbCustom = New System.Windows.Forms.RadioButton()
             Me.m_btnChoose = New System.Windows.Forms.Button()
             Me.m_lblPath = New System.Windows.Forms.Label()
+            Me.m_hdrCache = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnViewCache = New System.Windows.Forms.Button()
+            Me.m_btnClearCache = New System.Windows.Forms.Button()
+            Me.m_lblCacheTotal = New System.Windows.Forms.Label()
+            Me.m_lblCacheUnused = New System.Windows.Forms.Label()
+            Me.m_lblCacheUnusedVal = New System.Windows.Forms.Label()
+            Me.m_lblCacheTotalVal = New System.Windows.Forms.Label()
+            Me.m_lblCacheLocation = New System.Windows.Forms.Label()
+            Me.m_lblCacheLocationValue = New System.Windows.Forms.Label()
             Me.SuspendLayout()
             '
             'm_hdrCaption
@@ -85,12 +94,71 @@ Namespace Other
             resources.ApplyResources(Me.m_lblPath, "m_lblPath")
             Me.m_lblPath.Name = "m_lblPath"
             '
+            'm_hdrCache
+            '
+            resources.ApplyResources(Me.m_hdrCache, "m_hdrCache")
+            Me.m_hdrCache.CanCollapseParent = False
+            Me.m_hdrCache.CollapsedParentHeight = 0
+            Me.m_hdrCache.IsCollapsed = False
+            Me.m_hdrCache.Name = "m_hdrCache"
+            '
+            'm_btnViewCache
+            '
+            resources.ApplyResources(Me.m_btnViewCache, "m_btnViewCache")
+            Me.m_btnViewCache.Name = "m_btnViewCache"
+            Me.m_btnViewCache.UseVisualStyleBackColor = True
+            '
+            'm_btnClearCache
+            '
+            resources.ApplyResources(Me.m_btnClearCache, "m_btnClearCache")
+            Me.m_btnClearCache.Name = "m_btnClearCache"
+            Me.m_btnClearCache.UseVisualStyleBackColor = True
+            '
+            'm_lblCacheTotal
+            '
+            resources.ApplyResources(Me.m_lblCacheTotal, "m_lblCacheTotal")
+            Me.m_lblCacheTotal.Name = "m_lblCacheTotal"
+            '
+            'm_lblCacheUnused
+            '
+            resources.ApplyResources(Me.m_lblCacheUnused, "m_lblCacheUnused")
+            Me.m_lblCacheUnused.Name = "m_lblCacheUnused"
+            '
+            'm_lblCacheUnusedVal
+            '
+            resources.ApplyResources(Me.m_lblCacheUnusedVal, "m_lblCacheUnusedVal")
+            Me.m_lblCacheUnusedVal.Name = "m_lblCacheUnusedVal"
+            '
+            'm_lblCacheTotalVal
+            '
+            resources.ApplyResources(Me.m_lblCacheTotalVal, "m_lblCacheTotalVal")
+            Me.m_lblCacheTotalVal.Name = "m_lblCacheTotalVal"
+            '
+            'm_lblCacheLocation
+            '
+            resources.ApplyResources(Me.m_lblCacheLocation, "m_lblCacheLocation")
+            Me.m_lblCacheLocation.Name = "m_lblCacheLocation"
+            '
+            'm_lblCacheLocationValue
+            '
+            resources.ApplyResources(Me.m_lblCacheLocationValue, "m_lblCacheLocationValue")
+            Me.m_lblCacheLocationValue.Name = "m_lblCacheLocationValue"
+            '
             'ucOptionsSpatialTemporal
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_lblCacheTotalVal)
+            Me.Controls.Add(Me.m_lblCacheUnusedVal)
+            Me.Controls.Add(Me.m_lblCacheUnused)
+            Me.Controls.Add(Me.m_lblCacheLocation)
+            Me.Controls.Add(Me.m_lblCacheTotal)
+            Me.Controls.Add(Me.m_hdrCache)
+            Me.Controls.Add(Me.m_lblCacheLocationValue)
             Me.Controls.Add(Me.m_lblPath)
+            Me.Controls.Add(Me.m_btnClearCache)
             Me.Controls.Add(Me.m_btnChoose)
+            Me.Controls.Add(Me.m_btnViewCache)
             Me.Controls.Add(Me.m_btnVisitFolder)
             Me.Controls.Add(Me.m_rbCustom)
             Me.Controls.Add(Me.m_rbDefault)
@@ -108,6 +176,15 @@ Namespace Other
         Private WithEvents m_rbCustom As System.Windows.Forms.RadioButton
         Private WithEvents m_btnChoose As System.Windows.Forms.Button
         Private WithEvents m_lblPath As System.Windows.Forms.Label
+        Private WithEvents m_hdrCache As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnViewCache As System.Windows.Forms.Button
+        Private WithEvents m_btnClearCache As System.Windows.Forms.Button
+        Private WithEvents m_lblCacheTotal As System.Windows.Forms.Label
+        Private WithEvents m_lblCacheUnused As System.Windows.Forms.Label
+        Private WithEvents m_lblCacheUnusedVal As System.Windows.Forms.Label
+        Private WithEvents m_lblCacheTotalVal As System.Windows.Forms.Label
+        Private WithEvents m_lblCacheLocation As System.Windows.Forms.Label
+        Private WithEvents m_lblCacheLocationValue As System.Windows.Forms.Label
 
     End Class
 End Namespace
