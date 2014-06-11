@@ -190,7 +190,7 @@
     <value>True</value>
   </data>
   <data name="m_rbDefault.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 49</value>
+    <value>17, 53</value>
   </data>
   <data name="m_rbDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>82, 17</value>
@@ -235,7 +235,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnVisitFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>350, 45</value>
+    <value>350, 49</value>
   </data>
   <data name="m_btnVisitFolder.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -265,7 +265,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbCustom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 76</value>
+    <value>17, 80</value>
   </data>
   <data name="m_rbCustom.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 17</value>
@@ -295,7 +295,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnChoose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>350, 73</value>
+    <value>350, 77</value>
   </data>
   <data name="m_btnChoose.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -325,7 +325,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 73</value>
+    <value>101, 77</value>
   </data>
   <data name="m_lblPath.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -361,7 +361,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrCache.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 109</value>
+    <value>3, 113</value>
   </data>
   <data name="m_hdrCache.Size" type="System.Drawing.Size, System.Drawing">
     <value>431, 18</value>
@@ -409,7 +409,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnViewCache.Location" type="System.Drawing.Point, System.Drawing">
-    <value>350, 127</value>
+    <value>350, 131</value>
   </data>
   <data name="m_btnViewCache.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -439,7 +439,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnClearCache.Location" type="System.Drawing.Point, System.Drawing">
-    <value>350, 154</value>
+    <value>350, 158</value>
   </data>
   <data name="m_btnClearCache.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -466,7 +466,7 @@
     <value>True</value>
   </data>
   <data name="m_lblCacheTotal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 159</value>
+    <value>14, 163</value>
   </data>
   <data name="m_lblCacheTotal.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
@@ -496,7 +496,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCacheUnused.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 185</value>
+    <value>14, 189</value>
   </data>
   <data name="m_lblCacheUnused.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 13</value>
@@ -526,7 +526,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCacheUnusedVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 185</value>
+    <value>101, 189</value>
   </data>
   <data name="m_lblCacheUnusedVal.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 13</value>
@@ -556,7 +556,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCacheTotalVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 159</value>
+    <value>101, 163</value>
   </data>
   <data name="m_lblCacheTotalVal.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 13</value>
@@ -586,7 +586,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCacheLocation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 133</value>
+    <value>14, 137</value>
   </data>
   <data name="m_lblCacheLocation.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 13</value>
@@ -616,7 +616,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCacheLocationValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 128</value>
+    <value>101, 132</value>
   </data>
   <data name="m_lblCacheLocationValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
