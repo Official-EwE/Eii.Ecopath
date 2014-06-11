@@ -2675,7 +2675,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The spatial data cache occupies {0} KB of disk space, of which {1} KB is not in use by this model. Do you want to clear unused data only?.
+        '''  Looks up a localized string similar to The spatial data cache occupies {0} of disk space, of which {1} is not in use by this model. Do you want to clear unused data only?.
         '''</summary>
         Public ReadOnly Property PROMPT_CACHE_CLEAR() As String
             Get

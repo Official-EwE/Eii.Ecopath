@@ -28,7 +28,7 @@ Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Interface for classes that cache converted spatio-temporal data.
+    ''' Interface for classes that cache converted spatial-temporal data.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Interface ISpatialDataCache

@@ -14950,7 +14950,8 @@ Description: {1}</value>
     <comment>{0}:image size</comment>
   </data>
   <data name="PROMPT_CACHE_CLEAR" xml:space="preserve">
-    <value>The spatial data cache occupies {0} KB of disk space, of which {1} KB is not in use by this model. Do you want to clear unused data only?</value>
+    <value>The spatial data cache occupies {0} of disk space, of which {1} is not in use by this model. Do you want to clear unused data only?</value>
+    <comment>{0}=total cache size, in memory units; {1}=unused cache size, in memory units</comment>
   </data>
   <data name="FR_PLOT_Y_AXS" xml:space="preserve">
     <value>Q prey / B pred</value>
