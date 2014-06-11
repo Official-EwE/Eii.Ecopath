@@ -46,7 +46,7 @@ Namespace Other
 
 #Region " Private vars "
 
-        Private m_strPath As String = ""
+        Private m_strConfigPath As String = ""
 
 #End Region ' Private vars
 
@@ -74,9 +74,9 @@ Namespace Other
             Dim core As cCore = Me.UIContext.Core
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
 
-            Me.m_strPath = man.ConfigFile
+            Me.m_strConfigPath = man.ConfigFile
 
-            If String.IsNullOrWhiteSpace(Me.m_strPath) Or cFileUtils.Equals(Me.m_strPath, cSpatialDataSetManager.DefaultConfigFile) Then
+            If String.IsNullOrWhiteSpace(Me.m_strConfigPath) Or cFileUtils.Equals(Me.m_strConfigPath, cSpatialDataSetManager.DefaultConfigFile) Then
                 Me.m_rbDefault.Checked = True
             Else
                 Me.m_rbCustom.Checked = True
@@ -99,10 +99,10 @@ Namespace Other
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Title = My.Resources.PROMPT_SELECT_REFIMAGE
-            cmdFO.Invoke(Me.m_strPath, "Dataset config files|*.xml", 0)
+            cmdFO.Invoke(Me.m_strConfigPath, "Dataset config files|*.xml", 0)
 
             If (cmdFO.Result = DialogResult.OK) Then
-                Me.m_strPath = cmdFO.FileName
+                Me.m_strConfigPath = cmdFO.FileName
                 Me.m_rbCustom.Checked = True
                 Me.UpdateControls()
             End If
@@ -119,6 +119,37 @@ Namespace Other
                     cmd.Invoke(Path.GetDirectoryName(cSpatialDataSetManager.DefaultConfigFile))
                 Catch ex As Exception
                     cLog.Write(ex, "ucOptionsSpatialTemporal::OnViewDefault")
+                End Try
+            End If
+
+        End Sub
+
+        Private Sub OnViewCache(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnViewCache.Click
+
+            If (Me.UIContext IsNot Nothing) Then
+                Try
+                    Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
+                    Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                    Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                    cmd.Invoke(cache.RootFolder)
+                Catch ex As Exception
+                    cLog.Write(ex, "ucOptionsSpatialTemporal::OnViewCache")
+                End Try
+            End If
+
+        End Sub
+
+        Private Sub OnClearCache(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnClearCache.Click
+
+            If (Me.UIContext IsNot Nothing) Then
+                Try
+                    Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
+                    cache.Clear()
+                    Me.UpdateControls()
+                Catch ex As Exception
+                    cLog.Write(ex, "ucOptionsSpatialTemporal::OnClearCache")
                 End Try
             End If
 
@@ -169,7 +200,7 @@ Namespace Other
             Try
 
                 If (Me.m_rbCustom.Checked) Then
-                    strFile = Me.m_strPath
+                    strFile = Me.m_strConfigPath
                 End If
 
                 Me.UIContext.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
@@ -209,11 +240,28 @@ Namespace Other
 
         Private Sub UpdateControls()
 
-            Dim strPath As String = String.Copy(Me.m_strPath)
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
+            Dim man As cSpatialDataSetManager = Me.UIContext.Core.SpatialDataConnectionManager.DatasetManager
+            Dim strPath As String = ""
+
+            strPath = String.Copy(Me.m_strConfigPath)
             TextRenderer.MeasureText(strPath, Me.Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), _
                                      TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis)
             Me.m_lblPath.Text = strPath
 
+            strPath = cache.RootFolder
+            TextRenderer.MeasureText(strPath, Me.Font, New Drawing.Size(Me.m_lblCacheLocationValue.ClientSize.Width, 0), _
+                                     TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis)
+            Me.m_lblCacheLocationValue.Text = strPath
+
+            Me.m_lblCacheTotalVal.Text = sg.FormatMemory(cache.GetSize())
+            Me.m_lblCacheUnusedVal.Text = sg.FormatMemory(cache.GetUnusedSize(man))
+
+            Me.m_btnViewCache.Enabled = Directory.Exists(cache.RootFolder)
+            Me.m_btnClearCache.Enabled = (cache.GetSize() > 0)
         End Sub
 
 #End Region ' Internals
