@@ -39,6 +39,27 @@ Namespace SpatialData
         Implements IDisposable
         Implements ICoreInterface
 
+#Region " Private helper classes "
+
+        Private Class cDatasetComparer
+            Implements IComparer(Of ISpatialDataSet)
+
+            Public Function Compare(x As ISpatialDataSet, y As ISpatialDataSet) As Integer _
+                Implements IComparer(Of ISpatialDataSet).Compare
+
+                Dim strX As String = x.DisplayName
+                Dim strY As String = y.DisplayName
+
+                If (TypeOf x Is IPlugin) Then strX = DirectCast(x, IPlugin).Name
+                If (TypeOf y Is IPlugin) Then strY = DirectCast(y, IPlugin).Name
+
+                Return String.Compare(strX, strY, True)
+            End Function
+
+        End Class
+
+#End Region ' Private helper classes
+
 #Region " Variables "
 
         ''' <summary>Manager of active data sets.</summary>
@@ -251,6 +272,8 @@ Namespace SpatialData
                     End If
                 Next
             End If
+
+            lDatasets.Sort(New cDatasetComparer())
             Return lDatasets.ToArray
 
         End Function
