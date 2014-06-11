@@ -185,7 +185,7 @@ Namespace Ecospace.Controls
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
 
             ' Temporal overlap
-            Me(iRow, eColumnTypes.TempOverlap).Value = String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, CInt(Math.Ceiling(100 * comp.NumOverlappingTimeSteps / iNumTS)))
+            Me(iRow, eColumnTypes.TempOverlap).Value = CStr(comp.NumOverlappingTimeSteps) & " time step(s)"
 
             ' Spatial overlap col
             If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then

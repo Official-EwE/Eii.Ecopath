@@ -31,7 +31,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 ' ToDo: Use format provider for scale box
 ' ToDo: Populate dataset details panel
-' ToDo: Reactivate indexing
 ' ToDo: Respond to configuration / name changes
 ' ToDo: Enable varname hierarchy in TreeView
 
@@ -226,14 +225,15 @@ Namespace Ecospace.Controls
         Private Sub OnAddDataset(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAdd.Click, m_lbSourceDatasets.DoubleClick
 
-            Me.m_bInUpdate = True
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
             Try
                 Dim ds As ISpatialDataSet = Me.m_lbSourceDatasets.SelectedDataset
                 If (ds IsNot Nothing) And (Me.m_iNumConn < cSpatialDataStructures.cMAX_CONN) Then
+                    Me.m_bInUpdate = True
                     Me.m_iNumConn += 1
                     Me.m_adt.Dataset(m_iLayer, Me.m_iNumConn) = ds
                     Me.LayerChanged()
+                    Me.m_bInUpdate = False
 
                     Me.m_gridConnections.Add(ds, True)
                 End If
@@ -241,7 +241,6 @@ Namespace Ecospace.Controls
 
             End Try
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
-            Me.m_bInUpdate = False
             Me.UpdateControls()
 
         End Sub
@@ -513,6 +512,7 @@ Namespace Ecospace.Controls
             End Try
 
             Me.m_bInUpdate = False
+            Me.UpdateControls()
 
         End Sub
 
