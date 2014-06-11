@@ -60,7 +60,6 @@ Namespace Ecospace
             Index = 0
             Name
             Enabled
-            Status
         End Enum
 
         Public Sub New()
@@ -92,14 +91,11 @@ Namespace Ecospace
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
-            'ToDo: Globalize this
-
             Me.Redim(1, Me.m_nBaseCols + cSpatialDataStructures.cMAX_CONN)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell("Enabled")
-            Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+            Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED)
 
             For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
                 Me(0, Me.m_nBaseCols + i - 1) = New EwEColumnHeaderCell(CStr(i))
@@ -159,12 +155,11 @@ Namespace Ecospace
                         Me(iRow, eColumnTypes.Enabled) = New SourceGrid2.Cells.Real.CheckBox(adt.IsEnabled(layer.Index))
                         Me(iRow, eColumnTypes.Enabled).Behaviors.Add(Me.EwEEditHandler)
 
-                        Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-
                         For j As Integer = Me.m_nBaseCols To Me.ColumnsCount - 1
                             Me(iRow, j) = New Cells.Real.Cell("")
                             Me(iRow, j).Behaviors.Add(Me.m_bmCell)
                             Me(iRow, j).Tag = (j - Me.m_nBaseCols + 1)
+                            Me(iRow, j).VisualModel = New VisualModels.Common()
                         Next
                         Me.ConnectionAtRow(iRow) = New cConnectionInfo(adt, layer)
                         hgcGroup.AddChildRow(iRow)
@@ -178,45 +173,35 @@ Namespace Ecospace
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
+            Me.AllowBlockSelect = False
         End Sub
 
         Protected Sub UpdateDatasetRow(iRow As Integer)
 
             Dim conn As cConnectionInfo = Me.ConnectionAtRow(iRow)
             If (conn Is Nothing) Then Return
+
             Dim iNumDefined As Integer = 0
             Dim iNumConnected As Integer = 0
-            Dim strText As String = ""
 
             For j As Integer = Me.m_nBaseCols To Me.ColumnsCount - 1
 
                 Dim adt As cSpatialDataAdapter = conn.Adapter
                 Dim layer As cEcospaceLayer = conn.Layer
                 Dim iConn As Integer = (j - Me.m_nBaseCols + 1)
+                Dim strText As String = ""
+                Dim status As cStyleGuide.eApplicationColorType = cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND
 
-                strText = ""
-
-                If adt.Dataset(layer.Index, iConn) IsNot Nothing Then
-                    iNumDefined += 1
-                    If conn.Adapter.IsConnected(conn.Layer.Index, iConn) Then
-                        iNumConnected += 1
-                        strText = "OK"
-                    Else
-                        strText = "!"
+                If (adt.Dataset(layer.Index, iConn) IsNot Nothing) Then
+                    strText = adt.Dataset(layer.Index, iConn).DisplayName
+                    If (Not conn.Adapter.IsConnected(conn.Layer.Index, iConn)) Then
+                        status = cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND
                     End If
                 End If
+
+                Me(iRow, j).VisualModel.BackColor = Me.StyleGuide.ApplicationColor(status)
                 Me(iRow, j).Value = strText
             Next
-
-            ' Connection status, all over
-            If iNumDefined = 0 Then
-                strText = ""
-            ElseIf (iNumConnected < iNumDefined) Then
-                strText = "!"
-            Else
-                strText = "OK"
-            End If
-            Me(iRow, eColumnTypes.Status).Value = strText
 
         End Sub
 

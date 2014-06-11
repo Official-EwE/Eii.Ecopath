@@ -4051,6 +4051,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Enabled.
+        '''</summary>
+        Public ReadOnly Property HEADER_ENABLED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ENABLED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Acitve.
         '''</summary>
         Public ReadOnly Property HEADER_ENVINPUT_ACTIVE() As String

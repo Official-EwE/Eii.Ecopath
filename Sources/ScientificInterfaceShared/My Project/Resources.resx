@@ -3113,4 +3113,7 @@
   <data name="GENERIC_VALUE_FIRSTTIMESTEP" xml:space="preserve">
     <value>(first time step)</value>
   </data>
+  <data name="HEADER_ENABLED" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
 </root>
