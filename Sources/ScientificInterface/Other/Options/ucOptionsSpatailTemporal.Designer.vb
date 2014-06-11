@@ -42,10 +42,8 @@ Namespace Other
             Me.m_hdrCache = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnViewCache = New System.Windows.Forms.Button()
             Me.m_btnClearCache = New System.Windows.Forms.Button()
-            Me.m_lblCacheTotal = New System.Windows.Forms.Label()
-            Me.m_lblCacheUnused = New System.Windows.Forms.Label()
-            Me.m_lblCacheUnusedVal = New System.Windows.Forms.Label()
-            Me.m_lblCacheTotalVal = New System.Windows.Forms.Label()
+            Me.m_lblCacheSize = New System.Windows.Forms.Label()
+            Me.m_lblCacheSizeValue = New System.Windows.Forms.Label()
             Me.m_lblCacheLocation = New System.Windows.Forms.Label()
             Me.m_lblCacheLocationValue = New System.Windows.Forms.Label()
             Me.SuspendLayout()
@@ -114,25 +112,15 @@ Namespace Other
             Me.m_btnClearCache.Name = "m_btnClearCache"
             Me.m_btnClearCache.UseVisualStyleBackColor = True
             '
-            'm_lblCacheTotal
+            'm_lblCacheSize
             '
-            resources.ApplyResources(Me.m_lblCacheTotal, "m_lblCacheTotal")
-            Me.m_lblCacheTotal.Name = "m_lblCacheTotal"
+            resources.ApplyResources(Me.m_lblCacheSize, "m_lblCacheSize")
+            Me.m_lblCacheSize.Name = "m_lblCacheSize"
             '
-            'm_lblCacheUnused
+            'm_lblCacheSizeValue
             '
-            resources.ApplyResources(Me.m_lblCacheUnused, "m_lblCacheUnused")
-            Me.m_lblCacheUnused.Name = "m_lblCacheUnused"
-            '
-            'm_lblCacheUnusedVal
-            '
-            resources.ApplyResources(Me.m_lblCacheUnusedVal, "m_lblCacheUnusedVal")
-            Me.m_lblCacheUnusedVal.Name = "m_lblCacheUnusedVal"
-            '
-            'm_lblCacheTotalVal
-            '
-            resources.ApplyResources(Me.m_lblCacheTotalVal, "m_lblCacheTotalVal")
-            Me.m_lblCacheTotalVal.Name = "m_lblCacheTotalVal"
+            resources.ApplyResources(Me.m_lblCacheSizeValue, "m_lblCacheSizeValue")
+            Me.m_lblCacheSizeValue.Name = "m_lblCacheSizeValue"
             '
             'm_lblCacheLocation
             '
@@ -148,11 +136,9 @@ Namespace Other
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_lblCacheTotalVal)
-            Me.Controls.Add(Me.m_lblCacheUnusedVal)
-            Me.Controls.Add(Me.m_lblCacheUnused)
+            Me.Controls.Add(Me.m_lblCacheSizeValue)
             Me.Controls.Add(Me.m_lblCacheLocation)
-            Me.Controls.Add(Me.m_lblCacheTotal)
+            Me.Controls.Add(Me.m_lblCacheSize)
             Me.Controls.Add(Me.m_hdrCache)
             Me.Controls.Add(Me.m_lblCacheLocationValue)
             Me.Controls.Add(Me.m_lblPath)
@@ -179,10 +165,8 @@ Namespace Other
         Private WithEvents m_hdrCache As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnViewCache As System.Windows.Forms.Button
         Private WithEvents m_btnClearCache As System.Windows.Forms.Button
-        Private WithEvents m_lblCacheTotal As System.Windows.Forms.Label
-        Private WithEvents m_lblCacheUnused As System.Windows.Forms.Label
-        Private WithEvents m_lblCacheUnusedVal As System.Windows.Forms.Label
-        Private WithEvents m_lblCacheTotalVal As System.Windows.Forms.Label
+        Private WithEvents m_lblCacheSize As System.Windows.Forms.Label
+        Private WithEvents m_lblCacheSizeValue As System.Windows.Forms.Label
         Private WithEvents m_lblCacheLocation As System.Windows.Forms.Label
         Private WithEvents m_lblCacheLocationValue As System.Windows.Forms.Label
 
