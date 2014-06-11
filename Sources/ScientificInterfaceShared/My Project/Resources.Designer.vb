@@ -8060,6 +8060,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to B.
+        '''</summary>
+        Public ReadOnly Property UNIT_BYTE() As String
+            Get
+                Return ResourceManager.GetString("UNIT_BYTE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to kcal/m².
         '''</summary>
         Public ReadOnly Property UNIT_CURRENCY_CALORIE() As String
@@ -8119,6 +8128,33 @@ Namespace My.Resources
         Public ReadOnly Property UNIT_CURRENCY_WETWEIGHT() As String
             Get
                 Return ResourceManager.GetString("UNIT_CURRENCY_WETWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to KB.
+        '''</summary>
+        Public ReadOnly Property UNIT_KILOBYTE() As String
+            Get
+                Return ResourceManager.GetString("UNIT_KILOBYTE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MB.
+        '''</summary>
+        Public ReadOnly Property UNIT_MEGABYTE() As String
+            Get
+                Return ResourceManager.GetString("UNIT_MEGABYTE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to TB.
+        '''</summary>
+        Public ReadOnly Property UNIT_TERABYTE() As String
+            Get
+                Return ResourceManager.GetString("UNIT_TERABYTE", resourceCulture)
             End Get
         End Property
         

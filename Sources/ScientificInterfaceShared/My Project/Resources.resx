@@ -3098,4 +3098,16 @@
   <data name="GENERIC_VALUE_DELETE_PENDING" xml:space="preserve">
     <value>(to delete)</value>
   </data>
+  <data name="UNIT_BYTE" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="UNIT_KILOBYTE" xml:space="preserve">
+    <value>KB</value>
+  </data>
+  <data name="UNIT_MEGABYTE" xml:space="preserve">
+    <value>MB</value>
+  </data>
+  <data name="UNIT_TERABYTE" xml:space="preserve">
+    <value>TB</value>
+  </data>
 </root>

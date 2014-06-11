@@ -568,6 +568,22 @@ Namespace Style
 
         End Function
 
+        Public Function FormatMemory(size As Long) As String
+
+            Dim astrUnits As String() = New String() {My.Resources.UNIT_BYTE, My.Resources.UNIT_KILOBYTE, My.Resources.UNIT_MEGABYTE, My.Resources.UNIT_TERABYTE}
+            Dim i As Integer = 0
+            Dim dTest As Double = 1024
+            Dim dValue As Double = size
+
+            While (dValue > dTest) And (i < astrUnits.Length - 1)
+                dValue /= 1024
+                i += 1
+            End While
+
+            Return String.Format(My.Resources.GENERIC_LABEL_DOUBLE, Me.FormatNumber(CInt(size)), astrUnits(i))
+
+        End Function
+
 #End Region ' Number formatting
 
 #Region " Units "
