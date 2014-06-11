@@ -145,8 +145,35 @@ Namespace Other
 
             If (Me.UIContext IsNot Nothing) Then
                 Try
+                    Dim man As cSpatialDataSetManager = Me.UIContext.Core.SpatialDataConnectionManager.DatasetManager
                     Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
-                    cache.Clear()
+                    Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+                    Dim core As cCore = Me.UIContext.Core
+                    Dim lSizeBefore As Long = cache.GetSize()
+                    Dim lSizeUnused As Long = cache.GetUnusedSize(man)
+                    Dim strPrompt As String = My.Resources.PROMPT_CACHE_CLEAR
+
+                    If (lSizeUnused > 0) Then
+                        Dim fmsg As New cFeedbackMessage(String.Format(strPrompt, sg.FormatMemory(lSizeBefore), sg.FormatMemory(lSizeUnused)), _
+                                                         eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
+                        core.Messages.SendMessage(fmsg)
+
+                        Select Case fmsg.Reply
+                            Case eMessageReply.YES
+                                cache.Clear(man)
+                            Case eMessageReply.NO
+                                cache.Clear()
+                            Case eMessageReply.CANCEL
+                                Return
+                        End Select
+                    Else
+                        cache.Clear()
+                    End If
+
+                    Dim msg As New cMessage(String.Format(My.Resources.STATUS_CACHECLEARED, sg.FormatMemory(lSizeBefore - cache.GetSize())), _
+                         eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+                    core.Messages.SendMessage(msg)
+
                     Me.UpdateControls()
                 Catch ex As Exception
                     cLog.Write(ex, "ucOptionsSpatialTemporal::OnClearCache")
