@@ -49,10 +49,10 @@ Namespace Ecospace.Controls
             Me.m_btnConfigure = New System.Windows.Forms.Button()
             Me.m_cbEnableIndexing = New System.Windows.Forms.CheckBox()
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnSwitchConfig = New System.Windows.Forms.ToolStripButton()
             Me.m_tssbCreateNew = New System.Windows.Forms.ToolStripSplitButton()
+            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnSwitchConfig = New System.Windows.Forms.ToolStripButton()
             Me.m_gridDatasets = New ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
@@ -89,25 +89,25 @@ Namespace Ecospace.Controls
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
-            'm_tsbnExport
-            '
-            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
-            Me.m_tsbnExport.Name = "m_tsbnExport"
-            '
-            'm_tsbnSwitchConfig
-            '
-            resources.ApplyResources(Me.m_tsbnSwitchConfig, "m_tsbnSwitchConfig")
-            Me.m_tsbnSwitchConfig.Name = "m_tsbnSwitchConfig"
-            '
             'm_tssbCreateNew
             '
             resources.ApplyResources(Me.m_tssbCreateNew, "m_tssbCreateNew")
             Me.m_tssbCreateNew.Name = "m_tssbCreateNew"
             '
+            'm_tsbnExport
+            '
+            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
+            Me.m_tsbnExport.Name = "m_tsbnExport"
+            '
             'ToolStripSeparator1
             '
             Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
             resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
+            'm_tsbnSwitchConfig
+            '
+            resources.ApplyResources(Me.m_tsbnSwitchConfig, "m_tsbnSwitchConfig")
+            Me.m_tsbnSwitchConfig.Name = "m_tsbnSwitchConfig"
             '
             'm_gridDatasets
             '

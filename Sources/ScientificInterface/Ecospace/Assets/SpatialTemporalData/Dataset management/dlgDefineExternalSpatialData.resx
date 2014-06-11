@@ -268,10 +268,10 @@
     <value>Magenta</value>
   </data>
   <data name="m_tssbCreateNew.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 22</value>
+    <value>72, 22</value>
   </data>
   <data name="m_tssbCreateNew.Text" xml:space="preserve">
-    <value>Create new connection...</value>
+    <value>New...</value>
   </data>
   <data name="m_tssbCreateNew.ToolTipText" xml:space="preserve">
     <value>Create new connection</value>
@@ -279,20 +279,20 @@
   <data name="m_tsbnExport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALjSURBVDhPjZNrSNNRGMb3vS996pMKmonhrbR1sVKioIu3
-        PiR00Vh5C1oWZmkZVmLmbZquTZd5YWpecl5Tm21NxdQ51G06ELdlztuc5G2o/dV4Ov5nZlDUAy/vOQee
-        H895D4fxptfoKpQbcb9OT0WUDlFeGXLqxIseypevpHz4Kiry7TBVIp/UCZVTOxh/0vViDWLq9DDMrcC4
-        8A0zixS+milMkz45T6HPYEYAvw9+3E7xpuV3OcXLMDixhPnlNWJehWmBoiEzZrIm+/G5VeTLdNgZmCwO
-        Dg4GsdDl7u6+0RkMtydSeHL6UN47jf6xRWhNS1CPm6H4Mo+ez7PErMW+B7WwDUrfSsBisX6CCCBeAtdn
-        XTjDVyGuQY+kFgPCK7S4wP2E88/r4Hm3EKdiimCzDUC0lYTh8qgZB1J64J+rRlS1FtE1OhzJVME+uh5W
-        LB6sgzmwvpIGu6DkLQCbzabNdHeObQAztQcBggE8btQjUTwCb+4AXB42wiFcgN3XsmDHyoTNpcS/DPGe
-        iAAU8BeokfphFFzZGLyy1ZuAXNS3D9HVsNlF0gFkC1ss99/Q3qhKGuCXqwJHMgp++wSObwPUyDSg9R1Y
-        xQp5mRV09mtx6FyoBeJ4pxwe9AxUSCcAXtv4NoAAVRIV7Rfp3+FmZQFYWRokdWShVtIN5tkQMBxvl8Ij
-        WQ5fMkSOxAAeSXBsG6CsuZcG3KrOhldRIIIyBrE/3xv8svcWgG14HpgpCgTkaZBGEmS1khlwNwBNBPAK
-        xfXdNOAyZwq70l1hl3EaVznD4JWILQCfNCmsIkU4mtyJ0LJhRNeP4qRAC+e4JtiHvESBqB3L6+uokS8j
-        jDsLhxwmYuVPUVAlswAiRbqLCdUqeHPkcEtoAzOmAk7sQtiH8rDnxmsIKj5iaW0dY6Y56AwmKIeN6FCM
-        /ErwL/FLW8jfWEKXUocaqQKFolbkkLP/BnCFzTjsGwZP/wi6DpLn2zBaKgQ/ABH3Rp5VJa7gAAAAAElF
-        TkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALiSURBVDhPjZNrSNNRGMb3vS996pMGmonhrbR1sdKgoPLa
+        h4QuLlbegtTCFC3DSsy8TdO16TIveMlLzmtqs62pmDqHuk0Hskvm1NRJXpn2V+Pp+J/ZgqIeeHnPOfD8
+        eM57OIzXAzMupbIZxDbqqfDyUcozq486/VxG+fCGKG+egop8o6HK+qZ0pYrpXYw/6WaZGnGNehgW1jCz
+        9A1zyxS+rlCYJf3LIoVBwwoC+IPw4/aIti2/yzFRipEpExZXN4h5HcYliobMrZA12U8urKNQqsPuwFQR
+        i8UCsdDl5ua21RkM18cSeHAGUTUwi6GJZWiNJqgmVyD/vIj+T/PErMXB+w2wCcrcScBms3+CCCBRDJen
+        vTjPVyKhWY+UdgPCqrW4xP2Ii88a4XGvGGfjSrDXAkC0k4Th/LANh9P64Z+vQnSdFjH1OhzPVsIupglW
+        bB6sWRxYX8uAbVDqDiAiIoI2090pvhnM9H4ECIbxqEWPZNEYvLjDcH7QAvswAfbdyIEtOxt7ryT/ZYix
+        QgKQw1+gQvr7cXClE/DMVW0D8tHUNUpX83YXSoaRW9puvv+WDkTX0AC/fCU44nHwu6ZwygJQL1WD1ndg
+        HWvkZdbQM6TFUe8QM8ThbhXc6RkokUkAvM5JC4AAtWIl7Rfq3+J2TRHYOWqkdOegQdwH5oVgMBzuVMA9
+        VQZfMkSO2AAeSXDSAlDZNkADIuty4VkSiKCsERwq9AK/8p0ZYBNWAGaaHAEFamSQBDkdZAbcLUArAbxE
+        WVMfDbjKmcaeTBfYZp3DdY4GvHKRGeCTIYFVlBAnUnsQUqlBTNM4zgi0cEpohV3wCxQJu7C6uYl62SpC
+        ufOwz2MiXvYERbVSMyBKqLucVKeEF0cG16ROMOOq4RhRDLsQHvbfegVB9QeYNjYxYVyAzmCEQjODbvnY
+        rwT/Er+infwNE3oVOtRL5CgWdiCPnP03gFvahmO+ofDwD6frCHm+LaO5gvED1olGj/ORGTcAAAAASUVO
+        RK5CYII=
 </value>
   </data>
   <data name="m_tsbnExport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -345,7 +345,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10800.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
@@ -369,7 +369,7 @@
     <value>m_gridDatasets</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.10800.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Parent" xml:space="preserve">
     <value>$this</value>
@@ -389,23 +389,8 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Define external spatial temporal data connections</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnExport.Name" xml:space="preserve">
-    <value>m_tsbnExport</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnExport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSwitchConfig.Name" xml:space="preserve">
-    <value>m_tsbnSwitchConfig</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSwitchConfig.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Createa a new connection to external spatial temporal data</value>
   </data>
   <data name="&gt;&gt;m_tssbCreateNew.Name" xml:space="preserve">
     <value>m_tssbCreateNew</value>
@@ -413,16 +398,28 @@
   <data name="&gt;&gt;m_tssbCreateNew.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsbnExport.Name" xml:space="preserve">
+    <value>m_tsbnExport</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnExport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
     <value>ToolStripSeparator1</value>
   </data>
   <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsbnSwitchConfig.Name" xml:space="preserve">
+    <value>m_tsbnSwitchConfig</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnSwitchConfig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>dlgDefineExternalSpatialData</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10800.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

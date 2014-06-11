@@ -353,48 +353,6 @@ Namespace Ecospace.Controls
 
         End Function
 
-        ' TODO: MOVE TO OPTIONS
-
-        ''' <summary>
-        ''' User wants to clear the spatial data cache.
-        ''' </summary>
-        Private Sub OnClearCache(sender As System.Object, e As System.EventArgs)
-
-            Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
-            Dim dSizeTot As Double = cache.GetSize() / 1024
-            Dim dSizeUnused As Double = cache.GetUnusedSize(Me.m_manSets) / 1024
-            Dim strPrompt As String = My.Resources.PROMPT_CACHE_CLEAR
-            Dim bSucces As Boolean = True
-
-            Try
-                If (dSizeUnused > 0) Then
-                    Dim fmsg As New cFeedbackMessage(String.Format(strPrompt, Me.m_uic.StyleGuide.FormatNumber(dSizeTot), Me.m_uic.StyleGuide.FormatNumber(dSizeUnused)), _
-                                                     EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
-                    Me.m_uic.Core.Messages.SendMessage(fmsg)
-
-                    Select Case fmsg.Reply
-                        Case eMessageReply.YES
-                            bSucces = cSpatialDataCache.DefaultDataCache.Clear(Me.m_manSets)
-                        Case eMessageReply.NO
-                            bSucces = cSpatialDataCache.DefaultDataCache.Clear()
-                        Case eMessageReply.CANCEL
-                    End Select
-                Else
-                    bSucces = cSpatialDataCache.DefaultDataCache.Clear()
-                End If
-            Catch ex As Exception
-                bSucces = False
-            End Try
-
-            ' Repopulate grid to reflect cache sizes
-            Me.m_gridDatasets.Fill(Me.SelectedDataset)
-
-            Dim dSizeTot2 As Double = cache.GetSize() / 1024
-            Dim msg As New cMessage(String.Format(My.Resources.STATUS_CACHECLEARED, Me.m_uic.StyleGuide.FormatNumber(dSizeTot - dSizeTot2)), _
-                                    eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
-            Me.m_uic.Core.Messages.SendMessage(msg)
-
-        End Sub
 
         Private Function Export(sets As ISpatialDataSet()) As Boolean
 
