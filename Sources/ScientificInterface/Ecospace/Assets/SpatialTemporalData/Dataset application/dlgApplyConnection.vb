@@ -602,6 +602,7 @@ Namespace Ecospace.Controls
             Me.m_plConversion.Enabled = bHasConnectionSelected And bNeedsConverter
             Me.m_plConversion.Visible = bNeedsConverter
             Me.m_btnConfigCV.Enabled = bCanConfigCV
+            Me.m_cmbConverter.Enabled = (Me.m_cmbConverter.Items.Count > 1)
 
             Me.m_plScalarAdapter.Enabled = bHasConnectionSelected And bNeedsScaling
             Me.m_plScalarAdapter.Visible = bNeedsScaling
