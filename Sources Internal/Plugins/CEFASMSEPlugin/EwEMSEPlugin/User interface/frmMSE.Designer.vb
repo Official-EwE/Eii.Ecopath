@@ -153,7 +153,6 @@ Partial Class frmMSE
         '
         'm_plStep2
         '
-        Me.m_plStep2.Controls.Add(Me.m_btnDeleteResults)
         Me.m_plStep2.Controls.Add(Me.m_btnCreateDiet)
         Me.m_plStep2.Controls.Add(Me.m_btnSampleSurvivabilities)
         Me.m_plStep2.Controls.Add(Me.m_pbCompatible)
@@ -242,6 +241,7 @@ Partial Class frmMSE
         '
         'm_plStep4
         '
+        Me.m_plStep4.Controls.Add(Me.m_btnDeleteResults)
         Me.m_plStep4.Controls.Add(Me.m_hdrStep4)
         Me.m_plStep4.Controls.Add(Me.m_tbxNModels2Run)
         Me.m_plStep4.Controls.Add(Me.m_lblNYears)

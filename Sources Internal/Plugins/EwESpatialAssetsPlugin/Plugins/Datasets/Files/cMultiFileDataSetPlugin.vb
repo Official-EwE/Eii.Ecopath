@@ -399,7 +399,7 @@ Namespace SpatialData
                 'xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("DateRef")
-                xaFile.Value = cStringUtils.FormatDate(tf.Date, "d")
+                xaFile.Value = cStringUtils.FormatDate(tf.Date)
                 xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("Indexed")

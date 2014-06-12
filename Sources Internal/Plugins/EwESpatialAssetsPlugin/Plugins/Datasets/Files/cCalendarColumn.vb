@@ -48,7 +48,7 @@ Public Class cCalendarCell
 
     Public Sub New()
         MyBase.New()
-        Me.Style.Format = "yyyy/MM/dd"
+        Me.Style.Format = "yyyy/MM"
     End Sub
 
     Public Overrides Sub InitializeEditingControl(ByVal rowIndex As Integer, _

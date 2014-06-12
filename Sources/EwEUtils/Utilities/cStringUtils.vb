@@ -659,7 +659,7 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Format a date into ISO 8601 format YYYY-MM-DDThh:mm:ss.sTZD.
+        ''' Format a date.
         ''' </summary>
         ''' <param name="dtValue">The date to format.</param>
         ''' <param name="strFormat">Optional date formatting flag (http://msdn.microsoft.com/en-us/library/zdtaw1bw%28v=vs.110%29.aspx)</param>
@@ -669,8 +669,8 @@ Namespace Utilities
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Shared Function FormatDate(ByVal dtValue As DateTime, _
-                                          Optional ByVal strFormat As String = "s") As String
-            Return dtValue.ToString(strFormat, New CultureInfo("en-US"))
+                                          Optional ByVal strFormat As String = "dd/MM/yyyy") As String
+            Return dtValue.ToString(strFormat)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -678,12 +678,12 @@ Namespace Utilities
         ''' Read a date from a en-US formatted string.
         ''' </summary>
         ''' <param name="strDate">The date to read.</param>
+        ''' <param name="strFormat">Optional date formatting flag (http://msdn.microsoft.com/en-us/library/zdtaw1bw%28v=vs.110%29.aspx)</param>
         ''' <returns>The date, of Date.MinValue if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ConvertToDate(ByVal strDate As String) As Date
-            Dim dt As New Date(0)
-            Date.TryParse(strDate, New CultureInfo("en-US"), DateTimeStyles.None, dt)
-            Return dt
+        Public Shared Function ConvertToDate(ByVal strDate As String, _
+                                              Optional ByVal strFormat As String = "dd/MM/yyyy") As DateTime
+            Return DateTime.Parse(strFormat)
         End Function
 
         ''' -------------------------------------------------------------------
