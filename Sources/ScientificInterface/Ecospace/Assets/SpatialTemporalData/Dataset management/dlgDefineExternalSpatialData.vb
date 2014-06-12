@@ -125,11 +125,11 @@ Namespace Ecospace.Controls
             Dim bHasSelection As Boolean = (ds IsNot Nothing)
             Dim bCanConfig As Boolean = (TypeOf ds Is IConfigurable)
 
-            Me.m_tssbCreateNew.Enabled = bHasTemplate
-
-            Me.m_btnDelete.Enabled = bHasSelection
+            Me.m_btnCreate.Enabled = bHasTemplate
             Me.m_btnConfigure.Enabled = bHasSelection And bCanConfig
-            Me.m_tsbnExport.Enabled = bHasDS
+            Me.m_btnDelete.Enabled = bHasSelection
+            Me.m_tsbnExportSelected.Enabled = bHasSelection
+            Me.m_tsbnExportAll.Enabled = bHasDS
 
         End Sub
 
@@ -137,12 +137,13 @@ Namespace Ecospace.Controls
 
 #Region " Event handlers "
 
-        Private Sub OnCreateDataset(sender As System.Object, e As System.EventArgs)
+        Private Sub OnCreateDataset(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnCreate.Click
 
             Me.Cursor = Cursors.WaitCursor
             Try
-                Dim item As ToolStripItem = DirectCast(sender, ToolStripMenuItem)
-                Me.CreateDS(DirectCast(item.Tag, ISpatialDataSet))
+                Dim ds As ISpatialDataSet = DirectCast(Me.m_cmbTemplates.SelectedItem, ISpatialDataSet)
+                Me.CreateDS(ds)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -160,12 +161,21 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnExportAll(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnExport.Click
+        Private Sub OnExportSelected(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnExportSelected.Click
             Try
                 Me.Export(Me.m_gridDatasets.SelectedDatasets)
             Catch ex As Exception
-                cLog.Write(ex, "")
+                cLog.Write(ex, "dlgDefineExternalSpatialData::OnExportSelected")
+            End Try
+        End Sub
+
+        Private Sub OnExportAll(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnExportAll.Click
+            Try
+                Me.Export()
+            Catch ex As Exception
+                cLog.Write(ex, "dlgDefineExternalSpatialData::OnExportAll")
             End Try
         End Sub
 
@@ -182,7 +192,7 @@ Namespace Ecospace.Controls
                 Me.m_manSets.IndexDataset = Me.SelectedDataset
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "ucConficAdapter::OnConfigureDS")
+                cLog.Write(ex, "dlgDefineExternalSpatialData::OnConfigureDS")
             End Try
             Me.Cursor = Cursors.Default
 
@@ -259,13 +269,15 @@ Namespace Ecospace.Controls
 
             Me.m_bHasDatasetTemplates = False
 
-            Me.m_tssbCreateNew.DropDown.Items.Clear()
+            Me.m_cmbTemplates.Items.Clear()
             For Each ds As ISpatialDataSet In Me.m_man.DatasetTemplates
-                Dim item As New ToolStripMenuItem(ds.DisplayName, Nothing, AddressOf OnCreateDataset)
-                item.Tag = ds
-                Me.m_tssbCreateNew.DropDown.Items.Add(item)
+                Me.m_cmbTemplates.Items.Add(ds)
                 Me.m_bHasDatasetTemplates = True
             Next
+
+            If (Me.m_bHasDatasetTemplates) Then
+                Me.m_cmbTemplates.SelectedIndex = 0
+            End If
 
         End Sub
 
@@ -292,7 +304,7 @@ Namespace Ecospace.Controls
                     Me.m_manSets.IndexDataset = dsNew
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "ucConficAdapter::CreateDS")
+                cLog.Write(ex, "dlgDefineExternalSpatialData::CreateDS")
             End Try
 
         End Sub
@@ -343,10 +355,16 @@ Namespace Ecospace.Controls
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Export datasets to an external directory structure for transfer to another computer.
+        ''' </summary>
+        ''' <param name="sets"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function Export(Optional sets As ISpatialDataSet() = Nothing) As Boolean
 
-        Private Function Export(sets As ISpatialDataSet()) As Boolean
-
-            If (sets Is Nothing) Then Return False
+            If (sets Is Nothing) Then sets = Me.m_manSets.ToArray()
             If (sets.Length = 0) Then Return False
 
             Dim dlg As New frmInputBox()

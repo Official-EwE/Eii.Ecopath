@@ -58,6 +58,23 @@ Namespace SpatialData
 
         End Class
 
+        Private Class cConverterComparer
+            Implements IComparer(Of ISpatialDataConverter)
+
+            Public Function Compare(x As ISpatialDataConverter, y As ISpatialDataConverter) As Integer _
+                Implements IComparer(Of ISpatialDataConverter).Compare
+
+                Dim strX As String = x.DisplayName
+                Dim strY As String = y.DisplayName
+
+                If (TypeOf x Is IPlugin) Then strX = DirectCast(x, IPlugin).Name
+                If (TypeOf y Is IPlugin) Then strY = DirectCast(y, IPlugin).Name
+
+                Return String.Compare(strX, strY, True)
+            End Function
+
+        End Class
+
 #End Region ' Private helper classes
 
 #Region " Variables "
@@ -313,6 +330,8 @@ Namespace SpatialData
                     End If
                 Next
             End If
+
+            lConverters.Sort(New cConverterComparer())
             Return lConverters.ToArray
 
         End Function
@@ -335,6 +354,8 @@ Namespace SpatialData
                     End If
                 Next
             End If
+
+            lConverters.Sort(New cConverterComparer())
             Return lConverters.ToArray
 
         End Function
