@@ -125,6 +125,16 @@ Public Class frmMSE
         Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
         AddHandler mon.OnInvalidated, AddressOf OnMSEStateChanged
 
+        ' Show/hide debug buttons
+#If DEBUG Then
+        Me.m_btnSampleSurvivabilities.Visible = True
+        Me.m_btnCreateDiet.Visible = True
+        Me.m_btnDeleteResults.Visible = True
+#Else
+        Me.m_btnSampleSurvivabilities.Visible = False
+        Me.m_btnCreateDiet.Visible = False
+        Me.m_btnDeleteResults.Visible = False
+#End If
         Me.UpdateControls()
 
     End Sub
@@ -210,6 +220,8 @@ Public Class frmMSE
             Me.m_tbxNumAvailableFishingStrategies.Text = ""
         End If
 
+        Me.m_btnDeleteResults.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasResults)
+
     End Sub
 
 #End Region ' Form overrides
@@ -257,7 +269,7 @@ Public Class frmMSE
             Me.MSE.UseEwEPath = Me.m_rbEwEDefault.Checked
             Me.ResolveMSEPathConflicts()
         Catch ex As Exception
-            cLog.Write(ex, "CEFASMSE:OnPathPrefChanged")
+            cLog.Write(ex, "CEFAS.frmMSE::OnPathPrefChanged")
         End Try
 
     End Sub
@@ -267,7 +279,7 @@ Public Class frmMSE
         Try
             Me.MSE.LoadSampledParams()
         Catch ex As Exception
-            cLog.Write(ex, "CEFASMSE:OnRun")
+            cLog.Write(ex, "CEFAS.frmMSE::OnRun")
         End Try
     End Sub
 
@@ -280,7 +292,7 @@ Public Class frmMSE
                 Me.ResolveMSEPathConflicts()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFASMSE:OnSelectDataPath")
+            cLog.Write(ex, "CEFAS.frmMSE::OnSelectDataPath")
         End Try
 
     End Sub
@@ -293,7 +305,7 @@ Public Class frmMSE
             frmSurvivabilities.Init(Me.UIContext)
             frmSurvivabilities.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnShowTFM")
+            cLog.Write(ex, "CEFAS.frmMSE::OnShowTFM")
         End Try
 
     End Sub
@@ -306,7 +318,7 @@ Public Class frmMSE
             frm.Init(Me.UIContext, Me.MSE)
             frm.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnShowTFM")
+            cLog.Write(ex, "CEFAS.frmMSE::OnShowTFM")
         End Try
 
     End Sub
@@ -317,7 +329,7 @@ Public Class frmMSE
         Try
             Me.ReviewDistParams()
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnReviewDistParams")
+            cLog.Write(ex, "CEFAS.frmMSE::OnReviewDistParams")
         End Try
 
     End Sub
@@ -326,7 +338,7 @@ Public Class frmMSE
         Try
             Me.MSE.NModels2Run = CInt(Me.m_fpNModelsToRun.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnNModels2RunChanged")
+            cLog.Write(ex, "CEFAS.frmMSE::OnNModels2RunChanged")
         End Try
     End Sub
 
@@ -334,7 +346,7 @@ Public Class frmMSE
         Try
             Me.MSE.NModels = CInt(Me.m_fpNTrials.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnNTrialsChanged")
+            cLog.Write(ex, "CEFAS.frmMSE::OnNTrialsChanged")
         End Try
     End Sub
 
@@ -342,7 +354,7 @@ Public Class frmMSE
         Try
             Me.MSE.NYearsProject = CInt(Me.m_fpNYearsToProject.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnNYearsToProjectChanged")
+            cLog.Write(ex, "CEFAS.frmMSE::OnNYearsToProjectChanged")
         End Try
     End Sub
 
@@ -350,7 +362,7 @@ Public Class frmMSE
         Try
             Me.MSE.MassBalanceTol = CSng(Me.m_fpMassBalanceTol.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnMassBalanceTolChanged")
+            cLog.Write(ex, "CEFAS.frmMSE::OnMassBalanceTolChanged")
         End Try
     End Sub
 
@@ -358,7 +370,7 @@ Public Class frmMSE
         Try
             Me.MSE.NMaxAttempts = CInt(Me.m_fpMaxAttempts.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnMaxAttemptsChanged")
+            cLog.Write(ex, "CEFAS.frmMSE::OnMaxAttemptsChanged")
         End Try
     End Sub
 
@@ -366,22 +378,61 @@ Public Class frmMSE
         Try
             Me.MSE.NMaxTime = CSng(Me.m_fpMaxTime.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnMaxAttemptsChanged")
+            cLog.Write(ex, "CEFAS.frmMSE::OnMaxAttemptsChanged")
         End Try
     End Sub
 
-    Private Sub OnDecreaseEffort(sender As Object, e As System.EventArgs) Handles m_btnDecreaseEffort.Click
+    Private Sub OnDecreaseEffort(sender As Object, e As System.EventArgs) _
+        Handles m_btnDecreaseEffort.Click
 
         Try
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
             frmMaxDecreaseEfforts.Init(Me.UIContext, Me.MSE)
             frmMaxDecreaseEfforts.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:OnDecreaseEffort")
+            cLog.Write(ex, "CEFAS.frmMSE::OnDecreaseEffort")
         End Try
 
     End Sub
 
+
+    Private Sub OnGenerateSampleSurvivabilities(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnSampleSurvivabilities.Click
+        Try
+            MSE.GenerateSurvivabilities()
+        Catch ex As Exception
+            cLog.Write(ex, "CEFAS.frmMSE::OnGenerateSampleSurvivabilities")
+        End Try
+    End Sub
+
+    Private Sub OnCreateDietFiles(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnCreateDiet.Click
+
+    End Sub
+
+    Private Sub OnDeleteResults(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnDeleteResults.Click
+
+        ' ToDo: globalize this
+        If Me.m_plugin.MSE.AskUser("Are you sure you want to delete all results?", eMessageReplyStyle.YES_NO) <> eMessageReply.YES Then
+            Return
+        End If
+
+        Try
+            File.Delete(m_plugin.MSE.DataPath & "\Results\Fleet.csv")
+            File.Delete(m_plugin.MSE.DataPath & "\Results\Results.csv")
+
+            For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories")
+                File.Delete(iFile)
+            Next
+            For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories2")
+                File.Delete(iFile)
+            Next
+        Catch ex As Exception
+            cLog.Write(ex, "CEFAS.frmMSE::OnDeleteResults")
+        End Try
+
+    End Sub
 #End Region ' Control events
 
 #Region " Plug-in callback "
@@ -547,28 +598,4 @@ Public Class frmMSE
 
 #End Region ' Path / model validation
 
-    Private Sub btnSampleSurvivabilities_Click(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnSampleSurvivabilities.Click
-        MSE.GenerateSurvivabilities()
-    End Sub
-
-    Private Sub btnCreateDiet_Click(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnCreateDiet.Click
-
-    End Sub
-
-    Private Sub btnDeleteResults_Click(sender As System.Object, e As System.EventArgs) Handles btnDeleteResults.Click
-
-        File.Delete(m_plugin.MSE.DataPath & "\Results\Fleet.csv")
-        File.Delete(m_plugin.MSE.DataPath & "\Results\Results.csv")
-
-        For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories")
-            File.Delete(iFile)
-        Next
-        For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories2")
-            File.Delete(iFile)
-        Next
-
-
-    End Sub
 End Class

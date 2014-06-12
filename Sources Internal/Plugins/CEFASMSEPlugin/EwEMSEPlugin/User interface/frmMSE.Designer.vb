@@ -56,6 +56,7 @@ Partial Class frmMSE
         Me.m_btnCreateModels = New System.Windows.Forms.Button()
         Me.m_btnReviewTFM = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
+        Me.m_btnDeleteResults = New System.Windows.Forms.Button()
         Me.m_btnCreateDiet = New System.Windows.Forms.Button()
         Me.m_btnSampleSurvivabilities = New System.Windows.Forms.Button()
         Me.m_pbCompatible = New System.Windows.Forms.PictureBox()
@@ -92,7 +93,6 @@ Partial Class frmMSE
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
-        Me.btnDeleteResults = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -153,7 +153,7 @@ Partial Class frmMSE
         '
         'm_plStep2
         '
-        Me.m_plStep2.Controls.Add(Me.btnDeleteResults)
+        Me.m_plStep2.Controls.Add(Me.m_btnDeleteResults)
         Me.m_plStep2.Controls.Add(Me.m_btnCreateDiet)
         Me.m_plStep2.Controls.Add(Me.m_btnSampleSurvivabilities)
         Me.m_plStep2.Controls.Add(Me.m_pbCompatible)
@@ -171,6 +171,12 @@ Partial Class frmMSE
         Me.m_plStep2.Controls.Add(Me.m_tbxMaxTime)
         resources.ApplyResources(Me.m_plStep2, "m_plStep2")
         Me.m_plStep2.Name = "m_plStep2"
+        '
+        'm_btnDeleteResults
+        '
+        resources.ApplyResources(Me.m_btnDeleteResults, "m_btnDeleteResults")
+        Me.m_btnDeleteResults.Name = "m_btnDeleteResults"
+        Me.m_btnDeleteResults.UseVisualStyleBackColor = True
         '
         'm_btnCreateDiet
         '
@@ -412,12 +418,6 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
-        'btnDeleteResults
-        '
-        resources.ApplyResources(Me.btnDeleteResults, "btnDeleteResults")
-        Me.btnDeleteResults.Name = "btnDeleteResults"
-        Me.btnDeleteResults.UseVisualStyleBackColor = True
-        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -487,5 +487,5 @@ Partial Class frmMSE
     Private WithEvents m_tlpFishingControls As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_btnCreateDiet As System.Windows.Forms.Button
     Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
-    Friend WithEvents btnDeleteResults As System.Windows.Forms.Button
+    Private WithEvents m_btnDeleteResults As System.Windows.Forms.Button
 End Class

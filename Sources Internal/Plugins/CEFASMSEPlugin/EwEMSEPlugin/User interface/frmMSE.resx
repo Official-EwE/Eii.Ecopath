@@ -378,28 +378,31 @@
   <data name="&gt;&gt;m_btnReviewTFM.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="btnDeleteResults.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnDeleteResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnDeleteResults.Location" type="System.Drawing.Point, System.Drawing">
     <value>517, 124</value>
   </data>
-  <data name="btnDeleteResults.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnDeleteResults.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 20</value>
   </data>
-  <data name="btnDeleteResults.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnDeleteResults.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="btnDeleteResults.Text" xml:space="preserve">
+  <data name="m_btnDeleteResults.Text" xml:space="preserve">
     <value>Delete Results</value>
   </data>
-  <data name="&gt;&gt;btnDeleteResults.Name" xml:space="preserve">
-    <value>btnDeleteResults</value>
+  <data name="&gt;&gt;m_btnDeleteResults.Name" xml:space="preserve">
+    <value>m_btnDeleteResults</value>
   </data>
-  <data name="&gt;&gt;btnDeleteResults.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnDeleteResults.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnDeleteResults.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnDeleteResults.Parent" xml:space="preserve">
     <value>m_plStep2</value>
   </data>
-  <data name="&gt;&gt;btnDeleteResults.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnDeleteResults.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_btnCreateDiet.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -442,7 +445,7 @@
     <value>11</value>
   </data>
   <data name="m_btnSampleSurvivabilities.Text" xml:space="preserve">
-    <value>Create Survivabilities</value>
+    <value>Create Surv.</value>
   </data>
   <data name="&gt;&gt;m_btnSampleSurvivabilities.Name" xml:space="preserve">
     <value>m_btnSampleSurvivabilities</value>
@@ -502,7 +505,7 @@
     <value>m_hdrStep2</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10728.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Parent" xml:space="preserve">
     <value>m_plStep2</value>
@@ -772,7 +775,7 @@
     <value>m_hdrStep4</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10728.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Parent" xml:space="preserve">
     <value>m_plStep4</value>
@@ -952,7 +955,7 @@
     <value>m_hdrStep3</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10728.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Parent" xml:space="preserve">
     <value>m_plStep3</value>
@@ -2222,7 +2225,7 @@
     <value>m_hdrStep1</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10728.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Parent" xml:space="preserve">
     <value>m_plStep1</value>
@@ -2336,6 +2339,6 @@
     <value>frmMSE</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10728.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10865.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
