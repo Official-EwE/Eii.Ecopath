@@ -457,6 +457,12 @@ Public Class frmMain
         Me.OpenLink("http://www.icm.csic.es/")
     End Sub
 
+    Private Sub OnVisitEII(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbEII.Click
+        ' User wants to visit EII
+        Me.OpenLink("http://www.ecopathinternational.org")
+    End Sub
+
     Private Sub OnCoreStateChanged(csm As cCoreStateMonitor)
         Try
             Me.UpdateControls()

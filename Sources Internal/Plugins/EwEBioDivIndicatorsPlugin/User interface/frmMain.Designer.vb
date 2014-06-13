@@ -81,6 +81,7 @@ Partial Class frmMain
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
+        Me.m_pbEII = New System.Windows.Forms.PictureBox()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -97,6 +98,7 @@ Partial Class frmMain
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpMC.SuspendLayout()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'SplitContainer1
@@ -172,20 +174,21 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_tlpCredits, "m_tlpCredits")
         Me.m_tlpCredits.Controls.Add(Me.m_pbICM, 1, 1)
         Me.m_tlpCredits.Controls.Add(Me.m_pbCSIC, 3, 1)
+        Me.m_tlpCredits.Controls.Add(Me.m_pbEII, 5, 1)
         Me.m_tlpCredits.Name = "m_tlpCredits"
         '
         'm_pbICM
         '
-        resources.ApplyResources(Me.m_pbICM, "m_pbICM")
         Me.m_pbICM.BackgroundImage = Global.EwEBioDiversityIndicatorsPlugin.My.Resources.Resources.icm
+        resources.ApplyResources(Me.m_pbICM, "m_pbICM")
         Me.m_pbICM.Cursor = System.Windows.Forms.Cursors.Hand
         Me.m_pbICM.Name = "m_pbICM"
         Me.m_pbICM.TabStop = False
         '
         'm_pbCSIC
         '
-        resources.ApplyResources(Me.m_pbCSIC, "m_pbCSIC")
         Me.m_pbCSIC.BackgroundImage = Global.EwEBioDiversityIndicatorsPlugin.My.Resources.Resources.csic
+        resources.ApplyResources(Me.m_pbCSIC, "m_pbCSIC")
         Me.m_pbCSIC.Cursor = System.Windows.Forms.Cursors.Hand
         Me.m_pbCSIC.Name = "m_pbCSIC"
         Me.m_pbCSIC.TabStop = False
@@ -400,6 +403,14 @@ Partial Class frmMain
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
         '
+        'm_pbEII
+        '
+        Me.m_pbEII.BackgroundImage = Global.EwEBioDiversityIndicatorsPlugin.My.Resources.Resources.eii
+        resources.ApplyResources(Me.m_pbEII, "m_pbEII")
+        Me.m_pbEII.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.m_pbEII.Name = "m_pbEII"
+        Me.m_pbEII.TabStop = False
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -429,6 +440,7 @@ Partial Class frmMain
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpMC.ResumeLayout(False)
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -467,4 +479,5 @@ Partial Class frmMain
     Private WithEvents m_tpEcospace As System.Windows.Forms.TabPage
     Private WithEvents m_pbEcospaceMap As System.Windows.Forms.PictureBox
     Private WithEvents m_legend As ScientificInterfaceShared.Controls.ucLegendBar
+    Private WithEvents m_pbEII As System.Windows.Forms.PictureBox
 End Class

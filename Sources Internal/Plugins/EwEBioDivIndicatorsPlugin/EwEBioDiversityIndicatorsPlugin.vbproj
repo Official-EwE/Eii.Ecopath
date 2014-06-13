@@ -228,6 +228,7 @@
   <ItemGroup>
     <Content Include="Resources\BioDiversityPlugin.ico" />
     <Content Include="Resources\BioDiversityPlugin.png" />
+    <Content Include="Resources\eii.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
