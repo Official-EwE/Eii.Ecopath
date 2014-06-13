@@ -2080,7 +2080,7 @@ Public Class cPluginManager
 
     Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal ex As Exception)
 
-        Dim strAssembly As String = "<unknown>"
+        Dim strAssembly As String = My.Resources.GENERIC_VALUE_UNKNOWN
 
         If (assembly IsNot Nothing) Then
             strAssembly = assembly.AssemblyName.Name
@@ -2093,8 +2093,8 @@ Public Class cPluginManager
     Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal plugin As IPlugin, _
       ByVal strMethodName As String, ByVal ex As Exception)
 
-        Dim strAssembly As String = "<unknown>"
-        Dim strPlugin As String = "<unknown>"
+        Dim strAssembly As String = My.Resources.GENERIC_VALUE_UNKNOWN
+        Dim strPlugin As String = My.Resources.GENERIC_VALUE_UNKNOWN
 
         If (assembly IsNot Nothing) Then
             strAssembly = assembly.AssemblyName.Name

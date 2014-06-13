@@ -1013,11 +1013,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Cannot specify both CV and Weight</value>
   </data>
   <data name="STATUS_PLUGIN_LOADED" xml:space="preserve">
-    <value>Plug-in module '{0}' loaded</value>
+    <value>Plug-in {0} loaded</value>
     <comment>{0}=plugin module name</comment>
   </data>
   <data name="STATUS_PLUGIN_UNLOADED" xml:space="preserve">
-    <value>Plug-in module '{0}' unloaded</value>
+    <value>Plug-in {0} unloaded</value>
     <comment>{0}=plugin module name</comment>
   </data>
   <data name="MAP_INVALID_NOPP" xml:space="preserve">
@@ -1218,7 +1218,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Failed to reload one or more spatial temporal data connections. Are you missing a required plug-in?</value>
   </data>
   <data name="STATUS_PLUGIN_SANDBOXED" xml:space="preserve">
-    <value>Plug-in module '{0}' sandboxed</value>
+    <value>Plug-in {0} sandboxed</value>
     <comment>{0}=plugin module name</comment>
   </data>
   <data name="String1" xml:space="preserve">

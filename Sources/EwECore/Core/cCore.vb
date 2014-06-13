@@ -13759,10 +13759,10 @@ Public Class cCore
         Handles m_pluginManager.AssemblyAdded
 
         If (String.IsNullOrWhiteSpace(paAdded.Sandbox)) Then
-            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_LOADED, paAdded.Filename), _
+            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_LOADED, Path.GetFileNameWithoutExtension(paAdded.Filename)), _
                                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
         Else
-            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_SANDBOXED, paAdded.Filename), _
+            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_SANDBOXED, Path.GetFileNameWithoutExtension(paAdded.Filename)), _
                                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
         End If
         'AddHandler paAdded.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
@@ -13777,7 +13777,7 @@ Public Class cCore
     Private Sub m_pluginManager_AssemblyRemoved(ByVal paRemoved As EwEPlugin.cPluginAssembly) _
         Handles m_pluginManager.AssemblyRemoved
 
-        m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_UNLOADED, paRemoved.Filename), _
+        m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_UNLOADED, Path.GetFileNameWithoutExtension(paRemoved.Filename)), _
                                              eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
         'RemoveHandler paRemoved.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
     End Sub

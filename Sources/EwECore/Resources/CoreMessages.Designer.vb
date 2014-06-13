@@ -2417,7 +2417,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plug-in module &apos;{0}&apos; loaded.
+        '''  Looks up a localized string similar to Plug-in {0} loaded.
         '''</summary>
         Friend Shared ReadOnly Property STATUS_PLUGIN_LOADED() As String
             Get
@@ -2426,7 +2426,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plug-in module &apos;{0}&apos; sandboxed.
+        '''  Looks up a localized string similar to Plug-in {0} sandboxed.
         '''</summary>
         Friend Shared ReadOnly Property STATUS_PLUGIN_SANDBOXED() As String
             Get
@@ -2435,7 +2435,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plug-in module &apos;{0}&apos; unloaded.
+        '''  Looks up a localized string similar to Plug-in {0} unloaded.
         '''</summary>
         Friend Shared ReadOnly Property STATUS_PLUGIN_UNLOADED() As String
             Get
