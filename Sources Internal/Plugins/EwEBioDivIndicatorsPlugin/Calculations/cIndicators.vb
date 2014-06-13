@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -466,46 +467,46 @@ Public MustInherit Class cIndicators
         Me.m_sInveB = sInveB
         Me.m_sTotalB4 = sTotalB4
         Me.m_sMSRB = sMSRB
-        Me.m_sInveFishB = CSng(IIf(sFishB = 0, 0, sInveB / sFishB))
+        Me.m_sInveFishB = CSng(cSystemUtils.IIF(sFishB = 0, 0, sInveB / sFishB))
         Me.m_sDemB = sDemB
         Me.m_sPelB = sPelB
-        Me.m_sDemPelB = CSng(IIf(sPelB = 0, 0, sDemB / sPelB))
+        Me.m_sDemPelB = CSng(cSystemUtils.IIF(sPelB = 0, 0, sDemB / sPelB))
         Me.m_sKemptonsQ = 0
 
         ' Catch indicators
         Me.m_sCT = sCT
         Me.m_sFishC = sFishC
         Me.m_sInveC = sInveC
-        Me.m_sInveFishC = CSng(IIf(sFishC = 0, 0, sInveC / sFishC))
+        Me.m_sInveFishC = CSng(cSystemUtils.IIF(sFishC = 0, 0, sInveC / sFishC))
         Me.m_sC4 = sC4
         Me.m_sMSRC = sMSRC
         Me.m_sDT = sDT
         Me.m_sDemC = sDemC
         Me.m_sPelC = sPelC
-        Me.m_sDemPelC = CSng(IIf(sPelC = 0, 0, sDemC / sPelC))
+        Me.m_sDemPelC = CSng(cSystemUtils.IIF(sPelC = 0, 0, sDemC / sPelC))
 
         ' Trophic indicators
         Me.m_sTLC = Me.ModelTLCatch ' Ha!
-        Me.m_sMTI = CSng(IIf(sC325 = 0, 0, sMTI / sC325))
+        Me.m_sMTI = CSng(cSystemUtils.IIF(sC325 = 0, 0, sMTI / sC325))
         Me.m_sTLCo = sTLiBi / Me.m_sTotalB
-        Me.m_sTLCo2 = CSng(IIf(sTotalB2 = 0, 0, sTLi2Bi / sTotalB2))
-        Me.m_sTLCo325 = CSng(IIf(sTotalB325 = 0, 0, sTLi325Bi / sTotalB325))
-        Me.m_sTLCo4 = CSng(IIf(sTotalB4 = 0, 0, sTLi4Bi / sTotalB4))
+        Me.m_sTLCo2 = CSng(cSystemUtils.IIF(sTotalB2 = 0, 0, sTLi2Bi / sTotalB2))
+        Me.m_sTLCo325 = CSng(cSystemUtils.IIF(sTotalB325 = 0, 0, sTLi325Bi / sTotalB325))
+        Me.m_sTLCo4 = CSng(cSystemUtils.IIF(sTotalB4 = 0, 0, sTLi4Bi / sTotalB4))
 
         ' Species indicators
         Me.m_sEndemicC = sEndemicC
         Me.m_sEndemicB = sEndemicB
         Me.m_sIUCNC = sIUCNC
         Me.m_sIUCNB = sIUCNB
-        Me.m_sIVIc = CSng(IIf(sFishC = 0, 0, sIVIiCi / sFishC))
+        Me.m_sIVIc = CSng(cSystemUtils.IIF(sFishC = 0, 0, sIVIiCi / sFishC))
 
         'Size-base indicators
-        Me.m_sMLifeSc = CSng(IIf(sMLifeSC = 0, 0, sMLifeSSC / sMLifeSC))
-        Me.m_sMLifeSb = CSng(IIf(sMLifeSB = 0, 0, sMLifeSSB / sMLifeSB))
-        Me.m_sMLengthc = CSng(IIf(sMLengthC = 0, 0, sMLengthSC / sMLengthC))
-        Me.m_sMLengthb = CSng(IIf(sMLengthB = 0, 0, sMLengthSB / sMLengthB))
-        Me.m_sMWeightc = CSng(IIf(sMWeightC = 0, 0, sMWeightSC / sMWeightC))
-        Me.m_sMWeightb = CSng(IIf(sMWeightB = 0, 0, sMWeightSB / sMWeightB))
+        Me.m_sMLifeSc = CSng(cSystemUtils.IIF(sMLifeSC = 0, 0, sMLifeSSC / sMLifeSC))
+        Me.m_sMLifeSb = CSng(cSystemUtils.IIF(sMLifeSB = 0, 0, sMLifeSSB / sMLifeSB))
+        Me.m_sMLengthc = CSng(cSystemUtils.IIF(sMLengthC = 0, 0, sMLengthSC / sMLengthC))
+        Me.m_sMLengthb = CSng(cSystemUtils.IIF(sMLengthB = 0, 0, sMLengthSB / sMLengthB))
+        Me.m_sMWeightc = CSng(cSystemUtils.IIF(sMWeightC = 0, 0, sMWeightSC / sMWeightC))
+        Me.m_sMWeightb = CSng(cSystemUtils.IIF(sMWeightB = 0, 0, sMWeightSB / sMWeightB))
 
         Me.IsComputed = True
 
