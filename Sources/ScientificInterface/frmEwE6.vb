@@ -1991,6 +1991,7 @@ Public Class frmEwE6
         Else
             Dim msg As New cMessage(String.Format(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Critical)
             Me.Core.Messages.SendMessage(msg)
+            ds.Close()
             Return False
         End If
 
