@@ -1255,13 +1255,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_hdrGraphTypes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+    <value>0, 0</value>
   </data>
   <data name="m_hdrGraphTypes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrGraphTypes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 18</value>
+    <value>207, 18</value>
   </data>
   <data name="m_hdrGraphTypes.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
