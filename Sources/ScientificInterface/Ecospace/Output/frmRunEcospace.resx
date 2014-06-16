@@ -487,7 +487,7 @@
     <value>m_hdrLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Parent" xml:space="preserve">
     <value>m_plLabelOptions</value>
@@ -742,7 +742,7 @@
     <value>m_hdrDist</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Parent" xml:space="preserve">
     <value>m_plDistribution</value>
@@ -889,7 +889,7 @@
     <value>m_hdrDispOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Parent" xml:space="preserve">
     <value>m_plDisplayOptions</value>
@@ -982,7 +982,7 @@
     <value>m_hdrRunning</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Parent" xml:space="preserve">
     <value>m_plRun</value>
@@ -996,6 +996,24 @@
   <data name="m_tlpRun.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="m_btnPause.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_btnPause.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 32</value>
+  </data>
+  <data name="m_btnPause.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 3, 3</value>
+  </data>
+  <data name="m_btnPause.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 23</value>
+  </data>
+  <data name="m_btnPause.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_btnPause.Text" xml:space="preserve">
+    <value>Pause</value>
+  </data>
   <data name="&gt;&gt;m_btnPause.Name" xml:space="preserve">
     <value>m_btnPause</value>
   </data>
@@ -1006,6 +1024,30 @@
     <value>m_tlpRun</value>
   </data>
   <data name="&gt;&gt;m_btnPause.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_cmbRunType.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_cmbRunType.Items" xml:space="preserve">
+    <value>Multi-stanza</value>
+  </data>
+  <data name="m_cmbRunType.Items1" xml:space="preserve">
+    <value>IBM</value>
+  </data>
+  <data name="m_cmbRunType.Items2" xml:space="preserve">
+    <value>Basic PDE</value>
+  </data>
+  <data name="m_cmbRunType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>105, 4</value>
+  </data>
+  <data name="m_cmbRunType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 4, 0, 4</value>
+  </data>
+  <data name="m_cmbRunType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 21</value>
+  </data>
+  <data name="m_cmbRunType.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="&gt;&gt;m_cmbRunType.Name" xml:space="preserve">
@@ -1215,6 +1257,9 @@
   <data name="m_hdrGraphTypes.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 0</value>
   </data>
+  <data name="m_hdrGraphTypes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
   <data name="m_hdrGraphTypes.Size" type="System.Drawing.Size, System.Drawing">
     <value>201, 18</value>
   </data>
@@ -1231,7 +1276,7 @@
     <value>m_hdrGraphTypes</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Parent" xml:space="preserve">
     <value>m_plGraphTypes</value>
@@ -1311,6 +1356,57 @@
   <data name="m_tcOutputs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="m_legend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Right</value>
+  </data>
+  <data name="m_legend.Colors" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAKABU3lzdGVtLkRyYXdpbmcsIFZlcnNpb249NC4wLjAuMCwgQ3Vs
+        dHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iMDNmNWY3ZjExZDUwYTNhXV0sIG1zY29ybGliLCBW
+        ZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0
+        ZTA4OQwDAAAAUVN5c3RlbS5EcmF3aW5nLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwg
+        UHVibGljS2V5VG9rZW49YjAzZjVmN2YxMWQ1MGEzYQUBAAAAN1N5c3RlbS5Db2xsZWN0aW9ucy5HZW5l
+        cmljLkxpc3RgMVtbU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAABl9pdGVtcwVfc2l6ZQhfdmVyc2lvbgQA
+        ABZTeXN0ZW0uRHJhd2luZy5Db2xvcltdAwAAAAgIAgAAAAkEAAAAAAAAAAQAAAAHBAAAAAABAAAAAAAA
+        AAQUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAACw==
+</value>
+  </data>
+  <data name="m_legend.Location" type="System.Drawing.Point, System.Drawing">
+    <value>800, 3</value>
+  </data>
+  <data name="m_legend.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_legend.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 705</value>
+  </data>
+  <data name="m_legend.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_legend.Name" xml:space="preserve">
+    <value>m_legend</value>
+  </data>
+  <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
+    <value>m_tabMap</value>
+  </data>
+  <data name="&gt;&gt;m_legend.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tabMap.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tabMap.Size" type="System.Drawing.Size, System.Drawing">
+    <value>828, 708</value>
+  </data>
+  <data name="m_tabMap.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_tabMap.Text" xml:space="preserve">
+    <value>Map</value>
+  </data>
   <data name="&gt;&gt;m_tabMap.Name" xml:space="preserve">
     <value>m_tabMap</value>
   </data>
@@ -1322,6 +1418,45 @@
   </data>
   <data name="&gt;&gt;m_tabMap.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_zgPlotLarge.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_zgPlotLarge.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_zgPlotLarge.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_zgPlotLarge.Size" type="System.Drawing.Size, System.Drawing">
+    <value>828, 708</value>
+  </data>
+  <data name="m_zgPlotLarge.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_zgPlotLarge.Name" xml:space="preserve">
+    <value>m_zgPlotLarge</value>
+  </data>
+  <data name="&gt;&gt;m_zgPlotLarge.Type" xml:space="preserve">
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+  </data>
+  <data name="&gt;&gt;m_zgPlotLarge.Parent" xml:space="preserve">
+    <value>m_tabPlot</value>
+  </data>
+  <data name="&gt;&gt;m_zgPlotLarge.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tabPlot.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tabPlot.Size" type="System.Drawing.Size, System.Drawing">
+    <value>828, 708</value>
+  </data>
+  <data name="m_tabPlot.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tabPlot.Text" xml:space="preserve">
+    <value>Plot</value>
   </data>
   <data name="&gt;&gt;m_tabPlot.Name" xml:space="preserve">
     <value>m_tabPlot</value>
@@ -1389,210 +1524,6 @@
   <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_btnPause.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_btnPause.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 32</value>
-  </data>
-  <data name="m_btnPause.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 3, 3</value>
-  </data>
-  <data name="m_btnPause.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 23</value>
-  </data>
-  <data name="m_btnPause.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_btnPause.Text" xml:space="preserve">
-    <value>Pause</value>
-  </data>
-  <data name="&gt;&gt;m_btnPause.Name" xml:space="preserve">
-    <value>m_btnPause</value>
-  </data>
-  <data name="&gt;&gt;m_btnPause.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnPause.Parent" xml:space="preserve">
-    <value>m_tlpRun</value>
-  </data>
-  <data name="&gt;&gt;m_btnPause.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_cmbRunType.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_cmbRunType.Items" xml:space="preserve">
-    <value>Multi-stanza</value>
-  </data>
-  <data name="m_cmbRunType.Items1" xml:space="preserve">
-    <value>IBM</value>
-  </data>
-  <data name="m_cmbRunType.Items2" xml:space="preserve">
-    <value>Basic PDE</value>
-  </data>
-  <data name="m_cmbRunType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 4</value>
-  </data>
-  <data name="m_cmbRunType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 4, 0, 4</value>
-  </data>
-  <data name="m_cmbRunType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 21</value>
-  </data>
-  <data name="m_cmbRunType.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRunType.Name" xml:space="preserve">
-    <value>m_cmbRunType</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRunType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRunType.Parent" xml:space="preserve">
-    <value>m_tlpRun</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRunType.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_legend.Name" xml:space="preserve">
-    <value>m_legend</value>
-  </data>
-  <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.10853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
-    <value>m_tabMap</value>
-  </data>
-  <data name="&gt;&gt;m_legend.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tabMap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tabMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>828, 708</value>
-  </data>
-  <data name="m_tabMap.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_tabMap.Text" xml:space="preserve">
-    <value>Map</value>
-  </data>
-  <data name="&gt;&gt;m_tabMap.Name" xml:space="preserve">
-    <value>m_tabMap</value>
-  </data>
-  <data name="&gt;&gt;m_tabMap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tabMap.Parent" xml:space="preserve">
-    <value>m_tcOutputs</value>
-  </data>
-  <data name="&gt;&gt;m_tabMap.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_legend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Right</value>
-  </data>
-  <data name="m_legend.Colors" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAKABU3lzdGVtLkRyYXdpbmcsIFZlcnNpb249NC4wLjAuMCwgQ3Vs
-        dHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iMDNmNWY3ZjExZDUwYTNhXV0sIG1zY29ybGliLCBW
-        ZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0
-        ZTA4OQwDAAAAUVN5c3RlbS5EcmF3aW5nLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwg
-        UHVibGljS2V5VG9rZW49YjAzZjVmN2YxMWQ1MGEzYQUBAAAAN1N5c3RlbS5Db2xsZWN0aW9ucy5HZW5l
-        cmljLkxpc3RgMVtbU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAABl9pdGVtcwVfc2l6ZQhfdmVyc2lvbgQA
-        ABZTeXN0ZW0uRHJhd2luZy5Db2xvcltdAwAAAAgIAgAAAAkEAAAAAAAAAAQAAAAHBAAAAAABAAAAAAAA
-        AAQUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAACw==
-</value>
-  </data>
-  <data name="m_legend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>800, 3</value>
-  </data>
-  <data name="m_legend.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_legend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 705</value>
-  </data>
-  <data name="m_legend.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_legend.Name" xml:space="preserve">
-    <value>m_legend</value>
-  </data>
-  <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.10853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
-    <value>m_tabMap</value>
-  </data>
-  <data name="&gt;&gt;m_legend.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_zgPlotLarge.Name" xml:space="preserve">
-    <value>m_zgPlotLarge</value>
-  </data>
-  <data name="&gt;&gt;m_zgPlotLarge.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
-  </data>
-  <data name="&gt;&gt;m_zgPlotLarge.Parent" xml:space="preserve">
-    <value>m_tabPlot</value>
-  </data>
-  <data name="&gt;&gt;m_zgPlotLarge.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tabPlot.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tabPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>828, 708</value>
-  </data>
-  <data name="m_tabPlot.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tabPlot.Text" xml:space="preserve">
-    <value>Plot</value>
-  </data>
-  <data name="&gt;&gt;m_tabPlot.Name" xml:space="preserve">
-    <value>m_tabPlot</value>
-  </data>
-  <data name="&gt;&gt;m_tabPlot.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tabPlot.Parent" xml:space="preserve">
-    <value>m_tcOutputs</value>
-  </data>
-  <data name="&gt;&gt;m_tabPlot.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_zgPlotLarge.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_zgPlotLarge.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_zgPlotLarge.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_zgPlotLarge.Size" type="System.Drawing.Size, System.Drawing">
-    <value>828, 708</value>
-  </data>
-  <data name="m_zgPlotLarge.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_zgPlotLarge.Name" xml:space="preserve">
-    <value>m_zgPlotLarge</value>
-  </data>
-  <data name="&gt;&gt;m_zgPlotLarge.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
-  </data>
-  <data name="&gt;&gt;m_zgPlotLarge.Parent" xml:space="preserve">
-    <value>m_tabPlot</value>
-  </data>
-  <data name="&gt;&gt;m_zgPlotLarge.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -1612,6 +1543,6 @@
     <value>frmRunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
