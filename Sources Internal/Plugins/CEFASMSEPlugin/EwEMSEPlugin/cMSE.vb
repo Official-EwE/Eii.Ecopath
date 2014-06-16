@@ -2764,7 +2764,8 @@ stepend:
 
         If (Me.Core Is Nothing) Then Return
 
-        Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, importance)
+        Dim msg As New cMessage(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_INDEXED, My.Resources.CAPTION, strMessage), _
+                                eMessageType.Any, eCoreComponentType.External, importance)
         msg.Hyperlink = strHyperlink
         If (astrSubMessages IsNot Nothing) Then
             For Each strSubMessage As String In astrSubMessages
@@ -2792,7 +2793,8 @@ stepend:
 
         If (Me.Core Is Nothing) Then Return replyDefault
 
-        Dim fmsg As New cFeedbackMessage(strMessage, eCoreComponentType.External, eMessageType.Any, importance, style)
+        Dim fmsg As New cFeedbackMessage(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_INDEXED, My.Resources.CAPTION, strMessage), _
+                                         eCoreComponentType.External, eMessageType.Any, importance, style)
         fmsg.Reply = replyDefault
         Me.Core.Messages.SendMessage(fmsg)
         Return fmsg.Reply
