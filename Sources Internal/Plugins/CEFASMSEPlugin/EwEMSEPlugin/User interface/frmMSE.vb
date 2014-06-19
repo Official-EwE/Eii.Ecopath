@@ -547,7 +547,7 @@ Public Class frmMSE
             End If
         Else
             ' Check if input structure is compatible
-            If Not Me.MSE.IsRunDataCompatible Then
+            If Not Me.MSE.IsInputDataCompatible() Then
                 If Me.MSE.AskUser("The selected folder is not compatible with the currently loaded model. If you continue, previously saved MSE settings will be lost. Do you wish to continue, delete existing MSE settings, and start anew?", _
                                eMessageReplyStyle.YES_NO, eMessageImportance.Warning, eMessageReply.NO) = eMessageReply.NO Then
                     Return False
