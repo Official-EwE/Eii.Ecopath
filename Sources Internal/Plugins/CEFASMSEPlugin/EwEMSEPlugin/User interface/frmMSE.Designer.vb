@@ -56,10 +56,9 @@ Partial Class frmMSE
         Me.m_btnCreateModels = New System.Windows.Forms.Button()
         Me.m_btnReviewTFM = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
-        Me.m_btnDeleteResults = New System.Windows.Forms.Button()
         Me.m_btnCreateDiet = New System.Windows.Forms.Button()
         Me.m_btnSampleSurvivabilities = New System.Windows.Forms.Button()
-        Me.m_pbCompatible = New System.Windows.Forms.PictureBox()
+        Me.m_pbModelsCompatible = New System.Windows.Forms.PictureBox()
         Me.m_hdrStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableModels = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
@@ -68,6 +67,7 @@ Partial Class frmMSE
         Me.m_lblMaxTime = New System.Windows.Forms.Label()
         Me.m_tbxMaxAttempts = New System.Windows.Forms.TextBox()
         Me.m_tbxMaxTime = New System.Windows.Forms.TextBox()
+        Me.m_btnDeleteResults = New System.Windows.Forms.Button()
         Me.m_plStep4 = New System.Windows.Forms.Panel()
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblNModels = New System.Windows.Forms.Label()
@@ -87,20 +87,22 @@ Partial Class frmMSE
         Me.m_plStep1 = New System.Windows.Forms.Panel()
         Me.m_lblPathValue = New System.Windows.Forms.Label()
         Me.m_lblDataPath = New System.Windows.Forms.Label()
+        Me.m_pbPathCompatible = New System.Windows.Forms.PictureBox()
         Me.m_rbCustomPath = New System.Windows.Forms.RadioButton()
         Me.m_lblInputParams = New System.Windows.Forms.Label()
-        Me.m_rbEwEDefault = New System.Windows.Forms.RadioButton()
+        Me.m_rbEwEDefaultPath = New System.Windows.Forms.RadioButton()
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
-        CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
         Me.m_plStep3.SuspendLayout()
         Me.m_tlpFishingControls.SuspendLayout()
         CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpLayout.SuspendLayout()
         Me.m_plStep1.SuspendLayout()
+        CType(Me.m_pbPathCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_tbxNModels2Run
@@ -155,7 +157,7 @@ Partial Class frmMSE
         '
         Me.m_plStep2.Controls.Add(Me.m_btnCreateDiet)
         Me.m_plStep2.Controls.Add(Me.m_btnSampleSurvivabilities)
-        Me.m_plStep2.Controls.Add(Me.m_pbCompatible)
+        Me.m_plStep2.Controls.Add(Me.m_pbModelsCompatible)
         Me.m_plStep2.Controls.Add(Me.m_lblMassBalanceTol)
         Me.m_plStep2.Controls.Add(Me.m_tbxTolerance)
         Me.m_plStep2.Controls.Add(Me.m_hdrStep2)
@@ -171,12 +173,6 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_plStep2, "m_plStep2")
         Me.m_plStep2.Name = "m_plStep2"
         '
-        'm_btnDeleteResults
-        '
-        resources.ApplyResources(Me.m_btnDeleteResults, "m_btnDeleteResults")
-        Me.m_btnDeleteResults.Name = "m_btnDeleteResults"
-        Me.m_btnDeleteResults.UseVisualStyleBackColor = True
-        '
         'm_btnCreateDiet
         '
         resources.ApplyResources(Me.m_btnCreateDiet, "m_btnCreateDiet")
@@ -189,16 +185,16 @@ Partial Class frmMSE
         Me.m_btnSampleSurvivabilities.Name = "m_btnSampleSurvivabilities"
         Me.m_btnSampleSurvivabilities.UseVisualStyleBackColor = True
         '
-        'm_pbCompatible
+        'm_pbModelsCompatible
         '
-        resources.ApplyResources(Me.m_pbCompatible, "m_pbCompatible")
-        Me.m_pbCompatible.Name = "m_pbCompatible"
-        Me.m_pbCompatible.TabStop = False
+        resources.ApplyResources(Me.m_pbModelsCompatible, "m_pbModelsCompatible")
+        Me.m_pbModelsCompatible.Name = "m_pbModelsCompatible"
+        Me.m_pbModelsCompatible.TabStop = False
         '
         'm_hdrStep2
         '
         Me.m_hdrStep2.CanCollapseParent = True
-        Me.m_hdrStep2.CollapsedParentHeight = 72
+        Me.m_hdrStep2.CollapsedParentHeight = 71
         resources.ApplyResources(Me.m_hdrStep2, "m_hdrStep2")
         Me.m_hdrStep2.IsCollapsed = False
         Me.m_hdrStep2.Name = "m_hdrStep2"
@@ -238,6 +234,12 @@ Partial Class frmMSE
         '
         resources.ApplyResources(Me.m_tbxMaxTime, "m_tbxMaxTime")
         Me.m_tbxMaxTime.Name = "m_tbxMaxTime"
+        '
+        'm_btnDeleteResults
+        '
+        resources.ApplyResources(Me.m_btnDeleteResults, "m_btnDeleteResults")
+        Me.m_btnDeleteResults.Name = "m_btnDeleteResults"
+        Me.m_btnDeleteResults.UseVisualStyleBackColor = True
         '
         'm_plStep4
         '
@@ -354,12 +356,13 @@ Partial Class frmMSE
         '
         Me.m_plStep1.Controls.Add(Me.m_lblPathValue)
         Me.m_plStep1.Controls.Add(Me.m_lblDataPath)
+        Me.m_plStep1.Controls.Add(Me.m_pbPathCompatible)
         Me.m_plStep1.Controls.Add(Me.m_lblAreaUnit)
         Me.m_plStep1.Controls.Add(Me.m_rbCustomPath)
         Me.m_plStep1.Controls.Add(Me.m_lblArea)
         Me.m_plStep1.Controls.Add(Me.m_tbxArea)
         Me.m_plStep1.Controls.Add(Me.m_lblInputParams)
-        Me.m_plStep1.Controls.Add(Me.m_rbEwEDefault)
+        Me.m_plStep1.Controls.Add(Me.m_rbEwEDefaultPath)
         Me.m_plStep1.Controls.Add(Me.m_tbxParamStatus)
         Me.m_plStep1.Controls.Add(Me.m_hdrStep1)
         Me.m_plStep1.Controls.Add(Me.m_btnReviewDistParms)
@@ -379,6 +382,12 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_lblDataPath, "m_lblDataPath")
         Me.m_lblDataPath.Name = "m_lblDataPath"
         '
+        'm_pbPathCompatible
+        '
+        resources.ApplyResources(Me.m_pbPathCompatible, "m_pbPathCompatible")
+        Me.m_pbPathCompatible.Name = "m_pbPathCompatible"
+        Me.m_pbPathCompatible.TabStop = False
+        '
         'm_rbCustomPath
         '
         resources.ApplyResources(Me.m_rbCustomPath, "m_rbCustomPath")
@@ -391,12 +400,12 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_lblInputParams, "m_lblInputParams")
         Me.m_lblInputParams.Name = "m_lblInputParams"
         '
-        'm_rbEwEDefault
+        'm_rbEwEDefaultPath
         '
-        resources.ApplyResources(Me.m_rbEwEDefault, "m_rbEwEDefault")
-        Me.m_rbEwEDefault.Name = "m_rbEwEDefault"
-        Me.m_rbEwEDefault.TabStop = True
-        Me.m_rbEwEDefault.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbEwEDefaultPath, "m_rbEwEDefaultPath")
+        Me.m_rbEwEDefaultPath.Name = "m_rbEwEDefaultPath"
+        Me.m_rbEwEDefaultPath.TabStop = True
+        Me.m_rbEwEDefaultPath.UseVisualStyleBackColor = True
         '
         'm_tbxParamStatus
         '
@@ -427,7 +436,7 @@ Partial Class frmMSE
         Me.Name = "frmMSE"
         Me.m_plStep2.ResumeLayout(False)
         Me.m_plStep2.PerformLayout()
-        CType(Me.m_pbCompatible, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_plStep4.ResumeLayout(False)
         Me.m_plStep4.PerformLayout()
         Me.m_plStep3.ResumeLayout(False)
@@ -437,6 +446,7 @@ Partial Class frmMSE
         Me.m_tlpLayout.ResumeLayout(False)
         Me.m_plStep1.ResumeLayout(False)
         Me.m_plStep1.PerformLayout()
+        CType(Me.m_pbPathCompatible, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -467,14 +477,14 @@ Partial Class frmMSE
     Private WithEvents m_hdrStep1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_rbCustomPath As System.Windows.Forms.RadioButton
     Private WithEvents m_lblInputParams As System.Windows.Forms.Label
-    Private WithEvents m_rbEwEDefault As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbEwEDefaultPath As System.Windows.Forms.RadioButton
     Private WithEvents m_btnChangePath As System.Windows.Forms.Button
     Friend WithEvents m_lblDataPath As System.Windows.Forms.Label
     Private WithEvents m_lblAvailableModels As System.Windows.Forms.Label
     Private WithEvents m_tbxNumAvailableModels As System.Windows.Forms.TextBox
     Private WithEvents m_lblAvailableStrategies As System.Windows.Forms.Label
     Private WithEvents m_tbxNumAvailableFishingStrategies As System.Windows.Forms.TextBox
-    Private WithEvents m_pbCompatible As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbModelsCompatible As System.Windows.Forms.PictureBox
     Private WithEvents m_lblMaxAttempts As System.Windows.Forms.Label
     Private WithEvents m_tbxMaxAttempts As System.Windows.Forms.TextBox
     Private WithEvents m_lblAreaUnit As System.Windows.Forms.Label
@@ -488,4 +498,5 @@ Partial Class frmMSE
     Private WithEvents m_btnCreateDiet As System.Windows.Forms.Button
     Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
     Private WithEvents m_btnDeleteResults As System.Windows.Forms.Button
+    Private WithEvents m_pbPathCompatible As System.Windows.Forms.PictureBox
 End Class

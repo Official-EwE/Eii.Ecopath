@@ -62,7 +62,7 @@ Public Class frmTFMpolicy
 
     ''' <summary>MSE Plugin initialized in me.Init(cUIContext,cMSE)</summary>
     ''' <remarks>Provides access to data.</remarks>
-    Private m_plugin As cMSE
+    Private m_MSE As cMSE
     Private m_qeh As cQuickEditHandler
     Private m_SelectedStrategy As Strategy
     Private m_HCR As HCR_Group
@@ -79,11 +79,11 @@ Public Class frmTFMpolicy
         Me.InitializeComponent()
     End Sub
 
-    Public Sub Init(UI As cUIContext, Plugin As cMSE)
+    Public Sub Init(UI As cUIContext, MSE As cMSE)
         Me.UIContext = UI
-        Me.m_plugin = Plugin
+        Me.m_MSE = MSE
         ' Make copy of strategies
-        Me.m_strategies = Plugin.Strategies
+        Me.m_strategies = MSE.Strategies
     End Sub
 
 #End Region
@@ -126,7 +126,7 @@ Public Class frmTFMpolicy
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
         If m_bStrategiesSaved = False Then
-            e.Cancel = (Me.m_plugin.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) = eMessageReplyStyle.OK)
+            e.Cancel = (Me.m_MSE.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) = eMessageReplyStyle.OK)
         End If
         Me.m_qeh.Detach()
 
@@ -173,9 +173,9 @@ Public Class frmTFMpolicy
             If String.IsNullOrWhiteSpace(StratName) Then Return
 
             'Build the filename out of the strategy name
-            Dim StartFilename As String = Path.Combine(cMSEUtils.MSEFolder(Me.m_plugin.DataPath, cMSEUtils.eMSEPaths.Strategies), cFileUtils.ToValidFileName(StratName + ".csv", False))
+            Dim StartFilename As String = Path.Combine(cMSEUtils.MSEFolder(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.Strategies), cFileUtils.ToValidFileName(StratName + ".csv", False))
             Dim NumberOfStrategies As Integer = Me.m_strategies.Count
-            Dim strategy As Strategy = New Strategy(StratName, NumberOfStrategies + 1, StartFilename, Me.Core, Me.m_plugin)
+            Dim strategy As Strategy = New Strategy(StratName, NumberOfStrategies + 1, StartFilename, Me.Core, Me.m_MSE)
 
             ' JS 30Sep13: Strategies class validates both strategy name and file. VERY GOOD!!
             If (Not Me.m_strategies.Contains(strategy)) Then
@@ -184,7 +184,7 @@ Public Class frmTFMpolicy
                 Me.changeSelectedStrategy(Me.m_tscmStrategies.Items.Count - 1)
                 Me.m_bStrategiesSaved = False
             Else
-                Me.m_plugin.InformUser(My.Resources.ERROR_ENTERNAME, eMessageImportance.Warning)
+                Me.m_MSE.InformUser(My.Resources.ERROR_ENTERNAME, eMessageImportance.Warning)
             End If
 
         Catch ex As Exception
@@ -239,17 +239,17 @@ Public Class frmTFMpolicy
 
         Try
             If Me.m_strategies.Save() Then
-                Me.m_plugin.Strategies.Clear()
-                Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
-                Me.m_plugin.InvalidateData()
+                Me.m_MSE.Strategies.Clear()
+                Me.m_MSE.Strategies.AddRange(Me.m_strategies.ToArray)
+                Me.m_MSE.InvalidateData()
             End If
 
             Me.m_bStrategiesSaved = Me.m_strategies.Save()
             Me.UpdateControls()
 
-            Me.m_plugin.Strategies.Clear()
-            Me.m_plugin.Strategies.AddRange(Me.m_strategies.ToArray)
-            Me.m_plugin.InvalidateData()
+            Me.m_MSE.Strategies.Clear()
+            Me.m_MSE.Strategies.AddRange(Me.m_strategies.ToArray)
+            Me.m_MSE.InvalidateData()
 
             Me.m_bStrategiesSaved = True
             Me.DialogResult = Windows.Forms.DialogResult.OK
@@ -310,7 +310,7 @@ Public Class frmTFMpolicy
 
         'Ask the user to create a new HCR_Group
         Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule
-        HRCDialogue.Init(Me.m_plugin, Me.m_SelectedStrategy)
+        HRCDialogue.Init(Me.m_MSE, Me.m_SelectedStrategy)
         HRCDialogue.ShowDialog()
 
         If HRCDialogue.DialogResult = Windows.Forms.DialogResult.OK Then
@@ -364,7 +364,7 @@ Public Class frmTFMpolicy
 
     Private ReadOnly Property MSE As cMSE
         Get
-            Return Me.m_plugin
+            Return Me.m_MSE
         End Get
     End Property
 

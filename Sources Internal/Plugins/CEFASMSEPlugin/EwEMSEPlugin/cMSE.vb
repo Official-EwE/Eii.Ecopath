@@ -225,11 +225,11 @@ Public Class cMSE
         TSurvivability.Load_Distribution_Params()
         TSurvivability.SampleParams(Me.NModels)
         TSurvivability.SaveSampledToCSV()
+        TSurvivability.Save_Distribution_Params()
 
         Me.InvalidateData()
 
     End Sub
-
 
     Public Function GenerateEmptyDietCSVs() As Boolean
 
@@ -287,6 +287,18 @@ Public Class cMSE
 
     End Function
 
+    Public Function GenerateEmptyDistributions() As Boolean
+
+        Dim distpath As New cEcopathDistributionParams(Me, Me.Core)
+        Dim distsim As New cEcosimDistributionParams(Me, Me.Core)
+
+        distpath.Save()
+        distsim.Save()
+
+        Return True
+
+    End Function
+
 #End Region
 
 #Region " Diagnostics and state management "
@@ -300,7 +312,7 @@ Public Class cMSE
 
         ' Test whether core is up and running
         If (Me.m_core Is Nothing) Then Return
-        ' Test whether a scenarion is available
+        ' Test whether a scenario is available
         If (Me.m_core.ActiveEcosimScenarioIndex < 1) Then Return
         ' Test whether MSE has been initialized
         If (Me.m_survivability Is Nothing) Then Return
@@ -371,7 +383,9 @@ Public Class cMSE
             If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Or _
                Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
                 Me.m_tsInputDataCompatibility = TriState.False
-            Else
+            End If
+
+            If (Me.m_tsInputDataCompatibility <> TriState.False) Then
                 ' Assess Ecopath files
                 For Each strFile As String In aFilesEcopath
                     If Not CheckEcopathDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
@@ -379,16 +393,18 @@ Public Class cMSE
                         Exit For
                     End If
                 Next strFile
+            End If
 
-                ' Assess Ecopath files
+            If (Me.m_tsInputDataCompatibility <> TriState.False) Then
+                ' Assess Ecosim files
                 For Each strFile As String In aFilesEcosim
                     If Not CheckEcoSimDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
                         Me.m_tsInputDataCompatibility = TriState.False
                         Exit For
                     End If
                 Next strFile
-
             End If
+
         End If
 
         Return (Me.m_tsInputDataCompatibility = TriState.True)
@@ -426,7 +442,7 @@ Public Class cMSE
             ' Assess Ecopath files
             For Each strFile As String In outParamFiles
                 If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, strFile & ".csv")) Then
-                    Me.m_tsInputDataCompatibility = TriState.False
+                    Me.m_tsRunDataCompatibility = TriState.False
                     Exit For
                 End If
             Next strFile
@@ -802,6 +818,8 @@ Public Class cMSE
         Dim MonteCarlo As cMonteCarloManager = m_core.EcosimMonteCarlo
         Dim MCGroup As cMonteCarloGroup
         Dim xgrp As Integer
+
+        ' ToDo: merge with self-load capabilities of cDistributionParameters
 
         Try
 

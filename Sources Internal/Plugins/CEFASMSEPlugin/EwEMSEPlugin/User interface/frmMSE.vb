@@ -115,7 +115,7 @@ Public Class frmMSE
         Me.m_fpMaxTime = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMaxTime, GetType(Single), New cVariableMetaData(0.08, 48, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         AddHandler Me.m_fpMaxTime.OnValueChanged, AddressOf OnMaxTimeChanged
 
-        Me.m_rbEwEDefault.Checked = Me.MSE.UseEwEPath
+        Me.m_rbEwEDefaultPath.Checked = Me.MSE.UseEwEPath
         Me.m_rbCustomPath.Checked = Not Me.MSE.UseEwEPath
 
         Me.m_hdrStep2.IsCollapsed = True
@@ -178,6 +178,8 @@ Public Class frmMSE
         If (Me.m_plugin Is Nothing) Then Return
         If (Me.IsDisposed) Then Return
 
+        Me.m_bInUpdate = True
+
         Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
         Dim img As Image = Nothing
 
@@ -186,9 +188,23 @@ Public Class frmMSE
         Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_plStep4.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
 
+        Me.m_rbEwEDefaultPath.Checked = Me.MSE.UseEwEPath
+        Me.m_rbCustomPath.Checked = Not Me.MSE.UseEwEPath
+
         Me.m_lblPathValue.Text = cStringUtils.CompactString(Me.MSE.DataPath, Me.m_lblPathValue.ClientRectangle.Width, Me.m_lblPathValue.Font, TextFormatFlags.PathEllipsis)
         cToolTipShared.GetInstance().SetToolTip(Me.m_lblPathValue, Me.MSE.DataPath)
 
+        img = Nothing
+        If Me.MSE.IsInputStructureAvailable(False) And Not Me.MSE.IsInputDataCompatible() Then
+            img = SharedResources.Critical
+            Me.m_btnReviewDistParms.Enabled = False
+        Else
+            img = SharedResources.OK
+            Me.m_btnReviewDistParms.Enabled = True
+        End If
+        Me.m_pbPathCompatible.Image = img
+
+        img = Nothing
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
             Me.m_tbxParamStatus.Text = My.Resources.STATUS_AVAILABLE
             If Not mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
@@ -197,7 +213,7 @@ Public Class frmMSE
         Else
             Me.m_tbxParamStatus.Text = My.Resources.STATUS_NOTAVAILABLE
         End If
-        Me.m_pbCompatible.Image = img
+        Me.m_pbModelsCompatible.Image = img
 
         ' Update trial buttons
         Me.m_fpNTrials.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
@@ -221,6 +237,8 @@ Public Class frmMSE
         End If
 
         Me.m_btnDeleteResults.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasResults)
+
+        Me.m_bInUpdate = False
 
     End Sub
 
@@ -260,14 +278,14 @@ Public Class frmMSE
     End Sub
 
     Private Sub OnPathPrefChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_rbEwEDefault.CheckedChanged, m_rbCustomPath.CheckedChanged
+        Handles m_rbEwEDefaultPath.CheckedChanged, m_rbCustomPath.CheckedChanged
 
         If (Me.m_plugin Is Nothing) Then Return
         If (Me.m_bInUpdate) Then Return
 
         Try
-            Me.MSE.UseEwEPath = Me.m_rbEwEDefault.Checked
-            Me.ResolveMSEPathConflicts()
+            Me.MSE.UseEwEPath = Me.m_rbEwEDefaultPath.Checked
+            'Me.ResolveMSEPathConflicts()
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnPathPrefChanged")
         End Try
@@ -286,14 +304,16 @@ Public Class frmMSE
     Private Sub OnSelectDataPath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnChangePath.Click
 
-        ' JS 30Sep13: Use EwE dialog framework here
+        Me.m_bInUpdate = True
         Try
-            If (Me.SelectDataPath()) Then
-                Me.ResolveMSEPathConflicts()
+            If Me.BrowseDataPath() Then
+                Me.UpdateControls()
+                'Me.ResolveMSEPathConflicts()
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnSelectDataPath")
         End Try
+        Me.m_bInUpdate = False
 
     End Sub
 
@@ -479,36 +499,34 @@ Public Class frmMSE
 
     Private Function ReviewDistParams() As Boolean
 
+        If Not Me.ResolveMSEPathConflicts Then Return False
+
         Dim frmDisParams As New frmDistributionParameters()
         frmDisParams.Init(Me.UIContext, Me.Plugin)
 
-        If frmDisParams.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-            Me.MSE.InvalidateData()
+        If (frmDisParams.ShowDialog(Me) = Windows.Forms.DialogResult.OK) Then
+            Me.MSE.InvalidateData(False)
+            Me.UpdateControls()
             Return True
         End If
+
         Return False
 
     End Function
 
-    Private Function SelectDataPath() As Boolean
+    Private Function BrowseDataPath() As Boolean
 
         Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-        Dim bNeedsResolving As Boolean = False
+        Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+        cmd.Invoke(Me.MSE.CustomPath, My.Resources.PROMPT_DATAPATH)
 
-        If Me.MSE.UseEwEPath Then
-            Dim cmd As cShowOptionsCommand = DirectCast(cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
-            cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.FileLocations)
-            bNeedsResolving = cmd.UserHandled
-        Else
-            Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
-            cmd.Invoke(Me.MSE.CustomPath, My.Resources.PROMPT_DATAPATH)
-            If (cmd.Result = Windows.Forms.DialogResult.OK) Then
-                Me.MSE.CustomPath = cmd.Directory
-                bNeedsResolving = True
-            End If
+        If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+            Me.MSE.CustomPath = cmd.Directory
+            Me.MSE.UseEwEPath = False
+            Return True
         End If
 
-        Return bNeedsResolving
+        Return False
 
     End Function
 
@@ -517,82 +535,52 @@ Public Class frmMSE
     ''' </summary>
     Private Function ResolveMSEPathConflicts() As Boolean
 
-        ' Assume the worst
-        Dim bPathValid As Boolean = False
-        ' .. and forget all we know
+        ' Forget all we know
         Me.MSE.InvalidateData(False)
 
-        While Not bPathValid
-
-            ' Check if input structure is missing
-            If Not Me.MSE.IsInputStructureAvailable(False) Then
-
-                ' Ask user to create folder structure
-                If Me.MSE.AskUser(String.Format(My.Resources.PROMPT_DATAPATH_MISSING, Me.MSE.DataPath), eMessageReplyStyle.YES_NO) <> eMessageReply.OK Then
-                    ' #User abort: abandon process
+        ' Check if input structure is missing
+        If Not Me.MSE.IsInputStructureAvailable(False) Then
+            ' Ask user to create folder structure
+            If Me.MSE.AskUser(String.Format(My.Resources.PROMPT_DATAPATH_MISSING, Me.MSE.DataPath), eMessageReplyStyle.YES_NO) <> eMessageReply.OK Then
+                ' #User abort: abandon process
+                Return False
+            End If
+        Else
+            ' Check if input structure is compatible
+            If Not Me.MSE.IsRunDataCompatible Then
+                If Me.MSE.AskUser("The selected folder is not compatible with the currently loaded model. If you continue, previously saved MSE settings will be lost. Do you wish to continue, delete existing MSE settings, and start anew?", _
+                               eMessageReplyStyle.YES_NO, eMessageImportance.Warning, eMessageReply.NO) = eMessageReply.NO Then
                     Return False
-                End If
-
-                ' Try to create folder structure
-                If Me.MSE.IsInputStructureAvailable(True) Then
-                    ' #Created: force user to examine distribution params
-                    If (Me.ReviewDistParams) Then
-                        ' #User went along so far: create all other essential input files
-
-                        ' --- BEGIN GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
-
-                        MSE.GenerateSurvivabilities()
-                        MSE.GenerateEmptyDietCSVs()
-                        ' .. add more
-
-                        ' --- END GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
-
-                        ' Re-assess state
-                        Me.MSE.InvalidateData(False)
-                        bPathValid = Me.MSE.IsInputDataCompatible()
-
-                        ' Panic in debug mode only
-                        Debug.Assert(Me.MSE.IsInputDataCompatible(), "Cefas MSE default data generation logic is not working")
-
-                    Else
-                        ' #Not created. Now we're stuck with a messy folder structure that may not be used. Pollution!
-                        bPathValid = True
-                    End If
-                Else
-                    ' #No luck? Panic, and make the user try again
-                    Me.MSE.InformUser(String.Format(My.Resources.PROMPT_DATAPATH_INACCESSIBLE, Me.MSE.DataPath), eMessageImportance.Critical)
-                    bPathValid = Me.SelectDataPath()
                 End If
             Else
-                ' Input structure is there, but may be meant for a different model
-                If (Not Me.MSE.IsInputDataCompatible()) Then
-                    ' #Folder incompatible: notify user
-                    Me.MSE.InformUser(String.Format(My.Resources.PROMPT_DATAPATH_INCOMPATIBLE, Me.MSE.DataPath), eMessageImportance.Warning)
-                    ' Sorry dude, you have to pick another folder
-                    bPathValid = False
-                Else
-                    ' #Folder is compatible with current model
-                    bPathValid = True
-                End If
+                Return True
             End If
+        End If
 
-            ' Do we need to pick again?
-            If (Not bPathValid) Then
-                ' #Yes: ask user to pick a folder
-                If Not Me.SelectDataPath() Then
-                    ' #Aborted: done for now
-                    Return False
-                End If
+        ' Try to create folder structure
+        If Me.MSE.IsInputStructureAvailable(True) Then
 
-                ' Re-assess state
-                Me.MSE.InvalidateData()
-                bPathValid = (Me.MSE.IsInputStructureAvailable(False) And Me.MSE.IsInputDataCompatible())
+            ' --- BEGIN GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
 
-            End If
+            MSE.GenerateEmptyDistributions()
+            MSE.GenerateSurvivabilities()
+            MSE.GenerateEmptyDietCSVs()
 
-        End While
+            ' .. add more
 
-        Return True
+            ' --- END GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
+
+            ' Re-assess state
+            Me.MSE.InvalidateData(False)
+
+#If DEBUG Then
+            ' Panic in debug mode only
+            Debug.Assert(Me.MSE.IsInputDataCompatible(), "Cefas MSE default data generation logic is not working")
+#End If
+
+        End If
+
+        Return Me.MSE.IsInputDataCompatible()
 
     End Function
 
