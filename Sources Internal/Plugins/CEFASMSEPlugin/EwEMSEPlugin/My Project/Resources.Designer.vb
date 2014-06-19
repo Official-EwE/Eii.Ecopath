@@ -583,7 +583,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} found a new balanced model at trial {1}.
+        '''  Looks up a localized string similar to {0} found a new balanced model at trial {1}. {2}.
         '''</summary>
         Friend ReadOnly Property STATUS_FOUND_MODEL() As String
             Get

@@ -315,8 +315,8 @@
     <comment>{0}=plugin name, {1}=#of models found, {2}=#of models requested</comment>
   </data>
   <data name="STATUS_FOUND_MODEL" xml:space="preserve">
-    <value>{0} found a new balanced model at trial {1}</value>
-    <comment>{0}=plugin name, {1}=trial number</comment>
+    <value>{0} found a new balanced model at trial {1}. {2}</value>
+    <comment>{0}=plugin name, {1}=trial number, {2}=time expired</comment>
   </data>
   <data name="STATUS_NOTAVAILABLE" xml:space="preserve">
     <value>Not available</value>

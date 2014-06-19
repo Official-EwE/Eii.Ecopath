@@ -1374,8 +1374,8 @@ Public Class cMSE
         Dim nFailedParameterisations As Integer
         Dim BiomassLimits As cBiomassLimits
 
-        Dim swGroup As StreamWriter
-        Dim swFleet As StreamWriter
+        Dim swGroup As StreamWriter = Nothing
+        Dim swFleet As StreamWriter = Nothing
 
         Try
 
@@ -1548,10 +1548,9 @@ Public Class cMSE
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function updateDietMatrixFromCSVFile(ByVal iTrial As Integer) As Boolean
+
         Dim GoodDynamics As Boolean = True
-        Dim csvDietMatrix As CsvReader
-        'Dim strmReader As StreamReader = New StreamReader
-        'strmReader()
+        Dim csvDietMatrix As CsvReader = Nothing
         Dim strmReader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"))
 
         If (strmReader IsNot Nothing) Then
@@ -1596,19 +1595,23 @@ Public Class cMSE
 
     Private Sub DumpFishingEffort()
 
-        Dim strm As New System.IO.StreamWriter("C:\Users\Mark\Desktop\GAP\Data\Results\fishingEffort.csv", True)
-        strm.WriteLine("iter")
+        Try
+            Dim strm As New System.IO.StreamWriter("C:\Users\Mark\Desktop\GAP\Data\Results\fishingEffort.csv", True)
+            strm.WriteLine("iter")
 
-        strm.WriteLine("-----------------Start Fishing Effort Matrix-----------------------")
-        For iFleet As Integer = 1 To m_core.nFleets
-            strm.Write("Fleet = " & m_core.EcosimFleetInputs(iFleet).Name & ",")
-            For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                strm.Write(Me._simdata.ResultsEffort(iFleet, iTimeStep).ToString() + ",")
+            strm.WriteLine("-----------------Start Fishing Effort Matrix-----------------------")
+            For iFleet As Integer = 1 To m_core.nFleets
+                strm.Write("Fleet = " & m_core.EcosimFleetInputs(iFleet).Name & ",")
+                For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+                    strm.Write(Me._simdata.ResultsEffort(iFleet, iTimeStep).ToString() + ",")
+                Next
+                strm.WriteLine()
             Next
-            strm.WriteLine()
-        Next
-        strm.WriteLine("-----------------Start Fishing Effort Matrix------------------------")
-        strm.Close()
+            strm.WriteLine("-----------------Start Fishing Effort Matrix------------------------")
+            strm.Close()
+        Catch ex As Exception
+            ' Aargh
+        End Try
 
     End Sub
 
@@ -1621,18 +1624,22 @@ Public Class cMSE
     ''' </remarks>
     Private Sub dumpDietMatrix()
 
-        Dim strm As New System.IO.StreamWriter("MSEDietMatrix.csv", True)
-        strm.WriteLine("iter")
+        Try
+            Dim strm As New System.IO.StreamWriter("MSEDietMatrix.csv", True)
+            strm.WriteLine("iter")
 
-        strm.WriteLine("-----------------Start Diet Matrix-----------------------")
-        For iprey As Integer = 1 To m_core.nGroups
-            For ipred As Integer = 1 To m_core.nLivingGroups
-                strm.Write(Me._pathdata.DCInput(ipred, iprey).ToString() + ",")
+            strm.WriteLine("-----------------Start Diet Matrix-----------------------")
+            For iprey As Integer = 1 To m_core.nGroups
+                For ipred As Integer = 1 To m_core.nLivingGroups
+                    strm.Write(Me._pathdata.DCInput(ipred, iprey).ToString() + ",")
+                Next
+                strm.WriteLine()
             Next
-            strm.WriteLine()
-        Next
-        strm.WriteLine("-----------------End Diet Matrix------------------------")
-        strm.Close()
+            strm.WriteLine("-----------------End Diet Matrix------------------------")
+            strm.Close()
+        Catch ex As Exception
+            ' Aargh
+        End Try
 
     End Sub
 
@@ -2110,7 +2117,9 @@ Public Class cMSE
                                 '    Me.getEcosimResults()
                                 'End If 'RunEcosim
 
-                                Me.InformUser(String.Format(My.Resources.STATUS_FOUND_MODEL, My.Resources.CAPTION, i), eMessageImportance.Information)
+                                'Me.InformUser(String.Format(My.Resources.STATUS_FOUND_MODEL, My.Resources.CAPTION, i), eMessageImportance.Information)
+                                cLog.Write(String.Format(My.Resources.STATUS_FOUND_MODEL, My.Resources.CAPTION, i, sw.Elapsed.ToString()))
+
                                 iNumFound += 1
                                 bFound = True
 
@@ -2120,7 +2129,11 @@ Public Class cMSE
                         End If ' MonteCarlo.selectNewEcopathParameters()
 
                         i += 1
-                        bExpired = (sw.ElapsedMilliseconds > lTimeout)
+
+                        If (sw.ElapsedMilliseconds > lTimeout) Then
+                            cLog.Write(String.Format("Cefas MSE time-out expired at iteration {0}, {1}", i, sw.Elapsed.ToString()))
+                            bExpired = True
+                        End If
 
                     End While
 
@@ -2132,7 +2145,7 @@ Public Class cMSE
                 End While
 
                 If bExpired Then
-                    Me.InformUser("MSE expired after " & sw.ElapsedMilliseconds & "ms", eMessageImportance.Information)
+                    Me.InformUser("MSE expired after " & sw.Elapsed.ToString(), eMessageImportance.Information)
                 End If
 
             End If 'Me.InitMonteCarloParameters()
