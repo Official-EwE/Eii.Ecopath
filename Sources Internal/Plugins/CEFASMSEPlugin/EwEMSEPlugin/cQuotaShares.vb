@@ -250,21 +250,21 @@ Public Class cQuotaShares
     Public Sub Defaults() _
         Implements IMSEData.Defaults
 
-        Dim nFleetsCatch As Integer
+        Dim TotalCatch As Double
 
         If Not m_lstQuotaShares Is Nothing Then m_lstQuotaShares.Clear()
 
         For iGroup = 1 To m_core.nLivingGroups
 
             'Count how many fleets catch this group
-            nFleetsCatch = 0
+            TotalCatch = 0
             For iFleet = 1 To m_core.nFleets
-                If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then nFleetsCatch += 1
+                TotalCatch += m_core.FleetInputs(iFleet).Landings(iGroup) + m_core.FleetInputs(iFleet).Discards(iGroup)
             Next
 
             For iFleet = 1 To m_core.nFleets
                 If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then
-                    AddQuotaShare(iGroup, iFleet, 1 / nFleetsCatch)
+                    AddQuotaShare(iGroup, iFleet, (m_core.FleetInputs(iFleet).Landings(iGroup) + m_core.FleetInputs(iFleet).Discards(iGroup)) / TotalCatch)
                 End If
             Next
 
@@ -384,27 +384,27 @@ Public Class cQuotaShares
     End Function
 
     'Something that might only be used for testing purposes
-    Public Sub SetDefault()
-        Dim nFleetsCatch As Integer
+    'Public Sub SetDefault()
+    '    Dim nFleetsCatch As Integer
 
-        If Not m_lstQuotaShares Is Nothing Then m_lstQuotaShares.Clear()
+    '    If Not m_lstQuotaShares Is Nothing Then m_lstQuotaShares.Clear()
 
-        For iGroup As Integer = 1 To m_core.nLivingGroups
+    '    For iGroup As Integer = 1 To m_core.nLivingGroups
 
-            'Count how many fleets catch this group
-            nFleetsCatch = 0
-            For iFleet = 1 To m_core.nFleets
-                If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then nFleetsCatch += 1
-            Next
+    '        'Count how many fleets catch this group
+    '        nFleetsCatch = 0
+    '        For iFleet = 1 To m_core.nFleets
+    '            If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then nFleetsCatch += 1
+    '        Next
 
-            For iFleet = 1 To m_core.nFleets
-                If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then
-                    AddQuotaShare(iGroup, iFleet, 1 / nFleetsCatch)
-                End If
-            Next
+    '        For iFleet = 1 To m_core.nFleets
+    '            If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then
+    '                AddQuotaShare(iGroup, iFleet, 1 / nFleetsCatch)
+    '            End If
+    '        Next
 
-        Next
+    '    Next
 
-    End Sub
+    'End Sub
 
 End Class

@@ -2681,7 +2681,7 @@ stepend:
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
                                 If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
                                     'find the stock with the biggest economic value
-                                    v = CSng(m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * m_ecopath.EcopathData.Market(iGrp, iFleet))
+                                    v = CSng(m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * m_ecopath.EcopathData.Market(iFleet, iGrp))
                                     If v > vmax Then
                                         vmax = v
                                         imax = iGrp
