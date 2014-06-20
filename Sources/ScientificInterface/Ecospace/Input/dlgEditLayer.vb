@@ -191,6 +191,8 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Import "
 
+        ' Oooh, this is nasty! Three different import methods, handled by three different classes!
+
         Private Sub OnImportCSV(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiImportCSV.Click
             Try
@@ -204,7 +206,7 @@ Namespace Ecospace.Basemap.Layers
             Handles m_tsmiImportXYZ.Click
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data})
+                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, cImportLayerCommand.eImportFormatTypes.XYZ)
                 Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
             Catch ex As Exception
 
@@ -215,6 +217,7 @@ Namespace Ecospace.Basemap.Layers
             Handles m_tsmiAsc.Click
             Try
                 Dim ofd As New OpenFileDialog()
+                ' ToDo: 
                 ofd.Title = "Pick ASCII file to load"
                 ofd.Filter = "ASCII files|*.asc"
                 If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
@@ -394,12 +397,13 @@ Namespace Ecospace.Basemap.Layers
                 cf = cf Or cDisplayLayer.eChangeFlags.VisualStyle
             End If
 
-            If Me.m_grid.Apply(Me.m_layerOriginal) Then
+            'If Me.m_grid.Apply(Me.m_layerOriginal) Then
                 cf = cf Or cDisplayLayer.eChangeFlags.Map
-            End If
+            'End If
 
             ' Fire layer changed notification
             Me.m_layerOriginal.Update(cf)
+
             Return True
 
         End Function

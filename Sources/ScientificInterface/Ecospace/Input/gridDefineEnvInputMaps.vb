@@ -56,8 +56,6 @@ Namespace Ecospace
             LayerStatus
         End Enum
 
-        Private m_isInInit As Boolean
-
 #Region " Helper classes "
 
         ''' -----------------------------------------------------------------------
@@ -361,8 +359,6 @@ Namespace Ecospace
             Dim ewec As EwECell = Nothing
             Dim style As cStyleGuide.eStyleFlags
 
-            Me.m_isInInit = True
-
             ' Create missing rows
             For iRow As Integer = Me.Rows.Count To Me.m_alLayers.Count
                 Me.AddRow()
@@ -403,8 +399,6 @@ Namespace Ecospace
             For iRow As Integer = 1 To Me.m_alLayers.Count
                 UpdateRow(iRow)
             Next iRow
-
-            Me.m_isInInit = False
 
         End Sub
 
@@ -473,32 +467,40 @@ Namespace Ecospace
             'Depth row can't be edited
             If Not li.IsEditable Then Return True
 
-            Select Case DirectCast(p.Column, eColumnTypes)
-                Case eColumnTypes.LayerIndex
-                    ' Not possible
+            Try
 
-                Case eColumnTypes.LayerName
-                    Dim strName As String = CStr(cell.GetValue(p))
-                    ' Check if name is unique
-                    For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
-                        Dim giTemp As cLayerInfo = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
-                        ' Does name already exist?
-                        If (Not Object.ReferenceEquals(giTemp, li)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
-                            ' Change is not allowed
-                            Me.UpdateRow(p.Row)
-                            ' Report failure
-                            Return False
-                        End If
-                    Next
-                    ' Allow name change
-                    li.Name = strName
+                Select Case DirectCast(p.Column, eColumnTypes)
+                    Case eColumnTypes.LayerIndex
+                        ' Not possible
 
-                Case eColumnTypes.LayerDescription
-                    Dim val As Object = cell.GetValue(p)
-                    If (val Is Nothing) Then val = ""
-                    li.Description = CStr(val)
+                    Case eColumnTypes.LayerName
+                        Dim strName As String = CStr(cell.GetValue(p))
+                        ' Check if name is unique
+                        For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
+                            Dim giTemp As cLayerInfo = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
+                            ' Does name already exist?
+                            If (Not Object.ReferenceEquals(giTemp, li)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                                ' Change is not allowed
+                                Me.UpdateRow(p.Row)
+                                ' Report failure
+                                Return False
+                            End If
+                        Next
+                        ' Allow name change
+                        li.Name = strName
 
-            End Select
+                    Case eColumnTypes.LayerDescription
+                        Dim val As Object = cell.GetValue(p)
+                        If (val Is Nothing) Then val = ""
+                        li.Description = CStr(val)
+
+                    Case Else
+                        ' NOP
+
+                End Select
+            Catch ex As Exception
+
+            End Try
 
             Return True
 
@@ -506,20 +508,19 @@ Namespace Ecospace
 
         Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-            If Not Me.m_isInInit Then
+            If Not Me.AllowUpdates Then Return True
 
+            Try
                 Dim li As cLayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), cLayerInfo)
                 Select Case DirectCast(p.Column, eColumnTypes)
-
                     Case eColumnTypes.LayerIsActive
                         li.IsActive = CBool(cell.GetValue(p))
-
+                    Case Else
+                        ' NOP
                 End Select
+            Catch ex As Exception
 
-                Return True
-
-            End If
-
+            End Try
             Return MyBase.OnCellValueChanged(p, cell)
 
         End Function
