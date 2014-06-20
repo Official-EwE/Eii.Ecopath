@@ -3855,9 +3855,15 @@ Public Class frmEwE6
     Private Sub OnImportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnInvoke
         Try
-            Dim dlg As New dlgImportLayerDataXYZ(Me.UIContext)
-            dlg.Layers = Me.m_cmdImportLayerData.Layers
-            dlg.ShowDialog(Me)
+            Select Case Me.m_cmdImportLayerData.Format
+                Case cImportLayerCommand.eImportFormatTypes.Default, _
+                     cImportLayerCommand.eImportFormatTypes.XYZ
+                    Dim dlg As New dlgImportLayerDataXYZ(Me.UIContext)
+                    dlg.Layers = Me.m_cmdImportLayerData.Layers
+                    dlg.ShowDialog(Me)
+                Case cImportLayerCommand.eImportFormatTypes.ASCII
+                    ' NOP
+            End Select
         Catch ex As Exception
             cLog.Write(ex, "AppLauncher:OnImportLayerData")
         End Try
