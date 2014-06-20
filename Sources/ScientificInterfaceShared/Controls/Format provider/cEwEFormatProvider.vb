@@ -372,6 +372,9 @@ Namespace Controls
             '''' </summary>
             '''' -----------------------------------------------------------------------
             Private Sub OnControlLeft(ByVal sender As Object, ByVal e As System.EventArgs)
+
+                If (Me.m_tb Is Nothing) Then Return
+
                 Try
                     ' Did anything change?
                     Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
