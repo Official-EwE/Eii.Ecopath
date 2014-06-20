@@ -57,6 +57,7 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Private mMSE As cMSE
     Private mSimData As cEcosimDatastructures
+    Private mPathData As cEcopathDataStructures
     ''' <summary>
     ''' Equals True if the survivability distribution parameters file exists
     ''' </summary>
@@ -84,10 +85,11 @@ Public Class cSurvivability
 
 #Region " Construction "
 
-    Public Sub New(MSE As cMSE, core As EwECore.cCore, EcosimDataStructures As cEcosimDatastructures)
+    Public Sub New(MSE As cMSE, core As EwECore.cCore, EcosimDataStructures As cEcosimDatastructures, EcopathDataStructures As cEcopathDataStructures)
         Me.mcore = core
         Me.mMSE = MSE
         Me.mSimData = EcosimDataStructures
+        Me.mPathData = EcopathDataStructures
         Me.mListofSuriveDistParams = New List(Of cSurvivabilityDistributonParam)
         Me.m_ListOfSampledSurvivabilities = New List(Of cSampledSurvivability)
         Me.Defaults()
@@ -342,7 +344,7 @@ Public Class cSurvivability
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function LoadSampledParams() As Boolean
+    Public Function LoadSampledParamsFromCSV() As Boolean
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
@@ -453,7 +455,11 @@ Public Class cSurvivability
 
     Public Sub ConfigCoreWithSurvivabilities(ByVal iModel As Integer)
         ' TODO MP
-        'mcore.EcoPathGroupInputs(1).
+        'For iFleet = 1 To mcore.nFleets
+        '    For iGroup = 1 To mcore.nGroups
+        '        mPathData.
+        '    Next()
+        'Next
         'mSimData.Propdiscardtime()
     End Sub
 

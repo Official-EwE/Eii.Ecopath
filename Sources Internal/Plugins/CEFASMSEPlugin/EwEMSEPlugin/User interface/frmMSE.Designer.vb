@@ -94,6 +94,7 @@ Partial Class frmMSE
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
+        Me.btnCreateSurvDist = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -155,6 +156,7 @@ Partial Class frmMSE
         '
         'm_plStep2
         '
+        Me.m_plStep2.Controls.Add(Me.btnCreateSurvDist)
         Me.m_plStep2.Controls.Add(Me.m_btnCreateDiet)
         Me.m_plStep2.Controls.Add(Me.m_btnSampleSurvivabilities)
         Me.m_plStep2.Controls.Add(Me.m_pbModelsCompatible)
@@ -427,6 +429,12 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
+        'btnCreateSurvDist
+        '
+        resources.ApplyResources(Me.btnCreateSurvDist, "btnCreateSurvDist")
+        Me.btnCreateSurvDist.Name = "btnCreateSurvDist"
+        Me.btnCreateSurvDist.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -499,4 +507,5 @@ Partial Class frmMSE
     Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
     Private WithEvents m_btnDeleteResults As System.Windows.Forms.Button
     Private WithEvents m_pbPathCompatible As System.Windows.Forms.PictureBox
+    Friend WithEvents btnCreateSurvDist As System.Windows.Forms.Button
 End Class

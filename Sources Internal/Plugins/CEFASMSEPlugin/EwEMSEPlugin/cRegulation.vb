@@ -41,8 +41,7 @@ Public Class cRegulations
     Implements IMSEData
 
     Public Enum eRegMethod As Byte
-        None = 0
-        NoQuota = 1
+        None = 1
         WeakestStock
         HighestValue
         SelectiveFishing
@@ -74,46 +73,6 @@ Public Class cRegulations
             End If
         End Set
     End Property
-
-    'Commented out 31-3-14 if still not required and commented out by 5-14 then delete
-    'Public Function LoadRegsFromCSV(StrategyNumber As Integer) As Boolean
-
-    '    Dim reader As StreamReader = Nothing
-    '    Dim csv As CsvReader = Nothing
-    '    Dim bSuccess As Boolean = True
-    '    Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies, "Regulations.csv")
-    '    Dim Reg As cReg
-
-    '    If File.Exists(filePath) Then
-
-    '        reader = cMSEUtils.GetReader(filePath)
-    '        If (reader IsNot Nothing) Then
-    '            Try
-    '                csv = New CsvReader(reader, True)
-    '                RegulationsFileExists = True
-    '                If CInt(csv.Item(StrategyNumber - 1, 0)) <> StrategyNumber Then Return False
-
-    '                For iFleet = 1 To mCore.nFleets
-    '                    Reg = New cReg
-    '                    Reg.mFleetID = iFleet
-    '                    Reg.mRegMethod = CType(csv.Item(StrategyNumber - 1, iFleet), eRegMethod)
-    '                    ListofRegs.Add(Reg)
-    '                Next
-    '                Return True
-    '                csv.Dispose()
-    '            Catch ex As Exception
-    '                'Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
-    '                bSuccess = False
-    '            End Try
-    '            cMSEUtils.ReleaseReader(reader)
-    '        End If
-    '    Else
-    '        bSuccess = False
-    '    End If
-
-    '    Return bSuccess
-
-    'End Function
 
     Public Function Load(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
