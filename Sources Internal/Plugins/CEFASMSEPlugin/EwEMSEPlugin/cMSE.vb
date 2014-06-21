@@ -328,6 +328,7 @@ Public Class cMSE
             Me.EffortLimits.Load()
             Me.QuotaShares.Load()
             Me.Strategies.Load()
+            Me.Survivability.LoadSampledParamsFromCSV()
             Me.Survivability.Load_Distribution_Params()
         Catch ex As Exception
 
@@ -1451,7 +1452,6 @@ Public Class cMSE
 
                             Me.RunEcosim()
 
-
                             'Save the Ecosim results
                             GoodDynamics = Me.SaveResults(iTrial, nResultIters, nFleetIters, swGroup, swFleet, BiomassLimits)
 
@@ -1778,18 +1778,19 @@ Public Class cMSE
         Return GoodDynamics
     End Function
 
-    Private Function updateEcopathEcosimParameters(iTrial As Integer) As Boolean
+    Private Function updateEcopathEcosimParameters(iModel As Integer) As Boolean
 
 
         'Update the Ecopath and Ecosim parameters from the data read into memory by Me.readEcopathEcosimParameters()
-        Me.updateParametersFromMemory(iTrial)
+        Me.updateParametersFromMemory(iModel)
+        Survivability.ConfigCoreWithSurvivabilities(iModel)
 
         ' Me.updateDietRandom()
         'Return Me.readDietMatrix(iTrial)
         ' Return True
         'Diet matrix parameters are stored in file by iTrial
         'Read the file and update the dietmatrix parameters
-        Return Me.updateDietMatrixFromCSVFile(iTrial)
+        Return Me.updateDietMatrixFromCSVFile(iModel)
         Return True
 
 

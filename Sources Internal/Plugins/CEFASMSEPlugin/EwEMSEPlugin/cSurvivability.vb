@@ -144,9 +144,9 @@ Public Class cSurvivability
         Public Property Iteration As Integer
         Public Property FleetNo As Integer
         Public Property GroupNo As Integer
-        Public Property Survivability As Double
+        Public Property Survivability As Single
 
-        Public Sub New(ByVal Iteration As Integer, ByVal FleetNumber As Integer, ByVal GroupNumber As Integer, ByVal Survivability As Double)
+        Public Sub New(ByVal Iteration As Integer, ByVal FleetNumber As Integer, ByVal GroupNumber As Integer, ByVal Survivability As Single)
 
             Me.Iteration = Iteration
             Me.FleetNo = FleetNumber
@@ -316,7 +316,7 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Public Function SampleParams(nParams As Integer) As Boolean
         Dim TempSurvDistParam As cSurvivabilityDistributonParam
-        Dim TempSampledParam As Double
+        Dim TempSampledParam As Single
         Dim BetaGenerator As New BetaDistribution
 
         Try
@@ -325,7 +325,7 @@ Public Class cSurvivability
                     TempSurvDistParam = Me.ReadRowDist(iRow)
                     BetaGenerator.Alpha = TempSurvDistParam.Alpha
                     BetaGenerator.Beta = TempSurvDistParam.Beta
-                    TempSampledParam = BetaGenerator.NextDouble()
+                    TempSampledParam = Convert.ToSingle(BetaGenerator.NextDouble())
                     m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(iParameter, TempSurvDistParam.FleetNo, _
                                                                         TempSurvDistParam.GroupNo, _
                                                                         TempSampledParam))
@@ -396,13 +396,13 @@ Public Class cSurvivability
         Dim TIteration As Integer
         Dim TFleetNumber As Integer
         Dim TGroupNumber As Integer
-        Dim TSurvivability As Double
+        Dim TSurvivability As Single
 
         Try
             TIteration = cStringUtils.ConvertToInteger(csv(0))
             TFleetNumber = cStringUtils.ConvertToInteger(csv(1))
             TGroupNumber = cStringUtils.ConvertToInteger(csv(3))
-            TSurvivability = cStringUtils.ConvertToDouble(csv(5))
+            TSurvivability = cStringUtils.ConvertToSingle(csv(5))
 
         Catch ex As Exception
             ' ToDo_JS: respond to error
@@ -455,12 +455,11 @@ Public Class cSurvivability
 
     Public Sub ConfigCoreWithSurvivabilities(ByVal iModel As Integer)
         ' TODO MP
-        'For iFleet = 1 To mcore.nFleets
-        '    For iGroup = 1 To mcore.nGroups
-        '        mPathData.
-        '    Next()
-        'Next
-        'mSimData.Propdiscardtime()
+        For iFleet = 1 To mcore.nFleets
+            For iGroup = 1 To mcore.nGroups
+                mPathData.PropDiscardMort(iFleet, iGroup) = GetSurvivability_FleetGroupModel(iFleet, iGroup, iModel)
+            Next
+        Next
     End Sub
 
 #End Region
@@ -511,6 +510,17 @@ Public Class cSurvivability
     Public Sub Defaults() Implements IMSEData.Defaults
         Me.ListofSurvDistParams.Clear()
     End Sub
+
+    Private Function GetSurvivability_FleetGroupModel(iFleet As Integer, iGroup As Integer, iModel As Integer) As Single
+
+        For Each iSurvivability In m_ListOfSampledSurvivabilities
+            If iSurvivability.FleetNo = iFleet And iSurvivability.GroupNo = iGroup And iSurvivability.Iteration = iModel Then
+                Return iSurvivability.Survivability
+            End If
+        Next
+
+    End Function
+
 
     Public Function IsChanged() As Boolean _
         Implements IMSEData.IsChanged
