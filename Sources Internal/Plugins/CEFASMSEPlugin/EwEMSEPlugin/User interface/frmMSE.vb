@@ -129,10 +129,12 @@ Public Class frmMSE
 #If DEBUG Then
         Me.m_btnSampleSurvivabilities.Visible = True
         Me.m_btnCreateDiet.Visible = True
+        Me.m_btnCreateSurvDist.Visible = True
         Me.m_btnDeleteResults.Visible = True
 #Else
         Me.m_btnSampleSurvivabilities.Visible = False
         Me.m_btnCreateDiet.Visible = False
+        Me.m_btnCreateSurvDist.Visible = False
         Me.m_btnDeleteResults.Visible = False
 #End If
         Me.UpdateControls()
@@ -587,22 +589,27 @@ Public Class frmMSE
 
 #End Region ' Path / model validation
 
-    Private Sub btnCreateSurvDist_Click(sender As System.Object, e As System.EventArgs) Handles btnCreateSurvDist.Click
+    Private Sub btnCreateSurvDist_Click(sender As System.Object, e As System.EventArgs) Handles btnCreateSurvDist.Click, m_btnCreateSurvDist.Click
+
         'Creates a default set of survivability distribution parameters - we might not need this later
 
-        Dim DefaultSurvDist As StreamWriter
+        ' JS 20Jun14: This should perhaps not have been added again:
+        ' Survivabilities_dist files are already created with the setup of new folders.
+        ' If you need the new files, let's at least re-use what MSE is already offering.
 
-        DefaultSurvDist = cMSEUtils.GetWriter(cMSEUtils.MSEFile(MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv"), False)
+        Me.MSE.GenerateSurvivabilities()
 
-        DefaultSurvDist.WriteLine("FleetNumber,FleetName,GroupNumber,GroupName,Alpha,Beta")
-        For iFleet = 1 To MSE.Core.nFleets
-            For iGroup = 1 To MSE.Core.nGroups
-                DefaultSurvDist.WriteLine(iFleet.ToString & "," & cStringUtils.ToCSVField(MSE.Core.FleetInputs(iFleet).Name) & "," & _
-                                          iGroup.ToString & "," & cStringUtils.ToCSVField(MSE.Core.EcoPathGroupInputs(iGroup).Name) & ",10,90")
-            Next
-        Next
-
-        cMSEUtils.ReleaseWriter(DefaultSurvDist)
+        'Dim DefaultSurvDist As StreamWriter
+        'DefaultSurvDist = cMSEUtils.GetWriter(cMSEUtils.MSEFile(MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv"), False)
+        'DefaultSurvDist.WriteLine("FleetNumber,FleetName,GroupNumber,GroupName,Alpha,Beta")
+        'For iFleet = 1 To MSE.Core.nFleets
+        '    For iGroup = 1 To MSE.Core.nGroups
+        '        DefaultSurvDist.WriteLine(iFleet.ToString & "," & cStringUtils.ToCSVField(MSE.Core.FleetInputs(iFleet).Name) & "," & _
+        '                                  iGroup.ToString & "," & cStringUtils.ToCSVField(MSE.Core.EcoPathGroupInputs(iGroup).Name) & ",10,90")
+        '    Next
+        'Next
+        'cMSEUtils.ReleaseWriter(DefaultSurvDist)
 
     End Sub
+
 End Class
