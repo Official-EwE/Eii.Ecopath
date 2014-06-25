@@ -47,13 +47,13 @@ Namespace Controls
                                      ByVal strPrompt As String, _
                                      Optional strCaption As String = "", _
                                      Optional strInitialValue As String = "") As DialogResult
-            Me.ShowDialog(owner, strPrompt, strCaption, strInitialValue)
+            Return Me.ShowDialog(owner, strPrompt, strCaption, strInitialValue)
         End Function
 
         Public Shadows Function Show(ByVal strPrompt As String, _
                                      Optional strCaption As String = "", _
                                      Optional strInitialValue As String = "") As DialogResult
-            Me.ShowDialog(Nothing, strPrompt, strCaption, strInitialValue)
+            Return Me.ShowDialog(Nothing, strPrompt, strCaption, strInitialValue)
         End Function
 
         Public Shadows Function ShowDialog(owner As IWin32Window, _
