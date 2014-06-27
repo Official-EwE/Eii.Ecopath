@@ -133,7 +133,7 @@ Public Class gridMaxDecreaseEffort
         End Get
     End Property
 
-    Private Function DataCell(dValue As Double) As EwECell
+    Private Function DataCell(dValue As Single) As EwECell
 
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
         Dim cell As EwECell = Nothing
@@ -158,7 +158,7 @@ Public Class gridMaxDecreaseEffort
         ' Check column
         If (p.Column = eColumnTypes.MaxChangeEffort) Then
             ' Store value
-            data.Value(p.Row) = CDbl(cell.GetValue(p))
+            data.Value(p.Row) = Convert.ToSingle(cell.GetValue(p))
         End If
 
         ' Yippee

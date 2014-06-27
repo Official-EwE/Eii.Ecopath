@@ -37,7 +37,7 @@ Public Class cEffortLimits
 
     Private m_core As cCore = Nothing
     Private m_mse As cMSE = Nothing
-    Private m_data As Double()
+    Private m_data As Single()
     Private m_bChanged As Boolean = False
 
 #End Region ' Private variables
@@ -55,7 +55,7 @@ Public Class cEffortLimits
 
 #Region " Public bits "
 
-    Public Shared NoHCR_F As Double = cCore.NULL_VALUE
+    Public Shared NoHCR_F As Single = cCore.NULL_VALUE
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IMSEData.Defaults"/>
@@ -100,7 +100,7 @@ Public Class cEffortLimits
                     If EffortLimitsCSV.ReadNextRecord() Then
                         iFleet = cStringUtils.ConvertToInteger(EffortLimitsCSV(0))
                         If (1 <= iFleet) And (iFleet <= Me.nFleets) Then
-                            Me.Value(iFleet) = cStringUtils.ConvertToDouble(EffortLimitsCSV(2))
+                            Me.Value(iFleet) = cStringUtils.ConvertToSingle(EffortLimitsCSV(2))
                         End If
                     End If
                 End While
@@ -145,13 +145,13 @@ Public Class cEffortLimits
 
     End Function
 
-    Public Property Value(iFleet As Integer) As Double
+    Public Property Value(iFleet As Integer) As Single
         Get
             ' Sanity check
             Debug.Assert(1 <= iFleet And iFleet <= Me.m_core.nFleets)
             Return Me.m_data(iFleet - 1)
         End Get
-        Set(value As Double)
+        Set(value As Single)
             ' Sanity check
             Debug.Assert(1 <= iFleet And iFleet <= Me.m_core.nFleets)
             If (value <> Me.m_data(iFleet - 1)) Then

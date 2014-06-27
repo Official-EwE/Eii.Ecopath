@@ -51,6 +51,7 @@ Public Class cMSE
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer
+    Private MinEffortThisYear() As Single
 
     Private TargConsQuota(,) As Double 'Stores the target and conservation f's for each species
     Private nSuccessfullyProjectedModels As Integer
@@ -115,6 +116,7 @@ Public Class cMSE
     Private m_tsRunDataCompatibility As TriState = TriState.UseDefault
     Private TrajectoryCsv As StreamWriter
     Private Trajectory2Csv As List(Of StreamWriter)             'Trajectories2 is similar to trajectories apart from it each file contains only 1 group
+    Private swFleetEfforts As StreamWriter
 
 #End Region ' Internal vars
 
@@ -1377,6 +1379,7 @@ Public Class cMSE
 
         Dim swGroup As StreamWriter = Nothing
         Dim swFleet As StreamWriter = Nothing
+        Dim swFleetEfforts As StreamWriter = Nothing
 
         Try
 
@@ -1403,7 +1406,11 @@ Public Class cMSE
             Trajectory2Csv = New List(Of StreamWriter)
             Me.initTrajectoryByGroupFiles(msgReport, Trajectory2Csv)
 
+            'Prepare the effort trajectory csv with the column headings
+            swFleetEfforts = Me.initTrajectoryEffortFiles(msgReport)
+
             ReDim TargConsQuota(m_core.nGroups - 1, 1)
+            ReDim MinEffortThisYear(m_core.nFleets - 1)
 
             'increase the number of years for the projection
             m_core.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / m_ecosim.EcosimData.NumStepsPerYear + NYearsProject)
@@ -1453,7 +1460,7 @@ Public Class cMSE
                             Me.RunEcosim()
 
                             'Save the Ecosim results
-                            GoodDynamics = Me.SaveResults(iTrial, nResultIters, nFleetIters, swGroup, swFleet, BiomassLimits)
+                            GoodDynamics = Me.SaveResults(iTrial, nResultIters, nFleetIters, swGroup, swFleet, swFleetEfforts, BiomassLimits)
 
                             'If one of the groups colapsed during the Ecosim run 
                             'Reject this parameter set
@@ -1505,6 +1512,7 @@ Public Class cMSE
 
         cMSEUtils.ReleaseWriter(swGroup)
         cMSEUtils.ReleaseWriter(swFleet)
+        cMSEUtils.ReleaseWriter(swFleetEfforts)
 
         Me.RestoreOriginalState()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1644,7 +1652,8 @@ Public Class cMSE
     End Sub
 
     Private Function SaveResults(ByVal iTrial As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
-                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByVal swGroup As StreamWriter, ByVal swFleet As StreamWriter, ByRef BiomassLimits As cBiomassLimits) As Boolean
+                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByVal swGroup As StreamWriter, ByVal swFleet As StreamWriter, _
+                                        ByRef swFleetEffort As StreamWriter, ByRef BiomassLimits As cBiomassLimits) As Boolean
 
         Dim GoodDynamics As Boolean = True
 
@@ -1709,6 +1718,19 @@ Public Class cMSE
         If GoodDynamics = False Then
             Console.WriteLine("This set of parameters is no good")
         Else
+
+            'Output the trajectories of the efforts
+            For iFleet As Integer = 1 To m_core.nFleets
+                swFleetEffort.Write("{0},{1},{2},{3}", _
+                        cStringUtils.FormatNumber(iTrial), _
+                        cStringUtils.ToCSVField(m_currentStrategy.Name), _
+                        cStringUtils.FormatNumber(iFleet), cStringUtils.ToCSVField(m_core.FleetInputs(iFleet).Name))
+                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+                    swFleetEffort.Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsEffort(iFleet, iTime)))
+                Next
+                swFleetEffort.WriteLine()
+            Next
+
             For iFleet As Integer = 1 To m_core.nFleets
                 For iGrp As Integer = 1 To m_core.nLivingGroups
                     swFleet.WriteLine("{0},{1},{2},{3},{4},{5},{6}", _
@@ -1718,6 +1740,7 @@ Public Class cMSE
                                       cStringUtils.FormatNumber(iGrp), cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name), _
                                       cStringUtils.FormatNumber(Me._simdata.ResultsSumCatchByGroupGear(iGrp, iFleet, OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear)))
                 Next
+
             Next
 
             For iGrp As Integer = 1 To m_core.nLivingGroups
@@ -1863,6 +1886,12 @@ Public Class cMSE
         strmFleet.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
         msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Fleet.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
+        ''Create the csv writer for writing out individual fleet efforts
+        'strmFleetEffort = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "FleetEfforts.csv"), False)
+        'If Me.m_core.SaveWithFileHeader Then strmFleetEffort.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+        'strmFleetEffort.WriteLine("Iteration,Strategy,FleetNumber,FleetName,Effort")
+        'msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "FleetEfforts.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
     End Sub
 
     Private Function initTrialTrajectoryFile(msgReport As cMessage, iTrial As Integer) As StreamWriter
@@ -1878,6 +1907,21 @@ Public Class cMSE
         strm.WriteLine()
         Return strm
     End Function
+
+    Private Function initTrajectoryEffortFiles(msgReport As cMessage) As StreamWriter
+        Dim strm As StreamWriter
+        strm = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "EffortTrajectories.csv"), False)
+        If Me.m_core.SaveWithFileHeader Then strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+        strm.Write("Model,Strategy,FleetNumber,FleetName")
+        msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "EffortTrajectories.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+        For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+            strm.Write("," & cStringUtils.FormatNumber(iTime))
+        Next
+        strm.WriteLine()
+        Return strm
+    End Function
+
 
 
     Private Sub initTrajectoryByGroupFiles(ByVal msgReport As cMessage, ByVal TrajectoryList As List(Of StreamWriter))
@@ -2235,6 +2279,9 @@ Public Class cMSE
         '!!! at a later date we might want to change this to include conservation fs
 
         Dim TargConsQuota(m_core.nGroups - 1, 1) As Double
+
+        'Calc the maximum decreases in the biomass
+
 
         'Initialise FTargetandConservation
         For i = 1 To m_core.nGroups
@@ -2643,7 +2690,7 @@ stepend:
         Dim QMult(m_ecosim.EcosimData.nGroups) As Double
         'Dim tempFConservation As Double
         'used so that we don't repeat same groups when cycling through HCRs
-        Dim LastYearsEffort(m_ecosim.EcopathData.NumFleet - 1) As Double
+        'Dim LastYearsEffort(m_ecosim.EcopathData.NumFleet - 1) As Double
         'Dim variable_results() As Double
 
         'Dim TargConsQuota(mCore.nGroups - 1, 1) As Double 'Stores the target and conservation f's for each species
@@ -2655,7 +2702,15 @@ stepend:
         If ChangeEffortFlag = True And iTime > OriginalNTimesteps Then 'Flag is only set to true when the button on the form is clicked
             'this is so that its only executed when ecosim is run from mseform
 
-            If (iTime - 1) Mod 12 = 0 Then TargConsQuota = DetermineQuotas(BiomassAtTimestep)
+            If (iTime - 1) Mod 12 = 0 Then
+
+                TargConsQuota = DetermineQuotas(BiomassAtTimestep)
+                For iFleet = 1 To m_core.nFleets
+                    MinEffortThisYear(iFleet - 1) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
+                    If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MinEffortThisYear(iFleet - 1) = 0
+                Next
+
+            End If
 
             'if there are no fleets to optimise for skip all this
             If FleetsThatFishHCRGrp.Count > 0 Then
@@ -2664,6 +2719,8 @@ stepend:
                 For indexgrp As Integer = 1 To m_ecosim.EcosimData.nGroups
                     QMult(indexgrp - 1) = m_ecosim.EcosimData.QmQo(indexgrp) / (1 + (m_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / m_ecosim.EcosimData.StartBiomass(indexgrp))
                 Next
+
+
 
                 For Each iFleet In FleetsThatFishHCRGrp
                     Select Case m_currentStrategy.Regulations.Method(iFleet)
@@ -2692,6 +2749,11 @@ stepend:
                             'get the effort limit for the stock with the biggest value
                             Emax = 0
                             Emax = CSng((m_quotashares.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * m_ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
+
+                            'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
+                            If Emax < MinEffortThisYear(iFleet - 1) Then
+                                Emax = MinEffortThisYear(iFleet)
+                            End If
 
                             'Limit the effort if it is greater than the max allowable 
                             If Emax < m_ecosim.EcosimData.FishRateGear(iFleet, iTime) Then m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
@@ -2733,6 +2795,10 @@ stepend:
                                     'Calculate the effort limitation, has quota been exceeded?
                                     'QYear is omitted from following equation because it is assumed that technological creep is zero
                                     Elim = CSng((m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+                                    'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
+                                    If Elim < MinEffortThisYear(iFleet - 1) Then
+                                        Elim = MinEffortThisYear(iFleet - 1)
+                                    End If
                                     Debug.Assert(Elim >= 0)
                                     If _simdata.FishRateGear(iFleet, iTime) > Elim Then
                                         _simdata.FishRateGear(iFleet, iTime) = Elim

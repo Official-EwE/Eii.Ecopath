@@ -457,7 +457,7 @@ Public Class cSurvivability
         ' TODO MP
         For iFleet = 1 To mcore.nFleets
             For iGroup = 1 To mcore.nGroups
-                mPathData.PropDiscardMort(iFleet, iGroup) = GetSurvivability_FleetGroupModel(iFleet, iGroup, iModel)
+                mPathData.PropDiscardMort(iFleet, iGroup) = 1 - GetSurvivability_FleetGroupModel(iFleet, iGroup, iModel)
             Next
         Next
     End Sub
@@ -513,11 +513,15 @@ Public Class cSurvivability
 
     Private Function GetSurvivability_FleetGroupModel(iFleet As Integer, iGroup As Integer, iModel As Integer) As Single
 
+        Const DefaultSurvivability = 0
+
         For Each iSurvivability In m_ListOfSampledSurvivabilities
             If iSurvivability.FleetNo = iFleet And iSurvivability.GroupNo = iGroup And iSurvivability.Iteration = iModel Then
                 Return iSurvivability.Survivability
             End If
         Next
+
+        Return DefaultSurvivability
 
     End Function
 
