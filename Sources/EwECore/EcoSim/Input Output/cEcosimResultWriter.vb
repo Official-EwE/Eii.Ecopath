@@ -197,7 +197,7 @@ Namespace Ecosim
                         Next
 
                     Next
-                    strDataDetails = "Data, " & resulttype.ToString
+                    strDataDetails = "Data," & resulttype.ToString
                     bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype), _
                                                  bSaveAnnual, data, _
                                                  strModelDetails, strDataDetails, astrGroupNames)
@@ -232,7 +232,7 @@ Namespace Ecosim
                                     iNumPred += 1
                                 End If
                             Next
-                            strDataDetails = "Data, " & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
+                            strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
 
                             bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                                                       bSaveAnnual, predData, _
@@ -272,7 +272,7 @@ Namespace Ecosim
                                 End If
                             Next
 
-                            strDataDetails = "Data, " & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
+                            strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
                             bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                                   bSaveAnnual, preyData, _
                                                   strModelDetails, strDataDetails, preyNames.ToString)
