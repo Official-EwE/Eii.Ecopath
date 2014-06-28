@@ -85,10 +85,16 @@ Public Class cConsWriterPlugin
 
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) _
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
-        If Me.m_core.Autosave(EwEUtils.Core.eAutosaveTypes.Ecosim) Then
-            Me.SaveDataToFile(iTime, True)
-            Me.SaveDataToFile(iTime, False)
-        End If
+
+        Try
+            If Me.m_core.Autosave(EwEUtils.Core.eAutosaveTypes.Ecosim) Then
+                Me.SaveDataToFile(iTime, True)
+                Me.SaveDataToFile(iTime, False)
+            End If
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Function SaveDataToFile(ByVal iTime As Integer, _
@@ -98,7 +104,6 @@ Public Class cConsWriterPlugin
         Dim strFileName As String = Me.GetOutputFileName(strPath, bAnnual, iTime)
         Dim strModelDetails As String = Me.GetModelDetails()
         Dim strDataDetails As String = "Data,Consumption"
-        Dim strGroupNames As String = Me.GetAllGroupNames()
         Dim data As Single(,) = Me.m_simds.Consumpt
 
         'Me.m_simds.ResultsOverTime()
@@ -133,7 +138,11 @@ Public Class cConsWriterPlugin
                     sw.WriteLine()
                 End If
 
-                sw.WriteLine(strGroupNames)
+                For i As Integer = 1 To Me.m_core.nGroups
+                    If i > 1 Then sw.Write(",")
+                    sw.Write(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(i).Name))
+                Next
+                sw.WriteLine()
                 For j As Integer = 1 To Me.m_core.nGroups
                     For i As Integer = 1 To Me.m_core.nGroups
                         If i > 1 Then sw.Write(", ")
@@ -176,19 +185,6 @@ Public Class cConsWriterPlugin
     ''' -----------------------------------------------------------------------
     Private Function GetModelDetails() As String
         Return Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim)
-    End Function
-
-    Private Function GetAllGroupNames() As String
-
-        Dim str As New StringBuilder()
-
-        For i As Integer = 1 To Me.m_core.nGroups
-            str.Append(cStringUtils.ToCSVField(Me.m_core.EcoSimGroupOutputs(i).Name))
-            If i <> Me.m_core.nGroups Then str.Append(",")
-        Next
-
-        Return str.ToString()
-
     End Function
 
 End Class
