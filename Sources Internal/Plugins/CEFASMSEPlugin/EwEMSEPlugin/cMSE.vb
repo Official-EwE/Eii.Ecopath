@@ -2752,7 +2752,7 @@ stepend:
 
                             'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
                             If Emax < MinEffortThisYear(iFleet - 1) Then
-                                Emax = MinEffortThisYear(iFleet)
+                                Emax = MinEffortThisYear(iFleet - 1)
                             End If
 
                             'Limit the effort if it is greater than the max allowable 

@@ -589,6 +589,9 @@ Public Class cSurvivability
     Public Function Save_Distribution_Params(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Save
 
+        Const DefaultAlpha As Single = 10
+        Const DefaultBeta As Single = 90
+
         If (String.IsNullOrWhiteSpace(strFilename)) Then
             strFilename = Me.DefaultFilePath()
         End If
@@ -600,15 +603,29 @@ Public Class cSurvivability
 
         Try
             writer.WriteLine("FleetNumber,FleetName,GroupNumber,GroupName,Alpha,Beta")
-
-            For Each entry As cSurvivabilityDistributonParam In mListofSuriveDistParams
-                writer.WriteLine(cStringUtils.ToCSVField(entry.FleetNo) & "," & _
-                                 cStringUtils.ToCSVField(mcore.FleetInputs(entry.FleetNo).Name) & "," & _
-                                 cStringUtils.ToCSVField(entry.GroupNo) & "," & _
-                                 cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," & _
-                                 cStringUtils.ToCSVField(entry.Alpha) & "," & _
-                                 cStringUtils.ToCSVField(entry.Beta))
-            Next
+            If mListofSuriveDistParams.Count = 0 Then
+                For iFleet = 1 To mcore.nFleets
+                    For iGroup = 1 To mcore.nGroups
+                        If mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
+                            writer.WriteLine(cStringUtils.ToCSVField(iFleet) & "," & _
+                                     cStringUtils.ToCSVField(mcore.FleetInputs(iFleet).Name) & "," & _
+                                     cStringUtils.ToCSVField(iGroup) & "," & _
+                                     cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(iGroup).Name) & "," & _
+                                     cStringUtils.ToCSVField(DefaultAlpha) & "," & _
+                                     cStringUtils.ToCSVField(DefaultBeta))
+                        End If
+                    Next
+                Next
+            Else
+                For Each entry As cSurvivabilityDistributonParam In mListofSuriveDistParams
+                    writer.WriteLine(cStringUtils.ToCSVField(entry.FleetNo) & "," & _
+                                     cStringUtils.ToCSVField(mcore.FleetInputs(entry.FleetNo).Name) & "," & _
+                                     cStringUtils.ToCSVField(entry.GroupNo) & "," & _
+                                     cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," & _
+                                     cStringUtils.ToCSVField(entry.Alpha) & "," & _
+                                     cStringUtils.ToCSVField(entry.Beta))
+                Next
+            End If
 
             bSuccess = True
 

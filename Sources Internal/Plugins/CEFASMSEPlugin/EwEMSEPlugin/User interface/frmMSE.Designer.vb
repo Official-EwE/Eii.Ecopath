@@ -57,7 +57,6 @@ Partial Class frmMSE
         Me.m_btnReviewTFM = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
         Me.m_btnCreateSurvDist = New System.Windows.Forms.Button()
-        Me.m_btnCreateDiet = New System.Windows.Forms.Button()
         Me.m_btnSampleSurvivabilities = New System.Windows.Forms.Button()
         Me.m_pbModelsCompatible = New System.Windows.Forms.PictureBox()
         Me.m_hdrStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -157,7 +156,6 @@ Partial Class frmMSE
         'm_plStep2
         '
         Me.m_plStep2.Controls.Add(Me.m_btnCreateSurvDist)
-        Me.m_plStep2.Controls.Add(Me.m_btnCreateDiet)
         Me.m_plStep2.Controls.Add(Me.m_btnSampleSurvivabilities)
         Me.m_plStep2.Controls.Add(Me.m_pbModelsCompatible)
         Me.m_plStep2.Controls.Add(Me.m_lblMassBalanceTol)
@@ -180,12 +178,6 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_btnCreateSurvDist, "m_btnCreateSurvDist")
         Me.m_btnCreateSurvDist.Name = "m_btnCreateSurvDist"
         Me.m_btnCreateSurvDist.UseVisualStyleBackColor = True
-        '
-        'm_btnCreateDiet
-        '
-        resources.ApplyResources(Me.m_btnCreateDiet, "m_btnCreateDiet")
-        Me.m_btnCreateDiet.Name = "m_btnCreateDiet"
-        Me.m_btnCreateDiet.UseVisualStyleBackColor = True
         '
         'm_btnSampleSurvivabilities
         '
@@ -503,7 +495,6 @@ Partial Class frmMSE
     Private WithEvents m_btnDecreaseEffort As System.Windows.Forms.Button
     Private WithEvents btnEditSurvivabilities As System.Windows.Forms.Button
     Private WithEvents m_tlpFishingControls As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_btnCreateDiet As System.Windows.Forms.Button
     Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
     Private WithEvents m_btnDeleteResults As System.Windows.Forms.Button
     Private WithEvents m_pbPathCompatible As System.Windows.Forms.PictureBox

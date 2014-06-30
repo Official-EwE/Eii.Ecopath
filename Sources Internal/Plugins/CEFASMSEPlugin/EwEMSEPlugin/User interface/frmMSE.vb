@@ -128,7 +128,6 @@ Public Class frmMSE
         ' Show/hide debug buttons
 #If DEBUG Then
         Me.m_btnSampleSurvivabilities.Visible = True
-        Me.m_btnCreateDiet.Visible = True
         Me.m_btnCreateSurvDist.Visible = True
         Me.m_btnDeleteResults.Visible = True
 #Else
@@ -427,10 +426,6 @@ Public Class frmMSE
         End Try
     End Sub
 
-    Private Sub OnCreateDietFiles(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnCreateDiet.Click
-
-    End Sub
 
     Private Sub OnDeleteResults(sender As System.Object, e As System.EventArgs) _
         Handles m_btnDeleteResults.Click
@@ -443,6 +438,7 @@ Public Class frmMSE
         Try
             File.Delete(m_plugin.MSE.DataPath & "\Results\Fleet.csv")
             File.Delete(m_plugin.MSE.DataPath & "\Results\Results.csv")
+            File.Delete(m_plugin.MSE.DataPath & "\Results\EffortTrajectories.csv")
 
             For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories")
                 File.Delete(iFile)
@@ -589,8 +585,7 @@ Public Class frmMSE
 
 #End Region ' Path / model validation
 
-    Private Sub btnCreateSurvDist_Click(sender As System.Object, e As System.EventArgs) Handles btnCreateSurvDist.Click, m_btnCreateSurvDist.Click
-
+    Private Sub btnCreateSurvDist_Click(sender As System.Object, e As System.EventArgs) Handles m_btnCreateSurvDist.Click
         'Creates a default set of survivability distribution parameters - we might not need this later
 
         ' JS 20Jun14: This should perhaps not have been added again:
