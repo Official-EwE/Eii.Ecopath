@@ -306,8 +306,9 @@ Namespace SpatialData
                 While Not reader.EndOfStream And bDataCorrect
                     ' Read line
                     strLine = reader.ReadLine()
-                    ' Split by space
-                    Dim bits As String() = strLine.Split(" "c)
+                    'GDAL .asc writer adds a space to the start of the data rows strip this off
+                    'Then split the string by space
+                    Dim bits As String() = strLine.Trim().Split(" "c)
                     ' Exact number of columns encountered?
                     If (bits.Length <> rs.NumColumns) Then
                         ' #No: do not accept this data
