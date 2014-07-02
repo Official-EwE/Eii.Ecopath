@@ -62,6 +62,8 @@ Public Class dlgEditBasemap
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Me.m_pbLink.Image = ScientificInterfaceShared.My.Resources.chain_vert
+
         Me.m_fpInCol = New cEwEFormatProvider(Me.m_uic, Me.m_nudColCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InCol))
         Me.m_fpInCol.Value = Me.m_basemap.InCol
 
