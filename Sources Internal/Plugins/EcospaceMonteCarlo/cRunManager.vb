@@ -194,7 +194,7 @@ Public Class cRunManager
             strm.Write(filename + ", " + Me.m_TrialNumber.ToString + ", " + RunType)
             For igrp As Integer = 1 To m_plugin.Core.nGroups
                 sumB = 0
-
+                'The Zero index in ResultsByGroup(type,group,year) is Biomass
                 For it As Integer = Me.m_RunSpace.StartOfLastYear To Me.m_RunSpace.StartOfLastYear + Me.m_RunSpace.nTimeStepPerYear
                     sumB += m_plugin.EcoSpaceData.ResultsByGroup(0, igrp, it)
                 Next it
