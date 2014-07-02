@@ -309,7 +309,7 @@ Public Class frmMSE
         Try
             If Me.BrowseDataPath() Then
                 Me.UpdateControls()
-                'Me.ResolveMSEPathConflicts()
+                'Me.zMSEPathConflicts()
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnSelectDataPath")

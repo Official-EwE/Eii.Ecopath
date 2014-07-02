@@ -61,7 +61,7 @@ Public Class cEffortLimits
     ''' <inheritdocs cref="IMSEData.Defaults"/>
     ''' -----------------------------------------------------------------------
     Public Sub Defaults() _
-          Implements IMSEData.Defaults
+        Implements IMSEData.Defaults
         For i As Integer = 1 To Me.m_core.nFleets
             Me.Value(i) = cEffortLimits.NoHCR_F
         Next
