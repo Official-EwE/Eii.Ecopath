@@ -345,7 +345,7 @@ Public Class cEcosimDatastructures
     Public Cbase() As Single
 
     ''' <summary>
-    '''  Fishing Mortality at Ecopath baseset set in SetRelativeCatchabilities
+    '''  Catch Rate at Ecopath base. Include all catch even discards that survive. set in SetRelativeCatchabilities
     ''' </summary>
     ''' <remarks>EcopathCatch / StartBiomass</remarks>
     Public relQ(,) As Single
