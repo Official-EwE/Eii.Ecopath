@@ -625,11 +625,10 @@ Namespace Ecosim
             'value of 1.0 so that F for the gear (F=qE=C/B) is 1.0xq where q is relative catchability
             'this avoids measuring effort in some unnecessary data units
 
-            'jb moved to RedimVariabs1()
-            'ReDim m_Data.relQ(m_Data.nGear, nGroups)
-
             For i = 1 To m_Data.nGear
                 For j = 1 To nGroups
+                    'total catch rate 
+                    'Includes discards that survive
                     m_Data.relQ(i, j) = (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_Data.StartBiomass(j)
                 Next
             Next
@@ -800,6 +799,7 @@ Namespace Ecosim
 
                 'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
                 '*
+                Dim FSearch As Single
                 If m_search.bInSearch Then
 
                     'Calculates NetCost() 
@@ -812,8 +812,9 @@ Namespace Ecosim
                         'used to overwrite FishRateNo() inside the month time loop
                         For iFlt As Integer = 1 To m_EPData.NumFleet
                             For j = 1 To m_EPData.NumGroups
-
-                                m_search.FishYear(j) += Fgear(iFlt) * m_Data.relQ(iFlt, j) * QYear(iFlt)
+                                'Don't include discards that survived  Propdiscardtime() does not include survivors
+                                FSearch = m_Data.relQ(iFlt, j) * (m_Data.PropLandedTime(iFlt, j) + m_Data.Propdiscardtime(iFlt, j))
+                                m_search.FishYear(j) += Fgear(iFlt) * FSearch * QYear(iFlt)
                                 '********following line stops gear overwrite for cases where
                                 'model has been fit to historical data by using species F forcing
                                 'for years 1 to NYRDAT (policy impact allowed only for future years)
@@ -4294,15 +4295,14 @@ Namespace Ecosim
                     For ig = 1 To m_Data.nGear
                         Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i), 3) <= 1.0!, _
                                     Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
-
+                        'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
                         Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                     Next
 
                     'Save F for this time step 
                     'NOT including Density Dependant Catchability.
                     'This is because Density Dependant Catchability is dependant on B(t) B(0) ratio which we may not know for given t
-                    'Density Dependant Catchability will need to be applied during the timestep when FishTime() is populated
-                    'In SetFishTime()
+                    'Density Dependant Catchability will need to be applied during the timestep when FishTime() is populated In SetFishTime()
                     m_Data.FishRateNo(i, t) = Ft
 
                     'Include Density Dependant Catchability in the F that is applied to the current timestep
