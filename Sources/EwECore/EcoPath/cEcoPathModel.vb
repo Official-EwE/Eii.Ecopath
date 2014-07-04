@@ -985,14 +985,16 @@ Namespace Ecopath
                 m_Data.Discard(i, 0) = 0
                 For j = 1 To m_Data.NumGroups
                     'mData.fcatch by NumGear, group and total
-                    'mData.fcatch(NumGroups + i) = mData.fcatch(NumGroups + i) + mData.landing(i, j) 'by NumGear
-                    m_Data.fCatch(j) = CSng(m_Data.fCatch(j) + m_Data.Landing(i, j) + m_Data.Discard(i, j))        'by group
-                    'mData.fcatch(0) = mData.fcatch(0) + mData.landing(i, j)             'total
-                    'mData.Discards by gear, group, and total
-                    m_Data.Landing(i, 0) = m_Data.Landing(i, 0) + m_Data.Landing(i, j)
-                    m_Data.Landing(0, j) = m_Data.Landing(0, j) + m_Data.Landing(i, j)
-                    m_Data.Landing(0, 0) = m_Data.Landing(0, 0) + m_Data.Landing(i, j)
 
+                    'jb Only include discards that suffer mortality
+                    m_Data.fCatch(j) = CSng(m_Data.fCatch(j) + m_Data.Landing(i, j) + (m_Data.Discard(i, j) * m_Data.PropDiscardMort(i, j)))       'by group
+
+                    'mData.Discards by gear, group, and total
+                    m_Data.Landing(i, 0) = m_Data.Landing(i, 0) + m_Data.Landing(i, j) 'sum of Landing by gear
+                    m_Data.Landing(0, j) = m_Data.Landing(0, j) + m_Data.Landing(i, j) 'sum Landing by group
+                    m_Data.Landing(0, 0) = m_Data.Landing(0, 0) + m_Data.Landing(i, j) 'sum all landing by group and gear
+
+                    'Include all discards even those the survive
                     m_Data.Discard(i, 0) = m_Data.Discard(i, 0) + m_Data.Discard(i, j)
                     m_Data.Discard(0, j) = m_Data.Discard(0, j) + m_Data.Discard(i, j)
                     m_Data.Discard(0, 0) = m_Data.Discard(0, 0) + m_Data.Discard(i, j)
@@ -1033,6 +1035,7 @@ Namespace Ecopath
                 NotifyCore(msg)
             End If
 
+
             'Also calculate the average market value by group  -- average value
             For j = 1 To m_Data.NumGroups
                 m_Data.Market(0, j) = 0
@@ -1044,6 +1047,7 @@ Namespace Ecopath
                     m_Data.PropDiscard(i, j) = 0
                     If m_Data.Landing(i, j) + m_Data.Discard(i, j) > 0 Then
                         m_Data.PropLanded(i, j) = CSng(m_Data.Landing(i, j) / (m_Data.Landing(i, j) + m_Data.Discard(i, j)))
+                        'PropDiscard() includes discards that survived 
                         m_Data.PropDiscard(i, j) = CSng(m_Data.Discard(i, j) / (m_Data.Landing(i, j) + m_Data.Discard(i, j)))
                     End If
 

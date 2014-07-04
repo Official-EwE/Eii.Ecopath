@@ -258,6 +258,7 @@ Public Class cEcopathDataStructures
     Public CostPct(,) As Single
 
     ''' <summary> discarded biomass by fleet group </summary>
+    ''' <remarks> Includes fish that survived</remarks>
     Public Discard(,) As Single
     Public DiscardFate(,) As Single
     ''' <summary>Names of fleets.</summary>
@@ -265,13 +266,14 @@ Public Class cEcopathDataStructures
     ''' <summary>Database IDs per fleet.</summary>
     Friend FleetDBID() As Integer
 
-    ''' <summary>Landinged biomass (by fleet x group)</summary>
+    ''' <summary>Landinged biomass (by fleet,group)</summary>
     Public Landing(,) As Single
-    ''' <summary>Market valye of landings (fleet x group)</summary>
+    ''' <summary>Market value of landings (by fleet,group)</summary>
     Public Market(,) As Single
-    ''' <summary>Proportion of discards (fleet x group)</summary>
+    ''' <summary>Proportion of total catch that are discards (by fleet, group)</summary>
+    ''' <remarks>This is proportion of the total catch that are discarded. Including mortality and survivals.</remarks>
     Public PropDiscard(,) As Single
-    ''' <summary>Proportion of regulated discards that die (fleet x group)</summary>
+    ''' <summary>Proportion of regulated discards that die (by fleet, group)</summary>
     Public PropDiscardMort(,) As Single ' gear group 0-1
 
 
