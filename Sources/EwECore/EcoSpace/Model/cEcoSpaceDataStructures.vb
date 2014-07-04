@@ -59,23 +59,23 @@ Public Class cEcospaceDataStructures
     ''' Predict fishing effort via the Gravity attraction model
     ''' </summary>
     ''' <remarks>If = True Predict fishing effort based on Fishing Cost Map, Catch Value and Area Fished. If PredictEffort = False then use the Ecopath Effort.</remarks>
-    Public Property PredictEffort As Boolean
-    Public Property AdjustSpace As Boolean
-    Public Property SpaceTime As Boolean
-    Public Property IsFishRateSet As Boolean
+    Public PredictEffort As Boolean
+    Public AdjustSpace As Boolean
+    Public SpaceTime As Boolean
+    Public IsFishRateSet As Boolean
     ''' <summary>
     ''' Get/set whether Ecospace will use square cells, e.g. will bypass cell width corrections.
     ''' </summary>
-    Public Property AssumeSquareCells As Boolean = False
+    Public AssumeSquareCells As Boolean = False
 
     Public CurrentForce As Boolean
     'jb Ecoseed may get move to an object
     'for now this will let the code function
-    Public Property EcoseedOn As Boolean
+    Public EcoseedOn As Boolean
 
     ''' <summary>Current model time step in years. Incremented by <see cref="TimeStep">TimeStep</see> at the end of the timestep.</summary>
     ''' <remarks>This is the time in years, not the array index.</remarks>
-    Public Property TimeNow As Single
+    Public TimeNow As Single
 
     ''' <summary>
     ''' Length of the time step in years 
