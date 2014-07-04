@@ -3719,7 +3719,7 @@ exitline:
                                 'mpamonth(Month, MPAType) is false if closed, True if open.
                                 Valt = 0
                                 For isp = 1 To m_Data.NGroups
-                                    Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
+                                    Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp) * m_SimData.PropLandedTime(iFlt, isp)
                                 Next
 
                                 'VC Sail() above: to avoid dividing with zero
@@ -3988,7 +3988,8 @@ exitline:
                         'mpamonth(Month, MPAType) is false if closed, True if open.
                         Valt = 0
                         For isp = 1 To m_Data.NGroups
-                            Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(iRow, iCol, isp) * m_SimData.relQ(iFlt, isp)
+                            'discards will have a value of zero so they will not be included in the total value
+                            Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(iRow, iCol, isp) * m_SimData.relQ(iFlt, isp) * m_SimData.PropLandedTime(iFlt, isp)
                         Next
                         Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
 

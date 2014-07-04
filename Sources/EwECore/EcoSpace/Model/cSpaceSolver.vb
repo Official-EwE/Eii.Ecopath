@@ -1053,9 +1053,9 @@ Public Class cSpaceSolver
                                 Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
                             End If
 
-                            Me.Landings(iGrp, iFlt) += cellCatch * Me.m_PathData.PropLanded(iFlt, iGrp)
+                            Me.Landings(iGrp, iFlt) += cellCatch * Me.m_SimData.PropLandedTime(iFlt, iGrp)
                             'Discards map used by the Biodiversity plugin
-                            Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += cellCatch * (1 - Me.m_PathData.PropLanded(iFlt, iGrp))
+                            Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += cellCatch * Me.m_SimData.Propdiscardtime(iFlt, iGrp)
                         End If
                     Next iFlt
                 End If 'If m_EPdata.fCatch(igrp) > 0 Then
