@@ -88,7 +88,8 @@ Namespace Ecopath.Output
                     group = Core.EcoPathGroupOutputs(iGroup)
                     ' Get values 
                     sLandings = fleet.Landings(iGroup)
-                    sDiscards = fleet.Discards(iGroup)
+                    'Only discards the suffer mortality
+                    sDiscards = fleet.Discards(iGroup) * fleet.DiscardMortality(iGroup)
                     sBiomass = group.Biomass()
 
                     ' Create cell
