@@ -180,10 +180,8 @@ Public Class cSearchDatastructures
     ''' <remarks>index = (living)</remarks>
     Public CatchYearGroup() As Single
 
-    ''' <summary>Fishing per year</summary>
-    ''' <remarks>index = (numgroups)
-    ''' This variable is calculated in the loop but not used outside
-    ''' RunModel value... should it be calculated OUTSIDE? the loop?</remarks>
+    ''' <summary>Total Fishing mortality by group</summary>
+    ''' <remarks>FishYear = effort * F * QYear</remarks>
     Public FishYear() As Single
 
     ' Public CatchYearGroup() As Single
