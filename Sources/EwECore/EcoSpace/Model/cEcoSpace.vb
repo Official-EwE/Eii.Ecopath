@@ -22,6 +22,7 @@ Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ProjNet.CoordinateSystems
 
 ''' <summary>
 ''' Definition of Time Step Delegate used for notification of an Ecospace time step

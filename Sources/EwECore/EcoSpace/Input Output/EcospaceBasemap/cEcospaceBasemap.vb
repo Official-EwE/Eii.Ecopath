@@ -38,10 +38,6 @@ Public Class cEcospaceBasemap
     ''' <summary>The layers maintained in a basemap.</summary>
     Private m_dictLayers As New Dictionary(Of eVarNameFlags, cEcospaceLayer())
 
-    ''' <summary>Equator length in km.</summary>
-    ''' <remarks>http://en.wikipedia.org/wiki/Equator#Exact_length_of_the_Equator</remarks>
-    Private Shared c_sEquatorLength As Single = 40007.862917
-
 #Region " Constructor "
 
     Sub New(ByRef theCore As cCore)
@@ -74,27 +70,32 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' CellLength
-            meta = New cVariableMetaData(0, c_sEquatorLength, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.CellLength, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' CellSize
-            meta = New cVariableMetaData(0, 90, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.CellSize, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' Latitude (top-left coord of layer)
-            meta = New cVariableMetaData(-90.0!, 90.0!, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(0, eVarNameFlags.Latitude, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' Longitude (top-left coord of layer)
-            meta = New cVariableMetaData(-180.0!, 180.0!, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(0, eVarNameFlags.Longitude, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' Assume square cells
+            meta = New cVariableMetaData(False)
+            val = New cValue(New Boolean, eVarNameFlags.AssumeSquareCells, eStatusFlags.Null, eValueTypes.Bool, meta)
             m_values.Add(val.varName, val)
 
             ' *************************************************************************************** '
@@ -201,7 +202,6 @@ Public Class cEcospaceBasemap
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerBiomassRelativeForcing, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
-
 
             ' LayerExclusion
             meta = New cVariableMetaData()
@@ -329,6 +329,34 @@ Public Class cEcospaceBasemap
     End Sub
 
 #End Region ' Constructor
+
+#Region " Overrides "
+
+    Public Overrides Function GetVariable(VarName As eVarNameFlags, _
+                                          Optional iIndex As Integer = -9999, _
+                                          Optional iIndex2 As Integer = -9999, _
+                                          Optional iIndex3 As Integer = -9999) As Object
+
+        ' JS 07Jul14: cell size is now a derived value
+        If (VarName = eVarNameFlags.CellSize) Then
+            Return Me.ToCellSize(CSng(Me.GetVariable(eVarNameFlags.CellLength)), Me.AssumeSquareCells)
+        End If
+        Return MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3)
+    End Function
+
+    Public Overrides Function SetVariable(VarName As eVarNameFlags, _
+                                          newValue As Object, _
+                                          Optional iSecondaryIndex As Integer = -9999) As Boolean
+
+        ' JS 07Jul14: cell size is now a derived value
+        If (VarName = eVarNameFlags.CellSize) Then
+            Return SetVariable(eVarNameFlags.CellLength, Me.ToCellLength(CSng(newValue), Me.AssumeSquareCells))
+        End If
+        Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
+
+    End Function
+
+#End Region ' Overrides
 
 #Region " Variables by dot (.) operator "
 
@@ -471,6 +499,15 @@ Public Class cEcospaceBasemap
             SetVariable(eVarNameFlags.Latitude, value.Y - Me.CellSize * Me.InRow)
         End Set
 
+    End Property
+
+    Public Property AssumeSquareCells As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.AssumeSquareCells))
+        End Get
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.AssumeSquareCells, ValidationStatus)
+        End Set
     End Property
 
 #End Region ' Variables by dot (.) operator
@@ -824,17 +861,27 @@ Public Class cEcospaceBasemap
 
 #Region " Cell position calculations "
 
-    Public Shared ReadOnly Property DegreeToKm() As Single
+    ''' <summary>Equator length in km.</summary>
+    ''' <remarks>http://en.wikipedia.org/wiki/Equator#Exact_length_of_the_Equator</remarks>
+    Friend Shared c_sEquatorLength As Single = 40007.862917
+
+    Public ReadOnly Property DegreeToKm() As Single
         Get
             Return c_sEquatorLength / 360.0!
         End Get
     End Property
 
-    Public Shared Function ToCellSize(ByVal sCellLength As Single) As Single
+    Public Function ToCellSize(ByVal sCellLength As Single, ByVal bAssumeSquareCells As Boolean) As Single
+        If (bAssumeSquareCells) Then
+            Return sCellLength * 1000.0!
+        End If
         Return sCellLength / DegreeToKm
     End Function
 
-    Public Shared Function ToCellLength(ByVal sCellSize As Single) As Single
+    Public Function ToCellLength(ByVal sCellSize As Single, ByVal bAssumeSquareCells As Boolean) As Single
+        If (bAssumeSquareCells) Then
+            Return sCellSize / 1000.0!
+        End If
         Return sCellSize * DegreeToKm
     End Function
 

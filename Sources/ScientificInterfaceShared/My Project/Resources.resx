@@ -3116,4 +3116,13 @@
   <data name="HEADER_ENABLED" xml:space="preserve">
     <value>Enabled</value>
   </data>
+  <data name="UNIT_DECIMALDEGREE" xml:space="preserve">
+    <value>dd</value>
+  </data>
+  <data name="UNIT_KILOMETER" xml:space="preserve">
+    <value>km</value>
+  </data>
+  <data name="UNIT_METER" xml:space="preserve">
+    <value>m</value>
+  </data>
 </root>

@@ -7194,12 +7194,12 @@ Namespace DataSources
                 ecospaceDS.InRow = CInt(reader("Inrow"))
                 ecospaceDS.InCol = CInt(reader("Incol"))
                 ecospaceDS.CellLength = CSng(reader("CellLength"))
-                ecospaceDS.CellSize = CSng(Me.m_db.ReadSafe(reader, "CellSize", cEcospaceBasemap.ToCellSize(ecospaceDS.CellLength)))
                 ecospaceDS.Lat1 = CSng(Me.m_db.ReadSafe(reader, "MinLat", 0))
                 ecospaceDS.Lon1 = CSng(Me.m_db.ReadSafe(reader, "MinLon", 0))
                 ecospaceDS.TimeStep = CSng(Me.m_db.ReadSafe(reader, "TimeStep", 0))
                 ecospaceDS.PredictEffort = (CInt(Me.m_db.ReadSafe(reader, "PredictEffort", True)) <> 0)
                 ecospaceDS.AssumeSquareCells = (CInt(Me.m_db.ReadSafe(reader, "AssumeSquareCells", True)) <> 0)
+                ecospaceDS.CoordinateSystemWKT = CStr(Me.m_db.ReadSafe(reader, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM))
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
                 If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -7236,6 +7236,8 @@ Namespace DataSources
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
+
+            ' JS 08Jl14: redimForRun is called too many times
 
             'set the size of the variables that hold the map data to InRow and InCol
             'Call cEcospace.redimForRun() First because it allocates bigger blocks of memory
@@ -7391,12 +7393,12 @@ Namespace DataSources
                 drow("Inrow") = ecospaceDS.InRow
                 drow("Incol") = ecospaceDS.InCol
                 drow("CellLength") = ecospaceDS.CellLength
-                drow("CellSize") = ecospaceDS.CellSize
                 drow("MinLon") = ecospaceDS.Lon1
                 drow("MinLat") = ecospaceDS.Lat1
                 drow("TimeStep") = ecospaceDS.TimeStep
                 drow("PredictEffort") = ecospaceDS.PredictEffort
                 drow("AssumeSquareCells") = ecospaceDS.AssumeSquareCells
+                drow("CoordinateSystemWKT") = ecospaceDS.CoordinateSystemWKT
 
                 drow("TotalTime") = ecospaceDS.TotalTime
                 drow("IFDPower") = ecospaceDS.IFDPower
@@ -7502,7 +7504,6 @@ Namespace DataSources
                 drow("InRow") = InRow
                 drow("InCol") = InCol
                 drow("CellLength") = sCellLength
-                drow("CellSize") = cEcospaceBasemap.ToCellSize(sCellLength)
                 drow("MinLat") = sOriginLat
                 drow("MinLon") = sOriginLon
                 drow("ModelType") = 2

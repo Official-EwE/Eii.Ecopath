@@ -21,7 +21,6 @@ Imports System.Math
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 
-
 Public Class cRowCol
     Public Property Row As Integer
     Public Property Col As Integer
@@ -37,6 +36,8 @@ End Class
 Public Class cEcospaceDataStructures
 
 #Region "Public Fields"
+
+    Public Const DEFAULT_COORDINATESYSTEM As String = "GEOGCS[""WGS 84"", DATUM[""WGS_1984"", SPHEROID[""WGS 84"",6378137,298.257223563, AUTHORITY[""EPSG"",""7030""]], AUTHORITY[""EPSG"",""6326""]], PRIMEM[""Greenwich"",0, AUTHORITY[""EPSG"",""8901""]], UNIT[""degree"",0.01745329251994328, AUTHORITY[""EPSG"",""9122""]], AUTHORITY[""EPSG"",""4326""]]"
 
     Public EcosimScenarioDBID As Integer
     ''' <summary>Array of ecospace group database IDs.</summary>
@@ -67,6 +68,15 @@ Public Class cEcospaceDataStructures
     ''' Get/set whether Ecospace will use square cells, e.g. will bypass cell width corrections.
     ''' </summary>
     Public AssumeSquareCells As Boolean = False
+    ''' <summary>
+    ''' Bad-ass flag, stating whether cell length can be computed from cell size and vice-versa.
+    ''' This should really be properly determined from proper projections
+    ''' </summary>
+    Public LinkCellWidthAndSize As Boolean = True
+    ''' <summary>
+    ''' WKT string for the Ecospace coordinate system
+    ''' </summary>
+    Friend CoordinateSystemWKT As String = DEFAULT_COORDINATESYSTEM
 
     Public CurrentForce As Boolean
     'jb Ecoseed may get move to an object
@@ -164,12 +174,8 @@ Public Class cEcospaceDataStructures
     Public InRow As Integer
     ''' <summary>Number of rows in the current base map</summary>
     Public InCol As Integer
-    ''' <summary>Length in KM of a cell </summary>
-    ''' <remarks>Not area</remarks>
+    ''' <summary>Length in KM of a cell, used for dispersal etc.</summary>
     Public CellLength As Single
-    ''' <summary>Size of a cell in decimal degrees.</summary>
-    ''' <remarks>Maintained for spatially referencing a map.</remarks>
-    Public CellSize As Single
     ''' <summary>Latitude of upper left coordinate of the current basemap.</summary>
     Public Lat1 As Single
     ''' <summary>Longitude of upper left coordinate of the current basemap.</summary>
@@ -529,12 +535,7 @@ Public Class cEcospaceDataStructures
     '''<summary>max capacity by group</summary>
     ''' <remarks>Used to check that the user has set capacities for all groups </remarks>
     Public MaxHabCap() As Single
-    ''' <summary>
-    ''' Latiude of a cell by row
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Lat() As Single
-
+ 
     Public Width() As Single
 
     Public SaveAnnual As Boolean = True
@@ -1582,7 +1583,6 @@ Public Class cEcospaceDataStructures
             ReDim MPAmonth(12, 1)
             ReDim IsFished(nFleets, Me.InRow, Me.InCol)
             ReDim EffZones(InRow, InCol)
-            ReDim Lat(InRow)
             ReDim Width(InRow)
 
             'jb move this here to set a few defaults this will have to change
@@ -1590,12 +1590,18 @@ Public Class cEcospaceDataStructures
                 PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
 
-            'jb 28-Nov-2013 find width for the center of the cell
-            'half a cell height in degrees 
             Dim halfcell As Single = Me.CellLength / 2 / (60 * 1.852F)
             For i = 1 To InRow
-                Lat(i) = Lat1 - Me.CellLength * (i - 1) / (60 * 1.852F) - halfcell
-                Width(i) = CSng(Math.Cos(Lat(i) / 90.0 * Math.PI / 2.0))
+
+                'jb 28-Nov-2013 find width for the center of the cell
+                If (Me.AssumeSquareCells) Then
+                    Width(i) = 1
+                Else
+                    'half a cell height in degrees 
+                    Dim Lat As Single = Lat1 - Me.CellLength * (i - 1) / (60 * 1.852F) - halfcell
+                    Width(i) = CSng(Math.Cos(Lat / 90.0 * Math.PI / 2.0))
+                End If
+
                 For j = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
                     DepthA(i, j) = Depth(i, j)
@@ -2106,13 +2112,6 @@ Public Class cEcospaceDataStructures
 
 
     End Sub
-
-    Public Function GetCellSize() As Single
-        Dim cellSizeDegrees As Single = Me.CellSize
-        If cellSizeDegrees = 0 Then cellSizeDegrees = cEcospaceBasemap.ToCellSize(Me.CellLength)
-        Return cellSizeDegrees
-    End Function
-
 
     ''' <summary>
     ''' Count the number of water cells and sets public property nWaterCells

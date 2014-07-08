@@ -20,10 +20,9 @@
 
 Option Strict On
 Imports EwECore
-Imports System.Windows.Forms
-Imports ScientificInterface.Controls
-Imports ScientificInterface.Other
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -45,6 +44,7 @@ Public Class dlgEditBasemap
     Private m_fpLon As cEwEFormatProvider = Nothing
     Private m_fpCellLength As cEwEFormatProvider = Nothing
     Private m_fpCellSize As cEwEFormatProvider = Nothing
+    Private m_fpSquareCells As cEwEFormatProvider = Nothing
 
     Private m_bInitialized As Boolean = False
     Private m_bInUpdate As Boolean = False
@@ -82,6 +82,10 @@ Public Class dlgEditBasemap
         Me.m_fpCellSize = New cEwEFormatProvider(Me.m_uic, Me.m_nudCellSize, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellSize))
         Me.m_fpCellSize.Value = Me.m_basemap.CellSize
 
+        Me.m_fpSquareCells = New cEwEFormatProvider(Me.m_uic, Me.m_cbAssumeSquareCells, GetType(Boolean))
+        Me.m_fpSquareCells.Value = Me.m_basemap.AssumeSquareCells
+        AddHandler Me.m_fpSquareCells.OnValueChanged, AddressOf OnAssumeSquareCellsChanged
+
         Me.UpdateControls()
 
         Me.m_bInitialized = True
@@ -89,6 +93,9 @@ Public Class dlgEditBasemap
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        RemoveHandler Me.m_fpSquareCells.OnValueChanged, AddressOf OnAssumeSquareCellsChanged
+        Me.m_fpSquareCells.Release()
 
         Me.m_fpCellLength.Release()
         Me.m_fpCellSize.Release()
@@ -100,13 +107,13 @@ Public Class dlgEditBasemap
 
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
         Me.Apply()
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -114,24 +121,21 @@ Public Class dlgEditBasemap
     Private Sub OnCellLengthChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_nudCellLength.ValueChanged
 
-        If Not Me.m_bInitialized Or Me.m_bInUpdate Then Return
-
-        Me.m_bInUpdate = True
-        Dim sLen As Single = CSng(Me.m_nudCellLength.Value)
-        Me.m_fpCellSize.Value = cEcospaceBasemap.ToCellSize(sLen)
-        Me.m_bInUpdate = False
+        Me.CalcCellSize()
 
     End Sub
 
     Private Sub OnCellSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_nudCellSize.ValueChanged
 
-        If Not Me.m_bInitialized Or Me.m_bInUpdate Then Return
+        Me.CalcCellLength()
 
-        Me.m_bInUpdate = True
-        Dim sSize As Single = CSng(Me.m_nudCellSize.Value)
-        Me.m_fpCellLength.Value = cEcospaceBasemap.ToCellLength(sSize)
-        Me.m_bInUpdate = False
+    End Sub
+
+    Private Sub OnAssumeSquareCellsChanged(sender As System.Object, e As System.EventArgs) 
+
+        Me.CalcCellSize()
+        Me.UpdateControls()
 
     End Sub
 
@@ -140,7 +144,40 @@ Public Class dlgEditBasemap
 #Region " Implementation "
 
     Private Sub UpdateControls()
+
+        Dim strUnit As String = cSystemUtils.IIF(Me.m_cbAssumeSquareCells.Checked, SharedResources.UNIT_METER, SharedResources.UNIT_DECIMALDEGREE)
+
+        Me.m_lblUnitLon.Text = strUnit
+        Me.m_lblUnitLat.Text = strUnit
+        Me.m_lblUnitCellSize.Text = strUnit
+        Me.m_lblUnitCellLen.Text = SharedResources.UNIT_KILOMETER
+
         Me.m_btnOk.Enabled = True
+
+    End Sub
+
+    Private Sub CalcCellSize()
+
+        If Not Me.m_bInitialized Or Me.m_bInUpdate Then Return
+
+        Me.m_bInUpdate = True
+        Dim sLen As Single = CSng(Me.m_nudCellLength.Value)
+        Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+        Me.m_fpCellSize.Value = bm.ToCellSize(sLen, Me.m_cbAssumeSquareCells.Checked)
+        Me.m_bInUpdate = False
+
+    End Sub
+
+    Private Sub CalcCellLength()
+
+        If Not Me.m_bInitialized Or Me.m_bInUpdate Then Return
+
+        Me.m_bInUpdate = True
+        Dim sSize As Single = CSng(Me.m_nudCellSize.Value)
+        Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+        Me.m_fpCellLength.Value = bm.ToCellLength(sSize, Me.m_cbAssumeSquareCells.Checked)
+        Me.m_bInUpdate = False
+
     End Sub
 
     Private Sub Apply()
@@ -171,6 +208,7 @@ Public Class dlgEditBasemap
         Me.m_basemap.CellSize = CSng(Me.m_fpCellSize.Value)
         Me.m_basemap.Latitude = CSng(Me.m_fpLat.Value)
         Me.m_basemap.Longitude = CSng(Me.m_fpLon.Value)
+        Me.m_basemap.AssumeSquareCells = CBool(Me.m_fpSquareCells.Value)
 
         If bResizeMap Then
             cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_RESIZING_MAP)
