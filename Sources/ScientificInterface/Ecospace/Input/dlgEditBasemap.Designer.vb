@@ -58,6 +58,11 @@ Partial Class dlgEditBasemap
         Me.m_lblCellSize = New System.Windows.Forms.Label()
         Me.m_hdrDimensions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrSpatialReference = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_cbAssumeSquareCells = New System.Windows.Forms.CheckBox()
+        Me.m_lblUnitLat = New System.Windows.Forms.Label()
+        Me.m_lblUnitLon = New System.Windows.Forms.Label()
+        Me.m_lblUnitCellLen = New System.Windows.Forms.Label()
+        Me.m_lblUnitCellSize = New System.Windows.Forms.Label()
         Me.m_tlpButtons.SuspendLayout()
         CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -166,25 +171,56 @@ Partial Class dlgEditBasemap
         '
         'm_hdrDimensions
         '
+        resources.ApplyResources(Me.m_hdrDimensions, "m_hdrDimensions")
         Me.m_hdrDimensions.CanCollapseParent = False
         Me.m_hdrDimensions.CollapsedParentHeight = 0
         Me.m_hdrDimensions.IsCollapsed = False
-        resources.ApplyResources(Me.m_hdrDimensions, "m_hdrDimensions")
         Me.m_hdrDimensions.Name = "m_hdrDimensions"
         '
         'm_hdrSpatialReference
         '
+        resources.ApplyResources(Me.m_hdrSpatialReference, "m_hdrSpatialReference")
         Me.m_hdrSpatialReference.CanCollapseParent = False
         Me.m_hdrSpatialReference.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrSpatialReference, "m_hdrSpatialReference")
         Me.m_hdrSpatialReference.IsCollapsed = False
         Me.m_hdrSpatialReference.Name = "m_hdrSpatialReference"
+        '
+        'm_cbAssumeSquareCells
+        '
+        resources.ApplyResources(Me.m_cbAssumeSquareCells, "m_cbAssumeSquareCells")
+        Me.m_cbAssumeSquareCells.Name = "m_cbAssumeSquareCells"
+        Me.m_cbAssumeSquareCells.UseVisualStyleBackColor = True
+        '
+        'm_lblUnitLat
+        '
+        resources.ApplyResources(Me.m_lblUnitLat, "m_lblUnitLat")
+        Me.m_lblUnitLat.Name = "m_lblUnitLat"
+        '
+        'm_lblUnitLon
+        '
+        resources.ApplyResources(Me.m_lblUnitLon, "m_lblUnitLon")
+        Me.m_lblUnitLon.Name = "m_lblUnitLon"
+        '
+        'm_lblUnitCellLen
+        '
+        resources.ApplyResources(Me.m_lblUnitCellLen, "m_lblUnitCellLen")
+        Me.m_lblUnitCellLen.Name = "m_lblUnitCellLen"
+        '
+        'm_lblUnitCellSize
+        '
+        resources.ApplyResources(Me.m_lblUnitCellSize, "m_lblUnitCellSize")
+        Me.m_lblUnitCellSize.Name = "m_lblUnitCellSize"
         '
         'dlgEditBasemap
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_lblUnitCellSize)
+        Me.Controls.Add(Me.m_lblUnitCellLen)
+        Me.Controls.Add(Me.m_lblUnitLon)
+        Me.Controls.Add(Me.m_lblUnitLat)
+        Me.Controls.Add(Me.m_cbAssumeSquareCells)
         Me.Controls.Add(Me.m_pbLink)
         Me.Controls.Add(Me.m_hdrSpatialReference)
         Me.Controls.Add(Me.m_lblLonTL)
@@ -236,5 +272,10 @@ Partial Class dlgEditBasemap
     Private WithEvents m_nudLonTL As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudLatTL As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudCellSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_cbAssumeSquareCells As System.Windows.Forms.CheckBox
+    Private WithEvents m_lblUnitLat As System.Windows.Forms.Label
+    Private WithEvents m_lblUnitLon As System.Windows.Forms.Label
+    Private WithEvents m_lblUnitCellLen As System.Windows.Forms.Label
+    Private WithEvents m_lblUnitCellSize As System.Windows.Forms.Label
 
 End Class

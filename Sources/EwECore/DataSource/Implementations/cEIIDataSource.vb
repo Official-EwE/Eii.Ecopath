@@ -1088,7 +1088,6 @@ Public Class cEIIDataSource
             ecospaceDS.InRow = 320
             ecospaceDS.InCol = 720
             ecospaceDS.CellLength = 100
-            ecospaceDS.CellSize = cCore.NULL_VALUE 'CSng(Me.m_db.ReadSafe(reader, "CellSize", cEcospaceBasemap.ToCellSize(ecospaceDS.CellLength)))
             ecospaceDS.Lat1 = 0
             ecospaceDS.Lon1 = 0
             ecospaceDS.TimeStep = 1 / 12
@@ -1116,6 +1115,8 @@ Public Class cEIIDataSource
         Catch ex As Exception
             bSucces = False
         End Try
+
+        ' JS 08Jl14: redimForRun is called too many times
 
         'set the size of the variables that hold the map data to InRow and InCol
         'Call cEcospace.redimForRun() First because it allocates bigger blocks of memory

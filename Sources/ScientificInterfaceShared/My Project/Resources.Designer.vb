@@ -8150,6 +8150,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to dd.
+        '''</summary>
+        Public ReadOnly Property UNIT_DECIMALDEGREE() As String
+            Get
+                Return ResourceManager.GetString("UNIT_DECIMALDEGREE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to KB.
         '''</summary>
         Public ReadOnly Property UNIT_KILOBYTE() As String
@@ -8159,11 +8168,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to km.
+        '''</summary>
+        Public ReadOnly Property UNIT_KILOMETER() As String
+            Get
+                Return ResourceManager.GetString("UNIT_KILOMETER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MB.
         '''</summary>
         Public ReadOnly Property UNIT_MEGABYTE() As String
             Get
                 Return ResourceManager.GetString("UNIT_MEGABYTE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to m.
+        '''</summary>
+        Public ReadOnly Property UNIT_METER() As String
+            Get
+                Return ResourceManager.GetString("UNIT_METER", resourceCulture)
             End Get
         End Property
         

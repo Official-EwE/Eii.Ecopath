@@ -464,7 +464,7 @@ Namespace Core
         InCol
         ''' <summary>Length of a cell (km).</summary>
         CellLength
-        ''' <summary>Size of a cell (decimal degrees).</summary>
+        ''' <summary>Size of a cell (in map units).</summary>
         CellSize
         ''' <summary>Latitude of spatial data.</summary>
         Latitude
@@ -1539,6 +1539,10 @@ Namespace Core
         MSYNumTrialYears
         ''' <summary>Number of MSY trial years.</summary>
         MSYRunLengthMode
+
+        ' JS 04Jul14: progressively overcome Ecospace projection limitations
+        AssumeSquareCells
+        CoordinateSystem
 
     End Enum
 

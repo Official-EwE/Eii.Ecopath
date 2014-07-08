@@ -1962,11 +1962,12 @@ Public Class cEIIXMLDataSource
             ecospaceDS.InRow = CInt(drow("Inrow"))
             ecospaceDS.InCol = CInt(drow("Incol"))
             ecospaceDS.CellLength = CSng(drow("CellLength"))
-            ecospaceDS.CellSize = CSng(Me.ReadSafe(drow, "CellSize", cEcospaceBasemap.ToCellSize(ecospaceDS.CellLength)))
             ecospaceDS.Lat1 = CSng(Me.ReadSafe(drow, "MinLat", 0))
             ecospaceDS.Lon1 = CSng(Me.ReadSafe(drow, "MinLon", 0))
             ecospaceDS.TimeStep = CSng(Me.ReadSafe(drow, "TimeStep", 0))
             ecospaceDS.PredictEffort = (CInt(Me.ReadSafe(drow, "PredictEffort", True)) <> 0)
+            ecospaceDS.AssumeSquareCells = (CInt(Me.ReadSafe(drow, "AssumeSquareCells", True)) <> 0)
+            ecospaceDS.CoordinateSystemWKT = CStr(Me.ReadSafe(drow, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM))
 
             ' JS 05apr08: pragmatic fix to prevent mayhem
             If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -2000,6 +2001,8 @@ Public Class cEIIXMLDataSource
             Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace Scenario {1}", ex.Message, iScenarioID))
             bSucces = False
         End Try
+
+        ' JS 08Jl14: redimForRun is called too many times
 
         'set the size of the variables that hold the map data to InRow and InCol
         'Call cEcospace.redimForRun() First because it allocates bigger blocks of memory

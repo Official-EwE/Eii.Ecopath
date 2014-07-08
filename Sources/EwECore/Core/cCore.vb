@@ -79,7 +79,7 @@ Public Class cCore
     Public Const N_MONTHS As Integer = 12
     ''' <summary>Max number of years ecosim or ecospace can run for</summary>
     Public Const MAX_RUN_LENGTH As Integer = 500
-
+  
 #End Region ' Shared consts
 
 #Region " Public delegates "
@@ -2706,15 +2706,15 @@ Public Class cCore
             ' Has Ecospace?
             If (savetype >= eAutosaveTypes.Ecospace) Then
                 ' #Yes: add ecospace scenario details
-                ' JS: 
                 sb.AppendLine("EcospaceScenario," & cStringUtils.ToCSVField(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name))
                 sb.AppendLine("MapRows," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow))
                 sb.AppendLine("MapCols," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol))
                 sb.AppendLine("MapCellLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength))
-                sb.AppendLine("MapCellSize," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.GetCellSize()))
+                sb.AppendLine("MapCellSize," & cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize()))
                 sb.AppendLine("MapLatitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1))
                 sb.AppendLine("MapLongitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1))
                 sb.AppendLine("EcoSpaceTimeStepLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep))
+                sb.AppendLine("CoordinateSystemWKT," & cStringUtils.ToCSVField(Me.m_EcoSpaceData.CoordinateSystemWKT.Replace("""", "'")))
             End If
 
             ' Has Ecotracer?
@@ -9978,7 +9978,6 @@ Public Class cCore
                 .InCol = m_EcoSpaceData.InCol
                 .InRow = m_EcoSpaceData.InRow
                 .CellLength = m_EcoSpaceData.CellLength
-                .CellSize = m_EcoSpaceData.CellSize
                 .Latitude = m_EcoSpaceData.Lat1 'UDH_UL
                 .Longitude = m_EcoSpaceData.Lon1
                 .ResetStatusFlags()
@@ -10048,7 +10047,6 @@ Public Class cCore
             'Me.m_EcoSpaceData.InCol = m_EcospaceBasemap.InCol
 
             Me.m_EcoSpaceData.CellLength = m_EcospaceBasemap.CellLength
-            Me.m_EcoSpaceData.CellSize = m_EcospaceBasemap.CellSize
 
             Me.m_EcoSpaceData.Lat1 = m_EcospaceBasemap.Latitude
             Me.m_EcoSpaceData.Lon1 = m_EcospaceBasemap.Longitude

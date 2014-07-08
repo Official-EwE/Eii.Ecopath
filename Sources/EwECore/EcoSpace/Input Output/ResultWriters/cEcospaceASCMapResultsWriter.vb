@@ -206,11 +206,13 @@ Public Class cEcospaceASCMapResultsWriter
     ''' -----------------------------------------------------------------------
     Protected Sub WriteASCIIHeader(ByVal writer As StreamWriter)
 
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+
         writer.WriteLine("ncols         " & Me.EcospaceData.InCol)
         writer.WriteLine("nrows         " & Me.EcospaceData.InRow)
         writer.WriteLine("xllcorner     " & Me.EcospaceData.Lon1)
-        writer.WriteLine("yllcorner     " & Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow) * Me.EcospaceData.GetCellSize())
-        writer.WriteLine("cellsize      " & Me.EcospaceData.GetCellSize())
+        writer.WriteLine("yllcorner     " & Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow) * bm.CellSize())
+        writer.WriteLine("cellsize      " & bm.CellSize())
         writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
 
     End Sub
