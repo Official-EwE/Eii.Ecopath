@@ -2633,10 +2633,12 @@
     <value>Z||Tot. mort. rate|Total mortality rate</value>
   </data>
   <data name="GENERIC_VALUE_MAPPOS" xml:space="preserve">
-    <value>row {2}, col {3}; lon {0}, lat {1}</value>
+    <value>row {3}, col {4}; lon {0}{2}, lat {1}{2}</value>
+    <comment>{0}=lon pos, {1}=lat pos, {2}=map unit, {3}=row, {4}=col</comment>
   </data>
   <data name="GENERIC_VALUE_MAPPOS_VALUE" xml:space="preserve">
-    <value>row {2}, col {3}; lon {0}, lat {1}; value: {4}</value>
+    <value>row {3}, col {4}; lon {0}{2}, lat {1}{2}; value: {5}</value>
+    <comment>{0}=lon pos, {1}=lat pos, {2}=map unit, {3}=row, {4}=col, {5}=value</comment>
   </data>
   <data name="ABOUT_32BIT" xml:space="preserve">
     <value>32 bit</value>
@@ -3124,5 +3126,11 @@
   </data>
   <data name="UNIT_METER" xml:space="preserve">
     <value>m</value>
+  </data>
+  <data name="VARIABLE_LAYERMIGRATION" xml:space="preserve">
+    <value>Migration</value>
+  </data>
+  <data name="VARIABLE_LAYERREGION" xml:space="preserve">
+    <value>Region</value>
   </data>
 </root>

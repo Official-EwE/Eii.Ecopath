@@ -144,7 +144,7 @@ Namespace Controls.Map
                     renderer = New cLayerRendererValue(vs)
                     renderer.ScaleMin = 0
                     editor = New cLayerEditorRegion()
-                    layer = New cDisplayRasterLayer(uic, bmd.LayerRegion, renderer, editor)
+                    layer = New cDisplayRasterLayer(uic, bmd.LayerRegion, renderer, editor, bmd, eVarNameFlags.LayerRegion)
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMPA
