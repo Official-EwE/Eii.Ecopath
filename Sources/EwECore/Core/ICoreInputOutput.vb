@@ -271,6 +271,7 @@ Public MustInherit Class cCoreInputOutputBase
 
         meta = New cVariableMetaData(250)
         val = New cValue(New String(name), eVarNameFlags.Name, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))

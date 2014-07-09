@@ -2153,7 +2153,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to row {2}, col {3}; lon {0}, lat {1}.
+        '''  Looks up a localized string similar to row {3}, col {4}; lon {0}{2}, lat {1}{2}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_MAPPOS() As String
             Get
@@ -2162,7 +2162,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to row {2}, col {3}; lon {0}, lat {1}; value: {4}.
+        '''  Looks up a localized string similar to row {3}, col {4}; lon {0}{2}, lat {1}{2}; value: {5}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_MAPPOS_VALUE() As String
             Get
@@ -8555,6 +8555,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Migration.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_LAYERMIGRATION() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERMIGRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MPA map|||Marine Protected Area map.
         '''</summary>
         Public ReadOnly Property VARIABLE_LAYERMPA() As String
@@ -8569,6 +8578,15 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_LAYERPORT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_LAYERPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Region.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_LAYERREGION() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERREGION", resourceCulture)
             End Get
         End Property
         

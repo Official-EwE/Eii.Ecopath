@@ -35,17 +35,6 @@ Namespace Controls.Map.Layers
         Implements IUIElement
         Implements ILayerEditorGUI
 
-#Region " Private vars "
-
-        ''' <summary>Underlying editor.</summary>
-        Private m_editor As cLayerEditor = Nothing
-        ''' <summary>Underlying raster layer.</summary>
-        Private m_layer As cDisplayRasterLayer = Nothing
-        ''' <summary>Underlying UI context.</summary>
-        Private m_uic As cUIContext = Nothing
-
-#End Region ' Private vars
-
 #Region " Construction / destruction "
 
         Public Sub New()
@@ -57,28 +46,21 @@ Namespace Controls.Map.Layers
 
 #Region " Public interfaces "
 
-        Public Sub Attach(ByVal uic As cUIContext, _
-                          ByVal editor As cLayerEditor, _
-                          ByVal layer As cDisplayRasterLayer)
+        Public Overridable Sub Attach(ByVal uic As cUIContext, _
+                                      ByVal editor As cLayerEditor, _
+                                      ByVal layer As cDisplayRasterLayer)
             Me.UIContext = uic
             Me.Editor = editor
             Me.Layer = layer
         End Sub
 
-        Public Sub Detach()
+        Public Overridable Sub Detach()
             Me.UIContext = Nothing
             Me.Editor = Nothing
         End Sub
 
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Protected Set(ByVal value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -87,14 +69,6 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Property Editor() As cLayerEditor
-            Get
-                Return Me.m_editor
-            End Get
-            Protected Set(ByVal editor As cLayerEditor)
-                Me.m_editor = editor
-                Me.UpdateContent(editor)
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -103,14 +77,6 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Property Layer() As cDisplayRasterLayer
-            Get
-                Return Me.m_layer
-            End Get
-            Protected Set(ByVal layer As cDisplayRasterLayer)
-                Me.m_layer = layer
-                Me.Invalidate(True)
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.Initialize"/>

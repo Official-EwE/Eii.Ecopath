@@ -30,6 +30,7 @@ Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Properties
 Imports System.Reflection
 Imports System.Security.Permissions
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -258,7 +259,7 @@ Namespace Controls.Map
 #End If
                     Catch ex As Exception
 
-            End Try
+                    End Try
 
                 End If
 
@@ -344,14 +345,18 @@ Namespace Controls.Map
 
                     Dim sel As cPropertySelectionCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
 
-                    If sel IsNot Nothing Then
+                    If (sel IsNot Nothing) Then
+                        Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(sLat)
+                        Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(sLon)
+                        Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells, My.Resources.UNIT_METER, My.Resources.UNIT_DECIMALDEGREE)
+
                         If Not String.IsNullOrWhiteSpace(strVal) Then
                             strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE, _
-                                                        Me.UIContext.StyleGuide.FormatNumber(sLon), Me.UIContext.StyleGuide.FormatNumber(sLat), _
+                                                        strLon, strLat, strUnit, _
                                                         ptCell.Y, ptCell.X, strVal)
                         Else
                             strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS, _
-                                                        Me.UIContext.StyleGuide.FormatNumber(sLon), Me.UIContext.StyleGuide.FormatNumber(sLat), _
+                                                        strLon, strLat, strUnit, _
                                                         ptCell.Y, ptCell.X)
                         End If
                         sel.Invoke(sel.Selection, strFeedback)
@@ -709,6 +714,7 @@ Namespace Controls.Map
 
         <ReflectionPermission(SecurityAction.Demand, MemberAccess:=True)> _
         Private Sub ResetExceptionState(ByVal control As Control)
+            ' Reset exception state on drawing errors
             Dim args() As Object = {&H400000, False}
             GetType(Control).InvokeMember("SetState", _
                                           BindingFlags.NonPublic Or BindingFlags.InvokeMethod Or BindingFlags.Instance, _

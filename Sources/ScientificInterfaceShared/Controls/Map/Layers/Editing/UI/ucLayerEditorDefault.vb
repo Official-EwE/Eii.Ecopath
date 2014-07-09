@@ -34,9 +34,24 @@ Namespace Controls.Map.Layers
     ''' =======================================================================
     Public Class ucLayerEditorDefault
 
+        Private m_fpName As cEwEFormatProvider = Nothing
+
         Public Sub New()
             MyBase.New()
             Me.InitializeComponent()
+        End Sub
+
+        Public Overrides Sub Attach(uic As cUIContext, editor As cLayerEditor, layer As cDisplayRasterLayer)
+            MyBase.Attach(uic, editor, layer)
+            Me.m_fpName = New cEwEFormatProvider(uic, Me.m_tbxName, GetType(String))
+            Me.m_fpName.Value = layer.Name
+            AddHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
+        End Sub
+
+        Public Overrides Sub Detach()
+            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
+            Me.m_fpName.Release()
+            MyBase.Detach()
         End Sub
 
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
@@ -44,6 +59,7 @@ Namespace Controls.Map.Layers
 
             ' Sanity checks
             If (editor Is Nothing) Then Return
+            If (Me.UIContext Is Nothing) Then Return
             If (Me.m_ucSlider Is Nothing) Then Return
 
             Dim bEnabled As Boolean = editor.IsEditable
@@ -52,7 +68,7 @@ Namespace Controls.Map.Layers
             Me.m_ucSlider.Enabled = bEnabled
 
             If (Me.Layer IsNot Nothing) Then
-                Me.m_tbxName.Text = Me.Layer.Name
+                Me.m_fpName.Enabled = Me.HasUniqueSource()
 
                 Dim sMin As Single = cCore.NULL_VALUE
                 Dim sMax As Single = cCore.NULL_VALUE
@@ -68,6 +84,8 @@ Namespace Controls.Map.Layers
 
                 Me.m_tbxMin.Text = cStringUtils.FormatNumber(sMin)
                 Me.m_tbxMax.Text = cStringUtils.FormatNumber(sMax)
+            Else
+                Me.m_fpName.Enabled = False
             End If
 
         End Sub
@@ -93,6 +111,24 @@ Namespace Controls.Map.Layers
             End If
 
         End Sub
+
+        Private Sub OnNameChanged(sender As Object, args As EventArgs)
+            Me.Layer.Name = CStr(Me.m_fpName.Value)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Diagnostic method, states if a layer has a unique core variable 
+        ''' link. Layers with unique sources support extra's that can be stored
+        ''' in the database such as remarks and visual styles.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function HasUniqueSource() As Boolean
+            If (Me.Layer.Source Is Nothing) Then Return False
+            If (TypeOf Me.Layer.Source Is cEcospaceBasemap) Then Return False
+            Return True
+        End Function
 
     End Class
 

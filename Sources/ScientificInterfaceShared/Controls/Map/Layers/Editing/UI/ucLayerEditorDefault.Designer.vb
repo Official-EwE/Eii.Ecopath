@@ -76,7 +76,6 @@ Namespace Controls.Map.Layers
             '
             resources.ApplyResources(Me.m_tbxName, "m_tbxName")
             Me.m_tbxName.Name = "m_tbxName"
-            Me.m_tbxName.ReadOnly = True
             '
             'm_lblMin
             '
