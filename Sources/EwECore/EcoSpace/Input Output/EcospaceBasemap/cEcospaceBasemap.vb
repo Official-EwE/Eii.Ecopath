@@ -506,7 +506,7 @@ Public Class cEcospaceBasemap
             Return CBool(Me.GetVariable(eVarNameFlags.AssumeSquareCells))
         End Get
         Set(value As Boolean)
-            Me.SetVariable(eVarNameFlags.AssumeSquareCells, ValidationStatus)
+            Me.SetVariable(eVarNameFlags.AssumeSquareCells, value)
         End Set
     End Property
 

@@ -204,11 +204,11 @@ Public Class dlgEditBasemap
         End If
 
         ' Apply other data first
+        Me.m_basemap.AssumeSquareCells = CBool(Me.m_fpSquareCells.Value)
         Me.m_basemap.CellLength = CSng(Me.m_fpCellLength.Value)
         Me.m_basemap.CellSize = CSng(Me.m_fpCellSize.Value)
         Me.m_basemap.Latitude = CSng(Me.m_fpLat.Value)
         Me.m_basemap.Longitude = CSng(Me.m_fpLon.Value)
-        Me.m_basemap.AssumeSquareCells = CBool(Me.m_fpSquareCells.Value)
 
         If bResizeMap Then
             cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_RESIZING_MAP)
