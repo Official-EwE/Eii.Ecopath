@@ -2199,6 +2199,30 @@ Public Class cEcospaceDataStructures
 
 #End Region
 
+    ''' <summary>Equator length in km.</summary>
+    ''' <remarks>http://en.wikipedia.org/wiki/Equator#Exact_length_of_the_Equator</remarks>
+    Friend Shared c_sEquatorLength As Single = 40007.862917
+
+    Friend ReadOnly Property DegreeToKm() As Single
+        Get
+            Return c_sEquatorLength / 360.0!
+        End Get
+    End Property
+
+    Public Function ToCellSize(ByVal sCellLength As Single, ByVal bAssumeSquareCells As Boolean) As Single
+        If (bAssumeSquareCells) Then
+            Return sCellLength * 1000.0!
+        End If
+        Return sCellLength / DegreeToKm
+    End Function
+
+    Public Function ToCellLength(ByVal sCellSize As Single, ByVal bAssumeSquareCells As Boolean) As Single
+        If (bAssumeSquareCells) Then
+            Return sCellSize / 1000.0!
+        End If
+        Return sCellSize * DegreeToKm
+    End Function
+
 End Class
 
 

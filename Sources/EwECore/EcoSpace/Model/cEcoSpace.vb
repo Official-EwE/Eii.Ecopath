@@ -92,12 +92,6 @@ Public Class cEcoSpace
 
     Private Const MIN_HABCAP As Single = 0.000001F
 
-    Private Enum eDistanceType As Integer
-        NauticalMiles
-        Kilometers
-        Degrees
-    End Enum
-
     ''' <summary>To call the plugins</summary>
     Private m_pluginManager As cPluginManager
 
@@ -575,7 +569,7 @@ Public Class cEcoSpace
                 Next
             Next
 
-             Me.UpdateDepthMap()
+            Me.UpdateDepthMap()
             '   Me.m_SpaceCatchSemaphor = New System.Threading.Semaphore(1, 1, "EcoSpaceMontlyCatch")
 
             Return True
@@ -6594,7 +6588,7 @@ exitline:
         Next iFleet
 
         'Cell size in degress at the equator
-        Dim CellDegrees As Single = m_Data.CellLength / (40007.862917 / 360.0F)
+        Dim CellSize As Single = m_Data.ToCellSize(Me.m_Data.CellLength, Me.m_Data.AssumeSquareCells)
 
         For iPort = 1 To Ports      'go port by port
             iColPortX = PortX(iPort)
@@ -6603,8 +6597,8 @@ exitline:
             'Port location in degrees
             'm_Data.InRow = Y = Lat
             'm_Data.InCol = X = Lon
-            LonPort = CSng(m_Data.Lon1 + (iColPortX * CellDegrees))
-            LatPort = CSng(m_Data.Lat1 - (iRowPortY * CellDegrees))
+            LonPort = CSng(m_Data.Lon1 + (iColPortX * CellSize))
+            LatPort = CSng(m_Data.Lat1 - (iRowPortY * CellSize))
 
             For iFleet = 0 To Me.m_Data.nFleets
                 ' Is this fleet based in a this port?
@@ -6613,10 +6607,10 @@ exitline:
                     For iRow = 1 To m_Data.InRow
                         For iCol = 1 To m_Data.InCol
                             If Me.EcoSpaceData.Depth(iRow, iCol) > 0 Then 'water cell
-                                Longi = CSng(m_Data.Lon1 + (iCol * CellDegrees))
-                                Lati = CSng(m_Data.Lat1 - (iRow * CellDegrees))
+                                Longi = CSng(m_Data.Lon1 + (iCol * CellSize))
+                                Lati = CSng(m_Data.Lat1 - (iRow * CellSize))
 
-                                Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.Kilometers)
+                                Dist = CalDistance(LonPort, LatPort, Longi, Lati)
                                 minD(iFleet, iRow, iCol) = Math.Min(Dist, minD(iFleet, iRow, iCol))
                             Else
                                 minD(iFleet, iRow, iCol) = 0
@@ -6638,8 +6632,7 @@ exitline:
 
     End Sub
 
-    Private Function CalDistance(ByVal Lon1 As Single, ByVal Lat1 As Single, ByVal Lon2 As Single, ByVal Lat2 As Single, _
-                                 ByVal DistType As eDistanceType) As Single  ', Dist As Single, XDist As Single, YDist As Single) As Single
+    Private Function CalDistance(ByVal Lon1 As Single, ByVal Lat1 As Single, ByVal Lon2 As Single, ByVal Lat2 As Single) As Single
         'On Local Error GoTo errCalDistance
         'Villy C received this sub is from Reg Watson 04 May 2001, modified to function and dropped last terms, also made types explicit
         'Calculates the distance between two map points Lon1,Lat1 and Lon2,Lat2
@@ -6657,49 +6650,43 @@ exitline:
         'Note: always goes the shortest way... not over pole or wrong way around the world
         'Dist does not have a sign but XDist and YDist do
 
-        Dim CoLatA As Double
-        Dim CoLatB As Double
-        Dim DifLong As Double
-        Dim PartA As Double
-        Dim PartB As Double
-        Dim XXD As Double
-        Dim AngDisDeg As Double
-        Dim DistNM As Double
-        Dim Ydist As Double
         Dim Dist As Double
-        Dim TwoPie As Double = Math.PI * 2.0#
-        Dim DR As Double = TwoPie / 360.0# 'for converting degrees to radians for functions
 
-        CoLatA = 90 + Sign(Lat1) * Abs(Lat1)
-        CoLatB = 90 + Sign(Lat2) * Abs(Lat2)
+        If (Me.m_Data.AssumeSquareCells) Then
+            Dim dx As Double = Lon2 - Lon1
+            Dim dy As Double = Lat2 - Lat1
+            Dist = Math.Sqrt(dx * dx + dy * dy)
+        Else
+            Dim CoLatA As Double
+            Dim CoLatB As Double
+            Dim DifLong As Double
+            Dim PartA As Double
+            Dim PartB As Double
+            Dim XXD As Double
+            Dim Ydist As Double
+            Dim TwoPie As Double = Math.PI * 2.0#
+            Dim DR As Double = TwoPie / 360.0# 'for converting degrees to radians for functions
 
-        DifLong = Abs(Lon1 - Lon2)
+            CoLatA = 90 + Sign(Lat1) * Abs(Lat1)
+            CoLatB = 90 + Sign(Lat2) * Abs(Lat2)
 
-        If DifLong > 180 Then
-            DifLong = 360 - DifLong
+            DifLong = Abs(Lon1 - Lon2)
+
+            If DifLong > 180 Then
+                DifLong = 360 - DifLong
+            End If
+
+            Ydist = Lat1 - Lat2
+
+            PartA = Cos(CoLatA * DR) * Cos(CoLatB * DR)
+            PartB = Sin(CoLatA * DR) * Sin(CoLatB * DR) * Cos(DifLong * DR)
+            XXD = PartA + PartB
+
+            If XXD = 1.0# Then XXD = 1.000001
+            'There is no arccos so it is atn(-X/sqr(-X*X+1))+1.5708
+            Dist = (Atan(-XXD / Sqrt(-XXD * XXD + 1.0#)) + 1.5708) / TwoPie * 360.0#
         End If
 
-        Ydist = Lat1 - Lat2
-
-        PartA = Cos(CoLatA * DR) * Cos(CoLatB * DR)
-        PartB = Sin(CoLatA * DR) * Sin(CoLatB * DR) * Cos(DifLong * DR)
-        XXD = PartA + PartB
-
-        If XXD = 1.0# Then XXD = 1.000001
-        'There is no arccos so it is atn(-X/sqr(-X*X+1))+1.5708
-        AngDisDeg = (Atan(-XXD / Sqrt(-XXD * XXD + 1.0#)) + 1.5708) / TwoPie * 360.0#
-        DistNM = AngDisDeg * 60.0#
-
-        Select Case DistType
-            Case eDistanceType.NauticalMiles
-                Dist = DistNM
-                Ydist = Ydist * 60.0#
-            Case eDistanceType.Kilometers
-                Dist = DistNM * 1.85325
-                Ydist = Ydist * 60.0# * 1.85325
-            Case eDistanceType.Degrees
-                Dist = AngDisDeg
-        End Select
         Return CSng(Dist)
 
         'This code can not be reached
@@ -6832,7 +6819,7 @@ exitline:
 
 
         For igrp As Integer = 1 To Me.m_Data.NGroups
-           
+
             If isCapChanged(igrp) Then
                 m_Data.TotHabCap(igrp) = 0.0F
                 m_Data.MaxHabCap(igrp) = 0.0F
