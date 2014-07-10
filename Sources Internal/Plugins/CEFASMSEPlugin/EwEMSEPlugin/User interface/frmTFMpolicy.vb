@@ -82,8 +82,9 @@ Public Class frmTFMpolicy
     Public Sub Init(UI As cUIContext, MSE As cMSE)
         Me.UIContext = UI
         Me.m_MSE = MSE
-        ' Make copy of strategies
-        Me.m_strategies = MSE.Strategies
+
+        Me.m_strategies = New Strategies(MSE, Me.UIContext.Core)
+        Me.m_strategies.Load()
     End Sub
 
 #End Region
@@ -102,6 +103,7 @@ Public Class frmTFMpolicy
         Me.m_zgh.AllowZoom = False
         Me.m_zgh.AllowPan = False
         Me.m_zgh.AllowEdit = True
+        Me.m_zgh.ShowHoverMenu = False
 
         Me.m_grid.UIContext = Me.UIContext
         Me.m_gridRegulations.UIContext = Me.UIContext
@@ -181,7 +183,7 @@ Public Class frmTFMpolicy
             If (Not Me.m_strategies.Contains(strategy)) Then
                 Me.m_strategies.Add(strategy)
                 Me.UpdateStrategies()
-                Me.changeSelectedStrategy(Me.m_tscmStrategies.Items.Count - 1)
+                Me.SelectedStrategy = Me.m_tscmStrategies.Items.Count - 1
                 Me.m_bStrategiesSaved = False
             Else
                 Me.m_MSE.InformUser(My.Resources.ERROR_ENTERNAME, eMessageImportance.Warning)
@@ -207,7 +209,7 @@ Public Class frmTFMpolicy
             If selStrategy >= 0 Then
                 Me.m_strategies.RemoveAt(selStrategy)
                 Me.UpdateStrategies()
-                Me.m_tscmStrategies.SelectedIndex = (Me.m_strategies.Count - 1)
+                Me.SelectedStrategy = Me.m_tscmStrategies.Items.Count - 1
                 Me.m_bStrategiesSaved = False
             End If
         Catch ex As Exception
@@ -222,7 +224,7 @@ Public Class frmTFMpolicy
 
         Try
             If Me.m_tscmStrategies.SelectedIndex >= 0 Then
-                Me.changeSelectedStrategy(Me.m_tscmStrategies.SelectedIndex)
+                Me.SelectedStrategy = Me.m_tscmStrategies.SelectedIndex
             End If
         Catch ex As Exception
 
@@ -239,8 +241,7 @@ Public Class frmTFMpolicy
 
         Try
             If Me.m_strategies.Save() Then
-                Me.m_MSE.Strategies.Clear()
-                Me.m_MSE.Strategies.AddRange(Me.m_strategies.ToArray)
+                Me.m_MSE.Strategies.Load()
                 Me.m_MSE.InvalidateData()
             End If
 
@@ -446,23 +447,25 @@ Public Class frmTFMpolicy
         Next
     End Sub
 
-    Private Sub changeSelectedStrategy(iSelectedIndex As Integer)
+    Private Property SelectedStrategy As Integer
+        Get
+            Return Me.m_tscmStrategies.SelectedIndex
+        End Get
+        Set(value As Integer)
+            Dim strat As Strategy = Nothing
+            If (0 <= value And value < Me.m_strategies.Count) Then
+                strat = Me.m_strategies(value)
+                Me.m_tscmStrategies.SelectedIndex = value
+            Else
+                Me.m_tscmStrategies.SelectedIndex = -1
+            End If
 
-        Dim strat As Strategy = Nothing
-
-        If (0 <= iSelectedIndex And iSelectedIndex < Me.m_strategies.Count) Then
-            strat = Me.m_strategies(iSelectedIndex)
-            Me.m_tscmStrategies.SelectedIndex = iSelectedIndex
-        Else
-            Me.m_tscmStrategies.SelectedIndex = -1
-        End If
-
-        Me.m_SelectedStrategy = strat
-        Me.m_grid.SelectedStrategy = strat
-        Me.m_gridRegulations.SelectedStrategy = strat
-        Me.UpdatePlot()
-
-    End Sub
+            Me.m_SelectedStrategy = strat
+            Me.m_grid.SelectedStrategy = strat
+            Me.m_gridRegulations.SelectedStrategy = strat
+            Me.UpdatePlot()
+        End Set
+    End Property
 
 #End Region ' Internals
 

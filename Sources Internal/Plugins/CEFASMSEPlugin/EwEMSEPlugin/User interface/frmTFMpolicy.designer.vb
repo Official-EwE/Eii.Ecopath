@@ -58,30 +58,30 @@ Partial Class frmTFMpolicy
         Me.m_tsbnAddStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_graph = New ZedGraph.ZedGraphControl()
+        Me.m_scDetails = New System.Windows.Forms.SplitContainer()
         Me.m_tlpHCR = New System.Windows.Forms.TableLayoutPanel()
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         Me.m_tsHCR = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnAddHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_hdrHCR = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_btnSave = New System.Windows.Forms.Button()
-        Me.m_btnCancel = New System.Windows.Forms.Button()
-        Me.m_scDetails = New System.Windows.Forms.SplitContainer()
         Me.m_tlpRegulations = New System.Windows.Forms.TableLayoutPanel()
         Me.m_hdrRegulations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_gridRegulations = New EwEMSEPlugin.gridRegulations()
+        Me.m_btnSave = New System.Windows.Forms.Button()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
         Me.m_tlpStrategies.SuspendLayout()
         Me.m_tsStrategy.SuspendLayout()
-        Me.m_tlpHCR.SuspendLayout()
-        Me.m_tsHCR.SuspendLayout()
         CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scDetails.Panel1.SuspendLayout()
         Me.m_scDetails.Panel2.SuspendLayout()
         Me.m_scDetails.SuspendLayout()
+        Me.m_tlpHCR.SuspendLayout()
+        Me.m_tsHCR.SuspendLayout()
         Me.m_tlpRegulations.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -149,6 +149,19 @@ Partial Class frmTFMpolicy
         Me.m_graph.ScrollMinY = 0.0R
         Me.m_graph.ScrollMinY2 = 0.0R
         Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
+        '
+        'm_scDetails
+        '
+        resources.ApplyResources(Me.m_scDetails, "m_scDetails")
+        Me.m_scDetails.Name = "m_scDetails"
+        '
+        'm_scDetails.Panel1
+        '
+        Me.m_scDetails.Panel1.Controls.Add(Me.m_tlpHCR)
+        '
+        'm_scDetails.Panel2
+        '
+        Me.m_scDetails.Panel2.Controls.Add(Me.m_tlpRegulations)
         '
         'm_tlpHCR
         '
@@ -219,32 +232,6 @@ Partial Class frmTFMpolicy
         Me.m_hdrHCR.IsCollapsed = False
         Me.m_hdrHCR.Name = "m_hdrHCR"
         '
-        'm_btnSave
-        '
-        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
-        Me.m_btnSave.Name = "m_btnSave"
-        Me.m_btnSave.UseVisualStyleBackColor = True
-        '
-        'm_btnCancel
-        '
-        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
-        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.m_btnCancel.Name = "m_btnCancel"
-        Me.m_btnCancel.UseVisualStyleBackColor = True
-        '
-        'm_scDetails
-        '
-        resources.ApplyResources(Me.m_scDetails, "m_scDetails")
-        Me.m_scDetails.Name = "m_scDetails"
-        '
-        'm_scDetails.Panel1
-        '
-        Me.m_scDetails.Panel1.Controls.Add(Me.m_tlpHCR)
-        '
-        'm_scDetails.Panel2
-        '
-        Me.m_scDetails.Panel2.Controls.Add(Me.m_tlpRegulations)
-        '
         'm_tlpRegulations
         '
         resources.ApplyResources(Me.m_tlpRegulations, "m_tlpRegulations")
@@ -292,6 +279,19 @@ Partial Class frmTFMpolicy
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridRegulations.UIContext = Nothing
         '
+        'm_btnSave
+        '
+        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
+        Me.m_btnSave.Name = "m_btnSave"
+        Me.m_btnSave.UseVisualStyleBackColor = True
+        '
+        'm_btnCancel
+        '
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
+        '
         'frmTFMpolicy
         '
         Me.AcceptButton = Me.m_btnSave
@@ -313,14 +313,14 @@ Partial Class frmTFMpolicy
         Me.m_tlpStrategies.PerformLayout()
         Me.m_tsStrategy.ResumeLayout(False)
         Me.m_tsStrategy.PerformLayout()
-        Me.m_tlpHCR.ResumeLayout(False)
-        Me.m_tlpHCR.PerformLayout()
-        Me.m_tsHCR.ResumeLayout(False)
-        Me.m_tsHCR.PerformLayout()
         Me.m_scDetails.Panel1.ResumeLayout(False)
         Me.m_scDetails.Panel2.ResumeLayout(False)
         CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scDetails.ResumeLayout(False)
+        Me.m_tlpHCR.ResumeLayout(False)
+        Me.m_tlpHCR.PerformLayout()
+        Me.m_tsHCR.ResumeLayout(False)
+        Me.m_tsHCR.PerformLayout()
         Me.m_tlpRegulations.ResumeLayout(False)
         Me.ResumeLayout(False)
 
