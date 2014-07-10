@@ -66,7 +66,7 @@ Friend Class cDBUpdate6_50_00_08
                 Dim sLen As Single = CSng(db.ReadSafe(reader, "CellLength", 0))
 
                 If (sLen = 0) Then
-                    lLen.Add(szSize * cEcospaceBasemap.c_sEquatorLength / 360.0!)
+                    lLen.Add(szSize * cEcospaceDataStructures.c_sEquatorLength / 360.0!)
                     lID.Add(CInt(reader("ScenarioID")))
                 End If
             End While
