@@ -9980,6 +9980,7 @@ Public Class cCore
                 .CellLength = m_EcoSpaceData.CellLength
                 .Latitude = m_EcoSpaceData.Lat1 'UDH_UL
                 .Longitude = m_EcoSpaceData.Lon1
+                .AssumeSquareCells = m_EcoSpaceData.AssumeSquareCells
                 .ResetStatusFlags()
                 .AllowValidation = True
             End With
@@ -10047,7 +10048,7 @@ Public Class cCore
             'Me.m_EcoSpaceData.InCol = m_EcospaceBasemap.InCol
 
             Me.m_EcoSpaceData.CellLength = m_EcospaceBasemap.CellLength
-
+            Me.m_EcoSpaceData.AssumeSquareCells = Me.m_EcospaceBasemap.AssumeSquareCells
             Me.m_EcoSpaceData.Lat1 = m_EcospaceBasemap.Latitude
             Me.m_EcoSpaceData.Lon1 = m_EcospaceBasemap.Longitude
 
