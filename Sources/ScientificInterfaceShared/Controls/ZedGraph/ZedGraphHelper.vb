@@ -382,8 +382,6 @@ Namespace Controls
             ExportToCSV
         End Enum
 
-        ''' <summary>States whether a floating hover menu should be displayed on the graph.</summary>
-        Private m_bShowHoverMenu As Boolean = True
         ''' <summary>The hover menu to display on top of graph areas.</summary>
         Private m_hovermenu As ucHoverMenu = Nothing
 
@@ -421,6 +419,11 @@ Namespace Controls
             Return Me.m_zgc IsNot Nothing
         End Function
 
+        ''' <summary>
+        ''' Get/set whether a floating hover menu should be displayed on the graph.
+        ''' </summary>
+        Public Property ShowHoverMenu As Boolean = True
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Attach a zedgraph helper to a zedgraph control.
@@ -446,25 +449,28 @@ Namespace Controls
             Me.m_zgc = zgc
             Me.m_nPanels = iNumPanels
 
-            Me.m_hovermenu = New ucHoverMenu(Me.m_uic)
-            Me.m_hovermenu.Attach(Me.m_zgc)
-            Me.m_hovermenu.AddItem(My.Resources.ZoomInHS, My.Resources.GENERIC_ZOOM_IN, eHoverCommands.Zoomin)
-            Me.m_hovermenu.AddItem(My.Resources.ZoomOutHS, My.Resources.GENERIC_ZOOM_OUT, eHoverCommands.Zoomout)
-            Me.m_hovermenu.AddItem(My.Resources.ZoomHS, My.Resources.GENERIC_ZOOM_RESET, eHoverCommands.ZoomReset)
-            Me.m_hovermenu.AddSeparator()
-            Me.m_hovermenu.AddItem(My.Resources.LegendHS, My.Resources.GENERIC_SHOW_LEGEND, eHoverCommands.ShowLegend)
-            Me.m_hovermenu.AddItem(My.Resources.tag, My.Resources.GENERIC_SHOW_LABELS, eHoverCommands.ShowLabels)
-            Me.m_hovermenu.AddSeparator()
-            Me.m_hovermenu.AddItem(My.Resources.ExportXMLHS, My.Resources.GENERIC_SAVE_TO_CSV, eHoverCommands.ExportToCSV)
-            AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
+            If (Me.ShowHoverMenu) Then
+                Me.m_hovermenu = New ucHoverMenu(Me.m_uic)
+                Me.m_hovermenu.Attach(Me.m_zgc)
+                Me.m_hovermenu.AddItem(My.Resources.ZoomInHS, My.Resources.GENERIC_ZOOM_IN, eHoverCommands.Zoomin)
+                Me.m_hovermenu.AddItem(My.Resources.ZoomOutHS, My.Resources.GENERIC_ZOOM_OUT, eHoverCommands.Zoomout)
+                Me.m_hovermenu.AddItem(My.Resources.ZoomHS, My.Resources.GENERIC_ZOOM_RESET, eHoverCommands.ZoomReset)
+                Me.m_hovermenu.AddSeparator()
+                Me.m_hovermenu.AddItem(My.Resources.LegendHS, My.Resources.GENERIC_SHOW_LEGEND, eHoverCommands.ShowLegend)
+                Me.m_hovermenu.AddItem(My.Resources.tag, My.Resources.GENERIC_SHOW_LABELS, eHoverCommands.ShowLabels)
+                Me.m_hovermenu.AddSeparator()
+                Me.m_hovermenu.AddItem(My.Resources.ExportXMLHS, My.Resources.GENERIC_SAVE_TO_CSV, eHoverCommands.ExportToCSV)
+                AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
+            End If
 
             Me.ChangeNumPanels()
 
             AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             AddHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             AddHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
-            'AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             AddHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
+
+            'AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
 
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
@@ -498,13 +504,15 @@ Namespace Controls
             RemoveHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            RemoveHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
+
+            If (Me.m_hovermenu IsNot Nothing) Then
+                RemoveHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
+                Me.m_hovermenu.Detach()
+                Me.m_hovermenu.Dispose()
+                Me.m_hovermenu = Nothing
+            End If
 
             Me.m_dtAxisLabels.Clear()
-
-            Me.m_hovermenu.Detach()
-            Me.m_hovermenu.Dispose()
-            Me.m_hovermenu = Nothing
 
             Me.m_zgc = Nothing
             Me.m_nPanels = 0 ' To ensure that avid child control detaches do not stumble
