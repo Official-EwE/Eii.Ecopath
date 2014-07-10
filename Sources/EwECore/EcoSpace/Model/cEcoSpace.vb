@@ -91,6 +91,8 @@ Public Class cEcoSpace
 #Region "Private data"
 
     Private Const MIN_HABCAP As Single = 0.000001F
+    Private Const TWO_PI As Double = Math.PI * 2.0#
+    Private Const DEG2RAD As Double = TWO_PI / 360.0# 'for converting degrees to radians for functions
 
     ''' <summary>To call the plugins</summary>
     Private m_pluginManager As cPluginManager
@@ -6664,8 +6666,6 @@ exitline:
             Dim PartB As Double
             Dim XXD As Double
             Dim Ydist As Double
-            Dim TwoPie As Double = Math.PI * 2.0#
-            Dim DR As Double = TwoPie / 360.0# 'for converting degrees to radians for functions
 
             CoLatA = 90 + Sign(Lat1) * Abs(Lat1)
             CoLatB = 90 + Sign(Lat2) * Abs(Lat2)
@@ -6678,13 +6678,13 @@ exitline:
 
             Ydist = Lat1 - Lat2
 
-            PartA = Cos(CoLatA * DR) * Cos(CoLatB * DR)
-            PartB = Sin(CoLatA * DR) * Sin(CoLatB * DR) * Cos(DifLong * DR)
+            PartA = Cos(CoLatA * DEG2RAD) * Cos(CoLatB * DEG2RAD)
+            PartB = Sin(CoLatA * DEG2RAD) * Sin(CoLatB * DEG2RAD) * Cos(DifLong * DEG2RAD)
             XXD = PartA + PartB
 
             If XXD = 1.0# Then XXD = 1.000001
             'There is no arccos so it is atn(-X/sqr(-X*X+1))+1.5708
-            Dist = (Atan(-XXD / Sqrt(-XXD * XXD + 1.0#)) + 1.5708) / TwoPie * 360.0#
+            Dist = (Atan(-XXD / Sqrt(-XXD * XXD + 1.0#)) + 1.5708) / TWO_PI * 360.0#
         End If
 
         Return CSng(Dist)
