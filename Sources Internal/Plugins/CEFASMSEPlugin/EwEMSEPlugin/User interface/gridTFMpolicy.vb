@@ -174,7 +174,7 @@ Public Class gridTargetFishingMortalityPolicy
                     DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = Units.Convert(eConvertTypes.ToDisplayBio, hcr.UpperLimit)
                     DirectCast(row.GetCells(eColumnTypes.MaxF), EwECell).Value = hcr.MaxF
 
-                    DirectCast(row.GetCells(eColumnTypes.CostFunction), EwECell).Value = hcr.TypeOfHCR
+                    DirectCast(row.GetCells(eColumnTypes.CostFunction), ICell).Value = hcr.TypeOfHCR
 
                 End If
 
