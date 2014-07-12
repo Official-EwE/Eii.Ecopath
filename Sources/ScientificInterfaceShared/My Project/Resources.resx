@@ -2131,9 +2131,6 @@
   <data name="LABEL_YZERO" xml:space="preserve">
     <value>Y &amp;zero:</value>
   </data>
-  <data name="SHAPEFUNCTION_NORMAL" xml:space="preserve">
-    <value>Normal</value>
-  </data>
   <data name="ECOSIM_DEFAULT_NEWCAPACITYSHAPE" xml:space="preserve">
     <value>Foraging response {0}</value>
     <comment>The default name for a new Ecosim capacity shape. {0}: autonumber</comment>
@@ -3132,5 +3129,14 @@
   </data>
   <data name="VARIABLE_LAYERREGION" xml:space="preserve">
     <value>Region</value>
+  </data>
+  <data name="SHAPEFUNCTION_NORMAL" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="SHAPEFUNCTION_LEFTSHOULDER" xml:space="preserve">
+    <value>Left shoulder</value>
+  </data>
+  <data name="SHAPEFUNCTION_RIGHTSHOULDER" xml:space="preserve">
+    <value>Right shoulder</value>
   </data>
 </root>

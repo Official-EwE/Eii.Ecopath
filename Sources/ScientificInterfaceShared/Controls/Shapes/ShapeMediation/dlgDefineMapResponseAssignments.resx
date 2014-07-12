@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>943, 419</value>
+    <value>997, 513</value>
   </data>
   <data name="m_btnOk.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 22</value>
@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>17</value>
   </data>
   <data name="m_lblMaps.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -181,13 +181,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblMaps.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>15</value>
   </data>
   <data name="m_tbxXMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>659, 32</value>
+    <value>899, 32</value>
   </data>
   <data name="m_tbxXMax.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 20</value>
+    <value>62, 20</value>
   </data>
   <data name="m_tbxXMax.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -202,7 +202,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxXMax.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="m_lblXMax.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -211,16 +211,19 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblXMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>614, 35</value>
+    <value>854, 36</value>
   </data>
   <data name="m_lblXMax.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 13</value>
+    <value>45, 13</value>
   </data>
   <data name="m_lblXMax.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="m_lblXMax.Text" xml:space="preserve">
-    <value>X m&amp;ax:</value>
+    <value>X m&amp;ax:  </value>
+  </data>
+  <data name="m_lblXMax.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="&gt;&gt;m_lblXMax.Name" xml:space="preserve">
     <value>m_lblXMax</value>
@@ -232,7 +235,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblXMax.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="m_graph.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -244,7 +247,7 @@
     <value>0, 3, 0, 0</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>590, 354</value>
+    <value>644, 448</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -253,19 +256,19 @@
     <value>m_graph</value>
   </data>
   <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.19206, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
   </data>
   <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>10</value>
   </data>
   <data name="m_tbxXMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>487, 32</value>
+    <value>492, 32</value>
   </data>
   <data name="m_tbxXMin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 20</value>
+    <value>66, 20</value>
   </data>
   <data name="m_tbxXMin.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -280,7 +283,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxXMin.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>14</value>
   </data>
   <data name="m_lblXMin.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -289,16 +292,19 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblXMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>445, 35</value>
+    <value>442, 36</value>
   </data>
   <data name="m_lblXMin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 13</value>
+    <value>42, 13</value>
   </data>
   <data name="m_lblXMin.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="m_lblXMin.Text" xml:space="preserve">
-    <value>X m&amp;in:</value>
+    <value>X m&amp;in:  </value>
+  </data>
+  <data name="m_lblXMin.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="&gt;&gt;m_lblXMin.Name" xml:space="preserve">
     <value>m_lblXMin</value>
@@ -310,7 +316,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblXMin.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="m_btnDefaultMinMax.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -319,16 +325,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnDefaultMinMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>861, 30</value>
+    <value>978, 30</value>
   </data>
   <data name="m_btnDefaultMinMax.Size" type="System.Drawing.Size, System.Drawing">
-    <value>177, 23</value>
+    <value>114, 23</value>
   </data>
   <data name="m_btnDefaultMinMax.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
   <data name="m_btnDefaultMinMax.Text" xml:space="preserve">
-    <value>Set X axis from selected map</value>
+    <value>Default X axis</value>
   </data>
   <data name="&gt;&gt;m_btnDefaultMinMax.Name" xml:space="preserve">
     <value>m_btnDefaultMinMax</value>
@@ -340,7 +346,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnDefaultMinMax.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>12</value>
   </data>
   <data name="m_tvMaps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -352,7 +358,7 @@
     <value>3, 3, 0, 0</value>
   </data>
   <data name="m_tvMaps.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 354</value>
+    <value>187, 448</value>
   </data>
   <data name="m_tvMaps.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -367,7 +373,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tvMaps.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>18</value>
   </data>
   <data name="m_lblGroups.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -400,7 +406,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblGroups.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>19</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -409,7 +415,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 241</value>
+    <value>177, 288</value>
   </data>
   <data name="m_btnRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 23</value>
@@ -427,7 +433,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRemove.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>13</value>
   </data>
   <data name="m_btnAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -436,7 +442,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 212</value>
+    <value>177, 259</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 23</value>
@@ -454,7 +460,109 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>16</value>
+  </data>
+  <data name="m_txMean.Location" type="System.Drawing.Point, System.Drawing">
+    <value>629, 32</value>
+  </data>
+  <data name="m_txMean.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 20</value>
+  </data>
+  <data name="m_txMean.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;m_txMean.Name" xml:space="preserve">
+    <value>m_txMean</value>
+  </data>
+  <data name="&gt;&gt;m_txMean.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_txMean.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_txMean.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_txSD.Location" type="System.Drawing.Point, System.Drawing">
+    <value>760, 32</value>
+  </data>
+  <data name="m_txSD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 20</value>
+  </data>
+  <data name="m_txSD.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;m_txSD.Name" xml:space="preserve">
+    <value>m_txSD</value>
+  </data>
+  <data name="&gt;&gt;m_txSD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_txSD.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_txSD.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_lbMean.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbMean.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbMean.Location" type="System.Drawing.Point, System.Drawing">
+    <value>586, 36</value>
+  </data>
+  <data name="m_lbMean.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 13</value>
+  </data>
+  <data name="m_lbMean.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="m_lbMean.Text" xml:space="preserve">
+    <value>Mean:</value>
+  </data>
+  <data name="&gt;&gt;m_lbMean.Name" xml:space="preserve">
+    <value>m_lbMean</value>
+  </data>
+  <data name="&gt;&gt;m_lbMean.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbMean.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lbMean.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_lbSD.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbSD.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbSD.Location" type="System.Drawing.Point, System.Drawing">
+    <value>729, 36</value>
+  </data>
+  <data name="m_lbSD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>25, 13</value>
+  </data>
+  <data name="m_lbSD.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="m_lbSD.Text" xml:space="preserve">
+    <value>SD:</value>
+  </data>
+  <data name="&gt;&gt;m_lbSD.Name" xml:space="preserve">
+    <value>m_lbSD</value>
+  </data>
+  <data name="&gt;&gt;m_lbSD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbSD.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lbSD.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_hdrReponse.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -478,13 +586,13 @@
     <value>m_hdrReponse</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10958.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>7</value>
   </data>
   <data name="m_lbxGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -499,7 +607,7 @@
     <value>0, 3, 3, 0</value>
   </data>
   <data name="m_lbxGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 354</value>
+    <value>159, 448</value>
   </data>
   <data name="m_lbxGroups.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -508,13 +616,13 @@
     <value>m_lbxGroups</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.10958.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="m_hdrConfig.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -538,13 +646,37 @@
     <value>m_hdrConfig</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10958.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>11</value>
+  </data>
+  <data name="m_btChangeShape.Location" type="System.Drawing.Point, System.Drawing">
+    <value>796, 513</value>
+  </data>
+  <data name="m_btChangeShape.Size" type="System.Drawing.Size, System.Drawing">
+    <value>164, 22</value>
+  </data>
+  <data name="m_btChangeShape.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="m_btChangeShape.Text" xml:space="preserve">
+    <value>Edit Response Function...</value>
+  </data>
+  <data name="&gt;&gt;m_btChangeShape.Name" xml:space="preserve">
+    <value>m_btChangeShape</value>
+  </data>
+  <data name="&gt;&gt;m_btChangeShape.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btChangeShape.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btChangeShape.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -553,7 +685,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1050, 453</value>
+    <value>1104, 547</value>
   </data>
   <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>

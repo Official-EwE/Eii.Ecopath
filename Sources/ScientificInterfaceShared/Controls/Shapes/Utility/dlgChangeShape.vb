@@ -61,6 +61,7 @@ Namespace Controls
 
         Private m_bRecalc As Boolean = True
 
+
         Private MAXIT As Integer = 100
         Private EPS As Single = 0.0000003
         Private FPMIN As Single = 1.0E-30
@@ -87,6 +88,7 @@ Namespace Controls
 
         End Sub
 
+      
 #End Region ' Constructor
 
 #Region " Events "
@@ -161,6 +163,11 @@ Namespace Controls
                     sB = 3.0F
                 Case eShapeFunctionType.Normal
                     sA = 1.0 : sB = 1.0 : sC = 10.0
+                Case eShapeFunctionType.LeftShoulder
+                    sA = 1.0 : sB = 2.0 : sC = 3.0
+                Case eShapeFunctionType.RightShoulder
+                    sA = 1.0 : sB = 2.0 : sC = 3.0
+
             End Select
 
             Me.m_fpA.Value = sA
@@ -245,6 +252,8 @@ Namespace Controls
                     g.FillRectangle(br, rc)
                 End Using
 
+
+
                 cShapeImage.DrawShapeDirect(Me.m_uic, _
                                             Me.m_asDataWork, Me.NumDisplayPoints, Me.m_shape.IsSeasonal, _
                                             Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
@@ -311,7 +320,9 @@ Namespace Controls
             Select Case Me.m_shape.DataType
 
                 Case EwEUtils.Core.eDataTypes.Forcing
-                    Return (FuncType <> eShapeFunctionType.Betapdf And FuncType <> eShapeFunctionType.Normal)
+                    Return (FuncType <> eShapeFunctionType.Betapdf And FuncType <> eShapeFunctionType.Normal And _
+                            FuncType <> eShapeFunctionType.Normal And FuncType <> eShapeFunctionType.RightShoulder _
+                            And FuncType <> eShapeFunctionType.LeftShoulder)
 
                 Case EwEUtils.Core.eDataTypes.Mediation, EwEUtils.Core.eDataTypes.PriceMediation
                     Return True
@@ -365,11 +376,18 @@ Namespace Controls
                     strLabelB = My.Resources.LABEL_B
 
                 Case eShapeFunctionType.Normal
-                    bEnableA = True : bEnableB = True : bEnableC = True
+                    bEnableA = True : bEnableB = True : bEnableC = True : bEnableD = True
                     strLabelA = My.Resources.LABEL_SD_LEFT
                     strLabelB = My.Resources.LABEL_SD_RIGHT
                     strLabelC = My.Resources.LABEL_SD_WIDTH
+                    strLabelD = "Mean:"
 
+                Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder
+                    bEnableA = True : bEnableB = True : bEnableC = True
+                    strLabelA = "Left point:"
+                    strLabelB = "Right point:"
+                    strLabelC = "Width:"
+                 
                 Case Else
                     Debug.Assert(False)
             End Select
@@ -469,6 +487,7 @@ Namespace Controls
                         Dim sd As Single = sYZero + 0.0000001F
                         'width in SD
                         Dim Wsd As Single = sYBase
+
                         'Delta X 
                         Dim dx As Single = Wsd / (nPoints - 1)
                         'Start X
@@ -481,6 +500,42 @@ Namespace Controls
                             x = x0 + dx * (i - 1)
                             Me.m_asDataWork(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
                         Next
+
+                    Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder
+
+                        Dim dix As Single = 1 / (nPoints / 4.0F)
+                        Dim dx As Single = sYBase / nPoints
+                        Dim xpt As Single
+
+                        If sYBase = 0 Then sYBase = 1
+                        If sYZero > sYEnd Then sYEnd = sYZero
+                        If sYBase < sYZero Or sYBase < sYEnd Then sYBase = sYEnd + 1
+
+                        Dim yVal() As Single = New Single() {1, 1, 0, 0}
+                        If Me.SelectedShapeType = eShapeFunctionType.LeftShoulder Then
+                            yVal = New Single() {1, 1, 0, 0}
+                        Else
+                            yVal = New Single() {0, 0, 1, 1}
+                        End If
+
+                        Dim xVal() As Single = New Single() {0, sYZero, sYEnd, sYBase}
+                        'The location of the shoulder in the response function is determined by
+                        'it's index position in the points array
+                        Dim iIndexLocs() As Integer = New Integer() {0, Me.getIndex(sYZero, sYBase, nPoints), Me.getIndex(sYEnd, sYBase, nPoints), nPoints}
+
+                        Dim shape As cEnviroResponseFunction = TryCast(Me.m_shape, cEnviroResponseFunction)
+                        If shape IsNot Nothing Then
+                            shape.ResponseLeftLimit = 0
+                            shape.ResponseRightLimit = sYBase
+                        End If
+                        Debug.Assert(shape IsNot Nothing, "Oppss BUG! Trying to edit a shoulder shape that is not an cEnviroResponseFunction!")
+
+                        For i As Integer = 0 To 2
+                            For j As Integer = iIndexLocs(i) To iIndexLocs(i + 1)
+                                xpt = j * dx
+                                Me.m_asDataWork(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
+                            Next j
+                        Next i
 
                     Case Else
                         Debug.Assert(False)
@@ -506,6 +561,17 @@ Namespace Controls
 
         End Function
 
+        Private Function getIndex(Value As Single, dataWidth As Single, TotalNPoints As Integer) As Integer
+            Return CInt(Math.Truncate(TotalNPoints * (Value / dataWidth)))
+        End Function
+
+        Private Function LinearInterp(ByVal x As Single, x0 As Single, x1 As Single, y0 As Single, y1 As Single) As Single
+            If ((x1 - x0) = 0) Then
+                Return (y0 + y1) / 2
+            Else
+                Return y0 + (x - x0) * (y1 - y0) / (x1 - x0)
+            End If
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -571,29 +637,29 @@ Namespace Controls
             d = 1.0F / d
             h = d
 
-                    For m = 1 To MAXIT ' - 1 '(m=1;m<=MAXIT;m++) 
-                        m2 = 2 * m
-                        aa = m * (b - m) * x / ((qam + m2) * (a + m2))
-                        d = 1.0F + aa * d ' One step (the even one) of the recurrence.
-                        If (Math.Abs(d) < FPMIN) Then d = FPMIN
-                        c = 1.0F + aa / c
-                        If (Math.Abs(c) < FPMIN) Then c = FPMIN 'if (fabs(c) < FPMIN) c=FPMIN;
-                        d = 1.0F / d
-                        h *= d * c
-                        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
-                        d = 1.0F + aa * d ' Next step of the recurrence (the odd one).
-                        If (Math.Abs(d) < FPMIN) Then d = FPMIN
-                        c = 1.0F + aa / c
-                        If (Math.Abs(c) < FPMIN) Then c = FPMIN
-                        d = 1.0F / d
-                        del = d * c
-                        h *= del
-                        If (Math.Abs(del - 1.0) < EPS) Then Exit For ' Are we done?'if (fabs(del-1.0) < EPS) break; Are we done?
+            For m = 1 To MAXIT ' - 1 '(m=1;m<=MAXIT;m++) 
+                m2 = 2 * m
+                aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+                d = 1.0F + aa * d ' One step (the even one) of the recurrence.
+                If (Math.Abs(d) < FPMIN) Then d = FPMIN
+                c = 1.0F + aa / c
+                If (Math.Abs(c) < FPMIN) Then c = FPMIN 'if (fabs(c) < FPMIN) c=FPMIN;
+                d = 1.0F / d
+                h *= d * c
+                aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+                d = 1.0F + aa * d ' Next step of the recurrence (the odd one).
+                If (Math.Abs(d) < FPMIN) Then d = FPMIN
+                c = 1.0F + aa / c
+                If (Math.Abs(c) < FPMIN) Then c = FPMIN
+                d = 1.0F / d
+                del = d * c
+                h *= del
+                If (Math.Abs(del - 1.0) < EPS) Then Exit For ' Are we done?'if (fabs(del-1.0) < EPS) break; Are we done?
 
-                    Next
+            Next
 
-                    'if (m > MAXIT) nrerror("a or b too big, or MAXIT too small in betacf");
-                    Return h
+            'if (m > MAXIT) nrerror("a or b too big, or MAXIT too small in betacf");
+            Return h
 
         End Function
 
@@ -659,6 +725,16 @@ Namespace Controls
             End If
             Return Me.m_shape.nPoints
         End Function
+
+
+        'Private Function calcWSDFromSD() As Single
+        '    If Me.m_shape.ShapeFunctionType = eShapeFunctionType.Normal Then
+        '        Dim sd As Single = CSng(Me.m_fpC.Value)
+        '        Dim mean As Single = CSng(Me.m_fpD.Value)
+        '        Dim wsd As Single = mean / sd
+        '        Return wsd
+        '    End If
+        'End Function
 
 #End Region ' Private method helpers
 

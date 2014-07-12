@@ -42,11 +42,11 @@ Namespace Controls
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucMediationSketchPad))
             Me.SuspendLayout()
             '
-            'MediationSketchPad
+            'ucMediationSketchPad
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Name = "MediationSketchPad"
+            Me.Name = "ucMediationSketchPad"
             Me.ResumeLayout(False)
 
         End Sub

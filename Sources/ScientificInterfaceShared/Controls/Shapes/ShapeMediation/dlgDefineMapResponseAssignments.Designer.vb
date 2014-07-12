@@ -41,6 +41,7 @@ Partial Class dlgDefineMapResponseAssignments
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineMapResponseAssignments))
         Me.m_btnOk = New System.Windows.Forms.Button()
         Me.m_lblMaps = New System.Windows.Forms.Label()
@@ -54,9 +55,14 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_lblGroups = New System.Windows.Forms.Label()
         Me.m_btnRemove = New System.Windows.Forms.Button()
         Me.m_btnAdd = New System.Windows.Forms.Button()
+        Me.m_txMean = New System.Windows.Forms.TextBox()
+        Me.m_txSD = New System.Windows.Forms.TextBox()
+        Me.m_lbMean = New System.Windows.Forms.Label()
+        Me.m_lbSD = New System.Windows.Forms.Label()
         Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
         Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_btChangeShape = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -135,6 +141,26 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_btnAdd.Name = "m_btnAdd"
         Me.m_btnAdd.UseVisualStyleBackColor = True
         '
+        'm_txMean
+        '
+        resources.ApplyResources(Me.m_txMean, "m_txMean")
+        Me.m_txMean.Name = "m_txMean"
+        '
+        'm_txSD
+        '
+        resources.ApplyResources(Me.m_txSD, "m_txSD")
+        Me.m_txSD.Name = "m_txSD"
+        '
+        'm_lbMean
+        '
+        resources.ApplyResources(Me.m_lbMean, "m_lbMean")
+        Me.m_lbMean.Name = "m_lbMean"
+        '
+        'm_lbSD
+        '
+        resources.ApplyResources(Me.m_lbSD, "m_lbSD")
+        Me.m_lbSD.Name = "m_lbSD"
+        '
         'm_hdrReponse
         '
         Me.m_hdrReponse.CanCollapseParent = False
@@ -150,7 +176,6 @@ Partial Class dlgDefineMapResponseAssignments
         resources.ApplyResources(Me.m_lbxGroups, "m_lbxGroups")
         Me.m_lbxGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.m_lbxGroups.FormattingEnabled = True
-        Me.m_lbxGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
         Me.m_lbxGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.Manual
         Me.m_lbxGroups.IsAllGroupsItemSelected = False
         Me.m_lbxGroups.Name = "m_lbxGroups"
@@ -159,7 +184,6 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_lbxGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.m_lbxGroups.ShowAllGroupsItem = False
         Me.m_lbxGroups.SortThreshold = -9999.0!
-        Me.m_lbxGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
         '
         'm_hdrConfig
         '
@@ -169,11 +193,22 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_hdrConfig.IsCollapsed = False
         Me.m_hdrConfig.Name = "m_hdrConfig"
         '
+        'm_btChangeShape
+        '
+        resources.ApplyResources(Me.m_btChangeShape, "m_btChangeShape")
+        Me.m_btChangeShape.Name = "m_btChangeShape"
+        Me.m_btChangeShape.UseVisualStyleBackColor = True
+        '
         'dlgDefineMapResponseAssignments
         '
         Me.AcceptButton = Me.m_btnOk
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_btChangeShape)
+        Me.Controls.Add(Me.m_lbSD)
+        Me.Controls.Add(Me.m_lbMean)
+        Me.Controls.Add(Me.m_txSD)
+        Me.Controls.Add(Me.m_txMean)
         Me.Controls.Add(Me.m_lblXMin)
         Me.Controls.Add(Me.m_tbxXMax)
         Me.Controls.Add(Me.m_hdrReponse)
@@ -214,5 +249,10 @@ Partial Class dlgDefineMapResponseAssignments
     Private WithEvents m_tbxXMax As System.Windows.Forms.TextBox
     Private WithEvents m_hdrReponse As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrConfig As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents m_txMean As System.Windows.Forms.TextBox
+    Friend WithEvents m_txSD As System.Windows.Forms.TextBox
+    Friend WithEvents m_lbMean As System.Windows.Forms.Label
+    Friend WithEvents m_lbSD As System.Windows.Forms.Label
+    Friend WithEvents m_btChangeShape As System.Windows.Forms.Button
 
 End Class
