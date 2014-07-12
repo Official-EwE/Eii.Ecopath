@@ -131,14 +131,6 @@ Public Class dlgDefineMapResponseAssignments
 
         Me.m_lbxGroups.Detach()
 
-        'RemoveHandler Me.m_fpXMin.OnValueChanged, AddressOf OnMinMaxTextChanged
-        'RemoveHandler Me.m_fpXMax.OnValueChanged, AddressOf OnMinMaxTextChanged
-
-        'Me.m_fpXMax.Release()
-        'Me.m_fpXMax = Nothing
-        'Me.m_fpXMin.Release()
-        'Me.m_fpXMin = Nothing
-
         MyBase.OnFormClosed(e)
 
     End Sub
