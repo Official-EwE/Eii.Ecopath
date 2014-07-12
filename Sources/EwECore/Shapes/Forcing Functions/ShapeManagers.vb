@@ -33,6 +33,8 @@ Public Enum eShapeFunctionType
     Exponential
     Betapdf
     Normal
+    RightShoulder
+    LeftShoulder
 End Enum
 
 #End Region

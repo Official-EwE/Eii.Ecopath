@@ -274,6 +274,12 @@ Public Class cMediationDataStructures
     Public Function getEnviroResponse(ByVal iMedShapeIndex As Integer, ByVal Xvalue As Single) As Single
         Dim ip As Integer
 
+        'Debug.Assert(Xvalue <> cCore.NULL_VALUE, "Core NULL Passed to Response function.")
+
+        'No Data in this cell 
+        'So this response function has no affect
+        If Xvalue = cCore.NULL_VALUE Then Return 1.0F
+
         'is the Xvalue in bounds
         If Xvalue <= Me.XAxisMin(iMedShapeIndex) Then Return Me.Medpoints(1, iMedShapeIndex)
         If Xvalue >= Me.XAxisMax(iMedShapeIndex) Then Return Me.Medpoints(NMedPoints, iMedShapeIndex)

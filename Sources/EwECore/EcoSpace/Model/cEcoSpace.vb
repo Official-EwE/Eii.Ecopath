@@ -7292,11 +7292,7 @@ exitline:
                                         'For debugging
                                         'dumpCapacity(map, igrp, irow, icol)
 
-                                        'jb 27-May-2014 Allow NULL Values in the base map
-                                        'Commented out until we sort out if it is OK to allow NULL Values in the basemap
-                                        'If CInt(map.Layer.Cell(irow, icol)) <> cCore.NULL_VALUE Then
                                         Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
-                                        'End If
 
                                     End If
                                 Next icol

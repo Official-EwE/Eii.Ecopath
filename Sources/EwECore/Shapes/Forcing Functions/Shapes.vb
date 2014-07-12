@@ -127,11 +127,11 @@ Public Class cForcingFunction
         End Set
     End Property
 
-    Public ReadOnly Property ZScale() As Single
-        Get
-            Return Me.m_ZScale
-        End Get
-    End Property
+    'Public ReadOnly Property ZScale() As Single
+    '    Get
+    '        Return Me.m_ZScale
+    '    End Get
+    'End Property
 
     ''' <summary>
     ''' Index of the shape in the list managers list of shape
