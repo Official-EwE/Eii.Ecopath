@@ -25,10 +25,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("EwEConsumtionWriterPlugin")> 
+<Assembly: AssemblyTitle("EwEConsumptionWriterPlugin")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("EwEConsumtionWriterPlugin")> 
+<Assembly: AssemblyProduct("EwEConsumptionWriterPlugin")> 
 <Assembly: AssemblyCopyright("Copyright ©  2014")> 
 <Assembly: AssemblyTrademark("")> 
 
