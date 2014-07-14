@@ -48,16 +48,13 @@ Partial Class frmTFMpolicy
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTFMpolicy))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
-        Me.m_tlpStrategies = New System.Windows.Forms.TableLayoutPanel()
         Me.m_tsStrategy = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tslSelectStratagy = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmStrategies = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tsbnAddStrategy = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteStrategy = New System.Windows.Forms.ToolStripButton()
-        Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_scDetails = New System.Windows.Forms.SplitContainer()
         Me.m_tlpHCR = New System.Windows.Forms.TableLayoutPanel()
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
@@ -70,11 +67,11 @@ Partial Class frmTFMpolicy
         Me.m_gridRegulations = New EwEMSEPlugin.gridRegulations()
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_graph = New ZedGraph.ZedGraphControl()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
-        Me.m_tlpStrategies.SuspendLayout()
         Me.m_tsStrategy.SuspendLayout()
         CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scDetails.Panel1.SuspendLayout()
@@ -92,24 +89,18 @@ Partial Class frmTFMpolicy
         '
         'm_scMain.Panel1
         '
-        Me.m_scMain.Panel1.Controls.Add(Me.m_tlpStrategies)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_graph)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_tsStrategy)
         '
         'm_scMain.Panel2
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_scDetails)
         '
-        'm_tlpStrategies
-        '
-        resources.ApplyResources(Me.m_tlpStrategies, "m_tlpStrategies")
-        Me.m_tlpStrategies.Controls.Add(Me.m_tsStrategy, 0, 0)
-        Me.m_tlpStrategies.Controls.Add(Me.m_graph, 0, 1)
-        Me.m_tlpStrategies.Name = "m_tlpStrategies"
-        '
         'm_tsStrategy
         '
-        resources.ApplyResources(Me.m_tsStrategy, "m_tsStrategy")
         Me.m_tsStrategy.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsStrategy.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslSelectStratagy, Me.m_tscmStrategies, Me.m_tsbnAddStrategy, Me.m_tsbnDeleteStrategy})
+        resources.ApplyResources(Me.m_tsStrategy, "m_tsStrategy")
         Me.m_tsStrategy.Name = "m_tsStrategy"
         Me.m_tsStrategy.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
@@ -135,20 +126,6 @@ Partial Class frmTFMpolicy
         Me.m_tsbnDeleteStrategy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_tsbnDeleteStrategy, "m_tsbnDeleteStrategy")
         Me.m_tsbnDeleteStrategy.Name = "m_tsbnDeleteStrategy"
-        '
-        'm_graph
-        '
-        resources.ApplyResources(Me.m_graph, "m_graph")
-        Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
-        Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0.0R
-        Me.m_graph.ScrollMaxX = 0.0R
-        Me.m_graph.ScrollMaxY = 0.0R
-        Me.m_graph.ScrollMaxY2 = 0.0R
-        Me.m_graph.ScrollMinX = 0.0R
-        Me.m_graph.ScrollMinY = 0.0R
-        Me.m_graph.ScrollMinY2 = 0.0R
-        Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
         '
         'm_scDetails
         '
@@ -292,6 +269,20 @@ Partial Class frmTFMpolicy
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
+        'm_graph
+        '
+        resources.ApplyResources(Me.m_graph, "m_graph")
+        Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
+        Me.m_graph.Name = "m_graph"
+        Me.m_graph.ScrollGrace = 0.0R
+        Me.m_graph.ScrollMaxX = 0.0R
+        Me.m_graph.ScrollMaxY = 0.0R
+        Me.m_graph.ScrollMaxY2 = 0.0R
+        Me.m_graph.ScrollMinX = 0.0R
+        Me.m_graph.ScrollMinY = 0.0R
+        Me.m_graph.ScrollMinY2 = 0.0R
+        Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
+        '
         'frmTFMpolicy
         '
         Me.AcceptButton = Me.m_btnSave
@@ -306,11 +297,10 @@ Partial Class frmTFMpolicy
         Me.Name = "frmTFMpolicy"
         Me.ShowIcon = False
         Me.m_scMain.Panel1.ResumeLayout(False)
+        Me.m_scMain.Panel1.PerformLayout()
         Me.m_scMain.Panel2.ResumeLayout(False)
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
-        Me.m_tlpStrategies.ResumeLayout(False)
-        Me.m_tlpStrategies.PerformLayout()
         Me.m_tsStrategy.ResumeLayout(False)
         Me.m_tsStrategy.PerformLayout()
         Me.m_scDetails.Panel1.ResumeLayout(False)
@@ -327,7 +317,6 @@ Partial Class frmTFMpolicy
     End Sub
 
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
-    Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tsHCR As cEwEToolstrip
     Private WithEvents m_grid As EwEMSEPlugin.gridTargetFishingMortalityPolicy
     Private WithEvents m_tsStrategy As cEwEToolstrip
@@ -340,12 +329,12 @@ Partial Class frmTFMpolicy
     Private WithEvents m_btnSave As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_scDetails As System.Windows.Forms.SplitContainer
-    Private WithEvents m_tlpStrategies As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_tlpHCR As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_hdrHCR As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tlpRegulations As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_hdrRegulations As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_gridRegulations As gridRegulations
+    Private WithEvents m_graph As ZedGraph.ZedGraphControl
 
 End Class
 

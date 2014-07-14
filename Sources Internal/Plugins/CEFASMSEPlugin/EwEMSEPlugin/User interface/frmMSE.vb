@@ -132,7 +132,6 @@ Public Class frmMSE
         Me.m_btnDeleteResults.Visible = True
 #Else
         Me.m_btnSampleSurvivabilities.Visible = False
-        Me.m_btnCreateDiet.Visible = False
         Me.m_btnCreateSurvDist.Visible = False
         Me.m_btnDeleteResults.Visible = False
 #End If
@@ -195,13 +194,13 @@ Public Class frmMSE
         Me.m_lblPathValue.Text = cStringUtils.CompactString(Me.MSE.DataPath, Me.m_lblPathValue.ClientRectangle.Width, Me.m_lblPathValue.Font, TextFormatFlags.PathEllipsis)
         cToolTipShared.GetInstance().SetToolTip(Me.m_lblPathValue, Me.MSE.DataPath)
 
-        img = Nothing
-        If Me.MSE.IsInputStructureAvailable(False) And Not Me.MSE.IsInputDataCompatible() Then
-            img = SharedResources.Critical
-            Me.m_btnReviewDistParms.Enabled = False
-        Else
-            img = SharedResources.OK
-            Me.m_btnReviewDistParms.Enabled = True
+        img = SharedResources.Critical
+        Me.m_btnReviewDistParms.Enabled = False
+        If Me.MSE.IsInputStructureAvailable(False) Then
+            If Me.MSE.IsInputDataCompatible() Then
+                img = SharedResources.OK
+                Me.m_btnReviewDistParms.Enabled = True
+            End If
         End If
         Me.m_pbPathCompatible.Image = img
 
