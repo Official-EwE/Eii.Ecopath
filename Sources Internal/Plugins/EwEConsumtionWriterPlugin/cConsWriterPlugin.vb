@@ -30,11 +30,14 @@ Public Class cConsWriterPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
+    Implements EwEPlugin.IAutoSavePlugin
 
     Private m_core As cCore = Nothing
     Private m_simds As cEcosimDatastructures = Nothing
     ''' <summary>Array for averaging</summary>
     Private m_consumpt As Single(,) = Nothing
+
+#Region " Generic plug-in bits "
 
     Public ReadOnly Property Author As String _
         Implements EwEPlugin.IPlugin.Author
@@ -68,6 +71,40 @@ Public Class cConsWriterPlugin
         End Get
     End Property
 
+#End Region ' Generic plug-in bits
+
+#Region " Autosave implementation "
+
+    Public Property AutoSave As Boolean _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSave
+        Get
+            Return My.Settings.Autosave
+        End Get
+        Set(value As Boolean)
+            My.Settings.Autosave = value
+            My.Settings.Save()
+        End Set
+    End Property
+
+    Public Function AutoSaveName() As String _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
+        Return "Consumption matrices"
+    End Function
+
+    Public Function AutoSaveSubPath() As String _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
+        Return ""
+    End Function
+
+    Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveType
+        Return eAutosaveTypes.Ecosim
+    End Function
+
+#End Region ' Autosave implementation
+
+#Region " Ecosim integration "
+
     Public Sub EcosimInitialized(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Try
@@ -87,7 +124,7 @@ Public Class cConsWriterPlugin
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Try
-            If Me.m_core.Autosave(EwEUtils.Core.eAutosaveTypes.Ecosim) Then
+            If (Me.AutoSave) Then
                 Me.SaveDataToFile(iTime, True)
                 Me.SaveDataToFile(iTime, False)
             End If
@@ -96,6 +133,10 @@ Public Class cConsWriterPlugin
         End Try
 
     End Sub
+
+#End Region ' Ecosim integration
+
+#Region " Internals "
 
     Private Function SaveDataToFile(ByVal iTime As Integer, _
                                     ByVal bAnnual As Boolean) As Boolean
@@ -186,5 +227,7 @@ Public Class cConsWriterPlugin
     Private Function GetModelDetails() As String
         Return Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim)
     End Function
+
+#End Region ' Internals
 
 End Class
