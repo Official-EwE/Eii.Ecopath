@@ -22,11 +22,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports LumenWorks.Framework.IO.Csv
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -159,14 +156,10 @@ Public Class frmDistributionParameters
 
 #Region " Internals "
 
-
     Private Sub UpdateGrid(data As IDistributionParamsData(), strName As String)
         Me.m_grid.Data = data
         Me.m_grid.DataName = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.CAPTION, strName)
     End Sub
-
-
-
 
 #End Region ' Internals
 
@@ -250,8 +243,9 @@ Public Class frmDistributionParameters
             Return
         End If
 
- 
-        Me.MSE.GenerateEmptyDietCSVs()
+        Me.m_ecopathdist.Save()
+        Me.m_ecosimdist.Save()
+
         Me.m_bIsDirty = False
 
         Me.m_plugin.InformUser(String.Format(My.Resources.STATUS_SAVED_DISTPARMS, My.Resources.CAPTION, strFolder), _
