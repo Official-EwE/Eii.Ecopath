@@ -464,7 +464,7 @@ Public Class cEcosimDistributionParamsData
         Me.DistributionType = DistributionType
         Me.LowerBound = LowerBound
         Me.UpperBound = UpperBound
-        Me.MidPoint = MidPoint
+        Me.MidPoint = EwEUtils.SystemUtilities.cSystemUtils.IIF(MidPoint < 0, cCore.NULL_VALUE, MidPoint)
     End Sub
 
     Public Property GroupNo As Integer
@@ -647,7 +647,7 @@ Public Class cEcosimDistributionParams
                     TMean = Me.Core.EcoSimGroupInputs(igrp).SwitchingPower
                 End If
                 If Core.EcoPathGroupInputs(igrp).IsProducer Then
-                    params(igrp) = New cEcosimDistributionParamsData(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, 0, -9999, -9999, -9999)
+                    params(igrp) = New cEcosimDistributionParamsData(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, cMSE.DistributionType.NotSet, -9999, -9999, -9999)
                 Else
                     params(igrp) = New cEcosimDistributionParamsData(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean)
                 End If

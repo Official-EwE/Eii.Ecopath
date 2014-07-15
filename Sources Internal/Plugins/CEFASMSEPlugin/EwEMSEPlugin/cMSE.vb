@@ -99,7 +99,8 @@ Public Class cMSE
     Private m_rand As New Random()
 
     Public Enum DistributionType As Integer
-        Uniform = 1
+        NotSet = 0
+        Uniform
         Triangular
     End Enum
 

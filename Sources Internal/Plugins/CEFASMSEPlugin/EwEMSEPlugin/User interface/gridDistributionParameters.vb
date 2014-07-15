@@ -55,6 +55,8 @@ Public Class gridDistributionParameters
         Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.GetDescriptor
             Select Case (DirectCast(value, cMSE.DistributionType))
+                Case cMSE.DistributionType.NotSet
+                    Return SharedResources.GENERIC_VALUE_NOTUSED
                 Case cMSE.DistributionType.Triangular
                     Return My.Resources.DISTR_TYPE_TRIANGULAR
                 Case cMSE.DistributionType.Uniform
@@ -222,6 +224,10 @@ Public Class gridDistributionParameters
                     Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(data.DistributionType, cb)
                     cbCell.Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eEcosimColumnTypes.DistrType) = cbCell
+
+                    If data.DistributionType = cMSE.DistributionType.NotSet Then
+                        cbCell.DataModel.EnableEdit = False
+                    End If
 
                     Me(iRow, eEcosimColumnTypes.Lower) = DataCell(data.LowerBound)
                     Me(iRow, eEcosimColumnTypes.Upper) = DataCell(data.UpperBound)
