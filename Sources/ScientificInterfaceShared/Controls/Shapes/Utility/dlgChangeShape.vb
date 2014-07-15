@@ -59,6 +59,8 @@ Namespace Controls
         ''' <summary></summary>
         Private m_fpD As cEwEFormatProvider = Nothing
 
+        Private m_fpMax As cEwEFormatProvider = Nothing
+
         Private m_bRecalc As Boolean = True
 
 
@@ -111,6 +113,9 @@ Namespace Controls
             Me.m_fpD = New cEwEFormatProvider(Me.m_uic, Me.m_tbxD, GetType(Single))
             Me.m_fpD.Value = Me.m_shape.Steep ' CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
 
+            Me.m_fpMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxMaxValue, GetType(Single))
+            Me.m_fpMax.Value = Me.m_shape.YMax ' CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
+
             ' Show available options
             For Each sft As eShapeFunctionType In [Enum].GetValues(GetType(eShapeFunctionType))
                 If Me.IsRelevantShapeType(sft) Then
@@ -135,6 +140,7 @@ Namespace Controls
             Me.m_fpC.Release()
             Me.m_fpB.Release()
             Me.m_fpA.Release()
+            Me.m_fpMax.Release()
 
             MyBase.OnFormClosed(e)
 
@@ -146,6 +152,8 @@ Namespace Controls
             Dim sB As Single = 0.0
             Dim sC As Single = 0.0
             Dim sD As Single = 0.0
+
+            Dim max As Single = Me.m_shape.YMax
 
             Select Case Me.SelectedShapeType
                 Case eShapeFunctionType.NotSet
@@ -271,6 +279,18 @@ Namespace Controls
 
         End Sub
 
+        Private Sub On_MaxValue_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_tbxMaxValue.TextChanged
+            Try
+                Dim scale As Single
+                If Single.TryParse(m_tbxMaxValue.Text, scale) Then
+                    Me.ScaleShape(scale)
+                    Me.UpdatePreview()
+                End If
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
 #End Region ' Events
 
 #Region " Private method helpers "
@@ -380,13 +400,13 @@ Namespace Controls
                     strLabelA = My.Resources.LABEL_SD_LEFT
                     strLabelB = My.Resources.LABEL_SD_RIGHT
                     strLabelC = My.Resources.LABEL_SD_WIDTH
-                    strLabelD = "Mean:"
+                    strLabelD = My.Resources.LABEL_MEAN
 
                 Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder
                     bEnableA = True : bEnableB = True : bEnableC = True
-                    strLabelA = "Left point:"
-                    strLabelB = "Right point:"
-                    strLabelC = "Width:"
+                    strLabelA = My.Resources.LABEL_LEFTPOINT
+                    strLabelB = My.Resources.LABEL_RIGHTPOINT
+                    strLabelC = My.Resources.LABEL_WIDTH
                  
                 Case Else
                     Debug.Assert(False)
@@ -420,6 +440,7 @@ Namespace Controls
                 Dim sSteep As Single = CSng(Me.m_fpD.Value)
                 Dim sYBase As Single = CSng(Me.m_fpC.Value)
                 Dim sYEnd As Single = CSng(Me.m_fpB.Value)
+
 
                 Select Case Me.SelectedShapeType
 
@@ -542,6 +563,12 @@ Namespace Controls
                         Return False
 
                 End Select
+
+                Dim ScaleMax As Single
+                If Single.TryParse(Me.m_tbxMaxValue.Text, ScaleMax) Then
+                    Me.ScaleShape(ScaleMax)
+                End If
+              
 
             Catch ex As Exception
                 Return False
@@ -727,14 +754,23 @@ Namespace Controls
         End Function
 
 
-        'Private Function calcWSDFromSD() As Single
-        '    If Me.m_shape.ShapeFunctionType = eShapeFunctionType.Normal Then
-        '        Dim sd As Single = CSng(Me.m_fpC.Value)
-        '        Dim mean As Single = CSng(Me.m_fpD.Value)
-        '        Dim wsd As Single = mean / sd
-        '        Return wsd
-        '    End If
-        'End Function
+        Private Sub ScaleShape(newMax As Single)
+
+            If newMax = 0 Then Return
+            'OK this is dumb
+            'Because the dialogue operates on a buffer
+            'It may/will have changed the buffer without updating the shape (see RecalShape())
+            'So 
+            '1 update the shape with new data
+            '2 then scale it
+            '3 the copy the shape back into the buffer
+            Me.m_shape.ShapeData = Me.m_asDataWork
+            Me.m_shape.Scale(newMax)
+            Me.m_asDataWork = Me.m_shape.ShapeData
+
+
+
+        End Sub
 
 #End Region ' Private method helpers
 

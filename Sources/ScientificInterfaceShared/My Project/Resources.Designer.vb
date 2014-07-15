@@ -6640,6 +6640,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Left point:.
+        '''</summary>
+        Public ReadOnly Property LABEL_LEFTPOINT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_LEFTPOINT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mean:.
+        '''</summary>
+        Public ReadOnly Property LABEL_MEAN() As String
+            Get
+                Return ResourceManager.GetString("LABEL_MEAN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Right point:.
+        '''</summary>
+        Public ReadOnly Property LABEL_RIGHTPOINT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_RIGHTPOINT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to SD &amp;left:.
         '''</summary>
         Public ReadOnly Property LABEL_SD_LEFT() As String
@@ -6726,6 +6753,15 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_VALUE_UPTO() As String
             Get
                 Return ResourceManager.GetString("LABEL_VALUE_UPTO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Width:.
+        '''</summary>
+        Public ReadOnly Property LABEL_WIDTH() As String
+            Get
+                Return ResourceManager.GetString("LABEL_WIDTH", resourceCulture)
             End Get
         End Property
         

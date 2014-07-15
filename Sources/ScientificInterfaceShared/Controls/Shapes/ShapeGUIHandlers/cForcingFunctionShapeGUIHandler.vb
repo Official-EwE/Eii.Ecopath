@@ -549,15 +549,12 @@ Namespace Controls
             Debug.Assert(shape IsNot Nothing, "Need valid FF")
             Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
 
-            Dim sCurrMax As Single = shape.YMax
-            If (sCurrMax <= 0) Then Return
+            Try
+                'We just tested to make sure the shape in a cForcingFunction
+                DirectCast(shape, cForcingFunction).Scale(sNewMaxValue)
+            Catch ex As Exception
 
-            Dim sScale As Single = sNewMaxValue / sCurrMax
-            shape.LockUpdates()
-            For i As Integer = 0 To shape.nPoints
-                shape.ShapeData(i) *= sScale
-            Next
-            shape.UnlockUpdates(True)
+            End Try
 
         End Sub
 

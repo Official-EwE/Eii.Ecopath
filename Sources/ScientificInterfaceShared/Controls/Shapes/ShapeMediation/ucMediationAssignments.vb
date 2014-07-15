@@ -373,7 +373,7 @@ Namespace Controls
                 pane.CurveList.Add(il)
 
                 Me.m_zgh.XScaleMax = Xmax
-                Me.m_zgh.YScaleMax = resShape.YMax + resShape.YMax * 0.1
+                Me.m_zgh.YScaleMax = resShape.YMax * 1.1
                 Me.m_zgh.YScaleMin = 0
 
             Catch ex As Exception

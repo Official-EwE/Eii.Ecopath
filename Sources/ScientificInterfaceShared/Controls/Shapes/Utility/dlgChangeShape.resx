@@ -126,7 +126,7 @@
     <value>3, 0, 0, 6</value>
   </data>
   <data name="m_tbxC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 20</value>
+    <value>88, 20</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tbxC.TabIndex" type="System.Int32, mscorlib">
@@ -142,7 +142,7 @@
     <value>m_tlpParams</value>
   </data>
   <data name="&gt;&gt;m_tbxC.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_lblC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -178,7 +178,7 @@
     <value>m_tlpParams</value>
   </data>
   <data name="&gt;&gt;m_lblC.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_tbxA.Location" type="System.Drawing.Point, System.Drawing">
     <value>96, 0</value>
@@ -187,7 +187,7 @@
     <value>3, 0, 0, 6</value>
   </data>
   <data name="m_tbxA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 20</value>
+    <value>88, 20</value>
   </data>
   <data name="m_tbxA.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -247,7 +247,7 @@
     <value>3, 0, 0, 6</value>
   </data>
   <data name="m_tbxD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 20</value>
+    <value>88, 20</value>
   </data>
   <data name="m_tbxD.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -271,7 +271,7 @@
     <value>3, 0, 0, 6</value>
   </data>
   <data name="m_tbxB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 20</value>
+    <value>88, 20</value>
   </data>
   <data name="m_tbxB.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -286,7 +286,7 @@
     <value>m_tlpParams</value>
   </data>
   <data name="&gt;&gt;m_tbxB.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_lblD.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -322,7 +322,7 @@
     <value>m_tlpParams</value>
   </data>
   <data name="&gt;&gt;m_lblD.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>8</value>
   </data>
   <data name="m_lblB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -358,7 +358,7 @@
     <value>m_tlpParams</value>
   </data>
   <data name="&gt;&gt;m_lblB.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_btnOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -367,7 +367,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>390, 301</value>
+    <value>456, 350</value>
   </data>
   <data name="m_btnOk.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -397,7 +397,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>471, 301</value>
+    <value>537, 350</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -430,7 +430,7 @@
     <value>205, 12</value>
   </data>
   <data name="m_plPreview.Size" type="System.Drawing.Size, System.Drawing">
-    <value>341, 283</value>
+    <value>407, 332</value>
   </data>
   <data name="m_plPreview.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -457,7 +457,7 @@
     <value>12, 33</value>
   </data>
   <data name="m_lbShapeFunctionTypes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 136</value>
+    <value>187, 178</value>
   </data>
   <data name="m_lbShapeFunctionTypes.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -496,7 +496,7 @@
     <value>m_hdrShape</value>
   </data>
   <data name="&gt;&gt;m_hdrShape.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10958.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10962.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrShape.Parent" xml:space="preserve">
     <value>$this</value>
@@ -511,7 +511,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrParams.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 176</value>
+    <value>12, 225</value>
   </data>
   <data name="m_hdrParams.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 18</value>
@@ -529,7 +529,7 @@
     <value>m_hdrParams</value>
   </data>
   <data name="&gt;&gt;m_hdrParams.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10958.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10962.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrParams.Parent" xml:space="preserve">
     <value>$this</value>
@@ -540,14 +540,68 @@
   <data name="m_tlpParams.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="m_tbxMaxValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>96, 107</value>
+  </data>
+  <data name="m_tbxMaxValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 20</value>
+  </data>
+  <data name="m_tbxMaxValue.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMaxValue.Name" xml:space="preserve">
+    <value>m_tbxMaxValue</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMaxValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMaxValue.Parent" xml:space="preserve">
+    <value>m_tlpParams</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMaxValue.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_lblMax.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblMax.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 104</value>
+  </data>
+  <data name="m_lblMax.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 3, 0</value>
+  </data>
+  <data name="m_lblMax.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 13</value>
+  </data>
+  <data name="m_lblMax.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_lblMax.Text" xml:space="preserve">
+    <value>Max value:</value>
+  </data>
+  <data name="m_lblMax.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblMax.Name" xml:space="preserve">
+    <value>m_lblMax</value>
+  </data>
+  <data name="&gt;&gt;m_lblMax.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblMax.Parent" xml:space="preserve">
+    <value>m_tlpParams</value>
+  </data>
+  <data name="&gt;&gt;m_lblMax.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
   <data name="m_tlpParams.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 197</value>
+    <value>12, 217</value>
   </data>
   <data name="m_tlpParams.RowCount" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_tlpParams.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 98</value>
+    <value>187, 138</value>
   </data>
   <data name="m_tlpParams.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -565,13 +619,13 @@
     <value>1</value>
   </data>
   <data name="m_tlpParams.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblA" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxA" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblD" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblB" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxB" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxC" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblC" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxD" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblA" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxA" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblB" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxB" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxC" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblC" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMaxValue" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxD" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblD" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMax" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_btDefaults.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btDefaults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>309, 301</value>
+    <value>375, 350</value>
   </data>
   <data name="m_btDefaults.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -601,7 +655,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>558, 336</value>
+    <value>624, 385</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

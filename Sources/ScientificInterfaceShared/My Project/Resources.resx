@@ -3139,4 +3139,16 @@
   <data name="SHAPEFUNCTION_RIGHTSHOULDER" xml:space="preserve">
     <value>Right shoulder</value>
   </data>
+  <data name="LABEL_LEFTPOINT" xml:space="preserve">
+    <value>Left point:</value>
+  </data>
+  <data name="LABEL_MEAN" xml:space="preserve">
+    <value>Mean:</value>
+  </data>
+  <data name="LABEL_RIGHTPOINT" xml:space="preserve">
+    <value>Right point:</value>
+  </data>
+  <data name="LABEL_WIDTH" xml:space="preserve">
+    <value>Width:</value>
+  </data>
 </root>

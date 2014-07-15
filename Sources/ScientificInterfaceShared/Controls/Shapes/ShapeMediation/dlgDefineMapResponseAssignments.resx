@@ -564,6 +564,33 @@
   <data name="&gt;&gt;m_lbSD.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_btChangeShape.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btChangeShape.Location" type="System.Drawing.Point, System.Drawing">
+    <value>796, 513</value>
+  </data>
+  <data name="m_btChangeShape.Size" type="System.Drawing.Size, System.Drawing">
+    <value>164, 22</value>
+  </data>
+  <data name="m_btChangeShape.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="m_btChangeShape.Text" xml:space="preserve">
+    <value>Edit Response Function...</value>
+  </data>
+  <data name="&gt;&gt;m_btChangeShape.Name" xml:space="preserve">
+    <value>m_btChangeShape</value>
+  </data>
+  <data name="&gt;&gt;m_btChangeShape.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btChangeShape.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btChangeShape.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_hdrReponse.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -586,7 +613,7 @@
     <value>m_hdrReponse</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10958.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10962.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Parent" xml:space="preserve">
     <value>$this</value>
@@ -616,7 +643,7 @@
     <value>m_lbxGroups</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.10958.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.10962.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Parent" xml:space="preserve">
     <value>$this</value>
@@ -646,37 +673,13 @@
     <value>m_hdrConfig</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10958.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10962.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.ZOrder" xml:space="preserve">
     <value>11</value>
-  </data>
-  <data name="m_btChangeShape.Location" type="System.Drawing.Point, System.Drawing">
-    <value>796, 513</value>
-  </data>
-  <data name="m_btChangeShape.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 22</value>
-  </data>
-  <data name="m_btChangeShape.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="m_btChangeShape.Text" xml:space="preserve">
-    <value>Edit Response Function...</value>
-  </data>
-  <data name="&gt;&gt;m_btChangeShape.Name" xml:space="preserve">
-    <value>m_btChangeShape</value>
-  </data>
-  <data name="&gt;&gt;m_btChangeShape.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btChangeShape.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btChangeShape.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
