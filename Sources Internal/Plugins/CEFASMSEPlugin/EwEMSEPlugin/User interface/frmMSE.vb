@@ -408,7 +408,9 @@ Public Class frmMSE
         Try
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
             frmMaxDecreaseEfforts.Init(Me.UIContext, Me.MSE)
-            frmMaxDecreaseEfforts.ShowDialog(Me)
+            If frmMaxDecreaseEfforts.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                Me.MSE.InvalidateData(True)
+            End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnDecreaseEffort")
         End Try

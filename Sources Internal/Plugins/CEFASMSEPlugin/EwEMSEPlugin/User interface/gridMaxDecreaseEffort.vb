@@ -53,8 +53,7 @@ Public Class gridMaxDecreaseEffort
 
 #End Region ' Internal defs
 
-    ''' <summary>The cMSE Plugin that contains the data.</summary>
-    Private m_mse As cMSE
+    Private m_data As cEffortLimits = Nothing
 
 #Region " Constructor "
 
@@ -66,8 +65,8 @@ Public Class gridMaxDecreaseEffort
 
 #Region " Public access "
 
-    Public Sub Init(mse As cMSE)
-        Me.m_mse = mse
+    Public Sub Init(data As cEffortLimits)
+        Me.m_data = data
         Me.FillData()
     End Sub
 
@@ -79,6 +78,8 @@ Public Class gridMaxDecreaseEffort
 
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
+
+        ' ToDo: Globalize this
 
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
         Me.Redim(1, iNumCols)
@@ -95,21 +96,20 @@ Public Class gridMaxDecreaseEffort
 
     Protected Overrides Sub FillData()
 
-        If (Me.m_mse Is Nothing) Then Return
+        If (Me.m_data Is Nothing) Then Return
 
         Dim iRow As Integer = -1
         Dim cell As EwECell = Nothing
-        Dim data As cEffortLimits = Me.m_mse.EffortLimits
 
         Me.RowsCount = 1
 
-        For i As Integer = 1 To data.nFleets
+        For i As Integer = 1 To Me.m_data.nFleets
             iRow = Me.AddRow()
 
             Dim fleet As cFleetInput = Me.Core.FleetInputs(i)
             Me(iRow, eColumnTypes.FleetIndex) = New EwERowHeaderCell(CStr(fleet.Index))
             Me(iRow, eColumnTypes.FleetName) = New EwERowHeaderCell(CStr(fleet.Name))
-            Me(iRow, eColumnTypes.MaxChangeEffort) = Me.DataCell(data.Value(i))
+            Me(iRow, eColumnTypes.MaxChangeEffort) = Me.DataCell(Me.m_data.Value(i))
 
             ' No need to use tags here: row number = fleet number
             ' Me.Rows(iRow).Tag = i
@@ -150,15 +150,13 @@ Public Class gridMaxDecreaseEffort
 
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-        If (Me.m_mse Is Nothing) Then Return False
+        If (Me.m_data Is Nothing) Then Return False
         If (Not MyBase.OnCellEdited(p, cell)) Then Return False
-
-        Dim data As cEffortLimits = Me.m_mse.EffortLimits
 
         ' Check column
         If (p.Column = eColumnTypes.MaxChangeEffort) Then
             ' Store value
-            data.Value(p.Row) = Convert.ToSingle(cell.GetValue(p))
+            Me.m_data.Value(p.Row) = Convert.ToSingle(cell.GetValue(p))
         End If
 
         ' Yippee

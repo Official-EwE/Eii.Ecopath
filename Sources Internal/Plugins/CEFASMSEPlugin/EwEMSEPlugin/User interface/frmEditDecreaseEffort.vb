@@ -32,6 +32,7 @@ Imports EwEUtils.Utilities
 Public Class frmEditDecreaseEffort
 
     Private m_mse As cMSE = Nothing
+    Private m_data As cEffortLimits = Nothing
 
     Public Sub New()
         MyBase.New()
@@ -40,6 +41,8 @@ Public Class frmEditDecreaseEffort
 
     Public Sub Init(ByVal uic As cUIContext, ByVal mse As cMSE)
         Me.m_mse = mse
+        Me.m_data = New cEffortLimits(mse, mse.Core)
+        Me.m_data.Load()
         Me.Grid = m_grid
         Me.UIContext = uic
     End Sub
@@ -50,7 +53,7 @@ Public Class frmEditDecreaseEffort
         Me.QuickEditHandler.ShowImportExport = False
         Me.QuickEditHandler.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
 
-        Me.m_grid.Init(Me.m_mse)
+        Me.m_grid.Init(Me.m_data)
 
     End Sub
 
@@ -76,7 +79,7 @@ Public Class frmEditDecreaseEffort
 
         Try
             ' Save to default location
-            If Me.m_mse.EffortLimits.Save("") Then
+            If Me.m_data.Save("") Then
                 Me.DialogResult = Windows.Forms.DialogResult.OK
                 Me.Close()
             End If
