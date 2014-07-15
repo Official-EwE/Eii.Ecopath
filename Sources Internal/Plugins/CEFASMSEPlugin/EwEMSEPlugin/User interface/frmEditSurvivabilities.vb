@@ -31,7 +31,7 @@ Public Class frmEditSurvivabilities
     Implements IDisposable
 
     Private m_mse As cMSE = Nothing
-    Public m_survivability As cSurvivability
+    Private m_survivability As cSurvivability
     Private m_bIsDirty As Boolean
 
     Public Sub New(MSE As cMSE)
@@ -44,7 +44,8 @@ Public Class frmEditSurvivabilities
         Me.UIContext = uic
         Me.m_grid.UIContext = uic
         Me.m_grid.Init(Me.m_mse, Me.m_mse.Survivability)
-        Me.m_survivability = Me.m_mse.Survivability
+        Me.m_survivability = New cSurvivability(Me.m_mse, uic.Core, Me.m_mse.Survivability.EcosimData, Me.m_mse.Survivability.EcopathData)
+        Me.m_survivability.Load()
         Me.UpdateGrid(Me.m_survivability.ListofSurvDistParams, My.Resources.HEADER_SURVIVABILITIES)
     End Sub
 
@@ -103,7 +104,7 @@ Public Class frmEditSurvivabilities
         Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_mse.DataPath, cMSEUtils.eMSEPaths.DistrParams)
 
         'Saves all the parameters to csv when user clicks to save
-        If m_survivability.Save_Distribution_Params() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "Survivabilities_dist.csv"))
+        If m_survivability.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "Survivabilities_dist.csv"))
 
         Me.m_bIsDirty = False
 

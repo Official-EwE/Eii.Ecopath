@@ -224,7 +224,7 @@ Public Class cMSE
     Public Sub GenerateDefaultSurviveDistributions()
 
         Dim TSurvivability As cSurvivability = New cSurvivability(Me, m_core, _simdata, _pathdata)
-        TSurvivability.Save_Distribution_Params()
+        TSurvivability.Save()
         Me.InvalidateData()
 
     End Sub
@@ -233,10 +233,10 @@ Public Class cMSE
 
         Dim TSurvivability As cSurvivability = New cSurvivability(Me, m_core, _simdata, _pathdata)
 
-        TSurvivability.Load_Distribution_Params()
+        TSurvivability.Load()
         TSurvivability.SampleParams(Me.NModels)
         TSurvivability.SaveSampledToCSV()
-        TSurvivability.Save_Distribution_Params()
+        TSurvivability.Save()
 
         Me.InvalidateData()
 
@@ -368,7 +368,7 @@ Public Class cMSE
             Me.QuotaShares.Load()
             Me.Strategies.Load()
             Me.Survivability.LoadSampledParamsFromCSV()
-            Me.Survivability.Load_Distribution_Params()
+            Me.Survivability.Load()
         Catch ex As Exception
 
         End Try

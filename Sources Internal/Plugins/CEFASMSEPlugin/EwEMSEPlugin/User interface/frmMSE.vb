@@ -323,7 +323,9 @@ Public Class frmMSE
         Try
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
             frmSurvivabilities.Init(Me.UIContext)
-            frmSurvivabilities.ShowDialog(Me)
+            If frmSurvivabilities.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                Me.MSE.InvalidateData(True)
+            End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnShowTFM")
         End Try

@@ -88,7 +88,6 @@ Public Class cSurvivability
     Public Sub New(MSE As cMSE, core As EwECore.cCore, EcosimDataStructures As cEcosimDatastructures, EcopathDataStructures As cEcopathDataStructures)
         Me.mcore = core
         Me.mMSE = MSE
-        Me.mSimData = EcosimDataStructures
         Me.mPathData = EcopathDataStructures
         Me.mListofSuriveDistParams = New List(Of cSurvivabilityDistributonParam)
         Me.m_ListOfSampledSurvivabilities = New List(Of cSampledSurvivability)
@@ -507,6 +506,18 @@ Public Class cSurvivability
 
 #End Region
 
+    Public ReadOnly Property EcopathData As cEcopathDataStructures
+        Get
+            Return Me.mPathData
+        End Get
+    End Property
+
+    Public ReadOnly Property EcosimData As cEcosimDatastructures
+        Get
+            Return Me.mSimData
+        End Get
+    End Property
+
     Public Sub Defaults() Implements IMSEData.Defaults
         Me.ListofSurvDistParams.Clear()
     End Sub
@@ -531,7 +542,7 @@ Public Class cSurvivability
         Return False
     End Function
 
-    Public Function Load_Distribution_Params(Optional strFilename As String = "") As Boolean _
+    Public Function Load(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
         Dim reader As StreamReader = Nothing
@@ -586,7 +597,7 @@ Public Class cSurvivability
         Return bSuccess
     End Function
 
-    Public Function Save_Distribution_Params(Optional strFilename As String = "") As Boolean _
+    Public Function Save(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Save
 
         Const DefaultAlpha As Single = 10
