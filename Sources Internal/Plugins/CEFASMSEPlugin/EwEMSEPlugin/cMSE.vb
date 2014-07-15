@@ -221,6 +221,14 @@ Public Class cMSE
         Return bsuccess
     End Function
 
+    Public Sub GenerateDefaultSurviveDistributions()
+
+        Dim TSurvivability As cSurvivability = New cSurvivability(Me, m_core, _simdata, _pathdata)
+        TSurvivability.Save_Distribution_Params()
+        Me.InvalidateData()
+
+    End Sub
+
     Public Sub GenerateSurvivabilities()
 
         Dim TSurvivability As cSurvivability = New cSurvivability(Me, m_core, _simdata, _pathdata)
@@ -231,6 +239,34 @@ Public Class cMSE
         TSurvivability.Save_Distribution_Params()
 
         Me.InvalidateData()
+
+    End Sub
+
+    Public Sub GenerateEmptyBiomassLimitsCSV()
+
+        Dim TBiomassLimits As cBiomassLimits = New cBiomassLimits(m_plugin)
+
+        TBiomassLimits.SaveLimitsToCSV()
+
+    End Sub
+
+    Public Sub GenerateEmptyEffortLimitsCSV()
+
+        Dim TEffortLimits As cEffortLimits = New cEffortLimits(Me, m_core)
+        Dim strPath As String = ""
+
+        strPath = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")
+        TEffortLimits.CreateDefaultCSV(strPath)
+
+    End Sub
+
+    Public Sub GenerateEmptyQuotaSharesCSV()
+
+        Dim TQuotaShares As cQuotaShares = New cQuotaShares(Me, Core)
+        Dim strPath As String = ""
+
+        strPath = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")
+        TQuotaShares.CreateDefaultCSV(strPath)
 
     End Sub
 
@@ -1679,6 +1715,25 @@ Public Class cMSE
         '    End If
         'Next iGrp
 
+        'This outputs information that can be used to resolve issues with the biomass limits are exceeded
+        Dim DiagnosticOutput4BiomassLimits = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "BadDynamicsTrajectories.csv"), True)
+        Dim MaxBiomass As Single
+        For Each iGrp In BiomassLimits.lstBiomassLimits
+            MaxBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, OriginalNTimesteps + 1)
+            For iTimeStep As Integer = OriginalNTimesteps + 2 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) > MaxBiomass Then
+                    MaxBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep)
+                End If
+            Next
+            DiagnosticOutput4BiomassLimits.WriteLine("{0},{1},{2},{3},{4},{5}", _
+                        cStringUtils.FormatNumber(iTrial), _
+                        cStringUtils.ToCSVField(m_currentStrategy.Name), _
+                        cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp.mGroup.Index).Name), _
+                        cStringUtils.FormatNumber(MaxBiomass), _
+                        cStringUtils.FormatNumber(iGrp.mUpperLimit), _
+                        cStringUtils.FormatNumber(MaxBiomass / iGrp.mUpperLimit))
+        Next
+        cMSEUtils.ReleaseWriter(DiagnosticOutput4BiomassLimits)
 
         'Check whether the biomass for any species goes beneath or hits zero
         For iGrp As Integer = 1 To m_core.nLivingGroups

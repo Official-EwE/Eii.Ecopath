@@ -563,8 +563,11 @@ Public Class frmMSE
             ' --- BEGIN GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
 
             MSE.GenerateEmptyDistributions()
-            MSE.GenerateSurvivabilities()
+            MSE.GenerateDefaultSurviveDistributions()
             MSE.GenerateEmptyDietCSVs()
+            MSE.GenerateEmptyBiomassLimitsCSV()
+            MSE.GenerateEmptyEffortLimitsCSV()
+            MSE.GenerateEmptyQuotaSharesCSV()
 
             ' .. add more
 

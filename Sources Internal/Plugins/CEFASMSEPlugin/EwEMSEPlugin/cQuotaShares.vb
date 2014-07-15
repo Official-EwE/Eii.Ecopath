@@ -25,6 +25,7 @@ Option Strict On
 Option Explicit On
 
 Imports System.IO
+Imports System.Collections.ObjectModel
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
@@ -240,9 +241,19 @@ Public Class cQuotaShares
 
     End Function
 
-    Public Sub CreateDefaultCSV()
+    Public Function QuotaSharesExistForFleet(iGrp As Integer) As Boolean
+
+        For iRow As Integer = 0 To m_lstQuotaShares.Count - 1
+            If m_lstQuotaShares(iRow).mGroupNo = iGrp Then Return True
+        Next
+
+        Return False
+
+    End Function
+
+    Public Sub CreateDefaultCSV(Optional strFilename As String = "")
         Me.Defaults()
-        Me.Save()
+        Me.Save(strFilename)
     End Sub
 
 #End Region
@@ -250,25 +261,25 @@ Public Class cQuotaShares
     Public Sub Defaults() _
         Implements IMSEData.Defaults
 
-        Dim TotalCatch As Double
+        'Dim TotalCatch As Double
 
-        If Not m_lstQuotaShares Is Nothing Then m_lstQuotaShares.Clear()
+        'If Not m_lstQuotaShares Is Nothing Then m_lstQuotaShares.Clear()
 
-        For iGroup = 1 To m_core.nLivingGroups
+        'For iGroup = 1 To m_core.nLivingGroups
 
-            'Count how many fleets catch this group
-            TotalCatch = 0
-            For iFleet = 1 To m_core.nFleets
-                TotalCatch += m_core.FleetInputs(iFleet).Landings(iGroup) + m_core.FleetInputs(iFleet).Discards(iGroup)
-            Next
+        '    'Count how many fleets catch this group
+        '    TotalCatch = 0
+        '    For iFleet = 1 To m_core.nFleets
+        '        TotalCatch += m_core.FleetInputs(iFleet).Landings(iGroup) + m_core.FleetInputs(iFleet).Discards(iGroup)
+        '    Next
 
-            For iFleet = 1 To m_core.nFleets
-                If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then
-                    AddQuotaShare(iGroup, iFleet, (m_core.FleetInputs(iFleet).Landings(iGroup) + m_core.FleetInputs(iFleet).Discards(iGroup)) / TotalCatch)
-                End If
-            Next
+        '    For iFleet = 1 To m_core.nFleets
+        '        If m_core.FleetInputs(iFleet).Landings(iGroup) > 0 Then
+        '            AddQuotaShare(iGroup, iFleet, (m_core.FleetInputs(iFleet).Landings(iGroup) + m_core.FleetInputs(iFleet).Discards(iGroup)) / TotalCatch)
+        '        End If
+        '    Next
 
-        Next
+        'Next
     End Sub
 
     Public Function IsChanged() As Boolean Implements IMSEData.IsChanged
@@ -406,5 +417,49 @@ Public Class cQuotaShares
     '    Next
 
     'End Sub
+
+    Sub RemoveUnnecessaryShares()
+        'This routine deletes the shares if there is no longer a hcr associate with it
+
+        'Loop through each group
+        For iGroup = 1 To m_core.nGroups
+            'Check that the group has no hcr associated with it and whether there are shares associated with this group
+            If Not m_MSE.Strategies.HCRExistsForGroup(iGroup) And m_MSE.QuotaShares.QuotaSharesExistForFleet(iGroup) Then
+                'If there are then delete them
+                For iShare As Integer = m_MSE.QuotaShares.m_lstQuotaShares.Count - 1 To 0 Step -1
+                    If m_MSE.QuotaShares.m_lstQuotaShares(iShare).mGroupNo = iGroup Then m_MSE.QuotaShares.m_lstQuotaShares.RemoveAt(iShare)
+                Next
+            End If
+        Next
+        
+    End Sub
+
+    Sub ModifyWithNewDefaults()
+        'This routine adds default values to quotashares object and csv because values are now necessary since hcrs have been created for new groups
+        Dim Share As Single
+        Dim TotalLandings As Single
+
+        'Loop though each group
+        For iGrp = 1 To m_core.nGroups
+            'Check whether the group has an hcr for it and check whether there are quotashares set up for it
+            If m_MSE.Strategies.HCRExistsForGroup(iGrp) And Not m_MSE.QuotaShares.QuotaSharesExistForFleet(iGrp) Then
+                'if a strategy exists for the group but there aren't any quotashares create default quotashares in memory
+                TotalLandings = 0
+                For iFleet = 1 To m_core.nFleets
+                    TotalLandings += m_core.FleetInputs(iFleet).Landings(iGrp)
+                Next
+
+                For iFleet As Integer = 1 To m_core.nFleets
+                    If m_core.FleetInputs(iFleet).Landings(iGrp) > 0 Then
+                        Share = m_core.FleetInputs(iFleet).Landings(iGrp) / TotalLandings
+                        m_MSE.QuotaShares.AddQuotaShare(iGrp, iFleet, Share)
+                    End If
+                Next
+
+            End If
+        Next
+
+    End Sub
+
 
 End Class

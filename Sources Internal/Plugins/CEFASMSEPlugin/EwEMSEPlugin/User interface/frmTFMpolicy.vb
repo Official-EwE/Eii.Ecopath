@@ -217,6 +217,11 @@ Public Class frmTFMpolicy
         End Try
         Me.UpdateControls()
 
+        'Remove quotashares for groups no longer with a hcr
+        Me.m_MSE.QuotaShares.RemoveUnnecessaryShares()
+        'Save the quotashares to csv
+        Me.m_MSE.QuotaShares.Save()
+
     End Sub
 
     Private Sub OnSelectedStrategyChanged(sender As Object, e As System.EventArgs) _
@@ -255,6 +260,12 @@ Public Class frmTFMpolicy
             Me.m_bStrategiesSaved = True
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
+
+            'Update quotashares to include default values for new groups with hcr and remove them for groups no longer with a hcr
+            Me.m_MSE.QuotaShares.ModifyWithNewDefaults()
+            Me.m_MSE.QuotaShares.RemoveUnnecessaryShares()
+            'Save the quotashares to csv
+            Me.m_MSE.QuotaShares.Save()
 
         Catch ex As Exception
 

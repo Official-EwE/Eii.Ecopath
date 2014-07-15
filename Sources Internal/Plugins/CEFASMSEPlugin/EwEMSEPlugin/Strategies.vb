@@ -66,6 +66,19 @@ Public Class Strategies
         End Try
     End Sub
 
+    Public Function HCRExistsForGroup(ByVal iGrp As Integer) As Boolean
+
+        For Each iStrategy In Me
+            For iHCR = 1 To iStrategy.Count
+                If iStrategy.Item(iHCR - 1).GroupF.DBID = iGrp Then
+                    Return True
+                End If
+            Next
+        Next
+
+    End Function
+
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Resolve a name and index to a <see cref="cEcoPathGroupInput"/> instance.
