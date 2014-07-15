@@ -329,6 +329,25 @@ Public Class cForcingFunction
 
     End Sub
 
+    Public Overridable Sub Scale(NewMax As Single)
+        Try
+
+            Dim scalar As Single = NewMax / Me.YMax
+            Me.LockUpdates()
+            For ipt As Integer = 1 To Me.nPoints
+                Me.ShapeData(ipt) *= scalar
+            Next
+            Me.UnlockUpdates()
+
+        Catch ex As Exception
+            cLog.Write(ex, Me.ToString + ".Normalize()")
+        End Try
+
+    End Sub
+
+
+
+
 #End Region ' Updating
 
 End Class ' cForcingFunction

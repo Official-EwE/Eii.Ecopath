@@ -55,6 +55,8 @@ Namespace Controls
             Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpParams = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tbxMaxValue = New System.Windows.Forms.TextBox()
+            Me.m_lblMax = New System.Windows.Forms.Label()
             Me.m_btDefaults = New System.Windows.Forms.Button()
             Me.m_tlpParams.SuspendLayout()
             Me.SuspendLayout()
@@ -147,13 +149,25 @@ Namespace Controls
             resources.ApplyResources(Me.m_tlpParams, "m_tlpParams")
             Me.m_tlpParams.Controls.Add(Me.m_lblA, 0, 0)
             Me.m_tlpParams.Controls.Add(Me.m_tbxA, 1, 0)
-            Me.m_tlpParams.Controls.Add(Me.m_lblD, 0, 3)
             Me.m_tlpParams.Controls.Add(Me.m_lblB, 0, 1)
             Me.m_tlpParams.Controls.Add(Me.m_tbxB, 1, 1)
             Me.m_tlpParams.Controls.Add(Me.m_tbxC, 1, 2)
             Me.m_tlpParams.Controls.Add(Me.m_lblC, 0, 2)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxMaxValue, 1, 4)
             Me.m_tlpParams.Controls.Add(Me.m_tbxD, 1, 3)
+            Me.m_tlpParams.Controls.Add(Me.m_lblD, 0, 3)
+            Me.m_tlpParams.Controls.Add(Me.m_lblMax, 0, 4)
             Me.m_tlpParams.Name = "m_tlpParams"
+            '
+            'm_tbxMaxValue
+            '
+            resources.ApplyResources(Me.m_tbxMaxValue, "m_tbxMaxValue")
+            Me.m_tbxMaxValue.Name = "m_tbxMaxValue"
+            '
+            'm_lblMax
+            '
+            resources.ApplyResources(Me.m_lblMax, "m_lblMax")
+            Me.m_lblMax.Name = "m_lblMax"
             '
             'm_btDefaults
             '
@@ -199,6 +213,8 @@ Namespace Controls
         Private WithEvents m_lbShapeFunctionTypes As System.Windows.Forms.ListBox
         Private WithEvents m_tlpParams As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents m_btDefaults As System.Windows.Forms.Button
+        Friend WithEvents m_lblMax As System.Windows.Forms.Label
+        Friend WithEvents m_tbxMaxValue As System.Windows.Forms.TextBox
 
     End Class
 

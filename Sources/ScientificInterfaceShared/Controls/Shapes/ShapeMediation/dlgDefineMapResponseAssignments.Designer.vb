@@ -59,10 +59,10 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_txSD = New System.Windows.Forms.TextBox()
         Me.m_lbMean = New System.Windows.Forms.Label()
         Me.m_lbSD = New System.Windows.Forms.Label()
+        Me.m_btChangeShape = New System.Windows.Forms.Button()
         Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
         Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_btChangeShape = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -161,6 +161,12 @@ Partial Class dlgDefineMapResponseAssignments
         resources.ApplyResources(Me.m_lbSD, "m_lbSD")
         Me.m_lbSD.Name = "m_lbSD"
         '
+        'm_btChangeShape
+        '
+        resources.ApplyResources(Me.m_btChangeShape, "m_btChangeShape")
+        Me.m_btChangeShape.Name = "m_btChangeShape"
+        Me.m_btChangeShape.UseVisualStyleBackColor = True
+        '
         'm_hdrReponse
         '
         Me.m_hdrReponse.CanCollapseParent = False
@@ -193,15 +199,8 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_hdrConfig.IsCollapsed = False
         Me.m_hdrConfig.Name = "m_hdrConfig"
         '
-        'm_btChangeShape
-        '
-        resources.ApplyResources(Me.m_btChangeShape, "m_btChangeShape")
-        Me.m_btChangeShape.Name = "m_btChangeShape"
-        Me.m_btChangeShape.UseVisualStyleBackColor = True
-        '
         'dlgDefineMapResponseAssignments
         '
-        Me.AcceptButton = Me.m_btnOk
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_btChangeShape)
