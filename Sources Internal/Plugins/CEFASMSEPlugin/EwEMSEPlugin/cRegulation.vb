@@ -57,6 +57,10 @@ Public Class cRegulations
         Me.m_MSE = MSE
         Me.m_Core = Core
         ReDim m_methods(Core.nFleets)
+        ' Set proper defaults
+        For i As Integer = 0 To Core.nFleets - 1
+            Me.m_methods(i) = eRegMethod.None
+        Next
         Me.Defaults()
     End Sub
 
@@ -97,7 +101,7 @@ Public Class cRegulations
                     'get the reg object out of the list based on the fleet index
                     'Debug.Assert(reg.mFleetName = cMSEUtils.FromCSVField(recs(0)), "Oppss Fleetname in file does not match Core Fleetname for fleet." + iflt.ToString)
                     Me.m_methods(iflt) = CType(cStringUtils.ConvertToInteger(recs(2)), eRegMethod)
-
+                    If (Me.m_methods(iflt) = 0) Then Me.m_methods(iflt) = eRegMethod.None
                 Loop
 
             End If '(reader IsNot Nothing)
