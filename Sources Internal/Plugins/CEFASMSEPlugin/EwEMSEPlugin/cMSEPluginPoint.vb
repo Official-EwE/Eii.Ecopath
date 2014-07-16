@@ -45,6 +45,7 @@ Public Class cMSEPluginPoint
     Implements EwEPlugin.IEcosimPlugin
     Implements EwEPlugin.IEcopathRunInitializedPlugin
     Implements EwEPlugin.IMSEInitialized
+    Implements EwEPlugin.IEcosimDataInitializedPlugin
 
 
 #Region " Internal vars "
@@ -212,6 +213,20 @@ Public Class cMSEPluginPoint
             cLog.Write(ex, "MSEInitialized(...) Failed to cast MSEDataStructure to cMSEDataStructures.")
         End Try
 
+    End Sub
+
+
+    Public Sub EcosimPreDataInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreDataInitialized
+
+    End Sub
+
+    Public Sub EcosimPreRunInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreRunInitialized
+        Try
+            Dim data As cEcosimDatastructures = DirectCast(EcosimDatastructures, cEcosimDatastructures)
+            Me.m_MSE.onEcosimRunBeginning(data)
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
@@ -427,5 +442,4 @@ Public Class cMSEPluginPoint
 
 #End Region ' Helper methods
 
-  
 End Class

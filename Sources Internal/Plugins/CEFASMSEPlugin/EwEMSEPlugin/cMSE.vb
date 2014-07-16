@@ -178,6 +178,14 @@ Public Class cMSE
         End Get
     End Property
 
+
+    Public ReadOnly Property EcopathData As cEcopathDataStructures
+        Get
+            Return Me._pathdata
+        End Get
+    End Property
+
+
     Public Property CoreMSEData As MSE.cMSEDataStructures
         Get
             Return Me.m_CoreMSEData
@@ -2760,6 +2768,17 @@ stepend:
 
     End Sub
 
+    Public Sub onEcosimRunBeginning(ByVal EcosimDatastructures As cEcosimDatastructures)
+
+        Try
+            Me.StockAssessment.Init()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+
     Public Sub onEcopathInitialized(ByVal EcopathData As cEcopathDataStructures)
         Me._pathdata = EcopathData
     End Sub
@@ -2801,6 +2820,11 @@ stepend:
                 Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(iTime)
                 'Use the biomass estimated by the stock assessment model 
                 'as the true biomass
+
+                For i As Integer = 1 To Me.Core.nLivingGroups
+                    System.Console.Write(i.ToString + "," + (bioEst(i) / BiomassAtTimestep(i)).ToString + " | ")
+                Next
+                System.Console.WriteLine()
                 'TargConsQuota = DetermineQuotas(bioEst)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
