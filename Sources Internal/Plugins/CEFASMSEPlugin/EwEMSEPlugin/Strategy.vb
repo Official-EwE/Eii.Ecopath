@@ -201,7 +201,7 @@ Public Class Strategy
                     tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(recs(3))
                     tempHCRGroup.GroupF = Me.ResolveGroup(recs(4), cStringUtils.ConvertToInteger(recs(5)))
                     tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(recs(6))
-                    ' tempHCRGroup.CostFunction = HCR_Group.toCostFunctionEnum(csv(7))
+                    tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
 
                     Dim strMsg As String = ""
                     ' Only add valid strategies!

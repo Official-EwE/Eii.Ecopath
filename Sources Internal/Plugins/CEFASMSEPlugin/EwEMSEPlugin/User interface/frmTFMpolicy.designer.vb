@@ -48,8 +48,10 @@ Partial Class frmTFMpolicy
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTFMpolicy))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_tsStrategy = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tslSelectStratagy = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmStrategies = New System.Windows.Forms.ToolStripComboBox()
@@ -67,7 +69,6 @@ Partial Class frmTFMpolicy
         Me.m_gridRegulations = New EwEMSEPlugin.gridRegulations()
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
-        Me.m_graph = New ZedGraph.ZedGraphControl()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -95,6 +96,20 @@ Partial Class frmTFMpolicy
         'm_scMain.Panel2
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_scDetails)
+        '
+        'm_graph
+        '
+        resources.ApplyResources(Me.m_graph, "m_graph")
+        Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
+        Me.m_graph.Name = "m_graph"
+        Me.m_graph.ScrollGrace = 0.0R
+        Me.m_graph.ScrollMaxX = 0.0R
+        Me.m_graph.ScrollMaxY = 0.0R
+        Me.m_graph.ScrollMaxY2 = 0.0R
+        Me.m_graph.ScrollMinX = 0.0R
+        Me.m_graph.ScrollMinY = 0.0R
+        Me.m_graph.ScrollMinY2 = 0.0R
+        Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
         '
         'm_tsStrategy
         '
@@ -268,20 +283,6 @@ Partial Class frmTFMpolicy
         Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
-        '
-        'm_graph
-        '
-        resources.ApplyResources(Me.m_graph, "m_graph")
-        Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
-        Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0.0R
-        Me.m_graph.ScrollMaxX = 0.0R
-        Me.m_graph.ScrollMaxY = 0.0R
-        Me.m_graph.ScrollMaxY2 = 0.0R
-        Me.m_graph.ScrollMinX = 0.0R
-        Me.m_graph.ScrollMinY = 0.0R
-        Me.m_graph.ScrollMinY2 = 0.0R
-        Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
         '
         'frmTFMpolicy
         '
