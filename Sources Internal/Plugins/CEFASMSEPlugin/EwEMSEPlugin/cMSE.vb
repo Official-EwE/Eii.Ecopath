@@ -44,6 +44,16 @@ Public Class cMSE
     Private m_currentStrategy As Strategy = Nothing
     Private m_monitor As cMSEStateMonitor = Nothing
     Private m_effortlimits As cEffortLimits = Nothing
+
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'For the Stock Assessment Model
+    Private m_StockAssessment As cStockAssessmentModel
+
+    'For now use the MSE data from the Core get CV's for distributions
+    'Once we have an interface we can replace this
+    Private m_CoreMSEData As MSE.cMSEDataStructures
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     Private m_ecosim As EwECore.Ecosim.cEcoSimModel
     Private _simdata As cEcosimDatastructures
     Private _pathdata As cEcopathDataStructures
@@ -153,6 +163,28 @@ Public Class cMSE
         Get
             Return Me.m_effortlimits
         End Get
+    End Property
+
+    Public ReadOnly Property StockAssessment As cStockAssessmentModel
+        Get
+            Return Me.m_StockAssessment
+        End Get
+    End Property
+
+
+    Public ReadOnly Property EcosimData As cEcosimDatastructures
+        Get
+            Return Me._simdata
+        End Get
+    End Property
+
+    Public Property CoreMSEData As MSE.cMSEDataStructures
+        Get
+            Return Me.m_CoreMSEData
+        End Get
+        Set(value As MSE.cMSEDataStructures)
+            Me.m_CoreMSEData = value
+        End Set
     End Property
 
 #End Region
@@ -2722,6 +2754,8 @@ stepend:
         Me.m_strategies = New Strategies(Me, Me.m_core)
         Me.m_effortlimits = New cEffortLimits(Me, Me.m_core)
 
+        Me.m_StockAssessment = New cStockAssessmentModel(Me)
+
         Me.InvalidateData()
 
     End Sub
@@ -2760,6 +2794,16 @@ stepend:
 
             If (iTime - 1) Mod 12 = 0 Then
 
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Stock Assessment
+                'Get Biomass estimated by the stock assessment model
+                'not used at this time just for testing
+                Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(iTime)
+                'Use the biomass estimated by the stock assessment model 
+                'as the true biomass
+                'TargConsQuota = DetermineQuotas(bioEst)
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
                 TargConsQuota = DetermineQuotas(BiomassAtTimestep)
                 For iFleet = 1 To m_core.nFleets
                     MinEffortThisYear(iFleet - 1) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
@@ -2771,6 +2815,7 @@ stepend:
             'if there are no fleets to optimise for skip all this
             If FleetsThatFishHCRGrp.Count > 0 Then
 
+                'jb QMult() is Density dependant catchability
                 'Not quite sure what QMult is but it is needed to calculate what F is in the optimised routine
                 For indexgrp As Integer = 1 To m_ecosim.EcosimData.nGroups
                     QMult(indexgrp - 1) = m_ecosim.EcosimData.QmQo(indexgrp) / (1 + (m_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / m_ecosim.EcosimData.StartBiomass(indexgrp))

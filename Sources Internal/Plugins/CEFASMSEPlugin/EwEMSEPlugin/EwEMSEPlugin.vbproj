@@ -143,6 +143,7 @@
     <Compile Include="cMSEPluginPoint.vb" />
     <Compile Include="cQuotaShares.vb" />
     <Compile Include="cRegulation.vb" />
+    <Compile Include="cStockAssessmentModel.vb" />
     <Compile Include="IMSEData.vb" />
     <Compile Include="User interface\frmEditSurvivabilities.Designer.vb">
       <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>

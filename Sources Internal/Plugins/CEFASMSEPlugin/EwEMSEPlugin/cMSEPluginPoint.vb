@@ -44,6 +44,7 @@ Public Class cMSEPluginPoint
     Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcosimPlugin
     Implements EwEPlugin.IEcopathRunInitializedPlugin
+    Implements EwEPlugin.IMSEInitialized
 
 
 #Region " Internal vars "
@@ -57,6 +58,7 @@ Public Class cMSEPluginPoint
     Private m_ecopath As Ecopath.cEcoPathModel
     Private m_simdata As cEcosimDatastructures
     Private m_pathdata As cEcopathDataStructures
+    Private m_coreMSEData As EwECore.MSE.cMSEDataStructures
 
     Private m_EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
 
@@ -199,6 +201,16 @@ Public Class cMSEPluginPoint
             Me.MSE.onEcosimInitialized(Me.m_simdata)
 
         End If
+
+    End Sub
+
+    Public Sub MSEInitialized(MSEModel As Object, MSEDataStructure As Object, EcosimDatastructures As Object) Implements EwEPlugin.IMSEInitialized.MSEInitialized
+        Try
+            m_coreMSEData = DirectCast(MSEDataStructure, MSE.cMSEDataStructures)
+            Me.m_MSE.CoreMSEData = Me.m_coreMSEData
+        Catch ex As Exception
+            cLog.Write(ex, "MSEInitialized(...) Failed to cast MSEDataStructure to cMSEDataStructures.")
+        End Try
 
     End Sub
 
@@ -415,4 +427,5 @@ Public Class cMSEPluginPoint
 
 #End Region ' Helper methods
 
+  
 End Class
