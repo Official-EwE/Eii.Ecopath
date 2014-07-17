@@ -550,7 +550,7 @@ Namespace Controls
             Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
 
             Try
-                'We just tested to make sure the shape in a cForcingFunction
+                'We just tested to make sure the shape is a cForcingFunction
                 DirectCast(shape, cForcingFunction).Scale(sNewMaxValue)
             Catch ex As Exception
 
