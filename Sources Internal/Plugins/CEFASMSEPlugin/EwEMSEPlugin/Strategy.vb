@@ -25,9 +25,8 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
-Imports LumenWorks.Framework.IO.Csv
 Imports System.IO
+Imports EwECore
 Imports EwEUtils.Utilities
 
 #End Region ' Imports 
@@ -168,6 +167,7 @@ Public Class Strategy
     Public Function Load(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
+        Dim strMsg As String = ""
         Dim buff As String
         Dim recs() As String
         Dim breturn As Boolean = False
@@ -201,9 +201,14 @@ Public Class Strategy
                     tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(recs(3))
                     tempHCRGroup.GroupF = Me.ResolveGroup(recs(4), cStringUtils.ConvertToInteger(recs(5)))
                     tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(recs(6))
-                    tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
+                    Try
+                        If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
+                            tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
+                        End If
+                    Catch ex As Exception
+                        ' Whoah!
+                    End Try
 
-                    Dim strMsg As String = ""
                     ' Only add valid strategies!
                     If tempHCRGroup.isValid(strMsg) Then
                         Me.Add(tempHCRGroup)
