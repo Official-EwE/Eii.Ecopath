@@ -409,6 +409,7 @@ Public Class cMSE
             Me.Strategies.Load()
             Me.Survivability.LoadSampledParamsFromCSV()
             Me.Survivability.Load()
+            Me.StockAssessment.Load()
         Catch ex As Exception
 
         End Try
@@ -2817,14 +2818,9 @@ stepend:
                 'Stock Assessment
                 'Get Biomass estimated by the stock assessment model
                 'not used at this time just for testing
-                Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(iTime)
-                'Use the biomass estimated by the stock assessment model 
-                'as the true biomass
+                Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(iTime, BiomassAtTimestep)
+                'Use the biomass estimated by the stock assessment model as the true biomass
 
-                For i As Integer = 1 To Me.Core.nLivingGroups
-                    System.Console.Write(i.ToString + "," + (bioEst(i) / BiomassAtTimestep(i)).ToString + " | ")
-                Next
-                System.Console.WriteLine()
                 'TargConsQuota = DetermineQuotas(bioEst)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
