@@ -54,6 +54,7 @@ Public Class cCostFunctionTypeFormatter
     End Function
 
 End Class
+
 ''' <summary>
 ''' Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
 ''' </summary>

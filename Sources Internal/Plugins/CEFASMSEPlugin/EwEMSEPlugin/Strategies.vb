@@ -39,9 +39,9 @@ Public Class Strategies
     Inherits List(Of Strategy)
     Implements IMSEData
 
-    Private mName As String
-    Private mMSE As cMSE
-    Private mCore As cCore
+    Private m_strName As String = ""
+    Private mMSE As cMSE = Nothing
+    Private mCore As cCore = Nothing
 
     Sub New(MSE As cMSE, Core As cCore)
         mMSE = MSE
