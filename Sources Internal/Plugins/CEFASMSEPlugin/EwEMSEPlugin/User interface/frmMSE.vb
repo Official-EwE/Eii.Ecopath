@@ -194,13 +194,17 @@ Public Class frmMSE
         Me.m_lblPathValue.Text = cStringUtils.CompactString(Me.MSE.DataPath, Me.m_lblPathValue.ClientRectangle.Width, Me.m_lblPathValue.Font, TextFormatFlags.PathEllipsis)
         cToolTipShared.GetInstance().SetToolTip(Me.m_lblPathValue, Me.MSE.DataPath)
 
-        img = SharedResources.Critical
-        Me.m_btnReviewDistParms.Enabled = False
         If Me.MSE.IsInputStructureAvailable(False) Then
             If Me.MSE.IsInputDataCompatible() Then
                 img = SharedResources.OK
                 Me.m_btnReviewDistParms.Enabled = True
+            Else
+                Me.m_btnReviewDistParms.Enabled = False
+                img = SharedResources.Critical
             End If
+        Else
+            img = Nothing
+            Me.m_btnReviewDistParms.Enabled = True
         End If
         Me.m_pbPathCompatible.Image = img
 
@@ -289,6 +293,7 @@ Public Class frmMSE
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnPathPrefChanged")
         End Try
+        Me.UpdateControls()
 
     End Sub
 
