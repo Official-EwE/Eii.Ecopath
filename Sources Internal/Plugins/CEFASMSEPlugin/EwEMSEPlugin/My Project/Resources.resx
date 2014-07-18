@@ -245,6 +245,9 @@
   <data name="HEADER_MAXRELFEEDTIME" xml:space="preserve">
     <value>Max. rel. feeding time</value>
   </data>
+  <data name="HEADER_MAX_CHANGE_F" xml:space="preserve">
+    <value>Max Change in Effort</value>
+  </data>
   <data name="HEADER_MIDPOINT" xml:space="preserve">
     <value>Mid-point</value>
   </data>
@@ -317,6 +320,9 @@
   <data name="STATUS_FOUND_MODEL" xml:space="preserve">
     <value>{0} found a new balanced model at trial {1}. {2}</value>
     <comment>{0}=plugin name, {1}=trial number, {2}=time expired</comment>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>Loading Cefas MSE...</value>
   </data>
   <data name="STATUS_NOTAVAILABLE" xml:space="preserve">
     <value>Not available</value>

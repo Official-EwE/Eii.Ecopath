@@ -385,6 +385,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Max Change in Effort.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MAX_CHANGE_F() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAX_CHANGE_F", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Max. rel. feeding time.
         '''</summary>
         Friend ReadOnly Property HEADER_MAXRELFEEDTIME() As String
@@ -588,6 +597,15 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_FOUND_MODEL() As String
             Get
                 Return ResourceManager.GetString("STATUS_FOUND_MODEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Loading Cefas MSE....
+        '''</summary>
+        Friend ReadOnly Property STATUS_LOADING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_LOADING", resourceCulture)
             End Get
         End Property
         

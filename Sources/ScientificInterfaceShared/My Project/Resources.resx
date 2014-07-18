@@ -3151,4 +3151,7 @@
   <data name="LABEL_WIDTH" xml:space="preserve">
     <value>Width:</value>
   </data>
+  <data name="HEADER_METHOD" xml:space="preserve">
+    <value>Method</value>
+  </data>
 </root>

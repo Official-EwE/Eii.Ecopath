@@ -98,8 +98,6 @@ Public Class gridTargetFishingMortalityPolicy
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        ' JS 13Oct13: Globalized this
-
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
 
         Me.Redim(1, iNumCols)

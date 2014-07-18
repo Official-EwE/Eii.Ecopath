@@ -79,14 +79,12 @@ Public Class gridMaxDecreaseEffort
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        ' ToDo: Globalize this
-
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
         Me.Redim(1, iNumCols)
 
         Me(0, eColumnTypes.FleetIndex) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-        Me(0, eColumnTypes.MaxChangeEffort) = New EwEColumnHeaderCell("Max Change in Effort")
+        Me(0, eColumnTypes.MaxChangeEffort) = New EwEColumnHeaderCell(My.Resources.HEADER_MAX_CHANGE_F)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False

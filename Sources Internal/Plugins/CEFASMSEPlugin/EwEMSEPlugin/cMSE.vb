@@ -400,8 +400,7 @@ Public Class cMSE
         If (Not Me.IsInputDataCompatible()) Then Return
         If (Not bReloadData) Then Return
 
-        ' ToDo: globalize this
-        cApplicationStatusNotifier.StartProgress(Me.m_core, "Loading Cefas MSE...", -1)
+        cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_LOADING, -1)
         Try
             ' Reload possible data
             Me.EffortLimits.Load()

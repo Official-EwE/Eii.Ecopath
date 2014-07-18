@@ -117,7 +117,7 @@ Public Class gridRegulations
 
         Me(0, eColumnTypes.FleetIndex) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-        Me(0, eColumnTypes.Method) = New EwEColumnHeaderCell("Method")
+        Me(0, eColumnTypes.Method) = New EwEColumnHeaderCell(SharedResources.HEADER_METHOD)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
