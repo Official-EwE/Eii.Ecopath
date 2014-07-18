@@ -329,7 +329,7 @@ Public Class frmTFMpolicy
             'add the newly created harvest control rule to the current strategy
             Me.m_SelectedStrategy.Add(HRCDialogue.HarvestControlRule)
             Me.m_grid.RefreshContent()
-
+            Me.m_gridRegulations.RefreshContent()
             Me.m_bStrategiesSaved = False
         End If
 
@@ -349,9 +349,11 @@ Public Class frmTFMpolicy
                 If curStratIndex > -1 And curStratIndex < Me.m_tscmStrategies.Items.Count Then
                     Me.m_tscmStrategies.SelectedIndex = curStratIndex
                 End If
+                Me.HCRGroup = Me.m_grid.HarvestControlRule
 
                 Me.m_grid.RefreshContent()
-                Me.HCRGroup = Me.m_grid.HarvestControlRule
+                Me.m_gridRegulations.RefreshContent()
+
                 Me.m_bStrategiesSaved = False
                 Me.UpdateControls()
 

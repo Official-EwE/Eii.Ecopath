@@ -75,6 +75,7 @@ Public Class Strategies
                 End If
             Next
         Next
+        Return False
 
     End Function
 
