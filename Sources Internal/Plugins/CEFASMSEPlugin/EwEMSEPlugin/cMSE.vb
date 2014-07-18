@@ -1460,6 +1460,8 @@ Public Class cMSE
 
         Try
 
+            Me.StockAssessment.BeginRun()
+
             Dim BiomassProjected(Me.NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
             Dim msgReport As New cFeedbackMessage("?", eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Information, eMessageReplyStyle.OK)
@@ -1590,6 +1592,8 @@ Public Class cMSE
         cMSEUtils.ReleaseWriter(swGroup)
         cMSEUtils.ReleaseWriter(swFleet)
         cMSEUtils.ReleaseWriter(swFleetEfforts)
+
+        Me.StockAssessment.RunEnded()
 
         Me.RestoreOriginalState()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

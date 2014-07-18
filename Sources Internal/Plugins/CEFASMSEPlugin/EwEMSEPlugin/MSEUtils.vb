@@ -151,6 +151,8 @@ Public Class cMSEUtils
         Regulations
 
         BiomassLimits
+
+        StockAssessment
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -198,6 +200,7 @@ Public Class cMSEUtils
             Case eMSEPaths.Strategies : Return "Strategies"
             Case eMSEPaths.Regulations : Return "Regulations"
             Case eMSEPaths.BiomassLimits : Return "BiomassLimits"
+            Case eMSEPaths.StockAssessment : Return "StockAssessment"
             Case Else
                 Debug.Assert(False)
         End Select

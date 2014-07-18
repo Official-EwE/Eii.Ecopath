@@ -24,6 +24,8 @@ Option Explicit On
 
 #Region "Imports"
 
+Imports System.IO
+
 Imports EwECore
 Imports Troschuetz.Random
 
@@ -48,6 +50,8 @@ Public Class cStockAssessmentModel
     Private KalmanGain() As Single
 
     Private m_RandNormal As Troschuetz.Random.NormalDistribution
+
+    Private m_strmBobsB As StreamWriter
 
 #End Region
 
@@ -77,17 +81,18 @@ Public Class cStockAssessmentModel
 
     Public Sub Init()
         Dim BaB As Single
-        ' Dim MSEData As MSE.cMSEDataStructures = Me.MSE.CoreMSEData
         Dim simdata As cEcosimDatastructures = Me.MSE.EcosimData
         Dim pathdata As cEcopathDataStructures = Me.MSE.EcopathData
 
         Bestimate = New Single(Me.Core.nLivingGroups) {}
         BestimateLast = New Single(Me.Core.nLivingGroups) {}
         m_RandNormal = New Troschuetz.Random.NormalDistribution()
+        m_RandNormal.Mu = 0
+        m_RandNormal.Sigma = 1
 
         'Init Bestimate() and BestimateLast() to the start biomass with some error
         For igrp As Integer = 1 To Me.Core.nLivingGroups
-            Bestimate(igrp) = simdata.StartBiomass(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * (1 - m_RandNormal.NextDouble())))
+            Bestimate(igrp) = simdata.StartBiomass(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * m_RandNormal.NextDouble()))
             BestimateLast(igrp) = Bestimate(igrp)
         Next igrp
 
@@ -127,17 +132,16 @@ Public Class cStockAssessmentModel
             Dim Bavg() As Single = Me.getAvgB(iTimestep)
 
             For igrp As Integer = 1 To nGrps
-                'Get the Observed Biomass from the last year
-                'Average biomass with variation for the last year
-                '1 - rand.NextDouble() ??? is this a mean=0 sd=1
-                Bobs(igrp) = Bavg(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * (1 - m_RandNormal.NextDouble())))
+                'Get the Observed Biomass
+                'Average biomass from the last year with sampling error
+                Bobs(igrp) = Bavg(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * m_RandNormal.NextDouble()))
 
                 'Get the estimated biomass base on the observed biomass plus variation
                 'Using the stock recruitment curve from the EwE6 MSE interface
                 Me.Bestimate(igrp) = Me.stockRecruitment(iTimestep, igrp, Bobs(igrp), Me.Bestimate(igrp))
             Next igrp
 
-            'For debugging dump BioEst/B to console window
+            'For debugging dump BioEst/B to file
             Me.dumpBioEstOverB(Me.Bestimate, Biomass)
 
             Return Me.Bestimate
@@ -151,6 +155,31 @@ Public Class cStockAssessmentModel
     End Function
 
 
+    Public Sub RunEnded()
+
+        cMSEUtils.ReleaseWriter(m_strmBobsB)
+
+    End Sub
+
+    Public Sub BeginRun()
+
+        Try
+
+            If m_strmBobsB IsNot Nothing Then
+                cMSEUtils.ReleaseWriter(m_strmBobsB)
+            End If
+
+            Dim fn As String = cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "BobsOverB.csv")
+            m_strmBobsB = cMSEUtils.GetWriter(fn)
+            m_strmBobsB.WriteLine("B_StockAssessment / B_Ecosim")
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+
 #End Region
 
 #Region "Private Properties and  Methods"
@@ -158,9 +187,11 @@ Public Class cStockAssessmentModel
     Private Sub dumpBioEstOverB(BioEst() As Single, B() As Single)
 
         For i As Integer = 1 To Me.Core.nLivingGroups
-            System.Console.Write(i.ToString + "," + (BioEst(i) / B(i)).ToString + " | ")
+            Me.m_strmBobsB.Write((BioEst(i) / B(i)).ToString)
+            If i < Me.Core.nLivingGroups Then Me.m_strmBobsB.Write(",")
         Next
-        System.Console.WriteLine()
+        Me.m_strmBobsB.WriteLine()
+        Me.m_strmBobsB.Flush()
 
     End Sub
 
@@ -242,14 +273,6 @@ Public Class cStockAssessmentModel
 
     End Function
 
-    Private Sub InitBestimated()
-        If Bestimate Is Nothing Then
-            Bestimate = New Single(Me.Core.nLivingGroups) {}
-        End If
-        If Bestimate.Length <> Me.Core.nLivingGroups Then
-            Bestimate = New Single(Me.Core.nLivingGroups) {}
-        End If
-    End Sub
 
 
     Private Sub InitToCoreData()
@@ -296,7 +319,7 @@ Public Class cStockAssessmentModel
 
 
     Public Sub Defaults() Implements IMSEData.Defaults
-
+        'No defaults yet
     End Sub
 
     Public Function IsChanged() As Boolean Implements IMSEData.IsChanged
