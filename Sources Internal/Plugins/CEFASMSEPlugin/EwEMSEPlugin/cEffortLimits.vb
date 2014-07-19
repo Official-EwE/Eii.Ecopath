@@ -79,7 +79,8 @@ Public Class cEffortLimits
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IMSEData.Load"/>
     ''' -----------------------------------------------------------------------
-    Public Function Load(Optional strFilename As String = "") As Boolean _
+    Public Function Load(Optional msg As cMessage = Nothing, _
+                         Optional strFilename As String = "") As Boolean _
          Implements IMSEData.Load
 
         ' Resolve path to default, if missing
@@ -106,7 +107,8 @@ Public Class cEffortLimits
                 End While
                 EffortLimitsCSV.Dispose()
             Catch ex As Exception
-                ' CSV malformed, handle error?
+                ' CSV malformed
+                cMSEUtils.LogError(msg, "Effort limits cannot load from " & strFilename & ". " & ex.Message)
             End Try
         End If
 

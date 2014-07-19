@@ -78,7 +78,8 @@ Public Class cRegulations
         End Set
     End Property
 
-    Public Function Load(Optional strFilename As String = "") As Boolean _
+    Public Function Load(Optional msg As cMessage = Nothing, _
+                         Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
         Dim buff As String
@@ -108,6 +109,7 @@ Public Class cRegulations
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
+            cMSEUtils.LogError(msg, "Regulations could not load from " & strFilename & ". " & ex.Message)
             breturn = False
         End Try
         cMSEUtils.ReleaseReader(reader)

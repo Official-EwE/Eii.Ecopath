@@ -20,6 +20,13 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
+Option Strict On
+Imports EwECore
+
+#End Region ' Imports
+
 ''' <summary>
 ''' Foundation interface for user-supplied data in the MSE plug-in.
 ''' </summary>
@@ -30,7 +37,8 @@ Public Interface IMSEData
     ''' </summary>
     ''' <param name="strFilename">Optional file name to load data from.</param>
     ''' <returns>True if successful.</returns>
-    Function Load(Optional strFilename As String = "") As Boolean
+    Function Load(Optional msg As cMessage = Nothing, _
+                  Optional strFilename As String = "") As Boolean
 
     ''' <summary>
     ''' Load data to a file.

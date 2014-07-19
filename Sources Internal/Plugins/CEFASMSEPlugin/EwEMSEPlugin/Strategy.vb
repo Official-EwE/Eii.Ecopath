@@ -164,71 +164,69 @@ Public Class Strategy
         Return False
     End Function
 
-    Public Function Load(Optional strFilename As String = "") As Boolean _
+    Public Function Load(Optional msg As cMessage = Nothing, _
+                         Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
         Dim strMsg As String = ""
         Dim buff As String
         Dim recs() As String
-        Dim breturn As Boolean = False
+        Dim bSuccess As Boolean = True
 
         If (String.IsNullOrWhiteSpace(strFilename)) Then
             strFilename = Me.FileName
         End If
 
-        If Not File.Exists(Me.FileName) Then
-            'message of some sort
-            Return False
+        If Not File.Exists(strFilename) Then
+            ' OK: data loaded with defaults
+            Return bSuccess
         End If
 
-        Try
+        Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
+        If (reader IsNot Nothing) Then
 
-            Dim reader As StreamReader = cMSEUtils.GetReader(Me.FileName)
-            If (reader IsNot Nothing) Then
+            reader.ReadLine()
+            Do Until reader.EndOfStream
+                buff = reader.ReadLine()
+                recs = buff.Split(","c)
 
-                reader.ReadLine()
-                Do Until reader.EndOfStream
-                    buff = reader.ReadLine()
-                    recs = buff.Split(","c)
+                Dim tempHCRGroup As HCR_Group
+                'Each HCR Group needs to be a new object
+                tempHCRGroup = New HCR_Group(m_core)
 
-                    Dim tempHCRGroup As HCR_Group
-                    'Each HCR Group needs to be a new object
-                    tempHCRGroup = New HCR_Group(m_core)
-
+                Try
                     ' Resolve group
                     tempHCRGroup.GroupB = Me.ResolveGroup(recs(0), cStringUtils.ConvertToInteger(recs(1)))
                     tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(recs(2))
                     tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(recs(3))
                     tempHCRGroup.GroupF = Me.ResolveGroup(recs(4), cStringUtils.ConvertToInteger(recs(5)))
                     tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(recs(6))
-                    Try
-                        If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
-                            tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
-                        End If
-                    Catch ex As Exception
-                        ' Whoah!
-                    End Try
-
-                    ' Only add valid strategies!
-                    If tempHCRGroup.isValid(strMsg) Then
-                        Me.Add(tempHCRGroup)
+                    If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
+                        tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
                     End If
+                Catch ex As Exception
+                    ' Whoah!
+                    cMSEUtils.LogError(msg, "Strategy could not load from " & strFilename & ". " & ex.Message)
+                    bSuccess = False
+                End Try
 
-                    breturn = True
+                ' Only add valid strategies!
+                If tempHCRGroup.isValid(strMsg) Then
+                    Me.Add(tempHCRGroup)
+                Else
+                    cMSEUtils.LogError(msg, "Strategy loaded from " & strFilename & " is not valid.")
+                    bSuccess = False
+                End If
 
-                Loop
-            End If 'cMSEUtils.readToTag(reader, START_TAG)
+            Loop
+        End If 'cMSEUtils.readToTag(reader, START_TAG)
 
-            cMSEUtils.ReleaseReader(reader)
-
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
-        End Try
+        cMSEUtils.ReleaseReader(reader)
 
         'for debugging
-        Debug.Assert(breturn, Me.ToString + ".Read() Failed to read strategies from file.")
+        Debug.Assert(bSuccess, Me.ToString + ".Read() Failed to read strategies from file.")
 
-        Return breturn
+        Return bSuccess
     End Function
 
     Public Function Save(Optional strFilename As String = "") As Boolean _
@@ -238,7 +236,7 @@ Public Class Strategy
             strFilename = Me.FileName
         End If
 
-        Dim strm As StreamWriter = cMSEUtils.GetWriter(Me.FileName, False)
+        Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
         If (strm IsNot Nothing) Then
 
             'msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _

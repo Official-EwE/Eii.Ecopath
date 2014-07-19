@@ -542,7 +542,8 @@ Public Class cSurvivability
         Return False
     End Function
 
-    Public Function Load(Optional strFilename As String = "") As Boolean _
+    Public Function Load(Optional msg As cMessage = Nothing, _
+                         Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
         Dim reader As StreamReader = Nothing
@@ -563,7 +564,7 @@ Public Class cSurvivability
                 Try
                     csv = New CsvReader(reader, True)
 
-                    While ExtractSurvivabilityDist(csv, param)
+                    While ExtractSurvivabilityDist(msg, csv, param)
                         Me.AddDist(param)
                     End While
                     csv.Dispose()
@@ -655,7 +656,9 @@ Public Class cSurvivability
     ''' <param name="csv">The CSV object linking to the survivability distribution parameter file</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function ExtractSurvivabilityDist(ByVal csv As CsvReader, ByRef param As cSurvivabilityDistributonParam) As Boolean
+    Private Function ExtractSurvivabilityDist(ByVal msg As cMessage, _
+                                              ByVal csv As CsvReader, _
+                                              ByRef param As cSurvivabilityDistributonParam) As Boolean
 
         ' Sanity checks
         If (csv Is Nothing) Then Return False
@@ -673,7 +676,7 @@ Public Class cSurvivability
             TBeta = cStringUtils.ConvertToDouble(csv(5))
 
         Catch ex As Exception
-            ' ToDo_JS: respond to error
+            cMSEUtils.LogError(msg, "Failed to read survivabilities from ?" & ex.Message)
             Return Nothing
         End Try
 

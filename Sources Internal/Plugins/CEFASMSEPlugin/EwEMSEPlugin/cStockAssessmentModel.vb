@@ -317,7 +317,6 @@ Public Class cStockAssessmentModel
 
 #Region "IMSEData Implementation"
 
-
     Public Sub Defaults() Implements IMSEData.Defaults
         'No defaults yet
     End Sub
@@ -327,7 +326,9 @@ Public Class cStockAssessmentModel
         Return False
     End Function
 
-    Public Function Load(Optional strFilename As String = "") As Boolean Implements IMSEData.Load
+    Public Function Load(Optional msg As cMessage = Nothing, _
+                         Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.Load
 
         'For now just copy the data from the core into local arrays
         Me.InitToCoreData()
@@ -335,7 +336,8 @@ Public Class cStockAssessmentModel
         Return True
     End Function
 
-    Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
+    Public Function Save(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.Save
 
         Return True
     End Function

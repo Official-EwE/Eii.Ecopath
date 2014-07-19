@@ -129,18 +129,16 @@ Public Class Strategies
         Return False
     End Function
 
-    Public Function Load(Optional strFilename As String = "") As Boolean _
+    Public Function Load(Optional msg As cMessage = Nothing, _
+                         Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
         Dim StrategiesFileNames As String()
         Dim Strategy As Strategy
         Dim strStategyDir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
         Dim strRegulationDir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
-        Dim strVal As String = ""
         Dim StratCounter As Integer = 1
-        Dim bReadStrat As Boolean
-        Dim bReadReg As Boolean
-        Dim lstFailedFiles As New List(Of String)
+        Dim bSuccess As Boolean = True
 
         If Not Directory.Exists(strStategyDir) Then Return False
 
@@ -154,40 +152,18 @@ Public Class Strategies
 
             Strategy = New Strategy(Path.GetFileNameWithoutExtension(StrategyFile), StratCounter, StrategyFile, mCore, mMSE)
 
-            'Save the Strategy to the file pass into its constructor
-            bReadStrat = Strategy.Load()
-            bReadReg = Strategy.Regulations.Load(Path.Combine(strRegulationDir, Path.GetFileNameWithoutExtension(StrategyFile) & ".csv"))
-
-            If bReadStrat And bReadReg Then
-                'Only add the Strategy if it read both strategy and regulations from file
+            'Only add the Strategy if it read both strategy and regulations from file
+            If Strategy.Load(msg) And Strategy.Regulations.Load(msg, Path.Combine(strRegulationDir, Path.GetFileNameWithoutExtension(StrategyFile) & ".csv")) Then
                 Me.Add(Strategy)
             Else
-                'keep track for the files that failed to read
-                lstFailedFiles.Add(StrategyFile)
+                bSuccess = False
             End If
-
-            ' ToDo: Consider if file(s) need to be removed if a disaster occurred?!
 
             StratCounter += 1
         Next StrategyFile
 
-        ''Warn the user if anything failed
-        '' JS 04May14: changed message to prompt, localized
-        'For Each strFile In lstFailedFiles
-        '    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_STRATEGY_REMOVE, strFile), _
-        '                                     eCoreComponentType.External, eMessageType.DataImport, eMessageImportance.Question, _
-        '                                     eMessageReplyStyle.YES_NO)
-        '    Me.mCore.Messages.SendMessage(fmsg)
-        '    If (fmsg.Reply = eMessageReply.YES) Then
-        '        Try
-        '            File.Delete(strFile)
-        '        Catch ex As Exception
-        '            cLog.Write(ex, "CefasMSE:cStrategies delete(" & strFile & ")")
-        '        End Try
-        '    End If
-        'Next
+        Return bSuccess
 
-        Return True
     End Function
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save

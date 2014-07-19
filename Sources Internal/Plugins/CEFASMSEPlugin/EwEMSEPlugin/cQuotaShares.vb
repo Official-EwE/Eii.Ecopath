@@ -286,7 +286,8 @@ Public Class cQuotaShares
         Return True
     End Function
 
-    Public Function Load(Optional strFilename As String = "") As Boolean Implements IMSEData.Load
+    Public Function Load(Optional msg As cMessage = Nothing, _
+                         Optional strFilename As String = "") As Boolean Implements IMSEData.Load
 
         If (String.IsNullOrWhiteSpace(strFilename)) Then
             strFilename = Me.DefaultFileName
@@ -316,6 +317,7 @@ Public Class cQuotaShares
 
                 Catch ex As Exception
                     'Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
+                    cMSEUtils.LogError(msg, "Quota shared cannot load from " & strFilename & ". " & ex.Message)
                     bSuccess = False
                 End Try
                 cMSEUtils.ReleaseReader(reader)

@@ -25,9 +25,9 @@ Option Strict On
 Option Explicit On
 
 Imports System.IO
+Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports LumenWorks.Framework.IO.Csv
 
 #End Region ' Imports 
 
@@ -227,5 +227,20 @@ Public Class cMSEUtils
         'Failed to find the tag in the stream
         Return False
     End Function
+
+    ''' <summary>
+    ''' Generate a <see cref="cVariableStatus">error flag</see> for use in MSE error messages.
+    ''' </summary>
+    ''' <param name="strMsg"></param>
+    ''' <param name="status"></param>
+    ''' <remarks></remarks>
+    Public Shared Sub LogError(ByVal msg As cMessage, _
+                               ByVal strMsg As String, _
+                               Optional ByVal status As eStatusFlags = eStatusFlags.ErrorEncountered)
+        If (msg IsNot Nothing) Then
+            msg.AddVariable(New cVariableStatus(status, strMsg, eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0))
+        End If
+        cLog.Write("CefasMSE: " & strMsg, eVerboseLevel.Standard)
+    End Sub
 
 End Class
