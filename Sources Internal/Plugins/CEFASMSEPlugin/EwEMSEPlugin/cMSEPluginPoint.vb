@@ -114,7 +114,7 @@ Public Class cMSEPluginPoint
 
     Friend Sub InvalidateConfiguration()
 
-        Me.MSE.InvalidateData()
+        Me.MSE.InvalidateRunState()
         Me.m_monitor.Invalidate()
 
     End Sub

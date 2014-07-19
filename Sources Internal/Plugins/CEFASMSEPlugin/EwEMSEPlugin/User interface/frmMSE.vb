@@ -329,7 +329,7 @@ Public Class frmMSE
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
             frmSurvivabilities.Init(Me.UIContext)
             If frmSurvivabilities.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.InvalidateData(True)
+                Me.MSE.InvalidateRunState(True)
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnShowTFM")
@@ -416,7 +416,7 @@ Public Class frmMSE
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
             frmMaxDecreaseEfforts.Init(Me.UIContext, Me.MSE)
             If frmMaxDecreaseEfforts.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.InvalidateData(True)
+                Me.MSE.InvalidateRunState(True)
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnDecreaseEffort")
@@ -511,7 +511,7 @@ Public Class frmMSE
         frmDisParams.Init(Me.UIContext, Me.Plugin)
 
         If (frmDisParams.ShowDialog(Me) = Windows.Forms.DialogResult.OK) Then
-            Me.MSE.InvalidateData(False)
+            Me.MSE.InvalidateRunState(False)
             Me.UpdateControls()
             Return True
         End If
@@ -542,7 +542,7 @@ Public Class frmMSE
     Private Function ResolveMSEPathConflicts() As Boolean
 
         ' Forget all we know
-        Me.MSE.InvalidateData(False)
+        Me.MSE.InvalidateRunState(False)
 
         ' Check if input structure is missing
         If Not Me.MSE.IsInputStructureAvailable(False) Then
@@ -581,7 +581,7 @@ Public Class frmMSE
             ' --- END GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
 
             ' Re-assess state
-            Me.MSE.InvalidateData(False)
+            Me.MSE.InvalidateRunState(False)
 
 #If DEBUG Then
             ' Panic in debug mode only

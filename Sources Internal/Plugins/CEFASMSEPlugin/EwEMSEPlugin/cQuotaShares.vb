@@ -420,20 +420,23 @@ Public Class cQuotaShares
 
     'End Sub
 
-    Sub RemoveUnnecessaryShares()
-        'This routine deletes the shares if there is no longer a hcr associate with it
+    ''' <summary>
+    ''' Delete the shares if there is no longer a hcr associated with it
+    ''' </summary>
+    ''' <param name="strategies"></param>
+    Sub RemoveUnnecessaryShares(strategies As Strategies)
 
         'Loop through each group
         For iGroup = 1 To m_core.nGroups
             'Check that the group has no hcr associated with it and whether there are shares associated with this group
-            If Not m_MSE.Strategies.HCRExistsForGroup(iGroup) And m_MSE.QuotaShares.QuotaSharesExistForFleet(iGroup) Then
+            If Not strategies.HCRExistsForGroup(iGroup) And Me.QuotaSharesExistForFleet(iGroup) Then
                 'If there are then delete them
-                For iShare As Integer = m_MSE.QuotaShares.m_lstQuotaShares.Count - 1 To 0 Step -1
-                    If m_MSE.QuotaShares.m_lstQuotaShares(iShare).mGroupNo = iGroup Then m_MSE.QuotaShares.m_lstQuotaShares.RemoveAt(iShare)
+                For iShare As Integer = Me.m_lstQuotaShares.Count - 1 To 0 Step -1
+                    If Me.m_lstQuotaShares(iShare).mGroupNo = iGroup Then Me.m_lstQuotaShares.RemoveAt(iShare)
                 Next
             End If
         Next
-        
+
     End Sub
 
     Sub ModifyWithNewDefaults()

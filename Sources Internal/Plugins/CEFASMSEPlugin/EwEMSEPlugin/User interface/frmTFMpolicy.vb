@@ -218,7 +218,7 @@ Public Class frmTFMpolicy
         Me.UpdateControls()
 
         'Remove quotashares for groups no longer with a hcr
-        Me.m_MSE.QuotaShares.RemoveUnnecessaryShares()
+        Me.m_MSE.QuotaShares.RemoveUnnecessaryShares(Me.m_strategies)
         'Save the quotashares to csv
         Me.m_MSE.QuotaShares.Save()
 
@@ -247,7 +247,7 @@ Public Class frmTFMpolicy
         Try
             If Me.m_strategies.Save() Then
                 Me.m_MSE.Strategies.Load()
-                Me.m_MSE.InvalidateData()
+                Me.m_MSE.InvalidateRunState()
             End If
 
             Me.m_bStrategiesSaved = Me.m_strategies.Save()
@@ -255,7 +255,7 @@ Public Class frmTFMpolicy
 
             Me.m_MSE.Strategies.Clear()
             Me.m_MSE.Strategies.AddRange(Me.m_strategies.ToArray)
-            Me.m_MSE.InvalidateData()
+            Me.m_MSE.InvalidateRunState()
 
             Me.m_bStrategiesSaved = True
             Me.DialogResult = Windows.Forms.DialogResult.OK
@@ -263,7 +263,7 @@ Public Class frmTFMpolicy
 
             'Update quotashares to include default values for new groups with hcr and remove them for groups no longer with a hcr
             Me.m_MSE.QuotaShares.ModifyWithNewDefaults()
-            Me.m_MSE.QuotaShares.RemoveUnnecessaryShares()
+            Me.m_MSE.QuotaShares.RemoveUnnecessaryShares(Me.m_strategies)
             'Save the quotashares to csv
             Me.m_MSE.QuotaShares.Save()
 

@@ -202,7 +202,7 @@ Public Class cMSE
     Public Sub New(ByVal Monitor As cMSEStateMonitor, pluginPoint As cMSEPluginPoint)
         Me.m_Monitor = Monitor
         Me.m_plugin = pluginPoint
-        Me.InvalidateData()
+        Me.InvalidateRunState()
     End Sub
 
     Public Sub onCoreInitialized(EwECore As cCore, Ecopath As Ecopath.cEcoPathModel, Ecosim As Ecosim.cEcoSimModel)
@@ -211,7 +211,7 @@ Public Class cMSE
         Me.m_ecopath = Ecopath
         Me.m_ecosim = Ecosim
 
-        Me.InvalidateData()
+        Me.InvalidateRunState()
 
     End Sub
 
@@ -265,7 +265,7 @@ Public Class cMSE
 
         Dim TSurvivability As cSurvivability = New cSurvivability(Me, m_core, _simdata, _pathdata)
         TSurvivability.Save()
-        Me.InvalidateData()
+        Me.InvalidateRunState()
 
     End Sub
 
@@ -278,7 +278,7 @@ Public Class cMSE
         TSurvivability.SaveSampledToCSV()
         TSurvivability.Save()
 
-        Me.InvalidateData()
+        Me.InvalidateRunState()
 
     End Sub
 
@@ -361,7 +361,7 @@ Public Class cMSE
         End If
         cMSEUtils.ReleaseWriter(writer)
 
-        Me.InvalidateData()
+        Me.InvalidateRunState()
         Return bSuccess
 
     End Function
@@ -382,7 +382,14 @@ Public Class cMSE
 
 #Region " Diagnostics and state management "
 
-    Friend Sub InvalidateData(Optional bReloadData As Boolean = True)
+    ''' <summary>
+    ''' Invalidate the known state of the MSE engine. Data may have been changed, directories
+    ''' may have been swapped: MSE simply does not know its state any longer and will need to
+    ''' reassess this at a next opportunity.
+    ''' </summary>
+    ''' <param name="bReloadData"></param>
+    ''' <remarks></remarks>
+    Friend Sub InvalidateRunState(Optional bReloadData As Boolean = True)
 
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
@@ -2076,7 +2083,7 @@ Public Class cMSE
             ' Kaboom!
         End Try
         ' Re-assess configuration when next needed
-        Me.InvalidateData()
+        Me.InvalidateRunState()
         Me.RestoreOriginalState()
 
     End Sub
@@ -2768,7 +2775,7 @@ stepend:
 
         Me.m_StockAssessment = New cStockAssessmentModel(Me)
 
-        Me.InvalidateData()
+        Me.InvalidateRunState()
 
     End Sub
 
@@ -3039,7 +3046,7 @@ stepend:
         End If
 
         If (bRefresh = True) Then
-            Me.InvalidateData()
+            Me.InvalidateRunState()
         End If
 
     End Sub
@@ -3107,7 +3114,7 @@ stepend:
             If (value <> My.Settings.UseEwEPath) Then
                 My.Settings.UseEwEPath = value
                 My.Settings.Save()
-                Me.InvalidateData()
+                Me.InvalidateRunState()
             End If
         End Set
     End Property
@@ -3124,7 +3131,7 @@ stepend:
             If (value <> My.Settings.CustomPath) Then
                 My.Settings.CustomPath = value
                 My.Settings.Save()
-                Me.InvalidateData()
+                Me.InvalidateRunState()
             End If
         End Set
     End Property
@@ -3142,7 +3149,7 @@ stepend:
             If (value <> My.Settings.NMaxAttempts) Then
                 My.Settings.NMaxAttempts = value
                 My.Settings.Save()
-                Me.InvalidateData()
+                Me.InvalidateRunState()
             End If
         End Set
     End Property
@@ -3160,7 +3167,7 @@ stepend:
             If (value <> My.Settings.NMaxTime) Then
                 My.Settings.NMaxTime = value
                 My.Settings.Save()
-                Me.InvalidateData()
+                Me.InvalidateRunState()
             End If
         End Set
     End Property
