@@ -141,6 +141,7 @@
     <Compile Include="cEffortLimits.vb" />
     <Compile Include="cMSE.vb" />
     <Compile Include="cMSEPluginPoint.vb" />
+    <Compile Include="cDiets.vb" />
     <Compile Include="cQuotaShares.vb" />
     <Compile Include="cRegulation.vb" />
     <Compile Include="cStockAssessmentModel.vb" />

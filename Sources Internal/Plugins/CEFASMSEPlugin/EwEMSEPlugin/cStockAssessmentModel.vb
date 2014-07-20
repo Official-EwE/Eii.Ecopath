@@ -19,18 +19,15 @@
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 
-Option Strict On
-Option Explicit On
 
 #Region "Imports"
 
+Option Strict On
+Option Explicit On
 Imports System.IO
-
 Imports EwECore
-Imports Troschuetz.Random
 
 #End Region
-
 
 Public Class cStockAssessmentModel
     Implements IMSEData

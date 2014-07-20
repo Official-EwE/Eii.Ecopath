@@ -312,8 +312,8 @@ Public Class frmMSE
         Me.m_bInUpdate = True
         Try
             If Me.BrowseDataPath() Then
+                Me.MSE.IsInputStructureAvailable(True)
                 Me.UpdateControls()
-                'Me.zMSEPathConflicts()
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnSelectDataPath")
@@ -341,9 +341,11 @@ Public Class frmMSE
         Handles m_btnReviewTFM.Click
 
         Try
-            Dim frm As New frmTFMpolicy()
-            frm.Init(Me.UIContext, Me.MSE)
-            frm.ShowDialog(Me)
+            Dim frm As New frmTFMpolicy(Me.UIContext, Me.MSE)
+            If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                Me.MSE.InvalidateRunState(True)
+                Me.UpdateControls()
+            End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnShowTFM")
         End Try

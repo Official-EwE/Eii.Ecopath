@@ -106,11 +106,12 @@ Public Class frmDistributionParameters
         Me.m_ecopathdist = New cEcopathDistributionParams(Me.MSE, Me.Core)
         Me.m_ecosimdist = New cEcosimDistributionParams(Me.MSE, Me.Core)
 
-        If Me.m_ecopathdist.Load() = False Then
+        ' ToDo: use proper message
+        If Me.m_ecopathdist.Load(Nothing) = False Then
             Me.m_plugin.InformUser(My.Resources.ERROR_DISTRPAR_LOAD_ECOPATH, eMessageImportance.Warning)
         End If
 
-        If Me.m_ecosimdist.load() = False Then
+        If Me.m_ecosimdist.Load(Nothing) = False Then
             Me.m_plugin.InformUser(My.Resources.ERROR_DISTRPAR_LOAD_ECOSIM, eMessageImportance.Warning)
         End If
 

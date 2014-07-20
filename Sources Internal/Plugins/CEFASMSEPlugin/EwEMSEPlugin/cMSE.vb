@@ -44,6 +44,7 @@ Public Class cMSE
     Private m_currentStrategy As Strategy = Nothing
     Private m_monitor As cMSEStateMonitor = Nothing
     Private m_effortlimits As cEffortLimits = Nothing
+    Private m_diets As cDiets = Nothing
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'For the Stock Assessment Model
@@ -71,19 +72,19 @@ Public Class cMSE
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'All basic Ecopath and Ecosim parameters X(a,b) a = iteration b = the functional group
-    Dim B(,) As Double
-    Dim PB(,) As Double
-    Dim QB(,) As Double
-    Dim EE(,) As Double
-    Dim BA(,) As Double
-    Dim DenDepCatchability(,) As Double
-    Dim FeedingTimeAdjustRate(,) As Double
-    Dim MaxRelFeedingTime(,) As Double
-    Dim OtherMortFeedingTime(,) As Double
-    Dim PredEffectFeedingTime(,) As Double
-    Dim QBMaxxQBio(,) As Double
-    Dim SwitchingPower(,) As Double
-    Dim Vulnerabilities(,,) As Double
+    Private B(,) As Double
+    Private PB(,) As Double
+    Private QB(,) As Double
+    Private EE(,) As Double
+    Private BA(,) As Double
+    Private DenDepCatchability(,) As Double
+    Private FeedingTimeAdjustRate(,) As Double
+    Private MaxRelFeedingTime(,) As Double
+    Private OtherMortFeedingTime(,) As Double
+    Private PredEffectFeedingTime(,) As Double
+    Private QBMaxxQBio(,) As Double
+    Private SwitchingPower(,) As Double
+    Private Vulnerabilities(,,) As Double
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     Private FleetsThatFishHCRGrp As List(Of Integer) = New List(Of Integer)
@@ -165,12 +166,17 @@ Public Class cMSE
         End Get
     End Property
 
+    Public ReadOnly Property Diets As cDiets
+        Get
+            Return Me.m_diets
+        End Get
+    End Property
+
     Public ReadOnly Property StockAssessment As cStockAssessmentModel
         Get
             Return Me.m_StockAssessment
         End Get
     End Property
-
 
     Public ReadOnly Property EcosimData As cEcosimDatastructures
         Get
@@ -178,13 +184,11 @@ Public Class cMSE
         End Get
     End Property
 
-
     Public ReadOnly Property EcopathData As cEcopathDataStructures
         Get
             Return Me._pathdata
         End Get
     End Property
-
 
     Public Property CoreMSEData As MSE.cMSEDataStructures
         Get
@@ -242,6 +246,7 @@ Public Class cMSE
 
     Public Function CreateModels() As Boolean
         Dim bsuccess As Boolean = True
+
         Try
 
             Me.GenerateEcosimParameters("MaxRelFeedingTime")
@@ -265,7 +270,6 @@ Public Class cMSE
 
         Dim TSurvivability As cSurvivability = New cSurvivability(Me, m_core, _simdata, _pathdata)
         TSurvivability.Save()
-        Me.InvalidateRunState()
 
     End Sub
 
@@ -283,98 +287,31 @@ Public Class cMSE
     End Sub
 
     Public Sub GenerateEmptyBiomassLimitsCSV()
-
         Dim TBiomassLimits As cBiomassLimits = New cBiomassLimits(m_plugin)
-
         TBiomassLimits.SaveLimitsToCSV()
-
     End Sub
 
     Public Sub GenerateEmptyEffortLimitsCSV()
-
         Dim TEffortLimits As cEffortLimits = New cEffortLimits(Me, m_core)
-        Dim strPath As String = ""
-
-        strPath = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")
-        TEffortLimits.CreateDefaultCSV(strPath)
-
+        TEffortLimits.Save()
     End Sub
 
     Public Sub GenerateEmptyQuotaSharesCSV()
-
         Dim TQuotaShares As cQuotaShares = New cQuotaShares(Me, Core)
-        Dim strPath As String = ""
-
-        strPath = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")
-        TQuotaShares.CreateDefaultCSV(strPath)
-
+        TQuotaShares.Save()
     End Sub
 
     Public Function GenerateEmptyDietCSVs() As Boolean
-
-        Dim strPath As String = ""
-        Dim writer As StreamWriter = Nothing
-        Dim bSuccess As Boolean = True
-
-        strPath = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")
-        writer = cMSEUtils.GetWriter(strPath, False)
-
-        If (writer IsNot Nothing) Then
-
-            writer.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
-            writer.WriteLine()
-
-            For iPred As Integer = 1 To m_core.nLivingGroups
-                If m_core.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
-                    Dim mean As Single = m_core.EcoPathGroupInputs(iPred).ImpDiet
-                    writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,1," & cStringUtils.ToCSVField(mean))
-                Else
-                    writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,0,0")
-                End If
-
-                For iPrey As Integer = 1 To m_core.nGroups
-                    If m_core.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
-                        Dim mean As Single = m_core.EcoPathGroupInputs(iPred).DietComp(iPrey)
-                        writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",1," & cStringUtils.ToCSVField(mean))
-                    Else
-                        writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & ",0,0")
-                    End If
-                Next
-            Next
-        Else
-            bSuccess = False
-        End If
-        cMSEUtils.ReleaseWriter(writer)
-
-        strPath = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietCompositionMultipliers.csv")
-        writer = cMSEUtils.GetWriter(strPath, False)
-        If (writer IsNot Nothing) Then
-            writer.WriteLine("PredatorIndexNumber,PredatorIndexName,Multiplier")
-            For iPred As Integer = 1 To m_core.nLivingGroups
-                writer.WriteLine("{0},{1},{2}", _
-                                 cStringUtils.ToCSVField(iPred), _
-                                 cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name), _
-                                 1)
-            Next
-        Else
-            bSuccess = False
-        End If
-        cMSEUtils.ReleaseWriter(writer)
-
-        Me.InvalidateRunState()
-        Return bSuccess
-
+        ' JS 20Jul14: Diet writing moved to cDiets class
+        Dim d As New cDiets(Me, Me.Core)
+        Return d.Save()
     End Function
 
     Public Function GenerateEmptyDistributions() As Boolean
 
         Dim distpath As New cEcopathDistributionParams(Me, Me.Core)
         Dim distsim As New cEcosimDistributionParams(Me, Me.Core)
-
-        distpath.Save()
-        distsim.Save()
-
-        Return True
+        Return distpath.Save() And distsim.Save()
 
     End Function
 
@@ -413,6 +350,7 @@ Public Class cMSE
             Me.EffortLimits.Load()
             Me.QuotaShares.Load()
             Me.Strategies.Load()
+            Me.Diets.Load()
             Me.Survivability.LoadSampledParamsFromCSV()
             Me.Survivability.Load()
             Me.StockAssessment.Load()
@@ -455,41 +393,63 @@ Public Class cMSE
     ''' -----------------------------------------------------------------------
     Public Function IsInputDataCompatible() As Boolean
 
+
         ' Would it not be nice if these file names were represented by enums as well?
 
-        Dim aFilesEcopath As String() = New String() {"B_Dist", "BA_Dist", "PB_Dist", "QB_Dist", "EE_Dist"}
-        Dim aFilesEcosim As String() = New String() {"DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
-        Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams)
+        'Dim aFilesEcopath As String() = New String() {"B_Dist", "BA_Dist", "PB_Dist", "QB_Dist", "EE_Dist"}
+        'Dim aFilesEcosim As String() = New String() {"DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
+        'Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams)
+        Dim msg As cMessage = Nothing
 
         If (Me.m_tsInputDataCompatibility = TriState.UseDefault) Then
 
             ' Hope for the best
             Me.m_tsInputDataCompatibility = TriState.True
+            msg = New cMessage("", eMessageType.Any, eCoreComponentType.External, eMessageImportance.Maintenance, eDataTypes.External)
 
             ' Make sure plug-in has empty CSV
-            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Or _
-               Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
+            'If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Or _
+            '   Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
+            '    Me.m_tsInputDataCompatibility = TriState.False
+            'End If
+            If Not Me.Diets.Load(msg) Or Not Me.Survivability.Load(msg) Then
                 Me.m_tsInputDataCompatibility = TriState.False
             End If
 
             If (Me.m_tsInputDataCompatibility <> TriState.False) Then
-                ' Assess Ecopath files
-                For Each strFile As String In aFilesEcopath
-                    If Not CheckEcopathDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
-                        Me.m_tsInputDataCompatibility = TriState.False
-                        Exit For
-                    End If
-                Next strFile
+                ' Assess Ecopath distributions
+                'For Each strFile As String In aFilesEcopath
+                '    If Not CheckEcopathDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
+                '        Me.m_tsInputDataCompatibility = TriState.False
+                '        Exit For
+                '    End If
+                'Next strFile
+                Dim dist As New cEcopathDistributionParams(Me, Me.Core)
+                If Not dist.Load(msg) Then
+                    Me.m_tsInputDataCompatibility = TriState.False
+                End If
             End If
 
             If (Me.m_tsInputDataCompatibility <> TriState.False) Then
-                ' Assess Ecosim files
-                For Each strFile As String In aFilesEcosim
-                    If Not CheckEcoSimDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
-                        Me.m_tsInputDataCompatibility = TriState.False
-                        Exit For
-                    End If
-                Next strFile
+                ' Assess Ecosim distributions
+                'For Each strFile As String In aFilesEcosim
+                '    If Not CheckEcoSimDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
+                '        Me.m_tsInputDataCompatibility = TriState.False
+                '        Exit For
+                '    End If
+                'Next strFile
+                Dim dist As New cEcosimDistributionParams(Me, Me.Core)
+                If Not dist.Load(msg) Then
+                    Me.m_tsInputDataCompatibility = TriState.False
+                End If
+            End If
+
+            ' Input structure not compatible?
+            If (Me.m_tsInputDataCompatibility = TriState.False) Then
+                ' Prepare and send message
+                msg.Message = "Cefas MSE cannot use folder " & Me.DataPath & " for this EwE model."
+                msg.Importance = eMessageImportance.Critical
+                Me.m_core.Messages.SendMessage(msg)
             End If
 
         End If
@@ -514,7 +474,7 @@ Public Class cMSE
             ' Hope for the best
             Me.m_tsRunDataCompatibility = TriState.True
 
-            ' Make sure plug-in has empty CSV
+            ' Make sure folder has out CSV files
             If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")) Or _
                 Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Or _
                 Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilities_out.csv")) Then
@@ -552,6 +512,8 @@ Public Class cMSE
     ''' <param name="strPath"></param>
     ''' <returns>True if all ok.</returns>
     Private Function CheckEcopathDistributionFilesOkay(ByVal strPath As String) As Boolean
+
+        ' ToDo: Move to ecopath distributions class, check on LOAD
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
@@ -621,102 +583,6 @@ Public Class cMSE
         Return True
 
     End Function
-
-    ''' <summary>
-    ''' Checks whether each of the Ecosim distribution files (not vulnerabilities) is has the correct functional groups in it
-    ''' It does this by saving a true in the position of an array at the index at which it exists in EwE
-    ''' It then sums the values in this array and checks that they are equal to nlivinggroups (TRUE=1)
-    ''' The reason I have done this is to prevent the problem where a file might have replicate groups
-    ''' If a file has replicate groups and we check each group to see if it is in EwE and it happens that the number
-    ''' of groups in the file are equal to the number of living groups, the file will be wrongly accepted
-    ''' </summary>
-    ''' <param name="strPath"></param>
-    ''' <returns>True if all ok.</returns>
-    Private Function CheckEcoSimDistributionFilesOkay(ByVal strPath As String) As Boolean
-
-        Dim reader As StreamReader = Nothing
-        Dim csv As CsvReader = Nothing
-        Dim correct(m_core.nGroups - 1) As Integer
-        Dim TotalFound As Integer = 0
-        Dim bOK As Boolean = True
-        Dim nPrimaryProducers As Integer
-
-        'initialise correct to all zeros
-        For i = 1 To m_core.nGroups
-            correct(i - 1) = 0
-        Next
-
-        'Count the number of primary producers
-        For i = 1 To m_core.nGroups
-            If m_core.EcoPathGroupInputs(i).IsProducer And m_core.EcoPathGroupInputs(i).IsLiving Then nPrimaryProducers += 1
-        Next
-
-        reader = cMSEUtils.GetReader(strPath)
-        If (reader IsNot Nothing) Then
-            csv = New CsvReader(reader, True)
-
-            Try
-                'cycle through each of the living functional groups each time checking if it exists in the file
-                While Not csv.EndOfStream
-                    If csv.ReadNextRecord() Then
-                        For xgrp = 1 To m_core.nGroups
-                            If String.Compare(cMSEUtils.FromCSVField(csv("GroupName")), m_ecopath.EcopathData.GroupName(xgrp), True) = 0 Then
-                                correct(xgrp - 1) += 1
-                                Exit For
-                            End If
-                        Next
-                    End If
-                End While
-            Catch ex As Exception
-                bOK = False
-            End Try
-            csv.Dispose()
-        End If
-        cMSEUtils.ReleaseReader(reader)
-
-        ' Report file read error
-        If (bOK = False) Then
-            Me.InformUser(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
-            Return False
-        End If
-
-        'Check if any of the records are for groups which are primary producers
-        'For igrp = 1 To mCore.nGroups
-        '    If correct(igrp - 1) > 0 And mCore.EcoPathGroupOutputs(igrp).IsProducer Then
-        '        Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER, _
-        '                                     Path.GetFileNameWithoutExtension(strPath), _
-        '                                     mCore.EcoPathGroupOutputs(igrp).Name, _
-        '                                     cStringUtils.vbCrLf), _
-        '                       eMessageImportance.Warning)
-        '        Return False
-        '    End If
-        'Next
-
-        'check that there are no replicates
-        For igrp = 1 To m_core.nGroups
-            If correct(igrp - 1) > 1 Then
-                Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
-                Return False
-            End If
-        Next
-
-        'sum all the values in correct to be use to diagnose whether there are the correct number of groups in the file
-        For Each i In correct
-            TotalFound += i
-        Next
-
-        If TotalFound < m_core.nLivingGroups - nPrimaryProducers Then 'Check whether there are too few groups in the file
-            Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
-            Return False
-        ElseIf TotalFound > m_core.nLivingGroups Then 'Check whether there are too many groups in the file
-            Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOMANY, Path.GetFileNameWithoutExtension(strPath)), eMessageImportance.Warning)
-            Return False
-        End If
-
-        Return True
-
-    End Function
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1087,7 +953,7 @@ Public Class cMSE
 
         Dim strPath As String = cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, ParamName & ".csv")
 
-        If Not CheckEcoSimDistributionFilesOkay(strPath) Then Return False
+        'If Not CheckEcoSimDistributionFilesOkay(strPath) Then Return False
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
@@ -2105,9 +1971,6 @@ Public Class cMSE
         Dim ee(nTrials, nLiving) As Single
         Dim TimeFindingBalanced As New Stopwatch
         Dim csv As CsvReader
-        Dim MeanProportions(m_core.nLivingGroups - 1, m_core.nGroups) As Single
-        Dim DietPropMultipliers(m_core.nLivingGroups - 1) As Double
-        Dim Interacts(m_core.nLivingGroups - 1, m_core.nGroups) As Integer
         'Dim nPPers As Integer 'number of primary producers
         'Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
         'Const PQThreshold As Double = 0.5
@@ -2126,6 +1989,8 @@ Public Class cMSE
         'We need to save the original state of Ecopath so it can be restored when we are done
         Me.SaveOriginalState()
 
+        ' JS 20Jul14: Diet reading moved to cDiets class
+#If 0 Then
         Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv"))
         If (reader Is Nothing) Then
             ' ToDo: report some kind of error
@@ -2186,6 +2051,7 @@ Public Class cMSE
         Else
             ' ToDo_JS: Diets multipliers were not read; handle error
         End If
+#End If
 
         'Calculate how many living groups that aren't primary producers
         'For i = 1 To mCore.nGroups
@@ -2225,7 +2091,7 @@ Public Class cMSE
 
                         'Write code here that generates a whole set of diet parameters to be used in combination with new ecopath parameters
                         'to be tested for the mass-balance criteria
-                        Me.SampleDietMatrix(Interacts, MeanProportions, DietPropMultipliers)
+                        Me.SampleDietMatrix(Me.m_diets.Interacts, Me.m_diets.MeanProportions, Me.m_diets.DietPropMultipliers)
                         'Me.NormalizeDiet(Me._pathdata.DCInput)
                         'Me.dumpDietMatrix()
 
@@ -2631,7 +2497,7 @@ stepend:
 
     End Function
 
-    Private Sub SampleDietMatrix(ByRef Interacts(,) As Integer, ByRef MeanProportions(,) As Single, ByRef DietPropMultipliers() As Double)
+    Private Sub SampleDietMatrix(ByVal Interacts(,) As Integer, ByVal MeanProportions(,) As Single, ByVal DietPropMultipliers() As Double)
 
         Dim MeanPropMod() As Single
         Dim SumInteractions(m_core.nLivingGroups - 1) As Single
@@ -2772,8 +2638,8 @@ stepend:
         Me.m_survivability = New cSurvivability(Me, Me.m_core, EcosimDatastructures, _pathdata)
         Me.m_strategies = New Strategies(Me, Me.m_core)
         Me.m_effortlimits = New cEffortLimits(Me, Me.m_core)
-
         Me.m_StockAssessment = New cStockAssessmentModel(Me)
+        Me.m_diets = New cDiets(Me, Me.m_core)
 
         Me.InvalidateRunState()
 

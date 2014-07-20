@@ -68,23 +68,27 @@ Public Class frmTFMpolicy
     Private m_HCR As HCR_Group
 
     Private m_strategies As Strategies
+    Private m_shares As cQuotaShares
     Private m_bStrategiesSaved As Boolean = True
 
 #End Region ' Internals
 
 #Region " Construction Initialization "
 
-    Public Sub New()
+    Public Sub New(UI As cUIContext, MSE As cMSE)
         MyBase.New()
-        Me.InitializeComponent()
-    End Sub
 
-    Public Sub Init(UI As cUIContext, MSE As cMSE)
         Me.UIContext = UI
         Me.m_MSE = MSE
 
+        Me.InitializeComponent()
+
         Me.m_strategies = New Strategies(MSE, Me.UIContext.Core)
         Me.m_strategies.Load()
+
+        Me.m_shares = New cQuotaShares(MSE, Me.UIContext.Core)
+        Me.m_shares.Load()
+
     End Sub
 
 #End Region
@@ -215,12 +219,13 @@ Public Class frmTFMpolicy
         Catch ex As Exception
 
         End Try
-        Me.UpdateControls()
 
         'Remove quotashares for groups no longer with a hcr
-        Me.m_MSE.QuotaShares.RemoveUnnecessaryShares(Me.m_strategies)
+        Me.m_shares.RemoveUnnecessaryShares(Me.m_strategies)
         'Save the quotashares to csv
-        Me.m_MSE.QuotaShares.Save()
+        Me.m_shares.Save()
+
+        Me.UpdateControls()
 
     End Sub
 
@@ -245,27 +250,17 @@ Public Class frmTFMpolicy
     Private Sub OnSave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSave.Click
 
         Try
-            If Me.m_strategies.Save() Then
-                Me.m_MSE.Strategies.Load()
-                Me.m_MSE.InvalidateRunState()
-            End If
-
             Me.m_bStrategiesSaved = Me.m_strategies.Save()
-            Me.UpdateControls()
 
-            Me.m_MSE.Strategies.Clear()
-            Me.m_MSE.Strategies.AddRange(Me.m_strategies.ToArray)
-            Me.m_MSE.InvalidateRunState()
+            'Update quotashares to include default values for new groups with hcr and remove them for groups no longer with a hcr
+            Me.m_shares.ModifyWithNewDefaults(Me.m_strategies)
+            Me.m_shares.RemoveUnnecessaryShares(Me.m_strategies)
+            'Save the quotashares to csv
+            Me.m_shares.Save()
 
             Me.m_bStrategiesSaved = True
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
-
-            'Update quotashares to include default values for new groups with hcr and remove them for groups no longer with a hcr
-            Me.m_MSE.QuotaShares.ModifyWithNewDefaults()
-            Me.m_MSE.QuotaShares.RemoveUnnecessaryShares(Me.m_strategies)
-            'Save the quotashares to csv
-            Me.m_MSE.QuotaShares.Save()
 
         Catch ex As Exception
 

@@ -251,11 +251,6 @@ Public Class cQuotaShares
 
     End Function
 
-    Public Sub CreateDefaultCSV(Optional strFilename As String = "")
-        Me.Defaults()
-        Me.Save(strFilename)
-    End Sub
-
 #End Region
 
     Public Sub Defaults() _
@@ -439,7 +434,7 @@ Public Class cQuotaShares
 
     End Sub
 
-    Sub ModifyWithNewDefaults()
+    Sub ModifyWithNewDefaults(strategies As Strategies)
         'This routine adds default values to quotashares object and csv because values are now necessary since hcrs have been created for new groups
         Dim Share As Single
         Dim TotalLandings As Single
@@ -447,7 +442,7 @@ Public Class cQuotaShares
         'Loop though each group
         For iGrp = 1 To m_core.nGroups
             'Check whether the group has an hcr for it and check whether there are quotashares set up for it
-            If m_MSE.Strategies.HCRExistsForGroup(iGrp) And Not m_MSE.QuotaShares.QuotaSharesExistForFleet(iGrp) Then
+            If strategies.HCRExistsForGroup(iGrp) And Not Me.QuotaSharesExistForFleet(iGrp) Then
                 'if a strategy exists for the group but there aren't any quotashares create default quotashares in memory
                 TotalLandings = 0
                 For iFleet = 1 To m_core.nFleets
@@ -457,7 +452,7 @@ Public Class cQuotaShares
                 For iFleet As Integer = 1 To m_core.nFleets
                     If m_core.FleetInputs(iFleet).Landings(iGrp) > 0 Then
                         Share = m_core.FleetInputs(iFleet).Landings(iGrp) / TotalLandings
-                        m_MSE.QuotaShares.AddQuotaShare(iGrp, iFleet, Share)
+                        Me.AddQuotaShare(iGrp, iFleet, Share)
                     End If
                 Next
 

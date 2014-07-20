@@ -118,23 +118,6 @@ Public Class cEffortLimits
 
     End Function
 
-    Public Sub CreateDefaultCSV(Optional strFilename As String = "")
-
-        ' Resolve path to default, if missing
-        If String.IsNullOrWhiteSpace(strFilename) Then
-            strFilename = Me.DefaultFileName()
-        End If
-
-        Dim csv_out As New StreamWriter(strFilename, False)
-
-        csv_out.WriteLine("FleetNumber,FleetName,MaxChangeEffort")
-
-        csv_out.Flush()
-        csv_out.Close()
-        csv_out.Dispose()
-
-    End Sub
-
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IMSEData.Save"/>
     ''' -----------------------------------------------------------------------
