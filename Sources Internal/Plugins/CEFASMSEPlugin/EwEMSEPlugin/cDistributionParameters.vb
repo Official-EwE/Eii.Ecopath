@@ -672,7 +672,7 @@ Public Class cEcosimDistributionParams
 
         ' Complement list with defaults for missing groups
         For igrp = 1 To Me.Core.nLivingGroups
-            If params(igrp) Is Nothing Then
+            If (params(igrp) Is Nothing) And (Not Me.Core.EcoPathGroupInputs(igrp).IsProducer) Then
                 If ParamName = eDistrParamName.DenDepCatchability Then
                     TMean = Me.Core.EcoSimGroupInputs(igrp).DenDepCatchability
                 ElseIf ParamName = eDistrParamName.FeedingTimeAdjustRate Then
