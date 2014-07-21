@@ -373,15 +373,18 @@ Public Class cMSE
     ''' -----------------------------------------------------------------------
     Public Function IsInputStructureAvailable(bCreate As Boolean) As Boolean
 
-        ' Make sure plug-in has all dirs
-        Dim strPath As String = Me.DataPath
-        Dim bSuccess As Boolean = True
+        '' Make sure plug-in has all dirs
+        'Dim strPath As String = Me.DataPath
+        'Dim bSuccess As Boolean = True
 
-        For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
-            bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
-        Next
+        'For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
+        '    bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
+        'Next
 
-        Return bSuccess
+        'Return bSuccess
+
+        ' JS 21Jul14: with data objects being fully able to save their own data and directory structre, this check is no longer needed.
+        Return True
 
     End Function
 
@@ -393,12 +396,8 @@ Public Class cMSE
     ''' -----------------------------------------------------------------------
     Public Function IsInputDataCompatible() As Boolean
 
+        ' JS 21Jul14: data compatibility is assessed by individual data classes now
 
-        ' Would it not be nice if these file names were represented by enums as well?
-
-        'Dim aFilesEcopath As String() = New String() {"B_Dist", "BA_Dist", "PB_Dist", "QB_Dist", "EE_Dist"}
-        'Dim aFilesEcosim As String() = New String() {"DenDepCatchability", "SwitchingPower", "QBMaxxQBio", "PredEffectFeedingTime", "OtherMortFeedingTime", "MaxRelFeedingTime", "FeedingTimeAdjustRate"}
-        'Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams)
         Dim msg As cMessage = Nothing
 
         If (Me.m_tsInputDataCompatibility = TriState.UseDefault) Then
@@ -408,22 +407,12 @@ Public Class cMSE
             msg = New cMessage("", eMessageType.Any, eCoreComponentType.External, eMessageImportance.Maintenance, eDataTypes.External)
 
             ' Make sure plug-in has empty CSV
-            'If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv")) Or _
-            '   Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")) Then
-            '    Me.m_tsInputDataCompatibility = TriState.False
-            'End If
             If Not Me.Diets.Load(msg) Or Not Me.Survivability.Load(msg) Then
                 Me.m_tsInputDataCompatibility = TriState.False
             End If
 
             If (Me.m_tsInputDataCompatibility <> TriState.False) Then
                 ' Assess Ecopath distributions
-                'For Each strFile As String In aFilesEcopath
-                '    If Not CheckEcopathDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
-                '        Me.m_tsInputDataCompatibility = TriState.False
-                '        Exit For
-                '    End If
-                'Next strFile
                 Dim dist As New cEcopathDistributionParams(Me, Me.Core)
                 If Not dist.Load(msg) Then
                     Me.m_tsInputDataCompatibility = TriState.False
@@ -432,12 +421,6 @@ Public Class cMSE
 
             If (Me.m_tsInputDataCompatibility <> TriState.False) Then
                 ' Assess Ecosim distributions
-                'For Each strFile As String In aFilesEcosim
-                '    If Not CheckEcoSimDistributionFilesOkay(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFile & ".csv")) Then
-                '        Me.m_tsInputDataCompatibility = TriState.False
-                '        Exit For
-                '    End If
-                'Next strFile
                 Dim dist As New cEcosimDistributionParams(Me, Me.Core)
                 If Not dist.Load(msg) Then
                     Me.m_tsInputDataCompatibility = TriState.False
@@ -447,7 +430,7 @@ Public Class cMSE
             ' Input structure not compatible?
             If (Me.m_tsInputDataCompatibility = TriState.False) Then
                 ' Prepare and send message
-                msg.Message = "Cefas MSE cannot use folder " & Me.DataPath & " for this EwE model."
+                msg.Message = String.Format(My.Resources.PROMPT_DATAPATH_INCOMPATIBLE, Me.DataPath)
                 msg.Importance = eMessageImportance.Critical
                 Me.m_core.Messages.SendMessage(msg)
             End If

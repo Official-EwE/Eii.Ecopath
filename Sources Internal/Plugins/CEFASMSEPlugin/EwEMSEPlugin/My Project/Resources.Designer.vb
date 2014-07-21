@@ -466,7 +466,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The path {0}&apos; cannot be used. You must select another folder..
+        '''  Looks up a localized string similar to Cefas MSE cannot use path &apos;{0}&apos;. You must select another folder..
         '''</summary>
         Friend ReadOnly Property PROMPT_DATAPATH_INACCESSIBLE() As String
             Get
@@ -475,7 +475,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The path {0}&apos; was used for a different model. You must select another folder..
+        '''  Looks up a localized string similar to Cefas MSE cannot use path &apos;{0}&apos;, it was used for a different model. You must select another folder..
         '''</summary>
         Friend ReadOnly Property PROMPT_DATAPATH_INCOMPATIBLE() As String
             Get

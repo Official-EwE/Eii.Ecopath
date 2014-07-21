@@ -271,11 +271,11 @@
     <value>Select the directory to retrieve data from and output results to</value>
   </data>
   <data name="PROMPT_DATAPATH_INACCESSIBLE" xml:space="preserve">
-    <value>The path {0}' cannot be used. You must select another folder.</value>
+    <value>Cefas MSE cannot use path '{0}'. You must select another folder.</value>
     <comment>{0}=MSE data path</comment>
   </data>
   <data name="PROMPT_DATAPATH_INCOMPATIBLE" xml:space="preserve">
-    <value>The path {0}' was used for a different model. You must select another folder.</value>
+    <value>Cefas MSE cannot use path '{0}', it was used for a different model. You must select another folder.</value>
     <comment>{0}=MSE data path</comment>
   </data>
   <data name="PROMPT_DATAPATH_MISSING" xml:space="preserve">
