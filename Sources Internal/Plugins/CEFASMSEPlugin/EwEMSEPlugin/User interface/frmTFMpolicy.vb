@@ -118,6 +118,7 @@ Public Class frmTFMpolicy
         Me.m_grid.DataName = "HarvestControlRules"
         AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
         AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        AddHandler Me.m_gridRegulations.onEdited, AddressOf OnGridEdited
 
         Me.UpdateStrategies()
 
@@ -144,6 +145,7 @@ Public Class frmTFMpolicy
 
         RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
         RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        RemoveHandler Me.m_gridRegulations.onEdited, AddressOf OnGridEdited
 
         If (Me.m_zgh IsNot Nothing) Then
             Me.m_zgh.Detach()
@@ -444,7 +446,7 @@ Public Class frmTFMpolicy
         Me.m_tsbnAddHCR.Enabled = bHasStrategy
         Me.m_tsbnDeleteHCR.Enabled = bHasHCR
 
-        Me.m_btnSave.Enabled = Me.m_bStrategiesSaved
+        Me.m_btnSave.Enabled = Not Me.m_bStrategiesSaved
 
     End Sub
 
