@@ -354,7 +354,8 @@ Public Class cQuotaShares
 
     End Function
 
-    Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
+    Public Function Save(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.Save
 
         If (String.IsNullOrWhiteSpace(strFilename)) Then
             strFilename = Me.DefaultFileName
@@ -385,6 +386,14 @@ Public Class cQuotaShares
         Return bSuccess
 
 
+    End Function
+
+    Public Function FileExists(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.FileExists
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFileName
+        End If
+        Return File.Exists(strFilename)
     End Function
 
     Private Function DefaultFileName() As String
@@ -460,6 +469,5 @@ Public Class cQuotaShares
         Next
 
     End Sub
-
 
 End Class

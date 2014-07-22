@@ -58,4 +58,11 @@ Public Interface IMSEData
     ''' </summary>
     Sub Defaults()
 
+    ''' <summary>
+    ''' Returns whether the file(s) for the data exist
+    ''' </summary>
+    ''' <param name="strFilename"></param>
+    ''' <returns></returns>
+    Function FileExists(Optional strFilename As String = "") As Boolean
+
 End Interface

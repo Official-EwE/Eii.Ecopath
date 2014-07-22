@@ -341,4 +341,8 @@ Public Class cStockAssessmentModel
 
 #End Region
 
+    Public Function FileExists(Optional strFilename As String = "") As Boolean Implements IMSEData.FileExists
+        Return False
+    End Function
+
 End Class

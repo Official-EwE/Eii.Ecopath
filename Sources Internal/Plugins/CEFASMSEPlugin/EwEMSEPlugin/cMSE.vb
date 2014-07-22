@@ -301,7 +301,7 @@ Public Class cMSE
         TQuotaShares.Save()
     End Sub
 
-    Public Function GenerateEmptyDietCSVs() As Boolean
+    Public Function GenerateDefaultDiets() As Boolean
         ' JS 20Jul14: Diet writing moved to cDiets class
         Dim d As New cDiets(Me, Me.Core)
         Return d.Save()
@@ -373,18 +373,23 @@ Public Class cMSE
     ''' -----------------------------------------------------------------------
     Public Function IsInputStructureAvailable(bCreate As Boolean) As Boolean
 
-        '' Make sure plug-in has all dirs
-        'Dim strPath As String = Me.DataPath
-        'Dim bSuccess As Boolean = True
+        ' JS 21Jul14: just check if data files exist for objects without GUI
+        Dim bSuccess As Boolean = True
 
-        'For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
-        '    bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
-        'Next
+        If (bCreate) Then
+            If Not Diets.FileExists() Then Me.GenerateDefaultDiets()
+            If Not Me.Survivability.FileExists() Then Me.GenerateDefaultSurviveDistributions()
 
-        'Return bSuccess
+            ' Make sure plug-in has all dirs
+            Dim strPath As String = Me.DataPath
 
-        ' JS 21Jul14: with data objects being fully able to save their own data and directory structre, this check is no longer needed.
-        Return True
+            For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
+                bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
+            Next
+
+        End If
+
+        Return bSuccess And Diets.FileExists() And Me.Survivability.FileExists()
 
     End Function
 
@@ -398,23 +403,21 @@ Public Class cMSE
 
         ' JS 21Jul14: data compatibility is assessed by individual data classes now
 
-        Dim msg As cMessage = Nothing
-
         If (Me.m_tsInputDataCompatibility = TriState.UseDefault) Then
 
             ' Hope for the best
+            Dim msgError As New cMessage("", eMessageType.Any, eCoreComponentType.External, eMessageImportance.Maintenance, eDataTypes.External)
             Me.m_tsInputDataCompatibility = TriState.True
-            msg = New cMessage("", eMessageType.Any, eCoreComponentType.External, eMessageImportance.Maintenance, eDataTypes.External)
 
             ' Make sure plug-in has empty CSV
-            If Not Me.Diets.Load(msg) Or Not Me.Survivability.Load(msg) Then
+            If Not Me.Diets.Load(msgError) Or Not Me.Survivability.Load(msgError) Then
                 Me.m_tsInputDataCompatibility = TriState.False
             End If
 
             If (Me.m_tsInputDataCompatibility <> TriState.False) Then
                 ' Assess Ecopath distributions
                 Dim dist As New cEcopathDistributionParams(Me, Me.Core)
-                If Not dist.Load(msg) Then
+                If Not dist.Load(msgError) Then
                     Me.m_tsInputDataCompatibility = TriState.False
                 End If
             End If
@@ -422,7 +425,7 @@ Public Class cMSE
             If (Me.m_tsInputDataCompatibility <> TriState.False) Then
                 ' Assess Ecosim distributions
                 Dim dist As New cEcosimDistributionParams(Me, Me.Core)
-                If Not dist.Load(msg) Then
+                If Not dist.Load(msgError) Then
                     Me.m_tsInputDataCompatibility = TriState.False
                 End If
             End If
@@ -430,9 +433,9 @@ Public Class cMSE
             ' Input structure not compatible?
             If (Me.m_tsInputDataCompatibility = TriState.False) Then
                 ' Prepare and send message
-                msg.Message = String.Format(My.Resources.PROMPT_DATAPATH_INCOMPATIBLE, Me.DataPath)
-                msg.Importance = eMessageImportance.Critical
-                Me.m_core.Messages.SendMessage(msg)
+                msgError.Message = String.Format(My.Resources.PROMPT_DATAPATH_INCOMPATIBLE, Me.DataPath)
+                msgError.Importance = eMessageImportance.Critical
+                Me.m_core.Messages.SendMessage(msgError)
             End If
 
         End If
@@ -480,90 +483,6 @@ Public Class cMSE
         End If
 
         Return (Me.m_tsRunDataCompatibility = TriState.True)
-
-    End Function
-
-    ''' <summary>
-    ''' Checks whether each of the Ecopath (not diet matrix) distribution files is has the correct functional groups in it
-    ''' They should only have living groups
-    ''' It does this by saving a true in the position of an array at the index at which it exists in EwE
-    ''' It then sums the values in this array and checks that they are equal to nlivinggroups (TRUE=1)
-    ''' The reason I have done this is to prevent the problem where a file might have replicate groups
-    ''' If a file has replicate groups and we check each group to see if it is in EwE and it happens that the number
-    ''' of groups in the file are equal to the number of living groups, the file will be wrongly accepted.
-    ''' </summary>
-    ''' <param name="strPath"></param>
-    ''' <returns>True if all ok.</returns>
-    Private Function CheckEcopathDistributionFilesOkay(ByVal strPath As String) As Boolean
-
-        ' ToDo: Move to ecopath distributions class, check on LOAD
-
-        Dim reader As StreamReader = Nothing
-        Dim csv As CsvReader = Nothing
-        Dim correct(m_core.nGroups - 1) As Integer
-        Dim TotalFound As Integer = 0
-        Dim bOK As Boolean = True
-
-        reader = cMSEUtils.GetReader(strPath)
-        If (reader Is Nothing) Then Return False
-
-        ' Initialise correct to all zeros
-        For i = 1 To m_core.nGroups
-            correct(i - 1) = 0
-        Next
-
-        csv = New CsvReader(reader, True)
-        Try
-            'cycle through each of the living functional groups each time checking if it exists in the file
-            ' JS 13Oct13: Changed the looping structure here. If csvreader fails to load a record it will repeat the last record!
-            '             This created double-counting when a CSV file did not contain enough records
-            While Not csv.EndOfStream
-                If csv.ReadNextRecord() Then
-                    For xgrp = 1 To m_core.nGroups
-                        If (cStringUtils.ConvertToInteger(csv(0)) = xgrp) And (String.Compare(cMSEUtils.FromCSVField(csv(1)), m_ecopath.EcopathData.GroupName(xgrp), True) = 0) Then
-                            correct(xgrp - 1) += 1
-                            ' Exit For ' JS: keep on checking to find duplicates
-                        End If
-                    Next
-                End If
-            End While
-        Catch ex As Exception
-            bOK = False
-        End Try
-
-        csv.Dispose()
-        cMSEUtils.ReleaseReader(reader)
-
-        ' Report file read error
-        If (bOK = False) Then
-            Me.InformUser(String.Format(My.Resources.ERROR_CSV_MALFORMED, Path.GetFileName(strPath)), eMessageImportance.Warning)
-            Return False
-        End If
-
-        'check that there are no replicates
-        For igrp = 1 To m_core.nGroups
-            If correct(igrp - 1) > 1 Then
-                Me.InformUser(String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED, Path.GetFileName(strPath)), eMessageImportance.Warning)
-                Return False
-            End If
-        Next
-
-        'sum all the values in correct to be use to diagnose whether there are the correct number of groups in the file
-        For Each i In correct
-            TotalFound += i
-        Next
-
-        ' Check whether there are too few groups in the file
-        If TotalFound < m_core.nLivingGroups Then
-            Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)), eMessageImportance.Warning)
-            Return False
-        ElseIf TotalFound > m_core.nLivingGroups Then 'Check whether there are too many groups in the file
-            Me.InformUser(String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)), eMessageImportance.Warning)
-            Return False
-        End If
-
-        ' Phew
-        Return True
 
     End Function
 
@@ -629,13 +548,6 @@ Public Class cMSE
 #End Region ' Diagnostics and state management
 
 #Region "File I/O and other file related 'stuff'"
-
-    ' ''' -----------------------------------------------------------------------
-    ' ''' <summary>
-    ' ''' Get/set whether the MSE is running. This flag is used to know when to 
-    ' ''' suppress core messages in order not to disrupt the MSE run flow.
-    ' ''' </summary>
-    ' ''' -----------------------------------------------------------------------
 
     Public ReadOnly Property DataPath As String
         Get
@@ -712,9 +624,6 @@ Public Class cMSE
 
     End Function
 
-
-
-
     ''' <summary>
     ''' Append an Ecopath variable to a CSV out file.
     ''' </summary>
@@ -759,7 +668,7 @@ Public Class cMSE
 
         Try
 
-            If Not CheckEcopathDistributionFilesOkay(strPath) Then Return False
+            'If Not CheckEcopathDistributionFilesOkay(strPath) Then Return False
 
             csvParamX = New CsvReader(New StreamReader(strPath), True) ' I think this is to restart the reading of the csv
 

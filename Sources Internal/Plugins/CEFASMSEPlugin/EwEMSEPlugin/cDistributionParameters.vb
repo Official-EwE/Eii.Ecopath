@@ -316,16 +316,16 @@ Public Class cEcopathDistributionParams
                     bSuccess = False
                 End Try
                 cMSEUtils.ReleaseReader(reader)
-            End If
-        End If
 
-        If bSuccess And (nGroups <> Core.nLivingGroups) Then
-            If nGroups < Me.Core.nLivingGroups Then
-                cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)))
-            ElseIf nGroups > Me.Core.nLivingGroups Then 'Check whether there are too many groups in the file
-                cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)))
+                If bSuccess And (nGroups <> Core.nLivingGroups) Then
+                    If nGroups < Me.Core.nLivingGroups Then
+                        cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)))
+                    ElseIf nGroups > Me.Core.nLivingGroups Then 'Check whether there are too many groups in the file
+                        cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)))
+                    End If
+                    bSuccess = False
+                End If
             End If
-            bSuccess = False
         End If
 
         ' Complement list with defaults for missing groups
@@ -658,16 +658,16 @@ Public Class cEcosimDistributionParams
                     bSuccess = False
                 End Try
                 cMSEUtils.ReleaseReader(reader)
-            End If
-        End If
 
-        If bSuccess And (nGroups <> Core.nLivingGroups) Then
-            If nGroups < Me.Core.nLivingGroups Then
-                cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)))
-            ElseIf nGroups > Me.Core.nLivingGroups Then 'Check whether there are too many groups in the file
-                cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)))
+                If bSuccess And (nGroups <> Core.nLivingGroups) Then
+                    If nGroups < Me.Core.nLivingGroups Then
+                        cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)))
+                    ElseIf nGroups > Me.Core.nLivingGroups Then 'Check whether there are too many groups in the file
+                        cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)))
+                    End If
+                    bSuccess = False
+                End If
             End If
-            bSuccess = False
         End If
 
         ' Complement list with defaults for missing groups

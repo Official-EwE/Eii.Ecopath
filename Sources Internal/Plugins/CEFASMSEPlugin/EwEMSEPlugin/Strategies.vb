@@ -206,4 +206,9 @@ Public Class Strategies
 
     End Function
 
+    Public Function FileExists(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.FileExists
+        Return File.Exists(strFilename)
+    End Function
+
 End Class

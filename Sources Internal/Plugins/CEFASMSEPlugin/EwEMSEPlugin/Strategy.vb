@@ -261,4 +261,7 @@ Public Class Strategy
 
 #End Region ' IMSEData implementation
 
+    Public Function FileExists(Optional strFilename As String = "") As Boolean Implements IMSEData.FileExists
+        Return FileExists(strFilename)
+    End Function
 End Class

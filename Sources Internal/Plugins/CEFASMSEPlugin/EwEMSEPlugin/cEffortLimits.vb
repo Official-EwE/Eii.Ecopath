@@ -147,6 +147,14 @@ Public Class cEffortLimits
 
     End Function
 
+    Public Function FileExists(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.FileExists
+        If String.IsNullOrWhiteSpace(strFilename) Then
+            strFilename = Me.DefaultFileName()
+        End If
+        Return File.Exists(strFilename)
+    End Function
+
     Public Property Value(iFleet As Integer) As Single
         Get
             ' Sanity check

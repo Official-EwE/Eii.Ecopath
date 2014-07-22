@@ -153,4 +153,9 @@ Public Class cRegulations
         Me.m_bIsChanged = False
     End Sub
 
+    Public Function FileExists(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.FileExists
+        Return File.Exists(strFilename)
+    End Function
+
 End Class

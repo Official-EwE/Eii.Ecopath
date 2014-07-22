@@ -312,7 +312,7 @@ Public Class frmMSE
         Me.m_bInUpdate = True
         Try
             If Me.BrowseDataPath() Then
-                Me.MSE.IsInputStructureAvailable(True)
+                Me.MSE.IsInputStructureAvailable(False)
                 Me.UpdateControls()
             End If
         Catch ex As Exception
@@ -573,7 +573,7 @@ Public Class frmMSE
 
             MSE.GenerateEmptyDistributions()
             MSE.GenerateDefaultSurviveDistributions()
-            MSE.GenerateEmptyDietCSVs()
+            MSE.GenerateDefaultDiets()
             MSE.GenerateEmptyBiomassLimitsCSV()
             MSE.GenerateEmptyEffortLimitsCSV()
             MSE.GenerateEmptyQuotaSharesCSV()

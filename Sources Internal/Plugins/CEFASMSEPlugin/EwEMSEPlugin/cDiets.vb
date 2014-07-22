@@ -37,11 +37,13 @@ Public Class cDiets
     Implements IMSEData
 
 #Region " Internal Variables "
+
     Private m_core As cCore
     Private m_MSE As cMSE
     Private m_meanProportions(,) As Single
     Private m_interacts(,) As Integer
     Private m_dietPropMultipliers() As Double
+
 #End Region
 
 #Region " Construction initialiaztion"
@@ -149,14 +151,10 @@ Public Class cDiets
                     cMSEUtils.LogError(msg, "DietComposition cannot load from " & strFilename & ". " & ex.Message)
                     bSuccess = False
                 End Try
+                csv.Dispose()
                 cMSEUtils.ReleaseReader(reader)
             End If
-        Else
-            bSuccess = False
         End If
-
-        csv.Dispose()
-        cMSEUtils.ReleaseReader(reader)
 
         strFilename = Me.DefaultFileName("DietCompositionMultipliers.csv")
         reader = cMSEUtils.GetReader(strFilename)
@@ -174,9 +172,8 @@ Public Class cDiets
             End Try
             csv.Dispose()
             cMSEUtils.ReleaseReader(reader)
-        Else
-            ' ToDo_JS: Diets multipliers were not read; handle error
         End If
+
         Return bSuccess
 
     End Function
@@ -231,6 +228,12 @@ Public Class cDiets
 
     Private Function DefaultFileName(strBit As String) As String
         Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, strBit)
+    End Function
+
+    Public Function FileExists(Optional strFilename As String = "") As Boolean Implements IMSEData.FileExists
+        ' Ignore file name parameter
+        Return File.Exists(Me.DefaultFileName("DietComposition.csv")) And _
+               File.Exists(Me.DefaultFileName("DietCompositionMultipliers.csv"))
     End Function
 
 End Class

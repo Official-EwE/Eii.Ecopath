@@ -689,5 +689,13 @@ Public Class cSurvivability
         Return cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")
     End Function
 
+    Public Function FileExists(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.FileExists
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFilePath()
+        End If
+        Return File.Exists(strFilename)
+    End Function
+
 End Class
 
