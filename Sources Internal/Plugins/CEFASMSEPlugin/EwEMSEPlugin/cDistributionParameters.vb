@@ -625,6 +625,14 @@ Public Class cEcosimDistributionParams
         Dim param As cEcosimDistributionParamsData = Nothing
         Dim nGroups As Integer = 0
         Dim bSuccess As Boolean = True
+        Dim nPrimaryProducers As Integer = 0
+
+        'Count Primary producers
+        For iGrp = 1 To Me.Core.nGroups
+            If Me.Core.EcoPathGroupInputs(iGrp).IsProducer Then
+                nPrimaryProducers += 1
+            End If
+        Next
 
         If File.Exists(strPath) Then
 
@@ -659,11 +667,11 @@ Public Class cEcosimDistributionParams
                 End Try
                 cMSEUtils.ReleaseReader(reader)
 
-                If bSuccess And (nGroups <> Core.nLivingGroups) Then
-                    If nGroups < Me.Core.nLivingGroups Then
-                        cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)))
-                    ElseIf nGroups > Me.Core.nLivingGroups Then 'Check whether there are too many groups in the file
-                        cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING, Path.GetFileName(strPath)))
+                If bSuccess And (nGroups <> Core.nLivingGroups - nPrimaryProducers) Then
+                    If nGroups < Me.Core.nLivingGroups - nPrimaryProducers Then
+                        cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileName(strPath)))
+                    ElseIf nGroups > Me.Core.nLivingGroups - nPrimaryProducers Then 'Check whether there are too many groups in the file
+                        cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOMANY, Path.GetFileName(strPath)))
                     End If
                     bSuccess = False
                 End If
@@ -671,27 +679,27 @@ Public Class cEcosimDistributionParams
         End If
 
         ' Complement list with defaults for missing groups
-        For igrp = 1 To Me.Core.nLivingGroups
-            If (params(igrp) Is Nothing) Then
+        For iGrp = 1 To Me.Core.nLivingGroups
+            If (params(iGrp) Is Nothing) Then
                 If ParamName = eDistrParamName.DenDepCatchability Then
-                    TMean = Me.Core.EcoSimGroupInputs(igrp).DenDepCatchability
+                    TMean = Me.Core.EcoSimGroupInputs(iGrp).DenDepCatchability
                 ElseIf ParamName = eDistrParamName.FeedingTimeAdjustRate Then
-                    TMean = Me.Core.EcoSimGroupInputs(igrp).FeedingTimeAdjustRate
+                    TMean = Me.Core.EcoSimGroupInputs(iGrp).FeedingTimeAdjustRate
                 ElseIf ParamName = eDistrParamName.MaxRelFeedingTime Then
-                    TMean = Me.Core.EcoSimGroupInputs(igrp).MaxRelFeedingTime
+                    TMean = Me.Core.EcoSimGroupInputs(iGrp).MaxRelFeedingTime
                 ElseIf ParamName = eDistrParamName.OtherMortFeedingTime Then
-                    TMean = Me.Core.EcoSimGroupInputs(igrp).OtherMortFeedingTime
+                    TMean = Me.Core.EcoSimGroupInputs(iGrp).OtherMortFeedingTime
                 ElseIf ParamName = eDistrParamName.PredEffectFeedingTime Then
-                    TMean = Me.Core.EcoSimGroupInputs(igrp).PredEffectFeedingTime
+                    TMean = Me.Core.EcoSimGroupInputs(iGrp).PredEffectFeedingTime
                 ElseIf ParamName = eDistrParamName.QBMaxxQBio Then
-                    TMean = Me.Core.EcoSimGroupInputs(igrp).QBMaxQBio
+                    TMean = Me.Core.EcoSimGroupInputs(iGrp).QBMaxQBio
                 ElseIf ParamName = eDistrParamName.SwitchingPower Then
-                    TMean = Me.Core.EcoSimGroupInputs(igrp).SwitchingPower
+                    TMean = Me.Core.EcoSimGroupInputs(iGrp).SwitchingPower
                 End If
-                If Core.EcoPathGroupInputs(igrp).IsProducer Then
-                    params(igrp) = New cEcosimDistributionParamsData(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, cMSE.DistributionType.NotSet, -9999, -9999, -9999)
+                If Core.EcoPathGroupInputs(iGrp).IsProducer Then
+                    params(iGrp) = New cEcosimDistributionParamsData(iGrp, Me.Core.EcoPathGroupInputs(iGrp).Name, cMSE.DistributionType.NotSet, -9999, -9999, -9999)
                 Else
-                    params(igrp) = New cEcosimDistributionParamsData(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean)
+                    params(iGrp) = New cEcosimDistributionParamsData(iGrp, Me.Core.EcoPathGroupInputs(iGrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean)
                 End If
             End If
         Next
