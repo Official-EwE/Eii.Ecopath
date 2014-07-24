@@ -33,9 +33,6 @@ Public Class cStockAssessmentModel
     Implements IMSEData
 
     'ToDo Implement the stock recruitment model
-    'ToDo Figure out how to get Troschuetz.Random.NormalDistribution() to return a normal distribution with a mean=0 sd=1
-    'as is it looks like its mean=1 sd=1
-
 
 #Region "Private data"
 
