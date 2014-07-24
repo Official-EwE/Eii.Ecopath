@@ -48,21 +48,27 @@ Namespace Ecospace
             Dim RelScaler() As Single = Args.RelMapScaler
             Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
 
+            'Prebuilt brushes for excluded
+            Dim brshExcLand As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Gray)
+            Dim brshExcWater As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Blue)
+            Dim brshExcTransparent As Brush = New SolidBrush(Color.Transparent)
+
             If maptype = eMapType.FishingMortRate Then
                 FScaler = Me.Colors.Count / Args.FishingMortLegendMax
             End If
 
             For i As Integer = 1 To Me.InRow
                 For j As Integer = 1 To Me.InCol
+
+                    Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
+                                                                       CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
+                                                                       CSng(rcPos.Width() / Me.InCol), _
+                                                                       CSng(rcPos.Height() / Me.InRow))
                     If CBool(excl.Cell(i, j)) = False Then
 
                         Try
                             Dim sMapValue As Single = 1.0E-20
                             Dim icc As Single
-                            Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
-                                                                       CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
-                                                                       CSng(rcPos.Width() / Me.InCol), _
-                                                                       CSng(rcPos.Height() / Me.InRow))
                             Dim brCell As Brush = Nothing
 
                             'If it is water
@@ -106,10 +112,36 @@ Namespace Ecospace
                             'Debug.Assert(False, ex.Message)
                             Exit Sub
                         End Try
-                    End If
+                    Else 'CBool(excl.Cell(i, j)) = False
 
+                        'Excluded Cell 
+                        'Figure out which brush to use
+                        Dim brCell As Brush = Nothing
+
+                        If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                            'Water Blue hatched brush
+                            brCell = brshExcWater
+                        Else
+                            If Me.ShowLand Then
+                                'Land Gray hatched brush
+                                brCell = brshExcLand
+                            Else
+                                brCell = brshExcTransparent
+                            End If
+                        End If 'm_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j)
+
+                        'Ok draw it
+                        Me.Graphics.FillRectangle(brCell, rcfCell)
+
+                    End If 'if Excluded
                 Next
             Next
+
+            'Probable don't have to do this as these brushes are only create once
+            'and will be disposed when they go out of scope
+            brshExcWater.Dispose()
+            brshExcLand.Dispose()
+            brshExcTransparent.Dispose()
 
             If (Me.StanzaDS IsNot Nothing) Then
 
