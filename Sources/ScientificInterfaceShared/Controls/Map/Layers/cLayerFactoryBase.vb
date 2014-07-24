@@ -349,7 +349,7 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then
                         vs = New cVisualStyle(ad)
                         vs.ForeColour = Color.Red
-                        vs.BackColour = Color.OrangeRed
+                        vs.BackColour = Color.FromArgb(&H88FF4500) ' Color.OrangeRed 
                         vs.HatchStyle = Drawing2D.HatchStyle.DiagonalCross
                     End If
                     renderer = New cLayerRendererExclusion(vs)
