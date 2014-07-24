@@ -698,8 +698,18 @@ Namespace Ecospace
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
             Dim excl As cEcospaceLayerExclusion = Me.Core.EcospaceBasemap.LayerExclusion
 
+            'Prebuilt brushes for excluded area
+            Dim brshExcLand As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Gray)
+            Dim brshExcWater As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Blue)
+
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
+
+                    Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
+                        CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
+                        CSng(rcPos.Width() / m_iInCol), _
+                        CSng(rcPos.Height() / m_iInRow))
+
 
                     If CBool(excl.Cell(i, j)) = False Then
 
@@ -723,12 +733,14 @@ Namespace Ecospace
                             tmpBrush = New SolidBrush(Color.Gray)
                         End If
 
-                        Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
-                                                CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
-                                                CSng(rcPos.Width() / m_iInCol), _
-                                                CSng(rcPos.Height() / m_iInRow))
+                        'Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
+                        '                        CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
+                        '                        CSng(rcPos.Width() / m_iInCol), _
+                        '                        CSng(rcPos.Height() / m_iInRow))
                         g.FillRectangle(tmpBrush, tmpRect)
                         tmpBrush.Dispose()
+
+
 
                         ' Draw MPA
                         If Me.m_bShowMPA Then
@@ -744,12 +756,34 @@ Namespace Ecospace
                                 brCell.Dispose()
                             End If
                         End If
-                    End If
+
+
+                    Else
+                        'Excluded Cell 
+
+                        'Figure out which brush to use
+                        If Me.Core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                            'Water Blue hatched brush
+                            brCell = brshExcWater
+                        Else
+                            'Land
+                            brCell = brshExcLand
+                        End If
+
+                        'Ok draw it
+                        g.FillRectangle(brCell, tmpRect)
+
+                    End If 'if Excluded
+
                 Next
             Next
 
             'Draw the black frame of base map
             g.DrawRectangle(Pens.Black, rcPos)
+
+            'Probable don't have to do this as these brushes are only create once
+            brshExcWater.Dispose()
+            brshExcLand.Dispose()
 
             'Display the group name
             If Me.m_bShowLabels Then
@@ -1132,8 +1166,9 @@ Namespace Ecospace
                             If (TimeStepData.ContaminantMap IsNot Nothing) Then
                                 Me.m_ConcOverB(iRow, iCol, iGroup) = TimeStepData.ContaminantMap(iRow, iCol, iGroup) / sB
                             End If
-                        End If
-                        Me.m_FoverB(iRow, iCol, iGroup) = TimeStepData.CatchMap(iRow, iCol, iGroup) / sB
+                            Me.m_FoverB(iRow, iCol, iGroup) = TimeStepData.CatchMap(iRow, iCol, iGroup) / sB
+                        End If '(sB > 0)
+
                     Next iGroup
                 Next iCol
             Next iRow
