@@ -599,7 +599,9 @@ Namespace Controls.Map
                             For X As Integer = iXFrom To iXTo
                                 For Y As Integer = iYFrom To iYTo
 
-                                    If Not CBool(layExcl.Cell(Y, X)) Or (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion) Then
+                                    If (CBool(layExcl.Cell(Y, X)) = False) Or _
+                                       (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion) Or _
+                                       (rl.Data.DataType = eDataTypes.EcospaceLayerDepth) Then
 
                                         ptCell = New Point(X, Y)
                                         Dim rcCell As Rectangle = Me.GetCellRect(ptCell, InRow, InCol)
