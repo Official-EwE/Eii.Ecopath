@@ -208,6 +208,7 @@ Friend Class cStyleGuideUpdater
             .MapReferenceLayerFile = My.Settings.MapLayerRefFile
             .MapReferenceLayerTL = New PointF(My.Settings.MapLayerRefLonMin, My.Settings.MapLayerRefLatMax)
             .MapReferenceLayerBR = New PointF(My.Settings.MapLayerRefLonMax, My.Settings.MapLayerRefLatMin)
+            .ShowExcludedCells = My.Settings.MapShowExcludedCells
 
             .PreferredDPI = My.Settings.OutputDPI
 
@@ -257,6 +258,7 @@ Friend Class cStyleGuideUpdater
             My.Settings.MapLayerRefLonMax = .MapReferenceLayerBR.X
             My.Settings.MapLayerRefLatMin = .MapReferenceLayerBR.Y
             My.Settings.MapLayerRefLatMax = .MapReferenceLayerTL.Y
+            My.Settings.MapShowExcludedCells = .ShowExcludedCells
 
             My.Settings.OutputDPI = .PreferredDPI
 

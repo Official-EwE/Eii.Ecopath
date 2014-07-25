@@ -40,6 +40,7 @@ Namespace Other
             Me.m_tbxFile = New System.Windows.Forms.TextBox()
             Me.m_btnChoose = New System.Windows.Forms.Button()
             Me.m_plPreview = New System.Windows.Forms.Panel()
+            Me.m_cbShowExcludedCells = New System.Windows.Forms.CheckBox()
             Me.m_nudEast = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_nudWest = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
@@ -93,6 +94,12 @@ Namespace Other
             Me.m_plPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plPreview.Name = "m_plPreview"
             '
+            'm_cbShowExcludedCells
+            '
+            resources.ApplyResources(Me.m_cbShowExcludedCells, "m_cbShowExcludedCells")
+            Me.m_cbShowExcludedCells.Name = "m_cbShowExcludedCells"
+            Me.m_cbShowExcludedCells.UseVisualStyleBackColor = True
+            '
             'm_nudEast
             '
             resources.ApplyResources(Me.m_nudEast, "m_nudEast")
@@ -137,6 +144,7 @@ Namespace Other
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_cbShowExcludedCells)
             Me.Controls.Add(Me.m_plPreview)
             Me.Controls.Add(Me.m_btnChoose)
             Me.Controls.Add(Me.m_tbxFile)
@@ -172,6 +180,7 @@ Namespace Other
         Private WithEvents m_btnChoose As System.Windows.Forms.Button
         Private WithEvents m_tbxFile As System.Windows.Forms.TextBox
         Private WithEvents m_plPreview As System.Windows.Forms.Panel
+        Private WithEvents m_cbShowExcludedCells As System.Windows.Forms.CheckBox
 
     End Class
 End Namespace

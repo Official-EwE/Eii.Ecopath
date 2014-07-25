@@ -424,13 +424,14 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the name of a <see cref="EwEUtils.Commands.cCommand"/> that can
-        ''' be triggered to modify the items within a layer group.
+        ''' be triggered to modify the <see cref="ICoreInputOutput">core items </see>
+        ''' reflected by a type of layer.
         ''' </summary>
         ''' <param name="varName">The <see cref="eVarNameFlags"/> to obtain the 
         ''' edit command for.</param>
         ''' <returns>A command name, or an empty string if not applicable.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetLayerGroupEditCommand(ByVal varName As eVarNameFlags) As String
+        Public Overridable Function GetLayerEditCommand(ByVal varName As eVarNameFlags) As String
 
             Dim strCommand As String = ""
             Select Case varName

@@ -49,9 +49,13 @@ Namespace Ecospace
             Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
 
             'Prebuilt brushes for excluded
-            Dim brshExcLand As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Gray)
-            Dim brshExcWater As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Blue)
-            Dim brshExcTransparent As Brush = New SolidBrush(Color.Transparent)
+            ' JS: Sorry Joe, the blue and red combo brushes are too nasty... instead, let's stick with the default excluded colour for now, with 50% transparency to show land through.
+            '     At some point I'll have to update this renderer to use user-defined map colours, need to add proper legends showing these colours, etc...
+
+            'Dim brshExcLand As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Gray)
+            'Dim brshExcWater As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Blue)
+            'Dim brshExcTransparent As Brush = New SolidBrush(Color.Transparent)
+            Dim brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
 
             If maptype = eMapType.FishingMortRate Then
                 FScaler = Me.Colors.Count / Args.FishingMortLegendMax
@@ -112,36 +116,37 @@ Namespace Ecospace
                             'Debug.Assert(False, ex.Message)
                             Exit Sub
                         End Try
-                    Else 'CBool(excl.Cell(i, j)) = False
+                    ElseIf Me.ShowExcluded Then
 
                         'Excluded Cell 
                         'Figure out which brush to use
+                        ' JS: to change to current user-selected colours, do not use different brushes
                         Dim brCell As Brush = Nothing
 
-                        If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
-                            'Water Blue hatched brush
-                            brCell = brshExcWater
-                        Else
-                            If Me.ShowLand Then
-                                'Land Gray hatched brush
-                                brCell = brshExcLand
-                            Else
-                                brCell = brshExcTransparent
-                            End If
-                        End If 'm_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j)
-
-                        'Ok draw it
-                        Me.Graphics.FillRectangle(brCell, rcfCell)
+                        'If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                        '    'Water Blue hatched brush
+                        '    brCell = brshExcWater
+                        'Else
+                        '    If Me.ShowLand Then
+                        '        'Land Gray hatched brush
+                        '        brCell = brshExcLand
+                        '    Else
+                        '        brCell = brshExcTransparent
+                        '    End If
+                        'End If 'm_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j)
+                        Me.Graphics.FillRectangle(brExcluded, rcfCell)
 
                     End If 'if Excluded
                 Next
             Next
 
-            'Probable don't have to do this as these brushes are only create once
-            'and will be disposed when they go out of scope
-            brshExcWater.Dispose()
-            brshExcLand.Dispose()
-            brshExcTransparent.Dispose()
+            ' Probably don't have to do this as these brushes are only create once and will be disposed when they go out of scope
+            ' JS: No, must dispose GDI objects because they are not garbage collected in .NET
+            brExcluded.Dispose()
+            brExcluded = Nothing
+            'brshExcWater.Dispose()
+            'brshExcLand.Dispose()
+            'brshExcTransparent.Dispose()
 
             If (Me.StanzaDS IsNot Nothing) Then
 

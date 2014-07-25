@@ -237,7 +237,7 @@ Namespace Ecospace.Basemap
             Dim factory As New cLayerFactoryInternal()
             Dim alayers As cDisplayLayer() = factory.GetLayers(Me.UIContext, varName)
             Dim strGroup As String = factory.GetLayerGroup(varName)
-            Dim strCommand As String = factory.GetLayerGroupEditCommand(varName)
+            Dim strCommand As String = factory.GetLayerEditCommand(varName)
 
             ' Define group
             Me.m_ucLayers.AddGroup(strGroup, strCommand, True, bClearGroup)
