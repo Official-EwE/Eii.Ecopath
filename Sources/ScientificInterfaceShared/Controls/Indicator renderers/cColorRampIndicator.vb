@@ -46,6 +46,7 @@ Namespace Controls
                                         Optional ByVal bHorizontal As Boolean = True)
 
             If (ramp Is Nothing) Then Return
+            If (rc.Width <= 0) Or (rc.Height <= 0) Then Return
 
             Dim bmp As New Bitmap(rc.Width, rc.Height, PixelFormat.Format32bppArgb)
             Dim gtmp As Graphics = Graphics.FromImage(bmp)
