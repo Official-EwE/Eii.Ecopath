@@ -117,6 +117,8 @@ Namespace Style
         Private m_strMapRefLayerFile As String = ""
         Private m_ptMapRefLayerTL As PointF
         Private m_ptMapRefLayerBR As PointF
+        ''' <summary>Display of excluded cells.</summary>
+        Private m_bShowExcludedCells As Boolean = False
 
         ' -- pedigree --
         Private m_bShowPedigree As Boolean = True
@@ -978,7 +980,7 @@ Namespace Style
             End Set
         End Property
 
-        Public Sub MapChanged()
+        Public Sub MapStyleChanged()
             Me.FireChangeEvent(eChangeType.Map)
         End Sub
 
@@ -993,7 +995,7 @@ Namespace Style
                         Me.m_imgReference = Nothing
                     End If
                     Me.m_strMapRefLayerFile = value
-                    Me.MapChanged()
+                    Me.MapStyleChanged()
                 End If
             End Set
         End Property
@@ -1005,7 +1007,7 @@ Namespace Style
             Set(value As PointF)
                 If Not Point.Equals(Me.m_ptMapRefLayerTL, value) Then
                     Me.m_ptMapRefLayerTL = value
-                    MapChanged()
+                    MapStyleChanged()
                 End If
             End Set
         End Property
@@ -1017,7 +1019,7 @@ Namespace Style
             Set(value As PointF)
                 If Not Point.Equals(Me.m_ptMapRefLayerBR, value) Then
                     Me.m_ptMapRefLayerBR = value
-                    MapChanged()
+                    MapStyleChanged()
                 End If
             End Set
         End Property
@@ -1038,6 +1040,22 @@ Namespace Style
                 Return Me.m_imgReference
             End Get
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set if maps should show excluded cells.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowExcludedCells() As Boolean
+            Get
+                Return Me.m_bShowExcludedCells
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowExcludedCells = value
+                Me.MapStyleChanged()
+            End Set
+        End Property
+
 
 #End Region ' Maps and charts
 

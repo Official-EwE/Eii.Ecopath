@@ -253,7 +253,7 @@ Namespace Ecospace
                 drawer = New cMapDrawerGroup(Me.Core)
                 drawer.Graphics = Graphics.FromImage(Me.m_bmpBiomassMap)
                 drawer.Colors = Me.m_legend.Colors
-
+                drawer.ShowExcluded = My.Settings.MapShowExcludedCells
                 Me.m_drawers.Add(drawer)
             Next
         End Sub
@@ -268,6 +268,12 @@ Namespace Ecospace
         Protected Overrides Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
             If ((changeType And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
                 Me.UpdateStyleColors()
+            End If
+            If ((changeType And cStyleGuide.eChangeType.Map) = cStyleGuide.eChangeType.Map) Then
+                For Each d As cMapDrawerBase In Me.m_drawers
+                    d.ShowExcluded = Me.StyleGuide.ShowExcludedCells
+                Next
+                Me.RefreshPlot()
             End If
             If ((changeType And cStyleGuide.eChangeType.GroupVisibility) = cStyleGuide.eChangeType.GroupVisibility) Then
                 Me.RefreshPlot()
@@ -698,9 +704,10 @@ Namespace Ecospace
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
             Dim excl As cEcospaceLayerExclusion = Me.Core.EcospaceBasemap.LayerExclusion
 
-            'Prebuilt brushes for excluded area
-            Dim brshExcLand As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Gray)
-            Dim brshExcWater As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Blue)
+            ''Prebuilt brushes for excluded area
+            'Dim brshExcLand As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Gray)
+            'Dim brshExcWater As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Blue)
+            Dim brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
 
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
@@ -758,20 +765,20 @@ Namespace Ecospace
                         End If
 
 
-                    Else
-                        'Excluded Cell 
+                    ElseIf Me.StyleGuide.ShowExcludedCells Then
 
-                        'Figure out which brush to use
-                        If Me.Core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
-                            'Water Blue hatched brush
-                            brCell = brshExcWater
-                        Else
-                            'Land
-                            brCell = brshExcLand
-                        End If
+                        'Excluded Cell 
+                        ''Figure out which brush to use
+                        'If Me.Core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                        '    'Water Blue hatched brush
+                        '    brCell = brshExcWater
+                        'Else
+                        '    'Land
+                        '    brCell = brshExcLand
+                        'End If
 
                         'Ok draw it
-                        g.FillRectangle(brCell, tmpRect)
+                        g.FillRectangle(brExcluded, tmpRect)
 
                     End If 'if Excluded
 
@@ -781,9 +788,10 @@ Namespace Ecospace
             'Draw the black frame of base map
             g.DrawRectangle(Pens.Black, rcPos)
 
-            'Probable don't have to do this as these brushes are only create once
-            brshExcWater.Dispose()
-            brshExcLand.Dispose()
+            ' Probably don't have to do this as these brushes are only create once and will be disposed when they go out of scope
+            ' JS: No, must dispose GDI objects because they are not garbage collected in .NET
+            brExcluded.Dispose()
+            brExcluded = Nothing
 
             'Display the group name
             If Me.m_bShowLabels Then

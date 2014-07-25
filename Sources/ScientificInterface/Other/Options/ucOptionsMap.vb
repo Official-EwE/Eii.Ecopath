@@ -93,6 +93,9 @@ Namespace Other
             MyBase.OnLoad(e)
             Me.UpdateControls()
             Me.UpdatePreviewImage()
+
+            Me.m_cbShowExcludedCells.Checked = Me.UIContext.StyleGuide.ShowExcludedCells
+
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -236,6 +239,7 @@ Namespace Other
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex, "ucOptionsMap::Apply")
             End Try
+            sg.ShowExcludedCells = Me.m_cbShowExcludedCells.Checked
 
             sg.ResumeEvents()
             Return IOptionsPage.eApplyResultType.Success

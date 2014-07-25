@@ -67,6 +67,7 @@ Namespace Controls.Map
             Me.AllowedToRun = True
             Me.ShowLand = True
             Me.ShowBorder = True
+            Me.ShowExcluded = False
         End Sub
 
 #End Region ' Constructor
@@ -77,6 +78,7 @@ Namespace Controls.Map
         Public Property ShowMPA() As Boolean
         Public Property ShowLand() As Boolean
         Public Property ShowBorder() As Boolean
+        Public Property ShowExcluded() As Boolean
         Public Property Map() As Single(,,)
         Public Property StanzaDS() As cStanzaDatastructures
         Public Property InRow() As Integer

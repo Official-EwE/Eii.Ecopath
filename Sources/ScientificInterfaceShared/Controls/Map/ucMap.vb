@@ -595,20 +595,25 @@ Namespace Controls.Map
                     If (TypeOf l Is cDisplayRasterLayer) Then
 
                         Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+
                         If (rl.HasData) Then
+
+                            Dim bDrawExcluded As Boolean = (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion And Me.UIContext.StyleGuide.ShowExcludedCells)
 
                             For X As Integer = iXFrom To iXTo
                                 For Y As Integer = iYFrom To iYTo
 
                                     If (CBool(layExcl.Cell(Y, X)) = False) Or _
                                        (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion) Or _
-                                       (rl.Data.DataType = eDataTypes.EcospaceLayerDepth) Then
+                                       (layDepth.IsLandCell(Y, X)) Then
 
                                         ptCell = New Point(X, Y)
                                         Dim rcCell As Rectangle = Me.GetCellRect(ptCell, InRow, InCol)
 
                                         Select Case rl.Data.DataType
-                                            Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerPort, eDataTypes.EcospaceLayerExclusion
+                                            Case eDataTypes.EcospaceLayerDepth, _
+                                                 eDataTypes.EcospaceLayerPort, _
+                                                 eDataTypes.EcospaceLayerExclusion
                                                 bDrawCell = True
                                             Case Else
                                                 bDrawCell = layDepth.IsWaterCell(Y, X)
@@ -619,7 +624,7 @@ Namespace Controls.Map
                                             If rl.IsValue(objValue) Then
                                                 ' Build style flags
                                                 style = cStyleGuide.eStyleFlags.OK
-                                                If l.IsSelected Then
+                                                If l.IsSelected Or bDrawExcluded Then
                                                     style = (style Or cStyleGuide.eStyleFlags.Highlight)
                                                 End If
                                                 ' Render cell

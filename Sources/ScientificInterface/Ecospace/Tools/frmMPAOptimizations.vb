@@ -1022,7 +1022,7 @@ Namespace Ecospace
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = factory.GetLayerGroup(varName)
-            Dim strCommand As String = factory.GetLayerGroupEditCommand(varName)
+            Dim strCommand As String = factory.GetLayerEditCommand(varName)
             Dim alayers As cDisplayRasterLayer() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cDisplayLayer = Nothing
 
