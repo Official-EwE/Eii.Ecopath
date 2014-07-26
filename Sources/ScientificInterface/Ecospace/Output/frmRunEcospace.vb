@@ -702,6 +702,7 @@ Namespace Ecospace
             Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
+            Dim depth As cEcospaceLayerDepth = Me.Core.EcospaceBasemap.LayerDepth
             Dim excl As cEcospaceLayerExclusion = Me.Core.EcospaceBasemap.LayerExclusion
 
             ''Prebuilt brushes for excluded area
@@ -716,72 +717,48 @@ Namespace Ecospace
                         CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
                         CSng(rcPos.Width() / m_iInCol), _
                         CSng(rcPos.Height() / m_iInRow))
+                    Dim tmpBrush As SolidBrush = Nothing
 
+                    If (depth.IsWaterCell(i, j) = True) Then
+                        If (CBool(excl.Cell(i, j))) = False Then
 
-                    If CBool(excl.Cell(i, j)) = False Then
+                            'Effort for a single fleet
+                            Dim icc As Single = mapFishing(iFleet, i, j) * cScaler
 
-                        Dim icc As Single
+                            'Convert to effort per unit of area
+                            'icc = baseMap(iFleet, i, j) * cScaler / cEcospaceDataStructures.Width(i)
 
-                        'Effort for a single fleet
-                        icc = mapFishing(iFleet, i, j) * cScaler
-                        'Convert to effort per unit of area
-                        'icc = baseMap(iFleet, i, j) * cScaler / cEcospaceDataStructures.Width(i)
-
-                        'Boundary check
-                        icc = Math.Max(Math.Min(cColourBins, icc), 0)
-
-                        Dim tmpBrush As SolidBrush = Nothing
-                        'If it is water
-                        If CInt(m_layerDepth.Cell(i, j)) > 0 Then
-                            ' #Water
+                            'Boundary check
+                            icc = Math.Max(Math.Min(cColourBins, icc), 0)
                             tmpBrush = New SolidBrush(lColors(CInt(icc)))
-                        Else
-                            ' #Land
-                            tmpBrush = New SolidBrush(Color.Gray)
-                        End If
 
-                        'Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
-                        '                        CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
-                        '                        CSng(rcPos.Width() / m_iInCol), _
-                        '                        CSng(rcPos.Height() / m_iInRow))
-                        g.FillRectangle(tmpBrush, tmpRect)
-                        tmpBrush.Dispose()
+                            g.FillRectangle(tmpBrush, tmpRect)
+                            tmpBrush.Dispose()
 
-
-
-                        ' Draw MPA
-                        If Me.m_bShowMPA Then
-                            Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA.Cell(i, j))
-                            ' Is MPA cell?
-                            If iMPA > 0 Then
-                                If Me.Core.EcospaceMPAs(iMPA).MPAMonth(iMonth) Then
-                                    brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
-                                Else
-                                    brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                            ' Draw MPA
+                            If Me.m_bShowMPA Then
+                                Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA.Cell(i, j))
+                                ' Is MPA cell?
+                                If iMPA > 0 Then
+                                    If Me.Core.EcospaceMPAs(iMPA).MPAMonth(iMonth) Then
+                                        brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
+                                    Else
+                                        brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                                    End If
+                                    g.FillRectangle(brCell, tmpRect)
+                                    brCell.Dispose()
                                 End If
-                                g.FillRectangle(brCell, tmpRect)
-                                brCell.Dispose()
                             End If
                         End If
+                    Else
+                        tmpBrush = New SolidBrush(Color.Gray)
+                        g.FillRectangle(tmpBrush, tmpRect)
+                        tmpBrush.Dispose()
+                    End If
 
-
-                    ElseIf Me.StyleGuide.ShowExcludedCells Then
-
-                        'Excluded Cell 
-                        ''Figure out which brush to use
-                        'If Me.Core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
-                        '    'Water Blue hatched brush
-                        '    brCell = brshExcWater
-                        'Else
-                        '    'Land
-                        '    brCell = brshExcLand
-                        'End If
-
-                        'Ok draw it
+                    If Me.StyleGuide.ShowExcludedCells And (CBool(excl.Cell(i, j)) = True) Then
                         g.FillRectangle(brExcluded, tmpRect)
-
-                    End If 'if Excluded
-
+                    End If
                 Next
             Next
 

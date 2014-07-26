@@ -61,24 +61,23 @@ Namespace Ecospace
                 FScaler = Me.Colors.Count / Args.FishingMortLegendMax
             End If
 
-            For i As Integer = 1 To Me.InRow
-                For j As Integer = 1 To Me.InCol
+            Try
+                For i As Integer = 1 To Me.InRow
+                    For j As Integer = 1 To Me.InCol
 
-                    Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
-                                                                       CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
-                                                                       CSng(rcPos.Width() / Me.InCol), _
-                                                                       CSng(rcPos.Height() / Me.InRow))
-                    If CBool(excl.Cell(i, j)) = False Then
+                        Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
+                                                                           CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
+                                                                           CSng(rcPos.Width() / Me.InCol), _
+                                                                           CSng(rcPos.Height() / Me.InRow))
+                        Dim brCell As Brush = Nothing
 
-                        Try
-                            Dim sMapValue As Single = 1.0E-20
-                            Dim icc As Single
-                            Dim brCell As Brush = Nothing
-
-                            'If it is water
-                            If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                        'If it is water
+                        If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                            ' Is not excluded
+                            If CBool(excl.Cell(i, j)) = False Then
                                 ' Water Cell
-                                sMapValue = Me.Map(i, j, iItem) / RelScaler(iItem)
+                                Dim sMapValue As Single = Me.Map(i, j, iItem) / RelScaler(iItem)
+                                Dim icc As Single
 
                                 ' Old EwE5:    icc = m_ColorNum * 1 / (MapValue + 1)
                                 ' Latest EwE5: icc = MaxColorsInGrad * MapValue / (MaxColorsInGrad / ColorScaling - 1 + MapValue)
@@ -101,44 +100,29 @@ Namespace Ecospace
                                 'Boundary check
                                 icc = Math.Max(Math.Min(Me.Colors.Count - 1, icc), 1)
                                 brCell = New SolidBrush(Me.Colors(CInt(icc)))
-
-                            ElseIf Me.ShowLand Then
-                                ' #Land
-                                brCell = New SolidBrush(Color.Gray)
-                            Else
-                                brCell = New SolidBrush(Color.Transparent)
                             End If
+                        ElseIf Me.ShowLand Then
+                            ' #Land
+                            brCell = New SolidBrush(Color.Gray)
+                        End If
 
+                        If (brCell IsNot Nothing) Then
                             Me.Graphics.FillRectangle(brCell, rcfCell)
                             brCell.Dispose()
+                        End If
 
-                        Catch ex As Exception
-                            'Debug.Assert(False, ex.Message)
-                            Exit Sub
-                        End Try
-                    ElseIf Me.ShowExcluded Then
-
-                        'Excluded Cell 
-                        'Figure out which brush to use
-                        ' JS: to change to current user-selected colours, do not use different brushes
-                        Dim brCell As Brush = Nothing
-
-                        'If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
-                        '    'Water Blue hatched brush
-                        '    brCell = brshExcWater
-                        'Else
-                        '    If Me.ShowLand Then
-                        '        'Land Gray hatched brush
-                        '        brCell = brshExcLand
-                        '    Else
-                        '        brCell = brshExcTransparent
-                        '    End If
-                        'End If 'm_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j)
-                        Me.Graphics.FillRectangle(brExcluded, rcfCell)
-
-                    End If 'if Excluded
+                        ' Always show excluded?
+                        If Me.ShowExcluded And CBool(excl.Cell(i, j)) = True Then
+                            ' Draw excluded Cell 
+                            Me.Graphics.FillRectangle(brExcluded, rcfCell)
+                        End If
+                    Next
                 Next
-            Next
+
+            Catch ex As Exception
+                'Debug.Assert(False, ex.Message)
+                Exit Sub
+            End Try
 
             ' Probably don't have to do this as these brushes are only create once and will be disposed when they go out of scope
             ' JS: No, must dispose GDI objects because they are not garbage collected in .NET
