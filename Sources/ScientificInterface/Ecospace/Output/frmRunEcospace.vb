@@ -704,10 +704,6 @@ Namespace Ecospace
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
             Dim depth As cEcospaceLayerDepth = Me.Core.EcospaceBasemap.LayerDepth
             Dim excl As cEcospaceLayerExclusion = Me.Core.EcospaceBasemap.LayerExclusion
-
-            ''Prebuilt brushes for excluded area
-            'Dim brshExcLand As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Gray)
-            'Dim brshExcWater As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Blue)
             Dim brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
 
             For i As Integer = 1 To m_iInRow
@@ -720,7 +716,7 @@ Namespace Ecospace
                     Dim tmpBrush As SolidBrush = Nothing
 
                     If (depth.IsWaterCell(i, j) = True) Then
-                        If (CBool(excl.Cell(i, j))) = False Then
+                        If (Not excl.IsExcludedCell(i, j)) Then
 
                             'Effort for a single fleet
                             Dim icc As Single = mapFishing(iFleet, i, j) * cScaler
@@ -756,7 +752,7 @@ Namespace Ecospace
                         tmpBrush.Dispose()
                     End If
 
-                    If Me.StyleGuide.ShowExcludedCells And (CBool(excl.Cell(i, j)) = True) Then
+                    If Me.StyleGuide.ShowExcludedCells And (excl.IsExcludedCell(i, j)) Then
                         g.FillRectangle(brExcluded, tmpRect)
                     End If
                 Next

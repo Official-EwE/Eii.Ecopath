@@ -74,7 +74,7 @@ Namespace Ecospace
                         'If it is water
                         If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
                             ' Is not excluded
-                            If CBool(excl.Cell(i, j)) = False Then
+                            If (Not excl.IsExcludedCell(i, j)) Then
                                 ' Water Cell
                                 Dim sMapValue As Single = Me.Map(i, j, iItem) / RelScaler(iItem)
                                 Dim icc As Single
@@ -112,7 +112,7 @@ Namespace Ecospace
                         End If
 
                         ' Always show excluded?
-                        If Me.ShowExcluded And CBool(excl.Cell(i, j)) = True Then
+                        If Me.ShowExcluded And excl.IsExcludedCell(i, j) = True Then
                             ' Draw excluded Cell 
                             Me.Graphics.FillRectangle(brExcluded, rcfCell)
                         End If

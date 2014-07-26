@@ -36,4 +36,17 @@ Public Class cEcospaceLayerExclusion
         Me.m_dataType = eDataTypes.EcospaceLayerExclusion
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' States if a given cell is an excluded cell.
+    ''' </summary>
+    ''' <param name="iRow">The row of the cell to check.</param>
+    ''' <param name="iCol">The column of the cell to check.</param>
+    ''' <returns>True if the given cell is an excluded cell.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsExcludedCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+        If Not Me.ValidateCellPosition(iRow, iCol) Then Return False
+        Return (CBool(Me.Cell(iRow, iCol)) = True)
+    End Function
+
 End Class
