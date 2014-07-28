@@ -2708,6 +2708,11 @@ stepend:
                 End If
             Next
 
+            'Add uncertainty in Effort
+            'This is implementation error
+            'How well they match the quota set above
+            '_simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * CSng(Math.Exp(CVEffort(ifleet) * m_RandNormal.NextDouble()))
+
             'Calculates what the F's are for each species given the effort
             m_ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
 
