@@ -32,7 +32,9 @@ Imports EwECore
 Public Class cStockAssessmentModel
     Implements IMSEData
 
-    'ToDo Implement the stock recruitment model
+    'Stock assessment model and strategies
+    'For now there will be one stock assessment model for all the strategies
+    'Groups CV's should be by strategy, I'm not sure what this means for the code or interface right now so I'll just ignore it...
 
 #Region "Private data"
 
@@ -130,7 +132,7 @@ Public Class cStockAssessmentModel
                 'Average biomass from the last year with sampling error
                 Bobs(igrp) = Bavg(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * m_RandNormal.NextDouble()))
 
-                'Get the estimated biomass base on the observed biomass plus variation
+                'Get the estimated biomass base on the observed biomass plus uncertainty
                 'Using the stock recruitment curve from the EwE6 MSE interface
                 Me.Bestimate(igrp) = Me.stockRecruitment(iTimestep, igrp, Bobs(igrp), Me.Bestimate(igrp))
             Next igrp
