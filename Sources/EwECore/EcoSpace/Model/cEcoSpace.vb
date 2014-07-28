@@ -947,12 +947,11 @@ Public Class cEcoSpace
                 'do external processing at the start of the time step i.e. Call Plugins or sub models
                 Me.BeginTimeStep(Fgear, its, m_Data.MonthNow, m_Data.YearNow, Btime, RelFopt, m_Data.TimeNow)
 
-                If Me.m_Data.bHasCapacityChanged Then
+                If Me.m_Data.isCapacityChanged Then
                     Dim hcSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
                     'set the Capacity maps if any of the inputs have changed
                     Me.SetHabCap()
-
-                    'System.Console.WriteLine("SetHabCap() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - hcSt).ToString)
+                    System.Console.WriteLine("SetHabCap() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - hcSt).ToString)
                 End If
 
                 'Tell Ecoseed that we are at the start of a timestep
@@ -1943,8 +1942,9 @@ Public Class cEcoSpace
             'jb 12-Ma7-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
             Me.m_Ecosim.Init(True)
 
-            'Tell all the map variables that they need to be reset
-            Me.m_Data.bHasCapacityChanged = True
+            'Tell all the capacity map variables that they need to be recomputed
+            Me.m_Data.isCapacityChanged = True
+            Me.m_Data.setHabCapGroupIsChanged(True)
             'Now reset capacity
             SetHabCap()
 
@@ -6766,16 +6766,12 @@ exitline:
     Public Sub SetHabCap()
 
         'Have ANY of the inputs changed
-        If Not Me.m_Data.bHasCapacityChanged Then
+        If Not Me.m_Data.isCapacityChanged Then
             Return
         End If
 
-        Me.ClearHabCapGroups(Me.m_Data.isGroupHabCapChanged)
-
-        ''set up array of relative habitat capacities by cell and group
-        'Array.Clear(m_Data.HabCap, 0, m_Data.HabCap.Length)
-        'Array.Clear(m_Data.TotHabCap, 0, m_Data.TotHabCap.Length)
-        'Array.Clear(m_Data.MaxHabCap, 0, m_Data.MaxHabCap.Length)
+        'Clear out the old value used to normalize the map  
+        ClearHabCapGroups(Me.m_Data.isGroupHabCapChanged)
 
         'Sum the capacity input map into HabCap
         Me.setHabCapFromCapInputMap()
@@ -6790,7 +6786,6 @@ exitline:
         Me.normalizeCapacityMap()
 
         'Set the capacity gradients to flow from low to high capacity cells
-        ' Me.AdjustLowHapCaps()
         Me.runAjustLowHabCapsThreaded()
 
         'Make sure runAjustLowHabCapsThreaded() did not set HabCap()<MIN_HABCAP
@@ -6806,7 +6801,9 @@ exitline:
         Next ig
 
         'All the map changes have been computed
-        Me.m_Data.bHasCapacityChanged = False
+        Me.m_Data.isCapacityChanged = False
+        'this will clear the individual isGroupHabCapChanged() flags
+        Me.m_Data.setHabCapGroupIsChanged(False)
 
     End Sub
 
@@ -7069,7 +7066,8 @@ exitline:
         Me.UpdateDepthMap()
 
         'make sure the habitat capacity has been set
-        Me.m_Data.bHasCapacityChanged = True
+        Me.m_Data.isCapacityChanged = True
+        Me.m_Data.setHabCapGroupIsChanged(True)
         Me.SetHabCap()
 
         'Makes sure the number of water cells has been set
@@ -7113,7 +7111,8 @@ exitline:
                 MapDataType = eDataTypes.EcospaceLayerExclusion Then
 
                 'This will force the capacity model to update
-                Me.m_Data.bHasCapacityChanged = True
+                Me.m_Data.isCapacityChanged = True
+                Me.m_Data.setHabCapGroupIsChanged(True)
 
                 Return True
 
@@ -7276,6 +7275,7 @@ exitline:
 
             'Is this layer active
             If map.isLayerActive Then
+                'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
                     'jb The isGroupHabCapChanged(igrp) was always false with the RBT Model
@@ -7283,6 +7283,7 @@ exitline:
                     If Me.m_Data.isGroupHabCapChanged(igrp) Then
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
+                            'System.Console.Write(igrp.ToString + ",")
                             'Yep Layer is Active
                             'Habitat for group has changed
                             'There is a response function
@@ -7300,6 +7301,7 @@ exitline:
                         End If ' map.ResponseIndexForGroup(igrp) > 0
                     End If ' Me.m_Data.isGroupHabCapChanged(igrp)
                 Next igrp
+                'System.Console.WriteLine()
             End If ' map.isLayerActive
         Next map
 

@@ -715,28 +715,46 @@ Public Class cEcospaceDataStructures
     ''' Have any of the capacity input layers changed
     ''' </summary>
     ''' <remarks>Capacity Inputs, Habitats, Environmental layers, depth....</remarks>
-    Public Property bHasCapacityChanged(Optional GroupIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Property isCapacityChanged() As Boolean
+        'Public Property bHasCapacityChanged(Optional GroupIndex As Integer = cCore.NULL_VALUE) As Boolean
         Get
-            Return m_bHasCapacityChanged
+            Return Me.m_bHasCapacityChanged
         End Get
         Set(value As Boolean)
-
-            ' m_bHasCapacityChanged = value
-            If GroupIndex = cCore.NULL_VALUE Then
-
-                m_bHasCapacityChanged = value
-                For igrp As Integer = 1 To Me.NGroups
-                    Me.isGroupHabCapChanged(igrp) = value
-                Next
-            Else
-                'If we are setting one group to True
-                'Make sure the capacity routine gets called
-                If value Then m_bHasCapacityChanged = True
-                Me.isGroupHabCapChanged(GroupIndex) = value
-            End If
-
+            Me.m_bHasCapacityChanged = value
+            'If the bHasCapacityChanged has been set to false 
+            'clear all the individual group flags
+            'If value = False Then
+            '    For igrp As Integer = 1 To NGroups
+            '        Me.isGroupHabCapChanged(igrp) = False
+            '    Next
+            'End If
         End Set
+
     End Property
+
+
+    Public Sub setHabCapGroupIsChanged(ByVal Value As Boolean)
+        For igrp As Integer = 1 To NGroups
+            Me.isGroupHabCapChanged(igrp) = Value
+        Next
+    End Sub
+
+    ' '''<summary>
+    ' ''' Have any of the capacity input layers changed
+    ' ''' </summary>
+    ' ''' <remarks>Capacity Inputs, Habitats, Environmental layers, depth....</remarks>
+    'Public Property _isGroupHabCapChanged(ByVal iGroupIndex As Integer) As Boolean
+    '    'Public Property bHasCapacityChanged(Optional GroupIndex As Integer = cCore.NULL_VALUE) As Boolean
+    '    Get
+    '        Return Me.isGroupHabCapChanged(iGroupIndex)
+    '    End Get
+
+    '    Set(value As Boolean)
+    '        Me.isGroupHabCapChanged(iGroupIndex) = value
+    '    End Set
+
+    'End Property
 
     ''' <summary>Number of Base Groups (Ecopath) </summary>
     ''' <remarks>This was nvar in EwE5</remarks>
@@ -1189,10 +1207,6 @@ Public Class cEcospaceDataStructures
             ReDim IsAdvected(NGroups)
             ReDim Me.TotHabCap(NGroups)
             ReDim Me.MaxHabCap(NGroups)
-
-
-            'jb PrefHab() was redimed here and redimHabitatVariables()
-            '        ReDim PrefHab(nGroups, NoHabitats)
 
             ' Allocate room for Depth map
             ReDim Me.CapMapFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)

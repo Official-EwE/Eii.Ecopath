@@ -9432,7 +9432,8 @@ Public Class cCore
             m_Ecospace.SearchData = m_SearchData
 
             'all the input maps have changed if a new scenario is loaded
-            Me.m_EcoSpaceData.bHasCapacityChanged = True
+            Me.m_EcoSpaceData.isCapacityChanged = True
+            Me.m_EcoSpaceData.setHabCapGroupIsChanged(True)
 
 
             'hardwire some capacity maps for debugging

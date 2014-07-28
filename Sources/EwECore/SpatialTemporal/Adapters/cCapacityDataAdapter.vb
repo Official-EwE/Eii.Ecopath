@@ -80,18 +80,13 @@ Namespace SpatialData
                                                   ByVal dNoData As Double) As Boolean
             Dim breturnVal As Boolean
 
-            'Sets the bHasCapacityChanged for all the groups to False
-            'Then ONLY turn On the groups that have a Response function
-            Me.m_spaceData.bHasCapacityChanged = True
-
+            Me.m_spaceData.isCapacityChanged = True
             breturnVal = MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
 
             For iGroup As Integer = 1 To Me.m_spaceData.NGroups
                 'Ok Turn on the groups that that were changed
                 If Me.m_spaceData.CapMapFunctions(layer.Index, iGroup) > 0 Then
-                    Me.m_spaceData.bHasCapacityChanged(iGroup) = True
-                Else
-                    Me.m_spaceData.bHasCapacityChanged(iGroup) = False
+                    Me.m_spaceData.isGroupHabCapChanged(iGroup) = True
                 End If
             Next
 
