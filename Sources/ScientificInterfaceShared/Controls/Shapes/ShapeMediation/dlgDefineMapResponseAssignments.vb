@@ -31,16 +31,16 @@ Imports ZedGraph
 
 Public Class dlgDefineMapResponseAssignments
 
+    'ToDo  update graph interface from edit dialog 
+    'ToDo Localize text
+
 #Region "Private variables"
 
     Private m_shape As EwECore.cEnviroResponseFunction = Nothing
     Private m_manager As cMapResponseInteractionManager = Nothing
     Private m_zgh As cZedGraphMediationHelper = Nothing
     Private m_uic As cUIContext = Nothing
-    'Private m_bHasInit As Boolean
     Private m_map As cEnviroInputMap = Nothing
-    'Private m_fpXMin As cEwEFormatProvider = Nothing
-    'Private m_fpXMax As cEwEFormatProvider = Nothing
 
     Private m_ShapeGUIHandler As cShapeGUIHandler
 
@@ -301,7 +301,6 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.GetPane(1).CurveList.Clear()
 
             Me.PlotShape()
-
             Me.PlotMap()
 
         Catch ex As Exception
@@ -338,7 +337,7 @@ Public Class dlgDefineMapResponseAssignments
                     Me.m_txMean.Text = Me.m_shape.Steep.ToString
                     Me.m_txSD.Text = Me.m_SD.ToString
 
-                Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder
+                Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder, eShapeFunctionType.Trapezoid
 
                     Me.m_tbxXMax.Enabled = True
                     Me.m_tbxXMin.Enabled = True
@@ -356,8 +355,6 @@ Public Class dlgDefineMapResponseAssignments
 
                     Me.m_lbMean.Enabled = False
                     Me.m_lbSD.Enabled = False
-
-
 
                 Case Else
 
@@ -415,7 +412,8 @@ Public Class dlgDefineMapResponseAssignments
     Private Function CanUpdateMinMax() As Boolean
         If Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal Or _
             Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder Or _
-            Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder Then
+            Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder Or _
+             Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid Then
             Return False
         End If
         Return True
@@ -443,7 +441,7 @@ Public Class dlgDefineMapResponseAssignments
                 Me.calcXFromMeanAndSD(Me.m_SD, ShapeMin, ShapeMax)
 
 
-            Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder
+            Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder, eShapeFunctionType.Trapezoid
                 'Shoulder shape min and max can not be set here
                 'They only get set from the ChangeShape dialogue
 

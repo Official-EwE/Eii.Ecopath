@@ -35,6 +35,7 @@ Public Enum eShapeFunctionType
     Normal
     RightShoulder
     LeftShoulder
+    Trapezoid
 End Enum
 
 #End Region

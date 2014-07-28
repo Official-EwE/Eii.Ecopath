@@ -176,6 +176,9 @@ Namespace Controls
                 Case eShapeFunctionType.RightShoulder
                     sA = 1.0 : sB = 2.0 : sC = 3.0
 
+                Case eShapeFunctionType.Trapezoid
+                    sA = 1.0 : sB = 2.0 : sC = 3.0 : sD = 4.0
+
             End Select
 
             Me.m_fpA.Value = sA
@@ -234,7 +237,54 @@ Namespace Controls
 
         Private Sub OnInputValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
                 Handles m_tbxD.Validated, m_tbxC.Validated, m_tbxB.Validated, m_tbxA.Validated
+
+            Me.ValidateInput()
             Me.UpdatePreview()
+
+        End Sub
+
+        Private Sub ValidateInput()
+
+            Dim a As Single = CSng(Me.m_fpA.Value)
+            Dim b As Single = CSng(Me.m_fpB.Value)
+            Dim c As Single = CSng(Me.m_fpC.Value)
+            Dim d As Single = CSng(Me.m_fpD.Value)
+
+            Dim aorg As Single = Me.m_shape.YZero
+            Dim borg As Single = Me.m_shape.YEnd
+            Dim corg As Single = Me.m_shape.YBase
+            Dim dorg As Single = Me.m_shape.Steep
+
+            Dim shift As Single
+
+            Select Case Me.SelectedShapeType
+
+                Case eShapeFunctionType.Trapezoid
+                    If a > b Then
+                        shift = a - aorg
+                        Me.m_fpB.Value = b + shift
+                        b = b + shift
+                    End If
+
+                    If b > c Then
+                        shift = b - borg
+                        Me.m_fpC.Value = c + shift
+                        c = b + c
+                    End If
+
+                    If c > d Then
+                        shift = c - borg
+                        Me.m_fpD.Value = d + shift
+                        d = c + d
+                    End If
+
+            End Select
+
+        End Sub
+
+
+        Private Sub TranslateShape(Shift As Single)
+
         End Sub
 
         Private Sub OnPaintPreview(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
@@ -407,7 +457,21 @@ Namespace Controls
                     strLabelA = My.Resources.LABEL_LEFTPOINT
                     strLabelB = My.Resources.LABEL_RIGHTPOINT
                     strLabelC = My.Resources.LABEL_WIDTH
-                 
+
+                Case eShapeFunctionType.Trapezoid
+
+                    bEnableA = True : bEnableB = True : bEnableC = True : bEnableD = True
+                    strLabelA = "Left bottom"
+                    strLabelB = "Left top"
+                    strLabelC = "Right top"
+                    strLabelD = "Right bottom"
+
+                    'strLabelA = My.Resources.LABEL_LEFTPOINT
+                    'strLabelB = My.Resources.LABEL_RIGHTPOINT
+                    'strLabelC = My.Resources.LABEL_WIDTH
+                    'strLabelD = My.Resources.LABEL_WIDTH
+
+
                 Case Else
                     Debug.Assert(False)
             End Select
@@ -524,7 +588,7 @@ Namespace Controls
 
                     Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder
 
-                        Dim dix As Single = 1 / (nPoints / 4.0F)
+                        'Dim dix As Single = 1 / (nPoints / 4.0F)
                         Dim dx As Single = sYBase / nPoints
                         Dim xpt As Single
 
@@ -549,7 +613,7 @@ Namespace Controls
                             shape.ResponseLeftLimit = 0
                             shape.ResponseRightLimit = sYBase
                         End If
-                        Debug.Assert(shape IsNot Nothing, "Oppss BUG! Trying to edit a shoulder shape that is not an cEnviroResponseFunction!")
+
 
                         For i As Integer = 0 To 2
                             For j As Integer = iIndexLocs(i) To iIndexLocs(i + 1)
@@ -557,6 +621,40 @@ Namespace Controls
                                 Me.m_asDataWork(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
                             Next j
                         Next i
+
+
+                    Case eShapeFunctionType.Trapezoid
+
+                        'Dim dix As Single = 1 / (nPoints / 4.0F)
+
+                        Dim xpt As Single
+                        Dim width As Single = sSteep ' + 1
+                        Dim dx As Single = width / nPoints
+
+                        If sYBase = 0 Then sYBase = 1
+                        If sYZero > sYEnd Then sYEnd = sYZero
+                        If sYBase < sYZero Or sYBase < sYEnd Then sYBase = sYEnd + 1
+
+                        Dim yVal() As Single = New Single() {0, 0, 1, 1, 0, 0}
+                        Dim xVal() As Single = New Single() {0, sYZero, sYEnd, sYBase, sSteep, width}
+                        'The location of the shoulder in the response function is determined by
+                        'it's index position in the points array
+                        Dim iIndexLocs() As Integer = New Integer() {0, Me.getIndex(sYZero, width, nPoints), Me.getIndex(sYEnd, width, nPoints), Me.getIndex(sYBase, width, nPoints), Me.getIndex(sSteep, width, nPoints), nPoints}
+
+                        Dim shape As cEnviroResponseFunction = TryCast(Me.m_shape, cEnviroResponseFunction)
+                        If shape IsNot Nothing Then
+                            shape.ResponseLeftLimit = 0
+                            shape.ResponseRightLimit = width
+                        End If
+
+
+                        For i As Integer = 0 To 4
+                            For j As Integer = iIndexLocs(i) To iIndexLocs(i + 1)
+                                xpt = j * dx
+                                Me.m_asDataWork(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
+                            Next j
+                        Next i
+
 
                     Case Else
                         Debug.Assert(False)
