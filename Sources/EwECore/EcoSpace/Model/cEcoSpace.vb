@@ -2053,9 +2053,9 @@ Public Class cEcoSpace
                     Next j
                 Next i
                 Btime(ip) = Btime(ip) / m_Data.nWaterCells
-                If ip > 0 Then
-                    System.Console.WriteLine(Me.m_EPdata.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.m_EPdata.B(ip)).ToString)
-                End If
+                'If ip > 0 Then
+                '    System.Console.WriteLine(Me.m_EPdata.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.m_EPdata.B(ip)).ToString)
+                'End If
             Next ip
 
             Dim isc As Integer, ieco As Integer
