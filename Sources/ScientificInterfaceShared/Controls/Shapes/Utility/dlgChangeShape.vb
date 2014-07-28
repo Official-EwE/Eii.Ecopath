@@ -63,7 +63,6 @@ Namespace Controls
 
         Private m_bRecalc As Boolean = True
 
-
         Private MAXIT As Integer = 100
         Private EPS As Single = 0.0000003
         Private FPMIN As Single = 1.0E-30
@@ -235,6 +234,7 @@ Namespace Controls
             Me.UpdatePreview()
         End Sub
 
+
         Private Sub OnInputValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
                 Handles m_tbxD.Validated, m_tbxC.Validated, m_tbxB.Validated, m_tbxA.Validated
 
@@ -250,42 +250,42 @@ Namespace Controls
             Dim c As Single = CSng(Me.m_fpC.Value)
             Dim d As Single = CSng(Me.m_fpD.Value)
 
-            Dim aorg As Single = Me.m_shape.YZero
-            Dim borg As Single = Me.m_shape.YEnd
-            Dim corg As Single = Me.m_shape.YBase
-            Dim dorg As Single = Me.m_shape.Steep
-
             Dim shift As Single
 
             Select Case Me.SelectedShapeType
 
                 Case eShapeFunctionType.Trapezoid
+                    'This only sort of works
+                    'The idea is to translate the object
+                    'if one of the points is to far to the right.
+                    'Because we don't know the point positions before the edit 
+                    'we can't figure out the shift for the translate
+                    'So just fake it...
                     If a > b Then
-                        shift = a - aorg
+                        shift = a - b
                         Me.m_fpB.Value = b + shift
-                        b = b + shift
+                        Me.m_fpC.Value = c + shift
+                        Me.m_fpD.Value = d + shift
+                        Return
                     End If
 
                     If b > c Then
-                        shift = b - borg
+                        shift = b - c
                         Me.m_fpC.Value = c + shift
-                        c = b + c
+                        Me.m_fpD.Value = d + shift
+                        Return
                     End If
 
                     If c > d Then
-                        shift = c - borg
+                        shift = c - d
                         Me.m_fpD.Value = d + shift
-                        d = c + d
+                        Return
                     End If
 
             End Select
 
         End Sub
 
-
-        Private Sub TranslateShape(Shift As Single)
-
-        End Sub
 
         Private Sub OnPaintPreview(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
                 Handles m_plPreview.Paint
@@ -625,8 +625,6 @@ Namespace Controls
 
                     Case eShapeFunctionType.Trapezoid
 
-                        'Dim dix As Single = 1 / (nPoints / 4.0F)
-
                         Dim xpt As Single
                         Dim width As Single = sSteep ' + 1
                         Dim dx As Single = width / nPoints
@@ -646,7 +644,6 @@ Namespace Controls
                             shape.ResponseLeftLimit = 0
                             shape.ResponseRightLimit = width
                         End If
-
 
                         For i As Integer = 0 To 4
                             For j As Integer = iIndexLocs(i) To iIndexLocs(i + 1)
@@ -865,8 +862,6 @@ Namespace Controls
             Me.m_shape.ShapeData = Me.m_asDataWork
             Me.m_shape.Scale(newMax)
             Me.m_asDataWork = Me.m_shape.ShapeData
-
-
 
         End Sub
 
