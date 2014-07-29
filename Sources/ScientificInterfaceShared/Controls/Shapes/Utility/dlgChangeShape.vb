@@ -39,6 +39,35 @@ Namespace Controls
     ''' </remarks>
     Public Class dlgChangeShape
 
+#Region "Private internal class definitions"
+
+        ''' <summary>
+        ''' Internal class to hold the shape values in a buffer
+        ''' </summary>
+        ''' <remarks>
+        ''' For now this is only used in the data validation. 
+        ''' It could be extended so the interface always uses this as it's data source.
+        '''  </remarks>
+        Private Class cShapeBuffer
+            Public A As Single
+            Public B As Single
+            Public C As Single
+            Public D As Single
+
+            Public ShapeType As eShapeFunctionType
+
+            Public Sub New(ByVal Shape As cForcingFunction)
+                Me.A = Shape.YZero
+                Me.B = Shape.YEnd
+                Me.C = Shape.YBase
+                Me.D = Shape.Steep
+                Me.ShapeType = Shape.ShapeFunctionType
+            End Sub
+
+        End Class
+
+#End Region
+
 #Region " Private vars "
 
         ''' <summary></summary>
@@ -67,6 +96,9 @@ Namespace Controls
         Private EPS As Single = 0.0000003
         Private FPMIN As Single = 1.0E-30
 
+        Private m_shpBuff As cShapeBuffer
+
+
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -87,9 +119,14 @@ Namespace Controls
             Me.m_handler = handler
             Me.m_asDataWork = shape.ShapeData
 
+            'Keep the shape in a buffer
+            'At this time this is only used for data validation
+            'but should be extented to buffer all the shape data
+            Me.m_shpBuff = New cShapeBuffer(Me.m_shape)
+
         End Sub
 
-      
+
 #End Region ' Constructor
 
 #Region " Events "
@@ -132,6 +169,7 @@ Namespace Controls
             Me.UpdateControls()
 
         End Sub
+
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
@@ -190,6 +228,16 @@ Namespace Controls
 
         End Sub
 
+
+        Private Sub updateShape()
+            Me.m_shpBuff.A = CSng(Me.m_fpA.Value)
+            Me.m_shpBuff.B = CSng(Me.m_fpB.Value)
+            Me.m_shpBuff.C = CSng(Me.m_fpC.Value)
+            Me.m_shpBuff.D = CSng(Me.m_fpD.Value)
+        End Sub
+
+
+
         Private Sub OnOk(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnOk.Click
 
@@ -239,6 +287,7 @@ Namespace Controls
                 Handles m_tbxD.Validated, m_tbxC.Validated, m_tbxB.Validated, m_tbxA.Validated
 
             Me.ValidateInput()
+            Me.updateShape()
             Me.UpdatePreview()
 
         End Sub
@@ -262,7 +311,7 @@ Namespace Controls
                     'we can't figure out the shift for the translate
                     'So just fake it...
                     If a > b Then
-                        shift = a - b
+                        shift = a - Me.m_shpBuff.A
                         Me.m_fpB.Value = b + shift
                         Me.m_fpC.Value = c + shift
                         Me.m_fpD.Value = d + shift
@@ -270,14 +319,14 @@ Namespace Controls
                     End If
 
                     If b > c Then
-                        shift = b - c
+                        shift = b - Me.m_shpBuff.B
                         Me.m_fpC.Value = c + shift
                         Me.m_fpD.Value = d + shift
                         Return
                     End If
 
                     If c > d Then
-                        shift = c - d
+                        shift = c - Me.m_shpBuff.C
                         Me.m_fpD.Value = d + shift
                         Return
                     End If
@@ -663,7 +712,7 @@ Namespace Controls
                 If Single.TryParse(Me.m_tbxMaxValue.Text, ScaleMax) Then
                     Me.ScaleShape(ScaleMax)
                 End If
-              
+
 
             Catch ex As Exception
                 Return False
