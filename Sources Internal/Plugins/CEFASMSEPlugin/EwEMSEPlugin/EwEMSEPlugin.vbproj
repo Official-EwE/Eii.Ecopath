@@ -152,6 +152,12 @@
     <Compile Include="User interface\frmEditSurvivabilities.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="User interface\frmCEFASRecruitment.designer.vb">
+      <DependentUpon>frmCEFASRecruitment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="User interface\frmCEFASRecruitment.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmTFMpolicy.designer.vb">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
     </Compile>
@@ -159,6 +165,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="User interface\gridMaxDecreaseEffort.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridCEFASRecruitment.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="User interface\gridRegulations.vb">
@@ -243,6 +252,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmMSE.resx">
       <DependentUpon>frmMSE.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User interface\frmCEFASRecruitment.resx">
+      <DependentUpon>frmCEFASRecruitment.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmTFMpolicy.resx">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
