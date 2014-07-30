@@ -648,16 +648,28 @@ Public Class cEcosimDistributionParams
                             ' Only add with valid group indexes and names
                             If (param.GroupNo >= 1 And param.GroupNo <= Me.Core.nLivingGroups) Then
                                 If (String.Compare(param.GroupName, Me.Core.EcoPathGroupInputs(param.GroupNo).Name, True) = 0) Then
-                                    params(param.GroupNo) = param
-                                    nGroups += 1
-                                    bOK = True
+                                    If Me.Core.EcoPathGroupInputs(param.GroupNo).IsProducer And param.DistributionType = cMSE.DistributionType.NotSet And _
+                                        param.LowerBound = -9999 And param.UpperBound = -9999 Then
+                                        'This has been recognised at a primary producer that is correctly parameterised
+                                        params(param.GroupNo) = param
+                                        bOK = True
+                                    ElseIf Me.Core.EcoPathGroupInputs(param.GroupNo).IsProducer And (Not param.DistributionType = cMSE.DistributionType.NotSet Or _
+                                    param.LowerBound <> -9999 Or param.UpperBound <> -9999) Then
+                                        'This is a primary producer that is incorrectly parameterised
+                                        bOK = False
+                                    ElseIf Not Me.Core.EcoPathGroupInputs(param.GroupNo).IsProducer Then
+                                        'This isn't a primary producer
+                                        params(param.GroupNo) = param
+                                        nGroups += 1
+                                        bOK = True
+                                    End If
                                 End If
+                                End If
+                                If (bOK = False) Then
+                                    cMSEUtils.LogError(msg, "Invalid group " & param.GroupNo & " encountered in " & Path.GetFileName(strPath))
+                                End If
+                                bSuccess = bSuccess And bOK
                             End If
-                            If (bOK = False) Then
-                                cMSEUtils.LogError(msg, "Invalid group " & param.GroupNo & " encountered in " & Path.GetFileName(strPath))
-                            End If
-                            bSuccess = bSuccess And bOK
-                        End If
                     End While
                     csv.Dispose()
 
