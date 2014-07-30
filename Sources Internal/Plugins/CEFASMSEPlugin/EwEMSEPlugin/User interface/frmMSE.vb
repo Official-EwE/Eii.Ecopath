@@ -432,8 +432,8 @@ Public Class frmMSE
     End Sub
 
 
-    Private Sub OnGenerateSampleSurvivabilities(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnSampleSurvivabilities.Click
+    Private Sub OnGenerateSampleSurvivabilities(sender As System.Object, e As System.EventArgs) Handles m_btnSampleSurvivabilities.Click
+
         Try
             MSE.GenerateSurvivabilities()
         Catch ex As Exception
@@ -587,11 +587,13 @@ Public Class frmMSE
 
             ' --- END GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
 
+
             ' Re-assess state
             Me.MSE.InvalidateRunState(False)
 
 #If DEBUG Then
             ' Panic in debug mode only
+            'Stop
             Debug.Assert(Me.MSE.IsInputDataCompatible(), "Cefas MSE default data generation logic is not working")
 #End If
 

@@ -74,10 +74,10 @@ Partial Class frmMSE
         Me.m_plStep3 = New System.Windows.Forms.Panel()
         Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnDecreaseEffort = New System.Windows.Forms.Button()
-        Me.btnEditSurvivabilities = New System.Windows.Forms.Button()
         Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
+        Me.btnEditSurvivabilities = New System.Windows.Forms.Button()
         Me.m_tbxArea = New System.Windows.Forms.TextBox()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_pbCefas = New System.Windows.Forms.PictureBox()
@@ -94,6 +94,7 @@ Partial Class frmMSE
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
+        Me.btnTestStop = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -280,7 +281,6 @@ Partial Class frmMSE
         '
         resources.ApplyResources(Me.m_tlpFishingControls, "m_tlpFishingControls")
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnDecreaseEffort, 0, 0)
-        Me.m_tlpFishingControls.Controls.Add(Me.btnEditSurvivabilities, 2, 0)
         Me.m_tlpFishingControls.Name = "m_tlpFishingControls"
         '
         'm_btnDecreaseEffort
@@ -288,12 +288,6 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_btnDecreaseEffort, "m_btnDecreaseEffort")
         Me.m_btnDecreaseEffort.Name = "m_btnDecreaseEffort"
         Me.m_btnDecreaseEffort.UseVisualStyleBackColor = True
-        '
-        'btnEditSurvivabilities
-        '
-        resources.ApplyResources(Me.btnEditSurvivabilities, "btnEditSurvivabilities")
-        Me.btnEditSurvivabilities.Name = "btnEditSurvivabilities"
-        Me.btnEditSurvivabilities.UseVisualStyleBackColor = True
         '
         'm_hdrStep3
         '
@@ -313,6 +307,12 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_tbxNumAvailableFishingStrategies, "m_tbxNumAvailableFishingStrategies")
         Me.m_tbxNumAvailableFishingStrategies.Name = "m_tbxNumAvailableFishingStrategies"
         Me.m_tbxNumAvailableFishingStrategies.ReadOnly = True
+        '
+        'btnEditSurvivabilities
+        '
+        resources.ApplyResources(Me.btnEditSurvivabilities, "btnEditSurvivabilities")
+        Me.btnEditSurvivabilities.Name = "btnEditSurvivabilities"
+        Me.btnEditSurvivabilities.UseVisualStyleBackColor = True
         '
         'm_tbxArea
         '
@@ -354,7 +354,9 @@ Partial Class frmMSE
         '
         'm_plStep1
         '
+        Me.m_plStep1.Controls.Add(Me.btnTestStop)
         Me.m_plStep1.Controls.Add(Me.m_lblPathValue)
+        Me.m_plStep1.Controls.Add(Me.btnEditSurvivabilities)
         Me.m_plStep1.Controls.Add(Me.m_lblDataPath)
         Me.m_plStep1.Controls.Add(Me.m_pbPathCompatible)
         Me.m_plStep1.Controls.Add(Me.m_lblAreaUnit)
@@ -427,6 +429,12 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
+        'btnTestStop
+        '
+        resources.ApplyResources(Me.btnTestStop, "btnTestStop")
+        Me.btnTestStop.Name = "btnTestStop"
+        Me.btnTestStop.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -495,8 +503,9 @@ Partial Class frmMSE
     Private WithEvents m_btnDecreaseEffort As System.Windows.Forms.Button
     Private WithEvents btnEditSurvivabilities As System.Windows.Forms.Button
     Private WithEvents m_tlpFishingControls As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
     Private WithEvents m_btnDeleteResults As System.Windows.Forms.Button
     Private WithEvents m_pbPathCompatible As System.Windows.Forms.PictureBox
     Private WithEvents m_btnCreateSurvDist As System.Windows.Forms.Button
+    Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
+    Friend WithEvents btnTestStop As System.Windows.Forms.Button
 End Class
