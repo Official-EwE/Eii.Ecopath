@@ -341,9 +341,7 @@ Public Class frmMSE
         Handles m_btnReviewTFM.Click
 
         Try
-            Debug.Assert(False, "Warning Stock Assessment model has been hooked up to the TFM button!")
-            Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE.StockAssessment)
-            ' Dim frm As New frmTFMpolicy(Me.UIContext, Me.MSE)
+            Dim frm As New frmTFMpolicy(Me.UIContext, Me.MSE)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 Me.MSE.InvalidateRunState(True)
                 Me.UpdateControls()
@@ -417,6 +415,11 @@ Public Class frmMSE
         Handles m_btnDecreaseEffort.Click
 
         Try
+
+            'This was just for debugging the Stock Assessment
+            'Debug.Assert(False, "Warning Stock Assessment model has been hooked up to the Decrease Effort button!")
+            'Dim frmMaxDecreaseEfforts As New frmCEFASRecruitment(Me.UIContext, Me.MSE.StockAssessment)
+
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
             frmMaxDecreaseEfforts.Init(Me.UIContext, Me.MSE)
             If frmMaxDecreaseEfforts.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then

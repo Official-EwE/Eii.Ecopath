@@ -97,7 +97,6 @@ Public Class frmCEFASRecruitment
         Me.m_grid.Init(Me.m_Assessment)
         Me.m_grid.UIContext = Me.UIContext
 
-
         ' Select first group with likely values
         For iGroup As Integer = 1 To Core.nGroups
             ' Get group
@@ -140,7 +139,7 @@ Public Class frmCEFASRecruitment
         End Try
     End Sub
 
-    Private Sub HandlePropertyChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
+    Private Sub HandlePropertyChanged(ByVal iGroupIndex As Integer)
         ' A relevant property has changed: redraw the graph
         Me.Redraw()
     End Sub
@@ -158,29 +157,28 @@ Public Class frmCEFASRecruitment
         Get
             Return Me.m_group
         End Get
+
         Set(ByVal value As cStockAssessmentParameters)
 
-            'Dim pm As cPropertyManager = Me.PropertyManager
+            ' Unregister
+            If (Me.m_group IsNot Nothing) Then
+                RemoveHandler Me.m_group.onParameterChanged, AddressOf HandlePropertyChanged
+                RemoveHandler Me.m_group.onParameterChanged, AddressOf HandlePropertyChanged
+            End If
 
-            '' Unregister
-            'If (Me.m_group IsNot Nothing) Then
-            '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf HandlePropertyChanged
-            '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf HandlePropertyChanged
-            'End If
+            ' Update
+            Me.m_group = value
 
-            '' Update
-            'Me.m_group = value
-
-            '' Register
-            'If (Me.m_group IsNot Nothing) Then
-            '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf HandlePropertyChanged
-            '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf HandlePropertyChanged
-            'End If
+            ' Register
+            If (Me.m_group IsNot Nothing) Then
+                AddHandler Me.m_group.onParameterChanged, AddressOf HandlePropertyChanged
+                AddHandler Me.m_group.onParameterChanged, AddressOf HandlePropertyChanged
+            End If
 
             ' Redraw the graph
             Me.Redraw()
-
         End Set
+
     End Property
 
     ''' -------------------------------------------------------------------
@@ -330,5 +328,8 @@ Public Class frmCEFASRecruitment
 
 #End Region ' Internals
 
+    Private Sub m_grid_Validated(sender As Object, e As System.EventArgs) Handles m_grid.Validated
+
+    End Sub
 End Class
 

@@ -238,6 +238,11 @@ Public Class cStockAssessmentModel
         End Get
     End Property
 
+    Public Sub OnParameterChanged(ByVal iGroupIndex As Integer)
+        InitStockAssessment()
+    End Sub
+
+
 
 #End Region
 

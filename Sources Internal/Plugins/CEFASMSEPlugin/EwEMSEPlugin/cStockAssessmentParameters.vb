@@ -38,6 +38,8 @@ Public Class cStockAssessmentParameters
     Private m_simdata As cEcosimDatastructures
     Private m_pathdata As cEcopathDataStructures
 
+    Public Event onParameterChanged(ByVal iGroupIndex As Integer)
+
     Public Sub New(ByVal iGroup As Integer, ByVal StockAssessmentModel As cStockAssessmentModel, ByVal EcoSimData As cEcosimDatastructures, ByVal EcoPathData As cEcopathDataStructures)
         Me.m_iGrp = iGroup
         Me.m_Assessment = StockAssessmentModel
@@ -47,43 +49,47 @@ Public Class cStockAssessmentParameters
 
     Public Property RHalfB0Ratio As Single
         Get
-            Return Me.m_Assessment.RHalfB0Ratio(Me.m_iGrp)
+            Return Me.m_Assessment.RHalfB0Ratio(Me.iGroupIndex)
         End Get
         Set(value As Single)
-            Me.m_Assessment.RHalfB0Ratio(Me.m_iGrp) = value
+            Me.m_Assessment.RHalfB0Ratio(Me.iGroupIndex) = value
+            FireOnChanged()
         End Set
     End Property
 
     Public Property ForcastGain As Single
         Get
-            Return Me.m_Assessment.RstockRatio(Me.m_iGrp)
+            Return Me.m_Assessment.RstockRatio(Me.iGroupIndex)
         End Get
         Set(value As Single)
-            Me.m_Assessment.RstockRatio(Me.m_iGrp) = value
+            Me.m_Assessment.RstockRatio(Me.iGroupIndex) = value
+            Me.FireOnChanged()
         End Set
     End Property
 
     Public Property HalfRecruitmentBiomass As Single
         Get
-            Return Me.m_Assessment.RstockRatio(Me.m_iGrp)
+            Return Me.m_Assessment.RstockRatio(Me.iGroupIndex)
         End Get
         Set(value As Single)
-            Me.m_Assessment.RstockRatio(Me.m_iGrp) = value
+            Me.m_Assessment.RstockRatio(Me.iGroupIndex) = value
+            Me.FireOnChanged()
         End Set
     End Property
 
     Public Property cvRec As Single
         Get
-            Return Me.m_Assessment.cvRec(Me.m_iGrp)
+            Return Me.m_Assessment.cvRec(Me.iGroupIndex)
         End Get
         Set(value As Single)
-            Me.m_Assessment.cvRec(Me.m_iGrp) = value
+            Me.m_Assessment.cvRec(Me.iGroupIndex) = value
+            Me.FireOnChanged()
         End Set
     End Property
 
     Public ReadOnly Property Name As String
         Get
-            Return Me.m_pathdata.GroupName(Me.m_iGrp)
+            Return Me.m_pathdata.GroupName(Me.iGroupIndex)
         End Get
     End Property
 
@@ -92,5 +98,23 @@ Public Class cStockAssessmentParameters
             Return Me.m_iGrp
         End Get
     End Property
+
+    Public ReadOnly Property isFished As Boolean
+        Get
+            Return (Me.m_pathdata.fCatch(Me.iGroupIndex) > 0)
+        End Get
+    End Property
+
+
+    Private Sub FireOnChanged()
+
+        Me.m_Assessment.OnParameterChanged(Me.iGroupIndex)
+        Try
+            RaiseEvent onParameterChanged(Me.iGroupIndex)
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
 
 End Class
