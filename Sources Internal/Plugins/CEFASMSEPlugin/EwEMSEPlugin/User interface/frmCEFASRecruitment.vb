@@ -45,7 +45,10 @@ Public Class frmCEFASRecruitment
     ''' <summary><see cref="cZedGraphHelper">Helper</see> to manipulate the graph.</summary>
     Private m_zgh As cZedGraphHelper = Nothing
     ''' <summary>Group selected in the form.</summary>
-    Private m_group As cMSEGroupInput = Nothing
+    Private m_group As cStockAssessmentParameters = Nothing
+
+
+    Private m_Assessment As cStockAssessmentModel
 
     Private Structure sGraphData
 
@@ -66,9 +69,10 @@ Public Class frmCEFASRecruitment
 
 #End Region ' Internals
 
-    Public Sub New(UI As cUIContext)
+    Public Sub New(UI As cUIContext, StockAssessmentModel As cStockAssessmentModel)
         MyBase.New()
         Me.UIContext = UI
+        Me.m_Assessment = StockAssessmentModel
         Me.InitializeComponent()
     End Sub
 
@@ -77,7 +81,7 @@ Public Class frmCEFASRecruitment
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Dim group As cMSEGroupInput = Nothing
+        Dim CoreMSEGroup As cMSEGroupInput = Nothing
 
         If Me.UIContext Is Nothing Then Return
 
@@ -90,16 +94,18 @@ Public Class frmCEFASRecruitment
         Me.m_zgh.AllowEdit = True
         Me.m_zgh.ShowPointValue = True
 
+        Me.m_grid.Init(Me.m_Assessment)
         Me.m_grid.UIContext = Me.UIContext
+
 
         ' Select first group with likely values
         For iGroup As Integer = 1 To Core.nGroups
             ' Get group
-            group = Me.Core.MSEManager.GroupInputs(iGroup)
+            CoreMSEGroup = Me.Core.MSEManager.GroupInputs(iGroup)
             ' Has forcastgain value?
-            If ((group.GetStatus(eVarNameFlags.MSEForcastGain) And eStatusFlags.Null) = 0) Then
+            If ((CoreMSEGroup.GetStatus(eVarNameFlags.MSEForcastGain) And eStatusFlags.Null) = 0) Then
                 ' #Yep: select group in grid (which will update this group too)
-                Me.m_grid.Group = group
+                Me.m_grid.Group = Me.m_Assessment.Parameter(iGroup)
                 ' Bail out
                 Exit For
             End If
@@ -127,7 +133,8 @@ Public Class frmCEFASRecruitment
     Private Sub tsbtDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles tsbtDefaults.Click
         Try
-            Me.Core.SetDefaultMSERecruitment()
+            Debug.Assert(False, "Set defaults not implemented yet!")
+            'Me.Core.SetDefaultMSERecruitment()
         Catch ex As Exception
             ' Yippee
         End Try
@@ -147,28 +154,28 @@ Public Class frmCEFASRecruitment
     ''' Get/set the group to select in the form.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Property Group() As cMSEGroupInput
+    Private Property Group() As cStockAssessmentParameters
         Get
             Return Me.m_group
         End Get
-        Set(ByVal value As cMSEGroupInput)
+        Set(ByVal value As cStockAssessmentParameters)
 
-            Dim pm As cPropertyManager = Me.PropertyManager
+            'Dim pm As cPropertyManager = Me.PropertyManager
 
-            ' Unregister
-            If (Me.m_group IsNot Nothing) Then
-                RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf HandlePropertyChanged
-                RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf HandlePropertyChanged
-            End If
+            '' Unregister
+            'If (Me.m_group IsNot Nothing) Then
+            '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf HandlePropertyChanged
+            '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf HandlePropertyChanged
+            'End If
 
-            ' Update
-            Me.m_group = value
+            '' Update
+            'Me.m_group = value
 
-            ' Register
-            If (Me.m_group IsNot Nothing) Then
-                AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf HandlePropertyChanged
-                AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf HandlePropertyChanged
-            End If
+            '' Register
+            'If (Me.m_group IsNot Nothing) Then
+            '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf HandlePropertyChanged
+            '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf HandlePropertyChanged
+            'End If
 
             ' Redraw the graph
             Me.Redraw()
@@ -193,7 +200,7 @@ Public Class frmCEFASRecruitment
         Else  'a group has been selected
 
             Dim BiomassStep As Single
-            Dim iGrp As Integer = Me.Group.Index
+            Dim iGrp As Integer = Me.Group.iGroupIndex
 
             'the 100 steps for the graphs:
             data = New sGraphData(100)
@@ -253,13 +260,13 @@ Public Class frmCEFASRecruitment
 
         If (Me.Group IsNot Nothing) Then
             ' Group has data?
-            If (Me.Group.GetStatus(eVarNameFlags.MSEForcastGain) And eStatusFlags.Null) = 0 Then
-                ' #Yes: plot data
-                For i As Integer = 0 To data.NumSteps - 1
-                    lpts.Add(data.Biomass(i), data.Recruitment(i))
-                Next
-                lLines.Add(Me.m_zgh.CreateLineItem(Me.Group.Name, eLineType.ModelData, Color.DarkSlateGray, lpts))
-            End If
+            'If (Me.Group.GetStatus(eVarNameFlags.MSEForcastGain) And eStatusFlags.Null) = 0 Then
+            ' #Yes: plot data
+            For i As Integer = 0 To data.NumSteps - 1
+                lpts.Add(data.Biomass(i), data.Recruitment(i))
+            Next
+            lLines.Add(Me.m_zgh.CreateLineItem(Me.Group.Name, eLineType.ModelData, Color.DarkSlateGray, lpts))
+            'End If
         End If
 
         ' Did any lines get manufactured?

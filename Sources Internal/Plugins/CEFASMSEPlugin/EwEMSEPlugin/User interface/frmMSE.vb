@@ -341,7 +341,9 @@ Public Class frmMSE
         Handles m_btnReviewTFM.Click
 
         Try
-            Dim frm As New frmTFMpolicy(Me.UIContext, Me.MSE)
+            Debug.Assert(False, "Warning Stock Assessment model has been hooked up to the TFM button!")
+            Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE.StockAssessment)
+            ' Dim frm As New frmTFMpolicy(Me.UIContext, Me.MSE)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 Me.MSE.InvalidateRunState(True)
                 Me.UpdateControls()

@@ -29,6 +29,7 @@ Imports EwECore
 
 #End Region
 
+
 Public Class cStockAssessmentModel
     Implements IMSEData
 
@@ -45,9 +46,18 @@ Public Class cStockAssessmentModel
     Private BestimateLast() As Single
     Private KalmanGain() As Single
 
-    Private m_RandNormal As Troschuetz.Random.NormalDistribution
+    ''' <summary>
+    ''' Random normal distribution with a mean = 0 standard deviation = 1
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private m_NormalDist As Troschuetz.Random.NormalDistribution
 
     Private m_strmBobsB As StreamWriter
+
+    Private m_lstParams As List(Of cStockAssessmentParameters)
+
+    Dim m_simdata As cEcosimDatastructures
+    Dim m_pathdata As cEcopathDataStructures
 
 #End Region
 
@@ -66,48 +76,94 @@ Public Class cStockAssessmentModel
 
 #Region "Construction and Initialization"
 
-
     Public Sub New(ByVal MSE As cMSE)
         Me.m_MSE = MSE
         Me.m_core = m_MSE.Core
+
+        Me.m_simdata = Me.MSE.EcosimData
+        Me.m_pathdata = Me.MSE.EcopathData
+
         Debug.Assert(Me.m_MSE IsNot Nothing, "cStockAssessmentModel must have a valid cMSE object during initialization!")
         Debug.Assert(Me.m_core IsNot Nothing, "cStockAssessmentModel must have a valid cCore object during initialization!")
+
+        Me.Init()
+
+    End Sub
+
+    Public Sub InitForRun()
+
+        Me.InitStockAssessment()
+
     End Sub
 
 
-    Public Sub Init()
+    Private Sub Init()
+        Try
+
+            Bestimate = New Single(Me.Core.nLivingGroups) {}
+            BestimateLast = New Single(Me.Core.nLivingGroups) {}
+            m_NormalDist = New Troschuetz.Random.NormalDistribution()
+            m_NormalDist.Mu = 0
+            m_NormalDist.Sigma = 1
+
+            'For now just copy the data from the core into local arrays
+            Me.InitToCoreData()
+
+            Me.InitStockAssessment()
+            Me.InitInterfaceParameters()
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            'Me.MSE.InformUser(...)
+        End Try
+
+    End Sub
+
+
+    Private Sub InitInterfaceParameters()
+        Try
+
+            Me.m_lstParams = New List(Of cStockAssessmentParameters)
+            For igrp As Integer = 0 To Me.m_core.nGroups
+                Me.m_lstParams.Add(New cStockAssessmentParameters(igrp, Me, Me.m_simdata, Me.m_pathdata))
+            Next
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            'Me.MSE.InformUser(...)
+        End Try
+
+    End Sub
+
+    Private Sub InitStockAssessment()
         Dim BaB As Single
-        Dim simdata As cEcosimDatastructures = Me.MSE.EcosimData
-        Dim pathdata As cEcopathDataStructures = Me.MSE.EcopathData
+        Try
 
-        Bestimate = New Single(Me.Core.nLivingGroups) {}
-        BestimateLast = New Single(Me.Core.nLivingGroups) {}
-        m_RandNormal = New Troschuetz.Random.NormalDistribution()
-        m_RandNormal.Mu = 0
-        m_RandNormal.Sigma = 1
+            'Init Bestimate() and BestimateLast() to the start biomass with some error
+            For igrp As Integer = 1 To Me.Core.nLivingGroups
+                Bestimate(igrp) = m_simdata.StartBiomass(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * m_NormalDist.NextDouble()))
+                BestimateLast(igrp) = Bestimate(igrp)
+            Next igrp
 
-        'Init Bestimate() and BestimateLast() to the start biomass with some error
-        For igrp As Integer = 1 To Me.Core.nLivingGroups
-            Bestimate(igrp) = simdata.StartBiomass(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * m_RandNormal.NextDouble()))
-            BestimateLast(igrp) = Bestimate(igrp)
-        Next igrp
+            'init RstockPred from GstockPred
+            'GstockPred could have been altered by an interface
+            For igrp = 1 To Me.Core.nLivingGroups
+                'BaB is correct for Stanza groups because Ecopath.BA() gets updated with Stanza.BaBsplit()
+                BaB = m_pathdata.BA(igrp) / m_pathdata.B(igrp)
+                'gstockpred=exp(bab)-rstockratio, rather than 1-rstockratio.  Check to insure gstockpred>0
 
-        'init RstockPred from GstockPred
-        'GstockPred could have been altered by an interface
-        For igrp = 1 To Me.Core.nLivingGroups
-            'BaB is correct for Stanza groups because Ecopath.BA() gets updated with Stanza.BaBsplit()
-            BaB = pathdata.BA(igrp) / pathdata.B(igrp)
-            'gstockpred=exp(bab)-rstockratio, rather than 1-rstockratio.  Check to insure gstockpred>0
+                'Me.m_data.GstockPred(igrp) = 1 - Me.m_data.RstockRatio(igrp)
+                GstockPred(igrp) = CSng(Math.Exp(BaB) - RstockRatio(igrp))
+                If GstockPred(igrp) < 0 Then GstockPred(igrp) = 0
+                BhalfT(igrp) = RHalfB0Ratio(igrp) * m_pathdata.B(igrp)
 
-            'Me.m_data.GstockPred(igrp) = 1 - Me.m_data.RstockRatio(igrp)
-            GstockPred(igrp) = CSng(Math.Exp(BaB) - RstockRatio(igrp))
-            If GstockPred(igrp) < 0 Then GstockPred(igrp) = 0
-            BhalfT(igrp) = RHalfB0Ratio(igrp) * pathdata.B(igrp)
+                RStock0(igrp) = RstockRatio(igrp) * m_simdata.StartBiomass(igrp)
+                Rmax(igrp) = RStock0(igrp) * (RHalfB0Ratio(igrp) + 1)
 
-            RStock0(igrp) = RstockRatio(igrp) * simdata.StartBiomass(igrp)
-            Rmax(igrp) = RStock0(igrp) * (RHalfB0Ratio(igrp) + 1)
-
-        Next
+            Next
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            'Me.MSE.InformUser(...)
+        End Try
 
     End Sub
 
@@ -130,7 +186,7 @@ Public Class cStockAssessmentModel
             For igrp As Integer = 1 To nGrps
                 'Get the Observed Biomass
                 'Average biomass from the last year with sampling error
-                Bobs(igrp) = Bavg(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * m_RandNormal.NextDouble()))
+                Bobs(igrp) = Bavg(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * m_NormalDist.NextDouble()))
 
                 'Get the estimated biomass base on the observed biomass plus uncertainty
                 'Using the stock recruitment curve from the EwE6 MSE interface
@@ -174,6 +230,13 @@ Public Class cStockAssessmentModel
         End Try
 
     End Sub
+
+
+    Public ReadOnly Property Parameter(ByVal iGroupIndex As Integer) As cStockAssessmentParameters
+        Get
+            Return Me.m_lstParams.Item(iGroupIndex)
+        End Get
+    End Property
 
 
 #End Region
@@ -314,7 +377,7 @@ Public Class cStockAssessmentModel
 #Region "IMSEData Implementation"
 
     Public Sub Defaults() Implements IMSEData.Defaults
-        'No defaults yet
+        Me.InitToCoreData()
     End Sub
 
     Public Function IsChanged() As Boolean Implements IMSEData.IsChanged
@@ -322,9 +385,7 @@ Public Class cStockAssessmentModel
         Return False
     End Function
 
-    Public Function Load(Optional msg As cMessage = Nothing, _
-                         Optional strFilename As String = "") As Boolean _
-        Implements IMSEData.Load
+    Public Function Load(Optional msg As cMessage = Nothing, Optional strFilename As String = "") As Boolean Implements IMSEData.Load
 
         'For now just copy the data from the core into local arrays
         Me.InitToCoreData()
@@ -332,8 +393,7 @@ Public Class cStockAssessmentModel
         Return True
     End Function
 
-    Public Function Save(Optional strFilename As String = "") As Boolean _
-        Implements IMSEData.Save
+    Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
 
         Return True
     End Function

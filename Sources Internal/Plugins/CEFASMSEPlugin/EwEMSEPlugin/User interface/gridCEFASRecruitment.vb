@@ -27,6 +27,9 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
+Imports ScientificInterfaceShared.Style
+
+
 #End Region ' Imports
 
 
@@ -39,6 +42,8 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 <CLSCompliant(False)> _
 Public Class gridCEFASRecruitment
     Inherits EwEGrid
+
+    Private m_Assessment As cStockAssessmentModel
 
 #Region " Internal defs "
 
@@ -56,18 +61,23 @@ Public Class gridCEFASRecruitment
 
     Public Sub New()
         MyBase.new()
+
+    End Sub
+
+    Public Sub Init(ByVal StockAssessmentModel As cStockAssessmentModel)
+        m_Assessment = StockAssessmentModel
     End Sub
 
 #End Region ' Constructor
 
 #Region " Public interfaces "
 
-    Public Property Group() As cMSEGroupInput
+    Public Property Group() As cStockAssessmentParameters
         Get
             Try
 
                 If Me.Selection.SelectedRows.Length = 1 Then
-                    Return DirectCast(Me.Selection.SelectedRows(0).Tag, cMSEGroupInput)
+                    Return DirectCast(Me.Selection.SelectedRows(0).Tag, cStockAssessmentParameters)
                 End If
             Catch ex As Exception
                 Debug.Assert(False, "Invalid cast!!!! maybe..." & ex.Message)
@@ -76,10 +86,10 @@ Public Class gridCEFASRecruitment
             Return Nothing
 
         End Get
-        Set(ByVal value As cMSEGroupInput)
+        Set(ByVal value As cStockAssessmentParameters)
             Me.Selection.Clear()
             If value IsNot Nothing Then
-                Me.Selection.Add(New Position(value.Index, 0))
+                Me.Selection.Add(New Position(value.iGroupIndex, 0))
             End If
             Me.RaiseSelectionChangeEvent()
         End Set
@@ -109,22 +119,42 @@ Public Class gridCEFASRecruitment
 
     Protected Overrides Sub FillData()
 
-        Dim group As cMSEGroupInput = Nothing
+        Dim group As cStockAssessmentParameters
+        Dim Cell As ICell
+        Dim irow As Integer
 
         ' For each group
         For iGroup As Integer = 1 To Core.nLivingGroups
 
             'Get the group info!!!!
-            group = Core.MSEManager.GroupInputs(iGroup)
+            group = Me.m_Assessment.Parameter(iGroup)
 
-            Me.AddRow()
+            irow = Me.AddRow()
 
             Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-            Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+            Cell = New EwECell(group.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
+            Me(irow, eColumnTypes.Name) = Cell
 
-            Me(iGroup, eColumnTypes.RHalfB) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.RHalfB0Ratio)
-            Me(iGroup, eColumnTypes.ForcastGain) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEForcastGain)
-            Me(iGroup, eColumnTypes.RecruitmentCV) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSERecruitmentCV)
+            Cell = New EwECell(group.RHalfB0Ratio, GetType(Double))
+            Cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(irow, eColumnTypes.RHalfB) = Cell
+
+
+            Cell = New EwECell(group.ForcastGain, GetType(Double))
+            Cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(irow, eColumnTypes.ForcastGain) = Cell
+
+            Cell = New EwECell(group.cvRec, GetType(Double))
+            Cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(irow, eColumnTypes.RecruitmentCV) = Cell
+
+
+
+            'Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+
+            'Me(iGroup, eColumnTypes.RHalfB) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.RHalfB0Ratio)
+            'Me(iGroup, eColumnTypes.ForcastGain) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEForcastGain)
+            'Me(iGroup, eColumnTypes.RecruitmentCV) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSERecruitmentCV)
 
             Me.Rows(iGroup).Tag = group
 

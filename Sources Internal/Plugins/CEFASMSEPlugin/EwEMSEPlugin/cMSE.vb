@@ -2540,7 +2540,7 @@ stepend:
     Public Sub onEcosimRunBeginning(ByVal EcosimDatastructures As cEcosimDatastructures)
 
         Try
-            Me.StockAssessment.Init()
+            Me.StockAssessment.InitForRun()
         Catch ex As Exception
 
         End Try
