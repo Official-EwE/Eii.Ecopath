@@ -716,19 +716,13 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks>Capacity Inputs, Habitats, Environmental layers, depth....</remarks>
     Public Property isCapacityChanged() As Boolean
-        'Public Property bHasCapacityChanged(Optional GroupIndex As Integer = cCore.NULL_VALUE) As Boolean
+
         Get
             Return Me.m_bHasCapacityChanged
         End Get
         Set(value As Boolean)
             Me.m_bHasCapacityChanged = value
-            'If the bHasCapacityChanged has been set to false 
-            'clear all the individual group flags
-            'If value = False Then
-            '    For igrp As Integer = 1 To NGroups
-            '        Me.isGroupHabCapChanged(igrp) = False
-            '    Next
-            'End If
+            
         End Set
 
     End Property

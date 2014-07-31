@@ -67,7 +67,9 @@ Public Class cDepthDataAdapter
         'Counts and re-sets the number of water cells in the core
         WaterCells()
 
-        Me.SpaceData.bHasCapacityChanged = True
+        Me.SpaceData.isCapacityChanged = True
+        Me.SpaceData.setHabCapGroupIsChanged(True)
+
         Me.Ecospace.SetHabCap()
 
         'CalcHabitatArea() assumes that we have ONLY set water cells to land. Not the other direction.
