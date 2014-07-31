@@ -52,7 +52,7 @@ Public Class gridCEFASRecruitment
         Name
         ForcastGain
         RHalfB
-        RecruitmentCV
+        cvRec
     End Enum
 
 #End Region ' Internal defs
@@ -110,7 +110,7 @@ Public Class gridCEFASRecruitment
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, eColumnTypes.RHalfB) = New EwEColumnHeaderCell(SharedResources.HEADER_RHALFB0RATIO)
         Me(0, eColumnTypes.ForcastGain) = New EwEColumnHeaderCell(SharedResources.HEADER_FORCASTGAIN)
-        Me(0, eColumnTypes.RecruitmentCV) = New EwEColumnHeaderCell(SharedResources.HEADER_RECRUITMENT_CV)
+        Me(0, eColumnTypes.cvRec) = New EwEColumnHeaderCell(SharedResources.HEADER_RECRUITMENT_CV)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -138,30 +138,30 @@ Public Class gridCEFASRecruitment
 
             If group.isFished Then
 
-                Cell = New EwECell(group.RHalfB0Ratio, GetType(Double))
+                Cell = New EwECell(group.RHalfB0Ratio, GetType(Single))
                 Cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(irow, eColumnTypes.RHalfB) = Cell
 
-                Cell = New EwECell(group.ForcastGain, GetType(Double))
+                Cell = New EwECell(group.ForcastGain, GetType(Single))
                 Cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(irow, eColumnTypes.ForcastGain) = Cell
 
-                Cell = New EwECell(group.cvRec, GetType(Double))
+                Cell = New EwECell(group.cvRec, GetType(Single))
                 Cell.Behaviors.Add(Me.EwEEditHandler)
-                Me(irow, eColumnTypes.RecruitmentCV) = Cell
+                Me(irow, eColumnTypes.cvRec) = Cell
 
                 Me.Rows(iGroup).Tag = group
 
             Else
                 style = cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable
-                Cell = New EwECell(cCore.NULL_VALUE, GetType(Double), style)
+                Cell = New EwECell(cCore.NULL_VALUE, GetType(Single), style)
                 Me(irow, eColumnTypes.RHalfB) = Cell
 
-                Cell = New EwECell(cCore.NULL_VALUE, GetType(Double), style)
+                Cell = New EwECell(cCore.NULL_VALUE, GetType(Single), style)
                 Me(irow, eColumnTypes.ForcastGain) = Cell
 
-                Cell = New EwECell(cCore.NULL_VALUE, GetType(Double), style)
-                Me(irow, eColumnTypes.RecruitmentCV) = Cell
+                Cell = New EwECell(cCore.NULL_VALUE, GetType(Single), style)
+                Me(irow, eColumnTypes.cvRec) = Cell
 
             End If
 
@@ -180,42 +180,49 @@ Public Class gridCEFASRecruitment
         End Get
     End Property
 
+    Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-    Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        If Rows(p.Row).Tag Is Nothing Then
+            'No Group in this row
+            Return True
+        End If
 
         Try
 
-            If Rows(p.Row).Tag Is Nothing Then
-                'No Group in this row
-                Return True
-            End If
+            'Changing the value of the parameter 
+            'forces the model to init to the new value
+            'and redraws the interface
+            'so only update if the value is actually new 
+            Dim param As cStockAssessmentParameters = DirectCast(Rows(p.Row).Tag, cStockAssessmentParameters)
+            Dim newValue As Single = CSng(cell.GetValue(p))
 
             Select Case p.Column
 
                 Case eColumnTypes.RHalfB
-                    DirectCast(Rows(p.Row).Tag, cStockAssessmentParameters).RHalfB0Ratio = CSng(cell.GetValue(p))
+
+                    If param.RHalfB0Ratio <> newValue Then
+                        param.RHalfB0Ratio = newValue
+                    End If
 
                 Case eColumnTypes.ForcastGain
-                    DirectCast(Rows(p.Row).Tag, cStockAssessmentParameters).ForcastGain = CSng(cell.GetValue(p))
+                    If param.ForcastGain <> newValue Then
+                        param.ForcastGain = newValue
+                    End If
 
-                Case eColumnTypes.RecruitmentCV
-                    DirectCast(Rows(p.Row).Tag, cStockAssessmentParameters).cvRec = CSng(cell.GetValue(p))
+                Case eColumnTypes.cvRec
+                    If param.cvRec <> newValue Then
+                        param.cvRec = newValue
+                    End If
 
             End Select
 
-            Try
-
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString + " onEdited Event Exception: " + ex.Message)
-            End Try
-
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString + ".OnCellValueChanged() Exception: " + ex.Message)
+            Debug.Assert(False, Me.ToString + ".OnCellEdited() Exception: " + ex.Message)
         End Try
 
-        Return True
-    End Function
+        Return MyBase.OnCellEdited(p, cell)
 
+    End Function
 
 #End Region ' Overrides
 
