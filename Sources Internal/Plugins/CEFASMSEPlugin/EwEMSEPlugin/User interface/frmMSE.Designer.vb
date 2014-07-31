@@ -94,7 +94,6 @@ Partial Class frmMSE
         Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
-        Me.btnTestStop = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -354,7 +353,6 @@ Partial Class frmMSE
         '
         'm_plStep1
         '
-        Me.m_plStep1.Controls.Add(Me.btnTestStop)
         Me.m_plStep1.Controls.Add(Me.m_lblPathValue)
         Me.m_plStep1.Controls.Add(Me.btnEditSurvivabilities)
         Me.m_plStep1.Controls.Add(Me.m_lblDataPath)
@@ -429,12 +427,6 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
-        'btnTestStop
-        '
-        resources.ApplyResources(Me.btnTestStop, "btnTestStop")
-        Me.btnTestStop.Name = "btnTestStop"
-        Me.btnTestStop.UseVisualStyleBackColor = True
-        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -507,5 +499,4 @@ Partial Class frmMSE
     Private WithEvents m_pbPathCompatible As System.Windows.Forms.PictureBox
     Private WithEvents m_btnCreateSurvDist As System.Windows.Forms.Button
     Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
-    Friend WithEvents btnTestStop As System.Windows.Forms.Button
 End Class
