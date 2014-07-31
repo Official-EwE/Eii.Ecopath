@@ -97,10 +97,13 @@ Public Class cDiets
 
         ' Set proper defaults in-memory
         For iPred As Integer = 1 To m_core.nLivingGroups
+            mean = m_core.EcoPathGroupInputs(iPred).ImpDiet
+            Me.m_meanProportions(iPred - 1, 0) = mean
+            Me.m_interacts(iPred - 1, 0) = cSystemUtils.IIF(mean > 0, 1, 0)
             For iPrey As Integer = 1 To m_core.nGroups
                 mean = m_core.EcoPathGroupInputs(iPred).DietComp(iPrey)
-                Me.m_meanProportions(iPred - 1, iPrey - 1) = mean
-                Me.m_interacts(iPred - 1, iPrey - 1) = cSystemUtils.IIF(mean > 0, 1, 0)
+                Me.m_meanProportions(iPred - 1, iPrey) = mean
+                Me.m_interacts(iPred - 1, iPrey) = cSystemUtils.IIF(mean > 0, 1, 0)
             Next
             Me.m_dietPropMultipliers(iPred - 1) = 1.0
         Next
@@ -135,16 +138,11 @@ Public Class cDiets
                             '     Rows for each prey
                             ' The reading logic does not reflect this
 
-                            ' JS to discuss with MP. For now, Imports rows are ignored
-                            If (String.Compare(csv(2), "imports", True) <> 0) Then
-                                'Note about indices for interacts, lower and upper
-                                'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
-                                'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                                m_interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
-                                m_meanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
-                            Else
-                                ' Skip import row
-                            End If
+                            'Note about indices for interacts, lower and upper
+                            'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
+                            'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
+                            m_interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
+                            m_meanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
                         End If
                     End While
                 Catch ex As Exception
