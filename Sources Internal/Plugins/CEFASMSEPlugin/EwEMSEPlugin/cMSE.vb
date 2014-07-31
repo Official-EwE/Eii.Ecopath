@@ -2523,7 +2523,8 @@ stepend:
 #Region "EwE Events onEcosimInitialized()..."
 
     Public Sub onEcosimInitialized(ByVal EcosimDatastructures As cEcosimDatastructures)
-        _simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
+
+        Me._simdata = EcosimDatastructures
 
         Me.m_regulations = New cRegulations(Me, Me.m_core)
         Me.m_quotashares = New cQuotaShares(Me, Me.m_core)
