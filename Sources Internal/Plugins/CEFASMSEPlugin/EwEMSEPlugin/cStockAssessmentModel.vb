@@ -49,6 +49,8 @@ Public Class cStockAssessmentModel
     'ToDo Observation error(error on biomass estimates) and implementation error(error on effort required to reach the quota)
     'ToDo Sort out the interaction between editing the parameters and having to init the model. Does this need to happen at all, or just for some variables?
 
+    'ToDo use of CVbiomEst() in the Kalman Gain filter. Should this be it's own variable?
+
 
 #Region "Private data"
 
