@@ -44,8 +44,9 @@ Public Class cStockAssessmentModel
     'ToDo Sort out how the Stratigies interact with the model
     'Todo Debug initialization of Stock Assessment model and Ecosim, figure out how this works with the strategies
     'ToDo Seed for Troschuetz.Random.NormalDistribution, when does this need to get seeded. 
-    '   I'm think just once at the start of the run but need to make sure?
-    '   Should the random seed value be set by the user and saved?
+    '   I'm thinking just once at the start of the run but need to make sure?
+    '   31-July-2014 We need to call Reset() once at the start of each MSE Run to reset the seed. 
+    '   this will generate the same sequence of random numbers for each complete run of the MSE.
     'ToDo Observation error(error on biomass estimates) and implementation error(error on effort required to reach the quota)
     'ToDo Sort out the interaction between editing the parameters and having to init the model. Does this need to happen at all, or just for some variables?
 
@@ -123,7 +124,16 @@ Public Class cStockAssessmentModel
 
             Bestimate = New Single(Me.Core.nLivingGroups) {}
             BestimateLast = New Single(Me.Core.nLivingGroups) {}
+
             m_NormalDist = New Troschuetz.Random.NormalDistribution()
+
+            'This will reset the random number generator with the same seed each time 
+            'the same sequence of random numbers will be generated on each call to NextDouble()
+            'see http://www.codeproject.com/Articles/15102/NET-random-number-generators-and-distributions
+            'The Reset() will need to be called each time the MSE is run
+            'Right now this is called just once when the Ecosim scenarion is loaded
+            m_NormalDist.Reset()
+
             m_NormalDist.Mu = 0
             m_NormalDist.Sigma = 1
 
