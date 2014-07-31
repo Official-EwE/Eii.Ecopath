@@ -74,6 +74,8 @@ Partial Class frmMSE
         Me.m_plStep3 = New System.Windows.Forms.Panel()
         Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnDecreaseEffort = New System.Windows.Forms.Button()
+        Me.m_btnStockAssessment = New System.Windows.Forms.Button()
+        Me.m_btnSAError = New System.Windows.Forms.Button()
         Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
@@ -280,6 +282,8 @@ Partial Class frmMSE
         '
         resources.ApplyResources(Me.m_tlpFishingControls, "m_tlpFishingControls")
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnDecreaseEffort, 0, 0)
+        Me.m_tlpFishingControls.Controls.Add(Me.m_btnStockAssessment, 2, 0)
+        Me.m_tlpFishingControls.Controls.Add(Me.m_btnSAError, 4, 0)
         Me.m_tlpFishingControls.Name = "m_tlpFishingControls"
         '
         'm_btnDecreaseEffort
@@ -287,6 +291,18 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_btnDecreaseEffort, "m_btnDecreaseEffort")
         Me.m_btnDecreaseEffort.Name = "m_btnDecreaseEffort"
         Me.m_btnDecreaseEffort.UseVisualStyleBackColor = True
+        '
+        'm_btnStockAssessment
+        '
+        resources.ApplyResources(Me.m_btnStockAssessment, "m_btnStockAssessment")
+        Me.m_btnStockAssessment.Name = "m_btnStockAssessment"
+        Me.m_btnStockAssessment.UseVisualStyleBackColor = True
+        '
+        'm_btnSAError
+        '
+        resources.ApplyResources(Me.m_btnSAError, "m_btnSAError")
+        Me.m_btnSAError.Name = "m_btnSAError"
+        Me.m_btnSAError.UseVisualStyleBackColor = True
         '
         'm_hdrStep3
         '
@@ -499,4 +515,6 @@ Partial Class frmMSE
     Private WithEvents m_pbPathCompatible As System.Windows.Forms.PictureBox
     Private WithEvents m_btnCreateSurvDist As System.Windows.Forms.Button
     Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
+    Friend WithEvents m_btnStockAssessment As System.Windows.Forms.Button
+    Friend WithEvents m_btnSAError As System.Windows.Forms.Button
 End Class

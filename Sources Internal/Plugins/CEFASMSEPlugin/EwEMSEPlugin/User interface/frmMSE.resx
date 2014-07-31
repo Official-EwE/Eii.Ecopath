@@ -484,7 +484,7 @@
     <value>m_hdrStep2</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11015.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Parent" xml:space="preserve">
     <value>m_plStep2</value>
@@ -781,7 +781,7 @@
     <value>m_hdrStep4</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11015.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Parent" xml:space="preserve">
     <value>m_plStep4</value>
@@ -850,7 +850,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tlpFishingControls.ColumnCount" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_btnDecreaseEffort.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -862,7 +862,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_btnDecreaseEffort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 23</value>
+    <value>120, 23</value>
   </data>
   <data name="m_btnDecreaseEffort.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -881,6 +881,66 @@
   </data>
   <data name="&gt;&gt;m_btnDecreaseEffort.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_btnStockAssessment.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_btnStockAssessment.Location" type="System.Drawing.Point, System.Drawing">
+    <value>126, 0</value>
+  </data>
+  <data name="m_btnStockAssessment.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_btnStockAssessment.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 23</value>
+  </data>
+  <data name="m_btnStockAssessment.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_btnStockAssessment.Text" xml:space="preserve">
+    <value>Stock assessment...</value>
+  </data>
+  <data name="&gt;&gt;m_btnStockAssessment.Name" xml:space="preserve">
+    <value>m_btnStockAssessment</value>
+  </data>
+  <data name="&gt;&gt;m_btnStockAssessment.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnStockAssessment.Parent" xml:space="preserve">
+    <value>m_tlpFishingControls</value>
+  </data>
+  <data name="&gt;&gt;m_btnStockAssessment.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_btnSAError.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_btnSAError.Location" type="System.Drawing.Point, System.Drawing">
+    <value>252, 0</value>
+  </data>
+  <data name="m_btnSAError.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_btnSAError.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 23</value>
+  </data>
+  <data name="m_btnSAError.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_btnSAError.Text" xml:space="preserve">
+    <value>Uncertainty...</value>
+  </data>
+  <data name="&gt;&gt;m_btnSAError.Name" xml:space="preserve">
+    <value>m_btnSAError</value>
+  </data>
+  <data name="&gt;&gt;m_btnSAError.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnSAError.Parent" xml:space="preserve">
+    <value>m_tlpFishingControls</value>
+  </data>
+  <data name="&gt;&gt;m_btnSAError.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_tlpFishingControls.Location" type="System.Drawing.Point, System.Drawing">
     <value>139, 47</value>
@@ -907,7 +967,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpFishingControls.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnDecreaseEffort" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Absolute,6,Percent,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnDecreaseEffort" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnStockAssessment" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_btnSAError" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Absolute,6,Percent,33.33333,Absolute,6,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_hdrStep3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -931,7 +991,7 @@
     <value>m_hdrStep3</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11015.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Parent" xml:space="preserve">
     <value>m_plStep3</value>
@@ -2258,7 +2318,7 @@
     <value>m_hdrStep1</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11015.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Parent" xml:space="preserve">
     <value>m_plStep1</value>
@@ -2372,6 +2432,6 @@
     <value>frmMSE</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11015.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
