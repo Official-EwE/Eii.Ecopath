@@ -87,6 +87,26 @@ Public Class cStockAssessmentParameters
         End Set
     End Property
 
+    Public Property CVObservationError As Single
+        Get
+            Return Me.m_Assessment.CVbiomEst(Me.iGroupIndex)
+        End Get
+        Set(value As Single)
+            Me.m_Assessment.CVbiomEst(Me.iGroupIndex) = value
+            'Me.FireOnChanged()
+        End Set
+    End Property
+
+    Public Property CVImplementationError As Single
+        Get
+            Return Me.m_Assessment.CVImpError(Me.iGroupIndex)
+        End Get
+        Set(value As Single)
+            Me.m_Assessment.CVImpError(Me.iGroupIndex) = value
+            'Me.FireOnChanged()
+        End Set
+    End Property
+
     Public ReadOnly Property Name As String
         Get
             Return Me.m_pathdata.GroupName(Me.iGroupIndex)

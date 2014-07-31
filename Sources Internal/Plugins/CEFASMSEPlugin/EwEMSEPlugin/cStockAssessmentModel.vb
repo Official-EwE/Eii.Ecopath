@@ -37,6 +37,19 @@ Public Class cStockAssessmentModel
     'For now there will be one stock assessment model for all the strategies
     'Groups CV's should be by strategy, I'm not sure what this means for the code or interface right now so I'll just ignore it...
 
+    'ToDo Saving and restoration of the data. 
+    '   Set defaults from core data. 
+    '   Save and read to file.
+
+    'ToDo Sort out how the Stratigies interact with the model
+    'Todo Debug initialization of Stock Assessment model and Ecosim, figure out how this works with the strategies
+    'ToDo Seed for Troschuetz.Random.NormalDistribution, when does this need to get seeded. 
+    '   I'm think just once at the start of the run but need to make sure?
+    '   Should the random seed value be set by the user and saved?
+    'ToDo Observation error(error on biomass estimates) and implementation error(error on effort required to reach the quota)
+    'ToDo Sort out the interaction between editing the parameters and having to init the model. Does this need to happen at all, or just for some variables?
+
+
 #Region "Private data"
 
     Private m_MSE As cMSE
@@ -71,6 +84,12 @@ Public Class cStockAssessmentModel
     Public RStock0() As Single
     Public RHalfB0Ratio() As Single
     Public cvRec() As Single
+
+    ''' <summary>
+    ''' CVImpError is by fleet
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public CVImpError() As Single
 
 #End Region
 
@@ -353,6 +372,8 @@ Public Class cStockAssessmentModel
         cvRec = New Single(Me.Core.nLivingGroups) {}
         KalmanGain = New Single(Me.Core.nLivingGroups) {}
 
+        CVImpError = New Single(Me.Core.nFleets) {}
+
         Array.Copy(MSEData.Rmax, Rmax, Me.Core.nLivingGroups)
         Array.Copy(MSEData.BhalfT, BhalfT, Me.Core.nLivingGroups)
         Array.Copy(MSEData.CVbiomEst, CVbiomEst, Me.Core.nLivingGroups)
@@ -361,6 +382,8 @@ Public Class cStockAssessmentModel
         Array.Copy(MSEData.RStock0, RStock0, Me.Core.nLivingGroups)
         Array.Copy(MSEData.RHalfB0Ratio, RHalfB0Ratio, Me.Core.nLivingGroups)
         Array.Copy(MSEData.cvRec, cvRec, Me.Core.nLivingGroups)
+
+        Array.Copy(MSEData.CVFest, CVImpError, Me.Core.nFleets)
 
     End Sub
 
