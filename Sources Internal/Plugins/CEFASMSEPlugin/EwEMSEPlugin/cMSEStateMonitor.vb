@@ -118,7 +118,7 @@ Public Class cMSEStateMonitor
 
             Case eState.HasParams
                 bHasState = Me.IsStateAvailable(eState.Idle) And _
-                    Me.MSE.IsInputStructureAvailable(False) And _
+                    Me.MSE.IsInputStructureAvailable() And _
                     Me.MSE.IsInputDataCompatible()
 
             Case eState.HasModels

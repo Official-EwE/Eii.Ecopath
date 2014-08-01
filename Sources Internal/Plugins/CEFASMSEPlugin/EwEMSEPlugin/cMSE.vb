@@ -223,6 +223,70 @@ Public Class cMSE
 
 #Region "Pubic methods"
 
+
+    ''' <summary>
+    ''' Interactively resolve MSE folder conflicts.
+    ''' </summary>
+    Public Function ResolveMSEPathConflicts(ByVal bInteractive As Boolean) As Boolean
+
+        ' Forget all we know
+        Me.InvalidateRunState(False)
+
+        ' Check if input structure is missing
+        If Not Me.IsInputStructureAvailable() Then
+            ' Ask user to create folder structure
+            If (bInteractive) And Me.AskUser(String.Format(My.Resources.PROMPT_DATAPATH_MISSING, Me.DataPath), eMessageReplyStyle.YES_NO) <> eMessageReply.OK Then
+                ' #User abort: abandon process
+                Return False
+            End If
+        Else
+            ' Check if input structure is compatible
+            ' JS: this check is for ow ruled out by disabling the 'Review dist params' button in the UI
+            If Not Me.IsInputDataCompatible() Then
+                If (bInteractive) And Me.AskUser("The selected folder is not compatible with the currently loaded model. If you continue, previously saved MSE settings will be lost. Do you wish to continue, delete existing MSE settings, and start anew?", _
+                               eMessageReplyStyle.YES_NO, eMessageImportance.Warning, eMessageReply.NO) = eMessageReply.NO Then
+                    Return False
+                End If
+            Else
+                Return True
+            End If
+        End If
+
+
+        ' Make sure plug-in has all dirs
+        Dim strPath As String = Me.DataPath
+        For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
+            cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), True)
+            'bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), True)
+        Next
+
+        ' --- BEGIN GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
+
+        Me.GenerateEmptyDistributions()
+        Me.GenerateDefaultSurviveDistributions()
+        Me.GenerateDefaultDiets()
+        Me.GenerateEmptyBiomassLimitsCSV()
+        Me.GenerateEmptyEffortLimitsCSV()
+        Me.GenerateEmptyQuotaSharesCSV()
+
+        ' .. add more
+
+        ' --- END GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
+
+
+        ' Re-assess state
+        Me.InvalidateRunState(False)
+
+#If DEBUG Then
+        ' Panic in debug mode only
+        'Stop
+        Debug.Assert(Me.IsInputDataCompatible(), "Cefas MSE default data generation logic is not working")
+#End If
+
+        Return Me.IsInputDataCompatible()
+
+    End Function
+
     Public Sub LoadSampledParams()
 
         Me.IsRunning = True
@@ -340,7 +404,7 @@ Public Class cMSE
         ' Test whether MSE has been initialized
         If (Me.m_survivability Is Nothing) Then Return
 
-        If (Not Me.IsInputStructureAvailable(False)) Then Return
+        If (Not Me.IsInputStructureAvailable()) Then Return
         If (Not Me.IsInputDataCompatible()) Then Return
         If (Not bReloadData) Then Return
 
@@ -367,29 +431,11 @@ Public Class cMSE
     ''' Returns whether the MSE plug-in has all directories that it needs in the
     ''' <see cref="DataPath"></see>.
     ''' </summary>
-    ''' <param name="bCreate">Flag, indicating whether the directory structure
-    ''' should be created if missing.</param>
     ''' <returns>True if the directory structure exists in its entirety.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsInputStructureAvailable(bCreate As Boolean) As Boolean
+    Public Function IsInputStructureAvailable() As Boolean
 
-        ' JS 21Jul14: just check if data files exist for objects without GUI
-        Dim bSuccess As Boolean = True
-
-        If (bCreate) Then
-            If Not Diets.FileExists() Then Me.GenerateDefaultDiets()
-            If Not Me.Survivability.FileExists() Then Me.GenerateDefaultSurviveDistributions()
-
-            ' Make sure plug-in has all dirs
-            Dim strPath As String = Me.DataPath
-
-            For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
-                bSuccess = bSuccess And cFileUtils.IsDirectoryAvailable(cMSEUtils.MSEFolder(strPath, f), bCreate)
-            Next
-
-        End If
-
-        Return bSuccess And Diets.FileExists() And Me.Survivability.FileExists()
+        Return Diets.FileExists() And Me.Survivability.FileExists()
 
     End Function
 
