@@ -49,12 +49,17 @@ Public Class cConsumptionWriter
         Dim strModelDetails As String = Me.GetModelDetails()
         Dim strDataDetails As String = "Data,Consumption"
         Dim data As Single(,) = Me.m_simds.Consumpt
+        Dim nMax As Integer = Me.m_core.nLivingGroups
+
+        If My.Settings.IncludeDetritus Then
+            nMax = Me.m_core.nGroups
+        End If
 
         If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName)) Then Return False
 
         If bAnnual Then
-            For i As Integer = 1 To Me.m_core.nGroups
-                For j As Integer = 1 To Me.m_core.nGroups
+            For i As Integer = 1 To nMax
+                For j As Integer = 1 To nMax
                     If (iTime Mod cCore.N_MONTHS) = 1 Then
                         Me.m_annualavg(i, j) = 0
                     End If
@@ -64,8 +69,8 @@ Public Class cConsumptionWriter
 
             If ((iTime Mod cCore.N_MONTHS) = 0) Then
                 ' Calc mean and fall through
-                For i As Integer = 1 To Me.m_core.nGroups
-                    For j As Integer = 1 To Me.m_core.nGroups
+                For i As Integer = 1 To nMax
+                    For j As Integer = 1 To nMax
                         Me.m_annualavg(i, j) /= cCore.N_MONTHS
                         data = Me.m_annualavg
                     Next
@@ -85,16 +90,29 @@ Public Class cConsumptionWriter
                     sw.WriteLine()
                 End If
 
-                For i As Integer = 1 To Me.m_core.nGroups
+                For i As Integer = 1 To nMax
                     If i > 1 Then sw.Write(",")
                     sw.Write(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(i).Name))
                 Next
+
+                If My.Settings.IncludeImportAndSum Then
+                    sw.Write(",Import,Sum")
+                End If
                 sw.WriteLine()
-                For j As Integer = 1 To Me.m_core.nGroups
-                    For i As Integer = 1 To Me.m_core.nGroups
+
+                For j As Integer = 1 To nMax
+                    Dim sSum As Single = 0
+                    For i As Integer = 1 To nMax
                         If i > 1 Then sw.Write(",")
                         sw.Write(cStringUtils.FormatSingle(data(j, i)))
+                        sSum += data(j, i)
                     Next
+                    If My.Settings.IncludeImportAndSum Then
+                        sw.Write(",")
+                        sw.Write(cStringUtils.FormatSingle(0))
+                        sw.Write(",")
+                        sw.Write(cStringUtils.FormatSingle(sSum))
+                    End If
                     sw.WriteLine()
                 Next
                 sw.Close()

@@ -65,6 +65,30 @@ Namespace My
                 Me("Autosave") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property IncludeDetritus() As Boolean
+            Get
+                Return CType(Me("IncludeDetritus"),Boolean)
+            End Get
+            Set
+                Me("IncludeDetritus") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property IncludeImportAndSum() As Boolean
+            Get
+                Return CType(Me("IncludeImportAndSum"),Boolean)
+            End Get
+            Set
+                Me("IncludeImportAndSum") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -59,5 +59,14 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Consumption writer settings....
+        '''</summary>
+        Friend ReadOnly Property MENU_ITEM() As String
+            Get
+                Return ResourceManager.GetString("MENU_ITEM", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

@@ -31,10 +31,11 @@ Public Class cConsWriterPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
     Implements EwEPlugin.IAutoSavePlugin
+    Implements EwEPlugin.IMenuItemPlugin
 
     Private m_core As cCore = Nothing
     Private m_writer As cConsumptionWriter = Nothing
- 
+
 #Region " Generic plug-in bits "
 
     Public ReadOnly Property Author As String _
@@ -132,5 +133,49 @@ Public Class cConsWriterPlugin
     End Sub
 
 #End Region ' Ecosim integration
+
+#Region " Menu integration "
+
+    Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+        Get
+            Return Nothing
+        End Get
+    End Property
+
+    Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
+        Get
+            Return My.Resources.MENU_ITEM
+        End Get
+    End Property
+
+    Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+        Get
+            Return ""
+        End Get
+    End Property
+
+    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+        Get
+            Return eCoreExecutionState.Idle
+        End Get
+    End Property
+
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+        Implements EwEPlugin.IGUIPlugin.OnControlClick
+        Try
+            Dim dlg As New frmConfig()
+            dlg.ShowDialog()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Public ReadOnly Property MenuItemLocation As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+        Get
+            Return "MenuTools"
+        End Get
+    End Property
+
+#End Region ' Menu integration
 
 End Class
