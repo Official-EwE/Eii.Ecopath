@@ -91,11 +91,11 @@ Partial Class frmMSE
         Me.m_lblDataPath = New System.Windows.Forms.Label()
         Me.m_pbPathCompatible = New System.Windows.Forms.PictureBox()
         Me.m_rbCustomPath = New System.Windows.Forms.RadioButton()
-        Me.m_lblInputParams = New System.Windows.Forms.Label()
         Me.m_rbEwEDefaultPath = New System.Windows.Forms.RadioButton()
-        Me.m_tbxParamStatus = New System.Windows.Forms.TextBox()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -105,6 +105,7 @@ Partial Class frmMSE
         Me.m_tlpLayout.SuspendLayout()
         Me.m_plStep1.SuspendLayout()
         CType(Me.m_pbPathCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_tbxNModels2Run
@@ -369,19 +370,16 @@ Partial Class frmMSE
         '
         'm_plStep1
         '
+        Me.m_plStep1.Controls.Add(Me.TableLayoutPanel1)
         Me.m_plStep1.Controls.Add(Me.m_lblPathValue)
-        Me.m_plStep1.Controls.Add(Me.btnEditSurvivabilities)
         Me.m_plStep1.Controls.Add(Me.m_lblDataPath)
         Me.m_plStep1.Controls.Add(Me.m_pbPathCompatible)
         Me.m_plStep1.Controls.Add(Me.m_lblAreaUnit)
         Me.m_plStep1.Controls.Add(Me.m_rbCustomPath)
         Me.m_plStep1.Controls.Add(Me.m_lblArea)
         Me.m_plStep1.Controls.Add(Me.m_tbxArea)
-        Me.m_plStep1.Controls.Add(Me.m_lblInputParams)
         Me.m_plStep1.Controls.Add(Me.m_rbEwEDefaultPath)
-        Me.m_plStep1.Controls.Add(Me.m_tbxParamStatus)
         Me.m_plStep1.Controls.Add(Me.m_hdrStep1)
-        Me.m_plStep1.Controls.Add(Me.m_btnReviewDistParms)
         Me.m_plStep1.Controls.Add(Me.m_btnChangePath)
         resources.ApplyResources(Me.m_plStep1, "m_plStep1")
         Me.m_plStep1.Name = "m_plStep1"
@@ -411,23 +409,12 @@ Partial Class frmMSE
         Me.m_rbCustomPath.TabStop = True
         Me.m_rbCustomPath.UseVisualStyleBackColor = True
         '
-        'm_lblInputParams
-        '
-        resources.ApplyResources(Me.m_lblInputParams, "m_lblInputParams")
-        Me.m_lblInputParams.Name = "m_lblInputParams"
-        '
         'm_rbEwEDefaultPath
         '
         resources.ApplyResources(Me.m_rbEwEDefaultPath, "m_rbEwEDefaultPath")
         Me.m_rbEwEDefaultPath.Name = "m_rbEwEDefaultPath"
         Me.m_rbEwEDefaultPath.TabStop = True
         Me.m_rbEwEDefaultPath.UseVisualStyleBackColor = True
-        '
-        'm_tbxParamStatus
-        '
-        resources.ApplyResources(Me.m_tbxParamStatus, "m_tbxParamStatus")
-        Me.m_tbxParamStatus.Name = "m_tbxParamStatus"
-        Me.m_tbxParamStatus.ReadOnly = True
         '
         'm_hdrStep1
         '
@@ -442,6 +429,20 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_btnChangePath, "m_btnChangePath")
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        resources.ApplyResources(Me.Button1, "Button1")
+        Me.Button1.Name = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'TableLayoutPanel1
+        '
+        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+        Me.TableLayoutPanel1.Controls.Add(Me.Button1, 4, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.btnEditSurvivabilities, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_btnReviewDistParms, 0, 0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         '
         'frmMSE
         '
@@ -463,6 +464,7 @@ Partial Class frmMSE
         Me.m_plStep1.ResumeLayout(False)
         Me.m_plStep1.PerformLayout()
         CType(Me.m_pbPathCompatible, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -492,7 +494,6 @@ Partial Class frmMSE
     Private WithEvents m_plStep1 As System.Windows.Forms.Panel
     Private WithEvents m_hdrStep1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_rbCustomPath As System.Windows.Forms.RadioButton
-    Private WithEvents m_lblInputParams As System.Windows.Forms.Label
     Private WithEvents m_rbEwEDefaultPath As System.Windows.Forms.RadioButton
     Private WithEvents m_btnChangePath As System.Windows.Forms.Button
     Friend WithEvents m_lblDataPath As System.Windows.Forms.Label
@@ -504,7 +505,6 @@ Partial Class frmMSE
     Private WithEvents m_lblMaxAttempts As System.Windows.Forms.Label
     Private WithEvents m_tbxMaxAttempts As System.Windows.Forms.TextBox
     Private WithEvents m_lblAreaUnit As System.Windows.Forms.Label
-    Private WithEvents m_tbxParamStatus As System.Windows.Forms.TextBox
     Private WithEvents m_lblMaxTime As System.Windows.Forms.Label
     Private WithEvents m_tbxMaxTime As System.Windows.Forms.TextBox
     Private WithEvents m_lblPathValue As System.Windows.Forms.Label
@@ -517,4 +517,6 @@ Partial Class frmMSE
     Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
     Friend WithEvents m_btnStockAssessment As System.Windows.Forms.Button
     Friend WithEvents m_btnSAError As System.Windows.Forms.Button
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents Button1 As System.Windows.Forms.Button
 End Class

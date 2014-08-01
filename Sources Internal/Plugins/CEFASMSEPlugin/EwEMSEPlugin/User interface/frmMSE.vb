@@ -194,7 +194,7 @@ Public Class frmMSE
         Me.m_lblPathValue.Text = cStringUtils.CompactString(Me.MSE.DataPath, Me.m_lblPathValue.ClientRectangle.Width, Me.m_lblPathValue.Font, TextFormatFlags.PathEllipsis)
         cToolTipShared.GetInstance().SetToolTip(Me.m_lblPathValue, Me.MSE.DataPath)
 
-        If Me.MSE.IsInputStructureAvailable(False) Then
+        If Me.MSE.IsInputStructureAvailable() Then
             If Me.MSE.IsInputDataCompatible() Then
                 img = SharedResources.OK
                 Me.m_btnReviewDistParms.Enabled = True
@@ -210,12 +210,9 @@ Public Class frmMSE
 
         img = Nothing
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
-            Me.m_tbxParamStatus.Text = My.Resources.STATUS_AVAILABLE
             If Not mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
                 img = SharedResources.Critical
             End If
-        Else
-            Me.m_tbxParamStatus.Text = My.Resources.STATUS_NOTAVAILABLE
         End If
         Me.m_pbModelsCompatible.Image = img
 
@@ -312,7 +309,7 @@ Public Class frmMSE
         Me.m_bInUpdate = True
         Try
             If Me.BrowseDataPath() Then
-                Me.MSE.IsInputStructureAvailable(False)
+                Me.MSE.IsInputStructureAvailable()
                 Me.UpdateControls()
             End If
         Catch ex As Exception
@@ -323,7 +320,7 @@ Public Class frmMSE
     End Sub
 
     Private Sub OnEditSurvivabilities(sender As System.Object, e As System.EventArgs) _
-        Handles btnEditSurvivabilities.Click
+        Handles btnEditSurvivabilities.Click, Button1.Click
 
         Try
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
@@ -551,7 +548,7 @@ Public Class frmMSE
 
     Private Function ReviewDistParams() As Boolean
 
-        If Not Me.ResolveMSEPathConflicts Then Return False
+        If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return False
 
         Dim frmDisParams As New frmDistributionParameters()
         frmDisParams.Init(Me.UIContext, Me.Plugin)
@@ -579,66 +576,6 @@ Public Class frmMSE
         End If
 
         Return False
-
-    End Function
-
-    ''' <summary>
-    ''' Interactively resolve MSE folder conflicts.
-    ''' </summary>
-    Private Function ResolveMSEPathConflicts() As Boolean
-
-        ' Forget all we know
-        Me.MSE.InvalidateRunState(False)
-
-        ' Check if input structure is missing
-        If Not Me.MSE.IsInputStructureAvailable(False) Then
-            ' Ask user to create folder structure
-            If Me.MSE.AskUser(String.Format(My.Resources.PROMPT_DATAPATH_MISSING, Me.MSE.DataPath), eMessageReplyStyle.YES_NO) <> eMessageReply.OK Then
-                ' #User abort: abandon process
-                Return False
-            End If
-        Else
-            ' Check if input structure is compatible
-            ' JS: this check is for ow ruled out by disabling the 'Review dist params' button in the UI
-            If Not Me.MSE.IsInputDataCompatible() Then
-                If Me.MSE.AskUser("The selected folder is not compatible with the currently loaded model. If you continue, previously saved MSE settings will be lost. Do you wish to continue, delete existing MSE settings, and start anew?", _
-                               eMessageReplyStyle.YES_NO, eMessageImportance.Warning, eMessageReply.NO) = eMessageReply.NO Then
-                    Return False
-                End If
-            Else
-                Return True
-            End If
-        End If
-
-        ' Try to create folder structure
-        If Me.MSE.IsInputStructureAvailable(True) Then
-
-            ' --- BEGIN GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
-
-            MSE.GenerateEmptyDistributions()
-            MSE.GenerateDefaultSurviveDistributions()
-            MSE.GenerateDefaultDiets()
-            MSE.GenerateEmptyBiomassLimitsCSV()
-            MSE.GenerateEmptyEffortLimitsCSV()
-            MSE.GenerateEmptyQuotaSharesCSV()
-
-            ' .. add more
-
-            ' --- END GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
-
-
-            ' Re-assess state
-            Me.MSE.InvalidateRunState(False)
-
-#If DEBUG Then
-            ' Panic in debug mode only
-            'Stop
-            Debug.Assert(Me.MSE.IsInputDataCompatible(), "Cefas MSE default data generation logic is not working")
-#End If
-
-        End If
-
-        Return Me.MSE.IsInputDataCompatible()
 
     End Function
 

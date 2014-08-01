@@ -239,8 +239,7 @@ Public Class frmDistributionParameters
         Dim lstrSubMessages As New List(Of String)
         Dim strFolder As String = cMSEUtils.MSEFolder(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams)
 
-        If Not Me.MSE.IsInputStructureAvailable(True) Then
-            ' ToDo: report error
+        If Not Me.MSE.ResolveMSEPathConflicts(False) Then
             Return
         End If
 
