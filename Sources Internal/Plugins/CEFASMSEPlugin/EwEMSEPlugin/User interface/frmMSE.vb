@@ -474,7 +474,7 @@ Public Class frmMSE
     Private Sub onStockAssessment(sender As System.Object, e As System.EventArgs) Handles m_btnStockAssessment.Click
 
         Try
-            Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE)
+            Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE.StockAssessment)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 Me.MSE.InvalidateRunState(True)
             End If
@@ -487,8 +487,8 @@ Public Class frmMSE
     Private Sub onUncertainty(sender As System.Object, e As System.EventArgs) Handles m_btnSAError.Click
 
         Try
+            'This is just until we get an interface for the Uncertainty/Error values
             Me.MSE.InformUser("Sorry not implemented yet!", eMessageImportance.Information)
-            Me.MSE.ResolveMSEPathConflicts(True)
         Catch ex As Exception
 
         End Try

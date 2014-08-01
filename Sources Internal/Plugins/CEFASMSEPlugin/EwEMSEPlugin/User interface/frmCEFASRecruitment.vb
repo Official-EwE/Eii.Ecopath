@@ -70,10 +70,10 @@ Public Class frmCEFASRecruitment
 
 #End Region ' Internals
 
-    Public Sub New(UI As cUIContext, MSE As cMSE)
+    Public Sub New(UI As cUIContext, StockAssessmentModel As cStockAssessmentModel)
         MyBase.New()
         Me.UIContext = UI
-        Me.m_Assessment = New cStockAssessmentModel(MSE)
+        Me.m_Assessment = StockAssessmentModel
         Me.m_Assessment.Load()
         Me.InitializeComponent()
     End Sub
@@ -151,7 +151,7 @@ Public Class frmCEFASRecruitment
         End Try
     End Sub
 
-    Private Sub HandlePropertyChanged(ByVal iGroupIndex As Integer)
+    Private Sub onParameterChanged(ByVal iGroupIndex As Integer)
         ' A relevant property has changed: redraw the graph
         Me.Redraw()
     End Sub
@@ -174,8 +174,8 @@ Public Class frmCEFASRecruitment
 
             ' Unregister
             If (Me.m_group IsNot Nothing) Then
-                RemoveHandler Me.m_group.onParameterChanged, AddressOf HandlePropertyChanged
-                RemoveHandler Me.m_group.onParameterChanged, AddressOf HandlePropertyChanged
+                RemoveHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
+                RemoveHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
             End If
 
             ' Update
@@ -183,8 +183,8 @@ Public Class frmCEFASRecruitment
 
             ' Register
             If (Me.m_group IsNot Nothing) Then
-                AddHandler Me.m_group.onParameterChanged, AddressOf HandlePropertyChanged
-                AddHandler Me.m_group.onParameterChanged, AddressOf HandlePropertyChanged
+                AddHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
+                AddHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
             End If
 
             ' Redraw the graph

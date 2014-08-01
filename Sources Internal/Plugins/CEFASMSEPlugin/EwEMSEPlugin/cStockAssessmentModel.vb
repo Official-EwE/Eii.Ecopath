@@ -89,7 +89,7 @@ Public Class cStockAssessmentModel
     Public cvRec() As Single
 
     ''' <summary>
-    ''' CVImpError is by fleet
+    ''' CV of implementation error by fleet
     ''' </summary>
     ''' <remarks></remarks>
     Public CVImpError() As Single
@@ -131,7 +131,7 @@ Public Class cStockAssessmentModel
             'the same sequence of random numbers will be generated on each call to NextDouble()
             'see http://www.codeproject.com/Articles/15102/NET-random-number-generators-and-distributions
             'The Reset() will need to be called each time the MSE is run
-            'Right now this is called just once when the Ecosim scenarion is loaded
+            'Right now this is called just once when the Ecosim scenario is loaded
             m_NormalDist.Reset()
 
             m_NormalDist.Mu = 0
@@ -271,6 +271,17 @@ Public Class cStockAssessmentModel
 
     Public Sub OnParameterChanged(ByVal iGroupIndex As Integer)
         InitStockAssessment()
+    End Sub
+
+
+    Public Sub setDefault()
+
+        For igrp As Integer = 1 To Me.Core.nGroups
+            Me.RstockRatio(igrp) = CSng(1 - Math.Exp(-Me.m_pathdata.PB(igrp)))
+        Next
+
+        InitStockAssessment()
+
     End Sub
 
 
@@ -434,10 +445,11 @@ Public Class cStockAssessmentModel
         Return True
     End Function
 
-#End Region
-
     Public Function FileExists(Optional strFilename As String = "") As Boolean Implements IMSEData.FileExists
         Return False
     End Function
+
+#End Region
+
 
 End Class
