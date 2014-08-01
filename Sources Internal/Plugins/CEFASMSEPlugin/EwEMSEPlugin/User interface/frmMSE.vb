@@ -326,6 +326,7 @@ Public Class frmMSE
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
             frmSurvivabilities.Init(Me.UIContext)
             If frmSurvivabilities.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                Me.MSE.ResolveMSEPathConflicts(True)
                 Me.MSE.InvalidateRunState(True)
             End If
         Catch ex As Exception
@@ -498,6 +499,7 @@ Public Class frmMSE
     Private Sub onUncertainty(sender As System.Object, e As System.EventArgs) Handles m_btnSAError.Click
 
         MessageBox.Show("Sorry not implemented yet!")
+        Me.MSE.ResolveMSEPathConflicts(True)
 
     End Sub
 
