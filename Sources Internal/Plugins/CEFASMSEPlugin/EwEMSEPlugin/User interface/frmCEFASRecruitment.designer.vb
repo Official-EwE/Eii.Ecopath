@@ -47,16 +47,16 @@ Partial Class frmCEFASRecruitment
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCEFASRecruitment))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_graph = New ZedGraph.ZedGraphControl()
-        Me.tsToolStrip = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.tsbtDefaults = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tsbnDefaults = New System.Windows.Forms.ToolStripButton()
+        Me.m_grid = New EwEMSEPlugin.gridCEFASRecruitment()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnSave = New System.Windows.Forms.Button()
-        Me.m_grid = New EwEMSEPlugin.gridCEFASRecruitment()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
-        Me.tsToolStrip.SuspendLayout()
+        Me.m_tsMain.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_scMain
@@ -71,7 +71,7 @@ Partial Class frmCEFASRecruitment
         '
         'm_scMain.Panel2
         '
-        Me.m_scMain.Panel2.Controls.Add(Me.tsToolStrip)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tsMain)
         Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
         '
         'm_graph
@@ -88,32 +88,19 @@ Partial Class frmCEFASRecruitment
         Me.m_graph.ScrollMinY2 = 0.0R
         Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
         '
-        'tsToolStrip
+        'm_tsMain
         '
-        Me.tsToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.tsToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbtDefaults})
-        resources.ApplyResources(Me.tsToolStrip, "tsToolStrip")
-        Me.tsToolStrip.Name = "tsToolStrip"
-        Me.tsToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefaults})
+        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+        Me.m_tsMain.Name = "m_tsMain"
+        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
-        'tsbtDefaults
+        'm_tsbnDefaults
         '
-        Me.tsbtDefaults.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.tsbtDefaults, "tsbtDefaults")
-        Me.tsbtDefaults.Name = "tsbtDefaults"
-        '
-        'm_btnCancel
-        '
-        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
-        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.m_btnCancel.Name = "m_btnCancel"
-        Me.m_btnCancel.UseVisualStyleBackColor = True
-        '
-        'm_btnSave
-        '
-        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
-        Me.m_btnSave.Name = "m_btnSave"
-        Me.m_btnSave.UseVisualStyleBackColor = True
+        Me.m_tsbnDefaults.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnDefaults, "m_tsbnDefaults")
+        Me.m_tsbnDefaults.Name = "m_tsbnDefaults"
         '
         'm_grid
         '
@@ -147,6 +134,19 @@ Partial Class frmCEFASRecruitment
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
+        'm_btnCancel
+        '
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
+        '
+        'm_btnSave
+        '
+        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
+        Me.m_btnSave.Name = "m_btnSave"
+        Me.m_btnSave.UseVisualStyleBackColor = True
+        '
         'frmCEFASRecruitment
         '
         resources.ApplyResources(Me, "$this")
@@ -165,8 +165,8 @@ Partial Class frmCEFASRecruitment
         Me.m_scMain.Panel2.PerformLayout()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
-        Me.tsToolStrip.ResumeLayout(False)
-        Me.tsToolStrip.PerformLayout()
+        Me.m_tsMain.ResumeLayout(False)
+        Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -174,10 +174,10 @@ Partial Class frmCEFASRecruitment
     Private WithEvents m_grid As gridCEFASRecruitment
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
-    Friend WithEvents tsToolStrip As cEwEToolstrip
-    Friend WithEvents tsbtDefaults As System.Windows.Forms.ToolStripButton
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_btnSave As System.Windows.Forms.Button
+    Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
+    Private WithEvents m_tsbnDefaults As System.Windows.Forms.ToolStripButton
 
 End Class
 

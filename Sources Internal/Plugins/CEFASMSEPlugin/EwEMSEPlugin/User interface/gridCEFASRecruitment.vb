@@ -171,7 +171,8 @@ Public Class gridCEFASRecruitment
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
-        Me.Selection.SelectionMode = GridSelectionMode.Row
+        ' JS: keep at default for allow quickedit handler
+        'Me.Selection.SelectionMode = GridSelectionMode.Row
     End Sub
 
     Public Overrides ReadOnly Property MessageSource() As eCoreComponentType

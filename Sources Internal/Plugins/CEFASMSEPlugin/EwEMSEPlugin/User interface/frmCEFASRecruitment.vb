@@ -30,6 +30,7 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.Controls.EwEGrid
 
 #End Region ' Imports
 
@@ -46,7 +47,7 @@ Public Class frmCEFASRecruitment
     Private m_zgh As cZedGraphHelper = Nothing
     ''' <summary>Group selected in the form.</summary>
     Private m_group As cStockAssessmentParameters = Nothing
-
+    Private m_qehGrid As cQuickEditHandler = Nothing
 
     Private m_Assessment As cStockAssessmentModel
 
@@ -98,6 +99,9 @@ Public Class frmCEFASRecruitment
         Me.m_grid.Init(Me.m_Assessment)
         Me.m_grid.UIContext = Me.UIContext
 
+        Me.m_qehGrid = New cQuickEditHandler()
+        Me.m_qehGrid.Attach(Me.m_grid, Me.UIContext, Me.m_tsMain)
+
         ' Select first group with likely values
         For iGroup As Integer = 1 To Core.nGroups
             ' Get group
@@ -111,11 +115,18 @@ Public Class frmCEFASRecruitment
             End If
         Next
 
+        Me.CenterToParent()
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-        If Me.m_zgh IsNot Nothing Then
+        If (Me.m_qehGrid IsNot Nothing) Then
+            Me.m_qehGrid.Detach()
+            Me.m_qehGrid = Nothing
+        End If
+
+        If (Me.m_zgh IsNot Nothing) Then
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
         End If
@@ -131,7 +142,7 @@ Public Class frmCEFASRecruitment
     End Sub
 
     Private Sub tsbtDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles tsbtDefaults.Click
+        Handles m_tsbnDefaults.Click
         Try
             Debug.Assert(False, "Set defaults not implemented yet!")
             'Me.Core.SetDefaultMSERecruitment()
@@ -218,7 +229,6 @@ Public Class frmCEFASRecruitment
             If CSng(1.1 / Group.RHalfB0Ratio) > maxXaxisValue Then
                 maxXaxisValue = CSng(1.2 / Group.RHalfB0Ratio)  '1.2 is just to give some extra space on the x axis
             End If
-
 
             'the max recruitment = RecEcop*(Ratio+1)
             Dim maxYaxisValue As Single = EcopathRecruitment * (Me.Group.RHalfB0Ratio + 1)
@@ -320,9 +330,14 @@ Public Class frmCEFASRecruitment
 
             ' place lines
             Me.m_zgh.PlotLines(lLines.ToArray)
+
+            ' Set x-axis label
+            Me.m_zgh.AxisLabel(Me.m_zgh.GetPane(1).XAxis, _
+                               String.Format(SharedResources.GENERIC_LABEL_DOUBLE, SharedResources.HEADER_BIOMASS, Me.Group.Name))
         Else
             ' Clear graph
             Me.m_zgh.PlotLines(Nothing)
+            Me.m_zgh.AxisLabel(Me.m_zgh.GetPane(1).XAxis, SharedResources.HEADER_BIOMASS)
         End If
 
     End Sub

@@ -165,10 +165,10 @@
   <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="tsToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
-  <data name="tsbtDefaults.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="m_tsbnDefaults.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
@@ -183,34 +183,34 @@
         TgDQASA1MVpwzwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="tsbtDefaults.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbnDefaults.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsbtDefaults.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsbnDefaults.Size" type="System.Drawing.Size, System.Drawing">
     <value>205, 22</value>
   </data>
-  <data name="tsbtDefaults.Text" xml:space="preserve">
+  <data name="m_tsbnDefaults.Text" xml:space="preserve">
     <value>Set Recruitment/total pop. to default</value>
   </data>
-  <data name="tsToolStrip.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tsToolStrip.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>628, 25</value>
   </data>
-  <data name="tsToolStrip.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;tsToolStrip.Name" xml:space="preserve">
-    <value>tsToolStrip</value>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
   </data>
-  <data name="&gt;&gt;tsToolStrip.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;tsToolStrip.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;tsToolStrip.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -220,7 +220,7 @@
     <value>0, 28</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>628, 206</value>
+    <value>624, 202</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -342,19 +342,16 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>MSE recruitment</value>
   </data>
-  <data name="&gt;&gt;tsbtDefaults.Name" xml:space="preserve">
-    <value>tsbtDefaults</value>
+  <data name="&gt;&gt;m_tsbnDefaults.Name" xml:space="preserve">
+    <value>m_tsbnDefaults</value>
   </data>
-  <data name="&gt;&gt;tsbtDefaults.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsbnDefaults.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
