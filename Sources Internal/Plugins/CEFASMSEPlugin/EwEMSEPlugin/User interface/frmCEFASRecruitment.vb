@@ -69,10 +69,11 @@ Public Class frmCEFASRecruitment
 
 #End Region ' Internals
 
-    Public Sub New(UI As cUIContext, StockAssessmentModel As cStockAssessmentModel)
+    Public Sub New(UI As cUIContext, MSE As cMSE)
         MyBase.New()
         Me.UIContext = UI
-        Me.m_Assessment = StockAssessmentModel
+        Me.m_Assessment = New cStockAssessmentModel(MSE)
+        Me.m_Assessment.Load()
         Me.InitializeComponent()
     End Sub
 
@@ -328,8 +329,16 @@ Public Class frmCEFASRecruitment
 
 #End Region ' Internals
 
-    Private Sub m_grid_Validated(sender As Object, e As System.EventArgs) Handles m_grid.Validated
+    Private Sub m_btnSave_Click(sender As System.Object, e As System.EventArgs) Handles m_btnSave.Click
+        If (Me.m_Assessment.Save) Then
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
+        End If
+    End Sub
 
+    Private Sub m_btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles m_btnCancel.Click
+        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.Close()
     End Sub
 End Class
 

@@ -470,23 +470,12 @@ Public Class frmMSE
 
         Me.MSE.GenerateSurvivabilities()
 
-        'Dim DefaultSurvDist As StreamWriter
-        'DefaultSurvDist = cMSEUtils.GetWriter(cMSEUtils.MSEFile(MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv"), False)
-        'DefaultSurvDist.WriteLine("FleetNumber,FleetName,GroupNumber,GroupName,Alpha,Beta")
-        'For iFleet = 1 To MSE.Core.nFleets
-        '    For iGroup = 1 To MSE.Core.nGroups
-        '        DefaultSurvDist.WriteLine(iFleet.ToString & "," & cStringUtils.ToCSVField(MSE.Core.FleetInputs(iFleet).Name) & "," & _
-        '                                  iGroup.ToString & "," & cStringUtils.ToCSVField(MSE.Core.EcoPathGroupInputs(iGroup).Name) & ",10,90")
-        '    Next
-        'Next
-        'cMSEUtils.ReleaseWriter(DefaultSurvDist)
-
     End Sub
 
     Private Sub onStockAssessment(sender As System.Object, e As System.EventArgs) Handles m_btnStockAssessment.Click
 
         Try
-            Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE.StockAssessment)
+            Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 Me.MSE.InvalidateRunState(True)
             End If
@@ -498,8 +487,12 @@ Public Class frmMSE
 
     Private Sub onUncertainty(sender As System.Object, e As System.EventArgs) Handles m_btnSAError.Click
 
-        MessageBox.Show("Sorry not implemented yet!")
-        Me.MSE.ResolveMSEPathConflicts(True)
+        Try
+            Me.MSE.InformUser("Sorry not implemented yet!", eMessageImportance.Information)
+            Me.MSE.ResolveMSEPathConflicts(True)
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

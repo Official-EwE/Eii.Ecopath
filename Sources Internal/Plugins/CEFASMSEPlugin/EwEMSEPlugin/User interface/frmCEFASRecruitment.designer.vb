@@ -43,13 +43,16 @@ Partial Class frmCEFASRecruitment
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCEFASRecruitment))
-        Me.m_scMain = New System.Windows.Forms.SplitContainer
-        Me.m_graph = New ZedGraph.ZedGraphControl
-        Me.tsToolStrip = New cEwEToolstrip
-        Me.tsbtDefaults = New System.Windows.Forms.ToolStripButton
-        Me.m_grid = New gridCEFASRecruitment
+        Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.m_graph = New ZedGraph.ZedGraphControl()
+        Me.tsToolStrip = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.tsbtDefaults = New System.Windows.Forms.ToolStripButton()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_btnSave = New System.Windows.Forms.Button()
+        Me.m_grid = New EwEMSEPlugin.gridCEFASRecruitment()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
@@ -58,8 +61,8 @@ Partial Class frmCEFASRecruitment
         '
         'm_scMain
         '
-        Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         resources.ApplyResources(Me.m_scMain, "m_scMain")
+        Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.m_scMain.Name = "m_scMain"
         '
         'm_scMain.Panel1
@@ -76,26 +79,41 @@ Partial Class frmCEFASRecruitment
         resources.ApplyResources(Me.m_graph, "m_graph")
         Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
         Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0
-        Me.m_graph.ScrollMaxX = 0
-        Me.m_graph.ScrollMaxY = 0
-        Me.m_graph.ScrollMaxY2 = 0
-        Me.m_graph.ScrollMinX = 0
-        Me.m_graph.ScrollMinY = 0
-        Me.m_graph.ScrollMinY2 = 0
+        Me.m_graph.ScrollGrace = 0.0R
+        Me.m_graph.ScrollMaxX = 0.0R
+        Me.m_graph.ScrollMaxY = 0.0R
+        Me.m_graph.ScrollMaxY2 = 0.0R
+        Me.m_graph.ScrollMinX = 0.0R
+        Me.m_graph.ScrollMinY = 0.0R
+        Me.m_graph.ScrollMinY2 = 0.0R
         Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
         '
         'tsToolStrip
         '
+        Me.tsToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tsToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbtDefaults})
         resources.ApplyResources(Me.tsToolStrip, "tsToolStrip")
         Me.tsToolStrip.Name = "tsToolStrip"
+        Me.tsToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'tsbtDefaults
         '
         Me.tsbtDefaults.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.tsbtDefaults, "tsbtDefaults")
         Me.tsbtDefaults.Name = "tsbtDefaults"
+        '
+        'm_btnCancel
+        '
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
+        '
+        'm_btnSave
+        '
+        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
+        Me.m_btnSave.Name = "m_btnSave"
+        Me.m_btnSave.UseVisualStyleBackColor = True
         '
         'm_grid
         '
@@ -108,34 +126,44 @@ Partial Class frmCEFASRecruitment
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.Group = Nothing
+        Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
-        'frmMSERecruitment
+        'frmCEFASRecruitment
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CloseButton = False
+        Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_scMain)
-        Me.Name = "frmMSERecruitment"
+        Me.Controls.Add(Me.m_btnSave)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
+        Me.Name = "frmCEFASRecruitment"
+        Me.ShowIcon = False
+        Me.ShowInTaskbar = False
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel2.ResumeLayout(False)
         Me.m_scMain.Panel2.PerformLayout()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
         Me.tsToolStrip.ResumeLayout(False)
         Me.tsToolStrip.PerformLayout()
@@ -148,6 +176,8 @@ Partial Class frmCEFASRecruitment
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Friend WithEvents tsToolStrip As cEwEToolstrip
     Friend WithEvents tsbtDefaults As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_btnSave As System.Windows.Forms.Button
 
 End Class
 
