@@ -33,10 +33,8 @@ Public Class cConsWriterPlugin
     Implements EwEPlugin.IAutoSavePlugin
 
     Private m_core As cCore = Nothing
-    Private m_simds As cEcosimDatastructures = Nothing
-    ''' <summary>Array for averaging</summary>
-    Private m_consumpt As Single(,) = Nothing
-
+    Private m_writer As cConsumptionWriter = Nothing
+ 
 #Region " Generic plug-in bits "
 
     Public ReadOnly Property Author As String _
@@ -108,8 +106,7 @@ Public Class cConsWriterPlugin
     Public Sub EcosimInitialized(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Try
-            Me.m_simds = DirectCast(EcosimDatastructures, cEcosimDatastructures)
-            ReDim Me.m_consumpt(Me.m_core.nGroups, Me.m_core.nGroups)
+            Me.m_writer = New cConsumptionWriter(Me.m_core, DirectCast(EcosimDatastructures, cEcosimDatastructures))
         Catch ex As Exception
 
         End Try
@@ -117,16 +114,16 @@ Public Class cConsWriterPlugin
 
     Public Sub EcosimRunCompletedPost(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
-        Me.m_consumpt = Nothing
+        Me.m_writer = Nothing
     End Sub
 
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) _
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Try
-            If (Me.AutoSave) Then
-                Me.SaveDataToFile(iTime, True)
-                Me.SaveDataToFile(iTime, False)
+            If (Me.AutoSave And Me.m_writer IsNot Nothing) Then
+                Me.m_writer.SaveDataToFile(iTime, True)
+                Me.m_writer.SaveDataToFile(iTime, False)
             End If
         Catch ex As Exception
 
@@ -135,99 +132,5 @@ Public Class cConsWriterPlugin
     End Sub
 
 #End Region ' Ecosim integration
-
-#Region " Internals "
-
-    Private Function SaveDataToFile(ByVal iTime As Integer, _
-                                    ByVal bAnnual As Boolean) As Boolean
-
-        Dim strPath As String = Me.m_core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim)
-        Dim strFileName As String = Me.GetOutputFileName(strPath, bAnnual, iTime)
-        Dim strModelDetails As String = Me.GetModelDetails()
-        Dim strDataDetails As String = "Data,Consumption"
-        Dim data As Single(,) = Me.m_simds.Consumpt
-
-        'Me.m_simds.ResultsOverTime()
-        If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName)) Then Return False
-
-        If bAnnual Then
-            If (iTime Mod cCore.N_MONTHS) = 0 Then
-                For i As Integer = 1 To Me.m_core.nGroups
-                    For j As Integer = 1 To Me.m_core.nGroups
-                        Me.m_consumpt(i, j) += data(i, j)
-                    Next
-                Next
-                ' Exit
-                Return True
-            End If
-            ' Calc mean and fall through
-            For i As Integer = 1 To Me.m_core.nGroups
-                For j As Integer = 1 To Me.m_core.nGroups
-                    Me.m_consumpt(i, j) /= cCore.N_MONTHS
-                    data = Me.m_consumpt
-                Next
-            Next
-        End If
-
-        Try
-            'Overwritten the file
-            Using sw As StreamWriter = New StreamWriter(strFileName, False)
-
-                If Me.m_core.SaveWithFileHeader Then
-                    sw.WriteLine(strModelDetails)
-                    sw.WriteLine(strDataDetails)
-                    sw.WriteLine()
-                End If
-
-                For i As Integer = 1 To Me.m_core.nGroups
-                    If i > 1 Then sw.Write(",")
-                    sw.Write(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(i).Name))
-                Next
-                sw.WriteLine()
-                For j As Integer = 1 To Me.m_core.nGroups
-                    For i As Integer = 1 To Me.m_core.nGroups
-                        If i > 1 Then sw.Write(", ")
-                        sw.Write(cStringUtils.FormatSingle(data(j, i)))
-                    Next
-                    sw.WriteLine()
-                Next
-                sw.Close()
-
-            End Using
-
-        Catch ex As Exception
-            Return False
-        End Try
-        Return True
-
-    End Function
-
-    Private Function GetOutputFileName(ByVal strPath As String, _
-                                       ByVal bSaveAnnual As Boolean, _
-                                       ByVal iTime As Integer) As String
-
-        Dim strFileName As String = ""
-        Dim strExt As String = ".csv"
-
-        If bSaveAnnual Then
-            strFileName = String.Format("Consumption_annual_{0:0000}", iTime)
-        Else
-            strFileName = String.Format("Consumption_{0:0000}", iTime)
-        End If
-
-        Return Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get default model details to report in output file.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Function GetModelDetails() As String
-        Return Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim)
-    End Function
-
-#End Region ' Internals
 
 End Class
