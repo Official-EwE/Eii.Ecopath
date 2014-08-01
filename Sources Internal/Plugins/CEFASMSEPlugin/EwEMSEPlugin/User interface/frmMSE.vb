@@ -439,8 +439,7 @@ Public Class frmMSE
     Private Sub OnDeleteResults(sender As System.Object, e As System.EventArgs) _
         Handles m_btnDeleteResults.Click
 
-        ' ToDo: globalize this
-        If Me.m_plugin.MSE.AskUser("Are you sure you want to delete all results?", eMessageReplyStyle.YES_NO) <> eMessageReply.YES Then
+        If Me.m_plugin.MSE.AskUser(My.Resources.PROMPT_DELETE_RESULTS, eMessageReplyStyle.YES_NO) <> eMessageReply.YES Then
             Return
         End If
 

@@ -282,6 +282,9 @@
     <value>The path '{0}' does not contain the MSE file structure. Do you wish to create this?</value>
     <comment>{0}=MSE data path</comment>
   </data>
+  <data name="PROMPT_DELETE_RESULTS" xml:space="preserve">
+    <value>Are you sure you want to delete all results?</value>
+  </data>
   <data name="PROMPT_ENTERNAME" xml:space="preserve">
     <value>Select a name for the new Strategy</value>
   </data>

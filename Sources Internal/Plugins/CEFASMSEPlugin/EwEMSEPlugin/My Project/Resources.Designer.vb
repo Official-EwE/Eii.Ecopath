@@ -493,6 +493,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Are you sure you want to delete all results?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DELETE_RESULTS() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DELETE_RESULTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Select a name for the new Strategy.
         '''</summary>
         Friend ReadOnly Property PROMPT_ENTERNAME() As String
