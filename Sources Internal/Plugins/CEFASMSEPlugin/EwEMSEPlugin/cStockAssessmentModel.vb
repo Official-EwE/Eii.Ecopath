@@ -426,15 +426,11 @@ Public Class cStockAssessmentModel
     End Function
 
     Public Function Load(Optional msg As cMessage = Nothing, Optional strFilename As String = "") As Boolean Implements IMSEData.Load
-
-        'For now just copy the data from the core into local arrays
-        Me.InitToCoreData()
-
+        Me.Defaults()
         Return True
     End Function
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
-
         Return True
     End Function
 
