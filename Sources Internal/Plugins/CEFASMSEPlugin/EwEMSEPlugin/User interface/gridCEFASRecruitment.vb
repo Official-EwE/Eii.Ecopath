@@ -171,7 +171,7 @@ Public Class gridCEFASRecruitment
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
-        ' JS: keep at default for allow quickedit handler
+        ' JS: keep at default for quickedit handler
         'Me.Selection.SelectionMode = GridSelectionMode.Row
     End Sub
 
