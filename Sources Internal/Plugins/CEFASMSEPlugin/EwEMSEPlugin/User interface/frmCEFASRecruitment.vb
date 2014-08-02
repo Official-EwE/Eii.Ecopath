@@ -73,6 +73,10 @@ Public Class frmCEFASRecruitment
     Public Sub New(UI As cUIContext, StockAssessmentModel As cStockAssessmentModel)
         MyBase.New()
         Me.UIContext = UI
+        ' JS 02Aug14: all other MSE interfaces operate on a copy of data. This interface
+        ' for some reason is different by operating on MSE core data, which introduces a liability in 
+        ' cancelling edits that will be made to MSE core data rather than local, temporary data.
+        ' Make sure that cancellations work when the dialog aborts!
         Me.m_Assessment = StockAssessmentModel
         Me.m_Assessment.Load()
         Me.InitializeComponent()
@@ -344,16 +348,19 @@ Public Class frmCEFASRecruitment
 
 #End Region ' Internals
 
-    Private Sub m_btnSave_Click(sender As System.Object, e As System.EventArgs) Handles m_btnSave.Click
+    Private Sub OnSave(sender As System.Object, e As System.EventArgs) Handles m_btnSave.Click
         If (Me.m_Assessment.Save) Then
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
         End If
     End Sub
 
-    Private Sub m_btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles m_btnCancel.Click
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
-        Me.Close()
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles m_btnCancel.Click
+        ' JS 02Aug31 - this is a dicey way to discard any changes
+        If (Me.m_Assessment.Load()) Then
+            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        End If
     End Sub
 End Class
 
