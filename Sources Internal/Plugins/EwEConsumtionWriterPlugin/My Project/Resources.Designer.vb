@@ -87,5 +87,23 @@ Namespace My.Resources
                 Return ResourceManager.GetString("MENU_ITEM", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Consumption matrices failed to save to {0}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Consumption matrices saved to {0}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

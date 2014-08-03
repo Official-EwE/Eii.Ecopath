@@ -127,4 +127,10 @@
   <data name="MENU_ITEM" xml:space="preserve">
     <value>Consumption writer options...</value>
   </data>
+  <data name="STATUS_SAVE_FAILED" xml:space="preserve">
+    <value>Consumption matrices failed to save to {0}</value>
+  </data>
+  <data name="STATUS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Consumption matrices saved to {0}</value>
+  </data>
 </root>

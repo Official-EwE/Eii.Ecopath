@@ -155,6 +155,7 @@
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="app.config" />
+    <None Include="Documentation\EwEConsumptionWriter.docx" />
     <None Include="EwEConsumptionWriterPlugin.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

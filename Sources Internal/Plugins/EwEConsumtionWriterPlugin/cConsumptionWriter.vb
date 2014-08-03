@@ -34,32 +34,37 @@ Public Class cConsumptionWriter
     Private m_simds As cEcosimDatastructures = Nothing
     ''' <summary>Array for annual averaging</summary>
     Private m_annualavg As Single(,) = Nothing
+    ''' <summary>States if all saving went well.</summary>
+    Private m_bSuccess As Boolean = True
 
     Public Sub New(core As cCore, ds As cEcosimDatastructures)
         Me.m_core = core
         Me.m_simds = ds
-        ReDim Me.m_annualavg(Me.m_core.nGroups, Me.m_core.nGroups)
+        ReDim Me.m_annualavg(Me.m_core.nGroups, Me.m_core.nGroups + 1)
     End Sub
 
     Public Function SaveDataToFile(ByVal iTime As Integer, _
                                    ByVal bAnnual As Boolean) As Boolean
 
-        Dim strPath As String = Me.m_core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim)
+        If (Not Me.m_bSuccess) Then Return False
+
+        Dim strPath As String = Me.OutputPath()
         Dim strFileName As String = Me.GetOutputFileName(strPath, bAnnual, iTime)
         Dim strModelDetails As String = Me.GetModelDetails()
         Dim strDataDetails As String = "Data,Consumption"
-        Dim data As Single(,) = Me.m_simds.Consumpt
+        Dim data As Single(,) = Me.SimData()
         Dim nMax As Integer = Me.m_core.nLivingGroups
+        Dim nGroups As Integer = Me.m_core.nGroups
 
         If My.Settings.IncludeDetritus Then
             nMax = Me.m_core.nGroups
         End If
 
-        If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName)) Then Return False
+        If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName), True) Then Return False
 
         If bAnnual Then
-            For i As Integer = 1 To nMax
-                For j As Integer = 1 To nMax
+            For i As Integer = 1 To nGroups
+                For j As Integer = 1 To nGroups + 1
                     If (iTime Mod cCore.N_MONTHS) = 1 Then
                         Me.m_annualavg(i, j) = 0
                     End If
@@ -69,8 +74,8 @@ Public Class cConsumptionWriter
 
             If ((iTime Mod cCore.N_MONTHS) = 0) Then
                 ' Calc mean and fall through
-                For i As Integer = 1 To nMax
-                    For j As Integer = 1 To nMax
+                For i As Integer = 1 To nGroups
+                    For j As Integer = 1 To nGroups + 1
                         Me.m_annualavg(i, j) /= cCore.N_MONTHS
                         data = Me.m_annualavg
                     Next
@@ -109,7 +114,7 @@ Public Class cConsumptionWriter
                     Next
                     If My.Settings.IncludeImportAndSum Then
                         sw.Write(",")
-                        sw.Write(cStringUtils.FormatSingle(0))
+                        sw.Write(cStringUtils.FormatSingle(data(j, nGroups + 1)))
                         sw.Write(",")
                         sw.Write(cStringUtils.FormatSingle(sSum))
                     End If
@@ -120,11 +125,27 @@ Public Class cConsumptionWriter
             End Using
 
         Catch ex As Exception
+            Me.m_bSuccess = False
             Return False
         End Try
         Return True
 
     End Function
+
+    ''' <summary>
+    ''' Get if all writing went well - so far.
+    ''' </summary>
+    Public ReadOnly Property Success As Boolean
+        Get
+            Return Me.m_bSuccess
+        End Get
+    End Property
+
+    Public ReadOnly Property OutputPath As String
+        Get
+            Return Me.m_core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim)
+        End Get
+    End Property
 
     Private Function GetOutputFileName(ByVal strPath As String, _
                                        ByVal bSaveAnnual As Boolean, _
@@ -151,4 +172,18 @@ Public Class cConsumptionWriter
     Private Function GetModelDetails() As String
         Return Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim)
     End Function
+
+    Private Function SimData() As Single(,)
+        Dim n As Integer = Me.m_core.nGroups
+        Dim data(n, n + 1) As Single
+        For i As Integer = 1 To n
+            For j As Integer = 1 To n
+                data(i, j) = Me.m_simds.Consumpt(i, j)
+            Next
+            ' ToDo: add imports
+            data(i, n + 1) = 0
+        Next
+        Return data
+    End Function
+
 End Class

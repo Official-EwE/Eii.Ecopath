@@ -107,7 +107,9 @@ Public Class cConsWriterPlugin
     Public Sub EcosimInitialized(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Try
-            Me.m_writer = New cConsumptionWriter(Me.m_core, DirectCast(EcosimDatastructures, cEcosimDatastructures))
+            If My.Settings.Autosave Then
+                Me.m_writer = New cConsumptionWriter(Me.m_core, DirectCast(EcosimDatastructures, cEcosimDatastructures))
+            End If
         Catch ex As Exception
 
         End Try
@@ -115,14 +117,29 @@ Public Class cConsWriterPlugin
 
     Public Sub EcosimRunCompletedPost(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
-        Me.m_writer = Nothing
+
+        'ToDo: globalize this
+
+        If (Me.m_writer IsNot Nothing) Then
+            Dim msg As cMessage = Nothing
+            If (Me.m_writer.Success) Then
+                msg = New cMessage(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.m_writer.OutputPath), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = Me.m_writer.OutputPath
+            Else
+                msg = New cMessage(String.Format(My.Resources.STATUS_SAVE_FAILED, Me.m_writer.OutputPath), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+            End If
+            Me.m_core.Messages.SendMessage(msg)
+            Me.m_writer = Nothing
+        End If
     End Sub
 
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) _
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Try
-            If (Me.AutoSave And Me.m_writer IsNot Nothing) Then
+            If (Me.m_writer IsNot Nothing) Then
                 Me.m_writer.SaveDataToFile(iTime, True)
                 Me.m_writer.SaveDataToFile(iTime, False)
             End If
