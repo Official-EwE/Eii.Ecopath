@@ -23,23 +23,61 @@ Option Strict On
 
 Public Class frmConfig
 
+#Region " Overrides "
+
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
+
+        Me.m_cbAutosave.Checked = My.Settings.Autosave
         Me.m_cbIncludeDetritus.Checked = My.Settings.IncludeDetritus
         Me.m_cbIncludeImportAndSum.Checked = My.Settings.IncludeImportAndSum
+
+        Me.UpdateControls()
     End Sub
 
-    Private Sub OnOK(sender As System.Object, e As System.EventArgs) Handles m_btnOK.Click
+#End Region ' Overrides
+
+#Region " Event handlers "
+
+    Private Sub OnCheckChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbAutosave.CheckedChanged, _
+                m_cbIncludeDetritus.CheckedChanged, _
+                m_cbIncludeImportAndSum.CheckedChanged
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnOK.Click
+
+        My.Settings.Autosave = Me.m_cbAutosave.Checked
         My.Settings.IncludeDetritus = Me.m_cbIncludeDetritus.Checked
         My.Settings.IncludeImportAndSum = Me.m_cbIncludeImportAndSum.Checked
         My.Settings.Save()
+
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
+
     End Sub
 
-    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles m_btnCancel.Click
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnCancel.Click
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
+
+#End Region ' Event handlers
+
+#Region " Internals "
+
+    Private Sub UpdateControls()
+        Me.m_cbIncludeDetritus.Enabled = Me.m_cbAutosave.Checked
+        Me.m_cbIncludeImportAndSum.Enabled = Me.m_cbAutosave.Checked
+    End Sub
+
+#End Region ' Internals
 
 End Class

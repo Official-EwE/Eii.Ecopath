@@ -27,6 +27,9 @@ Partial Class frmConfig
         Me.m_cbIncludeImportAndSum = New System.Windows.Forms.CheckBox()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_cbAutosave = New System.Windows.Forms.CheckBox()
+        Me.m_pbCredits = New System.Windows.Forms.PictureBox()
+        CType(Me.m_pbCredits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_cbIncludeDetritus
@@ -53,19 +56,37 @@ Partial Class frmConfig
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
+        'm_cbAutosave
+        '
+        resources.ApplyResources(Me.m_cbAutosave, "m_cbAutosave")
+        Me.m_cbAutosave.Name = "m_cbAutosave"
+        Me.m_cbAutosave.UseVisualStyleBackColor = True
+        '
+        'm_pbCredits
+        '
+        resources.ApplyResources(Me.m_pbCredits, "m_pbCredits")
+        Me.m_pbCredits.BackColor = System.Drawing.SystemColors.Window
+        Me.m_pbCredits.BackgroundImage = Global.EwEConsumptionWriterPlugin.My.Resources.Resources.EscudoIPN1
+        Me.m_pbCredits.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_pbCredits.Name = "m_pbCredits"
+        Me.m_pbCredits.TabStop = False
+        '
         'frmConfig
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_pbCredits)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_cbIncludeImportAndSum)
+        Me.Controls.Add(Me.m_cbAutosave)
         Me.Controls.Add(Me.m_cbIncludeDetritus)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "frmConfig"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        CType(Me.m_pbCredits, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -74,4 +95,6 @@ Partial Class frmConfig
     Private WithEvents m_btnOK As System.Windows.Forms.Button
     Friend WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_cbIncludeDetritus As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbAutosave As System.Windows.Forms.CheckBox
+    Private WithEvents m_pbCredits As System.Windows.Forms.PictureBox
 End Class

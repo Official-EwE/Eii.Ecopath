@@ -66,7 +66,7 @@ Public Class cConsWriterPlugin
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ndAutosaveSimConsumption"
+            Return "MenuOptionsConsWriter"
         End Get
     End Property
 
@@ -87,7 +87,7 @@ Public Class cConsWriterPlugin
 
     Public Function AutoSaveName() As String _
         Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
-        Return "Consumption matrices"
+        Return My.Resources.AUTOSAVE_ITEM
     End Function
 
     Public Function AutoSaveSubPath() As String _
