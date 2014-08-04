@@ -567,24 +567,48 @@ Namespace Controls.Map
 
             Dim layers As New List(Of cDisplayLayer)
             Dim displayDepth As cDisplayLayer = Nothing
+            Dim dtGroup As eDataTypes = Nothing
+
+            If (Me.m_layerSelected IsNot Nothing) Then
+                If (Me.m_layerSelected.RenderMode = Definitions.eLayerRenderType.Grouped) Then
+                    If (TypeOf Me.m_layerSelected Is cDisplayRasterLayer) Then
+                        dtGroup = DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Data.DataType
+                    End If
+                End If
+            End If
 
             For Each l In Me.m_layers
                 Dim bDrawLayer As Boolean = (l.Renderer.IsVisible)
+
                 If TypeOf l Is cDisplayRasterLayer Then
-                    If (DirectCast(l, cDisplayRasterLayer).VarName = eVarNameFlags.LayerDepth) Then
-                        bDrawLayer = False
-                        displayDepth = l
+
+                    Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+
+                    If (rl.VarName = eVarNameFlags.LayerDepth) Then
+                        displayDepth = rl
                     End If
+
+                    Select Case rl.RenderMode
+                        Case Definitions.eLayerRenderType.Always
+                            ' NOP
+                        Case Definitions.eLayerRenderType.Selected
+                            bDrawLayer = bDrawLayer And rl.IsSelected()
+                        Case Definitions.eLayerRenderType.Grouped
+                            If (rl.Data.DataType = dtGroup) And (dtGroup <> eDataTypes.NotSet) Then
+                                ' NOP
+                            Else
+                                bDrawLayer = False
+                            End If
+                    End Select
+
+                    ' Special case
+                    If (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion And Me.UIContext.StyleGuide.ShowExcludedCells) Then
+                        bDrawLayer = True
+                    End If
+
                 End If
                 If bDrawLayer Then layers.Add(l)
             Next
-
-            If (displayDepth IsNot Nothing) Then
-                If displayDepth.IsSelected Then
-                    layers.Clear()
-                End If
-                layers.Add(displayDepth)
-            End If
 
             ' Draw raster layers in reverse order
             For iLayer As Integer = layers.Count - 1 To 0 Step -1
@@ -597,8 +621,6 @@ Namespace Controls.Map
                         Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
 
                         If (rl.HasData) Then
-
-                            Dim bDrawExcluded As Boolean = (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion And Me.UIContext.StyleGuide.ShowExcludedCells)
 
                             For X As Integer = iXFrom To iXTo
                                 For Y As Integer = iYFrom To iYTo
@@ -624,7 +646,7 @@ Namespace Controls.Map
                                             If rl.IsValue(objValue) Then
                                                 ' Build style flags
                                                 style = cStyleGuide.eStyleFlags.OK
-                                                If l.IsSelected Or bDrawExcluded Then
+                                                If l.IsSelected Then
                                                     style = (style Or cStyleGuide.eStyleFlags.Highlight)
                                                 End If
                                                 ' Render cell

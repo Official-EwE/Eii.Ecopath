@@ -26,6 +26,7 @@ Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -231,6 +232,13 @@ Namespace Controls.Map.Layers
             Set(ByVal value As Boolean)
                 Me.m_bAllowValidation = value
             End Set
+        End Property
+
+        Public ReadOnly Property RenderMode As eLayerRenderType
+            Get
+                If (Me.m_renderer Is Nothing) Then Return eLayerRenderType.Always
+                Return Me.m_renderer.RenderMode
+            End Get
         End Property
 
 #End Region ' Public properties

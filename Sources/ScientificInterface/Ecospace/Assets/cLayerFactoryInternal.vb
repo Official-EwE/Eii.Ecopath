@@ -81,6 +81,8 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
+                    renderer.RenderMode = eLayerRenderType.Always
+
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerMPASeed
                     layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMPASeed, 1, 0)
@@ -96,6 +98,7 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
+                    renderer.RenderMode = eLayerRenderType.Always
                     editor = New cLayerEditorTwoState()
                     layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedCurrent, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = layerData.Name
@@ -113,6 +116,7 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
+                    renderer.RenderMode = eLayerRenderType.Always
                     editor = New cLayerEditorTwoState()
                     layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedBest, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = layerData.Name
@@ -128,6 +132,7 @@ Namespace Ecospace.Basemap.Layers
                         vs.BackColour = Color.Blue
 
                         renderer = New cLayerRendererValue(vs)
+                        renderer.RenderMode = eLayerRenderType.Always
                         editor = New cLayerEditorRange()
                         layer = New cDisplayRasterLayer(uic, layerData, renderer, editor)
                         layer.Name = layerData.Name

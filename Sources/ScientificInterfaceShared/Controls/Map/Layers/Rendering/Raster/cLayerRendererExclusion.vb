@@ -58,10 +58,6 @@ Namespace Controls.Map.Layers
                                         ByVal value As Object, _
                                         ByVal style As cStyleGuide.eStyleFlags)
 
-            ' Skip this if layer should not draw
-            If ((style And cStyleGuide.eStyleFlags.Highlight) = 0) Then
-                Return
-            End If
             If CBool(value) Then Me.RenderPreview(g, rc)
 
         End Sub

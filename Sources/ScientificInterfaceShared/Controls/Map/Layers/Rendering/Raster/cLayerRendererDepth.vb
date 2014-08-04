@@ -78,11 +78,6 @@ Namespace Controls.Map.Layers
                                 g.FillRectangle(br, rc)
                             End Using
                         End If
-                        '' Draw value
-                        'g.DrawString(String.Format("{0}", value), Me.Font, Me.ForeBrush, rc)
-                    Else
-                        ' Dangerous! This assumes depth layer is positioned correctly at the bottom of the layer pile
-                        g.FillRectangle(Brushes.White, rc)
                     End If
                 End If
 
