@@ -212,5 +212,19 @@ Namespace Definitions
         Arch = 2
     End Enum
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type determining how map layers are drawn.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eLayerRenderType As Integer
+        ''' <summary>A map layer always renders.</summary>
+        Always = 0
+        ''' <summary>Only the map layer that is selected is rendered.</summary>
+        Exclusive
+        ''' <summary>All map layers of the same type that is selected are rendered.</summary>
+        Grouped
+    End Enum
+
 End Namespace
 
