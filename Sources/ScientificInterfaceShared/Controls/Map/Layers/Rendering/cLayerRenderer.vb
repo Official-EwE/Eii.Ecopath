@@ -22,6 +22,7 @@ Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports 
 
@@ -107,7 +108,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property VisualStyleFlags() As cVisualStyle.eVisualStyleTypes
-            
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Update any cached data for this layer representation.
@@ -186,7 +187,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property IsVisible() As Boolean = True
-            
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the scale max value to render to.
@@ -208,6 +209,13 @@ Namespace Controls.Map.Layers
         ''' <returns>The display text for a given cell in the underlying data.</returns>
         ''' -----------------------------------------------------------------------
         Public MustOverride Function GetDisplayText(value As Object) As String
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set how the <see cref="eLayerRenderType">layer should be drawn</see>.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property RenderMode As eLayerRenderType = eLayerRenderType.Selected
 
     End Class
 
