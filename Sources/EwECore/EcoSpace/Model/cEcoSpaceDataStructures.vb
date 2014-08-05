@@ -722,33 +722,22 @@ Public Class cEcospaceDataStructures
         End Get
         Set(value As Boolean)
             Me.m_bHasCapacityChanged = value
-            
         End Set
 
     End Property
 
-
+    ''' <summary>
+    ''' Set the isGroupHabCapChanged() flag to True or False for all the groups
+    ''' </summary>
+    ''' <param name="Value"></param>
+    ''' <remarks></remarks>
     Public Sub setHabCapGroupIsChanged(ByVal Value As Boolean)
         For igrp As Integer = 1 To NGroups
             Me.isGroupHabCapChanged(igrp) = Value
         Next
     End Sub
 
-    ' '''<summary>
-    ' ''' Have any of the capacity input layers changed
-    ' ''' </summary>
-    ' ''' <remarks>Capacity Inputs, Habitats, Environmental layers, depth....</remarks>
-    'Public Property _isGroupHabCapChanged(ByVal iGroupIndex As Integer) As Boolean
-    '    'Public Property bHasCapacityChanged(Optional GroupIndex As Integer = cCore.NULL_VALUE) As Boolean
-    '    Get
-    '        Return Me.isGroupHabCapChanged(iGroupIndex)
-    '    End Get
-
-    '    Set(value As Boolean)
-    '        Me.isGroupHabCapChanged(iGroupIndex) = value
-    '    End Set
-
-    'End Property
+   
 
     ''' <summary>Number of Base Groups (Ecopath) </summary>
     ''' <remarks>This was nvar in EwE5</remarks>
