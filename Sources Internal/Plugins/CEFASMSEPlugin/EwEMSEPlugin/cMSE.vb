@@ -2632,14 +2632,18 @@ stepend:
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Stock Assessment
                 'Get Biomass estimated by the stock assessment model
-                'not used at this time just for testing
                 Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(iTime, BiomassAtTimestep)
-                'Use the biomass estimated by the stock assessment model as the true biomass
 
-                'TargConsQuota = DetermineQuotas(bioEst)
+                'OK Hook the stock assessment model up to the Quota setting
+                'Use the biomass estimated by the stock assessment model as the true biomass
+                TargConsQuota = DetermineQuotas(bioEst)
+
+                'DON'T use stock assessment model 
+                'Compute the quota on the TRUE(Ecosim) biomass
+                'TargConsQuota = DetermineQuotas(BiomassAtTimestep)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                TargConsQuota = DetermineQuotas(BiomassAtTimestep)
+
                 For iFleet = 1 To m_core.nFleets
                     MinEffortThisYear(iFleet - 1) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
                     If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MinEffortThisYear(iFleet - 1) = 0
@@ -2752,13 +2756,21 @@ stepend:
             For iFleet = 1 To m_core.nFleets
                 If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
                     _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
+                Else
+
+                    'Add uncertainty to the regulated effort 
+                    'This is implementation error
+                    'How well they match the quota set above
+                    'The implementation error is not really the business of the stock assessment model
+                    'It is part of the stock assessment for practical reasons 
+                    '   CV can be included in the interface
+                    '   Random number generator needs to be seeded at the same time as the stock assessment model
+                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
+                    '_simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * CSng(Math.Exp(Me.StockAssessment.CV(iFleet) * m_RandNormal))
+
+
                 End If
             Next
-
-            'Add uncertainty in Effort
-            'This is implementation error
-            'How well they match the quota set above
-            '_simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * CSng(Math.Exp(CVEffort(ifleet) * m_RandNormal.NextDouble()))
 
             'Calculates what the F's are for each species given the effort
             m_ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)

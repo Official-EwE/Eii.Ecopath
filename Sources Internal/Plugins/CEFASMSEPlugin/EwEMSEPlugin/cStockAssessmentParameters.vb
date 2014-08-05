@@ -97,15 +97,34 @@ Public Class cStockAssessmentParameters
         End Set
     End Property
 
+
+
+    ''' <summary>
+    ''' Quota implementation error. Strictly speaking this is not correct. 
+    ''' Error on the implemenation of the Quota is not part of the Stock Assessment model.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property CVImplementationError As Single
         Get
             Return Me.m_Assessment.CVImpError(Me.iGroupIndex)
         End Get
         Set(value As Single)
             Me.m_Assessment.CVImpError(Me.iGroupIndex) = value
-            'Me.FireOnChanged()
         End Set
     End Property
+
+   
+    Public Property CVRecruitmentError As Single
+        Get
+            Return Me.m_Assessment.CVImpError(Me.iGroupIndex)
+        End Get
+        Set(value As Single)
+            Me.m_Assessment.CVImpError(Me.iGroupIndex) = value
+        End Set
+    End Property
+
 
     Public ReadOnly Property Name As String
         Get
@@ -121,7 +140,7 @@ Public Class cStockAssessmentParameters
 
     Public ReadOnly Property isFished As Boolean
         Get
-            Return (Me.m_pathdata.fCatch(Me.iGroupIndex) > 0)
+            Return Me.m_Assessment.Core.EcoPathGroupInputs(iGroupIndex).IsFished
         End Get
     End Property
 

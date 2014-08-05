@@ -81,11 +81,22 @@ Public Class cStockAssessmentModel
 
     Public Rmax() As Single
     Public BhalfT() As Single
+
+    ''' <summary>
+    ''' CV of observation error by group
+    ''' </summary>
+    ''' <remarks></remarks>
     Public CVbiomEst() As Single
+
     Public GstockPred() As Single
     Public RstockRatio() As Single
     Public RStock0() As Single
+
+    ''' <summary>
+    ''' Input Ratio of Bt to B0 needed for 50% of max recruitment 
+    ''' </summary>
     Public RHalfB0Ratio() As Single
+
     Public cvRec() As Single
 
     ''' <summary>
@@ -93,6 +104,8 @@ Public Class cStockAssessmentModel
     ''' </summary>
     ''' <remarks></remarks>
     Public CVImpError() As Single
+
+    Public CVRecruitError() As Single
 
 #End Region
 
@@ -284,6 +297,9 @@ Public Class cStockAssessmentModel
 
     End Sub
 
+    Public Function getImplementationError(iFleet As Integer) As Single
+        Return CSng(Math.Exp(Me.CVImpError(iFleet) * m_NormalDist.NextDouble()))
+    End Function
 
 
 #End Region
@@ -347,7 +363,7 @@ Public Class cStockAssessmentModel
 
         RstockPred = CSng(Rmax(iGroup) * Me.BestimateLast(iGroup) / (BhalfT(iGroup) + Me.BestimateLast(iGroup)))
         vPred = CSng((RstockRatio(iGroup) * cvRec(iGroup)) ^ 2 / (1 - GstockPred(iGroup) ^ 2))
-        KalmanGain(iGroup) = CSng(vPred / (vPred + CVbiomEst(iGroup) ^ 2))
+        KalmanGain(iGroup) = CSng(vPred / (vPred + CVRecruitError(iGroup) ^ 2))
 
         Best = KalmanGain(iGroup) * BioEst + (1 - KalmanGain(iGroup)) * (GstockPred(iGroup) * Me.BestimateLast(iGroup) + RstockPred)
 
@@ -395,7 +411,10 @@ Public Class cStockAssessmentModel
         cvRec = New Single(Me.Core.nLivingGroups) {}
         KalmanGain = New Single(Me.Core.nLivingGroups) {}
 
+        CVRecruitError = New Single(Me.Core.nLivingGroups) {}
+
         CVImpError = New Single(Me.Core.nFleets) {}
+
 
         Array.Copy(MSEData.Rmax, Rmax, Me.Core.nLivingGroups)
         Array.Copy(MSEData.BhalfT, BhalfT, Me.Core.nLivingGroups)
@@ -406,12 +425,16 @@ Public Class cStockAssessmentModel
         Array.Copy(MSEData.RHalfB0Ratio, RHalfB0Ratio, Me.Core.nLivingGroups)
         Array.Copy(MSEData.cvRec, cvRec, Me.Core.nLivingGroups)
 
+        'HACK WARNING EwE does not have a seperate error on recruitment
+        'it uses the observed biomass error
+        Array.Copy(MSEData.CVbiomEst, CVRecruitError, Me.Core.nLivingGroups)
+
         Array.Copy(MSEData.CVFest, CVImpError, Me.Core.nFleets)
 
     End Sub
 
 
-    Private ReadOnly Property Core As cCore
+    Friend ReadOnly Property Core As cCore
         Get
             Return Me.m_core
         End Get
