@@ -28,8 +28,17 @@ Partial Class frmConfig
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_cbAutosave = New System.Windows.Forms.CheckBox()
-        Me.m_pbCredits = New System.Windows.Forms.PictureBox()
-        CType(Me.m_pbCredits, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_pbIPN = New System.Windows.Forms.PictureBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbCicimar = New System.Windows.Forms.PictureBox()
+        Me.m_pbAuci = New System.Windows.Forms.PictureBox()
+        Me.m_pbConacyt = New System.Windows.Forms.PictureBox()
+        Me.m_hdrSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        CType(Me.m_pbIPN, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel1.SuspendLayout()
+        CType(Me.m_pbCicimar, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbAuci, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbConacyt, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_cbIncludeDetritus
@@ -62,21 +71,59 @@ Partial Class frmConfig
         Me.m_cbAutosave.Name = "m_cbAutosave"
         Me.m_cbAutosave.UseVisualStyleBackColor = True
         '
-        'm_pbCredits
+        'm_pbIPN
         '
-        resources.ApplyResources(Me.m_pbCredits, "m_pbCredits")
-        Me.m_pbCredits.BackColor = System.Drawing.SystemColors.Window
-        Me.m_pbCredits.BackgroundImage = Global.EwEConsumptionWriterPlugin.My.Resources.Resources.EscudoIPN1
-        Me.m_pbCredits.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_pbCredits.Name = "m_pbCredits"
-        Me.m_pbCredits.TabStop = False
+        Me.m_pbIPN.BackgroundImage = Global.EwEConsumptionWriterPlugin.My.Resources.Resources.EscudoIPN1
+        resources.ApplyResources(Me.m_pbIPN, "m_pbIPN")
+        Me.m_pbIPN.Name = "m_pbIPN"
+        Me.m_pbIPN.TabStop = False
+        '
+        'TableLayoutPanel1
+        '
+        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+        Me.TableLayoutPanel1.BackColor = System.Drawing.Color.White
+        Me.TableLayoutPanel1.Controls.Add(Me.m_pbIPN, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_pbCicimar, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_pbAuci, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_pbConacyt, 3, 0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        '
+        'm_pbCicimar
+        '
+        Me.m_pbCicimar.BackgroundImage = Global.EwEConsumptionWriterPlugin.My.Resources.Resources.cicimar_color
+        resources.ApplyResources(Me.m_pbCicimar, "m_pbCicimar")
+        Me.m_pbCicimar.Name = "m_pbCicimar"
+        Me.m_pbCicimar.TabStop = False
+        '
+        'm_pbAuci
+        '
+        Me.m_pbAuci.BackgroundImage = Global.EwEConsumptionWriterPlugin.My.Resources.Resources.AUCI
+        resources.ApplyResources(Me.m_pbAuci, "m_pbAuci")
+        Me.m_pbAuci.Name = "m_pbAuci"
+        Me.m_pbAuci.TabStop = False
+        '
+        'm_pbConacyt
+        '
+        Me.m_pbConacyt.BackgroundImage = Global.EwEConsumptionWriterPlugin.My.Resources.Resources.CONACYT
+        resources.ApplyResources(Me.m_pbConacyt, "m_pbConacyt")
+        Me.m_pbConacyt.Name = "m_pbConacyt"
+        Me.m_pbConacyt.TabStop = False
+        '
+        'm_hdrSponsors
+        '
+        resources.ApplyResources(Me.m_hdrSponsors, "m_hdrSponsors")
+        Me.m_hdrSponsors.CanCollapseParent = False
+        Me.m_hdrSponsors.CollapsedParentHeight = 0
+        Me.m_hdrSponsors.IsCollapsed = False
+        Me.m_hdrSponsors.Name = "m_hdrSponsors"
         '
         'frmConfig
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_pbCredits)
+        Me.Controls.Add(Me.m_hdrSponsors)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_cbIncludeImportAndSum)
@@ -86,7 +133,11 @@ Partial Class frmConfig
         Me.Name = "frmConfig"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        CType(Me.m_pbCredits, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbIPN, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        CType(Me.m_pbCicimar, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbAuci, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbConacyt, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -96,5 +147,10 @@ Partial Class frmConfig
     Friend WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_cbIncludeDetritus As System.Windows.Forms.CheckBox
     Private WithEvents m_cbAutosave As System.Windows.Forms.CheckBox
-    Private WithEvents m_pbCredits As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbIPN As System.Windows.Forms.PictureBox
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_pbCicimar As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbAuci As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbConacyt As System.Windows.Forms.PictureBox
+    Private WithEvents m_hdrSponsors As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 End Class

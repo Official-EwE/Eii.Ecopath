@@ -18,11 +18,13 @@
 #Region " Imports "
 
 Option Strict On
+Option Explicit On
 Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -32,8 +34,10 @@ Public Class cConsWriterPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
     Implements EwEPlugin.IAutoSavePlugin
     Implements EwEPlugin.IMenuItemPlugin
+    Implements EwEPlugin.IUIContextPlugin
 
     Private m_core As cCore = Nothing
+    Private m_uic As cUIContext = Nothing
     Private m_writer As cConsumptionWriter = Nothing
 
 #Region " Generic plug-in bits "
@@ -180,7 +184,7 @@ Public Class cConsWriterPlugin
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         Try
-            Dim dlg As New frmConfig()
+            Dim dlg As New frmConfig(Me.m_uic)
             dlg.ShowDialog()
         Catch ex As Exception
 
@@ -194,5 +198,13 @@ Public Class cConsWriterPlugin
     End Property
 
 #End Region ' Menu integration
+
+    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+        Try
+            Me.m_uic = CType(uic, cUIContext)
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
 End Class

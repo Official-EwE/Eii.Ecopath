@@ -19,9 +19,20 @@
 
 Option Strict On
 
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Core
+
 #End Region ' Imports
 
 Public Class frmConfig
+
+    Private m_uic As cUIContext = Nothing
+
+    Public Sub New(uic As cUIContext)
+        Me.m_uic = uic
+        Me.InitializeComponent()
+    End Sub
 
 #Region " Overrides "
 
@@ -69,9 +80,42 @@ Public Class frmConfig
         Me.Close()
     End Sub
 
+    Private Sub m_pbIPN_Click(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbIPN.Click
+        Me.ShowSponsor("http://www.ipn.mx")
+    End Sub
+
+    Private Sub m_pbCicimar_Click(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbCicimar.Click
+        Me.ShowSponsor("http://www.cicimar.ipn.mx")
+    End Sub
+
+    Private Sub m_pbAuci_Click(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbAuci.Click
+        Me.ShowSponsor("http://www.auci.gub.uy")
+    End Sub
+
+    Private Sub m_pbConacyt_Click(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbConacyt.Click
+        Me.ShowSponsor("http://www.conacyt.mx")
+    End Sub
+
 #End Region ' Event handlers
 
 #Region " Internals "
+
+    Private Sub ShowSponsor(strURL As String)
+
+        If (Me.m_uic Is Nothing) Then Return
+
+        Try
+            Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke(strURL)
+        Catch ex As Exception
+            cLog.Write(ex, "ConsumptionWriterPlugin::frmConfig.ShowSponsor(" & strURL & ")")
+        End Try
+
+    End Sub
 
     Private Sub UpdateControls()
         Me.m_cbIncludeDetritus.Enabled = Me.m_cbAutosave.Checked
