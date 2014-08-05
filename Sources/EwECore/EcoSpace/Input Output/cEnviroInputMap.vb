@@ -237,12 +237,22 @@ Public Class cEnviroInputMap
                 Return 0
             End If
 
-            Return Me.m_MedData.getEnviroResponse(iShp, CSng(Me.m_source.Cell(iMapRow, iMapCol)))
+            Return Me.m_MedData.getEnviroResponse(iShp, Me.getCellValue(iMapRow, iMapCol))
 
         Catch ex As Exception
             Debug.Assert(False)
         End Try
 
+    End Function
+
+
+    Private Function getCellValue(irow As Integer, icol As Integer) As Single
+        Debug.Assert(Me.m_source.VarName = eVarNameFlags.LayerDepth Or Me.m_source.VarName = eVarNameFlags.LayerDriver, Me.ToString + " Invalid layer type.")
+        If Me.m_source.VarName = eVarNameFlags.LayerDepth Then
+            Return Me.m_spaceData.Depth(irow, icol)
+        Else
+            Return Me.m_spaceData.EnvironmentalLayerMap(Me.m_iLayerIndex, irow, icol)
+        End If
     End Function
 
 
