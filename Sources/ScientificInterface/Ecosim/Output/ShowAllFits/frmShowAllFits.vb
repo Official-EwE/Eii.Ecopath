@@ -141,7 +141,7 @@ Namespace Ecosim
                     g.DrawString(strTitle, ftCaption, Brushes.Black, sPosX + szPosName.Width, sPosY + szPosName.Height)
 
                     ' Test axis for extreme values
-                    If (Not Single.IsNaN(plot.YMax)) Then
+                    If (Not Single.IsNaN(plot.YMax)) And (plot.YMax > 0) Then
 
                         g.Clip = New Region(New Rectangle(CInt(sPosX), CInt(sPosY), CInt(pzPosGraph.Width), CInt(pzPosGraph.Height)))
 
@@ -168,7 +168,7 @@ Namespace Ecosim
                         ' Draw results
                         ' ===============
                         data = plot.SimData
-                        If Not data Is Nothing Then
+                        If (Not data Is Nothing) Then
                             For k As Integer = 1 To data.Length - 2
 
                                 Dim x1RelPos As Single = m_sPlotWidth * k / m_NTimes
