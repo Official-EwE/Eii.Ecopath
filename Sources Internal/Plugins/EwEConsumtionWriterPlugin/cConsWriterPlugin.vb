@@ -19,26 +19,31 @@
 
 Option Strict On
 Option Explicit On
-Imports System.IO
-Imports System.Text
+
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
 Public Class cConsWriterPlugin
-    Implements EwEPlugin.IEcosimEndTimestepPlugin
-    Implements EwEPlugin.IEcosimInitializedPlugin
-    Implements EwEPlugin.IEcosimRunCompletedPostPlugin
-    Implements EwEPlugin.IAutoSavePlugin
-    Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.IUIContextPlugin
+    Implements EwEPlugin.IAutoSavePlugin
+    Implements EwEPlugin.IEcopathRunInitializedPlugin
+    Implements EwEPlugin.IEcosimInitializedPlugin
+    Implements EwEPlugin.IEcosimEndTimestepPlugin
+    Implements EwEPlugin.IEcosimRunCompletedPostPlugin
+    Implements EwEPlugin.IMenuItemPlugin
 
-    Private m_core As cCore = Nothing
+#Region " Private vars "
+
     Private m_uic As cUIContext = Nothing
+    Private m_core As cCore = Nothing
+    Private m_pathds As cEcopathDataStructures = Nothing
+    Private m_simds As cEcosimDatastructures = Nothing
     Private m_writer As cConsumptionWriter = Nothing
+
+#End Region ' Private vars
 
 #Region " Generic plug-in bits "
 
@@ -106,13 +111,41 @@ Public Class cConsWriterPlugin
 
 #End Region ' Autosave implementation
 
+#Region " UIC integration "
+
+    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+        Try
+            Me.m_uic = CType(uic, cUIContext)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+#End Region ' UIC integration
+
+#Region " Ecopath integration "
+
+    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, _
+                                     TaxonDataAsObject As Object, _
+                                     StanzaDataAsObject As Object) Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
+        Try
+            Me.m_pathds = CType(EcopathDataAsObject, cEcopathDataStructures)
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+#End Region ' Ecopath integration
+
 #Region " Ecosim integration "
 
     Public Sub EcosimInitialized(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Try
+            Me.m_simds = CType(EcosimDatastructures, cEcosimDatastructures)
             If My.Settings.Autosave Then
-                Me.m_writer = New cConsumptionWriter(Me.m_core, DirectCast(EcosimDatastructures, cEcosimDatastructures))
+                Me.m_writer = New cConsumptionWriter(Me.m_core, m_pathds, m_simds)
             End If
         Catch ex As Exception
 
@@ -198,13 +231,5 @@ Public Class cConsWriterPlugin
     End Property
 
 #End Region ' Menu integration
-
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
-        Try
-            Me.m_uic = CType(uic, cUIContext)
-        Catch ex As Exception
-
-        End Try
-    End Sub
 
 End Class

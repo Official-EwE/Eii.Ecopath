@@ -30,6 +30,8 @@ Public Class cConsumptionWriter
 
     ''' <summary>EwE core to use</summary>
     Private m_core As cCore = Nothing
+    ''' <summary>Ecopath data structures to use</summary>
+    Private m_pathds As cEcopathDataStructures = Nothing
     ''' <summary>Ecosim data structures to use</summary>
     Private m_simds As cEcosimDatastructures = Nothing
     ''' <summary>Array for annual averaging</summary>
@@ -37,9 +39,10 @@ Public Class cConsumptionWriter
     ''' <summary>States if all saving went well.</summary>
     Private m_bSuccess As Boolean = True
 
-    Public Sub New(core As cCore, ds As cEcosimDatastructures)
+    Public Sub New(core As cCore, pathds As cEcopathDataStructures, simds As cEcosimDatastructures)
         Me.m_core = core
-        Me.m_simds = ds
+        Me.m_pathds = pathds
+        Me.m_simds = simds
         ReDim Me.m_annualavg(Me.m_core.nGroups, Me.m_core.nGroups + 1)
     End Sub
 
@@ -174,16 +177,22 @@ Public Class cConsumptionWriter
     End Function
 
     Private Function SimData() As Single(,)
+
         Dim n As Integer = Me.m_core.nGroups
         Dim data(n, n + 1) As Single
+
+        ' Grab consumption
         For i As Integer = 1 To n
             For j As Integer = 1 To n
                 data(i, j) = Me.m_simds.Consumpt(i, j)
             Next
-            ' ToDo: add imports
-            data(i, n + 1) = 0
+
+            ' Calc imports
+            data(i, n + 1) = Me.m_pathds.DtImp(i) * m_simds.Eatenby(i)
         Next
+
         Return data
+
     End Function
 
 End Class

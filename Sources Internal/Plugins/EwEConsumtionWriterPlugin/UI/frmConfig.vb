@@ -19,9 +19,9 @@
 
 Option Strict On
 
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
