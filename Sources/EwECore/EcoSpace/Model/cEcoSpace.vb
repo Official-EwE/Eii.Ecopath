@@ -7270,7 +7270,6 @@ exitline:
             Return False
         End If
 
-
         For Each map As IEnviroInputMap In Me.m_Data.CapMaps
 
             'Is this layer active
@@ -7278,14 +7277,12 @@ exitline:
                 'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
-                    'jb The isGroupHabCapChanged(igrp) was always false with the RBT Model
-                    'so just disable it for now....until I sort out what happened
                     If Me.m_Data.isGroupHabCapChanged(igrp) Then
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
                             'System.Console.Write(igrp.ToString + ",")
                             'Yep Layer is Active
-                            'Habitat for group has changed
+                            'Habitat for this group has changed
                             'There is a response function
                             For irow = 1 To Me.m_Data.InRow
                                 For icol = 1 To Me.m_Data.InCol
@@ -7374,8 +7371,8 @@ exitline:
         'Can be used by an interface to tell if the current time step is in the Spin-Up period
 
         'Me.bInitSpinUpBase
-        'Use to tell if the Spin-Up base has been ititialized yet
-        'Private use only by Ecosim to maintian the initialization state of the base values
+        'Used to tell if the Spin-Up base has been ititialized yet
+        'Private use only by Ecosim to maintain the initialization state of the base values
 
         'xxxxxxxxxxxxxxx NOT USING SPIN-UP xxxxxxxxxxxxxxx
         'Set the base values

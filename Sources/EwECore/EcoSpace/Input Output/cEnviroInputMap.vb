@@ -126,8 +126,7 @@ Public Class cEnviroInputMap
             For ir As Integer = 1 To Me.m_spaceData.InRow
                 For ic As Integer = 1 To Me.m_spaceData.InCol
                     If Me.m_spaceData.Depth(ir, ic) > 0 Then
-                        Dim cell As Single = CSng(Me.m_source.Cell(ir, ic))
-                        'ipt = CInt(Math.Truncate(cell / m_binWidth)) + 1
+                        Dim cell As Single = CSng(Me.getCellValue(ir, ic))
                         ipt = CInt(Math.Truncate((cell - Me.Min) / m_binWidth)) + 1
                         If ipt >= nBins Then ipt = nBins
                         If ipt <= 0 Then ipt = 1
@@ -298,7 +297,7 @@ Public Class cEnviroInputMap
                 For ic As Integer = 1 To Me.m_spaceData.InCol
                     ' JS 30May14: fixed #1343
                     If Me.m_spaceData.Depth(ir, ic) > 0 And m_spaceData.Excluded(ir, ic) = False Then
-                        Dim sCell As Single = CSng(Me.m_source.Cell(ir, ic))
+                        Dim sCell As Single = CSng(Me.getCellValue(ir, ic))
                         ' JS 30May14: fixed #1342
                         If (sCell <> cCore.NULL_VALUE) Then
                             Me.m_min = Math.Min(sCell, Me.m_min)
