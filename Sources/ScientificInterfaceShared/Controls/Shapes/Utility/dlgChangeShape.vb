@@ -515,12 +515,6 @@ Namespace Controls
                     strLabelC = "Right top"
                     strLabelD = "Right bottom"
 
-                    'strLabelA = My.Resources.LABEL_LEFTPOINT
-                    'strLabelB = My.Resources.LABEL_RIGHTPOINT
-                    'strLabelC = My.Resources.LABEL_WIDTH
-                    'strLabelD = My.Resources.LABEL_WIDTH
-
-
                 Case Else
                     Debug.Assert(False)
             End Select
@@ -637,37 +631,49 @@ Namespace Controls
 
                     Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder
 
-                        'Dim dix As Single = 1 / (nPoints / 4.0F)
-                        Dim dx As Single = sYBase / nPoints
                         Dim xpt As Single
+                        Dim width As Single = sYBase
+                        'x0 is the value of the first x point
+                        'if the user set the first point to < zero 
+                        'then shift x0 over by one point to get a bit of room for the shoulder 
+                        Dim x0 As Single = 0
+                        If sYZero < 0 Then
+                            x0 = sYZero - 1.0F
+                            width = sYBase - x0
+                        End If
+
+                        Dim dx As Single = width / nPoints
 
                         If sYBase = 0 Then sYBase = 1
                         If sYZero > sYEnd Then sYEnd = sYZero
                         If sYBase < sYZero Or sYBase < sYEnd Then sYBase = sYEnd + 1
 
-                        Dim yVal() As Single = New Single() {1, 1, 0, 0}
+                        Dim yVal() As Single
                         If Me.SelectedShapeType = eShapeFunctionType.LeftShoulder Then
+
                             yVal = New Single() {1, 1, 0, 0}
                         Else
                             yVal = New Single() {0, 0, 1, 1}
                         End If
 
-                        Dim xVal() As Single = New Single() {0, sYZero, sYEnd, sYBase}
-                        'The location of the shoulder in the response function is determined by
-                        'it's index position in the points array
-                        Dim iIndexLocs() As Integer = New Integer() {0, Me.getIndex(sYZero, sYBase, nPoints), Me.getIndex(sYEnd, sYBase, nPoints), nPoints}
+                        Dim xVal() As Single = New Single() {x0, sYZero, sYEnd, sYBase}
+                        'Break the line up into segments based on the xpoints the user entered
+                        'The location of the shoulder in the response function is determined by it's index position in the points array
+                        Dim iSegment() As Integer = New Integer() {0, Me.getIndex(sYZero, x0, sYBase, nPoints), Me.getIndex(sYEnd, x0, sYBase, nPoints), nPoints}
 
                         Dim shape As cEnviroResponseFunction = TryCast(Me.m_shape, cEnviroResponseFunction)
                         If shape IsNot Nothing Then
-                            shape.ResponseLeftLimit = 0
+                            'set the extent of the data in the shape
+                            shape.ResponseLeftLimit = x0
                             shape.ResponseRightLimit = sYBase
                         End If
 
-
+                        'loop over the segments and interpolate the points on the line
                         For i As Integer = 0 To 2
-                            For j As Integer = iIndexLocs(i) To iIndexLocs(i + 1)
-                                xpt = j * dx
+                            xpt = xVal(i)
+                            For j As Integer = iSegment(i) To iSegment(i + 1)
                                 Me.m_asDataWork(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
+                                xpt += dx
                             Next j
                         Next i
 
@@ -675,7 +681,13 @@ Namespace Controls
                     Case eShapeFunctionType.Trapezoid
 
                         Dim xpt As Single
-                        Dim width As Single = sSteep ' + 1
+                        Dim width As Single = sSteep
+                        Dim x0 As Single = 0
+                        If sYZero < 0 Then
+                            x0 = sYZero
+                            width = sSteep - sYZero
+                        End If
+
                         Dim dx As Single = width / nPoints
 
                         If sYBase = 0 Then sYBase = 1
@@ -683,21 +695,27 @@ Namespace Controls
                         If sYBase < sYZero Or sYBase < sYEnd Then sYBase = sYEnd + 1
 
                         Dim yVal() As Single = New Single() {0, 0, 1, 1, 0, 0}
-                        Dim xVal() As Single = New Single() {0, sYZero, sYEnd, sYBase, sSteep, width}
-                        'The location of the shoulder in the response function is determined by
-                        'it's index position in the points array
-                        Dim iIndexLocs() As Integer = New Integer() {0, Me.getIndex(sYZero, width, nPoints), Me.getIndex(sYEnd, width, nPoints), Me.getIndex(sYBase, width, nPoints), Me.getIndex(sSteep, width, nPoints), nPoints}
+                        Dim xVal() As Single = New Single() {x0, sYZero, sYEnd, sYBase, sSteep, width}
+
+                        'Break the line up into segments based on the xpoints the user entered
+                        'The location of the shoulder in the response function is determined by it's index position in the points array
+                        Dim iSegment() As Integer = New Integer() {0, Me.getIndex(sYZero, x0, sSteep, nPoints), Me.getIndex(sYEnd, x0, sSteep, nPoints), Me.getIndex(sYBase, x0, sSteep, nPoints), Me.getIndex(sSteep, x0, sSteep, nPoints), nPoints}
 
                         Dim shape As cEnviroResponseFunction = TryCast(Me.m_shape, cEnviroResponseFunction)
                         If shape IsNot Nothing Then
-                            shape.ResponseLeftLimit = 0
-                            shape.ResponseRightLimit = width
+                            'set the extent of the data in the shape
+                            shape.ResponseLeftLimit = x0
+                            shape.ResponseRightLimit = sSteep
                         End If
 
+                        'loop over the segments and interpolate the points on the line
                         For i As Integer = 0 To 4
-                            For j As Integer = iIndexLocs(i) To iIndexLocs(i + 1)
-                                xpt = j * dx
+                            xpt = xVal(i)
+                            'loop from the start to the end position in this segment
+                            'and interpolate the y point on the line
+                            For j As Integer = iSegment(i) To iSegment(i + 1)
                                 Me.m_asDataWork(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
+                                xpt += dx
                             Next j
                         Next i
 
@@ -732,15 +750,21 @@ Namespace Controls
 
         End Function
 
-        Private Function getIndex(Value As Single, dataWidth As Single, TotalNPoints As Integer) As Integer
-            Return CInt(Math.Truncate(TotalNPoints * (Value / dataWidth)))
+        Private Function getIndex(Xvalue As Single, x0 As Single, x1 As Single, TotalNPoints As Integer) As Integer
+            Debug.Assert(Xvalue >= x0 And Xvalue <= x1, Me.ToString + ".getIndex() value out of bounds.")
+            'use the linear interpolator to find the index positon of Value
+            'In this case we are interpolating the number of data points Xvalue is along the line
+            'x0 and x1 are the first and last values of the x axis
+            '0 and TotalNPoints are the number of data points/array indexes
+            Return CInt(LinearInterp(Xvalue, x0, x1, 0, TotalNPoints))
         End Function
 
         Private Function LinearInterp(ByVal x As Single, x0 As Single, x1 As Single, y0 As Single, y1 As Single) As Single
             If ((x1 - x0) = 0) Then
-                Return (y0 + y1) / 2
+                'mid point on the y axis
+                Return (y0 + y1) / 2.0F
             Else
-                Return y0 + (x - x0) * (y1 - y0) / (x1 - x0)
+                Return y0 + (y1 - y0) * ((x - x0) / (x1 - x0))
             End If
         End Function
 
