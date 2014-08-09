@@ -27,6 +27,8 @@ Option Explicit On
 Imports System.IO
 Imports EwECore
 
+Imports EwEUtils.Utilities
+
 #End Region
 
 
@@ -168,6 +170,7 @@ Public Class cStockAssessmentModel
         Try
 
             Me.m_lstParams = New List(Of cStockAssessmentParameters)
+            'Include the zero element so the indexing matches up with the core one based indexes
             For igrp As Integer = 0 To Me.m_core.nGroups
                 Me.m_lstParams.Add(New cStockAssessmentParameters(igrp, Me, Me.m_simdata, Me.m_pathdata))
             Next
@@ -460,18 +463,84 @@ Public Class cStockAssessmentModel
     End Function
 
     Public Function Load(Optional msg As cMessage = Nothing, Optional strFilename As String = "") As Boolean Implements IMSEData.Load
-        Me.Defaults()
-        Return True
+        Dim buff As String
+        Dim igrp As Integer
+        Dim breturn As Boolean = False
+
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFileName
+        End If
+
+        Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
+
+        Try
+            If (reader IsNot Nothing) Then
+                'read the header line
+                reader.ReadLine()
+                Do Until reader.EndOfStream
+                    'igroup indexing assumes the file was written in order
+                    'which it was
+                    igrp += 1
+                    buff = reader.ReadLine()
+                    Me.Parameter(igrp).FromCSVString(buff)
+                Loop
+
+                breturn = True
+            End If '(reader IsNot Nothing)
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
+            cMSEUtils.LogError(msg, "Regulations could not load from " & strFilename & ". " & ex.Message)
+            breturn = False
+        End Try
+        cMSEUtils.ReleaseReader(reader)
+
+        If Not breturn Then
+            Me.Defaults()
+            Me.MSE.InformUser("CEFAS MSE Stock Assessment model failed to load parameters from file. Defaults will be used.", EwEUtils.Core.eMessageImportance.Information)
+        End If
+
+        Return breturn
     End Function
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
-        Return True
+        Dim breturn As Boolean
+        Try
+
+            If (String.IsNullOrWhiteSpace(strFilename)) Then
+                strFilename = Me.DefaultFileName
+            End If
+
+            Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
+            If (strm IsNot Nothing) Then
+
+                strm.WriteLine(cStockAssessmentParameters.toCSVHeader)
+                For iGrp As Integer = 1 To Me.m_core.nLivingGroups
+                    strm.WriteLine(Me.Parameter(iGrp).toCSVString)
+                Next
+                cMSEUtils.ReleaseWriter(strm)
+                breturn = True
+            End If
+
+        Catch ex As Exception
+            breturn = False
+        End Try
+
+        Return breturn
     End Function
 
-    Public Function FileExists(Optional strFilename As String = "") As Boolean Implements IMSEData.FileExists
-        Return False
+    Private Function DefaultFileName() As String
+        Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "StockAssessment.csv")
     End Function
 
+
+    Public Function FileExists(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.FileExists
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFileName
+        End If
+        Return File.Exists(strFilename)
+    End Function
 #End Region
 
 

@@ -474,7 +474,7 @@ Public Class frmMSE
     Private Sub onStockAssessment(sender As System.Object, e As System.EventArgs) Handles m_btnStockAssessment.Click
 
         Try
-            Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE.StockAssessment)
+            Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 Me.MSE.InvalidateRunState(True)
             End If

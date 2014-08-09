@@ -25,6 +25,8 @@ Option Strict On
 Option Explicit On
 Imports EwECore
 
+Imports EwEUtils.Utilities
+
 #End Region
 
 
@@ -37,6 +39,9 @@ Public Class cStockAssessmentParameters
     Private m_iGrp As Integer
     Private m_simdata As cEcosimDatastructures
     Private m_pathdata As cEcopathDataStructures
+
+    Public Property isLoading As Boolean
+
 
     Public Event onParameterChanged(ByVal iGroupIndex As Integer)
 
@@ -115,7 +120,7 @@ Public Class cStockAssessmentParameters
         End Set
     End Property
 
-   
+
     Public Property CVRecruitmentError As Single
         Get
             Return Me.m_Assessment.CVImpError(Me.iGroupIndex)
@@ -147,6 +152,8 @@ Public Class cStockAssessmentParameters
 
     Private Sub FireOnChanged()
 
+        If Me.isLoading Then Return
+
         Me.m_Assessment.OnParameterChanged(Me.iGroupIndex)
         Try
             RaiseEvent onParameterChanged(Me.iGroupIndex)
@@ -155,5 +162,33 @@ Public Class cStockAssessmentParameters
         End Try
 
     End Sub
+
+    Public Function FromCSVString(csvBuffer As String) As Boolean
+        Dim recs() As String
+        recs = cStringUtils.SplitQualified(csvBuffer, ",")
+
+        Me.isLoading = True
+
+        Me.m_iGrp = cStringUtils.ConvertToInteger(recs(1))
+        Me.ForcastGain = cStringUtils.ConvertToSingle(recs(2))
+        Me.RHalfB0Ratio = cStringUtils.ConvertToSingle(recs(3))
+        Me.cvRec = cStringUtils.ConvertToSingle(recs(4))
+
+        Me.isLoading = False
+
+        Return True
+
+    End Function
+
+
+    Public Function toCSVString() As String
+        Return cStringUtils.ToCSVField(Me.Name) + "," + cStringUtils.ToCSVField(Me.iGroupIndex) + "," + _
+            cStringUtils.ToCSVField(Me.ForcastGain) + "," + cStringUtils.ToCSVField(Me.RHalfB0Ratio) + "," + _
+            cStringUtils.ToCSVField(Me.cvRec)
+    End Function
+
+    Public Shared Function toCSVHeader() As String
+        Return "GroupName,GroupIndex,ForcastGain,RHalfBioAtB0,CVKalman"
+    End Function
 
 End Class
