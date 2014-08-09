@@ -77,6 +77,8 @@ Public Class cStockAssessmentModel
     Dim m_simdata As cEcosimDatastructures
     Dim m_pathdata As cEcopathDataStructures
 
+    Dim m_isChanged As Boolean
+
 #End Region
 
 #Region "Pubic data"
@@ -125,6 +127,8 @@ Public Class cStockAssessmentModel
 
         Me.Init()
 
+        Me.m_isChanged = False
+
     End Sub
 
     Public Sub InitForRun()
@@ -137,23 +141,21 @@ Public Class cStockAssessmentModel
     Private Sub Init()
         Try
 
-            Bestimate = New Single(Me.Core.nLivingGroups) {}
-            BestimateLast = New Single(Me.Core.nLivingGroups) {}
+            Me.InitData()
 
-            m_NormalDist = New Troschuetz.Random.NormalDistribution()
+            Me.m_NormalDist = New Troschuetz.Random.NormalDistribution()
 
             'This will reset the random number generator with the same seed each time 
             'the same sequence of random numbers will be generated on each call to NextDouble()
             'see http://www.codeproject.com/Articles/15102/NET-random-number-generators-and-distributions
             'The Reset() will need to be called each time the MSE is run
             'Right now this is called just once when the Ecosim scenario is loaded
-            m_NormalDist.Reset()
-
-            m_NormalDist.Mu = 0
-            m_NormalDist.Sigma = 1
+            Me.m_NormalDist.Reset()
+            Me.m_NormalDist.Mu = 0
+            Me.m_NormalDist.Sigma = 1
 
             'For now just copy the data from the core into local arrays
-            Me.InitToCoreData()
+            'Me.InitToCoreData()
 
             Me.InitStockAssessment()
             Me.InitInterfaceParameters()
@@ -286,24 +288,13 @@ Public Class cStockAssessmentModel
     End Property
 
     Public Sub OnParameterChanged(ByVal iGroupIndex As Integer)
-        InitStockAssessment()
-    End Sub
-
-
-    Public Sub setDefault()
-
-        For igrp As Integer = 1 To Me.Core.nGroups
-            Me.RstockRatio(igrp) = CSng(1 - Math.Exp(-Me.m_pathdata.PB(igrp)))
-        Next
-
-        InitStockAssessment()
-
+        'InitStockAssessment()
+        Me.m_isChanged = True
     End Sub
 
     Public Function getImplementationError(iFleet As Integer) As Single
         Return CSng(Math.Exp(Me.CVImpError(iFleet) * m_NormalDist.NextDouble()))
     End Function
-
 
 #End Region
 
@@ -398,26 +389,9 @@ Public Class cStockAssessmentModel
 
     End Function
 
-
-
     Private Sub InitToCoreData()
 
         Dim MSEData As MSE.cMSEDataStructures = Me.MSE.CoreMSEData
-
-        Rmax = New Single(Me.Core.nLivingGroups) {}
-        BhalfT = New Single(Me.Core.nLivingGroups) {}
-        CVbiomEst = New Single(Me.Core.nLivingGroups) {}
-        GstockPred = New Single(Me.Core.nLivingGroups) {}
-        RstockRatio = New Single(Me.Core.nLivingGroups) {}
-        RStock0 = New Single(Me.Core.nLivingGroups) {}
-        RHalfB0Ratio = New Single(Me.Core.nLivingGroups) {}
-        cvRec = New Single(Me.Core.nLivingGroups) {}
-        KalmanGain = New Single(Me.Core.nLivingGroups) {}
-
-        CVRecruitError = New Single(Me.Core.nLivingGroups) {}
-
-        CVImpError = New Single(Me.Core.nFleets) {}
-
 
         Array.Copy(MSEData.Rmax, Rmax, Me.Core.nLivingGroups)
         Array.Copy(MSEData.BhalfT, BhalfT, Me.Core.nLivingGroups)
@@ -436,6 +410,26 @@ Public Class cStockAssessmentModel
 
     End Sub
 
+    Private Sub InitData()
+
+        Bestimate = New Single(Me.Core.nLivingGroups) {}
+        BestimateLast = New Single(Me.Core.nLivingGroups) {}
+
+        Rmax = New Single(Me.Core.nLivingGroups) {}
+        BhalfT = New Single(Me.Core.nLivingGroups) {}
+        CVbiomEst = New Single(Me.Core.nLivingGroups) {}
+        GstockPred = New Single(Me.Core.nLivingGroups) {}
+        RstockRatio = New Single(Me.Core.nLivingGroups) {}
+        RStock0 = New Single(Me.Core.nLivingGroups) {}
+        RHalfB0Ratio = New Single(Me.Core.nLivingGroups) {}
+        cvRec = New Single(Me.Core.nLivingGroups) {}
+        KalmanGain = New Single(Me.Core.nLivingGroups) {}
+
+        CVRecruitError = New Single(Me.Core.nLivingGroups) {}
+
+        CVImpError = New Single(Me.Core.nFleets) {}
+
+    End Sub
 
     Friend ReadOnly Property Core As cCore
         Get
@@ -449,17 +443,40 @@ Public Class cStockAssessmentModel
         End Get
     End Property
 
+    Private Function DefaultFileName() As String
+        Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "StockAssessment.csv")
+    End Function
+
 #End Region
 
 #Region "IMSEData Implementation"
 
     Public Sub Defaults() Implements IMSEData.Defaults
-        Me.InitToCoreData()
+        'Me.InitToCoreData()
+        Try
+            For igrp As Integer = 1 To Me.Core.nLivingGroups
+                Me.RstockRatio(igrp) = CSng(1 - Math.Exp(-Me.m_pathdata.PB(igrp)))
+                Me.RHalfB0Ratio(igrp) = 0.2F
+
+                Me.CVbiomEst(igrp) = 0.3F
+                Me.CVRecruitError(igrp) = 0.3F
+                Me.cvRec(igrp) = 0.8F
+            Next
+
+            For iflt As Integer = 1 To Me.Core.nFleets
+                Me.CVImpError(iflt) = 0.3F
+            Next
+
+            Me.InitStockAssessment()
+
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Public Function IsChanged() As Boolean Implements IMSEData.IsChanged
-
-        Return False
+        Return Me.m_isChanged
     End Function
 
     Public Function Load(Optional msg As cMessage = Nothing, Optional strFilename As String = "") As Boolean Implements IMSEData.Load
@@ -495,10 +512,17 @@ Public Class cStockAssessmentModel
         End Try
         cMSEUtils.ReleaseReader(reader)
 
-        If Not breturn Then
+        If breturn Then
+            'Read the file 
+            Me.m_isChanged = False
+        Else
+            'Failed to read the file 
+            'set some defaults and tell the user
             Me.Defaults()
             Me.MSE.InformUser("CEFAS MSE Stock Assessment model failed to load parameters from file. Defaults will be used.", EwEUtils.Core.eMessageImportance.Information)
         End If
+
+        Me.InitStockAssessment()
 
         Return breturn
     End Function
@@ -526,12 +550,13 @@ Public Class cStockAssessmentModel
             breturn = False
         End Try
 
+        If breturn Then
+            Me.m_isChanged = False
+        End If
+
         Return breturn
     End Function
 
-    Private Function DefaultFileName() As String
-        Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "StockAssessment.csv")
-    End Function
 
 
     Public Function FileExists(Optional strFilename As String = "") As Boolean _
@@ -541,6 +566,7 @@ Public Class cStockAssessmentModel
         End If
         Return File.Exists(strFilename)
     End Function
+
 #End Region
 
 

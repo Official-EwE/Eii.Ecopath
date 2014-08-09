@@ -98,35 +98,36 @@ Public Class cStockAssessmentParameters
         End Get
         Set(value As Single)
             Me.m_Assessment.CVbiomEst(Me.iGroupIndex) = value
-            'Me.FireOnChanged()
+            Me.FireOnChanged()
         End Set
     End Property
 
 
-
-    ''' <summary>
-    ''' Quota implementation error. Strictly speaking this is not correct. 
-    ''' Error on the implemenation of the Quota is not part of the Stock Assessment model.
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property CVImplementationError As Single
-        Get
-            Return Me.m_Assessment.CVImpError(Me.iGroupIndex)
-        End Get
-        Set(value As Single)
-            Me.m_Assessment.CVImpError(Me.iGroupIndex) = value
-        End Set
-    End Property
+    ' ''' <summary>
+    ' ''' Quota implementation error. Strictly speaking this is not correct. 
+    ' ''' Error on the implemenation of the Quota is not part of the Stock Assessment model.
+    ' ''' </summary>
+    ' ''' <value></value>
+    ' ''' <returns></returns>
+    ' ''' <remarks></remarks>
+    'Public Property CVImplementationError As Single
+    '    Get
+    '        Return Me.m_Assessment.CVImpError(Me.iGroupIndex)
+    '    End Get
+    '    Set(value As Single)
+    '        Me.m_Assessment.CVImpError(Me.iGroupIndex) = value
+    '        FireOnChanged()
+    '    End Set
+    'End Property
 
 
     Public Property CVRecruitmentError As Single
         Get
-            Return Me.m_Assessment.CVImpError(Me.iGroupIndex)
+            Return Me.m_Assessment.CVRecruitError(Me.iGroupIndex)
         End Get
         Set(value As Single)
-            Me.m_Assessment.CVImpError(Me.iGroupIndex) = value
+            Me.m_Assessment.CVRecruitError(Me.iGroupIndex) = value
+            FireOnChanged()
         End Set
     End Property
 
@@ -174,6 +175,9 @@ Public Class cStockAssessmentParameters
         Me.RHalfB0Ratio = cStringUtils.ConvertToSingle(recs(3))
         Me.cvRec = cStringUtils.ConvertToSingle(recs(4))
 
+        Me.CVObservationError = cStringUtils.ConvertToSingle(recs(5))
+        Me.CVRecruitmentError = cStringUtils.ConvertToSingle(recs(6))
+
         Me.isLoading = False
 
         Return True
@@ -184,11 +188,12 @@ Public Class cStockAssessmentParameters
     Public Function toCSVString() As String
         Return cStringUtils.ToCSVField(Me.Name) + "," + cStringUtils.ToCSVField(Me.iGroupIndex) + "," + _
             cStringUtils.ToCSVField(Me.ForcastGain) + "," + cStringUtils.ToCSVField(Me.RHalfB0Ratio) + "," + _
-            cStringUtils.ToCSVField(Me.cvRec)
+            cStringUtils.ToCSVField(Me.cvRec) + "," + cStringUtils.ToCSVField(Me.CVObservationError) + "," + _
+            cStringUtils.ToCSVField(Me.CVRecruitmentError)
     End Function
 
     Public Shared Function toCSVHeader() As String
-        Return "GroupName,GroupIndex,ForcastGain,RHalfBioAtB0,CVKalman"
+        Return "GroupName,GroupIndex,ForcastGain,RHalfBioAtB0,CVKalman,CVObservationError,CVRecruitment"
     End Function
 
 End Class

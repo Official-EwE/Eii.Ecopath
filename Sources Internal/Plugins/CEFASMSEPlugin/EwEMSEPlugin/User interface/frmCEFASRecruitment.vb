@@ -145,8 +145,9 @@ Public Class frmCEFASRecruitment
     Private Sub tsbtDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnDefaults.Click
         Try
-            Debug.Assert(False, "Set defaults not implemented yet!")
-            'Me.Core.SetDefaultMSERecruitment()
+            'Debug.Assert(False, "Set defaults not implemented yet!")
+            Me.m_Assessment.Defaults()
+
         Catch ex As Exception
             ' Yippee
         End Try
