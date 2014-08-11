@@ -142,39 +142,7 @@ Namespace Controls
         ''' <returns>A file dialog.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FolderBrowserDialog(ByVal strDescription As String, _
-                                                   ByVal strInitialDirectory As String) As Ookii.Dialogs.VistaFolderBrowserDialog
-
-            Dim dlg As New Ookii.Dialogs.VistaFolderBrowserDialog()
-
-            If (String.IsNullOrWhiteSpace(strDescription)) Then
-                strDescription = My.Resources.PROMPT_FOLDER_SELECTION
-            End If
-
-            dlg.SelectedPath = strInitialDirectory
-            dlg.ShowNewFolderButton = True
-            dlg.Description = strDescription
-            dlg.UseDescriptionForTitle = True
-
-            ' Hack when XP SP1 installation is not detected
-            Dim pi As PropertyInfo = GetType(FolderBrowserDialog).GetProperty("AutoUpgradeEnabled")
-            If (pi IsNot Nothing) Then pi.SetValue(dlg, True, Nothing)
-
-            Return dlg
-
-        End Function
-
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Create an standardized Folder browse dialog for use in EwE.
-        ''' </summary>
-        ''' <param name="strDescription">Description to display in the dialog.</param>
-        ''' <param name="strInitialDirectory">The initial directory to open the
-        ''' dialog for.</param>
-        ''' <returns>A file dialog.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function FolderBrowserDialogOld(ByVal strDescription As String, _
-                                    ByVal strInitialDirectory As String) As FolderBrowserDialog
+                                                   ByVal strInitialDirectory As String) As FolderBrowserDialog
 
             Dim dlg As New FolderBrowserDialog()
 

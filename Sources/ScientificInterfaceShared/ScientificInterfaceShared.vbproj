@@ -986,7 +986,6 @@
     <Content Include="Includes\Ionic.Zip.dll" />
     <Content Include="Includes\Microsoft.GLEE.dll" />
     <Content Include="Includes\Microsoft.Office.Interop.Excel.dll" />
-    <Content Include="Includes\Ookii.Dialogs.dll" />
     <Content Include="Includes\SourceGrid2.dll" />
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
