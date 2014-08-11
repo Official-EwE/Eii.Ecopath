@@ -123,9 +123,6 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ookii.Dialogs">
-      <HintPath>..\ScientificInterfaceShared\Includes\Ookii.Dialogs.dll</HintPath>
-    </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>

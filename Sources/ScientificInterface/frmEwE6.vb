@@ -2532,32 +2532,15 @@ Public Class frmEwE6
 
         Dim doc As cDirectoryOpenCommand = DirectCast(cmd, cDirectoryOpenCommand)
         Dim strPath As String = doc.Directory
-        Dim bOK As Boolean = False
 
         Try
-            ' Try Ookii dialogs first
-            Dim dlgLoad As Ookii.Dialogs.VistaFolderBrowserDialog = Nothing
+            Dim dlgLoad As FolderBrowserDialog = Nothing
             dlgLoad = cEwEFileDialogHelper.FolderBrowserDialog(doc.Prompt, strPath)
-            If dlgLoad IsNot Nothing Then
-                doc.Result = dlgLoad.ShowDialog()
-                strPath = dlgLoad.SelectedPath
-                bOK = True
-            End If
+            doc.Result = dlgLoad.ShowDialog()
+            strPath = dlgLoad.SelectedPath
         Catch ex As Exception
-            cLog.Write(ex, "OnDirectoryOpen ookii")
+            cLog.Write(ex, "OnDirectoryOpen old")
         End Try
-
-        If Not bOK Then
-            Try
-                Dim dlgLoad As FolderBrowserDialog = Nothing
-                dlgLoad = cEwEFileDialogHelper.FolderBrowserDialogOld(doc.Prompt, strPath)
-                doc.Result = dlgLoad.ShowDialog()
-                strPath = dlgLoad.SelectedPath
-                bOK = True
-            Catch ex As Exception
-                cLog.Write(ex, "OnDirectoryOpen old")
-            End Try
-        End If
 
         If (doc.Result = Windows.Forms.DialogResult.OK) Then
             doc.Directory = strPath
