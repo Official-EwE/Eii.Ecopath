@@ -145,17 +145,33 @@ Public Class frmCEFASRecruitment
     Private Sub tsbtDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnDefaults.Click
         Try
-            'Debug.Assert(False, "Set defaults not implemented yet!")
             Me.m_Assessment.Defaults()
-
         Catch ex As Exception
-            ' Yippee
+            cLog.Write(ex, "CefasMSE:frmCEFASRecruitment.tsbtDefaults_Click")
         End Try
     End Sub
 
+    Private Sub OnSave(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnSave.Click
+        If (Me.m_Assessment.Save) Then
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
+        End If
+    End Sub
+
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnCancel.Click
+        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
     Private Sub onParameterChanged(ByVal iGroupIndex As Integer)
-        ' A relevant property has changed: redraw the graph
-        Me.Redraw()
+        Try
+            ' A relevant property has changed: redraw the graph
+            Me.Redraw()
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE:frmCEFASRecruitment.onParameterChanged")
+        End Try
     End Sub
 
 #End Region ' Events
@@ -173,6 +189,8 @@ Public Class frmCEFASRecruitment
         End Get
 
         Set(ByVal value As cStockAssessmentParameters)
+
+            ' JS 12Aug14: setting and removing two handlers for the same event seems like a bug to me
 
             ' Unregister
             If (Me.m_group IsNot Nothing) Then
@@ -346,16 +364,5 @@ Public Class frmCEFASRecruitment
 
 #End Region ' Internals
 
-    Private Sub OnSave(sender As System.Object, e As System.EventArgs) Handles m_btnSave.Click
-        If (Me.m_Assessment.Save) Then
-            Me.DialogResult = Windows.Forms.DialogResult.OK
-            Me.Close()
-        End If
-    End Sub
-
-    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles m_btnCancel.Click
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
-        Me.Close()
-    End Sub
 End Class
 
