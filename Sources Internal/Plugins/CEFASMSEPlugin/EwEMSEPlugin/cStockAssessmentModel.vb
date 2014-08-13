@@ -271,8 +271,16 @@ Public Class cStockAssessmentModel
             End If
 
             Dim fn As String = cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "BobsOverB.csv")
-            m_strmBobsB = cMSEUtils.GetWriter(fn)
+            m_strmBobsB = cMSEUtils.GetWriter(fn, False)
+            'Headers
             m_strmBobsB.WriteLine("B_StockAssessment / B_Ecosim")
+            For igrp As Integer = 1 To Me.Core.nGroups
+                m_strmBobsB.Write(Me.m_pathdata.GroupName(igrp))
+                If igrp < Me.Core.nGroups Then
+                    m_strmBobsB.Write(",")
+                End If
+            Next
+            m_strmBobsB.WriteLine()
 
         Catch ex As Exception
 
@@ -556,8 +564,6 @@ Public Class cStockAssessmentModel
 
         Return breturn
     End Function
-
-
 
     Public Function FileExists(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.FileExists
