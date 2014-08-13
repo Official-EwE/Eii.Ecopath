@@ -42,7 +42,6 @@ Public Class cStockAssessmentParameters
 
     Public Property isLoading As Boolean
 
-
     Public Event onParameterChanged(ByVal iGroupIndex As Integer)
 
     Public Sub New(ByVal iGroup As Integer, ByVal StockAssessmentModel As cStockAssessmentModel, ByVal EcoSimData As cEcosimDatastructures, ByVal EcoPathData As cEcopathDataStructures)
@@ -101,25 +100,6 @@ Public Class cStockAssessmentParameters
             Me.FireOnChanged()
         End Set
     End Property
-
-
-    ' ''' <summary>
-    ' ''' Quota implementation error. Strictly speaking this is not correct. 
-    ' ''' Error on the implemenation of the Quota is not part of the Stock Assessment model.
-    ' ''' </summary>
-    ' ''' <value></value>
-    ' ''' <returns></returns>
-    ' ''' <remarks></remarks>
-    'Public Property CVImplementationError As Single
-    '    Get
-    '        Return Me.m_Assessment.CVImpError(Me.iGroupIndex)
-    '    End Get
-    '    Set(value As Single)
-    '        Me.m_Assessment.CVImpError(Me.iGroupIndex) = value
-    '        FireOnChanged()
-    '    End Set
-    'End Property
-
 
     Public Property CVRecruitmentError As Single
         Get
