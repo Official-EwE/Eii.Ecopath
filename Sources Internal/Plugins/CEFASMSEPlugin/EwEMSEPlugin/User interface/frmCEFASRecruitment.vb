@@ -110,6 +110,8 @@ Public Class frmCEFASRecruitment
             End If
         Next
 
+        Me.m_chkUseAssessment.Checked = Me.m_Assessment.UseAssessment
+
         Me.CenterToParent()
 
     End Sub
@@ -157,6 +159,11 @@ Public Class frmCEFASRecruitment
         Handles m_btnCancel.Click
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
         Me.Close()
+    End Sub
+
+
+    Private Sub OnUseAssessment(sender As System.Object, e As System.EventArgs) Handles m_chkUseAssessment.CheckedChanged
+        Me.m_Assessment.UseAssessment = Me.m_chkUseAssessment.Checked
     End Sub
 
     Private Sub onParameterChanged(ByVal iGroupIndex As Integer)

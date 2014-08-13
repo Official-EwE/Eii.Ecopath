@@ -52,6 +52,7 @@ Partial Class frmCEFASRecruitment
         Me.m_grid = New EwEMSEPlugin.gridCEFASRecruitment()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnSave = New System.Windows.Forms.Button()
+        Me.m_chkUseAssessment = New System.Windows.Forms.CheckBox()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -147,11 +148,20 @@ Partial Class frmCEFASRecruitment
         Me.m_btnSave.Name = "m_btnSave"
         Me.m_btnSave.UseVisualStyleBackColor = True
         '
+        'm_chkUseAssessment
+        '
+        resources.ApplyResources(Me.m_chkUseAssessment, "m_chkUseAssessment")
+        Me.m_chkUseAssessment.Checked = True
+        Me.m_chkUseAssessment.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.m_chkUseAssessment.Name = "m_chkUseAssessment"
+        Me.m_chkUseAssessment.UseVisualStyleBackColor = True
+        '
         'frmCEFASRecruitment
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CloseButton = False
+        Me.Controls.Add(Me.m_chkUseAssessment)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.m_btnSave)
@@ -168,6 +178,7 @@ Partial Class frmCEFASRecruitment
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -178,6 +189,7 @@ Partial Class frmCEFASRecruitment
     Private WithEvents m_btnSave As System.Windows.Forms.Button
     Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
     Private WithEvents m_tsbnDefaults As System.Windows.Forms.ToolStripButton
+    Friend WithEvents m_chkUseAssessment As System.Windows.Forms.CheckBox
 
 End Class
 
