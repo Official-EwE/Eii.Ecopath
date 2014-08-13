@@ -74,10 +74,12 @@ Public Class cStockAssessmentModel
 
     Private m_lstParams As List(Of cStockAssessmentParameters)
 
-    Dim m_simdata As cEcosimDatastructures
-    Dim m_pathdata As cEcopathDataStructures
+    Private m_simdata As cEcosimDatastructures
+    Private m_pathdata As cEcopathDataStructures
 
-    Dim m_isChanged As Boolean
+    Private m_isChanged As Boolean
+
+    Private m_rand As Random
 
 #End Region
 
@@ -111,6 +113,8 @@ Public Class cStockAssessmentModel
 
     Public CVRecruitError() As Single
 
+    Public UseAssessment As Boolean
+
 #End Region
 
 #Region "Construction and Initialization"
@@ -128,11 +132,13 @@ Public Class cStockAssessmentModel
         Me.Init()
 
         Me.m_isChanged = False
+        Me.UseAssessment = True
 
     End Sub
 
     Public Sub InitForRun()
 
+        Me.InitBiomass()
         Me.InitStockAssessment()
 
     End Sub
@@ -143,19 +149,22 @@ Public Class cStockAssessmentModel
 
             Me.InitData()
 
+            'Me.InitRandom()
+
             Me.m_NormalDist = New Troschuetz.Random.NormalDistribution()
+            Me.m_rand = New Random(666)
 
-            'This will reset the random number generator with the same seed each time 
-            'the same sequence of random numbers will be generated on each call to NextDouble()
-            'see http://www.codeproject.com/Articles/15102/NET-random-number-generators-and-distributions
-            'The Reset() will need to be called each time the MSE is run
-            'Right now this is called just once when the Ecosim scenario is loaded
-            Me.m_NormalDist.Reset()
-            Me.m_NormalDist.Mu = 0
-            Me.m_NormalDist.Sigma = 1
+            ''This will reset the random number generator with the same seed each time 
+            ''the same sequence of random numbers will be generated on each call to NextDouble()
+            ''see http://www.codeproject.com/Articles/15102/NET-random-number-generators-and-distributions
+            ''The Reset() will need to be called each time the MSE is run
+            ''Right now this is called just once when the Ecosim scenario is loaded
+            'Me.m_NormalDist.Reset()
+            'Me.m_NormalDist.Mu = 0
+            'Me.m_NormalDist.Sigma = 1
 
-            'For now just copy the data from the core into local arrays
-            'Me.InitToCoreData()
+            ''For now just copy the data from the core into local arrays
+            ''Me.InitToCoreData()
 
             Me.InitStockAssessment()
             Me.InitInterfaceParameters()
@@ -183,15 +192,19 @@ Public Class cStockAssessmentModel
 
     End Sub
 
+
+    Private Sub InitBiomass()
+        'Init Bestimate() and BestimateLast() to the start biomass with some error
+        For igrp As Integer = 1 To Me.Core.nLivingGroups
+            Bestimate(igrp) = m_simdata.StartBiomass(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * getNextRandNormal()))
+            BestimateLast(igrp) = Bestimate(igrp)
+        Next igrp
+
+    End Sub
+
     Private Sub InitStockAssessment()
         Dim BaB As Single
         Try
-
-            'Init Bestimate() and BestimateLast() to the start biomass with some error
-            For igrp As Integer = 1 To Me.Core.nLivingGroups
-                Bestimate(igrp) = m_simdata.StartBiomass(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * m_NormalDist.NextDouble()))
-                BestimateLast(igrp) = Bestimate(igrp)
-            Next igrp
 
             'init RstockPred from GstockPred
             'GstockPred could have been altered by an interface
@@ -221,31 +234,37 @@ Public Class cStockAssessmentModel
 #Region "Public Methods"
 
 
-    Public Function DoAnnualStockAssessment(iTimestep As Integer, Biomass() As Single) As Single()
+    Public Function DoAnnualStockAssessment(ByVal Strategy As Strategy, iTimestep As Integer, Biomass() As Single) As Single()
         Try
 
-            Dim nGrps As Integer = Me.Core.nLivingGroups
-            'Use the MSE Stock Recruitment Parameters from the EwE6 interface until we get our own interface
-            Dim MSEData As MSE.cMSEDataStructures = Me.MSE.CoreMSEData
-            Dim Bobs() As Single = New Single(nGrps) {}
+            If Me.UseAssessment Then
 
-            'get average biomass for the last year
-            Dim Bavg() As Single = Me.getAvgB(iTimestep)
+                Dim nGrps As Integer = Me.Core.nLivingGroups
+                'Use the MSE Stock Recruitment Parameters from the EwE6 interface until we get our own interface
+                Dim MSEData As MSE.cMSEDataStructures = Me.MSE.CoreMSEData
+                Dim Bobs() As Single = New Single(nGrps) {}
 
-            For igrp As Integer = 1 To nGrps
-                'Get the Observed Biomass
-                'Average biomass from the last year with sampling error
-                Bobs(igrp) = Bavg(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * m_NormalDist.NextDouble()))
+                'get average biomass for the last year
+                Dim Bavg() As Single = Me.getAvgB(iTimestep)
 
-                'Get the estimated biomass base on the observed biomass plus uncertainty
-                'Using the stock recruitment curve from the EwE6 MSE interface
-                Me.Bestimate(igrp) = Me.stockRecruitment(iTimestep, igrp, Bobs(igrp), Me.Bestimate(igrp))
-            Next igrp
+                For igrp As Integer = 1 To nGrps
+                    'Get the Observed Biomass
+                    'Average biomass from the last year with sampling error
+                    Bobs(igrp) = Bavg(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * getNextRandNormal()))
 
-            'For debugging dump BioEst/B to file
-            Me.dumpBioEstOverB(Me.Bestimate, Biomass)
+                    'Get the estimated biomass base on the observed biomass plus uncertainty
+                    'Using the stock recruitment curve from the EwE6 MSE interface
+                    Me.Bestimate(igrp) = Me.stockRecruitment(iTimestep, igrp, Bobs(igrp), Me.Bestimate(igrp))
+                Next igrp
 
-            Return Me.Bestimate
+                'For debugging dump BioEst/B to file
+                Me.dumpBioEstOverB(Strategy, iTimestep, Me.Bestimate, Biomass)
+
+                Return Me.Bestimate
+
+            Else
+                Return Biomass
+            End If
 
         Catch ex As Exception
             Debug.Assert(False, "Opps Exception in DoAnnualStockAssessment(). " + ex.Message)
@@ -264,30 +283,10 @@ Public Class cStockAssessmentModel
 
     Public Sub BeginRun()
 
-        Try
-
-            If m_strmBobsB IsNot Nothing Then
-                cMSEUtils.ReleaseWriter(m_strmBobsB)
-            End If
-
-            Dim fn As String = cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "BobsOverB.csv")
-            m_strmBobsB = cMSEUtils.GetWriter(fn, False)
-            'Headers
-            m_strmBobsB.WriteLine("B_StockAssessment / B_Ecosim")
-            For igrp As Integer = 1 To Me.Core.nGroups
-                m_strmBobsB.Write(Me.m_pathdata.GroupName(igrp))
-                If igrp < Me.Core.nGroups Then
-                    m_strmBobsB.Write(",")
-                End If
-            Next
-            m_strmBobsB.WriteLine()
-
-        Catch ex As Exception
-
-        End Try
+        Me.InitOutputFiles()
+        Me.InitRandom()
 
     End Sub
-
 
     Public ReadOnly Property Parameter(ByVal iGroupIndex As Integer) As cStockAssessmentParameters
         Get
@@ -301,21 +300,49 @@ Public Class cStockAssessmentModel
     End Sub
 
     Public Function getImplementationError(iFleet As Integer) As Single
-        Return CSng(Math.Exp(Me.CVImpError(iFleet) * m_NormalDist.NextDouble()))
+        Return CSng(Math.Exp(Me.CVImpError(iFleet) * getNextRandNormal()))
     End Function
 
 #End Region
 
 #Region "Private Properties and  Methods"
 
-    Private Sub dumpBioEstOverB(BioEst() As Single, B() As Single)
+    Private Function getNextRandNormal() As Single
+        Dim val As Single
+        Dim V1 As Double, V2 As Double
 
-        For i As Integer = 1 To Me.Core.nLivingGroups
-            Me.m_strmBobsB.Write((BioEst(i) / B(i)).ToString)
-            If i < Me.Core.nLivingGroups Then Me.m_strmBobsB.Write(",")
-        Next
-        Me.m_strmBobsB.WriteLine()
-        Me.m_strmBobsB.Flush()
+        'Me.m_rand() get re-seeded for every run in InitRandom()
+
+        'Box Muller transformation 
+        'http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+        'Mean = 0 SD = 1
+        Do
+            V1 = Me.m_rand.NextDouble
+            V2 = Me.m_rand.NextDouble
+        Loop Until V1 > 0
+        val = CSng(Math.Sqrt(-2 * Math.Log(V1)) * Math.Cos(2 * Math.PI * V2))
+
+        'OK This should have worked but didn't
+        'it generated a difference sequence every time
+        'I must have done something wrong but can't figure out what...
+        'val = CSng(Me.m_NormalDist.NextDouble())
+
+        'System.Console.Write(val.ToString & ",")
+        Return val
+    End Function
+
+
+    Private Sub dumpBioEstOverB(Strategy As Strategy, iTimestep As Integer, BioEst() As Single, B() As Single)
+        Try
+            Me.m_strmBobsB.Write(Strategy.Name & "," & iTimestep.ToString)
+            For i As Integer = 1 To Me.Core.nLivingGroups
+                Me.m_strmBobsB.Write("," & (BioEst(i) / B(i)).ToString)
+            Next
+            Me.m_strmBobsB.WriteLine()
+            Me.m_strmBobsB.Flush()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -445,6 +472,7 @@ Public Class cStockAssessmentModel
         End Get
     End Property
 
+
     Private ReadOnly Property MSE As cMSE
         Get
             Return Me.m_MSE
@@ -454,6 +482,45 @@ Public Class cStockAssessmentModel
     Private Function DefaultFileName() As String
         Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "StockAssessment.csv")
     End Function
+
+    Private Sub InitRandom()
+
+        'HACK Troschuetz.Random.NormalDistribution
+        'Calling Reset() is suppose to set the seed back to the default and generate the same random sequence
+        'BUT IT DOESN'T bitches... so we'll do it ourselves
+        Me.m_NormalDist.Mu = 0
+        Me.m_NormalDist.Sigma = 1
+        Me.m_NormalDist.Reset()
+
+        Me.m_rand = New Random(666)
+
+        System.Console.WriteLine()
+        System.Console.WriteLine("---------New Random-----------")
+
+    End Sub
+
+
+    Private Sub InitOutputFiles()
+        Try
+
+            If m_strmBobsB IsNot Nothing Then
+                cMSEUtils.ReleaseWriter(m_strmBobsB)
+            End If
+
+            Dim fn As String = cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "BobsOverB.csv")
+            m_strmBobsB = cMSEUtils.GetWriter(fn, False)
+            'Headers
+            m_strmBobsB.WriteLine("B_StockAssessment / B_Ecosim")
+            m_strmBobsB.Write("Strategy,TimeStep")
+            For igrp As Integer = 1 To Me.Core.nGroups
+                m_strmBobsB.Write("," & Me.m_pathdata.GroupName(igrp))
+            Next
+            m_strmBobsB.WriteLine()
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
 #End Region
 
