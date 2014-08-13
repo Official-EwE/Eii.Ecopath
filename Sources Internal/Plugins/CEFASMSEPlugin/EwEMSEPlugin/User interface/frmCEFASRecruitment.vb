@@ -103,16 +103,10 @@ Public Class frmCEFASRecruitment
         Me.m_qehGrid = New cQuickEditHandler()
         Me.m_qehGrid.Attach(Me.m_grid, Me.UIContext, Me.m_tsMain)
 
-        ' Select first group with likely values
+        'Select first group with likely values
         For iGroup As Integer = 1 To Core.nGroups
-            ' Get group
-            CoreMSEGroup = Me.Core.MSEManager.GroupInputs(iGroup)
-            ' Has forcastgain value?
-            If ((CoreMSEGroup.GetStatus(eVarNameFlags.MSEForcastGain) And eStatusFlags.Null) = 0) Then
-                ' #Yep: select group in grid (which will update this group too)
+            If Me.m_Assessment.Parameter(iGroup).isFished Then
                 Me.m_grid.Group = Me.m_Assessment.Parameter(iGroup)
-                ' Bail out
-                Exit For
             End If
         Next
 
@@ -189,12 +183,8 @@ Public Class frmCEFASRecruitment
         End Get
 
         Set(ByVal value As cStockAssessmentParameters)
-
-            ' JS 12Aug14: setting and removing two handlers for the same event seems like a bug to me
-
             ' Unregister
             If (Me.m_group IsNot Nothing) Then
-                RemoveHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
                 RemoveHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
             End If
 
@@ -203,7 +193,6 @@ Public Class frmCEFASRecruitment
 
             ' Register
             If (Me.m_group IsNot Nothing) Then
-                AddHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
                 AddHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
             End If
 
@@ -289,13 +278,10 @@ Public Class frmCEFASRecruitment
 
         If (Me.Group IsNot Nothing) Then
             ' Group has data?
-            'If (Me.Group.GetStatus(eVarNameFlags.MSEForcastGain) And eStatusFlags.Null) = 0 Then
-            ' #Yes: plot data
             For i As Integer = 0 To data.NumSteps - 1
                 lpts.Add(data.Biomass(i), data.Recruitment(i))
             Next
             lLines.Add(Me.m_zgh.CreateLineItem(Me.Group.Name, eLineType.ModelData, Color.DarkSlateGray, lpts))
-            'End If
         End If
 
         ' Did any lines get manufactured?
@@ -304,7 +290,6 @@ Public Class frmCEFASRecruitment
             '#Yes: plot graph
             ''  - fix graph scale
 
-            ' JS: this should not be necessary
             Me.m_zgh.YScaleMax = data.MaxRecruitment * (1 + Me.m_zgh.YScaleGrace)
             Me.m_zgh.XScaleMax = data.Biomass(data.NumSteps - 1)
 
