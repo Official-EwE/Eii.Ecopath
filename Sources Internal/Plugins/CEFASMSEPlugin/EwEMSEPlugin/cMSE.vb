@@ -1516,10 +1516,10 @@ Public Class cMSE
     End Sub
 
     ''' <summary>
-    ''' Used for debugging to make sure the diet matrix created here is the same as the Ecopath diet matrix 
+    ''' Used for debugging to test the diet matrix created here against the Ecopath diet matrix 
     ''' </summary>
     ''' <remarks>
-    ''' There is a equivalent method in Ecopath that dumps the diet matrix use for the current interation out to file. 
+    ''' There is a equivalent method in Ecopath that dumps the diet matrix use for the current iteration out to file. 
     ''' These file can then be compared.
     ''' </remarks>
     Private Sub dumpDietMatrix()
@@ -2635,14 +2635,13 @@ stepend:
                 Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(iTime, BiomassAtTimestep)
 
                 'OK Hook the stock assessment model up to the Quota setting
-                'Use the biomass estimated by the stock assessment model as the true biomass
+                'Use the biomass estimated by the stock assessment model as the true biomass to set the Quota
                 TargConsQuota = DetermineQuotas(bioEst)
 
                 'DON'T use stock assessment model 
                 'Compute the quota on the TRUE(Ecosim) biomass
                 'TargConsQuota = DetermineQuotas(BiomassAtTimestep)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
                 For iFleet = 1 To m_core.nFleets
                     MinEffortThisYear(iFleet - 1) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
@@ -2659,8 +2658,6 @@ stepend:
                 For indexgrp As Integer = 1 To m_ecosim.EcosimData.nGroups
                     QMult(indexgrp - 1) = m_ecosim.EcosimData.QmQo(indexgrp) / (1 + (m_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / m_ecosim.EcosimData.StartBiomass(indexgrp))
                 Next
-
-
 
                 For Each iFleet In FleetsThatFishHCRGrp
                     Select Case m_currentStrategy.Regulations.Method(iFleet)
