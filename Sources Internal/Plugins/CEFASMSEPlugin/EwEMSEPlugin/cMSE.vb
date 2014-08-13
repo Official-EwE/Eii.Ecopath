@@ -2632,7 +2632,7 @@ stepend:
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Stock Assessment
                 'Get Biomass estimated by the stock assessment model
-                Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(iTime, BiomassAtTimestep)
+                Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(Me.m_currentStrategy, iTime, BiomassAtTimestep)
 
                 'OK Hook the stock assessment model up to the Quota setting
                 'Use the biomass estimated by the stock assessment model as the true biomass to set the Quota
@@ -2762,7 +2762,7 @@ stepend:
                     'It is part of the stock assessment for practical reasons 
                     '   CV can be included in the interface
                     '   Random number generator needs to be seeded at the same time as the stock assessment model
-                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
+                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) ' * Me.StockAssessment.getImplementationError(iFleet)
                     '_simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * CSng(Math.Exp(Me.StockAssessment.CV(iFleet) * m_RandNormal))
 
 
