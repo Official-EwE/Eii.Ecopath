@@ -123,6 +123,8 @@ Public Class cDiets
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
         Dim bSuccess As Boolean = True
+        Dim iPred As Integer
+        Dim iPrey As Integer
 
         'Read in the values from the DietComposition.csv into each array
         If File.Exists(strFilename) Then
@@ -133,16 +135,26 @@ Public Class cDiets
                     While Not csv.EndOfStream
                         If csv.ReadNextRecord() Then
 
-                            ' JS: diets are saved as follows:
-                            '     Predator header row with imports
-                            '     Rows for each prey
-                            ' The reading logic does not reflect this
+                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            'FILE INDEXING
+                            'The file stores Ecopath mixed one and zero based indexes
+                            'm_interacts(,) and m_meanProportions(,) are zero based
+
+                            'Pred (first) indexes are one based
+                            'Prey (second) indexes stores import in the zero then Prey in the one based indexes
+                            'Import and Prey for the first Ecoapth group
+                            '   Import  = m_meanProportions(0,0) = EcopathDiet(1,0) first group diet import
+                            '   Prey = m_meanProportions(0,2) = EcopathDiet(1,2) first group eats group 2
+                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                             'Note about indices for interacts, lower and upper
                             'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
                             'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                            m_interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
-                            m_meanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
+                            iPred = cStringUtils.ConvertToInteger(csv(2)) - 1
+                            'zero based for prey
+                            iPrey = cStringUtils.ConvertToInteger(csv(3))
+                            m_interacts(iPred, iPrey) = cStringUtils.ConvertToInteger(csv(4))
+                            m_meanProportions(iPred, iPrey) = cStringUtils.ConvertToSingle(csv(5))
                         End If
                     End While
                 Catch ex As Exception
@@ -199,8 +211,13 @@ Public Class cDiets
             End If
 
             For iPrey As Integer = 1 To m_core.nGroups
-                Dim mean As Single = Me.m_meanProportions(iPred - 1, iPrey - 1)
-                Dim interact As Integer = Me.m_interacts(iPred - 1, iPrey - 1)
+                'Ok Confusing indexing m_meanProportions(,) and m_interacts(,) are zero based, Ecopath diet matrix is one based. 
+                'The file contains the one based Ecopath Indexes
+                'However, Ecopath and stores the Imports in the zero prey index, Ecopath import for group one will be in diet(1,0)
+                'm_meanProportions(,) uses zero based pred and one based prey so
+                'Import for first group = m_meanProportions(0,0), prey for first group on itself = m_meanProportions(0,1)
+                Dim mean As Single = Me.m_meanProportions(iPred - 1, iPrey)
+                Dim interact As Integer = Me.m_interacts(iPred - 1, iPrey)
                 writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & "," & cStringUtils.ToCSVField(interact) & "," & cStringUtils.ToCSVField(mean))
             Next
         Next
