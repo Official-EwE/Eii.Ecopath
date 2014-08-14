@@ -2129,7 +2129,8 @@ Public Class cMSE
 
                         'Write code here that generates a whole set of diet parameters to be used in combination with new ecopath parameters
                         'to be tested for the mass-balance criteria
-                        Me.SampleDietMatrix(Me.m_diets.Interacts, Me.m_diets.MeanProportions, Me.m_diets.DietPropMultipliers)
+                        Me.SampleDietMatrix(Me.m_diets.Interacts, Me.m_diets.InteractsImports, Me.m_diets.MeanProportions, _
+                                            Me.m_diets.MeanProportionsImports, Me.m_diets.DietPropMultipliers)
                         'Me.NormalizeDiet(Me._pathdata.DCInput)
                         'Me.dumpDietMatrix()
 
@@ -2535,12 +2536,11 @@ stepend:
 
     End Function
 
-    Private Sub SampleDietMatrix(ByVal Interacts(,) As Integer, ByVal MeanProportions(,) As Single, ByVal DietPropMultipliers() As Double)
+    Private Sub SampleDietMatrix(ByVal Interacts(,) As Integer, ByVal InteractsImports() As Integer, ByVal MeanProportions(,) As Single, ByVal MeanProportionsImports() As Single, ByVal DietPropMultipliers() As Double)
 
         Dim MeanPropMod() As Single
         Dim SumInteractions(m_core.nLivingGroups - 1) As Single
         Dim TempDirichlet() As Single
-        Dim PreyIndex As Integer
         Dim DirichStopWatch As New Stopwatch
         Dim NormaliseStopWatch As New Stopwatch
         Dim EcopathStopWatch As New Stopwatch
@@ -2554,7 +2554,8 @@ stepend:
 
         'Generate a vector 'SumInteractions' that counts how many prey each predator has
         For iPred As Integer = 0 To m_core.nLivingGroups - 1
-            For iPrey As Integer = 0 To m_core.nGroups
+            SumInteractions(iPred) += InteractsImports(iPred)
+            For iPrey As Integer = 0 To m_core.nGroups - 1
                 SumInteractions(iPred) += Interacts(iPred, iPrey)
             Next
         Next
@@ -2571,7 +2572,11 @@ stepend:
 
                 ReDim MeanPropMod(CInt(SumInteractions(iPred) - 1))
                 iPointer = 0
-                For iPrey = 0 To m_core.nGroups
+                If InteractsImports(iPred) = 1 Then
+                    MeanPropMod(iPointer) = MeanProportionsImports(iPred)
+                    iPointer += 1
+                End If
+                For iPrey = 0 To m_core.nGroups - 1
                     If Interacts(iPred, iPrey) = 1 Then
                         MeanPropMod(iPointer) = MeanProportions(iPred, iPrey)
                         iPointer += 1
@@ -2581,88 +2586,25 @@ stepend:
                 'Samples a set of Dirichlet distributed parameters
                 TempDirichlet = DirichletSample2(CInt(SumInteractions(iPred)), MeanPropMod, DietPropMultipliers(iPred))
 
-                'Set all the diet values in ecopath to those sampled and checked to be within correct intervals
-                PreyIndex = 0
-                For i = 0 To TempDirichlet.GetLength(0) - 1
-                    While Interacts(iPred, PreyIndex) = 0
-                        ecopathData.DCInput(iPred + 1, PreyIndex) = 0
-                        PreyIndex += 1
-                    End While
-                    ecopathData.DCInput(iPred + 1, PreyIndex) = TempDirichlet(i)
-                    PreyIndex += 1
+
+                Dim i As Integer = 0
+                If InteractsImports(iPred) = 1 Then
+                    ecopathData.DCInput(iPred + 1, 0) = TempDirichlet(i)
+                    i += 1
+                End If
+
+                For iPrey = 1 To m_core.nGroups
+                    If Interacts(iPred, iPrey - 1) = 1 Then
+                        ecopathData.DCInput(iPred + 1, iPrey) = TempDirichlet(i)
+                        i += 1
+                    End If
                 Next
-
-                ''Changes the output of TempDirichlet so that it is a vector of length mcore.nlivinggroups
-                'If Interacts(iPred, 0) = 1 Then
-                '    'mCore.EcoPathGroupInputs(iPred + 1).ImpDiet() = TempDirichlet(0)
-                '    ecopathData.DC(iPred + 1, 0) = TempDirichlet(0)
-                'End If
-                'PreyIndex = 1
-                ''EcopathStopWatch.Start()
-                'For i = 1 To TempDirichlet.GetLength(0) - 1
-                '    While Interacts(iPred, PreyIndex) = 0
-                '        'DirichletArray(iPred, PreyIndex) = 0
-                '        'mCore.EcoPathGroupInputs(iPred + 1).DietComp(PreyIndex) = 0
-                '        ecopathData.DC(iPred + 1, PreyIndex) = 0
-                '        PreyIndex += 1
-                '    End While
-                '    'DirichletArray(iPred, PreyIndex) = TempDirichlet(i)
-
-                '    'EcopathInternalStopWatch.Start()
-                '    'mCore.EcoPathGroupInputs(iPred + 1).DietComp(PreyIndex) = TempDirichlet(i)
-                '    Console.WriteLine(TempDirichlet(i))
-                '    ecopathData.DC(iPred + 1, PreyIndex) = TempDirichlet(i)
-                '    'EcopathInternalStopWatch.Stop()
-                '    PreyIndex += 1
-                'Next
-                ''EcopathStopWatch.Stop()
 
             End If
 
         Next
 
-        'Console.WriteLine("Dirich Time = " & DirichStopWatch.ElapsedMilliseconds.ToString)
-        'Console.WriteLine("Normalise Time = " & NormaliseStopWatch.ElapsedMilliseconds.ToString)
-        'Console.WriteLine("Ecopath Time = " & EcopathStopWatch.ElapsedMilliseconds.ToString)
-        'Console.WriteLine("Ecopath Internal Time = " & EcopathInternalStopWatch.ElapsedMilliseconds.ToString)
-
     End Sub
-
-    'Private Sub SampleFunctionalGrpParams(ByVal ParamName As String, ByVal nIterations As Integer)
-    '    Dim sPath As String = "C:\Users\mick\Desktop\GAP\Data"
-    '    Dim csv = New CsvReader(New StreamReader(sPath & "/DistributionParameters/" & ParamName & ".csv"), True)
-    '    Dim SampledValues(mCore.nGroups - 1, nIterations - 1) As Single
-
-    '    For iGrp = 1 To mCore.nGroups
-    '        csv.ReadNextRecord()
-    '        For iIteration = 1 To nIterations
-    '            If csv(1) = 1 Then
-    '                SampledValues(iGrp - 1, iIteration - 1) = UniformSample(csv(2), csv(3))
-    '            ElseIf csv(1) = 2 Then
-    '                SampledValues(iGrp - 1, iIteration - 1) = TriangularSample(csv(2), csv(3), csv(4))
-    '            End If
-    '        Next
-    '    Next
-
-    '    Dim csvout As New StreamWriter(Path.Combine(sPath & "/ParametersOut/" & ParamName & ".csv"), True)
-    '    csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-    '    If mCore.nGroups > 1 Then
-    '        For iGrp = 2 To mCore.nGroups
-    '            csvout.Write("," & mCore.EcoPathGroupInputs(iGrp).Name)
-    '        Next
-    '    End If
-    '    csvout.WriteLine()
-    '    For iIteration = 1 To nIterations
-    '        csvout.Write(SampledValues(0, iIteration - 1))
-    '        If mCore.nGroups > 1 Then
-    '            For iGrp = 2 To mCore.nGroups
-    '                csvout.Write("," & SampledValues(iGrp - 1, iIteration - 1))
-    '            Next
-    '        End If
-    '        csvout.WriteLine()
-    '    Next
-
-    'End Sub
 
 #End Region 'Distributions and sampling code
 

@@ -41,7 +41,9 @@ Public Class cDiets
     Private m_core As cCore
     Private m_MSE As cMSE
     Private m_meanProportions(,) As Single
-    Private m_interacts(,) As Integer
+    Private m_interacts(,) As Integer '(Pred, Prey)
+    Private m_meanProportions_imports() As Single
+    Private m_interacts_imports() As Integer
     Private m_dietPropMultipliers() As Double
 
 #End Region
@@ -51,9 +53,11 @@ Public Class cDiets
     Public Sub New(MSE As cMSE, core As EwECore.cCore)
         Me.m_core = core
         Me.m_MSE = MSE
-        ReDim m_meanProportions(m_core.nLivingGroups, m_core.nGroups)
-        ReDim m_dietPropMultipliers(m_core.nLivingGroups)
-        ReDim m_interacts(m_core.nLivingGroups, m_core.nGroups)
+        ReDim m_meanProportions(m_core.nLivingGroups - 1, m_core.nGroups - 1)
+        ReDim m_dietPropMultipliers(m_core.nLivingGroups - 1)
+        ReDim m_interacts(m_core.nLivingGroups - 1, m_core.nGroups - 1)
+        ReDim m_meanProportions_imports(m_core.nLivingGroups - 1)
+        ReDim m_interacts_imports(m_core.nLivingGroups - 1)
         Me.Defaults()
     End Sub
 
@@ -79,6 +83,18 @@ Public Class cDiets
         End Get
     End Property
 
+    Public ReadOnly Property MeanProportionsImports As Single()
+        Get
+            Return Me.m_meanProportions_imports
+        End Get
+    End Property
+
+    Public ReadOnly Property InteractsImports As Integer()
+        Get
+            Return Me.m_interacts_imports
+        End Get
+    End Property
+
     ''' <summary>
     ''' Diet proportion multipliers (by predator). Note that predator indices are ZERO-based!
     ''' </summary>
@@ -98,12 +114,14 @@ Public Class cDiets
         ' Set proper defaults in-memory
         For iPred As Integer = 1 To m_core.nLivingGroups
             mean = m_core.EcoPathGroupInputs(iPred).ImpDiet
-            Me.m_meanProportions(iPred - 1, 0) = mean
-            Me.m_interacts(iPred - 1, 0) = cSystemUtils.IIF(mean > 0, 1, 0)
+            Me.m_meanProportions_imports(iPred - 1) = mean
+            'Me.m_meanProportions(iPred - 1, 0) = mean
+            'Me.m_interacts(iPred - 1, 0) = cSystemUtils.IIF(mean > 0, 1, 0)
+            Me.m_interacts_imports(iPred - 1) = cSystemUtils.IIF(mean > 0, 1, 0)
             For iPrey As Integer = 1 To m_core.nGroups
                 mean = m_core.EcoPathGroupInputs(iPred).DietComp(iPrey)
-                Me.m_meanProportions(iPred - 1, iPrey) = mean
-                Me.m_interacts(iPred - 1, iPrey) = cSystemUtils.IIF(mean > 0, 1, 0)
+                Me.m_meanProportions(iPred - 1, iPrey - 1) = mean
+                Me.m_interacts(iPred - 1, iPrey - 1) = cSystemUtils.IIF(mean > 0, 1, 0)
             Next
             Me.m_dietPropMultipliers(iPred - 1) = 1.0
         Next
@@ -135,26 +153,18 @@ Public Class cDiets
                     While Not csv.EndOfStream
                         If csv.ReadNextRecord() Then
 
-                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                            'FILE INDEXING
-                            'The file stores Ecopath mixed one and zero based indexes
-                            'm_interacts(,) and m_meanProportions(,) are zero based
-
-                            'Pred (first) indexes are one based
-                            'Prey (second) indexes stores import in the zero then Prey in the one based indexes
-                            'Import and Prey for the first Ecoapth group
-                            '   Import  = m_meanProportions(0,0) = EcopathDiet(1,0) first group diet import
-                            '   Prey = m_meanProportions(0,2) = EcopathDiet(1,2) first group eats group 2
-                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                             'Note about indices for interacts, lower and upper
-                            'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
-                            'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                            iPred = cStringUtils.ConvertToInteger(csv(2)) - 1
-                            'zero based for prey
-                            iPrey = cStringUtils.ConvertToInteger(csv(3))
-                            m_interacts(iPred, iPrey) = cStringUtils.ConvertToInteger(csv(4))
-                            m_meanProportions(iPred, iPrey) = cStringUtils.ConvertToSingle(csv(5))
+                            'In m_interacts and m_meanProportions:
+                            'The 1st index for predator runs from 0 to mlivinggroups-1
+                            'The 2nd index for prey runs from 0 to mlivinggroups-1
+                            If String.Compare(csv(1), "imports", True) <> 0 Then
+                                m_interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3)) - 1) = cStringUtils.ConvertToInteger(csv(4))
+                                m_meanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3)) - 1) = cStringUtils.ConvertToSingle(csv(5))
+                            Else
+                                m_interacts_imports(cStringUtils.ConvertToInteger(csv(2)) - 1) = cStringUtils.ConvertToInteger(csv(4))
+                                m_meanProportions_imports(cStringUtils.ConvertToInteger(csv(2)) - 1) = cStringUtils.ConvertToSingle(csv(5))
+                            End If
                         End If
                     End While
                 Catch ex As Exception
@@ -189,6 +199,8 @@ Public Class cDiets
     End Function
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
+        Dim mean As Single
+        Dim interact As Integer
 
         ' Ignore strFilename parameter
         strFilename = Me.DefaultFileName("DietComposition.csv")
@@ -203,21 +215,12 @@ Public Class cDiets
 
         ' ToDo: write diets properly
         For iPred As Integer = 1 To m_core.nLivingGroups
-            If m_core.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
-                Dim mean As Single = m_core.EcoPathGroupInputs(iPred).ImpDiet
-                writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,1," & cStringUtils.ToCSVField(mean))
-            Else
-                writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0,0,0")
-            End If
-
+            mean = Me.m_meanProportions_imports(iPred - 1)
+            interact = Me.m_interacts_imports(iPred - 1)
+            writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0," & cStringUtils.ToCSVField(interact) & "," & cStringUtils.ToCSVField(mean))
             For iPrey As Integer = 1 To m_core.nGroups
-                'Ok Confusing indexing m_meanProportions(,) and m_interacts(,) are zero based, Ecopath diet matrix is one based. 
-                'The file contains the one based Ecopath Indexes
-                'However, Ecopath and stores the Imports in the zero prey index, Ecopath import for group one will be in diet(1,0)
-                'm_meanProportions(,) uses zero based pred and one based prey so
-                'Import for first group = m_meanProportions(0,0), prey for first group on itself = m_meanProportions(0,1)
-                Dim mean As Single = Me.m_meanProportions(iPred - 1, iPrey)
-                Dim interact As Integer = Me.m_interacts(iPred - 1, iPrey)
+                mean = Me.m_meanProportions(iPred - 1, iPrey - 1)
+                interact = Me.m_interacts(iPred - 1, iPrey - 1)
                 writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & "," & cStringUtils.ToCSVField(interact) & "," & cStringUtils.ToCSVField(mean))
             Next
         Next
