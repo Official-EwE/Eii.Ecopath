@@ -496,6 +496,15 @@ Public Class frmMSE
     End Sub
 
 
+    Private Sub OnStopCreateModels_Click(sender As System.Object, e As System.EventArgs) Handles m_btnStopCreateModels.Click
+        Try
+            Me.MSE.StopRun()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+
 #End Region ' Control events
 
 #Region " Plug-in callback "
@@ -574,6 +583,5 @@ Public Class frmMSE
     End Function
 
 #End Region ' Path / model validation
-
   
 End Class

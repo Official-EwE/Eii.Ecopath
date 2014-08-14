@@ -109,6 +109,15 @@ Public Class cMSE
     Private ChangeEffortFlag As Boolean = False
     Private m_rand As New Random()
 
+    Private m_StopRun As Boolean
+
+#Region "Threading variables"
+    'Private m_WaitObject As System.Threading.ManualResetEvent
+
+    Private m_SyncObj As System.Threading.SynchronizationContext
+
+#End Region
+
     Public Enum DistributionType As Integer
         NotSet = 0
         Uniform
@@ -199,13 +208,30 @@ Public Class cMSE
         End Set
     End Property
 
+
+    Public Sub StopRun()
+        If Me.IsRunning Then
+            Me.m_StopRun = True
+        End If
+    End Sub
+
+
 #End Region
 
 #Region " Construction "
 
     Public Sub New(ByVal Monitor As cMSEStateMonitor, pluginPoint As cMSEPluginPoint)
-        Me.m_Monitor = Monitor
+        Me.m_monitor = Monitor
         Me.m_plugin = pluginPoint
+
+        Me.m_SyncObj = System.Threading.SynchronizationContext.Current
+        'if there is no current context then create a new one on this thread. 
+        'this happens if no interface has been created yet(I think...)
+        If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
+
+        'Create the wait object with the initial state signaled, the object can be used
+        'Me.m_WaitObject = New System.Threading.ManualResetEvent(True)
+
         Me.InvalidateRunState()
     End Sub
 
@@ -311,21 +337,34 @@ Public Class cMSE
     Public Function CreateModels() As Boolean
         Dim bsuccess As Boolean = True
 
-        Try
+        If Me.IsRunning Then
+            Me.InformUser("Sorry already running.", eMessageImportance.Warning)
+            Return False
+        End If
 
-            Me.GenerateEcosimParameters("MaxRelFeedingTime")
-            Me.GenerateEcosimParameters("FeedingTimeAdjustRate")
-            Me.GenerateEcosimParameters("OtherMortFeedingTime")
-            Me.GenerateEcosimParameters("PredEffectFeedingTime")
-            Me.GenerateEcosimParameters("DenDepCatchability")
-            Me.GenerateEcosimParameters("QBMaxxQBio")
-            Me.GenerateEcosimParameters("SwitchingPower")
-            Me.GenerateSurvivabilities()
-            Me.CreateVulnerabilities()
-            Me.GenerateEcopathParamaters()
-        Catch ex As Exception
-            bsuccess = False
-        End Try
+        Me.m_StopRun = False
+        Dim RunThread As Threading.Thread
+
+        RunThread = New Threading.Thread(AddressOf Me.runCreateModelsThread)
+        RunThread.Name = "CEFAS_MSE"
+
+        RunThread.Start()
+
+        'Try
+
+        '    Me.GenerateEcosimParameters("MaxRelFeedingTime")
+        '    Me.GenerateEcosimParameters("FeedingTimeAdjustRate")
+        '    Me.GenerateEcosimParameters("OtherMortFeedingTime")
+        '    Me.GenerateEcosimParameters("PredEffectFeedingTime")
+        '    Me.GenerateEcosimParameters("DenDepCatchability")
+        '    Me.GenerateEcosimParameters("QBMaxxQBio")
+        '    Me.GenerateEcosimParameters("SwitchingPower")
+        '    Me.GenerateSurvivabilities()
+        '    Me.CreateVulnerabilities()
+        '    Me.GenerateEcopathParamaters()
+        'Catch ex As Exception
+        '    bsuccess = False
+        'End Try
 
         Return bsuccess
     End Function
@@ -380,6 +419,60 @@ Public Class cMSE
     End Function
 
 #End Region
+
+#Region "Threading"
+
+    Private Sub runCreateModelsThread()
+
+        Try
+
+            m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireChangeRunState), cMSEStateMonitor.eState.CreateModelsRunStarted)
+
+            Me.GenerateEcosimParameters("MaxRelFeedingTime")
+            Me.GenerateEcosimParameters("FeedingTimeAdjustRate")
+            Me.GenerateEcosimParameters("OtherMortFeedingTime")
+            Me.GenerateEcosimParameters("PredEffectFeedingTime")
+            Me.GenerateEcosimParameters("DenDepCatchability")
+            Me.GenerateEcosimParameters("QBMaxxQBio")
+            Me.GenerateEcosimParameters("SwitchingPower")
+            Me.GenerateSurvivabilities()
+            Me.CreateVulnerabilities()
+            Me.GenerateEcopathParamaters()
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        'Make sure this gets called even if there is an exception
+        m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireChangeRunState), cMSEStateMonitor.eState.CreateModelsRunCompleted)
+
+    End Sub
+
+    Private Sub fireChangeRunState(obj As Object)
+
+        Try
+
+            Me.m_StopRun = False
+            'Put the Wait object in a non-signaled state
+            'all calls to Waitxxx() will block until Set() is called
+            ' Me.m_WaitObject.Reset()
+
+            'Tell the interface the Ecopath run has started
+            Dim NewState As cMSEStateMonitor.eState = DirectCast(obj, cMSEStateMonitor.eState)
+
+            'I'm not sure this will work
+            'Somehow set the current state of the State Monitor
+            'Me.m_monitor.SetState(NewState)
+            'Have the State monitor tell the world
+            'Me.m_monitor.Invalidate()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".fireChangeRunState() Exception: " & ex.Message)
+        End Try
+
+    End Sub
+
+#End Region 'Threading
 
 #Region " Diagnostics and state management "
 
@@ -2022,6 +2115,13 @@ Public Class cMSE
 
                         isbalanced = True
 
+                        'Has the user tried to stop the run
+                        If Me.m_StopRun Then
+                            'Yep
+                            'HACK use the bExpired flag to stop the run
+                            bExpired = True
+                        End If
+
                         ' Provide occassional UI feedback
                         If (i = 1) Or ((i Mod 50) = 0) Then
                             cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_TRIAL_PROGRESS, My.Resources.CAPTION, iTrial, i), -1)
@@ -2100,7 +2200,7 @@ Public Class cMSE
 
                 End While
 
-                If bExpired Then
+                If bExpired And Not Me.m_StopRun Then
                     Me.InformUser("MSE expired after " & sw.Elapsed.ToString(), eMessageImportance.Information)
                 End If
 

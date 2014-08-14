@@ -175,7 +175,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_lblNTrials.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_btnRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -292,7 +292,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_lblMassBalanceTol.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_tbxTolerance.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -322,7 +322,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_tbxTolerance.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_btnCreateModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -349,7 +349,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_btnCreateModels.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_btnReviewTFM.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -378,163 +378,31 @@
   <data name="&gt;&gt;m_btnReviewTFM.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_btnCreateSurvDist.Name" xml:space="preserve">
-    <value>m_btnCreateSurvDist</value>
+  <data name="m_btnStopCreateModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="&gt;&gt;m_btnCreateSurvDist.Type" xml:space="preserve">
+  <data name="m_btnStopCreateModels.Location" type="System.Drawing.Point, System.Drawing">
+    <value>517, 21</value>
+  </data>
+  <data name="m_btnStopCreateModels.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 23</value>
+  </data>
+  <data name="m_btnStopCreateModels.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="m_btnStopCreateModels.Text" xml:space="preserve">
+    <value>Stop run</value>
+  </data>
+  <data name="&gt;&gt;m_btnStopCreateModels.Name" xml:space="preserve">
+    <value>m_btnStopCreateModels</value>
+  </data>
+  <data name="&gt;&gt;m_btnStopCreateModels.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnCreateSurvDist.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnStopCreateModels.Parent" xml:space="preserve">
     <value>m_plStep2</value>
   </data>
-  <data name="&gt;&gt;m_btnCreateSurvDist.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_btnSampleSurvivabilities.Name" xml:space="preserve">
-    <value>m_btnSampleSurvivabilities</value>
-  </data>
-  <data name="&gt;&gt;m_btnSampleSurvivabilities.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSampleSurvivabilities.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_btnSampleSurvivabilities.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_pbModelsCompatible.Name" xml:space="preserve">
-    <value>m_pbModelsCompatible</value>
-  </data>
-  <data name="&gt;&gt;m_pbModelsCompatible.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbModelsCompatible.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_pbModelsCompatible.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep2.Name" xml:space="preserve">
-    <value>m_hdrStep2</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep2.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep2.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableModels.Name" xml:space="preserve">
-    <value>m_lblAvailableModels</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableModels.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableModels.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableModels.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumAvailableModels.Name" xml:space="preserve">
-    <value>m_tbxNumAvailableModels</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumAvailableModels.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumAvailableModels.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumAvailableModels.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNTrials.Name" xml:space="preserve">
-    <value>m_tbxNTrials</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNTrials.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNTrials.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNTrials.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxAttempts.Name" xml:space="preserve">
-    <value>m_lblMaxAttempts</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxAttempts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxAttempts.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxAttempts.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxTime.Name" xml:space="preserve">
-    <value>m_lblMaxTime</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxTime.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxTime.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxAttempts.Name" xml:space="preserve">
-    <value>m_tbxMaxAttempts</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxAttempts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxAttempts.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxAttempts.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxTime.Name" xml:space="preserve">
-    <value>m_tbxMaxTime</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxTime.Parent" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxTime.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="m_plStep2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_plStep2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 134</value>
-  </data>
-  <data name="m_plStep2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_plStep2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>608, 147</value>
-  </data>
-  <data name="m_plStep2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_plStep2.Name" xml:space="preserve">
-    <value>m_plStep2</value>
-  </data>
-  <data name="&gt;&gt;m_plStep2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plStep2.Parent" xml:space="preserve">
-    <value>m_tlpLayout</value>
-  </data>
-  <data name="&gt;&gt;m_plStep2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnStopCreateModels.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_btnCreateSurvDist.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -565,7 +433,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_btnCreateSurvDist.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_btnSampleSurvivabilities.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -595,7 +463,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_btnSampleSurvivabilities.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_pbModelsCompatible.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Center</value>
@@ -619,7 +487,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_pbModelsCompatible.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_hdrStep2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -643,13 +511,13 @@
     <value>m_hdrStep2</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Parent" xml:space="preserve">
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_lblAvailableModels.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -679,7 +547,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_lblAvailableModels.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_tbxNumAvailableModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -706,7 +574,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_tbxNumAvailableModels.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_tbxNTrials.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -733,7 +601,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_tbxNTrials.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_lblMaxAttempts.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -766,7 +634,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_lblMaxAttempts.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="m_lblMaxTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -799,7 +667,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_lblMaxTime.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_tbxMaxAttempts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -832,7 +700,7 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_tbxMaxAttempts.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_tbxMaxTime.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -862,7 +730,34 @@
     <value>m_plStep2</value>
   </data>
   <data name="&gt;&gt;m_tbxMaxTime.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
+  </data>
+  <data name="m_plStep2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_plStep2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 134</value>
+  </data>
+  <data name="m_plStep2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_plStep2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>608, 147</value>
+  </data>
+  <data name="m_plStep2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_plStep2.Name" xml:space="preserve">
+    <value>m_plStep2</value>
+  </data>
+  <data name="&gt;&gt;m_plStep2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_plStep2.Parent" xml:space="preserve">
+    <value>m_tlpLayout</value>
+  </data>
+  <data name="&gt;&gt;m_plStep2.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_btnDeleteResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -891,17 +786,53 @@
   <data name="&gt;&gt;m_btnDeleteResults.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_hdrStep4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_hdrStep4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_hdrStep4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>608, 18</value>
+  </data>
+  <data name="m_hdrStep4.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_hdrStep4.Text" xml:space="preserve">
+    <value>Run MSE</value>
+  </data>
+  <data name="m_hdrStep4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
   <data name="&gt;&gt;m_hdrStep4.Name" xml:space="preserve">
     <value>m_hdrStep4</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Parent" xml:space="preserve">
     <value>m_plStep4</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_lblNModels.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblNModels.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 24</value>
+  </data>
+  <data name="m_lblNModels.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 13</value>
+  </data>
+  <data name="m_lblNModels.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblNModels.Text" xml:space="preserve">
+    <value>No. of models to &amp;use:</value>
+  </data>
+  <data name="m_lblNModels.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;m_lblNModels.Name" xml:space="preserve">
     <value>m_lblNModels</value>
@@ -942,212 +873,11 @@
   <data name="&gt;&gt;m_plStep4.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_hdrStep4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_hdrStep4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_hdrStep4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>608, 18</value>
-  </data>
-  <data name="m_hdrStep4.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_hdrStep4.Text" xml:space="preserve">
-    <value>Run MSE</value>
-  </data>
-  <data name="m_hdrStep4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep4.Name" xml:space="preserve">
-    <value>m_hdrStep4</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep4.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep4.Parent" xml:space="preserve">
-    <value>m_plStep4</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep4.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_lblNModels.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblNModels.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 24</value>
-  </data>
-  <data name="m_lblNModels.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 13</value>
-  </data>
-  <data name="m_lblNModels.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_lblNModels.Text" xml:space="preserve">
-    <value>No. of models to &amp;use:</value>
-  </data>
-  <data name="m_lblNModels.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lblNModels.Name" xml:space="preserve">
-    <value>m_lblNModels</value>
-  </data>
-  <data name="&gt;&gt;m_lblNModels.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNModels.Parent" xml:space="preserve">
-    <value>m_plStep4</value>
-  </data>
-  <data name="&gt;&gt;m_lblNModels.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFishingControls.Name" xml:space="preserve">
-    <value>m_tlpFishingControls</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFishingControls.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFishingControls.Parent" xml:space="preserve">
-    <value>m_plStep3</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFishingControls.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tlpFishingControls.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnDecreaseEffort" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnStockAssessment" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_btnSAError" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Absolute,6,Percent,33.33333,Absolute,6,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep3.Name" xml:space="preserve">
-    <value>m_hdrStep3</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep3.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep3.Parent" xml:space="preserve">
-    <value>m_plStep3</value>
-  </data>
-  <data name="&gt;&gt;m_hdrStep3.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableStrategies.Name" xml:space="preserve">
-    <value>m_lblAvailableStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableStrategies.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableStrategies.Parent" xml:space="preserve">
-    <value>m_plStep3</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableStrategies.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumAvailableFishingStrategies.Name" xml:space="preserve">
-    <value>m_tbxNumAvailableFishingStrategies</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumAvailableFishingStrategies.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumAvailableFishingStrategies.Parent" xml:space="preserve">
-    <value>m_plStep3</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumAvailableFishingStrategies.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_plStep3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_plStep3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 282</value>
-  </data>
-  <data name="m_plStep3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_plStep3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>608, 76</value>
-  </data>
-  <data name="m_plStep3.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_plStep3.Name" xml:space="preserve">
-    <value>m_plStep3</value>
-  </data>
-  <data name="&gt;&gt;m_plStep3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plStep3.Parent" xml:space="preserve">
-    <value>m_tlpLayout</value>
-  </data>
-  <data name="&gt;&gt;m_plStep3.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tlpFishingControls.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tlpFishingControls.ColumnCount" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_btnDecreaseEffort.Name" xml:space="preserve">
-    <value>m_btnDecreaseEffort</value>
-  </data>
-  <data name="&gt;&gt;m_btnDecreaseEffort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnDecreaseEffort.Parent" xml:space="preserve">
-    <value>m_tlpFishingControls</value>
-  </data>
-  <data name="&gt;&gt;m_btnDecreaseEffort.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_btnStockAssessment.Name" xml:space="preserve">
-    <value>m_btnStockAssessment</value>
-  </data>
-  <data name="&gt;&gt;m_btnStockAssessment.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStockAssessment.Parent" xml:space="preserve">
-    <value>m_tlpFishingControls</value>
-  </data>
-  <data name="&gt;&gt;m_btnStockAssessment.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_btnSAError.Name" xml:space="preserve">
-    <value>m_btnSAError</value>
-  </data>
-  <data name="&gt;&gt;m_btnSAError.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSAError.Parent" xml:space="preserve">
-    <value>m_tlpFishingControls</value>
-  </data>
-  <data name="&gt;&gt;m_btnSAError.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_tlpFishingControls.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 47</value>
-  </data>
-  <data name="m_tlpFishingControls.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tlpFishingControls.Size" type="System.Drawing.Size, System.Drawing">
-    <value>372, 23</value>
-  </data>
-  <data name="m_tlpFishingControls.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFishingControls.Name" xml:space="preserve">
-    <value>m_tlpFishingControls</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFishingControls.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFishingControls.Parent" xml:space="preserve">
-    <value>m_plStep3</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFishingControls.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tlpFishingControls.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnDecreaseEffort" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnStockAssessment" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_btnSAError" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Absolute,6,Percent,33.33333,Absolute,6,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_btnDecreaseEffort.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1225,7 +955,7 @@
     <value>2</value>
   </data>
   <data name="m_btnSAError.Text" xml:space="preserve">
-    <value>Uncertainty...</value>
+    <value>Assessment error...</value>
   </data>
   <data name="&gt;&gt;m_btnSAError.Name" xml:space="preserve">
     <value>m_btnSAError</value>
@@ -1238,6 +968,33 @@
   </data>
   <data name="&gt;&gt;m_btnSAError.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="m_tlpFishingControls.Location" type="System.Drawing.Point, System.Drawing">
+    <value>139, 47</value>
+  </data>
+  <data name="m_tlpFishingControls.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpFishingControls.Size" type="System.Drawing.Size, System.Drawing">
+    <value>372, 23</value>
+  </data>
+  <data name="m_tlpFishingControls.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_tlpFishingControls.Name" xml:space="preserve">
+    <value>m_tlpFishingControls</value>
+  </data>
+  <data name="&gt;&gt;m_tlpFishingControls.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpFishingControls.Parent" xml:space="preserve">
+    <value>m_plStep3</value>
+  </data>
+  <data name="&gt;&gt;m_tlpFishingControls.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpFishingControls.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnDecreaseEffort" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnStockAssessment" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_btnSAError" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Absolute,6,Percent,33.33333,Absolute,6,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_hdrStep3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -1261,7 +1018,7 @@
     <value>m_hdrStep3</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Parent" xml:space="preserve">
     <value>m_plStep3</value>
@@ -1326,17 +1083,44 @@
   <data name="&gt;&gt;m_tbxNumAvailableFishingStrategies.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="m_plStep3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_plStep3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 282</value>
+  </data>
+  <data name="m_plStep3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_plStep3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>608, 76</value>
+  </data>
+  <data name="m_plStep3.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_plStep3.Name" xml:space="preserve">
+    <value>m_plStep3</value>
+  </data>
+  <data name="&gt;&gt;m_plStep3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_plStep3.Parent" xml:space="preserve">
+    <value>m_tlpLayout</value>
+  </data>
+  <data name="&gt;&gt;m_plStep3.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="btnEditSurvivabilities.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="btnEditSurvivabilities.Location" type="System.Drawing.Point, System.Drawing">
-    <value>125, 0</value>
+    <value>126, 0</value>
   </data>
   <data name="btnEditSurvivabilities.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="btnEditSurvivabilities.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 23</value>
+    <value>120, 23</value>
   </data>
   <data name="btnEditSurvivabilities.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2309,7 +2093,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_btnReviewDistParms.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 23</value>
+    <value>120, 23</value>
   </data>
   <data name="m_btnReviewDistParms.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2354,13 +2138,13 @@
     <value>NoControl</value>
   </data>
   <data name="Button1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>250, 0</value>
+    <value>252, 0</value>
   </data>
   <data name="Button1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="Button1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 23</value>
+    <value>120, 23</value>
   </data>
   <data name="Button1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2573,7 +2357,7 @@
     <value>m_hdrStep1</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Parent" xml:space="preserve">
     <value>m_plStep1</value>
@@ -2687,6 +2471,6 @@
     <value>frmMSE</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11042.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

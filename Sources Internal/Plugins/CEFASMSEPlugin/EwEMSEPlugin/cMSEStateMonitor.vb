@@ -73,6 +73,10 @@ Public Class cMSEStateMonitor
         HasModels
         ''' <summary>MSE has run.</summary>
         HasResults
+
+        CreateModelsRunStarted
+
+        CreateModelsRunCompleted
     End Enum
 
     ''' -----------------------------------------------------------------------
