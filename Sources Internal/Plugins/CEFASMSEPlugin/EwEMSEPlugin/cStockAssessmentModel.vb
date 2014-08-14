@@ -64,11 +64,11 @@ Public Class cStockAssessmentModel
     Private BestimateLast() As Single
     Private KalmanGain() As Single
 
-    ''' <summary>
-    ''' Random normal distribution with a mean = 0 standard deviation = 1
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private m_NormalDist As Troschuetz.Random.NormalDistribution
+    ' ''' <summary>
+    ' ''' Random normal distribution with a mean = 0 standard deviation = 1
+    ' ''' </summary>
+    ' ''' <remarks></remarks>
+    'Private m_NormalDist As Troschuetz.Random.NormalDistribution
 
     Private m_strmBobsB As StreamWriter
 
@@ -126,13 +126,13 @@ Public Class cStockAssessmentModel
         Me.m_simdata = Me.MSE.EcosimData
         Me.m_pathdata = Me.MSE.EcopathData
 
+        Me.m_isChanged = False
+        Me.UseAssessment = True
+
         Debug.Assert(Me.m_MSE IsNot Nothing, "cStockAssessmentModel must have a valid cMSE object during initialization!")
         Debug.Assert(Me.m_core IsNot Nothing, "cStockAssessmentModel must have a valid cCore object during initialization!")
 
         Me.Init()
-
-        Me.m_isChanged = False
-        Me.UseAssessment = True
 
     End Sub
 
@@ -149,9 +149,7 @@ Public Class cStockAssessmentModel
 
             Me.InitData()
 
-            'Me.InitRandom()
-
-            Me.m_NormalDist = New Troschuetz.Random.NormalDistribution()
+            'Me.m_NormalDist = New Troschuetz.Random.NormalDistribution()
             Me.m_rand = New Random(666)
 
             ''This will reset the random number generator with the same seed each time 
@@ -228,6 +226,65 @@ Public Class cStockAssessmentModel
         End Try
 
     End Sub
+
+    Private Sub InitToCoreData()
+
+        Dim MSEData As MSE.cMSEDataStructures = Me.MSE.CoreMSEData
+
+        Array.Copy(MSEData.Rmax, Rmax, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.BhalfT, BhalfT, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.CVbiomEst, CVbiomEst, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.GstockPred, GstockPred, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.RstockRatio, RstockRatio, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.RStock0, RStock0, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.RHalfB0Ratio, RHalfB0Ratio, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.cvRec, cvRec, Me.Core.nLivingGroups)
+
+        'HACK WARNING EwE does not have a seperate error on recruitment
+        'it uses the observed biomass error
+        Array.Copy(MSEData.CVbiomEst, CVRecruitError, Me.Core.nLivingGroups)
+
+        Array.Copy(MSEData.CVFest, CVImpError, Me.Core.nFleets)
+
+    End Sub
+
+    Private Sub InitData()
+
+        Bestimate = New Single(Me.Core.nLivingGroups) {}
+        BestimateLast = New Single(Me.Core.nLivingGroups) {}
+
+        Rmax = New Single(Me.Core.nLivingGroups) {}
+        BhalfT = New Single(Me.Core.nLivingGroups) {}
+        CVbiomEst = New Single(Me.Core.nLivingGroups) {}
+        GstockPred = New Single(Me.Core.nLivingGroups) {}
+        RstockRatio = New Single(Me.Core.nLivingGroups) {}
+        RStock0 = New Single(Me.Core.nLivingGroups) {}
+        RHalfB0Ratio = New Single(Me.Core.nLivingGroups) {}
+        cvRec = New Single(Me.Core.nLivingGroups) {}
+        KalmanGain = New Single(Me.Core.nLivingGroups) {}
+
+        CVRecruitError = New Single(Me.Core.nLivingGroups) {}
+
+        CVImpError = New Single(Me.Core.nFleets) {}
+
+    End Sub
+
+    Private Sub InitRandom()
+
+        'HACK Troschuetz.Random.NormalDistribution
+        'Calling Reset() is suppose to set the seed back to the default and generate the same random sequence
+        'BUT IT DOESN'T bitches... so we'll do it ourselves
+        'Me.m_NormalDist.Mu = 0
+        'Me.m_NormalDist.Sigma = 1
+        'Me.m_NormalDist.Reset()
+
+        Me.m_rand = New Random(666)
+
+        'System.Console.WriteLine()
+        'System.Console.WriteLine("---------New Random-----------")
+
+    End Sub
+
 
 #End Region
 
@@ -380,7 +437,6 @@ Public Class cStockAssessmentModel
         Dim Best As Single
 
         Dim simdata As cEcosimDatastructures = Me.MSE.EcosimData
-        'Dim MSEData As MSE.cMSEDataStructures = Me.MSE.CoreMSEData
 
         Dim CatchYear() As Single = Me.getCatch(iTime)
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -424,47 +480,6 @@ Public Class cStockAssessmentModel
 
     End Function
 
-    Private Sub InitToCoreData()
-
-        Dim MSEData As MSE.cMSEDataStructures = Me.MSE.CoreMSEData
-
-        Array.Copy(MSEData.Rmax, Rmax, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.BhalfT, BhalfT, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.CVbiomEst, CVbiomEst, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.GstockPred, GstockPred, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.RstockRatio, RstockRatio, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.RStock0, RStock0, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.RHalfB0Ratio, RHalfB0Ratio, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.cvRec, cvRec, Me.Core.nLivingGroups)
-
-        'HACK WARNING EwE does not have a seperate error on recruitment
-        'it uses the observed biomass error
-        Array.Copy(MSEData.CVbiomEst, CVRecruitError, Me.Core.nLivingGroups)
-
-        Array.Copy(MSEData.CVFest, CVImpError, Me.Core.nFleets)
-
-    End Sub
-
-    Private Sub InitData()
-
-        Bestimate = New Single(Me.Core.nLivingGroups) {}
-        BestimateLast = New Single(Me.Core.nLivingGroups) {}
-
-        Rmax = New Single(Me.Core.nLivingGroups) {}
-        BhalfT = New Single(Me.Core.nLivingGroups) {}
-        CVbiomEst = New Single(Me.Core.nLivingGroups) {}
-        GstockPred = New Single(Me.Core.nLivingGroups) {}
-        RstockRatio = New Single(Me.Core.nLivingGroups) {}
-        RStock0 = New Single(Me.Core.nLivingGroups) {}
-        RHalfB0Ratio = New Single(Me.Core.nLivingGroups) {}
-        cvRec = New Single(Me.Core.nLivingGroups) {}
-        KalmanGain = New Single(Me.Core.nLivingGroups) {}
-
-        CVRecruitError = New Single(Me.Core.nLivingGroups) {}
-
-        CVImpError = New Single(Me.Core.nFleets) {}
-
-    End Sub
 
     Friend ReadOnly Property Core As cCore
         Get
@@ -483,23 +498,7 @@ Public Class cStockAssessmentModel
         Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "StockAssessment.csv")
     End Function
 
-    Private Sub InitRandom()
-
-        'HACK Troschuetz.Random.NormalDistribution
-        'Calling Reset() is suppose to set the seed back to the default and generate the same random sequence
-        'BUT IT DOESN'T bitches... so we'll do it ourselves
-        Me.m_NormalDist.Mu = 0
-        Me.m_NormalDist.Sigma = 1
-        Me.m_NormalDist.Reset()
-
-        Me.m_rand = New Random(666)
-
-        System.Console.WriteLine()
-        System.Console.WriteLine("---------New Random-----------")
-
-    End Sub
-
-
+  
     Private Sub InitOutputFiles()
         Try
 
