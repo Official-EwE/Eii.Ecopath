@@ -297,8 +297,6 @@ Public Class cStockAssessmentModel
             If Me.UseAssessment Then
 
                 Dim nGrps As Integer = Me.Core.nLivingGroups
-                'Use the MSE Stock Recruitment Parameters from the EwE6 interface until we get our own interface
-                Dim MSEData As MSE.cMSEDataStructures = Me.MSE.CoreMSEData
                 Dim Bobs() As Single = New Single(nGrps) {}
 
                 'get average biomass for the last year
@@ -312,6 +310,7 @@ Public Class cStockAssessmentModel
                     'Get the estimated biomass base on the observed biomass plus uncertainty
                     'Using the stock recruitment curve from the EwE6 MSE interface
                     Me.Bestimate(igrp) = Me.stockRecruitment(iTimestep, igrp, Bobs(igrp), Me.Bestimate(igrp))
+                   
                 Next igrp
 
                 'For debugging dump BioEst/B to file
@@ -368,7 +367,7 @@ Public Class cStockAssessmentModel
         Dim val As Single
         Dim V1 As Double, V2 As Double
 
-        'Me.m_rand() get re-seeded for every run in InitRandom()
+        'Me.m_rand() gets re-seeded for every run in InitRandom()
 
         'Box Muller transformation 
         'http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
@@ -451,6 +450,11 @@ Public Class cStockAssessmentModel
         KalmanGain(iGroup) = CSng(vPred / (vPred + CVRecruitError(iGroup) ^ 2))
 
         Best = KalmanGain(iGroup) * BioEst + (1 - KalmanGain(iGroup)) * (GstockPred(iGroup) * Me.BestimateLast(iGroup) + RstockPred)
+
+        'If BioEst is tiny Best can be an invalid number
+        If Best = 0 Or Single.IsNaN(Best) Then
+            Best = 1.0E-20
+        End If
 
         Return Best
 
