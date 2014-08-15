@@ -1,4 +1,4 @@
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -15,32 +15,14 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Drawing
-Imports System.Windows.Forms
-Imports EwEUtils.Core
 
 #End Region ' Imports
 
-''' ---------------------------------------------------------------------------
-''' <summary>
-''' IGUIPlugin, interface for implementing <see cref="IPlugin">plugins</see> that
-''' must be accessible from a Windows GUI.
-''' </summary>
-''' ---------------------------------------------------------------------------
-Public Interface IGUIPlugin
+Public Interface IEcosimShapeFunctionPlugin
     Inherits IPlugin
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get an image to show in the control for this plugin.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    ReadOnly Property ControlImage() As Image
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -51,31 +33,43 @@ Public Interface IGUIPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the tooltip text to display for the control for this plugin.
+    ''' Set the shape function parameters to their default values.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    ReadOnly Property ControlTooltipText() As String
+    Sub Defaults()
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Event handler that will be called when the control for this plugin
-    ''' is clicked or activated.
+    ''' Get the number of parameters needed to configure the shape function.
     ''' </summary>
-    ''' <param name="sender">The control that was clicked or activated.</param>
-    ''' <param name="e">Event parameters pertaining the control.</param>
-    ''' <param name="frmPlugin">A reference to the form that the plugin creates
-    ''' or activates in response to this event.</param>
     ''' -----------------------------------------------------------------------
-    Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As Form)
+    ReadOnly Property nParameters() As Integer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get must meet to allow this plugin to run. All GUI controls attached
-    ''' to this plug-in will be enabled and disabled in tune with this state.
+    ''' Get the human legible name of a parameter of the shape function.
     ''' </summary>
-    ''' <returns>A eCoreExecutionState value, or 0 if this plugin should be accessible anytime.</returns>
-    ''' <remarks>See EwECore/Core/cCoreStateMonitor.eCoreExecutionState for possible values.</remarks>
+    ''' <param name="iParam">The index of the parameters [1,<see cref="nParameters"/>]
+    ''' to obtain the human legible name for.</param>
     ''' -----------------------------------------------------------------------
-    ReadOnly Property EnabledState() As eCoreExecutionState
+    ReadOnly Property ParamName(ByVal iParam As Integer) As String
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the value of a parameter of the shape function.
+    ''' </summary>
+    ''' <param name="iParam">The index of the parameters [1,<see cref="nParameters"/>]
+    ''' to access the value for.</param>
+    ''' -----------------------------------------------------------------------
+    Property ParamValue(ByVal iParam As Integer) As Single
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the points for the function, as computed from the <see cref="ParamValue">parameters values</see>.
+    ''' </summary>
+    ''' <param name="nPoints">The length of the points array to return.</param>
+    ''' <returns>An array of points.</returns>
+    ''' -----------------------------------------------------------------------
+    Function Points(Optional ByVal nPoints As Integer = 1200) As Single()
 
 End Interface
