@@ -441,7 +441,7 @@ Namespace Controls
                 Case EwEUtils.Core.eDataTypes.Forcing
                     Return (FuncType <> eShapeFunctionType.Betapdf And FuncType <> eShapeFunctionType.Normal And _
                             FuncType <> eShapeFunctionType.Normal And FuncType <> eShapeFunctionType.RightShoulder _
-                            And FuncType <> eShapeFunctionType.LeftShoulder)
+                            And FuncType <> eShapeFunctionType.LeftShoulder And FuncType <> eShapeFunctionType.Trapezoid)
 
                 Case EwEUtils.Core.eDataTypes.Mediation, EwEUtils.Core.eDataTypes.PriceMediation
                     Return True
@@ -629,6 +629,49 @@ Namespace Controls
                             Me.m_asDataWork(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
                         Next
 
+                        'xxxxxxALTERNATIVE WAY TO USE THE PARAMETERS NOT IMPLEMENTED HERE xxxxxxxxxxxx
+                        'Case eShapeFunctionType.Normal
+
+                        '    'normal distribution with a mean of Zero
+                        '    'User defines 
+                        '    '   Standard deviation on the left and right
+                        '    '   Width of the data in standard deviations 
+                        '    '   Width is important because values outside the bounds 
+                        '    '       are just the first or last value in the shape
+
+                        '    'Normal and Beta shapes are not used for Forcing functions
+                        '    'so it is only the shape we are interested in not that actual data
+                        '    'how the shape affects the data is defined by the user by where they place the baseline
+                        '    'If these are to be used as Forcing Function then we will need a way to 'scale' the data
+                        '    'as there is no way to in the Forcing Function interface to select where the baseline is.
+                        '    Dim nPtHalf As Integer = nPoints \ 2
+                        '    'SD left
+                        '    Dim SDLeft As Single = sYZero '+ 0.0000001F
+                        '    Dim SDRight As Single = sYEnd ' + 0.0000001F
+                        '    If SDLeft = 0 Then SDLeft = 0.0000001F
+                        '    If SDRight = 0 Then SDLeft = 0.0000001F
+
+                        '    Dim Mean As Single = sSteep
+                        '    'width in SD
+                        '    Dim Wsd As Single = sYBase
+
+                        '    'width in user defined units
+                        '    Dim Wvals As Single = Math.Max(SDLeft, SDRight) * Wsd
+                        '    'Delta X 
+                        '    Dim dx As Single = Wvals / (nPoints - 1)
+                        '    'Start X
+                        '    Dim x0 As Single = (-Wvals * 0.5F)
+                        '    Dim x As Single
+                        '    Dim sd As Single = SDLeft
+                        '    For i As Integer = 1 To nPoints
+                        '        If i > nPtHalf Then
+                        '            sd = SDRight ' + 0.0000001F
+                        '        End If
+                        '        x = x0 + dx * (i - 1)
+                        '        Me.m_asDataWork(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
+                        '    Next
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
                     Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder
 
                         Dim xpt As Single
@@ -751,7 +794,7 @@ Namespace Controls
         End Function
 
         Private Function getIndex(Xvalue As Single, x0 As Single, x1 As Single, TotalNPoints As Integer) As Integer
-            Debug.Assert(Xvalue >= x0 And Xvalue <= x1, Me.ToString + ".getIndex() value out of bounds.")
+            'Debug.Assert(Xvalue >= x0 And Xvalue <= x1, Me.ToString + ".getIndex() value out of bounds.")
             'use the linear interpolator to find the index positon of Value
             'In this case we are interpolating the number of data points Xvalue is along the line
             'x0 and x1 are the first and last values of the x axis
