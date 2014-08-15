@@ -127,6 +127,7 @@
     <Compile Include="Plugin templates\Database\IModelImportPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathRunInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimModifyEffort.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimShapeFunctionPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceLayerChangePlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceInitRunCompletedPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IMenuItemTogglePlugin.vb" />
