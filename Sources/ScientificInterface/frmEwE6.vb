@@ -34,7 +34,6 @@ Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports Ookii.Dialogs
 Imports ScientificInterface.Ecopath
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
