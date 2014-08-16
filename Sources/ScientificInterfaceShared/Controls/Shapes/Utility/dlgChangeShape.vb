@@ -359,8 +359,6 @@ Namespace Controls
                     g.FillRectangle(br, rc)
                 End Using
 
-
-
                 cShapeImage.DrawShapeDirect(Me.m_uic, _
                                             Me.m_asDataWork, Me.NumDisplayPoints, Me.m_shape.IsSeasonal, _
                                             Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
@@ -551,6 +549,7 @@ Namespace Controls
                 Select Case Me.SelectedShapeType
 
                     Case eShapeFunctionType.NotSet
+                        ' Obtain original shape data again
                         Me.m_asDataWork = Me.m_shape.ShapeData
 
                     Case eShapeFunctionType.Linear
@@ -703,6 +702,7 @@ Namespace Controls
                         'The location of the shoulder in the response function is determined by it's index position in the points array
                         Dim iSegment() As Integer = New Integer() {0, Me.getIndex(sYZero, x0, sYBase, nPoints), Me.getIndex(sYEnd, x0, sYBase, nPoints), nPoints}
 
+                        ' JS 160914: This is not right; the original shape cannot be modified until the user clicks 'OK'
                         Dim shape As cEnviroResponseFunction = TryCast(Me.m_shape, cEnviroResponseFunction)
                         If shape IsNot Nothing Then
                             'set the extent of the data in the shape
@@ -743,6 +743,7 @@ Namespace Controls
                         'The location of the shoulder in the response function is determined by it's index position in the points array
                         Dim iSegment() As Integer = New Integer() {0, Me.getIndex(sYZero, x0, sSteep, nPoints), Me.getIndex(sYEnd, x0, sSteep, nPoints), Me.getIndex(sYBase, x0, sSteep, nPoints), Me.getIndex(sSteep, x0, sSteep, nPoints), nPoints}
 
+                        ' JS 160914: This is not right; the original shape cannot be modified until the user clicks 'OK'
                         Dim shape As cEnviroResponseFunction = TryCast(Me.m_shape, cEnviroResponseFunction)
                         If shape IsNot Nothing Then
                             'set the extent of the data in the shape
@@ -971,12 +972,16 @@ Namespace Controls
             'Because the dialogue operates on a buffer
             'It may/will have changed the buffer without updating the shape (see RecalShape())
             'So 
+            '0 JS: do not forget to backup the shape buffer
             '1 update the shape with new data
             '2 then scale it
             '3 the copy the shape back into the buffer
+            '4 JS: do not forget to restore the shape to its original state. Shape can only be modified on 'OK'!
+            Dim buf As Single() = Me.m_shape.ShapeData
             Me.m_shape.ShapeData = Me.m_asDataWork
             Me.m_shape.Scale(newMax)
             Me.m_asDataWork = Me.m_shape.ShapeData
+            Me.m_shape.ShapeData = buf
 
         End Sub
 
