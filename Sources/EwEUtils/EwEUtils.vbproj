@@ -135,6 +135,7 @@
     <Compile Include="Core\IExternalDataSource.vb" />
     <Compile Include="Core\ILPSolver.vb" />
     <Compile Include="Core\IMessage.vb" />
+    <Compile Include="Core\IShapeFunction.vb" />
     <Compile Include="Core\ITaxonDetailData.vb" />
     <Compile Include="Core\IEconomicData.vb" />
     <Compile Include="Core\INetworkAnalysisData.vb" />

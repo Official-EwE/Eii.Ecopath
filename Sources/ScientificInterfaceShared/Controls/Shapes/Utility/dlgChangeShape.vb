@@ -46,7 +46,7 @@ Namespace Controls
         ''' </summary>
         ''' <remarks>
         ''' For now this is only used in the data validation. 
-        ''' It could be extended so the interface always uses this as it's data source.
+        ''' It could be extended so the interface always uses this as its data source.
         '''  </remarks>
         Private Class cShapeBuffer
             Public A As Single
@@ -420,7 +420,6 @@ Namespace Controls
         ''' <summary>
         ''' Generate one common shape (linear, sigmoid, etc) based on the user's choice.
         ''' </summary>
-        ''' <remarks>The formula here is extracted from EwE5 code</remarks>
         ''' -------------------------------------------------------------------
         Private Sub UpdatePreview()
             Me.m_bRecalc = True
