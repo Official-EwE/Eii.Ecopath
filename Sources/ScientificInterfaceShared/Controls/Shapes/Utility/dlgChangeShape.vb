@@ -29,6 +29,24 @@ Imports System.Drawing.Drawing2D
 
 #End Region ' Imports
 
+' ********************************************************************************
+' ********************************************************************************
+'
+' This dialog needs a major overhaul as follows:
+' - All shape functions will be provided by individual shape function classes, one
+'   for each type of function (sketched, linear, sigmoid, etc)
+' - Each shape function instance with have its OWN buffer for shape points and 
+'   configuration parameters.
+' - The controls in this form will interact only with the selected shape function class;
+'   when the selection changes the controls will be rerouted to work with this new 
+'   selection.
+' - The dialog must retain full OK / Cancel behaviour. This functionality is now 
+'   partially destroyed. On Cancel, the original shape must be unaffected
+' - IShapeFunctions classes will be available via the EwE Core, and can be obtained
+'   from plug-in points as well.
+' ********************************************************************************
+' ********************************************************************************
+
 Namespace Controls
 
     ''' <summary>
@@ -42,7 +60,9 @@ Namespace Controls
 #Region "Private internal class definitions"
 
         ''' <summary>
-        ''' Internal class to hold the shape values in a buffer
+        ''' Internal class to hold the shape values in a buffer. This class will be replaced by
+        ''' IShapeFunction-derived instances for each shape type, which can then also be derived
+        ''' from plug-in points.
         ''' </summary>
         ''' <remarks>
         ''' For now this is only used in the data validation. 
@@ -53,17 +73,41 @@ Namespace Controls
             Public B As Single
             Public C As Single
             Public D As Single
-
+            Public ShapeData As Single()
             Public ShapeType As eShapeFunctionType
 
-            Public Sub New(ByVal Shape As cForcingFunction)
-                Me.A = Shape.YZero
-                Me.B = Shape.YEnd
-                Me.C = Shape.YBase
-                Me.D = Shape.Steep
-                Me.ShapeType = Shape.ShapeFunctionType
+            Public Sub New(ByVal shape As cForcingFunction)
+                Me.A = shape.YZero
+                Me.B = shape.YEnd
+                Me.C = shape.YBase
+                Me.D = shape.Steep
+                Me.ShapeType = shape.ShapeFunctionType
+                Me.ShapeData = shape.ShapeData
             End Sub
 
+            Public Function Apply(shape As cForcingFunction) As Boolean
+
+                shape.LockUpdates()
+
+                shape.YZero = Me.A
+                shape.YEnd = Me.B
+                shape.YBase = Me.C
+                shape.Steep = Me.D
+                shape.ShapeData = Me.ShapeData
+
+                shape.UnlockUpdates()
+
+            End Function
+
+            Public ReadOnly Property Max As Single
+                Get
+                    Dim sDataMax As Single = Single.MinValue
+                    For Each s As Single In Me.ShapeData
+                        sDataMax = Math.Max(s, sDataMax)
+                    Next
+                    Return sDataMax
+                End Get
+            End Property
         End Class
 
 #End Region
@@ -77,8 +121,6 @@ Namespace Controls
         ''' <summary></summary>
         Private m_handler As cShapeGUIHandler = Nothing
 
-        ''' <summary>Copy of the original shape to work on.</summary>
-        Private m_asDataWork As Single()
         ''' <summary></summary>
         Private m_fpC As cEwEFormatProvider = Nothing
         ''' <summary></summary>
@@ -96,7 +138,7 @@ Namespace Controls
         Private EPS As Single = 0.0000003
         Private FPMIN As Single = 1.0E-30
 
-        Private m_shpBuff As cShapeBuffer
+        Private m_shpBuff As cShapeBuffer = Nothing
 
 
 #End Region ' Private vars
@@ -117,11 +159,8 @@ Namespace Controls
             Me.m_uic = uic
             Me.m_shape = shape
             Me.m_handler = handler
-            Me.m_asDataWork = shape.ShapeData
 
             'Keep the shape in a buffer
-            'At this time this is only used for data validation
-            'but should be extented to buffer all the shape data
             Me.m_shpBuff = New cShapeBuffer(Me.m_shape)
 
         End Sub
@@ -138,19 +177,19 @@ Namespace Controls
 
             'jb 24-May-11 removed data validation to fix ticket 975
             Me.m_fpA = New cEwEFormatProvider(Me.m_uic, Me.m_tbxA, GetType(Single))
-            Me.m_fpA.Value = Me.m_shape.YZero 'Math.Max(0, Me.m_shape.YZero)
+            Me.m_fpA.Value = Me.m_shpBuff.A
 
             Me.m_fpB = New cEwEFormatProvider(Me.m_uic, Me.m_tbxB, GetType(Single))
-            Me.m_fpB.Value = Me.m_shape.YEnd 'CSng(IIf(Me.m_shape.YEnd < 0, 1.0!, Me.m_shape.YEnd))
+            Me.m_fpB.Value = Me.m_shpBuff.B
 
             Me.m_fpC = New cEwEFormatProvider(Me.m_uic, Me.m_tbxC, GetType(Single))
-            Me.m_fpC.Value = Me.m_shape.YBase 'CSng(IIf(Me.m_shape.YBase <= 0, 0.5!, Me.m_shape.YBase))
+            Me.m_fpC.Value = Me.m_shpBuff.C
 
             Me.m_fpD = New cEwEFormatProvider(Me.m_uic, Me.m_tbxD, GetType(Single))
-            Me.m_fpD.Value = Me.m_shape.Steep ' CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
+            Me.m_fpD.Value = Me.m_shpBuff.D
 
             Me.m_fpMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxMaxValue, GetType(Single))
-            Me.m_fpMax.Value = Me.m_shape.YMax ' CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
+            Me.m_fpMax.Value = Me.m_shpBuff.Max
 
             ' Show available options
             For Each sft As eShapeFunctionType In [Enum].GetValues(GetType(eShapeFunctionType))
@@ -168,10 +207,24 @@ Namespace Controls
             Me.UpdatePreview()
             Me.UpdateControls()
 
+            AddHandler Me.m_fpA.OnValueChanged, AddressOf OnValueChanged
+            AddHandler Me.m_fpB.OnValueChanged, AddressOf OnValueChanged
+            AddHandler Me.m_fpC.OnValueChanged, AddressOf OnValueChanged
+            AddHandler Me.m_fpD.OnValueChanged, AddressOf OnValueChanged
+
+            AddHandler Me.m_fpMax.OnValueChanged, AddressOf OnMaxValueChanged
+
         End Sub
 
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+            RemoveHandler Me.m_fpA.OnValueChanged, AddressOf OnValueChanged
+            RemoveHandler Me.m_fpB.OnValueChanged, AddressOf OnValueChanged
+            RemoveHandler Me.m_fpC.OnValueChanged, AddressOf OnValueChanged
+            RemoveHandler Me.m_fpD.OnValueChanged, AddressOf OnValueChanged
+
+            RemoveHandler Me.m_fpMax.OnValueChanged, AddressOf OnMaxValueChanged
 
             Me.m_fpD.Release()
             Me.m_fpC.Release()
@@ -183,8 +236,9 @@ Namespace Controls
 
         End Sub
 
+        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btDefaults.Click
 
-        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btDefaults.Click
             Dim sA As Single = 0.0
             Dim sB As Single = 0.0
             Dim sC As Single = 0.0
@@ -228,16 +282,6 @@ Namespace Controls
 
         End Sub
 
-
-        Private Sub updateShape()
-            Me.m_shpBuff.A = CSng(Me.m_fpA.Value)
-            Me.m_shpBuff.B = CSng(Me.m_fpB.Value)
-            Me.m_shpBuff.C = CSng(Me.m_fpC.Value)
-            Me.m_shpBuff.D = CSng(Me.m_fpD.Value)
-        End Sub
-
-
-
         Private Sub OnOk(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnOk.Click
 
@@ -246,19 +290,7 @@ Namespace Controls
                 Return
             End If
 
-            Me.m_shape.LockUpdates()
-
-            ' Copy shape data back
-            Me.m_shape.ShapeData = Me.m_asDataWork
-            ' Store last used params
-            Me.m_shape.YZero = CSng(Me.m_fpA.Value)
-            Me.m_shape.YBase = CSng(Me.m_fpC.Value)
-            Me.m_shape.YEnd = CSng(Me.m_fpB.Value)
-            Me.m_shape.Steep = CSng(Me.m_fpD.Value)
-            Me.m_shape.ShapeFunctionType = Me.SelectedShapeType()
-
-            ' Go johnny go
-            Me.m_shape.UnlockUpdates(True)
+            Me.m_shpBuff.Apply(Me.m_shape)
 
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
@@ -270,7 +302,7 @@ Namespace Controls
             Me.Close()
         End Sub
 
-        Private Sub m_lbShapeFunctionTypes_Format(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Private Sub OnFormatShapeFunction(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_lbShapeFunctionTypes.Format
             Dim fmt As New cShapeFunctionTypeFormatter()
             e.Value = fmt.GetDescriptor(e.ListItem)
@@ -282,14 +314,101 @@ Namespace Controls
             Me.UpdatePreview()
         End Sub
 
-
-        Private Sub OnInputValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
-                Handles m_tbxD.Validated, m_tbxC.Validated, m_tbxB.Validated, m_tbxA.Validated
+        Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 
             Me.ValidateInput()
-            Me.updateShape()
+            Me.UpdateShape()
             Me.UpdatePreview()
 
+        End Sub
+
+        Private Sub OnMaxValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+
+            Dim scale As Single = CSng(Me.m_fpMax.Value)
+            Me.ScaleShape(scale)
+            Me.UpdatePreview()
+
+        End Sub
+
+        Private Sub OnPaintPreview(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+            Handles m_plPreview.Paint
+
+            Try
+
+                Dim sDataMax As Single = 0.0
+                Dim g As Graphics = e.Graphics
+                Dim rc As Rectangle = Me.m_plPreview.ClientRectangle
+                Dim iNumPoints As Integer = Me.m_shape.ShapeData.Length
+
+                If Me.m_bRecalc Then
+                    Me.RecalcShape()
+                    Me.m_bRecalc = False
+                End If
+
+                sDataMax = Me.m_shpBuff.Max
+
+                Using br As New SolidBrush(Me.m_plPreview.BackColor)
+                    g.FillRectangle(br, rc)
+                End Using
+
+                cShapeImage.DrawShapeDirect(Me.m_uic, _
+                                            Me.m_shpBuff.ShapeData, Me.NumDisplayPoints, Me.m_shape.IsSeasonal, _
+                                            Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
+                                            Me.m_handler.SketchDrawMode, _
+                                            sDataMax / 0.8!, cCore.NULL_VALUE, cCore.NULL_VALUE)
+
+                Using br As New HatchBrush(HatchStyle.SmallConfetti, Color.FromArgb(100, 0, 0, 0), Color.Transparent)
+                    Dim x As Integer = CInt(Math.Ceiling(rc.Width * Me.NumDataPoints / Me.NumDisplayPoints))
+                    g.FillRectangle(br, New Rectangle(x, 0, rc.Width, rc.Height))
+                End Using
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+#End Region ' Events
+
+#Region " Private method helpers "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the selected shape function type in the type selection controls
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Property SelectedShapeType() As eShapeFunctionType
+            Get
+                Dim item As Object = Me.m_lbShapeFunctionTypes.SelectedItem
+                If (item Is Nothing) Then Return eShapeFunctionType.NotSet
+                Return DirectCast(item, eShapeFunctionType)
+            End Get
+            Set(ByVal value As eShapeFunctionType)
+                For Each item As Object In Me.m_lbShapeFunctionTypes.Items
+                    If (DirectCast(item, eShapeFunctionType) = value) Then
+                        Me.m_lbShapeFunctionTypes.SelectedItem = item
+                        Return
+                    End If
+                Next
+                Me.m_lbShapeFunctionTypes.SelectedItem = Nothing
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generate one common shape (linear, sigmoid, etc) based on the user's choice.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdatePreview()
+            Me.m_bRecalc = True
+            Me.m_plPreview.Invalidate()
+        End Sub
+
+        Private Sub UpdateShape()
+            Me.m_shpBuff.A = CSng(Me.m_fpA.Value)
+            Me.m_shpBuff.B = CSng(Me.m_fpB.Value)
+            Me.m_shpBuff.C = CSng(Me.m_fpC.Value)
+            Me.m_shpBuff.D = CSng(Me.m_fpD.Value)
         End Sub
 
         Private Sub ValidateInput()
@@ -333,95 +452,6 @@ Namespace Controls
 
             End Select
 
-        End Sub
-
-
-        Private Sub OnPaintPreview(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-                Handles m_plPreview.Paint
-
-            Try
-
-                Dim sDataMax As Single = 0.0
-                Dim g As Graphics = e.Graphics
-                Dim rc As Rectangle = Me.m_plPreview.ClientRectangle
-                Dim iNumPoints As Integer = Me.m_shape.ShapeData.Length
-
-                If Me.m_bRecalc Then
-                    Me.RecalcShape()
-                    Me.m_bRecalc = False
-                End If
-
-                For Each s As Single In Me.m_asDataWork
-                    sDataMax = Math.Max(s, sDataMax)
-                Next
-
-                Using br As New SolidBrush(Me.m_plPreview.BackColor)
-                    g.FillRectangle(br, rc)
-                End Using
-
-                cShapeImage.DrawShapeDirect(Me.m_uic, _
-                                            Me.m_asDataWork, Me.NumDisplayPoints, Me.m_shape.IsSeasonal, _
-                                            Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
-                                            Me.m_handler.SketchDrawMode, _
-                                            sDataMax / 0.8!, cCore.NULL_VALUE, cCore.NULL_VALUE)
-
-                Using br As New HatchBrush(HatchStyle.SmallConfetti, Color.FromArgb(100, 0, 0, 0), Color.Transparent)
-                    Dim x As Integer = CInt(Math.Ceiling(rc.Width * Me.NumDataPoints / Me.NumDisplayPoints))
-                    g.FillRectangle(br, New Rectangle(x, 0, rc.Width, rc.Height))
-                End Using
-
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
-        Private Sub On_MaxValue_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_tbxMaxValue.TextChanged
-            Try
-                Dim scale As Single
-                If Single.TryParse(m_tbxMaxValue.Text, scale) Then
-                    Me.ScaleShape(scale)
-                    Me.UpdatePreview()
-                End If
-            Catch ex As Exception
-
-            End Try
-        End Sub
-
-#End Region ' Events
-
-#Region " Private method helpers "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the selected shape function type in the type selection controls
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Property SelectedShapeType() As eShapeFunctionType
-            Get
-                Dim item As Object = Me.m_lbShapeFunctionTypes.SelectedItem
-                If (item Is Nothing) Then Return eShapeFunctionType.NotSet
-                Return DirectCast(item, eShapeFunctionType)
-            End Get
-            Set(ByVal value As eShapeFunctionType)
-                For Each item As Object In Me.m_lbShapeFunctionTypes.Items
-                    If (DirectCast(item, eShapeFunctionType) = value) Then
-                        Me.m_lbShapeFunctionTypes.SelectedItem = item
-                        Return
-                    End If
-                Next
-                Me.m_lbShapeFunctionTypes.SelectedItem = Nothing
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Generate one common shape (linear, sigmoid, etc) based on the user's choice.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub UpdatePreview()
-            Me.m_bRecalc = True
-            Me.m_plPreview.Invalidate()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -550,11 +580,11 @@ Namespace Controls
 
                     Case eShapeFunctionType.NotSet
                         ' Obtain original shape data again
-                        Me.m_asDataWork = Me.m_shape.ShapeData
+                        Me.m_shpBuff.ShapeData = Me.m_shape.ShapeData
 
                     Case eShapeFunctionType.Linear
                         For i As Integer = 1 To nPoints
-                            Me.m_asDataWork(i) = sYZero + (sYEnd - sYZero) * (i - 1) / (nPoints - 1)
+                            Me.m_shpBuff.ShapeData(i) = sYZero + (sYEnd - sYZero) * (i - 1) / (nPoints - 1)
                         Next i
 
                     Case eShapeFunctionType.Sigmoid, eShapeFunctionType.Hyperbolic
@@ -569,7 +599,7 @@ Namespace Controls
                         For i As Integer = 1 To nPoints
                             xPow = CSng((i / nPoints) ^ sSteep)
                             If (xHalf + xPow <> 0) Then
-                                Me.m_asDataWork(i) = sYZero + ((sYEnd - sYZero) * xPow / (xHalf + xPow))
+                                Me.m_shpBuff.ShapeData(i) = sYZero + ((sYEnd - sYZero) * xPow / (xHalf + xPow))
                             End If
                         Next i
 
@@ -583,7 +613,7 @@ Namespace Controls
                         For i As Integer = 1 To nPoints
                             Dim sTmp As Single = CSng(sYZero * Math.Exp(expK * i / nPoints))
                             If sTmp > 1 Then sTmp = 1
-                            Me.m_asDataWork(i) = sTmp
+                            Me.m_shpBuff.ShapeData(i) = sTmp
                         Next i
 
                     Case eShapeFunctionType.Betapdf
@@ -591,7 +621,7 @@ Namespace Controls
                         'Beta probability distribution function
                         For i As Integer = 1 To nPoints
                             Dim x As Single = CSng(i / (nPoints + 1))
-                            Me.m_asDataWork(i) = CSng(Me.betaPDF(sYZero, sYEnd, x))
+                            Me.m_shpBuff.ShapeData(i) = CSng(Me.betaPDF(sYZero, sYEnd, x))
                         Next i
 
                     Case eShapeFunctionType.Normal
@@ -624,7 +654,7 @@ Namespace Controls
                                 sd = sYEnd + 0.0000001F
                             End If
                             x = x0 + dx * (i - 1)
-                            Me.m_asDataWork(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
+                            Me.m_shpBuff.ShapeData(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
                         Next
 
                         'xxxxxxALTERNATIVE WAY TO USE THE PARAMETERS NOT IMPLEMENTED HERE xxxxxxxxxxxx
@@ -714,7 +744,7 @@ Namespace Controls
                         For i As Integer = 0 To 2
                             xpt = xVal(i)
                             For j As Integer = iSegment(i) To iSegment(i + 1)
-                                Me.m_asDataWork(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
+                                Me.m_shpBuff.ShapeData(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
                                 xpt += dx
                             Next j
                         Next i
@@ -757,7 +787,7 @@ Namespace Controls
                             'loop from the start to the end position in this segment
                             'and interpolate the y point on the line
                             For j As Integer = iSegment(i) To iSegment(i + 1)
-                                Me.m_asDataWork(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
+                                Me.m_shpBuff.ShapeData(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
                                 xpt += dx
                             Next j
                         Next i
@@ -769,11 +799,8 @@ Namespace Controls
 
                 End Select
 
-                Dim ScaleMax As Single
-                If Single.TryParse(Me.m_tbxMaxValue.Text, ScaleMax) Then
-                    Me.ScaleShape(ScaleMax)
-                End If
-
+                Dim ScaleMax As Single = CSng(Me.m_fpMax.Value)
+                Me.ScaleShape(ScaleMax)
 
             Catch ex As Exception
                 Return False
@@ -784,7 +811,7 @@ Namespace Controls
 
                 ' Complete rest of shape
                 For i As Integer = nPoints + 1 To Me.NumDisplayPoints
-                    Me.m_asDataWork(i) = Me.m_asDataWork(nPoints)
+                    Me.m_shpBuff.ShapeData(i) = Me.m_shpBuff.ShapeData(nPoints)
                 Next
 
             End If
@@ -964,24 +991,18 @@ Namespace Controls
             Return Me.m_shape.nPoints
         End Function
 
+        ''' <summary>
+        ''' Scale the internal shape buffer to a new maximum.
+        ''' </summary>
+        ''' <param name="sNewMax"></param>
+        Private Sub ScaleShape(sNewMax As Single)
 
-        Private Sub ScaleShape(newMax As Single)
+            If (sNewMax = 0) Then Return
 
-            If newMax = 0 Then Return
-            'OK this is dumb
-            'Because the dialogue operates on a buffer
-            'It may/will have changed the buffer without updating the shape (see RecalShape())
-            'So 
-            '0 JS: do not forget to backup the shape buffer
-            '1 update the shape with new data
-            '2 then scale it
-            '3 the copy the shape back into the buffer
-            '4 JS: do not forget to restore the shape to its original state. Shape can only be modified on 'OK'!
-            Dim buf As Single() = Me.m_shape.ShapeData
-            Me.m_shape.ShapeData = Me.m_asDataWork
-            Me.m_shape.Scale(newMax)
-            Me.m_asDataWork = Me.m_shape.ShapeData
-            Me.m_shape.ShapeData = buf
+            Dim scalar As Single = sNewMax / Me.m_shpBuff.Max
+            For ipt As Integer = 1 To Me.m_shpBuff.ShapeData.Length - 1
+                Me.m_shpBuff.ShapeData(ipt) *= scalar
+            Next
 
         End Sub
 
