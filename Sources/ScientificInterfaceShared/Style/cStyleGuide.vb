@@ -380,7 +380,7 @@ Namespace Style
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         <Obsolete("Use cSystemUtils.IsRightToLeft instead")> _
-        Public Function IsRightToLeft() As Boolean
+        Public Shared Function IsRightToLeft() As Boolean
             Return cSystemUtils.IsRightToLeft()
         End Function
 
@@ -2135,6 +2135,27 @@ Namespace Style
         Public Property PreferredDPI As Integer = 220
 
 #End Region ' Image export settings
+
+#Region " Labels and headers "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a string to a label to be kept in a given control.
+        ''' </summary>
+        ''' <param name="strLabel"></param>
+        ''' <param name="parent">Not used yet. At some point, the parent control needs
+        ''' to be scanned for existing keyboard shortcuts to prevent duplicates.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToLabel(ByVal strLabel As String, Optional ByVal parent As Control = Nothing) As String
+            If cSystemUtils.IsRightToLeft() Then
+                Return ":" & cStringUtils.ToTitlecase(strLabel) & "&"
+            Else
+                Return "&" & cStringUtils.ToTitlecase(strLabel) & ":"
+            End If
+        End Function
+
+#End Region ' Labels and headers
 
 #End Region ' Public access
 

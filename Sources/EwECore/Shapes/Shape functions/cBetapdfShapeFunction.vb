@@ -1,0 +1,121 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
+
+Option Strict On
+
+Imports EwECore
+Imports EwEUtils.Core
+
+#End Region ' Imports
+
+Public Class cBetapdfShapeFunction
+    Inherits cShapeFunction
+
+    Public Sub New()
+        MyBase.New()
+    End Sub
+
+    Public Overrides Function CalculateShape(Optional nPoints As Integer = 1200) As Single()
+        If (Me.ParamsChanged) Then
+            Dim sYZero As Single = Me.ParamValue(1)
+            Dim sYEnd As Single = Me.ParamValue(2)
+            For i As Integer = 1 To nPoints
+                Dim x As Single = CSng(i / (nPoints + 1))
+                Me.m_sValues(i) = CSng(Me.betaPDF(sYZero, sYEnd, x))
+            Next i
+            Me.ParamsChanged = False
+        End If
+        Return Me.m_sValues
+    End Function
+
+    Public Overrides Sub Defaults()
+        Me.ParamValue(1) = 2.0F
+        Me.ParamValue(2) = 3.0F
+    End Sub
+
+    Public Overrides Function IsRelevantDataType(datatype As eDataTypes) As Boolean
+        Return (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
+               (datatype = EwEUtils.Core.eDataTypes.PriceMediation)
+    End Function
+
+    Public Overrides ReadOnly Property nParameters As Integer
+        Get
+            Return 2
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property ShapeFunctionType As EwECore.eShapeFunctionType
+        Get
+            Return eShapeFunctionType.Betapdf
+        End Get
+    End Property
+
+    Private Function betaPDF(ByVal a As Single, ByVal b As Single, ByVal x As Single) As Single
+        'Beta Distribution pdf from Wikipedia
+        'http://en.wikipedia.org/wiki/Beta_distribution
+        Return CSng((x ^ (a - 1) * (1 - x) ^ (b - 1)) / beta(a, b))
+    End Function
+
+    Private Function beta(ByVal a As Single, ByVal b As Single) As Single
+        'Beta function from Wikipedia
+        'http://en.wikipedia.org/wiki/Beta_function
+        Return CSng(Gamma(a) * Gamma(b) / Gamma(a + b))
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Gamma function
+    ''' </summary>
+    ''' <param name="xx"></param>
+    ''' -------------------------------------------------------------------
+    Private Function Gamma(ByVal xx As Double) As Double
+        'HACK gammln(x) returns the log n gamma used by Numeric Recipies in C betai(a,b,x) 
+        'we need gamma for beta(x) so remove the log
+        Return Math.Exp(Me.gammln(xx))
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Gamma Log n from Numeric Recipies in C
+    ''' </summary>
+    ''' <param name="xx"></param>
+    ''' <returns></returns>
+    ''' -------------------------------------------------------------------
+    Private Function gammln(ByVal xx As Double) As Double
+        'from NRC-2
+        Dim x As Double, y As Double, tmp As Double, ser As Double
+        Dim cof() As Double = {76.180091729471457, -86.505320329416776, _
+                              24.014098240830911, -1.231739572450155, _
+                              0.001208650973866179, -0.000005395239384953}
+        Dim j As Integer
+        x = xx
+        tmp = x + 5.5
+        tmp -= (x + 0.5) * Math.Log(tmp)
+        ser = 1.0000000001900149
+
+        For j = 0 To 5
+            y += 1
+            ser += cof(j) / (x + y)
+        Next
+
+        Return -tmp + Math.Log(2.5066282746310007 * ser / x)
+
+    End Function
+
+End Class

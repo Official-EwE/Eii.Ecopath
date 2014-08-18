@@ -1056,7 +1056,8 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Converts a string to proper title case, honouring 
+        ''' Converts a string to proper title case, honouring reading order and
+        ''' periods.
         ''' </summary>
         ''' <param name="strExpression">The string to convert.</param>
         ''' <returns>A string in proper title case.</returns>
@@ -1067,7 +1068,7 @@ Namespace Utilities
             Dim astrBits() As String
             Dim sbOUt As New StringBuilder()
 
-            ' ALl lower case first
+            ' All lower case first
             strExpression = strExpression.ToLower()
 
             If bR2L Then
