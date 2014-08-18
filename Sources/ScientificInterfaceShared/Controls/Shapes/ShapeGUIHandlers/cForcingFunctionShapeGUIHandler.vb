@@ -543,15 +543,22 @@ Namespace Controls
 
         End Sub
 
-        Private Sub ScaleShape(ByVal shape As cShapeData, ByVal sNewMaxValue As Single)
+        Private Sub ScaleShape(ByVal shape As cShapeData, ByVal sNewMax As Single)
 
             ' Sanity check
             Debug.Assert(shape IsNot Nothing, "Need valid FF")
             Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
 
+            If (sNewMax = 0) Then Return
             Try
-                'We just tested to make sure the shape is a cForcingFunction
-                DirectCast(shape, cForcingFunction).Scale(sNewMaxValue)
+
+                Dim scalar As Single = sNewMax / shape.YMax
+
+                shape.LockUpdates()
+                For i As Integer = 1 To shape.nPoints
+                    shape.ShapeData(i) *= scalar
+                Next
+                shape.UnlockUpdates(True)
             Catch ex As Exception
 
             End Try

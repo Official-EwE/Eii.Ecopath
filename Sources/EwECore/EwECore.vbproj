@@ -217,6 +217,9 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceTimestep.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceScenario.vb" />
     <Compile Include="Monte Carlo\cMonteCarloThread.vb" />
+    <Compile Include="Shapes\Shape functions\cShoulderShapeFunction.vb" />
+    <Compile Include="Shapes\Shape functions\cTrapezoidShapeFunction.vb" />
+    <Compile Include="Shapes\Shape functions\cShapeFunction.vb" />
     <Compile Include="Shapes\Forcing Functions\cMediatedInteractionManager.vb" />
     <Compile Include="Core\cCore.vb" />
     <Compile Include="Core\cCoreStateMonitor.vb" />
@@ -279,6 +282,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreMessages.resx</DependentUpon>
     </Compile>
+    <Compile Include="Shapes\Shape functions\cBetapdfShapeFunction.vb" />
+    <Compile Include="Shapes\Shape functions\cExponentialShapeFunction.vb" />
+    <Compile Include="Shapes\Shape functions\cHyperbolicShapeFunction.vb" />
+    <Compile Include="Shapes\Shape functions\cLinearShapeFunction.vb" />
+    <Compile Include="Shapes\Shape functions\cNormalShapeFunction.vb" />
+    <Compile Include="Shapes\Shape functions\cSigmoidShapeFunction.vb" />
+    <Compile Include="Shapes\Shape functions\cSketchedShapeFunction.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesDataStructures.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesReaderFactory.vb" />
     <Compile Include="Shapes\TimeSeries\Readers\cTimeSeriesClipboardReader.vb" />

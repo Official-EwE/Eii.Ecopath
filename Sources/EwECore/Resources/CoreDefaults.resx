@@ -242,6 +242,39 @@
     <value>Created {0}</value>
     <comment>{0} date and time, converted to string in current Locale</comment>
   </data>
+  <data name="PARAM_LEFTPOINT" xml:space="preserve">
+    <value>Left point</value>
+  </data>
+  <data name="PARAM_MEAN" xml:space="preserve">
+    <value>Mean</value>
+  </data>
+  <data name="PARAM_RIGHTPOINT" xml:space="preserve">
+    <value>Right point</value>
+  </data>
+  <data name="PARAM_SD_LEFT" xml:space="preserve">
+    <value>SD left</value>
+  </data>
+  <data name="PARAM_SD_RIGHT" xml:space="preserve">
+    <value>SD right</value>
+  </data>
+  <data name="PARAM_SD_WIDTH" xml:space="preserve">
+    <value>SD width</value>
+  </data>
+  <data name="PARAM_STEEPNESS" xml:space="preserve">
+    <value>Steep</value>
+  </data>
+  <data name="PARAM_WIDTH" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="PARAM_YBASE" xml:space="preserve">
+    <value>Y base</value>
+  </data>
+  <data name="PARAM_YEND" xml:space="preserve">
+    <value>Yend</value>
+  </data>
+  <data name="PARAM_YZERO" xml:space="preserve">
+    <value>Y zero</value>
+  </data>
   <data name="SOURCE_CLIPBOARD" xml:space="preserve">
     <value>From clipboard</value>
   </data>
