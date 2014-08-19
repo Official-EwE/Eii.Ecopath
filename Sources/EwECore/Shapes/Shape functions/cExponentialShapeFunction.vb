@@ -30,7 +30,7 @@ Public Class cExponentialShapeFunction
         MyBase.New()
     End Sub
 
-    Public Overrides Function CalculateShape(Optional nPoints As Integer = 1200) As Single()
+    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
         If (Me.ParamsChanged) Then
             Dim sYZero As Single = Me.ParamValue(1)
             Dim sYEnd As Single = Me.ParamValue(2)
@@ -46,11 +46,11 @@ Public Class cExponentialShapeFunction
             For i As Integer = 1 To nPoints
                 Dim sTmp As Single = CSng(sYZero * Math.Exp(expK * i / nPoints))
                 If sTmp > 1 Then sTmp = 1
-                Me.m_sValues(i) = sTmp
+                Me.m_points(i) = sTmp
             Next i
             Me.ParamsChanged = False
         End If
-        Return Me.m_sValues
+        Return Me.m_points
     End Function
 
     Public Overrides Sub Defaults()

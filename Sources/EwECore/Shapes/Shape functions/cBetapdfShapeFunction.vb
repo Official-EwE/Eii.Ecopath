@@ -31,17 +31,17 @@ Public Class cBetapdfShapeFunction
         MyBase.New()
     End Sub
 
-    Public Overrides Function CalculateShape(Optional nPoints As Integer = 1200) As Single()
+    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
         If (Me.ParamsChanged) Then
             Dim sYZero As Single = Me.ParamValue(1)
             Dim sYEnd As Single = Me.ParamValue(2)
             For i As Integer = 1 To nPoints
                 Dim x As Single = CSng(i / (nPoints + 1))
-                Me.m_sValues(i) = CSng(Me.betaPDF(sYZero, sYEnd, x))
+                Me.m_points(i) = CSng(Me.betaPDF(sYZero, sYEnd, x))
             Next i
             Me.ParamsChanged = False
         End If
-        Return Me.m_sValues
+        Return Me.m_points
     End Function
 
     Public Overrides Sub Defaults()
@@ -65,6 +65,8 @@ Public Class cBetapdfShapeFunction
             Return eShapeFunctionType.Betapdf
         End Get
     End Property
+
+#Region " Calculations "
 
     Private Function betaPDF(ByVal a As Single, ByVal b As Single, ByVal x As Single) As Single
         'Beta Distribution pdf from Wikipedia
@@ -117,5 +119,7 @@ Public Class cBetapdfShapeFunction
         Return -tmp + Math.Log(2.5066282746310007 * ser / x)
 
     End Function
+
+#End Region ' Calculations
 
 End Class

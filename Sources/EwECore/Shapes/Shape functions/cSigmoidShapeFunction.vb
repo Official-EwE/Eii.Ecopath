@@ -30,7 +30,7 @@ Public Class cSigmoidShapeFunction
         MyBase.New()
     End Sub
 
-    Public Overrides Function CalculateShape(Optional nPoints As Integer = 1200) As Single()
+    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
         If (Me.ParamsChanged) Then
             Dim sYZero As Single = Me.ParamValue(1)
             Dim sYEnd As Single = Me.ParamValue(2)
@@ -46,12 +46,12 @@ Public Class cSigmoidShapeFunction
             For i As Integer = 1 To nPoints
                 xPow = CSng((i / nPoints) ^ sSteep)
                 If (xHalf + xPow <> 0) Then
-                    Me.m_sValues(i) = sYZero + ((sYEnd - sYZero) * xPow / (xHalf + xPow))
+                    Me.m_points(i) = sYZero + ((sYEnd - sYZero) * xPow / (xHalf + xPow))
                 End If
             Next i
             Me.ParamsChanged = False
         End If
-        Return Me.m_sValues
+        Return Me.m_points
     End Function
 
     Public Overrides Sub Defaults()
