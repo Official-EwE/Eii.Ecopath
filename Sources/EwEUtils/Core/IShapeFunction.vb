@@ -27,6 +27,14 @@ Namespace Core
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Initialize to a given shape.
+        ''' </summary>
+        ''' <param name="shape"></param>
+        ''' -----------------------------------------------------------------------
+        Sub Init(shape As Object)
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Set a shape function parameters to their default values.
         ''' </summary>
         ''' -----------------------------------------------------------------------
@@ -64,7 +72,7 @@ Namespace Core
         ''' <param name="nPoints">The length of the points array to return.</param>
         ''' <returns>An array of points.</returns>
         ''' -----------------------------------------------------------------------
-        Function CalculateShape(Optional ByVal nPoints As Integer = 1200) As Single()
+        Function Shape(Optional ByVal nPoints As Integer = 1200) As Single()
 
         ''' -------------------------------------------------------------------
         ''' <summary>

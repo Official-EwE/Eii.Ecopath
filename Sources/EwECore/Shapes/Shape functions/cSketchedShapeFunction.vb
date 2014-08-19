@@ -23,7 +23,7 @@ Imports EwECore
 
 #End Region ' Imports
 
-Public MustInherit Class cSketchedShapeFunction
+Public Class cSketchedShapeFunction
     Inherits cShapeFunction
 
     Public Sub New()
@@ -52,9 +52,15 @@ Public MustInherit Class cSketchedShapeFunction
         End Get
     End Property
 
-    Public Overrides Function CalculateShape(Optional ByVal nPoints As Integer = 1200) As Single()
-        Return Me.m_sPoints
+    Public Overrides Function Shape(Optional ByVal nPoints As Integer = 1200) As Single()
+        Return Me.m_points
     End Function
+
+    Public Overrides ReadOnly Property ShapeFunctionType As eShapeFunctionType
+        Get
+            Return eShapeFunctionType.NotSet
+        End Get
+    End Property
 
 End Class
 

@@ -217,6 +217,7 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceTimestep.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceScenario.vb" />
     <Compile Include="Monte Carlo\cMonteCarloThread.vb" />
+    <Compile Include="Shapes\Shape functions\cShapeFunctionFactory.vb" />
     <Compile Include="Shapes\Shape functions\cShoulderShapeFunction.vb" />
     <Compile Include="Shapes\Shape functions\cTrapezoidShapeFunction.vb" />
     <Compile Include="Shapes\Shape functions\cShapeFunction.vb" />

@@ -26,6 +26,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports System.Drawing.Drawing2D
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -140,6 +141,8 @@ Namespace Controls
 
         Private m_shpBuff As cShapeBuffer = Nothing
 
+        ' --------------- NEW STUFF -------------------
+        Private m_fps As New List(Of cEwEFormatProvider)
 
 #End Region ' Private vars
 
@@ -371,6 +374,55 @@ Namespace Controls
 #End Region ' Events
 
 #Region " Private method helpers "
+
+        Private Property SelectedShapeFunction As IShapeFunction
+            Get
+                Return DirectCast(Me.m_lbShapeFunctionTypes.SelectedItem, IShapeFunction)
+            End Get
+            Set(value As IShapeFunction)
+                If (Object.ReferenceEquals(Me.SelectedShapeType, value)) Then Return
+
+                For Each fp As cEwEFormatProvider In Me.m_fps
+                    RemoveHandler fp.OnValueChanged, AddressOf OnValueChanged
+                    fp.Release()
+                Next
+
+                Me.m_fps.Clear()
+
+                For i As Integer = 1 To 4 ' Will become flexible to max number
+
+                    Dim lbl As Control = Nothing
+                    Dim tbx As Control = Nothing
+                    Dim fp As cEwEFormatProvider = Nothing
+
+                    Select Case i
+                        Case 1 : lbl = Me.m_lblA : tbx = Me.m_tbxA
+                        Case 2 : lbl = Me.m_lblB : tbx = Me.m_tbxB
+                        Case 3 : lbl = Me.m_lblC : tbx = Me.m_tbxC
+                        Case 4 : lbl = Me.m_lblD : tbx = Me.m_tbxD
+                    End Select
+
+                    If (i < value.nParameters) Then
+                        ' Configure label
+                        lbl.Visible = True
+                        lbl.Text = cStyleGuide.ToLabel(value.ParamName(i))
+                        ' Configure textbox and format provider
+                        tbx.Visible = True
+
+                        fp = New cEwEFormatProvider(Me.m_uic, tbx, GetType(Single))
+                        fp.Tag = i
+                        fp.Value = value.ParamValue(i)
+                        AddHandler fp.OnValueChanged, AddressOf OnValueChanged
+
+                        Me.m_fps.Add(fp)
+                    Else
+                        lbl.Visible = False
+                        tbx.Visible = False
+                    End If
+                Next
+
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>

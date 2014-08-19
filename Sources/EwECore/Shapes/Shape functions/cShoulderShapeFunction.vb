@@ -27,7 +27,7 @@ Imports EwEUtils.Core
 Public MustInherit Class cShoulderShapeFunction
     Inherits cShapeFunction
 
-    Public Overrides Function CalculateShape(Optional nPoints As Integer = 1200) As Single()
+    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
         If (Me.ParamsChanged) Then
 
             Dim sYZero As Single = Me.ParamValue(1)
@@ -75,13 +75,13 @@ Public MustInherit Class cShoulderShapeFunction
             For i As Integer = 0 To 2
                 xpt = xVal(i)
                 For j As Integer = iSegment(i) To iSegment(i + 1)
-                    Me.m_sValues(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
+                    Me.m_points(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
                     xpt += dx
                 Next j
             Next i
             Me.ParamsChanged = False
         End If
-        Return Me.m_sValues
+        Return Me.m_points
     End Function
 
     Public Overrides Sub Defaults()

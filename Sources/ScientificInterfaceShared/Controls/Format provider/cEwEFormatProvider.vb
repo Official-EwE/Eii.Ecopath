@@ -1580,6 +1580,14 @@ Namespace Controls
 
 #End Region ' Updates
 
+#Region " Tag "
+
+        Public Property Tag As Object
+
+#End Region ' Tag
+
+#Region " Internals "
+
         Protected Shared Function ExtractEnumValues(ByVal formatter As ITypeFormatter) As Object()
 
             Dim lItems As New List(Of Object)
@@ -1599,6 +1607,8 @@ Namespace Controls
             Return lItems.ToArray()
 
         End Function
+
+#End Region ' Internals
 
     End Class
 

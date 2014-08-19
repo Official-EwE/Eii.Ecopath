@@ -31,11 +31,11 @@ Public Class cTrapezoidShapeFunction
         MyBase.New()
     End Sub
 
-    Public Overrides Function CalculateShape(Optional nPoints As Integer = 1200) As Single()
+    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
         If (Me.ParamsChanged) Then
             Me.ParamsChanged = False
         End If
-        Return Me.m_sValues
+        Return Me.m_parameters
     End Function
 
     Public Overrides Sub Defaults()

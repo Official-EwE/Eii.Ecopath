@@ -46,7 +46,7 @@ Public Class cNormalShapeFunction
         End Get
     End Property
 
-    Public Overrides Function CalculateShape(Optional nPoints As Integer = 1200) As Single()
+    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
         If (Me.ParamsChanged) Then
             Dim sYEnd As Single = Me.ParamValue(2)
             'normal distribution with a mean of Zero
@@ -77,7 +77,7 @@ Public Class cNormalShapeFunction
                     sd = sYEnd + 0.0000001F
                 End If
                 x = x0 + dx * (i - 1)
-                Me.m_sValues(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
+                Me.m_points(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
             Next
 
             'xxxxxxALTERNATIVE WAY TO USE THE PARAMETERS NOT IMPLEMENTED HERE xxxxxxxxxxxx
@@ -124,7 +124,7 @@ Public Class cNormalShapeFunction
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             Me.ParamsChanged = False
         End If
-        Return Me.m_sValues
+        Return Me.m_points
     End Function
 
     Public Overrides Sub Defaults()

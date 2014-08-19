@@ -35,20 +35,41 @@ Public MustInherit Class cShapeFunction
     ''' <summary>This original value is extracted from EwE5.</summary>
     Protected Const xBase As Single = 0.3
 
-    Protected m_sValues As Single() = Nothing
-    Protected m_sPoints As Single() = Nothing
+    ''' <summary>The parameters that define the shape</summary>
+    Protected m_parameters As Single() = Nothing
+    ''' <summary>The points of the shape</summary>
+    Protected m_points As Single() = Nothing
 
 #End Region ' Private vars
 
     Public Sub New()
 
-        ' Not ready to be used yet
-        Throw New NotImplementedException()
+        '' Not ready to be used yet
+        'Throw New NotImplementedException()
 
-        ReDim Me.m_sValues(Me.nParameters)
-        ReDim Me.m_sPoints(1200)
+        ReDim Me.m_parameters(Me.nParameters)
+        ReDim Me.m_points(1200)
         Me.Defaults()
 
+    End Sub
+
+    Public Sub Init(obj As Object) _
+        Implements EwEUtils.Core.IShapeFunction.Init
+
+        If (Not TypeOf obj Is cForcingFunction) Then Return
+
+        Dim shp As cForcingFunction = DirectCast(obj, cForcingFunction)
+        If (shp.ShapeFunctionType <> Me.ShapeFunctionType) Then Return
+
+        Me.m_points = shp.ShapeData
+        For i As Integer = 1 To Me.nParameters
+            Select Case i
+                Case 1 : Me.ParamValue(1) = shp.YZero
+                Case 2 : Me.ParamValue(1) = shp.YEnd
+                Case 3 : Me.ParamValue(1) = shp.YBase
+                Case 4 : Me.ParamValue(i) = shp.Steep
+            End Select
+        Next
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -77,7 +98,7 @@ Public MustInherit Class cShapeFunction
     Public Overridable ReadOnly Property ParamName(iParam As Integer) As String _
         Implements EwEUtils.Core.IShapeFunction.ParamName
         Get
-            Debug.Assert((iParam > 1) And (iParam <= Me.nParameters))
+            Debug.Assert((iParam >= 1) And (iParam <= Me.nParameters))
             Select Case iParam
                 Case 1 : Return My.Resources.CoreDefaults.PARAM_YZERO
                 Case 2 : Return My.Resources.CoreDefaults.PARAM_YEND
@@ -91,7 +112,7 @@ Public MustInherit Class cShapeFunction
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Flag, indicating that parameter values have changed and that the shape 
-    ''' should be <see cref="CalculateShape">recalculated</see>.
+    ''' will be recalculated next time the <see cref="Shape"/> is requested.
     ''' </summary>
     ''' <returns>True if parameter values have recently changed.</returns>
     ''' -----------------------------------------------------------------------
@@ -100,19 +121,19 @@ Public MustInherit Class cShapeFunction
     Public Overridable Property ParamValue(iParam As Integer) As Single _
         Implements EwEUtils.Core.IShapeFunction.ParamValue
         Get
-            Debug.Assert((iParam > 1) And (iParam <= Me.nParameters))
-            Return Me.m_sValues(iParam)
+            Debug.Assert((iParam >= 1) And (iParam <= Me.nParameters))
+            Return Me.m_parameters(iParam)
         End Get
         Set(value As Single)
-            Debug.Assert((iParam > 1) And (iParam <= Me.nParameters))
-            If (Me.m_sValues(iParam) <> value) Then
-                Me.m_sValues(iParam) = value
+            Debug.Assert((iParam >= 1) And (iParam <= Me.nParameters))
+            If (Me.m_parameters(iParam) <> value) Then
+                Me.m_parameters(iParam) = value
                 Me.ParamsChanged = True
             End If
         End Set
     End Property
 
-    Public MustOverride Function CalculateShape(Optional ByVal nPoints As Integer = 1200) As Single() _
-        Implements EwEUtils.Core.IShapeFunction.CalculateShape
+    Public MustOverride Function Shape(Optional ByVal nPoints As Integer = 1200) As Single() _
+        Implements EwEUtils.Core.IShapeFunction.Shape
 
 End Class

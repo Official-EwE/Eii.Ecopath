@@ -30,16 +30,16 @@ Public Class cLinearShapeFunction
         MyBase.New()
     End Sub
 
-    Public Overrides Function CalculateShape(Optional nPoints As Integer = 1200) As Single()
+    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
         If (Me.ParamsChanged) Then
             Dim sYZero As Single = Me.ParamValue(1)
             Dim sYEnd As Single = Me.ParamValue(2)
             For i As Integer = 1 To nPoints
-                Me.m_sValues(i) = sYZero + (sYEnd - sYZero) * (i - 1) / (nPoints - 1)
+                Me.m_points(i) = sYZero + (sYEnd - sYZero) * (i - 1) / (nPoints - 1)
             Next i
             Me.ParamsChanged = False
         End If
-        Return Me.m_sValues
+        Return Me.m_points
     End Function
 
     Public Overrides Sub Defaults()
