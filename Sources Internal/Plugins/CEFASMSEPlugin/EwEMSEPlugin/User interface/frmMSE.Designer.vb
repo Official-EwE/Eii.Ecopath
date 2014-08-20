@@ -80,16 +80,16 @@ Partial Class frmMSE
         Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
-        Me.btnEditSurvivabilities = New System.Windows.Forms.Button()
+        Me.m_btnEditSurvivabilities = New System.Windows.Forms.Button()
         Me.m_tbxArea = New System.Windows.Forms.TextBox()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_pbCefas = New System.Windows.Forms.PictureBox()
         Me.m_lblAreaUnit = New System.Windows.Forms.Label()
-        Me.m_btnReviewDistParms = New System.Windows.Forms.Button()
+        Me.m_btnEditBasicInputs = New System.Windows.Forms.Button()
         Me.m_tlpLayout = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plStep1 = New System.Windows.Forms.Panel()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.m_btnEditDiets = New System.Windows.Forms.Button()
         Me.m_lblPathValue = New System.Windows.Forms.Label()
         Me.m_lblDataPath = New System.Windows.Forms.Label()
         Me.m_pbPathCompatible = New System.Windows.Forms.PictureBox()
@@ -332,11 +332,11 @@ Partial Class frmMSE
         Me.m_tbxNumAvailableFishingStrategies.Name = "m_tbxNumAvailableFishingStrategies"
         Me.m_tbxNumAvailableFishingStrategies.ReadOnly = True
         '
-        'btnEditSurvivabilities
+        'm_btnEditSurvivabilities
         '
-        resources.ApplyResources(Me.btnEditSurvivabilities, "btnEditSurvivabilities")
-        Me.btnEditSurvivabilities.Name = "btnEditSurvivabilities"
-        Me.btnEditSurvivabilities.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnEditSurvivabilities, "m_btnEditSurvivabilities")
+        Me.m_btnEditSurvivabilities.Name = "m_btnEditSurvivabilities"
+        Me.m_btnEditSurvivabilities.UseVisualStyleBackColor = True
         '
         'm_tbxArea
         '
@@ -360,11 +360,11 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_lblAreaUnit, "m_lblAreaUnit")
         Me.m_lblAreaUnit.Name = "m_lblAreaUnit"
         '
-        'm_btnReviewDistParms
+        'm_btnEditBasicInputs
         '
-        resources.ApplyResources(Me.m_btnReviewDistParms, "m_btnReviewDistParms")
-        Me.m_btnReviewDistParms.Name = "m_btnReviewDistParms"
-        Me.m_btnReviewDistParms.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnEditBasicInputs, "m_btnEditBasicInputs")
+        Me.m_btnEditBasicInputs.Name = "m_btnEditBasicInputs"
+        Me.m_btnEditBasicInputs.UseVisualStyleBackColor = True
         '
         'm_tlpLayout
         '
@@ -395,16 +395,16 @@ Partial Class frmMSE
         'TableLayoutPanel1
         '
         resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-        Me.TableLayoutPanel1.Controls.Add(Me.Button1, 4, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.btnEditSurvivabilities, 2, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_btnReviewDistParms, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_btnEditDiets, 4, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_btnEditSurvivabilities, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_btnEditBasicInputs, 0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         '
-        'Button1
+        'm_btnEditDiets
         '
-        resources.ApplyResources(Me.Button1, "Button1")
-        Me.Button1.Name = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnEditDiets, "m_btnEditDiets")
+        Me.m_btnEditDiets.Name = "m_btnEditDiets"
+        Me.m_btnEditDiets.UseVisualStyleBackColor = True
         '
         'm_lblPathValue
         '
@@ -492,7 +492,7 @@ Partial Class frmMSE
     Private WithEvents m_plStep3 As System.Windows.Forms.Panel
     Private WithEvents m_pbCefas As System.Windows.Forms.PictureBox
     Private WithEvents m_lblArea As System.Windows.Forms.Label
-    Private WithEvents m_btnReviewDistParms As System.Windows.Forms.Button
+    Private WithEvents m_btnEditBasicInputs As System.Windows.Forms.Button
     Private WithEvents m_tbxArea As System.Windows.Forms.TextBox
     Private WithEvents m_tbxNTrials As System.Windows.Forms.TextBox
     Private WithEvents m_hdrStep2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -517,7 +517,7 @@ Partial Class frmMSE
     Private WithEvents m_tbxMaxTime As System.Windows.Forms.TextBox
     Private WithEvents m_lblPathValue As System.Windows.Forms.Label
     Private WithEvents m_btnDecreaseEffort As System.Windows.Forms.Button
-    Private WithEvents btnEditSurvivabilities As System.Windows.Forms.Button
+    Private WithEvents m_btnEditSurvivabilities As System.Windows.Forms.Button
     Private WithEvents m_tlpFishingControls As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_btnDeleteResults As System.Windows.Forms.Button
     Private WithEvents m_pbPathCompatible As System.Windows.Forms.PictureBox
@@ -526,6 +526,6 @@ Partial Class frmMSE
     Friend WithEvents m_btnStockAssessment As System.Windows.Forms.Button
     Friend WithEvents m_btnSAError As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents Button1 As System.Windows.Forms.Button
+    Private WithEvents m_btnEditDiets As System.Windows.Forms.Button
     Friend WithEvents m_btnStopCreateModels As System.Windows.Forms.Button
 End Class

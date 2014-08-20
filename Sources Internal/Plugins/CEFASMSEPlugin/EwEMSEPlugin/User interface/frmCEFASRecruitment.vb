@@ -113,6 +113,7 @@ Public Class frmCEFASRecruitment
         Me.m_chkUseAssessment.Checked = Me.m_Assessment.UseAssessment
 
         Me.CenterToParent()
+        Me.RedrawGraph()
 
     End Sub
 
@@ -169,7 +170,7 @@ Public Class frmCEFASRecruitment
     Private Sub onParameterChanged(ByVal iGroupIndex As Integer)
         Try
             ' A relevant property has changed: redraw the graph
-            Me.Redraw()
+            Me.RedrawGraph()
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:frmCEFASRecruitment.onParameterChanged")
         End Try
@@ -192,6 +193,7 @@ Public Class frmCEFASRecruitment
         Set(ByVal value As cStockAssessmentParameters)
             ' Unregister
             If (Me.m_group IsNot Nothing) Then
+                'RemoveHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
                 RemoveHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
             End If
 
@@ -200,11 +202,12 @@ Public Class frmCEFASRecruitment
 
             ' Register
             If (Me.m_group IsNot Nothing) Then
+                'AddHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
                 AddHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
             End If
 
             ' Redraw the graph
-            Me.Redraw()
+            Me.RedrawGraph()
         End Set
 
     End Property
@@ -272,12 +275,12 @@ Public Class frmCEFASRecruitment
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Redraw the recruitment curve.
+    ''' Redraw the recruitment curve graph.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub Redraw()
+    Private Sub RedrawGraph()
 
-        If Me.m_zgh Is Nothing Then Return
+        If (Me.m_zgh Is Nothing) Then Return
 
         Dim lpts As New PointPairList
         Dim lLines As New List(Of LineItem)

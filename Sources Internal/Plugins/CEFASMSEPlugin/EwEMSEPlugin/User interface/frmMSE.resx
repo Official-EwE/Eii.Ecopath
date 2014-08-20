@@ -511,7 +511,7 @@
     <value>m_hdrStep2</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11114.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep2.Parent" xml:space="preserve">
     <value>m_plStep2</value>
@@ -808,7 +808,7 @@
     <value>m_hdrStep4</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11114.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.Parent" xml:space="preserve">
     <value>m_plStep4</value>
@@ -1018,7 +1018,7 @@
     <value>m_hdrStep3</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11114.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep3.Parent" xml:space="preserve">
     <value>m_plStep3</value>
@@ -1110,34 +1110,34 @@
   <data name="&gt;&gt;m_plStep3.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="btnEditSurvivabilities.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_btnEditSurvivabilities.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="btnEditSurvivabilities.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnEditSurvivabilities.Location" type="System.Drawing.Point, System.Drawing">
     <value>126, 0</value>
   </data>
-  <data name="btnEditSurvivabilities.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_btnEditSurvivabilities.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="btnEditSurvivabilities.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnEditSurvivabilities.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 23</value>
   </data>
-  <data name="btnEditSurvivabilities.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnEditSurvivabilities.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="btnEditSurvivabilities.Text" xml:space="preserve">
+  <data name="m_btnEditSurvivabilities.Text" xml:space="preserve">
     <value>Survivabilities...</value>
   </data>
-  <data name="&gt;&gt;btnEditSurvivabilities.Name" xml:space="preserve">
-    <value>btnEditSurvivabilities</value>
+  <data name="&gt;&gt;m_btnEditSurvivabilities.Name" xml:space="preserve">
+    <value>m_btnEditSurvivabilities</value>
   </data>
-  <data name="&gt;&gt;btnEditSurvivabilities.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEditSurvivabilities.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnEditSurvivabilities.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEditSurvivabilities.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;btnEditSurvivabilities.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEditSurvivabilities.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tbxArea.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -2083,34 +2083,34 @@
   <data name="&gt;&gt;m_lblAreaUnit.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_btnReviewDistParms.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_btnEditBasicInputs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_btnReviewDistParms.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnEditBasicInputs.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_btnReviewDistParms.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_btnEditBasicInputs.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_btnReviewDistParms.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnEditBasicInputs.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 23</value>
   </data>
-  <data name="m_btnReviewDistParms.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnEditBasicInputs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_btnReviewDistParms.Text" xml:space="preserve">
+  <data name="m_btnEditBasicInputs.Text" xml:space="preserve">
     <value>&amp;Basic inputs...</value>
   </data>
-  <data name="&gt;&gt;m_btnReviewDistParms.Name" xml:space="preserve">
-    <value>m_btnReviewDistParms</value>
+  <data name="&gt;&gt;m_btnEditBasicInputs.Name" xml:space="preserve">
+    <value>m_btnEditBasicInputs</value>
   </data>
-  <data name="&gt;&gt;m_btnReviewDistParms.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEditBasicInputs.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnReviewDistParms.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEditBasicInputs.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;m_btnReviewDistParms.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEditBasicInputs.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_tlpLayout.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -2128,40 +2128,40 @@
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="Button1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_btnEditDiets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="Button1.Enabled" type="System.Boolean, mscorlib">
+  <data name="m_btnEditDiets.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="Button1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnEditDiets.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Button1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnEditDiets.Location" type="System.Drawing.Point, System.Drawing">
     <value>252, 0</value>
   </data>
-  <data name="Button1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_btnEditDiets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="Button1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnEditDiets.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 23</value>
   </data>
-  <data name="Button1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnEditDiets.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="Button1.Text" xml:space="preserve">
+  <data name="m_btnEditDiets.Text" xml:space="preserve">
     <value>Diets...</value>
   </data>
-  <data name="&gt;&gt;Button1.Name" xml:space="preserve">
-    <value>Button1</value>
+  <data name="&gt;&gt;m_btnEditDiets.Name" xml:space="preserve">
+    <value>m_btnEditDiets</value>
   </data>
-  <data name="&gt;&gt;Button1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEditDiets.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Button1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEditDiets.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;Button1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEditDiets.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
@@ -2189,7 +2189,7 @@
     <value>0</value>
   </data>
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="Button1" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="btnEditSurvivabilities" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_btnReviewDistParms" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Absolute,6,Percent,33.33333,Absolute,6,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnEditDiets" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_btnEditSurvivabilities" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_btnEditBasicInputs" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Absolute,6,Percent,33.33333,Absolute,6,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_lblPathValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -2357,7 +2357,7 @@
     <value>m_hdrStep1</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11114.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStep1.Parent" xml:space="preserve">
     <value>m_plStep1</value>
@@ -2471,6 +2471,6 @@
     <value>frmMSE</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11093.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11114.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

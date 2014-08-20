@@ -33,7 +33,6 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
-
 Public Class cMSEPluginPoint
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.ICorePlugin
@@ -47,13 +46,12 @@ Public Class cMSEPluginPoint
     Implements EwEPlugin.IMSEInitialized
     Implements EwEPlugin.IEcosimDataInitializedPlugin
 
-
 #Region " Internal vars "
 
     Private m_MSE As cMSE
 
-    Private MSEForm As frmMSE = Nothing
-    Private mCore As cCore = Nothing
+    Private m_frm As frmMSE = Nothing
+    Private m_core As cCore = Nothing
     Private m_uic As cUIContext = Nothing
     Private m_ecosim As EwECore.Ecosim.cEcoSimModel = Nothing
     Private m_ecopath As Ecopath.cEcoPathModel
@@ -68,9 +66,18 @@ Public Class cMSEPluginPoint
     Private m_mhSettings As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
 
+    ''' <summary>
+    ''' Flag, stating that an MSE session has been explicitly activated by the user.
+    ''' </summary>
+    ''' <remarks>
+    ''' This prevents needless messages and processing if the MSE plug-in is loaded, 
+    ''' but has not been activated by the user.
+    ''' </remarks>
+    Private m_bSessionActive As Boolean = True
+
 #End Region ' Internal vars
 
-#Region "Public Properties"
+#Region " Public Properties "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -95,17 +102,16 @@ Public Class cMSEPluginPoint
 
     Friend ReadOnly Property Core As cCore
         Get
-            Return Me.mCore
+            Return Me.m_core
         End Get
     End Property
 
-#End Region 'Public Properties
+#End Region ' Public Properties
 
 #Region " Construction "
 
     Public Sub New()
-        m_MSE = New cMSE(m_monitor, Me)
-        Me.InvalidateConfiguration()
+        Me.m_MSE = New cMSE(m_monitor, Me)
     End Sub
 
 #End Region ' Construction
@@ -123,24 +129,17 @@ Public Class cMSEPluginPoint
 
 #Region " EwE app flow plugins "
 
-    Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
-
-        Try
-            Me.MSE.onEcosimBeginTimeStep(BiomassAtTimestep, iTime)
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
     Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
         ' NOP
         Return True
     End Function
 
     Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
+
+        If (Not Me.HasUI) Then Return True
         Me.InvalidateConfiguration()
         Return True
+
     End Function
 
     Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
@@ -152,7 +151,10 @@ Public Class cMSEPluginPoint
     End Sub
 
     Public Sub LoadEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.LoadEcosimScenario
+
+        If (Not Me.HasUI) Then Return
         Me.InvalidateConfiguration()
+
     End Sub
 
     Public Sub SaveEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.SaveEcosimScenario
@@ -160,18 +162,18 @@ Public Class cMSEPluginPoint
     End Sub
 
     Public Sub onInitialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        Me.mCore = CType(core, cCore)
-        Units.Init(mCore)
+        Me.m_core = CType(core, cCore)
+        Units.Init(m_core)
     End Sub
 
     Public Sub onCoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
 
-        m_ecopath = CType(objEcoPath, Ecopath.cEcoPathModel)
-        m_ecosim = CType(objEcoSim, Ecosim.cEcoSimModel)
+        Me.m_ecopath = CType(objEcoPath, Ecopath.cEcoPathModel)
+        Me.m_ecosim = CType(objEcoSim, Ecosim.cEcoSimModel)
 
         Debug.Assert(Me.m_uic IsNot Nothing)
 
-        Me.MSE.onCoreInitialized(Me.mCore, m_ecopath, m_ecosim)
+        Me.MSE.onCoreInitialized(Me.m_core, m_ecopath, m_ecosim)
 
         ' Set message handlers
 
@@ -205,9 +207,11 @@ Public Class cMSEPluginPoint
 
     End Sub
 
-    Public Sub MSEInitialized(MSEModel As Object, MSEDataStructure As Object, EcosimDatastructures As Object) Implements EwEPlugin.IMSEInitialized.MSEInitialized
+    Public Sub MSEInitialized(MSEModel As Object, MSEDataStructure As Object, EcosimDatastructures As Object) _
+        Implements EwEPlugin.IMSEInitialized.MSEInitialized
+
         Try
-            m_coreMSEData = DirectCast(MSEDataStructure, MSE.cMSEDataStructures)
+            Me.m_coreMSEData = DirectCast(MSEDataStructure, MSE.cMSEDataStructures)
             Me.m_MSE.CoreMSEData = Me.m_coreMSEData
         Catch ex As Exception
             cLog.Write(ex, "MSEInitialized(...) Failed to cast MSEDataStructure to cMSEDataStructures.")
@@ -215,12 +219,18 @@ Public Class cMSEPluginPoint
 
     End Sub
 
-
-    Public Sub EcosimPreDataInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreDataInitialized
+    Public Sub EcosimPreDataInitialized(EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreDataInitialized
 
     End Sub
 
-    Public Sub EcosimPreRunInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreRunInitialized
+    Public Sub EcosimPreRunInitialized(EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreRunInitialized
+
+        ' A session is only active IF the user has the MSE interface open when starting Ecosim
+        Me.m_bSessionActive = Me.HasUI
+        If (Not Me.m_bSessionActive) Then Return
+
         Try
             Dim data As cEcosimDatastructures = DirectCast(EcosimDatastructures, cEcosimDatastructures)
             Me.m_MSE.onEcosimRunBeginning(data)
@@ -229,65 +239,84 @@ Public Class cMSEPluginPoint
         End Try
     End Sub
 
+    Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) _
+        Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
+
+        If (Not Me.m_bSessionActive) Then Return
+
+        Try
+            Me.MSE.onEcosimBeginTimeStep(BiomassAtTimestep, iTime)
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         If Not Me.HasUI Then
-            MSEForm = New frmMSE(Me, Me.m_uic)
+            Me.InvalidateConfiguration()
+            Me.m_frm = New frmMSE(Me, Me.m_uic)
         End If
 
         ' Let EwE show the form
-        frmPlugin = MSEForm
+        frmPlugin = m_frm
 
     End Sub
 
 #End Region ' EwE app flow plugins
 
-#Region "Plugin Implementations"
+#Region " UI integration "
 
-
-    Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property ControlText As String _
+        Implements EwEPlugin.IGUIPlugin.ControlText
         Get
             Return My.Resources.CAPTION
         End Get
     End Property
 
-    Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText As String _
+        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
             Return My.Resources.CAPTION_TOOLTIP
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState _
+        Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
             'Return EwEUtils.Core.eCoreExecutionState.EcosimCompleted
             Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 
-    Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation() As String _
+        Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
     End Property
 
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author() As String _
+        Implements EwEPlugin.IPlugin.Author
         Get
             Return "Mark Platts CEFAS"
         End Get
     End Property
 
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact() As String _
+        Implements EwEPlugin.IPlugin.Contact
         Get
             Return "ewedevlowestoft@gmail.com"
         End Get
     End Property
 
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description() As String _
+        Implements EwEPlugin.IPlugin.Description
         Get
             Return "Plug-in to run CEFAS MSE"
         End Get
     End Property
-
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
@@ -295,21 +324,21 @@ Public Class cMSEPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As System.Drawing.Image _
+        Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
     End Property
 
-#End Region
+#End Region ' UI integration
 
 #Region " Helper methods "
 
     Private Function HasUI() As Boolean
-        If Me.MSEForm Is Nothing Then Return False
-        Return Not Me.MSEForm.IsDisposed
+        If (Me.m_frm Is Nothing) Then Return False
+        Return Not Me.m_frm.IsDisposed
     End Function
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

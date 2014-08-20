@@ -2622,8 +2622,6 @@ stepend:
         Me.m_StockAssessment = New cStockAssessmentModel(Me)
         Me.m_diets = New cDiets(Me, Me.m_core)
 
-        Me.InvalidateRunState()
-
     End Sub
 
     Public Sub onEcosimRunBeginning(ByVal EcosimDatastructures As cEcosimDatastructures)

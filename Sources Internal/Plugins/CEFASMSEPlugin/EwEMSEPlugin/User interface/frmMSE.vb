@@ -197,14 +197,14 @@ Public Class frmMSE
         If Me.MSE.IsInputStructureAvailable() Then
             If Me.MSE.IsInputDataCompatible() Then
                 img = SharedResources.OK
-                Me.m_btnReviewDistParms.Enabled = True
+                Me.m_btnEditBasicInputs.Enabled = True
             Else
-                Me.m_btnReviewDistParms.Enabled = False
+                Me.m_btnEditBasicInputs.Enabled = False
                 img = SharedResources.Critical
             End If
         Else
             img = Nothing
-            Me.m_btnReviewDistParms.Enabled = True
+            Me.m_btnEditBasicInputs.Enabled = True
         End If
         Me.m_pbPathCompatible.Image = img
 
@@ -320,7 +320,9 @@ Public Class frmMSE
     End Sub
 
     Private Sub OnEditSurvivabilities(sender As System.Object, e As System.EventArgs) _
-        Handles btnEditSurvivabilities.Click, Button1.Click
+        Handles m_btnEditSurvivabilities.Click
+
+        If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
 
         Try
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
@@ -332,6 +334,13 @@ Public Class frmMSE
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnShowTFM")
         End Try
+
+    End Sub
+
+    Private Sub OnEditDiets(sender As System.Object, e As System.EventArgs) Handles m_btnEditDiets.Click
+
+        If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
+        Throw New NotImplementedException("Edit Diets UI does not exist yet")
 
     End Sub
 
@@ -351,10 +360,10 @@ Public Class frmMSE
     End Sub
 
     Private Sub OnReviewDistParams(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnReviewDistParms.Click
+        Handles m_btnEditBasicInputs.Click
 
         Try
-            Me.ReviewDistParams()
+            Me.EditBasicInputs()
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnReviewDistParams")
         End Try
@@ -549,7 +558,7 @@ Public Class frmMSE
 
 #Region " Path / model validation "
 
-    Private Function ReviewDistParams() As Boolean
+    Private Function EditBasicInputs() As Boolean
 
         If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return False
 
