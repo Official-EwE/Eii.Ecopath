@@ -163,12 +163,6 @@
     </Compile>
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExclusion.vb" />
     <Compile Include="Controls\Options\IOptionsPage.vb" />
-    <Compile Include="Controls\Shapes\Utility\dlgChangeShape2.Designer.vb">
-      <DependentUpon>dlgChangeShape2.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Shapes\Utility\dlgChangeShape2.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Controls\SysConfig\cSysConfig.vb" />
     <Compile Include="Controls\TabControl\ucTabControlEx.vb">
       <SubType>Component</SubType>
@@ -856,10 +850,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.resx">
       <DependentUpon>dlgDefineMediationAssignments.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Shapes\Utility\dlgChangeShape2.resx">
-      <DependentUpon>dlgChangeShape2.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\Utility\dlgChangeShape.resx">
