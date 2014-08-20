@@ -116,7 +116,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether the dataset is configured for delivering data.
+        ''' Returns whether the dataset is configured for delivering data.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Function IsConfigured() As Boolean
