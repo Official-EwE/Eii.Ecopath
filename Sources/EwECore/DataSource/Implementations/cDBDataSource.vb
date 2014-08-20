@@ -9470,14 +9470,14 @@ Namespace DataSources
 
             Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
-
+            Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
             Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim bSucces As Boolean = True
 
             If (reader Is Nothing) Then Return Me.IsReadOnly
 
-            While reader.Read()
+            While (reader.Read())
                 Try
                     Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
                     Dim iLayer As Integer = Array.IndexOf(spaceDS.getLayerIDs(var), CInt(Me.m_db.ReadSafe(reader, "LayerID", 1)))
@@ -9503,6 +9503,9 @@ Namespace DataSources
                             item.ConverterConfig = CStr(Me.m_db.ReadSafe(reader, "ConverterCfg", ""))
                             item.Scale = CSng(Me.m_db.ReadSafe(reader, "Scale", 1.0!))
                             item.ScaleType = CType(Me.m_db.ReadSafe(reader, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
+
+                            ' Create a real dataset from this entry
+                            man.CreateDataset(item)
                         End If
                     End If
 

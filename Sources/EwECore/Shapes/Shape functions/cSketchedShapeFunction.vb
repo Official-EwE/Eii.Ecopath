@@ -34,7 +34,7 @@ Public Class cSketchedShapeFunction
         ' NOP
     End Sub
 
-    Public Overrides Function IsRelevantDataType(datatype As EwEUtils.Core.eDataTypes) As Boolean
+    Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
         Return (datatype = EwEUtils.Core.eDataTypes.Forcing) Or _
                (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
                (datatype = EwEUtils.Core.eDataTypes.PriceMediation)
@@ -52,8 +52,19 @@ Public Class cSketchedShapeFunction
         End Get
     End Property
 
-    Public Overrides Function Shape(Optional ByVal nPoints As Integer = 1200) As Single()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Shape"/>
+    ''' <summary>
+    ''' Returns the points for a sketched shape.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function Shape(ByVal nPoints As Integer) As Single()
+
+        ' Ignore parameters
+        Me.ParamsChanged = False
+        ' Return default points
         Return Me.m_points
+
     End Function
 
     Public Overrides ReadOnly Property ShapeFunctionType As eShapeFunctionType

@@ -2282,6 +2282,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to export data set(s) to {1}.
+        '''</summary>
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_ERROR() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_EXPORT_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} data set(s) successfully exported to {1}.
+        '''</summary>
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_EXPORT_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Unable to create data set &apos;{0}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_DETAIL() As String

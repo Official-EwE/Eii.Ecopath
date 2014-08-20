@@ -27,7 +27,14 @@ Imports EwEUtils.Core
 Public MustInherit Class cShoulderShapeFunction
     Inherits cShapeFunction
 
-    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Shape"/>
+    ''' <summary>
+    ''' Returns the points for a shoulder-contoured shape.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function Shape(nPoints As Integer) As Single()
+
         If (Me.ParamsChanged) Then
 
             Dim sYZero As Single = Me.ParamValue(1)
@@ -79,9 +86,10 @@ Public MustInherit Class cShoulderShapeFunction
                     xpt += dx
                 Next j
             Next i
-            Me.ParamsChanged = False
         End If
-        Return Me.m_points
+
+        Return MyBase.Shape(nPoints)
+
     End Function
 
     Public Overrides Sub Defaults()
@@ -90,7 +98,7 @@ Public MustInherit Class cShoulderShapeFunction
         Me.ParamValue(3) = 3.0F
     End Sub
 
-    Public Overrides Function IsRelevantDataType(datatype As eDataTypes) As Boolean
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
         Return (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
                (datatype = EwEUtils.Core.eDataTypes.PriceMediation)
     End Function

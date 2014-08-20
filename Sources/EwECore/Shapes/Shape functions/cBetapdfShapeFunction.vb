@@ -31,7 +31,14 @@ Public Class cBetapdfShapeFunction
         MyBase.New()
     End Sub
 
-    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Shape"/>
+    ''' <summary>
+    ''' Returns the points for an Betapdf shape.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function Shape(nPoints As Integer) As Single()
+
         If (Me.ParamsChanged) Then
             Dim sYZero As Single = Me.ParamValue(1)
             Dim sYEnd As Single = Me.ParamValue(2)
@@ -39,9 +46,10 @@ Public Class cBetapdfShapeFunction
                 Dim x As Single = CSng(i / (nPoints + 1))
                 Me.m_points(i) = CSng(Me.betaPDF(sYZero, sYEnd, x))
             Next i
-            Me.ParamsChanged = False
         End If
-        Return Me.m_points
+
+        Return MyBase.Shape(nPoints)
+
     End Function
 
     Public Overrides Sub Defaults()
@@ -49,7 +57,7 @@ Public Class cBetapdfShapeFunction
         Me.ParamValue(2) = 3.0F
     End Sub
 
-    Public Overrides Function IsRelevantDataType(datatype As eDataTypes) As Boolean
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
         Return (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
                (datatype = EwEUtils.Core.eDataTypes.PriceMediation)
     End Function

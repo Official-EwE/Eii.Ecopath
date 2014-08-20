@@ -41,7 +41,7 @@ Namespace Ecospace.Controls
         Private Class cDatasetInfo
             Public m_ds As ISpatialDataSet
             Public m_var As eVarNameFlags
-            Public m_iIndex As Integer
+            Public m_guid As Guid
             Public m_iTimeStart As Integer = 0
             Public m_iTimeEnd As Integer = 0
             Public m_iPosVert As Integer = 0
@@ -349,12 +349,12 @@ Namespace Ecospace.Controls
 
             ' Try to preserve selection
             Dim var As eVarNameFlags = eVarNameFlags.NotSet
-            Dim iIndex As Integer = -1
+            Dim guid As Guid
             Dim iSel As Integer = 0
 
             If (Me.m_iSelectedIndex > 0) Then
                 var = Me.m_lInfo(Me.m_iSelectedIndex).m_var
-                iIndex = Me.m_lInfo(Me.m_iSelectedIndex).m_iIndex
+                guid = Me.m_lInfo(Me.m_iSelectedIndex).m_guid
             End If
 
             Me.m_lInfo.Clear()
@@ -370,7 +370,7 @@ Namespace Ecospace.Controls
                             Dim pos As New cDatasetInfo()
                             pos.m_ds = ds
                             pos.m_var = adt.VarName
-                            pos.m_iIndex = adt.Index
+                            pos.m_guid = ds.GUID
                             pos.m_iPosVert = iRow
 
                             If ds.TimeStart = Date.MinValue Then
@@ -395,7 +395,7 @@ Namespace Ecospace.Controls
 
                             Me.m_lInfo.Add(pos)
 
-                            If (pos.m_var = var) And (pos.m_iIndex = iIndex) Then
+                            If (pos.m_var = var) And (pos.m_guid = guid) Then
                                 iSel = iRow
                             End If
 

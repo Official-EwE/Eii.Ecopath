@@ -88,23 +88,24 @@ Namespace SpatialData
 #Region " Internals "
 
         ''' <summary>
-        ''' 
+        ''' Class for maintaining the details for a given spatial data connection.
         ''' </summary>
         Friend Class cAdapaterConfiguration
             ''' <summary>GUID to locally defined dataset.</summary>
-            Public DatasetGUID As String = ""
+            Public Property DatasetGUID As String = ""
             ''' <summary>Typename to instantiate dataset.</summary>
-            Public DatasetTypeName As String = ""
+            Public Property DatasetTypeName As String = ""
             ''' <summary>Configuration to set up dataset.</summary>
-            Public DatasetConfig As String = ""
+            Public Property DatasetConfig As String = ""
             ''' <summary>Typename to instantiate converter.</summary>
-            Public ConverterTypeName As String = ""
+            Public Property ConverterTypeName As String = ""
             ''' <summary>Configuration to set up converter.</summary>
-            Public ConverterConfig As String = ""
+            Public Property ConverterConfig As String = ""
             ''' <summary>Data scale, if any.</summary>
-            Public Scale As Single = 1.0!
+            Public Property Scale As Single = 1.0!
             ''' <summary><see cref="cSpatialScalarDataAdapterBase.DataScaleType"/>.</summary>
-            Public ScaleType As Byte = 0
+            Public Property ScaleType As Byte = 0
+
         End Class
 
         ''' <summary>
