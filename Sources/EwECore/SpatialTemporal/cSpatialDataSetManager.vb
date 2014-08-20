@@ -614,6 +614,7 @@ Namespace SpatialData
                             Dim xnData As XmlElement = doc.CreateElement("Configuration")
                             xnData.InnerXml = cfg.DatasetConfig
                             ds.Configuration(doc) = xnData
+                            ds.GUID = guidDS
                         End If
 
                     Catch ex As Exception
