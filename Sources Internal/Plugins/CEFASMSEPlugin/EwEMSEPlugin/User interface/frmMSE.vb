@@ -194,17 +194,28 @@ Public Class frmMSE
         Me.m_lblPathValue.Text = cStringUtils.CompactString(Me.MSE.DataPath, Me.m_lblPathValue.ClientRectangle.Width, Me.m_lblPathValue.Font, TextFormatFlags.PathEllipsis)
         cToolTipShared.GetInstance().SetToolTip(Me.m_lblPathValue, Me.MSE.DataPath)
 
+        ' Manage panel 1 control in detail, because this panel shares general configuration
+        ' parameters (e.g., path stuff) with controls that act on input parameters once the
+        ' MSE path has been validated
         If Me.MSE.IsInputStructureAvailable() Then
             If Me.MSE.IsInputDataCompatible() Then
                 img = SharedResources.OK
                 Me.m_btnEditBasicInputs.Enabled = True
+                Me.m_btnEditSurvivabilities.Enabled = True
+                ' ToDo: enable Diets button when functionality is available
+                Me.m_btnEditDiets.Enabled = False
             Else
                 Me.m_btnEditBasicInputs.Enabled = False
+                Me.m_btnEditSurvivabilities.Enabled = False
+                Me.m_btnEditDiets.Enabled = False
                 img = SharedResources.Critical
             End If
         Else
             img = Nothing
             Me.m_btnEditBasicInputs.Enabled = True
+            Me.m_btnEditSurvivabilities.Enabled = True
+            ' ToDo: enable Diets button when functionality is available
+            Me.m_btnEditDiets.Enabled = False
         End If
         Me.m_pbPathCompatible.Image = img
 
