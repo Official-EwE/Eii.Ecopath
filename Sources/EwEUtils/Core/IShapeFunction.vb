@@ -69,17 +69,26 @@ Namespace Core
         ''' <summary>
         ''' Returns the actual function data points, as computed from the <see cref="ParamValue">parameters values</see>.
         ''' </summary>
-        ''' <param name="nPoints">The length of the points array to return.</param>
+        ''' <param name="nPoints">The number of points to calculate the shape for.</param>
         ''' <returns>An array of points.</returns>
         ''' -----------------------------------------------------------------------
-        Function Shape(Optional ByVal nPoints As Integer = 1200) As Single()
+        Function Shape(ByVal nPoints As Integer) As Single()
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return whether a shape function is relevant for a given <see cref="EwEUtils.Core.eDataTypes">data type</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Function IsRelevantDataType(ByVal DataType As EwEUtils.Core.eDataTypes) As Boolean
+        Function IsCompatible(ByVal datatype As EwEUtils.Core.eDataTypes) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update a shape from the shape function.
+        ''' </summary>
+        ''' <param name="shape"></param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Function Apply(ByVal shape As Object) As Boolean
 
     End Interface
 

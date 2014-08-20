@@ -48,6 +48,7 @@ Namespace SpatialData
 
         Private m_lAvailable As List(Of ISpatialDataSet) = Nothing
         Private m_lDeleted As List(Of Guid) = Nothing
+
         'Private m_fswSpy As FileSystemWatcher = Nothing
         Private m_core As cCore = Nothing
         Private m_bReadOnly As Boolean = False
@@ -248,6 +249,8 @@ Namespace SpatialData
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
             Dim bChanged As Boolean = False
+            Dim nExported As Integer = 0
+            Dim strPath As String = ""
             Dim bSuccess As Boolean = True
 
             ' Complete missing file name, if any
@@ -270,7 +273,8 @@ Namespace SpatialData
             End If
 
             ' Create dir
-            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
+            strPath = Path.GetDirectoryName(strFile)
+            If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
                 Return False
             End If
 
@@ -347,14 +351,15 @@ Namespace SpatialData
 
                     If (xnDetails IsNot Nothing) Then
                         xnDataset.AppendChild(xnDetails)
+                        nExported += 1
                     End If
 
                     ' Add dataset nodes
                     xnRoot.AppendChild(xnDataset)
                     bChanged = True
-
+                Else
+                    bSuccess = False
                 End If
-
             Next
 
             ' Save
@@ -370,6 +375,20 @@ Namespace SpatialData
 
             ' Restore original config file name
             Me.m_strConfigFile = strRescue
+
+            If (bExporting) Then
+                ' Send export status message
+                Dim msg As cMessage = Nothing
+                If bSuccess Then
+                    msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_SUCCESS, nExported, strPath), _
+                                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = strPath
+                Else
+                    msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_ERROR, strPath), _
+                                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+                End If
+                Me.m_core.Messages.SendMessage(msg)
+            End If
 
             Return bSuccess
 
@@ -473,6 +492,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function Contains(ByVal item As ISpatialDataSet) As Boolean _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Contains
+            If (item Is Nothing) Then Return False
             Return Me.m_lAvailable.Contains(item)
         End Function
 
@@ -578,54 +598,54 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return an existing dataset if available. If not available, a dataset
-        ''' is dynamically created from provided configuration info.
+        ''' Return an existing dataset if available. If not available, a 
+        ''' dataset is dynamically created from provided configuration info.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend ReadOnly Property CreateDataset(ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As ISpatialDataSet
-            Get
-                If (String.IsNullOrWhiteSpace(cfg.DatasetGUID)) Then Return Nothing
+        Friend Function CreateDataset(ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As ISpatialDataSet
+            If (String.IsNullOrWhiteSpace(cfg.DatasetGUID)) Then Return Nothing
 
-                Dim guidDS As Guid = Guid.Empty
-                Guid.TryParse(cfg.DatasetGUID, guidDS)
+            Dim guidDS As Guid = Guid.Empty
+            Guid.TryParse(cfg.DatasetGUID, guidDS)
 
-                Dim ds As ISpatialDataSet = Me.Find(guidDS)
+            Dim ds As ISpatialDataSet = Me.Find(guidDS)
 
-                If (ds Is Nothing) Then
+            If (ds Is Nothing) Then
 
-                    ' Abort if missing dataset creation info
-                    If (String.IsNullOrWhiteSpace(cfg.DatasetTypeName)) Then Return Nothing
+                ' Abort if missing dataset creation info
+                If (String.IsNullOrWhiteSpace(cfg.DatasetTypeName)) Then Return Nothing
 
-                    ' Abort if dataset cannot be instantiated
-                    ' yuck...
-                    Dim t As Type = cTypeUtils.StringToType(cfg.DatasetTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin"))
-                    If (t Is Nothing) Then Return Nothing
+                ' Abort if dataset cannot be instantiated
+                ' yuck...
+                Dim t As Type = cTypeUtils.StringToType(cfg.DatasetTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin"))
+                If (t Is Nothing) Then Return Nothing
 
-                    Try
-                        ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
-                        If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
+                Try
+                    ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
+                    If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
 
-                        ' This needs some restructuring. Perhaps it is easiest to add XML serializer classes
-                        ' for datasets and converters. This XML logic is becoming too fragmented
+                    ' This needs some restructuring. Perhaps it is easiest to add XML serializer classes
+                    ' for datasets and converters. This XML logic is becoming too fragmented
 
-                        If Not String.IsNullOrWhiteSpace(cfg.DatasetConfig) Then
-                            Dim xnRoot As XmlNode = Nothing
-                            Dim doc As XmlDocument = Me.NewDoc(xnRoot)
-                            Dim xnData As XmlElement = doc.CreateElement("Configuration")
-                            xnData.InnerXml = cfg.DatasetConfig
-                            ds.Configuration(doc) = xnData
-                            ds.GUID = guidDS
-                        End If
+                    If Not String.IsNullOrWhiteSpace(cfg.DatasetConfig) Then
+                        Dim xnRoot As XmlNode = Nothing
+                        Dim doc As XmlDocument = Me.NewDoc(xnRoot)
+                        Dim xnData As XmlElement = doc.CreateElement("Configuration")
+                        xnData.InnerXml = cfg.DatasetConfig
+                        ds.Configuration(doc) = xnData
+                        ds.GUID = guidDS
 
-                    Catch ex As Exception
-                        cLog.Write(ex, "cSpatialDatasetManager.CreateDataset " & cfg.DatasetTypeName)
-                    End Try
-                End If
+                        Me.m_lAvailable.Add(ds)
+                    End If
 
-                Return ds
+                Catch ex As Exception
+                    cLog.Write(ex, "cSpatialDatasetManager.CreateDataset " & cfg.DatasetTypeName)
+                End Try
+            End If
 
-            End Get
-        End Property
+            Return ds
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -870,6 +890,7 @@ Namespace SpatialData
             Return bSuccess
 
         End Function
+
 #End Region ' Internals
 
     End Class

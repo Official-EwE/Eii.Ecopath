@@ -30,7 +30,14 @@ Public Class cExponentialShapeFunction
         MyBase.New()
     End Sub
 
-    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Shape"/>
+    ''' <summary>
+    ''' Returns the points for an exponential shape.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function Shape(nPoints As Integer) As Single()
+
         If (Me.ParamsChanged) Then
             Dim sYZero As Single = Me.ParamValue(1)
             Dim sYEnd As Single = Me.ParamValue(2)
@@ -48,9 +55,10 @@ Public Class cExponentialShapeFunction
                 If sTmp > 1 Then sTmp = 1
                 Me.m_points(i) = sTmp
             Next i
-            Me.ParamsChanged = False
         End If
-        Return Me.m_points
+
+        Return MyBase.Shape(nPoints)
+
     End Function
 
     Public Overrides Sub Defaults()
@@ -59,7 +67,7 @@ Public Class cExponentialShapeFunction
         Me.ParamValue(3) = 0.2
     End Sub
 
-    Public Overrides Function IsRelevantDataType(datatype As EwEUtils.Core.eDataTypes) As Boolean
+    Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
         Return (datatype = EwEUtils.Core.eDataTypes.Forcing) Or _
                (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
                (datatype = EwEUtils.Core.eDataTypes.PriceMediation)

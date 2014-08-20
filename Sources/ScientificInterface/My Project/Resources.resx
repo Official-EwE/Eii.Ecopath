@@ -24096,14 +24096,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="PROMPT_SPATIALTEMPORAL_EXPORT" xml:space="preserve">
     <value>Enter a folder name for this data</value>
   </data>
-  <data name="STATUS_SPATIALTEMPORAL_EXPORT_FAILED" xml:space="preserve">
-    <value>Failed to export data set(s) to {1}</value>
-    <comment>{0}=dataset count, {1}=folder</comment>
-  </data>
-  <data name="STATUS_SPATIALTEMPORAL_EXPORT_SUCCESS" xml:space="preserve">
-    <value>{0} data set(s) exported to {1}</value>
-    <comment>{0}=dataset count, {1}=folder</comment>
-  </data>
   <data name="GENERIC_VALUE_CACHEMEMORY" xml:space="preserve">
     <value>{0} ({1} unused)</value>
   </data>

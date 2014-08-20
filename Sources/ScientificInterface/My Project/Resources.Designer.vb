@@ -3905,24 +3905,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Failed to export data set(s) to {1}.
-        '''</summary>
-        Public ReadOnly Property STATUS_SPATIALTEMPORAL_EXPORT_FAILED() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_EXPORT_FAILED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0} data set(s) exported to {1}.
-        '''</summary>
-        Public ReadOnly Property STATUS_SPATIALTEMPORAL_EXPORT_SUCCESS() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_EXPORT_SUCCESS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Loading time series &apos;{0}&apos;....
         '''</summary>
         Public ReadOnly Property STATUS_TIMESERIES_LOADING() As String

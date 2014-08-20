@@ -31,11 +31,62 @@ Public Class cTrapezoidShapeFunction
         MyBase.New()
     End Sub
 
-    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Shape"/>
+    ''' <summary>
+    ''' Returns the points for a trapezoid shape.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function Shape(ByVal nPoints As Integer) As Single()
+
         If (Me.ParamsChanged) Then
-            Me.ParamsChanged = False
+            Dim sYZero As Single = Me.ParamValue(1)
+            Dim sYEnd As Single = Me.ParamValue(2)
+            Dim sYBase As Single = Me.ParamValue(3)
+            Dim sSteep As Single = Me.ParamValue(4)
+            Dim xpt As Single
+            Dim width As Single = sSteep
+            Dim x0 As Single = 0
+            If sYZero < 0 Then
+                x0 = sYZero
+                width = sSteep - sYZero
+            End If
+
+            Dim dx As Single = width / nPoints
+
+            If sYBase = 0 Then sYBase = 1
+            If sYZero > sYEnd Then sYEnd = sYZero
+            If sYBase < sYZero Or sYBase < sYEnd Then sYBase = sYEnd + 1
+
+            Dim yVal() As Single = New Single() {0, 0, 1, 1, 0, 0}
+            Dim xVal() As Single = New Single() {x0, sYZero, sYEnd, sYBase, sSteep, width}
+
+            'Break the line up into segments based on the xpoints the user entered
+            'The location of the shoulder in the response function is determined by it's index position in the points array
+            Dim iSegment() As Integer = New Integer() {0, Me.getIndex(sYZero, x0, sSteep, nPoints), Me.getIndex(sYEnd, x0, sSteep, nPoints), Me.getIndex(sYBase, x0, sSteep, nPoints), Me.getIndex(sSteep, x0, sSteep, nPoints), nPoints}
+
+            '' JS 160914: This is not right; the original shape cannot be modified until the user clicks 'OK'
+            'Dim shape As cEnviroResponseFunction = TryCast(Me.m_shape, cEnviroResponseFunction)
+            'If Shape IsNot Nothing Then
+            '    'set the extent of the data in the shape
+            '    Shape.ResponseLeftLimit = x0
+            '    Shape.ResponseRightLimit = sSteep
+            'End If
+
+            'loop over the segments and interpolate the points on the line
+            For i As Integer = 0 To 4
+                xpt = xVal(i)
+                'loop from the start to the end position in this segment
+                'and interpolate the y point on the line
+                For j As Integer = iSegment(i) To iSegment(i + 1)
+                    Me.m_points(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
+                    xpt += dx
+                Next j
+            Next i
         End If
-        Return Me.m_parameters
+
+        Return MyBase.Shape(nPoints)
+
     End Function
 
     Public Overrides Sub Defaults()
@@ -45,7 +96,7 @@ Public Class cTrapezoidShapeFunction
         Me.ParamValue(4) = 4.0F
     End Sub
 
-    Public Overrides Function IsRelevantDataType(datatype As eDataTypes) As Boolean
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
         Return (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
                (datatype = EwEUtils.Core.eDataTypes.PriceMediation)
     End Function
@@ -118,5 +169,39 @@ Public Class cTrapezoidShapeFunction
             Return eShapeFunctionType.Trapezoid
         End Get
     End Property
+
+    Public Overrides Function Apply(obj As Object) As Boolean
+        If MyBase.Apply(obj) Then
+            Dim shape As cEnviroResponseFunction = TryCast(obj, cEnviroResponseFunction)
+            If shape IsNot Nothing Then
+                'set the extent of the data in the shape
+                shape.ResponseLeftLimit = Math.Max(0, Me.ParamValue(1))
+                shape.ResponseRightLimit = Me.ParamValue(4)
+            End If
+
+        End If
+    End Function
+
+#Region " Internals "
+
+    Private Function getIndex(Xvalue As Single, x0 As Single, x1 As Single, TotalNPoints As Integer) As Integer
+        'Debug.Assert(Xvalue >= x0 And Xvalue <= x1, Me.ToString + ".getIndex() value out of bounds.")
+        'use the linear interpolator to find the index positon of Value
+        'In this case we are interpolating the number of data points Xvalue is along the line
+        'x0 and x1 are the first and last values of the x axis
+        '0 and TotalNPoints are the number of data points/array indexes
+        Return CInt(LinearInterp(Xvalue, x0, x1, 0, TotalNPoints))
+    End Function
+
+    Private Function LinearInterp(ByVal x As Single, x0 As Single, x1 As Single, y0 As Single, y1 As Single) As Single
+        If ((x1 - x0) = 0) Then
+            'mid point on the y axis
+            Return (y0 + y1) / 2.0F
+        Else
+            Return y0 + (y1 - y0) * ((x - x0) / (x1 - x0))
+        End If
+    End Function
+
+#End Region ' Internals 
 
 End Class

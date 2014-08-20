@@ -30,7 +30,14 @@ Public Class cHyperbolicShapeFunction
         MyBase.New()
     End Sub
 
-    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Shape"/>
+    ''' <summary>
+    ''' Returns the points for a hyperbolic shape.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function Shape(nPoints As Integer) As Single()
+
         If (Me.ParamsChanged) Then
             Dim sYZero As Single = Me.ParamValue(1)
             Dim sYEnd As Single = Me.ParamValue(2)
@@ -49,9 +56,10 @@ Public Class cHyperbolicShapeFunction
                     Me.m_points(i) = sYZero + ((sYEnd - sYZero) * xPow / (xHalf + xPow))
                 End If
             Next i
-            Me.ParamsChanged = False
         End If
-        Return Me.m_points
+
+        Return MyBase.Shape(nPoints)
+
     End Function
 
     Public Overrides Sub Defaults()
@@ -60,7 +68,7 @@ Public Class cHyperbolicShapeFunction
         Me.ParamValue(3) = 0.75
     End Sub
 
-    Public Overrides Function IsRelevantDataType(DataType As EwEUtils.Core.eDataTypes) As Boolean
+    Public Overrides Function IsCompatible(DataType As EwEUtils.Core.eDataTypes) As Boolean
         Return True
     End Function
 

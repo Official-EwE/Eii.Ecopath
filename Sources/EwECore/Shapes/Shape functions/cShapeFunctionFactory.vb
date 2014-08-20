@@ -50,7 +50,7 @@ Public Class cShapeFunctionFactory
                 If (shape Is Nothing) Then
                     bCompatible = True
                 Else
-                    bCompatible = (fs.IsRelevantDataType(shape.DataType))
+                    bCompatible = (fs.IsCompatible(shape.DataType))
                 End If
 
                 If (bCompatible) Then

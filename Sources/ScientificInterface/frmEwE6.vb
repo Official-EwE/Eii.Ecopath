@@ -4240,6 +4240,8 @@ Public Class frmEwE6
             Me.Core.SaveWithFileHeader = My.Settings.AutosaveHeaders
             cAutosaveSettingsHelper.LoadFromSettings(My.Settings.AutosaveResults, Me.Core)
 
+            Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingAllowed = My.Settings.AutoIndexDatasets
+
         Catch ex As Exception
 
         End Try
@@ -4281,6 +4283,9 @@ Public Class frmEwE6
                 Case "Contact"
                     Me.Core.DefaultContact = My.Settings.Contact
 
+                Case "AutoIndexDatasets"
+                    Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingAllowed = My.Settings.AutoIndexDatasets
+
             End Select
 
             Me.m_ssMain.UpdateModelPanes()
@@ -4299,6 +4304,7 @@ Public Class frmEwE6
         Next
 
         My.Settings.AutosaveResults = cAutosaveSettingsHelper.SaveToSettings(Me.Core)
+        My.Settings.AutoIndexDatasets = Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingAllowed
 
         args.Cancel = False
 

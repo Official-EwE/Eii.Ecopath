@@ -628,7 +628,11 @@ Namespace SpatialData
             If (Me.IndexStatusAtT(dt) = ISpatialDataSet.eIndexStatus.NotIndexed) And (Me.IsConfigured) Then
                 Try
                     If Me.LockDataAtT(dt, 1.0!, ptfTL, ptfBR) Then
-                        Me.LoadSource()
+                        If Not Me.LoadSource() Then
+                            ' Log indexing failure
+                            Dim iFile As Integer = Me.FileIndex(dt)
+                            Me.m_lFiles(iFile).IndexStatus = ISpatialDataSet.eIndexStatus.Failed
+                        End If
                     End If
                 Catch ex As Threading.ThreadAbortException
                     ' OK
@@ -684,6 +688,7 @@ Namespace SpatialData
             End If
 
             Dim ds As cMultiFileDataSetPlugin = DirectCast(Me.MemberwiseClone, cMultiFileDataSetPlugin)
+            Dim bIgnoreFileErrors As Boolean = False
             ds.IsSourceRelative = True
             ds.Source = strAbsPath
 
@@ -694,6 +699,32 @@ Namespace SpatialData
                     Dim strTgt As String = Path.Combine(strAbsPath, Path.GetFileName(Me.m_lFiles(i).FileName))
                     System.IO.File.Copy(strSrc, strTgt, True)
                 Next
+            Catch exd As DirectoryNotFoundException
+                If Not bIgnoreFileErrors Then
+                    Dim msg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_EXPORT_ERROR_NOPATH, Me.Source, Me.DisplayName), _
+                                                    eCoreComponentType.External, eMessageType.DataExport, _
+                                                    eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                    msg.Reply = eMessageReply.NO
+                    Me.m_core.Messages.SendMessage(msg)
+                    If msg.Reply = eMessageReply.YES Then
+                        bIgnoreFileErrors = True
+                    Else
+                        Return Nothing
+                    End If
+                End If
+            Catch exf As FileNotFoundException
+                If Not bIgnoreFileErrors Then
+                    Dim msg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_EXPORT_ERROR_NOFILES, Me.DisplayName), _
+                                                    eCoreComponentType.External, eMessageType.DataExport, _
+                                                    eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                    msg.Reply = eMessageReply.NO
+                    Me.m_core.Messages.SendMessage(msg)
+                    If msg.Reply = eMessageReply.YES Then
+                        bIgnoreFileErrors = True
+                    Else
+                        Return Nothing
+                    End If
+                End If
             Catch ex As Exception
                 ' ToDo: send some kind of message
                 Return Nothing

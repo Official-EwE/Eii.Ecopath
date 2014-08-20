@@ -44,11 +44,10 @@ Public MustInherit Class cShapeFunction
 
     Public Sub New()
 
-        '' Not ready to be used yet
-        'Throw New NotImplementedException()
-
+        ' Redim with defaults
         ReDim Me.m_parameters(Me.nParameters)
         ReDim Me.m_points(1200)
+
         Me.Defaults()
 
     End Sub
@@ -64,9 +63,9 @@ Public MustInherit Class cShapeFunction
         Me.m_points = shp.ShapeData
         For i As Integer = 1 To Me.nParameters
             Select Case i
-                Case 1 : Me.ParamValue(1) = shp.YZero
-                Case 2 : Me.ParamValue(1) = shp.YEnd
-                Case 3 : Me.ParamValue(1) = shp.YBase
+                Case 1 : Me.ParamValue(i) = shp.YZero
+                Case 2 : Me.ParamValue(i) = shp.YEnd
+                Case 3 : Me.ParamValue(i) = shp.YBase
                 Case 4 : Me.ParamValue(i) = shp.Steep
             End Select
         Next
@@ -86,15 +85,32 @@ Public MustInherit Class cShapeFunction
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property ShapeFunctionType As EwECore.eShapeFunctionType
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.Defaults"/>
+    ''' -----------------------------------------------------------------------
     Public MustOverride Sub Defaults() _
         Implements EwEUtils.Core.IShapeFunction.Defaults
 
-    Public MustOverride Function IsRelevantDataType(datatype As EwEUtils.Core.eDataTypes) As Boolean _
-        Implements EwEUtils.Core.IShapeFunction.IsRelevantDataType
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.IsCompatible"/>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean _
+        Implements EwEUtils.Core.IShapeFunction.IsCompatible
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.nParameters"/>
+    ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property nParameters As Integer _
         Implements EwEUtils.Core.IShapeFunction.nParameters
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the name of a parameter. By default, one of the four standard
+    ''' shape paramter names is returned (e.g., YZero, YEnd, YBase and Steepness)
+    ''' </summary>
+    ''' <param name="iParam">The one-based parameter index [1, <see cref="nParameters"/>]
+    ''' to obtain the name for.</param>
+    ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property ParamName(iParam As Integer) As String _
         Implements EwEUtils.Core.IShapeFunction.ParamName
         Get
@@ -118,6 +134,9 @@ Public MustInherit Class cShapeFunction
     ''' -----------------------------------------------------------------------
     Protected Property ParamsChanged As Boolean = True
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.ParamValue"/>
+    ''' -----------------------------------------------------------------------
     Public Overridable Property ParamValue(iParam As Integer) As Single _
         Implements EwEUtils.Core.IShapeFunction.ParamValue
         Get
@@ -133,7 +152,46 @@ Public MustInherit Class cShapeFunction
         End Set
     End Property
 
-    Public MustOverride Function Shape(Optional ByVal nPoints As Integer = 1200) As Single() _
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.ParamValue"/>
+    ''' <summary>
+    ''' By default, the shape is filled to the end with the value at <paramref name="nPoints"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Function Shape(ByVal nPoints As Integer) As Single() _
         Implements EwEUtils.Core.IShapeFunction.Shape
+
+        If (Me.ParamsChanged) Then
+            ' Iterpolate to the end
+            For i As Integer = nPoints To Me.m_points.Length - 1
+                Me.m_points(i) = Me.m_points(nPoints)
+            Next
+        End If
+        Return Me.m_points
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.Apply"/>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Function Apply(obj As Object) As Boolean _
+        Implements EwEUtils.Core.IShapeFunction.Apply
+
+        If (Not TypeOf (obj) Is cForcingFunction) Then Return False
+
+        Dim shp As cForcingFunction = DirectCast(obj, cForcingFunction)
+
+        Debug.Assert(Me.IsCompatible(shp.DataType))
+
+        shp.ShapeData = Me.m_points
+        For i As Integer = 1 To Me.nParameters
+            Select Case i
+                Case 1 : shp.YZero = Me.ParamValue(i)
+                Case 2 : shp.YEnd = Me.ParamValue(i)
+                Case 3 : shp.YBase = Me.ParamValue(i)
+                Case 4 : shp.Steep = Me.ParamValue(i)
+            End Select
+        Next
+    End Function
 
 End Class

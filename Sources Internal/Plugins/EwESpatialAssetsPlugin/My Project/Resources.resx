@@ -215,6 +215,14 @@
     <value>Resampled raster to {0}, {1}</value>
     <comment>{0}=grid, {1}=stats</comment>
   </data>
+  <data name="PROMPT_EXPORT_ERROR_NOFILES" xml:space="preserve">
+    <value>One or more files for data set {0} cannot be found. Do you wish to export this data set anyway?</value>
+    <comment>{1}=dataset name</comment>
+  </data>
+  <data name="PROMPT_EXPORT_ERROR_NOPATH" xml:space="preserve">
+    <value>The data directory '{0}' for data set {1} cannot be found. Do you wish to export this data set anyway?</value>
+    <comment>{0}=path, {1}=dataset name</comment>
+  </data>
   <data name="PROMPT_SELECTFILE" xml:space="preserve">
     <value>Select file</value>
   </data>

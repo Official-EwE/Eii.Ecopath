@@ -369,8 +369,6 @@ Namespace Ecospace.Controls
 
             Dim dlg As New frmInputBox()
             Dim strPathOut As String = Path.Combine(Me.UIContext.Core.DefaultOutputPath(eAutosaveTypes.NotSet), "Export")
-            Dim strFile As String = ""
-            Dim msg As cMessage = Nothing
 
             If (dlg.ShowDialog(Me, My.Resources.PROMPT_SPATIALTEMPORAL_EXPORT, _
                                String.Format(My.Resources.CAPTION_SPATIALTEMPORAL_EXPORT, sets.Length)) <> DialogResult.OK) Then Return False
@@ -387,21 +385,7 @@ Namespace Ecospace.Controls
 
             ' JS 10Jun14: use default file name
             'strFile = Path.ChangeExtension(cFileUtils.ToValidFileName(dlg.Value, False), ".xml")
-            strFile = "ewe_datasets.xml"
-
-            Try
-                If Me.m_manSets.Save(Path.Combine(strPathOut, strFile), sets) Then
-                    msg = New cMessage(String.Format(My.Resources.STATUS_SPATIALTEMPORAL_EXPORT_SUCCESS, sets.Length, strPathOut), _
-                                       eMessageType.NotSet, eCoreComponentType.External, eMessageImportance.Information)
-                    msg.Hyperlink = strPathOut
-                Else
-                    msg = New cMessage(String.Format(My.Resources.STATUS_SPATIALTEMPORAL_EXPORT_FAILED, sets.Length, strPathOut), _
-                                       eMessageType.NotSet, eCoreComponentType.External, eMessageImportance.Warning)
-                End If
-                Me.UIContext.Core.Messages.SendMessage(msg)
-            Catch ex As Exception
-
-            End Try
+            Me.m_manSets.Save(Path.Combine(strPathOut, "ewe_datasets.xml"), sets)
             Return True
 
         End Function

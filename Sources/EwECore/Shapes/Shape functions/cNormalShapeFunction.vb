@@ -46,7 +46,14 @@ Public Class cNormalShapeFunction
         End Get
     End Property
 
-    Public Overrides Function Shape(Optional nPoints As Integer = 1200) As Single()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Shape"/>
+    ''' <summary>
+    ''' Returns the points for an normal distributed shape.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function Shape(nPoints As Integer) As Single()
+
         If (Me.ParamsChanged) Then
             Dim sYEnd As Single = Me.ParamValue(2)
             'normal distribution with a mean of Zero
@@ -122,9 +129,10 @@ Public Class cNormalShapeFunction
             '        Me.m_asDataWork(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
             '    Next
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            Me.ParamsChanged = False
         End If
-        Return Me.m_points
+
+        Return MyBase.Shape(nPoints)
+
     End Function
 
     Public Overrides Sub Defaults()
@@ -133,7 +141,7 @@ Public Class cNormalShapeFunction
         Me.ParamValue(3) = 10
     End Sub
 
-    Public Overrides Function IsRelevantDataType(datatype As EwEUtils.Core.eDataTypes) As Boolean
+    Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
         Return (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
                (datatype = EwEUtils.Core.eDataTypes.PriceMediation)
     End Function

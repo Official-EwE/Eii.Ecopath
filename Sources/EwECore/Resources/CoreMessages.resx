@@ -1224,4 +1224,12 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="String1" xml:space="preserve">
     <value />
   </data>
+  <data name="SPATIALTEMPORAL_EXPORT_ERROR" xml:space="preserve">
+    <value>Failed to export data set(s) to {1}</value>
+    <comment>{0}=dataset count, {1}=folder</comment>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_SUCCESS" xml:space="preserve">
+    <value>{0} data set(s) successfully exported to {1}</value>
+    <comment>{0}=dataset count, {1}=folder</comment>
+  </data>
 </root>
