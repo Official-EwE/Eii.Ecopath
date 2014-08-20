@@ -81,6 +81,8 @@ Namespace Other
             Else
                 Me.m_rbCustom.Checked = True
             End If
+
+            Me.m_cbAllowIndexing.Checked = man.IsIndexingAllowed
             Me.UpdateControls()
 
         End Sub
@@ -243,6 +245,8 @@ Namespace Other
                 cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
             End Try
 
+            man.IsIndexingAllowed = Me.m_cbAllowIndexing.Checked
+
             If bSuccess Then Return IOptionsPage.eApplyResultType.Success
             Return IOptionsPage.eApplyResultType.Failed
 
@@ -290,6 +294,7 @@ Namespace Other
 
             Me.m_btnViewCache.Enabled = Directory.Exists(cache.RootFolder)
             Me.m_btnClearCache.Enabled = (cache.GetSize() > 0)
+
         End Sub
 
 #End Region ' Internals

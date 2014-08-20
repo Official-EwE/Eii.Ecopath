@@ -46,6 +46,8 @@ Namespace Other
             Me.m_lblCacheSizeValue = New System.Windows.Forms.Label()
             Me.m_lblCacheLocation = New System.Windows.Forms.Label()
             Me.m_lblCacheLocationValue = New System.Windows.Forms.Label()
+            Me.m_hdrIndexing = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbAllowIndexing = New System.Windows.Forms.CheckBox()
             Me.SuspendLayout()
             '
             'm_hdrCaption
@@ -132,13 +134,29 @@ Namespace Other
             resources.ApplyResources(Me.m_lblCacheLocationValue, "m_lblCacheLocationValue")
             Me.m_lblCacheLocationValue.Name = "m_lblCacheLocationValue"
             '
+            'm_hdrIndexing
+            '
+            resources.ApplyResources(Me.m_hdrIndexing, "m_hdrIndexing")
+            Me.m_hdrIndexing.CanCollapseParent = False
+            Me.m_hdrIndexing.CollapsedParentHeight = 0
+            Me.m_hdrIndexing.IsCollapsed = False
+            Me.m_hdrIndexing.Name = "m_hdrIndexing"
+            '
+            'm_cbAllowIndexing
+            '
+            resources.ApplyResources(Me.m_cbAllowIndexing, "m_cbAllowIndexing")
+            Me.m_cbAllowIndexing.Name = "m_cbAllowIndexing"
+            Me.m_cbAllowIndexing.UseVisualStyleBackColor = True
+            '
             'ucOptionsSpatialTemporal
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_cbAllowIndexing)
             Me.Controls.Add(Me.m_lblCacheSizeValue)
             Me.Controls.Add(Me.m_lblCacheLocation)
             Me.Controls.Add(Me.m_lblCacheSize)
+            Me.Controls.Add(Me.m_hdrIndexing)
             Me.Controls.Add(Me.m_hdrCache)
             Me.Controls.Add(Me.m_lblCacheLocationValue)
             Me.Controls.Add(Me.m_lblPath)
@@ -169,6 +187,8 @@ Namespace Other
         Private WithEvents m_lblCacheSizeValue As System.Windows.Forms.Label
         Private WithEvents m_lblCacheLocation As System.Windows.Forms.Label
         Private WithEvents m_lblCacheLocationValue As System.Windows.Forms.Label
+        Private WithEvents m_hdrIndexing As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_cbAllowIndexing As System.Windows.Forms.CheckBox
 
     End Class
 End Namespace
