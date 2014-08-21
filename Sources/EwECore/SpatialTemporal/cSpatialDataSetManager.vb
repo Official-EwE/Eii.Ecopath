@@ -335,32 +335,35 @@ Namespace SpatialData
                 If (bExporting) Then ds = ds.ExportTo(Path.GetDirectoryName(strFile))
 
                 ' Exclude virtual datasets from ending up in a config file
-                If (ds IsNot Nothing) And (Not Me.m_lVirtual.Contains(ds)) Then
+                If (ds IsNot Nothing) Then
+                    If (Not Me.m_lVirtual.Contains(ds)) Then
 
-                    xnDataset = doc.CreateElement("Dataset")
+                        xnDataset = doc.CreateElement("Dataset")
 
-                    xaDataset = doc.CreateAttribute("Type")
-                    xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
-                    xnDataset.Attributes.Append(xaDataset)
+                        xaDataset = doc.CreateAttribute("Type")
+                        xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
+                        xnDataset.Attributes.Append(xaDataset)
 
-                    xaDataset = doc.CreateAttribute("GUID")
-                    xaDataset.Value = Convert.ToString(ds.GUID)
-                    xnDataset.Attributes.Append(xaDataset)
+                        xaDataset = doc.CreateAttribute("GUID")
+                        xaDataset.Value = Convert.ToString(ds.GUID)
+                        xnDataset.Attributes.Append(xaDataset)
 
-                    Try
-                        xnDetails = ds.Configuration(doc)
-                    Catch ex As Exception
-                        xnDetails = Nothing
-                    End Try
+                        Try
+                            xnDetails = ds.Configuration(doc)
+                        Catch ex As Exception
+                            xnDetails = Nothing
+                        End Try
 
-                    If (xnDetails IsNot Nothing) Then
-                        xnDataset.AppendChild(xnDetails)
-                        nExported += 1
+                        If (xnDetails IsNot Nothing) Then
+                            xnDataset.AppendChild(xnDetails)
+                            nExported += 1
+                        End If
+
+                        ' Add dataset nodes
+                        xnRoot.AppendChild(xnDataset)
+                        bChanged = True
+
                     End If
-
-                    ' Add dataset nodes
-                    xnRoot.AppendChild(xnDataset)
-                    bChanged = True
                 Else
                     bSuccess = False
                 End If
