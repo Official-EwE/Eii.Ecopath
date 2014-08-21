@@ -40,7 +40,6 @@ Namespace Ecospace.Controls
         End Enum
 
         Private m_uic As cUIContext = Nothing
-        Private m_strCustomPath As String = ""
         Private m_manConn As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
         Private m_htUsed As New HashSet(Of ISpatialDataSet)
@@ -65,6 +64,9 @@ Namespace Ecospace.Controls
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
+            ' Nice!
+            Me.CenterToParent()
+
             If (Me.m_uic Is Nothing) Then Return
 
             ' Populate dataset box
@@ -86,9 +88,11 @@ Namespace Ecospace.Controls
                 Next
             Next
 
+            ' Start with a default name
+            Me.m_tbxName.Text = cFileUtils.ToValidFileName(Me.m_uic.Core.EwEModel.Name, False)
+
             ' Shabang
             Me.SelectDatasets(eSelectionMode.Used)
-            Me.CenterToParent()
 
         End Sub
 
