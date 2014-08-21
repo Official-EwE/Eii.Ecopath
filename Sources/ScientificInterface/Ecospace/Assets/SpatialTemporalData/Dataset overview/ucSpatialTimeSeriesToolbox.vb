@@ -272,23 +272,30 @@ Namespace Ecospace.Controls
                 Dim iStep As Integer = TimestepFromPoint(ptClick)
 
                 Select Case comp.CompatibilityAt(iStep)
+
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
+                         cDatasetCompatilibity.eCompatibilityTypes.NotSet
+                        ' No tooltip
+
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors
-                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " is missing"
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.m_ds.DisplayName, iStep)
+
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " does not overlap with your scenario area"
-                    Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                        ' NOP
-                    Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
-                        ' NOP
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_NOSPATIAL, pos.m_ds.DisplayName, iStep)
+
                     Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " partially overlap with your scenario area"
-                    Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " has not been assessed yet"
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_PARTIALSPATIAL, pos.m_ds.DisplayName, iStep)
+
                     Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " fully overlaps with your scenario area"
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_FULLSPATIAL, pos.m_ds.DisplayName, iStep)
+
+                    Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_UNKNOWN, pos.m_ds.DisplayName, iStep)
+
                 End Select
             End If
 
+            ' Async update to prevent flickering
             If (strText <> Me.m_strTipText) Then
                 Me.m_strTipText = strText
                 BeginInvoke(New MethodInvoker(AddressOf UpdateTooltip))
