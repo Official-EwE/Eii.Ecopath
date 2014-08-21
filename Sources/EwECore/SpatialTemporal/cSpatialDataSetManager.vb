@@ -48,6 +48,7 @@ Namespace SpatialData
 
         Private m_lAvailable As List(Of ISpatialDataSet) = Nothing
         Private m_lDeleted As List(Of Guid) = Nothing
+        Private m_lVirtual As List(Of ISpatialDataSet) = Nothing
 
         'Private m_fswSpy As FileSystemWatcher = Nothing
         Private m_core As cCore = Nothing
@@ -66,6 +67,7 @@ Namespace SpatialData
 
             Me.m_lAvailable = New List(Of ISpatialDataSet)
             Me.m_lDeleted = New List(Of Guid)
+            Me.m_lVirtual = New List(Of ISpatialDataSet)
             Me.m_core = core
 
             '' Create folder watcher
@@ -93,6 +95,7 @@ Namespace SpatialData
             'End If
             Me.m_lAvailable = Nothing
             Me.m_lDeleted = Nothing
+            Me.m_lVirtual = Nothing
             GC.SuppressFinalize(Me)
 
         End Sub
@@ -331,7 +334,8 @@ Namespace SpatialData
 
                 If (bExporting) Then ds = ds.ExportTo(Path.GetDirectoryName(strFile))
 
-                If (ds IsNot Nothing) Then
+                ' Exclude virtual datasets from ending up in a config file
+                If (ds IsNot Nothing) And (Not Me.m_lVirtual.Contains(ds)) Then
 
                     xnDataset = doc.CreateElement("Dataset")
 
@@ -484,6 +488,7 @@ Namespace SpatialData
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Clear
             Me.m_indexer.Stop()
             Me.m_lAvailable.Clear()
+            Me.m_lVirtual.Clear()
             Me.m_lDeleted.Clear()
         End Sub
 
@@ -495,6 +500,27 @@ Namespace SpatialData
             If (item Is Nothing) Then Return False
             Return Me.m_lAvailable.Contains(item)
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether a given dataset is declared virtually by the 
+        ''' loaded model, instead of via a configuration file.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property IsVirtual(ByVal item As ISpatialDataSet) As Boolean
+            Get
+                If (item Is Nothing) Then Return False
+                Return Me.m_lVirtual.Contains(item)
+            End Get
+            Set(value As Boolean)
+                If (item Is Nothing) Then Return
+                If (value = True) Then
+                    If Not Me.m_lVirtual.Contains(item) Then Me.m_lVirtual.Add(item)
+                Else
+                    Me.m_lVirtual.Remove(item)
+                End If
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).CopyTo"/>
@@ -632,10 +658,13 @@ Namespace SpatialData
                         Dim doc As XmlDocument = Me.NewDoc(xnRoot)
                         Dim xnData As XmlElement = doc.CreateElement("Configuration")
                         xnData.InnerXml = cfg.DatasetConfig
+
                         ds.Configuration(doc) = xnData
                         ds.GUID = guidDS
-
                         Me.m_lAvailable.Add(ds)
+
+                        ' This dataset is obtained from the model, not from a properly defined dataset
+                        Me.IsVirtual(ds) = True
                     End If
 
                 Catch ex As Exception
