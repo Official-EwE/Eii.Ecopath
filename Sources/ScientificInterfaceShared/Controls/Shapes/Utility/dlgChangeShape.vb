@@ -463,7 +463,13 @@ Namespace Controls
             Me.m_shpBuff.D = CSng(Me.m_fpD.Value)
         End Sub
 
+        Private m_bInValidation As Boolean = False
+
         Private Sub ValidateInput()
+
+            If (Me.m_bInValidation) Then Return
+
+            Me.m_bInValidation = True
 
             Dim a As Single = CSng(Me.m_fpA.Value)
             Dim b As Single = CSng(Me.m_fpB.Value)
@@ -503,6 +509,8 @@ Namespace Controls
                     End If
 
             End Select
+
+            Me.m_bInValidation = False
 
         End Sub
 
