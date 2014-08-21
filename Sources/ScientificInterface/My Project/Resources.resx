@@ -24099,4 +24099,24 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="GENERIC_VALUE_CACHEMEMORY" xml:space="preserve">
     <value>{0} ({1} unused)</value>
   </data>
+  <data name="SPATIALTEMP_STATUS_T_FULLSPATIAL" xml:space="preserve">
+    <value>Spatial data for {0} at time {1} entirely overlaps with your model area</value>
+    <comment>{0}=data set name, {1}=time step</comment>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_MISSING" xml:space="preserve">
+    <value>Spatial data for {0} at time {1} cannot be located</value>
+    <comment>{0}=data set name, {1}=time step</comment>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_NOSPATIAL" xml:space="preserve">
+    <value>Spatial data for {0} at time {1} does not overlap with your model area</value>
+    <comment>{0}=data set name, {1}=time step</comment>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_PARTIALSPATIAL" xml:space="preserve">
+    <value>Spatial data for {0} at time {1} partially overlaps with your model area</value>
+    <comment>{0}=data set name, {1}=time step</comment>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_UNKNOWN" xml:space="preserve">
+    <value>Spatial data for {0} at time {1} has not been verified yet</value>
+    <comment>{0}=data set name, {1}=time step</comment>
+  </data>
 </root>

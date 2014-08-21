@@ -3347,6 +3347,51 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1} entirely overlaps with your model area.
+        '''</summary>
+        Public ReadOnly Property SPATIALTEMP_STATUS_T_FULLSPATIAL() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMP_STATUS_T_FULLSPATIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1} cannot be located.
+        '''</summary>
+        Public ReadOnly Property SPATIALTEMP_STATUS_T_MISSING() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMP_STATUS_T_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1} does not overlap with your model area.
+        '''</summary>
+        Public ReadOnly Property SPATIALTEMP_STATUS_T_NOSPATIAL() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMP_STATUS_T_NOSPATIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1} partially overlaps with your model area.
+        '''</summary>
+        Public ReadOnly Property SPATIALTEMP_STATUS_T_PARTIALSPATIAL() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMP_STATUS_T_PARTIALSPATIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1} has not been verified yet.
+        '''</summary>
+        Public ReadOnly Property SPATIALTEMP_STATUS_T_UNKNOWN() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMP_STATUS_T_UNKNOWN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to No stanza groups.
         '''</summary>
         Public ReadOnly Property SR_PLOT_NO_STANZA_GROUP() As String
