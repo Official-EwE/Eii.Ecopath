@@ -128,7 +128,7 @@ Namespace Ecospace.Controls
         Private Sub OnExport(sender As System.Object, e As System.EventArgs) _
             Handles m_btnExport.Click
 
-            If Me.m_manSets.Save(Me.OutputLocation()) Then
+            If Me.m_manSets.Save(Me.OutputLocation(), Me.SelectedDatasets()) Then
                 Me.DialogResult = Windows.Forms.DialogResult.OK
                 Me.Close()
             End If
@@ -179,6 +179,22 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
 
         End Sub
+
+        Private Function SelectedDatasets() As ISpatialDataSet()
+
+            Dim lds As New List(Of ISpatialDataSet)
+            Try
+                For i As Integer = 0 To Me.m_clbDatsets.Items.Count - 1
+                    If (Me.m_clbDatsets.GetItemChecked(i)) Then
+                        lds.Add(DirectCast(Me.m_clbDatsets.Items(i), ISpatialDataSet))
+                    End If
+                Next
+            Catch ex As Exception
+
+            End Try
+            Return lds.ToArray
+
+        End Function
 
         Private Sub UpdateControls()
 
