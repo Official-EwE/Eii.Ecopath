@@ -29,6 +29,7 @@ Imports EwEUtils.Database
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 
@@ -9485,6 +9486,7 @@ Namespace DataSources
 
                     ' May link to unknown layer
                     If (iLayer > 0) Then
+                        ' Find next available connection slot
                         For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
                             Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, i)
                             If (item IsNot Nothing) And (iConn = -1) Then
@@ -9504,8 +9506,8 @@ Namespace DataSources
                             item.Scale = CSng(Me.m_db.ReadSafe(reader, "Scale", 1.0!))
                             item.ScaleType = CType(Me.m_db.ReadSafe(reader, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
 
-                            ' Create a real dataset from this entry
-                            man.CreateDataset(item)
+                            ' These datasets are 'virtual', obtained from a foreign model but not properly defined
+
                         End If
                     End If
 
