@@ -228,7 +228,7 @@ Public Class cQuotaShares
     ''' <param name="iGroup"></param>
     ''' <returns></returns>
     ''' <remarks>iFleet and iGroup are zero-based</remarks>
-    Public Function ReadiFleetiGroupQuota(iFleet As Integer, iGroup As Integer) As QuotaShare
+    Public Function ReadiFleetiGroupQuotaShare(iFleet As Integer, iGroup As Integer) As QuotaShare
 
         If iFleet < 1 Or iFleet > m_core.nFleets Then Return Nothing
         If iGroup < 1 Or iGroup > m_core.nGroups Then Return Nothing

@@ -1692,7 +1692,9 @@ Public Class cMSE
                 End If
                 'If mCore.EcoSimGroupOutputs(iGrp).Biomass(iTimeStep) <= 0 Then GoodDynamics = False
                 'Test
-                If GoodDynamics = False Then Exit For
+                If GoodDynamics = False Then
+                    Exit For
+                End If
             Next
             If GoodDynamics = False Then Exit For
         Next iGrp
@@ -2256,14 +2258,14 @@ Public Class cMSE
 
 
 
-    Private Function CalcQuotafromHCR(ByRef Biomass As Single, ByRef MinBiomass As Single, ByRef MaxBiomass As Single, ByRef FMax As Single) As Double
+    Private Function CalcFfromHCR(ByRef Biomass As Single, ByRef MinBiomass As Single, ByRef MaxBiomass As Single, ByRef FMax As Single) As Double
 
         If Biomass > MaxBiomass Then
-            Return Convert.ToDouble(FMax * Biomass)
+            Return Convert.ToDouble(FMax)
         ElseIf Biomass < MinBiomass Then
             Return 0
         Else
-            Return Convert.ToDouble(((Biomass - MinBiomass) / (MaxBiomass - MinBiomass)) * FMax * Biomass)
+            Return Convert.ToDouble(((Biomass - MinBiomass) / (MaxBiomass - MinBiomass)) * FMax)
         End If
 
     End Function
@@ -2304,7 +2306,7 @@ Public Class cMSE
         For Each iHCRGroup In m_currentStrategy
             ' Determines the F for each group
             If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
-                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcQuotafromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), 0, CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), 0, CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
             Else
                 Me.InformUser(String.Format(My.Resources.ERROR_HARVESTRUILE_DUPLICATE_F, iHCRGroup.GroupF.Name), eMessageImportance.Warning)
             End If
@@ -2676,7 +2678,7 @@ stepend:
 
                 'OK Hook the stock assessment model up to the Quota setting
                 'Use the biomass estimated by the stock assessment model as the true biomass to set the Quota
-                TargConsQuota = DetermineQuotas(bioEst)
+                TargConsQuota = DetermineQuotas(BiomassAtTimestep)
 
                 'DON'T use stock assessment model 
                 'Compute the quota on the TRUE(Ecosim) biomass
@@ -2715,7 +2717,7 @@ stepend:
                             Dim v As Single
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
                                 If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) > 0 Then
-                                    v = CSng(m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * m_ecopath.EcopathData.Market(iFleet, iGrp))
+                                    v = CSng(m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * m_ecopath.EcopathData.Market(iFleet, iGrp))
                                     If v > vmax Then
                                         vmax = v
                                         imax = iGrp
@@ -2725,7 +2727,7 @@ stepend:
 
                             'get the effort limit for the stock with the biggest value
                             Emax = 0
-                            Emax = CSng((m_quotashares.ReadiFleetiGroupQuota(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * m_ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
+                            Emax = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, imax).mShare * TargConsQuota(imax - 1, 0)) / (1.0E-20 + QMult(imax) * m_ecosim.EcosimData.FishMGear(iFleet, imax) * BiomassAtTimestep(imax)))
 
                             'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
                             If Emax < MinEffortThisYear(iFleet - 1) Then
@@ -2742,9 +2744,9 @@ stepend:
                                     iCatch = CSng(m_ecosim.EcosimData.FishRateGear(iFleet, iTime) * QMult(iGrp) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
 
                                     'if the total catch exceeds the quota figure out what do do with the discards
-                                    If iCatch > m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
+                                    If iCatch > m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
                                         'fishing mortality exceeds quota
-                                        m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
+                                        m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
                                         If m_regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
                                             'QuotaType = Strongest
                                             'excess catch discarded and included in the fishing mortality()
@@ -2771,7 +2773,7 @@ stepend:
                                 If (m_ecopath.EcopathData.Landing(iFleet, iGrp) + m_ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> cEffortLimits.NoHCR_F Then
                                     'Calculate the effort limitation, has quota been exceeded?
                                     'QYear is omitted from following equation because it is assumed that technological creep is zero
-                                    Elim = CSng((m_quotashares.ReadiFleetiGroupQuota(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+                                    Elim = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
                                     'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
                                     If Elim < MinEffortThisYear(iFleet - 1) Then
                                         Elim = MinEffortThisYear(iFleet - 1)
