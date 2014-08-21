@@ -181,7 +181,7 @@ Namespace SpatialData
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <param name="iTimeStep"></param>
+        ''' <param name="iTimeStep">The Ecospace time step to check compatibility for.</param>
         ''' <returns>
         ''' <para>Return values should be interpreted as follows:</para>
         ''' </returns>

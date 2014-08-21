@@ -349,10 +349,6 @@ Namespace SpatialData
             Dim xnFile As XmlNode = Nothing
             Dim xaFile As XmlAttribute = Nothing
 
-            If (Me.IsSourceRelative) Then
-                Me.Source = Me.ToRelativePath(Me.Source)
-            End If
-
             xnMaster = doc.CreateElement("Configuration")
 
             xn = doc.CreateElement("Name")
@@ -391,7 +387,9 @@ Namespace SpatialData
                 xnFile = doc.CreateElement("File")
 
                 xaFile = doc.CreateAttribute("Name")
-                xaFile.Value = Path.GetFileName(tf.FileName)
+                Dim strFile As String = tf.FileName
+                If Me.IsSourceRelative Then strFile = Path.GetFileName(strFile)
+                xaFile.Value = strFile
                 xnFile.Attributes.Append(xaFile)
 
                 'xaFile = doc.CreateAttribute("Date")
@@ -469,7 +467,10 @@ Namespace SpatialData
                                 Dim strName As String = xnFile.Attributes("Name").InnerText
                                 Dim strDate As String = xnFile.Attributes("DateRef").InnerText
                                 Dim dt As DateTime = cStringUtils.ConvertToDate(strDate)
-                                Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
+                                Dim src As String = Me.Source()
+                                If Me.IsSourceRelative Then src = Me.ToAbsolutePath(src)
+                                Dim f As New cTemporalFile(dt, Path.Combine(src, strName))
+
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
                                 If (xnFile.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
                                     ' JS 06Nov13: added file exist check when loading dataset metadata
@@ -491,10 +492,6 @@ Namespace SpatialData
                 Me.Clear()
                 Return False
             End Try
-
-            If (Me.IsSourceRelative) Then
-                Me.Source = Me.ToAbsolutePath(Me.Source)
-            End If
 
             Return True
 

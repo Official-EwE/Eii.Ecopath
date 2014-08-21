@@ -259,6 +259,47 @@ Namespace Ecospace.Controls
             MyBase.OnMouseClick(e)
         End Sub
 
+        Private m_strTipText As String = ""
+
+        Protected Overrides Sub OnMouseMove(e As System.Windows.Forms.MouseEventArgs)
+
+            Dim ptClick As New Point(e.Location.X - Me.AutoScrollPosition.X, e.Location.Y - Me.AutoScrollPosition.Y)
+            Dim pos As cDatasetInfo = Me.DatasetFromPoint(ptClick)
+            Dim strText As String = ""
+
+            If (pos IsNot Nothing) Then
+                Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
+                Dim iStep As Integer = TimestepFromPoint(ptClick)
+
+                Select Case comp.CompatibilityAt(iStep)
+                    Case cDatasetCompatilibity.eCompatibilityTypes.Errors
+                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " is missing"
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
+                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " does not overlap with your scenario area"
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
+                        ' NOP
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
+                        ' NOP
+                    Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
+                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " partially overlap with your scenario area"
+                    Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
+                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " has not been assessed yet"
+                    Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
+                        strText = "Spatial data for dataset " & pos.m_ds.DisplayName & ", time " & iStep & " fully overlaps with your scenario area"
+                End Select
+            End If
+
+            If (strText <> Me.m_strTipText) Then
+                Me.m_strTipText = strText
+                BeginInvoke(New MethodInvoker(AddressOf UpdateTooltip))
+            End If
+
+        End Sub
+
+        Private Sub UpdateTooltip()
+            cToolTipShared.GetInstance().SetToolTip(Me, Me.m_strTipText)
+        End Sub
+
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
 
             MyBase.OnPaint(e)
@@ -316,7 +357,6 @@ Namespace Ecospace.Controls
             ' Calc number of pixels per time step
             Me.m_iTimestepSize = CInt(Math.Max(4, Math.Floor(Me.Width / Me.m_uic.Core.nEcospaceTimeSteps)))
 
-            ' ToDo: put vert scrollbar UNDER header panel, not beside header panel
             Me.AutoScroll = True
             Me.AutoScrollMinSize = New Size(Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, (Me.m_lInfo.Count * (c_barheight + 2 * c_barmargin) + c_headerheight))
             Me.AutoScrollMargin = New Size(0, 0)
@@ -521,7 +561,7 @@ Namespace Ecospace.Controls
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
                         clrOutline = Color.Black
-                        clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
+                        clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
                         bSkip = True
