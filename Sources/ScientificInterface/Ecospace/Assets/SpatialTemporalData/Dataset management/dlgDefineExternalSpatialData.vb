@@ -128,8 +128,7 @@ Namespace Ecospace.Controls
             Me.m_btnCreate.Enabled = bHasTemplate
             Me.m_btnConfigure.Enabled = bHasSelection And bCanConfig
             Me.m_btnDelete.Enabled = bHasSelection
-            Me.m_tsbnExportSelected.Enabled = bHasSelection
-            Me.m_tsbnExportAll.Enabled = bHasDS
+            Me.m_tsbnExport.Enabled = bHasDS
 
         End Sub
 
@@ -161,21 +160,13 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnExportSelected(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnExportSelected.Click
+        Private Sub OnExport(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnExport.Click
             Try
-                Me.Export(Me.m_gridDatasets.SelectedDatasets)
+                Dim dlg As New dlgExportSpatialData(Me.UIContext)
+                dlg.ShowDialog(Me)
             Catch ex As Exception
                 cLog.Write(ex, "dlgDefineExternalSpatialData::OnExportSelected")
-            End Try
-        End Sub
-
-        Private Sub OnExportAll(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnExportAll.Click
-            Try
-                Me.Export()
-            Catch ex As Exception
-                cLog.Write(ex, "dlgDefineExternalSpatialData::OnExportAll")
             End Try
         End Sub
 
@@ -352,41 +343,6 @@ Namespace Ecospace.Controls
 
             Me.m_gridDatasets.Fill()
             Me.UpdateControls()
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Export datasets to an external directory structure for transfer to another computer.
-        ''' </summary>
-        ''' <param name="sets"></param>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Private Function Export(Optional sets As ISpatialDataSet() = Nothing) As Boolean
-
-            If (sets Is Nothing) Then sets = Me.m_manSets.ToArray()
-            If (sets.Length = 0) Then Return False
-
-            Dim dlg As New frmInputBox()
-            Dim strPathOut As String = Path.Combine(Me.UIContext.Core.DefaultOutputPath(eAutosaveTypes.NotSet), "Export")
-
-            If (dlg.ShowDialog(Me, My.Resources.PROMPT_SPATIALTEMPORAL_EXPORT, _
-                               String.Format(My.Resources.CAPTION_SPATIALTEMPORAL_EXPORT, sets.Length)) <> DialogResult.OK) Then Return False
-
-            strPathOut = cFileUtils.ToValidFileName(Path.Combine(strPathOut, dlg.Value), True)
-
-            '' ToDo_JS: globalize this method
-            'If (Directory.Exists(strPathOut)) Then
-            '    Dim fmsg As New cFeedbackMessage(String.Format("The directory {0} already exists and cannot be used.", strPathOut), _
-            '                                     eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Warning, eMessageReplyStyle.OK)
-            '    Me.Core.Messages.SendMessage(fmsg)
-            '    Return False
-            'End If
-
-            ' JS 10Jun14: use default file name
-            'strFile = Path.ChangeExtension(cFileUtils.ToValidFileName(dlg.Value, False), ".xml")
-            Me.m_manSets.Save(Path.Combine(strPathOut, "ewe_datasets.xml"), sets)
-            Return True
 
         End Function
 

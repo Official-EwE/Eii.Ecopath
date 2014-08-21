@@ -159,6 +159,12 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgExportSpatialData.Designer.vb">
+      <DependentUpon>dlgExportSpatialData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgExportSpatialData.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmEwE6.Designer.vb">
       <DependentUpon>frmEwE6.vb</DependentUpon>
     </Compile>
@@ -828,6 +834,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgExportSpatialData.resx">
+      <DependentUpon>dlgExportSpatialData.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmEwE6.resx">
       <DependentUpon>frmEwE6.vb</DependentUpon>
       <SubType>Designer</SubType>
