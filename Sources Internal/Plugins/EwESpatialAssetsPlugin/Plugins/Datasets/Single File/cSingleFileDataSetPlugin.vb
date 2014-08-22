@@ -504,6 +504,9 @@ Namespace SpatialData
                 Return Nothing
             End Try
 
+            ' Clear index status on the new dataset; file presence must be re-assessed wherever the dataset is used
+            ds.m_indexstatus = ISpatialDataSet.eIndexStatus.NotIndexed
+
             ' Return clone
             Return ds
 

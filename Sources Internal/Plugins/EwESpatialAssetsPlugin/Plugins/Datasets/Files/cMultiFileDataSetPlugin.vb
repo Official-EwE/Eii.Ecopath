@@ -689,43 +689,48 @@ Namespace SpatialData
             ds.IsSourceRelative = True
             ds.Source = strAbsPath
 
-            ' Copy file
-            Try
-                For i As Integer = 0 To Me.m_lFiles.Count - 1
-                    Dim strSrc As String = Me.m_lFiles(i).FileName
-                    Dim strTgt As String = Path.Combine(strAbsPath, Path.GetFileName(Me.m_lFiles(i).FileName))
+            ' Copy all files
+            For i As Integer = 0 To Me.m_lFiles.Count - 1
+                Dim strSrc As String = ds.m_lFiles(i).FileName
+                Dim strTgt As String = Path.Combine(strAbsPath, Path.GetFileName(ds.m_lFiles(i).FileName))
+
+                Try
                     System.IO.File.Copy(strSrc, strTgt, True)
-                Next
-            Catch exd As DirectoryNotFoundException
-                If Not bIgnoreFileErrors Then
-                    Dim msg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_EXPORT_ERROR_NOPATH, Me.Source, Me.DisplayName), _
-                                                    eCoreComponentType.External, eMessageType.DataExport, _
-                                                    eMessageImportance.Question, eMessageReplyStyle.YES_NO)
-                    msg.Reply = eMessageReply.NO
-                    Me.m_core.Messages.SendMessage(msg)
-                    If msg.Reply = eMessageReply.YES Then
-                        bIgnoreFileErrors = True
-                    Else
-                        Return Nothing
+                Catch exd As DirectoryNotFoundException
+                    If Not bIgnoreFileErrors Then
+                        Dim msg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_EXPORT_ERROR_NOPATH, Me.Source, Me.DisplayName), _
+                                                        eCoreComponentType.External, eMessageType.DataExport, _
+                                                        eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                        msg.Reply = eMessageReply.NO
+                        Me.m_core.Messages.SendMessage(msg)
+                        If msg.Reply = eMessageReply.YES Then
+                            bIgnoreFileErrors = True
+                        Else
+                            Return Nothing
+                        End If
                     End If
-                End If
-            Catch exf As FileNotFoundException
-                If Not bIgnoreFileErrors Then
-                    Dim msg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_EXPORT_ERROR_NOFILES, Me.DisplayName), _
-                                                    eCoreComponentType.External, eMessageType.DataExport, _
-                                                    eMessageImportance.Question, eMessageReplyStyle.YES_NO)
-                    msg.Reply = eMessageReply.NO
-                    Me.m_core.Messages.SendMessage(msg)
-                    If msg.Reply = eMessageReply.YES Then
-                        bIgnoreFileErrors = True
-                    Else
-                        Return Nothing
+                Catch exf As FileNotFoundException
+                    If Not bIgnoreFileErrors Then
+                        Dim msg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_EXPORT_ERROR_NOFILES, Me.DisplayName), _
+                                                        eCoreComponentType.External, eMessageType.DataExport, _
+                                                        eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                        msg.Reply = eMessageReply.NO
+                        Me.m_core.Messages.SendMessage(msg)
+                        If msg.Reply = eMessageReply.YES Then
+                            bIgnoreFileErrors = True
+                        Else
+                            Return Nothing
+                        End If
                     End If
-                End If
-            Catch ex As Exception
-                ' ToDo: send some kind of message
-                Return Nothing
-            End Try
+                Catch ex As Exception
+                    ' ToDo: send some kind of message
+                    Return Nothing
+                End Try
+
+                ' Clear index status for each file; file presence must be re-assessed wherever the dataset is used
+                ds.m_lFiles(i).IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
+
+            Next i
 
             ' Return clone
             Return ds
