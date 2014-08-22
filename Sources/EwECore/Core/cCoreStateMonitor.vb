@@ -723,8 +723,9 @@ Public Class cCoreStateMonitor
     ''' Set the searching state of the core state monitor.
     ''' </summary>
     ''' <param name="searchmode"><see cref="eSearchModes">Search mode state flag</see>.</param>
+    ''' <remarks>Use this with care!!</remarks>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetIsSearching(ByVal searchmode As eSearchModes)
+    Public Sub SetIsSearching(ByVal searchmode As eSearchModes)
         Me.m_searchmode = searchmode
     End Sub
 

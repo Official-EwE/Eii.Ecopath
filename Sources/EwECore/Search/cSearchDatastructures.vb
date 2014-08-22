@@ -49,6 +49,8 @@ Public Enum eSearchModes
     MSY
     ''' <summary>FMSY search is active.</summary>
     FMSY
+    ''' <summary>An external search is active, for instance triggered by a plug-in.</summary>
+    External
 End Enum
 
 ''' <summary>
