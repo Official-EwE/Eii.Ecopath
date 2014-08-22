@@ -670,13 +670,15 @@ Public Class cMessageHistory
 
     Private Function ToMessageBoxText(ByVal msg As cMessage, ByRef strMessage As String) As Boolean
 
-        Dim sb As New StringBuilder(msg.Message)
+        Dim sb As New StringBuilder()
         Dim iNumSubLines As Integer = 0
         Dim strTmp As String = ""
         Dim bError As Boolean = False
 
         ' Sanity check
-        If msg IsNot Nothing Then
+        If (msg IsNot Nothing) Then
+
+            sb.AppendLine(msg.Message)
 
             ' Concatenate all child messages
             For Each vs As cVariableStatus In msg.Variables
@@ -686,7 +688,7 @@ Public Class cMessageHistory
                         strTmp = vs.Message
                         If Not String.IsNullOrEmpty(strTmp) Then
                             sb.AppendLine()
-                            sb.Append(" - " & strTmp)
+                            sb.Append(strTmp)
                             iNumSubLines += 1
                         End If
 
