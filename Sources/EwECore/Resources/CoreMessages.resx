@@ -1211,11 +1211,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=data set name</comment>
   </data>
   <data name="SPATIALTEMPORAL_LOAD_ERROR_DETAIL" xml:space="preserve">
-    <value>Unable to create data set '{0}'</value>
-    <comment>{0}=dataset type name</comment>
+    <value>Unable to load required plug-in '{0}'</value>
+    <comment>{0}=plug-in type name</comment>
   </data>
   <data name="SPATIALTEMPORAL_LOAD_ERROR_GENERIC" xml:space="preserve">
-    <value>Failed to reload one or more spatial temporal data connections. Are you missing a required plug-in?</value>
+    <value>Failed to reload one or more external spatial-temporal data connections. Are you missing a required plug-in?</value>
   </data>
   <data name="STATUS_PLUGIN_SANDBOXED" xml:space="preserve">
     <value>Plug-in {0} sandboxed</value>
