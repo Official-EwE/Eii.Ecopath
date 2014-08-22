@@ -56,7 +56,6 @@ Partial Class frmMSE
         Me.m_btnCreateModels = New System.Windows.Forms.Button()
         Me.m_btnReviewTFM = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
-        Me.m_btnStopCreateModels = New System.Windows.Forms.Button()
         Me.m_btnCreateSurvDist = New System.Windows.Forms.Button()
         Me.m_btnSampleSurvivabilities = New System.Windows.Forms.Button()
         Me.m_pbModelsCompatible = New System.Windows.Forms.PictureBox()
@@ -159,7 +158,6 @@ Partial Class frmMSE
         '
         'm_plStep2
         '
-        Me.m_plStep2.Controls.Add(Me.m_btnStopCreateModels)
         Me.m_plStep2.Controls.Add(Me.m_btnCreateSurvDist)
         Me.m_plStep2.Controls.Add(Me.m_btnSampleSurvivabilities)
         Me.m_plStep2.Controls.Add(Me.m_pbModelsCompatible)
@@ -177,12 +175,6 @@ Partial Class frmMSE
         Me.m_plStep2.Controls.Add(Me.m_tbxMaxTime)
         resources.ApplyResources(Me.m_plStep2, "m_plStep2")
         Me.m_plStep2.Name = "m_plStep2"
-        '
-        'm_btnStopCreateModels
-        '
-        resources.ApplyResources(Me.m_btnStopCreateModels, "m_btnStopCreateModels")
-        Me.m_btnStopCreateModels.Name = "m_btnStopCreateModels"
-        Me.m_btnStopCreateModels.UseVisualStyleBackColor = True
         '
         'm_btnCreateSurvDist
         '
@@ -527,5 +519,4 @@ Partial Class frmMSE
     Friend WithEvents m_btnSAError As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_btnEditDiets As System.Windows.Forms.Button
-    Friend WithEvents m_btnStopCreateModels As System.Windows.Forms.Button
 End Class

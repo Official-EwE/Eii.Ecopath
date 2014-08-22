@@ -73,10 +73,8 @@ Public Class cMSEStateMonitor
         HasModels
         ''' <summary>MSE has run.</summary>
         HasResults
-
-        CreateModelsRunStarted
-
-        CreateModelsRunCompleted
+        ''' <summary>MSE is running.</summary>
+        IsRunning
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -133,6 +131,10 @@ Public Class cMSEStateMonitor
             Case eState.HasResults
                 bHasState = Me.IsStateAvailable(eState.HasModels) And _
                     True ' ToDo_JS: determine this properly
+
+            Case eState.IsRunning
+                Return (Me.MSE.RunState <> cMSE.eRunStates.Idle)
+
         End Select
 
         ' Update state cache once state has been determined.

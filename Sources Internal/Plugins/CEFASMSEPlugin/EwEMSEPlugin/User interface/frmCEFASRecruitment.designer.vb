@@ -49,10 +49,10 @@ Partial Class frmCEFASRecruitment
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnDefaults = New System.Windows.Forms.ToolStripButton()
-        Me.m_grid = New EwEMSEPlugin.gridCEFASRecruitment()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_chkUseAssessment = New System.Windows.Forms.CheckBox()
+        Me.m_grid = New EwEMSEPlugin.gridCEFASRecruitment()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -71,8 +71,8 @@ Partial Class frmCEFASRecruitment
         '
         'm_scMain.Panel2
         '
-        Me.m_scMain.Panel2.Controls.Add(Me.m_tsMain)
         Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tsMain)
         '
         'm_graph
         '
@@ -102,38 +102,6 @@ Partial Class frmCEFASRecruitment
         resources.ApplyResources(Me.m_tsbnDefaults, "m_tsbnDefaults")
         Me.m_tsbnDefaults.Name = "m_tsbnDefaults"
         '
-        'm_grid
-        '
-        Me.m_grid.AllowBlockSelect = True
-        Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
-        Me.m_grid.AutoStretchRowsToFitHeight = False
-        Me.m_grid.BackColor = System.Drawing.Color.White
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_grid.CustomSort = False
-        Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = False
-        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_grid.GridToolTipActive = True
-        Me.m_grid.Group = Nothing
-        Me.m_grid.IsLayoutSuspended = False
-        resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.Name = "m_grid"
-        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.UIContext = Nothing
-        '
         'm_btnCancel
         '
         resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
@@ -154,6 +122,38 @@ Partial Class frmCEFASRecruitment
         Me.m_chkUseAssessment.CheckState = System.Windows.Forms.CheckState.Checked
         Me.m_chkUseAssessment.Name = "m_chkUseAssessment"
         Me.m_chkUseAssessment.UseVisualStyleBackColor = True
+        '
+        'm_grid
+        '
+        Me.m_grid.AllowBlockSelect = True
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.Group = Nothing
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.UIContext = Nothing
         '
         'frmCEFASRecruitment
         '
@@ -181,7 +181,6 @@ Partial Class frmCEFASRecruitment
 
     End Sub
 
-    Private WithEvents m_grid As gridCEFASRecruitment
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
@@ -189,6 +188,7 @@ Partial Class frmCEFASRecruitment
     Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
     Private WithEvents m_tsbnDefaults As System.Windows.Forms.ToolStripButton
     Friend WithEvents m_chkUseAssessment As System.Windows.Forms.CheckBox
+    Private WithEvents m_grid As EwEMSEPlugin.gridCEFASRecruitment
 
 End Class
 

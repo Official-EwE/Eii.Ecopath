@@ -182,11 +182,14 @@ Public Class frmMSE
 
         Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
         Dim img As Image = Nothing
+        Dim bIsRunningMSE As Boolean = (Me.MSE.RunState = cMSE.eRunStates.RunningMSE)
+        Dim bIsRunningModels As Boolean = (Me.MSE.RunState = cMSE.eRunStates.RunningModels)
+        Dim bIsRunning As Boolean = bIsRunningModels Or bIsRunningMSE
 
-        Me.m_plStep1.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.Idle)
-        Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
-        Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
-        Me.m_plStep4.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
+        Me.m_plStep1.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.Idle) And Not bIsRunning
+        Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) And Not bIsRunning
+        Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) And Not bIsRunning
+        Me.m_plStep4.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels) And Not bIsRunning
 
         Me.m_rbEwEDefaultPath.Checked = Me.MSE.UseEwEPath
         Me.m_rbCustomPath.Checked = Not Me.MSE.UseEwEPath
@@ -248,7 +251,7 @@ Public Class frmMSE
             Me.m_tbxNumAvailableFishingStrategies.Text = ""
         End If
 
-        Me.m_btnDeleteResults.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasResults)
+        Me.m_btnDeleteResults.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasResults) And Not bIsRunning
 
         Me.m_bInUpdate = False
 
@@ -340,7 +343,7 @@ Public Class frmMSE
             frmSurvivabilities.Init(Me.UIContext)
             If frmSurvivabilities.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 Me.MSE.ResolveMSEPathConflicts(True)
-                Me.MSE.InvalidateRunState(True)
+                Me.MSE.InvalidateConfigurationState(True)
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnShowTFM")
@@ -361,7 +364,7 @@ Public Class frmMSE
         Try
             Dim frm As New frmTFMpolicy(Me.UIContext, Me.MSE)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.InvalidateRunState(True)
+                Me.MSE.InvalidateConfigurationState(True)
                 Me.UpdateControls()
             End If
         Catch ex As Exception
@@ -437,7 +440,7 @@ Public Class frmMSE
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
             frmMaxDecreaseEfforts.Init(Me.UIContext, Me.MSE)
             If frmMaxDecreaseEfforts.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.InvalidateRunState(True)
+                Me.MSE.InvalidateConfigurationState(True)
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnDecreaseEffort")
@@ -496,7 +499,7 @@ Public Class frmMSE
         Try
             Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.InvalidateRunState(True)
+                Me.MSE.InvalidateConfigurationState(True)
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::onStockAssessment")
@@ -515,8 +518,7 @@ Public Class frmMSE
 
     End Sub
 
-
-    Private Sub OnStopCreateModels_Click(sender As System.Object, e As System.EventArgs) Handles m_btnStopCreateModels.Click
+    Private Sub OnStopCreateModels_Click(sender As System.Object, e As System.EventArgs)
         Try
             Me.MSE.StopRun()
         Catch ex As Exception
@@ -577,7 +579,7 @@ Public Class frmMSE
         frmDisParams.Init(Me.UIContext, Me.Plugin)
 
         If (frmDisParams.ShowDialog(Me) = Windows.Forms.DialogResult.OK) Then
-            Me.MSE.InvalidateRunState(False)
+            Me.MSE.InvalidateConfigurationState(False)
             Me.UpdateControls()
             Return True
         End If

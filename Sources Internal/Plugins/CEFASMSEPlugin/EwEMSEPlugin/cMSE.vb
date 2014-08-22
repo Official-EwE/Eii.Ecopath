@@ -110,6 +110,7 @@ Public Class cMSE
     Private m_rand As New Random()
 
     Private m_StopRun As Boolean
+    Private m_runstate As eRunStates = eRunStates.Idle
 
 #Region "Threading variables"
     'Private m_WaitObject As System.Threading.ManualResetEvent
@@ -143,7 +144,23 @@ Public Class cMSE
 
 #Region " Public Properties "
 
-    Public Property IsRunning As Boolean = False
+    Public Enum eRunStates As Byte
+        Idle = 0
+        RunningModels
+        RunningMSE
+    End Enum
+
+    Public Property RunState As eRunStates
+        Get
+            Return Me.m_runstate
+        End Get
+        Set(value As eRunStates)
+            If (value <> Me.m_runstate) Then
+                Me.m_runstate = value
+                Me.m_monitor.Invalidate()
+            End If
+        End Set
+    End Property
 
     Public ReadOnly Property Core As cCore
         Get
@@ -208,13 +225,11 @@ Public Class cMSE
         End Set
     End Property
 
-
     Public Sub StopRun()
-        If Me.IsRunning Then
+        If (Me.RunState <> eRunStates.Idle) Then
             Me.m_StopRun = True
         End If
     End Sub
-
 
 #End Region
 
@@ -232,7 +247,7 @@ Public Class cMSE
         'Create the wait object with the initial state signaled, the object can be used
         'Me.m_WaitObject = New System.Threading.ManualResetEvent(True)
 
-        Me.InvalidateRunState()
+        Me.InvalidateConfigurationState()
     End Sub
 
     Public Sub onCoreInitialized(EwECore As cCore, Ecopath As Ecopath.cEcoPathModel, Ecosim As Ecosim.cEcoSimModel)
@@ -241,7 +256,7 @@ Public Class cMSE
         Me.m_ecopath = Ecopath
         Me.m_ecosim = Ecosim
 
-        Me.InvalidateRunState()
+        Me.InvalidateConfigurationState()
 
     End Sub
 
@@ -256,7 +271,7 @@ Public Class cMSE
     Public Function ResolveMSEPathConflicts(ByVal bInteractive As Boolean) As Boolean
 
         ' Forget all we know
-        Me.InvalidateRunState(False)
+        Me.InvalidateConfigurationState(False)
 
         ' Check if input structure is missing
         If Not Me.IsInputStructureAvailable() Then
@@ -301,7 +316,7 @@ Public Class cMSE
 
 
         ' Re-assess state
-        Me.InvalidateRunState(False)
+        Me.InvalidateConfigurationState(False)
 
 #If DEBUG Then
         ' Panic in debug mode only
@@ -315,7 +330,7 @@ Public Class cMSE
 
     Public Sub LoadSampledParams()
 
-        Me.IsRunning = True
+        Me.RunState = eRunStates.RunningModels
         Me.ChangeEffortFlag = True
         cApplicationStatusNotifier.StartProgress(Me.Core, "", -1)
 
@@ -329,7 +344,7 @@ Public Class cMSE
 
         cApplicationStatusNotifier.EndProgress(Me.Core)
         Me.ChangeEffortFlag = False
-        Me.IsRunning = False
+        Me.RunState = eRunStates.Idle
 
     End Sub
 
@@ -337,7 +352,7 @@ Public Class cMSE
     Public Function CreateModels() As Boolean
         Dim bsuccess As Boolean = True
 
-        If Me.IsRunning Then
+        If (Me.RunState <> eRunStates.Idle) Then
             Me.InformUser("Sorry already running.", eMessageImportance.Warning)
             Return False
         End If
@@ -385,7 +400,7 @@ Public Class cMSE
         TSurvivability.SaveSampledToCSV()
         TSurvivability.Save()
 
-        Me.InvalidateRunState()
+        Me.InvalidateConfigurationState()
 
     End Sub
 
@@ -426,7 +441,11 @@ Public Class cMSE
 
         Try
 
-            m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireChangeRunState), cMSEStateMonitor.eState.CreateModelsRunStarted)
+            Me.m_StopRun = False
+            Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
+            Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
+
+            m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireChangeRunState), Nothing)
 
             Me.GenerateEcosimParameters("MaxRelFeedingTime")
             Me.GenerateEcosimParameters("FeedingTimeAdjustRate")
@@ -444,28 +463,18 @@ Public Class cMSE
         End Try
 
         'Make sure this gets called even if there is an exception
-        m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireChangeRunState), cMSEStateMonitor.eState.CreateModelsRunCompleted)
+        m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireChangeRunState), Nothing)
+
+        Me.m_core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
+        Me.m_core.SetStopRunDelegate(Nothing)
 
     End Sub
 
     Private Sub fireChangeRunState(obj As Object)
 
         Try
-
-            Me.m_StopRun = False
-            'Put the Wait object in a non-signaled state
-            'all calls to Waitxxx() will block until Set() is called
-            ' Me.m_WaitObject.Reset()
-
-            'Tell the interface the Ecopath run has started
-            Dim NewState As cMSEStateMonitor.eState = DirectCast(obj, cMSEStateMonitor.eState)
-
-            'I'm not sure this will work
-            'Somehow set the current state of the State Monitor
-            'Me.m_monitor.SetState(NewState)
-            'Have the State monitor tell the world
-            'Me.m_monitor.Invalidate()
-
+            ' Have the State monitor tell the world
+            Me.m_monitor.Invalidate()
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".fireChangeRunState() Exception: " & ex.Message)
         End Try
@@ -482,8 +491,7 @@ Public Class cMSE
     ''' reassess this at a next opportunity.
     ''' </summary>
     ''' <param name="bReloadData"></param>
-    ''' <remarks></remarks>
-    Friend Sub InvalidateRunState(Optional bReloadData As Boolean = True)
+    Friend Sub InvalidateConfigurationState(Optional bReloadData As Boolean = True)
 
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
@@ -1982,7 +1990,7 @@ Public Class cMSE
             ' Kaboom!
         End Try
         ' Re-assess configuration when next needed
-        Me.InvalidateRunState()
+        Me.InvalidateConfigurationState()
         Me.RestoreOriginalState()
 
     End Sub
@@ -2092,7 +2100,7 @@ Public Class cMSE
         'Next i
         'nLivingMinusPPers = mCore.nLivingGroups - nPPers
 
-        Me.IsRunning = True
+        Me.RunState = eRunStates.RunningMSE
         cApplicationStatusNotifier.StartProgress(Me.Core, "", -1)
         Try
 
@@ -2216,7 +2224,7 @@ Public Class cMSE
         End Try
 
         cApplicationStatusNotifier.EndProgress(Me.Core)
-        Me.IsRunning = False
+        Me.RunState = eRunStates.Idle
 
         Me.RestoreOriginalState()
 
@@ -2907,7 +2915,7 @@ stepend:
         End If
 
         If (bRefresh = True) Then
-            Me.InvalidateRunState()
+            Me.InvalidateConfigurationState()
         End If
 
     End Sub
@@ -2975,7 +2983,7 @@ stepend:
             If (value <> My.Settings.UseEwEPath) Then
                 My.Settings.UseEwEPath = value
                 My.Settings.Save()
-                Me.InvalidateRunState()
+                Me.InvalidateConfigurationState()
             End If
         End Set
     End Property
@@ -2992,7 +3000,7 @@ stepend:
             If (value <> My.Settings.CustomPath) Then
                 My.Settings.CustomPath = value
                 My.Settings.Save()
-                Me.InvalidateRunState()
+                Me.InvalidateConfigurationState()
             End If
         End Set
     End Property
@@ -3010,7 +3018,7 @@ stepend:
             If (value <> My.Settings.NMaxAttempts) Then
                 My.Settings.NMaxAttempts = value
                 My.Settings.Save()
-                Me.InvalidateRunState()
+                Me.InvalidateConfigurationState()
             End If
         End Set
     End Property
@@ -3028,7 +3036,7 @@ stepend:
             If (value <> My.Settings.NMaxTime) Then
                 My.Settings.NMaxTime = value
                 My.Settings.Save()
-                Me.InvalidateRunState()
+                Me.InvalidateConfigurationState()
             End If
         End Set
     End Property

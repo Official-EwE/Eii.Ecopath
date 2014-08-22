@@ -120,7 +120,7 @@ Public Class cMSEPluginPoint
 
     Friend Sub InvalidateConfiguration()
 
-        Me.MSE.InvalidateRunState()
+        Me.MSE.InvalidateConfigurationState()
         Me.m_monitor.Invalidate()
 
     End Sub
@@ -451,7 +451,7 @@ Public Class cMSEPluginPoint
         Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
 
         ' JS 03Oct13: ONLY SUPPRESS MESSAGES WHEN MSE IS RUNNING! 
-        If Not Me.MSE.IsRunning Then Return
+        If (Me.MSE.RunState = cMSE.eRunStates.Idle) Then Return
 
         'Plugin Point called to cancel a message
         Select Case msg.Type

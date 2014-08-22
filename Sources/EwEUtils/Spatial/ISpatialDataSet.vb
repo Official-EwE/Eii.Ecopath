@@ -290,13 +290,14 @@ Namespace SpatialData
 
 #Region " Import / export "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Export the dataset for transfer to another computer.
         ''' </summary>
         ''' <param name="strPath"></param>
         ''' <returns>A new dataset with the same <see cref="ISpatialDataSet.GUID"/>
         ''' as the source dataset.</returns>
-        ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
         Function ExportTo(ByVal strPath As String) As ISpatialDataSet
 
 #End Region ' Import / export
