@@ -2300,7 +2300,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Unable to create data set &apos;{0}&apos;.
+        '''  Looks up a localized string similar to Unable to load required plug-in &apos;{0}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_DETAIL() As String
             Get
@@ -2309,7 +2309,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Failed to reload one or more spatial temporal data connections. Are you missing a required plug-in?.
+        '''  Looks up a localized string similar to Failed to reload one or more external spatial-temporal data connections. Are you missing a required plug-in?.
         '''</summary>
         Friend Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_GENERIC() As String
             Get

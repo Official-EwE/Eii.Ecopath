@@ -197,7 +197,7 @@ Namespace SpatialData
                                     If (msgWarning Is Nothing) Then
                                         msgWarning = New cMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_GENERIC, _
                                                                   eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
-                                                                  eMessageImportance.Information)
+                                                                  eMessageImportance.Warning)
                                     End If
                                     Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
                                                                   String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_DETAIL, strTypeName), _
