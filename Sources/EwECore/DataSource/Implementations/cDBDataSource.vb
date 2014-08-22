@@ -9481,7 +9481,8 @@ Namespace DataSources
             While (reader.Read())
                 Try
                     Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
-                    Dim iLayer As Integer = Array.IndexOf(spaceDS.getLayerIDs(var), CInt(Me.m_db.ReadSafe(reader, "LayerID", 1)))
+                    Dim iLayerID As Integer = CInt(Me.m_db.ReadSafe(reader, "LayerID", 1))
+                    Dim iLayer As Integer = Array.IndexOf(spaceDS.getLayerIDs(var), iLayerID)
                     Dim iConn As Integer = -1
 
                     ' May link to unknown layer
@@ -9568,7 +9569,10 @@ Namespace DataSources
                                              eVarNameFlags.LayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacityInput, _
                                              eVarNameFlags.LayerMigration
                                             ' Map id-ed by group
-                                            iLayerID = idm.GetID(eDataTypes.EcospaceGroup, iLayerID)
+                                            ' HACK NEEDED - I knew we'd getting bitten by this one day!!!
+                                            ' iLayerID is an Ecospace group. However, ID mapping is based by Ecopath group. Yippee.
+                                            Dim iEcopathGroupID As Integer = ecopathDS.GroupDBID(i)
+                                            iLayerID = idm.GetID(eDataTypes.EcospaceGroup, iEcopathGroupID)
                                         Case eVarNameFlags.LayerDriver
                                             ' Map id-ed uniquely
                                             iLayerID = idm.GetID(eDataTypes.EcospaceLayerDriver, iLayerID)
