@@ -59,6 +59,9 @@ Namespace Controls.Map.Layers
             Me.m_nudDepth.Minimum = 1
             Me.m_nudDepth.Increment = 10
 
+            Dim sg As cStyleGuide = editor.UIContext.StyleGuide
+            Me.m_cbAlwaysShowExcluded.Checked = sg.ShowExcludedCells
+
         End Sub
 
 #End Region ' Overrides
@@ -85,6 +88,18 @@ Namespace Controls.Map.Layers
             Catch ex As Exception
                 cLog.Write(ex, "ucLayerEditorExclusion:OnExcludeDepths(" & Me.m_nudDepth.Value & ")")
             End Try
+        End Sub
+
+        Private Sub OnShowExcludedCellsToggled(sender As System.Object, e As System.EventArgs) _
+            Handles m_cbAlwaysShowExcluded.CheckedChanged
+
+            Try
+                Dim sg As cStyleGuide = Editor.UIContext.StyleGuide
+                sg.ShowExcludedCells = Me.m_cbAlwaysShowExcluded.Checked
+            Catch ex As Exception
+                cLog.Write(ex, "ucLayerEditorExclusion:OnShowExcludedCellsToggled()")
+            End Try
+
         End Sub
 
 #End Region ' Events

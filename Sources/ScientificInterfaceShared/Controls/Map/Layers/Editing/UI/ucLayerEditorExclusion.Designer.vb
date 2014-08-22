@@ -33,6 +33,7 @@ Namespace Controls.Map.Layers
             Me.m_nudDepth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_btnClear = New System.Windows.Forms.Button()
             Me.m_btnSet = New System.Windows.Forms.Button()
+            Me.m_cbAlwaysShowExcluded = New System.Windows.Forms.CheckBox()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -59,10 +60,11 @@ Namespace Controls.Map.Layers
             '
             'm_btnClear
             '
-            Me.m_btnClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnClear.Location = New System.Drawing.Point(68, 152)
+            Me.m_btnClear.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnClear.Location = New System.Drawing.Point(3, 152)
             Me.m_btnClear.Name = "m_btnClear"
-            Me.m_btnClear.Size = New System.Drawing.Size(129, 23)
+            Me.m_btnClear.Size = New System.Drawing.Size(194, 23)
             Me.m_btnClear.TabIndex = 3
             Me.m_btnClear.Text = "&Reset excluded cells"
             Me.m_btnClear.UseVisualStyleBackColor = True
@@ -77,20 +79,32 @@ Namespace Controls.Map.Layers
             Me.m_btnSet.Text = "&Set"
             Me.m_btnSet.UseVisualStyleBackColor = True
             '
+            'm_cbAlwaysShowExcluded
+            '
+            Me.m_cbAlwaysShowExcluded.AutoSize = True
+            Me.m_cbAlwaysShowExcluded.Location = New System.Drawing.Point(3, 181)
+            Me.m_cbAlwaysShowExcluded.Name = "m_cbAlwaysShowExcluded"
+            Me.m_cbAlwaysShowExcluded.Size = New System.Drawing.Size(157, 17)
+            Me.m_cbAlwaysShowExcluded.TabIndex = 5
+            Me.m_cbAlwaysShowExcluded.Text = "&Always show excluded cells"
+            Me.m_cbAlwaysShowExcluded.UseVisualStyleBackColor = True
+            '
             'ucLayerEditorExclusion
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_cbAlwaysShowExcluded)
             Me.Controls.Add(Me.m_lblDepth)
             Me.Controls.Add(Me.m_btnSet)
             Me.Controls.Add(Me.m_btnClear)
             Me.Controls.Add(Me.m_nudDepth)
             Me.Name = "ucLayerEditorExclusion"
-            Me.Size = New System.Drawing.Size(200, 183)
+            Me.Size = New System.Drawing.Size(200, 203)
             Me.Controls.SetChildIndex(Me.m_nudDepth, 0)
             Me.Controls.SetChildIndex(Me.m_btnClear, 0)
             Me.Controls.SetChildIndex(Me.m_btnSet, 0)
             Me.Controls.SetChildIndex(Me.m_lblDepth, 0)
+            Me.Controls.SetChildIndex(Me.m_cbAlwaysShowExcluded, 0)
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -100,6 +114,7 @@ Namespace Controls.Map.Layers
         Private WithEvents m_btnClear As System.Windows.Forms.Button
         Private WithEvents m_btnSet As System.Windows.Forms.Button
         Private WithEvents m_lblDepth As System.Windows.Forms.Label
+        Private WithEvents m_cbAlwaysShowExcluded As System.Windows.Forms.CheckBox
 
     End Class
 
