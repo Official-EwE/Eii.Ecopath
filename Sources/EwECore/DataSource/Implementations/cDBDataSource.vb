@@ -9564,27 +9564,34 @@ Namespace DataSources
                                     Select Case adt.VarName
                                         Case eVarNameFlags.LayerPort, eVarNameFlags.SailCost
                                             ' Map id-ed by fleet
-                                            iLayerID = idm.GetID(eDataTypes.EcospaceFleet, iLayerID)
+                                            ' iLayerID is an Ecospace fleet. However, ID mapping is based on Ecopath fleets.
+                                            Dim iEcopathFleetID As Integer = ecopathDS.FleetDBID(i)
+                                            iLayerID = idm.GetID(eDataTypes.EcospaceFleet, iEcopathFleetID)
+
                                         Case eVarNameFlags.LayerBiomassForcing, eVarNameFlags.LayerBiomassRelativeForcing, _
                                              eVarNameFlags.LayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacityInput, _
                                              eVarNameFlags.LayerMigration
                                             ' Map id-ed by group
-                                            ' HACK NEEDED - I knew we'd getting bitten by this one day!!!
-                                            ' iLayerID is an Ecospace group. However, ID mapping is based by Ecopath group. Yippee.
+                                            ' iLayerID is an Ecospace group. However, ID mapping is based on Ecopath groups.
                                             Dim iEcopathGroupID As Integer = ecopathDS.GroupDBID(i)
                                             iLayerID = idm.GetID(eDataTypes.EcospaceGroup, iEcopathGroupID)
+
                                         Case eVarNameFlags.LayerDriver
                                             ' Map id-ed uniquely
                                             iLayerID = idm.GetID(eDataTypes.EcospaceLayerDriver, iLayerID)
+
                                         Case eVarNameFlags.LayerHabitat
                                             ' Map id-ed by habitat
                                             iLayerID = idm.GetID(eDataTypes.EcospaceHabitat, iLayerID)
+
                                         Case eVarNameFlags.LayerImportance
                                             ' Map id-ed uniquely
                                             iLayerID = idm.GetID(eDataTypes.EcospaceLayerImportance, iLayerID)
+
                                         Case eVarNameFlags.LayerMPA
                                             ' Map id-ed with mpa
                                             iLayerID = idm.GetID(eDataTypes.EcospaceLayerMPA, iLayerID)
+
                                     End Select
 
                                     drow("LayerID") = iLayerID
