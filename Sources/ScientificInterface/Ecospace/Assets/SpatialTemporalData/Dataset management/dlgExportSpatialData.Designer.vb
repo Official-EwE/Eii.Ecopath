@@ -45,7 +45,6 @@
             Me.m_clbDatsets.CheckOnClick = True
             Me.m_clbDatsets.FormattingEnabled = True
             Me.m_clbDatsets.Name = "m_clbDatsets"
-            Me.m_clbDatsets.SelectionMode = System.Windows.Forms.SelectionMode.None
             Me.m_clbDatsets.ThreeDCheckBoxes = True
             '
             'm_btnAll

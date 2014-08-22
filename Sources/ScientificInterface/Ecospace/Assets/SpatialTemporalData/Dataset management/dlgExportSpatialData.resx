@@ -154,13 +154,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnAll.Location" type="System.Drawing.Point, System.Drawing">
-    <value>261, 130</value>
+    <value>261, 101</value>
   </data>
   <data name="m_btnAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnAll.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="m_btnAll.Text" xml:space="preserve">
     <value>&amp;All</value>
@@ -328,13 +328,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnUsed.Location" type="System.Drawing.Point, System.Drawing">
-    <value>261, 101</value>
+    <value>261, 130</value>
   </data>
   <data name="m_btnUsed.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnUsed.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_btnUsed.Text" xml:space="preserve">
     <value>&amp;Used</value>
@@ -442,7 +442,7 @@
     <value>m_hdrDestination</value>
   </data>
   <data name="&gt;&gt;m_hdrDestination.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11114.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11131.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDestination.Parent" xml:space="preserve">
     <value>$this</value>
@@ -475,7 +475,7 @@
     <value>m_hdrLabel</value>
   </data>
   <data name="&gt;&gt;m_hdrLabel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11114.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11131.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLabel.Parent" xml:space="preserve">
     <value>$this</value>
