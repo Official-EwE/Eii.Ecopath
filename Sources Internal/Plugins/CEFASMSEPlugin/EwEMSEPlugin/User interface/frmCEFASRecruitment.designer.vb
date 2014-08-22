@@ -63,7 +63,6 @@ Partial Class frmCEFASRecruitment
         'm_scMain
         '
         resources.ApplyResources(Me.m_scMain, "m_scMain")
-        Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.m_scMain.Name = "m_scMain"
         '
         'm_scMain.Panel1
@@ -106,7 +105,6 @@ Partial Class frmCEFASRecruitment
         'm_grid
         '
         Me.m_grid.AllowBlockSelect = True
-        resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
         Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -123,6 +121,7 @@ Partial Class frmCEFASRecruitment
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.Group = Nothing
         Me.m_grid.IsLayoutSuspended = False
+        resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
