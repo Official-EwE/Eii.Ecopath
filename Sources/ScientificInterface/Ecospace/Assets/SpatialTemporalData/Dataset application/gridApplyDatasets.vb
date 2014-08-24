@@ -174,6 +174,8 @@ Namespace Ecospace.Controls
 
         Private Sub UpdateDatasetRow(ds As ISpatialDataSet)
 
+            ' ToDo: globalize this
+
             Dim iRow As Integer = Me.DatasetRowIndex(ds)
             Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
 

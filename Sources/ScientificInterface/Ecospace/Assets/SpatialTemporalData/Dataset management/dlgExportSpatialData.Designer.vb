@@ -37,6 +37,8 @@
             Me.m_lblFolder = New System.Windows.Forms.Label()
             Me.m_hdrDestination = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrLabel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_tbxDescription = New System.Windows.Forms.TextBox()
             Me.SuspendLayout()
             '
             'm_clbDatsets
@@ -114,6 +116,16 @@
             Me.m_hdrLabel.IsCollapsed = False
             Me.m_hdrLabel.Name = "m_hdrLabel"
             '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'm_tbxDescription
+            '
+            resources.ApplyResources(Me.m_tbxDescription, "m_tbxDescription")
+            Me.m_tbxDescription.Name = "m_tbxDescription"
+            '
             'dlgExportSpatialData
             '
             Me.AcceptButton = Me.m_btnExport
@@ -123,7 +135,9 @@
             Me.ControlBox = False
             Me.Controls.Add(Me.m_lblFolder)
             Me.Controls.Add(Me.m_lblFolderPreview)
+            Me.Controls.Add(Me.m_tbxDescription)
             Me.Controls.Add(Me.m_tbxName)
+            Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_lblName)
             Me.Controls.Add(Me.m_hdrDestination)
             Me.Controls.Add(Me.m_hdrLabel)
@@ -151,6 +165,8 @@
         Private WithEvents m_btnUsed As System.Windows.Forms.Button
         Private WithEvents m_lblFolderPreview As System.Windows.Forms.Label
         Friend WithEvents m_lblFolder As System.Windows.Forms.Label
+        Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_tbxDescription As System.Windows.Forms.TextBox
     End Class
 
 End Namespace

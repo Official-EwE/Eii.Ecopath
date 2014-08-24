@@ -960,6 +960,34 @@ Partial Friend NotInheritable Class Settings
             Me("AutoIndexDatasets") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?>"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<ArrayOfAnyType xmlns:xsi=""http://www.w3"& _ 
+        ".org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"  <"& _ 
+        "anyType />"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"</ArrayOfAnyType>")>  _
+    Public Property SpatialTempMRU() As Global.System.Collections.ArrayList
+        Get
+            Return CType(Me("SpatialTempMRU"),Global.System.Collections.ArrayList)
+        End Get
+        Set
+            Me("SpatialTempMRU") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?>"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<ArrayOfAnyType xmlns:xsi=""http://www.w3"& _ 
+        ".org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"  <"& _ 
+        "anyType />"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"</ArrayOfAnyType>")>  _
+    Public Property SpatialTempConfigurations() As Global.System.Collections.ArrayList
+        Get
+            Return CType(Me("SpatialTempConfigurations"),Global.System.Collections.ArrayList)
+        End Get
+        Set
+            Me("SpatialTempConfigurations") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

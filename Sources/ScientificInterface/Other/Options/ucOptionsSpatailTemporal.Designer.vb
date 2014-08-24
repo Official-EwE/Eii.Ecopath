@@ -31,76 +31,37 @@ Namespace Other
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsSpatialTemporal))
-            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_lblCurrent = New System.Windows.Forms.Label()
-            Me.m_rbDefault = New System.Windows.Forms.RadioButton()
-            Me.m_btnVisitFolder = New System.Windows.Forms.Button()
-            Me.m_rbCustom = New System.Windows.Forms.RadioButton()
-            Me.m_btnChoose = New System.Windows.Forms.Button()
-            Me.m_lblPath = New System.Windows.Forms.Label()
-            Me.m_hdrCache = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_btnViewCache = New System.Windows.Forms.Button()
             Me.m_btnClearCache = New System.Windows.Forms.Button()
             Me.m_lblCacheSize = New System.Windows.Forms.Label()
             Me.m_lblCacheSizeValue = New System.Windows.Forms.Label()
             Me.m_lblCacheLocation = New System.Windows.Forms.Label()
             Me.m_lblCacheLocationValue = New System.Windows.Forms.Label()
-            Me.m_hdrIndexing = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbAllowIndexing = New System.Windows.Forms.CheckBox()
+            Me.m_btnRemove = New System.Windows.Forms.Button()
+            Me.m_lvDatasets = New System.Windows.Forms.ListView()
+            Me.m_chdrName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_chdrAuthor = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_chdrContact = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_chdrLOcation = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_btnNew = New System.Windows.Forms.Button()
+            Me.m_hdrIndexing = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrCache = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnSelect = New System.Windows.Forms.Button()
+            Me.m_chdrCurrent = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_ilLoaded = New System.Windows.Forms.ImageList(Me.components)
+            Me.Label1 = New System.Windows.Forms.Label()
             Me.SuspendLayout()
             '
-            'm_hdrCaption
+            'm_btnAdd
             '
-            Me.m_hdrCaption.CanCollapseParent = False
-            Me.m_hdrCaption.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
-            Me.m_hdrCaption.IsCollapsed = False
-            Me.m_hdrCaption.Name = "m_hdrCaption"
-            '
-            'm_lblCurrent
-            '
-            resources.ApplyResources(Me.m_lblCurrent, "m_lblCurrent")
-            Me.m_lblCurrent.Name = "m_lblCurrent"
-            '
-            'm_rbDefault
-            '
-            resources.ApplyResources(Me.m_rbDefault, "m_rbDefault")
-            Me.m_rbDefault.Name = "m_rbDefault"
-            Me.m_rbDefault.TabStop = True
-            Me.m_rbDefault.UseVisualStyleBackColor = True
-            '
-            'm_btnVisitFolder
-            '
-            resources.ApplyResources(Me.m_btnVisitFolder, "m_btnVisitFolder")
-            Me.m_btnVisitFolder.Name = "m_btnVisitFolder"
-            Me.m_btnVisitFolder.UseVisualStyleBackColor = True
-            '
-            'm_rbCustom
-            '
-            resources.ApplyResources(Me.m_rbCustom, "m_rbCustom")
-            Me.m_rbCustom.Name = "m_rbCustom"
-            Me.m_rbCustom.TabStop = True
-            Me.m_rbCustom.UseVisualStyleBackColor = True
-            '
-            'm_btnChoose
-            '
-            resources.ApplyResources(Me.m_btnChoose, "m_btnChoose")
-            Me.m_btnChoose.Name = "m_btnChoose"
-            Me.m_btnChoose.UseVisualStyleBackColor = True
-            '
-            'm_lblPath
-            '
-            resources.ApplyResources(Me.m_lblPath, "m_lblPath")
-            Me.m_lblPath.Name = "m_lblPath"
-            '
-            'm_hdrCache
-            '
-            resources.ApplyResources(Me.m_hdrCache, "m_hdrCache")
-            Me.m_hdrCache.CanCollapseParent = False
-            Me.m_hdrCache.CollapsedParentHeight = 0
-            Me.m_hdrCache.IsCollapsed = False
-            Me.m_hdrCache.Name = "m_hdrCache"
+            resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
+            Me.m_btnAdd.Name = "m_btnAdd"
+            Me.m_btnAdd.UseVisualStyleBackColor = True
             '
             'm_btnViewCache
             '
@@ -134,6 +95,51 @@ Namespace Other
             resources.ApplyResources(Me.m_lblCacheLocationValue, "m_lblCacheLocationValue")
             Me.m_lblCacheLocationValue.Name = "m_lblCacheLocationValue"
             '
+            'm_cbAllowIndexing
+            '
+            resources.ApplyResources(Me.m_cbAllowIndexing, "m_cbAllowIndexing")
+            Me.m_cbAllowIndexing.Name = "m_cbAllowIndexing"
+            Me.m_cbAllowIndexing.UseVisualStyleBackColor = True
+            '
+            'm_btnRemove
+            '
+            resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
+            Me.m_btnRemove.Name = "m_btnRemove"
+            Me.m_btnRemove.UseVisualStyleBackColor = True
+            '
+            'm_lvDatasets
+            '
+            resources.ApplyResources(Me.m_lvDatasets, "m_lvDatasets")
+            Me.m_lvDatasets.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.m_chdrName, Me.m_chdrCurrent, Me.m_chdrAuthor, Me.m_chdrContact, Me.m_chdrLOcation})
+            Me.m_lvDatasets.FullRowSelect = True
+            Me.m_lvDatasets.HideSelection = False
+            Me.m_lvDatasets.MultiSelect = False
+            Me.m_lvDatasets.Name = "m_lvDatasets"
+            Me.m_lvDatasets.UseCompatibleStateImageBehavior = False
+            Me.m_lvDatasets.View = System.Windows.Forms.View.Details
+            '
+            'm_chdrName
+            '
+            resources.ApplyResources(Me.m_chdrName, "m_chdrName")
+            '
+            'm_chdrAuthor
+            '
+            resources.ApplyResources(Me.m_chdrAuthor, "m_chdrAuthor")
+            '
+            'm_chdrContact
+            '
+            resources.ApplyResources(Me.m_chdrContact, "m_chdrContact")
+            '
+            'm_chdrLOcation
+            '
+            resources.ApplyResources(Me.m_chdrLOcation, "m_chdrLOcation")
+            '
+            'm_btnNew
+            '
+            resources.ApplyResources(Me.m_btnNew, "m_btnNew")
+            Me.m_btnNew.Name = "m_btnNew"
+            Me.m_btnNew.UseVisualStyleBackColor = False
+            '
             'm_hdrIndexing
             '
             resources.ApplyResources(Me.m_hdrIndexing, "m_hdrIndexing")
@@ -142,16 +148,49 @@ Namespace Other
             Me.m_hdrIndexing.IsCollapsed = False
             Me.m_hdrIndexing.Name = "m_hdrIndexing"
             '
-            'm_cbAllowIndexing
+            'm_hdrCache
             '
-            resources.ApplyResources(Me.m_cbAllowIndexing, "m_cbAllowIndexing")
-            Me.m_cbAllowIndexing.Name = "m_cbAllowIndexing"
-            Me.m_cbAllowIndexing.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_hdrCache, "m_hdrCache")
+            Me.m_hdrCache.CanCollapseParent = False
+            Me.m_hdrCache.CollapsedParentHeight = 0
+            Me.m_hdrCache.IsCollapsed = False
+            Me.m_hdrCache.Name = "m_hdrCache"
+            '
+            'm_hdrCaption
+            '
+            Me.m_hdrCaption.CanCollapseParent = False
+            Me.m_hdrCaption.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
+            Me.m_hdrCaption.IsCollapsed = False
+            Me.m_hdrCaption.Name = "m_hdrCaption"
+            '
+            'm_btnSelect
+            '
+            resources.ApplyResources(Me.m_btnSelect, "m_btnSelect")
+            Me.m_btnSelect.Name = "m_btnSelect"
+            Me.m_btnSelect.UseVisualStyleBackColor = True
+            '
+            'm_chdrCurrent
+            '
+            resources.ApplyResources(Me.m_chdrCurrent, "m_chdrCurrent")
+            '
+            'm_ilLoaded
+            '
+            Me.m_ilLoaded.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+            resources.ApplyResources(Me.m_ilLoaded, "m_ilLoaded")
+            Me.m_ilLoaded.TransparentColor = System.Drawing.Color.Transparent
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
             '
             'ucOptionsSpatialTemporal
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.m_lvDatasets)
             Me.Controls.Add(Me.m_cbAllowIndexing)
             Me.Controls.Add(Me.m_lblCacheSizeValue)
             Me.Controls.Add(Me.m_lblCacheLocation)
@@ -159,14 +198,12 @@ Namespace Other
             Me.Controls.Add(Me.m_hdrIndexing)
             Me.Controls.Add(Me.m_hdrCache)
             Me.Controls.Add(Me.m_lblCacheLocationValue)
-            Me.Controls.Add(Me.m_lblPath)
             Me.Controls.Add(Me.m_btnClearCache)
-            Me.Controls.Add(Me.m_btnChoose)
+            Me.Controls.Add(Me.m_btnRemove)
+            Me.Controls.Add(Me.m_btnSelect)
+            Me.Controls.Add(Me.m_btnNew)
+            Me.Controls.Add(Me.m_btnAdd)
             Me.Controls.Add(Me.m_btnViewCache)
-            Me.Controls.Add(Me.m_btnVisitFolder)
-            Me.Controls.Add(Me.m_rbCustom)
-            Me.Controls.Add(Me.m_rbDefault)
-            Me.Controls.Add(Me.m_lblCurrent)
             Me.Controls.Add(Me.m_hdrCaption)
             Me.Name = "ucOptionsSpatialTemporal"
             Me.ResumeLayout(False)
@@ -174,12 +211,7 @@ Namespace Other
 
         End Sub
         Private m_hdrCaption As cEwEHeaderLabel
-        Private WithEvents m_lblCurrent As System.Windows.Forms.Label
-        Private WithEvents m_rbDefault As System.Windows.Forms.RadioButton
-        Private WithEvents m_btnVisitFolder As System.Windows.Forms.Button
-        Private WithEvents m_rbCustom As System.Windows.Forms.RadioButton
-        Private WithEvents m_btnChoose As System.Windows.Forms.Button
-        Private WithEvents m_lblPath As System.Windows.Forms.Label
+        Private WithEvents m_btnAdd As System.Windows.Forms.Button
         Private WithEvents m_hdrCache As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnViewCache As System.Windows.Forms.Button
         Private WithEvents m_btnClearCache As System.Windows.Forms.Button
@@ -189,6 +221,17 @@ Namespace Other
         Private WithEvents m_lblCacheLocationValue As System.Windows.Forms.Label
         Private WithEvents m_hdrIndexing As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_cbAllowIndexing As System.Windows.Forms.CheckBox
+        Private WithEvents m_btnRemove As System.Windows.Forms.Button
+        Private WithEvents m_lvDatasets As System.Windows.Forms.ListView
+        Private WithEvents m_chdrName As System.Windows.Forms.ColumnHeader
+        Private WithEvents m_chdrAuthor As System.Windows.Forms.ColumnHeader
+        Private WithEvents m_btnNew As System.Windows.Forms.Button
+        Private WithEvents m_chdrContact As System.Windows.Forms.ColumnHeader
+        Private WithEvents m_chdrLOcation As System.Windows.Forms.ColumnHeader
+        Private WithEvents m_btnSelect As System.Windows.Forms.Button
+        Private WithEvents m_chdrCurrent As System.Windows.Forms.ColumnHeader
+        Private WithEvents m_ilLoaded As System.Windows.Forms.ImageList
+        Friend WithEvents Label1 As System.Windows.Forms.Label
 
     End Class
 End Namespace

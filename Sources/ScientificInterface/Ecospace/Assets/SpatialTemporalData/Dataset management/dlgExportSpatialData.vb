@@ -24,6 +24,7 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports EwECore
 
 #End Region ' Imports
 
@@ -88,8 +89,9 @@ Namespace Ecospace.Controls
                 Next
             Next
 
-            ' Start with a default name
+            ' Start with a defaults
             Me.m_tbxName.Text = cFileUtils.ToValidFileName(Me.m_uic.Core.EwEModel.Name, False)
+            Me.m_tbxDescription.Text = ""
 
             ' Shabang
             Me.SelectDatasets(eSelectionMode.Used)
@@ -106,7 +108,7 @@ Namespace Ecospace.Controls
 #Region " Events "
 
         Private Sub OnTargetNameChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_tbxName.TextChanged
+            Handles m_tbxName.TextChanged, m_tbxDescription.TextChanged
             Me.UpdateControls()
         End Sub
 
@@ -128,7 +130,18 @@ Namespace Ecospace.Controls
         Private Sub OnExport(sender As System.Object, e As System.EventArgs) _
             Handles m_btnExport.Click
 
-            If Me.m_manSets.Save(Me.OutputLocation(), Me.SelectedDatasets()) Then
+            Dim strAuthor As String = My.Settings.Author
+            Dim strContact As String = My.Settings.Contact
+            Dim sm As cCoreStateMonitor = Me.m_uic.Core.StateMonitor
+
+            If (sm.HasEcopathLoaded) Then
+                Dim model As cEwEModel = Me.m_uic.Core.EwEModel
+                If (String.IsNullOrWhiteSpace(strAuthor)) Then strAuthor = model.Author
+                If (String.IsNullOrWhiteSpace(strContact)) Then strContact = model.Contact
+            End If
+
+            If Me.m_manSets.Save(Me.OutputLocation(), Me.SelectedDatasets(), _
+                                 Me.m_tbxDescription.Text, My.Settings.Author, My.Settings.Contact) Then
                 Me.DialogResult = Windows.Forms.DialogResult.OK
                 Me.Close()
             End If
@@ -153,9 +166,10 @@ Namespace Ecospace.Controls
 #Region " Internals "
 
         Private Function OutputLocation() As String
-            Dim strPath As String = Path.Combine(Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecospace), _
-                                                 cFileUtils.ToValidFileName(Me.m_tbxName.Text, False))
-            Return Path.Combine(strPath, "ewe_datasets.xml")
+            Dim strSelection As String = cFileUtils.ToValidFileName(Me.m_tbxName.Text, True)
+            Dim strFile As String = Path.GetFileName(strSelection)
+            Dim strPath As String = Path.Combine(Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecospace), strSelection)
+            Return Path.Combine(strPath, Path.ChangeExtension(strFile, ".xml"))
         End Function
 
         Private Sub SelectDatasets(ByVal mode As eSelectionMode)
