@@ -47,6 +47,7 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
+Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -240,7 +241,8 @@ Public Class frmEwE6
     Private WithEvents m_cmdEditTaxa As cCommand = Nothing
     Private WithEvents m_cmdEditPedigree As cEditPedigreeCommand = Nothing
     Private WithEvents m_cmdImportTimeSeries As cCommand = Nothing
-    Private WithEvents m_cmdLoadTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdEcosimLoadTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdEcospaceLoadTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdWeightTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdExportTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdEditBasemap As cCommand = Nothing
@@ -606,8 +608,11 @@ Public Class frmEwE6
         Me.m_cmdImportTimeSeries = New cCommand(cmdh, "ImportTimeSeries")
         Me.m_cmdImportTimeSeries.AddControl(Me.m_tsmiTimeSeriesImport)
 
-        Me.m_cmdLoadTimeSeries = New cCommand(cmdh, "LoadTimeSeries")
-        Me.m_cmdLoadTimeSeries.AddControl(Me.m_tsmiTimeSeriesLoad)
+        Me.m_cmdEcosimLoadTimeSeries = New cCommand(cmdh, "LoadTimeSeries")
+        Me.m_cmdEcosimLoadTimeSeries.AddControl(Me.m_tsmiTimeSeriesLoad)
+
+        Me.m_cmdEcospaceLoadTimeSeries = New cCommand(cmdh, "LoadSpatialTemporalDataset")
+        'Me.m_cmdEcospaceLoadTimeSeries.AddControl(Me.m_tsmiTimeSeriesLoad)
 
         Me.m_cmdWeightTimeSeries = New cCommand(cmdh, "WeightTimeSeries")
         Me.m_cmdWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesEditWeights)
@@ -1007,7 +1012,7 @@ Public Class frmEwE6
         ' Terminate all model-independent UI components
         Me.CloseAllDocuments()
         Me.ClearScenarioDropdowns()
-        Me.ClearMRUDropdowns()
+        Me.ClearModelMRUDropdowns()
 
         ' JS 13Dec10: Another attempt to free tooltip memory 
         Dim ts As cToolTipShared = cToolTipShared.GetInstance()
@@ -1328,7 +1333,7 @@ Public Class frmEwE6
                                strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
-                Me.AddRecentFilesSetting(strFileName)
+                Me.AddModelMRU(strFileName)
 
                 Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
                 If dlg.ShowDialog(Me) = DialogResult.OK Then
@@ -1425,6 +1430,7 @@ Public Class frmEwE6
 
         Dim tsmi As ToolStripMenuItem = Nothing
         Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
+        Dim strItem As String
 
         Me.ClearScenarioDropdowns()
 
@@ -1472,9 +1478,37 @@ Public Class frmEwE6
                 tsmi.Text = Me.Core.EcospaceScenarios(i).Name
                 tsmi.Tag = Me.Core.EcospaceScenarios(i)
                 tsmi.Checked = (Me.Core.ActiveEcospaceScenarioIndex = i)
-                AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
+                AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenarioOrDataset
                 Me.m_tsbEcospace.DropDownItems.Add(tsmi)
             Next
+
+            ' List available spatial temporal datasets
+            Dim mru As ArrayList = My.Settings.SpatialTempMRU
+            Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
+            For i As Integer = 1 To mru.Count - 1
+
+                ' Is first dataset?
+                If (i = 1) Then
+                    ' #Yes: add a separator
+                    Me.m_tsbEcospace.DropDownItems.Add(New ToolStripSeparator())
+                    tsmi = New ToolStripMenuItem()
+                    tsmi.Text = SharedResources.GENERIC_VALUE_DEFAULT
+                    tsmi.Tag = ""
+
+                    AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenarioOrDataset
+                    Me.m_tsbEcospace.DropDownItems.Add(tsmi)
+                End If
+
+                strItem = CStr(mru(i))
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = strItem
+                tsmi.Tag = strItem
+                tsmi.Checked = (strItem = man.CurrentConfigFile)
+
+                AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenarioOrDataset
+                Me.m_tsbEcospace.DropDownItems.Add(tsmi)
+
+            Next i
 
             ' List available Ecotracer scenarios
             For i As Integer = 1 To Me.Core.nEcotracerScenarios
@@ -1509,7 +1543,9 @@ Public Class frmEwE6
 
         ' Properly release space menu items
         For Each tsi In Me.m_tsbEcospace.DropDownItems
-            RemoveHandler tsi.Click, AddressOf OnLoadEcospaceScenario
+            If Not (TypeOf tsi Is ToolStripSeparator) Then
+                RemoveHandler tsi.Click, AddressOf OnLoadEcospaceScenarioOrDataset
+            End If
         Next
         Me.m_tsbEcospace.DropDownItems.Clear()
 
@@ -1535,21 +1571,28 @@ Public Class frmEwE6
     End Sub
 
     Private Sub SaveSettings()
-        My.Settings.SpatialTemporalConfigFile = Me.Core.SpatialDataConnectionManager.DatasetManager.ConfigFile
+
+        Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
+
+        My.Settings.SpatialTempConfigurations = man.ConfigFiles
+        My.Settings.SpatialTemporalConfigFile = man.CurrentConfigFile
         My.Settings.Save()
+
     End Sub
 
 #End Region ' Settings
 
 #Region " MRU "
 
+#Region " Models "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Add a file name to the top of the MRU list.
+    ''' Add a EwE DB name to the top of the MRU list.
     ''' </summary>
     ''' <param name="strFileName">Name of the file to add.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub AddRecentFilesSetting(ByVal strFileName As String)
+    Private Sub AddModelMRU(ByVal strFileName As String)
 
         Dim alMDBmru As ArrayList = My.Settings.MdbRecentlyUsedList
 
@@ -1557,10 +1600,15 @@ Public Class frmEwE6
 
         ' Insert at head
         alMDBmru.Insert(0, strFileName)
-        My.Settings.MdbRecentlyUsedList = alMDBmru
-
         ' Remove any occurrences further down the list
-        Me.RemoveRecentFilesSetting(strFileName, 1)
+        Me.RemoveModelMRU(strFileName, 1)
+
+        ' Update system settings
+        My.Settings.MdbRecentlyUsedList = alMDBmru
+        Me.SaveSettings()
+
+        ' Update UI
+        Me.PopulateModelMRUDropdown()
 
     End Sub
 
@@ -1573,8 +1621,8 @@ Public Class frmEwE6
     ''' the item to remove. If not provided, the search will start at the 
     ''' beginning of the list.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub RemoveRecentFilesSetting(ByVal strFileName As String, _
-                                         Optional ByVal iStartPos As Integer = 0)
+    Private Sub RemoveModelMRU(ByVal strFileName As String, _
+                               Optional ByVal iStartPos As Integer = 0)
 
         Dim alMDBmru As ArrayList = My.Settings.MdbRecentlyUsedList
 
@@ -1594,12 +1642,7 @@ Public Class frmEwE6
             End If
             iStartPos += 1
         End While
-        ' Update system settings
         My.Settings.MdbRecentlyUsedList = alMDBmru
-        Me.SaveSettings()
-
-        ' Reflect!
-        Me.PopulateMRUDropdown()
 
     End Sub
 
@@ -1608,7 +1651,7 @@ Public Class frmEwE6
     ''' Show the list of MRU items in the menu structure.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub PopulateMRUDropdown()
+    Private Sub PopulateModelMRUDropdown()
 
         Dim alMRU As ArrayList = My.Settings.MdbRecentlyUsedList
         Dim iNumItems As Integer = Math.Min(alMRU.Count - 1, My.Settings.MdbRecentlyUsedCount)
@@ -1616,7 +1659,7 @@ Public Class frmEwE6
         Dim bHasMRU As Boolean = False
 
         ' Clear MRU list
-        Me.ClearMRUDropdowns()
+        Me.ClearModelMRUDropdowns()
 
         If (alMRU IsNot Nothing) Then
             bHasMRU = (alMRU.Count > 1)
@@ -1641,7 +1684,7 @@ Public Class frmEwE6
             item.Tag = str(0)
 
             'Add event handler to invoke the model
-            AddHandler item.Click, AddressOf OnMRUItemClicked
+            AddHandler item.Click, AddressOf OnModelMRUItemClicked
 
             Me.m_tsmiFileRecent.DropDownItems.Add(item)
 
@@ -1651,7 +1694,7 @@ Public Class frmEwE6
             item.Checked = (String.Compare(str(0), Me.SelectedFileName, True) = 0)
 
             'Add event handler to invoke the model
-            AddHandler item.Click, AddressOf OnMRUItemClicked
+            AddHandler item.Click, AddressOf OnModelMRUItemClicked
 
             Me.m_tsbEcopath.DropDownItems.Add(item)
         Next
@@ -1663,14 +1706,14 @@ Public Class frmEwE6
     ''' Clear the list of MRU items and attached event handlers.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub ClearMRUDropdowns()
+    Private Sub ClearModelMRUDropdowns()
 
         Dim item As ToolStripMenuItem = Nothing
 
         For Each item In Me.m_tsmiFileRecent.DropDownItems
             If (item.Tag IsNot Nothing) Then
                 ' Remove dangling event handler
-                RemoveHandler item.Click, AddressOf OnMRUItemClicked
+                RemoveHandler item.Click, AddressOf OnModelMRUItemClicked
             End If
         Next
         ' Eradicate menu items
@@ -1680,12 +1723,78 @@ Public Class frmEwE6
         For Each item In Me.m_tsbEcopath.DropDownItems
             If (item.Tag IsNot Nothing) Then
                 ' Remove dangling event handler
-                RemoveHandler item.Click, AddressOf OnMRUItemClicked
+                RemoveHandler item.Click, AddressOf OnModelMRUItemClicked
             End If
         Next
         Me.m_tsbEcopath.DropDownItems.Clear()
 
     End Sub
+
+#End Region ' Models
+
+#Region " Spatial temporal datasets "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Add a EwE DB name to the top of the MRU list.
+    ''' </summary>
+    ''' <param name="strFileName">Name of the file to add.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub AddSpatialTemporalMRU(ByVal strFileName As String)
+
+        Dim alMDBmru As ArrayList = My.Settings.SpatialTempMRU
+
+        If (alMDBmru Is Nothing) Then Return
+
+        ' Insert at head
+        alMDBmru.Insert(0, strFileName)
+        ' Remove any occurrences further down the list
+        Me.RemoveModelMRU(strFileName, 1)
+
+        ' Update system settings
+        My.Settings.SpatialTempMRU = alMDBmru
+        Me.SaveSettings()
+
+        ' Update UI
+        Me.PopulateModelMRUDropdown()
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Remove a file name from the MRU list, if possible.
+    ''' </summary>
+    ''' <param name="strFileName">Name of the file to remove.</param>
+    ''' <param name="iStartPos">Index in the MRU list to start searching for
+    ''' the item to remove. If not provided, the search will start at the 
+    ''' beginning of the list.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub RemoveSpatialTemporalMRU(ByVal strFileName As String, _
+                                         Optional ByVal iStartPos As Integer = 0)
+
+        Dim alMDBmru As ArrayList = My.Settings.SpatialTempMRU
+
+        If (alMDBmru Is Nothing) Then Return
+
+        ' Remove all occurrences from the list
+        While iStartPos < alMDBmru.Count - 1
+            If (TypeOf alMDBmru(iStartPos) Is String) Then
+                ' Get entry
+                Dim strEntry As String = CStr(alMDBmru(iStartPos))
+                ' Is same file?
+                If (String.Compare(strEntry, strFileName, True) = 0) Then
+                    ' #Yes: remove 
+                    alMDBmru.RemoveAt(iStartPos)
+                    iStartPos -= 1
+                End If
+            End If
+            iStartPos += 1
+        End While
+        My.Settings.SpatialTempMRU = alMDBmru
+
+    End Sub
+
+#End Region ' Spatial temporal datasets
 
 #End Region ' MRU
 
@@ -1915,7 +2024,7 @@ Public Class frmEwE6
                 Case eLoadSourceType.MRU
                     If Me.AskFeedback(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
                                       replystyle:=eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
-                        Me.RemoveRecentFilesSetting(strFileName)
+                        Me.RemoveModelMRU(strFileName)
                     End If
 
                 Case eLoadSourceType.User, _
@@ -1928,6 +2037,9 @@ Public Class frmEwE6
                     ' Do not provide user feedback in response to an API call
 
             End Select
+
+            ' Update system settings
+            Me.SaveSettings()
             Return False
         End If
 
@@ -1973,7 +2085,7 @@ Public Class frmEwE6
         End If
 
         ' Update MRU
-        Me.AddRecentFilesSetting(strFileName)
+        Me.AddModelMRU(strFileName)
 
         ' Open the datasource
         atResult = ds.Open(strFileName, Me.Core, eDataSourceTypes.NotSet, bReadOnly)
@@ -2009,7 +2121,7 @@ Public Class frmEwE6
     Private Function SaveEcopathModelAs(ByVal strFileName As String) As Boolean
 
         If (Me.Core.Save(strFileName)) Then
-            Me.AddRecentFilesSetting(strFileName)
+            Me.AddModelMRU(strFileName)
             Me.UpdateModelControls()
             Return True
         End If
@@ -2669,7 +2781,7 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Private Sub OnMRUOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsmiFileRecent.DropDownOpening
-        Me.PopulateMRUDropdown()
+        Me.PopulateModelMRUDropdown()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -3500,15 +3612,15 @@ Public Class frmEwE6
     ''' Command handler; invokes the load time series dialog, or loads a time
     ''' series dataset if this dataset is provided as a tag to the command.
     ''' </summary>
-    Private Sub m_cmdLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
-        Handles m_cmdLoadTimeSeries.OnInvoke
+    Private Sub m_cmdEcosimLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEcosimLoadTimeSeries.OnInvoke
 
         If Not Me.m_coreController.LoadState(eCoreExecutionState.EcosimLoaded) Then Return
 
-        If (Me.m_cmdLoadTimeSeries.Tag Is Nothing) Then
+        If (Me.m_cmdEcosimLoadTimeSeries.Tag Is Nothing) Then
             Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
-        ElseIf (TypeOf Me.m_cmdLoadTimeSeries.Tag Is cTimeSeriesDataset) Then
-            Dim ds As cTimeSeriesDataset = DirectCast(Me.m_cmdLoadTimeSeries.Tag, cTimeSeriesDataset)
+        ElseIf (TypeOf Me.m_cmdEcosimLoadTimeSeries.Tag Is cTimeSeriesDataset) Then
+            Dim ds As cTimeSeriesDataset = DirectCast(Me.m_cmdEcosimLoadTimeSeries.Tag, cTimeSeriesDataset)
             cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_TIMESERIES_LOADING, ds.Name))
             Me.Core.LoadTimeSeries(ds, True)
             cApplicationStatusNotifier.EndProgress(Me.Core)
@@ -3517,10 +3629,10 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdLoadTimeSeries">Load TimeSeries command</see>.
+    ''' Command update handler; enables and disables the <see cref="m_cmdEcosimLoadTimeSeries">Load TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
-        Handles m_cmdLoadTimeSeries.OnUpdate
+    Private Sub m_cmdEcosimLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEcosimLoadTimeSeries.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
@@ -3708,6 +3820,33 @@ Public Class frmEwE6
         cmd.Enabled = m.HasEcopathLoaded And _
                       Not m.IsBusy And _
                       Me.Core.nEcospaceScenarios > 0
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; loads an Ecospace spatial temporal data set
+    ''' </summary>
+    Private Sub m_cmdEcospaceLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEcospaceLoadTimeSeries.OnInvoke
+
+        If Not Me.m_coreController.LoadState(eCoreExecutionState.EcospaceLoaded) Then Return
+
+        If (Me.m_cmdEcospaceLoadTimeSeries.Tag IsNot Nothing) Then
+            Dim strFile As String = CType(Me.m_cmdEcospaceLoadTimeSeries.Tag, String)
+            Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
+            man.Load(strFile)
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdEcosimLoadTimeSeries">Load TimeSeries command</see>.
+    ''' </summary>
+    Private Sub m_cmdEcospaceLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEcospaceLoadTimeSeries.OnUpdate
+
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded() And Not m.IsBusy
+
     End Sub
 
     ''' <summary>
@@ -4200,12 +4339,27 @@ Public Class frmEwE6
 
 #Region " Big and evil event handlers "
 
-    Private Sub OnMRUItemClicked(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
-        Dim strFileName As String = CStr(mnuItem.Tag)
-        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
-        Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
-        cApplicationStatusNotifier.EndProgress(Me.Core)
+    Private Sub OnModelMRUItemClicked(ByVal sender As Object, ByVal e As System.EventArgs)
+        Try
+            Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
+            Dim strFileName As String = CStr(mnuItem.Tag)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
+            Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
+        Catch ex As Exception
+            ' Whoah!
+        End Try
+    End Sub
+
+    Private Sub OnSpatialTempMRUItemClicked(ByVal sender As Object, ByVal e As System.EventArgs)
+        Try
+            Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
+            Me.m_cmdEcospaceLoadTimeSeries.Tag = mnuItem.Tag
+            Me.m_cmdEcospaceLoadTimeSeries.Invoke()
+            Me.m_cmdEcospaceLoadTimeSeries.Tag = Nothing
+        Catch ex As Exception
+            ' Whoah!
+        End Try
     End Sub
 
     Private Sub OnLoadEcosimScenarioOrDataset(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -4214,23 +4368,33 @@ Public Class frmEwE6
         If (mnuItem.Tag Is Nothing) Then Return
 
         If (TypeOf mnuItem.Tag Is cEcoSimScenario) Then
-            ' Tag! You're it
             Me.m_cmdLoadEcosimScenario.Tag = mnuItem.Tag
             Me.m_cmdLoadEcosimScenario.Invoke()
             Me.m_cmdLoadEcosimScenario.Tag = Nothing
         ElseIf (TypeOf mnuItem.Tag Is cTimeSeriesDataset) Then
-            Me.m_cmdLoadTimeSeries.Tag = DirectCast(mnuItem.Tag, cTimeSeriesDataset)
-            Me.m_cmdLoadTimeSeries.Invoke()
-            Me.m_cmdLoadTimeSeries.Tag = Nothing
+            Me.m_cmdEcosimLoadTimeSeries.Tag = DirectCast(mnuItem.Tag, cTimeSeriesDataset)
+            Me.m_cmdEcosimLoadTimeSeries.Invoke()
+            Me.m_cmdEcosimLoadTimeSeries.Tag = Nothing
         End If
 
     End Sub
 
-    Private Sub OnLoadEcospaceScenario(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnLoadEcospaceScenarioOrDataset(ByVal sender As Object, ByVal e As System.EventArgs)
+
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Me.m_cmdLoadEcospaceScenario.Tag = mnuItem.Tag
-        Me.m_cmdLoadEcospaceScenario.Invoke()
-        Me.m_cmdLoadEcospaceScenario.Tag = Nothing
+
+        If (mnuItem.Tag Is Nothing) Then Return
+
+        If (TypeOf mnuItem.Tag Is cEcospaceScenario) Then
+            Me.m_cmdLoadEcospaceScenario.Tag = mnuItem.Tag
+            Me.m_cmdLoadEcospaceScenario.Invoke()
+            Me.m_cmdLoadEcospaceScenario.Tag = Nothing
+        ElseIf (TypeOf mnuItem.Tag Is String) Then
+            Me.m_cmdEcospaceLoadTimeSeries.Tag = CStr(mnuItem.Tag)
+            Me.m_cmdEcospaceLoadTimeSeries.Invoke()
+            Me.m_cmdEcospaceLoadTimeSeries.Tag = Nothing
+        End If
+
     End Sub
 
     Private Sub OnLoadEcotracerScenario(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -4268,7 +4432,10 @@ Public Class frmEwE6
             Me.Core.SaveWithFileHeader = My.Settings.AutosaveHeaders
             cAutosaveSettingsHelper.LoadFromSettings(My.Settings.AutosaveResults, Me.Core)
 
-            Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingAllowed = My.Settings.AutoIndexDatasets
+            Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
+            man.IsIndexingAllowed = My.Settings.AutoIndexDatasets
+            man.ConfigFiles = My.Settings.SpatialTempConfigurations
+            man.Load(My.Settings.SpatialTemporalConfigFile)
 
         Catch ex As Exception
 
@@ -4293,7 +4460,7 @@ Public Class frmEwE6
                     If (Me.m_MessageHistory IsNot Nothing) Then Me.m_MessageHistory.Refresh()
 
                 Case "MdbRecentlyUsedCount"
-                    Me.PopulateMRUDropdown()
+                    Me.PopulateModelMRUDropdown()
 
                 Case "BackupFileMask", "OutputPathMask"
                     Me.UpdateCorePaths(False)
@@ -4437,7 +4604,7 @@ Public Class frmEwE6
             End If
 
             Me.UpdateModelControls()
-            Me.PopulateMRUDropdown()
+            Me.PopulateModelMRUDropdown()
             Me.PopulateScenarioDropdowns()
         Catch ex As Exception
             cLog.Write(ex, "AppLauncher::OnCoreExecutionStateChanged(" & csm.CoreExecutionState.ToString() & ")")

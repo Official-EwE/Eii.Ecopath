@@ -257,7 +257,7 @@ Namespace SpatialData
             If Not Me.IsSourceRelative Then Return strPath
             If (String.IsNullOrWhiteSpace(strPathBase)) Then
                 Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
-                strPathBase = Path.GetDirectoryName(man.ConfigFile)
+                strPathBase = Path.GetDirectoryName(man.CurrentConfigFile)
             End If
             Return cFileUtils.NormalizePath(Path.Combine(strPathBase, strPath))
 
@@ -280,7 +280,7 @@ Namespace SpatialData
 
             If (String.IsNullOrWhiteSpace(strPathBase)) Then
                 Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
-                strPathBase = Path.GetDirectoryName(man.ConfigFile)
+                strPathBase = Path.GetDirectoryName(man.CurrentConfigFile)
             End If
 
             Return cFileUtils.RelativePath(strPathBase, strPath)

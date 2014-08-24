@@ -108,13 +108,11 @@ Namespace SpatialData
 
         End Class
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Storage structire of data connections by varname.
         ''' </summary>
-        ''' <remarks>
-        ''' Revamping; cannot make this an extending array because connections need to be 
-        ''' flexible to set up, add and remove.
-        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Private m_data As New Dictionary(Of eVarNameFlags, cAdapaterConfiguration(,))
 
 #End Region ' Internals

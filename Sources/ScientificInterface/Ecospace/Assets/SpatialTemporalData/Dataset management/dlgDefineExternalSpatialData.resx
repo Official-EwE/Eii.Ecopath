@@ -246,9 +246,9 @@
   <data name="&gt;&gt;m_cbEnableIndexing.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <metadata name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 17</value>
-  </metadata>
+  </data>
   <data name="m_tsbnSwitchConfig.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -269,10 +269,10 @@
     <value>78, 22</value>
   </data>
   <data name="m_tsbnSwitchConfig.Text" xml:space="preserve">
-    <value>Options...</value>
+    <value>Manage configurations...</value>
   </data>
   <data name="m_tsbnSwitchConfig.ToolTipText" xml:space="preserve">
-    <value>Switch configuration file...</value>
+    <value>Manage configuration files, or switch to a different configuration file</value>
   </data>
   <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
@@ -464,9 +464,9 @@
   <data name="&gt;&gt;m_hdrExisting.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>

@@ -59,16 +59,20 @@ Namespace SpatialData
 
         Private m_strConfigFile As String = ""
 
+        Private m_lConfigFiles As List(Of cSpatialDataConfigFile)
+
 #End Region ' Private vars
 
 #Region " Construction "
 
         Public Sub New(core As cCore)
 
+            Me.m_core = core
+
             Me.m_lAvailable = New List(Of ISpatialDataSet)
             Me.m_lDeleted = New List(Of Guid)
             Me.m_lVirtual = New List(Of ISpatialDataSet)
-            Me.m_core = core
+            Me.m_lConfigFiles = New List(Of cSpatialDataConfigFile)
 
             '' Create folder watcher
             'Me.m_fswSpy = New FileSystemWatcher()
@@ -122,7 +126,7 @@ Namespace SpatialData
         ''' Get the full path to the current active config file.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property ConfigFile As String
+        Public ReadOnly Property CurrentConfigFile As String
             Get
                 If (Not String.IsNullOrWhiteSpace(Me.m_strConfigFile)) Then Return Me.m_strConfigFile
                 Return DefaultConfigFile()
@@ -144,92 +148,24 @@ Namespace SpatialData
         Public Function Load(Optional strFile As String = "", _
                              Optional bClearFirst As Boolean = True) As Boolean
 
-            Dim doc As New XmlDocument()
-            Dim xnRoot As XmlNode = Nothing
-            Dim xa As XmlAttribute = Nothing
-            Dim ds As ISpatialDataSet = Nothing
-            Dim an As AssemblyName = Nothing
-            Dim msgWarning As cMessage = Nothing
             Dim bSuccess As Boolean = False
 
             If (bClearFirst) Then Me.Clear()
 
             If (String.IsNullOrWhiteSpace(strFile)) Then strFile = cSpatialDataSetManager.DefaultConfigFile()
 
+            Me.m_strConfigFile = strFile
+
             ' jb if it failed to find the config file shouldn't it return False
             ' JS: No, it is fine if the file does not exist, which is the initial state of a new EwE installation.
             '     bSuccess indicates whether the config file is corrupted, which is an error.
             If Not File.Exists(strFile) Then Return True
 
-            Me.m_strConfigFile = strFile
-
-            ' Load datasets
-            doc.Load(strFile)
-
-            For Each xnRoot In doc.GetElementsByTagName("Datasets")
-                'Found a "Datasets" tag in the file
-                bSuccess = True
-                For Each xn As XmlNode In xnRoot.ChildNodes
-                    ds = Nothing
-                    If (xn.Name = "Dataset") Then
-                        xa = xn.Attributes("Type")
-                        If (xa IsNot Nothing) Then
-                            Try
-                                Dim strTypeName As String = xa.InnerText
-                                ' Hack
-                                strTypeName = strTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin")
-                                ' Get plug-in
-                                Dim t As Type = cTypeUtils.StringToType(strTypeName)
-                                If (t IsNot Nothing) Then
-
-                                    ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
-                                    If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
-                                    ds.Configuration(doc) = xn.ChildNodes(0)
-
-                                    ' Assign GUID
-                                    xa = xn.Attributes("GUID")
-                                    ds.GUID = Guid.Parse(xa.InnerText)
-
-
-                                Else '(t IsNot Nothing)
-                                    cLog.Write("Unable to instantiate data set " & strTypeName)
-
-                                    If (msgWarning Is Nothing) Then
-                                        msgWarning = New cMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_GENERIC, _
-                                                                  eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
-                                                                  eMessageImportance.Warning)
-#If DEBUG Then
-                                        ' When debugging turn this message to a mere info message ;)
-                                        msgWarning.Importance = eMessageImportance.Information
-#End If
-                                    End If
-                                    Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
-                                                                  String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_DETAIL, strTypeName), _
-                                                                  eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSpace, 0)
-                                    msgWarning.AddVariable(vs)
-                                End If
-
-                            Catch ex As Exception
-                                ds = Nothing
-                                bSuccess = False
-                                cLog.Write(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
-                            End Try
-
-                            Dim bAdd As Boolean = False
-                            If (ds IsNot Nothing) Then
-                                bAdd = True
-                                If (Not (ds.GUID.Equals(Guid.Empty))) Then
-                                    bAdd = (Me.Find(ds.GUID) Is Nothing)
-                                End If
-                            End If
-                            If bAdd Then Me.Add(ds)
-                        End If
-                    End If
-                Next ' xn
-            Next ' xnRoot
-
-            If (msgWarning IsNot Nothing) Then
-                Me.m_core.Messages.SendMessage(msgWarning)
+            ' JS: moving load to dedicated class; with multiple config files we'll need better descriptions of
+            '     file content and purpose, etc. This warrants a unique class to maintain this info.
+            Dim cfg As New cSpatialDataConfigFile()
+            If cfg.Initialize(strFile) Then
+                Return cfg.Load(Me.m_core, Me)
             End If
 
             Return bSuccess
@@ -248,13 +184,11 @@ Namespace SpatialData
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Function Save(Optional strFile As String = "", _
-                             Optional datasets As ISpatialDataSet() = Nothing) As Boolean
+                             Optional datasets As ISpatialDataSet() = Nothing, _
+                             Optional strDescription As String = "", _
+                             Optional strAuthor As String = "", _
+                             Optional strContact As String = "") As Boolean
 
-            Dim doc As New XmlDocument()
-            Dim xnRoot As XmlNode = Nothing
-            Dim xnDataset As XmlNode = Nothing
-            Dim xnDetails As XmlNode = Nothing
-            Dim xaDataset As XmlAttribute = Nothing
             Dim bChanged As Boolean = False
             Dim nExported As Integer = 0
             Dim strPath As String = ""
@@ -262,20 +196,20 @@ Namespace SpatialData
 
             ' Complete missing file name, if any
             If (String.IsNullOrWhiteSpace(strFile)) Then
-                strFile = Me.ConfigFile()
+                strFile = Me.CurrentConfigFile()
             End If
 
             If (datasets Is Nothing) Then
-                datasets = Me.m_lAvailable.ToArray()
+                datasets = Me.Datasets()
             End If
             If (datasets.Length = 0) Then Return False
 
             ' Any switch of destination other than to the default location is considered as an export
             Dim bExporting As Boolean = (cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) = False) And _
-                                        (cFileUtils.Equals(strFile, Me.ConfigFile()) = False)
+                                        (cFileUtils.Equals(strFile, Me.CurrentConfigFile()) = False)
 
             If bExporting Then
-                Console.WriteLine("@@ Exporting from " & Me.ConfigFile & " to " & strFile)
+                Console.WriteLine("@@ Exporting from " & Me.CurrentConfigFile & " to " & strFile)
                 'Stop
             End If
 
@@ -285,121 +219,22 @@ Namespace SpatialData
                 Return False
             End If
 
-            Try
-                ' Load existing datasets from file if not exporting. This is done to ensure that
-                ' datasets that are defined but that could not be instantiated (for example due to
-                ' a missing plug-in) are not destroyed in the save process.
-                If ((Not bExporting) And (File.Exists(strFile))) Then
-                    doc.Load(strFile)
-                    xnRoot = doc.GetElementsByTagName("Datasets")(0)
-                End If
-            Catch ex As Exception
-                ' Plop
-            End Try
-
-            ' Create a new XML doc if needed.
-            If (xnRoot Is Nothing) Then
-                ' Build new base doc
-                doc = Me.NewDoc(xnRoot)
-            End If
-
-            ' Remove all deleted or current datasets from the XML nodes; these will be
-            ' recreated by the save process.
-            Dim lDelete As New List(Of XmlNode)
-            For Each xnDataset In xnRoot.ChildNodes
-                Dim guid As Guid
-                Dim xa As XmlAttribute = xnDataset.Attributes("GUID")
-                Dim bDelete As Boolean = False
-                If (xa IsNot Nothing) Then
-                    Try
-                        guid = guid.Parse(xa.InnerText)
-                    Catch ex As Exception
-                        guid = guid.Empty
-                    End Try
-                End If
-                For Each gTest As Guid In Me.m_lDeleted : bDelete = bDelete Or gTest.Equals(gTest) : Next
-                For Each ds As ISpatialDataSet In Me.m_lAvailable : bDelete = bDelete Or guid.Equals(ds.GUID) : Next
-                If bDelete Then lDelete.Add(xnDataset)
-            Next
-            For Each xnDataset In lDelete
-                xnRoot.RemoveChild(xnDataset)
-                bChanged = True
-            Next
-            lDelete.Clear()
-
             ' During the export process the dataset manager has to set its config file to the export path
             ' in order for file-based datasets to resolve absolute / relative paths. At the end of the
             ' export process the path is restored
-            Dim strRescue As String = Me.ConfigFile
+            Dim strRescue As String = Me.CurrentConfigFile
             Me.m_strConfigFile = strFile
 
-            ' Gather dataset config nodes, but do not add to the doc until all done
-            For Each ds As ISpatialDataSet In datasets
-
-                If (bExporting) Then ds = ds.ExportTo(Path.GetDirectoryName(strFile))
-
-                ' Exclude virtual datasets from ending up in a config file
-                If (ds IsNot Nothing) Then
-                    If (Not Me.m_lVirtual.Contains(ds)) Then
-
-                        xnDataset = doc.CreateElement("Dataset")
-
-                        xaDataset = doc.CreateAttribute("Type")
-                        xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
-                        xnDataset.Attributes.Append(xaDataset)
-
-                        xaDataset = doc.CreateAttribute("GUID")
-                        xaDataset.Value = Convert.ToString(ds.GUID)
-                        xnDataset.Attributes.Append(xaDataset)
-
-                        Try
-                            xnDetails = ds.Configuration(doc)
-                        Catch ex As Exception
-                            xnDetails = Nothing
-                        End Try
-
-                        If (xnDetails IsNot Nothing) Then
-                            xnDataset.AppendChild(xnDetails)
-                            nExported += 1
-                        End If
-
-                        ' Add dataset nodes
-                        xnRoot.AppendChild(xnDataset)
-                        bChanged = True
-
-                    End If
-                Else
-                    bSuccess = False
-                End If
-            Next
-
-            ' Save
-            'Me.m_fswSpy.EnableRaisingEvents = False
-            Try
-                If bChanged Then
-                    doc.Save(strFile)
-                End If
-            Catch ex As Exception
-                bSuccess = False
-            End Try
-            'Me.m_fswSpy.EnableRaisingEvents = True
+            Dim cfg As New cSpatialDataConfigFile(strFile, _
+                                                  Path.GetFileNameWithoutExtension(strFile), _
+                                                  strDescription, _
+                                                  cSystemUtils.GetHostName(), _
+                                                  strAuthor, _
+                                                  strContact)
+            bSuccess = cfg.Save(Me.m_core, Me, datasets, bExporting)
 
             ' Restore original config file name
             Me.m_strConfigFile = strRescue
-
-            If (bExporting) Then
-                ' Send export status message
-                Dim msg As cMessage = Nothing
-                If bSuccess Then
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_SUCCESS, nExported, strPath), _
-                                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                    msg.Hyperlink = strPath
-                Else
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_ERROR, strPath), _
-                                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
-                End If
-                Me.m_core.Messages.SendMessage(msg)
-            End If
 
             Return bSuccess
 
@@ -627,7 +462,112 @@ Namespace SpatialData
 
 #End Region ' Dataset list interface
 
+#Region " ~ In transit ~ "
+
+        Public Function Datasets() As ISpatialDataSet()
+            Return Me.m_lAvailable.ToArray()
+        End Function
+
+        Friend Function Virtual() As ISpatialDataSet()
+            Return Me.m_lVirtual.ToArray()
+        End Function
+
+        Friend Function Deleted() As Guid()
+            Return Me.m_lDeleted.ToArray()
+        End Function
+
+#End Region ' ~ In transit ~
+
+#Region " Config files "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the paths to all defined config files.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ConfigFiles As ArrayList
+            Get
+                Dim al As New ArrayList()
+                For Each cfg As cSpatialDataConfigFile In Me.ConfigFileDefinitions
+                    If File.Exists(cfg.FileName) Then
+                        al.Add(cfg.FileName)
+                    End If
+                Next
+                Return al
+            End Get
+            Set(value As ArrayList)
+                Me.m_lConfigFiles.Clear()
+                If (value Is Nothing) Then Return
+                For i As Integer = 0 To value.Count - 1
+                    If (TypeOf value(i) Is String) Then
+                        Me.AddConfigFile(CStr(value(i)))
+                    End If
+                Next
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Get all custom configuration files defined on the local system.
+        ''' </summary>
+        Public ReadOnly Property ConfigFileDefinitions As List(Of cSpatialDataConfigFile)
+            Get
+                Return Me.m_lConfigFiles
+            End Get
+        End Property
+
+        Public Function CreateConfigFile(ByVal strFile As String, _
+                                         ByVal strName As String, _
+                                         ByVal strDescription As String, _
+                                         ByVal strAuthor As String, _
+                                         ByVal strContact As String, _
+                                         ByVal strSource As String) As cSpatialDataConfigFile
+
+            Dim cfg As cSpatialDataConfigFile = Nothing
+
+            ' Check if file name does not exist
+            For Each cfg In Me.m_lConfigFiles
+                ' Do something smart here
+                If String.Compare(cfg.FileName, strFile, True) = 0 Then Return Nothing
+            Next
+
+            cfg = New cSpatialDataConfigFile(strFile, strName, strDescription, strSource, strAuthor, strContact)
+            Me.m_lConfigFiles.Add(cfg)
+            Return cfg
+
+        End Function
+
+        Public Function AddConfigFile(ByVal strFile As String) As cSpatialDataConfigFile
+
+            If (String.IsNullOrWhiteSpace(strFile)) Then Return Nothing
+
+            Dim cfg As cSpatialDataConfigFile = Nothing
+
+            ' Check if file name does not exist
+            For Each cfg In Me.m_lConfigFiles
+                ' Do something smart here
+                If String.Compare(cfg.FileName, strFile, True) = 0 Then Return Nothing
+            Next
+
+            cfg = New cSpatialDataConfigFile()
+            If (Not cfg.Initialize(strFile)) Then Return Nothing
+            Me.m_lConfigFiles.Add(cfg)
+            Return cfg
+
+        End Function
+
+#End Region ' Config files
+
 #Region " Internals "
+
+        Friend Shared Function NewDoc(ByRef xnRoot As XmlNode) As XmlDocument
+            Dim doc As New XmlDocument()
+            Dim xnData As XmlElement = Nothing
+            Dim xaData As XmlAttribute = Nothing
+            doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))
+            xnRoot = doc.CreateElement("Datasets")
+            doc.AppendChild(xnRoot)
+            Return doc
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -662,7 +602,7 @@ Namespace SpatialData
 
                     If Not String.IsNullOrWhiteSpace(cfg.DatasetConfig) Then
                         Dim xnRoot As XmlNode = Nothing
-                        Dim doc As XmlDocument = Me.NewDoc(xnRoot)
+                        Dim doc As XmlDocument = cSpatialDataSetManager.NewDoc(xnRoot)
                         Dim xnData As XmlElement = doc.CreateElement("Configuration")
                         xnData.InnerXml = cfg.DatasetConfig
 
@@ -703,7 +643,7 @@ Namespace SpatialData
             Dim xnData As XmlNode = Nothing
 
             Try
-                doc = Me.NewDoc(xnRoot)
+                doc = cSpatialDataSetManager.NewDoc(xnRoot)
 
                 cfg.DatasetTypeName = cTypeUtils.TypeToString(ds.GetType)
                 cfg.DatasetGUID = ds.GUID.ToString
@@ -744,7 +684,7 @@ Namespace SpatialData
 
                     If Not String.IsNullOrWhiteSpace(cfg.ConverterConfig) Then
                         Dim xnRoot As XmlNode = Nothing
-                        Dim doc As XmlDocument = Me.NewDoc(xnRoot)
+                        Dim doc As XmlDocument = cSpatialDataSetManager.NewDoc(xnRoot)
                         Dim xnData As XmlElement = doc.CreateElement("Configuration")
                         xnData.InnerXml = cfg.ConverterConfig
                         cv.Configuration(doc) = xnData
@@ -772,7 +712,7 @@ Namespace SpatialData
             Dim xnData As XmlNode = Nothing
 
             Try
-                doc = Me.NewDoc(xnRoot)
+                doc = cSpatialDataSetManager.NewDoc(xnRoot)
 
                 cfg.ConverterTypeName = cTypeUtils.TypeToString(cv.GetType)
                 xnData = cv.Configuration(doc)
@@ -803,16 +743,6 @@ Namespace SpatialData
 
         End Sub
 
-        Private Function NewDoc(ByRef xnRoot As XmlNode) As XmlDocument
-            Dim doc As New XmlDocument()
-            Dim xnData As XmlElement = Nothing
-            Dim xaData As XmlAttribute = Nothing
-            doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))
-            xnRoot = doc.CreateElement("Datasets")
-            doc.AppendChild(xnRoot)
-            Return doc
-        End Function
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Saves all datasets currently loaded by the manager to persistent storage.
@@ -831,7 +761,7 @@ Namespace SpatialData
             Dim xnDataset As XmlNode = Nothing
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
-            Dim datasets As ISpatialDataSet() = Me.m_lAvailable.ToArray()
+            Dim datasets As ISpatialDataSet() = Me.Datasets()
             Dim bMustSave As Boolean = bExport
             Dim bSuccess As Boolean = True
 
@@ -852,7 +782,7 @@ Namespace SpatialData
 
             If (xnRoot Is Nothing) Then
                 ' Build new base doc
-                doc = Me.NewDoc(xnRoot)
+                doc = cSpatialDataSetManager.NewDoc(xnRoot)
             End If
 
             ' Remove all deleted or current datasets

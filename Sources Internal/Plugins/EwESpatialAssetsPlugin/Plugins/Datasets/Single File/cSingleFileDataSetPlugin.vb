@@ -327,6 +327,12 @@ Namespace SpatialData
                                                            CSng(cStringUtils.ConvertToNumber(xn.Attributes("latmin").InnerText, GetType(Single))))
                                 End If
                             End If
+
+                            ' Set initial index status
+                            If Not File.Exists(Me.Source) Then
+                                Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Failed
+                            End If
+
                     End Select
                 Next
 

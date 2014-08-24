@@ -33,6 +33,8 @@ Imports EwEUtils.Utilities
 
 #End Region
 
+' ToDo: make interface work like proper options page (Cancel on Cancel, etc)
+
 Namespace Other
 
     ''' -----------------------------------------------------------------------
@@ -43,12 +45,6 @@ Namespace Other
     Public Class ucOptionsSpatialTemporal
         Implements IOptionsPage
         Implements IUIElement
-
-#Region " Private vars "
-
-        Private m_strConfigPath As String = ""
-
-#End Region ' Private vars
 
 #Region " Constructors "
 
@@ -71,59 +67,74 @@ Namespace Other
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim core As cCore = Me.UIContext.Core
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
 
-            Me.m_strConfigPath = man.ConfigFile
+            Me.m_cbAllowIndexing.Checked = man.IsIndexingAllowed
 
-            If String.IsNullOrWhiteSpace(Me.m_strConfigPath) Or cFileUtils.Equals(Me.m_strConfigPath, cSpatialDataSetManager.DefaultConfigFile) Then
-                Me.m_rbDefault.Checked = True
-            Else
-                Me.m_rbCustom.Checked = True
+            Me.UpdateConfigFileList()
+
+        End Sub
+
+        Private Sub OnSelectDataset(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnSelect.Click
+
+            If (Me.m_lvDatasets.SelectedItems.Count <> 1) Then Return
+
+            Dim core As cCore = Me.UIContext.Core
+            Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
+            Dim cfg As cSpatialDataConfigFile = CType(Me.m_lvDatasets.SelectedItems(0).Tag, cSpatialDataConfigFile)
+            Dim strFileName As String = ""
+
+            If (cfg IsNot Nothing) Then
+                strFileName = cfg.FileName
             End If
 
-            Me.m_cbAllowIndexing.Checked = man.IsIndexingAllowed
-            Me.UpdateControls()
+            man.Load(strFileName, True)
+            Me.UpdateConfigFileList()
 
         End Sub
 
-        Private Sub OnOptionChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_rbDefault.CheckedChanged, m_rbCustom.CheckedChanged
-            Me.UpdateControls()
-        End Sub
+        Private Sub OnAddFile(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnAdd.Click
 
-        Private Sub OnSelectFile(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnChoose.Click
+            ' ToDo: globalize this
 
             If (Me.UIContext Is Nothing) Then Return
 
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+            Dim core As cCore = Me.UIContext.Core
+            Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
 
-            cmdFO.Title = My.Resources.PROMPT_SELECT_REFIMAGE
-            cmdFO.Invoke(Me.m_strConfigPath, "Dataset config files|*.xml", 0)
+            cmdFO.Title = "Select data set file to add"
+            cmdFO.Invoke("Spatial temporal dataset files|*.xml", 0)
 
             If (cmdFO.Result = DialogResult.OK) Then
-                Me.m_strConfigPath = cmdFO.FileName
-                Me.m_rbCustom.Checked = True
-                Me.UpdateControls()
+                man.AddConfigFile(cmdFO.FileName)
+                Me.UpdateConfigFileList()
             End If
 
         End Sub
 
-        Private Sub OnViewDefault(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnVisitFolder.Click
+        Private Sub OnRemoveFile(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnRemove.Click
 
-            If (Me.UIContext IsNot Nothing) Then
-                Try
-                    Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-                    Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-                    cmd.Invoke(Path.GetDirectoryName(cSpatialDataSetManager.DefaultConfigFile))
-                Catch ex As Exception
-                    cLog.Write(ex, "ucOptionsSpatialTemporal::OnViewDefault")
-                End Try
-            End If
+            If (Me.m_lvDatasets.SelectedItems.Count <> 1) Then Return
+            Dim cfg As cSpatialDataConfigFile = CType(Me.m_lvDatasets.SelectedItems(0).Tag, cSpatialDataConfigFile)
+            Dim core As cCore = Me.UIContext.Core
+            Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
 
+            man.ConfigFileDefinitions.Remove(cfg)
+            Me.UpdateConfigFileList()
+
+        End Sub
+
+        Private Sub OnDatasetSelectionChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_lvDatasets.SelectedIndexChanged
+            Me.UpdateControls()
         End Sub
 
         Private Sub OnViewCache(sender As System.Object, e As System.EventArgs) _
@@ -228,17 +239,13 @@ Namespace Other
 
             Try
 
-                If (Me.m_rbCustom.Checked) Then
-                    strFile = Me.m_strConfigPath
-                End If
-
-                Me.UIContext.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
-                Try
-                    bSuccess = man.Load(strFile, True)
-                Catch ex As Exception
-                    bSuccess = False
-                End Try
-                core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
+                'Me.UIContext.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
+                'Try
+                '    bSuccess = man.Load(strFile, True)
+                'Catch ex As Exception
+                '    bSuccess = False
+                'End Try
+                'core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
 
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
@@ -259,7 +266,7 @@ Namespace Other
                 Implements IOptionsPage.SetDefaults
 
             Try
-                Me.m_rbDefault.Checked = True
+                Me.m_cbAllowIndexing.Checked = False
             Catch ex As Exception
 
             End Try
@@ -269,6 +276,52 @@ Namespace Other
 
 #Region " Internals "
 
+        Private Sub UpdateConfigFileList()
+
+            ' ToDo: globalize this
+
+            Dim lvi As ListViewItem = Nothing
+            Dim core As cCore = Me.UIContext.Core
+            Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
+
+            Me.m_lvDatasets.Items.Clear()
+            lvi = Me.m_lvDatasets.Items.Add(SharedResources.GENERIC_VALUE_DEFAULT)
+            If (man.CurrentConfigFile = cSpatialDataSetManager.DefaultConfigFile) Then
+                lvi.SubItems.Add(SharedResources.GENERIC_VALUE_YES)
+            Else
+                lvi.SubItems.Add("")
+            End If
+            lvi.SubItems.Add("(You)")
+            lvi.SubItems.Add("")
+            lvi.SubItems.Add(cSpatialDataSetManager.DefaultConfigFile)
+            lvi.Tag = Nothing
+
+            For Each cfg As cSpatialDataConfigFile In man.ConfigFileDefinitions
+                lvi = Me.m_lvDatasets.Items.Add(Me.ToDefaultString(cfg.DatasetName))
+                If (man.CurrentConfigFile = cfg.FileName) Then
+                    lvi.SubItems.Add(SharedResources.GENERIC_VALUE_YES)
+                Else
+                    lvi.SubItems.Add("")
+                End If
+                lvi.SubItems.Add(Me.ToDefaultString(String.Format("{0} {1}", cfg.Author, cfg.Source)))
+                lvi.SubItems.Add(Me.ToDefaultString(cfg.Contact))
+                lvi.SubItems.Add(cfg.FileName)
+                lvi.Tag = cfg
+            Next
+
+            Me.m_lvDatasets.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
+
+            Me.UpdateControls()
+
+        End Sub
+
+        Private Function ToDefaultString(ByVal strIn As String) As String
+
+            If String.IsNullOrWhiteSpace(strIn) Then Return SharedResources.GENERIC_VALUE_NOTSET
+            Return strIn
+
+        End Function
+
         Private Sub UpdateControls()
 
             If (Me.UIContext Is Nothing) Then Return
@@ -277,11 +330,16 @@ Namespace Other
             Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
             Dim man As cSpatialDataSetManager = Me.UIContext.Core.SpatialDataConnectionManager.DatasetManager
             Dim strPath As String = ""
+            Dim bHasSelection As Boolean = False
+            Dim bHasCustomSelection As Boolean = False
 
-            strPath = String.Copy(Me.m_strConfigPath)
-            TextRenderer.MeasureText(strPath, Me.Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), _
-                                     TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis)
-            Me.m_lblPath.Text = strPath
+            If (Me.m_lvDatasets.SelectedIndices.Count = 1) Then
+                bHasSelection = True
+                bHasCustomSelection = Me.m_lvDatasets.SelectedIndices(0) > 0
+            End If
+
+            Me.m_btnSelect.Enabled = bHasSelection
+            Me.m_btnRemove.Enabled = bHasCustomSelection
 
             strPath = cache.RootFolder
             TextRenderer.MeasureText(strPath, Me.Font, New Drawing.Size(Me.m_lblCacheLocationValue.ClientSize.Width, 0), _

@@ -302,6 +302,7 @@
     <Compile Include="SpatialTemporal\Adapters\cRelPPDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cSpatialDataAdapter.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataCache.vb" />
+    <Compile Include="SpatialTemporal\cSpatialDataConfigFile.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataConnectionManager.vb" />
     <Compile Include="SpatialTemporal\HelperClasses\cSpatialDatasetIndexer.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataSetManager.vb" />

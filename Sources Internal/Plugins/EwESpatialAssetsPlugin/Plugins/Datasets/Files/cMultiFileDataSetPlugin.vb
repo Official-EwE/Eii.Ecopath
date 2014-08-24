@@ -483,6 +483,11 @@ Namespace SpatialData
                                     End If
                                 End If
                                 Me.m_lFiles.Add(f)
+
+                                ' Set initial index status for this file
+                                If Not System.IO.File.Exists(f.FileName) Then
+                                    f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
+                                End If
                             Next
                     End Select
                 Next
