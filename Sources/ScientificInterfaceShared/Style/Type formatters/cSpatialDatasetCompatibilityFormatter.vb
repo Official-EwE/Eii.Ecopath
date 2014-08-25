@@ -44,49 +44,49 @@ Namespace Style
                                       Implements ITypeFormatter.GetDescriptor
 
             Dim comp As cDatasetCompatilibity = Nothing
+            Dim strBit As String = ""
 
 
             Try
                 comp = DirectCast(value, cDatasetCompatilibity)
-            Catch ex As Exception
-                Return ""
-            End Try
 
-            Dim val As cDatasetCompatilibity.eCompatibilityTypes = comp.Compatibility
-            Dim strDescr As String = cResourceUtils.LoadString("COMPATIBILITY_" & val.ToString().ToUpper, Me.GetType.Assembly)
-            Dim astrBits As String() = Nothing
-            Dim iNumBits As Integer = 0
-            Dim strBit As String = ""
+                Dim val As cDatasetCompatilibity.eCompatibilityTypes = comp.Compatibility
+                Dim strDescr As String = cResourceUtils.LoadString("COMPATIBILITY_" & val.ToString().ToUpper, Me.GetType.Assembly)
+                Dim astrBits As String() = Nothing
+                Dim iNumBits As Integer = 0
 
-            If (strDescr IsNot Nothing) Then
-                astrBits = strDescr.Split("|"c)
-                iNumBits = astrBits.Length
-            Else
-                Return ""
-            End If
+                If (strDescr IsNot Nothing) Then
+                    astrBits = strDescr.Split("|"c)
+                    iNumBits = astrBits.Length
+                Else
+                    Return ""
+                End If
 
                 For i As Integer = 0 To descriptor
 
-                ' Is first part?
-                If (i = 0) Then
-                    ' #Yes: remember default
-                    strBit = comp.Compatibility.ToString
-                End If
-
-                If i < iNumBits Then
-                    ' Has a part?
-                    If Not String.IsNullOrEmpty(astrBits(i)) Then
-                        ' #Yes: update bit
-                        strBit = astrBits(i).Trim
+                    ' Is first part?
+                    If (i = 0) Then
+                        ' #Yes: remember default
+                        strBit = comp.Compatibility.ToString
                     End If
+
+                    If i < iNumBits Then
+                        ' Has a part?
+                        If Not String.IsNullOrEmpty(astrBits(i)) Then
+                            ' #Yes: update bit
+                            strBit = astrBits(i).Trim
+                        End If
+                    End If
+
+                Next
+
+                ' Special cases
+                If (val = cDatasetCompatilibity.eCompatibilityTypes.Errors) Then
+                    strBit = String.Format(strBit, comp.NumError)
                 End If
-
-            Next
-
-            ' Special cases
-            If (val = cDatasetCompatilibity.eCompatibilityTypes.Errors) Then
-                strBit = String.Format(strBit, comp.NumError)
-            End If
+            Catch ex As Exception
+                Return ""
+            End Try
 
             Return strBit
 
