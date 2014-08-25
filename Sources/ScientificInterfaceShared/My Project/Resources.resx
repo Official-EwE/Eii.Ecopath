@@ -2889,7 +2889,7 @@
     <value>(unknown)</value>
   </data>
   <data name="COMPATIBILITY_ERRORS" xml:space="preserve">
-    <value>{0} error(s)|||The data contains {0) error(s) for the Ecospace run period. Please check</value>
+    <value>{0} error(s)|||The data contains {0} error(s) for the Ecospace run period. Please check</value>
     <comment>{0} = number of errors</comment>
   </data>
   <data name="COMPATIBILITY_NOSPATIAL" xml:space="preserve">

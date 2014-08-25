@@ -639,7 +639,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} error(s)|||The data contains {0) error(s) for the Ecospace run period. Please check.
+        '''  Looks up a localized string similar to {0} error(s)|||The data contains {0} error(s) for the Ecospace run period. Please check.
         '''</summary>
         Public ReadOnly Property COMPATIBILITY_ERRORS() As String
             Get
