@@ -45,6 +45,7 @@ Public Class cMSEPluginPoint
     Implements EwEPlugin.IEcopathRunInitializedPlugin
     Implements EwEPlugin.IMSEInitialized
     Implements EwEPlugin.IEcosimDataInitializedPlugin
+    Implements EwEPlugin.IDisposedPlugin
 
 #Region " Internal vars "
 
@@ -63,8 +64,9 @@ Public Class cMSEPluginPoint
 
     Private m_monitor As New cMSEStateMonitor(Me)
 
-    Private m_mhSettings As cMessageHandler = Nothing
+    Private m_mhEcopath As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
+    Private m_mhSettings As cMessageHandler = Nothing
 
     ''' <summary>
     ''' Flag, stating that an MSE session has been explicitly activated by the user.
@@ -120,7 +122,7 @@ Public Class cMSEPluginPoint
 
     Friend Sub InvalidateConfiguration()
 
-        Me.MSE.InvalidateConfigurationState()
+        Me.MSE.InvalidateConfigurationState(False)
         Me.m_monitor.Invalidate()
 
     End Sub
@@ -166,7 +168,8 @@ Public Class cMSEPluginPoint
         Units.Init(m_core)
     End Sub
 
-    Public Sub onCoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
+    Public Sub onCoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) _
+        Implements EwEPlugin.ICorePlugin.CoreInitialized
 
         Me.m_ecopath = CType(objEcoPath, Ecopath.cEcoPathModel)
         Me.m_ecosim = CType(objEcoSim, Ecosim.cEcoSimModel)
@@ -176,16 +179,37 @@ Public Class cMSEPluginPoint
         Me.MSE.onCoreInitialized(Me.m_core, m_ecopath, m_ecosim)
 
         ' Set message handlers
-
-        Me.m_mhSettings = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
+        Me.m_mhEcopath = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_uic.SyncObject)
         Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
+        Me.m_mhSettings = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
 
 #If DEBUG Then
-        Me.m_mhSettings.Name = "CefasMSE_mhSettings"
+        Me.m_mhEcopath.Name = "CefasMSE_mhEcopath"
         Me.m_mhEcosim.Name = "CefasMSE_mhEcosim"
+        Me.m_mhSettings.Name = "CefasMSE_mhSettings"
 #End If
 
+        Me.Core.Messages.AddMessageHandler(Me.m_mhEcopath)
+        Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
+        Me.Core.Messages.AddMessageHandler(Me.m_mhSettings)
+
     End Sub
+
+    Public Sub Dispose() _
+        Implements EwEPlugin.IDisposedPlugin.Dispose
+
+        Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcopath)
+        Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+        Me.Core.Messages.RemoveMessageHandler(Me.m_mhSettings)
+
+        ' Clean up the mess of OnCoreInitialized
+        Me.m_mhEcopath.Dispose()
+        Me.m_mhEcosim.Dispose()
+        Me.m_mhSettings.Dispose()
+
+
+    End Sub
+
 
     Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) _
                 Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
@@ -434,6 +458,10 @@ Public Class cMSEPluginPoint
         ' Refresh when Core settings have changed
         If (msg.Type = eMessageType.GlobalSettingsChanged) Then
             bRefresh = True
+        End If
+
+        If (msg.Source = eCoreComponentType.EcoPath) Then
+            bRefresh = (msg.Type = eMessageType.DataModified Or msg.Type = eMessageType.DataAddedOrRemoved Or msg.Type = eMessageType.DataValidation)
         End If
 
         ' Refresh upon ecosim scenario load
