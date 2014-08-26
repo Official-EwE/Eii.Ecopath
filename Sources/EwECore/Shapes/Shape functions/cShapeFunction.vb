@@ -52,7 +52,7 @@ Public MustInherit Class cShapeFunction
 
     End Sub
 
-    Public Sub Init(obj As Object) _
+    Public Overridable Sub Init(obj As Object) _
         Implements EwEUtils.Core.IShapeFunction.Init
 
         If (Not TypeOf obj Is cForcingFunction) Then Return
@@ -125,6 +125,13 @@ Public MustInherit Class cShapeFunction
         End Get
     End Property
 
+    Public Overridable ReadOnly Property ParamUnit(iParam As Integer) As String _
+        Implements IShapeFunction.ParamUnit
+        Get
+            Return ""
+        End Get
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Flag, indicating that parameter values have changed and that the shape 
@@ -166,6 +173,7 @@ Public MustInherit Class cShapeFunction
             For i As Integer = nPoints To Me.m_points.Length - 1
                 Me.m_points(i) = Me.m_points(nPoints)
             Next
+            Me.ParamsChanged = False
         End If
         Return Me.m_points
 
@@ -192,6 +200,20 @@ Public MustInherit Class cShapeFunction
                 Case 4 : shp.Steep = Me.ParamValue(i)
             End Select
         Next
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the max value in the shape buffer.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Protected Function Max() As Single
+        Dim sMax As Single = 0
+        For Each s As Single In Me.m_points
+            sMax = Math.Max(s, sMax)
+        Next
+        Return sMax
     End Function
 
 End Class

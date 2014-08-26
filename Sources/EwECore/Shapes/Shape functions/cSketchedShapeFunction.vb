@@ -26,8 +26,16 @@ Imports EwECore
 Public Class cSketchedShapeFunction
     Inherits cShapeFunction
 
+    Private m_shapeOrg As Single() = Nothing
+
     Public Sub New()
         MyBase.New()
+    End Sub
+
+    Public Overrides Sub Init(obj As Object)
+        MyBase.Init(obj)
+        Me.m_shapeOrg = CType(Me.m_points.Clone(), Single())
+        Me.ParamValue(1) = Me.Max
     End Sub
 
     Public Overrides Sub Defaults()
@@ -42,12 +50,15 @@ Public Class cSketchedShapeFunction
 
     Public Overrides ReadOnly Property nParameters As Integer
         Get
-            Return 0
+            Return 1
         End Get
     End Property
 
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
+            Select Case iParam
+                Case 1 : Return "Max"
+            End Select
             Return "?"
         End Get
     End Property
@@ -60,10 +71,20 @@ Public Class cSketchedShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides Function Shape(ByVal nPoints As Integer) As Single()
 
-        ' Ignore parameters
-        Me.ParamsChanged = False
-        ' Return default points
-        Return Me.m_points
+        If (Me.ParamsChanged) Then
+            Dim sMax As Single = Me.Max
+            Dim sScale As Single = 1
+
+            If (sMax > 0) Then
+                sScale = Me.ParamValue(1) / sMax
+            End If
+
+            For i As Integer = 1 To nPoints
+                Me.m_points(i) = Me.m_shapeOrg(i) * sScale
+            Next i
+        End If
+
+        Return MyBase.Shape(nPoints)
 
     End Function
 
