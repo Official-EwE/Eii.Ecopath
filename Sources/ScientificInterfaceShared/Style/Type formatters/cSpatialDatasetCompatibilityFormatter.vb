@@ -85,6 +85,7 @@ Namespace Style
                     strBit = String.Format(strBit, comp.NumError)
                 End If
             Catch ex As Exception
+                Debug.Assert(False, "Malformed resource")
                 Return ""
             End Try
 
