@@ -9,8 +9,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EwEShapeFunctionPlugin")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
+<Assembly: AssemblyDescription("Example plug-in for EwE6 showing how to add shape functions to the EwE user interface")> 
+<Assembly: AssemblyCompany("Ecopath International Initiative")> 
 <Assembly: AssemblyProduct("EwEShapeFunctionPlugin")> 
 <Assembly: AssemblyCopyright("Copyright © Ecopath International Initiative 2014-")> 
 <Assembly: AssemblyTrademark("")> 

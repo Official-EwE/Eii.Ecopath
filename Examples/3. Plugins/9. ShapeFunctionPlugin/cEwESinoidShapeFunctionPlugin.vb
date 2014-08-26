@@ -16,14 +16,18 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
 Option Strict On
-Imports EwEPlugin
 Imports EwECore
+Imports EwEPlugin
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Plug-in point to deliver a sinoid shape function to the Ecosim 'Change Shape' 
-''' user interfaces.
+''' Example plug-in point to deliver a sinoid shape function to the Ecosim 
+''' 'Change Shape' user interfaces. Feel free, go wild, and add your own shapes.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cEwESinoidShapeFunctionPlugin
@@ -31,14 +35,15 @@ Public Class cEwESinoidShapeFunctionPlugin
 
 #Region " Internal vars "
 
-    Private m_core As cCore = Nothing
-    Private m_sYZero As Single = 0.5
-    Private m_sAmplitude As Single = 0.5
-    Private m_sRepetitions As Single = 1.5
-    Private m_sOffset As Single = 0
-    Private m_nPoints As Integer = 0
+    ''' <summary>The core to operate on.</summary>
+    Private m_core As cCore
+    ''' <summary>The number of poitns in shape operated on.</summary>
+    Private m_nPoints As Integer
 
-    Private Const D2R As Single = 2 * Math.PI / 360.0!
+    ''' <summary>Degree-to-radians conversion factor.</summary>
+    Private Const cDegToRad As Single = Math.PI / 180.0!
+    ''' <summary>Another handy one.</summary>
+    Private Const cTwoPI As Single = Math.PI * 2.0!
 
 #End Region ' Internal vars
 
@@ -47,14 +52,14 @@ Public Class cEwESinoidShapeFunctionPlugin
     Public ReadOnly Property Name As String _
         Implements EwEPlugin.IPlugin.Name
         Get
-            Return "EwEShapeFunctionPlugin"
+            Return "Sinoid shape function"
         End Get
     End Property
 
     Public ReadOnly Property Author As String _
         Implements EwEPlugin.IPlugin.Author
         Get
-            Return "EwE development team"
+            Return "EwE development team / Ecopath International Initiative"
         End Get
     End Property
 
@@ -76,12 +81,37 @@ Public Class cEwESinoidShapeFunctionPlugin
         Implements EwEPlugin.IPlugin.Initialize
         Try
             Me.m_core = DirectCast(core, cCore)
+            Me.Defaults()
         Catch ex As Exception
             ' Kaboom
         End Try
     End Sub
 
 #End Region ' Generic plug-in bits
+
+#Region " Shape parameters "
+
+    ''' <summary>
+    ''' Y zero parameter of the Sinoid shape.
+    ''' </summary>
+    Private Property YZero As Single
+
+    ''' <summary>
+    ''' Sinoid amplitude.
+    ''' </summary>
+    Private Property Amplitude As Single
+
+    ''' <summary>
+    ''' Number of sinoid repetitions.
+    ''' </summary>
+    Private Property Repetitions As Single
+
+    ''' <summary>
+    ''' Offset angle (in decimal degrees) to start the sinoid with.
+    ''' </summary>
+    Private Property Offset As Single
+
+#End Region ' Shape parameters
 
 #Region " Shape function "
 
@@ -92,17 +122,15 @@ Public Class cEwESinoidShapeFunctionPlugin
 
         Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
 
-        ' Store properties
+        ' Store shape properties for later use
         Me.m_nPoints = ff.ShapeData.Length
 
-        If (ff.ShapeFunctionType = eShapeFunctionType.NotSet) Then
-            ' ToDo: recognize that we're the proper function type based on a field that does not 
-            '       yet exist in the shapes
-            Me.m_sYZero = ff.YZero
-            Me.m_sAmplitude = ff.YEnd
-            Me.m_sRepetitions = ff.YBase
-            Me.m_sOffset = ff.Steep
-        End If
+        ' Do not initialize setup parameters until we have a way to safely deduct
+        ' that this plug-in was used to modify a shape in the first place. 
+        'Me.m_sYZero = ff.YZero
+        'Me.m_sAmplitude = ff.YEnd
+        'Me.m_sRepetitions = ff.YBase
+        'Me.m_sOffset = ff.Steep
 
     End Sub
 
@@ -117,20 +145,18 @@ Public Class cEwESinoidShapeFunctionPlugin
     Public Sub Defaults() _
         Implements EwEUtils.Core.IShapeFunction.Defaults
 
-        ' YZero = 1
-        Me.ParamValue(1) = 1
-        ' Amplitude = 0.5
-        Me.ParamValue(2) = 0.5
-        ' Repetition = 1
-        Me.ParamValue(3) = 1
-        ' Offset = 180 degrees
-        Me.ParamValue(4) = 180
+        ' Pick some nice defaults
+        Me.YZero = 1
+        Me.Amplitude = 0.5
+        Me.Repetitions = 1
+        Me.Offset = 0
 
     End Sub
 
     Public ReadOnly Property nParameters As Integer _
         Implements EwEUtils.Core.IShapeFunction.nParameters
         Get
+            ' Tell the EwE interface that the Sinoid shape has four configurable parameters
             Return 4
         End Get
     End Property
@@ -138,33 +164,49 @@ Public Class cEwESinoidShapeFunctionPlugin
     Public ReadOnly Property ParamName(iParam As Integer) As String _
         Implements EwEUtils.Core.IShapeFunction.ParamName
         Get
+            ' Tell the EwE interface the name of configurable parameter 'iParam'
             Select Case iParam
-                Case 1 : Return "Y Zero"
-                Case 2 : Return "Amplitude"
-                Case 3 : Return "Repetitions"
-                Case 4 : Return "Offset"
+                Case 1 : Return My.Resources.PARAM_YZERO
+                Case 2 : Return My.Resources.PARAM_AMPLITUDE
+                Case 3 : Return My.Resources.PARAM_REPETITION
+                Case 4 : Return My.Resources.PARAM_OFFSET
             End Select
             Return "?"
+        End Get
+    End Property
+
+    Public ReadOnly Property ParamUnit(iParam As Integer) As String _
+        Implements EwEUtils.Core.IShapeFunction.ParamUnit
+        Get
+            ' Tell the EwE interface the unit of configurable parameter 'iParam', if any
+            Select Case iParam
+                Case 4
+                    ' The 'offset' parameter must be specified in decimal degrees
+                    Return My.Resources.UNIT_OFFSET
+            End Select
+            Return ""
         End Get
     End Property
 
     Public Property ParamValue(iParam As Integer) As Single _
         Implements EwEUtils.Core.IShapeFunction.ParamValue
         Get
+            ' Tell the EwE interface the value of configurable parameter 'iParam'
             Select Case iParam
-                Case 1 : Return Me.m_sYZero
-                Case 2 : Return Me.m_sAmplitude
-                Case 3 : Return Me.m_sRepetitions
-                Case 4 : Return Me.m_sOffset
+                Case 1 : Return Me.YZero
+                Case 2 : Return Me.Amplitude
+                Case 3 : Return Me.Repetitions
+                Case 4 : Return Me.Offset
             End Select
             Return cCore.NULL_VALUE
         End Get
         Set(value As Single)
+            ' Allow the EwE interface to set the value of configurable parameter 'iParam'
             Select Case iParam
-                Case 1 : Me.m_sYZero = value
-                Case 2 : Me.m_sAmplitude = value
-                Case 3 : Me.m_sRepetitions = CSng(Math.Max(0.00001, value))
-                Case 4 : Me.m_sOffset = value
+                Case 1 : Me.YZero = value
+                Case 2 : Me.Amplitude = value
+                Case 3 : Me.Repetitions = value
+                Case 4 : Me.Offset = value
             End Select
         End Set
     End Property
@@ -172,16 +214,23 @@ Public Class cEwESinoidShapeFunctionPlugin
     Public Function Shape(nPoints As Integer) As Single() _
         Implements EwEUtils.Core.IShapeFunction.Shape
 
+        ' Tell the EwE interface the actual shape of the sinoid, computed using the current parameter values
+
         Dim points(Me.m_nPoints) As Single
-        Dim sStep As Single = nPoints / (360.0! * Me.m_sRepetitions)
-        Dim sAngle As Single = Me.m_sOffset Mod 360
+        Dim dStep As Double = (Me.Repetitions * 360.0!) / nPoints
+        Dim dAngle As Double = Me.Offset Mod 360.0!
 
         For i As Integer = 1 To Math.Min(Me.m_nPoints, nPoints)
-            points(i) = CSng(Me.m_sYZero + Math.Sin(sAngle * D2R) * Me.m_sAmplitude)
+            points(i) = Me.YZero + CSng(Math.Sin(dAngle * cDegToRad)) * Me.Amplitude
+            dAngle = (dAngle + dStep) Mod 360.0!
         Next
+
+        ' Complete the rest of the shape by repeating the last value until the end of the shape
         For i As Integer = nPoints + 1 To Me.m_nPoints
             points(i) = points(nPoints)
         Next
+
+        ' Done
         Return points
 
     End Function
@@ -192,10 +241,15 @@ Public Class cEwESinoidShapeFunctionPlugin
         If (Not TypeOf shape Is cForcingFunction) Then Return False
 
         Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
-        ff.YZero = Me.m_sYZero
-        ff.YEnd = Me.m_sAmplitude
-        ff.YBase = Me.m_sRepetitions
-        ff.Steep = Me.m_sOffset
+
+        ' Do not store setup parameters until we have a way to safely deduct
+        ' what plug-in was used to modify a shape.
+
+        'ff.YZero = Me.m_sYZero
+        'ff.YEnd = Me.m_sAmplitude
+        'ff.YBase = Me.m_sRepetitions
+        'ff.Steep = Me.m_sOffset
+
         Return True
 
     End Function
