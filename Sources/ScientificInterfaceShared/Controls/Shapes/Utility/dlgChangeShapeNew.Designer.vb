@@ -64,6 +64,8 @@ Namespace Controls
             Me.m_tlpInput = New System.Windows.Forms.TableLayoutPanel()
             Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tbxName = New System.Windows.Forms.TextBox()
+            Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_tlpParams.SuspendLayout()
             Me.m_tlpInput.SuspendLayout()
             Me.SuspendLayout()
@@ -221,12 +223,24 @@ Namespace Controls
             Me.m_hdrParams.IsCollapsed = False
             Me.m_hdrParams.Name = "m_hdrParams"
             '
+            'm_tbxName
+            '
+            resources.ApplyResources(Me.m_tbxName, "m_tbxName")
+            Me.m_tbxName.Name = "m_tbxName"
+            '
+            'm_lblName
+            '
+            resources.ApplyResources(Me.m_lblName, "m_lblName")
+            Me.m_lblName.Name = "m_lblName"
+            '
             'dlgChangeShape2
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_lblName)
+            Me.Controls.Add(Me.m_tbxName)
             Me.Controls.Add(Me.m_tlpInput)
             Me.Controls.Add(Me.m_btDefaults)
             Me.Controls.Add(Me.m_plPreview)
@@ -238,6 +252,7 @@ Namespace Controls
             Me.m_tlpParams.PerformLayout()
             Me.m_tlpInput.ResumeLayout(False)
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_tbxC As System.Windows.Forms.TextBox
@@ -264,6 +279,8 @@ Namespace Controls
         Private WithEvents m_lblAUnit As System.Windows.Forms.Label
         Private WithEvents m_lblE As System.Windows.Forms.Label
         Private WithEvents m_lblEUnit As System.Windows.Forms.Label
+        Private WithEvents m_tbxName As System.Windows.Forms.TextBox
+        Private WithEvents m_lblName As System.Windows.Forms.Label
 
     End Class
 
