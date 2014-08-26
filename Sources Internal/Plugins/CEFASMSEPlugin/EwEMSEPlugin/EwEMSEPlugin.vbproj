@@ -147,6 +147,15 @@
     <Compile Include="cStockAssessmentModel.vb" />
     <Compile Include="cStockAssessmentParameters.vb" />
     <Compile Include="IMSEData.vb" />
+    <Compile Include="User interface\gridDiets.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\frmEditDiets.Designer.vb">
+      <DependentUpon>frmEditDiets.vb</DependentUpon>
+    </Compile>
+    <Compile Include="User interface\frmEditDiets.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmEditSurvivabilities.Designer.vb">
       <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
     </Compile>
@@ -238,6 +247,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User interface\frmEditDiets.resx">
+      <DependentUpon>frmEditDiets.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\dlgHarvestControlRule.resx">
       <DependentUpon>dlgHarvestControlRule.vb</DependentUpon>

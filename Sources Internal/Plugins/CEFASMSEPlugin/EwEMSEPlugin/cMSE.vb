@@ -536,7 +536,7 @@ Public Class cMSE
     ''' -----------------------------------------------------------------------
     Public Function IsInputStructureAvailable() As Boolean
 
-        Return Diets.FileExists() And Me.Survivability.FileExists()
+        Return Me.Survivability.FileExists()
 
     End Function
 

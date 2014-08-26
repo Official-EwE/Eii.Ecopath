@@ -65,6 +65,12 @@ Public Class cDiets
 
 #Region " Properties "
 
+    Public ReadOnly Property Core As cCore
+        Get
+            Return Me.m_core
+        End Get
+    End Property
+
     ''' <summary>
     ''' Mean diet proportions (by predator x prey). Note that predator and prey indices are ZERO-based!
     ''' </summary>
@@ -139,7 +145,7 @@ Public Class cDiets
         Dim csv As CsvReader = Nothing
         Dim bSuccess As Boolean = True
 
-        strFilename = Me.DefaultFileName("DietCompositionMultipliers.csv")
+        strFilename = Me.DefaultFileName()
         reader = cMSEUtils.GetReader(strFilename)
         If (reader IsNot Nothing) Then
             'Read in the values from the DietCompositionMultipliers.csv
@@ -166,7 +172,7 @@ Public Class cDiets
         Dim writer As StreamWriter = Nothing
         Dim bSuccess As Boolean = False
 
-        strFilename = Me.DefaultFileName("DietCompositionMultipliers.csv")
+        strFilename = Me.DefaultFileName()
         writer = cMSEUtils.GetWriter(strFilename, False)
         If (writer IsNot Nothing) Then
             writer.WriteLine("PredatorIndexNumber,PredatorIndexName,Multiplier")
@@ -174,7 +180,7 @@ Public Class cDiets
                 writer.WriteLine("{0},{1},{2}", _
                                  cStringUtils.ToCSVField(iPred), _
                                  cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name), _
-                                 cStringUtils.ToCSVField(Me.DietPropMultipliers(iPred)))
+                                 cStringUtils.ToCSVField(Me.DietPropMultipliers(iPred - 1)))
             Next
         Else
             bSuccess = False
@@ -184,13 +190,16 @@ Public Class cDiets
 
     End Function
 
-    Private Function DefaultFileName(strBit As String) As String
-        Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, strBit)
+    Private Function DefaultFileName() As String
+        Return cMSEUtils.MSEFile(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietCompositionMultipliers.csv")
     End Function
 
-    Public Function FileExists(Optional strFilename As String = "") As Boolean Implements IMSEData.FileExists
-        ' Ignore file name parameter
-        Return File.Exists(Me.DefaultFileName("DietCompositionMultipliers.csv"))
+    Public Function FileExists(Optional strFilename As String = "") As Boolean _
+        Implements IMSEData.FileExists
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFileName
+        End If
+        Return File.Exists(strFilename)
     End Function
 
 End Class

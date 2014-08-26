@@ -205,8 +205,7 @@ Public Class frmMSE
                 img = SharedResources.OK
                 Me.m_btnEditBasicInputs.Enabled = True
                 Me.m_btnEditSurvivabilities.Enabled = True
-                ' ToDo: enable Diets button when functionality is available
-                Me.m_btnEditDiets.Enabled = False
+                Me.m_btnEditDiets.Enabled = True
             Else
                 Me.m_btnEditBasicInputs.Enabled = False
                 Me.m_btnEditSurvivabilities.Enabled = False
@@ -217,8 +216,7 @@ Public Class frmMSE
             img = Nothing
             Me.m_btnEditBasicInputs.Enabled = True
             Me.m_btnEditSurvivabilities.Enabled = True
-            ' ToDo: enable Diets button when functionality is available
-            Me.m_btnEditDiets.Enabled = False
+            Me.m_btnEditDiets.Enabled = True
         End If
         Me.m_pbPathCompatible.Image = img
 
@@ -346,7 +344,7 @@ Public Class frmMSE
                 Me.MSE.InvalidateConfigurationState(True)
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnShowTFM")
+            cLog.Write(ex, "CEFAS.frmMSE::OnEditSurvivabilities")
         End Try
 
     End Sub
@@ -354,7 +352,16 @@ Public Class frmMSE
     Private Sub OnEditDiets(sender As System.Object, e As System.EventArgs) Handles m_btnEditDiets.Click
 
         If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
-        Throw New NotImplementedException("Edit Diets UI does not exist yet")
+        Try
+            Dim frmDiets As New frmEditDiets(MSE)
+            frmDiets.Init(Me.UIContext)
+            If frmDiets.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                Me.MSE.ResolveMSEPathConflicts(True)
+                Me.MSE.InvalidateConfigurationState(True)
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "CEFAS.frmMSE::OnEditDiets")
+        End Try
 
     End Sub
 
