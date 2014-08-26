@@ -59,6 +59,26 @@ Public Class cShapeFunctionFactory
                 End If
             End If
         Next
+
+        If (pm IsNot Nothing) Then
+            ' Get all shape functions provided as plug-ins
+            For Each c As IPlugin In pm.GetPlugins(GetType(IEcosimShapeFunctionPlugin))
+                Dim bCompatible As Boolean = False
+                fs = CType(c, IShapeFunction)
+
+                If (shape Is Nothing) Then
+                    bCompatible = True
+                Else
+                    bCompatible = (fs.IsCompatible(shape.DataType))
+                End If
+
+                If (bCompatible) Then
+                    fs.Init(shape)
+                    lfs.Add(fs)
+                End If
+            Next
+        End If
+
         Return lfs.ToArray()
     End Function
 

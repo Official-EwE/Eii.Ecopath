@@ -67,6 +67,15 @@ Namespace Core
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Get the human legible unit for a parameter of a shape function.
+        ''' </summary>
+        ''' <param name="iParam">The index of the parameters [1,<see cref="nParameters"/>]
+        ''' to obtain the human legible unit for.</param>
+        ''' -----------------------------------------------------------------------
+        ReadOnly Property ParamUnit(ByVal iParam As Integer) As String
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the actual function data points, as computed from the <see cref="ParamValue">parameters values</see>.
         ''' </summary>
         ''' <param name="nPoints">The number of points to calculate the shape for.</param>

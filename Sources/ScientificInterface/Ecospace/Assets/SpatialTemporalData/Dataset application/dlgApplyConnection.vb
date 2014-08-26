@@ -621,13 +621,20 @@ Namespace Ecospace.Controls
 
             If (iConn > 0) Then
 
-                ds = Me.m_adt.Dataset(Me.m_iLayer, iConn)
-                Me.m_lblDatasetInfo.Text = ds.DisplayName
+                Try
 
-                Dim comp As New cDatasetCompatilibity(Me.UIContext.Core, ds)
-                Dim fmt As New cSpatialDatasetCompatibilityFormatter()
-                Me.m_lblCompatibility.Text = fmt.Summary(comp)
-                Me.m_pbCompat.Image = cStyleGuide.GetImage(comp)
+                    ds = Me.m_adt.Dataset(Me.m_iLayer, iConn)
+                    Me.m_lblDatasetInfo.Text = ds.DisplayName
+
+                    Dim comp As New cDatasetCompatilibity(Me.UIContext.Core, ds)
+                    Dim fmt As New cSpatialDatasetCompatibilityFormatter()
+                    Me.m_lblCompatibility.Text = fmt.Summary(comp)
+                    Me.m_pbCompat.Image = cStyleGuide.GetImage(comp)
+
+                Catch ex As Exception
+
+                End Try
+
             Else
                 Me.m_lblDatasetInfo.Text = ""
                 Me.m_lblCompatibility.Text = ""
