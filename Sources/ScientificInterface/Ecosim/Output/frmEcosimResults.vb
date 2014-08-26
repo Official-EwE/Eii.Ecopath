@@ -55,9 +55,6 @@ Namespace Ecosim
         Private m_fpEndSum As cEwEFormatProvider = Nothing
         Private m_fpNumSteps As cEwEFormatProvider = Nothing
 
-        ''' <summary>core message handler.</summary>
-        Private m_coreMessageHandler As cMessageHandler
-
 #End Region ' Private variables
 
 #Region " Constructor "

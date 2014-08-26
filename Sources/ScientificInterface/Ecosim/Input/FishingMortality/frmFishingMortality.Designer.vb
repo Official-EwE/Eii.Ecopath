@@ -121,7 +121,6 @@ Namespace Ecosim
             Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
             Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
-            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.XAxisMaxValue = -9999
