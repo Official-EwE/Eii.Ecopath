@@ -469,7 +469,7 @@ Public Class cMSEPluginPoint
             bRefresh = True
         End If
 
-        If (bRefresh = True) Then
+        If (bRefresh = True And Me.HasUI) Then
             Me.InvalidateConfiguration()
         End If
 
