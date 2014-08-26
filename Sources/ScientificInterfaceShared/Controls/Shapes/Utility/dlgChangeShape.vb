@@ -203,10 +203,6 @@ Namespace Controls
                 End If
             Next
 
-            ' Integrate shape name into the dialog title
-            Dim fmt As New cShapeDataFormatter()
-            Me.Text = String.Format(Me.Text, fmt.GetDescriptor(Me.m_shape))
-
             Me.SelectedShapeType = Me.m_shape.ShapeFunctionType
 
             Me.UpdatePreview()
