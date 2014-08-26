@@ -114,7 +114,8 @@ Public Class cEwEStatusBar
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Private Sub OnCoreDataStateEvent(ByVal csm As EwECore.cCoreStateMonitor)
-        Me.UpdateModelPanes()
+        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateModelPanes))
+        'Me.UpdateModelPanes()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -153,7 +154,11 @@ Public Class cEwEStatusBar
     ''' -----------------------------------------------------------------------
     Public Sub UpdateModelPanes()
 
+        If (Me.m_uic Is Nothing) Then Return
+
         Dim core As cCore = Me.m_uic.Core
+        If (core Is Nothing) Then Return
+
         Dim eweModel As cEwEModel = Me.m_uic.Core.EwEModel
         Dim simScenario As cEcoSimScenario = Nothing
         Dim tsds As cTimeSeriesDataset = Nothing
