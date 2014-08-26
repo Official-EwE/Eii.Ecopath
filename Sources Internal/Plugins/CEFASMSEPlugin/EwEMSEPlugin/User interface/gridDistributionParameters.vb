@@ -203,7 +203,7 @@ Public Class gridDistributionParameters
 
                     If (bUse) Then
                         Me(iRow, eEcopathColumnTypes.CV) = DataCell(data.CV)
-                        Me(iRow, eEcopathColumnTypes.Mean) = DataCell(data.Mean)
+                        Me(iRow, eEcopathColumnTypes.Mean) = DataCell(data.Mean, cStyleGuide.eStyleFlags.NotEditable)
                         Me(iRow, eEcopathColumnTypes.Lower) = DataCell(data.LowerBound)
                         Me(iRow, eEcopathColumnTypes.Upper) = DataCell(data.UpperBound)
                     Else
@@ -260,9 +260,8 @@ Public Class gridDistributionParameters
         End Get
     End Property
 
-    Private Function DataCell(dValue As Double) As EwECell
+    Private Function DataCell(dValue As Double, Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As EwECell
 
-        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
         Dim cell As EwECell = Nothing
 
         If (dValue = cCore.NULL_VALUE) Then
