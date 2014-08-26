@@ -718,11 +718,11 @@ Public Class frmEwE6
         Me.m_mhTimeseries = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.TimeSeries, eMessageType.DataAddedOrRemoved, Me.SyncObject)
 
 #If DEBUG Then
-        Me.m_mhProgress.Name = "cAppLauncher:Progress"
-        Me.m_mhEcosim.Name = "cAppLauncher:Ecosim"
-        Me.m_mhEcospace.Name = "cAppLauncher:EcoSpace"
-        Me.m_mhEcotracer.Name = "cAppLauncher:EcoTracer"
-        Me.m_mhTimeseries.Name = "cAppLauncher:TimeSeries"
+        Me.m_mhProgress.Name = "frmEwE6:Progress"
+        Me.m_mhEcosim.Name = "frmEwE6:Ecosim"
+        Me.m_mhEcospace.Name = "frmEwE6:EcoSpace"
+        Me.m_mhEcotracer.Name = "frmEwE6:EcoTracer"
+        Me.m_mhTimeseries.Name = "frmEwE6:TimeSeries"
 #End If
 
         Me.Core.Messages.AddMessageHandler(Me.m_mhProgress)
@@ -2138,8 +2138,7 @@ Public Class frmEwE6
     ''' <returns>An Ecopath database, if succesful.</returns>
     ''' <remarks>
     ''' Note that this will NOT load the new model! For this, 
-    ''' <see cref="LoadEcopathModel">cAppLauncher.LoadEcopathModel</see> will need
-    ''' to be called.
+    ''' <see cref="LoadEcopathModel"/> will need to be called.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Friend Function CreateEcopathModel(ByVal strFileName As String, _
@@ -2224,8 +2223,7 @@ Public Class frmEwE6
     ''' <returns>An Ecopath database, if succesful.</returns>
     ''' <remarks>
     ''' <para>Note that this will NOT load the new model! For this, 
-    ''' <see cref="LoadEcopathModel">cAppLauncher.LoadEcopathModel</see> will need
-    ''' to be called.</para>
+    ''' <see cref="LoadEcopathModel"/> will need to be called.</para>
     ''' <para>This method distills the database type from the provided file name.</para>
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
