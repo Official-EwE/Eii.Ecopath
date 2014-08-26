@@ -135,46 +135,9 @@ Public Class cDiets
     Public Function Load(Optional msg As cMessage = Nothing, _
                          Optional strFilename As String = "") As Boolean Implements IMSEData.Load
 
-        ' Ignore filename param
-        strFilename = Me.DefaultFileName("DietComposition.csv")
-
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
         Dim bSuccess As Boolean = True
-        Dim iPred As Integer
-        Dim iPrey As Integer
-
-        'Read in the values from the DietComposition.csv into each array
-        If File.Exists(strFilename) Then
-            reader = cMSEUtils.GetReader(strFilename)
-            If (reader IsNot Nothing) Then
-                csv = New CsvReader(reader, True)
-                Try
-                    While Not csv.EndOfStream
-                        If csv.ReadNextRecord() Then
-
-
-                            'Note about indices for interacts, lower and upper
-                            'In m_interacts and m_meanProportions:
-                            'The 1st index for predator runs from 0 to mlivinggroups-1
-                            'The 2nd index for prey runs from 0 to mlivinggroups-1
-                            If String.Compare(csv(1), "imports", True) <> 0 Then
-                                m_interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3)) - 1) = cStringUtils.ConvertToInteger(csv(4))
-                                m_meanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3)) - 1) = cStringUtils.ConvertToSingle(csv(5))
-                            Else
-                                m_interacts_imports(cStringUtils.ConvertToInteger(csv(2)) - 1) = cStringUtils.ConvertToInteger(csv(4))
-                                m_meanProportions_imports(cStringUtils.ConvertToInteger(csv(2)) - 1) = cStringUtils.ConvertToSingle(csv(5))
-                            End If
-                        End If
-                    End While
-                Catch ex As Exception
-                    cMSEUtils.LogError(msg, "DietComposition cannot load from " & strFilename & ". " & ex.Message)
-                    bSuccess = False
-                End Try
-                csv.Dispose()
-                cMSEUtils.ReleaseReader(reader)
-            End If
-        End If
 
         strFilename = Me.DefaultFileName("DietCompositionMultipliers.csv")
         reader = cMSEUtils.GetReader(strFilename)
@@ -199,32 +162,9 @@ Public Class cDiets
     End Function
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
-        Dim mean As Single
-        Dim interact As Integer
 
-        ' Ignore strFilename parameter
-        strFilename = Me.DefaultFileName("DietComposition.csv")
-
-        Dim writer As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
+        Dim writer As StreamWriter = Nothing
         Dim bSuccess As Boolean = False
-
-        If (writer Is Nothing) Then Return bSuccess
-
-        writer.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
-        writer.WriteLine()
-
-        ' ToDo: write diets properly
-        For iPred As Integer = 1 To m_core.nLivingGroups
-            mean = Me.m_meanProportions_imports(iPred - 1)
-            interact = Me.m_interacts_imports(iPred - 1)
-            writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & ",Imports," & iPred & ",0," & cStringUtils.ToCSVField(interact) & "," & cStringUtils.ToCSVField(mean))
-            For iPrey As Integer = 1 To m_core.nGroups
-                mean = Me.m_meanProportions(iPred - 1, iPrey - 1)
-                interact = Me.m_interacts(iPred - 1, iPrey - 1)
-                writer.WriteLine(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name) & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPrey).Name) & "," & iPred & "," & iPrey & "," & cStringUtils.ToCSVField(interact) & "," & cStringUtils.ToCSVField(mean))
-            Next
-        Next
-        cMSEUtils.ReleaseWriter(writer)
 
         strFilename = Me.DefaultFileName("DietCompositionMultipliers.csv")
         writer = cMSEUtils.GetWriter(strFilename, False)
@@ -250,8 +190,7 @@ Public Class cDiets
 
     Public Function FileExists(Optional strFilename As String = "") As Boolean Implements IMSEData.FileExists
         ' Ignore file name parameter
-        Return File.Exists(Me.DefaultFileName("DietComposition.csv")) And _
-               File.Exists(Me.DefaultFileName("DietCompositionMultipliers.csv"))
+        Return File.Exists(Me.DefaultFileName("DietCompositionMultipliers.csv"))
     End Function
 
 End Class
