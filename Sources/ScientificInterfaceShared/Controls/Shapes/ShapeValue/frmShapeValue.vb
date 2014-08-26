@@ -301,7 +301,7 @@ Public Class frmShapeValue
     Private Sub LoadForcingDataToGrid()
 
         Dim iOffset As Integer = 0
-        Dim bIsMediation As Boolean = (TypeOf (Me.m_shape) Is cMediationBaseFunction)
+        Dim bIsMediation As Boolean = (Me.m_shape.DataType = EwEUtils.Core.eDataTypes.Mediation)
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
