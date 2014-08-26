@@ -58,6 +58,8 @@ Namespace Controls
             Me.m_tbxMaxValue = New System.Windows.Forms.TextBox()
             Me.m_lblMax = New System.Windows.Forms.Label()
             Me.m_btDefaults = New System.Windows.Forms.Button()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_tbxName = New System.Windows.Forms.TextBox()
             Me.m_tlpParams.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -175,12 +177,24 @@ Namespace Controls
             Me.m_btDefaults.Name = "m_btDefaults"
             Me.m_btDefaults.UseVisualStyleBackColor = True
             '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'm_tbxName
+            '
+            resources.ApplyResources(Me.m_tbxName, "m_tbxName")
+            Me.m_tbxName.Name = "m_tbxName"
+            '
             'dlgChangeShape
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_tbxName)
+            Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_btDefaults)
             Me.Controls.Add(Me.m_tlpParams)
             Me.Controls.Add(Me.m_lbShapeFunctionTypes)
@@ -195,6 +209,7 @@ Namespace Controls
             Me.m_tlpParams.ResumeLayout(False)
             Me.m_tlpParams.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_tbxC As System.Windows.Forms.TextBox
@@ -215,6 +230,8 @@ Namespace Controls
         Friend WithEvents m_btDefaults As System.Windows.Forms.Button
         Friend WithEvents m_lblMax As System.Windows.Forms.Label
         Friend WithEvents m_tbxMaxValue As System.Windows.Forms.TextBox
+        Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_tbxName As System.Windows.Forms.TextBox
 
     End Class
 
