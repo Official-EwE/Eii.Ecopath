@@ -720,7 +720,6 @@ Namespace Ecosim
             Me.m_shapeToolBox.Location = New System.Drawing.Point(0, 23)
             Me.m_shapeToolBox.Margin = New System.Windows.Forms.Padding(0)
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
-            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.Size = New System.Drawing.Size(579, 113)
             Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_shapeToolBox.TabIndex = 1

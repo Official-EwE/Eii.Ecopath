@@ -114,7 +114,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_shapeToolBox, "m_shapeToolBox")
             Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
-            Me.m_shapeToolBox.Selection = Nothing
             '
             'TableLayoutPanel1
             '
