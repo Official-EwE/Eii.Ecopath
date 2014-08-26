@@ -152,7 +152,7 @@ Namespace Controls
             End Get
             Set(ByVal iValue As Integer)
                 Me.m_iMaxXScale = iValue
-                Me.UpdateThumbnails()
+                Me.UpdateThumbnails(Me.Selection)
                 Me.Invalidate()
             End Set
         End Property
@@ -227,9 +227,8 @@ Namespace Controls
                 Next
             End If
 
-            Me.UpdateThumbnails()
-
-            Me.Selection = ashapeSelect
+            ' Update selection when redoing thumbnails
+            Me.UpdateThumbnails(ashapeSelect)
 
         End Sub
 
@@ -245,11 +244,14 @@ Namespace Controls
         ''' <summary>Helper flag to prevent selection loops.</summary>
         Private m_bInUpdate As Boolean = False
 
+        Private m_selectionDelayed As cShapeData()
+
         ''' ------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the list of selected shapes in the tool box.
         ''' </summary>
         ''' ------------------------------------------------------------------
+        <Browsable(False)> _
         Public Property Selection() As cShapeData()
             Get
                 Dim lShapes As New List(Of cShapeData)
@@ -261,29 +263,34 @@ Namespace Controls
 
             Set(ByVal ashapes As cShapeData())
 
-                Dim lShapes As New List(Of cShapeData)
+                Dim selection As New List(Of cShapeData)
+                Dim ids As New List(Of Integer)
 
                 Me.m_lvShapes.SuspendLayout()
 
                 Try
 
-                    If ashapes Is Nothing Then
+                    If (ashapes Is Nothing) Then
                         ' Clear all selections
                         For Each item As ListViewItem In Me.m_lvShapes.Items
                             item.Selected = False
                         Next
                     Else
+                        ' JS 26Aug14: better than object comparison
+                        For Each shp As cShapeData In ashapes
+                            ids.Add(shp.DBID)
+                        Next
+
                         For Each item As ListViewItem In Me.m_lvShapes.Items
                             ' Get item shape
                             Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
-                            ' Get index in selection, if any
-                            Dim iIndex As Integer = Array.IndexOf(ashapes, shape)
                             ' Exists in selection?
-                            If (iIndex > -1) Then
+                            If (ids.Contains(shape.DBID)) Then
                                 ' #Yes: select the item
                                 item.Selected = True
+                                item.EnsureVisible()
                                 ' Shape still exists: add to selection to broadcast
-                                lShapes.Add(shape)
+                                selection.Add(shape)
                             Else
                                 item.Selected = False
                             End If
@@ -297,14 +304,17 @@ Namespace Controls
                 Me.m_lvShapes.ResumeLayout()
 
                 If Not Me.m_bInUpdate Then
+
                     Me.m_bInUpdate = True
                     Me.UpdateControls()
-                    ' JS 10May11: event try/caught
+
                     Try
-                        RaiseEvent OnSelectionChanged(lShapes.ToArray())
+                        ' JS 10May11: event try/caught
+                        RaiseEvent OnSelectionChanged(selection.ToArray())
                     Catch ex As Exception
                         Debug.Assert(False, ex.Message)
                     End Try
+
                     Me.m_bInUpdate = False
                 End If
 
@@ -405,10 +415,14 @@ Namespace Controls
         ''' or preserve info which shape was changed. Hence this work-around.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateThumbnails()
+        Private Sub UpdateThumbnails(selection As cShapeData())
+
             If Not Me.Created Then Return
+            Me.m_selectionDelayed = selection
+
             If Me.m_bUpdateRequested Then Return
             Me.m_bUpdateRequested = True
+
             Try
                 Me.BeginInvoke(New MethodInvoker(AddressOf DelayUpdateThumbnails))
             Catch ex As Exception
@@ -418,10 +432,11 @@ Namespace Controls
 
         Private Sub DelayUpdateThumbnails()
 
-            Me.m_bUpdateRequested = False
-
             ' UIC may disappear in response to manager commands
             If (Me.m_uic Is Nothing) Then Return
+
+            If (Me.m_bUpdateRequested = False) Then Return
+            Me.m_bUpdateRequested = False
 
             Dim iThumbSize As Integer = Me.m_uic.StyleGuide.ThumbnailSize
             Dim largeImageList As New ImageList
@@ -473,6 +488,10 @@ Namespace Controls
             m_lvShapes.ResumeLayout()
             Me.m_bInUpdate = False
 
+            ' Update selection
+            Me.Selection = Me.m_selectionDelayed
+            Me.m_selectionDelayed = Nothing
+
         End Sub
 
 #End Region ' Helper methods
@@ -496,7 +515,7 @@ Namespace Controls
 
             Me.m_bInUpdate = True
             Me.Selection = Nothing
-            Me.UpdateThumbnails()
+            Me.UpdateThumbnails(Nothing)
             Me.m_bInUpdate = False
 
         End Sub
@@ -602,7 +621,7 @@ Namespace Controls
         ''' </summary>
         Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.Thumbnails) > 0 Then
-                Me.UpdateThumbnails()
+                Me.UpdateThumbnails(Me.Selection)
             End If
         End Sub
 
