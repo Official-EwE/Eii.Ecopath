@@ -83,14 +83,14 @@ Namespace Controls
 
             Me.CenterToParent()
 
-            ' Integrate shape name into the dialog title
-            Dim fmt As New cShapeDataFormatter()
-            Me.Text = String.Format(Me.Text, fmt.GetDescriptor(Me.m_shape))
+            ' Add shape name 
+            Me.m_tbxName.Text = Me.m_shape.Name
 
             ' Show available options
             For Each sft As IShapeFunction In cShapeFunctionFactory.GetShapeFunctions(Me.m_shape, Me.m_uic.Core.PluginManager)
                 Me.m_lbShapeFunctionTypes.Items.Add(sft)
-                ' Not nice, may change
+
+                ' This selection logic will have to change!
                 If (TypeOf sft Is cShapeFunction) Then
                     If (DirectCast(sft, cShapeFunction).ShapeFunctionType = Me.m_shape.ShapeFunctionType) Then
                         Me.m_lbShapeFunctionTypes.SelectedItem = sft
@@ -99,9 +99,9 @@ Namespace Controls
             Next
 
             Me.UpdatePreview()
+            Me.UpdateControls()
 
         End Sub
-
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
@@ -132,6 +132,7 @@ Namespace Controls
             If (fs Is Nothing) Then Return
 
             fs.Apply(Me.m_shape)
+            Me.m_shape.Name = Me.m_tbxName.Text
 
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
@@ -165,6 +166,13 @@ Namespace Controls
                 fs.ParamValue(i + 1) = CSng(Me.m_fps(i).Value)
             Next
             Me.UpdatePreview()
+
+        End Sub
+
+        Private Sub OnNameChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_tbxName.TextChanged
+
+            Me.UpdateControls()
 
         End Sub
 
@@ -210,6 +218,13 @@ Namespace Controls
 #End Region ' Events
 
 #Region " Private method helpers "
+
+        Private Sub UpdateControls()
+
+            Dim bHasName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxName.Text)
+            Me.m_btnOk.Enabled = bHasName
+
+        End Sub
 
         Private Property SelectedShapeFunction As IShapeFunction
             Get
@@ -271,7 +286,6 @@ Namespace Controls
 
             End Set
         End Property
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
