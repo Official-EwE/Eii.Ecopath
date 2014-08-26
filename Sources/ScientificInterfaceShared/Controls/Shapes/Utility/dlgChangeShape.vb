@@ -178,6 +178,8 @@ Namespace Controls
 
             Me.CenterToParent()
 
+            Me.m_tbxName.Text = Me.m_shape.Name
+
             'jb 24-May-11 removed data validation to fix ticket 975
             Me.m_fpA = New cEwEFormatProvider(Me.m_uic, Me.m_tbxA, GetType(Single))
             Me.m_fpA.Value = Me.m_shpBuff.A
@@ -294,15 +296,22 @@ Namespace Controls
             End If
 
             Me.m_shpBuff.Apply(Me.m_shape)
+            Me.m_shape.Name = Me.m_tbxName.Text
 
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
+
         End Sub
 
         Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_btnCancel.Click
             Me.DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
+        End Sub
+
+        Private Sub OnNameChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_tbxName.TextChanged
+            Me.UpdateControls()
         End Sub
 
         Private Sub OnFormatShapeFunction(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
@@ -547,6 +556,7 @@ Namespace Controls
         Private Sub UpdateControls()
             Me.SuspendLayout()
 
+            Dim bHasName As Boolean = (Me.m_tbxName.Text.Length > 0)
             Dim bEnableA As Boolean = False
             Dim bEnableB As Boolean = False
             Dim bEnableC As Boolean = False
@@ -619,6 +629,8 @@ Namespace Controls
             Me.m_lblD.Text = strLabelD
 
             Me.ResumeLayout(True)
+
+            Me.m_btnOk.Enabled = bHasName
 
         End Sub
 
