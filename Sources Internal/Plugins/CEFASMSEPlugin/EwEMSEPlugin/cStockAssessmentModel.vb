@@ -81,6 +81,8 @@ Public Class cStockAssessmentModel
 
     Private m_rand As Random
 
+    Private m_iTrial As Integer
+
 #End Region
 
 #Region "Pubic data"
@@ -359,6 +361,12 @@ Public Class cStockAssessmentModel
         Return CSng(Math.Exp(Me.CVImpError(iFleet) * getNextRandNormal()))
     End Function
 
+    Public WriteOnly Property TrialNumber As Integer
+        Set(value As Integer)
+            Me.m_iTrial = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Private Properties and  Methods"
@@ -390,7 +398,7 @@ Public Class cStockAssessmentModel
 
     Private Sub dumpBioEstOverB(Strategy As Strategy, iTimestep As Integer, BioEst() As Single, B() As Single)
         Try
-            Me.m_strmBobsB.Write(Strategy.Name & "," & iTimestep.ToString)
+            Me.m_strmBobsB.Write(m_iTrial.ToString & "," & Strategy.Name & "," & iTimestep.ToString)
             For i As Integer = 1 To Me.Core.nLivingGroups
                 Me.m_strmBobsB.Write("," & (BioEst(i) / B(i)).ToString)
             Next
@@ -514,7 +522,7 @@ Public Class cStockAssessmentModel
             m_strmBobsB = cMSEUtils.GetWriter(fn, False)
             'Headers
             m_strmBobsB.WriteLine("B_StockAssessment / B_Ecosim")
-            m_strmBobsB.Write("Strategy,TimeStep")
+            m_strmBobsB.Write("TrialNumber,Strategy,TimeStep")
             For igrp As Integer = 1 To Me.Core.nGroups
                 m_strmBobsB.Write("," & Me.m_pathdata.GroupName(igrp))
             Next
