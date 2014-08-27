@@ -3157,4 +3157,10 @@
   <data name="GENERIC_VALUE_DEFAULT" xml:space="preserve">
     <value>(Default)</value>
   </data>
+  <data name="ConnectHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\connecths.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DisconnectHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\disconnecths.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

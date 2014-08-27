@@ -1023,6 +1023,8 @@
     <None Include="Resources\Raster.png" />
     <Content Include="Resources\bug.png" />
     <Content Include="Resources\CogHS.png" />
+    <Content Include="Resources\ConnectHS.png" />
+    <Content Include="Resources\DisconnectHS.png" />
     <Content Include="Resources\ExportDatabaseHS.PNG" />
     <Content Include="Resources\FilterHS.png" />
     <None Include="Resources\fish_dead.png" />
