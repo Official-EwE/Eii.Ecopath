@@ -93,13 +93,12 @@ Namespace SpatialData
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
-            'Dim scalar As Double
-            'If (Me.DataScaleType(layer.Index) = eScaleType.Relative) Then
-            '    scalar = Me.DataScale(layer.Index)
-            'End If
-            'convert from mol C /m2 to kg/km2
-            'Hardwire the scaler until we sort out the interface issue with setting the scale value
-            sValueAtT *= Me.molesm2_to_kgkm2
+            Dim scalar As Double = 1.0
+            If (Me.DataScaleType(layer.Index, iConnection) = eScaleType.Relative) Then
+                scalar = Me.DataScale(layer.Index, iConnection)
+            End If
+            'Debug.Assert(sValueAtT < 1000)
+            sValueAtT *= scalar
             Return MyBase.SetCell(layer, iConnection, iRow, iCol, sValueAtT)
 
         End Function
