@@ -22,6 +22,9 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace Controls
 
+    ''' <summary>
+    ''' Generic configuration dialog for EwE.
+    ''' </summary>
     Public Class dlgConfig
         Implements IUIElement
 

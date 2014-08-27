@@ -730,6 +730,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property ConnectHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ConnectHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to CR||Critically endangered.
         '''</summary>
         Public ReadOnly Property CONSERVATIONSTATUS_CRITICALLYENDANGERED() As String
@@ -1001,6 +1011,16 @@ Namespace My.Resources
         Public ReadOnly Property DeleteHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("DeleteHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property DisconnectHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("DisconnectHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
