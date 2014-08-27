@@ -622,6 +622,7 @@ Namespace Ecospace
 
         Private Sub PlotMap(ByVal g As Graphics)
             Try
+                System.Console.WriteLine("PlotMap")
                 If (Me.m_plottype = ePlotTypes.Effort) Then
                     PlotFleetMap(g)
                 Else
@@ -1169,6 +1170,9 @@ Namespace Ecospace
             Me.m_pbMap.Invalidate()
             Me.UpdateControls()
 
+            'Hack dump out the maps
+            'HACKAutoDumpCurMap(TimeStepData)
+
         End Sub
 
 #End Region ' Ecospace Delegates
@@ -1239,6 +1243,22 @@ Namespace Ecospace
 #End Region ' Overrides
 
 #Region " Internal implementation "
+
+        ''' <summary>
+        ''' Hack to automatically dump the currently selected maps to file every second month. 
+        ''' </summary>
+        ''' <param name="TimeStepData"></param>
+        ''' <remarks></remarks>
+        Private Sub HACKAutoDumpCurMap(TimeStepData As cEcospaceTimestep)
+
+            If TimeStepData.iTimeStep Mod 2 <> 0 Then
+                Dim year As Integer = CInt(1 + Math.Truncate(TimeStepData.TimeStepinYears))
+                Dim month As Integer = CInt((TimeStepData.TimeStepinYears - (year - 1)) * 12)
+                Dim fn As String = Path.Combine(Me.Core.OutputPath, "EcoSpaceMap_Year=" + year.ToString + "_Month=" + month.ToString + "_TS=" + TimeStepData.iTimeStep.ToString + ".png")
+                Me.SaveMapImage(fn, ImageFormat.Jpeg)
+            End If
+
+        End Sub
 
         Private Property ShowItemMode() As eShowItemType
             Get
