@@ -28,7 +28,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("Plugin")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
-<Assembly: AssemblyProduct("ConsolePlugin")> 
+<Assembly: AssemblyProduct("SkeletonPlugin")> 
 <Assembly: AssemblyCopyright("Copyright © UBC Fisheries Centre 2013")> 
 <Assembly: AssemblyTrademark("")> 
 
