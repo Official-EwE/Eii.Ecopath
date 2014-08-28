@@ -5486,7 +5486,7 @@ Namespace DataSources
 
                 readerShape = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimShapeFishRate WHERE (ShapeID={0})", iShapeID))
                 If readerShape.Read() Then
-                    ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(readerShape("Title")).Trim()
+                    ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(Me.m_db.ReadSafe(readerShape, "Title", "")).Trim()
                     strMemo = CStr(readerShape("zScale"))
                     astrMemoBits = strMemo.Trim.Split(CChar(" "))
                     For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)

@@ -269,6 +269,7 @@ Public Class frmEwE6
     Private WithEvents m_cmdExportEcosimResultsToCSV As cEcosimSaveDataCommand = Nothing
     Private WithEvents m_cmdPrint As cCommand = Nothing
     Private WithEvents m_cmdEcosimTrimShapes As cCommand = Nothing
+    Private WithEvents m_cmdEcosimChangeShape As cCommand = Nothing
 
 #End Region ' Commands
 
@@ -604,6 +605,7 @@ Public Class frmEwE6
         Me.m_cmdEditLayer = New cEditLayerCommand(cmdh)
 
         Me.m_cmdEcosimTrimShapes = New cCommand(cmdh, "TrimUnusedShapeData")
+        Me.m_cmdEcosimChangeShape = New cCommand(cmdh, "ChangeEcosimShape")
 
         Me.m_cmdImportTimeSeries = New cCommand(cmdh, "ImportTimeSeries")
         Me.m_cmdImportTimeSeries.AddControl(Me.m_tsmiTimeSeriesImport)
@@ -3687,6 +3689,23 @@ Public Class frmEwE6
     Private Sub OnTrimEcosimShapesUpdate(cmd As cCommand) _
         Handles m_cmdEcosimTrimShapes.OnUpdate
         cmd.Enabled = Me.Core.HasUnusedShapeData And Not Me.Core.StateMonitor.IsBusy
+    End Sub
+
+    Private Sub OnEcosimChangeShapeInvoke(cmd As cCommand) _
+        Handles m_cmdEcosimChangeShape.OnInvoke
+
+        Try
+            Dim dlg As New dlgChangeShape(Me.UIContext, DirectCast(cmd.Tag, cForcingFunction))
+            dlg.ShowDialog(Me.UIContext.FormMain)
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnEcosimChangeShapeUpdate(cmd As cCommand) _
+        Handles m_cmdEcosimChangeShape.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded And Not Me.Core.StateMonitor.IsBusy
     End Sub
 
 #End Region ' Ecosim commands

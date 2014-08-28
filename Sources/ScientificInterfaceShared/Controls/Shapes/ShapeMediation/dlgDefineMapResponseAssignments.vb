@@ -15,7 +15,6 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Explicit On
@@ -26,15 +25,19 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
+''' <summary>
+''' Main interface to define the functional responses of groups to environmental drivers.
+''' </summary>
 Public Class dlgDefineMapResponseAssignments
 
     'ToDo  update graph interface from edit dialog 
     'ToDo Localize text
 
-#Region "Private variables"
+#Region " Private variables "
 
     Private m_shape As EwECore.cEnviroResponseFunction = Nothing
     Private m_manager As cMapResponseInteractionManager = Nothing
@@ -42,24 +45,33 @@ Public Class dlgDefineMapResponseAssignments
     Private m_uic As cUIContext = Nothing
     Private m_map As cEnviroInputMap = Nothing
 
-    Private m_ShapeGUIHandler As cShapeGUIHandler
+    Private m_fpMin As cEwEFormatProvider = Nothing
+    Private m_fpMax As cEwEFormatProvider = Nothing
+    Private m_fpMean As cEwEFormatProvider = Nothing
+    Private m_fpSD As cEwEFormatProvider = Nothing
 
-    Private m_SD As Single
+    Private m_bInUpdate As Boolean = False
 
-    Private m_bInInit As Boolean
+#End Region ' Private variables
 
-#End Region
+#Region " Construction Initialization "
 
-#Region "Construction Initialization"
-
-    Public Sub New(ByVal UIC As cUIContext, ByVal ResponseShape As EwECore.cEnviroResponseFunction, ByVal Manager As EwECore.cMapResponseInteractionManager, ByVal ParentShapeGUIHandler As cShapeGUIHandler)
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="uic"></param>
+    ''' <param name="shape"></param>
+    ''' <param name="manager"></param>
+    ''' <remarks></remarks>
+    Public Sub New(ByVal uic As cUIContext, _
+                   ByVal shape As EwECore.cEnviroResponseFunction, _
+                   ByVal manager As EwECore.cMapResponseInteractionManager)
         Me.InitializeComponent()
 
-        Me.m_shape = ResponseShape
-        Me.m_manager = Manager
-        Me.m_ShapeGUIHandler = ParentShapeGUIHandler
+        Me.m_shape = shape
+        Me.m_manager = manager
 
-        Me.m_uic = UIC
+        Me.m_uic = uic
 
         Me.m_zgh = New cZedGraphMediationHelper()
         Me.m_zgh.Attach(Me.m_uic, Me.m_graph)
@@ -79,11 +91,7 @@ Public Class dlgDefineMapResponseAssignments
         If (Me.m_uic Is Nothing) Then Return
 
         Try
-            Me.m_bInInit = True
-
-            Me.m_tbxXMax.Text = Me.m_shape.ResponseRightLimit.ToString
-            Me.m_tbxXMin.Text = Me.m_shape.ResponseLeftLimit.ToString
-
+            Me.m_bInUpdate = True
 
             Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
@@ -107,21 +115,21 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.GetPane(1).Y2Axis.Scale.MaxAuto = True
 
             Me.m_lbxGroups.Attach(Me.m_uic)
+            Me.m_fpMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
+            Me.m_fpMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
+            Me.m_fpMean = New cEwEFormatProvider(Me.m_uic, Me.m_tbxMean, GetType(Single))
+            Me.m_fpSD = New cEwEFormatProvider(Me.m_uic, Me.m_tbxSD, GetType(Single))
 
-            Me.calcSDFromXAxis()
-
-            Me.loadMaps()
-            Me.UpdatePlots()
-
-            ' Me.m_bHasInit = True
-            Me.updateControls()
+            ' Set min and max
+            Me.m_fpMin.Value = Me.m_shape.ResponseLeftLimit
+            Me.m_fpMax.Value = Me.m_shape.ResponseRightLimit
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".OnLoad() Exception: " & ex.Message)
-            cLog.Write(ex)
+
         End Try
 
-        Me.m_bInInit = False
+        Me.m_bInUpdate = False
+        Me.InitToShapeType()
 
     End Sub
 
@@ -131,17 +139,60 @@ Public Class dlgDefineMapResponseAssignments
 
         Me.m_lbxGroups.Detach()
 
+        ' Clear out shape to de-init UI
+        Me.m_shape = Nothing
+        Me.InitToShapeType()
+
+        Me.m_fpMin.Release()
+        Me.m_fpMax.Release()
+        Me.m_fpMean.Release()
+        Me.m_fpSD.Release()
+
         MyBase.OnFormClosed(e)
 
     End Sub
 
-#End Region
+    Private Sub InitToShapeType()
 
-#Region "Control Event Handlers"
+        If (Me.CanEditMinMax) Then
+            RemoveHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
+            RemoveHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
+        End If
 
-    Private Sub OnGroupSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_lbxGroups.SelectedValueChanged
+        If (Me.CanEditMeanSD) Then
+            RemoveHandler Me.m_fpMean.OnValueChanged, AddressOf OnMeanValueChanged
+            RemoveHandler Me.m_fpSD.OnValueChanged, AddressOf OnSDValueChanged
+        End If
+
+        If (Me.m_shape Is Nothing) Then Return
+
+        If (Me.CanEditMinMax) Then
+            AddHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
+            AddHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
+        End If
+
+        If (Me.CanEditMeanSD) Then
+            Me.m_fpMean.Value = Me.m_shape.Steep
+            Me.m_fpSD.Value = Me.CalcSDFromXAxis()
+
+            AddHandler Me.m_fpMean.OnValueChanged, AddressOf OnMeanValueChanged
+            AddHandler Me.m_fpSD.OnValueChanged, AddressOf OnSDValueChanged
+        End If
+
+        Me.LoadMaps()
+        Me.UpdatePlots()
+        Me.UpdateControls()
+
+    End Sub
+
+#End Region ' Construction Initialization
+
+#Region " Control Event Handlers "
+
+    Private Sub OnGroupSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_lbxGroups.SelectedValueChanged
         Try
-            Me.updateControls()
+            Me.UpdateControls()
         Catch ex As Exception
         End Try
     End Sub
@@ -149,12 +200,11 @@ Public Class dlgDefineMapResponseAssignments
     ''' <summary>
     ''' Add the selected groups to the currently selected map
     ''' </summary>
-    Private Sub OnAddGroup(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btnAdd.Click
+    Private Sub OnAddGroup(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnAdd.Click
 
         Try
-
-            'Dim Map As IEnviroInputMap = Me.getSelMap
-            'Is there a selected map
+            ' Abort if no selected map
             If Me.m_map Is Nothing Then Return
 
             'Yes add all the groups 
@@ -163,7 +213,7 @@ Public Class dlgDefineMapResponseAssignments
             Next
 
             'bluntly reload the map tree
-            Me.loadMaps()
+            Me.LoadMaps()
 
         Catch ex As Exception
             Debug.Assert(False)
@@ -171,11 +221,11 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-    Private Sub OnRemove(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btnRemove.Click
-        Try
+    Private Sub OnRemoveGroup(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnRemove.Click
 
-            ' Dim map As IEnviroInputMap = Me.getSelMap
-            If Me.m_map Is Nothing Then Return
+        Try
+            If (Me.m_map Is Nothing) Then Return
 
             Dim node As TreeNode
             node = Me.m_tvMaps.SelectedNode
@@ -200,98 +250,103 @@ Public Class dlgDefineMapResponseAssignments
             End If
 
             ' Me.loadMaps()
-
         Catch ex As Exception
 
         End Try
+
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnOk.Click
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
 
     End Sub
 
-    Private Sub trvMapTree_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles m_tvMaps.AfterExpand
-        Me.m_map = Me.GetSelectedMap(e.Node)
+    Private Sub OnMapTreeExpanded(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+        Handles m_tvMaps.AfterExpand
+
+        Try
+            Me.m_map = Me.GetSelectedMap(e.Node)
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
-    Private Sub trvMapTree_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles m_tvMaps.AfterSelect
+    Private Sub OnMapTreeSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+        Handles m_tvMaps.AfterSelect
         Try
             Me.m_map = GetSelectedMap(e.Node)
-            Me.updateControls()
+            Me.UpdateControls()
             Me.UpdatePlots()
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Private Sub OnMinMaxTextChanged(ByVal sender As Object, args As EventArgs)
-        ' Format providers changed: update the map
+    Private Sub OnMinMaxValueChanged(ByVal sender As Object, args As EventArgs)
+
+        If Me.m_bInUpdate Then Return
+
+        'Not all shapes use the Min and Mix data range
+        Debug.Assert(Me.CanEditMinMax())
+
+        Try
+            Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
+            Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
+            Me.UpdatePlots()
+        Catch ex As Exception
+
+        End Try
         Me.UpdatePlots()
+
     End Sub
 
-    Private Sub OnSetDefaultMinMax(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnDefaultMinMax.Click
-        Me.setDefaultMinMax()
+    Private Sub OnSetDefaultMinMax(ByVal sender As Object, ByVal e As EventArgs) _
+        Handles m_btnDefaultMinMax.Click
+        Me.SetDefaultMinMax()
     End Sub
 
-    Private Sub txMean_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_txMean.TextChanged
+    Private Sub OnMeanValueChanged(sender As System.Object, e As System.EventArgs)
         Try
-            If Me.m_bInInit Then Return
+            If Me.m_bInUpdate Then Return
+            Debug.Assert(Me.CanEditMeanSD(), "Oppss BUG! should not be setting the Mean for this type of shape.")
             'Mean is stored in the Steep variable
-            Debug.Assert(Me.m_shape.ShapeFunctionType = eShapeFunctionType.Normal, "Oppss BUG! should not be setting the Mean for shapes that are not Normal.")
-            Me.m_shape.Steep = Single.Parse(Me.m_txMean.Text)
-            Me.calcXFromMeanAndSD(Me.m_SD, Me.m_shape.ResponseLeftLimit, Me.m_shape.ResponseRightLimit)
-            UpdatePlots()
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-    Private Sub txSD_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_txSD.TextChanged
-        Try
-            If Me.m_bInInit Then Return
-            Debug.Assert(Me.m_shape.ShapeFunctionType = eShapeFunctionType.Normal, "Oppss BUG! should not be setting the SD for shapes that are not Normal.")
-            Me.m_SD = Single.Parse(Me.m_txSD.Text)
-            Me.calcXFromMeanAndSD(Me.m_SD, Me.m_shape.ResponseLeftLimit, Me.m_shape.ResponseRightLimit)
-            UpdatePlots()
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-
-    Private Sub onMinMax_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_tbxXMin.TextChanged, m_tbxXMax.TextChanged
-
-        If Me.m_bInInit Then Return
-        Try
-            'Not all shapes use the Min and Mix data range
-            If Me.CanUpdateMinMax() Then
-                Me.m_shape.ResponseLeftLimit = Single.Parse(Me.m_tbxXMin.Text)
-                Me.m_shape.ResponseRightLimit = Single.Parse(Me.m_tbxXMax.Text)
-            End If
+            Me.m_shape.Steep = CSng(Me.m_fpMean.Value)
+            Me.CalcXFromMeanAndSD(Me.m_shape.ResponseLeftLimit, Me.m_shape.ResponseRightLimit)
             Me.UpdatePlots()
         Catch ex As Exception
 
         End Try
-
     End Sub
 
+    Private Sub OnSDValueChanged(sender As System.Object, e As System.EventArgs)
+        Try
+            If Me.m_bInUpdate Then Return
+            Debug.Assert(Me.CanEditMeanSD(), "Oppss BUG! should not be setting the SD for this type of shape.")
+            Me.CalcXFromMeanAndSD(Me.m_shape.ResponseLeftLimit, Me.m_shape.ResponseRightLimit)
+            Me.UpdatePlots()
+        Catch ex As Exception
 
-    Private Sub m_btChangeShape_Click(sender As System.Object, e As System.EventArgs) Handles m_btChangeShape.Click
+        End Try
+    End Sub
+
+    Private Sub OnChangeShape(sender As System.Object, e As System.EventArgs) _
+        Handles m_btChangeShape.Click
         Try
             Me.ChangeFFShape()
-            Me.UpdatePlots()
+            ' Type of shape may have changed
+            Me.InitToShapeType()
         Catch ex As Exception
 
         End Try
-
     End Sub
 
-#End Region
+#End Region ' Control Event Handlers
 
-#Region "Private Methods"
+#Region " Private Methods "
 
     Private Sub UpdatePlots()
 
@@ -309,85 +364,62 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-    Private Sub updateControls()
+    Private Sub UpdateControls()
 
-        Try
+        ' ToDo JS: this will be connected to IShapeFunction behaviour
 
-            Dim bCanAddGroup As Boolean = (Me.m_lbxGroups.SelectedItems.Count > 0)
-            Dim bCanRemoveGroup As Boolean = (Me.m_tvMaps.SelectedNode IsNot Nothing)
+        Dim bCanAddGroup As Boolean = (Me.m_lbxGroups.SelectedItems.Count > 0)
+        Dim bCanRemoveGroup As Boolean = (Me.m_tvMaps.SelectedNode IsNot Nothing)
+        Dim bCanSetMinMax As Boolean = Me.CanEditMinMax()
+        Dim bCanSetMeanSD As Boolean = Me.CanEditMeanSD()
 
-            Me.m_btnAdd.Enabled = bCanAddGroup
-            Me.m_btnRemove.Enabled = bCanRemoveGroup
+        ' ToDo: globalize this
+        Dim strXMin As String = "x min"
+        Dim strXMax As String = "x max"
+        Dim strMean As String = "mean"
+        Dim strSD As String = "SD" ' All caps
 
-            Select Case Me.m_shape.ShapeFunctionType
+        Select Case Me.m_shape.ShapeFunctionType
 
-                Case eShapeFunctionType.Normal
+            Case eShapeFunctionType.Normal
+                ' ToDo: globalize this
+                strXMin = "plot min"
+                strXMax = "plot max"
 
-                    Me.m_tbxXMax.Enabled = True
-                    Me.m_tbxXMin.Enabled = True
+                'Me.m_tbxMean.Text = Me.m_shape.Steep.ToString
+                'Me.m_tbxSD.Text = Me.m_SD.ToString
 
-                    Me.m_lblXMin.Enabled = True
-                    Me.m_lblXMax.Enabled = True
+            Case eShapeFunctionType.LeftShoulder, _
+                 eShapeFunctionType.RightShoulder, _
+                 eShapeFunctionType.Trapezoid
+                ' ToDo: globalize this
+                strXMin = "plot min"
+                strXMax = "plot max"
 
-                    Me.m_lblXMin.Text = "Plot min:"
-                    Me.m_lblXMax.Text = "Plot max:"
+            Case Else
+                ' NOP
+        End Select
 
-                    Me.m_txMean.Enabled = True
-                    Me.m_txSD.Enabled = True
-                    Me.m_txMean.Text = Me.m_shape.Steep.ToString
-                    Me.m_txSD.Text = Me.m_SD.ToString
+        Me.m_btnAdd.Enabled = bCanAddGroup
+        Me.m_btnRemove.Enabled = bCanRemoveGroup
 
-                Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder, eShapeFunctionType.Trapezoid
+        Me.m_lblXMin.Text = cStyleGuide.ToLabel(strXMin)
+        Me.m_lblXMax.Text = cStyleGuide.ToLabel(strXMax)
+        Me.m_fpMin.Enabled = bCanSetMinMax
+        Me.m_fpMax.Enabled = bCanSetMinMax
 
-                    Me.m_tbxXMax.Enabled = True
-                    Me.m_tbxXMin.Enabled = True
-
-                    Me.m_lblXMin.Enabled = True
-                    Me.m_lblXMax.Enabled = True
-
-                    Me.m_lblXMin.Text = "Plot min:"
-                    Me.m_lblXMax.Text = "Plot max:"
-
-                    Me.m_txMean.Enabled = False
-                    Me.m_txSD.Enabled = False
-                    Me.m_txMean.Text = ""
-                    Me.m_txSD.Text = ""
-
-                    Me.m_lbMean.Enabled = False
-                    Me.m_lbSD.Enabled = False
-
-                Case Else
-
-                    Me.m_tbxXMax.Enabled = True
-                    Me.m_tbxXMin.Enabled = True
-
-                    Me.m_lblXMin.Enabled = True
-                    Me.m_lblXMax.Enabled = True
-
-                    'the space after the text are so the label will line up when the text is swapped 
-                    Me.m_lblXMin.Text = "X min:  "
-                    Me.m_lblXMax.Text = "X max:  "
-
-                    Me.m_txMean.Enabled = False
-                    Me.m_txSD.Enabled = False
-                    Me.m_txMean.Text = ""
-                    Me.m_txSD.Text = ""
-
-                    Me.m_lbMean.Enabled = False
-                    Me.m_lbSD.Enabled = False
-
-            End Select
-
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
+        Me.m_lblMean.Text = cStyleGuide.ToLabel(strMean)
+        Me.m_lblSD.Text = cStyleGuide.ToLabel(strSD)
+        Me.m_fpMean.Enabled = bCanSetMeanSD
+        Me.m_fpSD.Enabled = bCanSetMeanSD
 
     End Sub
 
-    Private Sub calcXFromMeanAndSD(SD As Single, ByRef XMin As Single, ByRef XMax As Single)
+    Private Sub CalcXFromMeanAndSD(ByRef XMin As Single, ByRef XMax As Single)
 
         Dim mean As Single = Me.m_shape.Steep
         Dim widthSD As Single = Me.m_shape.YBase
+        Dim sd As Single = CSng(Me.m_fpSD.Value)
 
         'Compute half the width in the same units as SD (x axis units)
         Dim halfwidth As Single = SD * widthSD / 2.0F
@@ -396,37 +428,72 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
+    Private Function CalcSDFromXAxis() As Single
 
-    Private Sub calcSDFromXAxis()
         Debug.Assert(Not (Me.m_shape.ResponseLeftLimit = 0 And Me.m_shape.ResponseRightLimit = 0), "Opps X Axis has not been set!")
+
         Dim mean As Single = Me.m_shape.Steep
         Dim widthSD As Single = Me.m_shape.YBase
-
         Dim range As Single = mean - Me.m_shape.ResponseLeftLimit
-        Me.m_SD = range / (widthSD / 2)
+        Dim SD As Single = range / (widthSD / 2)
         'If this is a new response function then 
         'SD will be calculated as 0 give it a default of 1
-        If Me.m_SD = 0 Then Me.m_SD = 1
-    End Sub
+        If SD = 0 Then SD = 1
+        Return SD
 
-    Private Function CanUpdateMinMax() As Boolean
+    End Function
+
+    Private Function CanEditMinMax() As Boolean
+
+        If (Me.m_shape Is Nothing) Then Return False
+
         If Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal Or _
             Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder Or _
             Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder Or _
              Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid Then
             Return False
         End If
-        Return True
+
     End Function
 
+    Private Function CanEditMeanSD() As Boolean
 
+        If (Me.m_shape Is Nothing) Then Return False
+
+        Select Case Me.m_shape.ShapeFunctionType
+            Case eShapeFunctionType.Normal : Return True
+        End Select
+        Return False
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Launch EwE 'change shape' interface.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub ChangeFFShape()
-        Dim dlg As New dlgChangeShape(Me.m_uic, DirectCast(Me.m_shape, cForcingFunction), Me.m_ShapeGUIHandler)
-        dlg.ShowDialog(Me.m_uic.FormMain)
+        Try
+            Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand("ChangeEcosimShape")
+            cmd.Tag = Me.m_shape
+            cmd.Invoke()
+            cmd.Tag = Nothing
+        Catch ex As Exception
+
+        End Try
     End Sub
 
-
-    Private Sub getPlotMinMax(ByRef ShapeMin As Single, ByRef ShapeMax As Single, ByRef PlotMin As Single, ByRef PlotMax As Single)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' ToDo: document this
+    ''' </summary>
+    ''' <param name="sShapeMin"></param>
+    ''' <param name="sShapeMax"></param>
+    ''' <param name="sPlotMin"></param>
+    ''' <param name="sPlotMax"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub GetPlotMinMax(ByRef sShapeMin As Single, ByRef sShapeMax As Single, _
+                              ByRef sPlotMin As Single, ByRef sPlotMax As Single)
 
         Select Case Me.m_shape.ShapeFunctionType
 
@@ -434,41 +501,37 @@ Public Class dlgDefineMapResponseAssignments
                 'Normal distribution shape min and max are set from the Mean SD
 
                 'Use the Min Max on the interface to set the plot window size
-                PlotMin = Single.Parse(Me.m_tbxXMin.Text)
-                PlotMax = Single.Parse(Me.m_tbxXMax.Text)
+                sPlotMin = CSng(Me.m_fpMin.Value)
+                sPlotMax = CSng(Me.m_fpMax.Value)
 
                 'Get the Min and Max of the data from Mean, SD and SDWidth
-                Me.calcXFromMeanAndSD(Me.m_SD, ShapeMin, ShapeMax)
-
+                Me.CalcXFromMeanAndSD(sShapeMin, sShapeMax)
 
             Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder, eShapeFunctionType.Trapezoid
                 'Shoulder shape min and max can not be set here
                 'They only get set from the ChangeShape dialogue
 
                 'Min and Max of the plot window NOT the data
-                PlotMax = Single.Parse(Me.m_tbxXMax.Text)
-                PlotMin = Single.Parse(Me.m_tbxXMin.Text)
+                sPlotMin = CSng(Me.m_fpMin.Value)
+                sPlotMax = CSng(Me.m_fpMax.Value)
 
                 'The min and max of the data cannot be changed here
-                ShapeMin = Me.m_shape.ResponseLeftLimit
-                ShapeMax = Me.m_shape.ResponseRightLimit
-
+                sShapeMin = Me.m_shape.ResponseLeftLimit
+                sShapeMax = Me.m_shape.ResponseRightLimit
 
             Case Else
                 'For all other shape the Min Max get set for the Min and Max textbox on this form
-                ShapeMin = CSng(Me.m_tbxXMin.Text)
-                ShapeMax = CSng(Me.m_tbxXMax.Text)
-                PlotMin = ShapeMin
-                PlotMax = ShapeMax
+                sPlotMin = CSng(Me.m_fpMin.Value)
+                sPlotMax = CSng(Me.m_fpMax.Value)
+                sPlotMin = sShapeMin
+                sPlotMax = sShapeMax
 
         End Select
     End Sub
 
-
     Private Sub PlotShape()
 
         Try
-
             'Min Max of the response function
             Dim Xmin As Single
             Dim Xmax As Single
@@ -477,7 +540,7 @@ Public Class dlgDefineMapResponseAssignments
             Dim XmaxWin As Single
             Dim XminWin As Single
 
-            Me.getPlotMinMax(Xmin, Xmax, XminWin, XmaxWin)
+            Me.GetPlotMinMax(Xmin, Xmax, XminWin, XmaxWin)
 
             'set the Min and Max on the response function
             'this is what the core will use to find the x value
@@ -517,7 +580,7 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-    Private Sub loadMaps()
+    Private Sub LoadMaps()
 
         Dim map As IEnviroInputMap = Nothing
         Dim fmt As New cCoreInterfaceFormatter()
@@ -555,26 +618,31 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
+    Private Sub SetDefaultMinMax()
 
-    Private Sub setDefaultMinMax()
+        Debug.Assert(Me.m_map IsNot Nothing)
 
-        If (Me.m_map Is Nothing) Then
-            'some kind of a warning
-            Exit Sub
-        End If
+        Me.m_bInUpdate = True
 
-        Me.m_tbxXMax.Text = Me.m_map.Max.ToString
-        Me.m_tbxXMin.Text = Me.m_map.Min.ToString
+        '' Never use blunt string parsing in EwE6 UI to adhere to EwE number formatting behaviour
+        'Me.m_tbxXMax.Text = Me.m_map.Max.ToString
+        'Me.m_tbxXMin.Text = Me.m_map.Min.ToString
+
+        Me.m_fpMin.Value = Me.m_map.Min
+        Me.m_fpMax.Value = Me.m_map.Max
+        Me.UpdatePlots()
+
+        Me.m_bInUpdate = False
 
     End Sub
 
     Private Function GetSelectedMap(ByVal node As TreeNode) As cEnviroInputMap
         Try
 
-            Dim ob As Object
+            Dim ob As Object = Nothing
 
             'No node has been selected just return nothing
-            If node Is Nothing Then Return Nothing
+            If (node Is Nothing) Then Return Nothing
 
             Do While node.Parent IsNot Nothing
                 node = node.Parent
@@ -597,11 +665,7 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Sub PlotMap()
         Try
-            'Dim map As IEnviroInputMap = Me.getSelMap
-            If Me.m_map Is Nothing Then
-                'no map to plot
-                Return
-            End If
+            If (Me.m_map Is Nothing) Then Return
 
             Dim y2max As Single
             Dim histPts() As Drawing.PointF = Me.m_map.Histogram()
@@ -635,7 +699,7 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-#End Region
+#End Region ' Private Methods
 
 
 End Class
