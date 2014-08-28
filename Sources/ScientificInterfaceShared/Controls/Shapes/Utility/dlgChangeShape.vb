@@ -95,6 +95,7 @@ Namespace Controls
                 shape.YBase = Me.C
                 shape.Steep = Me.D
                 shape.ShapeData = Me.ShapeData
+                shape.ShapeFunctionType = Me.ShapeType
 
                 shape.UnlockUpdates()
 
@@ -148,7 +149,7 @@ Namespace Controls
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext, ByVal shape As cForcingFunction, ByVal handler As cShapeGUIHandler)
+        Public Sub New(ByVal uic As cUIContext, ByVal shape As cForcingFunction)
 
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
@@ -161,7 +162,7 @@ Namespace Controls
             ' Init
             Me.m_uic = uic
             Me.m_shape = shape
-            Me.m_handler = handler
+            Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape)
 
             'Keep the shape in a buffer
             Me.m_shpBuff = New cShapeBuffer(Me.m_shape)
@@ -290,6 +291,9 @@ Namespace Controls
                 ' MsgBox
                 Return
             End If
+
+            ' Hack
+            Me.m_shpBuff.ShapeType = Me.SelectedShapeType
 
             Me.m_shpBuff.Apply(Me.m_shape)
             Me.m_shape.Name = Me.m_tbxName.Text
