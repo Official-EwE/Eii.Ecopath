@@ -144,9 +144,19 @@
     <Compile Include="cDiets.vb" />
     <Compile Include="cQuotaShares.vb" />
     <Compile Include="cRegulation.vb" />
+    <Compile Include="cStockAssessmentFleetParameters.vb" />
     <Compile Include="cStockAssessmentModel.vb" />
     <Compile Include="cStockAssessmentParameters.vb" />
     <Compile Include="IMSEData.vb" />
+    <Compile Include="User interface\frmEditAssessmentError.Designer.vb">
+      <DependentUpon>frmEditAssessmentError.vb</DependentUpon>
+    </Compile>
+    <Compile Include="User interface\frmEditAssessmentError.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User interface\gridErrorCVs.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="User interface\gridDiets.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -247,6 +257,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User interface\frmEditAssessmentError.resx">
+      <DependentUpon>frmEditAssessmentError.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmEditDiets.resx">
       <DependentUpon>frmEditDiets.vb</DependentUpon>

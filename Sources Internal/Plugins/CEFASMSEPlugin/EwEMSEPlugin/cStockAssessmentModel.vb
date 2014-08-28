@@ -45,12 +45,6 @@ Public Class cStockAssessmentModel
 
     'ToDo Sort out how the Stratigies interact with the model
     'Todo Debug initialization of Stock Assessment model and Ecosim, figure out how this works with the strategies
-    'ToDo Seed for Troschuetz.Random.NormalDistribution, when does this need to get seeded. 
-    '   I'm thinking just once at the start of the run but need to make sure?
-    '   31-July-2014 We need to call Reset() once at the start of each MSE Run to reset the seed. 
-    '   this will generate the same sequence of random numbers for each complete run of the MSE.
-    'ToDo Observation error(error on biomass estimates) and implementation error(error on effort required to reach the quota)
-    'ToDo Sort out the interaction between editing the parameters and having to init the model. Does this need to happen at all, or just for some variables?
 
     'ToDo use of CVbiomEst() in the Kalman Gain filter. Should this be it's own variable?
 
@@ -73,6 +67,8 @@ Public Class cStockAssessmentModel
     Private m_strmBobsB As StreamWriter
 
     Private m_lstParams As List(Of cStockAssessmentParameters)
+
+    Private m_lstFleets As List(Of cStockAssessmentFleetParameters)
 
     Private m_simdata As cEcosimDatastructures
     Private m_pathdata As cEcopathDataStructures
@@ -185,6 +181,13 @@ Public Class cStockAssessmentModel
             For igrp As Integer = 0 To Me.m_core.nGroups
                 Me.m_lstParams.Add(New cStockAssessmentParameters(igrp, Me, Me.m_simdata, Me.m_pathdata))
             Next
+
+            m_lstFleets = New List(Of cStockAssessmentFleetParameters)
+            'Include the zero element so the indexing matches up with the core one based indexes
+            For iflt As Integer = 0 To Me.m_core.nGroups
+                Me.m_lstFleets.Add(New cStockAssessmentFleetParameters(iflt, Me, Me.m_pathdata))
+            Next
+
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
             'Me.MSE.InformUser(...)
@@ -348,9 +351,26 @@ Public Class cStockAssessmentModel
 
     Public ReadOnly Property Parameter(ByVal iGroupIndex As Integer) As cStockAssessmentParameters
         Get
-            Return Me.m_lstParams.Item(iGroupIndex)
+            Try
+                Return Me.m_lstParams.Item(iGroupIndex)
+            Catch ex As Exception
+                Debug.Assert(False, "Opps bug. Indexing error in Parameter()")
+            End Try
+            Return Nothing
         End Get
     End Property
+
+    Public ReadOnly Property FleetParameter(ByVal iFleetIndex As Integer) As cStockAssessmentFleetParameters
+        Get
+            Try
+                Return Me.m_lstFleets.Item(iFleetIndex)
+            Catch ex As Exception
+                Debug.Assert(False, "Opps bug. Indexing error in FleetParameter()")
+            End Try
+            Return Nothing
+        End Get
+    End Property
+
 
     Public Sub OnParameterChanged(ByVal iGroupIndex As Integer)
         'InitStockAssessment()
@@ -387,7 +407,7 @@ Public Class cStockAssessmentModel
         val = CSng(Math.Sqrt(-2 * Math.Log(V1)) * Math.Cos(2 * Math.PI * V2))
 
         'OK This should have worked but didn't
-        'it generated a difference sequence every time
+        'It generated a difference sequence every time it was reset for a new run
         'I must have done something wrong but can't figure out what...
         'val = CSng(Me.m_NormalDist.NextDouble())
 
@@ -580,20 +600,36 @@ Public Class cStockAssessmentModel
             If (reader IsNot Nothing) Then
                 'read the header line
                 reader.ReadLine()
-                Do Until reader.EndOfStream
+                For igrp = 1 To Me.Core.nLivingGroups
                     'igroup indexing assumes the file was written in order
                     'which it was
-                    igrp += 1
                     buff = reader.ReadLine()
                     Me.Parameter(igrp).FromCSVString(buff)
-                Loop
+                Next
+
+
+                'Older files did not include the fleets part of the file
+                'So read it if it's there
+                'If not used defaults which are already loaded
+                If Not reader.EndOfStream Then
+                    Try
+                        'Fleet data
+                        buff = reader.ReadLine()
+                        For iflt As Integer = 1 To Core.nFleets
+                            buff = reader.ReadLine()
+                            Me.FleetParameter(igrp).FromCSVString(buff)
+                        Next
+                    Catch ex As Exception
+
+                    End Try
+                End If
 
                 breturn = True
             End If '(reader IsNot Nothing)
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
-            cMSEUtils.LogError(msg, "Regulations could not load from " & strFilename & ". " & ex.Message)
+            cMSEUtils.LogError(msg, "Stock Assessment could not load from " & strFilename & ". " & ex.Message)
             breturn = False
         End Try
         cMSEUtils.ReleaseReader(reader)
@@ -628,6 +664,12 @@ Public Class cStockAssessmentModel
                 For iGrp As Integer = 1 To Me.m_core.nLivingGroups
                     strm.WriteLine(Me.Parameter(iGrp).toCSVString)
                 Next
+
+                strm.WriteLine(cStockAssessmentFleetParameters.toCSVHeader)
+                For iflt As Integer = 1 To Me.m_core.nFleets
+                    strm.WriteLine(Me.FleetParameter(iflt).toCSVString)
+                Next
+
                 cMSEUtils.ReleaseWriter(strm)
                 breturn = True
             End If

@@ -517,8 +517,10 @@ Public Class frmMSE
     Private Sub onUncertainty(sender As System.Object, e As System.EventArgs) Handles m_btnSAError.Click
 
         Try
-            'This is just until we get an interface for the Uncertainty/Error values
-            Me.MSE.InformUser("Sorry not implemented yet!", eMessageImportance.Information)
+            Dim frm As New frmEditAssessmentError(Me.UIContext, Me.MSE)
+            If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                Me.MSE.InvalidateConfigurationState(True)
+            End If
         Catch ex As Exception
 
         End Try

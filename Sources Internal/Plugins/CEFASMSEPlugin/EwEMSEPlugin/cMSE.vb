@@ -2812,8 +2812,7 @@ stepend:
                     'It is part of the stock assessment for practical reasons 
                     '   CV can be included in the interface
                     '   Random number generator needs to be seeded at the same time as the stock assessment model
-                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) ' * Me.StockAssessment.getImplementationError(iFleet)
-                    '_simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * CSng(Math.Exp(Me.StockAssessment.CV(iFleet) * m_RandNormal))
+                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
 
 
                 End If
