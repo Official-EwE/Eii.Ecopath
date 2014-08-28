@@ -278,28 +278,29 @@ Namespace Controls
                 If (cf And (Properties.cProperty.eChangeFlags.Value Or Properties.cProperty.eChangeFlags.CoreStatus)) > 0 Then
 
                     ' Sanity checks
-                    If objValue Is Nothing Then Return
+                    If (objValue IsNot Nothing) Then
 
-                    ' Get default value
-                    strText = objValue.ToString()
+                        ' Get default value
+                        strText = objValue.ToString()
 
-                    ' Interpret as single?
-                    If objValueType Is GetType(Single) Then
-                        ' #Yes: apply format
-                        If Me.m_tb.Focused Then
-                            strText = CDbl(objValue).ToString
-                        Else
-                            strText = sg.FormatNumber(CSng(objValue), style)
+                        ' Interpret as single?
+                        If objValueType Is GetType(Single) Then
+                            ' #Yes: apply format
+                            If Me.m_tb.Focused Then
+                                strText = CDbl(objValue).ToString
+                            Else
+                                strText = sg.FormatNumber(CSng(objValue), style)
+                            End If
                         End If
-                    End If
 
-                    ' Interpret as double?
-                    If objValueType Is GetType(Double) Then
-                        ' #Yes: apply format
-                        If Me.m_tb.Focused Then
-                            strText = CDbl(objValue).ToString
-                        Else
-                            strText = sg.FormatNumber(CDbl(objValue), style)
+                        ' Interpret as double?
+                        If objValueType Is GetType(Double) Then
+                            ' #Yes: apply format
+                            If Me.m_tb.Focused Then
+                                strText = CDbl(objValue).ToString
+                            Else
+                                strText = sg.FormatNumber(CDbl(objValue), style)
+                            End If
                         End If
                     End If
 
