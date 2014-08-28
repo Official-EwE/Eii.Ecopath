@@ -32,8 +32,8 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
-    ''' handling generic <see cref="cForcingFunction">forcing functions</see>.
+    ''' <see cref="cShapeGUIHandler"/> implementation for handling generic 
+    ''' <see cref="cForcingFunction">forcing functions</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
@@ -496,8 +496,14 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub ChangeFFShape()
-            Dim dlg As New dlgChangeShape(Me.UIContext, DirectCast(Me.SelectedShape, cForcingFunction), Me)
-            dlg.ShowDialog(Me.UIContext.FormMain)
+            Try
+                Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("ChangeEcosimShape")
+                cmd.Tag = Me.SelectedShape
+                cmd.Invoke()
+                cmd.Tag = Nothing
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         ''' -----------------------------------------------------------------------

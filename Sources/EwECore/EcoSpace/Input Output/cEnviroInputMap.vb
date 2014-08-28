@@ -51,18 +51,19 @@ Public Class cEnviroInputMap
 #Region "Construction Initialization"
 
     Friend Sub New(ByVal theManager As cMapResponseInteractionManager, ByVal source As cEcospaceLayer)
-        Me.m_source = source
-        Me.setManager(theManager)
-        ' Init to the data in the manager
-        Me.Init(Me.m_manager.MediationData, Me.m_manager.SpaceData)
-        m_iLayerIndex = cCore.NULL_VALUE
-        Me.Update()
+        Me.new(theManager, source, cCore.NULL_VALUE)
     End Sub
 
 
     Friend Sub New(ByVal theManager As cMapResponseInteractionManager, ByVal source As cEcospaceLayer, ByVal iLayerIndex As Integer)
-        Me.New(theManager, source)
+
+        Me.m_source = source
         Me.m_iLayerIndex = iLayerIndex
+        Me.setManager(theManager)
+
+        ' Init to the data in the manager
+        Me.Init(Me.m_manager.MediationData, Me.m_manager.SpaceData)
+        Me.Update()
 
     End Sub
 
