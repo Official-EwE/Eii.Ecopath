@@ -370,7 +370,7 @@ Public Class dlgDefineMapResponseAssignments
 
         Dim bCanAddGroup As Boolean = (Me.m_lbxGroups.SelectedItems.Count > 0)
         Dim bCanRemoveGroup As Boolean = (Me.m_tvMaps.SelectedNode IsNot Nothing)
-        Dim bCanSetMinMax As Boolean = Me.CanEditMinMax()
+        Dim bCanSetMinMax As Boolean = Me.CanEditMinMax() Or True
         Dim bCanSetMeanSD As Boolean = Me.CanEditMeanSD()
 
         ' ToDo: globalize this
@@ -447,12 +447,15 @@ Public Class dlgDefineMapResponseAssignments
 
         If (Me.m_shape Is Nothing) Then Return False
 
-        If Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal Or _
-            Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder Or _
-            Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder Or _
-             Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid Then
-            Return False
-        End If
+        Return True
+
+        'If Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal Or _
+        '    Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder Or _
+        '    Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder Or _
+        '     Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid Then
+        '    Return False
+        'End If
+        'Return True
 
     End Function
 
@@ -527,6 +530,7 @@ Public Class dlgDefineMapResponseAssignments
                 sPlotMax = sShapeMax
 
         End Select
+
     End Sub
 
     Private Sub PlotShape()
@@ -620,7 +624,7 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Sub SetDefaultMinMax()
 
-        Debug.Assert(Me.m_map IsNot Nothing)
+        If (Me.m_map Is Nothing) Then Return
 
         Me.m_bInUpdate = True
 
