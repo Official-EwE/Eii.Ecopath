@@ -1068,14 +1068,18 @@ Namespace Utilities
             Dim astrBits() As String
             Dim sbOUt As New StringBuilder()
 
-            ' All lower case first
-            strExpression = strExpression.ToLower()
-
             If bR2L Then
                 astrBits = strExpression.Split(New String() {" ."}, System.StringSplitOptions.RemoveEmptyEntries)
             Else
                 astrBits = strExpression.Split(New String() {". "}, System.StringSplitOptions.RemoveEmptyEntries)
             End If
+
+            ' Protect all words that are pure upper case. The rest will be turned to lower case
+            For i As Integer = 0 To astrBits.Length - 1
+                If (String.Compare(astrBits(i), astrBits(i).ToUpper, False) <> 0) Then
+                    astrBits(i) = astrBits(i).ToLower()
+                End If
+            Next
 
             For i As Integer = 0 To astrBits.Length - 1
                 astrBits(i) = astrBits(i).Trim
