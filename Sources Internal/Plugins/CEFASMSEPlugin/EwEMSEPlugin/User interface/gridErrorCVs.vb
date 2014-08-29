@@ -45,7 +45,7 @@ Public Class gridErrorCVs
 
     Private m_Assessment As cStockAssessmentModel
 
-    Private m_ErrorType As frmEditAssessmentError.eErrorType
+    Private m_ErrorType As frmEditAssessmentError.eErrorDataType
 
 #Region " Internal defs "
 
@@ -57,12 +57,14 @@ Public Class gridErrorCVs
 
 #End Region ' Internal defs
 
+    Public Event onEdited()
+
 #Region " Constructor "
 
     Public Sub New()
         MyBase.new()
 
-        m_ErrorType = frmEditAssessmentError.eErrorType.GroupObervationError
+        m_ErrorType = frmEditAssessmentError.eErrorDataType.GroupObervationError
 
     End Sub
 
@@ -75,11 +77,11 @@ Public Class gridErrorCVs
 #Region " Public interfaces "
 
 
-    Public Property ErrorDataType As frmEditAssessmentError.eErrorType
+    Public Property ErrorDataType As frmEditAssessmentError.eErrorDataType
         Get
             Return Me.m_ErrorType
         End Get
-        Set(value As frmEditAssessmentError.eErrorType)
+        Set(value As frmEditAssessmentError.eErrorDataType)
 
             Me.m_ErrorType = value
             If (Me.UIContext Is Nothing) Then Return
@@ -130,10 +132,10 @@ Public Class gridErrorCVs
         Dim colName As String
         Dim errorCaption As String
         Select Case Me.m_ErrorType
-            Case frmEditAssessmentError.eErrorType.FleetImplementationError
+            Case frmEditAssessmentError.eErrorDataType.FleetImplementationError
                 colName = SharedResources.HEADER_FLEETNAME
                 errorCaption = "Implementation Error"
-            Case frmEditAssessmentError.eErrorType.GroupObervationError
+            Case frmEditAssessmentError.eErrorDataType.GroupObervationError
                 colName = SharedResources.HEADER_GROUPNAME
                 errorCaption = "Observation Error"
         End Select
@@ -152,9 +154,9 @@ Public Class gridErrorCVs
 
         Select Case Me.m_ErrorType
 
-            Case frmEditAssessmentError.eErrorType.FleetImplementationError
+            Case frmEditAssessmentError.eErrorDataType.FleetImplementationError
                 FillFleetData()
-            Case frmEditAssessmentError.eErrorType.GroupObervationError
+            Case frmEditAssessmentError.eErrorDataType.GroupObervationError
                 FillGroupData()
 
         End Select
@@ -232,7 +234,7 @@ Public Class gridErrorCVs
     End Property
 
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
-
+        Dim bEdited As Boolean
         If Rows(p.Row).Tag Is Nothing Then
             'No Group in this row
             Return True
@@ -253,17 +255,19 @@ Public Class gridErrorCVs
 
                     Select Case Me.m_ErrorType
 
-                        Case frmEditAssessmentError.eErrorType.FleetImplementationError
+                        Case frmEditAssessmentError.eErrorDataType.FleetImplementationError
                             Dim param As cStockAssessmentFleetParameters = DirectCast(Rows(p.Row).Tag, cStockAssessmentFleetParameters)
                             If param.cvImpError <> newValue Then
                                 param.cvImpError = newValue
+                                bEdited = True
                             End If
 
-                        Case frmEditAssessmentError.eErrorType.GroupObervationError
+                        Case frmEditAssessmentError.eErrorDataType.GroupObervationError
 
                             Dim param As cStockAssessmentParameters = DirectCast(Rows(p.Row).Tag, cStockAssessmentParameters)
                             If param.CVObservationError <> newValue Then
                                 param.CVObservationError = newValue
+                                bEdited = True
                             End If
 
                     End Select
@@ -273,6 +277,14 @@ Public Class gridErrorCVs
         Catch ex As Exception
             Debug.Assert(False, Me.ToString + ".OnCellEdited() Exception: " + ex.Message)
         End Try
+
+        If bEdited Then
+            Try
+                RaiseEvent onEdited()
+            Catch ex As Exception
+
+            End Try
+        End If
 
         Return MyBase.OnCellEdited(p, cell)
 

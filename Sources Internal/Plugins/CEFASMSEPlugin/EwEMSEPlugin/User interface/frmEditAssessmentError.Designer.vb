@@ -98,7 +98,7 @@ Partial Class frmEditAssessmentError
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grdError.CustomSort = False
         Me.m_grdError.DataName = "grid content"
-        Me.m_grdError.ErrorDataType = EwEMSEPlugin.frmEditAssessmentError.eErrorType.GroupObervationError
+        Me.m_grdError.ErrorDataType = EwEMSEPlugin.frmEditAssessmentError.eErrorDataType.GroupObervationError
         Me.m_grdError.FixedColumnWidths = False
         Me.m_grdError.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grdError.GridToolTipActive = True

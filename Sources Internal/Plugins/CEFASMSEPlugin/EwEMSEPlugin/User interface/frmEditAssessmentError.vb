@@ -29,16 +29,14 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class frmEditAssessmentError
     Implements IDisposable
 
-    Private m_mse As cMSE = Nothing
-    Private m_bIsDirty As Boolean
-    Private m_StockAssess As cStockAssessmentModel
+#Region "Private Definitions"
 
     Private Class cComboItem
 
-        Public Property ErrorDataType As eErrorType
+        Public Property ErrorDataType As eErrorDataType
         Public Property Text As String
 
-        Public Sub New(ItemTest As String, ErorrTypeEnum As eErrorType)
+        Public Sub New(ItemTest As String, ErorrTypeEnum As eErrorDataType)
             ErrorDataType = ErorrTypeEnum
             Text = ItemTest
         End Sub
@@ -48,11 +46,24 @@ Public Class frmEditAssessmentError
         End Function
     End Class
 
-
-    Public Enum eErrorType As Integer
+    Public Enum eErrorDataType As Integer
         GroupObervationError
         FleetImplementationError
     End Enum
+
+#End Region
+
+
+#Region "Private Variables"
+
+    Private m_mse As cMSE = Nothing
+    Private m_bIsDirty As Boolean
+    Private m_StockAssess As cStockAssessmentModel
+
+#End Region
+
+
+#Region "Construction, Initialization and Destruction"
 
     Public Sub New(ByVal uic As cUIContext, MSE As cMSE)
         Me.m_mse = MSE
@@ -75,10 +86,12 @@ Public Class frmEditAssessmentError
 
         Me.m_grdError.Init(Me.m_StockAssess)
         Me.m_grdError.UIContext = Me.UIContext
-        Me.m_grdError.ErrorDataType = eErrorType.GroupObervationError
+        Me.m_grdError.ErrorDataType = eErrorDataType.GroupObervationError
 
-        Me.m_tscbTypes.Items.Add(New cComboItem("Biomass obervation error", eErrorType.GroupObervationError))
-        Me.m_tscbTypes.Items.Add(New cComboItem("Fleet implementation error", eErrorType.FleetImplementationError))
+        AddHandler Me.m_grdError.onEdited, AddressOf Me.OnGridEdited
+
+        Me.m_tscbTypes.Items.Add(New cComboItem("Biomass obervation error", eErrorDataType.GroupObervationError))
+        Me.m_tscbTypes.Items.Add(New cComboItem("Fleet implementation error", eErrorDataType.FleetImplementationError))
         Me.m_tscbTypes.SelectedIndex = 0
 
         Me.m_bIsDirty = False
@@ -103,23 +116,20 @@ Public Class frmEditAssessmentError
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.QuickEditHandler.Detach()
+        RemoveHandler Me.m_grdError.onEdited, AddressOf OnGridEdited
         Me.m_grdError.UIContext = Nothing
 
         MyBase.OnFormClosed(e)
 
     End Sub
 
-    Protected Overrides Sub UpdateControls()
-        MyBase.UpdateControls()
-        ' Me.m_btnOK.Enabled = Me.m_bIsDirty
-    End Sub
+#End Region
 
-    'Private Sub UpdateGrid(data As cDiets, strName As String)
-    '    Me.m_grid.Init(data)
-    '    Me.m_grid.DataName = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.CAPTION, strName)
-    'End Sub
+
+#Region "Events"
 
     Private Sub m_btnSave_Click(sender As System.Object, e As System.EventArgs) Handles m_btnSave.Click
+
         Dim lstrSubMessages As New List(Of String)
         Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_mse.DataPath, cMSEUtils.eMSEPaths.StockAssessment)
 
@@ -136,7 +146,7 @@ Public Class frmEditAssessmentError
 
     Private Sub OnGridEdited()
         Me.m_bIsDirty = True
-        Me.Invoke(New MethodInvoker(AddressOf UpdateControls))
+        Me.UpdateControls()
     End Sub
 
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -159,4 +169,16 @@ Public Class frmEditAssessmentError
         End Try
 
     End Sub
+
+#End Region
+
+#Region "Private Methods"
+
+    Protected Overrides Sub UpdateControls()
+        MyBase.UpdateControls()
+        'Me.m_btnSave.Enabled = Me.m_bIsDirty
+    End Sub
+
+#End Region
+
 End Class

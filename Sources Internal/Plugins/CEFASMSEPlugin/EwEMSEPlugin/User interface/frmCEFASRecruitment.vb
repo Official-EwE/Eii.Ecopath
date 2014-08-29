@@ -50,6 +50,7 @@ Public Class frmCEFASRecruitment
     Private m_qehGrid As cQuickEditHandler = Nothing
 
     Private m_Assessment As cStockAssessmentModel
+    Private m_inInit As Boolean
 
     Private Structure sGraphData
 
@@ -72,6 +73,7 @@ Public Class frmCEFASRecruitment
 
     Public Sub New(UI As cUIContext, MSE As cMSE)
         MyBase.New()
+        Me.m_inInit = True
         Me.UIContext = UI
 
         Me.m_Assessment = New cStockAssessmentModel(MSE)
@@ -114,6 +116,8 @@ Public Class frmCEFASRecruitment
 
         Me.CenterToParent()
         Me.RedrawGraph()
+
+        Me.m_inInit = False
 
     End Sub
 
@@ -164,11 +168,13 @@ Public Class frmCEFASRecruitment
 
 
     Private Sub OnUseAssessment(sender As System.Object, e As System.EventArgs) Handles m_chkUseAssessment.CheckedChanged
+        If Me.m_inInit Then Return
         Me.m_Assessment.UseAssessment = Me.m_chkUseAssessment.Checked
     End Sub
 
     Private Sub onParameterChanged(ByVal iGroupIndex As Integer)
         Try
+            If Me.m_inInit Then Return
             ' A relevant property has changed: redraw the graph
             Me.RedrawGraph()
         Catch ex As Exception

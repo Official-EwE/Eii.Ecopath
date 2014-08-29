@@ -51,6 +51,8 @@ Public Class cStockAssessmentModel
 
 #Region "Private data"
 
+    Private Const MODEL_HEADER As String = "ModelParametersName,Value"
+
     Private m_MSE As cMSE
     Private m_core As cCore
 
@@ -125,7 +127,7 @@ Public Class cStockAssessmentModel
         Me.m_pathdata = Me.MSE.EcopathData
 
         Me.m_isChanged = False
-        Me.UseAssessment = True
+        'Me.UseAssessment = True
 
         Debug.Assert(Me.m_MSE IsNot Nothing, "cStockAssessmentModel must have a valid cMSE object during initialization!")
         Debug.Assert(Me.m_core IsNot Nothing, "cStockAssessmentModel must have a valid cCore object during initialization!")
@@ -298,7 +300,13 @@ Public Class cStockAssessmentModel
 
     Public Function DoAnnualStockAssessment(ByVal Strategy As Strategy, iTimestep As Integer, Biomass() As Single) As Single()
         Try
+            'Run the Stock assessment model at the start of each year.
+            'This returns the biomass for the comming year that the quotas will be based on. 
 
+            '1. Get the observed biomass 
+            '2. Added observation error to the biomass
+            '3. Use the observed biomass with error as input to the stock recruitment model
+            '4. Return the biomass predicted by the stock recruitment model as the true biomass for the comming year
             If Me.UseAssessment Then
 
                 Dim nGrps As Integer = Me.Core.nLivingGroups
@@ -315,7 +323,7 @@ Public Class cStockAssessmentModel
                     'Get the estimated biomass base on the observed biomass plus uncertainty
                     'Using the stock recruitment curve from the EwE6 MSE interface
                     Me.Bestimate(igrp) = Me.stockRecruitment(iTimestep, igrp, Bobs(igrp), Me.Bestimate(igrp))
-                   
+
                 Next igrp
 
                 'For debugging dump BioEst/B to file
@@ -324,6 +332,7 @@ Public Class cStockAssessmentModel
                 Return Me.Bestimate
 
             Else
+                'Not using the Stock Assessment model so just return the unaltered biomass
                 Return Biomass
             End If
 
@@ -586,9 +595,9 @@ Public Class cStockAssessmentModel
     End Function
 
     Public Function Load(Optional msg As cMessage = Nothing, Optional strFilename As String = "") As Boolean Implements IMSEData.Load
-        Dim buff As String
-        Dim igrp As Integer
-        Dim breturn As Boolean = False
+        'Dim buff As String
+        'Dim igrp As Integer
+        Dim breturn As Boolean = True
 
         If (String.IsNullOrWhiteSpace(strFilename)) Then
             strFilename = Me.DefaultFileName
@@ -598,33 +607,11 @@ Public Class cStockAssessmentModel
 
         Try
             If (reader IsNot Nothing) Then
-                'read the header line
-                reader.ReadLine()
-                For igrp = 1 To Me.Core.nLivingGroups
-                    'igroup indexing assumes the file was written in order
-                    'which it was
-                    buff = reader.ReadLine()
-                    Me.Parameter(igrp).FromCSVString(buff)
-                Next
 
+                breturn = breturn And Me.ReadGroupData(reader)
+                breturn = breturn And Me.ReadFleetData(reader)
+                breturn = breturn And Me.ReadModelData(reader)
 
-                'Older files did not include the fleets part of the file
-                'So read it if it's there
-                'If not used defaults which are already loaded
-                If Not reader.EndOfStream Then
-                    Try
-                        'Fleet data
-                        buff = reader.ReadLine()
-                        For iflt As Integer = 1 To Core.nFleets
-                            buff = reader.ReadLine()
-                            Me.FleetParameter(igrp).FromCSVString(buff)
-                        Next
-                    Catch ex As Exception
-
-                    End Try
-                End If
-
-                breturn = True
             End If '(reader IsNot Nothing)
 
         Catch ex As Exception
@@ -649,6 +636,89 @@ Public Class cStockAssessmentModel
         Return breturn
     End Function
 
+
+    Private Function ReadGroupData(strm As StreamReader) As Boolean
+        Dim buff As String
+        Dim breturn As Boolean = True
+
+        Try
+            'read the header line
+            strm.ReadLine()
+            For igrp = 1 To Me.Core.nLivingGroups
+                'igroup indexing assumes the file was written in order
+                'which it was
+                buff = strm.ReadLine()
+                'Let the parameter object figure out how it was stored
+                Me.Parameter(igrp).FromCSVString(buff)
+            Next
+
+        Catch ex As Exception
+            breturn = False
+        End Try
+
+        Return breturn
+
+    End Function
+
+    Private Function ReadFleetData(strm As StreamReader) As Boolean
+        Dim buff As String
+        Dim breturn As Boolean = True
+
+        If strm.EndOfStream Then
+            'Fleet data was not even in the file
+            'This can happen with older files
+            'Return False and use the defaults
+            'next time the file is saved the data will be there
+            Return False
+        End If
+
+        Try
+            'Header
+            buff = strm.ReadLine()
+            'Fleet data
+            For iflt As Integer = 1 To Core.nFleets
+                buff = strm.ReadLine()
+                'Let the parameter object figure out how it was stored
+                Me.FleetParameter(iflt).FromCSVString(buff)
+            Next
+        Catch ex As Exception
+            breturn = False
+        End Try
+
+        Return breturn
+
+    End Function
+
+    Private Function ReadModelData(strm As StreamReader) As Boolean
+        Dim buff As String
+        Dim recs() As String
+        Dim breturn As Boolean = True
+
+        If strm.EndOfStream Then
+            'Model data was not even in the file
+            'This can happen with older files
+            'Return False and use the defaults
+            'next time the file is saved the data will be there
+            Return False
+        End If
+
+        Try
+            'Header data
+            buff = strm.ReadLine()
+            Debug.Assert(buff.Contains(MODEL_HEADER), "Opps could be a problem reading Model data from StockAssessment file.")
+            'Data
+            buff = strm.ReadLine()
+            recs = cStringUtils.SplitQualified(buff, ",")
+            Me.UseAssessment = Boolean.Parse(recs(1))
+
+        Catch ex As Exception
+            breturn = False
+        End Try
+
+        Return breturn
+
+    End Function
+
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
         Dim breturn As Boolean
         Try
@@ -669,6 +739,9 @@ Public Class cStockAssessmentModel
                 For iflt As Integer = 1 To Me.m_core.nFleets
                     strm.WriteLine(Me.FleetParameter(iflt).toCSVString)
                 Next
+
+                strm.WriteLine(MODEL_HEADER)
+                strm.WriteLine("UseStockAssessmentModel," + Me.UseAssessment.ToString)
 
                 cMSEUtils.ReleaseWriter(strm)
                 breturn = True

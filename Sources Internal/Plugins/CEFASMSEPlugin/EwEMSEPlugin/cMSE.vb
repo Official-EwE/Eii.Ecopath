@@ -2686,7 +2686,7 @@ stepend:
 
                 'OK Hook the stock assessment model up to the Quota setting
                 'Use the biomass estimated by the stock assessment model as the true biomass to set the Quota
-                TargConsQuota = DetermineQuotas(BiomassAtTimestep)
+                TargConsQuota = DetermineQuotas(bioEst)
 
                 'DON'T use stock assessment model 
                 'Compute the quota on the TRUE(Ecosim) biomass
