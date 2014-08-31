@@ -79,7 +79,7 @@ Namespace Other
         End Sub
 
         Private Sub OnSelectDataset(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnSelect.Click
+            Handles m_btnSelect.Click, m_lvDatasets.DoubleClick
 
             If (Me.m_lvDatasets.SelectedItems.Count <> 1) Then Return
 
@@ -331,14 +331,24 @@ Namespace Other
             Dim man As cSpatialDataSetManager = Me.UIContext.Core.SpatialDataConnectionManager.DatasetManager
             Dim strPath As String = ""
             Dim bHasSelection As Boolean = False
+            Dim bIsCurrent As Boolean = False
             Dim bHasCustomSelection As Boolean = False
 
             If (Me.m_lvDatasets.SelectedIndices.Count = 1) Then
                 bHasSelection = True
-                bHasCustomSelection = Me.m_lvDatasets.SelectedIndices(0) > 0
+                bHasCustomSelection = (Me.m_lvDatasets.SelectedIndices(0) > 0)
+
+                Dim item As ListViewItem = Me.m_lvDatasets.SelectedItems(0)
+
+                If (item.Tag Is Nothing) Then
+                    bIsCurrent = (man.CurrentConfigFile = cSpatialDataSetManager.DefaultConfigFile)
+                Else
+                    Dim cfg As cSpatialDataConfigFile = CType(item.Tag, cSpatialDataConfigFile)
+                    bIsCurrent = (man.CurrentConfigFile = cfg.FileName)
+                End If
             End If
 
-            Me.m_btnSelect.Enabled = bHasSelection
+            Me.m_btnSelect.Enabled = bHasSelection And Not bIsCurrent
             Me.m_btnRemove.Enabled = bHasCustomSelection
 
             strPath = cache.RootFolder
