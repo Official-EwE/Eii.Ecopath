@@ -351,6 +351,18 @@ Namespace Controls
             Return cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS
         End Function
 
+        Public Overrides Function IsForcing() As Boolean
+            Return False
+        End Function
+
+        Public Overrides Function IsMediation() As Boolean
+            Return True
+        End Function
+
+        Public Overrides Function IsTimeSeries() As Boolean
+            Return False
+        End Function
+
     End Class
 
 End Namespace ' Ecosim

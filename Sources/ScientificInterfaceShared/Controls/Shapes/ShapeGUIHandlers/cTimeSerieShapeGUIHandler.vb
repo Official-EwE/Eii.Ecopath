@@ -719,6 +719,18 @@ Namespace Controls
             Return ds.NumPoints
         End Function
 
+        Public Overrides Function IsForcing() As Boolean
+            Return False
+        End Function
+
+        Public Overrides Function IsMediation() As Boolean
+            Return False
+        End Function
+
+        Public Overrides Function IsTimeSeries() As Boolean
+            Return True
+        End Function
+
     End Class
 
 End Namespace
