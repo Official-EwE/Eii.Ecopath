@@ -21,7 +21,8 @@
     <SccProvider>
     </SccProvider>
     <OptionStrict>On</OptionStrict>
-    <ApplicationIcon>Resources\Ecopath0.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -213,6 +214,7 @@
     <Compile Include="Ecospace\Output\Map rendering\cMapDrawerFleet.vb" />
     <Compile Include="Ecospace\Output\Map rendering\cMapDrawerGroup.vb" />
     <Compile Include="Ecospace\Output\Map rendering\cRunEcospacePlotTypeFormatter.vb" />
+    <Compile Include="Other\cEwEIcon.vb" />
     <Compile Include="Other\cStyleGuideUpdater.vb" />
     <Compile Include="Controls\cEwEStatusBar.designer.vb">
       <DependentUpon>cEwEStatusBar.vb</DependentUpon>
@@ -339,6 +341,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\cSelectionMonitor.vb" />
+    <Compile Include="Other\frmSplash.Designer.vb">
+      <DependentUpon>frmSplash.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\frmSplash.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Other\Options\AutoSaveOptionAssets\cAutoSaveItemEngine.vb" />
     <Compile Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.Designer.vb">
       <DependentUpon>ucAutosaveOption.vb</DependentUpon>
@@ -906,6 +914,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="Resources\Ecopath3_easter.ico" />
     <None Include="_Designs_\EwE6 application layout.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -968,6 +977,9 @@
     <EmbeddedResource Include="Ecospace\Output\frmRunEcospace.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmRunEcospace.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\frmSplash.resx">
+      <DependentUpon>frmSplash.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.resx">
       <DependentUpon>ucAutosaveOption.vb</DependentUpon>
@@ -1055,8 +1067,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\ecopath5_30.ico" />
-    <Content Include="Resources\Ecopath6_joepie.ico" />
+    <None Include="Resources\Ecopath6_joepie.ico" />
+    <None Include="Resources\ecopath5_30.ico" />
     <Content Include="Resources\logo_sm.png" />
     <None Include="Resources\Warning.png" />
     <None Include="Resources\license.rtf" />
@@ -1193,6 +1205,8 @@
       <DependentUpon>ucOptionsPresentation.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Resources\ecopath_logo.ico" />
+    <None Include="Resources\Ecopath2_beta.ico" />
     <EmbeddedResource Include="Tools\MSEBatch\frmMSEBatchFixedF.resx">
       <DependentUpon>frmMSEBatchFixedF.vb</DependentUpon>
     </EmbeddedResource>
@@ -1261,7 +1275,6 @@
       <DependentUpon>frmUpdateComponents.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ecopath_logo.ico" />
     <Compile Include="Controls\cEwEStatusBar.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1743,18 +1756,13 @@
     <None Include="Resources\Ecotracer.ico" />
     <None Include="Resources\ewe_home.url.txt" />
     <None Include="Resources\certificate.png" />
-    <DesignData Include="Resources\Ecopath4_hohoho.ico" />
     <Content Include="Resources\Computer.png" />
-    <EmbeddedResource Include="Resources\Ecopath2_beta.ico" />
     <None Include="Resources\EWE_forever.jpg" />
-    <DesignDataWithDesignTimeCreatableTypes Include="Resources\Ecopath1_doc.ico" />
     <None Include="Resources\Ecopath_install.png" />
-    <None Include="Resources\Ecopath3_easter.ico" />
     <Content Include="Resources\logo_EU.jpg" />
     <None Include="Resources\ewe_wiki.url.txt" />
     <Content Include="Resources\logo_FIMR.jpg" />
     <None Include="Resources\Importance.png" />
-    <None Include="Resources\google.ico" />
     <Content Include="Resources\logo_LENFEST.jpg" />
     <None Include="Resources\logo_MGEL.gif" />
     <None Include="Resources\logo_PEW.jpg" />
@@ -1864,7 +1872,6 @@
       <DependentUpon>ucOptionsPluginDetails.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Resource Include="Resources\Ecopath0.ico" />
     <EmbeddedResource Include="Resources\Ecosim.ico" />
     <EmbeddedResource Include="Resources\Ecospace.ico" />
     <EmbeddedResource Include="Ecosim\Output\ShowAllFits\dlgChangeYScale.resx">
@@ -1981,6 +1988,14 @@
       <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Ecopath0.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ecopath1_doc.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ecopath4_hohoho.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

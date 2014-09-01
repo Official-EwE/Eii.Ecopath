@@ -28,6 +28,15 @@ Namespace My
 
     Class MyApplication
 
+        Private m_splash As frmSplash = Nothing
+
+        Protected Overrides Sub OnCreateSplashScreen()
+            If My.Settings.ShowSplash Then
+                Me.m_splash = New frmSplash()
+                Me.m_splash.Show()
+            End If
+        End Sub
+
     End Class
 
 End Namespace

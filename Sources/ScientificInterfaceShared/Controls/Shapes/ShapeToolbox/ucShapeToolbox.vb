@@ -278,7 +278,9 @@ Namespace Controls
                     Else
                         ' JS 26Aug14: better than object comparison
                         For Each shp As cShapeData In ashapes
-                            ids.Add(shp.DBID)
+                            If (shp IsNot Nothing) Then
+                                ids.Add(shp.DBID)
+                            End If
                         Next
 
                         For Each item As ListViewItem In Me.m_lvShapes.Items
