@@ -165,7 +165,7 @@ Public Class frmEwE6
                     Me.m_bShowNavPanel = Me.m_frm.Panel(cPANEL_NAV).IsHiding : Me.m_frm.Panel(cPANEL_NAV).AutoHide = My.Settings.PresentationModeCollapseNavPanel
 
                     ' JS 28Mar14: This now works
-                    ' - Using screen bounds works better than maximizing AppLauncher
+                    ' - Using screen bounds works better than maximizing frmEwE6
                     ' - TopMost is not needed anymore
                     ' - Do not change the order of the next three statements!
                     Me.m_bFormState = Me.m_frm.WindowState : Me.m_frm.WindowState = FormWindowState.Normal
@@ -305,12 +305,17 @@ Public Class frmEwE6
 
         Me.InitializeComponent()
 
-        Debug.Assert(frmEwE6.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
+        Debug.Assert(frmEwE6.__inst__ Is Nothing, "Only one instance of frmEwE6 allowed")
         frmEwE6.__inst__ = Me
         cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
 
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.m_presentationmode = New cPresentationMode(Me)
+
+        ' Prepare caption
+        Me.Text = My.Resources.GENERIC_CAPTION
+        ' Prepare Icon
+        Me.Icon = cEwEIcon.Current()
 
     End Sub
 
@@ -698,7 +703,7 @@ Public Class frmEwE6
         Dim so As SynchronizationContext = SynchronizationContext.Current
 
         If so Is Nothing Then
-            'create the sync object on the same thread that created the AppLauncher
+            'create the sync object on the same thread that created the frmEwE6
             so = New SynchronizationContext()
         End If
 
@@ -892,27 +897,6 @@ Public Class frmEwE6
             .BringToFront()
         End With
 
-        ' Prepare caption
-        Me.Text = My.Resources.GENERIC_CAPTION
-
-        ' Prepare icon
-        Select Case cDateUtils.GetNextEvent(15)
-            Case cDateUtils.eNextEvent.Easter
-                Me.Icon = My.Resources.Ecopath3_easter
-            Case cDateUtils.eNextEvent.Xmas
-                Me.Icon = My.Resources.Ecopath4_hohoho
-            Case cDateUtils.eNextEvent.Conf30
-                Me.Icon = My.Resources.ecopath5_30
-            Case cDateUtils.eNextEvent.DagVanDeLiefde
-                Me.Icon = My.Resources.Ecopath6_joepie
-            Case Else
-#If BETA = 1 Then
-                Me.Icon = My.Resources.Ecopath2_beta
-#Else
-                Me.Icon = My.Resources.Ecopath0
-#End If
-        End Select
-
         Me.ResumeLayout()
         My.Settings.Reload()
 
@@ -960,6 +944,14 @@ Public Class frmEwE6
         Me.Help.HelpTopic(Me.Panel(cPANEL_START)) = "Ecopath with Ecosim 6 Getting started.htm"
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
+        Try
+            If (frmSplash.GetInstance() IsNot Nothing) Then
+                frmSplash.GetInstance().Close()
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -2027,6 +2019,7 @@ Public Class frmEwE6
                     If Me.AskFeedback(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
                                       replystyle:=eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
                         Me.RemoveModelMRU(strFileName)
+                        Me.PopulateModelMRUDropdown()
                     End If
 
                 Case eLoadSourceType.User, _
@@ -3390,7 +3383,7 @@ Public Class frmEwE6
             Dim dlg As New dlgEditPedigree(Me.UIContext, DirectCast(cmd, cEditPedigreeCommand).Variable)
             dlg.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "AppLauncher::OnEditPedigreeLevels")
+            cLog.Write(ex, "frmEwE6::OnEditPedigreeLevels")
         End Try
     End Sub
 
@@ -3496,7 +3489,7 @@ Public Class frmEwE6
                     Try
                         Me.Core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                     Catch ex As Exception
-                        cLog.Write(ex, "AppLauncher::SaveEcosimScenarioAs")
+                        cLog.Write(ex, "frmEwE6::SaveEcosimScenarioAs")
                     End Try
                     cApplicationStatusNotifier.EndProgress(Me.Core)
 
@@ -3788,7 +3781,7 @@ Public Class frmEwE6
                         Try
                             Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                         Catch ex As Exception
-                            cLog.Write(ex, "AppLauncher::SaveEcopaceScenarioAs")
+                            cLog.Write(ex, "frmEwE6::SaveEcopaceScenarioAs")
                         End Try
                         cApplicationStatusNotifier.EndProgress(Me.Core)
 
@@ -3978,7 +3971,7 @@ Public Class frmEwE6
             dlg.UIContext = Me.UIContext
             dlg.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "AppLauncher:OnDefineEcospaceDatasets")
+            cLog.Write(ex, "frmEwE6:OnDefineEcospaceDatasets")
         End Try
     End Sub
 
@@ -4002,7 +3995,7 @@ Public Class frmEwE6
             Dim dlg As New Ecospace.Controls.dlgExportSpatialData(Me.UIContext)
             dlg.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "AppLauncher:OnExportEcospaceDatasets")
+            cLog.Write(ex, "frmEwE6:OnExportEcospaceDatasets")
         End Try
     End Sub
 
@@ -4031,7 +4024,7 @@ Public Class frmEwE6
                     ' NOP
             End Select
         Catch ex As Exception
-            cLog.Write(ex, "AppLauncher:OnImportLayerData")
+            cLog.Write(ex, "frmEwE6:OnImportLayerData")
         End Try
     End Sub
 
@@ -4054,7 +4047,7 @@ Public Class frmEwE6
             dlg.Layers = Me.m_cmdExportLayerData.Layers
             dlg.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "AppLauncher:OnExportLayerData")
+            cLog.Write(ex, "frmEwE6:OnExportLayerData")
         End Try
     End Sub
 
@@ -4178,7 +4171,7 @@ Public Class frmEwE6
                     Try
                         Me.Core.SaveEcotracerScenario(DirectCast(dlg.Scenario, cEcotracerScenario))
                     Catch ex As Exception
-                        cLog.Write(ex, "AppLauncher::SaveEcotracerScenarioAs")
+                        cLog.Write(ex, "frmEwE6::SaveEcotracerScenarioAs")
                     End Try
                     cApplicationStatusNotifier.EndProgress(Me.Core)
                 End If
@@ -4624,7 +4617,7 @@ Public Class frmEwE6
             Me.PopulateModelMRUDropdown()
             Me.PopulateScenarioDropdowns()
         Catch ex As Exception
-            cLog.Write(ex, "AppLauncher::OnCoreExecutionStateChanged(" & csm.CoreExecutionState.ToString() & ")")
+            cLog.Write(ex, "frmEwE6::OnCoreExecutionStateChanged(" & csm.CoreExecutionState.ToString() & ")")
         End Try
 
     End Sub
@@ -4640,7 +4633,7 @@ Public Class frmEwE6
                 End If
             End If
         Catch ex As Exception
-            cLog.Write(ex, "AppLauncher::OnCoreMessage(" & msg.Message & ")")
+            cLog.Write(ex, "frmEwE6::OnCoreMessage(" & msg.Message & ")")
         End Try
     End Sub
 
@@ -4651,7 +4644,7 @@ Public Class frmEwE6
             Dim pmsg As cProgressMessage = DirectCast(msg, cProgressMessage)
             Me.ShowProgress(pmsg.ProgressState, pmsg.Message, pmsg.Progress)
         Catch ex As Exception
-            cLog.Write(ex, "AppLauncher::OnProgressMessage(" & msg.Message & ")")
+            cLog.Write(ex, "frmEwE6::OnProgressMessage(" & msg.Message & ")")
         End Try
     End Sub
 

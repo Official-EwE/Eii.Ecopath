@@ -239,5 +239,8 @@
   &lt;anyType /&gt;
 &lt;/ArrayOfAnyType&gt;</Value>
     </Setting>
+    <Setting Name="ShowSplash" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
