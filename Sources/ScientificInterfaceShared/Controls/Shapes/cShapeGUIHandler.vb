@@ -589,6 +589,10 @@ Namespace Controls
             Return cCore.NULL_VALUE
         End Function
 
+        Public MustOverride Function IsForcing() As Boolean
+        Public MustOverride Function IsMediation() As Boolean
+        Public MustOverride Function IsTimeSeries() As Boolean
+
 #End Region ' Public access
 
 #Region " Factory "

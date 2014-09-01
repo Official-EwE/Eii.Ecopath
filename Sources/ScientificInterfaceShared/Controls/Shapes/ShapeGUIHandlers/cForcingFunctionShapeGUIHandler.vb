@@ -794,6 +794,18 @@ Namespace Controls
 
 #End Region ' Helper methods
 
+        Public Overrides Function IsForcing() As Boolean
+            Return True
+        End Function
+
+        Public Overrides Function IsMediation() As Boolean
+            Return False
+        End Function
+
+        Public Overrides Function IsTimeSeries() As Boolean
+            Return False
+        End Function
+
     End Class
 
 End Namespace ' Controls
