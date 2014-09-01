@@ -19,7 +19,6 @@ Namespace SpatialData
 
         Private m_strFileName As String = ""
         Private m_strDatasetName As String = ""
-        Private m_guid As Guid = Guid.Empty
 
 #End Region ' Internal vars
 
@@ -54,12 +53,6 @@ Namespace SpatialData
             End Set
         End Property
 
-        Public ReadOnly Property GUID As Guid
-            Get
-                Return Me.m_guid
-            End Get
-        End Property
-
         Public Property DatasetName As String
             Get
                 If (String.IsNullOrWhiteSpace(Me.m_strDatasetName)) And _
@@ -83,10 +76,7 @@ Namespace SpatialData
 #Region " Internals "
 
         Friend Function Create(ByVal strFile As String) As Boolean
-
             Me.FileName = strFile
-            Me.m_guid = GUID.NewGuid()
-
         End Function
 
         Friend Function Initialize(ByVal strFile As String) As Boolean
@@ -114,7 +104,6 @@ Namespace SpatialData
                         Case "Contact" : Me.Contact = xa.InnerText
                         Case "Source" : Me.Source = xa.InnerText
                         Case "Description" : Me.Description = xa.InnerText
-                        Case "GUID" : GUID.TryParse(xa.InnerText, Me.m_guid)
                     End Select
                 Next
             Next
@@ -169,7 +158,7 @@ Namespace SpatialData
 
                                     ' Assign GUID
                                     xa = xn.Attributes("GUID")
-                                    ds.GUID = Guid.Parse(xa.InnerText)
+                                    ds.GUID = GUID.Parse(xa.InnerText)
 
 
                                 Else '(t IsNot Nothing)
@@ -199,7 +188,7 @@ Namespace SpatialData
                             Dim bAdd As Boolean = False
                             If (ds IsNot Nothing) Then
                                 bAdd = True
-                                If (Not (ds.GUID.Equals(Guid.Empty))) Then
+                                If (Not (ds.GUID.Equals(GUID.Empty))) Then
                                     bAdd = (man.Find(ds.GUID) Is Nothing)
                                 End If
                             End If
@@ -331,13 +320,6 @@ Namespace SpatialData
                 xnRoot.Attributes.Append(xaRoot)
             End If
             xaRoot.InnerText = Me.Description
-
-            xaRoot = CType(xnRoot.Attributes.GetNamedItem("GUID"), XmlAttribute)
-            If (xaRoot Is Nothing) Then
-                xaRoot = doc.CreateAttribute("GUID")
-                xnRoot.Attributes.Append(xaRoot)
-            End If
-            xaRoot.InnerText = Convert.ToString(Me.GUID)
 
             ' Gather dataset config nodes, but do not add to the doc until all done
             For Each ds As ISpatialDataSet In datasets
