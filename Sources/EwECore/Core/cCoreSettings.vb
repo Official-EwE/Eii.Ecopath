@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -144,6 +145,7 @@ Friend Class cCoreSettings
     ''' -----------------------------------------------------------------------
     Public Property Author As String
         Get
+            If (String.IsNullOrWhiteSpace(Me.m_strAuthor)) Then Return cSystemUtils.GetUserName()
             Return Me.m_strAuthor
         End Get
         Set(value As String)

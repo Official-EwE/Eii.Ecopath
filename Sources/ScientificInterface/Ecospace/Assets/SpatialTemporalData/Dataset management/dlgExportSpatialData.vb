@@ -130,18 +130,9 @@ Namespace Ecospace.Controls
         Private Sub OnExport(sender As System.Object, e As System.EventArgs) _
             Handles m_btnExport.Click
 
-            Dim strAuthor As String = My.Settings.Author
-            Dim strContact As String = My.Settings.Contact
             Dim sm As cCoreStateMonitor = Me.m_uic.Core.StateMonitor
 
-            If (sm.HasEcopathLoaded) Then
-                Dim model As cEwEModel = Me.m_uic.Core.EwEModel
-                If (String.IsNullOrWhiteSpace(strAuthor)) Then strAuthor = model.Author
-                If (String.IsNullOrWhiteSpace(strContact)) Then strContact = model.Contact
-            End If
-
-            If Me.m_manSets.Save(Me.OutputLocation(), Me.SelectedDatasets(), _
-                                 Me.m_tbxDescription.Text, My.Settings.Author, My.Settings.Contact) Then
+            If Me.m_manSets.Save(Me.OutputLocation(), Me.SelectedDatasets(), Me.m_tbxDescription.Text) Then
                 Me.DialogResult = Windows.Forms.DialogResult.OK
                 Me.Close()
             End If

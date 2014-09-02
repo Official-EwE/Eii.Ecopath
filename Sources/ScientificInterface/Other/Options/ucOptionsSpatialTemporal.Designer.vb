@@ -44,6 +44,7 @@ Namespace Other
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_lvDatasets = New System.Windows.Forms.ListView()
             Me.m_chdrName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_chdrCurrent = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.m_chdrAuthor = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.m_chdrContact = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.m_chdrLOcation = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -52,9 +53,9 @@ Namespace Other
             Me.m_hdrCache = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnSelect = New System.Windows.Forms.Button()
-            Me.m_chdrCurrent = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.m_ilLoaded = New System.Windows.Forms.ImageList(Me.components)
             Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_btnExport = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_btnAdd
@@ -122,6 +123,10 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_chdrName, "m_chdrName")
             '
+            'm_chdrCurrent
+            '
+            resources.ApplyResources(Me.m_chdrCurrent, "m_chdrCurrent")
+            '
             'm_chdrAuthor
             '
             resources.ApplyResources(Me.m_chdrAuthor, "m_chdrAuthor")
@@ -170,10 +175,6 @@ Namespace Other
             Me.m_btnSelect.Name = "m_btnSelect"
             Me.m_btnSelect.UseVisualStyleBackColor = True
             '
-            'm_chdrCurrent
-            '
-            resources.ApplyResources(Me.m_chdrCurrent, "m_chdrCurrent")
-            '
             'm_ilLoaded
             '
             Me.m_ilLoaded.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
@@ -184,6 +185,12 @@ Namespace Other
             '
             resources.ApplyResources(Me.Label1, "Label1")
             Me.Label1.Name = "Label1"
+            '
+            'm_btnExport
+            '
+            resources.ApplyResources(Me.m_btnExport, "m_btnExport")
+            Me.m_btnExport.Name = "m_btnExport"
+            Me.m_btnExport.UseVisualStyleBackColor = True
             '
             'ucOptionsSpatialTemporal
             '
@@ -200,6 +207,7 @@ Namespace Other
             Me.Controls.Add(Me.m_lblCacheLocationValue)
             Me.Controls.Add(Me.m_btnClearCache)
             Me.Controls.Add(Me.m_btnRemove)
+            Me.Controls.Add(Me.m_btnExport)
             Me.Controls.Add(Me.m_btnSelect)
             Me.Controls.Add(Me.m_btnNew)
             Me.Controls.Add(Me.m_btnAdd)
@@ -232,6 +240,7 @@ Namespace Other
         Private WithEvents m_chdrCurrent As System.Windows.Forms.ColumnHeader
         Private WithEvents m_ilLoaded As System.Windows.Forms.ImageList
         Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_btnExport As System.Windows.Forms.Button
 
     End Class
 End Namespace

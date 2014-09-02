@@ -57,7 +57,11 @@ Namespace SpatialData
         Private m_indexer As cSpatialDatasetIndexer = Nothing
         Private m_bIndexingAllowed As Boolean = False
 
+        ' Current config metadata
         Private m_strConfigFile As String = ""
+        Private m_strAuthor As String = ""
+        Private m_strContact As String = ""
+        Private m_strDescription As String = ""
 
         Private m_lConfigFiles As List(Of cSpatialDataConfigFile)
 
@@ -165,7 +169,12 @@ Namespace SpatialData
             '     file content and purpose, etc. This warrants a unique class to maintain this info.
             Dim cfg As New cSpatialDataConfigFile()
             If cfg.Initialize(strFile) Then
-                Return cfg.Load(Me.m_core, Me)
+                If cfg.Load(Me.m_core, Me) Then
+                    bSuccess = True
+                    Me.m_strDescription = cfg.Description
+                    Me.m_strAuthor = cfg.Author
+                    Me.m_strContact = cfg.Contact
+                End If
             End If
 
             Return bSuccess
@@ -185,9 +194,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function Save(Optional strFile As String = "", _
                              Optional datasets As ISpatialDataSet() = Nothing, _
-                             Optional strDescription As String = "", _
-                             Optional strAuthor As String = "", _
-                             Optional strContact As String = "") As Boolean
+                             Optional strDescription As String = "") As Boolean
 
             Dim bChanged As Boolean = False
             Dim nExported As Integer = 0
@@ -229,8 +236,8 @@ Namespace SpatialData
                                                   Path.GetFileNameWithoutExtension(strFile), _
                                                   strDescription, _
                                                   cSystemUtils.GetHostName(), _
-                                                  strAuthor, _
-                                                  strContact)
+                                                  Me.m_strAuthor, _
+                                                  Me.m_strContact)
             bSuccess = cfg.Save(Me.m_core, Me, datasets, bExporting)
 
             ' Restore original config file name
@@ -515,12 +522,23 @@ Namespace SpatialData
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Creates a new configuration file, and adds it to the internal list of
+        ''' defined spatial temporal data configuration files.
+        ''' </summary>
+        ''' <param name="strFile"></param>
+        ''' <param name="strName"></param>
+        ''' <param name="strDescription"></param>
+        ''' <remarks>The dataset configuration file will inherit the local computer 
+        ''' name, and <see cref="cCore.DefaultAuthor">author</see> and <see cref="cCore.DefaultContact">contact</see> 
+        ''' information as configured in the core.
+        ''' </remarks>
+        ''' <returns>The created dataset, or nothing if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
         Public Function CreateConfigFile(ByVal strFile As String, _
                                          ByVal strName As String, _
-                                         ByVal strDescription As String, _
-                                         ByVal strAuthor As String, _
-                                         ByVal strContact As String, _
-                                         ByVal strSource As String) As cSpatialDataConfigFile
+                                         ByVal strDescription As String) As cSpatialDataConfigFile
 
             Dim cfg As cSpatialDataConfigFile = Nothing
 
@@ -530,7 +548,10 @@ Namespace SpatialData
                 If String.Compare(cfg.FileName, strFile, True) = 0 Then Return Nothing
             Next
 
-            cfg = New cSpatialDataConfigFile(strFile, strName, strDescription, strSource, strAuthor, strContact)
+            cfg = New cSpatialDataConfigFile(strFile, strName, strDescription, _
+                                             cSystemUtils.GetHostName(), _
+                                             Me.m_core.DefaultAuthor, Me.m_core.DefaultContact)
+            cfg.Save(Me.m_core, Me, Nothing, False)
             Me.m_lConfigFiles.Add(cfg)
             Return cfg
 
