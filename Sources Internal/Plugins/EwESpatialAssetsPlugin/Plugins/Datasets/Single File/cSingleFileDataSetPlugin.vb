@@ -230,7 +230,11 @@ Namespace SpatialData
             xnFile = doc.CreateElement("File")
 
             xaFile = doc.CreateAttribute("Source")
-            xaFile.Value = strSource
+            If (Me.IsSourceRelative) Then
+                xaFile.Value = Me.ToRelativePath(strSource)
+            Else
+                xaFile.Value = strSource
+            End If
             xnFile.Attributes.Append(xaFile)
 
             xaFile = doc.CreateAttribute("IsSourceRelative")

@@ -364,7 +364,11 @@ Namespace SpatialData
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Source")
-            xn.InnerText = Me.Source
+            If Me.IsSourceRelative Then
+                xn.InnerText = Me.ToRelativePath(Me.Source)
+            Else
+                xn.InnerText = Me.Source
+            End If
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("IsSourceRelative")
