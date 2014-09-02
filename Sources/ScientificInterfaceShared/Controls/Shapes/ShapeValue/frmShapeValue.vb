@@ -86,6 +86,7 @@ Public Class frmShapeValue
 #Region " Private vars "
 
     Private m_shape As cShapeData = Nothing
+    Private m_handler As cShapeGUIHandler = Nothing
     Private m_iNumPoints As Integer = 0
     Private m_SketchPad As ucSketchPad = Nothing
     Private m_displayMode As eDisplayMode = eDisplayMode.Monthly
@@ -99,6 +100,9 @@ Public Class frmShapeValue
     End Enum
 
     Private Const cNUMROWS_EMTPY As Integer = 100
+
+    Private m_fpWeight As cEwEFormatProvider = Nothing
+    Private m_fpXBase As cEwEFormatProvider = Nothing
 
 #End Region ' Private vars
 
@@ -123,6 +127,7 @@ Public Class frmShapeValue
 
         ' Store shape
         Me.m_shape = shape
+        Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape)
 
         ' Determine interface mode
         If (shape Is Nothing) Then
@@ -189,6 +194,9 @@ Public Class frmShapeValue
             End If
         End If
 
+        Me.m_fpWeight = New cEwEFormatProvider(Me.UIContext, Me.m_txtWeight, GetType(Single))
+        Me.m_fpXBase = New cEwEFormatProvider(Me.UIContext, Me.m_txtXBase, GetType(Single))
+
         Me.FillDataGrid()
         Me.UpdateControls()
 
@@ -198,7 +206,7 @@ Public Class frmShapeValue
         MyBase.OnFormClosed(e)
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnOK.Click
 
         Dim bSucces As Boolean = False
@@ -222,7 +230,7 @@ Public Class frmShapeValue
         End If
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnCancel.Click
 
         ' Done
@@ -231,7 +239,7 @@ Public Class frmShapeValue
 
     End Sub
 
-    Private Sub cmbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_cmbType.SelectedIndexChanged
 
         Me.FillPoolCodeComboBox()
@@ -241,10 +249,11 @@ Public Class frmShapeValue
 
     Private Sub AnyTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_txtWeight.TextChanged, m_lblNumPoints.TextChanged, m_txtName.TextChanged
-        Me.UpdateControls()
+        'Lazy update
+        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
     End Sub
 
-    Private Sub cmbPoolCode_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnPoolSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_cmbPoolCode.SelectedIndexChanged
         Me.UpdateControls()
     End Sub
@@ -328,7 +337,7 @@ Public Class frmShapeValue
         m_txtXBase.Visible = bIsMediation
 
         If bIsMediation Then
-            Me.m_txtXBase.Text = CStr(DirectCast(Me.m_shape, cMediationBaseFunction).XBaseIndex)
+            Me.m_fpXBase.Value = DirectCast(Me.m_shape, cMediationBaseFunction).XBaseIndex
         End If
 
         Me.IsSeasonal = Me.m_shape.IsSeasonal
@@ -350,7 +359,7 @@ Public Class frmShapeValue
 
         m_lblWeight.Visible = True
         m_txtWeight.Visible = True
-        m_txtWeight.Text = CStr(ts.WtType)
+        Me.m_fpWeight.Value = ts.WtType
 
         m_lblType.Visible = True
         m_cmbType.Visible = True
@@ -377,7 +386,6 @@ Public Class frmShapeValue
     ''' <summary>
     ''' Load an empty grid for Time Series
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub LoadEmptyGrid()
 
         Dim lstrTSNames As New List(Of String)
@@ -437,7 +445,7 @@ Public Class frmShapeValue
         'Update the time series
         ts.Name = m_txtName.Text
         ' Parse value using UI number settings
-        ts.WtType = Single.Parse(m_txtWeight.Text)
+        ts.WtType = CSng(Me.m_fpWeight.Value)
         ts.TimeSeriesType = Me.SelectedTimeSeriesType()
 
         ' Set the pool code
@@ -478,7 +486,7 @@ Public Class frmShapeValue
 
         If TypeOf (ff) Is cMediationBaseFunction Then
             ' Parse value using UI number settings
-            DirectCast(ff, cMediationBaseFunction).XBaseIndex = Integer.Parse(Me.m_txtXBase.Text)
+            DirectCast(ff, cMediationBaseFunction).XBaseIndex = CInt(Me.m_fpXBase.Value)
         End If
 
         ' Update the shape
@@ -505,7 +513,7 @@ Public Class frmShapeValue
 
         strName = m_txtName.Text
         ' Parse value using UI number settings
-        sWeight = Single.Parse(m_txtWeight.Text)
+        sWeight = CSng(Me.m_fpWeight.Value)
         tsType = Me.SelectedTimeSeriesType()
 
         ' Set the pool code

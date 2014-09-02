@@ -354,10 +354,10 @@
     <Compile Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Other\Options\ucOptionsSpatailTemporal.Designer.vb">
-      <DependentUpon>ucOptionsSpatailTemporal.vb</DependentUpon>
+    <Compile Include="Other\Options\ucOptionsSpatialTemporal.Designer.vb">
+      <DependentUpon>ucOptionsSpatialTemporal.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\ucOptionsSpatailTemporal.vb">
+    <Compile Include="Other\Options\ucOptionsSpatialTemporal.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Options\ucOptionsPedigree.Designer.vb">
@@ -984,8 +984,8 @@
     <EmbeddedResource Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.resx">
       <DependentUpon>ucAutosaveOption.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\ucOptionsSpatailTemporal.resx">
-      <DependentUpon>ucOptionsSpatailTemporal.vb</DependentUpon>
+    <EmbeddedResource Include="Other\Options\ucOptionsSpatialTemporal.resx">
+      <DependentUpon>ucOptionsSpatialTemporal.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsPedigree.resx">

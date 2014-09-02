@@ -30,6 +30,7 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities
 
 #End Region
 
@@ -79,7 +80,7 @@ Namespace Other
         End Sub
 
         Private Sub OnSelectDataset(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnSelect.Click, m_lvDatasets.DoubleClick
+            Handles m_btnSelect.Click, m_lvDatasets.DoubleClick, m_btnExport.Click
 
             If (Me.m_lvDatasets.SelectedItems.Count <> 1) Then Return
 
@@ -129,6 +130,28 @@ Namespace Other
 
             man.ConfigFileDefinitions.Remove(cfg)
             Me.UpdateConfigFileList()
+
+        End Sub
+
+        Private Sub OnNewFile(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnNew.Click
+
+            ' ToDo: globalize this
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            Dim core As cCore = Me.UIContext.Core
+            Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
+
+            cmdFS.Title = "Select data set file to create"
+            cmdFS.Invoke("Spatial temporal dataset files|*.xml", 0)
+
+            If (cmdFS.Result = DialogResult.OK) Then
+                man.CreateConfigFile(cmdFS.FileName, Path.GetFileNameWithoutExtension(cmdFS.FileName), "")
+                Me.UpdateConfigFileList()
+            End If
 
         End Sub
 
@@ -283,6 +306,7 @@ Namespace Other
             Dim lvi As ListViewItem = Nothing
             Dim core As cCore = Me.UIContext.Core
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
+            Dim strItem As String = ""
 
             Me.m_lvDatasets.Items.Clear()
             lvi = Me.m_lvDatasets.Items.Add(SharedResources.GENERIC_VALUE_DEFAULT)
@@ -303,7 +327,7 @@ Namespace Other
                 Else
                     lvi.SubItems.Add("")
                 End If
-                lvi.SubItems.Add(Me.ToDefaultString(String.Format("{0} {1}", cfg.Author, cfg.Source)))
+                lvi.SubItems.Add(Me.ToDefaultString("{0}@{1}", cfg.Author, cfg.Source))
                 lvi.SubItems.Add(Me.ToDefaultString(cfg.Contact))
                 lvi.SubItems.Add(cfg.FileName)
                 lvi.Tag = cfg
@@ -316,10 +340,17 @@ Namespace Other
         End Sub
 
         Private Function ToDefaultString(ByVal strIn As String) As String
-
             If String.IsNullOrWhiteSpace(strIn) Then Return SharedResources.GENERIC_VALUE_NOTSET
             Return strIn
+        End Function
 
+        Private Function ToDefaultString(ByVal strMask As String, strA As String, strB As String) As String
+            If Not String.IsNullOrWhiteSpace(strA) And Not String.IsNullOrWhiteSpace(strB) Then
+                Return String.Format(strMask, strA, strB)
+            End If
+            If Not String.IsNullOrWhiteSpace(strA) Then Return strA
+            If Not String.IsNullOrWhiteSpace(strB) Then Return strB
+            Return SharedResources.GENERIC_VALUE_NOTSET
         End Function
 
         Private Sub UpdateControls()

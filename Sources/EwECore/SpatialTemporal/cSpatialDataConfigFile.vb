@@ -25,7 +25,7 @@ Namespace SpatialData
         Friend Sub New()
         End Sub
 
-        Friend Sub New(ByVal strFile As String, _
+        Public Sub New(ByVal strFile As String, _
                        ByVal strName As String, _
                        ByVal strDescription As String, _
                        ByVal strSource As String, _
@@ -34,9 +34,9 @@ Namespace SpatialData
             Me.m_strFileName = strFile
             Me.DatasetName = strName
             Me.Description = strDescription
-            Me.Source = Source
-            Me.Author = Author
-            Me.Contact = Contact
+            Me.Source = strSource
+            Me.Author = strAuthor
+            Me.Contact = strContact
         End Sub
 
 #Region " Public properties "
@@ -234,8 +234,10 @@ Namespace SpatialData
             Dim strPath As String = ""
             Dim bSuccess As Boolean = True
 
-            If (datasets Is Nothing) Then Return False
-            If (datasets.Length = 0) Then Return False
+            ' Make sure we have something to iterate over, even if it is an empty list
+            If (datasets Is Nothing) Then
+                datasets = New ISpatialDataSet() {}
+            End If
 
             ' Create dir
             strPath = Path.GetDirectoryName(strFile)
@@ -363,7 +365,7 @@ Namespace SpatialData
 
             ' Save
             Try
-                If bChanged Then
+                If bChanged Or Not File.Exists(strFile) Then
                     doc.Save(strFile)
                 End If
             Catch ex As Exception
