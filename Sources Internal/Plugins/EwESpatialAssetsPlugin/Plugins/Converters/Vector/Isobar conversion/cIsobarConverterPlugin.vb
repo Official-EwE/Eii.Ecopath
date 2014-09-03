@@ -128,14 +128,18 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayName As String 
             Get
-                If String.IsNullOrWhiteSpace(Me.AttributeName) Then
-                    Return My.Resources.CONVERTER_ISOBAR_NAME
-                Else
-                    ' ToDo: globalize this
-                    Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
-                                         My.Resources.CONVERTER_ISOBAR_NAME, _
-                                         String.Format(SharedResources.GENERIC_LABEL_DOUBLE, "Field", Me.AttributeName))
-                End If
+                Return My.Resources.CONVERTER_ISOBAR_NAME
+
+                'If String.IsNullOrWhiteSpace(Me.AttributeName) Then
+                '    Return My.Resources.CONVERTER_ISOBAR_NAME
+                'Else
+                '    ' ToDo: globalize this
+                '    'Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                '    '                     My.Resources.CONVERTER_ISOBAR_NAME, _
+                '    '                     String.Format(SharedResources.GENERIC_LABEL_DOUBLE, "Field", Me.AttributeName))
+                '    Return (My.Resources.CONVERTER_ISOBAR_NAME & " using values from " & Me.AttributeName)
+                'End If
+
             End Get
         End Property
 

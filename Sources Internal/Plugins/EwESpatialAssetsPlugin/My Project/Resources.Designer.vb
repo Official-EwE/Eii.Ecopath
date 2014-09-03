@@ -70,11 +70,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Area ratio converter.
+        '''  Looks up a localized string similar to Area ratios.
         '''</summary>
         Friend ReadOnly Property CONVERTER_AREARASTER_NAME() As String
             Get
                 Return ResourceManager.GetString("CONVERTER_AREARASTER_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plugin that converts GIS vector data to a Ecospace raster using the vector data as a mask, where either values inside or outside the vector data are rasterized..
+        '''</summary>
+        Friend ReadOnly Property CONVERTER_COOKIECUTTER_DESCR() As String
+            Get
+                Return ResourceManager.GetString("CONVERTER_COOKIECUTTER_DESCR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Masked conversion.
+        '''</summary>
+        Friend ReadOnly Property CONVERTER_COOKIECUTTER_NAME() As String
+            Get
+                Return ResourceManager.GetString("CONVERTER_COOKIECUTTER_NAME", resourceCulture)
             End Get
         End Property
         
@@ -88,7 +106,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Raster interpolator.
+        '''  Looks up a localized string similar to Raster interpolation.
         '''</summary>
         Friend ReadOnly Property CONVERTER_DIRECTRASTER_NAME() As String
             Get
@@ -106,7 +124,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Vector converter.
+        '''  Looks up a localized string similar to Vector conversion.
         '''</summary>
         Friend ReadOnly Property CONVERTER_DIRECTVECTOR_NAME() As String
             Get
@@ -124,7 +142,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Isobar converter.
+        '''  Looks up a localized string similar to Isobar conversion.
         '''</summary>
         Friend ReadOnly Property CONVERTER_ISOBAR_NAME() As String
             Get

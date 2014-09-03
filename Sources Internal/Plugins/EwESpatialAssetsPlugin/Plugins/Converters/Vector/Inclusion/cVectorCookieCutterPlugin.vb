@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -109,11 +110,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayName As String
             Get
-                If Me.ExcludeInside Then
-                    Return "Ignoring cells inside"
-                Else
-                    Return "Ignoring cells outside"
-                End If
+                Return My.Resources.CONVERTER_COOKIECUTTER_NAME
             End Get
         End Property
 
