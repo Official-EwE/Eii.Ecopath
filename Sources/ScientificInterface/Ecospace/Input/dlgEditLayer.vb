@@ -397,10 +397,9 @@ Namespace Ecospace.Basemap.Layers
                 cf = cf Or cDisplayLayer.eChangeFlags.VisualStyle
             End If
 
-            'If Me.m_grid.Apply(Me.m_layerOriginal) Then
-                cf = cf Or cDisplayLayer.eChangeFlags.Map
-            'End If
-
+            Me.m_grid.Apply(Me.m_layerOriginal)
+            cf = cf Or cDisplayLayer.eChangeFlags.Map
+            
             ' Fire layer changed notification
             Me.m_layerOriginal.Update(cf)
 
