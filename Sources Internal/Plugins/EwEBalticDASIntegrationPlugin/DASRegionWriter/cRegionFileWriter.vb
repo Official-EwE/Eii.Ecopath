@@ -29,7 +29,7 @@ Imports EwEUtils.Utilities
 ''' Class that performs the actual file generation.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cRegionFileGenerator
+Public Class cRegionFileWriter
 
     Private m_core As cCore = Nothing
 
@@ -46,7 +46,7 @@ Public Class cRegionFileGenerator
     ''' <param name="strLayers">Layers to add.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Generate(ByVal strFileName As String, _
+    Public Function Save(ByVal strFileName As String, _
                              ByVal strLayers As String) As Boolean
 
         Dim writer As StreamWriter = Nothing
@@ -60,7 +60,7 @@ Public Class cRegionFileGenerator
             writer = New StreamWriter(strFileName)
 
             ' Using simple DAS region file format:
-            ' <nX> <nY> <nLayers> <cellsize in m> <lat> <lon>
+            ' <nX> <nY> <nLayers> <baltic latitude cellsize in m> <ll lat cell center> <ll lon cell center> 
             ' <layer 1> <layer 2> .. <layer n>
             ' <depth 1,1> .. <depth 1, nCols>
             ' .. .. 
@@ -69,9 +69,10 @@ Public Class cRegionFileGenerator
             writer.WriteLine("{0} {1} {2} {3} {4} {5}", _
                              bm.InCol, bm.InRow, _
                              strLayers.Split(" "c).Length, _
-                             bm.CellLength * 1000, _
-                             ToDASCoord(bm.PosBottomRight.Y), _
-                             ToDASCoord(bm.PosTopLeft.X))
+                             cStringUtils.ToCSVField(bm.CellLength * 999.9), _
+                             cStringUtils.ToCSVField(ToDASCoord(bm.PosBottomRight.Y + bm.CellSize / 2)), _
+                             cStringUtils.ToCSVField(ToDASCoord(bm.PosTopLeft.X + bm.CellSize / 2)))
+
             writer.WriteLine(strLayers)
             For iRow As Integer = 1 To bm.InRow
                 If (iRow > 1) Then writer.WriteLine()
@@ -89,7 +90,7 @@ Public Class cRegionFileGenerator
             ' Panic
             bSuccess = False
             ' Log event
-            cLog.Write(ex, "cRegionFileGenerator::Generate")
+            cLog.Write(ex, "cRegionFileWriter::Generate")
             ' Notify user (without hyperlink)
             Me.SendMessage(String.Format(My.Resources.STATUS_SAVE_FAILED, strFileName, ex.Message), _
                            "", bSuccess)
@@ -137,8 +138,11 @@ Public Class cRegionFileGenerator
     ''' -----------------------------------------------------------------------
     Private Function ToDASCoord(ByVal sPos As Single) As Integer
 
-        sPos = Math.Abs(sPos)
-        Return CInt(sPos * 100) + CInt((sPos - Math.Truncate(sPos)) * 60.0!)
+        sPos = ((sPos Mod 360) + 360) Mod 360
+
+        Dim sDeg As Single = CSng(Math.Truncate(sPos))
+        Dim sMin As Single = CSng(sPos - sDeg)
+        Return CInt(Math.Truncate(sPos) * 100) + CInt(sMin * 60.0!)
 
     End Function
 

@@ -33,7 +33,7 @@ Imports ScientificInterfaceShared.Controls
 ''' Main (and only) interface to the DAS region file generator utility thing bit.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class frmRegionFileGenerator
+Public Class frmRegionFileWriter
 
 #Region " Private vars "
 
@@ -99,7 +99,7 @@ Public Class frmRegionFileGenerator
             Me.UpdateControls()
 
         Catch ex As Exception
-            cLog.Write(ex, "frmRegionFileGenerator::OnFileTextChanged")
+            cLog.Write(ex, "frmRegionFileWriter::OnFileTextChanged")
         End Try
 
     End Sub
@@ -115,7 +115,7 @@ Public Class frmRegionFileGenerator
             Me.UpdateControls()
 
         Catch ex As Exception
-            cLog.Write(ex, "frmRegionFileGenerator::OnLayersValidated")
+            cLog.Write(ex, "frmRegionFileWriter::OnLayersValidated")
         End Try
 
     End Sub
@@ -134,9 +134,9 @@ Public Class frmRegionFileGenerator
             ' User completes file pick process?
             If (sfd.ShowDialog = DialogResult.OK) Then
 
-                Dim generator As New cRegionFileGenerator(Me.m_uic.Core)
+                Dim writer As New cRegionFileWriter(Me.m_uic.Core)
                 ' Save successful?
-                If (generator.Generate(sfd.FileName, Me.ToLayers())) Then
+                If (writer.Save(sfd.FileName, Me.ToLayers())) Then
                     ' #Yes: close save form
                     Me.DialogResult = Windows.Forms.DialogResult.OK
                     Me.Close()
@@ -144,7 +144,7 @@ Public Class frmRegionFileGenerator
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "frmRegionFileGenerator::OnGenerateFile")
+            cLog.Write(ex, "frmRegionFileWriter::OnGenerateFile")
         End Try
 
     End Sub
@@ -157,7 +157,7 @@ Public Class frmRegionFileGenerator
             Me.VisitSponsor("http://su.se")
 
         Catch ex As Exception
-            cLog.Write(ex, "frmRegionFileGenerator::OnVisitSU")
+            cLog.Write(ex, "frmRegionFileWriter::OnVisitSU")
         End Try
 
     End Sub

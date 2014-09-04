@@ -102,12 +102,20 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cRegionFileGenerator.vb" />
-    <Compile Include="cRegionFileGeneratorPluginPoint.vb" />
-    <Compile Include="frmRegionFileGenerator.Designer.vb">
-      <DependentUpon>frmRegionFileGenerator.vb</DependentUpon>
+    <Compile Include="DASOutputReader\cDASOutputReader.vb" />
+    <Compile Include="DASOutputReader\cOutputImporterPluginPoint.vb" />
+    <Compile Include="DASOutputReader\frmOutputImporter.Designer.vb">
+      <DependentUpon>frmOutputImporter.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmRegionFileGenerator.vb">
+    <Compile Include="DASOutputReader\frmOutputImporter.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DASRegionWriter\cRegionFileWriter.vb" />
+    <Compile Include="DASRegionWriter\cRegionFileWriterPluginPoint.vb" />
+    <Compile Include="DASRegionWriter\frmRegionFileWriter.Designer.vb">
+      <DependentUpon>frmRegionFileWriter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DASRegionWriter\frmRegionFileWriter.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -128,8 +136,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmRegionFileGenerator.resx">
-      <DependentUpon>frmRegionFileGenerator.vb</DependentUpon>
+    <EmbeddedResource Include="DASOutputReader\frmOutputImporter.resx">
+      <DependentUpon>frmOutputImporter.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DASRegionWriter\frmRegionFileWriter.resx">
+      <DependentUpon>frmRegionFileWriter.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -180,10 +191,7 @@
   <ItemGroup>
     <None Include="Resources\SU_logo.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DASOutputReader\" />
-    <Folder Include="DASRegionWriter\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
