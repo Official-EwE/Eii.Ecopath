@@ -134,7 +134,7 @@ Public Class cRegionFileGeneratorPluginPoint
     Public ReadOnly Property ControlText As String _
         Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return My.Resources.CONTROL_DASREAD_TEXT
+            Return My.Resources.CONTROL_TEXT
         End Get
     End Property
 
@@ -146,7 +146,7 @@ Public Class cRegionFileGeneratorPluginPoint
     Public ReadOnly Property ControlTooltipText As String _
         Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return My.Resources.CONTROL_DASREAD_TOOLTIP
+            Return My.Resources.CONTROL_TOOLTIP
         End Get
     End Property
 
@@ -173,7 +173,7 @@ Public Class cRegionFileGeneratorPluginPoint
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Try
-            Dim frm As New frmLayerReader(Me.m_uic)
+            Dim frm As New frmRegionFileGenerator(Me.m_uic)
             frm.ShowDialog()
         Catch ex As Exception
 

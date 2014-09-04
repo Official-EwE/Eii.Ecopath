@@ -20,11 +20,11 @@ Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -126,15 +126,17 @@ Public Class frmRegionFileGenerator
         Try
 
             ' Prepare save file dialog
-            Dim strTitle As String = My.Resources.CAPTION_GENREGION_SAVE
+            Dim strTitle As String = My.Resources.CAPTION_SAVE
             Dim strFilter As String = My.Resources.FILFILTER_DAS_REGION
             Dim strFile As String = cFileUtils.ToValidFileName(Me.m_tbxFile.Text, False)
             Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(strTitle, strFile, strFilter)
 
             ' User completes file pick process?
             If (sfd.ShowDialog = DialogResult.OK) Then
+
+                Dim generator As New cRegionFileGenerator(Me.m_uic.Core)
                 ' Save successful?
-                If Me.SaveRegionFile(sfd.FileName) Then
+                If (generator.Generate(sfd.FileName, Me.ToLayers())) Then
                     ' #Yes: close save form
                     Me.DialogResult = Windows.Forms.DialogResult.OK
                     Me.Close()
@@ -180,68 +182,6 @@ Public Class frmRegionFileGenerator
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Save the actual region file from Ecospace parameters and the 
-    ''' data that the user entered.
-    ''' </summary>
-    ''' <param name="strFileName"></param>
-    ''' <returns>True if successful.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function SaveRegionFile(strFileName As String) As Boolean
-
-        Dim writer As StreamWriter = Nothing
-        Dim core As cCore = Me.m_uic.Core
-        Dim bm As cEcospaceBasemap = core.EcospaceBasemap
-        Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-        Dim strLayers As String = Me.ToLayers
-        Dim sCellLength As Single = bm.CellLength
-        Dim bSuccess As Boolean = True
-
-        Try
-            ' If this fails an exception is thrown
-            writer = New StreamWriter(strFileName)
-
-            ' Using simple DAS region file format:
-            ' <nX> <nY> <nLayers> <cellsize in m> <lat> <lon>
-            ' <layer 1> <layer 2> .. <layer n>
-            ' <depth 1,1> .. <depth 1, nCols>
-            ' .. .. 
-            ' <depth nRows, 1> .. <depth nRows, nCols>
-
-            writer.WriteLine("{0} {1} {2} {3} {4} {5}", _
-                             bm.InCol, bm.InRow, _
-                             strLayers.Split(" "c).Length, _
-                             bm.CellLength, _
-                             bm.PosBottomRight.Y, _
-                             bm.PosBottomRight.X)
-            writer.WriteLine(strLayers)
-            For iRow As Integer = 1 To bm.InRow
-                If (iRow > 1) Then writer.WriteLine()
-                For iCol As Integer = 1 To bm.InCol
-                    If (iCol > 1) Then writer.Write(" "c)
-                    writer.Write(cStringUtils.ToCSVField(depth.Cell(iRow, iCol)))
-                Next
-            Next
-            writer.Flush()
-            writer.Close()
-            Me.SendMessage(String.Format(My.Resources.STATUS_GENREGION_SAVE_SUCCESS, strFileName), _
-                           Path.GetDirectoryName(strFileName), bSuccess)
-
-        Catch ex As Exception
-            ' Panic
-            bSuccess = False
-            ' Log event
-            cLog.Write(ex, "frmRegionFileGenerator::SaveRegionFile")
-            ' Notify user (without hyperlink)
-            Me.SendMessage(String.Format(My.Resources.STATUS_GENREGION_SAVE_FAILED, strFileName, ex.Message), _
-                           "", bSuccess)
-
-        End Try
-        Return True
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Returns a reasonably valid layers string from what the user entered.
     ''' </summary>
     ''' <returns>A reasonably valid layers string from what the user entered.</returns>
@@ -275,32 +215,6 @@ Public Class frmRegionFileGenerator
         Return sbLayers.ToString()
 
     End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Notify the user.
-    ''' </summary>
-    ''' <param name="strMessage">Message text.</param>
-    ''' <param name="strHyperlink">Clickable link.</param>
-    ''' <param name="bSucces">True if this message is a success, or false if this
-    ''' message indicates a disaster of epic proportions.</param>
-    ''' <remarks>
-    ''' The message is always sent as a Feedback message to ensure the user sees it.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Sub SendMessage(strMessage As String, strHyperlink As String, bSucces As Boolean)
-
-        Dim msg As New cFeedbackMessage(strMessage, _
-                                        eCoreComponentType.External, eMessageType.DataExport, _
-                                        eMessageImportance.Information, eMessageReplyStyle.OK)
-        If bSucces Then
-            msg.Hyperlink = strHyperlink
-        Else
-            msg.Importance = eMessageImportance.Critical
-        End If
-        Me.m_uic.Core.Messages.SendMessage(msg)
-
-    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

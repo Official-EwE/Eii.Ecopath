@@ -81,56 +81,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Select DAS output file to read.
-        '''</summary>
-        Friend ReadOnly Property CAPTION_DASREAD_LOAD() As String
-            Get
-                Return ResourceManager.GetString("CAPTION_DASREAD_LOAD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Save DAS region file.
         '''</summary>
-        Friend ReadOnly Property CAPTION_GENREGION_SAVE() As String
+        Friend ReadOnly Property CAPTION_SAVE() As String
             Get
-                Return ResourceManager.GetString("CAPTION_GENREGION_SAVE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Read DAS output file.
-        '''</summary>
-        Friend ReadOnly Property CONTROL_DASREAD_TEXT() As String
-            Get
-                Return ResourceManager.GetString("CONTROL_DASREAD_TEXT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Read an output file of the Baltic Data Assimilation System into one or more Ecospace layers.
-        '''</summary>
-        Friend ReadOnly Property CONTROL_DASREAD_TOOLTIP() As String
-            Get
-                Return ResourceManager.GetString("CONTROL_DASREAD_TOOLTIP", resourceCulture)
+                Return ResourceManager.GetString("CAPTION_SAVE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Generate DAS region file.
         '''</summary>
-        Friend ReadOnly Property CONTROL_GENREGION_TEXT() As String
+        Friend ReadOnly Property CONTROL_TEXT() As String
             Get
-                Return ResourceManager.GetString("CONTROL_GENREGION_TEXT", resourceCulture)
+                Return ResourceManager.GetString("CONTROL_TEXT", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Generate a region (.rgn) file for the Baltic Data Assimiliation System (DAS) for the current Ecospace basemap.
         '''</summary>
-        Friend ReadOnly Property CONTROL_GENREGION_TOOLTIP() As String
+        Friend ReadOnly Property CONTROL_TOOLTIP() As String
             Get
-                Return ResourceManager.GetString("CONTROL_GENREGION_TOOLTIP", resourceCulture)
+                Return ResourceManager.GetString("CONTROL_TOOLTIP", resourceCulture)
             End Get
         End Property
         
@@ -146,18 +119,18 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to DAS region failed to save to {0}. {1}.
         '''</summary>
-        Friend ReadOnly Property STATUS_GENREGION_SAVE_FAILED() As String
+        Friend ReadOnly Property STATUS_SAVE_FAILED() As String
             Get
-                Return ResourceManager.GetString("STATUS_GENREGION_SAVE_FAILED", resourceCulture)
+                Return ResourceManager.GetString("STATUS_SAVE_FAILED", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to DAS region file saved to {0}.
         '''</summary>
-        Friend ReadOnly Property STATUS_GENREGION_SAVE_SUCCESS() As String
+        Friend ReadOnly Property STATUS_SAVE_SUCCESS() As String
             Get
-                Return ResourceManager.GetString("STATUS_GENREGION_SAVE_SUCCESS", resourceCulture)
+                Return ResourceManager.GetString("STATUS_SAVE_SUCCESS", resourceCulture)
             End Get
         End Property
         

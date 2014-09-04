@@ -102,11 +102,12 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Region file generator\cRegionFileGeneratorPluginPoint.vb" />
-    <Compile Include="Region file generator\frmRegionFileGenerator.Designer.vb">
+    <Compile Include="cRegionFileGenerator.vb" />
+    <Compile Include="cRegionFileGeneratorPluginPoint.vb" />
+    <Compile Include="frmRegionFileGenerator.Designer.vb">
       <DependentUpon>frmRegionFileGenerator.vb</DependentUpon>
     </Compile>
-    <Compile Include="Region file generator\frmRegionFileGenerator.vb">
+    <Compile Include="frmRegionFileGenerator.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -127,7 +128,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Region file generator\frmRegionFileGenerator.resx">
+    <EmbeddedResource Include="frmRegionFileGenerator.resx">
       <DependentUpon>frmRegionFileGenerator.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -179,7 +180,10 @@
   <ItemGroup>
     <None Include="Resources\SU_logo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DASOutputReader\" />
+    <Folder Include="DASRegionWriter\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
