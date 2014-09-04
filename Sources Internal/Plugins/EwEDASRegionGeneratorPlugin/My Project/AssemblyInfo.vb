@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("EwEDASRegionGeneratorPlugin")> 
+<Assembly: AssemblyTitle("EwEBalticDASPlugin")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("EwEDASRegionGeneratorPlugin")> 
-<Assembly: AssemblyCopyright("Copyright ©  2014")> 
+<Assembly: AssemblyCompany("Stockholm University")> 
+<Assembly: AssemblyProduct("EwEBalticDASPlugin")> 
+<Assembly: AssemblyCopyright("Copyright © StockHolm University 2014")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

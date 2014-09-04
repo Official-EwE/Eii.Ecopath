@@ -1,5 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmUI
+﻿Partial Class frmRegionFileGenerator
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +21,7 @@ Partial Class frmUI
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmUI))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmRegionFileGenerator))
         Me.m_lblFile = New System.Windows.Forms.Label()
         Me.m_tbxFile = New System.Windows.Forms.TextBox()
         Me.m_lblLayers = New System.Windows.Forms.Label()
@@ -71,6 +70,7 @@ Partial Class frmUI
         '
         resources.ApplyResources(Me.m_pbxSponsors, "m_pbxSponsors")
         Me.m_pbxSponsors.BackColor = System.Drawing.Color.White
+        Me.m_pbxSponsors.BackgroundImage = Global.EwEBalticDASPlugin.My.Resources.Resources.SU_logo
         Me.m_pbxSponsors.Name = "m_pbxSponsors"
         Me.m_pbxSponsors.TabStop = False
         '
@@ -96,6 +96,7 @@ Partial Class frmUI
         Me.PerformLayout()
 
     End Sub
+
     Private WithEvents m_lblFile As System.Windows.Forms.Label
     Private WithEvents m_tbxFile As System.Windows.Forms.TextBox
     Private WithEvents m_lblLayers As System.Windows.Forms.Label
@@ -103,4 +104,5 @@ Partial Class frmUI
     Private WithEvents m_btnGenerate As System.Windows.Forms.Button
     Private WithEvents m_hdrSponsors As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_pbxSponsors As System.Windows.Forms.PictureBox
+
 End Class

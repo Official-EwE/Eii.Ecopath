@@ -39,7 +39,7 @@ Namespace My.Resources
         Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("EwEDASRegionGeneratorPlugin.Resources", GetType(Resources).Assembly)
+                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("EwEBalticDASPlugin.Resources", GetType(Resources).Assembly)
                     resourceMan = temp
                 End If
                 Return resourceMan
@@ -76,6 +76,70 @@ Namespace My.Resources
         Friend ReadOnly Property Baltic_img() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Baltic_img", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Save DAS region file.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_GENREGION_SAVE() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_GENREGION_SAVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Generate DAS region file.
+        '''</summary>
+        Friend ReadOnly Property CONTROL_GENREGION_TEXT() As String
+            Get
+                Return ResourceManager.GetString("CONTROL_GENREGION_TEXT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Generate a region (.rgn) file for the Baltic Data Assimiliation System (DAS) for the current Ecospace basemap.
+        '''</summary>
+        Friend ReadOnly Property CONTROL_GENREGION_TOOLTIP() As String
+            Get
+                Return ResourceManager.GetString("CONTROL_GENREGION_TOOLTIP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to DAS region files|*.rgn.
+        '''</summary>
+        Friend ReadOnly Property FILFILTER_DAS_REGION() As String
+            Get
+                Return ResourceManager.GetString("FILFILTER_DAS_REGION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to DAS region failed to save to {0}. {1}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_GENREGION_SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_GENREGION_SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to DAS region file saved to {0}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_GENREGION_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_GENREGION_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property SU_logo() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("SU_logo", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

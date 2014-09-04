@@ -76,9 +76,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.EwEDASRegionGeneratorPlugin.My.MySettings
+        Friend ReadOnly Property Settings() As Global.EwEBalticDASPlugin.My.MySettings
             Get
-                Return Global.EwEDASRegionGeneratorPlugin.My.MySettings.Default
+                Return Global.EwEBalticDASPlugin.My.MySettings.Default
             End Get
         End Property
     End Module
