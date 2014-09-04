@@ -2478,12 +2478,14 @@ Public Class cCore
             Dim strScenario As String = ""
             Dim strPath As String = ""
 
-            If (Me.DataSource IsNot Nothing) And (type <> eAutosaveTypes.NotSet) Then
-                strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName)
-            End If
-
             If String.IsNullOrWhiteSpace(strBasePath) Then
                 strBasePath = Me.OutputPath
+            End If
+
+            If (Me.DataSource IsNot Nothing) And (type <> eAutosaveTypes.NotSet) Then
+                strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName)
+            Else
+                strModel = "{model}"
             End If
 
             Select Case type
