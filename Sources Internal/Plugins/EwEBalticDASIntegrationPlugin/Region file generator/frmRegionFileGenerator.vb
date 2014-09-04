@@ -71,6 +71,8 @@ Public Class frmRegionFileGenerator
         ' Initialize enabled state of UI elements
         Me.UpdateControls()
 
+        Me.CenterToScreen()
+
     End Sub
 
     Protected Overrides Sub OnClosed(e As System.EventArgs)

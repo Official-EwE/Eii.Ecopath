@@ -55,7 +55,7 @@ Public Class cRegionFileGeneratorPluginPoint
     Public ReadOnly Property Name As String _
         Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ndGenerateDASRegionFile"
+            Return "ndBalticDASGenerateRegionFile"
         End Get
     End Property
 
@@ -95,7 +95,7 @@ Public Class cRegionFileGeneratorPluginPoint
     Public ReadOnly Property Author As String _
         Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Jeroen Steenbeek, Oleg Andrejev"
+            Return "Jeroen Steenbeek, Oleg Andrejev, Maciej Tomczak"
         End Get
     End Property
 
@@ -134,7 +134,7 @@ Public Class cRegionFileGeneratorPluginPoint
     Public ReadOnly Property ControlText As String _
         Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return My.Resources.CONTROL_GENREGION_TEXT
+            Return My.Resources.CONTROL_DASREAD_TEXT
         End Get
     End Property
 
@@ -146,7 +146,7 @@ Public Class cRegionFileGeneratorPluginPoint
     Public ReadOnly Property ControlTooltipText As String _
         Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return My.Resources.CONTROL_GENREGION_TOOLTIP
+            Return My.Resources.CONTROL_DASREAD_TOOLTIP
         End Get
     End Property
 
@@ -173,7 +173,7 @@ Public Class cRegionFileGeneratorPluginPoint
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Try
-            Dim frm As New frmRegionFileGenerator(Me.m_uic)
+            Dim frm As New frmLayerReader(Me.m_uic)
             frm.ShowDialog()
         Catch ex As Exception
 
