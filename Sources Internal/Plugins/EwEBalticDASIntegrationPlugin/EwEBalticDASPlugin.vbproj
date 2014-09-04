@@ -102,14 +102,6 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DASOutputReader\cDASOutputReader.vb" />
-    <Compile Include="DASOutputReader\cOutputImporterPluginPoint.vb" />
-    <Compile Include="DASOutputReader\frmOutputImporter.Designer.vb">
-      <DependentUpon>frmOutputImporter.vb</DependentUpon>
-    </Compile>
-    <Compile Include="DASOutputReader\frmOutputImporter.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="DASRegionWriter\cRegionFileWriter.vb" />
     <Compile Include="DASRegionWriter\cRegionFileWriterPluginPoint.vb" />
     <Compile Include="DASRegionWriter\frmRegionFileWriter.Designer.vb">
@@ -136,9 +128,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DASOutputReader\frmOutputImporter.resx">
-      <DependentUpon>frmOutputImporter.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DASRegionWriter\frmRegionFileWriter.resx">
       <DependentUpon>frmRegionFileWriter.vb</DependentUpon>
     </EmbeddedResource>
@@ -191,7 +180,9 @@
   <ItemGroup>
     <None Include="Resources\SU_logo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DASOutputReader\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
