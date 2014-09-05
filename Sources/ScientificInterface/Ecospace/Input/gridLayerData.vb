@@ -34,6 +34,7 @@ Public Class gridLayerData
 
     Private m_basemap As cEcospaceBasemap = Nothing
     Private m_layer As cDisplayRasterLayer = Nothing
+    Private m_bReadOnly As Boolean = False
 
     Public Sub New()
         MyBase.New()
@@ -90,10 +91,6 @@ Public Class gridLayerData
 
         Me.FixedColumns = 1
 
-        If Me.m_layer.Editor IsNot Nothing Then
-            Me.Enabled = Me.Layer.Editor.IsEditable()
-        End If
-
     End Sub
 
     Protected Overrides Sub FillData()
@@ -104,6 +101,11 @@ Public Class gridLayerData
         Dim cell As Cells.ICell = Nothing
         Dim tCell As Type = Nothing
         Dim data As cEcospaceLayer = Nothing
+        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+
+        If (Me.m_bReadOnly) Then
+            style = cStyleGuide.eStyleFlags.NotEditable
+        End If
 
         ' Grab the data
         data = Me.m_layer.Data
@@ -122,23 +124,9 @@ Public Class gridLayerData
             Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
             ' Add row value cells
             For iCol As Integer = 1 To Me.m_basemap.InCol
-                ' Properly prepare cell
-                cell = New EwECell(data.Cell(iRow, iCol), tCell)
-                'If tCell Is GetType(Integer) Then
-                '    cell = New Cells.Real.Cell(CInt(data.Cell(iRow, iCol)), tCell)
-                'ElseIf tCell Is GetType(Boolean) Then
-                '    cell = New Cells.Real.Cell(CBool(data.Cell(iRow, iCol)), tCell)
-                'Else
-                '    cell = New EwECell(CSng(data.Cell(iRow, iCol)), tCell)
-                'End If
-                cell.Behaviors.Add(Me.EwEEditHandler)
-                'cell.SuppressZero(cCore.NULL_VALUE) = True
-                '' Highlight land cells
-                'If dataDepth.Cell(iRow, iCol) = 0 Then
-                '    cell.Style = StyleGuide.eStyleFlags.Checked
-                'Else
-                'cell.Style = cStyleGuide.eStyleFlags.OK
-                'End If
+                ' Prepare cell
+                cell = New EwECell(data.Cell(iRow, iCol), tCell, style)
+                If (Not Me.m_bReadOnly) Then cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(iRow, iCol) = cell
             Next iCol
         Next iRow
@@ -164,6 +152,13 @@ Public Class gridLayerData
 
             If Not Object.ReferenceEquals(Me.m_layer, value) Then
                 Me.m_layer = value
+                Me.m_bReadOnly = True
+
+                If (Me.m_layer IsNot Nothing) Then
+                    If (Me.m_layer.Editor IsNot Nothing) Then
+                        Me.m_bReadOnly = Not Me.Layer.Editor.IsEditable()
+                    End If
+                End If
                 Me.RefreshContent()
             End If
 
