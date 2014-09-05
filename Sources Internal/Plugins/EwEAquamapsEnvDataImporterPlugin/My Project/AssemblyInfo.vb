@@ -30,7 +30,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Plug-in that imports Aquamaps species distribution envelopes into the Ecospace capacity model")> 
 <Assembly: AssemblyCompany("Ecopath International Initiative")> 
 <Assembly: AssemblyProduct("EwEAquamapsEnvDataImporterPlugin")> 
-<Assembly: AssemblyCopyright("Copyright ©  2014")> 
+<Assembly: AssemblyCopyright("Copyright © EII 2014")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

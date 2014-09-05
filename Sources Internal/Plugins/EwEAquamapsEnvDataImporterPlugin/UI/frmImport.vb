@@ -198,10 +198,12 @@ Public Class frmImport
     Private Sub OnViewExample(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
         Handles m_lllblExample.LinkClicked
 
-        Dim strFile As String = IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecospace, "example"), "Sardina pilchardus.csv")
+        Dim strFile As String = cFileUtils.MakeTempFile(".csv")
         Dim msg As cMessage = Nothing
 
         Try
+            cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)
+
             Dim writer As New StreamWriter(strFile, False)
             writer.Write(My.Resources.HSPEN_example_csv)
             writer.Flush()
@@ -211,7 +213,7 @@ Public Class frmImport
                                eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
             msg.Hyperlink = IO.Path.GetDirectoryName(strFile)
 
-            Me.VisitURL("file://" & strFile)
+            Me.VisitURL(strFile)
 
         Catch ex As Exception
             msg = New cMessage(String.Format(My.Resources.STATUS_EXAMPLE_SAVE_FAILED, strFile), _

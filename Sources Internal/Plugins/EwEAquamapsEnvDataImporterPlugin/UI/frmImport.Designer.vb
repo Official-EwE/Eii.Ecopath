@@ -44,7 +44,6 @@ Partial Class frmImport
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmImport))
-        Me.m_lblDrop = New ScientificInterfaceShared.Controls.cFileDropLabel()
         Me.m_btnImport = New System.Windows.Forms.Button()
         Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
         Me.m_hdrEnvelopes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -54,24 +53,16 @@ Partial Class frmImport
         Me.m_tlpLinks = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbAquamaps = New System.Windows.Forms.PictureBox()
         Me.m_pbJRC = New System.Windows.Forms.PictureBox()
-        Me.m_hdrAcknowledgements = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lllblExample = New System.Windows.Forms.LinkLabel()
+        Me.m_hdrAcknowledgements = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblDrop = New ScientificInterfaceShared.Controls.cFileDropLabel()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_tlpOptions.SuspendLayout()
         Me.m_tlpLinks.SuspendLayout()
         CType(Me.m_pbAquamaps, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbJRC, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'm_lblDrop
-        '
-        Me.m_lblDrop.AllowDrop = True
-        resources.ApplyResources(Me.m_lblDrop, "m_lblDrop")
-        Me.m_lblDrop.BackColor = System.Drawing.Color.Transparent
-        Me.m_lblDrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_lblDrop.FileExtensions = ""
-        Me.m_lblDrop.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_lblDrop.MaxFiles = 0
-        Me.m_lblDrop.Name = "m_lblDrop"
         '
         'm_btnImport
         '
@@ -140,6 +131,12 @@ Partial Class frmImport
         Me.m_pbJRC.Name = "m_pbJRC"
         Me.m_pbJRC.TabStop = False
         '
+        'm_lllblExample
+        '
+        resources.ApplyResources(Me.m_lllblExample, "m_lllblExample")
+        Me.m_lllblExample.Name = "m_lllblExample"
+        Me.m_lllblExample.TabStop = True
+        '
         'm_hdrAcknowledgements
         '
         resources.ApplyResources(Me.m_hdrAcknowledgements, "m_hdrAcknowledgements")
@@ -148,22 +145,34 @@ Partial Class frmImport
         Me.m_hdrAcknowledgements.IsCollapsed = False
         Me.m_hdrAcknowledgements.Name = "m_hdrAcknowledgements"
         '
-        'm_lllblExample
+        'm_lblDrop
         '
-        resources.ApplyResources(Me.m_lllblExample, "m_lllblExample")
-        Me.m_lllblExample.Name = "m_lllblExample"
-        Me.m_lllblExample.TabStop = True
+        Me.m_lblDrop.AllowDrop = True
+        Me.m_lblDrop.BackColor = System.Drawing.Color.Transparent
+        Me.m_lblDrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_lblDrop.Cursor = System.Windows.Forms.Cursors.Hand
+        resources.ApplyResources(Me.m_lblDrop, "m_lblDrop")
+        Me.m_lblDrop.FileExtensions = ""
+        Me.m_lblDrop.ForeColor = System.Drawing.SystemColors.ButtonShadow
+        Me.m_lblDrop.MaxFiles = 0
+        Me.m_lblDrop.Name = "m_lblDrop"
+        '
+        'TableLayoutPanel1
+        '
+        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lblDrop, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_tlpOptions, 0, 2)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         '
         'frmImport
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.m_lllblExample)
         Me.Controls.Add(Me.m_hdrAcknowledgements)
         Me.Controls.Add(Me.m_tlpLinks)
-        Me.Controls.Add(Me.m_tlpOptions)
         Me.Controls.Add(Me.m_btnImport)
-        Me.Controls.Add(Me.m_lblDrop)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmImport"
@@ -173,6 +182,7 @@ Partial Class frmImport
         Me.m_tlpLinks.ResumeLayout(False)
         CType(Me.m_pbAquamaps, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbJRC, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -189,4 +199,5 @@ Partial Class frmImport
     Private WithEvents m_pbJRC As System.Windows.Forms.PictureBox
     Private WithEvents m_hdrAcknowledgements As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_lllblExample As System.Windows.Forms.LinkLabel
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
 End Class
