@@ -287,21 +287,7 @@ Public Class dlgDefineMapResponseAssignments
     End Sub
 
     Private Sub OnMinMaxValueChanged(ByVal sender As Object, args As EventArgs)
-
-        If Me.m_bInUpdate Then Return
-
-        'Not all shapes use the Min and Mix data range
-        Debug.Assert(Me.CanEditMinMax())
-
-        Try
-            Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
-            Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
-            Me.UpdatePlots()
-        Catch ex As Exception
-
-        End Try
-        Me.UpdatePlots()
-
+        Me.ApplyMinMax()
     End Sub
 
     Private Sub OnSetDefaultMinMax(ByVal sender As Object, ByVal e As EventArgs) _
@@ -522,10 +508,11 @@ Public Class dlgDefineMapResponseAssignments
                 sShapeMin = Me.m_shape.ResponseLeftLimit
                 sShapeMax = Me.m_shape.ResponseRightLimit
 
+
             Case Else
                 'For all other shape the Min Max get set for the Min and Max textbox on this form
-                sPlotMin = CSng(Me.m_fpMin.Value)
-                sPlotMax = CSng(Me.m_fpMax.Value)
+                sShapeMin = CSng(Me.m_tbxXMin.Text)
+                sShapeMax = CSng(Me.m_tbxXMax.Text)
                 sPlotMin = sShapeMin
                 sPlotMax = sShapeMax
 
@@ -536,20 +523,19 @@ Public Class dlgDefineMapResponseAssignments
     Private Sub PlotShape()
 
         Try
-            'Min Max of the response function
-            Dim Xmin As Single
-            Dim Xmax As Single
+            ' Obtain Min and Max from the response function
+            ' this is what the core will use to find the x value
+            Dim Xmin As Single = Me.m_shape.ResponseLeftLimit
+            Dim Xmax As Single = Me.m_shape.ResponseRightLimit
 
-            'Min and Max of the plot window NOT the response function
             Dim XmaxWin As Single
             Dim XminWin As Single
 
             Me.GetPlotMinMax(Xmin, Xmax, XminWin, XmaxWin)
 
-            'set the Min and Max on the response function
-            'this is what the core will use to find the x value
-            Me.m_shape.ResponseLeftLimit = Xmin
-            Me.m_shape.ResponseRightLimit = Xmax
+            '' this is what the core will use to find the x value
+            'Xmin = Me.m_shape.ResponseLeftLimit
+            'Xmax = Me.m_shape.ResponseRightLimit
 
             Dim Xrange As Single = Xmax - Xmin
             Dim fmt As New cCoreInterfaceFormatter()
@@ -634,9 +620,28 @@ Public Class dlgDefineMapResponseAssignments
 
         Me.m_fpMin.Value = Me.m_map.Min
         Me.m_fpMax.Value = Me.m_map.Max
-        Me.UpdatePlots()
 
         Me.m_bInUpdate = False
+        Me.ApplyMinMax()
+
+    End Sub
+
+    Private Sub ApplyMinMax()
+        If Me.m_bInUpdate Then Return
+
+        'Not all shapes use the Min and Mix data range
+        Debug.Assert(Me.CanEditMinMax())
+
+        Try
+            Me.m_shape.LockUpdates()
+            Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
+            Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
+            Me.m_shape.UnlockUpdates(True)
+            Me.UpdatePlots()
+        Catch ex As Exception
+
+        End Try
+        Me.UpdatePlots()
 
     End Sub
 
