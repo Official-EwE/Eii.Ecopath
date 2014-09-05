@@ -44,20 +44,33 @@ Partial Class frmImport
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmImport))
-        Me.m_lblDrop = New cFileDropLabel
+        Me.m_lblDrop = New ScientificInterfaceShared.Controls.cFileDropLabel()
         Me.m_btnImport = New System.Windows.Forms.Button()
         Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
         Me.m_hdrEnvelopes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrSpecies = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_clbxSpecies = New System.Windows.Forms.CheckedListBox()
         Me.m_clbxEnvelopes = New System.Windows.Forms.CheckedListBox()
-        Me.m_llAquamaps = New System.Windows.Forms.LinkLabel()
+        Me.m_tlpLinks = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbAquamaps = New System.Windows.Forms.PictureBox()
+        Me.m_pbJRC = New System.Windows.Forms.PictureBox()
+        Me.m_hdrAcknowledgements = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lllblExample = New System.Windows.Forms.LinkLabel()
         Me.m_tlpOptions.SuspendLayout()
+        Me.m_tlpLinks.SuspendLayout()
+        CType(Me.m_pbAquamaps, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbJRC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblDrop
         '
+        Me.m_lblDrop.AllowDrop = True
         resources.ApplyResources(Me.m_lblDrop, "m_lblDrop")
+        Me.m_lblDrop.BackColor = System.Drawing.Color.Transparent
+        Me.m_lblDrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_lblDrop.FileExtensions = ""
+        Me.m_lblDrop.ForeColor = System.Drawing.SystemColors.ButtonShadow
+        Me.m_lblDrop.MaxFiles = 0
         Me.m_lblDrop.Name = "m_lblDrop"
         '
         'm_btnImport
@@ -105,17 +118,49 @@ Partial Class frmImport
         Me.m_clbxEnvelopes.FormattingEnabled = True
         Me.m_clbxEnvelopes.Name = "m_clbxEnvelopes"
         '
-        'm_llAquamaps
+        'm_tlpLinks
         '
-        resources.ApplyResources(Me.m_llAquamaps, "m_llAquamaps")
-        Me.m_llAquamaps.Name = "m_llAquamaps"
-        Me.m_llAquamaps.TabStop = True
+        resources.ApplyResources(Me.m_tlpLinks, "m_tlpLinks")
+        Me.m_tlpLinks.BackColor = System.Drawing.Color.White
+        Me.m_tlpLinks.Controls.Add(Me.m_pbAquamaps, 0, 0)
+        Me.m_tlpLinks.Controls.Add(Me.m_pbJRC, 1, 0)
+        Me.m_tlpLinks.Name = "m_tlpLinks"
+        '
+        'm_pbAquamaps
+        '
+        Me.m_pbAquamaps.BackgroundImage = Global.EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.aquamaps_jpg
+        resources.ApplyResources(Me.m_pbAquamaps, "m_pbAquamaps")
+        Me.m_pbAquamaps.Name = "m_pbAquamaps"
+        Me.m_pbAquamaps.TabStop = False
+        '
+        'm_pbJRC
+        '
+        Me.m_pbJRC.BackgroundImage = Global.EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.jrc_logo
+        resources.ApplyResources(Me.m_pbJRC, "m_pbJRC")
+        Me.m_pbJRC.Name = "m_pbJRC"
+        Me.m_pbJRC.TabStop = False
+        '
+        'm_hdrAcknowledgements
+        '
+        resources.ApplyResources(Me.m_hdrAcknowledgements, "m_hdrAcknowledgements")
+        Me.m_hdrAcknowledgements.CanCollapseParent = False
+        Me.m_hdrAcknowledgements.CollapsedParentHeight = 0
+        Me.m_hdrAcknowledgements.IsCollapsed = False
+        Me.m_hdrAcknowledgements.Name = "m_hdrAcknowledgements"
+        '
+        'm_lllblExample
+        '
+        resources.ApplyResources(Me.m_lllblExample, "m_lllblExample")
+        Me.m_lllblExample.Name = "m_lllblExample"
+        Me.m_lllblExample.TabStop = True
         '
         'frmImport
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.m_llAquamaps)
+        Me.Controls.Add(Me.m_lllblExample)
+        Me.Controls.Add(Me.m_hdrAcknowledgements)
+        Me.Controls.Add(Me.m_tlpLinks)
         Me.Controls.Add(Me.m_tlpOptions)
         Me.Controls.Add(Me.m_btnImport)
         Me.Controls.Add(Me.m_lblDrop)
@@ -125,6 +170,9 @@ Partial Class frmImport
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.m_tlpOptions.ResumeLayout(False)
+        Me.m_tlpLinks.ResumeLayout(False)
+        CType(Me.m_pbAquamaps, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbJRC, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -136,5 +184,9 @@ Partial Class frmImport
     Private WithEvents m_hdrSpecies As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_clbxSpecies As System.Windows.Forms.CheckedListBox
     Private WithEvents m_clbxEnvelopes As System.Windows.Forms.CheckedListBox
-    Private WithEvents m_llAquamaps As System.Windows.Forms.LinkLabel
+    Private WithEvents m_tlpLinks As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_pbAquamaps As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbJRC As System.Windows.Forms.PictureBox
+    Private WithEvents m_hdrAcknowledgements As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_lllblExample As System.Windows.Forms.LinkLabel
 End Class

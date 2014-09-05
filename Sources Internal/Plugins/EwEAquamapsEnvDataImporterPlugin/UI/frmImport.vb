@@ -26,6 +26,10 @@ Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Utilities
+Imports EwECore
+Imports System.Reflection
+Imports System.IO
 
 #End Region ' Imports
 
@@ -69,48 +73,28 @@ Public Class frmImport
 
 #Region " Events "
 
-    'Private Sub OnDragDropFiles(sender As Object, e As System.Windows.Forms.DragEventArgs) _
-    '    Handles m_lblDrop.DragDrop
-    '    Try
-    '        If Not Me.m_bDragOver Then Return
-    '        Me.ReadFiles(CType(e.Data.GetData(DataFormats.FileDrop), String()))
-    '    Catch ex As Exception
-    '    End Try
-    '    Me.m_bDragOver = False
-    '    Me.UpdateControls()
-    'End Sub
-
-    'Private Sub OnDragEnterFiles(sender As Object, e As System.Windows.Forms.DragEventArgs) _
-    '    Handles m_lblDrop.DragEnter
-
-    '    Try
-    '        If (e.Data.GetDataPresent(DataFormats.FileDrop)) Then
-    '            e.Effect = DragDropEffects.All
-    '            Me.m_bDragOver = True
-    '        End If
-    '    Catch ex As Exception
-    '        Me.m_bDragOver = False
-    '    End Try
-    '    Me.UpdateControls()
-
-    'End Sub
-
-    'Private Sub OnDragLeaveFiles(sender As Object, e As System.EventArgs) _
-    '    Handles m_lblDrop.DragLeave
-
-    '    Try
-    '        Me.m_bDragOver = False
-    '    Catch ex As Exception
-
-    '    End Try
-    '    Me.UpdateControls()
-
-    'End Sub
-
     Private Sub OnFilesDropped(sender As Object, files() As String) _
         Handles m_lblDrop.OnFilesDropped
         Try
             Me.ReadFiles(files)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnSelectFile(sender As System.Object, e As System.EventArgs) _
+        Handles m_lblDrop.Click
+        Try
+            Dim cmd As cFileOpenCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+            cmd.AllowMultiple = True
+
+            cmd.Title = My.Resources.CAPTION_LOAD_HSPEN
+            cmd.Filters = ScientificInterfaceShared.My.Resources.FILEFILTER_CSV
+            cmd.Invoke()
+
+            If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+                Me.ReadFiles(cmd.FileNames)
+            End If
         Catch ex As Exception
 
         End Try
@@ -141,19 +125,18 @@ Public Class frmImport
 
     End Sub
 
-    Private Sub OnAquamapsLinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
-        Handles m_llAquamaps.LinkClicked
 
-        Try
+    Private Sub OnVisitAquamaps(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbAquamaps.Click
 
-            Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            If (cmd IsNot Nothing) Then
-                cmd.Invoke("http://aquamaps.org")
-            End If
+        Me.VisitURL("http://aquamaps.org")
 
-        Catch ex As Exception
-            cLog.Write(ex, "AquamapsImporter::OnAquamapsLinkClicked")
-        End Try
+    End Sub
+
+    Private Sub OnVistJRC(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbJRC.Click
+
+        Me.VisitURL("https://ec.europa.eu/jrc/")
 
     End Sub
 
@@ -200,6 +183,41 @@ Public Class frmImport
         '    Me.m_lblDrop.BackColor = Drawing.Color.Transparent
         'End If
 
+    End Sub
+
+    Private Sub VisitURL(ByVal strURL As String)
+        Try
+            Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke(strURL)
+        Catch ex As Exception
+            cLog.Write(ex, "AquamapsImporter::VisitURL(" & strURL & ")")
+        End Try
+
+    End Sub
+
+    Private Sub OnViewExample(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
+        Handles m_lllblExample.LinkClicked
+
+        Dim strFile As String = IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecospace, "example"), "Sardina pilchardus.csv")
+        Dim msg As cMessage = Nothing
+
+        Try
+            Dim writer As New StreamWriter(strFile, False)
+            writer.Write(My.Resources.HSPEN_example_csv)
+            writer.Flush()
+            writer.Close()
+
+            msg = New cMessage(String.Format(My.Resources.STATUS_EXAMPLE_SAVE_SUCCESS, strFile), _
+                               eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+            msg.Hyperlink = IO.Path.GetDirectoryName(strFile)
+
+            Me.VisitURL("file://" & strFile)
+
+        Catch ex As Exception
+            msg = New cMessage(String.Format(My.Resources.STATUS_EXAMPLE_SAVE_FAILED, strFile), _
+                               eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+        End Try
+        Me.m_uic.Core.Messages.SendMessage(msg)
     End Sub
 
 #End Region ' Internals

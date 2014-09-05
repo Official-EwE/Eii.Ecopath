@@ -47,7 +47,7 @@ Public Class cPluginPoint
     Public ReadOnly Property ControlText As String _
         Implements IGUIPlugin.ControlText
         Get
-            Return "Import Aquamaps Species Envelopes"
+            Return "Import Aquamaps HSPEN Species Envelopes"
         End Get
     End Property
 

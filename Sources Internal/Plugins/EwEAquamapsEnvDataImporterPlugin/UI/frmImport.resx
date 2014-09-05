@@ -129,14 +129,15 @@
     <value>12, 9</value>
   </data>
   <data name="m_lblDrop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>428, 141</value>
+    <value>410, 141</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_lblDrop.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_lblDrop.Text" xml:space="preserve">
-    <value>Drop AquaMaps HSPEN file(s) here</value>
+    <value>Select or drop
+AquaMaps HSPEN file(s) here</value>
   </data>
   <data name="m_lblDrop.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -145,25 +146,25 @@
     <value>m_lblDrop</value>
   </data>
   <data name="&gt;&gt;m_lblDrop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cFileDropLabel, ScientificInterfaceShared, Version=6.5.11212.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblDrop.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblDrop.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_btnImport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnImport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>365, 289</value>
+    <value>347, 302</value>
   </data>
   <data name="m_btnImport.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnImport.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_btnImport.Text" xml:space="preserve">
     <value>Import</value>
@@ -178,7 +179,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnImport.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_tlpOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -186,32 +187,11 @@
   <data name="m_tlpOptions.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_hdrEnvelopes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_hdrEnvelopes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>217, 0</value>
-  </data>
-  <data name="m_hdrEnvelopes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
-  </data>
-  <data name="m_hdrEnvelopes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 23</value>
-  </data>
-  <data name="m_hdrEnvelopes.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_hdrEnvelopes.Text" xml:space="preserve">
-    <value>Envelopes</value>
-  </data>
-  <data name="m_hdrEnvelopes.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
   <data name="&gt;&gt;m_hdrEnvelopes.Name" xml:space="preserve">
     <value>m_hdrEnvelopes</value>
   </data>
   <data name="&gt;&gt;m_hdrEnvelopes.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10717.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11212.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEnvelopes.Parent" xml:space="preserve">
     <value>m_tlpOptions</value>
@@ -219,56 +199,17 @@
   <data name="&gt;&gt;m_hdrEnvelopes.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_hdrSpecies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_hdrSpecies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_hdrSpecies.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 3, 0</value>
-  </data>
-  <data name="m_hdrSpecies.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 23</value>
-  </data>
-  <data name="m_hdrSpecies.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_hdrSpecies.Text" xml:space="preserve">
-    <value>Species</value>
-  </data>
-  <data name="m_hdrSpecies.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
   <data name="&gt;&gt;m_hdrSpecies.Name" xml:space="preserve">
     <value>m_hdrSpecies</value>
   </data>
   <data name="&gt;&gt;m_hdrSpecies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10717.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11212.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSpecies.Parent" xml:space="preserve">
     <value>m_tlpOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrSpecies.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="m_clbxSpecies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_clbxSpecies.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_clbxSpecies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 23</value>
-  </data>
-  <data name="m_clbxSpecies.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 3, 0</value>
-  </data>
-  <data name="m_clbxSpecies.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 96</value>
-  </data>
-  <data name="m_clbxSpecies.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
   </data>
   <data name="&gt;&gt;m_clbxSpecies.Name" xml:space="preserve">
     <value>m_clbxSpecies</value>
@@ -281,24 +222,6 @@
   </data>
   <data name="&gt;&gt;m_clbxSpecies.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="m_clbxEnvelopes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_clbxEnvelopes.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_clbxEnvelopes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>217, 23</value>
-  </data>
-  <data name="m_clbxEnvelopes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
-  </data>
-  <data name="m_clbxEnvelopes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 96</value>
-  </data>
-  <data name="m_clbxEnvelopes.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
   </data>
   <data name="&gt;&gt;m_clbxEnvelopes.Name" xml:space="preserve">
     <value>m_clbxEnvelopes</value>
@@ -319,7 +242,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>428, 119</value>
+    <value>410, 132</value>
   </data>
   <data name="m_tlpOptions.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -334,39 +257,309 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tlpOptions.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_tlpOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_hdrEnvelopes" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrSpecies" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_clbxSpecies" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_clbxEnvelopes" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Absolute,23,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="m_llAquamaps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
+  <data name="m_hdrEnvelopes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="m_llAquamaps.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_hdrEnvelopes.Location" type="System.Drawing.Point, System.Drawing">
+    <value>208, 0</value>
   </data>
-  <data name="m_llAquamaps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 294</value>
+  <data name="m_hdrEnvelopes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
   </data>
-  <data name="m_llAquamaps.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 13</value>
+  <data name="m_hdrEnvelopes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>202, 23</value>
   </data>
-  <data name="m_llAquamaps.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrEnvelopes.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_hdrEnvelopes.Text" xml:space="preserve">
+    <value>Envelopes</value>
+  </data>
+  <data name="m_hdrEnvelopes.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEnvelopes.Name" xml:space="preserve">
+    <value>m_hdrEnvelopes</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEnvelopes.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11212.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEnvelopes.Parent" xml:space="preserve">
+    <value>m_tlpOptions</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEnvelopes.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_hdrSpecies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_hdrSpecies.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_hdrSpecies.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 3, 0</value>
+  </data>
+  <data name="m_hdrSpecies.Size" type="System.Drawing.Size, System.Drawing">
+    <value>202, 23</value>
+  </data>
+  <data name="m_hdrSpecies.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_hdrSpecies.Text" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="m_hdrSpecies.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrSpecies.Name" xml:space="preserve">
+    <value>m_hdrSpecies</value>
+  </data>
+  <data name="&gt;&gt;m_hdrSpecies.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11212.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrSpecies.Parent" xml:space="preserve">
+    <value>m_tlpOptions</value>
+  </data>
+  <data name="&gt;&gt;m_hdrSpecies.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_clbxSpecies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_clbxSpecies.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_clbxSpecies.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 23</value>
+  </data>
+  <data name="m_clbxSpecies.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 3, 0</value>
+  </data>
+  <data name="m_clbxSpecies.Size" type="System.Drawing.Size, System.Drawing">
+    <value>202, 109</value>
+  </data>
+  <data name="m_clbxSpecies.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_clbxSpecies.Name" xml:space="preserve">
+    <value>m_clbxSpecies</value>
+  </data>
+  <data name="&gt;&gt;m_clbxSpecies.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_clbxSpecies.Parent" xml:space="preserve">
+    <value>m_tlpOptions</value>
+  </data>
+  <data name="&gt;&gt;m_clbxSpecies.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_clbxEnvelopes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_clbxEnvelopes.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_clbxEnvelopes.Location" type="System.Drawing.Point, System.Drawing">
+    <value>208, 23</value>
+  </data>
+  <data name="m_clbxEnvelopes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
+  </data>
+  <data name="m_clbxEnvelopes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>202, 109</value>
+  </data>
+  <data name="m_clbxEnvelopes.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_llAquamaps.Text" xml:space="preserve">
-    <value>Go to Aquamaps</value>
+  <data name="&gt;&gt;m_clbxEnvelopes.Name" xml:space="preserve">
+    <value>m_clbxEnvelopes</value>
   </data>
-  <data name="&gt;&gt;m_llAquamaps.Name" xml:space="preserve">
-    <value>m_llAquamaps</value>
+  <data name="&gt;&gt;m_clbxEnvelopes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_llAquamaps.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_clbxEnvelopes.Parent" xml:space="preserve">
+    <value>m_tlpOptions</value>
   </data>
-  <data name="&gt;&gt;m_llAquamaps.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_clbxEnvelopes.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_tlpLinks.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_tlpLinks.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_pbAquamaps.Name" xml:space="preserve">
+    <value>m_pbAquamaps</value>
+  </data>
+  <data name="&gt;&gt;m_pbAquamaps.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbAquamaps.Parent" xml:space="preserve">
+    <value>m_tlpLinks</value>
+  </data>
+  <data name="&gt;&gt;m_pbAquamaps.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_pbJRC.Name" xml:space="preserve">
+    <value>m_pbJRC</value>
+  </data>
+  <data name="&gt;&gt;m_pbJRC.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbJRC.Parent" xml:space="preserve">
+    <value>m_tlpLinks</value>
+  </data>
+  <data name="&gt;&gt;m_pbJRC.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpLinks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 349</value>
+  </data>
+  <data name="m_tlpLinks.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpLinks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>410, 81</value>
+  </data>
+  <data name="m_tlpLinks.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_tlpLinks.Name" xml:space="preserve">
+    <value>m_tlpLinks</value>
+  </data>
+  <data name="&gt;&gt;m_tlpLinks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpLinks.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_llAquamaps.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpLinks.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tlpLinks.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbAquamaps" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbJRC" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_pbAquamaps.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbAquamaps.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbAquamaps.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="m_pbAquamaps.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 75</value>
+  </data>
+  <data name="m_pbAquamaps.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_pbAquamaps.Name" xml:space="preserve">
+    <value>m_pbAquamaps</value>
+  </data>
+  <data name="&gt;&gt;m_pbAquamaps.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbAquamaps.Parent" xml:space="preserve">
+    <value>m_tlpLinks</value>
+  </data>
+  <data name="&gt;&gt;m_pbAquamaps.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_pbJRC.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbJRC.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbJRC.Location" type="System.Drawing.Point, System.Drawing">
+    <value>208, 3</value>
+  </data>
+  <data name="m_pbJRC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 75</value>
+  </data>
+  <data name="m_pbJRC.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_pbJRC.Name" xml:space="preserve">
+    <value>m_pbJRC</value>
+  </data>
+  <data name="&gt;&gt;m_pbJRC.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbJRC.Parent" xml:space="preserve">
+    <value>m_tlpLinks</value>
+  </data>
+  <data name="&gt;&gt;m_pbJRC.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_hdrAcknowledgements.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_hdrAcknowledgements.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrAcknowledgements.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 328</value>
+  </data>
+  <data name="m_hdrAcknowledgements.Size" type="System.Drawing.Size, System.Drawing">
+    <value>410, 18</value>
+  </data>
+  <data name="m_hdrAcknowledgements.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_hdrAcknowledgements.Text" xml:space="preserve">
+    <value>Acknowledgements</value>
+  </data>
+  <data name="m_hdrAcknowledgements.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAcknowledgements.Name" xml:space="preserve">
+    <value>m_hdrAcknowledgements</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAcknowledgements.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11212.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAcknowledgements.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAcknowledgements.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lllblExample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="m_lllblExample.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lllblExample.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 307</value>
+  </data>
+  <data name="m_lllblExample.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 13</value>
+  </data>
+  <data name="m_lllblExample.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lllblExample.Text" xml:space="preserve">
+    <value>&amp;View example file...</value>
+  </data>
+  <data name="&gt;&gt;m_lllblExample.Name" xml:space="preserve">
+    <value>m_lllblExample</value>
+  </data>
+  <data name="&gt;&gt;m_lllblExample.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lllblExample.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lllblExample.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -376,7 +569,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>452, 324</value>
+    <value>434, 441</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -2418,7 +2611,7 @@
 </value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Import Aquamaps species envelopes</value>
+    <value>Import Aquamaps HSPEN species envelopes</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmImport</value>

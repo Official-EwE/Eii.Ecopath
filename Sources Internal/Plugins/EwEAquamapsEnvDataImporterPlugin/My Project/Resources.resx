@@ -118,9 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Aquamaps_ico" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Aquamaps.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="aquamaps_jpg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\aquamaps.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -153,10 +150,27 @@
   </data>
   <data name="PROMPT_FILE_INVALID" xml:space="preserve">
     <value>Aquamaps CSV file {0} is malformed, cannot continue</value>
-    <comment>{0} = file name</comment>
+    <comment>{0}=file name</comment>
   </data>
   <data name="PROMPT_FILE_NOT_FOUND" xml:space="preserve">
     <value>Unable to load Aquamaps distribution envelopes. {0}</value>
-    <comment>{0} = exception text</comment>
+    <comment>{0}=exception message</comment>
+  </data>
+  <data name="jrc_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\jrc_logo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CAPTION_LOAD_HSPEN" xml:space="preserve">
+    <value>Select Aquamaps HSPEN files to load</value>
+  </data>
+  <data name="HSPEN_example_csv" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\1392205186.csv;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="STATUS_EXAMPLE_SAVE_FAILED" xml:space="preserve">
+    <value>Example Aquamaps HSPEN file failed to save {0}</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="STATUS_EXAMPLE_SAVE_SUCCESS" xml:space="preserve">
+    <value>Example Aquamaps HSPEN file saved to {0}</value>
+    <comment>{0}=file name</comment>
   </data>
 </root>

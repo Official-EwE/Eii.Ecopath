@@ -154,8 +154,8 @@
     <None Include="Resources\1392205186.csv" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\jrc_logo.jpg" />
     <Content Include="~todo~.txt" />
-    <None Include="Resources\Aquamaps.ico" />
     <Content Include="Resources\aquamaps.jpg" />
   </ItemGroup>
   <ItemGroup>
