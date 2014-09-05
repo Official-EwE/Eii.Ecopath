@@ -138,7 +138,7 @@ Public Class cMSE
     Private m_tsRunDataCompatibility As TriState = TriState.UseDefault
     Private TrajectoryCsv As StreamWriter
     Private Trajectory2Csv As List(Of StreamWriter)             'Trajectories2 is similar to trajectories apart from it each file contains only 1 group
-    Private swFleetEfforts As StreamWriter
+    Private swFleetEffort As StreamWriter
 
 #End Region ' Internal vars
 
@@ -1033,19 +1033,19 @@ Public Class cMSE
 
                 eDistributionType = CType(ParameterArray(iGroup - 1, 0), DistributionType)
 
-                For iIteration = 1 To nModels
+                For iModel = 1 To nModels
 
                     Select Case eDistributionType
                         Case DistributionType.Uniform
-                            SampledParameters(iIteration - 1, iGroup - 1) = UniformSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2))
+                            SampledParameters(iModel - 1, iGroup - 1) = UniformSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2))
                         Case DistributionType.Triangular
-                            SampledParameters(iIteration - 1, iGroup - 1) = TriangularSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2), ParameterArray(iGroup - 1, 3))
+                            SampledParameters(iModel - 1, iGroup - 1) = TriangularSample(ParameterArray(iGroup - 1, 1), ParameterArray(iGroup - 1, 2), ParameterArray(iGroup - 1, 3))
                     End Select
 
                 Next
             Else
-                For iIteration = 1 To nModels
-                    SampledParameters(iIteration - 1, iGroup - 1) = cCore.NULL_VALUE
+                For iModel = 1 To nModels
+                    SampledParameters(iModel - 1, iGroup - 1) = cCore.NULL_VALUE
                 Next
             End If
 
@@ -1358,17 +1358,18 @@ Public Class cMSE
         ' JS 20Oct13: Applied standard EwE headers. Mark, please don't kill me
 
         Debug.Assert(Me.IsInputDataCompatible)
-        Dim nTrials As Integer
+        Dim nModels As Integer
         Dim GoodDynamics As Boolean
         ' Dim diet_matrix As CsvReader
         Dim nResultIters As Integer
         Dim nFleetIters As Integer
-        Dim nFailedParameterisations As Integer
+        Dim nFailedModels As Integer
         Dim BiomassLimits As cBiomassLimits
+        Dim ModelValid As Boolean
 
         Dim swGroup As StreamWriter = Nothing
         Dim swFleet As StreamWriter = Nothing
-        Dim swFleetEfforts As StreamWriter = Nothing
+        Dim swFleetEffort As StreamWriter = Nothing
 
         Try
 
@@ -1398,7 +1399,7 @@ Public Class cMSE
             Me.initTrajectoryByGroupFiles(msgReport, Trajectory2Csv)
 
             'Prepare the effort trajectory csv with the column headings
-            swFleetEfforts = Me.initTrajectoryEffortFiles(msgReport)
+            swFleetEffort = Me.initTrajectoryEffortFiles(msgReport)
 
             ReDim TargConsQuota(m_core.nGroups - 1, 1)
             ReDim MinEffortThisYear(m_core.nFleets - 1)
@@ -1416,15 +1417,47 @@ Public Class cMSE
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Run The Trials 
             'load parameter values into ecopath and ecosim to be used
-            nTrials = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
-            For iTrial = 1 To nTrials
+            nModels = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
+            For iModel = 1 To nModels
+                ModelValid = True
+
+                Dim FleetEffortTable As New DataTable
+                FleetEffortTable.Columns.Add("ModelID", GetType(Integer))
+                FleetEffortTable.Columns.Add("StrategyName", GetType(String))
+                FleetEffortTable.Columns.Add("FleetNumber", GetType(Integer))
+                FleetEffortTable.Columns.Add("FleetName", GetType(String))
+                FleetEffortTable.Columns.Add("Effort", GetType(Single()))
+
+                Dim FleetCatchTable As New DataTable
+                FleetCatchTable.Columns.Add("ModelID", GetType(Integer))
+                FleetCatchTable.Columns.Add("StrategyName", GetType(String))
+                FleetCatchTable.Columns.Add("FleetNumber", GetType(Integer))
+                FleetCatchTable.Columns.Add("FleetName", GetType(String))
+                FleetCatchTable.Columns.Add("GroupNumber", GetType(Integer))
+                FleetCatchTable.Columns.Add("GroupName", GetType(String))
+                FleetCatchTable.Columns.Add("CatchAtLastTimeStep", GetType(Single))
+
+                Dim ResultsTable As New DataTable
+                ResultsTable.Columns.Add("ModelID", GetType(Integer))
+                ResultsTable.Columns.Add("StrategyName", GetType(String))
+                ResultsTable.Columns.Add("ID", GetType(Integer))
+                ResultsTable.Columns.Add("Name", GetType(String))
+                ResultsTable.Columns.Add("ResultName", GetType(String))
+                ResultsTable.Columns.Add("ResultValue", GetType(Double))
+
+                Dim TrajectoryTable As New DataTable
+                TrajectoryTable.Columns.Add("ModelID", GetType(Integer))
+                TrajectoryTable.Columns.Add("StrategyName", GetType(String))
+                TrajectoryTable.Columns.Add("GroupID", GetType(Integer))
+                TrajectoryTable.Columns.Add("GroupName", GetType(String))
+                TrajectoryTable.Columns.Add("Biomass", GetType(Single()))
 
                 ResetEffortToMax(OriginalNTimesteps + 1, m_core.EcoSimModelParameters.NumberYears * m_ecosim.EcosimData.NumStepsPerYear)
 
-                cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iTrial), CSng(iTrial / nTrials))
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iModel), CSng(iModel / nModels))
 
                 'Only run the Strategies if the parameters loaded
-                If Me.updateEcopathEcosimParameters(iTrial) Then
+                If Me.updateEcopathEcosimParameters(iModel) Then
                     'Yep loaded all the parameters from file or memory
 
                     Try
@@ -1435,7 +1468,7 @@ Public Class cMSE
                         Debug.Assert(bEcopathRan, Me.ToString + ".Run() Ecopath failed to run from balanced parameter set.")
 
                         'This creates the files we will write the biomass trajectories to
-                        TrajectoryCsv = Me.initTrialTrajectoryFile(msgReport, iTrial)
+                        TrajectoryCsv = Me.initTrialTrajectoryFile(msgReport, iModel)
 
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'Loop over all the strategies for this trial
@@ -1448,21 +1481,28 @@ Public Class cMSE
                             'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
                             Me.initFishedByHCR(curStrategy)
 
-                            Me.RunEcosim()
-
-                            'Save the Ecosim results
-                            GoodDynamics = Me.SaveResults(iTrial, nResultIters, nFleetIters, swGroup, swFleet, swFleetEfforts, BiomassLimits)
+                            If Me.RunEcosim() Then
+                                'Save the Ecosim results
+                                GoodDynamics = Me.SaveResults2RAM(iModel, nResultIters, nFleetIters, ResultsTable, FleetCatchTable, FleetEffortTable, TrajectoryTable, BiomassLimits)
+                            Else
+                                GoodDynamics = False
+                                Exit For
+                            End If
 
                             'If one of the groups colapsed during the Ecosim run 
                             'Reject this parameter set
-                            If GoodDynamics = False Then
-                                nFailedParameterisations += 1
-                                Exit For
-                            End If
 
                         Next curStrategy
                         'End of Strategy loop
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                        If GoodDynamics = False Then
+                            nFailedModels += 1
+                            Exit For
+                        Else
+                            SaveResults2CSV(FleetEffortTable, FleetCatchTable, ResultsTable, TrajectoryTable, _
+                                            swFleetEffort, swFleet, swGroup, TrajectoryCsv, Trajectory2Csv)
+                        End If
 
                         cMSEUtils.ReleaseWriter(TrajectoryCsv)
 
@@ -1474,7 +1514,7 @@ Public Class cMSE
                 'BadDynamics:  ' This is so that if the dynamics of a parameterisation are bad that we can skip out of the loops and onto the the next Trial
                 GoodDynamics = True
 
-            Next iTrial
+            Next iModel
             'End of trials loop
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -1482,7 +1522,7 @@ Public Class cMSE
             m_core.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / m_ecosim.EcosimData.NumStepsPerYear)
 
             'Provide user with a message stating how many of the Trials produced reasonable dynamics
-            msgReport.Message = String.Format(My.Resources.PROMPT_TRIAL_REPORT, (nTrials - nFailedParameterisations), nTrials, CInt((nTrials - nFailedParameterisations) * 100 / nTrials))
+            msgReport.Message = String.Format(My.Resources.PROMPT_TRIAL_REPORT, (nModels - nFailedModels), nModels, CInt((nModels - nFailedModels) * 100 / nModels))
             Me.Core.Messages.SendMessage(msgReport)
 
         Catch ex As Exception
@@ -1503,12 +1543,93 @@ Public Class cMSE
 
         cMSEUtils.ReleaseWriter(swGroup)
         cMSEUtils.ReleaseWriter(swFleet)
-        cMSEUtils.ReleaseWriter(swFleetEfforts)
+        cMSEUtils.ReleaseWriter(swFleetEffort)
 
         Me.StockAssessment.RunEnded()
 
         Me.RestoreOriginalState()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    End Sub
+
+    Private Sub SaveResults2CSV(ByRef FleetEffortTable As DataTable, ByRef FleetCatchTable As DataTable, ByRef GroupResultsTable As DataTable, _
+                         ByRef TrajectoryTable As DataTable, _
+                         ByRef swFleetEffort As StreamWriter, ByRef swFleet As StreamWriter, ByRef swGroup As StreamWriter, _
+                         ByRef swTrajectory As StreamWriter, ByRef swTrajectory2 As List(Of StreamWriter))
+
+        'Save FleetEffortTable to CSV
+        'swFleetEffort.Write("Model,Strategy,FleetNumber,FleetName")
+        For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+            swFleetEffort.Write("," & iTimeStep)
+        Next
+        swFleetEffort.WriteLine()
+        For iRow = 0 To FleetEffortTable.Rows.Count - 1
+            Dim RowData As Data.DataRow
+            Dim EffortVals() As Single
+            RowData = FleetEffortTable.Rows(iRow)
+            EffortVals = RowData.Field(Of Single())("Effort")
+            swFleetEffort.Write("{0},{1},{2},{3}", _
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")), cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")), _
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("FleetNumber")), cStringUtils.ToCSVField(RowData.Field(Of String)("FleetName")))
+            For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+                swFleetEffort.Write("," & cStringUtils.FormatNumber(EffortVals(iTimeStep - 1)))
+            Next
+            swFleetEffort.WriteLine()
+        Next
+
+        'Save the FleetCatchTable to CSV
+        'swFleet.WriteLine("Model,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
+        For iRow = 0 To FleetCatchTable.Rows.Count - 1
+            Dim RowData As Data.DataRow = FleetCatchTable.Rows(iRow)
+            swFleet.WriteLine("{0},{1},{2},{3},{4},{5},{6}", _
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")), _
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")), _
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("FleetNumber")), _
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("FleetName")), _
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("GroupNumber")), _
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("GroupName")), _
+                                cStringUtils.FormatNumber(RowData.Field(Of Single)("CatchAtLastTimeStep")))
+        Next
+
+        'Save the GroupResultsTable to CSV
+        'swGroup.WriteLine("Model,Strategy,ID,Name,ResultName,ResultValue")
+        For iRow = 0 To GroupResultsTable.Rows.Count - 1
+            Dim RowData As Data.DataRow = GroupResultsTable.Rows(iRow)
+            swGroup.WriteLine("{0},{1},{2},{3},{4},{5}", _
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")), _
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")), _
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ID")), _
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("Name")), _
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("ResultName")), _
+                                cStringUtils.FormatNumber(RowData.Field(Of Double)("ResultValue")))
+        Next
+
+        'Save the trajectories by group
+        For iRow = 0 To TrajectoryTable.Rows.Count - 1
+            Dim RowData As Data.DataRow
+            Dim Biomass() As Single
+            RowData = TrajectoryTable.Rows(iRow)
+            Biomass = RowData.Field(Of Single())("Biomass")
+            swTrajectory.Write("{0},{1},{2}", _
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("GroupID")), cStringUtils.ToCSVField(RowData.Field(Of String)("GroupName")), _
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")))
+            For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+                swTrajectory.Write("," & cStringUtils.FormatNumber(Biomass(iTimeStep - 1)))
+            Next
+            swTrajectory.WriteLine()
+        Next
+
+        For iRow = 0 To TrajectoryTable.Rows.Count - 1
+            Dim RowData As Data.DataRow
+            Dim Biomass() As Single
+            RowData = TrajectoryTable.Rows(iRow)
+            Biomass = RowData.Field(Of Single())("Biomass")
+            Trajectory2Csv(RowData.Field(Of Integer)("GroupID") - 1).Write(cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")) & "," & cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")))
+            For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+                Trajectory2Csv(RowData.Field(Of Integer)("GroupID") - 1).Write("," & cStringUtils.FormatNumber(Biomass(iTime - 1)))
+            Next
+            Trajectory2Csv(RowData.Field(Of Integer)("GroupID") - 1).WriteLine()
+        Next
 
     End Sub
 
@@ -1644,32 +1765,16 @@ Public Class cMSE
 
     End Sub
 
-    Private Function SaveResults(ByVal iTrial As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
-                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByVal swGroup As StreamWriter, ByVal swFleet As StreamWriter, _
-                                        ByRef swFleetEffort As StreamWriter, ByRef BiomassLimits As cBiomassLimits) As Boolean
+    Private Function SaveResults2RAM(ByVal iModel As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
+                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByRef ResultsTable As DataTable,
+                                        ByRef FleetCatchTable As DataTable, ByRef FleetEffortTable As DataTable,
+                                        ByRef TrajectoryTable As DataTable, ByRef BiomassLimits As cBiomassLimits) As Boolean
 
         Dim GoodDynamics As Boolean = True
 
         Dim BiomassProjected(NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
         nSuccessfullyProjectedModels = 0
-
-        'Dim BadDynamics As StreamWriter = New StreamWriter(DataPath & "Results/diagnostics/BadDynamicsTrajectories.csv", True)
-        'BadDynamics.WriteLine("iTrial, Group")
-        ''diag!!! saves the biomass trajectory for groups with bad dynamics to csv
-        'For iGrp As Integer = 1 To mCore.nLivingGroups
-        '    For iTimeStep As Integer = 1 To OriginalNTimesteps
-        '        If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) <= 1 * 10 ^ -20 Then GoodDynamics = False
-        '        If GoodDynamics = False Then Exit For
-        '    Next
-        '    If GoodDynamics = False Then
-        '        'Extract the diet matrix
-        '        For iTimeStep As Integer = 1 To OriginalNTimesteps - 1
-        '            BadDynamics.Write(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTimeStep) & ",")
-        '        Next
-        '        BadDynamics.Write(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, OriginalNTimesteps))
-        '    End If
-        'Next iGrp
 
         'This outputs information that can be used to resolve issues with the biomass limits are exceeded
         Dim DiagnosticOutput4BiomassLimits = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "BadDynamicsTrajectories.csv"), True)
@@ -1682,7 +1787,7 @@ Public Class cMSE
                 End If
             Next
             DiagnosticOutput4BiomassLimits.WriteLine("{0},{1},{2},{3},{4},{5}", _
-                        cStringUtils.FormatNumber(iTrial), _
+                        cStringUtils.FormatNumber(iModel), _
                         cStringUtils.ToCSVField(m_currentStrategy.Name), _
                         cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp.mGroup.Index).Name), _
                         cStringUtils.FormatNumber(MaxBiomass), _
@@ -1735,26 +1840,19 @@ Public Class cMSE
 
             'Output the trajectories of the efforts
             For iFleet As Integer = 1 To m_core.nFleets
-                swFleetEffort.Write("{0},{1},{2},{3}", _
-                        cStringUtils.FormatNumber(iTrial), _
-                        cStringUtils.ToCSVField(m_currentStrategy.Name), _
-                        cStringUtils.FormatNumber(iFleet), cStringUtils.ToCSVField(m_core.FleetInputs(iFleet).Name))
+                Dim EffortVals(OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Single
                 For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                    swFleetEffort.Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsEffort(iFleet, iTime)))
+                    EffortVals(iTime - 1) = Me._simdata.ResultsEffort(iFleet, iTime)
                 Next
-                swFleetEffort.WriteLine()
+                FleetEffortTable.Rows.Add(iModel, m_currentStrategy.Name, iFleet, m_core.FleetInputs(iFleet).Name, EffortVals)
             Next
 
             For iFleet As Integer = 1 To m_core.nFleets
                 For iGrp As Integer = 1 To m_core.nLivingGroups
-                    swFleet.WriteLine("{0},{1},{2},{3},{4},{5},{6}", _
-                                      cStringUtils.FormatNumber(iTrial + NumberIterationsAlreadyInFleets), _
-                                      cStringUtils.ToCSVField(m_currentStrategy.Name), _
-                                      cStringUtils.FormatNumber(iFleet), cStringUtils.ToCSVField(m_core.FleetInputs(iFleet).Name), _
-                                      cStringUtils.FormatNumber(iGrp), cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name), _
-                                      cStringUtils.FormatNumber(Me._simdata.ResultsSumCatchByGroupGear(iGrp, iFleet, OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear)))
+                    FleetCatchTable.Rows.Add(iModel + NumberIterationsAlreadyInFleets, m_currentStrategy.Name, _
+                                             iFleet, m_core.FleetInputs(iFleet).Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, _
+                                            Me._simdata.ResultsSumCatchByGroupGear(iGrp, iFleet, OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear))
                 Next
-
             Next
 
             For iGrp As Integer = 1 To m_core.nLivingGroups
@@ -1763,53 +1861,25 @@ Public Class cMSE
                     BiomassProjected(iTime - 1) = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, OriginalNTimesteps + iTime)
                 Next
 
-                'Output to csv the biomass trajectories
-                TrajectoryCsv.Write("{0},{1},{2}", _
-                                    cStringUtils.FormatNumber(iGrp), _
-                                    cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name), _
-                                    cStringUtils.ToCSVField(m_currentStrategy.Name))
-
+                Dim BiomassVals(OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Single
                 For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                    TrajectoryCsv.Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTime)))
+                    BiomassVals(iTime - 1) = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTime)
                 Next
-                TrajectoryCsv.WriteLine()
+                TrajectoryTable.Rows.Add(iModel, m_currentStrategy.Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, BiomassVals)
 
-                'Trajectory2Csv(igrp - 1).Write(iTrial & "," & IO.Path.GetFileNameWithoutExtension(HCRFiles(Strategies.IndexOf(CurrentStrategy))))
-                Trajectory2Csv(iGrp - 1).Write(iTrial & "," & cStringUtils.ToCSVField(m_currentStrategy.Name))
-                For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                    Trajectory2Csv(iGrp - 1).Write("," & cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTime)))
-                Next
-                Trajectory2Csv(iGrp - 1).WriteLine()
-
-                swGroup.WriteLine("{0},{1},{2},{3},Biomass,{4}", _
-                             cStringUtils.FormatNumber(NumberIterationsAlreadyInResults + iTrial), _
-                             cStringUtils.ToCSVField(m_currentStrategy.Name), _
-                             cStringUtils.FormatNumber(iGrp), _
-                             cStringUtils.ToCSVField(m_core.EcoPathGroupOutputs(iGrp).Name), _
-                             cStringUtils.FormatNumber(BiomassProjected.Min))
-                swGroup.WriteLine("{0},{1},{2},{3},BiomassEnd,{4}", _
-                              cStringUtils.FormatNumber(NumberIterationsAlreadyInResults + iTrial), _
-                              cStringUtils.ToCSVField(m_currentStrategy.Name), _
-                              cStringUtils.FormatNumber(iGrp), _
-                              cStringUtils.ToCSVField(m_core.EcoPathGroupOutputs(iGrp).Name), _
-                              cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, Me._simdata.NTimes)))
-                'Results.Rows.Add(iIteration, HCRFiles(Strategies.IndexOf(CurrentStrategy)), mCore.EcoPathGroupOutputs(igrp).Name, "Catch", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, ecosimData.NTimes))
-                swGroup.WriteLine("{0},{1},{2},{3},Catch,{4}", _
-                              (NumberIterationsAlreadyInResults + iTrial), _
-                              cStringUtils.ToCSVField(m_currentStrategy.Name), _
-                              cStringUtils.FormatNumber(iGrp), cStringUtils.ToCSVField(m_core.EcoPathGroupOutputs(iGrp).Name), _
-                              cStringUtils.FormatNumber(Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGrp, Me._simdata.NTimes)))
-
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                                           m_core.EcoPathGroupOutputs(iGrp).Name, "Biomass", BiomassProjected.Min)
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                                           m_core.EcoPathGroupOutputs(iGrp).Name, "BiomassEnd", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, Me._simdata.NTimes))
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                                           m_core.EcoPathGroupOutputs(iGrp).Name, "Catch", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGrp, Me._simdata.NTimes))
             Next
 
             For iFleet As Integer = 1 To m_core.nFleets
-                swGroup.WriteLine("{0},{1},{2},{3},TotalEndValue,{4}", _
-                             cStringUtils.FormatNumber(NumberIterationsAlreadyInResults + iTrial), _
-                             cStringUtils.ToCSVField(m_currentStrategy.Name), _
-                             cStringUtils.FormatNumber(iFleet), _
-                             cStringUtils.ToCSVField(m_core.FleetInputs(iFleet).Name), _
-                             cStringUtils.FormatNumber(Me._simdata.ResultsSumValueByGear(iFleet, m_ecosim.EcosimData.NTimes)))
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iFleet, _
+                                      m_core.FleetInputs(iFleet).Name, "TotalEndValue", Me._simdata.ResultsSumValueByGear(iFleet, m_ecosim.EcosimData.NTimes))
             Next
+
         End If
 
         Return GoodDynamics
@@ -1908,12 +1978,12 @@ Public Class cMSE
 
     End Sub
 
-    Private Function initTrialTrajectoryFile(msgReport As cMessage, iTrial As Integer) As StreamWriter
+    Private Function initTrialTrajectoryFile(msgReport As cMessage, iModel As Integer) As StreamWriter
         Dim strm As StreamWriter
-        strm = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Trial" & iTrial & ".csv"), False)
+        strm = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Model" & iModel & ".csv"), False)
         If Me.m_core.SaveWithFileHeader Then strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
         strm.Write("GroupNumber,Group,Strategy")
-        msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Trial" & iTrial & ".csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+        msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Model" & iModel & ".csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
         For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
             strm.Write("," & cStringUtils.FormatNumber(iTime))
@@ -1950,7 +2020,7 @@ Public Class cMSE
 
             TrajectoryList.Add(writer)
             If Me.m_core.SaveWithFileHeader Then TrajectoryList(igrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-            TrajectoryList(igrp - 1).Write("Trial,Strategy")
+            TrajectoryList(igrp - 1).Write("Model,Strategy")
             For iTime = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                 TrajectoryList(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
             Next
@@ -2484,50 +2554,50 @@ Public Class cMSE
 
     End Function
 
-    Private Function DirichletSample(ByVal nDimensions As Integer, ByVal a() As Single, ByRef DietMultiplier As Double) As Single()
-        Dim u1, u2, b, p, x As Single
-        Dim gamma(nDimensions - 1) As Single
-        Dim dirichlet(nDimensions - 1) As Single
-        Dim sumofgamma As Single
+    '    Private Function DirichletSample(ByVal nDimensions As Integer, ByVal a() As Single, ByRef DietMultiplier As Double) As Single()
+    '        Dim u1, u2, b, p, x As Single
+    '        Dim gamma(nDimensions - 1) As Single
+    '        Dim dirichlet(nDimensions - 1) As Single
+    '        Dim sumofgamma As Single
 
-        For i = 0 To a.Length() - 1
-            a(i) = CSng(a(i) * DietMultiplier)
-        Next
+    '        For i = 0 To a.Length() - 1
+    '            a(i) = CSng(a(i) * DietMultiplier)
+    '        Next
 
-        For i As Integer = 0 To nDimensions - 1
-step1:
-            u1 = CSng(Me.m_rand.NextDouble())
-            b = CSng((Math.E + a(i)) / Math.E)
-            p = b * u1
-            If p >= 1 Then GoTo step3
-step2:
-            x = CSng(p ^ (1 / a(i)))
-            u2 = CSng(Me.m_rand.NextDouble())
-            If u2 > Math.Exp(-x) Then
-                GoTo step1
-            Else
-                gamma(i) = x
-                GoTo stepend
-            End If
-step3:
-            x = CSng(-Math.Log((b - p) / a(i)))
-            u2 = CSng(Me.m_rand.NextDouble())
-            If u2 > x ^ (a(i) - 1) Then
-                GoTo step1
-            Else
-                gamma(i) = x
-            End If
-stepend:
-        Next
+    '        For i As Integer = 0 To nDimensions - 1
+    'step1:
+    '            u1 = CSng(Me.m_rand.NextDouble())
+    '            b = CSng((Math.E + a(i)) / Math.E)
+    '            p = b * u1
+    '            If p >= 1 Then GoTo step3
+    'step2:
+    '            x = CSng(p ^ (1 / a(i)))
+    '            u2 = CSng(Me.m_rand.NextDouble())
+    '            If u2 > Math.Exp(-x) Then
+    '                GoTo step1
+    '            Else
+    '                gamma(i) = x
+    '                GoTo stepend
+    '            End If
+    'step3:
+    '            x = CSng(-Math.Log((b - p) / a(i)))
+    '            u2 = CSng(Me.m_rand.NextDouble())
+    '            If u2 > x ^ (a(i) - 1) Then
+    '                GoTo step1
+    '            Else
+    '                gamma(i) = x
+    '            End If
+    'stepend:
+    '        Next
 
-        sumofgamma = gamma.Sum()
-        For i = 0 To nDimensions - 1
-            dirichlet(i) = gamma(i) / sumofgamma
-        Next
+    '        sumofgamma = gamma.Sum()
+    '        For i = 0 To nDimensions - 1
+    '            dirichlet(i) = gamma(i) / sumofgamma
+    '        Next
 
-        Return (dirichlet)
+    '        Return (dirichlet)
 
-    End Function
+    '    End Function
 
     Private Function UniformSample(ByVal min_par As Single, ByVal max_par As Single) As Double
 

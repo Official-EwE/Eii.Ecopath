@@ -477,6 +477,7 @@ Public Class frmMSE
             File.Delete(m_plugin.MSE.DataPath & "\Results\Fleet.csv")
             File.Delete(m_plugin.MSE.DataPath & "\Results\Results.csv")
             File.Delete(m_plugin.MSE.DataPath & "\Results\EffortTrajectories.csv")
+            File.Delete(m_plugin.MSE.DataPath & "\Results\BadDynamicsTrajectories.csv")
 
             For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories")
                 File.Delete(iFile)
