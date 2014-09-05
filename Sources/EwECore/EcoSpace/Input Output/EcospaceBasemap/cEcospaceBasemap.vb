@@ -501,6 +501,14 @@ Public Class cEcospaceBasemap
 
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <para>Get/set whether to assume square cells without latitude tapering correction. 
+    ''' Square cells can be assumed on relatively small areas in UTM projections.</para>
+    ''' <para>As an additional bonus Ecospace assumes meters as map units when this flag is 
+    ''' set; if this flag is cleared map units are expected to be decimal degrees.</para>
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property AssumeSquareCells As Boolean
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.AssumeSquareCells))
@@ -509,6 +517,20 @@ Public Class cEcospaceBasemap
             Me.SetVariable(eVarNameFlags.AssumeSquareCells, value)
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether a cell is modelled for Ecosystem dynamics.
+    ''' </summary>
+    ''' <param name="iRow">One-based row index.</param>
+    ''' <param name="iCol">One-based column index.</param>
+    ''' <returns>
+    ''' A cell is modelled when it represent water in the included cell range.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsModelledCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+        Return Me.LayerDepth.IsWaterCell(iRow, iCol) And Not Me.LayerExclusion.IsExcludedCell(iRow, iCol)
+    End Function
 
 #End Region ' Variables by dot (.) operator
 

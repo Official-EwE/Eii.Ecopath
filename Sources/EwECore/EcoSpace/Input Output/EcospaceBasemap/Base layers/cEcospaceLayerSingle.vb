@@ -143,7 +143,6 @@ Public Class cEcospaceLayerSingle
     Protected Overridable Sub RecalcStats()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
         Dim s As Single = 0.0!
         Dim iRows As Integer = bm.InRow
         Dim iCols As Integer = bm.InCol
@@ -152,7 +151,7 @@ Public Class cEcospaceLayerSingle
         Me.m_sMinValue = Single.MaxValue
         For iRow As Integer = 1 To iRows
             For iCol As Integer = 1 To iCols
-                If layerDepth.IsWaterCell(iRow, iCol) Then
+                If (bm.IsModelledCell(iRow, iCol)) Then
                     s = CSng(Me.Cell(iRow, iCol))
                     If (s <> cCore.NULL_VALUE) Then
                         Me.m_sMaxValue = Math.Max(s, Me.m_sMaxValue)
