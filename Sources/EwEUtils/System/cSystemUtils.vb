@@ -66,13 +66,18 @@ Namespace SystemUtilities
         ''' <returns>The username for the active logged-in user.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function GetUserName() As String
+
             Dim strName As String = ""
+
             If (cSystemUtils.UserInfo() IsNot Nothing) Then
                 strName = cSystemUtils.UserInfo().DisplayName
-            Else
+            End If
+
+            If (String.IsNullOrWhiteSpace(strName)) Then
                 strName = My.User.Name
                 strName = strName.Substring(strName.IndexOf("\") + 1)
             End If
+
             Return strName
 
         End Function
