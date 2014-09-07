@@ -4683,6 +4683,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Left limit.
+        '''</summary>
+        Public ReadOnly Property HEADER_LEFT_LIMIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LEFT_LIMIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to L at infinity (cm).
         '''</summary>
         Public ReadOnly Property HEADER_LENGTH_INFINITY_UNIT() As String
@@ -4913,6 +4922,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_MEAN_LIFESPAN_UNIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_MEAN_LIFESPAN_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Limit mean.
+        '''</summary>
+        Public ReadOnly Property HEADER_MEAN_LIMIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MEAN_LIMIT", resourceCulture)
             End Get
         End Property
         
@@ -5732,6 +5750,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_RHALFB0RATIO() As String
             Get
                 Return ResourceManager.GetString("HEADER_RHALFB0RATIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Right limit.
+        '''</summary>
+        Public ReadOnly Property HEADER_RIGHT_LIMIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RIGHT_LIMIT", resourceCulture)
             End Get
         End Property
         

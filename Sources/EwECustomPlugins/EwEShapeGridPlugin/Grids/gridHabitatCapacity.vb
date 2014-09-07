@@ -45,7 +45,7 @@ Public Class gridHabitatCapacity
         Name
         LimLeft
         LimRight
-        LimMean
+        'LimMean
         FirstTime
     End Enum
 
@@ -86,14 +86,13 @@ Public Class gridHabitatCapacity
         Me(eRowType.Thumbnail, 0) = New EwERowHeaderCell(SharedResources.HEADER_IMAGE)
         Me(eRowType.Name, 0) = New EwERowHeaderCell(SharedResources.HEADER_NAME)
 
-        ' ToDo: globalize this
-        Me(eRowType.LimLeft, 0) = New EwERowHeaderCell("Left limit")
-        Me(eRowType.LimRight, 0) = New EwERowHeaderCell("Right limit")
-        Me(eRowType.LimMean, 0) = New EwERowHeaderCell("Limit mean")
+        Me(eRowType.LimLeft, 0) = New EwERowHeaderCell(SharedResources.HEADER_LEFT_LIMIT)
+        Me(eRowType.LimRight, 0) = New EwERowHeaderCell(SharedResources.HEADER_RIGHT_LIMIT)
+        'Me(eRowType.LimMean, 0) = New EwERowHeaderCell(SharedResources.HEADER_MEAN_LIMIT)
 
         ' Create row header cells
         For i As Integer = 0 To iNumPoints - 1
-            cell = New EwERowHeaderCell(CStr(i))
+            cell = New EwERowHeaderCell(CStr(i + 1))
             Me(eRowType.FirstTime + i, 0) = cell
         Next
 
@@ -115,12 +114,18 @@ Public Class gridHabitatCapacity
             Me(eRowType.Name, i + 1) = cell
 
             ' JS 10Jun13: added
-            cell = New EwECell(env.ResponseLeftLimit, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
+            ' JS 07Sep14: limits must be editable
+            cell = New EwECell(env.ResponseLeftLimit, GetType(Double))
+            cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.LimLeft, i + 1) = cell
-            cell = New EwECell(env.ResponseRightLimit, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
+
+            cell = New EwECell(env.ResponseRightLimit, GetType(Double))
+            cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.LimRight, i + 1) = cell
-            cell = New EwECell(env.ResponseMean, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
-            Me(eRowType.LimMean, i + 1) = cell
+
+            'JS 07Sep14: removed mean cells because this calculation can only be performed after shapes have been updated. Too complicated to sync well and not really necessary
+            'cell = New EwECell(env.ResponseMean, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
+            'Me(eRowType.LimMean, i + 1) = cell
 
             For j As Integer = 0 To Math.Min(iNumPoints, env.nPoints) - 1
                 cell = New EwECell(env.ShapeData(j + 1), GetType(Single))
@@ -136,4 +141,25 @@ Public Class gridHabitatCapacity
         cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
 
     End Sub
+
+    Protected Overrides Function SafeCellEdit(p As SourceGrid2.Position, _
+                                              cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+        Dim shape As cEnviroResponseFunction = DirectCast(Me.Shape(p.Column), cEnviroResponseFunction)
+
+        Select Case p.Row
+            Case eRowType.Name
+                shape.Name = CStr(cell.GetValue(p))
+            Case eRowType.LimLeft
+                shape.ResponseLeftLimit = CSng(cell.GetValue(p))
+            Case eRowType.LimRight
+                shape.ResponseRightLimit = CSng(cell.GetValue(p))
+            Case Else
+                Dim iTime As Integer = p.Row - eRowType.FirstTime + 1
+                shape.ShapeData(iTime) = CSng(cell.GetValue(p))
+        End Select
+        Return True
+
+    End Function
+
 End Class

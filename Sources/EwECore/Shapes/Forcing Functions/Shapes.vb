@@ -321,7 +321,6 @@ Public Class cForcingFunction
     ''' <summary>
     ''' Tell the manager that a shape has changed
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Sub ShapeChanged()
 
         'tell the manager that a shape has changed it's data
