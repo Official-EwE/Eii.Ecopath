@@ -139,17 +139,12 @@ Namespace SpatialData
             Me.m_mtbSeasonalEnd.ValidatingType = GetType(Date)
             Me.m_mtbSeasonalEnd.Text = Me.m_dataset.TimeEnd.ToString("yyyy") & Me.m_dataset.TimeEnd.ToString("MM")
 
-            If (Me.m_dataset.VarName = eVarNameFlags.NotSet) Then
-                ' Allow all supported varnames
-                Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
-                If (Me.UIContext IsNot Nothing) Then
-                    For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
-                        Me.m_cmbVarName.Items.Add(adt.VarName)
-                    Next
-                End If
-            Else
-                ' Allow only dataset varname when configuring a pre-existing dataset
-                Me.m_cmbVarName.Items.Add(Me.m_dataset.VarName)
+            ' Allow all supported varnames
+            Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
+            If (Me.UIContext IsNot Nothing) Then
+                For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
+                    Me.m_cmbVarName.Items.Add(adt.VarName)
+                Next
             End If
 
             Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
