@@ -348,7 +348,7 @@ Namespace SpatialData
                     Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
                     Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
 
-                    cmd.Invoke(Me.m_tbxPath.Text, My.Resources.PROMPT_SELECTFOLDER)
+                    cmd.Invoke(Me.AbsolutePath(), My.Resources.PROMPT_SELECTFOLDER)
                     If cmd.Result = DialogResult.OK Then
                         Me.m_tbxPath.Text = cmd.Directory
                         Me.UpdateControls()
@@ -363,7 +363,7 @@ Namespace SpatialData
             If Not bOK Then
                 Dim fbd As New FolderBrowserDialog()
 
-                fbd.SelectedPath = Me.m_tbxPath.Text
+                fbd.SelectedPath = Me.AbsolutePath()
                 fbd.Description = My.Resources.PROMPT_SELECTFOLDER
                 fbd.ShowNewFolderButton = False
 
@@ -410,8 +410,12 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Private Sub UpdateControls()
 
+            ' Prevent intiialization errors
+            If (Me.m_dataset Is Nothing) Then Return
+
             Dim bHasPattern As Boolean = (Not String.IsNullOrEmpty(Me.m_tbxDatePart.SelectedText))
-            Dim strPath As String = Me.m_tbxPath.Text
+            Dim bIsRelative As Boolean = Me.m_dataset.IsSourceRelative
+            Dim strPath As String = Me.AbsolutePath()
             Dim bHasFolder As Boolean = False
 
             Me.m_mtbSeasonalEnd.Enabled = Me.m_cbSeasonal.Checked
@@ -424,9 +428,19 @@ Namespace SpatialData
             Catch ex As Exception
 
             End Try
+
             Me.m_btnSearch.Enabled = bHasFolder
+            Me.m_btnBrowse.Enabled = Not bIsRelative
 
         End Sub
+
+        Private Function AbsolutePath() As String
+            Dim strPath As String = Me.m_tbxPath.Text
+            If (Me.m_dataset.IsSourceRelative) Then
+                Return Me.m_dataset.ToAbsolutePath(strPath)
+            End If
+            Return strPath
+        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -461,7 +475,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Private Sub FindFiles()
 
-            Dim astrFiles As String() = Me.ReadFilesFromLocation(Me.m_tbxPath.Text, _
+            Dim astrFiles As String() = Me.ReadFilesFromLocation(Me.AbsolutePath(), _
                                                                  Me.m_tbxFileNamePattern.Text, _
                                                                  Me.SelectedExtensions())
             Me.m_lFiles.Clear()

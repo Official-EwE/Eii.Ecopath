@@ -233,7 +233,11 @@ Namespace SpatialData
 
 #Region " Import / export "
 
-        Protected Property IsSourceRelative As Boolean = False
+        ''' <summary>
+        ''' Get/set whether files are found on a path, dictated by source,
+        ''' relative to the current configuration file.
+        ''' </summary>
+        Friend Property IsSourceRelative As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.ExportTo"/>
@@ -251,8 +255,8 @@ Namespace SpatialData
         ''' EwE ccore.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Protected Function ToAbsolutePath(ByVal strPath As String, _
-                                          Optional ByVal strPathBase As String = "") As String
+        Friend Function ToAbsolutePath(ByVal strPath As String, _
+                                       Optional ByVal strPathBase As String = "") As String
 
             If Not Me.IsSourceRelative Then Return strPath
             If (String.IsNullOrWhiteSpace(strPathBase)) Then
@@ -273,8 +277,8 @@ Namespace SpatialData
         ''' EwE ccore.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Protected Function ToRelativePath(ByVal strPath As String, _
-                                          Optional ByVal strPathBase As String = "") As String
+        Friend Function ToRelativePath(ByVal strPath As String, _
+                                       Optional ByVal strPathBase As String = "") As String
 
             If Not Me.IsSourceRelative Then Return strPath
 
