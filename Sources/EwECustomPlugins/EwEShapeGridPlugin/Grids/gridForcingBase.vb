@@ -161,18 +161,13 @@ Public MustInherit Class gridForcingBase
     Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, _
                                               ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
+        ' Encapsulate cell edit in a safety net to prevent grid update loops
         Dim shape As cShapeData = Me.Shape(p.Column)
 
         Me.m_bInLocalEdit = True
         If (Me.IsInBatchEdit) Then shape.LockUpdates()
 
-        Select Case DirectCast(p.Row, eRowType)
-            Case eRowType.Name
-                shape.Name = CStr(cell.GetValue(p))
-            Case Else
-                Dim iTime As Integer = p.Row - eRowType.FirstTime
-                shape.ShapeData(iTime) = CSng(cell.GetValue(p))
-        End Select
+        Me.SafeCellEdit(p, cell)
 
         If (Me.IsInBatchEdit) Then
             shape.UnlockUpdates(False)
@@ -187,6 +182,21 @@ Public MustInherit Class gridForcingBase
                                                     ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
         Me.OnCellEdited(p, cell)
         Return MyBase.OnCellValueChanged(p, cell)
+    End Function
+
+    Protected Overridable Function SafeCellEdit(ByVal p As SourceGrid2.Position, _
+                                              ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+        Dim shape As cShapeData = Me.Shape(p.Column)
+        Select Case DirectCast(p.Row, eRowType)
+            Case eRowType.Name
+                shape.Name = CStr(cell.GetValue(p))
+            Case Else
+                Dim iTime As Integer = p.Row - eRowType.FirstTime
+                shape.ShapeData(iTime) = CSng(cell.GetValue(p))
+        End Select
+        Return True
+
     End Function
 
 #End Region ' Edits
