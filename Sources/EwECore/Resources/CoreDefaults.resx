@@ -177,7 +177,7 @@
     <value>All</value>
   </data>
   <data name="CORE_DEFAULT_IMPORTANCE" xml:space="preserve">
-    <value>Importance {0)</value>
+    <value>Importance {0}</value>
     <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_MEDIATIONSHAPE" xml:space="preserve">

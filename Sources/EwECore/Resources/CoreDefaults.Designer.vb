@@ -218,7 +218,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Importance {0).
+        '''  Looks up a localized string similar to Importance {0}.
         '''</summary>
         Friend Shared ReadOnly Property CORE_DEFAULT_IMPORTANCE() As String
             Get
