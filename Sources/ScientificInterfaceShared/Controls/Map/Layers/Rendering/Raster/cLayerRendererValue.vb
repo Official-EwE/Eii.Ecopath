@@ -118,9 +118,7 @@ Namespace Controls.Map.Layers
                                 g.FillRectangle(br, rc)
                             End Using
                         Else
-                            Using br As New SolidBrush(ColorRamp.GetColor(sValue, sValMax))
-                                g.FillRectangle(br, rc)
-                            End Using
+                            g.FillRectangle(Brushes.White, rc)
                         End If
                     End If
                     '' Draw value
