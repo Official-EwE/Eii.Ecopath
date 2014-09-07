@@ -236,7 +236,7 @@ Namespace Ecosim
             Me.m_bFullAssessment = Me.m_rbFull.Checked Or Me.m_rbBoth.Checked
             Me.m_bStatAssessment = Me.m_rbStationary.Checked Or Me.m_rbBoth.Checked
 
-            Me.TotallyAndCompletelyRefreshPlot()
+            Me.UpdatePlot()
             Me.UpdateControls()
 
         End Sub
@@ -291,6 +291,9 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnMSYRunStateChanged(ByVal RunState As eMSYRunStates)
+
+            If (Me.m_results Is Nothing) Then Return
+
             Try
 
                 If RunState = eMSYRunStates.FullCompRunCompleted Then
@@ -306,9 +309,9 @@ Namespace Ecosim
 
                 'Only update the interface if the Run Completed
                 'this will not update if the run was stopped
-                If RunState = eMSYRunStates.MSYRunComplete Then
+                If (RunState = eMSYRunStates.MSYRunComplete) Then
                     ' Trigger graph update
-                    Me.TotallyAndCompletelyRefreshPlot()
+                    Me.UpdatePlot()
                     ' Update control states
                     Me.UpdateControls()
 
@@ -346,7 +349,7 @@ Namespace Ecosim
             Set(value As eViewDataModeType)
                 If (value <> Me.m_dataMode) Then
                     Me.m_dataMode = value
-                    Me.TotallyAndCompletelyRefreshPlot()
+                    Me.UpdatePlot()
                     Me.UpdateControls()
                 End If
             End Set
@@ -463,7 +466,7 @@ Namespace Ecosim
         ''' revised. The current implementation bluntly repopulates the graph.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub TotallyAndCompletelyRefreshPlot()
+        Private Sub UpdatePlot()
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -717,6 +720,8 @@ Namespace Ecosim
             Dim bSucces As Boolean = True
 
             If Not Me.m_manager.IsAllowedToRun() Then Return
+
+            Me.m_results = New cMSYRunResults()
 
             Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxF.Value)
             Me.m_parms.EquilibriumStepSize = 1.0! / CSng(Me.m_fpNumSteps.Value)
