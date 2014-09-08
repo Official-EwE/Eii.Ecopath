@@ -861,11 +861,11 @@ Namespace Controls
                                 End If
 
 #If DEBUG Then
-                                ' Validate line content
-                                For ipt As Integer = 0 To li.Points.Count - 1
-                                    Dim pt As PointPair = li.Points(ipt)
-                                    Debug.Assert(cNumberUtils.IsFinite(CSng(pt.X)) And cNumberUtils.IsFinite(CSng(pt.X)), "Point contains invalid values")
-                                Next
+'                                ' Validate line content
+'                                For ipt As Integer = 0 To li.Points.Count - 1
+'                                    Dim pt As PointPair = li.Points(ipt)
+'                                    Debug.Assert(cNumberUtils.IsFinite(CSng(pt.X)) And cNumberUtils.IsFinite(CSng(pt.Y)), "Point contains infinite values")
+'                                Next
 #End If
                                 Select Case Me.CurveType(li)
 
