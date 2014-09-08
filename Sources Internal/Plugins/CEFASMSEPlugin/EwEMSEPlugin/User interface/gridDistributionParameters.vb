@@ -177,9 +177,7 @@ Public Class gridDistributionParameters
 
         Dim iRow As Integer = -1
         Dim cell As EwECell = Nothing
-        Dim lstOptions As New List(Of cMSE.DistributionType)
-        lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(cMSE.DistributionType)), IEnumerable(Of cMSE.DistributionType)))
-        Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cDistributionTypeFormatter(), lstOptions)
+        Dim comboEditor As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cDistributionTypeFormatter())
 
         Me.RowsCount = 1
 
@@ -221,13 +219,13 @@ Public Class gridDistributionParameters
                     Me(iRow, eEcosimColumnTypes.Index) = New EwERowHeaderCell(CStr(data.GroupNo))
                     Me(iRow, eEcosimColumnTypes.Name) = New EwERowHeaderCell(CStr(data.GroupName))
 
-                    Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(data.DistributionType, cb)
-                    cbCell.Behaviors.Add(Me.EwEEditHandler)
+                    Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(data.DistributionType, comboEditor)
                     Me(iRow, eEcosimColumnTypes.DistrType) = cbCell
+                    cbCell.Behaviors.Add(Me.EwEEditHandler)
 
-                    If data.DistributionType = cMSE.DistributionType.NotSet Then
-                        cbCell.DataModel.EnableEdit = False
-                    End If
+                    'If data.DistributionType = cMSE.DistributionType.NotSet Then
+                    '    cbCell.DataModel.EnableEdit = False
+                    'End If
 
                     Me(iRow, eEcosimColumnTypes.Lower) = DataCell(data.LowerBound)
                     Me(iRow, eEcosimColumnTypes.Upper) = DataCell(data.UpperBound)
