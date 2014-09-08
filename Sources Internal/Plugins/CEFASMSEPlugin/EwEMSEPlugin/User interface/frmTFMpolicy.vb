@@ -295,6 +295,7 @@ Public Class frmTFMpolicy
     ''' </summary>
     Private Sub OnGridEdited()
         Try
+            Me.m_bStrategiesSaved = False
             Me.UpdatePlot()
             Me.UpdateControls()
         Catch ex As Exception
