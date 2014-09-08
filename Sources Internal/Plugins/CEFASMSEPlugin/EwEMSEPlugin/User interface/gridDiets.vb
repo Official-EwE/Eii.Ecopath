@@ -80,6 +80,8 @@ Public Class gridDiets
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
+        ' ToDo: globalize this
+
         If (Me.m_data Is Nothing) Then Return
 
         Dim nFixedCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
@@ -119,13 +121,13 @@ Public Class gridDiets
             Me(iRow, eColumnTypes.PredIndex) = New EwERowHeaderCell(CStr(grp.Index))
             Me(iRow, eColumnTypes.PredName) = New EwERowHeaderCell(CStr(grp.Name))
             Me(iRow, eColumnTypes.Multiplier) = Me.DataCell(Me.m_data.DietPropMultipliers(i - 1))
-            Me(iRow, eColumnTypes.Imports) = New EwECell(Me.m_data.InteractsImports(i - 1), GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.Imports) = Me.DataCell(Me.m_data.InteractsImports(i - 1), cStyleGuide.eStyleFlags.NotEditable)
 
             For j As Integer = 1 To Me.m_data.Core.nGroups
                 Dim val As Single = Me.m_data.MeanProportions(i - 1, j - 1)
                 Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
                 If (val = 0) Then style = style Or cStyleGuide.eStyleFlags.Null
-                Me(iRow, nFixedCols + j - 1) = New EwECell(val, GetType(Single), style)
+                Me(iRow, nFixedCols + j - 1) = Me.DataCell(val, style)
             Next
         Next
 
@@ -146,16 +148,15 @@ Public Class gridDiets
         End Get
     End Property
 
-    Private Function DataCell(dValue As Double) As EwECell
+    Private Function DataCell(dValue As Double, Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As EwECell
 
-        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
         Dim cell As EwECell = Nothing
 
         If (dValue = cCore.NULL_VALUE) Then
-            style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
+            style = style Or cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
         End If
 
-        cell = New EwECell(CSng(dValue), GetType(Double), style)
+        cell = New EwECell(CSng(dValue), GetType(Single), style)
         cell.Behaviors.Add(Me.EwEEditHandler)
         Return cell
 
@@ -168,9 +169,14 @@ Public Class gridDiets
 
         ' Check column
         If (p.Column = eColumnTypes.Multiplier) Then
-            Dim iTag As Integer = CInt(Me(p.Row, p.Column).Tag)
+
             ' Store value
-            Me.m_data.DietPropMultipliers(iTag - 1) = Convert.ToSingle(cell.GetValue(p))
+            Try
+                Dim iGroup As Integer = CInt(Me.Rows(p.Row).Tag)
+                Me.m_data.DietPropMultipliers(iGroup - 1) = Convert.ToSingle(cell.GetValue(p))
+            Catch ex As Exception
+
+            End Try
         End If
 
         ' Yippee

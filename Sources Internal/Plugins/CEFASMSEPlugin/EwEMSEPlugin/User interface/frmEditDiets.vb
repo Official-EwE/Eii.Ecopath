@@ -35,6 +35,8 @@ Public Class frmEditDiets
 
     Public Sub New(MSE As cMSE)
         Me.m_mse = MSE
+        Me.m_diets = New cDiets(m_mse, MSE.Core)
+        Me.m_diets.Load()
         Me.InitializeComponent()
         Me.Grid = Me.m_grid
     End Sub
@@ -50,19 +52,16 @@ Public Class frmEditDiets
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Debug.Assert(Me.m_diets IsNot Nothing)
-
         Me.QuickEditHandler.ShowImportExport = False
         Me.QuickEditHandler.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
 
-        Me.m_diets = New cDiets(Me.m_mse, Me.UIContext.Core)
-        Me.m_diets.Load()
-        Me.UpdateGrid(Me.m_diets, "Diet multipliers")
+         Me.UpdateGrid(Me.m_diets, "Diet multipliers")
 
         AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
 
         Me.m_bIsDirty = False
         Me.UpdateControls()
+        Me.CenterToParent()
 
     End Sub
 
