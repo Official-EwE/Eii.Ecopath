@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports EwECore
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -44,6 +45,7 @@ Namespace Ecospace.Controls
         Private m_manConn As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
         Private m_htUsed As New HashSet(Of ISpatialDataSet)
+        Private m_strPath As String = ""
 
 #End Region ' Private variables
 
@@ -55,6 +57,7 @@ Namespace Ecospace.Controls
 
             Me.m_manConn = Me.m_uic.Core.SpatialDataConnectionManager
             Me.m_manSets = Me.m_manConn.DatasetManager
+            Me.m_strPath = Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecospace)
 
         End Sub
 
@@ -91,7 +94,9 @@ Namespace Ecospace.Controls
 
             ' Start with a defaults
             Me.m_tbxName.Text = cFileUtils.ToValidFileName(Me.m_uic.Core.EwEModel.Name, False)
-            Me.m_tbxDescription.Text = ""
+            Me.m_tbxAuthor.Text = Me.m_manSets.DataAuthor
+            Me.m_tbxContact.Text = Me.m_manSets.DataContact
+            Me.m_tbxDescription.Text = Me.m_manSets.DataDescription
 
             ' Shabang
             Me.SelectDatasets(eSelectionMode.Used)
@@ -107,8 +112,31 @@ Namespace Ecospace.Controls
 
 #Region " Events "
 
+        Private Sub OnChooseFolder(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnChoose.Click
+
+            Dim cmd As cDirectoryOpenCommand = CType(Me.m_uic.CommandHandler.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+            cmd.Directory = Me.m_strPath
+            cmd.Invoke()
+
+            If (cmd.Result <> Windows.Forms.DialogResult.OK) Then Return
+
+            'If Not cFileUtils.IsDirectoryEmpty(cmd.Directory) Then
+            '    Dim msg As New cFeedbackMessage("The selected folder is not empty. Are you sure you want to use it?", _
+            '                                     eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            '    msg.Reply = eMessageReply.NO
+            '    Me.m_uic.Core.Messages.SendMessage(msg)
+
+            '    If (msg.Reply = eMessageReply.NO) Then Return
+            'End If
+
+            Me.m_strPath = cmd.Directory
+            Me.UpdateControls()
+
+        End Sub
+
         Private Sub OnTargetNameChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_tbxName.TextChanged, m_tbxDescription.TextChanged
+            Handles m_tbxName.TextChanged, m_tbxDescription.TextChanged, m_tbxContact.TextChanged, m_tbxAuthor.TextChanged
             Me.UpdateControls()
         End Sub
 
@@ -131,8 +159,19 @@ Namespace Ecospace.Controls
             Handles m_btnExport.Click
 
             Dim sm As cCoreStateMonitor = Me.m_uic.Core.StateMonitor
+            Dim bSuccess As Boolean = False
 
-            If Me.m_manSets.Save(Me.OutputLocation(), Me.SelectedDatasets(), Me.m_tbxDescription.Text) Then
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, "Exporting data...", -1)
+            Try
+                bSuccess = Me.m_manSets.Save(Me.OutputLocation(), _
+                                             Me.SelectedDatasets(), Me.m_tbxDescription.Text, _
+                                             Me.m_tbxAuthor.Text, Me.m_tbxContact.Text)
+            Catch ex As Exception
+
+            End Try
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+
+            If (bSuccess) Then
                 Me.DialogResult = Windows.Forms.DialogResult.OK
                 Me.Close()
             End If
@@ -152,6 +191,15 @@ Namespace Ecospace.Controls
 
         End Sub
 
+        Private Sub OnItemCheckStateChanged(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) _
+            Handles m_clbDatsets.ItemCheck
+
+            ' Problem with CheckedListBox: event is thrown before event is processed.
+            ' Therefore, perform a delayed response:
+            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+
+        End Sub
+
 #End Region ' Events
 
 #Region " Internals "
@@ -159,7 +207,7 @@ Namespace Ecospace.Controls
         Private Function OutputLocation() As String
             Dim strSelection As String = cFileUtils.ToValidFileName(Me.m_tbxName.Text, True)
             Dim strFile As String = Path.GetFileName(strSelection)
-            Dim strPath As String = Path.Combine(Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecospace), strSelection)
+            Dim strPath As String = Path.Combine(Me.m_strPath, strSelection)
             Return Path.Combine(strPath, Path.ChangeExtension(strFile, ".xml"))
         End Function
 
@@ -181,7 +229,7 @@ Namespace Ecospace.Controls
 
                 Me.m_clbDatsets.SetItemChecked(i, bCheck)
             Next
-            Me.UpdateControls()
+            'Me.UpdateControls()
 
         End Sub
 
@@ -205,13 +253,17 @@ Namespace Ecospace.Controls
 
             If (Me.m_uic Is Nothing) Then Return
 
-            Dim strFile As String = String.Copy(Path.GetDirectoryName(Me.OutputLocation()))
             Dim bHasTarget As Boolean = Not String.IsNullOrWhiteSpace(cFileUtils.ToValidFileName(Me.m_tbxName.Text, False))
             Dim bHasSelection As Boolean = (Me.m_clbDatsets.CheckedIndices.Count > 0)
 
-            TextRenderer.MeasureText(strFile, Me.m_lblFolderPreview.Font, New Drawing.Size(Me.m_lblFolderPreview.ClientSize.Width, Me.m_lblFolderPreview.ClientSize.Height), _
+            Dim strPathOrg As String = Path.GetDirectoryName(Me.OutputLocation())
+            Dim strPathFit As String = String.Copy(Path.GetDirectoryName(Me.OutputLocation()))
+
+            TextRenderer.MeasureText(strPathFit, Me.m_lblFolderPreview.Font, New Drawing.Size(Me.m_lblFolderPreview.ClientSize.Width, Me.m_lblFolderPreview.ClientSize.Height), _
                                      TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString)
-            Me.m_lblFolderPreview.Text = strFile
+            Me.m_lblFolderPreview.Text = strPathFit
+            cToolTipShared.GetInstance().SetToolTip(Me.m_lblFolderPreview, strPathOrg)
+
 
             Me.m_btnExport.Enabled = bHasTarget And bHasSelection
 

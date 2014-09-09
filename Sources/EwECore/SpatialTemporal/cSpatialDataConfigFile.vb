@@ -232,6 +232,7 @@ Namespace SpatialData
             Dim bChanged As Boolean = False
             Dim nExported As Integer = 0
             Dim strPath As String = ""
+            Dim msg As cMessage = Nothing
             Dim bSuccess As Boolean = True
 
             ' Make sure we have something to iterate over, even if it is an empty list
@@ -368,21 +369,30 @@ Namespace SpatialData
                 If bChanged Or Not File.Exists(strFile) Then
                     doc.Save(strFile)
                 End If
+
+                If (bExporting) Then
+                    ' Send export status message
+                    If bSuccess Then
+                        msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_SUCCESS, nExported, strPath), _
+                                           eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                        msg.Hyperlink = strPath
+                    Else
+                        msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_ERROR, strPath), _
+                                           eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+                    End If
+                End If
+
             Catch ex As Exception
                 bSuccess = False
+
+                msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_EXCEPTION, strPath), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                If (bExporting) Then
+                    msg.Importance = eMessageImportance.Critical
+                End If
             End Try
 
-            If (bExporting) Then
-                ' Send export status message
-                Dim msg As cMessage = Nothing
-                If bSuccess Then
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_SUCCESS, nExported, strPath), _
-                                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                    msg.Hyperlink = strPath
-                Else
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_ERROR, strPath), _
-                                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
-                End If
+            If (msg IsNot Nothing) Then
                 core.Messages.SendMessage(msg)
             End If
 

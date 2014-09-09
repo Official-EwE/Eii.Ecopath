@@ -194,7 +194,9 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function Save(Optional strFile As String = "", _
                              Optional datasets As ISpatialDataSet() = Nothing, _
-                             Optional strDescription As String = "") As Boolean
+                             Optional strDescription As String = "", _
+                             Optional strAuthor As String = "", _
+                             Optional strContact As String = "") As Boolean
 
             Dim bChanged As Boolean = False
             Dim nExported As Integer = 0
@@ -210,6 +212,9 @@ Namespace SpatialData
                 datasets = Me.Datasets()
             End If
             If (datasets.Length = 0) Then Return False
+
+            If (String.IsNullOrWhiteSpace(strAuthor)) Then strAuthor = Me.DataAuthor
+            If (String.IsNullOrWhiteSpace(strContact)) Then strContact = Me.DataContact
 
             ' Any switch of destination other than to the default location is considered as an export
             Dim bExporting As Boolean = (cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) = False) And _
@@ -232,13 +237,18 @@ Namespace SpatialData
             Dim strRescue As String = Me.CurrentConfigFile
             Me.m_strConfigFile = strFile
 
-            Dim cfg As New cSpatialDataConfigFile(strFile, _
-                                                  Path.GetFileNameWithoutExtension(strFile), _
-                                                  strDescription, _
-                                                  cSystemUtils.GetHostName(), _
-                                                  Me.m_strAuthor, _
-                                                  Me.m_strContact)
-            bSuccess = cfg.Save(Me.m_core, Me, datasets, bExporting)
+            ' Make sure save exceptions do not affect current configuration
+            Try
+                Dim cfg As New cSpatialDataConfigFile(strFile, _
+                                                      Path.GetFileNameWithoutExtension(strFile), _
+                                                      strDescription, _
+                                                      cSystemUtils.GetHostName(), _
+                                                      strAuthor, _
+                                                      strContact)
+                bSuccess = cfg.Save(Me.m_core, Me, datasets, bExporting)
+            Catch ex As Exception
+                ' NOP
+            End Try
 
             ' Restore original config file name
             Me.m_strConfigFile = strRescue
@@ -469,7 +479,7 @@ Namespace SpatialData
 
 #End Region ' Dataset list interface
 
-#Region " ~ In transit ~ "
+#Region " Internal lists "
 
         Public Function Datasets() As ISpatialDataSet()
             Return Me.m_lAvailable.ToArray()
@@ -483,7 +493,7 @@ Namespace SpatialData
             Return Me.m_lDeleted.ToArray()
         End Function
 
-#End Region ' ~ In transit ~
+#End Region ' Internal lists
 
 #Region " Config files "
 
@@ -577,6 +587,30 @@ Namespace SpatialData
         End Function
 
 #End Region ' Config files
+
+#Region " Data ownership "
+
+        Public ReadOnly Property DataAuthor As String
+            Get
+                If (String.IsNullOrWhiteSpace(Me.m_strAuthor)) Then Return Me.m_core.DefaultAuthor
+                Return Me.m_strAuthor
+            End Get
+        End Property
+
+        Public ReadOnly Property DataContact As String
+            Get
+                If (String.IsNullOrWhiteSpace(Me.m_strContact)) Then Return Me.m_core.DefaultContact
+                Return Me.m_strContact
+            End Get
+        End Property
+
+        Public ReadOnly Property DataDescription As String
+            Get
+                Return Me.m_strDescription
+            End Get
+        End Property
+
+#End Region ' Data ownership
 
 #Region " Internals "
 

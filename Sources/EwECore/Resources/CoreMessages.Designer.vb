@@ -2291,7 +2291,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} data set(s) successfully exported to {1}.
+        '''  Looks up a localized string similar to An error occurred while exporting. {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_EXCEPTION() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_EXPORT_EXCEPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} data set(s) successfully exported to {1}. This folder is ready to be transferred to another computer.
         '''</summary>
         Friend Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_SUCCESS() As String
             Get
