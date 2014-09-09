@@ -45,7 +45,7 @@ Public Class gridErrorCVs
 
     Private m_Assessment As cStockAssessmentModel
 
-    Private m_ErrorType As frmEditAssessmentError.eErrorDataType
+    Private m_CurSelectedDataType As frmEditAssessmentError.eErrorDataType
 
 #Region " Internal defs "
 
@@ -64,7 +64,7 @@ Public Class gridErrorCVs
     Public Sub New()
         MyBase.new()
 
-        m_ErrorType = frmEditAssessmentError.eErrorDataType.GroupObervationError
+        m_CurSelectedDataType = frmEditAssessmentError.eErrorDataType.GroupObervationError
 
     End Sub
 
@@ -79,11 +79,11 @@ Public Class gridErrorCVs
 
     Public Property ErrorDataType As frmEditAssessmentError.eErrorDataType
         Get
-            Return Me.m_ErrorType
+            Return Me.m_CurSelectedDataType
         End Get
         Set(value As frmEditAssessmentError.eErrorDataType)
 
-            Me.m_ErrorType = value
+            Me.m_CurSelectedDataType = value
             If (Me.UIContext Is Nothing) Then Return
 
             Me.InitStyle()
@@ -92,31 +92,6 @@ Public Class gridErrorCVs
         End Set
 
     End Property
-
-
-
-    'Public Property Group() As cStockAssessmentParameters
-    '    Get
-    '        Try
-
-    '            Dim iRow As Integer = Me.SelectedRow
-    '            If (iRow > 0) Then
-    '                Return DirectCast(Me.Rows(iRow).Tag, cStockAssessmentParameters)
-    '            End If
-    '        Catch ex As Exception
-    '            Debug.Assert(False, "Invalid cast!!!! maybe..." & ex.Message)
-    '        End Try
-    '        Return Nothing
-
-    '    End Get
-    '    Set(ByVal value As cStockAssessmentParameters)
-    '        Me.Selection.Clear()
-    '        If value IsNot Nothing Then
-    '            Me.Selection.Add(New Position(value.iGroupIndex, 0))
-    '        End If
-    '        Me.RaiseSelectionChangeEvent()
-    '    End Set
-    'End Property
 
 #End Region ' Public interfaces
 
@@ -131,7 +106,7 @@ Public Class gridErrorCVs
 
         Dim colName As String
         Dim errorCaption As String
-        Select Case Me.m_ErrorType
+        Select Case Me.m_CurSelectedDataType
             Case frmEditAssessmentError.eErrorDataType.FleetImplementationError
                 colName = SharedResources.HEADER_FLEETNAME
                 errorCaption = "Implementation Error"
@@ -152,7 +127,7 @@ Public Class gridErrorCVs
 
         If Me.m_Assessment Is Nothing Then Return
 
-        Select Case Me.m_ErrorType
+        Select Case Me.m_CurSelectedDataType
 
             Case frmEditAssessmentError.eErrorDataType.FleetImplementationError
                 FillFleetData()
@@ -168,14 +143,11 @@ Public Class gridErrorCVs
         Dim Fleet As cStockAssessmentFleetParameters
         Dim Cell As ICell
         Dim irow As Integer
-        Dim style As cStyleGuide.eStyleFlags
 
-
-
-        ' For each group
+        'For each Fleet
         For iFlt As Integer = 1 To Core.nFleets
 
-            'Get the group info!!!!
+            'Fleet parameter object for this row/fleet
             Fleet = Me.m_Assessment.FleetParameter(iFlt)
 
             irow = Me.AddRow()
@@ -198,12 +170,11 @@ Public Class gridErrorCVs
         Dim Group As cStockAssessmentParameters
         Dim Cell As ICell
         Dim irow As Integer
-        Dim style As cStyleGuide.eStyleFlags
 
-        ' For each group
+        'For each group
         For iGrp As Integer = 1 To Core.nLivingGroups
 
-            'Get the group info!!!!
+            'Group parameter object for this row/group
             Group = Me.m_Assessment.Parameter(iGrp)
 
             irow = Me.AddRow()
@@ -223,8 +194,6 @@ Public Class gridErrorCVs
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
-        ' JS: keep at default for quickedit handler
-        'Me.Selection.SelectionMode = GridSelectionMode.Row
     End Sub
 
     Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
@@ -246,15 +215,16 @@ Public Class gridErrorCVs
             'forces the model to init to the new value
             'and redraws the interface
             'so only update if the value is actually new 
-
             Dim newValue As Single = CSng(cell.GetValue(p))
 
             Select Case p.Column
 
+                'Only the Error column is editable
                 Case eColumnTypes.ErrorCol
+                    'Check the currently selected data type for Group or Fleet Error
+                    Select Case Me.m_CurSelectedDataType
 
-                    Select Case Me.m_ErrorType
-
+                        'Fleet implementation error
                         Case frmEditAssessmentError.eErrorDataType.FleetImplementationError
                             Dim param As cStockAssessmentFleetParameters = DirectCast(Rows(p.Row).Tag, cStockAssessmentFleetParameters)
                             If param.cvImpError <> newValue Then
@@ -262,6 +232,7 @@ Public Class gridErrorCVs
                                 bEdited = True
                             End If
 
+                            'Group observation error
                         Case frmEditAssessmentError.eErrorDataType.GroupObervationError
 
                             Dim param As cStockAssessmentParameters = DirectCast(Rows(p.Row).Tag, cStockAssessmentParameters)

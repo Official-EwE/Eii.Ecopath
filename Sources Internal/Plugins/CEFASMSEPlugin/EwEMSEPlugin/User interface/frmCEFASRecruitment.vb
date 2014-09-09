@@ -52,6 +52,8 @@ Public Class frmCEFASRecruitment
     Private m_Assessment As cStockAssessmentModel
     Private m_inInit As Boolean
 
+    Private m_mse As cMSE
+
     Private Structure sGraphData
 
         Public MaxRecruitment As Single
@@ -76,6 +78,7 @@ Public Class frmCEFASRecruitment
         Me.m_inInit = True
         Me.UIContext = UI
 
+        Me.m_mse = MSE
         Me.m_Assessment = New cStockAssessmentModel(MSE)
         Me.m_Assessment.Load()
         Me.InitializeComponent()
@@ -86,36 +89,43 @@ Public Class frmCEFASRecruitment
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Dim CoreMSEGroup As cMSEGroupInput = Nothing
+        Try
 
-        If Me.UIContext Is Nothing Then Return
+            Dim CoreMSEGroup As cMSEGroupInput = Nothing
 
-        Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
-        Me.m_zgh.ConfigurePane("", SharedResources.HEADER_BIOMASS, SharedResources.HEADER_RECRUITMENT, True)
+            If Me.UIContext Is Nothing Then Return
 
-        Me.m_zgh.AllowZoom = False
-        Me.m_zgh.AllowPan = False
-        Me.m_zgh.AllowEdit = True
-        Me.m_zgh.ShowPointValue = True
+            Me.m_zgh = New cZedGraphHelper()
+            Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
+            Me.m_zgh.ConfigurePane("", SharedResources.HEADER_BIOMASS, SharedResources.HEADER_RECRUITMENT, True)
 
-        Me.m_grid.Init(Me.m_Assessment)
-        Me.m_grid.UIContext = Me.UIContext
+            Me.m_zgh.AllowZoom = False
+            Me.m_zgh.AllowPan = False
+            Me.m_zgh.AllowEdit = True
+            Me.m_zgh.ShowPointValue = True
 
-        Me.m_qehGrid = New cQuickEditHandler()
-        Me.m_qehGrid.Attach(Me.m_grid, Me.UIContext, Me.m_tsMain)
+            Me.m_grid.Init(Me.m_Assessment)
+            Me.m_grid.UIContext = Me.UIContext
 
-        'Select first group with likely values
-        For iGroup As Integer = 1 To Core.nGroups
-            If Me.m_Assessment.Parameter(iGroup).isFished Then
-                Me.m_grid.Group = Me.m_Assessment.Parameter(iGroup)
-            End If
-        Next
+            Me.m_qehGrid = New cQuickEditHandler()
+            Me.m_qehGrid.Attach(Me.m_grid, Me.UIContext, Me.m_tsMain)
 
-        Me.m_chkUseAssessment.Checked = Me.m_Assessment.UseAssessment
+            'Select first group with likely values
+            For iGroup As Integer = 1 To Core.nGroups
+                If Me.m_Assessment.Parameter(iGroup).isFished Then
+                    Me.m_grid.Group = Me.m_Assessment.Parameter(iGroup)
+                    Exit For
+                End If
+            Next
 
-        Me.CenterToParent()
-        Me.RedrawGraph()
+            Me.m_chkUseAssessment.Checked = Me.m_Assessment.UseAssessment
+
+            Me.CenterToParent()
+            Me.RedrawGraph()
+
+        Catch ex As Exception
+            cMSEUtils.LogError(New cMessage("Error while loading Stock Recruitment form.", eMessageType.Any, eCoreComponentType.Plugin, eMessageImportance.Warning), ex.Message)
+        End Try
 
         Me.m_inInit = False
 
@@ -288,78 +298,84 @@ Public Class frmCEFASRecruitment
 
         If (Me.m_zgh Is Nothing) Then Return
 
-        Dim lpts As New PointPairList
-        Dim lLines As New List(Of LineItem)
-        Dim data As sGraphData = Me.GetGraphValues()
+        Try
 
-        If (Me.Group IsNot Nothing) Then
-            ' Group has data?
-            For i As Integer = 0 To data.NumSteps - 1
-                lpts.Add(data.Biomass(i), data.Recruitment(i))
-            Next
-            lLines.Add(Me.m_zgh.CreateLineItem(Me.Group.Name, eLineType.ModelData, Color.DarkSlateGray, lpts))
-        End If
+            Dim lpts As New PointPairList
+            Dim lLines As New List(Of LineItem)
+            Dim data As sGraphData = Me.GetGraphValues()
 
-        ' Did any lines get manufactured?
-        If lLines.Count > 0 Then
+            If (Me.Group IsNot Nothing) Then
+                ' Group has data?
+                For i As Integer = 0 To data.NumSteps - 1
+                    lpts.Add(data.Biomass(i), data.Recruitment(i))
+                Next
+                lLines.Add(Me.m_zgh.CreateLineItem(Me.Group.Name, eLineType.ModelData, Color.DarkSlateGray, lpts))
+            End If
 
-            '#Yes: plot graph
-            ''  - fix graph scale
+            ' Did any lines get manufactured?
+            If lLines.Count > 0 Then
 
-            Me.m_zgh.YScaleMax = data.MaxRecruitment * (1 + Me.m_zgh.YScaleGrace)
-            Me.m_zgh.XScaleMax = data.Biomass(data.NumSteps - 1)
+                '#Yes: plot graph
+                ''  - fix graph scale
 
-            'now we need some lines:
-            '  - place a horizontal, stippled?, grey line at: maxRecruitment 
-            lpts = New PointPairList()
-            lpts.Add(0.0!, data.MaxRecruitment) : lpts.Add(Me.m_zgh.XScaleMax, data.MaxRecruitment)
-            Dim li As LineItem = Me.m_zgh.CreateLineItem(SharedResources.HEADER_MAX_RECRUITMENT, _
-                                                         eLineType.NotSet, Color.DarkGray, lpts)
-            li.Line.Style = Drawing2D.DashStyle.DashDot
-            lLines.Add(li)
+                Me.m_zgh.YScaleMax = data.MaxRecruitment * (1 + Me.m_zgh.YScaleGrace)
+                Me.m_zgh.XScaleMax = data.Biomass(data.NumSteps - 1)
 
-            '  - place a horizontal, stippled?, grey line at: maxRecruitment / 2
-            lpts = New PointPairList()
-            lpts.Add(0.0!, data.MaxRecruitment / 2) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
-            li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_MAX_RECRUITMENT, _
-                                         eLineType.NotSet, Color.DarkGray, lpts)
-            li.Line.Style = Drawing2D.DashStyle.Dot
-            lLines.Add(li)
+                'now we need some lines:
+                '  - place a horizontal, stippled?, grey line at: maxRecruitment 
+                lpts = New PointPairList()
+                lpts.Add(0.0!, data.MaxRecruitment) : lpts.Add(Me.m_zgh.XScaleMax, data.MaxRecruitment)
+                Dim li As LineItem = Me.m_zgh.CreateLineItem(SharedResources.HEADER_MAX_RECRUITMENT, _
+                                                             eLineType.NotSet, Color.DarkGray, lpts)
+                li.Line.Style = Drawing2D.DashStyle.DashDot
+                lLines.Add(li)
 
-            '  - place a vertical,   stippled?, grey line at: HalfRecruitment biomass
-            lpts = New PointPairList()
-            lpts.Add(data.HalfRecruitmentBiomass, 0.0) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
-            li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_RECRUITMENT_B, _
-                                         eLineType.NotSet, Color.LightSalmon, lpts)
-            lLines.Add(li)
+                '  - place a horizontal, stippled?, grey line at: maxRecruitment / 2
+                lpts = New PointPairList()
+                lpts.Add(0.0!, data.MaxRecruitment / 2) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
+                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_MAX_RECRUITMENT, _
+                                             eLineType.NotSet, Color.DarkGray, lpts)
+                li.Line.Style = Drawing2D.DashStyle.Dot
+                lLines.Add(li)
 
-            '  - place a vertical,   full, red line at: EcopathBiomass
-            lpts = New PointPairList()
-            lpts.Add(data.EcopathBiomass, 0.0!) : lpts.Add(data.EcopathBiomass, Me.m_zgh.YScaleMax)
-            li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_BIOMASS_ECOPATH, _
-                                         eLineType.NotSet, Color.LightSalmon, lpts)
-            li.Line.Style = Drawing2D.DashStyle.Dash
-            lLines.Add(li)
+                '  - place a vertical,   stippled?, grey line at: HalfRecruitment biomass
+                lpts = New PointPairList()
+                lpts.Add(data.HalfRecruitmentBiomass, 0.0) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
+                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_RECRUITMENT_B, _
+                                             eLineType.NotSet, Color.LightSalmon, lpts)
+                lLines.Add(li)
 
-            ' - place the dot
-            lpts = New PointPairList()
-            lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
-            li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.LightSalmon, lpts)
-            li.Symbol.Type = SymbolType.Circle
-            li.Line.IsVisible = False
-            lLines.Add(li)
+                '  - place a vertical,   full, red line at: EcopathBiomass
+                lpts = New PointPairList()
+                lpts.Add(data.EcopathBiomass, 0.0!) : lpts.Add(data.EcopathBiomass, Me.m_zgh.YScaleMax)
+                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_BIOMASS_ECOPATH, _
+                                             eLineType.NotSet, Color.LightSalmon, lpts)
+                li.Line.Style = Drawing2D.DashStyle.Dash
+                lLines.Add(li)
 
-            ' place lines
-            Me.m_zgh.PlotLines(lLines.ToArray)
+                ' - place the dot
+                lpts = New PointPairList()
+                lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
+                li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.LightSalmon, lpts)
+                li.Symbol.Type = SymbolType.Circle
+                li.Line.IsVisible = False
+                lLines.Add(li)
 
-            ' Set x-axis label
-            Me.m_zgh.AxisLabel(Me.m_zgh.GetPane(1).XAxis, _
-                               String.Format(SharedResources.GENERIC_LABEL_DOUBLE, SharedResources.HEADER_BIOMASS, Me.Group.Name))
-        Else
-            ' Clear graph
-            Me.m_zgh.PlotLines(Nothing)
-            Me.m_zgh.AxisLabel(Me.m_zgh.GetPane(1).XAxis, SharedResources.HEADER_BIOMASS)
-        End If
+                ' place lines
+                Me.m_zgh.PlotLines(lLines.ToArray)
+
+                ' Set x-axis label
+                Me.m_zgh.AxisLabel(Me.m_zgh.GetPane(1).XAxis, _
+                                   String.Format(SharedResources.GENERIC_LABEL_DOUBLE, SharedResources.HEADER_BIOMASS, Me.Group.Name))
+            Else
+                ' Clear graph
+                Me.m_zgh.PlotLines(Nothing)
+                Me.m_zgh.AxisLabel(Me.m_zgh.GetPane(1).XAxis, SharedResources.HEADER_BIOMASS)
+            End If
+
+        Catch ex As Exception
+            cMSEUtils.LogError(New cMessage("Error in Stock Recruitment.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning), ex.Message)
+        End Try
 
     End Sub
 

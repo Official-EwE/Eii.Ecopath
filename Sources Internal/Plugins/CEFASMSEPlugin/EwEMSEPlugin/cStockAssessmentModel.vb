@@ -606,17 +606,16 @@ Public Class cStockAssessmentModel
         Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
 
         Try
-            If (reader IsNot Nothing) Then
 
-                breturn = breturn And Me.ReadGroupData(reader)
-                breturn = breturn And Me.ReadFleetData(reader)
-                breturn = breturn And Me.ReadModelData(reader)
-
-            End If '(reader IsNot Nothing)
+            breturn = breturn And Me.ReadGroupData(reader)
+            breturn = breturn And Me.ReadFleetData(reader)
+            breturn = breturn And Me.ReadModelData(reader)
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
-            cMSEUtils.LogError(msg, "Stock Assessment could not load from " & strFilename & ". " & ex.Message)
+            'I don't think I've used this correctly, this message is not posted to the core.
+            'Anyway the user will be informed below just not that it was an error
+            cMSEUtils.LogError(New cMessage("Stock Assessment could not load from file " & strFilename & ". " & ex.Message, EwEUtils.Core.eMessageType.ErrorEncountered, EwEUtils.Core.eCoreComponentType.Plugin, EwEUtils.Core.eMessageImportance.Warning), ex.Message)
             breturn = False
         End Try
         cMSEUtils.ReleaseReader(reader)
@@ -648,7 +647,7 @@ Public Class cStockAssessmentModel
                 'igroup indexing assumes the file was written in order
                 'which it was
                 buff = strm.ReadLine()
-                'Let the parameter object figure out how it was stored
+                'Let the parameter object figure out the format of the data
                 Me.Parameter(igrp).FromCSVString(buff)
             Next
 
@@ -678,7 +677,7 @@ Public Class cStockAssessmentModel
             'Fleet data
             For iflt As Integer = 1 To Core.nFleets
                 buff = strm.ReadLine()
-                'Let the parameter object figure out how it was stored
+                'Let the parameter object figure out the format of the data
                 Me.FleetParameter(iflt).FromCSVString(buff)
             Next
         Catch ex As Exception
