@@ -30,6 +30,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports System.Text
 
 #End Region ' Imports
 
@@ -90,6 +91,7 @@ Namespace SpatialData
 
         Private m_dataset As cMultiFileDataSetPlugin = Nothing
         Private m_lFiles As New List(Of cFileEntry)
+        Private m_strSource As String = ""
 
 #End Region ' Private vars
 
@@ -126,13 +128,8 @@ Namespace SpatialData
 
             Me.m_tbxName.Text = Me.m_dataset.DisplayName
             Me.m_tbxDescription.Text = Me.m_dataset.DataDescription
-            Me.m_tbxPath.Text = Me.m_dataset.Source
+            Me.m_strSource = Me.m_dataset.Source
 
-            Dim astrFilters As String() = Me.m_dataset.DialogReadFilter(True, False, True).Split("|"c)
-            For i As Integer = 0 To astrFilters.Length - 1 Step 2
-                Me.m_cmbExtensions.Items.Add(New cFileExtItem(astrFilters(i), astrFilters(i + 1)))
-            Next
-            Me.m_cmbExtensions.SelectedIndex = 0
             Me.m_cmbInterval.SelectedIndex = 0
 
             Me.m_cbSeasonal.Checked = Me.m_dataset.IsSeasonal
@@ -220,8 +217,8 @@ Namespace SpatialData
         ''' 
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub OnPathChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-             Handles m_tbxFileNamePattern.TextChanged
+        Private Sub OnPathChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+
             Me.RefreshDataPartSample()
             Me.UpdateControls()
         End Sub
@@ -268,19 +265,6 @@ Namespace SpatialData
 
         End Sub
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Private Sub OnReload(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnSearch.Click
-            Try
-                Me.FindFiles()
-            Catch ex As Exception
-            End Try
-        End Sub
-
         Private Sub OnSetTime(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_btnSetTime.Click
 
@@ -301,9 +285,9 @@ Namespace SpatialData
             If Me.m_rbInterval.Checked Then
                 dt = Me.GetDateFromInterval(dtStart.Year, dtStart.Month, iFile, interval)
             ElseIf Me.m_rbFromName.Checked Then
-                dt = Me.GetDateFromFileName(Path.Combine(Me.m_tbxPath.Text, strFile))
+                dt = Me.GetDateFromFileName(Path.Combine(Me.m_strSource, strFile))
             ElseIf Me.m_rbFromDate.Checked Then
-                dt = Me.GetDateFromFile(Path.Combine(Me.m_tbxPath.Text, strFile))
+                dt = Me.GetDateFromFile(Path.Combine(Me.m_strSource, strFile))
             End If
             Return dt
 
@@ -340,38 +324,54 @@ Namespace SpatialData
 
         Private Sub DoBrowse()
 
-            Dim bOK As Boolean = False
+            Dim ofd As New OpenFileDialog
+            Dim sbFileName As New StringBuilder()
 
-            If (Me.UIContext IsNot Nothing) Then
-                Try
+            ofd.Title = "Select files for " & Me.m_tbxName.Text
+            ofd.Multiselect = True
+            ofd.InitialDirectory = Me.AbsolutePath()
+            ofd.Filter = Me.m_dataset.DialogReadFilter(True, False, True)
 
-                    Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-                    Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+            ' Pre-selecting current files does not work somehow
+            'For i As Integer = 0 To Me.m_lFiles.Count - 1
+            '    If (i > 0) Then sbFileName.Append(" ")
+            '    sbFileName.Append("""" & Path.GetFileName(Me.m_lFiles(i).FileName) & """")
+            'Next
+            'ofd.FileName = sbFileName.ToString()
 
-                    cmd.Invoke(Me.AbsolutePath(), My.Resources.PROMPT_SELECTFOLDER)
-                    If cmd.Result = DialogResult.OK Then
-                        Me.m_tbxPath.Text = cmd.Directory
-                        Me.UpdateControls()
+            If (ofd.ShowDialog() = DialogResult.OK) Then
+
+                Me.m_strSource = ofd.InitialDirectory
+
+                ' Merge file list
+                Dim lFilesTemp As cFileEntry() = Me.m_lFiles.ToArray()
+                Dim strFile As String = ""
+                Dim bFound As Boolean = False
+
+                Me.m_lFiles.Clear()
+
+                For i As Integer = 0 To ofd.FileNames.Length - 1
+
+                    strFile = ofd.FileNames(i)
+                    bFound = False
+
+                    ' Maintain original file def, if already present
+                    For Each fe As cFileEntry In lFilesTemp
+                        If (cFileUtils.Equals(fe.FileName, strFile, True)) Then
+                            Me.m_lFiles.Add(fe)
+                            bFound = True
+                        End If
+                    Next
+
+                    If (Not bFound) Then
+                        Dim dt As DateTime = Me.ToFileDate(i, ofd.FileNames(i))
+                        Dim fe As New cFileEntry(ofd.FileNames(i), dt)
+                        Me.m_lFiles.Add(fe)
                     End If
-                    bOK = True
-                Catch ex As Exception
+                Next
 
-                End Try
-            End If
-
-
-            If Not bOK Then
-                Dim fbd As New FolderBrowserDialog()
-
-                fbd.SelectedPath = Me.AbsolutePath()
-                fbd.Description = My.Resources.PROMPT_SELECTFOLDER
-                fbd.ShowNewFolderButton = False
-
-                If fbd.ShowDialog(Me) = DialogResult.OK Then
-                    Me.m_tbxPath.Text = fbd.SelectedPath
-                    Me.FindFiles()
-                    Me.UpdateControls()
-                End If
+                Me.UpdateGrid()
+                Me.UpdateControls()
             End If
 
         End Sub
@@ -414,7 +414,6 @@ Namespace SpatialData
             If (Me.m_dataset Is Nothing) Then Return
 
             Dim bHasPattern As Boolean = (Not String.IsNullOrEmpty(Me.m_tbxDatePart.SelectedText))
-            Dim bIsRelative As Boolean = Me.m_dataset.IsSourceRelative
             Dim strPath As String = Me.AbsolutePath()
             Dim bHasFolder As Boolean = False
 
@@ -429,13 +428,10 @@ Namespace SpatialData
 
             End Try
 
-            Me.m_btnSearch.Enabled = bHasFolder
-            Me.m_btnBrowse.Enabled = Not bIsRelative
-
         End Sub
 
         Private Function AbsolutePath() As String
-            Dim strPath As String = Me.m_tbxPath.Text
+            Dim strPath As String = Me.m_strSource
             If (Me.m_dataset.IsSourceRelative) Then
                 Return Me.m_dataset.ToAbsolutePath(strPath)
             End If
@@ -468,32 +464,6 @@ Namespace SpatialData
 
         End Sub
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Private Sub FindFiles()
-
-            Dim astrFiles As String() = Me.ReadFilesFromLocation(Me.AbsolutePath(), _
-                                                                 Me.m_tbxFileNamePattern.Text, _
-                                                                 Me.SelectedExtensions())
-            Me.m_lFiles.Clear()
-            For i As Integer = 0 To astrFiles.Length - 1
-                Dim dt As DateTime = Me.ToFileDate(i, astrFiles(i))
-                Dim fe As New cFileEntry(astrFiles(i), dt)
-                Me.m_lFiles.Add(fe)
-            Next
-            Me.UpdateGrid()
-
-            Try
-                RaiseEvent OnMultiFileConfigPageChanged(Me, New EventArgs())
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
         Private Sub UpdateGrid()
 
             Me.Cursor = Cursors.WaitCursor
@@ -515,7 +485,7 @@ Namespace SpatialData
 
             Me.m_dataset.DisplayName = Me.m_tbxName.Text
             Me.m_dataset.DataDescription = Me.m_tbxDescription.Text
-            Me.m_dataset.Source = Me.m_tbxPath.Text
+            Me.m_dataset.Source = Me.m_strSource
             Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
             Me.m_dataset.IsSeasonal = Me.m_cbSeasonal.Checked
             Me.m_dataset.SeasonsEnd = CType(Me.m_mtbSeasonalEnd.ValidateText, Date)
@@ -554,12 +524,6 @@ Namespace SpatialData
             Dim dt As Date = Date.MinValue
             DateTime.TryParse(strFile.Substring(Me.m_tbxDatePart.SelectionStart, Me.m_tbxDatePart.SelectionLength), dt)
             Return dt
-        End Function
-
-        Private Function SelectedExtensions() As String()
-            If Me.m_cmbExtensions.SelectedIndex = -1 Then Return New String() {}
-            Dim item As cFileExtItem = DirectCast(Me.m_cmbExtensions.SelectedItem, cFileExtItem)
-            Return item.Extensions
         End Function
 
 #End Region ' Internals

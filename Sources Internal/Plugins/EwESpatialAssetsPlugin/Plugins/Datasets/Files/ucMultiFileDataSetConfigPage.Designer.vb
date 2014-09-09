@@ -30,13 +30,10 @@ Namespace SpatialData
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
         Private Sub InitializeComponent()
-            Me.m_lblPath = New System.Windows.Forms.Label()
-            Me.m_tbxPath = New System.Windows.Forms.TextBox()
             Me.m_btnBrowse = New System.Windows.Forms.Button()
             Me.m_dgvFiles = New System.Windows.Forms.DataGridView()
             Me.m_colFileName = New System.Windows.Forms.DataGridViewTextBoxColumn()
             Me.m_colTime = New EwESpatialAssetsPlugin.cCalendarColumn()
-            Me.m_btnSearch = New System.Windows.Forms.Button()
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
             Me.m_tbxDescription = New System.Windows.Forms.TextBox()
@@ -58,13 +55,11 @@ Namespace SpatialData
             Me.m_hdrTime = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnSetTime = New System.Windows.Forms.Button()
             Me.m_plFiles = New System.Windows.Forms.Panel()
-            Me.m_tbxFileNamePattern = New System.Windows.Forms.TextBox()
-            Me.m_lblFileType = New System.Windows.Forms.Label()
-            Me.m_cmbExtensions = New System.Windows.Forms.ComboBox()
             Me.m_plDescription = New System.Windows.Forms.Panel()
             Me.m_cmbVarName = New System.Windows.Forms.ComboBox()
             Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lblVariable = New System.Windows.Forms.Label()
+            Me.Label1 = New System.Windows.Forms.Label()
             CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpConfig.SuspendLayout()
             Me.m_plTime.SuspendLayout()
@@ -72,35 +67,14 @@ Namespace SpatialData
             Me.m_plDescription.SuspendLayout()
             Me.SuspendLayout()
             '
-            'm_lblPath
-            '
-            Me.m_lblPath.AutoSize = True
-            Me.m_lblPath.Location = New System.Drawing.Point(4, 28)
-            Me.m_lblPath.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-            Me.m_lblPath.Name = "m_lblPath"
-            Me.m_lblPath.Size = New System.Drawing.Size(52, 17)
-            Me.m_lblPath.TabIndex = 0
-            Me.m_lblPath.Text = "&Folder:"
-            '
-            'm_tbxPath
-            '
-            Me.m_tbxPath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxPath.Location = New System.Drawing.Point(107, 25)
-            Me.m_tbxPath.Margin = New System.Windows.Forms.Padding(4)
-            Me.m_tbxPath.Name = "m_tbxPath"
-            Me.m_tbxPath.Size = New System.Drawing.Size(352, 22)
-            Me.m_tbxPath.TabIndex = 1
-            '
             'm_btnBrowse
             '
             Me.m_btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnBrowse.Location = New System.Drawing.Point(468, 22)
-            Me.m_btnBrowse.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_btnBrowse.Location = New System.Drawing.Point(351, 18)
             Me.m_btnBrowse.Name = "m_btnBrowse"
-            Me.m_btnBrowse.Size = New System.Drawing.Size(120, 28)
+            Me.m_btnBrowse.Size = New System.Drawing.Size(90, 23)
             Me.m_btnBrowse.TabIndex = 2
-            Me.m_btnBrowse.Text = "&Choose..."
+            Me.m_btnBrowse.Text = "&Browse..."
             Me.m_btnBrowse.UseVisualStyleBackColor = True
             '
             'm_dgvFiles
@@ -116,8 +90,7 @@ Namespace SpatialData
             Me.m_dgvFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
             Me.m_dgvFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colFileName, Me.m_colTime})
             Me.m_dgvFiles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
-            Me.m_dgvFiles.Location = New System.Drawing.Point(4, 95)
-            Me.m_dgvFiles.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_dgvFiles.Location = New System.Drawing.Point(3, 47)
             Me.m_dgvFiles.MultiSelect = False
             Me.m_dgvFiles.Name = "m_dgvFiles"
             Me.m_dgvFiles.RowHeadersVisible = False
@@ -127,7 +100,7 @@ Namespace SpatialData
             Me.m_dgvFiles.ShowCellToolTips = False
             Me.m_dgvFiles.ShowEditingIcon = False
             Me.m_dgvFiles.ShowRowErrors = False
-            Me.m_dgvFiles.Size = New System.Drawing.Size(584, 185)
+            Me.m_dgvFiles.Size = New System.Drawing.Size(438, 182)
             Me.m_dgvFiles.TabIndex = 9
             '
             'm_colFileName
@@ -149,24 +122,12 @@ Namespace SpatialData
             Me.m_colTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
             Me.m_colTime.Width = 120
             '
-            'm_btnSearch
-            '
-            Me.m_btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSearch.Location = New System.Drawing.Point(468, 54)
-            Me.m_btnSearch.Margin = New System.Windows.Forms.Padding(4)
-            Me.m_btnSearch.Name = "m_btnSearch"
-            Me.m_btnSearch.Size = New System.Drawing.Size(120, 28)
-            Me.m_btnSearch.TabIndex = 8
-            Me.m_btnSearch.Text = "S&earch files"
-            Me.m_btnSearch.UseVisualStyleBackColor = True
-            '
             'm_lblName
             '
             Me.m_lblName.AutoSize = True
-            Me.m_lblName.Location = New System.Drawing.Point(4, 28)
-            Me.m_lblName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+            Me.m_lblName.Location = New System.Drawing.Point(3, 23)
             Me.m_lblName.Name = "m_lblName"
-            Me.m_lblName.Size = New System.Drawing.Size(49, 17)
+            Me.m_lblName.Size = New System.Drawing.Size(38, 13)
             Me.m_lblName.TabIndex = 1
             Me.m_lblName.Text = "&Name:"
             '
@@ -174,11 +135,10 @@ Namespace SpatialData
             '
             Me.m_tbxName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxName.Location = New System.Drawing.Point(107, 25)
-            Me.m_tbxName.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_tbxName.Location = New System.Drawing.Point(80, 20)
             Me.m_tbxName.MaxLength = 100
             Me.m_tbxName.Name = "m_tbxName"
-            Me.m_tbxName.Size = New System.Drawing.Size(480, 22)
+            Me.m_tbxName.Size = New System.Drawing.Size(361, 20)
             Me.m_tbxName.TabIndex = 2
             '
             'm_tbxDescription
@@ -187,21 +147,19 @@ Namespace SpatialData
             Me.m_tbxDescription.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                 Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxDescription.Location = New System.Drawing.Point(107, 57)
-            Me.m_tbxDescription.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_tbxDescription.Location = New System.Drawing.Point(80, 46)
             Me.m_tbxDescription.Multiline = True
             Me.m_tbxDescription.Name = "m_tbxDescription"
             Me.m_tbxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-            Me.m_tbxDescription.Size = New System.Drawing.Size(480, 89)
+            Me.m_tbxDescription.Size = New System.Drawing.Size(361, 73)
             Me.m_tbxDescription.TabIndex = 4
             '
             'm_lblDescription
             '
             Me.m_lblDescription.AutoSize = True
-            Me.m_lblDescription.Location = New System.Drawing.Point(4, 60)
-            Me.m_lblDescription.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+            Me.m_lblDescription.Location = New System.Drawing.Point(3, 49)
             Me.m_lblDescription.Name = "m_lblDescription"
-            Me.m_lblDescription.Size = New System.Drawing.Size(83, 17)
+            Me.m_lblDescription.Size = New System.Drawing.Size(63, 13)
             Me.m_lblDescription.TabIndex = 3
             Me.m_lblDescription.Text = "&Description:"
             '
@@ -226,9 +184,8 @@ Namespace SpatialData
             Me.m_hdrFiles.CollapsedParentHeight = 71
             Me.m_hdrFiles.IsCollapsed = False
             Me.m_hdrFiles.Location = New System.Drawing.Point(0, 0)
-            Me.m_hdrFiles.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
             Me.m_hdrFiles.Name = "m_hdrFiles"
-            Me.m_hdrFiles.Size = New System.Drawing.Size(588, 22)
+            Me.m_hdrFiles.Size = New System.Drawing.Size(441, 18)
             Me.m_hdrFiles.TabIndex = 0
             Me.m_hdrFiles.Text = "Files"
             Me.m_hdrFiles.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -243,13 +200,12 @@ Namespace SpatialData
             Me.m_tlpConfig.Controls.Add(Me.m_plDescription, 0, 0)
             Me.m_tlpConfig.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tlpConfig.Location = New System.Drawing.Point(0, 0)
-            Me.m_tlpConfig.Margin = New System.Windows.Forms.Padding(4)
             Me.m_tlpConfig.Name = "m_tlpConfig"
             Me.m_tlpConfig.RowCount = 3
             Me.m_tlpConfig.RowStyles.Add(New System.Windows.Forms.RowStyle())
             Me.m_tlpConfig.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.m_tlpConfig.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_tlpConfig.Size = New System.Drawing.Size(600, 640)
+            Me.m_tlpConfig.Size = New System.Drawing.Size(450, 520)
             Me.m_tlpConfig.TabIndex = 0
             '
             'm_plTime
@@ -266,19 +222,17 @@ Namespace SpatialData
             Me.m_plTime.Controls.Add(Me.m_hdrTime)
             Me.m_plTime.Controls.Add(Me.m_btnSetTime)
             Me.m_plTime.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plTime.Location = New System.Drawing.Point(4, 483)
-            Me.m_plTime.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_plTime.Location = New System.Drawing.Point(3, 393)
             Me.m_plTime.Name = "m_plTime"
-            Me.m_plTime.Size = New System.Drawing.Size(592, 153)
+            Me.m_plTime.Size = New System.Drawing.Size(444, 124)
             Me.m_plTime.TabIndex = 0
             '
             'm_cbSeasonal
             '
             Me.m_cbSeasonal.AutoSize = True
-            Me.m_cbSeasonal.Location = New System.Drawing.Point(9, 31)
-            Me.m_cbSeasonal.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_cbSeasonal.Location = New System.Drawing.Point(7, 25)
             Me.m_cbSeasonal.Name = "m_cbSeasonal"
-            Me.m_cbSeasonal.Size = New System.Drawing.Size(165, 21)
+            Me.m_cbSeasonal.Size = New System.Drawing.Size(126, 17)
             Me.m_cbSeasonal.TabIndex = 11
             Me.m_cbSeasonal.Text = "&Data is seasonal until"
             Me.m_cbSeasonal.UseVisualStyleBackColor = True
@@ -288,49 +242,44 @@ Namespace SpatialData
             Me.m_cmbInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbInterval.FormattingEnabled = True
             Me.m_cmbInterval.Items.AddRange(New Object() {"month", "3 months", "6 months", "year", "decade"})
-            Me.m_cmbInterval.Location = New System.Drawing.Point(341, 64)
-            Me.m_cmbInterval.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_cmbInterval.Location = New System.Drawing.Point(256, 52)
             Me.m_cmbInterval.Name = "m_cmbInterval"
-            Me.m_cmbInterval.Size = New System.Drawing.Size(115, 24)
+            Me.m_cmbInterval.Size = New System.Drawing.Size(87, 21)
             Me.m_cmbInterval.TabIndex = 4
             '
             'm_lblIntervalWith
             '
             Me.m_lblIntervalWith.AutoSize = True
-            Me.m_lblIntervalWith.Location = New System.Drawing.Point(185, 68)
-            Me.m_lblIntervalWith.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+            Me.m_lblIntervalWith.Location = New System.Drawing.Point(139, 55)
             Me.m_lblIntervalWith.Name = "m_lblIntervalWith"
-            Me.m_lblIntervalWith.Size = New System.Drawing.Size(146, 17)
+            Me.m_lblIntervalWith.Size = New System.Drawing.Size(111, 13)
             Me.m_lblIntervalWith.TabIndex = 3
             Me.m_lblIntervalWith.Text = " spaced evenly every "
             '
             'm_mtbSeasonalEnd
             '
-            Me.m_mtbSeasonalEnd.Location = New System.Drawing.Point(185, 28)
-            Me.m_mtbSeasonalEnd.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_mtbSeasonalEnd.Location = New System.Drawing.Point(139, 23)
             Me.m_mtbSeasonalEnd.Mask = "0000/00"
             Me.m_mtbSeasonalEnd.Name = "m_mtbSeasonalEnd"
-            Me.m_mtbSeasonalEnd.Size = New System.Drawing.Size(68, 22)
+            Me.m_mtbSeasonalEnd.Size = New System.Drawing.Size(52, 20)
             Me.m_mtbSeasonalEnd.TabIndex = 2
             Me.m_mtbSeasonalEnd.Text = "195001"
             '
             'm_mtbIntervalStart
             '
-            Me.m_mtbIntervalStart.Location = New System.Drawing.Point(108, 64)
-            Me.m_mtbIntervalStart.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_mtbIntervalStart.Location = New System.Drawing.Point(81, 52)
             Me.m_mtbIntervalStart.Mask = "0000/00"
             Me.m_mtbIntervalStart.Name = "m_mtbIntervalStart"
-            Me.m_mtbIntervalStart.Size = New System.Drawing.Size(68, 22)
+            Me.m_mtbIntervalStart.Size = New System.Drawing.Size(52, 20)
             Me.m_mtbIntervalStart.TabIndex = 2
             Me.m_mtbIntervalStart.Text = "195001"
             '
             'm_rbFromName
             '
             Me.m_rbFromName.AutoSize = True
-            Me.m_rbFromName.Location = New System.Drawing.Point(9, 122)
-            Me.m_rbFromName.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_rbFromName.Location = New System.Drawing.Point(7, 99)
             Me.m_rbFromName.Name = "m_rbFromName"
-            Me.m_rbFromName.Size = New System.Drawing.Size(245, 21)
+            Me.m_rbFromName.Size = New System.Drawing.Size(185, 17)
             Me.m_rbFromName.TabIndex = 7
             Me.m_rbFromName.TabStop = True
             Me.m_rbFromName.Text = "From file &name (select which part):"
@@ -339,10 +288,9 @@ Namespace SpatialData
             'm_rbFromDate
             '
             Me.m_rbFromDate.AutoSize = True
-            Me.m_rbFromDate.Location = New System.Drawing.Point(9, 94)
-            Me.m_rbFromDate.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_rbFromDate.Location = New System.Drawing.Point(7, 76)
             Me.m_rbFromDate.Name = "m_rbFromDate"
-            Me.m_rbFromDate.Size = New System.Drawing.Size(115, 21)
+            Me.m_rbFromDate.Size = New System.Drawing.Size(88, 17)
             Me.m_rbFromDate.TabIndex = 6
             Me.m_rbFromDate.TabStop = True
             Me.m_rbFromDate.Text = "From file &date"
@@ -352,10 +300,9 @@ Namespace SpatialData
             '
             Me.m_rbInterval.AutoSize = True
             Me.m_rbInterval.Checked = True
-            Me.m_rbInterval.Location = New System.Drawing.Point(9, 65)
-            Me.m_rbInterval.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_rbInterval.Location = New System.Drawing.Point(7, 53)
             Me.m_rbInterval.Name = "m_rbInterval"
-            Me.m_rbInterval.Size = New System.Drawing.Size(94, 21)
+            Me.m_rbInterval.Size = New System.Drawing.Size(73, 17)
             Me.m_rbInterval.TabIndex = 1
             Me.m_rbInterval.TabStop = True
             Me.m_rbInterval.Text = "S&tarting at"
@@ -366,11 +313,10 @@ Namespace SpatialData
             Me.m_tbxDatePart.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tbxDatePart.HideSelection = False
-            Me.m_tbxDatePart.Location = New System.Drawing.Point(264, 122)
-            Me.m_tbxDatePart.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_tbxDatePart.Location = New System.Drawing.Point(198, 99)
             Me.m_tbxDatePart.Name = "m_tbxDatePart"
             Me.m_tbxDatePart.ReadOnly = True
-            Me.m_tbxDatePart.Size = New System.Drawing.Size(169, 22)
+            Me.m_tbxDatePart.Size = New System.Drawing.Size(128, 20)
             Me.m_tbxDatePart.TabIndex = 8
             '
             'm_hdrTime
@@ -381,9 +327,8 @@ Namespace SpatialData
             Me.m_hdrTime.CollapsedParentHeight = 76
             Me.m_hdrTime.IsCollapsed = False
             Me.m_hdrTime.Location = New System.Drawing.Point(0, 0)
-            Me.m_hdrTime.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
             Me.m_hdrTime.Name = "m_hdrTime"
-            Me.m_hdrTime.Size = New System.Drawing.Size(588, 22)
+            Me.m_hdrTime.Size = New System.Drawing.Size(441, 18)
             Me.m_hdrTime.TabIndex = 0
             Me.m_hdrTime.Text = "Time utility"
             Me.m_hdrTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -391,64 +336,24 @@ Namespace SpatialData
             'm_btnSetTime
             '
             Me.m_btnSetTime.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSetTime.Location = New System.Drawing.Point(468, 62)
-            Me.m_btnSetTime.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_btnSetTime.Location = New System.Drawing.Point(351, 50)
             Me.m_btnSetTime.Name = "m_btnSetTime"
-            Me.m_btnSetTime.Size = New System.Drawing.Size(120, 28)
+            Me.m_btnSetTime.Size = New System.Drawing.Size(90, 23)
             Me.m_btnSetTime.TabIndex = 10
             Me.m_btnSetTime.Text = "Set file &times"
             Me.m_btnSetTime.UseVisualStyleBackColor = True
             '
             'm_plFiles
             '
-            Me.m_plFiles.Controls.Add(Me.m_tbxFileNamePattern)
-            Me.m_plFiles.Controls.Add(Me.m_lblFileType)
-            Me.m_plFiles.Controls.Add(Me.m_cmbExtensions)
             Me.m_plFiles.Controls.Add(Me.m_dgvFiles)
             Me.m_plFiles.Controls.Add(Me.m_hdrFiles)
-            Me.m_plFiles.Controls.Add(Me.m_tbxPath)
-            Me.m_plFiles.Controls.Add(Me.m_lblPath)
             Me.m_plFiles.Controls.Add(Me.m_btnBrowse)
-            Me.m_plFiles.Controls.Add(Me.m_btnSearch)
+            Me.m_plFiles.Controls.Add(Me.Label1)
             Me.m_plFiles.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plFiles.Location = New System.Drawing.Point(4, 192)
-            Me.m_plFiles.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_plFiles.Location = New System.Drawing.Point(3, 155)
             Me.m_plFiles.Name = "m_plFiles"
-            Me.m_plFiles.Size = New System.Drawing.Size(592, 283)
+            Me.m_plFiles.Size = New System.Drawing.Size(444, 232)
             Me.m_plFiles.TabIndex = 1
-            '
-            'm_tbxFileNamePattern
-            '
-            Me.m_tbxFileNamePattern.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxFileNamePattern.Location = New System.Drawing.Point(108, 57)
-            Me.m_tbxFileNamePattern.Margin = New System.Windows.Forms.Padding(4)
-            Me.m_tbxFileNamePattern.Name = "m_tbxFileNamePattern"
-            Me.m_tbxFileNamePattern.Size = New System.Drawing.Size(97, 22)
-            Me.m_tbxFileNamePattern.TabIndex = 7
-            Me.m_tbxFileNamePattern.Text = "*"
-            '
-            'm_lblFileType
-            '
-            Me.m_lblFileType.AutoSize = True
-            Me.m_lblFileType.Location = New System.Drawing.Point(4, 60)
-            Me.m_lblFileType.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-            Me.m_lblFileType.Name = "m_lblFileType"
-            Me.m_lblFileType.Size = New System.Drawing.Size(65, 17)
-            Me.m_lblFileType.TabIndex = 3
-            Me.m_lblFileType.Text = "&File filter:"
-            '
-            'm_cmbExtensions
-            '
-            Me.m_cmbExtensions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_cmbExtensions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbExtensions.FormattingEnabled = True
-            Me.m_cmbExtensions.Location = New System.Drawing.Point(251, 57)
-            Me.m_cmbExtensions.Margin = New System.Windows.Forms.Padding(4)
-            Me.m_cmbExtensions.Name = "m_cmbExtensions"
-            Me.m_cmbExtensions.Size = New System.Drawing.Size(208, 24)
-            Me.m_cmbExtensions.TabIndex = 4
             '
             'm_plDescription
             '
@@ -460,10 +365,9 @@ Namespace SpatialData
             Me.m_plDescription.Controls.Add(Me.m_lblName)
             Me.m_plDescription.Controls.Add(Me.m_tbxDescription)
             Me.m_plDescription.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plDescription.Location = New System.Drawing.Point(4, 4)
-            Me.m_plDescription.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_plDescription.Location = New System.Drawing.Point(3, 3)
             Me.m_plDescription.Name = "m_plDescription"
-            Me.m_plDescription.Size = New System.Drawing.Size(592, 180)
+            Me.m_plDescription.Size = New System.Drawing.Size(444, 146)
             Me.m_plDescription.TabIndex = 0
             '
             'm_cmbVarName
@@ -472,10 +376,9 @@ Namespace SpatialData
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbVarName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbVarName.FormattingEnabled = True
-            Me.m_cmbVarName.Location = New System.Drawing.Point(107, 154)
-            Me.m_cmbVarName.Margin = New System.Windows.Forms.Padding(4)
+            Me.m_cmbVarName.Location = New System.Drawing.Point(80, 125)
             Me.m_cmbVarName.Name = "m_cmbVarName"
-            Me.m_cmbVarName.Size = New System.Drawing.Size(480, 24)
+            Me.m_cmbVarName.Size = New System.Drawing.Size(361, 21)
             Me.m_cmbVarName.TabIndex = 5
             '
             'm_hdrDescription
@@ -486,9 +389,8 @@ Namespace SpatialData
             Me.m_hdrDescription.CollapsedParentHeight = 94
             Me.m_hdrDescription.IsCollapsed = False
             Me.m_hdrDescription.Location = New System.Drawing.Point(0, 0)
-            Me.m_hdrDescription.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
             Me.m_hdrDescription.Name = "m_hdrDescription"
-            Me.m_hdrDescription.Size = New System.Drawing.Size(588, 22)
+            Me.m_hdrDescription.Size = New System.Drawing.Size(441, 18)
             Me.m_hdrDescription.TabIndex = 0
             Me.m_hdrDescription.Text = "Description"
             Me.m_hdrDescription.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -497,24 +399,31 @@ Namespace SpatialData
             '
             Me.m_lblVariable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.m_lblVariable.AutoSize = True
-            Me.m_lblVariable.Location = New System.Drawing.Point(5, 158)
-            Me.m_lblVariable.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+            Me.m_lblVariable.Location = New System.Drawing.Point(4, 128)
             Me.m_lblVariable.Name = "m_lblVariable"
-            Me.m_lblVariable.Size = New System.Drawing.Size(64, 17)
+            Me.m_lblVariable.Size = New System.Drawing.Size(48, 13)
             Me.m_lblVariable.TabIndex = 3
             Me.m_lblVariable.Text = "&Variable:"
             '
+            'Label1
+            '
+            Me.Label1.AutoSize = True
+            Me.Label1.Location = New System.Drawing.Point(4, 23)
+            Me.Label1.Name = "Label1"
+            Me.Label1.Size = New System.Drawing.Size(61, 13)
+            Me.Label1.TabIndex = 1
+            Me.Label1.Text = "&Select files:"
+            '
             'ucMultiFileDatasetConfigPage
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.BackColor = System.Drawing.SystemColors.Control
             Me.Controls.Add(Me.m_tlpConfig)
-            Me.Margin = New System.Windows.Forms.Padding(4)
-            Me.MinimumSize = New System.Drawing.Size(547, 492)
+            Me.MinimumSize = New System.Drawing.Size(410, 400)
             Me.Name = "ucMultiFileDatasetConfigPage"
-            Me.Size = New System.Drawing.Size(600, 640)
+            Me.Size = New System.Drawing.Size(450, 520)
             CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpConfig.ResumeLayout(False)
             Me.m_plTime.ResumeLayout(False)
@@ -526,11 +435,8 @@ Namespace SpatialData
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_lblPath As System.Windows.Forms.Label
-        Private WithEvents m_tbxPath As System.Windows.Forms.TextBox
         Private WithEvents m_btnBrowse As System.Windows.Forms.Button
         Private WithEvents m_dgvFiles As System.Windows.Forms.DataGridView
-        Private WithEvents m_btnSearch As System.Windows.Forms.Button
         Private WithEvents m_lblName As System.Windows.Forms.Label
         Private WithEvents m_tbxName As System.Windows.Forms.TextBox
         Private WithEvents m_tbxDescription As System.Windows.Forms.TextBox
@@ -553,14 +459,12 @@ Namespace SpatialData
         Private WithEvents m_btnSetTime As System.Windows.Forms.Button
         Private WithEvents m_rbFromDate As System.Windows.Forms.RadioButton
         Private WithEvents m_rbFromName As System.Windows.Forms.RadioButton
-        Private WithEvents m_cmbExtensions As System.Windows.Forms.ComboBox
-        Private WithEvents m_tbxFileNamePattern As System.Windows.Forms.TextBox
-        Private WithEvents m_lblFileType As System.Windows.Forms.Label
         Private WithEvents m_lblIntervalWith As System.Windows.Forms.Label
         Private WithEvents m_cmbVarName As System.Windows.Forms.ComboBox
         Private WithEvents m_lblVariable As System.Windows.Forms.Label
         Private WithEvents m_cbSeasonal As System.Windows.Forms.CheckBox
         Private WithEvents m_mtbSeasonalEnd As System.Windows.Forms.MaskedTextBox
+        Private WithEvents Label1 As System.Windows.Forms.Label
 
     End Class
 
