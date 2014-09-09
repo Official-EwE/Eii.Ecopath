@@ -27,6 +27,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -247,10 +248,9 @@ Namespace Other
                 If (Me.m_pi IsNot Nothing) Then
                     strPath = Path.Combine(strPath, Me.m_pi.AutoSaveSubPath)
                 End If
-                Me.m_strPath = String.Copy(strPath)
+                Me.m_strPath = strPath
 
-                TextRenderer.MeasureText(strPath, Me.Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis)
-                Me.m_lblPath.Text = strPath
+                Me.m_lblPath.Text = cStringUtils.CompactString(strPath, Me.m_lblPath.ClientSize.Width, Me.Font)
                 Me.m_lblPath.Visible = True
                 Me.m_btnVisitFolder.Visible = True
                 Me.m_btnVisitFolder.Enabled = Directory.Exists(Me.m_strPath)
