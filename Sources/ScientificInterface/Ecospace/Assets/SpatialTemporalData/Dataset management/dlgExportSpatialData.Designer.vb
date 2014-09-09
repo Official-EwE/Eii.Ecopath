@@ -35,10 +35,24 @@
             Me.m_btnUsed = New System.Windows.Forms.Button()
             Me.m_lblFolderPreview = New System.Windows.Forms.Label()
             Me.m_lblFolder = New System.Windows.Forms.Label()
-            Me.m_hdrDestination = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_hdrLabel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_tbxDescription = New System.Windows.Forms.TextBox()
+            Me.m_btnChoose = New System.Windows.Forms.Button()
+            Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plDestination = New System.Windows.Forms.Panel()
+            Me.m_plMetadata = New System.Windows.Forms.Panel()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_lblAuthor = New System.Windows.Forms.Label()
+            Me.m_tbxContact = New System.Windows.Forms.TextBox()
+            Me.m_tbxAuthor = New System.Windows.Forms.TextBox()
+            Me.m_plData = New System.Windows.Forms.Panel()
+            Me.m_hdrDestination = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrLabel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpContent.SuspendLayout()
+            Me.m_plDestination.SuspendLayout()
+            Me.m_plMetadata.SuspendLayout()
+            Me.m_plData.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_clbDatsets
@@ -100,6 +114,83 @@
             resources.ApplyResources(Me.m_lblFolder, "m_lblFolder")
             Me.m_lblFolder.Name = "m_lblFolder"
             '
+            'm_lblDescription
+            '
+            resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
+            Me.m_lblDescription.Name = "m_lblDescription"
+            '
+            'm_tbxDescription
+            '
+            resources.ApplyResources(Me.m_tbxDescription, "m_tbxDescription")
+            Me.m_tbxDescription.Name = "m_tbxDescription"
+            '
+            'm_btnChoose
+            '
+            resources.ApplyResources(Me.m_btnChoose, "m_btnChoose")
+            Me.m_btnChoose.Name = "m_btnChoose"
+            Me.m_btnChoose.UseVisualStyleBackColor = True
+            '
+            'm_tlpContent
+            '
+            resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
+            Me.m_tlpContent.Controls.Add(Me.m_plDestination, 0, 0)
+            Me.m_tlpContent.Controls.Add(Me.m_plMetadata, 0, 1)
+            Me.m_tlpContent.Controls.Add(Me.m_plData, 0, 2)
+            Me.m_tlpContent.Name = "m_tlpContent"
+            '
+            'm_plDestination
+            '
+            Me.m_plDestination.Controls.Add(Me.m_hdrDestination)
+            Me.m_plDestination.Controls.Add(Me.m_lblFolderPreview)
+            Me.m_plDestination.Controls.Add(Me.m_lblFolder)
+            Me.m_plDestination.Controls.Add(Me.m_btnChoose)
+            Me.m_plDestination.Controls.Add(Me.m_lblName)
+            Me.m_plDestination.Controls.Add(Me.m_tbxName)
+            resources.ApplyResources(Me.m_plDestination, "m_plDestination")
+            Me.m_plDestination.Name = "m_plDestination"
+            '
+            'm_plMetadata
+            '
+            Me.m_plMetadata.Controls.Add(Me.CEwEHeaderLabel1)
+            Me.m_plMetadata.Controls.Add(Me.m_tbxDescription)
+            Me.m_plMetadata.Controls.Add(Me.Label1)
+            Me.m_plMetadata.Controls.Add(Me.m_lblAuthor)
+            Me.m_plMetadata.Controls.Add(Me.m_lblDescription)
+            Me.m_plMetadata.Controls.Add(Me.m_tbxContact)
+            Me.m_plMetadata.Controls.Add(Me.m_tbxAuthor)
+            resources.ApplyResources(Me.m_plMetadata, "m_plMetadata")
+            Me.m_plMetadata.Name = "m_plMetadata"
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'm_lblAuthor
+            '
+            resources.ApplyResources(Me.m_lblAuthor, "m_lblAuthor")
+            Me.m_lblAuthor.Name = "m_lblAuthor"
+            '
+            'm_tbxContact
+            '
+            resources.ApplyResources(Me.m_tbxContact, "m_tbxContact")
+            Me.m_tbxContact.Name = "m_tbxContact"
+            '
+            'm_tbxAuthor
+            '
+            resources.ApplyResources(Me.m_tbxAuthor, "m_tbxAuthor")
+            Me.m_tbxAuthor.Name = "m_tbxAuthor"
+            '
+            'm_plData
+            '
+            Me.m_plData.Controls.Add(Me.m_hdrLabel)
+            Me.m_plData.Controls.Add(Me.m_clbDatsets)
+            Me.m_plData.Controls.Add(Me.m_btnAll)
+            Me.m_plData.Controls.Add(Me.m_btnNone)
+            Me.m_plData.Controls.Add(Me.m_btnUsed)
+            resources.ApplyResources(Me.m_plData, "m_plData")
+            Me.m_plData.Name = "m_plData"
+            '
             'm_hdrDestination
             '
             resources.ApplyResources(Me.m_hdrDestination, "m_hdrDestination")
@@ -107,6 +198,14 @@
             Me.m_hdrDestination.CollapsedParentHeight = 0
             Me.m_hdrDestination.IsCollapsed = False
             Me.m_hdrDestination.Name = "m_hdrDestination"
+            '
+            'CEwEHeaderLabel1
+            '
+            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
+            Me.CEwEHeaderLabel1.CanCollapseParent = True
+            Me.CEwEHeaderLabel1.CollapsedParentHeight = 114
+            Me.CEwEHeaderLabel1.IsCollapsed = False
+            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
             '
             'm_hdrLabel
             '
@@ -116,16 +215,6 @@
             Me.m_hdrLabel.IsCollapsed = False
             Me.m_hdrLabel.Name = "m_hdrLabel"
             '
-            'Label1
-            '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
-            '
-            'm_tbxDescription
-            '
-            resources.ApplyResources(Me.m_tbxDescription, "m_tbxDescription")
-            Me.m_tbxDescription.Name = "m_tbxDescription"
-            '
             'dlgExportSpatialData
             '
             Me.AcceptButton = Me.m_btnExport
@@ -133,24 +222,18 @@
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
-            Me.Controls.Add(Me.m_lblFolder)
-            Me.Controls.Add(Me.m_lblFolderPreview)
-            Me.Controls.Add(Me.m_tbxDescription)
-            Me.Controls.Add(Me.m_tbxName)
-            Me.Controls.Add(Me.Label1)
-            Me.Controls.Add(Me.m_lblName)
-            Me.Controls.Add(Me.m_hdrDestination)
-            Me.Controls.Add(Me.m_hdrLabel)
+            Me.Controls.Add(Me.m_tlpContent)
             Me.Controls.Add(Me.m_btnExport)
             Me.Controls.Add(Me.m_btnCancel)
-            Me.Controls.Add(Me.m_btnUsed)
-            Me.Controls.Add(Me.m_btnNone)
-            Me.Controls.Add(Me.m_btnAll)
-            Me.Controls.Add(Me.m_clbDatsets)
             Me.Name = "dlgExportSpatialData"
             Me.ShowInTaskbar = False
+            Me.m_tlpContent.ResumeLayout(False)
+            Me.m_plDestination.ResumeLayout(False)
+            Me.m_plDestination.PerformLayout()
+            Me.m_plMetadata.ResumeLayout(False)
+            Me.m_plMetadata.PerformLayout()
+            Me.m_plData.ResumeLayout(False)
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_btnExport As System.Windows.Forms.Button
@@ -165,8 +248,18 @@
         Private WithEvents m_btnUsed As System.Windows.Forms.Button
         Private WithEvents m_lblFolderPreview As System.Windows.Forms.Label
         Friend WithEvents m_lblFolder As System.Windows.Forms.Label
-        Friend WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_tbxDescription As System.Windows.Forms.TextBox
+        Private WithEvents m_btnChoose As System.Windows.Forms.Button
+        Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_lblDescription As System.Windows.Forms.Label
+        Private WithEvents m_plDestination As System.Windows.Forms.Panel
+        Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_lblAuthor As System.Windows.Forms.Label
+        Private WithEvents m_tbxContact As System.Windows.Forms.TextBox
+        Private WithEvents m_tbxAuthor As System.Windows.Forms.TextBox
+        Private WithEvents m_plMetadata As System.Windows.Forms.Panel
+        Private WithEvents m_plData As System.Windows.Forms.Panel
+        Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
     End Class
 
 End Namespace
