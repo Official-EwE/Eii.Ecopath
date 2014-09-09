@@ -230,10 +230,12 @@
     <comment>{0}=path, {1}=dataset name</comment>
   </data>
   <data name="PROMPT_SELECTFILE" xml:space="preserve">
-    <value>Select file</value>
+    <value>Select spatial-temporal file for '{0}'</value>
+    <comment>{0}=dataset name</comment>
   </data>
-  <data name="PROMPT_SELECTFOLDER" xml:space="preserve">
-    <value>Select folder with spatial/temporal files</value>
+  <data name="PROMPT_SELECTFILES" xml:space="preserve">
+    <value>Select spatial-temporal files for '{0}'</value>
+    <comment>{0}=dataset name</comment>
   </data>
   <data name="STATUS_CONVERTER" xml:space="preserve">
     <value>Using converter '{0}'</value>

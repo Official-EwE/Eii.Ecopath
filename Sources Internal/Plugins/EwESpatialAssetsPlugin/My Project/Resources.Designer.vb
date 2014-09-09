@@ -367,7 +367,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Select file.
+        '''  Looks up a localized string similar to Select spatial-temporal file for &apos;{0}&apos;.
         '''</summary>
         Friend ReadOnly Property PROMPT_SELECTFILE() As String
             Get
@@ -376,11 +376,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Select folder with spatial/temporal files.
+        '''  Looks up a localized string similar to Select spatial-temporal files for &apos;{0}&apos;.
         '''</summary>
-        Friend ReadOnly Property PROMPT_SELECTFOLDER() As String
+        Friend ReadOnly Property PROMPT_SELECTFILES() As String
             Get
-                Return ResourceManager.GetString("PROMPT_SELECTFOLDER", resourceCulture)
+                Return ResourceManager.GetString("PROMPT_SELECTFILES", resourceCulture)
             End Get
         End Property
         

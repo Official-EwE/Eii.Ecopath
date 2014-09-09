@@ -47,22 +47,6 @@ Namespace SpatialData
 
 #Region " Private classes "
 
-        Private Class cFileExtItem
-            Private m_strLabel As String
-            Private m_strExt As String
-            Public Sub New(strLabel As String, strExt As String)
-                Me.m_strLabel = strLabel : Me.m_strExt = strExt
-            End Sub
-            Public Overrides Function ToString() As String
-                Return Me.m_strLabel
-            End Function
-            Public ReadOnly Property Extensions As String()
-                Get
-                    Return Me.m_strExt.Split(";"c)
-                End Get
-            End Property
-        End Class
-
         Private Class cFileEntry
             Private m_strFileName As String
             Public Sub New(strFileName As String, dt As Date)
@@ -208,7 +192,7 @@ Namespace SpatialData
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub OnBrowse(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_btnBrowse.Click
+            Handles m_btnBrowse.Click
             Me.DoBrowse()
         End Sub
 
@@ -217,18 +201,7 @@ Namespace SpatialData
         ''' 
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub OnPathChanged(ByVal sender As Object, ByVal e As System.EventArgs)
-
-            Me.RefreshDataPartSample()
-            Me.UpdateControls()
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Private Sub OnDescriptiveChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnFriendlyInfoChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tbxName.TextChanged, m_tbxDescription.TextChanged
             Me.UpdateControls()
         End Sub
@@ -276,23 +249,6 @@ Namespace SpatialData
 
         End Sub
 
-        Private Function ToFileDate(iFile As Integer, strFile As String) As Date
-
-            Dim dtStart As Date = CType(Me.m_mtbIntervalStart.ValidateText, Date)
-            Dim interval As eIntervalType = DirectCast(Me.m_cmbInterval.SelectedIndex, eIntervalType)
-            Dim dt As Date
-
-            If Me.m_rbInterval.Checked Then
-                dt = Me.GetDateFromInterval(dtStart.Year, dtStart.Month, iFile, interval)
-            ElseIf Me.m_rbFromName.Checked Then
-                dt = Me.GetDateFromFileName(Path.Combine(Me.m_strSource, strFile))
-            ElseIf Me.m_rbFromDate.Checked Then
-                dt = Me.GetDateFromFile(Path.Combine(Me.m_strSource, strFile))
-            End If
-            Return dt
-
-        End Function
-
         Private Sub OnFormatVarname(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_cmbVarName.Format
             Dim fmt As New cVarnameTypeFormatter
@@ -327,7 +283,7 @@ Namespace SpatialData
             Dim ofd As New OpenFileDialog
             Dim sbFileName As New StringBuilder()
 
-            ofd.Title = "Select files for " & Me.m_tbxName.Text
+            ofd.Title = String.Format(My.Resources.PROMPT_SELECTFILES, Me.m_tbxName.Text)
             ofd.Multiselect = True
             ofd.InitialDirectory = Me.AbsolutePath()
             ofd.Filter = Me.m_dataset.DialogReadFilter(True, False, True)
@@ -380,33 +336,6 @@ Namespace SpatialData
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <param name="strPath">Root directory to search.</param>
-        ''' <param name="strPattern">File search pattern.</param>
-        ''' <param name="astrExtensions">Array of extensions to filter by.</param>
-        ''' -----------------------------------------------------------------------
-        Private Function ReadFilesFromLocation(ByVal strPath As String, _
-                                               ByVal strPattern As String, _
-                                               ByVal astrExtensions() As String) As String()
-
-            ' Provide a pattern if missing
-            If (String.IsNullOrWhiteSpace(strPattern)) Then
-                strPattern = "*.*"
-            End If
-
-            Try
-                If (Directory.Exists(strPath)) Then
-                    Return cFileUtils.FilesByDialogFilter(Directory.GetFiles(strPath, strPattern, SearchOption.TopDirectoryOnly), astrExtensions)
-                End If
-            Catch ex As Exception
-                ' Invalid bits
-            End Try
-            Return New String() {}
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub UpdateControls()
 
@@ -430,6 +359,12 @@ Namespace SpatialData
 
         End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the absolute path for the current dataset.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
         Private Function AbsolutePath() As String
             Dim strPath As String = Me.m_strSource
             If (Me.m_dataset.IsSourceRelative) Then
@@ -497,6 +432,25 @@ Namespace SpatialData
 
         End Sub
 
+#Region " Date helpers "
+
+        Private Function ToFileDate(iFile As Integer, strFile As String) As Date
+
+            Dim dtStart As Date = CType(Me.m_mtbIntervalStart.ValidateText, Date)
+            Dim interval As eIntervalType = DirectCast(Me.m_cmbInterval.SelectedIndex, eIntervalType)
+            Dim dt As Date
+
+            If Me.m_rbInterval.Checked Then
+                dt = Me.GetDateFromInterval(dtStart.Year, dtStart.Month, iFile, interval)
+            ElseIf Me.m_rbFromName.Checked Then
+                dt = Me.GetDateFromFileName(Path.Combine(Me.m_strSource, strFile))
+            ElseIf Me.m_rbFromDate.Checked Then
+                dt = Me.GetDateFromFile(Path.Combine(Me.m_strSource, strFile))
+            End If
+            Return dt
+
+        End Function
+
         Private Function GetDateFromInterval(ByVal iYear As Integer, ByVal iMonth As Integer, ByVal iFile As Integer, ByVal interval As eIntervalType) As Date
 
             Dim dt As New Date(iYear, iMonth, 1)
@@ -525,6 +479,8 @@ Namespace SpatialData
             DateTime.TryParse(strFile.Substring(Me.m_tbxDatePart.SelectionStart, Me.m_tbxDatePart.SelectionLength), dt)
             Return dt
         End Function
+
+#End Region ' Date helpers
 
 #End Region ' Internals
 
