@@ -21,6 +21,7 @@
 Option Strict On
 Imports System.Text
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -232,8 +233,7 @@ Namespace Controls
             rcLabel = New Rectangle(iMin, 0, iMax - iMin, Me.ClientRectangle.Height)
 
             If (rcLabel.Width > 0) Then
-                Dim sz As Size = TextRenderer.MeasureText(strTemp, Me.Font, New System.Drawing.Size(rcLabel.Width, rcLabel.Height), _
-                                                           TextFormatFlags.PathEllipsis Or TextFormatFlags.LeftAndRightPadding Or TextFormatFlags.ModifyString)
+                strTemp = cStringUtils.CompactString(strTemp, rcLabel.Width, Me.Font)
 
                 ' Chop off Nothing characters which will occur when string is shortened.
                 '   These chars are recognized and handled well by the String class, but 
@@ -245,7 +245,7 @@ Namespace Controls
                     sbTemp.Append(c)
                 Next
 
-             End If
+            End If
 
             ' Store
             Me.m_strLabel = sbTemp.ToString

@@ -360,7 +360,6 @@ Namespace Other
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
             Dim man As cSpatialDataSetManager = Me.UIContext.Core.SpatialDataConnectionManager.DatasetManager
-            Dim strPath As String = ""
             Dim bHasSelection As Boolean = False
             Dim bIsCurrent As Boolean = False
             Dim bHasCustomSelection As Boolean = False
@@ -382,11 +381,7 @@ Namespace Other
             Me.m_btnSelect.Enabled = bHasSelection And Not bIsCurrent
             Me.m_btnRemove.Enabled = bHasCustomSelection
 
-            strPath = cache.RootFolder
-            TextRenderer.MeasureText(strPath, Me.Font, New Drawing.Size(Me.m_lblCacheLocationValue.ClientSize.Width, 0), _
-                                     TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis)
-            Me.m_lblCacheLocationValue.Text = strPath
-
+            Me.m_lblCacheLocationValue.Text = cStringUtils.CompactString(cache.RootFolder, Me.m_lblCacheLocationValue.ClientSize.Width, Me.Font)
             Me.m_lblCacheSizeValue.Text = String.Format(My.Resources.GENERIC_VALUE_CACHEMEMORY, _
                                                         sg.FormatMemory(cache.GetSize()), _
                                                         sg.FormatMemory(cache.GetUnusedSize(man)))
