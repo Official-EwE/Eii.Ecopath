@@ -467,17 +467,15 @@ Namespace Utilities
                 If (i > nShared) Then sbPathRel.Append(Path.DirectorySeparatorChar)
                 sbPathRel.Append("..")
             Next
-
-            If sbPathRel.Length = 0 Then
-                sbPathRel.Append(".")
-            End If
-
+            'If sbPathRel.Length = 0 Then
+            '    sbPathRel.Append(".")
+            'End If
             For i As Integer = nShared To astrAbs.Length - 1
-                sbPathRel.Append(Path.DirectorySeparatorChar)
+                If (sbPathRel.Length > 0) Then sbPathRel.Append(Path.DirectorySeparatorChar)
                 sbPathRel.Append(astrAbs(i))
             Next
-
             Return sbPathRel.ToString
+
         End Function
 
         ''' -------------------------------------------------------------------
