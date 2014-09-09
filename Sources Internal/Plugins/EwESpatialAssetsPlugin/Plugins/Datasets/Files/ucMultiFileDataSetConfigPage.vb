@@ -110,9 +110,10 @@ Namespace SpatialData
 
             Me.UpdateGrid()
 
+            Me.m_strSource = Me.m_dataset.Source
+
             Me.m_tbxName.Text = Me.m_dataset.DisplayName
             Me.m_tbxDescription.Text = Me.m_dataset.DataDescription
-            Me.m_strSource = Me.m_dataset.Source
 
             Me.m_cmbInterval.SelectedIndex = 0
 
@@ -138,6 +139,11 @@ Namespace SpatialData
             Me.m_hdrTime.CollapsedParentHeight = Me.m_rbFromDate.Location.Y
             Me.m_hdrTime.IsCollapsed = True
 
+        End Sub
+
+        Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
+            MyBase.OnSizeChanged(e)
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Overrides
@@ -280,7 +286,7 @@ Namespace SpatialData
 
         Private Sub DoBrowse()
 
-            Dim ofd As New OpenFileDialog
+            Dim ofd As New OpenFileDialog()
             Dim sbFileName As New StringBuilder()
 
             ofd.Title = String.Format(My.Resources.PROMPT_SELECTFILES, Me.m_tbxName.Text)
@@ -339,7 +345,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Private Sub UpdateControls()
 
-            ' Prevent intiialization errors
+            ' Prevent intialization errors
             If (Me.m_dataset Is Nothing) Then Return
 
             Dim bHasPattern As Boolean = (Not String.IsNullOrEmpty(Me.m_tbxDatePart.SelectedText))
@@ -348,7 +354,7 @@ Namespace SpatialData
 
             Me.m_mtbSeasonalEnd.Enabled = Me.m_cbSeasonal.Checked
             Me.m_lblDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
-
+            Me.m_lblLocationSample.Text = cStringUtils.CompactString(Me.AbsolutePath(), Me.m_lblLocationSample.Width, Me.m_lblLocationSample.Font)
             Try
                 If Not String.IsNullOrWhiteSpace(strPath) Then
                     bHasFolder = Directory.Exists(Path.GetFullPath(strPath))

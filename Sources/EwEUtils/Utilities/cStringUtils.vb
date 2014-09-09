@@ -770,7 +770,7 @@ Namespace Utilities
         Public Shared Function CompactString(ByVal strSrc As String, _
                                              ByVal iWidth As Integer, _
                                              ByVal ft As Font, _
-                                             ByVal tfFlags As Windows.Forms.TextFormatFlags) As String
+                                             Optional ByVal tfFlags As Windows.Forms.TextFormatFlags = TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString) As String
 
             Dim strResult As String = String.Copy(strSrc)
             TextRenderer.MeasureText(strResult, ft, New Size(iWidth, 0), tfFlags Or TextFormatFlags.ModifyString)

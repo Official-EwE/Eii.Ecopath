@@ -55,11 +55,12 @@ Namespace SpatialData
             Me.m_hdrTime = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnSetTime = New System.Windows.Forms.Button()
             Me.m_plFiles = New System.Windows.Forms.Panel()
+            Me.m_lblLocation = New System.Windows.Forms.Label()
             Me.m_plDescription = New System.Windows.Forms.Panel()
             Me.m_cmbVarName = New System.Windows.Forms.ComboBox()
             Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lblVariable = New System.Windows.Forms.Label()
-            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_lblLocationSample = New System.Windows.Forms.Label()
             CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpConfig.SuspendLayout()
             Me.m_plTime.SuspendLayout()
@@ -348,12 +349,22 @@ Namespace SpatialData
             Me.m_plFiles.Controls.Add(Me.m_dgvFiles)
             Me.m_plFiles.Controls.Add(Me.m_hdrFiles)
             Me.m_plFiles.Controls.Add(Me.m_btnBrowse)
-            Me.m_plFiles.Controls.Add(Me.Label1)
+            Me.m_plFiles.Controls.Add(Me.m_lblLocationSample)
+            Me.m_plFiles.Controls.Add(Me.m_lblLocation)
             Me.m_plFiles.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_plFiles.Location = New System.Drawing.Point(3, 155)
             Me.m_plFiles.Name = "m_plFiles"
             Me.m_plFiles.Size = New System.Drawing.Size(444, 232)
             Me.m_plFiles.TabIndex = 1
+            '
+            'm_lblLocation
+            '
+            Me.m_lblLocation.AutoSize = True
+            Me.m_lblLocation.Location = New System.Drawing.Point(4, 23)
+            Me.m_lblLocation.Name = "m_lblLocation"
+            Me.m_lblLocation.Size = New System.Drawing.Size(51, 13)
+            Me.m_lblLocation.TabIndex = 1
+            Me.m_lblLocation.Text = "Location:"
             '
             'm_plDescription
             '
@@ -405,14 +416,15 @@ Namespace SpatialData
             Me.m_lblVariable.TabIndex = 3
             Me.m_lblVariable.Text = "&Variable:"
             '
-            'Label1
+            'm_lblLocationSample
             '
-            Me.Label1.AutoSize = True
-            Me.Label1.Location = New System.Drawing.Point(4, 23)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(61, 13)
-            Me.Label1.TabIndex = 1
-            Me.Label1.Text = "&Select files:"
+            Me.m_lblLocationSample.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblLocationSample.Location = New System.Drawing.Point(82, 23)
+            Me.m_lblLocationSample.Name = "m_lblLocationSample"
+            Me.m_lblLocationSample.Size = New System.Drawing.Size(263, 18)
+            Me.m_lblLocationSample.TabIndex = 1
+            Me.m_lblLocationSample.Text = "<path>"
             '
             'ucMultiFileDatasetConfigPage
             '
@@ -464,7 +476,8 @@ Namespace SpatialData
         Private WithEvents m_lblVariable As System.Windows.Forms.Label
         Private WithEvents m_cbSeasonal As System.Windows.Forms.CheckBox
         Private WithEvents m_mtbSeasonalEnd As System.Windows.Forms.MaskedTextBox
-        Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_lblLocation As System.Windows.Forms.Label
+        Private WithEvents m_lblLocationSample As System.Windows.Forms.Label
 
     End Class
 
