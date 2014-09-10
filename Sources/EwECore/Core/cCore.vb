@@ -13682,7 +13682,7 @@ Public Class cCore
             End If
 
             ' JS 31aug07: DataAddedOrRemoved messages are initialized by the db, thus the db should not get flagged as dirty
-            If TypeOfChange <> eMessageType.DataAddedOrRemoved Then
+            If (TypeOfChange <> eMessageType.DataAddedOrRemoved) And (Me.DataSource IsNot Nothing) Then
                 ' Update data state
                 DataSource.SetChanged(obj.CoreComponent)
                 Me.m_StateMonitor.UpdateDataState(DataSource)
