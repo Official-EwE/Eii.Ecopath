@@ -313,11 +313,15 @@ Namespace SpatialData
         End Function
 
         Public Sub Update(ByVal ds As ISpatialDataSet)
+            ' ToDo: implement selective update
+            Me.Update()
             ' ToDo: Only send out event if this dataset is used in a spat/temp configuration
             Me.Invalidate()
         End Sub
 
         Public Sub Update(ByVal cv As ISpatialDataConverter)
+            ' ToDo: implement selective update
+            Me.Update()
             ' ToDo: Only send out event this converter is used in a spat/temp configuration
             Me.Invalidate()
         End Sub
@@ -394,6 +398,7 @@ Namespace SpatialData
 #Region " Event handlers "
 
         Private Sub OnDatasetConfigurationChanged(ByVal sender As cSpatialDataSetManager)
+            Me.Load()
             Me.Update()
         End Sub
 
