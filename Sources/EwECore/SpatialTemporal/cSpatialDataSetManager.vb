@@ -160,20 +160,19 @@ Namespace SpatialData
 
             Me.m_strConfigFile = strFile
 
-            ' jb if it failed to find the config file shouldn't it return False
-            ' JS: No, it is fine if the file does not exist, which is the initial state of a new EwE installation.
-            '     bSuccess indicates whether the config file is corrupted, which is an error.
-            If Not File.Exists(strFile) Then Return True
-
             ' JS: moving load to dedicated class; with multiple config files we'll need better descriptions of
             '     file content and purpose, etc. This warrants a unique class to maintain this info.
             Dim cfg As New cSpatialDataConfigFile()
             If cfg.Initialize(strFile) Then
                 If cfg.Load(Me.m_core, Me) Then
-                    bSuccess = True
+
                     Me.m_strDescription = cfg.Description
                     Me.m_strAuthor = cfg.Author
                     Me.m_strContact = cfg.Contact
+
+                    Me.Update()
+
+                    bSuccess = True
                 End If
             End If
 
@@ -256,6 +255,20 @@ Namespace SpatialData
             Return bSuccess
 
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Send a change notification
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Update()
+            Try
+                'Notify the world
+                RaiseEvent OnConfigurationChanged(Me)
+            Catch ex As Exception
+                cLog.Write(ex, "cSpatialDatasetManager.Update")
+            End Try
+        End Sub
 
 #End Region ' Persistent storage    
 
@@ -496,6 +509,8 @@ Namespace SpatialData
 #End Region ' Internal lists
 
 #Region " Config files "
+
+        Public Event OnConfigurationChanged(ByVal sender As cSpatialDataSetManager)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -784,19 +799,19 @@ Namespace SpatialData
             Return True
         End Function
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler, invoked when the watched folder has changed.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnConfigFileChanged(ByVal sender As Object, ByVal args As FileSystemEventArgs)
+        ' ''' -------------------------------------------------------------------
+        ' ''' <summary>
+        ' ''' Event handler, invoked when the watched folder has changed.
+        ' ''' </summary>
+        ' ''' -------------------------------------------------------------------
+        'Private Sub OnConfigFileChanged(ByVal sender As Object, ByVal args As FileSystemEventArgs)
 
-            If Path.Equals(args.FullPath, cSpatialDataSetManager.DefaultConfigFile()) Then
-                ' Lock up list
-                m_bReadOnly = True
-            End If
+        '    If Path.Equals(args.FullPath, cSpatialDataSetManager.DefaultConfigFile()) Then
+        '        ' Lock up list
+        '        m_bReadOnly = True
+        '    End If
 
-        End Sub
+        'End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>

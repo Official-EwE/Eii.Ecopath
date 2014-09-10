@@ -53,7 +53,7 @@ Namespace Ecospace.Controls
 #Region " Private variables "
 
         Private m_uic As cUIContext = Nothing
-        Private m_man As cSpatialDataConnectionManager = Nothing
+        Private m_manConn As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
 
         ''' <summary>Selected data adapter</summary>
@@ -116,15 +116,15 @@ Namespace Ecospace.Controls
 
                     Me.m_manSets.Save()
                     Me.m_manSets = Nothing
-                    Me.m_man = Nothing
+                    Me.m_manConn = Nothing
                 End If
 
                 Me.m_uic = uic
 
                 If (Me.m_uic IsNot Nothing) Then
                     ' Set new
-                    Me.m_man = Me.m_uic.Core.SpatialDataConnectionManager
-                    Me.m_manSets = Me.m_man.DatasetManager
+                    Me.m_manConn = Me.m_uic.Core.SpatialDataConnectionManager
+                    Me.m_manSets = Me.m_manConn.DatasetManager
                     Me.m_lbSourceDatasets.UIContext = Me.m_uic
                     Me.m_gridConnections.UIContext = Me.m_uic
                 End If
@@ -167,7 +167,7 @@ Namespace Ecospace.Controls
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             If Me.m_bIsChanged Then
-                Me.m_man.Update()
+                Me.m_manConn.Update()
                 Me.m_bIsChanged = False
             End If
 
@@ -321,7 +321,7 @@ Namespace Ecospace.Controls
             Me.Cursor = Cursors.WaitCursor
             Try
                 Dim iRow As Integer = Me.m_gridConnections.SelectedRow
-                Me.ConfigDS(Me.SelectedDataset)
+                Me.ConfigDataset(Me.SelectedDataset)
                 Me.m_gridConnections.RefreshContent()
                 Me.m_gridConnections.SelectRow(iRow)
                 'Me.m_manSets.IndexDataset = Me.SelectedDataset
@@ -520,7 +520,8 @@ Namespace Ecospace.Controls
 
 #Region " Other "
 
-        Private Sub OnOK(sender As Object, e As System.EventArgs) Handles m_btnOK.Click
+        Private Sub OnOK(sender As Object, e As System.EventArgs) _
+            Handles m_btnOK.Click
 
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
@@ -655,7 +656,7 @@ Namespace Ecospace.Controls
 
             If (iConn > 0) Then
                 ds = Me.m_adt.Dataset(Me.m_iLayer, iConn)
-                For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates(ds)
+                For Each cvTest As ISpatialDataConverter In Me.m_manConn.ConverterTemplates(ds)
                     If (Me.m_adt.Converter(Me.m_iLayer, iConn) Is Nothing) Then Me.m_adt.Converter(Me.m_iLayer, iConn) = cvTest
                     Me.m_cmbConverter.Items.Add(cvTest)
                 Next
@@ -675,6 +676,8 @@ Namespace Ecospace.Controls
 
         Private Function ConfigConverter(cv As ISpatialDataConverter) As Boolean
 
+            ' ToDo: globalize this
+
             If (cv Is Nothing) Then Return False
             If (Not TypeOf cv Is IConfigurable) Then Return True
 
@@ -687,11 +690,13 @@ Namespace Ecospace.Controls
 
             If (ctrl Is Nothing) Then Return cvConf.IsConfigured
 
-            Dim dlg As New dlgConfig()
-            dlg.UIContext = Me.UIContext
-            dlg.ShowDialog(Me.FindForm, "Configure conversion", ctrl)
+            Dim dlg As New dlgConfig(Me.UIContext)
 
+            If (dlg.ShowDialog(Me.FindForm, "Configure conversion", ctrl) = Windows.Forms.DialogResult.OK) Then
+                Me.m_manConn.Update(cv)
+            End If
             Return (cvConf.IsConfigured)
+
         End Function
 
         Private Property SelectedDataset As ISpatialDataSet
@@ -755,7 +760,7 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
-        Private Function ConfigDS(ds As ISpatialDataSet) As Boolean
+        Private Function ConfigDataset(ds As ISpatialDataSet) As Boolean
 
             If (ds Is Nothing) Then Return False
             If (Not TypeOf ds Is IConfigurable) Then Return True
@@ -769,10 +774,10 @@ Namespace Ecospace.Controls
 
             If (ctrl Is Nothing) Then Return dsConf.IsConfigured
 
-            Dim dlg As New dlgConfig()
-            dlg.UIContext = Me.UIContext
-            dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
-
+            Dim dlg As New dlgConfig(Me.UIContext)
+            If dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl) = Windows.Forms.DialogResult.OK Then
+                Me.m_manConn.Update(ds)
+            End If
             Return (dsConf.IsConfigured)
 
         End Function

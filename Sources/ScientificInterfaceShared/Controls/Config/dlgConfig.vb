@@ -31,8 +31,9 @@ Namespace Controls
         Private m_ctrl As Control = Nothing
         Private m_uic As cUIContext = Nothing
 
-        Public Sub New()
+        Public Sub New(uic As cUIContext)
             Me.InitializeComponent()
+            Me.UIContext = uic
         End Sub
 
         Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _

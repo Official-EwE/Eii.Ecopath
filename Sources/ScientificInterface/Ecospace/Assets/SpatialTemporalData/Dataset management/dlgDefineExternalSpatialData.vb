@@ -300,9 +300,14 @@ Namespace Ecospace.Controls
 
         End Sub
 
+        ''' <summary>
+        ''' Configure a dataset.
+        ''' </summary>
+        ''' <param name="ds"></param>
+        ''' <returns>True if successful.</returns>
         Private Function ConfigDS(ds As ISpatialDataSet) As Boolean
 
-            If (ds Is Nothing) Then Return False
+            If (ds Is Nothing) Then Return True
             If (Not TypeOf ds Is IConfigurable) Then Return True
 
             If (TypeOf ds Is IPlugin) Then
@@ -314,10 +319,10 @@ Namespace Ecospace.Controls
 
             If (ctrl Is Nothing) Then Return dsConf.IsConfigured
 
-            Dim dlg As New dlgConfig()
-            dlg.UIContext = Me.UIContext
-            dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
-
+            Dim dlg As New dlgConfig(Me.UIContext)
+            If (dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl) = Windows.Forms.DialogResult.OK) Then
+                Me.m_man.Update(ds)
+            End If
             Return (dsConf.IsConfigured)
 
         End Function
