@@ -313,12 +313,12 @@ Namespace SpatialData
         End Function
 
         Public Sub Update(ByVal ds As ISpatialDataSet)
-            ' ToDo: Only send out event if this dataset is actively in a spat/temp configuration
+            ' ToDo: Only send out event if this dataset is used in a spat/temp configuration
             Me.Invalidate()
         End Sub
 
         Public Sub Update(ByVal cv As ISpatialDataConverter)
-            ' ToDo: Only send out event this converter is actively in a spat/temp configuration
+            ' ToDo: Only send out event this converter is used in a spat/temp configuration
             Me.Invalidate()
         End Sub
 
