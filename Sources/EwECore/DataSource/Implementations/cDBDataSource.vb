@@ -9386,9 +9386,9 @@ Namespace DataSources
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
                             ' Referenced to Ecospace group DBIDs
-                            drow("GroupID") = ecospaceDS.GroupDBID(iGroup)
+                            drow("GroupID") = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
-                            drow("VarDBID") = IIF(iMap = 0, 0, ecospaceDS.EnvironmentalLayerDBID(iMap))
+                            drow("VarDBID") = IIF(iMap = 0, 0, idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iMap)))
                             writer.AddRow(drow)
                         End If
                     Next iGroup
