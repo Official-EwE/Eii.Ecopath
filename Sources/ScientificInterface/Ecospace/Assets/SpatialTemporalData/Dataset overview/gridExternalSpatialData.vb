@@ -211,7 +211,9 @@ Namespace Ecospace
                 Dim conn As cConnectionInfo = Me.ConnectionAtRow(iRow)
                 If (conn Is Nothing) Then Return
                 Dim dlg As New dlgApplyConnection(Me.UIContext, conn.Adapter, conn.Layer)
-                dlg.ShowDialog()
+                If dlg.ShowDialog() = DialogResult.OK Then
+                    Me.m_man.Invalidate()
+                End If
                 Me.UpdateDatasetRow(iRow)
             Catch ex As Exception
                 ' Whoah

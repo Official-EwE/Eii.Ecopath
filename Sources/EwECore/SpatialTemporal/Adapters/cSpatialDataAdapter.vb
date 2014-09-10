@@ -78,6 +78,7 @@ Namespace SpatialData
             Me.AllowSaveIntermediateResults = False
             Me.DBID = -1
             Me.AllowValidation = True
+
         End Sub
 
 #End Region ' Constructor
@@ -201,9 +202,16 @@ Namespace SpatialData
             Set(ByVal value As ISpatialDataConverter)
                 If (Me.m_converters Is Nothing) Then Me.Initialize()
                 Debug.Assert(iLayer <= Me.MaxLength, "Index out of range")
-                Me.m_converters(Math.Max(0, iLayer), iConnection - 1) = value
 
-                ' Connect converter and dataset, if possible
+                ' Is a change?
+                If Not Object.ReferenceEquals(Me.m_converters(Math.Max(0, iLayer), iConnection - 1), value) Then
+                    Me.m_converters(Math.Max(0, iLayer), iConnection - 1) = value
+                    ' Connect converter and dataset, if possible
+                    If (value IsNot Nothing) Then
+                        value.Dataset = Me.Dataset(iLayer, iConnection)
+                    End If
+                    Me.OnChanged()
+                End If
                 If (value IsNot Nothing) Then
                     value.Dataset = Me.Dataset(iLayer, iConnection)
                 End If
@@ -226,7 +234,12 @@ Namespace SpatialData
             Set(ByVal value As ISpatialDataSet)
                 If (Me.m_datasets Is Nothing) Then Me.Initialize()
                 Debug.Assert(iLayer <= Me.MaxLength, "Index out of range")
-                Me.m_datasets(Math.Max(0, iLayer), iConnection - 1) = value
+
+                ' Is a change?
+                If Not Object.ReferenceEquals(Me.m_datasets(Math.Max(0, iLayer), iConnection - 1), value) Then
+                    Me.m_datasets(Math.Max(0, iLayer), iConnection - 1) = value
+                    Me.OnChanged()
+                End If
             End Set
         End Property
 
@@ -495,6 +508,12 @@ Namespace SpatialData
             Return True
 
         End Function
+
+        Public Sub OnChanged()
+            If (Me.AllowValidation) Then
+                Me.m_core.onChanged(Me, eMessageType.DataModified)
+            End If
+        End Sub
 
 #End Region ' Basic bits
 

@@ -596,7 +596,6 @@ Public Class frmEwE6
         Me.m_cmdDefineSpatialDatasets.AddControl(Me.m_tsmiEcospaceDatasets)
 
         Me.m_cmdExportSpatialDatasets = New cCommand(cmdh, "ExportSpatialDatasets")
-        Me.m_cmdExportSpatialDatasets.AddControl(Me.m_tsmiEcospaceDatasetsExport)
 
         'Me.m_cmdEcospaceDataConnections = New cEcospaceExternalDataCommand(cmdh)
         'Me.m_cmdEcospaceDataConnections.AddControl(Me.m_tsmiEcospaceDataConnections)

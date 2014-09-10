@@ -102,11 +102,16 @@ Namespace SpatialData
 
             Me.CreateAdapters()
 
+            AddHandler Me.m_datasetManager.OnConfigurationChanged, AddressOf OnDatasetConfigurationChanged
+
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
             If (Me.m_core IsNot Nothing) Then
                 Me.Clear()
+                RemoveHandler Me.m_datasetManager.OnConfigurationChanged, AddressOf OnDatasetConfigurationChanged
+                Me.m_datasetManager.Dispose()
+                Me.m_datasetManager = Nothing
                 Me.m_core = Nothing
             End If
             GC.SuppressFinalize(Me)
@@ -124,6 +129,7 @@ Namespace SpatialData
             Dim t As Type = Nothing
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
+                adt.AllowValidation = False
                 For i As Integer = 1 To adt.MaxLength
                     For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
 
@@ -149,6 +155,7 @@ Namespace SpatialData
                         adt.Converter(i, j) = cv
                     Next j
                 Next i
+                adt.AllowValidation = True
             Next adt
 
             ' Invalidate connection count
@@ -301,9 +308,31 @@ Namespace SpatialData
         ''' </summary>
         ''' <returns>A reference to the embedded dataset manager.</returns>
         ''' -------------------------------------------------------------------
-        Function DatasetManager() As cSpatialDataSetManager
+        Public Function DatasetManager() As cSpatialDataSetManager
             Return Me.m_datasetManager
         End Function
+
+        Public Sub Update(ByVal ds As ISpatialDataSet)
+            ' ToDo: Only send out event if this dataset is actively in a spat/temp configuration
+            Me.Invalidate()
+        End Sub
+
+        Public Sub Update(ByVal cv As ISpatialDataConverter)
+            ' ToDo: Only send out event this converter is actively in a spat/temp configuration
+            Me.Invalidate()
+        End Sub
+
+        Public Sub Invalidate()
+            Try
+                ' Assume that this has affected currently configured adapters, because 
+                ' this is very likely. This check can be improved.
+                If (Me.NumConnectedAdapters > 0) Then
+                    Me.m_core.onChanged(Me)
+                End If
+            Catch ex As Exception
+                'Ouch
+            End Try
+        End Sub
 
 #End Region ' Data sets
 
@@ -360,8 +389,15 @@ Namespace SpatialData
 
         End Function
 
-
 #End Region ' Converters
+
+#Region " Event handlers "
+
+        Private Sub OnDatasetConfigurationChanged(ByVal sender As cSpatialDataSetManager)
+            Me.Update()
+        End Sub
+
+#End Region ' Event handlers
 
 #Region " ICoreInterface implementation "
 

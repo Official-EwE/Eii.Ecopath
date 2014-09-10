@@ -81,6 +81,13 @@ Namespace SpatialData
 
         Friend Function Initialize(ByVal strFile As String) As Boolean
 
+            ' Clear properties just to be sure in case of re-initializing
+            Me.DatasetName = ""
+            Me.Author = ""
+            Me.Contact = ""
+            Me.Description = ""
+            Me.Source = ""
+
             Me.FileName = strFile
 
             If (Not File.Exists(Me.FileName)) Then
@@ -88,7 +95,6 @@ Namespace SpatialData
                 Return (String.Compare(Me.FileName, cSpatialDataSetManager.DefaultConfigFile, True) = 0)
             End If
 
-            ' ToDo: Read header info (author, contact, etc)
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
             Dim xa As XmlAttribute = Nothing

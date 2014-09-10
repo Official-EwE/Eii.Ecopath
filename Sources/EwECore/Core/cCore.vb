@@ -13668,7 +13668,6 @@ Public Class cCore
 
                     Me.m_publisher.AddMessage(New cMessage("Depth map update to exclusion layer.", eMessageType.DataModified, _
                                       eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
-
             End Select
 
             'Ecospace map input map(s) may have change

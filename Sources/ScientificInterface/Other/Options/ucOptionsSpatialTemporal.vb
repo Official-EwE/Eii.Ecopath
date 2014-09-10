@@ -327,7 +327,7 @@ Namespace Other
                 Else
                     lvi.SubItems.Add("")
                 End If
-                lvi.SubItems.Add(Me.ToDefaultString("{0}@{1}", cfg.Author, cfg.Source))
+                lvi.SubItems.Add(Me.ToDefaultString(SharedResources.GENERIC_LABEL_DETAILED, cfg.Author, cfg.Source))
                 lvi.SubItems.Add(Me.ToDefaultString(cfg.Contact))
                 lvi.SubItems.Add(cfg.FileName)
                 lvi.Tag = cfg
