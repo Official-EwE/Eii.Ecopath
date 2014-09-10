@@ -123,6 +123,8 @@ Namespace SpatialData
 
         Public Sub Load()
 
+            If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
+
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
@@ -168,6 +170,8 @@ Namespace SpatialData
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
+
+            If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
                 For i As Integer = 1 To adt.MaxLength
