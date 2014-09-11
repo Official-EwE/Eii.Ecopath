@@ -32,8 +32,6 @@ Namespace SpatialData
         Private Sub InitializeComponent()
             Me.m_btnBrowse = New System.Windows.Forms.Button()
             Me.m_dgvFiles = New System.Windows.Forms.DataGridView()
-            Me.m_colFileName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-            Me.m_colTime = New EwESpatialAssetsPlugin.cCalendarColumn()
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
             Me.m_tbxDescription = New System.Windows.Forms.TextBox()
@@ -55,12 +53,15 @@ Namespace SpatialData
             Me.m_hdrTime = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnSetTime = New System.Windows.Forms.Button()
             Me.m_plFiles = New System.Windows.Forms.Panel()
+            Me.m_lblLocationSample = New System.Windows.Forms.Label()
             Me.m_lblLocation = New System.Windows.Forms.Label()
             Me.m_plDescription = New System.Windows.Forms.Panel()
             Me.m_cmbVarName = New System.Windows.Forms.ComboBox()
             Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lblVariable = New System.Windows.Forms.Label()
-            Me.m_lblLocationSample = New System.Windows.Forms.Label()
+            Me.m_colError = New System.Windows.Forms.DataGridViewImageColumn()
+            Me.m_colFileName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.m_colTime = New EwESpatialAssetsPlugin.cCalendarColumn()
             CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpConfig.SuspendLayout()
             Me.m_plTime.SuspendLayout()
@@ -89,7 +90,7 @@ Namespace SpatialData
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_dgvFiles.BorderStyle = System.Windows.Forms.BorderStyle.None
             Me.m_dgvFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.m_dgvFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colFileName, Me.m_colTime})
+            Me.m_dgvFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colError, Me.m_colFileName, Me.m_colTime})
             Me.m_dgvFiles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
             Me.m_dgvFiles.Location = New System.Drawing.Point(3, 47)
             Me.m_dgvFiles.MultiSelect = False
@@ -103,25 +104,6 @@ Namespace SpatialData
             Me.m_dgvFiles.ShowRowErrors = False
             Me.m_dgvFiles.Size = New System.Drawing.Size(438, 182)
             Me.m_dgvFiles.TabIndex = 9
-            '
-            'm_colFileName
-            '
-            Me.m_colFileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-            Me.m_colFileName.HeaderText = "File"
-            Me.m_colFileName.Name = "m_colFileName"
-            Me.m_colFileName.ReadOnly = True
-            Me.m_colFileName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-            Me.m_colFileName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-            '
-            'm_colTime
-            '
-            Me.m_colTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-            Me.m_colTime.HeaderText = "Time"
-            Me.m_colTime.MinimumWidth = 120
-            Me.m_colTime.Name = "m_colTime"
-            Me.m_colTime.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-            Me.m_colTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-            Me.m_colTime.Width = 120
             '
             'm_lblName
             '
@@ -357,6 +339,16 @@ Namespace SpatialData
             Me.m_plFiles.Size = New System.Drawing.Size(444, 232)
             Me.m_plFiles.TabIndex = 1
             '
+            'm_lblLocationSample
+            '
+            Me.m_lblLocationSample.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblLocationSample.Location = New System.Drawing.Point(82, 23)
+            Me.m_lblLocationSample.Name = "m_lblLocationSample"
+            Me.m_lblLocationSample.Size = New System.Drawing.Size(263, 18)
+            Me.m_lblLocationSample.TabIndex = 1
+            Me.m_lblLocationSample.Text = "<path>"
+            '
             'm_lblLocation
             '
             Me.m_lblLocation.AutoSize = True
@@ -416,15 +408,37 @@ Namespace SpatialData
             Me.m_lblVariable.TabIndex = 3
             Me.m_lblVariable.Text = "&Variable:"
             '
-            'm_lblLocationSample
+            'm_colError
             '
-            Me.m_lblLocationSample.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_lblLocationSample.Location = New System.Drawing.Point(82, 23)
-            Me.m_lblLocationSample.Name = "m_lblLocationSample"
-            Me.m_lblLocationSample.Size = New System.Drawing.Size(263, 18)
-            Me.m_lblLocationSample.TabIndex = 1
-            Me.m_lblLocationSample.Text = "<path>"
+            Me.m_colError.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+            Me.m_colError.Frozen = True
+            Me.m_colError.HeaderText = ""
+            Me.m_colError.Name = "m_colError"
+            Me.m_colError.ReadOnly = True
+            Me.m_colError.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+            Me.m_colError.Width = 20
+            '
+            'm_colFileName
+            '
+            Me.m_colFileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+            Me.m_colFileName.Frozen = True
+            Me.m_colFileName.HeaderText = "File"
+            Me.m_colFileName.Name = "m_colFileName"
+            Me.m_colFileName.ReadOnly = True
+            Me.m_colFileName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+            Me.m_colFileName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+            Me.m_colFileName.Width = 317
+            '
+            'm_colTime
+            '
+            Me.m_colTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+            Me.m_colTime.Frozen = True
+            Me.m_colTime.HeaderText = "Time"
+            Me.m_colTime.MinimumWidth = 120
+            Me.m_colTime.Name = "m_colTime"
+            Me.m_colTime.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+            Me.m_colTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+            Me.m_colTime.Width = 120
             '
             'ucMultiFileDatasetConfigPage
             '
@@ -455,8 +469,6 @@ Namespace SpatialData
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
         Private WithEvents CCalendarColumn1 As cCalendarColumn
         Private WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
-        Private WithEvents m_colFileName As System.Windows.Forms.DataGridViewTextBoxColumn
-        Private WithEvents m_colTime As cCalendarColumn
         Private WithEvents m_tlpConfig As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_plTime As System.Windows.Forms.Panel
         Private WithEvents m_hdrTime As Controls.cEwEHeaderLabel
@@ -478,6 +490,9 @@ Namespace SpatialData
         Private WithEvents m_mtbSeasonalEnd As System.Windows.Forms.MaskedTextBox
         Private WithEvents m_lblLocation As System.Windows.Forms.Label
         Private WithEvents m_lblLocationSample As System.Windows.Forms.Label
+        Friend WithEvents m_colError As System.Windows.Forms.DataGridViewImageColumn
+        Friend WithEvents m_colFileName As System.Windows.Forms.DataGridViewTextBoxColumn
+        Friend WithEvents m_colTime As EwESpatialAssetsPlugin.cCalendarColumn
 
     End Class
 

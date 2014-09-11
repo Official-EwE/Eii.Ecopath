@@ -143,6 +143,11 @@ Friend Class ucSingleFileDataSetConfigPage
     ''' -----------------------------------------------------------------------
     Private Sub UpdateControls()
         Try
+            If File.Exists(Me.m_tbxFile.Text) Then
+                Me.m_pbInfo.BackgroundImage = ScientificInterfaceShared.My.Resources.OK
+            Else
+                Me.m_pbInfo.BackgroundImage = ScientificInterfaceShared.My.Resources.Critical
+            End If
             RaiseEvent OnSingleFileConfigPageChanged(Me, New EventArgs())
         Catch ex As Exception
 
@@ -159,6 +164,7 @@ Friend Class ucSingleFileDataSetConfigPage
             If (Me.m_dataset.Source Is Nothing) Then
                 Me.m_tbxName.Text = Path.GetFileNameWithoutExtension(dlg.FileName)
             End If
+            Me.UpdateControls()
             Return True
         End If
         Return False

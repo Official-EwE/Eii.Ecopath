@@ -282,6 +282,9 @@ Namespace SpatialData
 
             If Not Me.IsSourceRelative Then Return strPath
 
+            If (strPath.StartsWith(".\")) Then 
+                strPath = strPath.Substring(2)
+            End If
             If (String.IsNullOrWhiteSpace(strPathBase)) Then
                 Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
                 strPathBase = Path.GetDirectoryName(man.CurrentConfigFile)

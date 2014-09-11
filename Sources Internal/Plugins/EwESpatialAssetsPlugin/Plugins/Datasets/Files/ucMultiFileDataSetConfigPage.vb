@@ -31,6 +31,7 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports System.Text
+Imports System.Drawing
 
 #End Region ' Imports
 
@@ -219,10 +220,10 @@ Namespace SpatialData
         Private Sub OnGridCellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) _
             Handles m_dgvFiles.CellValueChanged
 
-            If (e.RowIndex < 0) Or (e.ColumnIndex <> 1) Then Return
+            If (e.RowIndex < 0) Or (e.ColumnIndex <> Me.m_colTime.Index) Then Return
 
             Dim row As DataGridViewRow = Me.m_dgvFiles.Rows(e.RowIndex)
-            Dim dt As Date = CDate(row.Cells(1).Value)
+            Dim dt As Date = CDate(row.Cells(e.ColumnIndex).Value)
             Dim entry As cFileEntry = DirectCast(row.Tag, cFileEntry)
 
             entry.FileDate = dt
@@ -238,7 +239,7 @@ Namespace SpatialData
             End If
 
             If (row IsNot Nothing) Then
-                Me.RefreshDataPartSample(CStr(row.Cells(0).Value))
+                Me.RefreshDataPartSample(CStr(row.Cells(1).Value))
             End If
 
         End Sub
@@ -302,8 +303,6 @@ Namespace SpatialData
 
             If (ofd.ShowDialog() = DialogResult.OK) Then
 
-                Me.m_strSource = ofd.InitialDirectory
-
                 ' Merge file list
                 Dim lFilesTemp As cFileEntry() = Me.m_lFiles.ToArray()
                 Dim strFile As String = ""
@@ -321,6 +320,7 @@ Namespace SpatialData
                         If (cFileUtils.Equals(fe.FileName, strFile, True)) Then
                             Me.m_lFiles.Add(fe)
                             bFound = True
+                            Exit For
                         End If
                     Next
 
@@ -330,6 +330,8 @@ Namespace SpatialData
                         Me.m_lFiles.Add(fe)
                     End If
                 Next
+
+                Me.m_strSource = Path.GetDirectoryName(Me.m_lFiles(0).FileName)
 
                 Me.UpdateGrid()
                 Me.UpdateControls()
@@ -353,6 +355,7 @@ Namespace SpatialData
 
             Me.m_mtbSeasonalEnd.Enabled = Me.m_cbSeasonal.Checked
             Me.m_lblDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
+            Me.m_tbxDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
             Me.m_lblLocationSample.Text = cStringUtils.CompactString(Me.AbsolutePath(), Me.m_lblLocationSample.Width, Me.m_lblLocationSample.Font)
 
             If (String.IsNullOrWhiteSpace(Me.m_lblLocationSample.Text)) Then
@@ -412,13 +415,18 @@ Namespace SpatialData
 
         Private Sub UpdateGrid()
 
+            Dim imgError As Bitmap = ScientificInterfaceShared.My.Resources.Critical
+            Dim imgOK As Bitmap = ScientificInterfaceShared.My.Resources.OK
+
             Me.Cursor = Cursors.WaitCursor
             Me.m_dgvFiles.SuspendLayout()
             Me.m_dgvFiles.Rows.Clear()
 
             For i As Integer = 0 To Me.m_lFiles.Count - 1
                 Dim entry As cFileEntry = Me.m_lFiles(i)
-                Dim iRow As Integer = Me.m_dgvFiles.Rows.Add(Path.GetFileName(entry.FileName), entry.FileDate)
+                Dim bmp As Bitmap = imgOK
+                If Not File.Exists(entry.FileName) Then bmp = imgError
+                Dim iRow As Integer = Me.m_dgvFiles.Rows.Add(bmp, Path.GetFileName(entry.FileName), entry.FileDate)
                 Me.m_dgvFiles.Rows(iRow).Tag = entry
             Next
 

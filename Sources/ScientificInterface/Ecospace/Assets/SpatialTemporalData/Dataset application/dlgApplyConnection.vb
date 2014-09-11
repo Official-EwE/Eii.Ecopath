@@ -26,6 +26,7 @@ Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -762,23 +763,9 @@ Namespace Ecospace.Controls
 
         Private Function ConfigDataset(ds As ISpatialDataSet) As Boolean
 
-            If (ds Is Nothing) Then Return False
-            If (Not TypeOf ds Is IConfigurable) Then Return True
-
-            If (TypeOf ds Is IPlugin) Then
-                DirectCast(ds, IPlugin).Initialize(Me.m_uic.Core)
-            End If
-
-            Dim dsConf As IConfigurable = DirectCast(ds, IConfigurable)
-            Dim ctrl As Control = dsConf.GetConfigUI()
-
-            If (ctrl Is Nothing) Then Return dsConf.IsConfigured
-
-            Dim dlg As New dlgConfig(Me.UIContext)
-            If dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl) = Windows.Forms.DialogResult.OK Then
-                Me.m_manConn.Update(ds)
-            End If
-            Return (dsConf.IsConfigured)
+            Dim cmd As cEditSpatialDatasetCommand = CType(Me.UIContext.CommandHandler.GetCommand(cEditSpatialDatasetCommand.COMMAND_NAME), cEditSpatialDatasetCommand)
+            cmd.Invoke(ds)
+            Return (ds.IsConfigured)
 
         End Function
 

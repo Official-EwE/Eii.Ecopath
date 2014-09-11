@@ -40,6 +40,8 @@ Partial Class ucSingleFileDataSetConfigPage
         Me.m_date = New System.Windows.Forms.DateTimePicker()
         Me.m_cmbVarName = New System.Windows.Forms.ComboBox()
         Me.m_lblVariable = New System.Windows.Forms.Label()
+        Me.m_pbInfo = New System.Windows.Forms.PictureBox()
+        CType(Me.m_pbInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_tbxName
@@ -177,10 +179,21 @@ Partial Class ucSingleFileDataSetConfigPage
         Me.m_lblVariable.TabIndex = 11
         Me.m_lblVariable.Text = "&Variable:"
         '
+        'm_pbInfo
+        '
+        Me.m_pbInfo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.m_pbInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.m_pbInfo.Location = New System.Drawing.Point(46, 154)
+        Me.m_pbInfo.Name = "m_pbInfo"
+        Me.m_pbInfo.Size = New System.Drawing.Size(20, 20)
+        Me.m_pbInfo.TabIndex = 13
+        Me.m_pbInfo.TabStop = False
+        '
         'ucSingleFileDataSetConfigPage
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_pbInfo)
         Me.Controls.Add(Me.m_cmbVarName)
         Me.Controls.Add(Me.m_lblVariable)
         Me.Controls.Add(Me.m_date)
@@ -196,6 +209,7 @@ Partial Class ucSingleFileDataSetConfigPage
         Me.Controls.Add(Me.m_tbxDescription)
         Me.Name = "ucSingleFileDataSetConfigPage"
         Me.Size = New System.Drawing.Size(361, 228)
+        CType(Me.m_pbInfo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -213,5 +227,6 @@ Partial Class ucSingleFileDataSetConfigPage
     Private WithEvents m_date As System.Windows.Forms.DateTimePicker
     Private WithEvents m_cmbVarName As System.Windows.Forms.ComboBox
     Private WithEvents m_lblVariable As System.Windows.Forms.Label
+    Private WithEvents m_pbInfo As System.Windows.Forms.PictureBox
 
 End Class

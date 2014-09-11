@@ -21,10 +21,11 @@
 Option Strict On
 Imports System.Drawing.Drawing2D
 Imports EwECore
-Imports EwECore.Ecospace
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -59,6 +60,7 @@ Namespace Ecospace.Controls
         Private Const c_barlabelheight As Integer = 18
         Private Const c_barmargin As Integer = 3
         Private Const c_dotradius As Integer = 2
+        Private Const c_imgradius As Integer = 4
 
         Private m_uic As cUIContext = Nothing
         Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
@@ -69,16 +71,37 @@ Namespace Ecospace.Controls
 
         Private m_mhSpace As cMessageHandler = Nothing
 
+        Private m_bmpError As Bitmap
+        Private m_bmpWarning As Bitmap
+
 #End Region ' Private vars
 
-#Region " Construction "
+#Region " Construction / destruction "
 
         Public Sub New()
             Me.InitializeComponent()
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.UserPaint Or ControlStyles.ResizeRedraw, True)
+            Me.m_bmpError = New Bitmap(ScientificInterfaceShared.My.Resources.Critical, c_imgradius * 2, c_imgradius * 2)
+            Me.m_bmpWarning = New Bitmap(ScientificInterfaceShared.My.Resources.Warning, c_imgradius * 2, c_imgradius * 2)
         End Sub
 
-#End Region ' Construction
+        'UserControl overrides dispose to clean up the component list.
+        <System.Diagnostics.DebuggerNonUserCode()> _
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                    Me.m_bmpError.Dispose()
+                    Me.m_bmpError = Nothing
+                    Me.m_bmpWarning.Dispose()
+                    Me.m_bmpWarning = Nothing
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
+        End Sub
+
+#End Region ' Construction / destruction
 
 #Region " Properties "
 
@@ -244,6 +267,18 @@ Namespace Ecospace.Controls
             MyBase.OnKeyDown(e)
         End Sub
 
+        Protected Overrides Sub OnMouseDoubleClick(e As System.Windows.Forms.MouseEventArgs)
+
+            'MyBase.OnMouseDoubleClick(e)
+
+            Dim info As cDatasetInfo = Me.DatasetFromPoint(e.Location)
+            If (info Is Nothing) Then Return
+
+            Dim cmd As cEditSpatialDatasetCommand = CType(Me.UIContext.CommandHandler.GetCommand(cEditSpatialDatasetCommand.COMMAND_NAME), cEditSpatialDatasetCommand)
+            cmd.Invoke(info.m_ds)
+
+        End Sub
+
         Protected Overrides Sub OnScroll(se As System.Windows.Forms.ScrollEventArgs)
             Me.Invalidate()
             MyBase.OnScroll(se)
@@ -342,14 +377,18 @@ Namespace Ecospace.Controls
         Private Sub OnCoreMessage(ByRef msg As cMessage)
 
             If (msg.Source <> eCoreComponentType.EcoSpace) Then Return
-            If (msg.Type = eMessageType.DataModified) Then
-                Select Case msg.DataType
-                    Case eDataTypes.EcospaceSpatialDataConnection
+
+            Select Case msg.DataType
+                Case eDataTypes.EcospaceSpatialDataConnection
+                    If msg.Type = eMessageType.DataModified Then
                         Me.Invalidate()
-                    Case eDataTypes.EcotracerScenario
+                    End If
+                    If msg.Type = eMessageType.DataAddedOrRemoved Then
                         Me.RefreshContent()
-                End Select
-            End If
+                    End If
+                Case eDataTypes.EcoSpaceScenario
+                    Me.RefreshContent()
+            End Select
 
         End Sub
 
@@ -517,81 +556,64 @@ Namespace Ecospace.Controls
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
             Dim rcBack As Rectangle = New Rectangle(-Me.AutoScrollPosition.X, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
             Dim rcLabel As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barlabelheight)
-            Dim rcTimeStep As New Rectangle(rcBar.X, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
-            Dim clrFill As Color = Color.LightGreen
-            Dim clrOutline As Color = Color.DarkGreen
+            Dim rcDot As New Rectangle(rcBar.X, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
+            Dim rcImg As New Rectangle(rcBar.X, CInt(rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_imgradius), 2 * c_imgradius, 2 * c_imgradius)
+
+            Dim clrBar As Color = SystemColors.ButtonFace
             Dim clrText As Color = SystemColors.ControlText
-            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-            Dim clrTextFill As Color = clrFill
+            Dim clrOutline As Color
+
             Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
-            Dim bSkip As Boolean = False
 
             If bSelected Then
                 clrText = SystemColors.HighlightText
-                clrTextFill = SystemColors.Highlight
-                Using br As New SolidBrush(Color.FromArgb(64, clrTextFill))
-                    g.FillRectangle(br, rcBack)
-                End Using
+                clrBar = SystemColors.Highlight
             End If
+            clrOutline = cColorUtils.GetVariant(clrBar, -0.5)
 
             ' Fill area bar
-            Using br As New SolidBrush(clrFill)
+            Using br As New SolidBrush(clrBar)
                 g.FillRectangle(br, rcBar)
             End Using
-            Using br As New SolidBrush(clrTextFill)
-                g.FillRectangle(br, rcLabel)
+            ' Draw outline
+            Using p As New Pen(clrOutline)
+                g.DrawRectangle(p, rcBar)
             End Using
+            ' Draw text within bar area, but as much on-screen as possible
             Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                 rcLabel.Width = rcBack.Width
                 g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, Math.Max(rcBack.X, rcLabel.X), rcLabel.Y)
             End Using
-            Using p As New Pen(clrOutline)
-                g.DrawRectangle(p, rcBar)
-            End Using
 
             For i As Integer = 0 To pos.m_liData.Count - 1
                 Dim iStep As Integer = pos.m_liData(i)
-                rcTimeStep.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize - c_dotradius
-
-                bSkip = False
+                rcDot.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize - c_dotradius
+                rcImg.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize - c_imgradius
 
                 Select Case comp.CompatibilityAt(iStep)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NotSet, _
                          cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                        clrOutline = Color.Black
-                        clrFill = Color.White
+                        g.FillEllipse(Brushes.White, rcDot)
+                        g.DrawEllipse(Pens.Black, rcDot)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors
-                        clrOutline = Color.Red
-                        clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
+                        g.DrawImage(Me.m_bmpError, rcImg.Location)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                        clrOutline = Color.Black
-                        clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+                        g.DrawImage(Me.m_bmpWarning, rcImg.Location)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                        bSkip = True
+                        'NOP
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                        clrOutline = Color.Black
-                        clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+                        g.DrawImage(Me.m_bmpWarning, rcImg.Location)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                        clrOutline = Color.Black
-                        clrFill = Color.Green
+                        g.FillEllipse(Brushes.Green, rcDot)
+                        g.DrawEllipse(Pens.Black, rcDot)
 
                 End Select
-
-                If (Not bSkip) Then
-                    Using br As New SolidBrush(clrFill)
-                        g.FillEllipse(br, rcTimeStep)
-                    End Using
-
-                    Using p As New Pen(clrOutline, 0.001)
-                        g.DrawEllipse(p, rcTimeStep)
-                    End Using
-                End If
 
             Next
 

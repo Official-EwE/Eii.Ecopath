@@ -123,8 +123,6 @@ Namespace SpatialData
 
         Public Sub Load()
 
-            If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
-
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
@@ -139,7 +137,7 @@ Namespace SpatialData
                         cv = Nothing
                         cfg = Me.m_data.Item(adt.VarName, i, j)
 
-                        If (cfg IsNot Nothing) Then
+                        If (Not String.IsNullOrWhiteSpace(cfg.DatasetTypeName)) Then
 
                             ds = Me.m_datasetManager.CreateDataset(cfg)
                             cv = Me.m_datasetManager.CreateConverter(cfg)
@@ -163,15 +161,20 @@ Namespace SpatialData
             ' Invalidate connection count
             Me.m_iNumConnected = cCore.NULL_VALUE
 
+            Me.NotifyCore(eMessageType.DataAddedOrRemoved)
+
         End Sub
 
+        ''' <summary>
+        ''' Apply spatial configration details to the underlying spatial data structures.
+        ''' </summary>
         Public Sub Update()
 
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
 
-            If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
+            'If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
                 For i As Integer = 1 To adt.MaxLength
@@ -201,7 +204,7 @@ Namespace SpatialData
             ' Invalidate connection count
             Me.m_iNumConnected = cCore.NULL_VALUE
 
-            Me.m_core.onChanged(Me, eMessageType.DataModified)
+            Me.NotifyCore(eMessageType.DataAddedOrRemoved)
 
         End Sub
 
@@ -320,22 +323,22 @@ Namespace SpatialData
             ' ToDo: implement selective update
             Me.Update()
             ' ToDo: Only send out event if this dataset is used in a spat/temp configuration
-            Me.Invalidate()
+            Me.NotifyCore(eMessageType.DataModified)
         End Sub
 
         Public Sub Update(ByVal cv As ISpatialDataConverter)
             ' ToDo: implement selective update
             Me.Update()
             ' ToDo: Only send out event this converter is used in a spat/temp configuration
-            Me.Invalidate()
+            Me.NotifyCore(eMessageType.DataModified)
         End Sub
 
-        Public Sub Invalidate()
+        Public Sub NotifyCore(importance As eMessageType)
             Try
                 ' Assume that this has affected currently configured adapters, because 
                 ' this is very likely. This check can be improved.
                 If (Me.NumConnectedAdapters > 0) Then
-                    Me.m_core.onChanged(Me)
+                    Me.m_core.onChanged(Me, importance)
                 End If
             Catch ex As Exception
                 'Ouch
@@ -402,8 +405,9 @@ Namespace SpatialData
 #Region " Event handlers "
 
         Private Sub OnDatasetConfigurationChanged(ByVal sender As cSpatialDataSetManager)
-            Me.Load()
-            Me.Update()
+            If Me.m_core.StateMonitor.HasEcospaceLoaded Then
+                Me.Load()
+            End If
         End Sub
 
 #End Region ' Event handlers
