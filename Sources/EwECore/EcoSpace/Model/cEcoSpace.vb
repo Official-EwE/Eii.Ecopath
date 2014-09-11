@@ -920,6 +920,9 @@ Public Class cEcoSpace
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For m_Data.TimeNow = StartTime To m_Data.TotalTime Step m_Data.TimeStep
 
+                'One Off hack to pause the run for the Water Institute's 2017 Gulf Coast Model
+                'Me.HACKAutoPause(its)
+
                 Me.m_PauseSignal.WaitOne()
 
                 'Ecospace has been stopped
@@ -1022,11 +1025,11 @@ Public Class cEcoSpace
                 'UPDATE SOLVERS WITH NON REFERENCED TIMESTEP DATA (itt, etc)
                 '*************
                 UpdateSpaceSolverThreads(m_Data.YearNow)
-
                 stpwchSolver.Start()
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Run the biomass calculation for each spatial cell at this time step
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'System.Console.Write("T = " + itt.ToString + ", ")
                 runSpaceSolverThreads()
                 stpwchSolver.Stop()
 
@@ -1075,6 +1078,7 @@ Public Class cEcoSpace
                     'can improve it later with more complex spatial redistribution
                     'rules eg running an IBM to predict movement among cells
                     Dim ieco As Integer
+
 
                     ReDim tbio(Me.m_Data.NGroups)
                     For isp As Integer = 1 To m_Stanza.Nsplit
@@ -1222,6 +1226,28 @@ Public Class cEcoSpace
             Throw New ApplicationException("FindSpatialEquilibrium() Error: " & ex.Message, ex)
         End Try
 
+    End Sub
+
+    ''' <summary>
+    ''' One Off to pause the model at a fixed timestep to allow the user to grab maps, plots...
+    ''' </summary>
+    ''' <param name="month"></param>
+    ''' <remarks></remarks>
+    Private Sub HACKAutoPause(month As Integer)
+        Try
+            Debug.Assert(False, "Warning Auto Pause has been called. Are you sure you want to do this.")
+            Dim CalendarYear As Integer = Me.m_Data.YearNow - 1 + Me.m_EPdata.FirstYear
+            'MonthNow has not been update yet so it is one month behind the actually month
+            If (CalendarYear = 2029 Or CalendarYear = 2059) And Me.m_Data.MonthNow = 10 Then
+                Dim msg As New Text.StringBuilder()
+                msg.AppendLine("Auto paused Year = " & CalendarYear.ToString & " Month = " & (Me.m_Data.MonthNow + 1).ToString)
+                msg.AppendLine("To restart the run click the Pause or Resume button once.")
+                Me.isPaused = True
+                Microsoft.VisualBasic.MsgBox(msg.ToString, Microsoft.VisualBasic.MsgBoxStyle.Information, "HACK WARNING")
+            End If
+        Catch ex As Exception
+            'Ehhh that's the breaks ehhh
+        End Try
     End Sub
 
 
@@ -2463,6 +2489,7 @@ Public Class cEcoSpace
             ReDim NstanzaBase(m_Data.Nvarsplit)
 
             ReDim m_Data.isGroupHabCapChanged(m_Data.NGroups)
+            ReDim m_Data.isForced(m_Data.NGroups)
 
             'GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
@@ -5341,7 +5368,7 @@ exitline:
                 'biomass
                 m_Data.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTimeStep) = Btime(igrp)
                 'relative biomass
-                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp) ' Me.m_EPdata.B(igrp) to use Ecopath base
+                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp) '  Me.m_EPdata.B(igrp) ' to use Ecopath base '
 
             Next igrp
 
