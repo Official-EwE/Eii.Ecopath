@@ -119,7 +119,6 @@ Namespace SpatialData
 
             Me.m_cbSeasonal.Checked = Me.m_dataset.IsSeasonal
             Me.m_mtbSeasonalEnd.ValidatingType = GetType(Date)
-            Me.m_mtbSeasonalEnd.Text = Me.m_dataset.TimeEnd.ToString("yyyy") & Me.m_dataset.TimeEnd.ToString("MM")
 
             ' Allow all supported varnames
             Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
@@ -355,6 +354,12 @@ Namespace SpatialData
             Me.m_mtbSeasonalEnd.Enabled = Me.m_cbSeasonal.Checked
             Me.m_lblDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
             Me.m_lblLocationSample.Text = cStringUtils.CompactString(Me.AbsolutePath(), Me.m_lblLocationSample.Width, Me.m_lblLocationSample.Font)
+
+            If (String.IsNullOrWhiteSpace(Me.m_lblLocationSample.Text)) Then
+                Me.m_lblLocationSample.Text = ScientificInterfaceShared.My.Resources.GENERIC_VALUE_NOTSET
+            End If
+            cToolTipShared.GetInstance().SetToolTip(Me.m_lblLocationSample, strPath)
+
             Try
                 If Not String.IsNullOrWhiteSpace(strPath) Then
                     bHasFolder = Directory.Exists(Path.GetFullPath(strPath))

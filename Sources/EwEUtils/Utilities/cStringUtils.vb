@@ -772,6 +772,8 @@ Namespace Utilities
                                              ByVal ft As Font, _
                                              Optional ByVal tfFlags As Windows.Forms.TextFormatFlags = TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString) As String
 
+            If (String.IsNullOrWhiteSpace(strSrc)) Then Return ""
+
             Dim strResult As String = String.Copy(strSrc)
             TextRenderer.MeasureText(strResult, ft, New Size(iWidth, 0), tfFlags Or TextFormatFlags.ModifyString)
             Return strResult
