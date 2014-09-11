@@ -57,6 +57,9 @@ Namespace SpatialData
         Private m_indexer As cSpatialDatasetIndexer = Nothing
         Private m_bIndexingAllowed As Boolean = False
 
+        Private m_bAllowValidation As Boolean = True
+        Private m_bValidationPending As Boolean = False
+
         ' Current config metadata
         Private m_strConfigFile As String = ""
         Private m_strAuthor As String = ""
@@ -160,7 +163,7 @@ Namespace SpatialData
 
             Me.m_strConfigFile = strFile
 
-            ' JS: moving load to dedicated class; with multiple config files we'll need better descriptions of
+            ' JS: moved load to dedicated class; with multiple config files we'll need better descriptions of
             '     file content and purpose, etc. This warrants a unique class to maintain this info.
             Dim cfg As New cSpatialDataConfigFile()
             If cfg.Initialize(strFile) Then
@@ -170,11 +173,11 @@ Namespace SpatialData
                     Me.m_strAuthor = cfg.Author
                     Me.m_strContact = cfg.Contact
 
-                    Me.Update()
-
                     bSuccess = True
                 End If
             End If
+
+            Me.Changed()
 
             Return bSuccess
 
@@ -256,18 +259,35 @@ Namespace SpatialData
 
         End Function
 
+        Public Property AllowValidation As Boolean
+            Get
+                Return Me.m_bAllowValidation
+            End Get
+            Set(value As Boolean)
+                Me.m_bAllowValidation = value
+                If Me.m_bAllowValidation And Me.m_bValidationPending Then
+                    Me.Changed()
+                End If
+            End Set
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Send a change notification
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Update()
-            Try
-                'Notify the world
-                RaiseEvent OnConfigurationChanged(Me)
-            Catch ex As Exception
-                cLog.Write(ex, "cSpatialDatasetManager.Update")
-            End Try
+        Public Sub Changed()
+            If Me.AllowValidation Then
+                Try
+                    'Notify the world
+                    RaiseEvent OnConfigurationChanged(Me)
+                Catch ex As Exception
+                    cLog.Write(ex, "cSpatialDatasetManager.Update")
+                End Try
+                Me.m_bValidationPending = False
+            Else
+                Me.m_bValidationPending = True
+            End If
         End Sub
 
 #End Region ' Persistent storage    

@@ -339,12 +339,13 @@ Namespace Ecospace.Controls
             Me.m_uic.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply = eMessageReply.NO) Then Return False
 
+            Me.m_manSets.AllowValidation = False
             For Each ds As ISpatialDataSet In sets
                 Me.m_manSets.Remove(ds)
             Next
+            Me.m_manSets.AllowValidation = True
 
             Me.SelectedDataset = Nothing
-            Me.m_man.Load()
 
             Me.m_gridDatasets.Fill()
             Me.UpdateControls()

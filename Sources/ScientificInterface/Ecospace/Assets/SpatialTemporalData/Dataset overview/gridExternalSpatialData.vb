@@ -212,7 +212,7 @@ Namespace Ecospace
                 If (conn Is Nothing) Then Return
                 Dim dlg As New dlgApplyConnection(Me.UIContext, conn.Adapter, conn.Layer)
                 If dlg.ShowDialog() = DialogResult.OK Then
-                    Me.m_man.Invalidate()
+                    Me.m_man.NotifyCore(eMessageType.DataModified)
                 End If
                 Me.UpdateDatasetRow(iRow)
             Catch ex As Exception

@@ -252,6 +252,7 @@ Public Class frmEwE6
     Private WithEvents m_cmdDefineImportanceMaps As cCommand = Nothing
     Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
     Private WithEvents m_cmdDefineSpatialDatasets As cCommand = Nothing
+    Private WithEvents m_cmdEditSpatialDataset As cEditSpatialDatasetCommand = Nothing
     Private WithEvents m_cmdExportSpatialDatasets As cCommand = Nothing
     Private WithEvents m_cmdImportLayerData As cImportLayerCommand = Nothing
     Private WithEvents m_cmdExportLayerData As cExportLayerCommand = Nothing
@@ -595,6 +596,8 @@ Public Class frmEwE6
         Me.m_cmdDefineSpatialDatasets = New cCommand(cmdh, "EditSpatialDatasets")
         Me.m_cmdDefineSpatialDatasets.AddControl(Me.m_tsmiEcospaceDatasets)
 
+        Me.m_cmdEditSpatialDataset = New cEditSpatialDatasetCommand(cmdh)
+
         Me.m_cmdExportSpatialDatasets = New cCommand(cmdh, "ExportSpatialDatasets")
 
         'Me.m_cmdEcospaceDataConnections = New cEcospaceExternalDataCommand(cmdh)
@@ -933,8 +936,8 @@ Public Class frmEwE6
         ' Auto-launch plugins
         Me.AutolaunchPlugins()
 
-        ' Load spatial data sets
-        Me.Core.SpatialDataConnectionManager.DatasetManager.Load(My.Settings.SpatialTemporalConfigFile)
+        ' JS 11Sep14: this will be done when settings are loaded
+        'Me.Core.SpatialDataConnectionManager.DatasetManager.Load(My.Settings.SpatialTemporalConfigFile)
 
         Me.ProcessCommandLine()
         Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!
@@ -3978,6 +3981,47 @@ Public Class frmEwE6
     ''' Command handler updater
     ''' </summary>
     Private Sub OnUpdateDefineEcospaceDatasetsInvoke(cmd As cCommand) Handles m_cmdDefineSpatialDatasets.OnUpdate
+        Try
+            Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+            cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Command handler
+    ''' </summary>
+    Private Sub OnEditEcospaceDataset(cmd As cCommand) Handles m_cmdEditSpatialDataset.OnInvoke
+
+        Try
+            Dim ds As EwEUtils.SpatialData.ISpatialDataSet = Me.m_cmdEditSpatialDataset.Dataset
+            If (ds Is Nothing) Then Return
+            If (Not TypeOf ds Is IConfigurable) Then Return
+
+            '' This artifact should really not be necessary!!
+            'If (TypeOf ds Is IPlugin) Then
+            '    DirectCast(ds, IPlugin).Initialize(Me.Core)
+            'End If
+
+            Dim dsConf As IConfigurable = DirectCast(ds, IConfigurable)
+            Dim ctrl As Control = dsConf.GetConfigUI()
+            If (ctrl Is Nothing) Then Return
+
+            Dim dlg As New dlgConfig(Me.UIContext)
+            If dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl) = Windows.Forms.DialogResult.OK Then
+                Me.Core.SpatialDataConnectionManager.Update(ds)
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "frmEwE6:OnDefineEcospaceDatasets")
+        End Try
+
+    End Sub
+
+    ''' <summary>
+    ''' Command handler updater
+    ''' </summary>
+    Private Sub OnUpdateEditEcospaceDatasetInvoke(cmd As cCommand) Handles m_cmdDefineSpatialDatasets.OnUpdate
         Try
             Dim m As cCoreStateMonitor = Me.Core.StateMonitor
             cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
