@@ -1486,6 +1486,7 @@ Public Class cMSE
                                 GoodDynamics = Me.SaveResults2RAM(iModel, nResultIters, nFleetIters, ResultsTable, FleetCatchTable, FleetEffortTable, TrajectoryTable, BiomassLimits)
                             Else
                                 GoodDynamics = False
+                                nFailedModels += 1
                                 Exit For
                             End If
 
@@ -1496,10 +1497,7 @@ Public Class cMSE
                         'End of Strategy loop
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                        If GoodDynamics = False Then
-                            nFailedModels += 1
-                            Exit For
-                        Else
+                        If GoodDynamics Then
                             SaveResults2CSV(FleetEffortTable, FleetCatchTable, ResultsTable, TrajectoryTable, _
                                             swFleetEffort, swFleet, swGroup, TrajectoryCsv, Trajectory2Csv)
                         End If
@@ -1779,20 +1777,28 @@ Public Class cMSE
         'This outputs information that can be used to resolve issues with the biomass limits are exceeded
         Dim DiagnosticOutput4BiomassLimits = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "BadDynamicsTrajectories.csv"), True)
         Dim MaxBiomass As Single
+        Dim MinBiomass As Single
         For Each iGrp In BiomassLimits.lstBiomassLimits
             MaxBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, OriginalNTimesteps + 1)
+            MinBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, OriginalNTimesteps + 1)
             For iTimeStep As Integer = OriginalNTimesteps + 2 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                 If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) > MaxBiomass Then
                     MaxBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep)
                 End If
+                If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) < MinBiomass Then
+                    MinBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep)
+                End If
             Next
-            DiagnosticOutput4BiomassLimits.WriteLine("{0},{1},{2},{3},{4},{5}", _
+            DiagnosticOutput4BiomassLimits.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8}", _
                         cStringUtils.FormatNumber(iModel), _
                         cStringUtils.ToCSVField(m_currentStrategy.Name), _
                         cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp.mGroup.Index).Name), _
                         cStringUtils.FormatNumber(MaxBiomass), _
                         cStringUtils.FormatNumber(iGrp.mUpperLimit), _
-                        cStringUtils.FormatNumber(MaxBiomass / iGrp.mUpperLimit))
+                        cStringUtils.FormatNumber(MaxBiomass / iGrp.mUpperLimit), _
+                        cStringUtils.FormatNumber(MinBiomass), _
+                        cStringUtils.FormatNumber(iGrp.mLowerLimit), _
+                        cStringUtils.FormatNumber(MinBiomass <= iGrp.mLowerLimit))
         Next
         cMSEUtils.ReleaseWriter(DiagnosticOutput4BiomassLimits)
 
