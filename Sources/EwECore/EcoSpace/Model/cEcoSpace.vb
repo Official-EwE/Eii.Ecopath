@@ -2482,16 +2482,12 @@ Public Class cEcoSpace
             ReDim Flowin(m_Data.nvartot)
             ReDim FlowoutRate(m_Data.nvartot)
 
-
             ReDim RecSplit(m_Data.Nvarsplit)
             ReDim PconSplit(m_Data.Nvarsplit)
             ReDim Tstanza(m_Data.Nvarsplit)
             ReDim NstanzaBase(m_Data.Nvarsplit)
 
             ReDim m_Data.isGroupHabCapChanged(m_Data.NGroups)
-            'ReDim m_Data.isForced(m_Data.NGroups)
-
-            'GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
             nEcospaceTimeSteps = CInt(m_Data.TotalTime * (1.0 / m_Data.TimeStep))
             success = success And m_Data.redimTimeStepResults(nEcospaceTimeSteps)

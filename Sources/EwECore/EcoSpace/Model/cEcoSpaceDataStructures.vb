@@ -686,9 +686,7 @@ Public Class cEcospaceDataStructures
     Public BaseConsump() As Single
     Public BasePredMort() As Single
 
-
     Public isGroupHabCapChanged() As Boolean
-
 
 #End Region
 
@@ -2109,6 +2107,7 @@ Public Class cEcospaceDataStructures
 
 
     End Sub
+
 
     ''' <summary>
     ''' Count the number of water cells and sets public property nWaterCells
