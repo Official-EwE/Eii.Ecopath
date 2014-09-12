@@ -2489,7 +2489,7 @@ Public Class cEcoSpace
             ReDim NstanzaBase(m_Data.Nvarsplit)
 
             ReDim m_Data.isGroupHabCapChanged(m_Data.NGroups)
-            ReDim m_Data.isForced(m_Data.NGroups)
+            'ReDim m_Data.isForced(m_Data.NGroups)
 
             'GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
