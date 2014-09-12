@@ -924,6 +924,16 @@ Public Class frmEwE6
         Me.m_ssMain.Attach(Me.UIContext, Me)
         ' Start controlling forms
         Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_coreController, Me.m_DockPanel)
+        Me.Help.HelpTopic(Me.Panel(cPANEL_START)) = "Ecopath with Ecosim 6 Getting started.htm"
+
+        Try
+            ' Dismiss splash screen to make room for UI interactivity
+            If (frmSplash.GetInstance() IsNot Nothing) Then
+                frmSplash.GetInstance().Close()
+            End If
+        Catch ex As Exception
+
+        End Try
 
         ' Update plug-ins first, if required
         If My.Settings.AutoUpdatePlugins Then
@@ -943,17 +953,8 @@ Public Class frmEwE6
         Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!
         Me.UpdateModelControls()
 
-        Me.Help.HelpTopic(Me.Panel(cPANEL_START)) = "Ecopath with Ecosim 6 Getting started.htm"
-
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
-        Try
-            If (frmSplash.GetInstance() IsNot Nothing) Then
-                frmSplash.GetInstance().Close()
-            End If
-        Catch ex As Exception
-
-        End Try
     End Sub
 
     ''' -----------------------------------------------------------------------
