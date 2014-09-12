@@ -371,6 +371,7 @@ Namespace SpatialData
 
             End Try
 
+            RaiseEvent OnMultiFileConfigPageChanged(Me, New EventArgs)
         End Sub
 
         ''' -----------------------------------------------------------------------

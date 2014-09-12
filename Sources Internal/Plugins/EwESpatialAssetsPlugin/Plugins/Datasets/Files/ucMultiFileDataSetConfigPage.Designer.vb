@@ -490,9 +490,9 @@ Namespace SpatialData
         Private WithEvents m_mtbSeasonalEnd As System.Windows.Forms.MaskedTextBox
         Private WithEvents m_lblLocation As System.Windows.Forms.Label
         Private WithEvents m_lblLocationSample As System.Windows.Forms.Label
-        Friend WithEvents m_colError As System.Windows.Forms.DataGridViewImageColumn
-        Friend WithEvents m_colFileName As System.Windows.Forms.DataGridViewTextBoxColumn
-        Friend WithEvents m_colTime As EwESpatialAssetsPlugin.cCalendarColumn
+        Private WithEvents m_colError As System.Windows.Forms.DataGridViewImageColumn
+        Private WithEvents m_colFileName As System.Windows.Forms.DataGridViewTextBoxColumn
+        Private WithEvents m_colTime As EwESpatialAssetsPlugin.cCalendarColumn
 
     End Class
 
