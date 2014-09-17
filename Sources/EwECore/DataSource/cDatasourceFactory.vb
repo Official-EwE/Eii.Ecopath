@@ -57,7 +57,7 @@ Namespace DataSources
                     Return eDataSourceTypes.Access2007
 
                 Case ".mdb", ".ewemdb"
-                    If cSystemUtils.Is64Bit() Then
+                    If cSystemUtils.Is64BitProcess() Then
                         Return eDataSourceTypes.Access2007
                     Else
                         Return eDataSourceTypes.Access2003

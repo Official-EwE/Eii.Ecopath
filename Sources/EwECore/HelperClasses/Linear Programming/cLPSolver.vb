@@ -57,7 +57,7 @@ Public Class cLPSolver
 
             Try
                 g_bUsable = cSystemUtils.IsWindows
-                If cSystemUtils.Is64Bit Then
+                If cSystemUtils.Is64BitProcess Then
                     solveDir = "Includes\LPSolve\win64"
                 Else
                     solveDir = "Includes\LPSolve\win32"

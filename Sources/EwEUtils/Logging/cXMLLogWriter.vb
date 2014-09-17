@@ -22,8 +22,9 @@ Option Explicit On
 Imports System
 Imports System.Diagnostics
 Imports System.IO
-Imports System.xml
+Imports System.Xml
 Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities
 
 Namespace Core
 
@@ -78,11 +79,10 @@ Namespace Core
         ''' <summary>
         ''' Open the XML stream
         ''' </summary>
-        ''' <remarks></remarks>
         Public Function Open() As Boolean
 
             Try
-                Dim settings As New XmlWriterSettings
+                Dim settings As New XmlWriterSettings()
 
                 'If no log file exists this will create a new one
                 'If the file exists it will not do anything
@@ -141,6 +141,9 @@ Namespace Core
                     m_XMLwriter = XmlWriter.Create(m_filestream, settings)
                     m_XMLwriter.WriteStartDocument()
                     m_XMLwriter.WriteStartElement("doc")
+                    m_XMLwriter.WriteElementString("Platform", cSystemUtils.Platform().ToString())
+                    m_XMLwriter.WriteElementString("Is64BitOS", cSystemUtils.IIF(cSystemUtils.Is64BitOS(), "True", "False"))
+                    m_XMLwriter.WriteElementString("Is64BitEwE", cSystemUtils.IIF(cSystemUtils.Is64BitProcess(), "True", "False"))
                     m_XMLwriter.WriteElementString("Model_Name", m_strModelName)
                     m_XMLwriter.WriteElementString("Created", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
                     m_XMLwriter.WriteEndElement()

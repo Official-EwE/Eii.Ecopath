@@ -56,7 +56,7 @@ Namespace Other
             Me.m_bInUpdate = True
 
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
-            Dim strBitApp As String = cSystemUtils.IIF(cSystemUtils.Is64Bit, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
+            Dim strBitApp As String = cSystemUtils.IIF(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
 
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
