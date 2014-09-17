@@ -272,7 +272,7 @@ Public Class cMatrixCalc
             ErrCode = matluS(A, OkToContinue)                      'Get LU matrix
             'If Not OkToContinue Then Error ErrCode
             If Not OkToContinue Then
-                Debug.Assert(False, "matluS returned false.")
+                cLog.Write("Ecopath error matluS() returned False. Trophic Levels will not be computed for this run.")
                 Return ErrCode
             End If
             'check dimensions of b
@@ -393,7 +393,7 @@ Public Class cMatrixCalc
                 Next row
 
                 If max = 0.0 Then                 'if no nonzero number is found, A is
-                    Debug.Assert(False)
+                    System.Console.WriteLine("WARNING Error in matluS() max = 0")
                     OkToContinue = False                   'singular, send back error, do not OkToContinue
                     Return 199
                 ElseIf pvt > 1 Then              'check if drop in pivots is too much
