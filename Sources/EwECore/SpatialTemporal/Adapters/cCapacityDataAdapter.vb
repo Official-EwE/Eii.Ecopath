@@ -84,7 +84,7 @@ Namespace SpatialData
             breturnVal = MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
 
             For iGroup As Integer = 1 To Me.m_spaceData.NGroups
-                'Ok Turn on the groups that that were changed
+                'Ok Turn on the groups that were changed
                 If Me.m_spaceData.CapMapFunctions(layer.Index, iGroup) > 0 Then
                     Me.m_spaceData.isGroupHabCapChanged(iGroup) = True
                 End If
