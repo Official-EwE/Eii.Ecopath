@@ -722,15 +722,6 @@ Namespace Ecosim
             ReDim QYear(m_EPData.NumFleet)
             ReDim QGrowUsed(m_EPData.NumFleet)
             ReDim RelFopt(nopt)
-            'ReDim m_search.LastYearIncomeSpecies(m_EPData.NumFleet, m_EPData.NumGroups)
-            'ReDim BestTime(m_EPData.NumLiving)
-            'ReDim BrecYear(nGroups)
-            'ReDim BBAvg(nGroups)
-            'ReDim LossAvg(nGroups)
-            'ReDim EatenByAvg(nGroups)
-            'ReDim EatenOfAvg(nGroups)
-            'ReDim PredAvg(nGroups)
-            'ReDim fCatch0(nGroups)
 
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
