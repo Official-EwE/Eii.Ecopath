@@ -40,7 +40,7 @@ Namespace Controls
         Public Shared Function NETVersion() As String
             Return String.Format(My.Resources.ABOUT_NET_VERSION, _
                                  System.Environment.Version.ToString(), _
-                                 cSystemUtils.IIF(cSystemUtils.Is64Bit, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT))
+                                 cSystemUtils.IIF(cSystemUtils.Is64BitProcess, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT))
         End Function
 
         Public Shared Function Modules(pm As cPluginManager) As String

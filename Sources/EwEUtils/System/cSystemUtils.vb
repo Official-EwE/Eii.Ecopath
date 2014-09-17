@@ -289,7 +289,7 @@ Namespace SystemUtilities
         ''' </summary>
         ''' <returns>True if running in 64 bit mode.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function Is64Bit() As Boolean
+        Public Shared Function Is64BitProcess() As Boolean
 
             ' This flag was introduced in .NET framework 4
             Return Environment.Is64BitProcess
@@ -305,7 +305,7 @@ Namespace SystemUtilities
         ''' -----------------------------------------------------------------------
         Public Shared Function IsWindows() As Boolean
 
-            Select Case Environment.OSVersion.Platform
+            Select Case cSystemUtils.Platform
                 Case PlatformID.MacOSX, _
                      PlatformID.Unix, _
                      PlatformID.Xbox
@@ -320,6 +320,16 @@ Namespace SystemUtilities
             End Select
             Return False
 
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the <see cref="PlatformID"/> of the running computer.
+        ''' </summary>
+        ''' <returns>The <see cref="PlatformID"/> of the running computer.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function Platform() As System.PlatformID
+            Return Environment.OSVersion.Platform
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -630,6 +640,15 @@ Namespace SystemUtilities
             End If
             Return 0
         End Function
+
+#Region " Discontinued "
+
+        <Obsolete("Please use Is64BitProcess instead")> _
+        Public Shared Function Is64Bit() As Boolean
+            Return cSystemUtils.Is64BitProcess
+        End Function
+
+#End Region ' Discontinued
 
     End Class
 
