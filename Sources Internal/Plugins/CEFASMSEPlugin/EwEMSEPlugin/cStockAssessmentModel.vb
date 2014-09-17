@@ -569,15 +569,22 @@ Public Class cStockAssessmentModel
     Public Sub Defaults() Implements IMSEData.Defaults
         'Me.InitToCoreData()
         Try
+            'On by default
+            Me.UseAssessment = True
+
             For igrp As Integer = 1 To Me.Core.nLivingGroups
                 Me.RstockRatio(igrp) = CSng(1 - Math.Exp(-Me.m_pathdata.PB(igrp)))
                 Me.RHalfB0Ratio(igrp) = 0.2F
 
+                'Stock Sampling error
                 Me.CVbiomEst(igrp) = 0.3F
+
+                'Kalman filter weights/error
                 Me.CVRecruitError(igrp) = 0.3F
                 Me.cvRec(igrp) = 0.8F
             Next
 
+            'Fleet implementation error
             For iflt As Integer = 1 To Me.Core.nFleets
                 Me.CVImpError(iflt) = 0.3F
             Next
@@ -585,7 +592,7 @@ Public Class cStockAssessmentModel
             Me.InitStockAssessment()
 
         Catch ex As Exception
-
+            Debug.Assert(False, ex.Message)
         End Try
 
     End Sub
@@ -720,13 +727,16 @@ Public Class cStockAssessmentModel
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
         Dim breturn As Boolean
+
+        Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
+
         Try
 
             If (String.IsNullOrWhiteSpace(strFilename)) Then
                 strFilename = Me.DefaultFileName
             End If
 
-            Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
+
             If (strm IsNot Nothing) Then
 
                 strm.WriteLine(cStockAssessmentParameters.toCSVHeader)
@@ -746,6 +756,8 @@ Public Class cStockAssessmentModel
                 breturn = True
             End If
 
+
+
         Catch ex As Exception
             breturn = False
         End Try
@@ -753,6 +765,8 @@ Public Class cStockAssessmentModel
         If breturn Then
             Me.m_isChanged = False
         End If
+
+        cMSEUtils.ReleaseWriter(strm)
 
         Return breturn
     End Function
