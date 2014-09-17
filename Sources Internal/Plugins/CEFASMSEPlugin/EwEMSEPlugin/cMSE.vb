@@ -1470,6 +1470,8 @@ Public Class cMSE
                         'This creates the files we will write the biomass trajectories to
                         TrajectoryCsv = Me.initTrialTrajectoryFile(msgReport, iModel)
 
+                        Me.m_StockAssessment.TrialNumber = iModel
+
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'Loop over all the strategies for this trial
                         For Each curStrategy As Strategy In Strategies
