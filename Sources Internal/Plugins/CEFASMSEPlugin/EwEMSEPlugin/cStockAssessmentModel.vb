@@ -613,10 +613,14 @@ Public Class cStockAssessmentModel
         Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
 
         Try
-
-            breturn = breturn And Me.ReadGroupData(reader)
-            breturn = breturn And Me.ReadFleetData(reader)
-            breturn = breturn And Me.ReadModelData(reader)
+            ' JS 18Sep14: try not to rely on exceptions; it's much more slow than using a simple test
+            If (reader IsNot Nothing) Then
+                breturn = Me.ReadGroupData(reader) And _
+                          Me.ReadFleetData(reader) And _
+                          Me.ReadModelData(reader)
+            Else
+                breturn = False
+            End If
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
