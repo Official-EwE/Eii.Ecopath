@@ -53,13 +53,14 @@ Partial Class frmMSE
         Me.m_lblNYears = New System.Windows.Forms.Label()
         Me.m_lblMassBalanceTol = New System.Windows.Forms.Label()
         Me.m_tbxTolerance = New System.Windows.Forms.TextBox()
-        Me.m_btnCreateModels = New System.Windows.Forms.Button()
+        Me.m_btnRunCreateModels = New System.Windows.Forms.Button()
         Me.m_btnReviewTFM = New System.Windows.Forms.Button()
         Me.m_plStep2 = New System.Windows.Forms.Panel()
         Me.m_btnCreateSurvDist = New System.Windows.Forms.Button()
         Me.m_btnSampleSurvivabilities = New System.Windows.Forms.Button()
         Me.m_pbModelsCompatible = New System.Windows.Forms.PictureBox()
         Me.m_hdrStep2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_btnStopCreateModels = New System.Windows.Forms.Button()
         Me.m_lblAvailableModels = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableModels = New System.Windows.Forms.TextBox()
         Me.m_tbxNTrials = New System.Windows.Forms.TextBox()
@@ -71,6 +72,7 @@ Partial Class frmMSE
         Me.m_plStep4 = New System.Windows.Forms.Panel()
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblNModels = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
         Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnDecreaseEffort = New System.Windows.Forms.Button()
@@ -121,6 +123,7 @@ Partial Class frmMSE
         'm_btnRun
         '
         resources.ApplyResources(Me.m_btnRun, "m_btnRun")
+        Me.m_btnRun.Image = Global.EwEMSEPlugin.My.Resources.Resources.StartHS
         Me.m_btnRun.Name = "m_btnRun"
         Me.m_btnRun.UseVisualStyleBackColor = True
         '
@@ -144,11 +147,12 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_tbxTolerance, "m_tbxTolerance")
         Me.m_tbxTolerance.Name = "m_tbxTolerance"
         '
-        'm_btnCreateModels
+        'm_btnRunCreateModels
         '
-        resources.ApplyResources(Me.m_btnCreateModels, "m_btnCreateModels")
-        Me.m_btnCreateModels.Name = "m_btnCreateModels"
-        Me.m_btnCreateModels.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnRunCreateModels, "m_btnRunCreateModels")
+        Me.m_btnRunCreateModels.Image = Global.EwEMSEPlugin.My.Resources.Resources.StartHS
+        Me.m_btnRunCreateModels.Name = "m_btnRunCreateModels"
+        Me.m_btnRunCreateModels.UseVisualStyleBackColor = True
         '
         'm_btnReviewTFM
         '
@@ -164,7 +168,8 @@ Partial Class frmMSE
         Me.m_plStep2.Controls.Add(Me.m_lblMassBalanceTol)
         Me.m_plStep2.Controls.Add(Me.m_tbxTolerance)
         Me.m_plStep2.Controls.Add(Me.m_hdrStep2)
-        Me.m_plStep2.Controls.Add(Me.m_btnCreateModels)
+        Me.m_plStep2.Controls.Add(Me.m_btnStopCreateModels)
+        Me.m_plStep2.Controls.Add(Me.m_btnRunCreateModels)
         Me.m_plStep2.Controls.Add(Me.m_lblAvailableModels)
         Me.m_plStep2.Controls.Add(Me.m_lblNTrials)
         Me.m_plStep2.Controls.Add(Me.m_tbxNumAvailableModels)
@@ -201,6 +206,13 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_hdrStep2, "m_hdrStep2")
         Me.m_hdrStep2.IsCollapsed = False
         Me.m_hdrStep2.Name = "m_hdrStep2"
+        '
+        'm_btnStopCreateModels
+        '
+        resources.ApplyResources(Me.m_btnStopCreateModels, "m_btnStopCreateModels")
+        Me.m_btnStopCreateModels.Image = Global.EwEMSEPlugin.My.Resources.Resources.StopHS
+        Me.m_btnStopCreateModels.Name = "m_btnStopCreateModels"
+        Me.m_btnStopCreateModels.UseVisualStyleBackColor = True
         '
         'm_lblAvailableModels
         '
@@ -251,6 +263,7 @@ Partial Class frmMSE
         Me.m_plStep4.Controls.Add(Me.m_tbxNModels2Run)
         Me.m_plStep4.Controls.Add(Me.m_lblNYears)
         Me.m_plStep4.Controls.Add(Me.m_lblNModels)
+        Me.m_plStep4.Controls.Add(Me.Button1)
         Me.m_plStep4.Controls.Add(Me.m_btnRun)
         Me.m_plStep4.Controls.Add(Me.m_tbxNYearsProject)
         resources.ApplyResources(Me.m_plStep4, "m_plStep4")
@@ -268,6 +281,13 @@ Partial Class frmMSE
         '
         resources.ApplyResources(Me.m_lblNModels, "m_lblNModels")
         Me.m_lblNModels.Name = "m_lblNModels"
+        '
+        'Button1
+        '
+        resources.ApplyResources(Me.Button1, "Button1")
+        Me.Button1.Image = Global.EwEMSEPlugin.My.Resources.Resources.StopHS
+        Me.Button1.Name = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'm_plStep3
         '
@@ -475,7 +495,7 @@ Partial Class frmMSE
     Private WithEvents m_tbxNYearsProject As System.Windows.Forms.TextBox
     Private WithEvents m_lblNYears As System.Windows.Forms.Label
     Private WithEvents m_tbxTolerance As System.Windows.Forms.TextBox
-    Private WithEvents m_btnCreateModels As System.Windows.Forms.Button
+    Private WithEvents m_btnRunCreateModels As System.Windows.Forms.Button
     Private WithEvents m_lblMassBalanceTol As System.Windows.Forms.Label
     Private WithEvents m_btnReviewTFM As System.Windows.Forms.Button
     Private WithEvents m_plStep2 As System.Windows.Forms.Panel
@@ -519,4 +539,6 @@ Partial Class frmMSE
     Friend WithEvents m_btnSAError As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_btnEditDiets As System.Windows.Forms.Button
+    Private WithEvents m_btnStopCreateModels As System.Windows.Forms.Button
+    Private WithEvents Button1 As System.Windows.Forms.Button
 End Class

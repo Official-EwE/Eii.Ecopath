@@ -134,6 +134,7 @@ Public Class cMSE
     Private m_mhSettings As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
     Private m_iNumModelsAvailable As Integer = cCore.NULL_VALUE
+    Private m_iNumStrategiesAvailable As Integer = cCore.NULL_VALUE
     Private m_tsInputDataCompatibility As TriState = TriState.UseDefault
     Private m_tsRunDataCompatibility As TriState = TriState.UseDefault
     Private TrajectoryCsv As StreamWriter
@@ -157,7 +158,7 @@ Public Class cMSE
         Set(value As eRunStates)
             If (value <> Me.m_runstate) Then
                 Me.m_runstate = value
-                Me.m_monitor.Invalidate()
+                Me.fireChangeRunState()
             End If
         End Set
     End Property
@@ -316,7 +317,7 @@ Public Class cMSE
 
 
         ' Re-assess state
-        Me.InvalidateConfigurationState(False)
+        Me.InvalidateConfigurationState(True)
 
 #If DEBUG Then
         ' Panic in debug mode only
@@ -365,23 +366,8 @@ Public Class cMSE
 
         RunThread.Start()
 
-        'Try
-
-        '    Me.GenerateEcosimParameters("MaxRelFeedingTime")
-        '    Me.GenerateEcosimParameters("FeedingTimeAdjustRate")
-        '    Me.GenerateEcosimParameters("OtherMortFeedingTime")
-        '    Me.GenerateEcosimParameters("PredEffectFeedingTime")
-        '    Me.GenerateEcosimParameters("DenDepCatchability")
-        '    Me.GenerateEcosimParameters("QBMaxxQBio")
-        '    Me.GenerateEcosimParameters("SwitchingPower")
-        '    Me.GenerateSurvivabilities()
-        '    Me.CreateVulnerabilities()
-        '    Me.GenerateEcopathParamaters()
-        'Catch ex As Exception
-        '    bsuccess = False
-        'End Try
-
         Return bsuccess
+
     End Function
 
     Public Sub GenerateDefaultSurviveDistributions()
@@ -400,7 +386,8 @@ Public Class cMSE
         TSurvivability.SaveSampledToCSV()
         TSurvivability.Save()
 
-        Me.InvalidateConfigurationState()
+        Me.Survivability.Load()
+        'Me.InvalidateConfigurationState()
 
     End Sub
 
@@ -439,14 +426,14 @@ Public Class cMSE
 
     Private Sub runCreateModelsThread()
 
+        Me.m_StopRun = False
+        Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
+        Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
+        Me.RunState = eRunStates.RunningModels
+
+        cApplicationStatusNotifier.StartProgress(Me.Core, "", -1)
+
         Try
-
-            Me.m_StopRun = False
-            Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
-            Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
-
-            m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireChangeRunState), Nothing)
-
             Me.GenerateEcosimParameters("MaxRelFeedingTime")
             Me.GenerateEcosimParameters("FeedingTimeAdjustRate")
             Me.GenerateEcosimParameters("OtherMortFeedingTime")
@@ -462,23 +449,26 @@ Public Class cMSE
             Debug.Assert(False, ex.Message)
         End Try
 
-        'Make sure this gets called even if there is an exception
-        m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireChangeRunState), Nothing)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         Me.m_core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
         Me.m_core.SetStopRunDelegate(Nothing)
+        Me.RunState = eRunStates.Idle
 
     End Sub
 
-    Private Sub fireChangeRunState(obj As Object)
+    Private Sub fireChangeRunState()
+        'Make sure this gets called even if there is an exception
+        m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.SendEvent), Nothing)
+    End Sub
 
+    Private Sub SendEvent(obj As Object)
         Try
             ' Have the State monitor tell the world
             Me.m_monitor.Invalidate()
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".fireChangeRunState() Exception: " & ex.Message)
         End Try
-
     End Sub
 
 #End Region 'Threading
@@ -494,6 +484,7 @@ Public Class cMSE
     Friend Sub InvalidateConfigurationState(Optional bReloadData As Boolean = True)
 
         Me.m_iNumModelsAvailable = cCore.NULL_VALUE
+        Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE
         Me.m_tsInputDataCompatibility = TriState.UseDefault
         Me.m_tsRunDataCompatibility = TriState.UseDefault
         Me.m_monitor.Invalidate()
@@ -676,7 +667,17 @@ Public Class cMSE
     ''' </returns>
     ''' -----------------------------------------------------------------------
     Public Function NumStrategiesAvailable() As Integer
-        Return Me.Strategies.Count
+
+        If (Me.m_iNumStrategiesAvailable = cCore.NULL_VALUE) Then
+
+            SyncLock Me
+                Me.Strategies.Load()
+                Me.m_iNumStrategiesAvailable = Me.Strategies.Count
+            End SyncLock
+
+        End If
+        Return Me.m_iNumStrategiesAvailable
+
     End Function
 
     Private m_strModelCompatibility As String = ""
@@ -895,96 +896,13 @@ Public Class cMSE
     Private Function InitMonteCarloParameters() As Boolean
 
         'loads the distribution parameters for the Ecopath parameters from csvs
-
-        'Dim csv_B, csv_PB, csv_QB, csv_EE, csv_BA As CsvReader
-        Dim MonteCarlo As cMonteCarloManager = m_core.EcosimMonteCarlo
-        'Dim MCGroup As cMonteCarloGroup
-        'Dim xgrp As Integer
-        'Initialize Monte Carlo parameters for B, PB, QB, EE and BA
-        'These are the group parameters in the EwE Monte Carlo runs form
-        'CV Lower and Upper Limit
-
         If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "B_Dist.csv"), eParamName.B) Then Return False
         If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "PB_Dist.csv"), eParamName.PB) Then Return False
         If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "QB_Dist.csv"), eParamName.QB) Then Return False
         If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "EE_Dist.csv"), eParamName.EE) Then Return False
         If Not InitMonteCarloParamX(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "BA_Dist.csv"), eParamName.BA) Then Return False
 
-        'csv_B = New CsvReader(New StreamReader(Path & "/B_Dist.csv"), True)
-        'csv_PB = New CsvReader(New StreamReader(Path & "/PB_Dist.csv"), True)
-        'csv_QB = New CsvReader(New StreamReader(Path & "/QB_Dist.csv"), True)
-        'csv_EE = New CsvReader(New StreamReader(Path & "/EE_Dist.csv"), True)
-        'csv_BA = New CsvReader(New StreamReader(Path & "/BA_Dist.csv"), True)
-
-        'If Not CheckEcopathDistributionFilesOkay(csv_B, "biomass") Then Return False
-        'If Not CheckEcopathDistributionFilesOkay(csv_PB, "production/biomass") Then Return False
-        'If Not CheckEcopathDistributionFilesOkay(csv_QB, "consumption/biomass") Then Return False
-        'If Not CheckEcopathDistributionFilesOkay(csv_EE, "ecotrophic efficiency") Then Return False
-        'If Not CheckEcopathDistributionFilesOkay(csv_BA, "biomass accumulation") Then Return False
-
-        'csv_B = New CsvReader(New StreamReader(Path & "/B_Dist.csv"), True)
-        'csv_PB = New CsvReader(New StreamReader(Path & "/PB_Dist.csv"), True)
-        'csv_QB = New CsvReader(New StreamReader(Path & "/QB_Dist.csv"), True)
-        'csv_EE = New CsvReader(New StreamReader(Path & "/EE_Dist.csv"), True)
-        'csv_BA = New CsvReader(New StreamReader(Path & "/BA_Dist.csv"), True)
-
-        'Set the cv values first ==================================================================================================================
-        'For igrp = 1 To mCore.nLivingGroups
-
-        '    xgrp = 1
-        '    csv_B.ReadNextRecord()
-        '    csv_BA.ReadNextRecord()
-        '    csv_EE.ReadNextRecord()
-        '    csv_PB.ReadNextRecord()
-        '    csv_QB.ReadNextRecord()
-
-        '    'Make sure that .csv files are set up with group names in same order because xgrp is found only from the B file
-        '    'and then is assumed to be the same for all other files
-        '    While MonteCarlo.Groups(xgrp).Name <> csv_B(1) 'And xgrp <= mCore.nLivingGroups
-        '        xgrp += 1
-        '    End While
-
-        '    MCGroup = MonteCarlo.Groups(xgrp)
-
-        '    'Setting a CV value will automatically set the Lower and Upper limits
-        '    'by Calling cEcosimMonteCarlo.CalculateUpperLowerLimits()
-        '    'If you want to manually set limits it must be done after the CV has been set
-
-        '    'CVs
-        '    MCGroup.Bcv = csv_B(2)
-        '    MCGroup.PBcv = csv_PB(2)
-        '    MCGroup.QBcv = csv_QB(2)
-        '    MCGroup.EEcv = csv_EE(2)
-        '    MCGroup.BAcv = csv_BA(2)
-
-        '    'LowerBounds
-        '    MCGroup.BLower = csv_B(3)
-        '    MCGroup.PBLower = csv_PB(3)
-        '    MCGroup.QBLower = csv_QB(3)
-        '    MCGroup.EELower = csv_EE(3)
-        '    MCGroup.BALower = csv_BA(3)
-
-        '    'UpperBounds
-        '    MCGroup.BUpper = csv_B(4)
-        '    MCGroup.PBUpper = csv_PB(4)
-        '    MCGroup.QBUpper = csv_QB(4)
-        '    MCGroup.EEUpper = csv_EE(4)
-        '    MCGroup.BAUpper = csv_BA(4)
-
-        'Next '========================================================================================================================================================
-
-        ''reset the connection to the csv files ready to be read from the beginning again
-        'csv_B.Dispose()
-        'csv_BA.Dispose()
-        'csv_EE.Dispose()
-        'csv_PB.Dispose()
-        'csv_QB.Dispose()
-
         Return True
-
-        'Catch ex As Exception
-        '    Debug.Assert(False, Me.ToString & ".InitMonteCarloParameters() Exception: " & ex.Message)
-        'End Try
 
     End Function
 
@@ -2177,9 +2095,6 @@ Public Class cMSE
         '    If mCore.EcoPathGroupInputs(i).IsProducer Then nPPers += 1
         'Next i
         'nLivingMinusPPers = mCore.nLivingGroups - nPPers
-
-        Me.RunState = eRunStates.RunningMSE
-        cApplicationStatusNotifier.StartProgress(Me.Core, "", -1)
         Try
 
             'Init some of the Monte Carlo parameters
@@ -2300,9 +2215,6 @@ Public Class cMSE
         Catch ex As Exception
 
         End Try
-
-        cApplicationStatusNotifier.EndProgress(Me.Core)
-        Me.RunState = eRunStates.Idle
 
         Me.RestoreOriginalState()
 
@@ -3060,7 +2972,7 @@ Public Class cMSE
             If (value <> My.Settings.UseEwEPath) Then
                 My.Settings.UseEwEPath = value
                 My.Settings.Save()
-                Me.InvalidateConfigurationState()
+                Me.InvalidateConfigurationState(True)
             End If
         End Set
     End Property
@@ -3077,7 +2989,7 @@ Public Class cMSE
             If (value <> My.Settings.CustomPath) Then
                 My.Settings.CustomPath = value
                 My.Settings.Save()
-                Me.InvalidateConfigurationState()
+                Me.InvalidateConfigurationState(True)
             End If
         End Set
     End Property
@@ -3095,7 +3007,7 @@ Public Class cMSE
             If (value <> My.Settings.NMaxAttempts) Then
                 My.Settings.NMaxAttempts = value
                 My.Settings.Save()
-                Me.InvalidateConfigurationState()
+                'Me.InvalidateConfigurationState()
             End If
         End Set
     End Property
@@ -3113,7 +3025,7 @@ Public Class cMSE
             If (value <> My.Settings.NMaxTime) Then
                 My.Settings.NMaxTime = value
                 My.Settings.Save()
-                Me.InvalidateConfigurationState()
+                'Me.InvalidateConfigurationState()
             End If
         End Set
     End Property

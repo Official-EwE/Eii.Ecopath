@@ -87,15 +87,6 @@ Public Class frmDistributionParameters
 
 #Region " Overrides "
 
-    Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
-        Get
-            Return MyBase.UIContext
-        End Get
-        Set(value As ScientificInterfaceShared.Controls.cUIContext)
-            MyBase.UIContext = value
-        End Set
-    End Property
-
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         ' JS 30Sep13: globalized this method

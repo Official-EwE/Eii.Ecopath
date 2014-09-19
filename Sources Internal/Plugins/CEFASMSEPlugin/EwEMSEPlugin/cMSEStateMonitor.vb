@@ -125,7 +125,7 @@ Public Class cMSEStateMonitor
 
             Case eState.HasModels
                 bHasState = Me.IsStateAvailable(eState.HasParams) And _
-                    Me.MSE.IsRunDataCompatible() And _
+                    (Me.MSE.IsRunDataCompatible()) And _
                     (Me.MSE.NumModelsAvailable > 0)
 
             Case eState.HasResults

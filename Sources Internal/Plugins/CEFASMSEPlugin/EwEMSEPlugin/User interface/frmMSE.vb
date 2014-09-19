@@ -182,14 +182,37 @@ Public Class frmMSE
 
         Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
         Dim img As Image = Nothing
+
+        ' States
+        Dim bHasParams As Boolean = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
+        Dim bHasModels As Boolean = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
+
         Dim bIsRunningMSE As Boolean = (Me.MSE.RunState = cMSE.eRunStates.RunningMSE)
         Dim bIsRunningModels As Boolean = (Me.MSE.RunState = cMSE.eRunStates.RunningModels)
         Dim bIsRunning As Boolean = bIsRunningModels Or bIsRunningMSE
 
         Me.m_plStep1.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.Idle) And Not bIsRunning
-        Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) And Not bIsRunning
-        Me.m_plStep3.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) And Not bIsRunning
-        Me.m_plStep4.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels) And Not bIsRunning
+        Me.m_plStep3.Enabled = bHasParams And Not bIsRunning
+
+        ' Enable/disable panel 2 in a loop
+        'Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) And Not bIsRunning
+        For Each ctrl As Control In Me.m_plStep2.Controls
+            If (Object.ReferenceEquals(ctrl, Me.m_btnStopCreateModels)) Then
+                ctrl.Enabled = bHasParams And bIsRunningModels
+            Else
+                ctrl.Enabled = bHasParams And Not bIsRunning
+            End If
+        Next
+
+        ' Enable/disable panel 4 in a loop
+        'Me.m_plStep4.Enabled = bHasModels And Not bIsRunning
+        For Each ctrl As Control In Me.m_plStep4.Controls
+            If (Object.ReferenceEquals(ctrl, Me.Button1)) Then
+                ctrl.Enabled = bHasParams And bIsRunningMSE
+            Else
+                ctrl.Enabled = bHasParams And Not bIsRunning
+            End If
+        Next
 
         Me.m_rbEwEDefaultPath.Checked = Me.MSE.UseEwEPath
         Me.m_rbCustomPath.Checked = Not Me.MSE.UseEwEPath
@@ -232,7 +255,6 @@ Public Class frmMSE
         Me.m_fpNTrials.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_fpMassBalanceTol.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Me.m_btnDecreaseEffort.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
-        Me.m_btnCreateModels.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
 
         ' Provide feedback about available models
         If mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) Then
@@ -259,18 +281,29 @@ Public Class frmMSE
 
 #Region " Control events "
 
-    Private Sub OnCreateModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnCreateModels.Click
+    Private Sub OnRunCreateModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnRunCreateModels.Click
 
         If (Me.m_plugin Is Nothing) Then Return
 
         Try
-            If Not Me.MSE.CreateModels() Then
-                'Failed to create the new models
-                'better tell the user 
-            End If
+            ' Run is threaded; result of call does not matter
+            Me.MSE.CreateModels()
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE.frmMSE::OnCreateModels")
+            cLog.Write(ex, "CefasMSE.frmMSE::OnRunCreateModels")
+        End Try
+
+    End Sub
+
+    Private Sub OnStopCreateModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnStopCreateModels.Click
+
+        If (Me.m_plugin Is Nothing) Then Return
+
+        Try
+            Me.MSE.StopRun()
+        Catch ex As Exception
+            cLog.Write(ex, "CefasMSE.frmMSE::OnStopCreateModels")
         End Try
 
     End Sub
@@ -307,7 +340,7 @@ Public Class frmMSE
     End Sub
 
     Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnRun.Click
+        Handles m_btnRun.Click, Button1.Click
         Try
             Me.MSE.LoadSampledParams()
         Catch ex As Exception
@@ -340,8 +373,8 @@ Public Class frmMSE
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
             frmSurvivabilities.Init(Me.UIContext)
             If frmSurvivabilities.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.ResolveMSEPathConflicts(True)
-                Me.MSE.InvalidateConfigurationState(True)
+                Me.MSE.Survivability.Load()
+                Me.UpdateControls()
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnEditSurvivabilities")
@@ -356,8 +389,8 @@ Public Class frmMSE
             Dim frmDiets As New frmEditDiets(MSE)
             frmDiets.Init(Me.UIContext)
             If frmDiets.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.ResolveMSEPathConflicts(True)
-                Me.MSE.InvalidateConfigurationState(True)
+                Me.MSE.Diets.Load()
+                Me.UpdateControls()
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnEditDiets")
@@ -371,7 +404,8 @@ Public Class frmMSE
         Try
             Dim frm As New frmTFMpolicy(Me.UIContext, Me.MSE)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.InvalidateConfigurationState(True)
+                'Me.MSE.InvalidateConfigurationState(True)
+                Me.MSE.Strategies.Load()
                 Me.UpdateControls()
             End If
         Catch ex As Exception
@@ -447,7 +481,9 @@ Public Class frmMSE
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
             frmMaxDecreaseEfforts.Init(Me.UIContext, Me.MSE)
             If frmMaxDecreaseEfforts.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.InvalidateConfigurationState(True)
+                'Me.MSE.InvalidateConfigurationState(True)
+                Me.MSE.EffortLimits.Load()
+                Me.UpdateControls()
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnDecreaseEffort")
@@ -507,7 +543,9 @@ Public Class frmMSE
         Try
             Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.InvalidateConfigurationState(True)
+                'Me.MSE.InvalidateConfigurationState(True)
+                Me.MSE.StockAssessment.Load()
+                Me.UpdateControls()
             End If
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::onStockAssessment")
@@ -520,7 +558,9 @@ Public Class frmMSE
         Try
             Dim frm As New frmEditAssessmentError(Me.UIContext, Me.MSE)
             If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Me.MSE.InvalidateConfigurationState(True)
+                'Me.MSE.InvalidateConfigurationState(True)
+                Me.MSE.StockAssessment.Load()
+                Me.UpdateControls()
             End If
         Catch ex As Exception
 
@@ -590,6 +630,7 @@ Public Class frmMSE
 
         If (frmDisParams.ShowDialog(Me) = Windows.Forms.DialogResult.OK) Then
             Me.MSE.InvalidateConfigurationState(False)
+            ' Nothing to reload
             Me.UpdateControls()
             Return True
         End If
