@@ -175,19 +175,27 @@ Namespace SpatialData
 
             Dim sb As New StringBuilder()
             Dim strPath As String = ""
+            Dim strFile As String = ""
+            Dim strModel As String = ""
             Dim sep As String = cStringUtils.vbTab
 
             If (Not Me.m_bLogStarted) Then
 
-                ' Allowed to use smart directory?
-                If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
-                    ' #Yes: use core smartness
-                    strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
-                Else
-                    ' #No: use base output directory
-                    strPath = Me.m_core.OutputPath
-                End If
-                Me.m_strLogFileName = Path.Combine(strPath, "SpatialOperations.txt")
+                strModel = Me.m_core.DataSource.ToString
+
+                '' Allowed to use smart directory?
+                'If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
+                '    ' #Yes: use core smartness
+                '    strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
+                'Else
+                '    ' #No: use base output directory
+                '    strPath = Me.m_core.OutputPath
+                'End If
+
+                strPath = Path.GetDirectoryName(strModel)
+                strFile = Path.GetFileNameWithoutExtension(strModel)
+
+                Me.m_strLogFileName = Path.Combine(strPath, strFile & "_spatiallog.txt")
 
                 If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(Me.m_strLogFileName), True) Then
                     cLog.Write("cSpatialOperationsLog: unable to create output directory " + Me.m_strLogFileName)
