@@ -1597,7 +1597,8 @@ Public Class cMSE
             csvDietMatrix = New CsvReader(strmReader, False)
             If csvDietMatrix.ReadNextRecord() Then
                 For iPred As Integer = 1 To m_core.nLivingGroups
-                    _pathdata.DCInput(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                    'NOT DCInput because we don't have the support that copies this into DC
+                    _pathdata.DC(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                 Next
             Else
                 ' Unable to read predator header line! We have a problem
@@ -1610,7 +1611,8 @@ Public Class cMSE
                     For iPred As Integer = 1 To m_core.nLivingGroups
                         'If m_ecopath.EcopathData.DC(iPred, iPrey) > 0 Then
                         'Debug.Assert(cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) > 0)
-                        _pathdata.DCInput(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                        'NOT DCInput because we don't have the support that copies this into DC
+                        _pathdata.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                         'End If
 
                     Next
@@ -2565,6 +2567,7 @@ Public Class cMSE
             If (SumInteractions(iPred) = 0) Then    'No need to do any of this unless there is at least 1 prey for this parameter
                 'Set all values to zero - if running slow might want to consider how this could be skipped - possibly setting whole array to zero at start
                 For iPrey = 0 To m_core.nGroups
+                    'Should be DCInput here because the montecarlo does copy to DC
                     ecopathData.DCInput(iPred + 1, iPrey) = 0
                 Next
             Else
@@ -2589,12 +2592,14 @@ Public Class cMSE
 
                 Dim i As Integer = 0
                 If InteractsImports(iPred) = 1 Then
+                    'Should be DCInput here because the montecarlo does copy to DC
                     ecopathData.DCInput(iPred + 1, 0) = TempDirichlet(i)
                     i += 1
                 End If
 
                 For iPrey = 1 To m_core.nGroups
                     If Interacts(iPred, iPrey - 1) = 1 Then
+                        'Should be DCInput here because the montecarlo does copy to DC
                         ecopathData.DCInput(iPred + 1, iPrey) = TempDirichlet(i)
                         i += 1
                     End If
