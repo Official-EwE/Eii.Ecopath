@@ -187,6 +187,7 @@ Namespace Controls
             '
             Me.m_tscmbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tscmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbFilter.DropDownWidth = 200
             Me.m_tscmbFilter.MaxDropDownItems = 12
             Me.m_tscmbFilter.Name = "m_tscmbFilter"
             Me.m_tscmbFilter.Size = New System.Drawing.Size(150, 25)
