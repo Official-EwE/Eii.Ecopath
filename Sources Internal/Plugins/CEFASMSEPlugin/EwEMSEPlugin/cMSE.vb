@@ -2136,7 +2136,10 @@ Public Class cMSE
                         'to be tested for the mass-balance criteria
                         Me.SampleDietMatrix(Me.m_diets.Interacts, Me.m_diets.InteractsImports, Me.m_diets.MeanProportions, _
                                             Me.m_diets.MeanProportionsImports, Me.m_diets.DietPropMultipliers)
-                        'Me.NormalizeDiet(Me._pathdata.DCInput)
+
+                        'jb 23-Sept-2014 SampleDietMatrix(...) will truncate values less than a hardwired min (1.0E-6 inside SampleDietMatrix )
+                        'If that happens we need to re-normalize the diet matrix
+                        Me.NormalizeDiet(Me._pathdata.DCInput)
                         'Me.dumpDietMatrix()
 
                         Console.WriteLine("Iteration = " & i)
@@ -2364,32 +2367,32 @@ Public Class cMSE
     End Function
 
 
-    'Private Sub NormalizeDiet(ByRef DietMatrix(,) As Single)
-    '    Dim dietsum As Single
-    '    Dim tol As Single = 0.001
-    '    Dim bwarning As Boolean = False
+    Private Sub NormalizeDiet(ByRef DietMatrix(,) As Single)
+        Dim dietsum As Single
+        Dim tol As Single = 0.001
+        Dim bwarning As Boolean = False
 
-    '    For iPred = 1 To Me._pathdata.NumLiving
-    '        bwarning = False
-    '        If Me._pathdata.PP(iPred) < 1 Then
-    '            dietsum = 0
-    '            For iPrey = 0 To Me._pathdata.NumGroups
-    '                dietsum = dietsum + DietMatrix(iPred, iPrey)
-    '            Next
-    '            If dietsum <> 0 And Math.Abs(dietsum - 1) > tol Then
-    '                bwarning = True
-    '                For iPrey = 0 To Me._pathdata.NumGroups
-    '                    DietMatrix(iPred, iPrey) = DietMatrix(iPred, iPrey) / dietsum
-    '                Next
-    '                'm_Data.DietsModified = True
-    '            End If
-    '        End If
-    '    Next
-    '    If bwarning Then
-    '        System.Console.WriteLine("WARNING MSE Normalized Diet after sampling.")
-    '    End If
+        For iPred = 1 To Me._pathdata.NumLiving
+            bwarning = False
+            If Me._pathdata.PP(iPred) < 1 Then
+                dietsum = 0
+                For iPrey = 0 To Me._pathdata.NumGroups
+                    dietsum = dietsum + DietMatrix(iPred, iPrey)
+                Next
+                If dietsum <> 0 And Math.Abs(dietsum - 1) > tol Then
+                    bwarning = True
+                    For iPrey = 0 To Me._pathdata.NumGroups
+                        DietMatrix(iPred, iPrey) = DietMatrix(iPred, iPrey) / dietsum
+                    Next
+                    'm_Data.DietsModified = True
+                End If
+            End If
+        Next
+        If bwarning Then
+            System.Console.WriteLine("WARNING MSE Normalized Diet after sampling.")
+        End If
 
-    'End Sub
+    End Sub
 
 
     Public Sub CreateRCode()
@@ -2539,7 +2542,6 @@ Public Class cMSE
     End Function
 
     Private Sub SampleDietMatrix(ByVal Interacts(,) As Integer, ByVal InteractsImports() As Integer, ByVal MeanProportions(,) As Single, ByVal MeanProportionsImports() As Single, ByVal DietPropMultipliers() As Double)
-
         Dim MeanPropMod() As Single
         Dim SumInteractions(m_core.nLivingGroups - 1) As Single
         Dim TempDirichlet() As Single
@@ -2549,6 +2551,7 @@ Public Class cMSE
         Dim EcopathInternalStopWatch As New Stopwatch
         Dim ecopathData As cEcopathDataStructures = Me.m_ecopath.EcopathData
         Dim iPointer As Integer = 0
+        Dim MinProp As Single = 0.000001
 
         'Dim DirichletArray(mCore.nLivingGroups - 1, mCore.nLivingGroups - 1) As Single
 
@@ -2567,7 +2570,6 @@ Public Class cMSE
             If (SumInteractions(iPred) = 0) Then    'No need to do any of this unless there is at least 1 prey for this parameter
                 'Set all values to zero - if running slow might want to consider how this could be skipped - possibly setting whole array to zero at start
                 For iPrey = 0 To m_core.nGroups
-                    'Should be DCInput here because the montecarlo does copy to DC
                     ecopathData.DCInput(iPred + 1, iPrey) = 0
                 Next
             Else
@@ -2584,32 +2586,36 @@ Public Class cMSE
                         MeanPropMod(iPointer) = MeanProportions(iPred, iPrey)
                         iPointer += 1
                     End If
-                Next
+                Next iPrey
 
                 'Samples a set of Dirichlet distributed parameters
                 TempDirichlet = DirichletSample2(CInt(SumInteractions(iPred)), MeanPropMod, DietPropMultipliers(iPred))
 
 
                 Dim i As Integer = 0
+                Dim dProp As Single
                 If InteractsImports(iPred) = 1 Then
-                    'Should be DCInput here because the montecarlo does copy to DC
-                    ecopathData.DCInput(iPred + 1, 0) = TempDirichlet(i)
+                    dProp = TempDirichlet(i)
+                    If dProp < MinProp Then dProp = 0.0F
+                    ecopathData.DCInput(iPred + 1, 0) = dProp
                     i += 1
-                End If
+                End If 'InteractsImports(iPred) = 1
 
                 For iPrey = 1 To m_core.nGroups
                     If Interacts(iPred, iPrey - 1) = 1 Then
-                        'Should be DCInput here because the montecarlo does copy to DC
-                        ecopathData.DCInput(iPred + 1, iPrey) = TempDirichlet(i)
+                        dProp = TempDirichlet(i)
+                        If dProp < MinProp Then dProp = 0.0F
+                        ecopathData.DCInput(iPred + 1, iPrey) = dProp
                         i += 1
-                    End If
-                Next
+                    End If 'Interacts(iPred, iPrey - 1) = 1
+                Next iPrey
 
-            End If
-
-        Next
+            End If '(SumInteractions(iPred) = 0)
+        Next iPred
 
     End Sub
+
+
 
 #End Region 'Distributions and sampling code
 
@@ -2800,15 +2806,17 @@ Public Class cMSE
                     _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 Else
 
-                    'Add uncertainty to the regulated effort 
-                    'This is implementation error
-                    'How well they match the quota set above
-                    'The implementation error is not really the business of the stock assessment model
-                    'It is part of the stock assessment for practical reasons 
-                    '   CV can be included in the interface
-                    '   Random number generator needs to be seeded at the same time as the stock assessment model
-                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
+                    'Make sure the fleet is regulated if we are going add error to Effort Implementation
+                    If Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None Then
+                        'Add uncertainty to the regulated Effort 
+                        'This is implementation error. The Effort actually achieved by the Fleet.
+                        'The implementation error is not really the business of the stock assessment model
+                        'It is part of the stock assessment for practical reasons 
+                        '   CV can be included in the interface
+                        '   Random number generator needs to be seeded at the same time as the stock assessment model
+                        _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
 
+                    End If 'Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None
 
                 End If
             Next
