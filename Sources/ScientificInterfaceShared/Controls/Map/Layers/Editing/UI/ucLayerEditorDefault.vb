@@ -22,6 +22,9 @@ Option Strict On
 
 Imports EwEUtils.Utilities
 Imports EwECore
+Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -100,6 +103,11 @@ Namespace Controls.Map.Layers
 
         End Sub
 
+        Private Sub OnLegendDoubleclick(sender As Object, e As System.EventArgs) _
+            Handles m_plLegend.DoubleClick
+            Me.EditLayer(eLayerEditTypes.EditVisuals)
+        End Sub
+
         Private Sub m_plLegend_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
             Handles m_plLegend.Paint
 
@@ -130,6 +138,21 @@ Namespace Controls.Map.Layers
             Return True
         End Function
 
+        Private Sub OnDoubleclickValue(sender As System.Object, e As System.EventArgs) _
+            Handles m_tbxMax.DoubleClick, m_tbxMin.DoubleClick
+            Me.EditLayer(eLayerEditTypes.EditData)
+        End Sub
+
+        Private Sub EditLayer(ByVal edittype As eLayerEditTypes)
+            Try
+                Dim rl As cDisplayRasterLayer = DirectCast(Me.Layer, cDisplayRasterLayer)
+                Dim cmd As cEditLayerCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
+                cmd.Invoke(rl, Nothing, edittype)
+            Catch ex As Exception
+                cLog.Write(ex, eVerboseLevel.Detailed, "ucLayerEditor::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
+            End Try
+
+        End Sub
     End Class
 
 End Namespace
