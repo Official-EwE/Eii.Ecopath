@@ -126,7 +126,7 @@ Namespace Ecospace.Controls
 
                 ' Config
                 If (Me.m_uic IsNot Nothing) Then
-                    Me.m_mhSpace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+                    Me.m_mhSpace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSpace)
 #If DEBUG Then
                     Me.m_mhSpace.Name = "ucSpatialTimeSeriesToolbox::m_mhSpace"
@@ -388,6 +388,8 @@ Namespace Ecospace.Controls
                     End If
                 Case eDataTypes.EcoSpaceScenario
                     Me.RefreshContent()
+                Case eDataTypes.EcospaceSpatialDataSource
+                    Me.RefreshContent()
             End Select
 
         End Sub
@@ -419,18 +421,17 @@ Namespace Ecospace.Controls
 
             Dim core As cCore = Me.m_uic.Core
             Dim bm As cEcospaceBasemap = core.EcospaceBasemap
-            Dim conn As cSpatialDataConnectionManager = Me.m_uic.Core.SpatialDataConnectionManager()
+            Dim man As cSpatialDataConnectionManager = Me.m_uic.Core.SpatialDataConnectionManager()
             Dim lAdt As New List(Of cSpatialDataAdapter)
-            Dim ds As ISpatialDataSet = Nothing
             Dim iRow As Integer = 0
             Dim ptfTL As PointF = bm.PosTopLeft
             Dim ptfBR As PointF = bm.PosBottomRight
 
             ' Resolve varname
             If (Me.m_varname = eVarNameFlags.NotSet) Then
-                lAdt.AddRange(conn.Adapters)
+                lAdt.AddRange(man.Adapters)
             Else
-                lAdt.Add(conn.Adapter(Me.m_varname))
+                lAdt.Add(man.Adapter(Me.m_varname))
             End If
 
             ' Try to preserve selection
@@ -445,51 +446,52 @@ Namespace Ecospace.Controls
 
             Me.m_lInfo.Clear()
 
+            Dim dicConn As New Dictionary(Of ISpatialDataSet, cSpatialDataConnection)
             For Each adt As cSpatialDataAdapter In lAdt
-                For i As Integer = 0 To adt.MaxLength - 1
-                    For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                For Each conn As cSpatialDataConnection In adt.Connections()
+                    Debug.Assert(conn IsNot Nothing)
+                    If (adt.IsEnabled(conn.iLayer)) Then
+                        dicConn(conn.Dataset) = conn
+                    End If
+                Next conn
+            Next
 
-                        If adt.IsConnected(i, j) Then
+            For Each conn As cSpatialDataConnection In dicConn.Values
 
-                            ds = adt.Dataset(i, j)
+                Dim pos As New cDatasetInfo()
+                pos.m_ds = conn.Dataset
+                pos.m_var = conn.Adapter.VarName
+                pos.m_guid = conn.Dataset.GUID
+                pos.m_iPosVert = iRow
 
-                            Dim pos As New cDatasetInfo()
-                            pos.m_ds = ds
-                            pos.m_var = adt.VarName
-                            pos.m_guid = ds.GUID
-                            pos.m_iPosVert = iRow
+                If conn.Dataset.TimeStart = Date.MinValue Then
+                    pos.m_iTimeStart = 1
+                Else
+                    pos.m_iTimeStart = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeStart)
+                End If
 
-                            If ds.TimeStart = Date.MinValue Then
-                                pos.m_iTimeStart = 1
-                            Else
-                                pos.m_iTimeStart = core.AbsoluteTimeToEcospaceTimestep(ds.TimeStart)
-                            End If
+                If conn.Dataset.TimeEnd = Date.MaxValue Then
+                    pos.m_iTimeEnd = core.nEcospaceTimeSteps
+                Else
+                    pos.m_iTimeEnd = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeEnd)
+                End If
 
-                            If ds.TimeEnd = Date.MaxValue Then
-                                pos.m_iTimeEnd = core.nEcospaceTimeSteps
-                            Else
-                                pos.m_iTimeEnd = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(ds.TimeEnd)
-                            End If
+                For iStep As Integer = pos.m_iTimeStart To pos.m_iTimeEnd
+                    Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
+                    If conn.Dataset.HasDataAtT(tm) Then
+                        pos.m_liData.Add(iStep)
+                        pos.m_liTime.Add(tm)
+                    End If
+                Next
 
-                            For iStep As Integer = pos.m_iTimeStart To pos.m_iTimeEnd
-                                Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
-                                If ds.HasDataAtT(tm) Then
-                                    pos.m_liData.Add(iStep)
-                                    pos.m_liTime.Add(tm)
-                                End If
-                            Next
+                Me.m_lInfo.Add(pos)
 
-                            Me.m_lInfo.Add(pos)
+                If (pos.m_var = var) And (pos.m_guid = guid) Then
+                    iSel = iRow
+                End If
 
-                            If (pos.m_var = var) And (pos.m_guid = guid) Then
-                                iSel = iRow
-                            End If
-
-                            iRow += 1
-                        End If
-                    Next j
-                Next i
-            Next adt
+                iRow += 1
+            Next conn
 
             Me.SelectedDatasetIndex = iSel
 

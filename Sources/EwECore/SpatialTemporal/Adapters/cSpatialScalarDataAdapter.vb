@@ -32,7 +32,7 @@ Namespace SpatialData
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Implementation of <see cref="cSpatialScalarDataAdapterBase"/> to scale data by 
-    ''' a given <see cref="cSpatialScalarDataAdapterBase.DataScale">scale</see>.
+    ''' a given <see cref="cSpatialScalarDataConnection.Scale">scale</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cSpatialScalarDataAdapter
@@ -54,16 +54,15 @@ Namespace SpatialData
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
         Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
-                                             ByVal iConnection As Integer, _
+                                             ByVal conn As cSpatialDataConnection, _
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
 
-            If (Me.DataScaleType(layer.Index, iConnection) = eScaleType.Relative) And (sValueAtT <> cCore.NULL_VALUE) Then
-                sValueAtT /= Me.DataScale(layer.Index, iConnection)
+            If (conn.ScaleType = eScaleType.Relative) And (sValueAtT <> cCore.NULL_VALUE) Then
+                sValueAtT /= conn.Scale
             End If
-
-            Return MyBase.SetCell(layer, iConnection, iRow, iCol, sValueAtT)
+            Return MyBase.SetCell(layer, conn, iRow, iCol, sValueAtT)
 
         End Function
 
@@ -79,18 +78,11 @@ Namespace SpatialData
     ''' Derived spatial data adapter to insert scaled external spatial/temporal map data into
     ''' the Ecospace data structures at any given moment. This adapter maintains a scale
     ''' for every map layer attached to the adapter, and will translate map values
-    ''' to relative values when <see cref="cSpatialScalarDataAdapter.DataScaleType"/> is set to
+    ''' to relative values when <see cref="cSpatialScalarDataConnection.ScaleType"/> is set to
     ''' <see cref="cSpatialScalarDataAdapter.eScaleType.Relative">relative</see>.
     ''' </summary>
     Public MustInherit Class cSpatialScalarDataAdapterBase
         Inherits cSpatialDataAdapter
-
-#Region " Private variables "
-
-        Protected m_scales(,) As Double
-        Protected m_scaleType(,) As eScaleType
-
-#End Region ' Private variables
 
 #Region " Constructor "
 
@@ -116,47 +108,6 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the <see cref="eScaleType">scale type</see> for the layer identified by <paramref name="iIndex"/>.
-        ''' If set to <see cref="eScaleType.Relative"/>, external values are <see cref="DataScale">scaled</see>.
-        ''' </summary>
-        ''' <param name="iIndex">Layer index [0, <see cref="MaxLength"/>&lt;</param>
-        ''' -------------------------------------------------------------------
-        Public Property DataScaleType(iIndex As Integer, iConnection As Integer) As eScaleType
-            Get
-                If (Me.m_scaleType Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.MaxLength, "Index out of range")
-                Return Me.m_scaleType(Math.Max(0, iIndex), iConnection)
-            End Get
-            Set(value As eScaleType)
-                If (Me.m_scaleType Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.MaxLength, "Index out of range")
-                Me.m_scaleType(Math.Max(0, iIndex), iConnection) = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the external data scale value. Scaling occurs only when the
-        ''' <see cref="DataScaleType"/> for layer <paramref name="iIndex"/> is
-        ''' set to <see cref="eScaleType.Relative"/>.
-        ''' </summary>
-        ''' <param name="iIndex">Layer index [0, <see cref="MaxLength"/>&lt;</param>
-        ''' -------------------------------------------------------------------
-        Public Property DataScale(iIndex As Integer, iConnection As Integer) As Double
-            Get
-                If (Me.m_scales Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.MaxLength, "Index out of range")
-                Return Me.m_scales(Math.Max(0, iIndex), iConnection)
-            End Get
-            Set(value As Double)
-                If (Me.m_scales Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.MaxLength, "Index out of range")
-                Me.m_scales(Math.Max(0, iIndex), iConnection) = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Calculate the average of a dataset for a year, starting at a given
         ''' Ecospace time step.
         ''' </summary>
@@ -167,8 +118,8 @@ Namespace SpatialData
         ''' indicating the outcome of the calculation.</returns>
         ''' -------------------------------------------------------------------
         Public Function CalculateScaleFromEcopathTimePeriod(ByVal iLayerIndex As Integer, _
+                                                            ByVal conn As cSpatialDataConnection, _
                                                             ByVal iFirstTimeStep As Integer, _
-                                                            ByVal iConnection As Integer, _
                                                             ByRef dScale As Double) As cDatasetCompatilibity.eCompatibilityTypes
 
             Dim manConn As cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
@@ -176,13 +127,13 @@ Namespace SpatialData
             Dim result As cDatasetCompatilibity.eCompatibilityTypes = cDatasetCompatilibity.eCompatibilityTypes.Errors
 
             ' Early bail-out
-            If Not Me.IsConnected(iLayerIndex, iConnection) Then Return result
+            If Not Me.IsConnected(iLayerIndex) Then Return result
 
             ' Terminate indexing
             manSets.StopIndexing()
 
-            Dim ds As ISpatialDataSet = Me.Dataset(iLayerIndex, iConnection)
-            Dim cv As ISpatialDataConverter = Me.Converter(iLayerIndex, iConnection)
+            Dim ds As ISpatialDataSet = conn.Dataset
+            Dim cv As ISpatialDataConverter = conn.Converter
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim iInRow As Integer = bm.InRow
             Dim iInCol As Integer = bm.InCol
@@ -268,31 +219,6 @@ Namespace SpatialData
         End Function
 
 #End Region ' Public access
-
-#Region " Overrides "
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cSpatialDataAdapter.Initialize"/>.
-        ''' -------------------------------------------------------------------
-        Friend Overrides Sub Initialize()
-
-            MyBase.Initialize()
-
-            Dim iNumItems As Integer = Math.Max(1, Me.m_core.GetCoreCounter(Me.m_coreCounter))
-
-            ReDim Me.m_scales(iNumItems, cSpatialDataStructures.cMAX_CONN)
-            ReDim Me.m_scaleType(iNumItems, cSpatialDataStructures.cMAX_CONN)
-
-            For i As Integer = 0 To iNumItems
-                For j As Integer = 0 To cSpatialDataStructures.cMAX_CONN
-                    Me.m_scales(i, j) = 1.0!
-                    Me.m_scaleType(i, j) = eScaleType.Relative
-                Next
-            Next
-
-        End Sub
-
-#End Region ' Overrides
 
     End Class
 

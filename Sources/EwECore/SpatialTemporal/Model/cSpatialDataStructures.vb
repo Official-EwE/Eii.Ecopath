@@ -103,8 +103,17 @@ Namespace SpatialData
             Public Property ConverterConfig As String = ""
             ''' <summary>Data scale, if any.</summary>
             Public Property Scale As Single = 1.0!
-            ''' <summary><see cref="cSpatialScalarDataAdapterBase.DataScaleType"/>.</summary>
+            ''' <summary></summary>
             Public Property ScaleType As Byte = 0
+
+            Friend Sub Clear()
+                Me.DatasetGUID = ""
+                Me.DatasetTypeName = ""
+                Me.DatasetConfig = ""
+                Me.ConverterTypeName = ""
+                Me.ConverterConfig = ""
+                Me.Scale = 1
+            End Sub
 
         End Class
 

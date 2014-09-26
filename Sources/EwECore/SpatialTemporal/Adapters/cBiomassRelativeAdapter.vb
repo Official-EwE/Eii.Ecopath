@@ -27,7 +27,6 @@ Imports EwEUtils.Utilities
 
 Namespace SpatialData
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Data Adapter specific to Biomass forcing.
@@ -38,14 +37,13 @@ Namespace SpatialData
     Public Class cBiomassRelativeAdapter
         Inherits cSpatialScalarDataAdapterBase
 
-
 #Region " Private vars "
 
         Private m_spaceData As cEcospaceDataStructures
 
-        'Ragged array used to store the base map by Layer
+        ''' <summary>Ragged array used to store the base map by Layer</summary>
         Private m_baseLayers()(,) As Single
-        'Has the base map for this layer been initialized
+        ''' <summary>Has the base map for this layer been initialized?</summary>
         Private m_IsBaseInitialized() As Boolean
 
 #End Region ' Private vars
@@ -89,23 +87,17 @@ Namespace SpatialData
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
         Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
-                                             ByVal iConnection As Integer, _
+                                             ByVal conn As cSpatialDataConnection, _
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
-            Dim scalar As Double
-
             Try
                 'Debug.Assert(Me.DataScaleType(layer.Index, iConnection) = eScaleType.Relative, Me.ToString + ".SetCell() Warning scale type should be 'Relative'")
 
-
-
                 If sValueAtT <> cCore.NULL_VALUE Then
-                    scalar = Me.m_scales(layer.Index, iConnection)
-
                     'External data is the pattern of biomass distribution relative to the Ecospace base biomass
                     'B = [B base at t=zero] * [B external] * [1/mean B external at t=zero]
-                    layer.Cell(iRow, iCol) = CDbl(Me.m_baseLayers(layer.Index)(iRow, iCol)) * sValueAtT * scalar
+                    layer.Cell(iRow, iCol) = CDbl(Me.m_baseLayers(layer.Index)(iRow, iCol)) * sValueAtT * conn.Scale
                 Else
                     layer.Cell(iRow, iCol) = sValueAtT
                 End If
@@ -122,7 +114,7 @@ Namespace SpatialData
 
 
         Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, ByVal layer As cEcospaceLayer,
-                                                  ByVal iConnection As Integer, ByVal iTime As Integer, ByVal dt As Date,
+                                                  ByVal conn As cSpatialDataConnection, ByVal iTime As Integer, ByVal dt As Date,
                                                   ByVal dataExternal As ISpatialRaster, ByVal dNoData As Double) As Boolean
 
             Try
@@ -138,7 +130,7 @@ Namespace SpatialData
                 Return False
             End Try
 
-            Return MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
+            Return MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
 
         End Function
 

@@ -353,11 +353,18 @@ Namespace Ecospace.Basemap
 #Region " Mandatory overrides "
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+
             ' Refresh basemap on ANY data added or removed message from Ecospace
             If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
                 ' Refresh it all
                 Me.Invalidate()
             End If
+
+            ' Trigger refresh for external data icons. Should really not be here, but ok
+            If ((msg.DataType = eDataTypes.EcospaceSpatialDataConnection) Or (msg.DataType = eDataTypes.EcospaceSpatialDataSource)) Then
+                Me.m_ucLayers.Invalidate(True)
+            End If
+
         End Sub
 
 #End Region ' Mandatory overrides

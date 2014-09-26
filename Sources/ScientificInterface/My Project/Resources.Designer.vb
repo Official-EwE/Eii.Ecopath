@@ -1915,6 +1915,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Create new connection.
+        '''</summary>
+        Public ReadOnly Property HEADER_SPATTEMP_CREATE_CONNECTION() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SPATTEMP_CREATE_CONNECTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No external data.
+        '''</summary>
+        Public ReadOnly Property HEADER_SPATTEMP_NODRIVER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SPATTEMP_NODRIVER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Stationary system.
         '''</summary>
         Public ReadOnly Property HEADER_STATIONARY() As String

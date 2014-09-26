@@ -24,6 +24,7 @@ Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -40,7 +41,10 @@ Namespace Ecospace
 
 #Region " Private helper classes "
 
-        Private Class cSpatialDataAdapterItem
+        ''' <summary>
+        ''' Private class for the adapter filter
+        ''' </summary>
+        Private Class cSpatialDataAdapterFilterItem
 
             Private m_adt As cSpatialDataAdapter
             Private m_fmt As New cSpatialDataAdapterFormatter()
@@ -100,22 +104,32 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
-            ' Connect to edit command
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditSpatialDatasets")
-            If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnConnections)
+            Me.m_tsbnConnections.Image = SharedResources.Database
+
+            Try
+                Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditSpatialDatasets")
+                cmd.AddControl(Me.m_tsbnConnections)
+            Catch ex As Exception
+                Debug.Assert(False)
+            End Try
+
+            Me.m_tsbnOnlyShowConnected.Image = SharedResources.FilterHS
+            Me.m_tslbAdapterFilter.Image = SharedResources.FilterHS
 
             ' Fill filter combo
-            Me.m_tscmTypes.Items.Add(New cSpatialDataAdapterItem(Nothing))
+            Me.m_tscmbAdapterFilter.Items.Add(New cSpatialDataAdapterFilterItem(Nothing))
             For Each adt As cSpatialDataAdapter In Me.Core.SpatialDataConnectionManager.Adapters
-                Me.m_tscmTypes.Items.Add(New cSpatialDataAdapterItem(adt))
+                Me.m_tscmbAdapterFilter.Items.Add(New cSpatialDataAdapterFilterItem(adt))
             Next
-            Me.m_tscmTypes.SelectedIndex = 0
+            Me.m_tscmbAdapterFilter.SelectedIndex = 0
 
             Me.m_tsbnShowRefMap.Checked = Me.m_map.ShowReferenceMap
             Me.m_tsbnShowGrid.Checked = Me.m_map.ShowGrid
             Me.m_toolbox.SelectedTimeStep = 0
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.External}
+            Me.m_tsbnOnlyShowConnected.Checked = Me.m_gridApply.OnlyShowConnected
+
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
         End Sub
 
@@ -123,11 +137,15 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
+            Try
+                Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditSpatialDatasets")
+                cmd.RemoveControl(Me.m_tsbnConnections)
+            Catch ex As Exception
+                Debug.Assert(False)
+            End Try
+
             Me.m_manDS.IndexDataset = Nothing ' Stop indexing
             Me.m_manDS.Save()
-
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME)
-            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnConnections)
 
             MyBase.OnFormClosed(e)
 
@@ -170,9 +188,9 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnSelectType(sender As System.Object, e As System.EventArgs) _
-            Handles m_tscmTypes.SelectedIndexChanged
+            Handles m_tscmbAdapterFilter.SelectedIndexChanged
 
-            Dim t As cSpatialDataAdapterItem = DirectCast(Me.m_tscmTypes.SelectedItem, cSpatialDataAdapterItem)
+            Dim t As cSpatialDataAdapterFilterItem = DirectCast(Me.m_tscmbAdapterFilter.SelectedItem, cSpatialDataAdapterFilterItem)
             Dim vn As eVarNameFlags = eVarNameFlags.NotSet
 
             If (t IsNot Nothing) Then
@@ -207,8 +225,14 @@ Namespace Ecospace
             Me.m_map.ShowReferenceMap = Me.m_tsbnShowRefMap.Checked
         End Sub
 
-        Private Sub OnToggleShowGrid(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowGrid.Click
+        Private Sub OnToggleShowGrid(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnShowGrid.Click
             Me.m_map.ShowGrid = Me.m_tsbnShowGrid.Checked
+        End Sub
+
+        Private Sub OnToggleOnlyShowConnected(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnOnlyShowConnected.Click
+            Me.m_gridApply.OnlyShowConnected = Me.m_tsbnOnlyShowConnected.Checked
         End Sub
 
 #End Region ' Control events
@@ -224,7 +248,8 @@ Namespace Ecospace
                 Case eDataTypes.EcospaceBasemap
                     Me.m_map.RefreshContent()
 
-                Case eDataTypes.EcospaceSpatialDataConnection
+                Case eDataTypes.EcospaceSpatialDataConnection, eDataTypes.EcospaceSpatialDataSource
+                    Me.m_gridApply.RefreshContent()
                     Me.m_toolbox.RefreshContent()
                     Me.m_map.RefreshContent()
 

@@ -52,7 +52,6 @@ Namespace Ecospace.Controls
             Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrConnections = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnFilter = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnDefineConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -60,6 +59,7 @@ Namespace Ecospace.Controls
             Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_btnAdd = New System.Windows.Forms.Button()
+            Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
@@ -110,6 +110,7 @@ Namespace Ecospace.Controls
             Me.m_gridConnections.GridToolTipActive = True
             Me.m_gridConnections.IsLayoutSuspended = False
             Me.m_gridConnections.Name = "m_gridConnections"
+            Me.m_gridConnections.SelectedConnection = Nothing
             Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                 Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -247,17 +248,10 @@ Namespace Ecospace.Controls
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnFilter, Me.m_tsbnDefineConnections})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineConnections})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tsbnFilter
-            '
-            Me.m_tsbnFilter.CheckOnClick = True
-            Me.m_tsbnFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsbnFilter, "m_tsbnFilter")
-            Me.m_tsbnFilter.Name = "m_tsbnFilter"
             '
             'm_tsbnDefineConnections
             '
@@ -313,11 +307,18 @@ Namespace Ecospace.Controls
             Me.m_btnAdd.Name = "m_btnAdd"
             Me.m_btnAdd.UseVisualStyleBackColor = True
             '
+            'm_cbEnabled
+            '
+            resources.ApplyResources(Me.m_cbEnabled, "m_cbEnabled")
+            Me.m_cbEnabled.Name = "m_cbEnabled"
+            Me.m_cbEnabled.UseVisualStyleBackColor = True
+            '
             'dlgApplyConnection
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_cbEnabled)
             Me.Controls.Add(Me.m_scMain)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_tsMain)
@@ -360,7 +361,6 @@ Namespace Ecospace.Controls
         Private WithEvents m_gridConnections As ScientificInterface.Ecospace.Controls.gridApplyDatasets
         Private WithEvents m_btnConfigDS As System.Windows.Forms.Button
         Private WithEvents m_btnOK As System.Windows.Forms.Button
-        Private WithEvents m_tsbnFilter As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnDefineConnections As System.Windows.Forms.ToolStripButton
         Private WithEvents m_hdrConfig As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
@@ -374,6 +374,7 @@ Namespace Ecospace.Controls
         Private WithEvents m_btnAdd As System.Windows.Forms.Button
         Private WithEvents m_lbSourceDatasets As cSpatialDatasetListbox
         Friend WithEvents m_pbCompat As System.Windows.Forms.PictureBox
+        Private WithEvents m_cbEnabled As System.Windows.Forms.CheckBox
 
     End Class
 

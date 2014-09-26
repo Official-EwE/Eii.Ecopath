@@ -49,13 +49,13 @@ Namespace Other
             Me.m_chdrContact = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.m_chdrLOcation = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.m_btnNew = New System.Windows.Forms.Button()
+            Me.m_btnSelect = New System.Windows.Forms.Button()
+            Me.m_ilLoaded = New System.Windows.Forms.ImageList(Me.components)
+            Me.m_lblAvailable = New System.Windows.Forms.Label()
+            Me.m_btnExport = New System.Windows.Forms.Button()
             Me.m_hdrIndexing = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrCache = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_btnSelect = New System.Windows.Forms.Button()
-            Me.m_ilLoaded = New System.Windows.Forms.ImageList(Me.components)
-            Me.Label1 = New System.Windows.Forms.Label()
-            Me.m_btnExport = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_btnAdd
@@ -145,6 +145,29 @@ Namespace Other
             Me.m_btnNew.Name = "m_btnNew"
             Me.m_btnNew.UseVisualStyleBackColor = False
             '
+            'm_btnSelect
+            '
+            resources.ApplyResources(Me.m_btnSelect, "m_btnSelect")
+            Me.m_btnSelect.Name = "m_btnSelect"
+            Me.m_btnSelect.UseVisualStyleBackColor = True
+            '
+            'm_ilLoaded
+            '
+            Me.m_ilLoaded.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+            resources.ApplyResources(Me.m_ilLoaded, "m_ilLoaded")
+            Me.m_ilLoaded.TransparentColor = System.Drawing.Color.Transparent
+            '
+            'm_lblAvailable
+            '
+            resources.ApplyResources(Me.m_lblAvailable, "m_lblAvailable")
+            Me.m_lblAvailable.Name = "m_lblAvailable"
+            '
+            'm_btnExport
+            '
+            resources.ApplyResources(Me.m_btnExport, "m_btnExport")
+            Me.m_btnExport.Name = "m_btnExport"
+            Me.m_btnExport.UseVisualStyleBackColor = True
+            '
             'm_hdrIndexing
             '
             resources.ApplyResources(Me.m_hdrIndexing, "m_hdrIndexing")
@@ -169,34 +192,11 @@ Namespace Other
             Me.m_hdrCaption.IsCollapsed = False
             Me.m_hdrCaption.Name = "m_hdrCaption"
             '
-            'm_btnSelect
-            '
-            resources.ApplyResources(Me.m_btnSelect, "m_btnSelect")
-            Me.m_btnSelect.Name = "m_btnSelect"
-            Me.m_btnSelect.UseVisualStyleBackColor = True
-            '
-            'm_ilLoaded
-            '
-            Me.m_ilLoaded.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-            resources.ApplyResources(Me.m_ilLoaded, "m_ilLoaded")
-            Me.m_ilLoaded.TransparentColor = System.Drawing.Color.Transparent
-            '
-            'Label1
-            '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
-            '
-            'm_btnExport
-            '
-            resources.ApplyResources(Me.m_btnExport, "m_btnExport")
-            Me.m_btnExport.Name = "m_btnExport"
-            Me.m_btnExport.UseVisualStyleBackColor = True
-            '
             'ucOptionsSpatialTemporal
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.m_lblAvailable)
             Me.Controls.Add(Me.m_lvDatasets)
             Me.Controls.Add(Me.m_cbAllowIndexing)
             Me.Controls.Add(Me.m_lblCacheSizeValue)
@@ -213,6 +213,7 @@ Namespace Other
             Me.Controls.Add(Me.m_btnAdd)
             Me.Controls.Add(Me.m_btnViewCache)
             Me.Controls.Add(Me.m_hdrCaption)
+            Me.MinimumSize = New System.Drawing.Size(400, 307)
             Me.Name = "ucOptionsSpatialTemporal"
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -239,8 +240,8 @@ Namespace Other
         Private WithEvents m_btnSelect As System.Windows.Forms.Button
         Private WithEvents m_chdrCurrent As System.Windows.Forms.ColumnHeader
         Private WithEvents m_ilLoaded As System.Windows.Forms.ImageList
-        Friend WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_btnExport As System.Windows.Forms.Button
+        Private WithEvents m_lblAvailable As System.Windows.Forms.Label
 
     End Class
 End Namespace

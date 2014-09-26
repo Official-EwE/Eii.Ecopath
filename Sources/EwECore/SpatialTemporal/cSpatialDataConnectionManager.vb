@@ -85,7 +85,7 @@ Namespace SpatialData
         Private m_data As cSpatialDataStructures = Nothing
 
         ''' <summary>Pre-determined number of configured data connections</summary>
-        Private m_iNumConnected As Integer = cCore.NULL_VALUE
+        Private m_iNumConfigured As Integer = cCore.NULL_VALUE
 
 #End Region ' Variables
 
@@ -126,85 +126,89 @@ Namespace SpatialData
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
+            Dim conn As cSpatialDataConnection = Nothing
             Dim t As Type = Nothing
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
-                adt.AllowValidation = False
                 For i As Integer = 1 To adt.MaxLength
                     For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
 
-                        ds = Nothing
-                        cv = Nothing
                         cfg = Me.m_data.Item(adt.VarName, i, j)
+                        Debug.Assert(cfg IsNot Nothing)
 
-                        If (Not String.IsNullOrWhiteSpace(cfg.DatasetTypeName)) Then
-
-                            ds = Me.m_datasetManager.CreateDataset(cfg)
-                            cv = Me.m_datasetManager.CreateConverter(cfg)
-
-                            'Convert not necessary for a scale value
-                            If TypeOf (adt) Is cSpatialScalarDataAdapterBase Then
-                                With DirectCast(adt, cSpatialScalarDataAdapterBase)
-                                    .DataScale(i, j) = cfg.Scale
-                                    .DataScaleType(i, j) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
-                                End With
-                            End If
-                        End If
-
-                        adt.Dataset(i, j) = ds
-                        adt.Converter(i, j) = cv
+                        ds = Me.m_datasetManager.CreateDataset(cfg)
+                        cv = Me.m_datasetManager.CreateConverter(cfg)
+                        If (ds IsNot Nothing) Then
+                            conn = adt.AddConnection(i)
+                            conn.Dataset = ds
+                            conn.Converter = cv
+                            conn.Scale = cfg.Scale
+                            conn.ScaleType = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
+                         End If
                     Next j
                 Next i
-                adt.AllowValidation = True
             Next adt
 
             ' Invalidate connection count
-            Me.m_iNumConnected = cCore.NULL_VALUE
+            Me.m_iNumConfigured = cCore.NULL_VALUE
 
-            Me.NotifyCore(eMessageType.DataAddedOrRemoved)
+            Me.Update(eMessageType.DataAddedOrRemoved)
 
         End Sub
 
         ''' <summary>
         ''' Apply spatial configration details to the underlying spatial data structures.
         ''' </summary>
-        Public Sub Update()
+        ''' <param name="adt">The adapter to update. If left empty, all adapters will be updated.</param>
+        Public Sub Update(Optional adt As cSpatialDataAdapter = Nothing)
+
+            'If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
 
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
 
-            'If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
+            Dim adapters As New List(Of cSpatialDataAdapter)
+            If (adt IsNot Nothing) Then
+                adapters.Add(adt)
+            Else
+                adapters.AddRange(Me.Adapters)
+            End If
 
-            For Each adt As cSpatialDataAdapter In Me.Adapters
+            For Each adt In adapters
                 For i As Integer = 1 To adt.MaxLength
+                    Dim connections As cSpatialDataConnection() = adt.Connections(i)
+                    Dim conn As cSpatialDataConnection = Nothing
                     For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
 
-                        ds = adt.Dataset(i, j)
-                        cv = adt.Converter(i, j)
+                        ' Get connection
+                        If (j <= connections.Length) Then
+                            conn = connections(j - 1)
+                        Else
+                            conn = Nothing
+                        End If
+
+                        ' Get configuration
                         cfg = Me.m_data.Item(adt.VarName, i, j)
 
-                        If (cfg IsNot Nothing) Then
+                        Debug.Assert(cfg IsNot Nothing)
 
-                            Me.m_datasetManager.UpdateDataset(ds, cfg)
-                            Me.m_datasetManager.UpdateConverter(cv, cfg)
-
-                            If TypeOf adt Is cSpatialScalarDataAdapterBase Then
-                                With DirectCast(adt, cSpatialScalarDataAdapterBase)
-                                    cfg.Scale = CSng(.DataScale(i, j))
-                                    cfg.ScaleType = CByte(.DataScaleType(i, j))
-                                End With
-                            End If
-
+                        If (conn IsNot Nothing) Then
+                            Me.m_datasetManager.UpdateDataset(conn.Dataset, cfg)
+                            Me.m_datasetManager.UpdateConverter(conn.Converter, cfg)
+                            cfg.Scale = conn.Scale
+                            cfg.ScaleType = CByte(conn.ScaleType)
+                        Else
+                            cfg.Clear()
                         End If
                     Next j
                 Next i
             Next adt
 
             ' Invalidate connection count
-            Me.m_iNumConnected = cCore.NULL_VALUE
+            Me.m_iNumConfigured = cCore.NULL_VALUE
 
-            Me.NotifyCore(eMessageType.DataAddedOrRemoved)
+            Me.Update(eMessageType.DataAddedOrRemoved)
 
         End Sub
 
@@ -215,10 +219,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumConnectedAdapters As Integer
             Get
-                If (Me.m_iNumConnected = cCore.NULL_VALUE) Then
+                If (Me.m_iNumConfigured = cCore.NULL_VALUE) Then
                     Me.UpdateConnectionCount()
                 End If
-                Return Me.m_iNumConnected
+                Return Me.m_iNumConfigured
             End Get
         End Property
 
@@ -323,17 +327,17 @@ Namespace SpatialData
             ' ToDo: implement selective update
             Me.Update()
             ' ToDo: Only send out event if this dataset is used in a spat/temp configuration
-            Me.NotifyCore(eMessageType.DataModified)
+            Me.Update(eMessageType.DataModified)
         End Sub
 
         Public Sub Update(ByVal cv As ISpatialDataConverter)
             ' ToDo: implement selective update
             Me.Update()
             ' ToDo: Only send out event this converter is used in a spat/temp configuration
-            Me.NotifyCore(eMessageType.DataModified)
+            Me.Update(eMessageType.DataModified)
         End Sub
 
-        Public Sub NotifyCore(importance As eMessageType)
+        Public Sub Update(importance As eMessageType)
             Try
                 ' Assume that this has affected currently configured adapters, because 
                 ' this is very likely. This check can be improved.
@@ -496,12 +500,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub UpdateConnectionCount()
 
-            Me.m_iNumConnected = 0
+            Me.m_iNumConfigured = 0
             For Each adt As cSpatialDataAdapter In Me.Adapters
-                For i As Integer = 0 To adt.MaxLength
-                    For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
-                        If adt.IsConnected(i, j) Then m_iNumConnected += 1
-                    Next
+                For Each conn As cSpatialDataConnection In adt.Connections()
+                    If conn.IsConfigured() Then m_iNumConfigured += 1
                 Next
             Next
         End Sub

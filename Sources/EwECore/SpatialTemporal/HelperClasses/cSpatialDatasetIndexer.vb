@@ -189,9 +189,9 @@ Namespace SpatialData
                                 If (ds.IndexStatusAtT(dt) = ISpatialDataSet.eIndexStatus.NotIndexed) Then
                                     ' ToDo: Every dataset call should be subject to a timeout
                                     ds.UpdateIndexAtT(dt)
+                                    Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
+                                    Me.OnSpatialIndexUpdated(strMessage, eProgressState.Running, CSng(comp.NumIndexed / comp.NumOverlappingTimeSteps))
                                 End If
-                                Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
-                                Me.OnSpatialIndexUpdated(strMessage, eProgressState.Running, CSng(comp.NumIndexed / comp.NumOverlappingTimeSteps))
                             End If
 
                             ' Next

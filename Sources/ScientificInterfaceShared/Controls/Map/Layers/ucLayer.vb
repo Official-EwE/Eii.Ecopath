@@ -53,6 +53,7 @@ Namespace Controls.Map
         Protected Shared g_imgPen1 As Image = My.Resources.NotEditable
         Protected Shared g_imgLock As Image = My.Resources.ProtectFormHS
         Protected Shared g_imgData As Image = My.Resources.Database
+        Protected Shared g_imgDataDisabled As Image = My.Resources.database_NA
 
 #End Region ' Private vars
 
@@ -158,7 +159,7 @@ Namespace Controls.Map
             If (TypeOf Me.Layer Is cDisplayRasterLayer) Then
                 Try
                     Dim rl As cDisplayRasterLayer = DirectCast(Me.Layer, cDisplayRasterLayer)
-                    Dim cmd As cEcospaceExternalDataCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME), cEcospaceExternalDataCommand)
+                    Dim cmd As cEcospaceConfigureConnectionCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEcospaceConfigureConnectionCommand.cCOMMAND_NAME), cEcospaceConfigureConnectionCommand)
                     cmd.Invoke(rl.Data)
                 Catch ex As Exception
                     cLog.Write(ex, eVerboseLevel.Detailed, "ucLayer::EditLayerConnection " & Me.Layer.Name)
@@ -284,7 +285,11 @@ Namespace Controls.Map
                 Dim rl As cDisplayRasterLayer = DirectCast(Me.m_layer, cDisplayRasterLayer)
                 ' Draw editable indicator (only when selected or hovering)
                 If (rl.IsExternal) Then
-                    img = g_imgData
+                    If (rl.IsExternalEnabled) Then
+                        img = g_imgData
+                    Else
+                        img = g_imgDataDisabled
+                    End If
                 ElseIf (rl.Editor.IsReadOnly) Then
                     img = g_imgLock
                 Else
@@ -389,7 +394,7 @@ Namespace Controls.Map
 
         Private Sub ucLayer_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.DoubleClick
             Select Case Me.GetArea(Me.PointToClient(MousePosition))
-                Case eAreaTypes.Editable
+                Case eAreaTypes.None
                     Me.EditLayerConnection()
                 Case Else
                     Me.EditLayer(eLayerEditTypes.EditData)

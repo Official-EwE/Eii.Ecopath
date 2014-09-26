@@ -484,9 +484,25 @@ Namespace Controls.Map.Layers
                 Dim l As cEcospaceLayer = Me.Data
                 If (l Is Nothing) Then Return False
                 For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
-                    If l.IsExternalData(j) Then Return True
+                    If l.IsExternalData() Then Return True
                 Next
                 Return False
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get whether the underlying data is enabled for external driving.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property IsExternalEnabled As Boolean
+            Get
+                Dim l As cEcospaceLayer = Me.Data
+                If (l Is Nothing) Then Return False
+                If (Me.m_uic Is Nothing) Then Return False
+                Dim adt As cSpatialDataAdapter = Me.m_uic.Core.SpatialDataConnectionManager.Adapter(l.VarName)
+                If (adt Is Nothing) Then Return False
+                Return adt.IsEnabled(l.Index)
             End Get
         End Property
 

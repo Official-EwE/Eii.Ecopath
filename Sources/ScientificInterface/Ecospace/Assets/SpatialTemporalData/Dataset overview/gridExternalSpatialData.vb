@@ -25,6 +25,9 @@ Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports EwEUtils.Core
 Imports SourceGrid2
 Imports ScientificInterface.Ecospace.Controls
+Imports EwEUtils.SpatialData
+Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -34,25 +37,19 @@ Namespace Ecospace
     Public Class gridExternalSpatialData
         Inherits EwEGrid
 
-#Region " Private classes "
-
         Private Class cConnectionInfo
-
             Public Sub New(adt As cSpatialDataAdapter, layer As cEcospaceLayer)
                 Me.Adapter = adt
                 Me.Layer = layer
             End Sub
-
-            Public Property Adapter As cSpatialDataAdapter = Nothing
+            Public Property Adapter As cSpatialDataAdapter
             Public Property Layer As cEcospaceLayer
-
         End Class
-
-#End Region ' Private classes
 
         Private m_man As cSpatialDataConnectionManager
         Private m_manSets As cSpatialDataSetManager
-        Private m_filter As eVarNameFlags = eVarNameFlags.NotSet
+        Private m_filterVarName As eVarNameFlags = eVarNameFlags.NotSet
+        Private m_bOnlyShowConnected As Boolean = True
         Private m_nBaseCols As Integer = 0
         Private m_bmCell As BehaviorModels.CustomEvents = Nothing
 
@@ -122,12 +119,16 @@ Namespace Ecospace
 
             Dim vizParent As New cVisualizerEwEParentRowHeader()
             Dim vizChild As New cVisualizerEwEChildRowHeader()
+            Dim bHasConnections As Boolean = False
 
             Me.RowsCount = 1
 
             For Each adt As cSpatialDataAdapter In Me.m_man.Adapters
 
-                If (adt.VarName = Me.m_filter) Or (Me.m_filter = eVarNameFlags.NotSet) Then
+                bHasConnections = (adt.Connections().Count > 0)
+
+                If (((adt.VarName = Me.m_filterVarName) Or (Me.m_filterVarName = eVarNameFlags.NotSet)) And _
+                    (bHasConnections Or (Me.m_bOnlyShowConnected = False))) Then
 
                     ' Get group name for the adapter
                     strAdapter = fmt.GetDescriptor(adt)
@@ -146,25 +147,39 @@ Namespace Ecospace
 
                     ' All layers
                     For i As Integer = 0 To layers.Count - 1
-                        iRow = Me.AddRow()
+
                         layer = layers(i)
-                        Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(layer.Index))
-                        Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(layer.Name)
-                        Me(iRow, eColumnTypes.Name).VisualModel = vizChild
+                        bHasConnections = (adt.Connections(layer.Index).Count > 0)
 
-                        Me(iRow, eColumnTypes.Enabled) = New SourceGrid2.Cells.Real.CheckBox(adt.IsEnabled(layer.Index))
-                        Me(iRow, eColumnTypes.Enabled).Behaviors.Add(Me.EwEEditHandler)
+                        If (bHasConnections Or (Me.m_bOnlyShowConnected = False)) Then
 
-                        For j As Integer = Me.m_nBaseCols To Me.ColumnsCount - 1
-                            Me(iRow, j) = New Cells.Real.Cell("")
-                            Me(iRow, j).Behaviors.Add(Me.m_bmCell)
-                            Me(iRow, j).Tag = (j - Me.m_nBaseCols + 1)
-                            Me(iRow, j).VisualModel = New VisualModels.Common()
-                        Next
-                        Me.ConnectionAtRow(iRow) = New cConnectionInfo(adt, layer)
-                        hgcGroup.AddChildRow(iRow)
+                            iRow = Me.AddRow()
+                            Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(layer.Index))
+                            Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(layer.Name)
+                            Me(iRow, eColumnTypes.Name).VisualModel = vizChild
 
-                        Me.UpdateDatasetRow(iRow)
+                            Me(iRow, eColumnTypes.Enabled) = New SourceGrid2.Cells.Real.CheckBox(adt.IsEnabled(layer.Index))
+                            Me(iRow, eColumnTypes.Enabled).Behaviors.Add(Me.EwEEditHandler)
+
+                            Dim conns As cSpatialDataConnection() = adt.Connections(layer.Index)
+                            Dim conn As cSpatialDataConnection = Nothing
+
+                            For j As Integer = 0 To cSpatialDataStructures.cMAX_CONN - 1 'Me.m_nBaseCols To Me.ColumnsCount - 1
+                                If (j < conns.Length) Then
+                                    conn = conns(j)
+                                Else
+                                    conn = Nothing
+                                End If
+                                Me(iRow, j + Me.m_nBaseCols) = New Cells.Real.Cell("")
+                                Me(iRow, j + Me.m_nBaseCols).Behaviors.Add(Me.m_bmCell)
+                                Me(iRow, j + Me.m_nBaseCols).VisualModel = New VisualModels.Common()
+                                Me.ConnectionAtCell(iRow, j + Me.m_nBaseCols) = conn
+                            Next
+                            hgcGroup.AddChildRow(iRow)
+
+                            Me.InfoAtRow(iRow) = New cConnectionInfo(adt, layer)
+                            Me.UpdateDatasetRow(iRow)
+                        End If
                     Next
                 End If
 
@@ -178,73 +193,101 @@ Namespace Ecospace
 
         Protected Sub UpdateDatasetRow(iRow As Integer)
 
-            Dim conn As cConnectionInfo = Me.ConnectionAtRow(iRow)
-            If (conn Is Nothing) Then Return
-
             Dim iNumDefined As Integer = 0
             Dim iNumConnected As Integer = 0
 
             For j As Integer = Me.m_nBaseCols To Me.ColumnsCount - 1
 
-                Dim adt As cSpatialDataAdapter = conn.Adapter
-                Dim layer As cEcospaceLayer = conn.Layer
-                Dim iConn As Integer = (j - Me.m_nBaseCols + 1)
                 Dim strText As String = ""
-                Dim status As cStyleGuide.eApplicationColorType = cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND
+                Dim conn As cSpatialDataConnection = Me.ConnectionAtCell(iRow, j)
 
-                If (adt.Dataset(layer.Index, iConn) IsNot Nothing) Then
-                    strText = adt.Dataset(layer.Index, iConn).DisplayName
-                    If (Not conn.Adapter.IsConnected(conn.Layer.Index, iConn)) Then
-                        status = cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND
+                If (conn IsNot Nothing) Then
+                    Dim ds As ISpatialDataSet = conn.Dataset()
+                    If (ds IsNot Nothing) Then
+                        strText = ds.DisplayName
                     End If
+                    'If (Not conn.Adapter.IsConnected(conn.Layer.Index, iConn)) Then
+                    '    status = cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND
+                    'End If
                 End If
 
-                Me(iRow, j).VisualModel.BackColor = Me.StyleGuide.ApplicationColor(status)
+                'Me(iRow, j).VisualModel.BackColor = Me.StyleGuide.ApplicationColor(status)
                 Me(iRow, j).Value = strText
+                Me.AutoSizeColumn(j, 20)
             Next
 
         End Sub
 
         Protected Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
             Try
-                Dim iRow As Integer = e.Position.Row
-                Dim conn As cConnectionInfo = Me.ConnectionAtRow(iRow)
-                If (conn Is Nothing) Then Return
-                Dim dlg As New dlgApplyConnection(Me.UIContext, conn.Adapter, conn.Layer)
-                If dlg.ShowDialog() = DialogResult.OK Then
-                    Me.m_man.NotifyCore(eMessageType.DataModified)
-                End If
-                Me.UpdateDatasetRow(iRow)
+
+                Dim info As cConnectionInfo = Me.InfoAtRow(e.Position.Row)
+                If (info Is Nothing) Then Return
+
+                ' Fire off a change
+                Dim cmd As cEcospaceConfigureConnectionCommand = CType(Me.UIContext.CommandHandler.GetCommand(cEcospaceConfigureConnectionCommand.cCOMMAND_NAME), cEcospaceConfigureConnectionCommand)
+                cmd.Invoke(info.Layer, Me.ConnectionAtCell(e.Position))
+
             Catch ex As Exception
                 ' Whoah
             End Try
         End Sub
 
         Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
-            If p.Column = eColumnTypes.Enabled Then
-                Dim iRow As Integer = p.Row
-                Dim conn As cConnectionInfo = Me.ConnectionAtRow(iRow)
-                conn.Adapter.IsEnabled(conn.Layer.Index) = CBool(cell.GetValue(p))
+            If (p.Column = eColumnTypes.Enabled) Then
+                Dim layer As cEcospaceLayer = Me.InfoAtRow(p.Row).Layer
+                Dim adt As cSpatialDataAdapter = Me.InfoAtRow(p.Row).Adapter
+                adt.IsEnabled(layer.Index) = CBool(cell.GetValue(p))
             End If
         End Function
 
         Public Property Filter As eVarNameFlags
             Get
-                Return Me.m_filter
+                Return Me.m_filterVarName
             End Get
             Set(value As eVarNameFlags)
-                If (value = Me.m_filter) Then Return
-                Me.m_filter = value
+                If (value = Me.m_filterVarName) Then Return
+                Me.m_filterVarName = value
                 Me.RefreshContent()
             End Set
         End Property
 
-        Private Property ConnectionAtRow(iRow As Integer) As cConnectionInfo
+        Public Property OnlyShowConnected As Boolean
             Get
-                Return DirectCast(Me(iRow, 0).Tag, cConnectionInfo)
+                Return Me.m_bOnlyShowConnected
+            End Get
+            Set(value As Boolean)
+                If (value <> Me.m_bOnlyShowConnected) Then
+                    Me.m_bOnlyShowConnected = value
+                    Me.RefreshContent()
+                End If
+            End Set
+        End Property
+
+        Private Property ConnectionAtCell(p As Position) As cSpatialDataConnection
+            Get
+                Return Me.ConnectionAtCell(p.Row, p.Column)
+            End Get
+            Set(value As cSpatialDataConnection)
+                Me.ConnectionAtCell(p.Row, p.Column) = value
+            End Set
+        End Property
+
+        Private Property ConnectionAtCell(iRow As Integer, iCol As Integer) As cSpatialDataConnection
+            Get
+                Return DirectCast(Me(iRow, iCol).Tag, cSpatialDataConnection)
+            End Get
+            Set(value As cSpatialDataConnection)
+                Me(iRow, iCol).Tag = value
+            End Set
+        End Property
+
+        Private Property InfoAtRow(iRow As Integer) As cConnectionInfo
+            Get
+                Return DirectCast(Me.Rows(iRow).Tag, cConnectionInfo)
             End Get
             Set(value As cConnectionInfo)
-                Me(iRow, 0).Tag = value
+                Me.Rows(iRow).Tag = value
             End Set
         End Property
 

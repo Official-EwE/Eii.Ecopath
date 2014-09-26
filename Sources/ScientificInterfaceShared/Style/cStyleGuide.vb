@@ -2136,7 +2136,7 @@ Namespace Style
 
 #End Region ' Image export settings
 
-#Region " Labels and headers "
+#Region " Labels, headers and menus "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -2155,7 +2155,24 @@ Namespace Style
             End If
         End Function
 
-#End Region ' Labels and headers
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a string to a menu item label.
+        ''' </summary>
+        ''' <param name="strLabel"></param>
+        ''' <param name="parent">Not used yet. At some point, the parent meu needs
+        ''' to be scanned for existing keyboard shortcuts to prevent duplicates.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToMenu(ByVal strLabel As String, Optional ByVal parent As MenuItem = Nothing) As String
+            If cSystemUtils.IsRightToLeft() Then
+                Return "..." & cStringUtils.ToTitlecase(strLabel) & "&"
+            Else
+                Return "&" & cStringUtils.ToTitlecase(strLabel) & "..."
+            End If
+        End Function
+
+#End Region ' Labels, headers and menus 
 
 #End Region ' Public access
 

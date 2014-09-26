@@ -13053,4 +13053,10 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="ecopath_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ecopath_logo.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HEADER_SPATTEMP_NODRIVER" xml:space="preserve">
+    <value>No external data</value>
+  </data>
+  <data name="HEADER_SPATTEMP_CREATE_CONNECTION" xml:space="preserve">
+    <value>Create new connection</value>
+  </data>
 </root>

@@ -19,6 +19,7 @@ Namespace SpatialData
 
         Private m_strFileName As String = ""
         Private m_strDatasetName As String = ""
+        Private m_nDatasets As Integer = 0
 
 #End Region ' Internal vars
 
@@ -71,6 +72,23 @@ Namespace SpatialData
         Public Property Author As String = ""
         Public Property Contact As String = ""
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the number of datasets in the configuration file.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property nDatasets As Integer
+            Get
+                Return Me.m_nDatasets
+            End Get
+        End Property
+
+        Public ReadOnly Property IsDefault As Boolean
+            Get
+                Return (String.Compare(Me.m_strFileName, cSpatialDataSetManager.DefaultConfigFile, True) = 0)
+            End Get
+        End Property
+
 #End Region ' Public properties
 
 #Region " Internals "
@@ -102,6 +120,8 @@ Namespace SpatialData
             ' Load datasets
             doc.Load(strFile)
 
+            Me.m_nDatasets = 0
+
             For Each xnRoot In doc.GetElementsByTagName("Datasets")
                 For Each xa In xnRoot.Attributes
                     Select Case xa.Name
@@ -113,6 +133,10 @@ Namespace SpatialData
                     End Select
                 Next
             Next
+
+            ' Update number of datasets
+            Me.m_nDatasets = doc.GetElementsByTagName("Dataset").Count
+
             Return True
 
         End Function

@@ -144,7 +144,7 @@
     <comment>'Comma' character description</comment>
   </data>
   <data name="GENERIC_VALUE_ALL" xml:space="preserve">
-    <value>(All)</value>
+    <value>(all)</value>
   </data>
   <data name="HEADER_RELATIVEWEIGHT" xml:space="preserve">
     <value>Relative weight</value>
@@ -227,7 +227,7 @@
     <comment>Time series type</comment>
   </data>
   <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
-    <value>(N/A)</value>
+    <value>(n/a)</value>
   </data>
   <data name="PROMPT_SHAPE_DELETE" xml:space="preserve">
     <value>You are about to delete forcing or mediation function '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
@@ -552,10 +552,10 @@
     <value>Step size</value>
   </data>
   <data name="GENERIC_VALUE_ALLGROUPS" xml:space="preserve">
-    <value>(All groups)</value>
+    <value>(all groups)</value>
   </data>
   <data name="GENERIC_VALUE_CUSTOM" xml:space="preserve">
-    <value>(Custom)</value>
+    <value>(custom)</value>
   </data>
   <data name="GENERIC_VALUE_NAMEANDSEQUENCE" xml:space="preserve">
     <value>{0} {1}</value>
@@ -1601,13 +1601,13 @@
     <value>..\Resources\ThumbnailLoadingHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_VALUE_NOTUSED" xml:space="preserve">
-    <value>(Not used)</value>
+    <value>(not used)</value>
   </data>
   <data name="HEADER_MESSAGE" xml:space="preserve">
     <value>Message</value>
   </data>
   <data name="GENERIC_VALUE_ALLRUNS" xml:space="preserve">
-    <value>(All runs)</value>
+    <value>(all runs)</value>
   </data>
   <data name="GENERIC_VAUE_RUN_X" xml:space="preserve">
     <value>Run {0}</value>
@@ -1834,7 +1834,7 @@
     <value>Questionable</value>
   </data>
   <data name="GENERIC_VALUE_NOTSET" xml:space="preserve">
-    <value>(Not specified)</value>
+    <value>(not specified)</value>
   </data>
   <data name="ORGANISM_ALGAE" xml:space="preserve">
     <value>Algae</value>
@@ -2361,7 +2361,7 @@
     <value>..\Resources\tag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_VALUE_ALLFIELDS" xml:space="preserve">
-    <value>(All fields)</value>
+    <value>(all fields)</value>
   </data>
   <data name="GENERIC_VALUE_NOSEARCHENGINES" xml:space="preserve">
     <value>(No search engines installed)</value>
@@ -2492,9 +2492,9 @@
     <value>{0} (- {1})</value>
     <comment>{0}=value, {1}=upper range</comment>
   </data>
-  <data name="CAPTION_EDITING_LAYER" xml:space="preserve">
+  <data name="CAPTION_GENERIC_EDIT" xml:space="preserve">
     <value>Editing {0}</value>
-    <comment>{0}=layer name</comment>
+    <comment>{0}=content name</comment>
   </data>
   <data name="Refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -2509,7 +2509,7 @@
     <value>Trial</value>
   </data>
   <data name="GENERIC_VALUE_ALLFLEETS" xml:space="preserve">
-    <value>(All fleets)</value>
+    <value>(all fleets)</value>
   </data>
   <data name="AUTOSAVE_ECOPATH" xml:space="preserve">
     <value>Ecopath estimates</value>
@@ -3155,13 +3155,23 @@
     <value>Method</value>
   </data>
   <data name="GENERIC_VALUE_DEFAULT" xml:space="preserve">
-    <value>(Default)</value>
+    <value>(default)</value>
   </data>
   <data name="ConnectHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\connecths.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DisconnectHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\disconnecths.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FILEFILTER_SPATTEMPCONFIG" xml:space="preserve">
+    <value>Spatial temporal configuration files|*.xml</value>
+  </data>
+  <data name="GENERIC_LABEL_A_AT_B" xml:space="preserve">
+    <value>{0} @ {1}</value>
+    <comment>{0}: value A; {1}: value B</comment>
+  </data>
+  <data name="GENERIC_VALUE_YOU" xml:space="preserve">
+    <value>(you)</value>
   </data>
   <data name="HEADER_LEFT_LIMIT" xml:space="preserve">
     <value>Left limit</value>

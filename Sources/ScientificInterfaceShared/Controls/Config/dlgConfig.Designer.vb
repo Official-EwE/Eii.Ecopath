@@ -45,6 +45,7 @@ Namespace Controls
             Me.m_plContent = New System.Windows.Forms.Panel()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_btnCancel = New System.Windows.Forms.Button()
+            Me.m_btnDefaults = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_plContent
@@ -65,6 +66,12 @@ Namespace Controls
             Me.m_btnCancel.Name = "m_btnCancel"
             Me.m_btnCancel.UseVisualStyleBackColor = True
             '
+            'm_btnDefaults
+            '
+            resources.ApplyResources(Me.m_btnDefaults, "m_btnDefaults")
+            Me.m_btnDefaults.Name = "m_btnDefaults"
+            Me.m_btnDefaults.UseVisualStyleBackColor = True
+            '
             'dlgConfig
             '
             Me.AcceptButton = Me.m_btnOK
@@ -73,6 +80,7 @@ Namespace Controls
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
             Me.Controls.Add(Me.m_btnCancel)
+            Me.Controls.Add(Me.m_btnDefaults)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_plContent)
             Me.Name = "dlgConfig"
@@ -83,6 +91,7 @@ Namespace Controls
         Private WithEvents m_plContent As System.Windows.Forms.Panel
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_btnCancel As System.Windows.Forms.Button
+        Private WithEvents m_btnDefaults As System.Windows.Forms.Button
     End Class
 
 End Namespace

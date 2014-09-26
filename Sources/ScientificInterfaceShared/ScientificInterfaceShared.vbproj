@@ -193,7 +193,7 @@
     <Compile Include="Commands\cEditLayerCommand.vb" />
     <Compile Include="Commands\cImportLayerCommand.vb" />
     <Compile Include="Commands\cExportLayerCommand.vb" />
-    <Compile Include="Commands\cEcospaceExternalDataCommand.vb" />
+    <Compile Include="Commands\cEcospaceConfigureConnectionCommand.vb" />
     <Compile Include="Commands\cPrintCommand.vb" />
     <Compile Include="Commands\cShowOptionsCommand.vb" />
     <Compile Include="Controls\ApplicationStatus\cApplicationStatusNotifier.vb" />

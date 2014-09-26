@@ -351,7 +351,7 @@ Namespace SpatialData
             If (Me.m_core.ActiveEcospaceScenarioIndex = -1) Then Return False
             If (iNumTimeSteps < 0) Then Return False
 
-            Dim iTimeEnd As Integer = iTimeStart + iNumTimeSteps
+            Dim iTimeEnd As Integer = iTimeStart + iNumTimeSteps - 1
 
             For iStep As Integer = iTimeStart To iTimeEnd
 
