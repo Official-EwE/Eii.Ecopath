@@ -115,8 +115,8 @@ Public MustInherit Class cFishBaseConnection
 
     Public Function IUCNstatus(strCode As String) As eIUCNConservationStatusTypes
 
-        Select Case strCode.ToLower
-            Case "n.e.", "ne" : Return eIUCNConservationStatusTypes.NotEvaluated
+        Select Case strCode.ToLower.Replace(".", "")
+            Case "ne" : Return eIUCNConservationStatusTypes.NotEvaluated
             Case "dd" : Return eIUCNConservationStatusTypes.DataDeficient
             Case "lc" : Return eIUCNConservationStatusTypes.LeastConcern
             Case "nt" : Return eIUCNConservationStatusTypes.NearThreatened
