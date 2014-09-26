@@ -1547,6 +1547,36 @@ Namespace Utilities
 
 #End Region ' Map array conversions
 
+#Region " Shape data conversions "
+
+        Public Shared Function StringToShape(ByVal strMemo As String, _
+                                             ByVal nItems As Integer, _
+                                             ByVal sDefault As Single, _
+                                             ByVal sData As Single(,), _
+                                             ByVal iIndex As Integer) As Boolean
+
+            Dim astrBits As String() = Nothing
+            Dim iPts As Integer = 1
+
+            If (Not String.IsNullOrWhiteSpace(strMemo)) Then
+                astrBits = strMemo.Trim.Split(CChar(" "))
+                iPts = astrBits.Length
+                For j As Integer = 1 To Math.Min(nItems, iPts)
+                    sData(iIndex, j) = cStringUtils.ConvertToSingle(astrBits(j - 1), sDefault)
+                Next
+            Else
+                sData(iIndex, iPts) = sDefault
+            End If
+
+            For j As Integer = iPts + 1 To nItems
+                sData(iIndex, j) = sData(iIndex, iPts)
+            Next
+            Return True
+
+        End Function
+
+#End Region ' Shape data conversions
+
 #Region " Microsoft.VisualBasic alternatives "
 
         ''' -------------------------------------------------------------------
