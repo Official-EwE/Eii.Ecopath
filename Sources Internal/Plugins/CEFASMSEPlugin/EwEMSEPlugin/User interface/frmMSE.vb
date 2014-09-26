@@ -186,6 +186,7 @@ Public Class frmMSE
         ' States
         Dim bHasParams As Boolean = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams)
         Dim bHasModels As Boolean = mon.IsStateAvailable(cMSEStateMonitor.eState.HasModels)
+        Dim bHasResults As Boolean = mon.IsStateAvailable(cMSEStateMonitor.eState.HasResults)
 
         Dim bIsRunningMSE As Boolean = (Me.MSE.RunState = cMSE.eRunStates.RunningMSE)
         Dim bIsRunningModels As Boolean = (Me.MSE.RunState = cMSE.eRunStates.RunningModels)
@@ -271,7 +272,7 @@ Public Class frmMSE
             Me.m_tbxNumAvailableFishingStrategies.Text = ""
         End If
 
-        Me.m_btnDeleteResults.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasResults) And Not bIsRunning
+        Me.m_btnDeleteResults.Enabled = bHasResults And Not bIsRunning
 
         Me.m_bInUpdate = False
 
@@ -505,25 +506,11 @@ Public Class frmMSE
     Private Sub OnDeleteResults(sender As System.Object, e As System.EventArgs) _
         Handles m_btnDeleteResults.Click
 
-        If Me.m_plugin.MSE.AskUser(My.Resources.PROMPT_DELETE_RESULTS, eMessageReplyStyle.YES_NO) <> eMessageReply.YES Then
-            Return
+        If Me.m_plugin.MSE.AskUser(My.Resources.PROMPT_DELETE_RESULTS, eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
+            Me.MSE.DeleteResults()
+            Me.MSE.InvalidateConfigurationState(False)
+            Me.UpdateControls()
         End If
-
-        Try
-            File.Delete(m_plugin.MSE.DataPath & "\Results\Fleet.csv")
-            File.Delete(m_plugin.MSE.DataPath & "\Results\Results.csv")
-            File.Delete(m_plugin.MSE.DataPath & "\Results\EffortTrajectories.csv")
-            File.Delete(m_plugin.MSE.DataPath & "\Results\BadDynamicsTrajectories.csv")
-
-            For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories")
-                File.Delete(iFile)
-            Next
-            For Each iFile In Directory.GetFiles(m_plugin.MSE.DataPath & "\Results\Trajectories2")
-                File.Delete(iFile)
-            Next
-        Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnDeleteResults")
-        End Try
 
     End Sub
 

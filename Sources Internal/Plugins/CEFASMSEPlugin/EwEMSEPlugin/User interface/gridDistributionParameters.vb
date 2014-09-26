@@ -34,6 +34,9 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
+' ToDo: Change col labels to lower, upper and midpoint
+' ToDo: Midpoint should be enabled when distr = Triangular 
+
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.
@@ -160,8 +163,8 @@ Public Class gridDistributionParameters
                 Me(0, eEcosimColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
                 Me(0, eEcosimColumnTypes.DistrType) = New EwEColumnHeaderCell(My.Resources.HEADER_DISTRIBUTIONTYPE)
                 Me(0, eEcosimColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
-                Me(0, eEcosimColumnTypes.MidPoint) = New EwEColumnHeaderCell(My.Resources.HEADER_MIDPOINT)
                 Me(0, eEcosimColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
+                Me(0, eEcosimColumnTypes.MidPoint) = New EwEColumnHeaderCell(My.Resources.HEADER_MIDPOINT)
 
         End Select
 

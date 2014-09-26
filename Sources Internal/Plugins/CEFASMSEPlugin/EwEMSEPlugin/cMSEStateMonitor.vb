@@ -130,7 +130,7 @@ Public Class cMSEStateMonitor
 
             Case eState.HasResults
                 bHasState = Me.IsStateAvailable(eState.HasModels) And _
-                    True ' ToDo_JS: determine this properly
+                    Me.MSE.HasResults()
 
             Case eState.IsRunning
                 Return (Me.MSE.RunState <> cMSE.eRunStates.Idle)

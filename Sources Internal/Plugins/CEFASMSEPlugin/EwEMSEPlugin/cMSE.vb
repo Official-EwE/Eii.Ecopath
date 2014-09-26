@@ -680,6 +680,19 @@ Public Class cMSE
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether there are results in the <see cref="DataPath"/>.
+    ''' </summary>
+    ''' <returns>True if there are results in the <see cref="DataPath"/>.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function HasResults() As Boolean
+
+        Dim strPath As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Results)
+        Return File.Exists(Path.Combine(strPath, "results.csv"))
+
+    End Function
+
     Private m_strModelCompatibility As String = ""
 
     ''' -----------------------------------------------------------------------
@@ -1080,6 +1093,41 @@ Public Class cMSE
 
     'End Function
 
+    Public Sub DeleteResults()
+
+        Me.SafeDeleteResult(cMSEUtils.eMSEPaths.Results, "Fleet.csv")
+        Me.SafeDeleteResult(cMSEUtils.eMSEPaths.Results, "Results.csv")
+        Me.SafeDeleteResult(cMSEUtils.eMSEPaths.Results, "EffortTrajectories.csv")
+        Me.SafeDeleteResult(cMSEUtils.eMSEPaths.Results, "BadDynamicsTrajectories.csv")
+        Me.SafeDeleteResult(cMSEUtils.eMSEPaths.ResultsTrajectories)
+        Me.SafeDeleteResult(cMSEUtils.eMSEPaths.ResultsTraj2)
+
+    End Sub
+
+    Private Sub SafeDeleteResult(ByVal category As cMSEUtils.eMSEPaths, _
+                                 Optional strFile As String = "")
+
+        Dim strPath As String = cMSEUtils.MSEFolder(Me.DataPath, category)
+        Dim lstrFiles As New List(Of String)
+
+        If (Not String.IsNullOrWhiteSpace(strFile)) Then
+            lstrFiles.Add(Path.Combine(strPath, strFile))
+        Else
+            lstrFiles.AddRange(Directory.GetFiles(strPath))
+        End If
+
+        For Each strFile In lstrFiles
+            If (File.Exists(strFile)) Then
+                Try
+                    File.Delete(strFile)
+                Catch ex As Exception
+                    ' Whoah!
+                    cLog.Write(ex, eVerboseLevel.Detailed, "CEFAS.cMSE::SafeDeleteResult(" & strFile & ")")
+                End Try
+            End If
+        Next
+
+    End Sub
 
 #End Region 'File I/O
 
@@ -2028,70 +2076,6 @@ Public Class cMSE
         'We need to save the original state of Ecopath so it can be restored when we are done
         Me.SaveOriginalState()
 
-        ' JS 20Jul14: Diet reading moved to cDiets class
-#If 0 Then
-        Dim reader As StreamReader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietComposition.csv"))
-        If (reader Is Nothing) Then
-            ' ToDo: report some kind of error
-            Return
-        End If
-
-        'Read in the values from the DietComposition.csv into each array
-        csv = New CsvReader(reader, True)
-        If (reader IsNot Nothing) Then
-
-            Try
-                'For iPred As Integer = 1 To mCore.nLivingGroups
-                '    For iPrey As Integer = 0 To mCore.nGroups
-                '        If csv.ReadNextRecord() Then
-                '            'Note about indices for interacts, lower and upper
-                '            'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
-                '            'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                '            Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
-                '            MeanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
-                '        Else
-                '            ' ToDo_JS: handle error. Unexpected end in CSV file
-                '        End If
-                '    Next
-                'Next
-                While Not csv.EndOfStream
-                    If csv.ReadNextRecord() Then
-                        'Note about indices for interacts, lower and upper
-                        'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
-                        'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                        Interacts(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToInteger(csv(4))
-                        MeanProportions(cStringUtils.ConvertToInteger(csv(2)) - 1, cStringUtils.ConvertToInteger(csv(3))) = cStringUtils.ConvertToSingle(csv(5))
-                    End If
-                End While
-            Catch ex As Exception
-                ' ToDo_JS: handle error. Unexpected exception reading CSV file
-            End Try
-        Else
-            ' ToDo_JS: Diets were not read; handle error
-        End If
-        csv.Dispose()
-        cMSEUtils.ReleaseReader(reader)
-
-        reader = cMSEUtils.GetReader(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DistrParams, "DietCompositionMultipliers.csv"))
-        If (reader IsNot Nothing) Then
-            'Read in the values from the DietCompositionMultipliers.csv
-            csv = New CsvReader(reader, True)
-            Try
-                Do While Not csv.EndOfStream
-                    If csv.ReadNextRecord() Then
-                        DietPropMultipliers(cStringUtils.ConvertToInteger(csv(0)) - 1) = cStringUtils.ConvertToInteger(csv(2))
-                    End If
-                Loop
-            Catch ex As Exception
-                ' ToDo_JS: handle error. Unexpected exception reading CSV file
-            End Try
-            csv.Dispose()
-            cMSEUtils.ReleaseReader(reader)
-        Else
-            ' ToDo_JS: Diets multipliers were not read; handle error
-        End If
-#End If
-
         'Calculate how many living groups that aren't primary producers
         'For i = 1 To mCore.nGroups
         '    If mCore.EcoPathGroupInputs(i).IsProducer Then nPPers += 1
@@ -2447,8 +2431,6 @@ Public Class cMSE
         cMSEUtils.ReleaseWriter(writer)
 
     End Sub
-
-
 
 #End Region 'Private modeling code
 
