@@ -34,16 +34,7 @@ Namespace SpatialData
         Public Property Adapter As cSpatialDataAdapter = Nothing
         Public Property iLayer As Integer = 1
 
-#If DEBUG Then
-        Private Shared s_NextID As Integer = 0
-        Private m_ID As Integer = 0
-#End If
-
         Public Sub New()
-#If DEBUG Then
-            Me.m_ID = s_NextID
-            s_NextID += 1
-#End If
         End Sub
 
         Public Overridable Function IsConfigured() As Boolean
