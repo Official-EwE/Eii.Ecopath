@@ -139,7 +139,7 @@
     <value>m_ucSlider</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.10945.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.11302.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Parent" xml:space="preserve">
     <value>$this</value>
@@ -370,6 +370,6 @@
     <value>ucLayerEditorDefault</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.5.10945.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.5.11302.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
