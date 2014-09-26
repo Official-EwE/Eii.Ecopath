@@ -123,7 +123,6 @@ Partial Class frmMSE
         'm_btnRun
         '
         resources.ApplyResources(Me.m_btnRun, "m_btnRun")
-        Me.m_btnRun.Image = Global.EwEMSEPlugin.My.Resources.Resources.StartHS
         Me.m_btnRun.Name = "m_btnRun"
         Me.m_btnRun.UseVisualStyleBackColor = True
         '
@@ -150,7 +149,6 @@ Partial Class frmMSE
         'm_btnRunCreateModels
         '
         resources.ApplyResources(Me.m_btnRunCreateModels, "m_btnRunCreateModels")
-        Me.m_btnRunCreateModels.Image = Global.EwEMSEPlugin.My.Resources.Resources.StartHS
         Me.m_btnRunCreateModels.Name = "m_btnRunCreateModels"
         Me.m_btnRunCreateModels.UseVisualStyleBackColor = True
         '
@@ -210,7 +208,6 @@ Partial Class frmMSE
         'm_btnStopCreateModels
         '
         resources.ApplyResources(Me.m_btnStopCreateModels, "m_btnStopCreateModels")
-        Me.m_btnStopCreateModels.Image = Global.EwEMSEPlugin.My.Resources.Resources.StopHS
         Me.m_btnStopCreateModels.Name = "m_btnStopCreateModels"
         Me.m_btnStopCreateModels.UseVisualStyleBackColor = True
         '
@@ -285,7 +282,6 @@ Partial Class frmMSE
         'Button1
         '
         resources.ApplyResources(Me.Button1, "Button1")
-        Me.Button1.Image = Global.EwEMSEPlugin.My.Resources.Resources.StopHS
         Me.Button1.Name = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
         '
