@@ -682,7 +682,7 @@ Namespace Utilities
         ''' <returns>The date, of Date.MinValue if an error occurred.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function ConvertToDate(ByVal strDate As String, _
-                                              Optional ByVal strFormat As String = "dd/MM/yyyy") As DateTime
+                                             Optional ByVal strFormat As String = "dd/MM/yyyy") As DateTime
             Dim dt As DateTime
             If (DateTime.TryParseExact(strDate, strFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, dt)) Then
                 Return dt

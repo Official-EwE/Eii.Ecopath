@@ -32,6 +32,9 @@ Namespace SpatialData
         Private Sub InitializeComponent()
             Me.m_btnBrowse = New System.Windows.Forms.Button()
             Me.m_dgvFiles = New System.Windows.Forms.DataGridView()
+            Me.m_colError = New System.Windows.Forms.DataGridViewImageColumn()
+            Me.m_colFileName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.m_colTime = New EwESpatialAssetsPlugin.cCalendarColumn()
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
             Me.m_tbxDescription = New System.Windows.Forms.TextBox()
@@ -59,9 +62,6 @@ Namespace SpatialData
             Me.m_cmbVarName = New System.Windows.Forms.ComboBox()
             Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lblVariable = New System.Windows.Forms.Label()
-            Me.m_colError = New System.Windows.Forms.DataGridViewImageColumn()
-            Me.m_colFileName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-            Me.m_colTime = New EwESpatialAssetsPlugin.cCalendarColumn()
             CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpConfig.SuspendLayout()
             Me.m_plTime.SuspendLayout()
@@ -102,8 +102,40 @@ Namespace SpatialData
             Me.m_dgvFiles.ShowCellToolTips = False
             Me.m_dgvFiles.ShowEditingIcon = False
             Me.m_dgvFiles.ShowRowErrors = False
-            Me.m_dgvFiles.Size = New System.Drawing.Size(438, 182)
+            Me.m_dgvFiles.Size = New System.Drawing.Size(438, 191)
             Me.m_dgvFiles.TabIndex = 9
+            '
+            'm_colError
+            '
+            Me.m_colError.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+            Me.m_colError.Frozen = True
+            Me.m_colError.HeaderText = ""
+            Me.m_colError.Name = "m_colError"
+            Me.m_colError.ReadOnly = True
+            Me.m_colError.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+            Me.m_colError.Width = 20
+            '
+            'm_colFileName
+            '
+            Me.m_colFileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+            Me.m_colFileName.Frozen = True
+            Me.m_colFileName.HeaderText = "File"
+            Me.m_colFileName.Name = "m_colFileName"
+            Me.m_colFileName.ReadOnly = True
+            Me.m_colFileName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+            Me.m_colFileName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+            Me.m_colFileName.Width = 317
+            '
+            'm_colTime
+            '
+            Me.m_colTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+            Me.m_colTime.Frozen = True
+            Me.m_colTime.HeaderText = "Time"
+            Me.m_colTime.MinimumWidth = 120
+            Me.m_colTime.Name = "m_colTime"
+            Me.m_colTime.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+            Me.m_colTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+            Me.m_colTime.Width = 120
             '
             'm_lblName
             '
@@ -193,10 +225,8 @@ Namespace SpatialData
             '
             'm_plTime
             '
-            Me.m_plTime.Controls.Add(Me.m_cbSeasonal)
             Me.m_plTime.Controls.Add(Me.m_cmbInterval)
             Me.m_plTime.Controls.Add(Me.m_lblIntervalWith)
-            Me.m_plTime.Controls.Add(Me.m_mtbSeasonalEnd)
             Me.m_plTime.Controls.Add(Me.m_mtbIntervalStart)
             Me.m_plTime.Controls.Add(Me.m_rbFromName)
             Me.m_plTime.Controls.Add(Me.m_rbFromDate)
@@ -205,15 +235,16 @@ Namespace SpatialData
             Me.m_plTime.Controls.Add(Me.m_hdrTime)
             Me.m_plTime.Controls.Add(Me.m_btnSetTime)
             Me.m_plTime.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plTime.Location = New System.Drawing.Point(3, 393)
+            Me.m_plTime.Location = New System.Drawing.Point(3, 427)
             Me.m_plTime.Name = "m_plTime"
-            Me.m_plTime.Size = New System.Drawing.Size(444, 124)
+            Me.m_plTime.Size = New System.Drawing.Size(444, 90)
             Me.m_plTime.TabIndex = 0
             '
             'm_cbSeasonal
             '
+            Me.m_cbSeasonal.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.m_cbSeasonal.AutoSize = True
-            Me.m_cbSeasonal.Location = New System.Drawing.Point(7, 25)
+            Me.m_cbSeasonal.Location = New System.Drawing.Point(7, 246)
             Me.m_cbSeasonal.Name = "m_cbSeasonal"
             Me.m_cbSeasonal.Size = New System.Drawing.Size(126, 17)
             Me.m_cbSeasonal.TabIndex = 11
@@ -225,7 +256,7 @@ Namespace SpatialData
             Me.m_cmbInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbInterval.FormattingEnabled = True
             Me.m_cmbInterval.Items.AddRange(New Object() {"month", "3 months", "6 months", "year", "decade"})
-            Me.m_cmbInterval.Location = New System.Drawing.Point(256, 52)
+            Me.m_cmbInterval.Location = New System.Drawing.Point(255, 20)
             Me.m_cmbInterval.Name = "m_cmbInterval"
             Me.m_cmbInterval.Size = New System.Drawing.Size(87, 21)
             Me.m_cmbInterval.TabIndex = 4
@@ -233,7 +264,7 @@ Namespace SpatialData
             'm_lblIntervalWith
             '
             Me.m_lblIntervalWith.AutoSize = True
-            Me.m_lblIntervalWith.Location = New System.Drawing.Point(139, 55)
+            Me.m_lblIntervalWith.Location = New System.Drawing.Point(138, 23)
             Me.m_lblIntervalWith.Name = "m_lblIntervalWith"
             Me.m_lblIntervalWith.Size = New System.Drawing.Size(111, 13)
             Me.m_lblIntervalWith.TabIndex = 3
@@ -241,7 +272,8 @@ Namespace SpatialData
             '
             'm_mtbSeasonalEnd
             '
-            Me.m_mtbSeasonalEnd.Location = New System.Drawing.Point(139, 23)
+            Me.m_mtbSeasonalEnd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_mtbSeasonalEnd.Location = New System.Drawing.Point(139, 244)
             Me.m_mtbSeasonalEnd.Mask = "0000/00"
             Me.m_mtbSeasonalEnd.Name = "m_mtbSeasonalEnd"
             Me.m_mtbSeasonalEnd.Size = New System.Drawing.Size(52, 20)
@@ -250,7 +282,7 @@ Namespace SpatialData
             '
             'm_mtbIntervalStart
             '
-            Me.m_mtbIntervalStart.Location = New System.Drawing.Point(81, 52)
+            Me.m_mtbIntervalStart.Location = New System.Drawing.Point(80, 20)
             Me.m_mtbIntervalStart.Mask = "0000/00"
             Me.m_mtbIntervalStart.Name = "m_mtbIntervalStart"
             Me.m_mtbIntervalStart.Size = New System.Drawing.Size(52, 20)
@@ -260,7 +292,7 @@ Namespace SpatialData
             'm_rbFromName
             '
             Me.m_rbFromName.AutoSize = True
-            Me.m_rbFromName.Location = New System.Drawing.Point(7, 99)
+            Me.m_rbFromName.Location = New System.Drawing.Point(6, 67)
             Me.m_rbFromName.Name = "m_rbFromName"
             Me.m_rbFromName.Size = New System.Drawing.Size(185, 17)
             Me.m_rbFromName.TabIndex = 7
@@ -271,7 +303,7 @@ Namespace SpatialData
             'm_rbFromDate
             '
             Me.m_rbFromDate.AutoSize = True
-            Me.m_rbFromDate.Location = New System.Drawing.Point(7, 76)
+            Me.m_rbFromDate.Location = New System.Drawing.Point(6, 44)
             Me.m_rbFromDate.Name = "m_rbFromDate"
             Me.m_rbFromDate.Size = New System.Drawing.Size(88, 17)
             Me.m_rbFromDate.TabIndex = 6
@@ -283,7 +315,7 @@ Namespace SpatialData
             '
             Me.m_rbInterval.AutoSize = True
             Me.m_rbInterval.Checked = True
-            Me.m_rbInterval.Location = New System.Drawing.Point(7, 53)
+            Me.m_rbInterval.Location = New System.Drawing.Point(6, 21)
             Me.m_rbInterval.Name = "m_rbInterval"
             Me.m_rbInterval.Size = New System.Drawing.Size(73, 17)
             Me.m_rbInterval.TabIndex = 1
@@ -296,7 +328,7 @@ Namespace SpatialData
             Me.m_tbxDatePart.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tbxDatePart.HideSelection = False
-            Me.m_tbxDatePart.Location = New System.Drawing.Point(198, 99)
+            Me.m_tbxDatePart.Location = New System.Drawing.Point(197, 67)
             Me.m_tbxDatePart.Name = "m_tbxDatePart"
             Me.m_tbxDatePart.ReadOnly = True
             Me.m_tbxDatePart.Size = New System.Drawing.Size(128, 20)
@@ -319,7 +351,7 @@ Namespace SpatialData
             'm_btnSetTime
             '
             Me.m_btnSetTime.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSetTime.Location = New System.Drawing.Point(351, 50)
+            Me.m_btnSetTime.Location = New System.Drawing.Point(350, 18)
             Me.m_btnSetTime.Name = "m_btnSetTime"
             Me.m_btnSetTime.Size = New System.Drawing.Size(90, 23)
             Me.m_btnSetTime.TabIndex = 10
@@ -328,6 +360,8 @@ Namespace SpatialData
             '
             'm_plFiles
             '
+            Me.m_plFiles.Controls.Add(Me.m_mtbSeasonalEnd)
+            Me.m_plFiles.Controls.Add(Me.m_cbSeasonal)
             Me.m_plFiles.Controls.Add(Me.m_dgvFiles)
             Me.m_plFiles.Controls.Add(Me.m_hdrFiles)
             Me.m_plFiles.Controls.Add(Me.m_btnBrowse)
@@ -336,7 +370,7 @@ Namespace SpatialData
             Me.m_plFiles.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_plFiles.Location = New System.Drawing.Point(3, 155)
             Me.m_plFiles.Name = "m_plFiles"
-            Me.m_plFiles.Size = New System.Drawing.Size(444, 232)
+            Me.m_plFiles.Size = New System.Drawing.Size(444, 266)
             Me.m_plFiles.TabIndex = 1
             '
             'm_lblLocationSample
@@ -407,38 +441,6 @@ Namespace SpatialData
             Me.m_lblVariable.Size = New System.Drawing.Size(48, 13)
             Me.m_lblVariable.TabIndex = 3
             Me.m_lblVariable.Text = "&Variable:"
-            '
-            'm_colError
-            '
-            Me.m_colError.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-            Me.m_colError.Frozen = True
-            Me.m_colError.HeaderText = ""
-            Me.m_colError.Name = "m_colError"
-            Me.m_colError.ReadOnly = True
-            Me.m_colError.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-            Me.m_colError.Width = 20
-            '
-            'm_colFileName
-            '
-            Me.m_colFileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-            Me.m_colFileName.Frozen = True
-            Me.m_colFileName.HeaderText = "File"
-            Me.m_colFileName.Name = "m_colFileName"
-            Me.m_colFileName.ReadOnly = True
-            Me.m_colFileName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-            Me.m_colFileName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-            Me.m_colFileName.Width = 317
-            '
-            'm_colTime
-            '
-            Me.m_colTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-            Me.m_colTime.Frozen = True
-            Me.m_colTime.HeaderText = "Time"
-            Me.m_colTime.MinimumWidth = 120
-            Me.m_colTime.Name = "m_colTime"
-            Me.m_colTime.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-            Me.m_colTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-            Me.m_colTime.Width = 120
             '
             'ucMultiFileDatasetConfigPage
             '

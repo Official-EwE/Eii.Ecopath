@@ -78,11 +78,11 @@ Namespace Ecospace.Controls
                 Me.m_clbDatsets.Items.Add(ds)
             Next
 
-            ' Make snapshot of all used adapters
-            For Each adt As cSpatialDataAdapter In Me.m_manConn.Adapters
-                For i As Integer = 0 To adt.MaxLength
-                    For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
-                        Dim ds As ISpatialDataSet = adt.Dataset(i, j)
+            If (Me.m_uic.Core.StateMonitor.HasEcospaceLoaded) Then
+                ' Make snapshot of all used adapters
+                For Each adt As cSpatialDataAdapter In Me.m_manConn.Adapters
+                    For Each conn As cSpatialDataConnection In adt.Connections()
+                        Dim ds As ISpatialDataSet = conn.Dataset
                         If (ds IsNot Nothing) Then
                             If (Not Me.m_htUsed.Contains(ds)) Then
                                 Me.m_htUsed.Add(ds)
@@ -90,7 +90,7 @@ Namespace Ecospace.Controls
                         End If
                     Next
                 Next
-            Next
+            End If
 
             ' Start with a defaults
             Me.m_tbxName.Text = cFileUtils.ToValidFileName(Me.m_uic.Core.EwEModel.Name, False)

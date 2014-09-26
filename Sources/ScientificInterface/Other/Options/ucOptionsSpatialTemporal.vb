@@ -47,6 +47,12 @@ Namespace Other
         Implements IOptionsPage
         Implements IUIElement
 
+#Region " Private vars "
+
+        Private m_bDragOver As Boolean = False
+
+#End Region ' Private vars
+
 #Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext)
@@ -74,13 +80,14 @@ Namespace Other
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
 
             Me.m_cbAllowIndexing.Checked = man.IsIndexingAllowed
+            Me.AllowDrop = True
 
             Me.UpdateConfigFileList()
 
         End Sub
 
         Private Sub OnSelectDataset(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnSelect.Click, m_lvDatasets.DoubleClick, m_btnExport.Click
+            Handles m_btnSelect.Click, m_lvDatasets.DoubleClick
 
             If (Me.m_lvDatasets.SelectedItems.Count <> 1) Then Return
 
@@ -111,7 +118,7 @@ Namespace Other
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
 
             cmdFO.Title = "Select data set file to add"
-            cmdFO.Invoke("Spatial temporal dataset files|*.xml", 0)
+            cmdFO.Invoke(SharedResources.FILEFILTER_SPATTEMPCONFIG, 0)
 
             If (cmdFO.Result = DialogResult.OK) Then
                 man.AddConfigFile(cmdFO.FileName)
@@ -146,13 +153,62 @@ Namespace Other
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
 
             cmdFS.Title = "Select data set file to create"
-            cmdFS.Invoke("Spatial temporal dataset files|*.xml", 0)
+            cmdFS.Invoke(SharedResources.FILEFILTER_SPATTEMPCONFIG, 0)
 
             If (cmdFS.Result = DialogResult.OK) Then
                 man.CreateConfigFile(cmdFS.FileName, Path.GetFileNameWithoutExtension(cmdFS.FileName), "")
                 Me.UpdateConfigFileList()
             End If
 
+        End Sub
+
+        Private Sub OnExportFile(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnExport.Click
+            Try
+                If (Me.UIContext Is Nothing) Then Return
+
+                Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                Dim cmd As cCommand = cmdh.GetCommand("ExportSpatialDatasets")
+                cmd.Invoke()
+                Me.UpdateConfigFileList()
+            Catch ex As Exception
+                'ToDo: log this
+            End Try
+
+        End Sub
+
+        Protected Overrides Sub OnDragEnter(e As System.Windows.Forms.DragEventArgs)
+            Try
+                If (e.Data.GetDataPresent(DataFormats.FileDrop)) Then
+                    Dim astrFiles As String() = CType(e.Data.GetData(DataFormats.FileDrop), String())
+                    If (astrFiles.Length = 1) Then
+                        e.Effect = DragDropEffects.All
+                        Me.m_bDragOver = True
+                    End If
+                End If
+            Catch ex As Exception
+                Me.m_bDragOver = False
+            End Try
+        End Sub
+
+        Protected Overrides Sub OnDragLeave(e As System.EventArgs)
+            Me.m_bDragOver = False
+            MyBase.OnDragLeave(e)
+        End Sub
+
+        Protected Overrides Sub OnDragDrop(e As System.Windows.Forms.DragEventArgs)
+            Try
+                If Not Me.m_bDragOver Then Return
+                Dim core As cCore = Me.UIContext.Core
+                Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
+                For Each strFile As String In CType(e.Data.GetData(DataFormats.FileDrop), String())
+                    man.AddConfigFile(strFile)
+                Next
+                Me.UpdateConfigFileList()
+            Catch ex As Exception
+            End Try
+            Me.m_bDragOver = False
+            Me.UpdateControls()
         End Sub
 
         Private Sub OnDatasetSelectionChanged(sender As System.Object, e As System.EventArgs) _
@@ -295,13 +351,21 @@ Namespace Other
             End Try
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanSetDefaults"/>
+        ''' -------------------------------------------------------------------
+        Public Function CanSetDefaults() As Boolean _
+            Implements IOptionsPage.CanSetDefaults
+            Return True
+        End Function
+
 #End Region ' Public methods
 
 #Region " Internals "
 
         Private Sub UpdateConfigFileList()
 
-            ' ToDo: globalize this
+            ' ToDo: replace listview by SourceGrid
 
             Dim lvi As ListViewItem = Nothing
             Dim core As cCore = Me.UIContext.Core
@@ -315,7 +379,7 @@ Namespace Other
             Else
                 lvi.SubItems.Add("")
             End If
-            lvi.SubItems.Add("(You)")
+            lvi.SubItems.Add(SharedResources.GENERIC_VALUE_YOU)
             lvi.SubItems.Add("")
             lvi.SubItems.Add(cSpatialDataSetManager.DefaultConfigFile)
             lvi.Tag = Nothing
@@ -327,7 +391,7 @@ Namespace Other
                 Else
                     lvi.SubItems.Add("")
                 End If
-                lvi.SubItems.Add(Me.ToDefaultString(SharedResources.GENERIC_LABEL_DETAILED, cfg.Author, cfg.Source))
+                lvi.SubItems.Add(Me.ToDefaultString(cfg.Author, cfg.Source))
                 lvi.SubItems.Add(Me.ToDefaultString(cfg.Contact))
                 lvi.SubItems.Add(cfg.FileName)
                 lvi.Tag = cfg
@@ -344,9 +408,9 @@ Namespace Other
             Return strIn
         End Function
 
-        Private Function ToDefaultString(ByVal strMask As String, strA As String, strB As String) As String
+        Private Function ToDefaultString(strA As String, strB As String) As String
             If Not String.IsNullOrWhiteSpace(strA) And Not String.IsNullOrWhiteSpace(strB) Then
-                Return String.Format(strMask, strA, strB)
+                Return String.Format(SharedResources.GENERIC_LABEL_A_AT_B, strA, strB)
             End If
             If Not String.IsNullOrWhiteSpace(strA) Then Return strA
             If Not String.IsNullOrWhiteSpace(strB) Then Return strB
@@ -380,6 +444,7 @@ Namespace Other
 
             Me.m_btnSelect.Enabled = bHasSelection And Not bIsCurrent
             Me.m_btnRemove.Enabled = bHasCustomSelection
+            Me.m_btnExport.Enabled = (man.Datasets.Count > 0)
 
             Me.m_lblCacheLocationValue.Text = cStringUtils.CompactString(cache.RootFolder, Me.m_lblCacheLocationValue.ClientSize.Width, Me.Font)
             Me.m_lblCacheSizeValue.Text = String.Format(My.Resources.GENERIC_VALUE_CACHEMEMORY, _

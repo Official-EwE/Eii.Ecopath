@@ -29,7 +29,6 @@ Namespace Controls
         Implements IUIElement
 
         Private m_ctrl As Control = Nothing
-        Private m_uic As cUIContext = Nothing
 
         Public Sub New(uic As cUIContext)
             Me.InitializeComponent()
@@ -38,13 +37,6 @@ Namespace Controls
 
         Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
             Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Set(value As ScientificInterfaceShared.Controls.cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
         Public Shadows Function ShowDialog(owner As IWin32Window, strTitle As String, ctrl As Control) As DialogResult
 
@@ -133,8 +125,6 @@ Namespace Controls
         Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
          Handles m_btnCancel.Click
 
-            Dim uic As cUIContext = Me.UIContext
-
             Try
                 Me.DialogResult = Windows.Forms.DialogResult.Cancel
                 Me.Close()
@@ -145,7 +135,26 @@ Namespace Controls
         End Sub
 
         Private Sub OnOptionsPageChanged(ByVal sender As IOptionsPage, ByVal args As EventArgs)
+            'Lazy reflect state
+            BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+        End Sub
+
+        Private Sub OnSetDefaults(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnDefaults.Click
+
+            Try
+                If (TypeOf Me.m_ctrl Is IOptionsPage) Then
+                    DirectCast(Me.m_ctrl, IOptionsPage).SetDefaults()
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "dlgConfig::OnSetDefaults")
+            End Try
+
+        End Sub
+
+        Protected Overridable Sub UpdateControls()
             Me.m_btnOK.Enabled = DirectCast(Me.m_ctrl, IOptionsPage).CanApply
+            Me.m_btnDefaults.Enabled = DirectCast(Me.m_ctrl, IOptionsPage).CanSetDefaults
         End Sub
 
     End Class

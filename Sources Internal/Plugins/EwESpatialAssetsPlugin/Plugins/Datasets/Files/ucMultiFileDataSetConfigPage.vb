@@ -120,6 +120,7 @@ Namespace SpatialData
 
             Me.m_cbSeasonal.Checked = Me.m_dataset.IsSeasonal
             Me.m_mtbSeasonalEnd.ValidatingType = GetType(Date)
+            Me.m_mtbSeasonalEnd.Text = Me.m_dataset.SeasonsEnd.ToString("yyyy") & Me.m_dataset.SeasonsEnd.ToString("MM")
 
             ' Allow all supported varnames
             Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
@@ -187,6 +188,14 @@ Namespace SpatialData
             Implements IOptionsPage.SetDefaults
             ' NOP
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanSetDefaults"/>
+        ''' -------------------------------------------------------------------
+        Public Function CanSetDefaults() As Boolean _
+            Implements IOptionsPage.CanSetDefaults
+            Return False
+        End Function
 
 #End Region ' Interface implementation
 

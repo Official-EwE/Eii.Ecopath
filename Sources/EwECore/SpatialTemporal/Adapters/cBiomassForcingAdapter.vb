@@ -31,8 +31,6 @@ Namespace SpatialData
     ''' <summary>
     ''' Data Adapter specific to Biomass forcing.
     ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Class cBiomassForcingAdapter
         Inherits cSpatialScalarDataAdapterBase
@@ -68,19 +66,6 @@ Namespace SpatialData
         Friend Overrides Sub Initialize()
             MyBase.Initialize()
             Me.m_spaceData = Me.m_core.m_EcoSpaceData
-            Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)
-
-            Debug.Assert(Me.m_coreCounter = eCoreCounterTypes.nGroups, Me.ToString + ".Initialize() incorrect core counter")
-
-            'WARNING: These values get overwritten by the loading 
-            'For now you can't hardwire an initial scaler value into an Adapter
-            For i As Integer = 0 To n
-                For j As Integer = 0 To cSpatialDataStructures.cMAX_CONN
-                    Me.m_scales(i, j) = Me.molesm2_to_kgkm2
-                    Me.m_scaleType(i, j) = eScaleType.Relative
-                Next
-            Next
-
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -89,20 +74,26 @@ Namespace SpatialData
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
         Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
-                                             ByVal iConnection As Integer, _
+                                             ByVal conn As cSpatialDataConnection, _
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
-            Dim scalar As Double = 1.0
-            If (Me.DataScaleType(layer.Index, iConnection) = eScaleType.Relative) Then
-                scalar = Me.DataScale(layer.Index, iConnection)
+
+            If (conn.ScaleType = eScaleType.Relative) Then
+                sValueAtT *= conn.Scale
             End If
-            'Debug.Assert(sValueAtT < 1000)
-            sValueAtT *= scalar
-            Return MyBase.SetCell(layer, iConnection, iRow, iCol, sValueAtT)
+            Return MyBase.SetCell(layer, conn, iRow, iCol, sValueAtT)
 
         End Function
 
+        Protected Overrides Function NewConnection() As cSpatialDataConnection
+            Dim conn As New cSpatialDataConnection()
+            'WARNING: These values get overwritten by the loading 
+            'For now you can't hardwire an initial scaler value into an Adapter
+            conn.Scale = Me.molesm2_to_kgkm2
+            conn.ScaleType = eScaleType.Relative
+            Return MyBase.NewConnection()
+        End Function
 
 #End Region ' Overrides
 

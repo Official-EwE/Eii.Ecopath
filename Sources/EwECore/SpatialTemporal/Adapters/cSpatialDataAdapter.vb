@@ -38,20 +38,14 @@ Namespace SpatialData
 
 #Region " Private vars "
 
-        ''' <summary>Converter for each layer.</summary>
-        Protected m_converters(,) As ISpatialDataConverter
-        ''' <summary>Dataset for each layer.</summary>
-        Protected m_datasets(,) As ISpatialDataSet
-        ''' <summary>Dataset enabled flags.</summary>
-        Protected m_bEnabled() As Boolean
+        Protected m_connections() As List(Of cSpatialDataConnection)
+        Protected m_astrBackupFiles() As String
+        Protected m_bIsEnabled() As Boolean
 
         ''' <summary>Ecospace variable to operate onto.</summary>
         Protected m_varName As eVarNameFlags = Nothing
         ''' <summary>Core counter that this adapter operates onto.</summary>
         Protected m_coreCounter As eCoreCounterTypes = eCoreCounterTypes.NotSet
-
-        ''' <summary>File names of preserved layers.</summary>
-        Private m_astrLayerBackupFiles(,) As String
 
 #End Region ' Private vars
 
@@ -100,22 +94,21 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Friend Overridable Sub Initialize()
 
-            Me.m_converters = Nothing
-            Me.m_datasets = Nothing
-
             Dim iNumItems As Integer = Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter)) + 1
 
-            ReDim Me.m_converters(iNumItems, cSpatialDataStructures.cMAX_CONN)
-            ReDim Me.m_datasets(iNumItems, cSpatialDataStructures.cMAX_CONN)
-            ReDim Me.m_astrLayerBackupFiles(iNumItems, cSpatialDataStructures.cMAX_CONN)
-            ReDim Me.m_bEnabled(iNumItems)
+            ReDim Me.m_connections(iNumItems)
+            For i As Integer = 0 To iNumItems
+                Me.m_connections(i) = New List(Of cSpatialDataConnection)
+            Next
 
-            For i As Integer = 1 To iNumItems
-                Me.m_bEnabled(i) = True
+            ReDim Me.m_astrBackupFiles(iNumItems)
+            ReDim Me.m_bIsEnabled(iNumItems)
+
+            For i As Integer = 0 To iNumItems - 1
+                Me.m_bIsEnabled(i) = True
             Next
 
         End Sub
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -129,59 +122,15 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether a data connection is allowed to exchange data.
-        ''' </summary>
-        ''' <param name="iIndex"></param>
-        ''' -------------------------------------------------------------------
-        Public Property IsEnabled(ByVal iIndex As Integer) As Boolean
-            Get
-                Return Me.m_bEnabled(iIndex)
-            End Get
-            Set(value As Boolean)
-                Me.m_bEnabled(iIndex) = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Return whether a layer in this adapter is connected to external data.
         ''' </summary>
-        ''' <param name="iIndex">The one-based index of the layer to query, or
-        ''' <see cref="cCore.NULL_VALUE"/> if irrelevant.</param>
+        ''' <param name="iLayer">The one-based index of the layer to query.</param>
         ''' -------------------------------------------------------------------
-        Public Function IsConnected(ByVal iIndex As Integer, _
-                                    Optional ByVal iConnection As Integer = -1) As Boolean
+        Public Function IsConnected(ByVal iLayer As Integer) As Boolean
 
-            If (Me.m_datasets Is Nothing) Then Me.Initialize()
-            If (Me.m_converters Is Nothing) Then Me.Initialize()
-
-            Dim cv As ISpatialDataConverter = Nothing
-            Dim ds As ISpatialDataSet = Nothing
             Dim bConnected As Boolean = False
-            Dim iMin As Integer = 1
-            Dim iMax As Integer = cSpatialDataStructures.cMAX_CONN
-
-            If iConnection > 0 Then
-                iMin = Math.Max(iConnection, 1) : iMax = Math.Min(iConnection, cSpatialDataStructures.cMAX_CONN)
-            End If
-
-            For i As Integer = iMin To iMax
-
-                cv = Me.Converter(iIndex, i)
-                ds = Me.Dataset(iIndex, i)
-
-                If (ds IsNot Nothing) Then
-                    If (ds.IsConfigured()) Then
-                        If Not String.IsNullOrWhiteSpace(ds.ConversionFormat) Then
-                            If (cv IsNot Nothing) Then
-                                bConnected = bConnected Or cv.IsConfigured()
-                            End If
-                        Else
-                            bConnected = True
-                        End If
-                    End If
-                End If
-
+            For Each conn As cSpatialDataConnection In Me.Connections(iLayer)
+                bConnected = bConnected Or conn.IsConfigured()
             Next
             Return bConnected
 
@@ -189,55 +138,18 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set a <see cref="ISpatialDataSet">data set</see> for layer <paramref name="iIndex"/>.
+        ''' Return whether a layer in this adapter is allowed to exchange external 
+        ''' data.
         ''' </summary>
-        ''' <param name="iLayer">Layer index [0, <see cref="MaxLength"/>&lt;.</param>
-        ''' <param name="iConnection">One-based index of the connection</param>
+        ''' <param name="iLayer">The one-based index of the layer to query.</param>
         ''' -------------------------------------------------------------------
-        Public Property Converter(iLayer As Integer, iConnection As Integer) As ISpatialDataConverter
+        Public Property IsEnabled(ByVal iLayer As Integer) As Boolean
             Get
-                Debug.Assert(iLayer <= Me.MaxLength, "Index out of range")
-                Return Me.m_converters(Math.Max(0, iLayer), iConnection - 1)
+                Return Me.m_bIsEnabled(iLayer)
             End Get
-            Set(ByVal value As ISpatialDataConverter)
-                If (Me.m_converters Is Nothing) Then Me.Initialize()
-                Debug.Assert(iLayer <= Me.MaxLength, "Index out of range")
-
-                ' Is a change?
-                If Not Object.ReferenceEquals(Me.m_converters(Math.Max(0, iLayer), iConnection - 1), value) Then
-                    Me.m_converters(Math.Max(0, iLayer), iConnection - 1) = value
-                    ' Connect converter and dataset, if possible
-                    If (value IsNot Nothing) Then
-                        value.Dataset = Me.Dataset(iLayer, iConnection)
-                    End If
-                    Me.OnChanged()
-                End If
-                If (value IsNot Nothing) Then
-                    value.Dataset = Me.Dataset(iLayer, iConnection)
-                End If
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set a <see cref="ISpatialDataConverter">data converter</see> 
-        ''' for layer <paramref name="iIndex"/>.
-        ''' </summary>
-        ''' <param name="iLayer">Layer index [0, <see cref="MaxLength"/>&lt;.</param>
-        ''' <param name="iConnection">One-based index of the connection</param>
-        ''' -------------------------------------------------------------------
-        Public Property Dataset(iLayer As Integer, iConnection As Integer) As ISpatialDataSet
-            Get
-                Debug.Assert(iLayer <= Me.MaxLength, "Index out of range")
-                Return Me.m_datasets(Math.Max(0, iLayer), iConnection - 1)
-            End Get
-            Set(ByVal value As ISpatialDataSet)
-                If (Me.m_datasets Is Nothing) Then Me.Initialize()
-                Debug.Assert(iLayer <= Me.MaxLength, "Index out of range")
-
-                ' Is a change?
-                If Not Object.ReferenceEquals(Me.m_datasets(Math.Max(0, iLayer), iConnection - 1), value) Then
-                    Me.m_datasets(Math.Max(0, iLayer), iConnection - 1) = value
+            Set(value As Boolean)
+                If (value <> Me.m_bIsEnabled(iLayer)) Then
+                    Me.m_bIsEnabled(iLayer) = value
                     Me.OnChanged()
                 End If
             End Set
@@ -287,14 +199,13 @@ Namespace SpatialData
 
                 If Me.IsEnabled(layer.Index) Then
 
-                    For iConnection As Integer = 1 To cSpatialDataStructures.cMAX_CONN
-
+                    For Each conn As cSpatialDataConnection In Me.m_connections(layer.Index)
                         ' Is ready to go?
-                        If Me.IsConnected(layer.Index, iConnection) Then
+                        If conn.IsConfigured Then
 
                             ' Get dataset and converter
-                            Dim ds As ISpatialDataSet = Me.Dataset(layer.Index, iConnection)
-                            Dim cv As ISpatialDataConverter = Me.Converter(layer.Index, iConnection)
+                            Dim ds As ISpatialDataSet = conn.Dataset
+                            Dim cv As ISpatialDataConverter = conn.Converter
 
                             ' #Yes: has data for this time step?
                             dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
@@ -331,7 +242,7 @@ Namespace SpatialData
                                         End If
 
                                         ' Integrate data
-                                        Me.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
+                                        Me.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
 
                                         ' Notify world
                                         If (Me.m_core.PluginManager IsNot Nothing) Then
@@ -368,10 +279,8 @@ Namespace SpatialData
                                 cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
                             End If
                         End If
-                    Next iConnection
-
-                End If ' IsEnabled(layer.Index)
-
+                    Next
+                End If
             Next layer
 
             Return bSuccess
@@ -414,7 +323,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Protected Friend Overridable Function Adapt(ByVal bm As cEcospaceBasemap, _
                                                     ByVal layer As cEcospaceLayer, _
-                                                    ByVal iConnection As Integer, _
+                                                    ByVal conn As cSpatialDataConnection, _
                                                     ByVal iTime As Integer, _
                                                     ByVal dt As Date, _
                                                     ByVal dataExternal As ISpatialRaster, _
@@ -451,12 +360,12 @@ Namespace SpatialData
                             ' Is a valid value?
                             If (sValue <> cCore.NULL_VALUE) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                                 ' #Yes: set value
-                                bSuccess = bSuccess And Me.SetCell(layer, iConnection, iRow, iCol, sValue)
+                                bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, sValue)
                                 'sum += CDbl(layer.Cell(iRow, iCol))
                                 n += 1
                             End If
                         Else
-                            bSuccess = bSuccess And Me.SetCell(layer, iConnection, iRow, iCol, dNoData)
+                            bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, dNoData)
                         End If
                         iCol += 1
                     End While ' iCol
@@ -491,7 +400,7 @@ Namespace SpatialData
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Protected Overridable Function SetCell(ByVal layer As cEcospaceLayer, _
-                                               ByVal iConnection As Integer, _
+                                               ByVal conn As cSpatialDataConnection, _
                                                ByVal iRow As Integer, _
                                                ByVal iCol As Integer, _
                                                ByVal sCellValueAtT As Double) As Boolean
@@ -533,9 +442,7 @@ Namespace SpatialData
 
             ' Wipe, just in case
             For i As Integer = 0 To Me.m_core.GetCoreCounter(Me.m_coreCounter)
-                For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
-                    Me.m_astrLayerBackupFiles(i, j) = String.Empty
-                Next
+                Me.m_astrBackupFiles(i) = String.Empty
             Next
 
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
@@ -547,46 +454,43 @@ Namespace SpatialData
 
             ' For all layers
             For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
-                For iConnection As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                ' Is driven by external data?
+                If (Me.IsConnected(layer.Index)) Then
+                    ' #Yes: set up a temp file and save the layer content to the file
+                    Try
+                        strFileName = cFileUtils.MakeTempFile(".ewetmp")
+                        tData = layer.ValueType
+                        sw = New StreamWriter(strFileName)
+                        For iRow As Integer = 1 To iNumRow
+                            For iCol As Integer = 1 To iNumCol
+                                If (iCol > 1) Then sw.Write(",")
+                                If tData Is GetType(Single) Or tData Is GetType(Integer) Then
+                                    sw.Write(cStringUtils.FormatNumber(layer.Cell(iRow, iCol)))
+                                ElseIf tData Is GetType(Boolean) Then
+                                    sw.Write(layer.Cell(iRow, iCol).ToString())
+                                End If
+                            Next iCol
+                            sw.WriteLine()
+                        Next iRow
 
-                    ' Is driven by external data?
-                    If (layer.IsExternalData(iConnection)) Then
-                        ' #Yes: set up a temp file and save the layer content to the file
-                        Try
-                            strFileName = cFileUtils.MakeTempFile(".ewetmp")
-                            tData = layer.ValueType
-                            sw = New StreamWriter(strFileName)
-                            For iRow As Integer = 1 To iNumRow
-                                For iCol As Integer = 1 To iNumCol
-                                    If (iCol > 1) Then sw.Write(",")
-                                    If tData Is GetType(Single) Or tData Is GetType(Integer) Then
-                                        sw.Write(cStringUtils.FormatNumber(layer.Cell(iRow, iCol)))
-                                    ElseIf tData Is GetType(Boolean) Then
-                                        sw.Write(layer.Cell(iRow, iCol).ToString())
-                                    End If
-                                Next iCol
-                                sw.WriteLine()
-                            Next iRow
+                        ' Clean up
+                        sw.Flush()
+                        sw.Close()
+                        sw = Nothing
 
-                            ' Clean up
-                            sw.Flush()
-                            sw.Close()
-                            sw = Nothing
-
-                            ' Store the name of the file where this layer's data was preserved
-                            Me.m_astrLayerBackupFiles(layer.Index, iConnection) = strFileName
+                        ' Store the name of the file where this layer's data was preserved
+                        Me.m_astrBackupFiles(layer.Index) = strFileName
 #If DEBUG Then
-                            Console.WriteLine("Adapter " & Me.ToString & " saved content of layer " & layer.ToString & ", connection " & iConnection & " to " & strFileName)
+                        Console.WriteLine("Adapter " & Me.ToString & " saved content of layer " & layer.ToString & " to " & strFileName)
 #End If
-                            cLog.Write("cSpatialDataAdapter::SaveLayerData successful for " & layer.Name & " into " & strFileName, eVerboseLevel.Detailed)
+                        cLog.Write("cSpatialDataAdapter::SaveLayerData successful for " & layer.Name & " into " & strFileName, eVerboseLevel.Detailed)
 
-                        Catch ex As Exception
-                            ' Log failure, plod along
-                            cLog.Write(ex, "cSpatialDataAdapter::SaveLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
-                        End Try
+                    Catch ex As Exception
+                        ' Log failure, plod along
+                        cLog.Write(ex, "cSpatialDataAdapter::SaveLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
+                    End Try
 
-                    End If
-                Next iConnection
+                End If
             Next layer
 
         End Sub
@@ -607,42 +511,40 @@ Namespace SpatialData
             Dim strFileName As String = ""
 
             For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
-                For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
 
-                    strFileName = Me.m_astrLayerBackupFiles(layer.Index, j)
-                    tData = layer.ValueType
+                strFileName = Me.m_astrBackupFiles(layer.Index)
+                tData = layer.ValueType
 
-                    If (Not String.IsNullOrWhiteSpace(strFileName) And layer.IsExternalData(j)) Then
-                        Try
+                If (Not String.IsNullOrWhiteSpace(strFileName) And Me.IsConnected(layer.Index)) Then
+                    Try
 #If DEBUG Then
-                            Console.WriteLine("Adapter " & Me.ToString & " restoring layer " & layer.ToString & " from " & strFileName)
+                        Console.WriteLine("Adapter " & Me.ToString & " restoring layer " & layer.ToString & " from " & strFileName)
 #End If
-                            sr = New StreamReader(strFileName)
-                            For iRow As Integer = 1 To iNumRow
-                                Dim strLine As String = sr.ReadLine
-                                Dim astrFields As String() = strLine.Split(","c)
-                                For iCol As Integer = 1 To iNumCol
+                        sr = New StreamReader(strFileName)
+                        For iRow As Integer = 1 To iNumRow
+                            Dim strLine As String = sr.ReadLine
+                            Dim astrFields As String() = strLine.Split(","c)
+                            For iCol As Integer = 1 To iNumCol
 
-                                    If tData Is GetType(Single) Or tData Is GetType(Integer) Then
-                                        layer.Cell(iRow, iCol) = cStringUtils.ConvertToNumber(astrFields(iCol - 1), tData)
-                                    ElseIf tData Is GetType(Boolean) Then
-                                        layer.Cell(iRow, iCol) = Boolean.Parse(astrFields(iCol - 1))
-                                    End If
+                                If tData Is GetType(Single) Or tData Is GetType(Integer) Then
+                                    layer.Cell(iRow, iCol) = cStringUtils.ConvertToNumber(astrFields(iCol - 1), tData)
+                                ElseIf tData Is GetType(Boolean) Then
+                                    layer.Cell(iRow, iCol) = Boolean.Parse(astrFields(iCol - 1))
+                                End If
 
-                                Next iCol
-                            Next iRow
-                            sr.Close()
-                            sr = Nothing
-                            cLog.Write("cSpatialDataAdapter::RestoreLayerData successful for " & layer.Name & " from " & strFileName, eVerboseLevel.Detailed)
-                        Catch ex As Exception
-                            ' Whoah!
-                            cLog.Write(ex, "cSpatialDataAdapter::RestoreLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
-                        End Try
-                        ' Remove this temp file
-                        cFileUtils.PurgeTempFile(strFileName)
-                    End If
-                    Me.m_astrLayerBackupFiles(layer.Index, j) = String.Empty
-                Next j
+                            Next iCol
+                        Next iRow
+                        sr.Close()
+                        sr = Nothing
+                        cLog.Write("cSpatialDataAdapter::RestoreLayerData successful for " & layer.Name & " from " & strFileName, eVerboseLevel.Detailed)
+                    Catch ex As Exception
+                        ' Whoah!
+                        cLog.Write(ex, "cSpatialDataAdapter::RestoreLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
+                    End Try
+                    ' Remove this temp file
+                    cFileUtils.PurgeTempFile(strFileName)
+                End If
+                Me.m_astrBackupFiles(layer.Index) = String.Empty
             Next layer
 
         End Sub
@@ -697,6 +599,52 @@ Namespace SpatialData
         End Function
 
 #End Region ' Intermediate output files
+
+#Region " Connections "
+
+        Public Function Connections(Optional iLayer As Integer = -1) As cSpatialDataConnection()
+
+            Dim iFrom As Integer = iLayer
+            Dim iTo As Integer = iLayer
+            Dim lConn As New List(Of cSpatialDataConnection)
+
+            If iFrom = -1 Then iFrom = 1
+            If iTo = -1 Then iTo = Me.MaxLength
+            For iLayer = iFrom To iTo
+                If Me.m_connections(iLayer).Count > 0 Then
+                    lConn.AddRange(Me.m_connections(iLayer))
+                End If
+            Next
+
+            Return lConn.ToArray
+
+        End Function
+
+        Public Function AddConnection(ByVal iLayer As Integer) As cSpatialDataConnection
+
+            Dim conn As cSpatialDataConnection = Nothing
+            If (Me.m_connections(iLayer).Count < cSpatialDataStructures.cMAX_CONN) Then
+                conn = Me.NewConnection()
+                conn.Adapter = Me
+                conn.iLayer = iLayer
+                Me.m_connections(iLayer).Add(conn)
+            End If
+            Return conn
+
+        End Function
+
+        Public Function RemoveConnection(ByVal iLayer As Integer, ByVal conn As cSpatialDataConnection) As Boolean
+
+            Me.m_connections(iLayer).Remove(conn)
+            Return True
+
+        End Function
+
+        Protected Overridable Function NewConnection() As cSpatialDataConnection
+            Return New cSpatialDataConnection()
+        End Function
+
+#End Region ' Connections
 
     End Class
 

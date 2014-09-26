@@ -258,7 +258,6 @@ Namespace SpatialData
         Friend Function ToAbsolutePath(ByVal strPath As String, _
                                        Optional ByVal strPathBase As String = "") As String
 
-            If Not Me.IsSourceRelative Then Return strPath
             If (String.IsNullOrWhiteSpace(strPathBase)) Then
                 Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
                 strPathBase = Path.GetDirectoryName(man.CurrentConfigFile)
@@ -280,9 +279,7 @@ Namespace SpatialData
         Friend Function ToRelativePath(ByVal strPath As String, _
                                        Optional ByVal strPathBase As String = "") As String
 
-            If Not Me.IsSourceRelative Then Return strPath
-
-            If (strPath.StartsWith(".\")) Then 
+            If (strPath.StartsWith(".\")) Then
                 strPath = strPath.Substring(2)
             End If
             If (String.IsNullOrWhiteSpace(strPathBase)) Then

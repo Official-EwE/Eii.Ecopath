@@ -336,6 +336,14 @@ Namespace Other
             Me.FillFontTypesListBox()
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanSetDefaults"/>
+        ''' -------------------------------------------------------------------
+        Public Function CanSetDefaults() As Boolean _
+            Implements IOptionsPage.CanSetDefaults
+            Return True
+        End Function
+
 #End Region ' Public methods
 
 #Region " Helper methods "

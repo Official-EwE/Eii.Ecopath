@@ -125,6 +125,14 @@ Namespace SpatialData
             ' NOP
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanSetDefaults"/>
+        ''' -------------------------------------------------------------------
+        Public Function CanSetDefaults() As Boolean _
+            Implements IOptionsPage.CanSetDefaults
+            Return False
+        End Function
+
     End Class
 
 End Namespace

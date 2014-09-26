@@ -195,6 +195,14 @@ Namespace Other
             Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(CDec(My.Settings.GetDefaultValue("UpdatePluginsTimeout")) / 1000)))
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanSetDefaults"/>
+        ''' -------------------------------------------------------------------
+        Public Function CanSetDefaults() As Boolean _
+            Implements IOptionsPage.CanSetDefaults
+            Return True
+        End Function
+
 #End Region ' Public interfaces
 
 #Region " Events "

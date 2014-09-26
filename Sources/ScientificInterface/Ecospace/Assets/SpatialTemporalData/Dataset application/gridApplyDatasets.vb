@@ -44,7 +44,7 @@ Namespace Ecospace.Controls
         Private m_mhEcospace As cMessageHandler = Nothing
         Private m_man As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
-        Private m_lDatasets As New List(Of ISpatialDataSet)
+        Private m_lConnections As New List(Of cSpatialDataConnection)
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -133,17 +133,19 @@ Namespace Ecospace.Controls
             If (Me.UIContext Is Nothing) Then Return
 
             Dim vfmt As New cVarnameTypeFormatter()
-            Dim ds As ISpatialDataSet = Nothing
+            Dim conn As cSpatialDataConnection = Nothing
             Dim iRow As Integer = 0
             Dim cell As EwECell = Nothing
 
             ' Dataset rows
-            For i As Integer = 0 To Me.m_lDatasets.Count - 1
-                ds = Me.m_lDatasets(i)
+            For i As Integer = 0 To Me.m_lConnections.Count - 1
+                conn = Me.m_lConnections(i)
                 iRow = Me.AddRow()
 
                 Dim strTStart As String = SharedResources.GENERIC_VALUE_FIRSTTIMESTEP
                 Dim strTEnd As String = ""
+                Dim ds As ISpatialDataSet = conn.Dataset
+
                 If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = ds.TimeStart.ToShortDateString
                 If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = ds.TimeEnd.ToShortDateString
 
@@ -154,9 +156,10 @@ Namespace Ecospace.Controls
                 Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me.Rows(iRow).Tag = ds
 
-                Me.UpdateDatasetRow(ds)
+                Me.ConnectionAtRow(iRow) = conn
+
+                Me.UpdateConnectionRow(iRow)
             Next
 
         End Sub
@@ -172,15 +175,15 @@ Namespace Ecospace.Controls
 
         End Sub
 
-        Private Sub UpdateDatasetRow(ds As ISpatialDataSet)
-
-            ' ToDo: globalize this
-
-            Dim iRow As Integer = Me.DatasetRowIndex(ds)
-            Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
+        Private Sub UpdateConnectionRow(iRow As Integer)
 
             If (iRow < 1) Then Return
 
+            ' ToDo: globalize this
+
+            Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
+            Dim conn As cSpatialDataConnection = Me.ConnectionAtRow(iRow)
+            Dim ds As ISpatialDataSet = conn.Dataset
             Dim comp As New cDatasetCompatilibity(Me.Core, ds)
             Dim iNumTS As Integer = Math.Max(Core.nEcospaceTimeSteps, 1)
             Dim strVal As String = ""
@@ -201,22 +204,18 @@ Namespace Ecospace.Controls
 
         End Sub
 
-        Private Function DatasetRowIndex(ds As ISpatialDataSet) As Integer
-            For iRow As Integer = 1 To Me.RowsCount - 1
-                Dim ri As RowInfo = Me.Rows(iRow)
-                If (Object.ReferenceEquals(ri.Tag, ds)) Then
-                    Return iRow
-                End If
-            Next
-            Return -1
-        End Function
-
         Public Overrides Sub OnCoreMessage(ByRef msg As cMessage)
 
             Try
                 ' May have been disposed already
                 If (msg.DataType = EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection) Then
-                    Me.UpdateDatasetRow(Me.m_manSets.IndexDataset)
+                    For iRow As Integer = 1 To Me.RowsCount - 1
+                        Dim conn As cSpatialDataConnection = Me.ConnectionAtRow(iRow)
+                        Debug.Assert(conn IsNot Nothing)
+                        If (Object.ReferenceEquals(conn.Dataset, Me.m_manSets.IndexDataset)) Then
+                            Me.UpdateConnectionRow(iRow)
+                        End If
+                    Next
                 Else
                     MyBase.OnCoreMessage(msg)
                 End If
@@ -229,28 +228,46 @@ Namespace Ecospace.Controls
 
 #End Region ' Internals
 
-        Public Sub Add(ds As ISpatialDataSet, bSelectRow As Boolean)
-            Me.m_lDatasets.Add(ds)
+        Public Sub AddConnection(conn As cSpatialDataConnection, bSelectRow As Boolean)
+            Me.m_lConnections.Add(conn)
             Me.RefreshContent()
             If (bSelectRow) Then
-                Me.SelectRow(Me.m_lDatasets.Count)
+                Me.SelectRow(Me.m_lConnections.Count)
             End If
         End Sub
 
-        Public Sub Remove(ds As ISpatialDataSet)
+        Public Sub RemoveConnection(conn As cSpatialDataConnection)
             Dim iRow As Integer = Me.SelectedRow
-            Me.m_lDatasets.Remove(ds)
+            Me.m_lConnections.Remove(conn)
             Me.RefreshContent()
             If Me.RowsCount > 1 Then
-                Me.SelectRow(Math.Min(Me.m_lDatasets.Count, Math.Max(1, iRow)))
+                Me.SelectRow(Math.Min(Me.m_lConnections.Count, Math.Max(1, iRow)))
             End If
         End Sub
 
-        Public ReadOnly Property SelectedDataset As ISpatialDataSet
+        Public Property SelectedConnection As cSpatialDataConnection
             Get
-                If Me.SelectedRow < 1 Then Return Nothing
-                Return DirectCast(Me.Rows(Me.SelectedRow).Tag, ISpatialDataSet)
+                Return Me.ConnectionAtRow(Me.SelectedRow)
             End Get
+            Set(value As cSpatialDataConnection)
+                For iRow As Integer = 1 To Me.RowsCount
+                    If (Object.ReferenceEquals(value, ConnectionAtRow(iRow))) Then
+                        Me.SelectRow(iRow)
+                        Return
+                    End If
+                Next
+                Me.SelectRow(-1)
+            End Set
+        End Property
+
+        Private Property ConnectionAtRow(ByVal iRow As Integer) As cSpatialDataConnection
+            Get
+                If (iRow < 1) Then Return Nothing
+                Return DirectCast(Me.Rows(iRow).Tag, cSpatialDataConnection)
+            End Get
+            Set(value As cSpatialDataConnection)
+                Me.Rows(iRow).Tag = value
+            End Set
         End Property
 
     End Class

@@ -67,6 +67,14 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Sub SetDefaults()
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether this options page can set defaults.
+        ''' </summary>
+        ''' <returns>True if the options page can set defaults.</returns>
+        ''' -----------------------------------------------------------------------
+        Function CanSetDefaults() As Boolean
+
     End Interface
 
 End Namespace

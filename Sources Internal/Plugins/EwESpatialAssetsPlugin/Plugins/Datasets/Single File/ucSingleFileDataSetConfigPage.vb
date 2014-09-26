@@ -194,4 +194,9 @@ Friend Class ucSingleFileDataSetConfigPage
     Public Event OnSingleFileConfigPageChanged(sender As IOptionsPage, args As System.EventArgs) _
         Implements ScientificInterfaceShared.Controls.IOptionsPage.OnChanged
 
+    Public Function CanSetDefaults() As Boolean _
+        Implements IOptionsPage.CanSetDefaults
+        Return False
+    End Function
+
 End Class

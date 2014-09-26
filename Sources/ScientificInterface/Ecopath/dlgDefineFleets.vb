@@ -128,7 +128,7 @@ Namespace Ecopath
 
         Private Sub OnDefaultCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnDefaultCurrent.Click
-            Me.m_grid.SetDefaultFleetColor(Me.m_grid.selectedrow)
+            Me.m_grid.SetDefaultFleetColor(Me.m_grid.SelectedRow)
         End Sub
 
         Private Sub OnCustomColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _

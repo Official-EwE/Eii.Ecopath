@@ -461,9 +461,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Editing {0}.
         '''</summary>
-        Public ReadOnly Property CAPTION_EDITING_LAYER() As String
+        Public ReadOnly Property CAPTION_GENERIC_EDIT() As String
             Get
-                Return ResourceManager.GetString("CAPTION_EDITING_LAYER", resourceCulture)
+                Return ResourceManager.GetString("CAPTION_GENERIC_EDIT", resourceCulture)
             End Get
         End Property
         
@@ -1615,6 +1615,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Spatial temporal configuration files|*.xml.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_SPATTEMPCONFIG() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_SPATTEMPCONFIG", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Text files|*.txt.
         '''</summary>
         Public ReadOnly Property FILEFILTER_TEXT() As String
@@ -1840,6 +1849,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} @ {1}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_A_AT_B() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_A_AT_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Apply.
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_APPLY() As String
@@ -2056,7 +2074,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (All).
+        '''  Looks up a localized string similar to (all).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_ALL() As String
             Get
@@ -2065,7 +2083,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (All fields).
+        '''  Looks up a localized string similar to (all fields).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_ALLFIELDS() As String
             Get
@@ -2074,7 +2092,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (All fleets).
+        '''  Looks up a localized string similar to (all fleets).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_ALLFLEETS() As String
             Get
@@ -2083,7 +2101,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (All groups).
+        '''  Looks up a localized string similar to (all groups).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_ALLGROUPS() As String
             Get
@@ -2092,7 +2110,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (All runs).
+        '''  Looks up a localized string similar to (all runs).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_ALLRUNS() As String
             Get
@@ -2110,7 +2128,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (Custom).
+        '''  Looks up a localized string similar to (custom).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_CUSTOM() As String
             Get
@@ -2119,7 +2137,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (Default).
+        '''  Looks up a localized string similar to (default).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_DEFAULT() As String
             Get
@@ -2245,7 +2263,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (N/A).
+        '''  Looks up a localized string similar to (n/a).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_NOTAVAILABLE() As String
             Get
@@ -2254,7 +2272,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (Not specified).
+        '''  Looks up a localized string similar to (not specified).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_NOTSET() As String
             Get
@@ -2263,7 +2281,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (Not used).
+        '''  Looks up a localized string similar to (not used).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_NOTUSED() As String
             Get
@@ -2313,6 +2331,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VALUE_YES() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_YES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (you).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_YOU() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_YOU", resourceCulture)
             End Get
         End Property
         

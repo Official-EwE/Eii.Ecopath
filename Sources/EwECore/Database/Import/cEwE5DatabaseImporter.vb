@@ -557,7 +557,8 @@ Namespace Database
             End If
 
             Try
-                Dim dt As Date = Convert.ToDateTime(strDate, New CultureInfo("en-US"))
+                Dim dt As Date '= Convert.ToDateTime(strDate, New CultureInfo("en-US"))
+                Date.TryParse(strDate, dt)
                 Return CSng(dt.ToOADate())
             Catch ex As Exception
                 ' Woops!

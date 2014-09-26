@@ -19,9 +19,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Commands
 Imports EwECore
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -33,15 +32,16 @@ Namespace Commands
     ''' interface.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cEcospaceExternalDataCommand
+    Public Class cEcospaceConfigureConnectionCommand
         Inherits cCommand
 
         Private m_layer As cEcospaceLayer = Nothing
+        Private m_conn As SpatialData.cSpatialDataConnection = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' -----------------------------------------------------------------------
-        Public Shared cCOMMAND_NAME As String = "~ecospaceexternaldata"
+        Public Shared cCOMMAND_NAME As String = "~ecospaceconfigureconnection"
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -58,7 +58,8 @@ Namespace Commands
         ''' element defined by this call.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(Optional ByVal layer As cEcospaceLayer = Nothing)
+        Public Overloads Sub Invoke(ByVal layer As cEcospaceLayer, _
+                                    Optional ByVal conn As SpatialData.cSpatialDataConnection = Nothing)
             Me.m_layer = layer
             MyBase.Invoke()
             Me.m_layer = Nothing
@@ -73,6 +74,17 @@ Namespace Commands
         Public ReadOnly Property Layer() As cEcospaceLayer
             Get
                 Return Me.m_layer
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="SpatialData.cSpatialDataConnection"/> to edit, if any.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Connection As SpatialData.cSpatialDataConnection
+            Get
+                Return Me.m_conn
             End Get
         End Property
 

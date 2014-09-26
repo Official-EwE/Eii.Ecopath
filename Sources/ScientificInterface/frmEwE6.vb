@@ -48,6 +48,7 @@ Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
 Imports EwECore.SpatialData
+Imports ScientificInterface.Ecospace.Controls
 
 #End Region ' Imports
 
@@ -253,6 +254,7 @@ Public Class frmEwE6
     Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
     Private WithEvents m_cmdDefineSpatialDatasets As cCommand = Nothing
     Private WithEvents m_cmdEditSpatialDataset As cEditSpatialDatasetCommand = Nothing
+    Private WithEvents m_cmdEcospaceConfigureConnection As cEcospaceConfigureConnectionCommand = Nothing
     Private WithEvents m_cmdExportSpatialDatasets As cCommand = Nothing
     Private WithEvents m_cmdImportLayerData As cImportLayerCommand = Nothing
     Private WithEvents m_cmdExportLayerData As cExportLayerCommand = Nothing
@@ -599,9 +601,7 @@ Public Class frmEwE6
         Me.m_cmdEditSpatialDataset = New cEditSpatialDatasetCommand(cmdh)
 
         Me.m_cmdExportSpatialDatasets = New cCommand(cmdh, "ExportSpatialDatasets")
-
-        'Me.m_cmdEcospaceDataConnections = New cEcospaceExternalDataCommand(cmdh)
-        'Me.m_cmdEcospaceDataConnections.AddControl(Me.m_tsmiEcospaceDataConnections)
+        Me.m_cmdEcospaceConfigureConnection = New cEcospaceConfigureConnectionCommand(cmdh)
 
         Me.m_cmdImportLayerData = New cImportLayerCommand(cmdh)
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
@@ -4028,6 +4028,24 @@ Public Class frmEwE6
             cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
         Catch ex As Exception
 
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Command handler
+    ''' </summary>
+    Private Sub OntEcospaceConfigureConnection(cmd As cCommand) Handles m_cmdEcospaceConfigureConnection.OnInvoke
+
+        If (Me.m_cmdEcospaceConfigureConnection.Layer Is Nothing) Then Return
+        Try
+            Dim adt As cSpatialDataAdapter = Me.Core.SpatialDataConnectionManager.Adapter(Me.m_cmdEcospaceConfigureConnection.Layer.VarName)
+            Dim dlg As New dlgApplyConnection(Me.UIContext, adt, Me.m_cmdEcospaceConfigureConnection.Layer, Me.m_cmdEcospaceConfigureConnection.Connection)
+
+            If dlg.ShowDialog() = DialogResult.OK Then
+                Me.Core.SpatialDataConnectionManager.Update(eMessageType.DataModified)
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "frmEwE6:OntEcospaceConfigureConnection")
         End Try
     End Sub
 

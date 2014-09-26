@@ -145,7 +145,9 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property TimeEnd As DateTime
             Get
-                If Me.IsSeasonal Then Return Me.SeasonsEnd
+                If Me.IsSeasonal Then
+                    Return Me.SeasonsEnd
+                End If
                 If (Me.m_lFiles.Count = 0) Then Return DateTime.MinValue
                 Me.Sort()
                 Return Me.m_lFiles(Me.m_lFiles.Count - 1).Date
@@ -254,7 +256,7 @@ Namespace SpatialData
         ''' <summary>Get/set whether date where 'seasonality' ends.</summary>
         ''' <remarks>Thanks, Marillion ;)</remarks>
         ''' -------------------------------------------------------------------
-        Public Property SeasonsEnd As Date = New Date(2100, 1, 1)
+        Public Property SeasonsEnd As DateTime = New DateTime(2100, 1, 1)
 
 #End Region ' Configuration
 
@@ -346,8 +348,8 @@ Namespace SpatialData
 
             Dim xnMaster As XmlNode = Nothing
             Dim xn As XmlNode = Nothing
-            Dim xnFile As XmlNode = Nothing
-            Dim xaFile As XmlAttribute = Nothing
+            Dim xa As XmlAttribute = Nothing
+            Dim xnChild As XmlNode = Nothing
 
             xnMaster = doc.CreateElement("Configuration")
 
@@ -364,7 +366,7 @@ Namespace SpatialData
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Source")
-            If Me.IsSourceRelative Then
+            If (Me.IsSourceRelative) Then
                 xn.InnerText = Me.ToRelativePath(Me.Source)
             Else
                 xn.InnerText = Me.Source
@@ -377,10 +379,9 @@ Namespace SpatialData
 
             xn = doc.CreateElement("Seasonal")
             xn.InnerText = Convert.ToString(Me.IsSeasonal)
-            xnMaster.AppendChild(xn)
-
-            xn = doc.CreateElement("SeasonsEnd")
-            xn.InnerText = Convert.ToString(Me.SeasonsEnd.ToOADate)
+            xa = doc.CreateAttribute("DateRef")
+            xa.InnerText = cStringUtils.FormatDate(Me.SeasonsEnd)
+            xn.Attributes.Append(xa)
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Files")
@@ -388,47 +389,43 @@ Namespace SpatialData
 
             For Each tf As cTemporalFile In Me.m_lFiles
 
-                xnFile = doc.CreateElement("File")
+                xnChild = doc.CreateElement("File")
 
-                xaFile = doc.CreateAttribute("Name")
+                xa = doc.CreateAttribute("Name")
                 Dim strFile As String = tf.FileName
-                If Me.IsSourceRelative Then strFile = Path.GetFileName(strFile)
-                xaFile.Value = strFile
-                xnFile.Attributes.Append(xaFile)
+                strFile = Me.ToRelativePath(strFile, Me.Source)
+                xa.Value = strFile
+                xnChild.Attributes.Append(xa)
 
-                'xaFile = doc.CreateAttribute("Date")
-                'xaFile.Value = Convert.ToString(tf.Date.ToOADate())
-                'xnFile.Attributes.Append(xaFile)
+                xa = doc.CreateAttribute("DateRef")
+                xa.Value = cStringUtils.FormatDate(tf.Date)
+                xnChild.Attributes.Append(xa)
 
-                xaFile = doc.CreateAttribute("DateRef")
-                xaFile.Value = cStringUtils.FormatDate(tf.Date)
-                xnFile.Attributes.Append(xaFile)
-
-                xaFile = doc.CreateAttribute("Indexed")
-                xaFile.Value = Convert.ToString(tf.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed)
-                xnFile.Attributes.Append(xaFile)
+                xa = doc.CreateAttribute("Indexed")
+                xa.Value = Convert.ToString(tf.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed)
+                xnChild.Attributes.Append(xa)
 
                 If (tf.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed) Then
 
-                    xaFile = doc.CreateAttribute("lonmin")
-                    xaFile.Value = cStringUtils.FormatSingle(tf.TopLeft.X)
-                    xnFile.Attributes.Append(xaFile)
+                    xa = doc.CreateAttribute("lonmin")
+                    xa.Value = cStringUtils.FormatSingle(tf.TopLeft.X)
+                    xnChild.Attributes.Append(xa)
 
-                    xaFile = doc.CreateAttribute("lonmax")
-                    xaFile.Value = cStringUtils.FormatSingle(tf.BottomRight.X)
-                    xnFile.Attributes.Append(xaFile)
+                    xa = doc.CreateAttribute("lonmax")
+                    xa.Value = cStringUtils.FormatSingle(tf.BottomRight.X)
+                    xnChild.Attributes.Append(xa)
 
-                    xaFile = doc.CreateAttribute("latmin")
-                    xaFile.Value = cStringUtils.FormatSingle(tf.BottomRight.Y)
-                    xnFile.Attributes.Append(xaFile)
+                    xa = doc.CreateAttribute("latmin")
+                    xa.Value = cStringUtils.FormatSingle(tf.BottomRight.Y)
+                    xnChild.Attributes.Append(xa)
 
-                    xaFile = doc.CreateAttribute("latmax")
-                    xaFile.Value = cStringUtils.FormatSingle(tf.TopLeft.Y)
-                    xnFile.Attributes.Append(xaFile)
+                    xa = doc.CreateAttribute("latmax")
+                    xa.Value = cStringUtils.FormatSingle(tf.TopLeft.Y)
+                    xnChild.Attributes.Append(xa)
 
                 End If
 
-                xn.AppendChild(xnFile)
+                xn.AppendChild(xnChild)
 
             Next
 
@@ -450,8 +447,8 @@ Namespace SpatialData
         Protected Overrides Function FromXML(ByVal doc As XmlDocument, ByVal node As XmlNode) As Boolean
 
             Dim xn As XmlNode = Nothing
-            Dim xnFile As XmlNode = Nothing
-            Dim xaFile As XmlAttribute = Nothing
+            Dim xa As XmlAttribute = Nothing
+            Dim xnChild As XmlNode = Nothing
 
             If (String.Compare(node.Name, "Configuration") <> 0) Then Return False
 
@@ -459,39 +456,46 @@ Namespace SpatialData
                 Me.m_bCanSort = False
                 For Each xn In node.ChildNodes
                     Select Case xn.Name
-                        Case "Name" : Me.m_strName = xn.InnerText
-                        Case "Description" : Me.DataDescription = xn.InnerText
-                        Case "Source" : Me.Source = xn.InnerText
-                        Case "IsSourceRelative" : Me.IsSourceRelative = Convert.ToBoolean(xn.InnerText)
-                        Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
-                        Case "Seasonal" : Me.IsSeasonal = Convert.ToBoolean(xn.InnerText)
-                        Case "SeasonsEnd" : Me.SeasonsEnd = DateTime.FromOADate(Convert.ToDouble(xn.InnerText))
+                        Case "Name"
+                            Me.m_strName = xn.InnerText
+                        Case "Description"
+                            Me.DataDescription = xn.InnerText
+                        Case "Source"
+                            Me.Source = xn.InnerText
+                        Case "IsSourceRelative"
+                            Me.IsSourceRelative = Convert.ToBoolean(xn.InnerText)
+                        Case "Variable"
+                            Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                        Case "Seasonal"
+                            Me.IsSeasonal = Convert.ToBoolean(xn.InnerText)
+                            Me.SeasonsEnd = Date.MaxValue
+                            If xn.Attributes.GetNamedItem("DateRef") IsNot Nothing Then
+                                Me.SeasonsEnd = cStringUtils.ConvertToDate(xn.Attributes("DateRef").InnerText)
+                            End If
                         Case "Files"
-                            For Each xnFile In xn.ChildNodes
-                                Dim strName As String = xnFile.Attributes("Name").InnerText
-                                Dim strDate As String = xnFile.Attributes("DateRef").InnerText
+
+                            If (Me.IsSourceRelative) Then
+                                Me.Source = Me.ToAbsolutePath(Me.Source)
+                            End If
+
+                            For Each xnChild In xn.ChildNodes
+                                Dim strName As String = Me.ToRelativePath(xnChild.Attributes("Name").InnerText, Me.Source)
+                                Dim strDate As String = xnChild.Attributes("DateRef").InnerText
                                 Dim dt As DateTime = cStringUtils.ConvertToDate(strDate)
-                                Dim src As String = Me.Source()
-                                If Me.IsSourceRelative Then src = Me.ToAbsolutePath(src)
-                                Dim f As New cTemporalFile(dt, Path.Combine(src, strName))
+                                Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
 
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
-                                If (xnFile.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
+                                If (xnChild.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
                                     ' JS 06Nov13: added file exist check when loading dataset metadata
-                                    If (Boolean.Parse(xnFile.Attributes("Indexed").InnerText)) And IO.File.Exists(f.FileName) Then
+                                    If (Boolean.Parse(xnChild.Attributes("Indexed").InnerText)) And IO.File.Exists(f.FileName) Then
                                         f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed
-                                        f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("lonmin").InnerText, GetType(Single))), _
-                                                            CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("latmax").InnerText, GetType(Single))))
-                                        f.BottomRight = New PointF(CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("lonmax").InnerText, GetType(Single))), _
-                                                            CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("latmin").InnerText, GetType(Single))))
+                                        f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("lonmin").InnerText, GetType(Single))), _
+                                                            CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("latmax").InnerText, GetType(Single))))
+                                        f.BottomRight = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("lonmax").InnerText, GetType(Single))), _
+                                                            CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("latmin").InnerText, GetType(Single))))
                                     End If
                                 End If
                                 Me.m_lFiles.Add(f)
-
-                                ' Set initial index status for this file
-                                If Not System.IO.File.Exists(f.FileName) Then
-                                    f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
-                                End If
                             Next
                     End Select
                 Next

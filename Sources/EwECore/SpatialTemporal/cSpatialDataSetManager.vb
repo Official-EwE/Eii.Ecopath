@@ -30,6 +30,8 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+' ToDo: change this class to solely work with cSpatialDataConfigFile instances
+
 Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
@@ -104,6 +106,7 @@ Namespace SpatialData
             '    RemoveHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
             '    Me.m_fswSpy = Nothing
             'End If
+
             Me.m_lAvailable = Nothing
             Me.m_lDeleted = Nothing
             Me.m_lVirtual = Nothing
@@ -237,7 +240,6 @@ Namespace SpatialData
             ' in order for file-based datasets to resolve absolute / relative paths. At the end of the
             ' export process the path is restored
             Dim strRescue As String = Me.CurrentConfigFile
-            Me.m_strConfigFile = strFile
 
             ' Make sure save exceptions do not affect current configuration
             Try
@@ -250,9 +252,10 @@ Namespace SpatialData
                 bSuccess = cfg.Save(Me.m_core, Me, datasets, bExporting)
             Catch ex As Exception
                 ' NOP
+                Debug.Assert(False, ex.Message)
             End Try
 
-            ' Restore original config file name
+            ' Always restore original config file name
             Me.m_strConfigFile = strRescue
 
             Return bSuccess
@@ -514,6 +517,31 @@ Namespace SpatialData
 
 #Region " Internal lists "
 
+        ''' --------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns all datasets compatible with a given <see cref="eVarNameFlags">variable</see>.
+        ''' </summary>
+        ''' <param name="var">The <see cref="eVarNameFlags">variable</see> to filter by.</param>
+        ''' <returns>An array of datasets, compatible with the given <paramref name="var">variable</paramref>.</returns>
+        ''' --------------------------------------------------------------------
+        Public Function Datasets(var As eVarNameFlags) As ISpatialDataSet()
+            Dim lFiltered As New List(Of ISpatialDataSet)
+            For Each ds As ISpatialDataSet In Me.m_lAvailable
+                If ((var = eVarNameFlags.NotSet) Or _
+                    (ds.VarName = eVarNameFlags.NotSet) Or _
+                    (var = ds.VarName)) Then
+                    lFiltered.Add(ds)
+                End If
+            Next
+            Return lFiltered.ToArray()
+        End Function
+
+        ''' --------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns all available datasets.
+        ''' </summary>
+        ''' <returns>All available datasets.</returns>
+        ''' --------------------------------------------------------------------
         Public Function Datasets() As ISpatialDataSet()
             Return Me.m_lAvailable.ToArray()
         End Function

@@ -73,7 +73,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, _
                                                   ByVal layer As cEcospaceLayer, _
-                                                  ByVal iConnection As Integer, _
+                                                  ByVal conn As cSpatialDataConnection, _
                                                   ByVal iTime As Integer, _
                                                   ByVal dt As Date, _
                                                   ByVal dataExternal As ISpatialRaster, _
@@ -81,7 +81,7 @@ Namespace SpatialData
             Dim breturnVal As Boolean
 
             Me.m_spaceData.isCapacityChanged = True
-            breturnVal = MyBase.Adapt(bm, layer, iConnection, iTime, dt, dataExternal, dNoData)
+            breturnVal = MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
 
             For iGroup As Integer = 1 To Me.m_spaceData.NGroups
                 'Ok Turn on the groups that were changed

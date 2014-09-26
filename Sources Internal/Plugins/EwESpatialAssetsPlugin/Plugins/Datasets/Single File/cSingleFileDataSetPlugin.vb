@@ -206,12 +206,6 @@ Namespace SpatialData
             Dim xn As XmlNode = Nothing
             Dim xnFile As XmlNode = Nothing
             Dim xaFile As XmlAttribute = Nothing
-            Dim strSource As String = Me.Source
-
-            ' Create relative source path from current config file location
-            If (Me.IsSourceRelative) Then
-                strSource = Me.ToRelativePath(Me.Source)
-            End If
 
             xnMaster = doc.CreateElement("Configuration")
 
@@ -231,19 +225,15 @@ Namespace SpatialData
 
             xaFile = doc.CreateAttribute("Source")
             If (Me.IsSourceRelative) Then
-                xaFile.Value = Me.ToRelativePath(strSource)
+                xaFile.Value = Me.ToRelativePath(Me.Source)
             Else
-                xaFile.Value = strSource
+                xaFile.Value = Me.Source
             End If
             xnFile.Attributes.Append(xaFile)
 
             xaFile = doc.CreateAttribute("IsSourceRelative")
             xaFile.Value = Convert.ToString(Me.IsSourceRelative)
             xnFile.Attributes.Append(xaFile)
-
-            'xaFile = doc.CreateAttribute("Date")
-            'xaFile.Value = Convert.ToString(Me.m_dtStart.ToOADate)
-            'xnFile.Attributes.Append(xaFile)
 
             xaFile = doc.CreateAttribute("DateRef")
             xaFile.Value = cStringUtils.FormatDate(Me.m_dtStart, "d")

@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>425, 44</value>
+    <value>425, 73</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -172,7 +172,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnViewCache.Location" type="System.Drawing.Point, System.Drawing">
-    <value>425, 232</value>
+    <value>425, 211</value>
   </data>
   <data name="m_btnViewCache.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -181,7 +181,7 @@
     <value>75, 24</value>
   </data>
   <data name="m_btnViewCache.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;m_btnViewCache.Name" xml:space="preserve">
     <value>m_btnViewCache</value>
@@ -202,13 +202,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnClearCache.Location" type="System.Drawing.Point, System.Drawing">
-    <value>425, 259</value>
+    <value>425, 238</value>
   </data>
   <data name="m_btnClearCache.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnClearCache.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="m_btnClearCache.Text" xml:space="preserve">
     <value>C&amp;lear</value>
@@ -235,13 +235,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCacheSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 264</value>
+    <value>10, 243</value>
   </data>
   <data name="m_lblCacheSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 13</value>
   </data>
   <data name="m_lblCacheSize.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="m_lblCacheSize.Text" xml:space="preserve">
     <value>Cache &amp;size:</value>
@@ -265,13 +265,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCacheSizeValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 264</value>
+    <value>93, 243</value>
   </data>
   <data name="m_lblCacheSizeValue.Size" type="System.Drawing.Size, System.Drawing">
     <value>326, 18</value>
   </data>
   <data name="m_lblCacheSizeValue.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="m_lblCacheSizeValue.Text" xml:space="preserve">
     <value>&lt;value&gt;</value>
@@ -298,13 +298,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCacheLocation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 238</value>
+    <value>10, 217</value>
   </data>
   <data name="m_lblCacheLocation.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 13</value>
   </data>
   <data name="m_lblCacheLocation.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="m_lblCacheLocation.Text" xml:space="preserve">
     <value>&amp;Location:</value>
@@ -328,7 +328,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCacheLocationValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 233</value>
+    <value>93, 212</value>
   </data>
   <data name="m_lblCacheLocationValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -337,7 +337,7 @@
     <value>326, 23</value>
   </data>
   <data name="m_lblCacheLocationValue.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="m_lblCacheLocationValue.Text" xml:space="preserve">
     <value>&lt;cache path&gt;</value>
@@ -367,13 +367,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbAllowIndexing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 306</value>
+    <value>13, 285</value>
   </data>
   <data name="m_cbAllowIndexing.Size" type="System.Drawing.Size, System.Drawing">
     <value>290, 17</value>
   </data>
   <data name="m_cbAllowIndexing.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="m_cbAllowIndexing.Text" xml:space="preserve">
     <value>&amp;Allow background indexing of external data connections</value>
@@ -397,7 +397,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>425, 73</value>
+    <value>425, 102</value>
   </data>
   <data name="m_btnRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -422,27 +422,6 @@
   </data>
   <data name="m_lvDatasets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_lvDatasets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 44</value>
-  </data>
-  <data name="m_lvDatasets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>406, 161</value>
-  </data>
-  <data name="m_lvDatasets.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_lvDatasets.Name" xml:space="preserve">
-    <value>m_lvDatasets</value>
-  </data>
-  <data name="&gt;&gt;m_lvDatasets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvDatasets.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lvDatasets.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_chdrName.Text" xml:space="preserve">
     <value>Name</value>
@@ -471,6 +450,27 @@
   <data name="m_chdrLOcation.Width" type="System.Int32, mscorlib">
     <value>400</value>
   </data>
+  <data name="m_lvDatasets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 44</value>
+  </data>
+  <data name="m_lvDatasets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>406, 140</value>
+  </data>
+  <data name="m_lvDatasets.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_lvDatasets.Name" xml:space="preserve">
+    <value>m_lvDatasets</value>
+  </data>
+  <data name="&gt;&gt;m_lvDatasets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lvDatasets.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lvDatasets.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_btnNew.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -478,7 +478,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnNew.Location" type="System.Drawing.Point, System.Drawing">
-    <value>425, 102</value>
+    <value>425, 44</value>
   </data>
   <data name="m_btnNew.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -501,105 +501,6 @@
   <data name="&gt;&gt;m_btnNew.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="m_hdrIndexing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="m_hdrIndexing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrIndexing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 285</value>
-  </data>
-  <data name="m_hdrIndexing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>503, 18</value>
-  </data>
-  <data name="m_hdrIndexing.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="m_hdrIndexing.Text" xml:space="preserve">
-    <value>Indexing</value>
-  </data>
-  <data name="m_hdrIndexing.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrIndexing.Name" xml:space="preserve">
-    <value>m_hdrIndexing</value>
-  </data>
-  <data name="&gt;&gt;m_hdrIndexing.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11190.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrIndexing.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrIndexing.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="m_hdrCache.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="m_hdrCache.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrCache.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 214</value>
-  </data>
-  <data name="m_hdrCache.Size" type="System.Drawing.Size, System.Drawing">
-    <value>506, 18</value>
-  </data>
-  <data name="m_hdrCache.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_hdrCache.Text" xml:space="preserve">
-    <value>Cache</value>
-  </data>
-  <data name="m_hdrCache.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCache.Name" xml:space="preserve">
-    <value>m_hdrCache</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCache.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11190.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCache.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCache.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="m_hdrCaption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_hdrCaption.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrCaption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_hdrCaption.Size" type="System.Drawing.Size, System.Drawing">
-    <value>509, 18</value>
-  </data>
-  <data name="m_hdrCaption.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_hdrCaption.Text" xml:space="preserve">
-    <value>Spatial-temporal data options</value>
-  </data>
-  <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Name" xml:space="preserve">
-    <value>m_hdrCaption</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11190.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
   <data name="m_btnSelect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -610,13 +511,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSelect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>425, 153</value>
+    <value>425, 131</value>
   </data>
   <data name="m_btnSelect.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnSelect.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="m_btnSelect.Text" xml:space="preserve">
     <value>&amp;Set current</value>
@@ -639,50 +540,50 @@
   <data name="m_ilLoaded.ImageSize" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
   </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblAvailable.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblAvailable.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblAvailable.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 28</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblAvailable.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 13</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+  <data name="m_lblAvailable.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="m_lblAvailable.Text" xml:space="preserve">
     <value>&amp;Available configurations:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;m_lblAvailable.Name" xml:space="preserve">
+    <value>m_lblAvailable</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblAvailable.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblAvailable.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblAvailable.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_btnExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="m_btnExport.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="m_btnExport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnExport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>425, 182</value>
+    <value>425, 161</value>
   </data>
   <data name="m_btnExport.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnExport.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>7</value>
   </data>
   <data name="m_btnExport.Text" xml:space="preserve">
     <value>&amp;Export</value>
@@ -699,6 +600,105 @@
   <data name="&gt;&gt;m_btnExport.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
+  <data name="m_hdrIndexing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_hdrIndexing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrIndexing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 264</value>
+  </data>
+  <data name="m_hdrIndexing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>503, 18</value>
+  </data>
+  <data name="m_hdrIndexing.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="m_hdrIndexing.Text" xml:space="preserve">
+    <value>Indexing</value>
+  </data>
+  <data name="m_hdrIndexing.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrIndexing.Name" xml:space="preserve">
+    <value>m_hdrIndexing</value>
+  </data>
+  <data name="&gt;&gt;m_hdrIndexing.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11304.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrIndexing.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrIndexing.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_hdrCache.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_hdrCache.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrCache.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 193</value>
+  </data>
+  <data name="m_hdrCache.Size" type="System.Drawing.Size, System.Drawing">
+    <value>506, 18</value>
+  </data>
+  <data name="m_hdrCache.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_hdrCache.Text" xml:space="preserve">
+    <value>Cache</value>
+  </data>
+  <data name="m_hdrCache.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCache.Name" xml:space="preserve">
+    <value>m_hdrCache</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCache.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11304.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCache.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCache.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_hdrCaption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_hdrCaption.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrCaption.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_hdrCaption.Size" type="System.Drawing.Size, System.Drawing">
+    <value>509, 18</value>
+  </data>
+  <data name="m_hdrCaption.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_hdrCaption.Text" xml:space="preserve">
+    <value>Spatial-temporal data options</value>
+  </data>
+  <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCaption.Name" xml:space="preserve">
+    <value>m_hdrCaption</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11304.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -706,7 +706,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>509, 328</value>
+    <value>509, 307</value>
   </data>
   <data name="&gt;&gt;m_chdrName.Name" xml:space="preserve">
     <value>m_chdrName</value>

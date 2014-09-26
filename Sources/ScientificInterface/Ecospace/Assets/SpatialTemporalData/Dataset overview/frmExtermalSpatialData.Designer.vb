@@ -49,6 +49,7 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim sep1 As System.Windows.Forms.ToolStripSeparator
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSpatialTimeSeries))
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
@@ -66,10 +67,12 @@ Namespace Ecospace
             Me.m_tsbnShowRefMap = New System.Windows.Forms.ToolStripButton()
             Me.m_map = New ScientificInterface.Ecospace.ucSpatialTimeSeriesMap()
             Me.m_tsDatasets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tscmTypes = New System.Windows.Forms.ToolStripComboBox()
-            Me.m_tslData = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsbnConnections = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnOnlyShowConnected = New System.Windows.Forms.ToolStripButton()
+            Me.m_tslbAdapterFilter = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tscmbAdapterFilter = New System.Windows.Forms.ToolStripComboBox()
             Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
+            sep1 = New System.Windows.Forms.ToolStripSeparator()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -81,6 +84,11 @@ Namespace Ecospace
             Me.m_tsMap.SuspendLayout()
             Me.m_tsDatasets.SuspendLayout()
             Me.SuspendLayout()
+            '
+            'sep1
+            '
+            sep1.Name = "sep1"
+            resources.ApplyResources(sep1, "sep1")
             '
             'm_scMain
             '
@@ -120,7 +128,7 @@ Namespace Ecospace
             '
             'm_gridApply
             '
-            Me.m_gridApply.AllowBlockSelect = True
+            Me.m_gridApply.AllowBlockSelect = False
             Me.m_gridApply.AutoSizeMinHeight = 10
             Me.m_gridApply.AutoSizeMinWidth = 10
             Me.m_gridApply.AutoStretchColumnsToFitWidth = False
@@ -139,6 +147,7 @@ Namespace Ecospace
             Me.m_gridApply.GridToolTipActive = True
             Me.m_gridApply.IsLayoutSuspended = False
             Me.m_gridApply.Name = "m_gridApply"
+            Me.m_gridApply.OnlyShowConnected = True
             Me.m_gridApply.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                 Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -231,30 +240,33 @@ Namespace Ecospace
             'm_tsDatasets
             '
             Me.m_tsDatasets.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsDatasets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tscmTypes, Me.m_tslData, Me.m_tsbnConnections})
+            Me.m_tsDatasets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnConnections, sep1, Me.m_tsbnOnlyShowConnected, Me.m_tslbAdapterFilter, Me.m_tscmbAdapterFilter})
             resources.ApplyResources(Me.m_tsDatasets, "m_tsDatasets")
             Me.m_tsDatasets.Name = "m_tsDatasets"
             Me.m_tsDatasets.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tscmTypes
-            '
-            Me.m_tscmTypes.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-            Me.m_tscmTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_tscmTypes.Name = "m_tscmTypes"
-            resources.ApplyResources(Me.m_tscmTypes, "m_tscmTypes")
-            Me.m_tscmTypes.Sorted = True
-            '
-            'm_tslData
-            '
-            Me.m_tslData.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-            Me.m_tslData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tslData.Name = "m_tslData"
-            resources.ApplyResources(Me.m_tslData, "m_tslData")
             '
             'm_tsbnConnections
             '
             resources.ApplyResources(Me.m_tsbnConnections, "m_tsbnConnections")
             Me.m_tsbnConnections.Name = "m_tsbnConnections"
+            '
+            'm_tsbnOnlyShowConnected
+            '
+            Me.m_tsbnOnlyShowConnected.CheckOnClick = True
+            resources.ApplyResources(Me.m_tsbnOnlyShowConnected, "m_tsbnOnlyShowConnected")
+            Me.m_tsbnOnlyShowConnected.Name = "m_tsbnOnlyShowConnected"
+            '
+            'm_tslbAdapterFilter
+            '
+            Me.m_tslbAdapterFilter.Name = "m_tslbAdapterFilter"
+            resources.ApplyResources(Me.m_tslbAdapterFilter, "m_tslbAdapterFilter")
+            '
+            'm_tscmbAdapterFilter
+            '
+            Me.m_tscmbAdapterFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbAdapterFilter.Name = "m_tscmbAdapterFilter"
+            resources.ApplyResources(Me.m_tscmbAdapterFilter, "m_tscmbAdapterFilter")
+            Me.m_tscmbAdapterFilter.Sorted = True
             '
             'm_toolbox
             '
@@ -293,9 +305,8 @@ Namespace Ecospace
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_toolbox As ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox
         Private WithEvents m_tsDatasets As ScientificInterfaceShared.Controls.cEwEToolstrip
-        Private WithEvents m_tscmTypes As System.Windows.Forms.ToolStripComboBox
-        Private WithEvents m_tslData As System.Windows.Forms.ToolStripLabel
-        Private WithEvents m_tsbnConnections As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tscmbAdapterFilter As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents m_tslbAdapterFilter As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_map As ScientificInterface.Ecospace.ucSpatialTimeSeriesMap
         Private WithEvents m_tsMap As cEwEToolstrip
         Private WithEvents m_tsbnZoomMap As System.Windows.Forms.ToolStripButton
@@ -310,6 +321,8 @@ Namespace Ecospace
         Private WithEvents m_tpConnections As System.Windows.Forms.TabPage
         Private WithEvents m_tpMap As System.Windows.Forms.TabPage
         Private WithEvents m_gridApply As gridExternalSpatialData
+        Private WithEvents m_tsbnOnlyShowConnected As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnConnections As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace

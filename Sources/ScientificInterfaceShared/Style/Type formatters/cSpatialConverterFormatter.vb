@@ -43,6 +43,8 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
+            ' ToDo: globalize this
+
             Try
                 If (value IsNot Nothing) Then
                     Dim obj As ISpatialDataConverter = DirectCast(value, ISpatialDataConverter)
@@ -52,12 +54,13 @@ Namespace Style
                     Dim strDetails As String = ""
 
                     If (Not String.IsNullOrWhiteSpace(obj.AttributeName)) Then
-                        Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strName, obj.AttributeName)
+                        strName = String.Format("{0} by field {1}", strName, obj.AttributeName)
                     End If
 
                     If (Not String.IsNullOrWhiteSpace(obj.AttributeFilter)) Then
-                        Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strName, obj.AttributeFilter)
+                        strName = String.Format("{0} filtering {1}", strName, obj.AttributeFilter)
                     End If
+
                     Return strName
                 End If
 
