@@ -35,8 +35,8 @@ Namespace Ecospace
     Public Class cMapDrawerGroup
         Inherits cMapDrawerBase
 
-        Public Sub New(core As cCore)
-            MyBase.New(core)
+        Public Sub New(core As cCore, sg As cStyleGuide)
+            MyBase.New(core, sg)
         End Sub
 
         Public Overrides Sub DrawMap(ByVal iItem As Integer, ByVal rcPos As Rectangle, ByVal Args As cMapDrawerArgs)
@@ -47,19 +47,15 @@ Namespace Ecospace
             Dim maptype As cMapDrawerBase.eMapType = Args.MapType
             Dim RelScaler() As Single = Args.RelMapScaler
             Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
-
-            'Prebuilt brushes for excluded
-            ' JS: Sorry Joe, the blue and red combo brushes are too nasty... instead, let's stick with the default excluded colour for now, with 50% transparency to show land through.
-            '     At some point I'll have to update this renderer to use user-defined map colours, need to add proper legends showing these colours, etc...
-
-            'Dim brshExcLand As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Gray)
-            'Dim brshExcWater As Brush = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.Blue)
-            'Dim brshExcTransparent As Brush = New SolidBrush(Color.Transparent)
             Dim brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
 
             If maptype = eMapType.FishingMortRate Then
                 FScaler = Me.Colors.Count / Args.FishingMortLegendMax
             End If
+
+            Using br As New SolidBrush(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
+                Me.Graphics.FillRectangle(br, rcPos)
+            End Using
 
             Try
                 For i As Integer = 1 To Me.InRow
@@ -124,14 +120,9 @@ Namespace Ecospace
                 Exit Sub
             End Try
 
-            ' Probably don't have to do this as these brushes are only create once and will be disposed when they go out of scope
-            ' JS: No, must dispose GDI objects because they are not garbage collected in .NET
             brExcluded.Dispose()
             brExcluded = Nothing
-            'brshExcWater.Dispose()
-            'brshExcLand.Dispose()
-            'brshExcTransparent.Dispose()
-
+  
             If (Me.StanzaDS IsNot Nothing) Then
 
                 Dim isp As Integer = -1
@@ -182,8 +173,9 @@ Namespace Ecospace
             MyBase.DrawMap(iItem, rcPos, Args)
 
             If Me.ShowLabels Then
-                'Display the group name
-                Dim grpName As String = m_core.EcospaceGroups(iItem).Name
+
+                Dim strLabel As String = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, _
+                                                       Me.m_core.EcospaceGroups(iItem).Name, Me.Date)
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()
 
@@ -192,7 +184,7 @@ Namespace Ecospace
 
                 If Me.InvertLabelColors Then br = Brushes.White
 
-                Me.Graphics.DrawString(grpName, Me.Font, br, rcPos, fmt)
+                Me.Graphics.DrawString(strLabel, Me.Font, br, rcPos, fmt)
             End If
 
         End Sub
