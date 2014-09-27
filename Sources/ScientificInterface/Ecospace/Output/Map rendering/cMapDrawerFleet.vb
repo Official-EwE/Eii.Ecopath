@@ -36,8 +36,8 @@ Namespace Ecospace
     Public Class cMapDrawerFleet
         Inherits cMapDrawerBase
 
-        Public Sub New(core As cCore)
-            MyBase.New(core)
+        Public Sub New(core As cCore, ByVal sg As cStyleGuide)
+            MyBase.New(core, sg)
         End Sub
 
         Public Overrides Sub DrawMap(iItem As Integer, rcPos As System.Drawing.Rectangle, Args As cMapDrawerArgs)

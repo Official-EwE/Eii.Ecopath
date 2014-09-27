@@ -252,10 +252,6 @@ Public Class frmEwE6
     Private WithEvents m_cmdEditMPAs As cCommand = Nothing
     Private WithEvents m_cmdDefineImportanceMaps As cCommand = Nothing
     Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
-    Private WithEvents m_cmdDefineSpatialDatasets As cCommand = Nothing
-    Private WithEvents m_cmdEditSpatialDataset As cEditSpatialDatasetCommand = Nothing
-    Private WithEvents m_cmdEcospaceConfigureConnection As cEcospaceConfigureConnectionCommand = Nothing
-    Private WithEvents m_cmdExportSpatialDatasets As cCommand = Nothing
     Private WithEvents m_cmdImportLayerData As cImportLayerCommand = Nothing
     Private WithEvents m_cmdExportLayerData As cExportLayerCommand = Nothing
     Private WithEvents m_cmdEditLayer As cEditLayerCommand = Nothing
@@ -273,6 +269,19 @@ Public Class frmEwE6
     Private WithEvents m_cmdPrint As cCommand = Nothing
     Private WithEvents m_cmdEcosimTrimShapes As cCommand = Nothing
     Private WithEvents m_cmdEcosimChangeShape As cCommand = Nothing
+
+    ' --- Ecospace external data ---
+
+    ''' <summary>Command to define external spatial temporal data connections.</summary>
+    Private WithEvents m_cmdDefineSpatialDatasets As cCommand = Nothing
+    ''' <summary>Command to define explort spatial temporal data connections.</summary>
+    Private WithEvents m_cmdEcospaceExportSpatialDatasets As cCommand = Nothing
+    ''' <summary>Command to edit an external data set.</summary>
+    Private WithEvents m_cmdEditSpatialDataset As cEditSpatialDatasetCommand = Nothing
+    ''' <summary>Command to configure the external data connection(s) to a single layer.</summary>
+    Private WithEvents m_cmdEcospaceConfigureConnection As cEcospaceConfigureConnectionCommand = Nothing
+    ''' <summary>Command to manage external data configurations.</summary>
+    Private WithEvents m_cmdEcospaceManageConfigs As cCommand = Nothing
 
 #End Region ' Commands
 
@@ -600,8 +609,11 @@ Public Class frmEwE6
 
         Me.m_cmdEditSpatialDataset = New cEditSpatialDatasetCommand(cmdh)
 
-        Me.m_cmdExportSpatialDatasets = New cCommand(cmdh, "ExportSpatialDatasets")
+        Me.m_cmdEcospaceExportSpatialDatasets = New cCommand(cmdh, "ExportSpatialDatasets")
         Me.m_cmdEcospaceConfigureConnection = New cEcospaceConfigureConnectionCommand(cmdh)
+
+        Me.m_cmdEcospaceManageConfigs = New cCommand(cmdh, "ManageSpatialDatasetConfigurations")
+        Me.m_cmdEcospaceManageConfigs.AddControl(Me.m_tsmiEcospaceManageConfigurations)
 
         Me.m_cmdImportLayerData = New cImportLayerCommand(cmdh)
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
@@ -3968,6 +3980,18 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler
     ''' </summary>
+    Private Sub OnEcospaceManageConfigs(cmd As cCommand) Handles m_cmdEcospaceManageConfigs.OnInvoke
+        Try
+            ' Reroute
+            Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.SpatialTemporal)
+        Catch ex As Exception
+            cLog.Write(ex, "frmEwE6:OnEcospaceManageConfigs")
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Command handler
+    ''' </summary>
     Private Sub OnDefineEcospaceDatasets(cmd As cCommand) Handles m_cmdDefineSpatialDatasets.OnInvoke
         Try
             Dim dlg As New Ecospace.Controls.dlgDefineExternalSpatialData()
@@ -4034,7 +4058,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler
     ''' </summary>
-    Private Sub OntEcospaceConfigureConnection(cmd As cCommand) Handles m_cmdEcospaceConfigureConnection.OnInvoke
+    Private Sub OnEcospaceConfigureConnection(cmd As cCommand) Handles m_cmdEcospaceConfigureConnection.OnInvoke
 
         If (Me.m_cmdEcospaceConfigureConnection.Layer Is Nothing) Then Return
         Try
@@ -4045,14 +4069,14 @@ Public Class frmEwE6
                 Me.Core.SpatialDataConnectionManager.Update(eMessageType.DataModified)
             End If
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6:OntEcospaceConfigureConnection")
+            cLog.Write(ex, "frmEwE6:OnEcospaceConfigureConnection")
         End Try
     End Sub
 
     ''' <summary>
     ''' Command handler
     ''' </summary>
-    Private Sub OnExportEcospaceDatasets(cmd As cCommand) Handles m_cmdExportSpatialDatasets.OnInvoke
+    Private Sub OnExportEcospaceDatasets(cmd As cCommand) Handles m_cmdEcospaceExportSpatialDatasets.OnInvoke
         Try
             Dim dlg As New Ecospace.Controls.dlgExportSpatialData(Me.UIContext)
             dlg.ShowDialog(Me)
@@ -4064,7 +4088,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler updater
     ''' </summary>
-    Private Sub OnUpdateExportEcospaceDatasetsInvoke(cmd As cCommand) Handles m_cmdExportSpatialDatasets.OnUpdate
+    Private Sub OnUpdateExportEcospaceDatasetsInvoke(cmd As cCommand) Handles m_cmdEcospaceExportSpatialDatasets.OnUpdate
         Try
             Dim m As cCoreStateMonitor = Me.Core.StateMonitor
             cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy

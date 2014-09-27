@@ -250,7 +250,7 @@ Namespace Ecospace
             Me.InitOutputBitmaps()
 
             For i As Integer = 1 To nThreads
-                drawer = New cMapDrawerGroup(Me.Core)
+                drawer = New cMapDrawerGroup(Me.Core, Me.StyleGuide)
                 drawer.Graphics = Graphics.FromImage(Me.m_bmpBiomassMap)
                 drawer.Colors = Me.m_legend.Colors
                 drawer.ShowExcluded = My.Settings.MapShowExcludedCells
@@ -534,6 +534,7 @@ Namespace Ecospace
                 Dim RelScaler() As Single = Nothing
                 Dim ifirst As Integer = 0
                 Dim ilast As Integer = 0
+                Dim strDate As String = dtTime.ToShortDateString()
 
                 For Each drawer In m_drawers
 
@@ -544,6 +545,7 @@ Namespace Ecospace
                         drawer.RectList = rectList
                         drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
                         drawer.ShowLabels = Me.m_bShowLabels
+                        drawer.Date = strDate
                         drawer.InvertLabelColors = Me.m_bInvertLabelColor
                         drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
 
@@ -706,6 +708,12 @@ Namespace Ecospace
             Dim depth As cEcospaceLayerDepth = Me.Core.EcospaceBasemap.LayerDepth
             Dim excl As cEcospaceLayerExclusion = Me.Core.EcospaceBasemap.LayerExclusion
             Dim brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
+            Dim dtTime As Date = Me.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStepCur)
+            Dim strDate As String = dtTime.ToShortDateString()
+
+            Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
+                g.FillRectangle(br, rcPos)
+            End Using
 
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
@@ -769,6 +777,10 @@ Namespace Ecospace
 
             'Display the group name
             If Me.m_bShowLabels Then
+
+                Dim strLabel As String = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, _
+                                                       Core.EcospaceFleets(iFleet), strDate)
+
                 Dim fltName As String = Core.EcospaceFleets(iFleet).Name
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()
@@ -1487,7 +1499,7 @@ Namespace Ecospace
 
             Dim maptype As cMapDrawerBase.eMapType
             Dim scaler As Single() = Nothing
-            Dim drawer As New cMapDrawerGroup(Me.Core)
+            Dim drawer As New cMapDrawerGroup(Me.Core, Me.StyleGuide)
             drawer.Graphics = Graphics.FromImage(bmp)
             drawer.Colors = Me.m_legend.Colors
             drawer.ShowLabels = False

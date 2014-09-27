@@ -218,11 +218,9 @@ Namespace Ecospace.Controls
         Private Sub OnSwitchConfig(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnSwitchConfig.Click
             Try
-                Dim cmd As cShowOptionsCommand = CType(Me.UIContext.CommandHandler.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
-                cmd.Invoke(eApplicationOptionTypes.SpatialTemporal)
-                If (cmd.UserHandled) Then
-                    Me.Reload()
-                End If
+                Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("ManageSpatialDatasetConfigurations")
+                cmd.Invoke()
+                Me.Reload()
             Catch ex As Exception
                 cLog.Write(ex, "dlgDefineExternalSpatialData.OnSwitchConfig")
             End Try

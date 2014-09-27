@@ -40,7 +40,8 @@ Namespace SpatialData
 
         Private m_core As cCore = Nothing
         Private m_ds As ISpatialDataSet = Nothing
-        Private m_rcf As RectangleF = Nothing
+        ''' <summary>Spatial bounds of the current base map.</summary>
+        Private m_rcfBasemap As RectangleF = Nothing
 
         ' -- Time step assessment period --
         Private m_iFirstTimeStep As Integer = 0
@@ -85,7 +86,7 @@ Namespace SpatialData
 
             If Not core.StateMonitor.HasEcospaceLoaded Then Return
 
-            Me.m_rcf = Me.ToRect(Me.m_core.EcospaceBasemap.PosTopLeft, Me.m_core.EcospaceBasemap.PosBottomRight)
+            Me.m_rcfBasemap = Me.ToRect(Me.m_core.EcospaceBasemap.PosTopLeft, Me.m_core.EcospaceBasemap.PosBottomRight)
 
             Dim iNumTimeSteps As Integer = core.nEcospaceTimeSteps
             ' Special case for datasets without temporal range
@@ -207,9 +208,9 @@ Namespace SpatialData
                 Case ISpatialDataSet.eIndexStatus.Indexed
                     If Me.m_ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
                         rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
-                        If rcfMap.Contains(Me.m_rcf) Then
+                        If rcfMap.Contains(Me.m_rcfBasemap) Then
                             Return eCompatibilityTypes.TotalOverlap
-                        ElseIf rcfMap.IntersectsWith(Me.m_rcf) Then
+                        ElseIf rcfMap.IntersectsWith(Me.m_rcfBasemap) Then
                             Return eCompatibilityTypes.PartialSpatial
                         End If
                         Return eCompatibilityTypes.NoSpatial

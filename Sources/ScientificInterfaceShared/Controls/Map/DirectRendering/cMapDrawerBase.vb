@@ -23,6 +23,7 @@ Option Explicit On
 
 Imports System.Threading
 Imports EwECore
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -53,6 +54,7 @@ Namespace Controls.Map
         Protected m_SignalState As New ManualResetEvent(True)
         Protected Const MAX_FISH_MORT As Single = 2
         Protected m_core As cCore = Nothing
+        Protected m_sg As cStyleGuide = Nothing
         Protected m_lItems As New List(Of Integer)
         Protected m_lLocations As New List(Of Integer)
         Protected m_labelposHorz As StringAlignment = StringAlignment.Near
@@ -62,8 +64,9 @@ Namespace Controls.Map
 
 #Region " Constructor "
 
-        Public Sub New(ByVal core As cCore)
+        Public Sub New(ByVal core As cCore, ByVal sg As cStyleGuide)
             Me.m_core = core
+            Me.m_sg = sg
             Me.AllowedToRun = True
             Me.ShowLand = True
             Me.ShowBorder = True
@@ -143,6 +146,13 @@ Namespace Controls.Map
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property ShowLabels() As Boolean
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the date of the current time step.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property [Date]() As String
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
