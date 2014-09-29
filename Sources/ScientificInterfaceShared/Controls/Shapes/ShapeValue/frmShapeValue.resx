@@ -445,7 +445,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblNumPoints.Parent" xml:space="preserve">
-    <value>tlpNoOfYears</value>
+    <value>m_tlpNoOfYears</value>
   </data>
   <data name="&gt;&gt;m_lblNumPoints.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -456,7 +456,7 @@
   <data name="m_tlpAll.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="tlpNoOfYears.ColumnCount" type="System.Int32, mscorlib">
+  <data name="m_tlpNoOfYears.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_btnSetNoOfYears.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -490,42 +490,42 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnSetNoOfYears.Parent" xml:space="preserve">
-    <value>tlpNoOfYears</value>
+    <value>m_tlpNoOfYears</value>
   </data>
   <data name="&gt;&gt;m_btnSetNoOfYears.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tlpNoOfYears.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_tlpNoOfYears.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="tlpNoOfYears.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tlpNoOfYears.Location" type="System.Drawing.Point, System.Drawing">
     <value>76, 353</value>
   </data>
-  <data name="tlpNoOfYears.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_tlpNoOfYears.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="tlpNoOfYears.RowCount" type="System.Int32, mscorlib">
+  <data name="m_tlpNoOfYears.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="tlpNoOfYears.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tlpNoOfYears.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 24</value>
   </data>
-  <data name="tlpNoOfYears.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tlpNoOfYears.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="&gt;&gt;tlpNoOfYears.Name" xml:space="preserve">
-    <value>tlpNoOfYears</value>
+  <data name="&gt;&gt;m_tlpNoOfYears.Name" xml:space="preserve">
+    <value>m_tlpNoOfYears</value>
   </data>
-  <data name="&gt;&gt;tlpNoOfYears.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpNoOfYears.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tlpNoOfYears.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpNoOfYears.Parent" xml:space="preserve">
     <value>m_tlpAll</value>
   </data>
-  <data name="&gt;&gt;tlpNoOfYears.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpNoOfYears.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="tlpNoOfYears.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+  <data name="m_tlpNoOfYears.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblNumPoints" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnSetNoOfYears" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="pnlValueGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -547,7 +547,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.gridShapeValue, ScientificInterfaceShared, Version=6.5.10676.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.gridShapeValue, ScientificInterfaceShared, Version=6.5.11343.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>pnlValueGrid</value>
@@ -727,7 +727,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpAll.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_txtName" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbType" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblValues" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblType" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPoolCode" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbPoolCode" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_txtWeight" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblWeight" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoOfPoints" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tlpNoOfYears" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnlValueGrid" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblViewAs" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbViewAs" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblXBase" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_txtXBase" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_txtName" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbType" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblValues" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblType" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPoolCode" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbPoolCode" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_txtWeight" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblWeight" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoOfPoints" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpNoOfYears" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnlValueGrid" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblViewAs" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbViewAs" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblXBase" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_txtXBase" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -805,6 +805,6 @@
     <value>frmShapeValue</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10676.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11343.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

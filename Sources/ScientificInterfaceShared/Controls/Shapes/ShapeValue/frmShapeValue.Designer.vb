@@ -52,7 +52,7 @@ Partial Class frmShapeValue
         Me.m_lblNoOfPoints = New System.Windows.Forms.Label()
         Me.m_lblNumPoints = New System.Windows.Forms.Label()
         Me.m_tlpAll = New System.Windows.Forms.TableLayoutPanel()
-        Me.tlpNoOfYears = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_tlpNoOfYears = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnSetNoOfYears = New System.Windows.Forms.Button()
         Me.pnlValueGrid = New System.Windows.Forms.Panel()
         Me.m_grid = New ScientificInterfaceShared.gridShapeValue()
@@ -63,7 +63,7 @@ Partial Class frmShapeValue
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_tlpAll.SuspendLayout()
-        Me.tlpNoOfYears.SuspendLayout()
+        Me.m_tlpNoOfYears.SuspendLayout()
         Me.pnlValueGrid.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -137,7 +137,7 @@ Partial Class frmShapeValue
         Me.m_tlpAll.Controls.Add(Me.m_lblName, 0, 0)
         Me.m_tlpAll.Controls.Add(Me.m_lblWeight, 0, 3)
         Me.m_tlpAll.Controls.Add(Me.m_lblNoOfPoints, 0, 7)
-        Me.m_tlpAll.Controls.Add(Me.tlpNoOfYears, 1, 7)
+        Me.m_tlpAll.Controls.Add(Me.m_tlpNoOfYears, 1, 7)
         Me.m_tlpAll.Controls.Add(Me.pnlValueGrid, 1, 6)
         Me.m_tlpAll.Controls.Add(Me.m_lblViewAs, 0, 5)
         Me.m_tlpAll.Controls.Add(Me.m_cmbViewAs, 1, 5)
@@ -145,12 +145,12 @@ Partial Class frmShapeValue
         Me.m_tlpAll.Controls.Add(Me.m_txtXBase, 1, 4)
         Me.m_tlpAll.Name = "m_tlpAll"
         '
-        'tlpNoOfYears
+        'm_tlpNoOfYears
         '
-        resources.ApplyResources(Me.tlpNoOfYears, "tlpNoOfYears")
-        Me.tlpNoOfYears.Controls.Add(Me.m_lblNumPoints, 0, 0)
-        Me.tlpNoOfYears.Controls.Add(Me.m_btnSetNoOfYears, 1, 0)
-        Me.tlpNoOfYears.Name = "tlpNoOfYears"
+        resources.ApplyResources(Me.m_tlpNoOfYears, "m_tlpNoOfYears")
+        Me.m_tlpNoOfYears.Controls.Add(Me.m_lblNumPoints, 0, 0)
+        Me.m_tlpNoOfYears.Controls.Add(Me.m_btnSetNoOfYears, 1, 0)
+        Me.m_tlpNoOfYears.Name = "m_tlpNoOfYears"
         '
         'm_btnSetNoOfYears
         '
@@ -250,7 +250,7 @@ Partial Class frmShapeValue
         Me.ShowInTaskbar = False
         Me.m_tlpAll.ResumeLayout(False)
         Me.m_tlpAll.PerformLayout()
-        Me.tlpNoOfYears.ResumeLayout(False)
+        Me.m_tlpNoOfYears.ResumeLayout(False)
         Me.pnlValueGrid.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -267,7 +267,7 @@ Partial Class frmShapeValue
     Private WithEvents m_lblNoOfPoints As System.Windows.Forms.Label
     Private WithEvents m_lblNumPoints As Label
     Private WithEvents m_tlpAll As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents tlpNoOfYears As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_tlpNoOfYears As System.Windows.Forms.TableLayoutPanel
     Private WithEvents pnlValueGrid As System.Windows.Forms.Panel
     Private WithEvents m_btnOK As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button

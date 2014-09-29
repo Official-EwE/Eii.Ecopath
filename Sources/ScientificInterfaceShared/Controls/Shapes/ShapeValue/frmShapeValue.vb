@@ -330,8 +330,7 @@ Public Class frmShapeValue
         m_cmbPoolCode.Visible = False
 
         m_lblNoOfPoints.Visible = False
-        m_lblNumPoints.Visible = False
-        m_btnSetNoOfYears.Visible = False
+        m_tlpNoOfYears.Visible = False
 
         m_lblXBase.Visible = bIsMediation
         m_txtXBase.Visible = bIsMediation
@@ -536,12 +535,13 @@ Public Class frmShapeValue
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub UpdateControls()
 
+        Dim bIsMediation As Boolean = (Me.m_shape.DataType = EwEUtils.Core.eDataTypes.Mediation)
         Dim bEnableOk As Boolean = True
         Try
             ' Need a name to 'OK'
             bEnableOk = Not String.IsNullOrEmpty(Me.m_txtName.Text)
 
-            If (TypeOf (Me.m_shape) Is cMediationBaseFunction) Then
+            If (bIsMediation) Then
                 Dim sDummy As Single = 42.0!
                 bEnableOk = bEnableOk And (Single.TryParse(Me.m_txtXBase.Text, sDummy) = True)
             End If
@@ -558,6 +558,7 @@ Public Class frmShapeValue
 
         Catch ex As Exception
             bEnableOk = False
+            Debug.Assert(False, ex.Message)
         End Try
 
         Me.m_btnOK.Enabled = bEnableOk
