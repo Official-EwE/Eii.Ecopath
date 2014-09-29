@@ -101,6 +101,7 @@ Public Class frmMain
 
 #Region " Event handlers "
 
+
     Private Sub OnBrowseIn(sender As System.Object, e As System.EventArgs) _
         Handles m_btnChooseSrc.Click
 
@@ -262,6 +263,15 @@ Public Class frmMain
             cLog.Write(ex, "OnFFTypeChecked")
         End Try
 
+    End Sub
+
+    Private Sub OnVisitSponsor(sender As Object, e As System.EventArgs) Handles m_pbLogo.Click
+        Try
+            Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke("http://www.dfo-mpo.gc.ca")
+        Catch ex As Exception
+            cLog.Write(ex, "MultiSim.frmMain::OnVisitSponsor")
+        End Try
     End Sub
 
 #End Region ' Event handlers
