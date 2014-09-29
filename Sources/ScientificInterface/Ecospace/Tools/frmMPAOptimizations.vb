@@ -210,6 +210,7 @@ Namespace Ecospace
             Me.m_fpBestPercentile = New cEwEFormatProvider(Me.UIContext, Me.m_nudBestPercentile, GetType(Single))
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_nudDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
             Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_nudGenDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
+            Me.m_fpMPA = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbMPA, MPAOpt, eVarNameFlags.iMPAOptToUse)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
 
@@ -244,6 +245,7 @@ Namespace Ecospace
 
             Me.CoreComponents = Nothing
 
+            Me.m_fpMPA.Release()
             Me.m_fpBaseYear.Release()
             Me.m_fpBestPercentile.Release()
             Me.m_fpDiscRate.Release()
@@ -858,9 +860,7 @@ Namespace Ecospace
                 alMPAs.Add(Me.UIContext.Core.EcospaceMPAs(iMPA))
             Next
 
-            ' Connect MPA optimization property to MPA control
-            If Me.m_fpMPA IsNot Nothing Then Me.m_fpMPA.Release()
-            Me.m_fpMPA = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbMPA, MPAOpt, eVarNameFlags.iMPAOptToUse, Nothing, alMPAs.ToArray)
+            Me.m_fpMPA.Items = alMPAs.ToArray
 
             ' Only one MPA available?
             If alMPAs.Count = 1 Then
@@ -1022,7 +1022,7 @@ Namespace Ecospace
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = factory.GetLayerGroup(varName)
-            Dim strCommand As String = factory.GetLayerEditCommand(varName)
+            Dim strCommand As String = "" ' factory.GetLayerEditCommand(varName)
             Dim alayers As cDisplayRasterLayer() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cDisplayLayer = Nothing
 
