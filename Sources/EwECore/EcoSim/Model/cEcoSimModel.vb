@@ -511,13 +511,9 @@ Namespace Ecosim
             End Set
         End Property
 
-
         ''' <summary>
-        ''' Time step delegate for Ecosim to call at each time step
+        ''' Get/set the time step delegate for Ecosim to call at each time step
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Property TimeStepDelegate() As EcoSimTimeStepDelegate
             Get
                 Return m_OnTimeStepDelegate
