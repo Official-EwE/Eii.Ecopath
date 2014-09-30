@@ -190,6 +190,17 @@ Public Class frmMain
         Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls), Nothing)
     End Sub
 
+    Private Sub OnGenerateSample(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnGenerateSample.Click
+
+        Try
+            Me.m_engine.GenerateSample(Me.m_tbxDest.Text, Me.SelectedApplications)
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
     Private Sub OnValidateFiles(sender As System.Object, e As System.EventArgs) _
         Handles m_btnValidate.Click
 
