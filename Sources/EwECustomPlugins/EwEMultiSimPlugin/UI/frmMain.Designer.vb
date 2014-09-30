@@ -42,6 +42,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.m_csMain = New System.Windows.Forms.SplitContainer()
+        Me.m_cbEggProduction = New System.Windows.Forms.CheckBox()
         Me.m_cbMort = New System.Windows.Forms.CheckBox()
         Me.m_cbEffort = New System.Windows.Forms.CheckBox()
         Me.m_cbFF = New System.Windows.Forms.CheckBox()
@@ -49,6 +50,7 @@ Partial Class frmMain
         Me.m_clbFilesSrc = New System.Windows.Forms.CheckedListBox()
         Me.m_hdrIn = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblSource = New System.Windows.Forms.Label()
+        Me.m_btnGenerateSample = New System.Windows.Forms.Button()
         Me.m_btnValidate = New System.Windows.Forms.Button()
         Me.m_btnAllSrc = New System.Windows.Forms.Button()
         Me.m_rbAnnual = New System.Windows.Forms.RadioButton()
@@ -67,7 +69,6 @@ Partial Class frmMain
         Me.m_btnChooseOut = New System.Windows.Forms.Button()
         Me.m_lblVars = New System.Windows.Forms.Label()
         Me.m_pbLogo = New System.Windows.Forms.PictureBox()
-        Me.m_cbEggProduction = New System.Windows.Forms.CheckBox()
         CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_csMain.Panel1.SuspendLayout()
         Me.m_csMain.Panel2.SuspendLayout()
@@ -90,6 +91,7 @@ Partial Class frmMain
         Me.m_csMain.Panel1.Controls.Add(Me.m_clbFilesSrc)
         Me.m_csMain.Panel1.Controls.Add(Me.m_hdrIn)
         Me.m_csMain.Panel1.Controls.Add(Me.m_lblSource)
+        Me.m_csMain.Panel1.Controls.Add(Me.m_btnGenerateSample)
         Me.m_csMain.Panel1.Controls.Add(Me.m_btnValidate)
         Me.m_csMain.Panel1.Controls.Add(Me.m_btnAllSrc)
         Me.m_csMain.Panel1.Controls.Add(Me.m_rbAnnual)
@@ -110,6 +112,12 @@ Partial Class frmMain
         Me.m_csMain.Panel2.Controls.Add(Me.m_btnAllVars)
         Me.m_csMain.Panel2.Controls.Add(Me.m_btnChooseOut)
         Me.m_csMain.Panel2.Controls.Add(Me.m_lblVars)
+        '
+        'm_cbEggProduction
+        '
+        resources.ApplyResources(Me.m_cbEggProduction, "m_cbEggProduction")
+        Me.m_cbEggProduction.Name = "m_cbEggProduction"
+        Me.m_cbEggProduction.UseVisualStyleBackColor = True
         '
         'm_cbMort
         '
@@ -155,6 +163,12 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_lblSource, "m_lblSource")
         Me.m_lblSource.Name = "m_lblSource"
+        '
+        'm_btnGenerateSample
+        '
+        resources.ApplyResources(Me.m_btnGenerateSample, "m_btnGenerateSample")
+        Me.m_btnGenerateSample.Name = "m_btnGenerateSample"
+        Me.m_btnGenerateSample.UseVisualStyleBackColor = True
         '
         'm_btnValidate
         '
@@ -267,12 +281,6 @@ Partial Class frmMain
         Me.m_pbLogo.Name = "m_pbLogo"
         Me.m_pbLogo.TabStop = False
         '
-        'm_cbEggProduction
-        '
-        resources.ApplyResources(Me.m_cbEggProduction, "m_cbEggProduction")
-        Me.m_cbEggProduction.Name = "m_cbEggProduction"
-        Me.m_cbEggProduction.UseVisualStyleBackColor = True
-        '
         'frmMain
         '
         Me.AcceptButton = Me.m_btnRun
@@ -321,4 +329,5 @@ Partial Class frmMain
     Private WithEvents m_cbFF As System.Windows.Forms.CheckBox
     Private WithEvents m_lblApply As System.Windows.Forms.Label
     Private WithEvents m_cbEggProduction As System.Windows.Forms.CheckBox
+    Private WithEvents m_btnGenerateSample As System.Windows.Forms.Button
 End Class

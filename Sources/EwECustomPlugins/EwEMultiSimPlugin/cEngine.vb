@@ -271,6 +271,71 @@ Friend Class cEngine
         Return True
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generate sample MultiSim template file.
+    ''' </summary>
+    ''' <param name="types">The FF types to include in the sample.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function GenerateSample(ByVal strOutFolder As String, _
+                                   ByVal types As eFunctionTypes) As Boolean
+
+        Dim strFileSample As String = Path.Combine(strOutFolder, "multisim_sample.csv")
+        Dim lShapes As New List(Of cForcingFunction)
+        Dim sw As StreamWriter = Nothing
+        Dim msg As cMessage = Nothing
+        Dim i As Integer = 0
+        Dim bSuccess As Boolean = True
+
+        Me.m_types = types
+        Me.BuildFFNameCache(True)
+
+        If Not cFileUtils.IsDirectoryAvailable(strOutFolder) Then Return False
+
+        Try
+            sw = New StreamWriter(strFileSample)
+
+            For Each man As cBaseShapeManager In Me.m_lManagers
+                For Each ff As cForcingFunction In man
+                    lShapes.Add(ff)
+                    If (i > 0) Then sw.Write(",")
+                    sw.Write(cStringUtils.ToCSVField(ff.Name))
+                    i += 1
+                Next
+            Next
+            sw.WriteLine()
+
+            i = 1
+            While i < Me.m_core.nEcosimYears
+                For j As Integer = 0 To lShapes.Count - 1
+                    If (j > 0) Then sw.Write(",")
+                    sw.Write(cStringUtils.ToCSVField(lShapes(j).ShapeData(j)))
+                Next
+                sw.WriteLine()
+                i += 1
+            End While
+
+            sw.Close()
+
+            ' ToDo: globalize this
+            msg = New cMessage("MultiSim sample file written to '" & strFileSample & "'", _
+                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+            msg.Hyperlink = strOutFolder
+        Catch ex As Exception
+
+            ' ToDo: globalize this
+            msg = New cMessage("MultiSim sample file could not be written to '" & strFileSample & "'. " & ex.Message, _
+                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+            bSuccess = False
+
+        End Try
+
+        Me.m_core.Messages.SendMessage(msg)
+        Return bSuccess
+
+    End Function
+
 #End Region ' Public bits
 
 #Region " Internals "
