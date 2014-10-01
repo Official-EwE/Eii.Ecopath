@@ -278,9 +278,9 @@ Friend Class cEngine
     ''' <param name="types">The FF types to include in the sample.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GenerateSample(ByVal strOutFolder As String, _
-                                   ByVal types As eFunctionTypes) As Boolean
+    Public Function GenerateSample(ByVal types As eFunctionTypes) As Boolean
 
+        Dim strOutFolder As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
         Dim strFileSample As String = Path.Combine(strOutFolder, "multisim_sample.csv")
         Dim lShapes As New List(Of cForcingFunction)
         Dim sw As StreamWriter = Nothing
@@ -318,14 +318,12 @@ Friend Class cEngine
 
             sw.Close()
 
-            ' ToDo: globalize this
-            msg = New cMessage("MultiSim sample file written to '" & strFileSample & "'", _
+            msg = New cMessage(String.Format(My.Resources.STATUS_EXAMPLE_SUCCESS, strFileSample), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             msg.Hyperlink = strOutFolder
         Catch ex As Exception
 
-            ' ToDo: globalize this
-            msg = New cMessage("MultiSim sample file could not be written to '" & strFileSample & "'. " & ex.Message, _
+            msg = New cMessage(String.Format(My.Resources.STATUS_EXAMPLE_FAILED, strFileSample, ex.Message), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             bSuccess = False
 
