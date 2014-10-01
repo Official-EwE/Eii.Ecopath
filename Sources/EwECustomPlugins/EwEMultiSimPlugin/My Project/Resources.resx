@@ -135,11 +135,11 @@
     <value>Restoring data...</value>
   </data>
   <data name="STATUS_RUNNING" xml:space="preserve">
-    <value>File '{0}' running...</value>
+    <value>Running CSV file '{0}'...</value>
     <comment>{0} = file name</comment>
   </data>
   <data name="STATUS_SAVING" xml:space="preserve">
-    <value>File '{0}' saving results...</value>
+    <value>Saving results for CSV file '{0}'...</value>
     <comment>{0} = file name</comment>
   </data>
   <data name="GENERIC_DESCRIPTION" xml:space="preserve">
@@ -153,7 +153,7 @@
     <comment>{0} = file name</comment>
   </data>
   <data name="STATUS_SUCCESS" xml:space="preserve">
-    <value>Multi-sim completeded successfully, see '{0}' for details</value>
+    <value>Multi-sim completed successfully, see '{0}' for details</value>
     <comment>{0} = file name</comment>
   </data>
   <data name="VAL_CSV_FN_MISSING" xml:space="preserve">
@@ -166,7 +166,7 @@
   </data>
   <data name="VAL_CSV_READ_ERROR" xml:space="preserve">
     <value>Error: something went wrong while reading CSV file {0}: {1}</value>
-    <comment>{0} = file name, {1} = exception</comment>
+    <comment>{0} = file name, {1} = exception message</comment>
   </data>
   <data name="VAL_CSV_READ_MISSING" xml:space="preserve">
     <value>Error: unable to find CSV file {0}</value>
@@ -192,6 +192,14 @@
   </data>
   <data name="VAL_RESULT_WARNING" xml:space="preserve">
     <value>Multi-sim could run but there are problems in your setup that you may want to resolve first. Please check the status panel or '{0}' for details</value>
+    <comment>{0} = file name</comment>
+  </data>
+  <data name="STATUS_EXAMPLE_FAILED" xml:space="preserve">
+    <value>Multi-sim example CSV input file could not be written to '{0}'. {1}</value>
+    <comment>{0} = file name, {1} = exception message</comment>
+  </data>
+  <data name="STATUS_EXAMPLE_SUCCESS" xml:space="preserve">
+    <value>Multi-sim example CSV input file written to '{0}'</value>
     <comment>{0} = file name</comment>
   </data>
 </root>

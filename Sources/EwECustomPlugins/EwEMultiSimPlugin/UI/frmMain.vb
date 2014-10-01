@@ -93,6 +93,7 @@ Public Class frmMain
         Dim bHasOutput As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxDest.Text)
         Dim bIsRunning As Boolean = Me.Core.StateMonitor.IsBusy()
 
+        Me.m_scMain.Enabled = Not bIsRunning
         Me.m_btnRun.Enabled = bHasFiles And bHasOutput And bHasVars And Not bIsRunning
 
     End Sub
@@ -194,7 +195,7 @@ Public Class frmMain
         Handles m_btnGenerateSample.Click
 
         Try
-            Me.m_engine.GenerateSample(Me.m_tbxDest.Text, Me.SelectedApplications)
+            Me.m_engine.GenerateSample(Me.SelectedApplications)
         Catch ex As Exception
 
         End Try

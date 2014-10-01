@@ -41,7 +41,7 @@ Partial Class frmMain
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Me.m_csMain = New System.Windows.Forms.SplitContainer()
+        Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_cbEggProduction = New System.Windows.Forms.CheckBox()
         Me.m_cbMort = New System.Windows.Forms.CheckBox()
         Me.m_cbEffort = New System.Windows.Forms.CheckBox()
@@ -69,49 +69,49 @@ Partial Class frmMain
         Me.m_btnChooseOut = New System.Windows.Forms.Button()
         Me.m_lblVars = New System.Windows.Forms.Label()
         Me.m_pbLogo = New System.Windows.Forms.PictureBox()
-        CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_csMain.Panel1.SuspendLayout()
-        Me.m_csMain.Panel2.SuspendLayout()
-        Me.m_csMain.SuspendLayout()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_scMain.Panel1.SuspendLayout()
+        Me.m_scMain.Panel2.SuspendLayout()
+        Me.m_scMain.SuspendLayout()
         CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'm_csMain
+        'm_scMain
         '
-        resources.ApplyResources(Me.m_csMain, "m_csMain")
-        Me.m_csMain.Name = "m_csMain"
+        resources.ApplyResources(Me.m_scMain, "m_scMain")
+        Me.m_scMain.Name = "m_scMain"
         '
-        'm_csMain.Panel1
+        'm_scMain.Panel1
         '
-        Me.m_csMain.Panel1.Controls.Add(Me.m_cbEggProduction)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_cbMort)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_cbEffort)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_cbFF)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_lblFilesSrc)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_clbFilesSrc)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_hdrIn)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_lblSource)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_btnGenerateSample)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_btnValidate)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_btnAllSrc)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_rbAnnual)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_tbxSource)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_rbMonthly)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_btnChooseSrc)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_lblApply)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_lblReadAs)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_cbEggProduction)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_cbMort)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_cbEffort)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_cbFF)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_lblFilesSrc)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_clbFilesSrc)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrIn)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_lblSource)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnGenerateSample)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnValidate)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnAllSrc)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_rbAnnual)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_tbxSource)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_rbMonthly)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnChooseSrc)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_lblApply)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_lblReadAs)
         '
-        'm_csMain.Panel2
+        'm_scMain.Panel2
         '
-        Me.m_csMain.Panel2.Controls.Add(Me.m_cbCreateRunFolder)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_hrdOut)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_tbxDest)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_btnRun)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_clbValues)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_lblDest)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_btnAllVars)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_btnChooseOut)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_lblVars)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_cbCreateRunFolder)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_hrdOut)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tbxDest)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_btnRun)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_clbValues)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_lblDest)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_btnAllVars)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_btnChooseOut)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_lblVars)
         '
         'm_cbEggProduction
         '
@@ -287,24 +287,24 @@ Partial Class frmMain
         Me.AllowDrop = True
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.m_csMain)
+        Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.m_pbLogo)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmMain"
         Me.ShowInTaskbar = False
-        Me.m_csMain.Panel1.ResumeLayout(False)
-        Me.m_csMain.Panel1.PerformLayout()
-        Me.m_csMain.Panel2.ResumeLayout(False)
-        Me.m_csMain.Panel2.PerformLayout()
-        CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_csMain.ResumeLayout(False)
+        Me.m_scMain.Panel1.ResumeLayout(False)
+        Me.m_scMain.Panel1.PerformLayout()
+        Me.m_scMain.Panel2.ResumeLayout(False)
+        Me.m_scMain.Panel2.PerformLayout()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_scMain.ResumeLayout(False)
         CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
     Private WithEvents m_clbFilesSrc As System.Windows.Forms.CheckedListBox
     Private WithEvents m_tbxDest As System.Windows.Forms.TextBox
-    Private WithEvents m_csMain As System.Windows.Forms.SplitContainer
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Friend WithEvents m_lblFilesSrc As System.Windows.Forms.Label
     Private WithEvents m_hdrIn As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_lblSource As System.Windows.Forms.Label
