@@ -112,6 +112,8 @@ Public Class cMSE
     Private m_StopRun As Boolean
     Private m_runstate As eRunStates = eRunStates.Idle
 
+    Const MIN_DIET_PROP As Single = 0.000001
+
 #Region "Threading variables"
     'Private m_WaitObject As System.Threading.ManualResetEvent
 
@@ -1646,7 +1648,11 @@ Public Class cMSE
             If csvDietMatrix.ReadNextRecord() Then
                 For iPred As Integer = 1 To m_core.nLivingGroups
                     'NOT DCInput because we don't have the support that copies this into DC
-                    _pathdata.DC(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                    If cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) < MIN_DIET_PROP Then
+                        _pathdata.DC(iPred, 0) = 0
+                    Else
+                        _pathdata.DC(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                    End If
                 Next
             Else
                 ' Unable to read predator header line! We have a problem
@@ -1660,15 +1666,20 @@ Public Class cMSE
                         'If m_ecopath.EcopathData.DC(iPred, iPrey) > 0 Then
                         'Debug.Assert(cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) > 0)
                         'NOT DCInput because we don't have the support that copies this into DC
-                        _pathdata.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
-                        'End If
-
+                        If cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) < MIN_DIET_PROP Then
+                            _pathdata.DC(iPred, iPrey) = 0
+                        Else
+                            _pathdata.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                        End If
                     Next
                 Else
                     ' Unable to read prey line! We have a problem
                     GoodDynamics = False
                 End If
             Next
+
+            Me.NormalizeDiet(_pathdata.DC)
+
         Else
             ' Could not read diet matrix for this trial
             GoodDynamics = False
@@ -1759,13 +1770,14 @@ Public Class cMSE
                     MinBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep)
                 End If
             Next
-            DiagnosticOutput4BiomassLimits.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8}", _
+            DiagnosticOutput4BiomassLimits.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", _
                         cStringUtils.FormatNumber(iModel), _
                         cStringUtils.ToCSVField(m_currentStrategy.Name), _
                         cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp.mGroup.Index).Name), _
                         cStringUtils.FormatNumber(MaxBiomass), _
                         cStringUtils.FormatNumber(iGrp.mUpperLimit), _
                         cStringUtils.FormatNumber(MaxBiomass / iGrp.mUpperLimit), _
+                        cStringUtils.FormatNumber(MaxBiomass > iGrp.mUpperLimit), _
                         cStringUtils.FormatNumber(MinBiomass), _
                         cStringUtils.FormatNumber(iGrp.mLowerLimit), _
                         cStringUtils.FormatNumber(MinBiomass <= iGrp.mLowerLimit))
@@ -2533,7 +2545,7 @@ Public Class cMSE
         Dim EcopathInternalStopWatch As New Stopwatch
         Dim ecopathData As cEcopathDataStructures = Me.m_ecopath.EcopathData
         Dim iPointer As Integer = 0
-        Dim MinProp As Single = 0.000001
+
 
         'Dim DirichletArray(mCore.nLivingGroups - 1, mCore.nLivingGroups - 1) As Single
 
@@ -2573,12 +2585,11 @@ Public Class cMSE
                 'Samples a set of Dirichlet distributed parameters
                 TempDirichlet = DirichletSample2(CInt(SumInteractions(iPred)), MeanPropMod, DietPropMultipliers(iPred))
 
-
                 Dim i As Integer = 0
                 Dim dProp As Single
                 If InteractsImports(iPred) = 1 Then
                     dProp = TempDirichlet(i)
-                    If dProp < MinProp Then dProp = 0.0F
+                    If dProp < MIN_DIET_PROP Then dProp = 0.0F
                     ecopathData.DCInput(iPred + 1, 0) = dProp
                     i += 1
                 End If 'InteractsImports(iPred) = 1
@@ -2586,7 +2597,7 @@ Public Class cMSE
                 For iPrey = 1 To m_core.nGroups
                     If Interacts(iPred, iPrey - 1) = 1 Then
                         dProp = TempDirichlet(i)
-                        If dProp < MinProp Then dProp = 0.0F
+                        If dProp < MIN_DIET_PROP Then dProp = 0.0F
                         ecopathData.DCInput(iPred + 1, iPrey) = dProp
                         i += 1
                     End If 'Interacts(iPred, iPrey - 1) = 1
