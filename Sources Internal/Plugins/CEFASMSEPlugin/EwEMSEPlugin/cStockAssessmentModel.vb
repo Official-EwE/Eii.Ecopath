@@ -731,8 +731,7 @@ Public Class cStockAssessmentModel
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
         Dim breturn As Boolean
-
-        Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
+        Dim strm As StreamWriter
 
         Try
 
@@ -740,6 +739,7 @@ Public Class cStockAssessmentModel
                 strFilename = Me.DefaultFileName
             End If
 
+            strm = cMSEUtils.GetWriter(strFilename, False)
 
             If (strm IsNot Nothing) Then
 
@@ -759,8 +759,6 @@ Public Class cStockAssessmentModel
                 cMSEUtils.ReleaseWriter(strm)
                 breturn = True
             End If
-
-
 
         Catch ex As Exception
             breturn = False
