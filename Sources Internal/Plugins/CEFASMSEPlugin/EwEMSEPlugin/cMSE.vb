@@ -2749,7 +2749,7 @@ Public Class cMSE
                                     If iCatch > m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) Then
                                         'fishing mortality exceeds quota
                                         m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)) / (iCatch + 1.0E-20))
-                                        If m_regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
+                                        If m_currentStrategy.Regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
                                             'QuotaType = Strongest
                                             'excess catch discarded and included in the fishing mortality()
                                             m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
