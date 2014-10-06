@@ -1447,6 +1447,8 @@ Public Class cMSE
                             'Set the CurrentStrategy used by onEcosimTimeStep()
                             m_currentStrategy = curStrategy
 
+                            If iModel = 3 Then Stop
+
                             'Get a list of all fleets that fish the groups that have HCRs
                             'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
                             Me.initFishedByHCR(curStrategy)
@@ -2305,7 +2307,7 @@ Public Class cMSE
         For Each iHCRGroup In m_currentStrategy
             ' Determines the F for each group
             If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
-                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), 0, CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
             Else
                 Me.InformUser(String.Format(My.Resources.ERROR_HARVESTRUILE_DUPLICATE_F, iHCRGroup.GroupF.Name), eMessageImportance.Warning)
             End If
@@ -2673,6 +2675,8 @@ Public Class cMSE
 
             If (iTime - 1) Mod 12 = 0 Then
 
+                'If iTime > 744 Then Stop
+
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Stock Assessment
                 'Get Biomass estimated by the stock assessment model
@@ -2713,12 +2717,14 @@ Public Class cMSE
                             'Calculate what selectivity would prevent any other stock going over quota
                             'Set selectivity variables
 
+                            'If iFleet = 3 Then Stop
+
                             'find the stock with the biggest economic value that the given fleet catches
-                            Dim vmax As Single = 0
+                            Dim vmax As Single = -9999
                             Dim imax As Integer = 0
                             Dim v As Single
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
-                                If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) > 0 Then
+                                If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) >= 0 Then
                                     v = CSng(m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0) * m_ecopath.EcopathData.Market(iFleet, iGrp))
                                     If v > vmax Then
                                         vmax = v
@@ -2738,6 +2744,8 @@ Public Class cMSE
 
                             'Limit the effort if it is greater than the max allowable 
                             If Emax < m_ecosim.EcosimData.FishRateGear(iFleet, iTime) Then m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
+
+                            'If m_ecosim.EcosimData.FishRateGear(iFleet, iTime) > 100 Then Stop
 
                             'Alters the discard parameters 
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
