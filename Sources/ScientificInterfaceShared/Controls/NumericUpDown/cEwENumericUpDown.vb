@@ -19,7 +19,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports System.ComponentModel
 
 #End Region ' Imports
@@ -31,241 +30,103 @@ Namespace Controls
     ''' Numeric up/down derived control to improve editing.
     ''' </summary>
     ''' <remarks>
-    ''' http://www.codeproject.com/articles/30899/extended-numericupdown-control
+    ''' http://www.codeproject.com/Articles/30899/Extended-NumericUpDown-Control
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Class cEwENumericUpDown
         Inherits NumericUpDown
 
-        Public Sub New()
-            MyBase.New()
-        End Sub
-
-#If 0 Then
-
-        Protected Overrides Sub OnGotFocus(e As System.EventArgs)
-            MyBase.OnGotFocus(e)
-            Me.Capture = True
-            Console.WriteLine(Me.Name & " captured")
-        End Sub
-
-        Protected Overrides Sub OnLostFocus(e As System.EventArgs)
-            Me.Capture = False
-            MyBase.OnLostFocus(e)
-            Console.WriteLine(Me.Name & " lost")
-        End Sub
-
-        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
-            Console.WriteLine(Me.Name & " heard click")
-            If Not Me.ClientRectangle.Contains(e.Location) Then
-                'If (Me.Capture = True) Then
-                Me.ValidateEditText()
-                Console.WriteLine(Me.Name & " validated")
-                'End If
-            End If
-            MyBase.OnMouseDown(e)
-        End Sub
-
-
-        Implements ISupportInitialize
-
 #Region " Private vars "
 
-        ''' <summary>Most recent mouse position while dragging.</summary>
-        Private m_ptLast As System.Drawing.Point = Nothing
-
         ''' <summary>Reference to the underlying TextBox control.</summary>
-        Private m_textbox As TextBox = Nothing
+        Private m_tbx As TextBox = Nothing
         ''' <summary>Reference to the underlying UpDownButtons control.</summary>
-        Private m_btnsUpDown As Control = Nothing
-
-        Private m_interceptMouseWheel As InterceptMouseWheelMode = InterceptMouseWheelMode.Always
-        Private m_bAutoSelect As Boolean = False
-        Private m_bShowUpDownButtons As ShowUpDownButtonsMode = ShowUpDownButtonsMode.Always
-        Private m_bWrapValue As Boolean = False
+        Private m_updown As Control = Nothing
 
         ''' <summary>Flag to track mouse position.</summary>
         Private m_bMouseOver As Boolean = False
-        Private m_bReady As Boolean = False
+        ''' <summary>Flag to track focus.</summary>
+        Private m_bHasFocus As Boolean = False
+
+        Private m_showUpdownMode As eShowUpDownButtonsType = eShowUpDownButtonsType.Always
 
 #End Region ' Private vars
 
-#Region " Control overrides "
+#Region " Construction / destruction "
 
-#If 0 Then
-
-        ''' <summary>
-        ''' Mouse press override. Used to set the capture for possible dragging.
-        ''' </summary>
-        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
-            ' Use control unaffected
-            MyBase.OnMouseDown(e)
-            Me.Capture = True
-            Me.m_ptLast = Me.DistanceFromBounds(e.Location)
-        End Sub
-
-        ''' <summary>
-        ''' Mouse move override. Changes the value of the control while dragging.
-        ''' </summary>
-        Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
-
-            If Me.Capture And Not Me.ClientRectangle.Contains(e.Location) Then
-
-                Dim ptCurr As Point = Me.DistanceFromBounds(e.Location)
-                Dim dx As Integer = (ptCurr.X - Me.m_ptLast.X)
-                Dim dy As Integer = (Me.m_ptLast.Y - ptCurr.Y)
-                Dim sIncrement As Single = Me.Increment
-
-                If My.Computer.Keyboard.CtrlKeyDown Then
-                    sIncrement *= 10
-                End If
-
-                If My.Computer.Keyboard.ShiftKeyDown Then
-                    sIncrement /= CSng(Math.Max(Math.Pow(10, Me.DecimalPlaces), 5))
-                End If
-
-                Dim sDist As Single = (dx + dy) * (dx + dy) * sIncrement * CSng(Math.Sign(dx + dy))
-                Me.Value = Convert.ToDecimal(Math.Max(Me.Minimum, Math.Min(Me.Maximum, Me.Value + sDist)))
-
-                ' Remember last point
-                Me.m_ptLast = ptCurr
-            Else
-                MyBase.OnMouseMove(e)
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' Mouse up override. Used to cancel mouse capture.
-        ''' </summary>
-        Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
-            Me.Capture = False
-            'Me.Cursor = Cursors.Default
-            MyBase.OnMouseUp(e)
-        End Sub
-
-        Protected Function DistanceFromBounds(ByVal pt As Point) As Point
-            Dim rc As Rectangle = Me.ClientRectangle
-            Dim dx As Integer
-            Dim dy As Integer
-
-            If pt.X < 0 Then
-                dx = pt.X
-            ElseIf pt.X <= rc.Width Then
-                dx = 0
-            Else
-                dx = pt.X - rc.Width
-            End If
-
-            If pt.Y < 0 Then
-                dy = pt.Y
-            ElseIf pt.Y <= rc.Height Then
-                dy = 0
-            Else
-                dy = pt.Y - rc.Height
-            End If
-            Return New Point(dx, dy)
-
-        End Function
-
-#End If
-
-#End Region ' Control overrides
-
-        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor
         ''' </summary>
-        ''' -------------------------------------------------------------------
         Public Sub New()
+
             MyBase.New()
 
-            ' Extract a reference to the underlying TextBox field
-            Me.m_textbox = GetPrivateField(Of TextBox)(Me, "upDownEdit")
-            Debug.Assert(Me.m_textbox IsNot Nothing, "Can't find internal TextBox field.")
+            ' Get a reference to the underlying UpDownButtons field
+            Me.m_updown = MyBase.Controls(0)
 
-            ' Extract a reference to the underlying UpDownButtons field
-            Me.m_btnsUpDown = GetPrivateField(Of Control)(Me, "upDownButtons")
-            Debug.Assert(Me.m_btnsUpDown IsNot Nothing, "Can't find internal UpDown buttons field.")
+            ' Sanity checks
+            Debug.Assert(Me.m_updown IsNot Nothing)
+            Debug.Assert(Me.m_updown.GetType().FullName = "System.Windows.Forms.UpDownBase+UpDownButtons")
 
-            Me.m_textbox.AcceptsReturn = False
+            ' Get a reference to the underlying TextBox field.
+            Me.m_tbx = TryCast(MyBase.Controls(1), TextBox)
+
+            ' Underlying private type is System.Windows.Forms.UpDownBase+UpDownButtons
+            If (Me.m_tbx Is Nothing) OrElse (Me.m_tbx.GetType().FullName <> "System.Windows.Forms.UpDownBase+UpDownEdit") Then
+                Throw New ArgumentNullException(Me.GetType.FullName & ": Can't get a reference to internal TextBox field.")
+            End If
 
             ' Add handlers (MouseEnter and MouseLeave events of NumericUpDown are not working properly)
-            AddHandler m_textbox.MouseEnter, AddressOf OnMouseEnterLeave
-            AddHandler m_textbox.MouseLeave, AddressOf OnMouseEnterLeave
-            AddHandler m_btnsUpDown.MouseEnter, AddressOf OnMouseEnterLeave
-            AddHandler m_btnsUpDown.MouseLeave, AddressOf OnMouseEnterLeave
-            AddHandler MyBase.MouseEnter, AddressOf OnMouseEnterLeave
-            AddHandler MyBase.MouseLeave, AddressOf OnMouseEnterLeave
-            'AddHandler Me.m_textbox.TextChanged, AddressOf OnTextBoxTextChanged
+            AddHandler m_tbx.MouseEnter, AddressOf HiddenMouseEnterLeave
+            AddHandler m_tbx.MouseLeave, AddressOf HiddenMouseEnterLeave
+            AddHandler m_updown.MouseEnter, AddressOf HiddenMouseEnterLeave
+            AddHandler m_updown.MouseLeave, AddressOf HiddenMouseEnterLeave
+            AddHandler MyBase.MouseEnter, AddressOf HiddenMouseEnterLeave
+            AddHandler MyBase.MouseLeave, AddressOf HiddenMouseEnterLeave
 
         End Sub
-
-#Region " Internals "
 
         Protected Overrides Sub Dispose(disposing As Boolean)
-            RemoveHandler m_textbox.MouseEnter, AddressOf OnMouseEnterLeave
-            RemoveHandler m_textbox.MouseLeave, AddressOf OnMouseEnterLeave
-            RemoveHandler m_btnsUpDown.MouseEnter, AddressOf OnMouseEnterLeave
-            RemoveHandler m_btnsUpDown.MouseLeave, AddressOf OnMouseEnterLeave
-            RemoveHandler MyBase.MouseEnter, AddressOf OnMouseEnterLeave
-            RemoveHandler MyBase.MouseLeave, AddressOf OnMouseEnterLeave
-            'RemoveHandler Me.m_textbox.TextChanged, AddressOf OnTextBoxTextChanged
+
+            ' Remove handlers
+            RemoveHandler m_tbx.MouseEnter, AddressOf HiddenMouseEnterLeave
+            RemoveHandler m_tbx.MouseLeave, AddressOf HiddenMouseEnterLeave
+            RemoveHandler m_updown.MouseEnter, AddressOf HiddenMouseEnterLeave
+            RemoveHandler m_updown.MouseLeave, AddressOf HiddenMouseEnterLeave
+            RemoveHandler MyBase.MouseEnter, AddressOf HiddenMouseEnterLeave
+            RemoveHandler MyBase.MouseLeave, AddressOf HiddenMouseEnterLeave
             MyBase.Dispose(disposing)
+
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Extracts a reference to a private underlying field
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Protected Friend Shared Function GetPrivateField(Of T As Control) _
-                (ByVal ctrl As cEwENumericUpDown, ByVal fieldName As String) As T
-            ' find internal TextBox
-            Dim fi As Reflection.FieldInfo _
-                = GetType(NumericUpDown).GetField(fieldName, _
-                            Reflection.BindingFlags.FlattenHierarchy _
-                            Or Reflection.BindingFlags.NonPublic _
-                            Or Reflection.BindingFlags.Instance)
-            ' take some caution... they could change field name in the future!
-            If fi Is Nothing Then
-                Return Nothing
-            Else
-                Return TryCast(fi.GetValue(ctrl), T)
-            End If
-        End Function
+#End Region ' Construction / destruction
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="e"></param>
-        ''' -------------------------------------------------------------------
+#Region " Overrides "
+
         Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
-            If Me.m_btnsUpDown.Visible = False Then
+            If (Me.m_updown.Visible = False) Then
                 e.Graphics.Clear(Me.BackColor)
             End If
             MyBase.OnPaint(e)
         End Sub
 
-        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' WndProc override to kill WN_MOUSEWHEEL message
         ''' </summary>
-        ''' -------------------------------------------------------------------
         Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
             Const WM_MOUSEWHEEL As Integer = &H20A
 
-            If m.Msg = WM_MOUSEWHEEL Then
-                Select Case m_interceptMouseWheel
-                    Case InterceptMouseWheelMode.Always
+            If (m.Msg = WM_MOUSEWHEEL) Then
+                Select Case InterceptMouseWheel
+                    Case eInterceptMouseWheelType.Always
                         ' standard message
                         MyBase.WndProc(m)
-                    Case InterceptMouseWheelMode.WhenMouseOver
+                    Case eInterceptMouseWheelType.WhenMouseOver
                         If m_bMouseOver Then
                             ' standard message
                             MyBase.WndProc(m)
                         End If
-                    Case InterceptMouseWheelMode.Never
+                    Case eInterceptMouseWheelType.Never
                         ' kill the message
                         Exit Sub
                 End Select
@@ -275,73 +136,74 @@ Namespace Controls
 
         End Sub
 
-#End Region ' Internals
+#End Region ' Overrides
 
-#Region " New properties "
+#Region " Extended properties "
 
-        <DefaultValue(False)> _
-        <Category("Behavior")> _
-        <Description("Automatically select control text when it receives focus.")> _
-        Public Property AutoSelect() As Boolean
-            Get
-                Return Me.m_bAutoSelect
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bAutoSelect = value
-            End Set
-        End Property
+        <DefaultValue(False)>
+        <Category("Behavior")>
+        <Description("Automatically select control text when it receives focus.")>
+        Public Property AutoSelect() As Boolean = False
 
-
-        <Browsable(False)> _
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="TextBox.SelectionStart"/>
+        ''' -------------------------------------------------------------------
+        <Browsable(False)>
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Property SelectionStart() As Integer
             Get
-                Return Me.m_textbox.SelectionStart
+                Return m_tbx.SelectionStart
             End Get
             Set(ByVal value As Integer)
-                Me.m_textbox.SelectionStart = value
+                m_tbx.SelectionStart = value
             End Set
         End Property
 
-
-        <Browsable(False)> _
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="TextBox.SelectionLength"/>
+        ''' -------------------------------------------------------------------
+        <Browsable(False)>
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Property SelectionLength() As Integer
             Get
-                Return Me.m_textbox.SelectionLength
+                Return m_tbx.SelectionLength
             End Get
             Set(ByVal value As Integer)
-                Me.m_textbox.SelectionLength = value
+                m_tbx.SelectionLength = value
             End Set
         End Property
 
-
-        <Browsable(False)> _
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="TextBox.SelectedText"/>
+        ''' -------------------------------------------------------------------
+        <Browsable(False)>
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Property SelectedText() As String
             Get
-                Return Me.m_textbox.SelectedText
+                Return m_tbx.SelectedText
             End Get
             Set(ByVal value As String)
-                Me.m_textbox.SelectedText = value
+                m_tbx.SelectedText = value
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Define <see cref="eInterceptMouseWheelType">when</see> the mouse wheel 
+        ''' is intercepted.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Category("Behavior")>
+         <DefaultValue(GetType(eInterceptMouseWheelType), "Always")>
+         <Description("Enables MouseWheel only under certain conditions.")>
+        Public Property InterceptMouseWheel() As eInterceptMouseWheelType = eInterceptMouseWheelType.WhenMouseOver
 
-        <DefaultValue(GetType(InterceptMouseWheelMode), "Always")> _
-        <Category("Behavior")> _
-        <Description("Enables MouseWheel only under certain conditions.")> _
-        Public Property InterceptMouseWheel() As InterceptMouseWheelMode
-            Get
-                Return Me.m_interceptMouseWheel
-            End Get
-            Set(ByVal value As InterceptMouseWheelMode)
-                Me.m_interceptMouseWheel = value
-            End Set
-        End Property
-
-
-        Public Enum InterceptMouseWheelMode
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Enumerated type defining possible mouse wheel capture modes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Enum eInterceptMouseWheelType As Integer
             ''' <summary>MouseWheel always works (defauld behavior)</summary>
             Always
             ''' <summary>MouseWheel works only when mouse is over the (focused) control</summary>
@@ -350,99 +212,129 @@ Namespace Controls
             Never
         End Enum
 
-
-        <DefaultValue(GetType(ShowUpDownButtonsMode), "Always")> _
-        <Category("Behavior")> _
-        <Description("Set UpDownButtons visibility mode.")> _
-        Public Property ShowUpDownButtons() As ShowUpDownButtonsMode
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Define <see cref="eShowUpDownButtonsType">when</see> the updown 
+        ''' buttons can be shown.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Category("Behavior")>
+        <DefaultValue(GetType(eShowUpDownButtonsType), "Always")>
+        <Description("Set UpDownButtons visibility mode.")>
+        Public Property ShowUpDownButtons() As eShowUpDownButtonsType
             Get
-                Return Me.m_bShowUpDownButtons
+                Return m_showUpdownMode
             End Get
-            Set(ByVal value As ShowUpDownButtonsMode)
-                Me.m_bShowUpDownButtons = value
+            Set(ByVal value As eShowUpDownButtonsType)
+                m_showUpdownMode = value
                 ' update UpDownButtons visibility
                 UpdateUpDownButtonsVisibility()
             End Set
         End Property
 
-
-        Public Enum ShowUpDownButtonsMode
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Enumerated type defining possible updown button visibility modes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Enum eShowUpDownButtonsType As Integer
             ''' <summary>UpDownButtons are always visible (defauld behavior)</summary>
             Always
             ''' <summary>UpDownButtons are visible only when mouse is over the control</summary>
             WhenMouseOver
+            ''' <summary>UpDownButtons are visible only when control has the focus</summary>
+            WhenFocus
+            ''' <summary>UpDownButtons are visible when control has focus or mouse is over the control</summary>
+            WhenFocusOrMouseOver
         End Enum
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' If set, incrementing value will cause it to restart from Minimum 
-        ''' when Maximum is reached (and viceversa).
+        ''' Get/set whether the value in the control will wrap around when exceeding 
+        ''' the <see cref="Maximum"/>, or dropping below the <see cref="Minimum"/>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <DefaultValue(False)> _
-        <Category("Behavior")> _
-        <Description("If set, incrementing value will cause it to restart from Minimum when Maximum is reached (and viceversa).")> _
+        <DefaultValue(False)>
+        <Category("Behavior")>
+        <Description("If set, incrementing value will cause it to restart from Minimum when Maximum is reached (and viceversa).")>
         Public Property WrapValue() As Boolean
-            Get
-                Return Me.m_bWrapValue
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bWrapValue = value
-            End Set
-        End Property
 
-#End Region ' New properties
+#End Region ' Extended properties
 
-#Region " Text selection "
+#Region "  Text selection "
 
-        ' select all the text on focus enter
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Select all the text on focus enter
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Protected Overrides Sub OnGotFocus(ByVal e As System.EventArgs)
-            If Me.m_bAutoSelect Then
-                Me.m_textbox.SelectAll()
+
+            Me.m_bHasFocus = True
+            If Me.AutoSelect Then Me.m_tbx.SelectAll()
+            ' Update UpDownButtons visibility
+            If (Me.m_showUpdownMode = eShowUpDownButtonsType.WhenFocus) Or (Me.m_showUpdownMode = eShowUpDownButtonsType.WhenFocusOrMouseOver) Then
+                Me.UpdateUpDownButtonsVisibility()
             End If
+
             MyBase.OnGotFocus(e)
+
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Indicate that we have lost the focus
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub OnLostFocus(e As EventArgs)
 
-        ' MouseUp will kill the SelectAll made on GotFocus.
-        ' Will restore it, but only if user have not made a partial text selection.
+            Me.m_bHasFocus = False
+            ' Update UpDownButtons visibility
+            If (Me.m_showUpdownMode = eShowUpDownButtonsType.WhenFocus) Or (Me.m_showUpdownMode = eShowUpDownButtonsType.WhenFocusOrMouseOver) Then
+                Me.UpdateUpDownButtonsVisibility()
+            End If
+            MyBase.OnLostFocus(e)
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' MouseUp will kill the SelectAll made on GotFocus.
+        ''' Will restore it, but only if user have not made a partial text selection.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Protected Overrides Sub OnMouseUp(ByVal mevent As System.Windows.Forms.MouseEventArgs)
-            If Me.m_bAutoSelect And (Me.m_textbox.SelectionLength = 0) Then
-                Me.m_textbox.SelectAll()
+            If AutoSelect AndAlso m_tbx.SelectionLength = 0 Then
+                m_tbx.SelectAll()
             End If
             MyBase.OnMouseUp(mevent)
         End Sub
 
-        Protected Overrides Sub OnKeyUp(e As System.Windows.Forms.KeyEventArgs)
-            MyBase.OnKeyUp(e)
-            Me.ValidateEditText()
-        End Sub
-
-#End Region
+#End Region ' Text selection
 
 #Region " Additional events "
 
         ' these events will be raised correctly, when mouse enters on the textbox
-        Shadows Event MouseEnter As EventHandler(Of EventArgs)
-        Shadows Event MouseLeave As EventHandler(Of EventArgs)
+        Public Shadows Event MouseEnter As EventHandler(Of EventArgs)
+        Public Shadows Event MouseLeave As EventHandler(Of EventArgs)
 
         ' Events raised BEFORE value decrement/increment
         Public Event BeforeValueDecrement As CancelEventHandler
         Public Event BeforeValueIncrement As CancelEventHandler
 
         ' this handler is called at each mouse Enter/Leave movement
-        Private Sub OnMouseEnterLeave(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub HiddenMouseEnterLeave(ByVal sender As Object, ByVal e As System.EventArgs)
 
             Dim cr As Drawing.Rectangle = RectangleToScreen(ClientRectangle)
             Dim mp As Drawing.Point = MousePosition
 
             ' actual state
-            Dim isOver As Boolean = cr.Contains(mp)
+            Dim bIsOver As Boolean = cr.Contains(mp)
 
             ' test if status changed
-            If m_bMouseOver Xor isOver Then
+            If m_bMouseOver Xor bIsOver Then
                 ' update state
-                m_bMouseOver = isOver
+                m_bMouseOver = bIsOver
                 If m_bMouseOver Then
                     RaiseEvent MouseEnter(Me, EventArgs.Empty)
                 Else
@@ -451,42 +343,50 @@ Namespace Controls
             End If
 
             ' update UpDownButtons visibility
-            If m_bShowUpDownButtons <> ShowUpDownButtonsMode.Always Then
+            If m_showUpdownMode <> eShowUpDownButtonsType.Always Then
                 UpdateUpDownButtonsVisibility()
             End If
 
         End Sub
 
-#End Region
+#End Region ' Additional events
 
 #Region " Value increment/decrement management "
 
-        ' raises the two new events
+        ''' <summary>
+        ''' Raise the down button event.
+        ''' </summary>
         Public Overrides Sub DownButton()
+
+            If MyBase.ReadOnly Then Exit Sub
             Dim e As New CancelEventArgs
             RaiseEvent BeforeValueDecrement(Me, e)
             If e.Cancel Then Exit Sub
             ' decrement with wrap
-            If m_bWrapValue AndAlso Value - Increment < Minimum Then
+            If WrapValue AndAlso Value - Increment < Minimum Then
                 Value = Maximum
             Else
                 MyBase.DownButton()
             End If
         End Sub
 
+        ''' <summary>
+        ''' Raise the up button event.
+        ''' </summary>
         Public Overrides Sub UpButton()
+            If MyBase.ReadOnly Then Exit Sub
             Dim e As New CancelEventArgs
             RaiseEvent BeforeValueIncrement(Me, e)
             If e.Cancel Then Exit Sub
             ' increment with wrap
-            If m_bWrapValue AndAlso Value + Increment > Maximum Then
+            If WrapValue AndAlso Value + Increment > Maximum Then
                 Value = Minimum
             Else
                 MyBase.UpButton()
             End If
         End Sub
 
-#End Region
+#End Region ' Value increment/decrement management
 
 #Region " UpDownButtons visibility management "
 
@@ -496,58 +396,60 @@ Namespace Controls
         Sub UpdateUpDownButtonsVisibility()
 
             ' test new state
-            Dim newVisible As Boolean
-            Select Case m_bShowUpDownButtons
-                Case ShowUpDownButtonsMode.WhenMouseOver
+            Dim newVisible As Boolean = False
+            Select Case m_showUpdownMode
+                Case eShowUpDownButtonsType.WhenMouseOver
                     newVisible = m_bMouseOver
+                Case eShowUpDownButtonsType.WhenFocus
+                    newVisible = m_bHasFocus
+                Case eShowUpDownButtonsType.WhenFocusOrMouseOver
+                    newVisible = m_bHasFocus OrElse m_bMouseOver
                 Case Else
                     newVisible = True
             End Select
 
             ' assign only if needed
-            If m_btnsUpDown.Visible <> newVisible Then
+            If m_updown.Visible <> newVisible Then
                 If newVisible Then
-                    Me.m_textbox.Width = Me.ClientRectangle.Width - m_btnsUpDown.Width
+                    m_tbx.Width = Me.ClientRectangle.Width - m_updown.Width
                 Else
-                    Me.m_textbox.Width = Me.ClientRectangle.Width
+                    m_tbx.Width = Me.ClientRectangle.Width
                 End If
-                Me.m_btnsUpDown.Visible = newVisible
-                OnTextBoxResize(m_textbox, EventArgs.Empty)
+                m_updown.Visible = newVisible
+                OnTextBoxResize(m_tbx, EventArgs.Empty)
                 Me.Invalidate()
             End If
 
         End Sub
 
-
         ''' <summary>
         ''' Custom textbox size management
         ''' </summary>
         Protected Overrides Sub OnTextBoxResize(ByVal source As Object, ByVal e As System.EventArgs)
-            If m_textbox Is Nothing Then Exit Sub
-            If m_bShowUpDownButtons = ShowUpDownButtonsMode.Always Then
+            If m_tbx Is Nothing Then Exit Sub
+            If m_showUpdownMode = eShowUpDownButtonsType.Always Then
                 ' standard management
                 MyBase.OnTextBoxResize(source, e)
             Else
                 ' custom management
 
                 ' change position if RTL
-                Dim bFixPos As Boolean = Me.RightToLeft = Windows.Forms.RightToLeft.Yes _
-                                         Xor Me.UpDownAlign = LeftRightAlignment.Left
+                Dim fixPos As Boolean = Me.RightToLeft = Windows.Forms.RightToLeft.Yes _
+                                    Xor Me.UpDownAlign = LeftRightAlignment.Left
 
                 If m_bMouseOver Then
-                    Me.m_textbox.Width = Me.ClientSize.Width - Me.m_textbox.Left - Me.m_btnsUpDown.Width - 2
-                    If bFixPos Then Me.m_textbox.Location = New Point(16, Me.m_textbox.Location.Y)
+                    m_tbx.Width = Me.ClientSize.Width - m_tbx.Left - m_updown.Width - 2
+                    If fixPos Then m_tbx.Location = New Point(16, m_tbx.Location.Y)
                 Else
-                    If bFixPos Then Me.m_textbox.Location = New Point(2, Me.m_textbox.Location.Y)
-                    Me.m_textbox.Width = Me.ClientSize.Width - Me.m_textbox.Left - 2
+                    If fixPos Then m_tbx.Location = New Point(2, m_tbx.Location.Y)
+                    m_tbx.Width = Me.ClientSize.Width - m_tbx.Left - 2
                 End If
 
             End If
 
         End Sub
 
-#End Region
-#End If
+#End Region ' UpDownButtons visibility management
 
     End Class
 
