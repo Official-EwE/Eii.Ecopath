@@ -105,9 +105,15 @@ Namespace Controls.Map.Layers
             Me.UpdateContent(Me.Editor)
         End Sub
 
+
         Private Sub OnLandWaterSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbWater.CheckedChanged, m_rbLand.CheckedChanged
             Me.UpdateValue()
+        End Sub
+
+        Private Sub OnDepthFieldGotFocus(sender As Object, e As System.EventArgs) _
+            Handles m_nudDepth.GotFocus
+            Me.m_rbWater.Checked = True
         End Sub
 
         Private Sub OnValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
