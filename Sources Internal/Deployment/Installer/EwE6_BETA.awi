@@ -1,4 +1,4 @@
-ÙÍW4AWinstall Project FileAddedFolderEcopath with Ecosim 6.3 BETA	AddedMenuEcopath with Ecosim 6.3 BETAAllowUninstall1AppId&{7535112A-DFA8-499A-8B6C-C71D9E765AAB}	BuildPathC:\Temp\Setup\EwE.exeCheckNet0CheckNetVersion3.5CompanyNameUBC Fisheries CentreCompanyWebSitehttp://www.ecopath.orgCopyrightTitle© 2006 - 2012 ${CompanyName}EULAÿù{\rtf1\ansi\ansicpg1252\deff0\deflang3084\deflangfe3084\deftab708{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+ÙÍW4AWinstall Project FileAddedFolder%Ecopath with Ecosim ${ProductVersion}	AddedMenu%Ecopath with Ecosim ${ProductVersion}AllowUninstall1AppId&{7535112A-DFA8-499A-8B6C-C71D9E765AAB}	BuildPathC:\Temp\Setup\EwE.exeCheckNet0CheckNetVersion3.5CompanyNameUBC Fisheries CentreCompanyWebSitehttp://www.ecopath.orgCopyrightTitle© 2006 - 2013 ${CompanyName}EULAÿù{\rtf1\ansi\ansicpg1252\deff0\deflang3084\deflangfe3084\deftab708{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
 {\colortbl ;\red0\green0\blue255;}
 \viewkind4\uc1\pard\sa200\sl276\slmult1\lang4105\f0\fs20 The Ecopath software version 6 is planned to be maintained, supported and extended for a many years to come by the Ecopath Research and Development Consortium. Older versions up to version 5 are no longer supported.
 \par \pard The Ecopath software is free software: you can redistribute it and/or modify it under the terms of the \cf1\ul GNU General Public License version 2 as published by the Free Software Foundation\cf0\ulnone . EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of ERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -9,83 +9,92 @@
 \par 
 \par The Ecopath Research and Development Consortium is committed to help users with their modelling efforts via the \cf1\ul user support subscriptions programme\cf0\ulnone . If you need assistance with your ecosystem model, or you would like us to comment, please \cf1\ul contact us by email\cf0\ulnone . If possible, attach your data file(s) in a zip-file as this will facilitate examination of your model. Your data will never be used or distributed without your explicit consent.
 \par }
-Flags182
+FeedbackUrlhttp://www.ecopath.orgFlags182
 HeaderPath.\EwE6Header.bmpIconPath.\Ecopath_install.icoLogoPath.\EwE5Logo.bmp
-NetPageURL:http://www.microsoft.com/download/en/details.aspx?id=17851OpenNetPage1ProductNameEcopath with Ecosim BETAProductPath,${ProgramsPath}\Ecopath with Ecosim 6.3 BETAProductVersion6.3SupportEmailmailto:ewedevteam@gmail.comUninstallTitle${ProductName}UserMenu1WindowTitle ${ProductName} ${ProductVersion}
+NetPageURL:http://www.microsoft.com/download/en/details.aspx?id=17851OpenNetPage1ProductNameEcopath with EcosimProductPath5${ProgramsPath}\Ecopath with Ecosim ${ProductVersion}ProductVersion6.4 BetaSupportEmailewedevteam@gmail.comUninstallTitle${ProductName}UserMenu0WindowTitle ${ProductName} ${ProductVersion}
 bCopyForCD0bEULA1bReadme0
-bShowAgree1bSilentUninstall0bUninstallExecBefore0	l.English1	!0.0.dest${ProductPath}\EwE6.exe	!0.0.dscrLaunch Ecopath with Ecosim 6!0.0.hk0!0.0.ici-1	!0.0.path(${ProductMenu}\Ecopath with Ecosim 6.lnk	!0.0.show1	!0.0.type6	!0.0.wdir${ProductPath}\	!0.1.dest${ProductPath}\EwE6.exe	!0.1.dscrLaunch Ecopath with Ecosim 6!0.1.hk0!0.1.ici-1	!0.1.path(${DesktopPath}\Ecopath with Ecosim 6.lnk	!0.1.show1	!0.1.type6	!0.1.wdir${ProductPath}\!0.10.CallInst0!0.10.RegAsm0!0.10.RegCom0!0.10.RegGAC0!0.10.RegTLB0
-!0.10.dest ${ProductPath}\SourceLibrary.dll
-!0.10.pathC:\Temp\Build\SourceLibrary.dll
-!0.10.type0!0.11.CallInst0!0.11.RegAsm0!0.11.RegCom0!0.11.RegGAC0!0.11.RegTLB0
-!0.11.dest/${ProductPath}\WeifenLuo.WinFormsUI.Docking.dll
-!0.11.path.C:\Temp\Build\WeifenLuo.WinFormsUI.Docking.dll
-!0.11.type0!0.12.CallInst0!0.12.RegAsm0!0.12.RegCom0!0.12.RegGAC0!0.12.RegTLB0
-!0.12.dest${ProductPath}\ZedGraph.dll
-!0.12.pathC:\Temp\Build\ZedGraph.dll
-!0.12.type0!0.13.dtewefile	!0.13.keyHKEY_CLASSES_ROOT\.ewemdb\	!0.13.ktp1
-!0.13.type4!0.14.dt"${ProductPath}\EwE6.exe" "%1"	!0.14.key-HKEY_CLASSES_ROOT\ewefile\shell\open\command\	!0.14.ktp1
-!0.14.type4!0.15.dtewefile	!0.15.keyHKEY_CLASSES_ROOT\.eweaccdb\	!0.15.ktp1
-!0.15.type4!0.16.dtEcopath with Ecosim model	!0.16.keyHKEY_CLASSES_ROOT\ewefile\	!0.16.ktp1
-!0.16.type4!0.17.dt${ProductPath}\EwE6.exe,1	!0.17.key&HKEY_CLASSES_ROOT\ewefile\DefaultIcon\	!0.17.ktp1
-!0.17.type4
-!0.18.dest+${ProductPath}\UserGuide\EwE6_userguide.chm
-!0.18.dscrEcopath with Ecosim users guide!0.18.hk0	!0.18.ici-1
-!0.18.path'${ProductMenu}\Help\EwE6 User Guide.lnk
-!0.18.show1
-!0.18.type6	!0.19.arg${UninstallLog}
-!0.19.dest${UninstallCommand}
-!0.19.dscrUninstall Ecopath with Ecosim 6!0.19.hk0	!0.19.ici-1
-!0.19.path'${ProductMenu}\Uninstall ${ProductName}
+bShowAgree1bSilentUninstall1bUninstallExecBefore0	l.English1	!0.0.dest${ProductPath}\EwE6.exe	!0.0.dscr,Launch Ecopath with Ecosim ${ProductVersion}!0.0.hk0!0.0.ici-1	!0.0.path8${ProductMenu}\Ecopath with Ecosim ${ProductVersion}.lnk	!0.0.show1	!0.0.type6	!0.0.wdir${ProductPath}\	!0.1.dest${ProductPath}\EwE6.exe	!0.1.dscr,Launch Ecopath with Ecosim ${ProductVersion}!0.1.hk0!0.1.ici-1	!0.1.path8${DesktopPath}\Ecopath with Ecosim ${ProductVersion}.lnk	!0.1.show1	!0.1.type6	!0.1.wdir${ProductPath}\!0.10.CallInst0!0.10.RegAsm0!0.10.RegCom0!0.10.RegGAC0!0.10.RegTLB0
+!0.10.dest${ProductPath}\ZedGraph.dll
+!0.10.pathC:\Temp\Build\ZedGraph.dll
+!0.10.type0!0.11.dtewefile	!0.11.keyHKEY_CLASSES_ROOT\.ewemdb\	!0.11.ktp1
+!0.11.type4!0.12.dt"${ProductPath}\EwE6.exe" "%1"	!0.12.key-HKEY_CLASSES_ROOT\ewefile\shell\open\command\	!0.12.ktp1
+!0.12.type4!0.13.dtewefile	!0.13.keyHKEY_CLASSES_ROOT\.eweaccdb\	!0.13.ktp1
+!0.13.type4!0.14.dtEcopath with Ecosim model	!0.14.keyHKEY_CLASSES_ROOT\ewefile\	!0.14.ktp1
+!0.14.type4!0.15.dt${ProductPath}\EwE6.exe,1	!0.15.key&HKEY_CLASSES_ROOT\ewefile\DefaultIcon\	!0.15.ktp1
+!0.15.type4
+!0.16.dest+${ProductPath}\UserGuide\EwE6_userguide.chm
+!0.16.dscrEcopath with Ecosim users guide!0.16.hk0	!0.16.ici-1
+!0.16.path'${ProductMenu}\Help\EwE6 User Guide.lnk
+!0.16.show1
+!0.16.type6	!0.17.arg${UninstallLog}
+!0.17.dest${UninstallCommand}
+!0.17.dscr/Uninstall Ecopath with Ecosim ${ProductVersion}!0.17.hk0	!0.17.ici-1
+!0.17.path'${ProductMenu}\Uninstall ${ProductName}
+!0.17.show1
+!0.17.type6!0.18.CallInst0!0.18.RegAsm0!0.18.RegCom0!0.18.RegGAC0!0.18.RegTLB0
+!0.18.dest${QuickLaunch}\EwE6.exe
+!0.18.pathC:\Temp\Build\EwE6.exe
+!0.18.type0
+!0.19.dest${ProductPath}\EwE6.exe
+!0.19.dscr,Launch Ecopath with Ecosim ${ProductVersion}!0.19.hk0	!0.19.ici-1
+!0.19.path8${QuickLaunch}\Ecopath with Ecosim ${ProductVersion}.lnk
 !0.19.show1
 !0.19.type6!0.2.CallInst0!0.2.RegAsm0!0.2.RegCom0!0.2.RegGAC0!0.2.RegTLB0	!0.2.dest${ProductPath}\EwE6.exe	!0.2.pathC:\Temp\Build\EwE6.exe	!0.2.type0!0.20.CallInst0!0.20.RegAsm0!0.20.RegCom0!0.20.RegGAC0!0.20.RegTLB0
-!0.20.dest${QuickLaunch}\EwE6.exe
-!0.20.pathC:\Temp\Build\EwE6.exe
-!0.20.type0
-!0.21.dest${ProductPath}\EwE6.exe
-!0.21.dscrLaunch Ecopath with Ecosim 6!0.21.hk0	!0.21.ici-1
-!0.21.path(${QuickLaunch}\Ecopath with Ecosim 6.lnk
-!0.21.show1
-!0.21.type6!0.22.CallInst0!0.22.RegAsm0!0.22.RegCom0!0.22.RegGAC0!0.22.RegTLB0
-!0.22.dest+${ProductPath}\UserGuide\EwE6_userguide.chm
-!0.22.path*C:\Temp\Build\UserGuide\EwE6_userguide.chm
-!0.22.type0!0.23.CallInst0!0.23.RegAsm0!0.23.RegCom0!0.23.RegGAC0!0.23.RegTLB0
-!0.23.dest"${ProductMenu}\Ecopath Website.url
-!0.23.pathQC:\BuildBot\slave\Ecopath6\Sources\ScientificInterface\Resources\ewe_home.url.txt
-!0.23.type0!0.24.CallInst0!0.24.RegAsm0!0.24.RegCom0!0.24.RegGAC0!0.24.RegTLB0
-!0.24.dest+${ProductMenu}\Ecopath Development Wiki.url
-!0.24.pathQC:\BuildBot\slave\Ecopath6\Sources\ScientificInterface\Resources\ewe_wiki.url.txt
-!0.24.type0!0.25.dt_Ecopath with Ecosim 6 - Scientific interface to the marine ecosystem modelling approach Ecopath	!0.25.keyNHKEY_LOCAL_MACHINE\Software\${ProductName}\Capabilities\ApplicationDescription	!0.25.ktp1
-!0.25.type4!0.26.dtEcopath with Ecosim 6	!0.26.keyGHKEY_LOCAL_MACHINE\Software\${ProductName}\Capabilities\ApplicationName	!0.26.ktp1
-!0.26.type4!0.27.dtewefile	!0.27.keyRHKEY_LOCAL_MACHINE\Software\${ProductName}\Capabilities\FileAssociations\.eweaccdb	!0.27.ktp1
-!0.27.type4!0.28.dtewefile	!0.28.keyPHKEY_LOCAL_MACHINE\Software\${ProductName}\Capabilities\FileAssociations\.ewemdb	!0.28.ktp1
-!0.28.type4!0.29.dt&Software\\${ProductName}\\Capabilities	!0.29.keyHHKEY_LOCAL_MACHINE\Software\RegisteredApplications\Ecopath with Ecosim 6	!0.29.ktp1
-!0.29.type4!0.3.CallInst0!0.3.RegAsm0!0.3.RegCom0!0.3.RegGAC0!0.3.RegTLB0	!0.3.dest${ProductPath}\EwE6.exe.config	!0.3.pathC:\Temp\Build\EwE6.exe.config	!0.3.type0!0.30.dtewefile	!0.30.keyHKEY_CLASSES_ROOT\.eiixml\	!0.30.ktp1
-!0.30.type4
-!0.31.langVBScript
-!0.31.textÿFlag = Installer.Variables("REG:HKLM\Software\Microsoft\NET Framework Setup\NDP\v4\Full\Install")
+!0.20.dest+${ProductPath}\UserGuide\EwE6_userguide.chm
+!0.20.path*C:\Temp\Build\UserGuide\EwE6_userguide.chm
+!0.20.type0!0.21.CallInst0!0.21.RegAsm0!0.21.RegCom0!0.21.RegGAC0!0.21.RegTLB0
+!0.21.dest"${ProductMenu}\Ecopath Website.url
+!0.21.pathQC:\BuildBot\slave\Ecopath6\Sources\ScientificInterface\Resources\ewe_home.url.txt
+!0.21.type0!0.22.CallInst0!0.22.RegAsm0!0.22.RegCom0!0.22.RegGAC0!0.22.RegTLB0
+!0.22.dest+${ProductMenu}\Ecopath Development Wiki.url
+!0.22.pathQC:\BuildBot\slave\Ecopath6\Sources\ScientificInterface\Resources\ewe_wiki.url.txt
+!0.22.type0!0.23.dt_Ecopath with Ecosim 6 - Scientific interface to the marine ecosystem modelling approach Ecopath	!0.23.keyNHKEY_LOCAL_MACHINE\Software\${ProductName}\Capabilities\ApplicationDescription	!0.23.ktp1
+!0.23.type4!0.24.dtEcopath with Ecosim 6	!0.24.keyGHKEY_LOCAL_MACHINE\Software\${ProductName}\Capabilities\ApplicationName	!0.24.ktp1
+!0.24.type4!0.25.dtewefile	!0.25.keyRHKEY_LOCAL_MACHINE\Software\${ProductName}\Capabilities\FileAssociations\.eweaccdb	!0.25.ktp1
+!0.25.type4!0.26.dtewefile	!0.26.keyPHKEY_LOCAL_MACHINE\Software\${ProductName}\Capabilities\FileAssociations\.ewemdb	!0.26.ktp1
+!0.26.type4!0.27.dt&Software\\${ProductName}\\Capabilities	!0.27.keyHHKEY_LOCAL_MACHINE\Software\RegisteredApplications\Ecopath with Ecosim 6	!0.27.ktp1
+!0.27.type4!0.28.dtewefile	!0.28.keyHKEY_CLASSES_ROOT\.eiixml\	!0.28.ktp1
+!0.28.type4
+!0.29.langVBScript
+!0.29.textÿFlag = Installer.Variables("REG:HKLM\Software\Microsoft\NET Framework Setup\NDP\v4\Full\Install")
 If Flag="" Then
-  res = Installer.ShowMessage("Ecopath with Ecosim requires the Microsoft .NET 4? framework. Do you wish to download and install this now?", ".NET Framework 4 not found", vbYesNo + vbExclamation)
+  res = Installer.ShowMessage("Ecopath with Ecosim requires the Microsoft .NET 4.0 framework. Do you wish to download and install this now?", ".NET framework update required", vbYesNo + vbExclamation)
   If res = vbYes Then
     Installer.RunProgram "http://www.microsoft.com/downloads/details.aspx?familyid=0A391ABD-25C1-4FC0-919F-B21F31AB88B7&displaylang=en ", "", false
     Installer.CancelInstall
   End If
 End If
-!0.31.type7!0.32.CallInst0!0.32.RegAsm0!0.32.RegCom0!0.32.RegGAC0!0.32.RegTLB0
-!0.32.dest+${ProductPath}\Includes\win32\lpsolve55.dll
-!0.32.path*C:\Temp\Build\Includes\win32\lpsolve55.dll
-!0.32.type0!0.33.CallInst0!0.33.RegAsm0!0.33.RegCom0!0.33.RegGAC0!0.33.RegTLB0
-!0.33.dest+${ProductPath}\Includes\win64\lpsolve55.dll
-!0.33.path*C:\Temp\Build\Includes\win64\lpsolve55.dll
-!0.33.type0!0.34.CallInst0!0.34.RegAsm0!0.34.RegCom0!0.34.RegGAC0!0.34.RegTLB0
-!0.34.dest${ProductPath}\Interop.JRO.dll
-!0.34.pathC:\Temp\Build\Interop.JRO.dll
+!0.29.type7!0.3.CallInst0!0.3.RegAsm0!0.3.RegCom0!0.3.RegGAC0!0.3.RegTLB0	!0.3.dest${ProductPath}\EwECore.dll	!0.3.pathC:\Temp\Build\EwECore.dll	!0.3.type0!0.30.CallInst0!0.30.RegAsm0!0.30.RegCom0!0.30.RegGAC0!0.30.RegTLB0
+!0.30.dest${ProductPath}\Interop.JRO.dll
+!0.30.pathC:\Temp\Build\Interop.JRO.dll
+!0.30.type0!0.31.CallInst0!0.31.RegAsm0!0.31.RegCom0!0.31.RegGAC0!0.31.RegTLB0
+!0.31.dest!${ProductPath}\Microsoft.GLEE.dll
+!0.31.path C:\Temp\Build\Microsoft.GLEE.dll
+!0.31.type0!0.32.CallInst0!0.32.RegAsm0!0.32.RegCom0!0.32.RegGAC0!0.32.RegTLB0
+!0.32.dest1${ProductPath}\Microsoft.Office.Interop.Excel.dll
+!0.32.pathhC:\BuildBot\slave\Ecopath6\Sources\ScientificInterfaceShared\Includes\Microsoft.Office.Interop.Excel.dll
+!0.32.type0!0.33.dtewefile	!0.33.keyPHKEY_LOCAL_MACHINE\Software\${ProductName}\Capabilities\FileAssociations\.ewexml	!0.33.ktp1
+!0.33.type4!0.34.CallInst0!0.34.RegAsm0!0.34.RegCom0!0.34.RegGAC0!0.34.RegTLB0
+!0.34.dest3${ProductPath}\Includes\LPSolve\win32\lpsolve55.dll
+!0.34.path2C:\Temp\Build\Includes\LPSolve\win32\lpsolve55.dll
 !0.34.type0!0.35.CallInst0!0.35.RegAsm0!0.35.RegCom0!0.35.RegGAC0!0.35.RegTLB0
-!0.35.dest${ProductPath}\Ionic.Zip.dll
-!0.35.pathC:\Temp\Build\Ionic.Zip.dll
+!0.35.dest3${ProductPath}\Includes\LPSolve\win64\lpsolve55.dll
+!0.35.path2C:\Temp\Build\Includes\LPSolve\win64\lpsolve55.dll
 !0.35.type0!0.36.CallInst0!0.36.RegAsm0!0.36.RegCom0!0.36.RegGAC0!0.36.RegTLB0
-!0.36.dest!${ProductPath}\Microsoft.GLEE.dll
-!0.36.path C:\Temp\Build\Microsoft.GLEE.dll
-!0.36.type0!0.37.CallInst0!0.37.RegAsm0!0.37.RegCom0!0.37.RegGAC0!0.37.RegTLB0
-!0.37.dest1${ProductPath}\Microsoft.Office.Interop.Excel.dll
-!0.37.pathhC:\BuildBot\slave\Ecopath6\Sources\ScientificInterfaceShared\Includes\Microsoft.Office.Interop.Excel.dll
-!0.37.type0!0.4.CallInst0!0.4.RegAsm0!0.4.RegCom0!0.4.RegGAC0!0.4.RegTLB0	!0.4.dest${ProductPath}\EwECore.dll	!0.4.pathC:\Temp\Build\EwECore.dll	!0.4.type0!0.5.CallInst0!0.5.RegAsm0!0.5.RegCom0!0.5.RegGAC0!0.5.RegTLB0	!0.5.dest${ProductPath}\EwEPlugin.dll	!0.5.pathC:\Temp\Build\EwEPlugin.dll	!0.5.type0!0.6.CallInst0!0.6.RegAsm0!0.6.RegCom0!0.6.RegGAC0!0.6.RegTLB0	!0.6.dest${ProductPath}\EwEUtils.dll	!0.6.pathC:\Temp\Build\EwEUtils.dll	!0.6.type0!0.7.CallInst0!0.7.RegAsm0!0.7.RegCom0!0.7.RegGAC0!0.7.RegTLB0	!0.7.dest${ProductPath}\SAUPUtil.dll	!0.7.pathC:\Temp\Build\SAUPUtil.dll	!0.7.type0!0.8.CallInst0!0.8.RegAsm0!0.8.RegCom0!0.8.RegGAC0!0.8.RegTLB0	!0.8.dest,${ProductPath}\ScientificInterfaceShared.dll	!0.8.path+C:\Temp\Build\ScientificInterfaceShared.dll	!0.8.type0!0.9.CallInst0!0.9.RegAsm0!0.9.RegCom0!0.9.RegGAC0!0.9.RegTLB0	!0.9.dest${ProductPath}\SourceGrid2.dll	!0.9.pathC:\Temp\Build\SourceGrid2.dll	!0.9.type0!0.chk1!0.descInstall all required EwE6 files!0.erm0!0.exu0!0.nmBasic installation!0.pdescInstalling required EwE6 files!0.vareq0!0.vis0!1.0.CallInst0!1.0.RegAsm0!1.0.RegCom0!1.0.RegGAC0!1.0.RegTLB0	!1.0.dest9${MyDocumentsPath}\EwE sample databases\Generic_37.EwEmdb	!1.0.path5C:\BuildBot\slave\Ecopath6\Database\Generic_37.EwEmdb	!1.0.type0!1.1.CallInst0!1.1.RegAsm0!1.1.RegCom0!1.1.RegGAC0!1.1.RegTLB0	!1.1.dest=${MyDocumentsPath}\EwE sample databases\Georgia_Strait.EwEmdb	!1.1.path9C:\BuildBot\slave\Ecopath6\Database\Georgia_Strait.EwEmdb	!1.1.type0!1.2.CallInst0!1.2.RegAsm0!1.2.RegCom0!1.2.RegGAC0!1.2.RegTLB0	!1.2.dest8${MyDocumentsPath}\EwE sample databases\Tampa_Bay.EwEmdb	!1.2.path4C:\BuildBot\slave\Ecopath6\Database\Tampa_Bay.EwEmdb	!1.2.type0	!1.3.dest(${MyDocumentsPath}\EwE sample databases\	!1.3.dscr'Sample models for Ecopath with Ecosim 6!1.3.hk0!1.3.ici-1	!1.3.path(${ProductMenu}\EwE6 sample databases.lnk	!1.3.show1	!1.3.type6!1.chk1!1.desc-This option installs three sample EwE6 models!1.erm0!1.exu0!1.nmSample models!1.pdescInstalling sample models!1.vareq0!1.vis1!2.0.CallInst0!2.0.RegAsm0!2.0.RegCom0!2.0.RegGAC0!2.0.RegTLB0	!2.0.dest'${ProductPath}\EwEFlowDiagramPlugin.dll	!2.0.path&C:\Temp\Build\EwEFlowDiagramPlugin.dll	!2.0.type0!2.1.CallInst0!2.1.RegAsm0!2.1.RegCom0!2.1.RegGAC0!2.1.RegTLB0	!2.1.dest${CommonFiles}\Ecopath\fd.exe	!2.1.path)C:\Temp\Build\EwEFlowDiagramPlugin\fd.exe	!2.1.type0!2.chk1!2.descZThis option installs a plug-in providing the EwE5 flow diagram drawing routines to Ecopath!2.erm0!2.exu0!2.nmPlug-in: Flow Diagram!2.pdescInstalling flow diagram plug-in!2.vareq0!2.vis1!3.0.CallInst0!3.0.RegAsm0!3.0.RegCom0!3.0.RegGAC0!3.0.RegTLB0	!3.0.dest%${ProductPath}\EwENetworkAnalysis.dll	!3.0.path$C:\Temp\Build\EwENetworkAnalysis.dll	!3.0.type0!3.1.CallInst0!3.1.RegAsm0!3.1.RegCom0!3.1.RegGAC0!3.1.RegTLB0	!3.1.dest"${CommonFiles}\Ecopath\PYRAMID.EXE	!3.1.path,C:\Temp\Build\EwENetworkAnalysis\PYRAMID.EXE	!3.1.type0!3.2.CallInst0!3.2.RegAsm0!3.2.RegCom0!3.2.RegGAC0!3.2.RegTLB0	!3.2.dest"${CommonFiles}\Ecopath\IMPACTS.EXE	!3.2.path,C:\Temp\Build\EwENetworkAnalysis\IMPACTS.EXE	!3.2.type0!3.chk1!3.desc\This option installs a plug-in providing network analysis capabilities to Ecopath and Ecosim!3.erm0!3.exu0!3.nmPlug-in: Network Analysis!3.pdesc#Installing network analysis plug-in!3.vareq0!3.vis1!4.0.CallInst0!4.0.RegAsm0!4.0.RegCom0!4.0.RegGAC0!4.0.RegTLB0	!4.0.dest,${ProductPath}\EwEResultsExtractorPlugin.dll	!4.0.path+C:\Temp\Build\EwEResultsExtractorPlugin.dll	!4.0.type0!4.1.CallInst0!4.1.RegAsm0!4.1.RegCom0!4.1.RegGAC0!4.1.RegTLB0	!4.1.dest1${ProductPath}\UserGuide\ResultsExtractorPlug.pdf	!4.1.path0C:\Temp\Build\UserGuide\ResultsExtractorPlug.pdf	!4.1.type0	!4.2.dest1${ProductPath}\UserGuide\ResultsExtractorPlug.pdf	!4.2.dscr#CEFAS Results extractor users guide!4.2.hk0!4.2.ici-1	!4.2.path/${ProductMenu}\Help\Using results extractor.lnk	!4.2.show1	!4.2.type6!4.chk1!4.desc]This option installs a plug-in providing an easy interface for extracting results from Ecosim!4.erm0!4.exu0!4.nmPlug-in: Results Extractor!4.pdesc$Installing results extractor plug-in!4.vareq0!4.vis1!5.0.CallInst0!5.0.RegAsm0!5.0.RegCom0!5.0.RegGAC0!5.0.RegTLB0	!5.0.dest%${ProductPath}\EwEShapeGridPlugin.dll	!5.0.path$C:\Temp\Build\EwEShapeGridPlugin.dll	!5.0.type0!5.chk1!5.desc…This option installs a plug-in providing table views of forcing functions, mediation functions and time series to Ecosim and Ecospace!5.erm0!5.exu0!5.nmPlug-in: Shape grids!5.pdescInstalling shape grid plug-in!5.vareq0!5.vis1!6.0.CallInst0!6.0.RegAsm0!6.0.RegCom0!6.0.RegGAC0!6.0.RegTLB0	!6.0.dest&${ProductPath}\EwEValueChainPlugin.dll	!6.0.path%C:\Temp\Build\EwEValueChainPlugin.dll	!6.0.type0!6.1.CallInst0!6.1.RegAsm0!6.1.RegCom0!6.1.RegGAC0!6.1.RegTLB0	!6.1.dest4${ProductPath}\UserGuide\ChristensenValueChainMS.pdf	!6.1.path3C:\Temp\Build\UserGuide\ChristensenValueChainMS.pdf	!6.1.type0	!6.2.dest4${ProductPath}\UserGuide\ChristensenValueChainMS.pdf	!6.2.dscrValue Chain users guide!6.2.hk0!6.2.ici-1	!6.2.path)${ProductMenu}\Help\Using value chain.lnk	!6.2.show1	!6.2.type6!6.3.CallInst0!6.3.RegAsm0!6.3.RegCom0!6.3.RegGAC0!6.3.RegTLB0	!6.3.dest:${MyDocumentsPath}\EwE sample databases\Ocean ECOST.ewemdb	!6.3.path6C:\BuildBot\slave\Ecopath6\Database\Ocean ECOST.ewemdb	!6.3.type0!6.chk0!6.desc\This option installs a plug-in providing an economic value chain model to Ecopath and Ecosim!6.erm0!6.exu0!6.nmPlug-in: Value Chain!6.pdescInstalling value chain plug-in!6.vareq0!6.vis1!7.0.CallInst0!7.0.RegAsm0!7.0.RegCom0!7.0.RegGAC0!7.0.RegTLB0	!7.0.dest$${ProductPath}\EwEMultiSimPlugin.dll	!7.0.path#C:\Temp\Build\EwEMultiSimPlugin.dll	!7.0.type0!7.chk0!7.desc‚This option installs a plug-in to run multiple Ecosim simulations, each time altering forcing functions from comma-separated files!7.erm0!7.exu0!7.nmPlug-in: Multi-Sim!7.pdescInstalling multi-sim plug-in!7.vareq0!7.vis1#crc#38f2fd6c
+!0.36.dest${ProductPath}\Ionic.Zip.dll
+!0.36.pathC:\Temp\Build\Ionic.Zip.dll
+!0.36.type0!0.4.CallInst0!0.4.RegAsm0!0.4.RegCom0!0.4.RegGAC0!0.4.RegTLB0	!0.4.dest${ProductPath}\EwEPlugin.dll	!0.4.pathC:\Temp\Build\EwEPlugin.dll	!0.4.type0!0.5.CallInst0!0.5.RegAsm0!0.5.RegCom0!0.5.RegGAC0!0.5.RegTLB0	!0.5.dest${ProductPath}\EwEUtils.dll	!0.5.pathC:\Temp\Build\EwEUtils.dll	!0.5.type0!0.6.CallInst0!0.6.RegAsm0!0.6.RegCom0!0.6.RegGAC0!0.6.RegTLB0	!0.6.dest,${ProductPath}\ScientificInterfaceShared.dll	!0.6.path+C:\Temp\Build\ScientificInterfaceShared.dll	!0.6.type0!0.7.CallInst0!0.7.RegAsm0!0.7.RegCom0!0.7.RegGAC0!0.7.RegTLB0	!0.7.dest${ProductPath}\SourceGrid2.dll	!0.7.pathC:\Temp\Build\SourceGrid2.dll	!0.7.type0!0.8.CallInst0!0.8.RegAsm0!0.8.RegCom0!0.8.RegGAC0!0.8.RegTLB0	!0.8.dest ${ProductPath}\SourceLibrary.dll	!0.8.pathC:\Temp\Build\SourceLibrary.dll	!0.8.type0!0.9.CallInst0!0.9.RegAsm0!0.9.RegCom0!0.9.RegGAC0!0.9.RegTLB0	!0.9.dest/${ProductPath}\WeifenLuo.WinFormsUI.Docking.dll	!0.9.path.C:\Temp\Build\WeifenLuo.WinFormsUI.Docking.dll	!0.9.type0!0.chk1!0.descInstall all required EwE6 files!0.erm0!0.exu0!0.nmBasic installation!0.pdescInstalling required EwE6 files!0.vareq0!0.vis0!1.0.CallInst0!1.0.RegAsm0!1.0.RegCom0!1.0.RegGAC0!1.0.RegTLB0	!1.0.dest9${MyDocumentsPath}\EwE sample databases\Generic_37.EwEmdb	!1.0.path5C:\BuildBot\slave\Ecopath6\Database\Generic_37.EwEmdb	!1.0.type0!1.1.CallInst0!1.1.RegAsm0!1.1.RegCom0!1.1.RegGAC0!1.1.RegTLB0	!1.1.dest=${MyDocumentsPath}\EwE sample databases\Georgia_Strait.EwEmdb	!1.1.path9C:\BuildBot\slave\Ecopath6\Database\Georgia_Strait.EwEmdb	!1.1.type0!1.2.CallInst0!1.2.RegAsm0!1.2.RegCom0!1.2.RegGAC0!1.2.RegTLB0	!1.2.dest8${MyDocumentsPath}\EwE sample databases\Tampa_Bay.EwEmdb	!1.2.path4C:\BuildBot\slave\Ecopath6\Database\Tampa_Bay.EwEmdb	!1.2.type0	!1.3.dest(${MyDocumentsPath}\EwE sample databases\	!1.3.dscr'Sample models for Ecopath with Ecosim 6!1.3.hk0!1.3.ici-1	!1.3.path(${ProductMenu}\EwE6 sample databases.lnk	!1.3.show1	!1.3.type6!1.chk1!1.desc-This option installs three sample EwE6 models!1.erm0!1.exu0!1.nmSample models!1.pdescInstalling sample models!1.vareq0!1.vis1!2.0.CallInst0!2.0.RegAsm0!2.0.RegCom0!2.0.RegGAC0!2.0.RegTLB0	!2.0.dest-${ProductPath}\plugins\EwEModelFromEcosim.dll	!2.0.path$C:\Temp\Build\EwEModelFromEcosim.dll	!2.0.type0!2.1.CallInst0!2.1.RegAsm0!2.1.RegCom0!2.1.RegGAC0!2.1.RegTLB0	!2.1.dest5${ProductPath}\UserGuide\EwE model from time step.pdf	!2.1.path4C:\Temp\Build\UserGuide\EwE model from time step.pdf	!2.1.type0	!2.2.dest5${ProductPath}\UserGuide\EwE model from time step.pdf!2.2.hk0!2.2.ici-1	!2.2.path6${ProductMenu}\Help\Using EwE model from time step.lnk	!2.2.show1	!2.2.type6!2.chk1!2.descHAdd the capability to generate an Ecopath model from an Ecosim time step!2.erm0!2.exu0!2.nm"Plug-in: Ecopath model from Ecosim!2.pdesc$Installing model from Ecosim plug-in!2.vareq0!2.vis1!3.0.CallInst0!3.0.RegAsm0!3.0.RegCom0!3.0.RegGAC0!3.0.RegTLB0	!3.0.dest&${ProductPath}\plugins\EwEEcotroph.dll	!3.0.pathC:\Temp\Build\EwEEcotroph.dll	!3.0.type0!3.chk1!3.desc(Add Ecotroph analysis to EwE, based in R!3.erm0!3.exu0!3.nmPlug-in: Ecotroph!3.pdescInstalling Ecotroph plug-in!3.vareq0!3.vis1!4.0.CallInst0!4.0.RegAsm0!4.0.RegCom0!4.0.RegGAC0!4.0.RegTLB0	!4.0.dest/${ProductPath}\plugins\EwEFlowDiagramPlugin.dll	!4.0.path&C:\Temp\Build\EwEFlowDiagramPlugin.dll	!4.0.type0!4.1.CallInst0!4.1.RegAsm0!4.1.RegCom0!4.1.RegGAC0!4.1.RegTLB0	!4.1.dest${CommonFiles}\Ecopath\fd.exe	!4.1.path)C:\Temp\Build\EwEFlowDiagramPlugin\fd.exe	!4.1.type0!4.chk0!4.descZThis option installs a plug-in providing the EwE5 flow diagram drawing routines to Ecopath!4.erm0!4.exu0!4.nmPlug-in: Flow Diagram!4.pdescInstalling flow diagram plug-in!4.vareq0!4.vis1!5.0.CallInst0!5.0.RegAsm0!5.0.RegCom0!5.0.RegGAC0!5.0.RegTLB0	!5.0.dest,${ProductPath}\plugins\EwEMultiSimPlugin.dll	!5.0.path#C:\Temp\Build\EwEMultiSimPlugin.dll	!5.0.type0!5.1.CallInst0!5.1.RegAsm0!5.1.RegCom0!5.1.RegGAC0!5.1.RegTLB0	!5.1.dest.${ProductPath}\UserGuide\EwEMultiSimPlugin.pdf	!5.1.path-C:\Temp\Build\UserGuide\EwEMultiSimPlugin.pdf	!5.1.type0!5.chk1!5.descnAdd a tool to run multiple Ecosim simulations, each time altering forcing functions from comma-separated files!5.erm0!5.exu0!5.nmPlug-in: Multi-Sim!5.pdescInstalling multi-sim plug-in!5.vareq0!5.vis1!6.0.CallInst0!6.0.RegAsm0!6.0.RegCom0!6.0.RegGAC0!6.0.RegTLB0	!6.0.dest-${ProductPath}\plugins\EwENetworkAnalysis.dll	!6.0.path$C:\Temp\Build\EwENetworkAnalysis.dll	!6.0.type0!6.1.CallInst0!6.1.RegAsm0!6.1.RegCom0!6.1.RegGAC0!6.1.RegTLB0	!6.1.dest"${CommonFiles}\Ecopath\PYRAMID.EXE	!6.1.path,C:\Temp\Build\EwENetworkAnalysis\PYRAMID.EXE	!6.1.type0!6.2.CallInst0!6.2.RegAsm0!6.2.RegCom0!6.2.RegGAC0!6.2.RegTLB0	!6.2.dest"${CommonFiles}\Ecopath\IMPACTS.EXE	!6.2.path,C:\Temp\Build\EwENetworkAnalysis\IMPACTS.EXE	!6.2.type0!6.chk1!6.desc7Add network analysis capabilities to Ecopath and Ecosim!6.erm0!6.exu0!6.nmPlug-in: Network Analysis!6.pdesc#Installing network analysis plug-in!6.vareq0!6.vis1!7.0.CallInst0!7.0.RegAsm0!7.0.RegCom0!7.0.RegGAC0!7.0.RegTLB0	!7.0.dest+${ProductPath}\plugins\EwERemarksPlugin.dll	!7.0.path"C:\Temp\Build\EwERemarksPlugin.dll	!7.0.type0!7.chk1!7.descZAdd a grid to the EwE main interface to browse, edit and export all the remarks in a model!7.erm0!7.exu0!7.nmPlug-in: Remarks Collector!7.pdesc$Installing remarks collector plug-in!7.vareq0!7.vis1!8.0.CallInst0!8.0.RegAsm0!8.0.RegCom0!8.0.RegGAC0!8.0.RegTLB0	!8.0.dest4${ProductPath}\plugins\EwEResultsExtractorPlugin.dll	!8.0.path+C:\Temp\Build\EwEResultsExtractorPlugin.dll	!8.0.type0!8.1.CallInst0!8.1.RegAsm0!8.1.RegCom0!8.1.RegGAC0!8.1.RegTLB0	!8.1.dest1${ProductPath}\UserGuide\ResultsExtractorPlug.pdf	!8.1.path0C:\Temp\Build\UserGuide\ResultsExtractorPlug.pdf	!8.1.type0	!8.2.dest1${ProductPath}\UserGuide\ResultsExtractorPlug.pdf	!8.2.dscr#CEFAS Results extractor users guide!8.2.hk0!8.2.ici-1	!8.2.path/${ProductMenu}\Help\Using results extractor.lnk	!8.2.show1	!8.2.type6!8.chk1!8.desc8Add an easy interface for extracting results from Ecosim!8.erm0!8.exu0!8.nmPlug-in: Results Extractor!8.pdesc$Installing results extractor plug-in!8.vareq0!8.vis1!9.0.CallInst0!9.0.RegAsm0!9.0.RegCom0!9.0.RegGAC0!9.0.RegTLB0	!9.0.dest-${ProductPath}\plugins\EwEShapeGridPlugin.dll	!9.0.path$C:\Temp\Build\EwEShapeGridPlugin.dll	!9.0.type0!9.chk1!9.descIAdd table views of forcing functions, mediation functions and time series!9.erm0!9.exu0!9.nmPlug-in: Shape grids!9.pdescInstalling shape grid plug-in!9.vareq0!9.vis1!10.0.CallInst0!10.0.RegAsm0!10.0.RegCom0!10.0.RegGAC0!10.0.RegTLB0
+!10.0.dest.${ProductPath}\plugins\EwEValueChainPlugin.dll
+!10.0.path%C:\Temp\Build\EwEValueChainPlugin.dll
+!10.0.type0!10.1.CallInst0!10.1.RegAsm0!10.1.RegCom0!10.1.RegGAC0!10.1.RegTLB0
+!10.1.dest4${ProductPath}\UserGuide\ChristensenValueChainMS.pdf
+!10.1.path3C:\Temp\Build\UserGuide\ChristensenValueChainMS.pdf
+!10.1.type0
+!10.2.dest4${ProductPath}\UserGuide\ChristensenValueChainMS.pdf
+!10.2.dscrValue Chain users guide!10.2.hk0	!10.2.ici-1
+!10.2.path)${ProductMenu}\Help\Using value chain.lnk
+!10.2.show1
+!10.2.type6!10.3.CallInst0!10.3.RegAsm0!10.3.RegCom0!10.3.RegGAC0!10.3.RegTLB0
+!10.3.dest:${MyDocumentsPath}\EwE sample databases\Ocean ECOST.ewemdb
+!10.3.path6C:\BuildBot\slave\Ecopath6\Database\Ocean ECOST.ewemdb
+!10.3.type0!10.chk0!10.desc7Add an economic value chain model to Ecopath and Ecosim!10.erm0!10.exu0!10.nmPlug-in: Value Chain	!10.pdescInstalling value chain plug-in	!10.vareq0!10.vis1#crc#bd1f19e9
