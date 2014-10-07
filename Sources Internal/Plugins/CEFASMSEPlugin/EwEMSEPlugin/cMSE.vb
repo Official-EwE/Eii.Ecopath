@@ -338,6 +338,7 @@ Public Class cMSE
         cApplicationStatusNotifier.StartProgress(Me.Core, "", -1)
 
         Try
+            Me.InvalidateConfigurationState(True)
             Me.Run()
         Catch ex As Exception
             ' Whoah!
@@ -361,6 +362,8 @@ Public Class cMSE
         End If
 
         Me.m_StopRun = False
+        Me.InvalidateConfigurationState(True)
+
         Dim RunThread As Threading.Thread
 
         RunThread = New Threading.Thread(AddressOf Me.runCreateModelsThread)
