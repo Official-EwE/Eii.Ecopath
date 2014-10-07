@@ -63,6 +63,7 @@ Public Class cMSE
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer
     Private MinEffortThisYear() As Single
+    Private MaxEffortThisYear() As Single
 
     Private TargConsQuota(,) As Double 'Stores the target and conservation f's for each species
     Private nSuccessfullyProjectedModels As Integer
@@ -1374,6 +1375,7 @@ Public Class cMSE
 
             ReDim TargConsQuota(m_core.nGroups - 1, 1)
             ReDim MinEffortThisYear(m_core.nFleets - 1)
+            ReDim MaxEffortThisYear(m_core.nFleets - 1)
 
             'increase the number of years for the projection
             m_core.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / m_ecosim.EcosimData.NumStepsPerYear + NYearsProject)
@@ -1450,7 +1452,7 @@ Public Class cMSE
                             'Set the CurrentStrategy used by onEcosimTimeStep()
                             m_currentStrategy = curStrategy
 
-                            If iModel = 3 Then Stop
+
 
                             'Get a list of all fleets that fish the groups that have HCRs
                             'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
@@ -2697,6 +2699,8 @@ Public Class cMSE
                 For iFleet = 1 To m_core.nFleets
                     MinEffortThisYear(iFleet - 1) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
                     If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MinEffortThisYear(iFleet - 1) = 0
+                    MaxEffortThisYear(iFleet - 1) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1) * (1 + m_effortlimits.Value(iFleet))
+                    If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MaxEffortThisYear(iFleet - 1) = 200
                 Next
 
             End If
@@ -2744,6 +2748,9 @@ Public Class cMSE
                             If Emax < MinEffortThisYear(iFleet - 1) Then
                                 Emax = MinEffortThisYear(iFleet - 1)
                             End If
+                            If Emax > MaxEffortThisYear(iFleet - 1) Then
+                                Emax = MaxEffortThisYear(iFleet - 1)
+                            End If
 
                             'Limit the effort if it is greater than the max allowable 
                             If Emax < m_ecosim.EcosimData.FishRateGear(iFleet, iTime) Then m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
@@ -2790,6 +2797,8 @@ Public Class cMSE
                                     'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
                                     If Elim < MinEffortThisYear(iFleet - 1) Then
                                         Elim = MinEffortThisYear(iFleet - 1)
+                                    ElseIf Elim > MaxEffortThisYear(iFleet - 1) Then
+                                        Elim = MaxEffortThisYear(iFleet - 1)
                                     End If
                                     Debug.Assert(Elim >= 0)
                                     If _simdata.FishRateGear(iFleet, iTime) > Elim Then
