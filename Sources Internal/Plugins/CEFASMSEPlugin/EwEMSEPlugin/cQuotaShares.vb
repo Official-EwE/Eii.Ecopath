@@ -256,9 +256,9 @@ Public Class cQuotaShares
     Public Sub Defaults() _
         Implements IMSEData.Defaults
 
-        'Dim TotalCatch As Double
+        Me.m_lstQuotaShares.Clear()
 
-        'If Not m_lstQuotaShares Is Nothing Then m_lstQuotaShares.Clear()
+        'Dim TotalCatch As Double
 
         'For iGroup = 1 To m_core.nLivingGroups
 
@@ -294,12 +294,13 @@ Public Class cQuotaShares
         Dim bSuccess As Boolean = True
         Dim filePath As String = strFilename
 
+        Me.m_lstQuotaShares.Clear()
+
         If File.Exists(filePath) Then
 
             reader = cMSEUtils.GetReader(filePath)
             If (reader IsNot Nothing) Then
                 Try
-                    m_lstQuotaShares.Clear()
                     csv = New CsvReader(reader, True)
                     mQuotaShareFileExists = True
                     While Not csv.EndOfStream
