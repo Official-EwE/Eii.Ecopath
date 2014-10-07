@@ -2711,7 +2711,7 @@ Public Class cMSE
                 'jb QMult() is Density dependant catchability
                 'Not quite sure what QMult is but it is needed to calculate what F is in the optimised routine
                 For indexgrp As Integer = 1 To m_ecosim.EcosimData.nGroups
-                    QMult(indexgrp - 1) = m_ecosim.EcosimData.QmQo(indexgrp) / (1 + (m_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / m_ecosim.EcosimData.StartBiomass(indexgrp))
+                    QMult(indexgrp) = m_ecosim.EcosimData.QmQo(indexgrp) / (1 + (m_ecosim.EcosimData.QmQo(indexgrp) - 1) * BiomassAtTimestep(indexgrp) / m_ecosim.EcosimData.StartBiomass(indexgrp))
                 Next
 
                 For Each iFleet In FleetsThatFishHCRGrp
