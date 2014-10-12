@@ -189,6 +189,9 @@ Namespace Ecosim
 
             ' Start listening for core messages
             Me.m_mhEcosim = New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, m_SyncObj)
+#If DEBUG Then
+            Me.m_mhEcosim.Name = "frmStockRecruitment.Ecosim"
+#End If
             Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
