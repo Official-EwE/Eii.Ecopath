@@ -123,6 +123,15 @@
   <data name="CAPTION" xml:space="preserve">
     <value>Resilience</value>
   </data>
+  <data name="LABEL_CAPTION" xml:space="preserve">
+    <value>Supply-demand of energy</value>
+  </data>
+  <data name="LABEL_XAXIS" xml:space="preserve">
+    <value>Log (demand, consumption)</value>
+  </data>
+  <data name="LABEL_YAXIS" xml:space="preserve">
+    <value>Log (supply, predation)</value>
+  </data>
   <data name="STATUS_SAVE_FAILED" xml:space="preserve">
     <value>Resilience data failed to save to {0}</value>
   </data>

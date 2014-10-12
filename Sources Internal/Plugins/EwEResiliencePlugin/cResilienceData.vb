@@ -24,66 +24,16 @@ Imports EwECore
 
 Public Class cResilienceData
 
-    ''' <summary>EwE core to use</summary>
-    Private m_core As cCore = Nothing
-    Private m_supply() As Single
-    Private m_demand() As Single
-
-    Public Event OnUpdated(sender As cResilienceData, time As Integer)
-
-    Public Sub New(core As cCore)
-        Me.m_core = core
+    Public Sub Resize(nTimes As Integer, nYears As Integer)
+        ReDim SupplyAtT(nTimes)
+        ReDim SupplyAtY(nYears)
+        ReDim DemandAtT(nTimes)
+        ReDim DemandAtY(nYears)
     End Sub
 
-    Public Sub Compute(iTime As Integer, simds As cEcosimDatastructures)
-
-        If (iTime = 1) Then
-            ReDim m_supply(simds.NTimes)
-            ReDim m_demand(simds.NTimes)
-        End If
-
-        Dim SumEatenBy As Single = 0
-        Dim SumEatenOf As Single = 0
-
-        For i As Integer = 1 To Me.m_core.nGroups
-            SumEatenBy += simds.Eatenby(i)
-            SumEatenOf += simds.Eatenof(i)
-        Next
-
-        Try
-            Me.m_demand(iTime) = CSng(Math.Log(SumEatenOf))
-            Me.m_supply(iTime) = -CSng(Math.Log(SumEatenBy))
-        Catch ex As Exception
-            Me.m_demand(iTime) = 0
-            Me.m_supply(iTime) = 0
-        End Try
-
-        Me.RaiseUpdate(iTime)
-
-    End Sub
-
-    Public ReadOnly Property Demand(iTime As Integer) As Single
-        Get
-            Return Me.m_demand(iTime)
-        End Get
-    End Property
-
-    Public ReadOnly Property Supply(iTime As Integer) As Single
-        Get
-            Return Me.m_supply(iTime)
-        End Get
-    End Property
-
-#Region " Internals "
-
-    Private Sub RaiseUpdate(time As Integer)
-        Try
-            RaiseEvent OnUpdated(Me, time)
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-#End Region ' Internals
+    Public Property SupplyAtT As Single()
+    Public Property SupplyAtY As Single()
+    Public Property DemandAtT As Single()
+    Public Property DemandAtY As Single()
 
 End Class

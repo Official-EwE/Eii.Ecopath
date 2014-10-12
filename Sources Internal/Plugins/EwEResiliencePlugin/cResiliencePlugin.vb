@@ -41,7 +41,7 @@ Public Class cResiliencePlugin
     Private m_pathds As cEcopathDataStructures = Nothing
     Private m_simds As cEcosimDatastructures = Nothing
     Private m_frm As frmResilience = Nothing
-    Private m_data As cResilienceData = Nothing
+    Private m_model As cResilienceModel = Nothing
 
 #End Region ' Private vars
 
@@ -71,12 +71,14 @@ Public Class cResiliencePlugin
     Public Sub Initialize(core As Object) _
         Implements EwEPlugin.IPlugin.Initialize
         Me.m_core = DirectCast(core, cCore)
-        Me.m_data = New cResilienceData(Me.m_core)
+        Me.m_model = New cResilienceModel(Me.m_core)
     End Sub
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ncEcosimOutputResilience"
+            ' Navigation tree nodes are sorted by name. 
+            ' With the name prefix 'ndX' the resilience node ends up at the bottom of the Ecosim output nodes list
+            Return "ndXEcosimResilience"
         End Get
     End Property
 
@@ -155,7 +157,7 @@ Public Class cResiliencePlugin
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Try
-            Me.m_data.Compute(iTime, Me.m_simds)
+            Me.m_model.Compute(iTime, Me.m_simds)
         Catch ex As Exception
 
         End Try
@@ -166,7 +168,7 @@ Public Class cResiliencePlugin
         Implements EwEPlugin.IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
 
         If My.Settings.Autosave Then
-            Dim writer As New cResilienceWriter(Me.m_core, Me.m_data)
+            Dim writer As New cResilienceWriter(Me.m_core, Me.m_model.Data)
             writer.SaveDataToFile()
         End If
 
@@ -208,7 +210,7 @@ Public Class cResiliencePlugin
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         Try
             If (Not Me.HasUI()) Then
-                Me.m_frm = New frmResilience(Me.m_uic, Me.m_data)
+                Me.m_frm = New frmResilience(Me.m_uic, Me.m_model)
                 frmPlugin = Me.m_frm
             End If
         Catch ex As Exception
@@ -233,7 +235,7 @@ Public Class cResiliencePlugin
             Me.m_frm.Dispose()
             Me.m_frm = Nothing
         End If
-        Me.m_data = Nothing
+        Me.m_model = Nothing
 
     End Sub
 
@@ -243,7 +245,7 @@ Public Class cResiliencePlugin
 
     Private Function HasUI() As Boolean
         If (Me.m_frm Is Nothing) Then Return False
-        Return (Me.m_frm.IsDisposed)
+        Return (Not Me.m_frm.IsDisposed)
     End Function
 
 #End Region ' Internals

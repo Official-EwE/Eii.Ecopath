@@ -72,7 +72,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="strURL">URL to navigate to.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(Optional ByVal strURL As String = "")
+        Public Overloads Sub Invoke(ByVal strURL As String)
             Me.m_strURL = strURL
             MyBase.Invoke()
             Me.m_strURL = ""

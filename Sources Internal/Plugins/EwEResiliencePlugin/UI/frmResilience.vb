@@ -19,33 +19,101 @@
 
 Option Strict On
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
 Public Class frmResilience
 
-    Private m_data As cResilienceData = Nothing
+    Private m_model As cResilienceModel = Nothing
+    Private m_zgh As cZedGraphHelper = Nothing
 
-    Public Sub New(uic As cUIContext, data As cResilienceData)
+    Public Sub New(uic As cUIContext, model As cResilienceModel)
         MyBase.New()
-        Me.InitializeComponent()
         Me.UIContext = uic
-        Me.m_data = data
+        Me.m_model = model
+        Me.InitializeComponent()
     End Sub
+
+#Region " Form overrides "
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
+
+        If (Me.UIContext Is Nothing) Then Return
+
         Me.Text = My.Resources.CAPTION
-        AddHandler Me.m_data.OnUpdated, AddressOf OnDataUpdated
+
+        Me.m_zgh = New cZedGraphHelper()
+        Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
+
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
+        AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
+
+        Me.UpdateControls()
+        Me.UpdatePlot()
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
-        RemoveHandler Me.m_data.OnUpdated, AddressOf OnDataUpdated
+
+        RemoveHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
         MyBase.OnFormClosed(e)
+
     End Sub
 
-    Private Sub OnDataUpdated(sender As cResilienceData, iTime As Integer)
-        Console.WriteLine("Resilience {0}: supply {1}, demand {2}", iTime, m_data.Supply(iTime), Me.m_data.Demand(iTime))
+    Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
+        MyBase.OnCoreMessage(msg)
+
+        Select Case msg.Source
+            Case eCoreComponentType.Core
+                If (msg.Type = eMessageType.GlobalSettingsChanged) Then
+                    Me.UpdateControls()
+                End If
+        End Select
+
     End Sub
+
+    Protected Overrides Sub UpdateControls()
+        Me.m_cbAutosave.Checked = My.Settings.Autosave
+        MyBase.UpdateControls()
+    End Sub
+
+    Private Sub UpdatePlot()
+
+        Me.m_zgh.ConfigurePane(My.Resources.LABEL_CAPTION, My.Resources.LABEL_XAXIS, My.Resources.LABEL_YAXIS, True)
+        Me.m_zgh.RescaleAndRedraw()
+
+    End Sub
+
+#End Region ' Form overrides
+
+#Region " Events "
+
+    Private Sub OnCalculationsUpdated(sender As cResilienceData, iTime As Integer)
+        Dim data As cResilienceData = Me.m_model.Data
+        Console.WriteLine("Resilience {0}: supply {1}, demand {2}", iTime, data.SupplyAtT(iTime), data.DemandAtT(iTime))
+    End Sub
+
+    Private Sub m_btnRunEcosim_Click(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnRunEcosim.Click
+        Try
+            Me.Core.RunEcoSim()
+        Catch ex As Exception
+            Debug.Assert(False)
+        End Try
+    End Sub
+
+    Private Sub OnToggleAutosave(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbAutosave.CheckedChanged
+        Try
+            My.Settings.Autosave = Me.m_cbAutosave.Checked
+            Me.Core.OnSettingsChanged()
+        Catch ex As Exception
+            Debug.Assert(False)
+        End Try
+    End Sub
+
+#End Region ' Events 
 
 End Class

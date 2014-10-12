@@ -98,10 +98,12 @@ Namespace Commands
         ''' Invoke the underlying command.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Protected Sub Invoke()
+        Protected Sub Invoke(Optional p As Object() = Nothing)
+
+            If (p Is Nothing) Then p = Me.Params
             Dim t As Type = Me.m_cmd.GetType
-            t.InvokeMember("Invoke", BindingFlags.InvokeMethod, Type.DefaultBinder, Me.m_cmd, Me.m_objParams)
-            'Me.m_cmd.Invoke()
+            t.InvokeMember("Invoke", BindingFlags.InvokeMethod, Type.DefaultBinder, Me.m_cmd, p)
+
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -326,5 +328,52 @@ Namespace Commands
     End Class
 
 #End Region ' cButtonControlHandler
+
+#Region " cRichTextBoxControlHandler "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Implementation of a connecting between a <see cref="cCommand"/> and a <see cref="RichTextBox"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Class cRichTextBoxControlHandler
+        Inherits cControlHandler
+
+        Private WithEvents m_ctrl As RichTextBox = Nothing
+
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+            MyBase.New(objCmd, objGUI, fnparms)
+            Debug.Assert(TypeOf objGUI Is RichTextBox)
+            Me.m_ctrl = DirectCast(objGUI, RichTextBox)
+        End Sub
+
+        Public Overrides Sub Dispose()
+            Me.m_ctrl = Nothing
+            MyBase.Dispose()
+        End Sub
+
+        Public Overrides Sub Update()
+            Me.m_ctrl.Enabled = Me.Command.Enabled
+        End Sub
+
+        Private Sub OnClick(sender As Object, e As System.EventArgs) Handles m_ctrl.Click
+            Try
+                Me.Invoke()
+            Catch ex As Exception
+                ' Kaboom
+            End Try
+        End Sub
+
+        Private Sub OnLinkClicked(sender As Object, e As System.Windows.Forms.LinkClickedEventArgs) Handles m_ctrl.LinkClicked
+            Try
+                Me.Invoke(New Object() {e.LinkText})
+            Catch ex As Exception
+                ' Kaboom
+            End Try
+        End Sub
+
+    End Class
+
+#End Region ' cRichTextBoxControlHandler
 
 End Namespace

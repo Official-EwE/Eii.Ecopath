@@ -188,7 +188,7 @@ Public Class cConsWriterPlugin
 
 #End Region ' Ecosim integration
 
-#Region " Menu integration "
+#Region " UI integration "
 
     Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
@@ -230,6 +230,6 @@ Public Class cConsWriterPlugin
         End Get
     End Property
 
-#End Region ' Menu integration
+#End Region ' UI integration
 
 End Class

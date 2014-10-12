@@ -47,6 +47,8 @@ Public Class ucParameters
     Private m_fpFMin As cEwEFormatProvider = Nothing
     Private m_fpFMax As cEwEFormatProvider = Nothing
     Private m_fpIncr As cEwEFormatProvider = Nothing
+    ''' <summary>Core event monitor</summary>
+    Private m_mhCore As cMessageHandler = Nothing
 
     Private m_bInUpdate As Boolean = False
 
@@ -66,11 +68,21 @@ Public Class ucParameters
         Me.m_params = data.Parameters
         Me.m_uic = uic
 
+        ' Start listening for core messages
+        Me.m_mhCore = New cMessageHandler(AddressOf CoreMessageHandler, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
+#If DEBUG Then
+        Me.m_mhCore.Name = "ValueChain.ucParameters.Core"
+#End If
+        Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhCore)
     End Sub
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing Then
+
+                ' Stop listening for core messages
+                Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhCore)
+                Me.m_mhCore.Dispose()
 
                 Me.ConfigureEcosimControls(False)
 
@@ -152,9 +164,9 @@ Public Class ucParameters
         AddHandler Me.m_params.OnChanged, AddressOf OnParametersChanged
 
         Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
-        cmd.AddControl(Me.m_pbLenfest, New Object() {"http://www.lenfestocean.org/"})
-        cmd.AddControl(Me.m_pbSAUP, New Object() {"http://www.seaaroundus.org/"})
-        cmd.AddControl(Me.m_pbEcostProject, New Object() {"http://www.ird.fr/ecostproject/doku.php"})
+        cmd.AddControl(Me.m_pbLenfest, "http://www.lenfestocean.org/")
+        cmd.AddControl(Me.m_pbSAUP, "http://www.seaaroundus.org/")
+        cmd.AddControl(Me.m_pbEcostProject, "http://www.ird.fr/ecostproject/doku.php")
 
         ' Force core state dependent initialization
         Me.OnCoreStateChanged(Me.m_uic.Core.StateMonitor)
@@ -284,6 +296,20 @@ Public Class ucParameters
 
     Private Sub OnParametersChanged(ByVal obj As cOOPStorable)
         Me.UpdateControlValues()
+    End Sub
+
+    Private Sub CoreMessageHandler(ByRef msg As cMessage)
+
+        Try
+            Select Case msg.Type
+                Case eMessageType.GlobalSettingsChanged
+                    Me.UpdateControlValues()
+            End Select
+
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
     End Sub
 
 #End Region ' Events

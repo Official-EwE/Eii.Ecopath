@@ -25,6 +25,7 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Commands
 
 #End Region ' Imports 
 
@@ -58,6 +59,12 @@ Namespace Other
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
             Dim strBitApp As String = cSystemUtils.IIF(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
 
+            Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
+            cmd.AddControl(Me.m_rtbAcknowledgements)
+            cmd.AddControl(Me.m_rtbDisclaimer)
+            cmd.AddControl(Me.m_rtbDistribution)
+            cmd.AddControl(Me.m_rtbLicense)
+
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
@@ -90,6 +97,13 @@ Namespace Other
         End Sub
 
         Protected Overrides Sub OnClosed(e As System.EventArgs)
+
+            Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
+            cmd.RemoveControl(Me.m_rtbAcknowledgements)
+            cmd.RemoveControl(Me.m_rtbDisclaimer)
+            cmd.RemoveControl(Me.m_rtbDistribution)
+            cmd.RemoveControl(Me.m_rtbLicense)
+
             Me.m_qehTech.Detach()
             MyBase.OnClosed(e)
         End Sub
@@ -97,21 +111,6 @@ Namespace Other
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnOK.Click
             Me.Close()
-        End Sub
-
-        Private Sub OnURLClicked(sender As Object, e As System.Windows.Forms.LinkClickedEventArgs) _
-            Handles m_rtbLicense.LinkClicked, m_rtbDistribution.LinkClicked, m_rtbAcknowledgements.LinkClicked
-
-            Try
-                Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-                If cmd IsNot Nothing Then
-                    cmd.Invoke(e.LinkText)
-                End If
-            Catch ex As Exception
-                ' Aargh
-                cLog.Write(ex, "frmAboutEwE::OnURLClicked")
-            End Try
-
         End Sub
 
         Private Sub OnToggleEwECOmponentView(sender As System.Object, e As System.EventArgs) _

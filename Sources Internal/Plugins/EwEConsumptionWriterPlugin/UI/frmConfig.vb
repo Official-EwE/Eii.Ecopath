@@ -22,6 +22,7 @@ Option Strict On
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -43,7 +44,22 @@ Public Class frmConfig
         Me.m_cbIncludeDetritus.Checked = My.Settings.IncludeDetritus
         Me.m_cbIncludeImportAndSum.Checked = My.Settings.IncludeImportAndSum
 
+        Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
+        cmd.AddControl(Me.m_pbIPN, "http://www.ipn.mx")
+        cmd.AddControl(Me.m_pbCicimar, "http://www.cicimar.ipn.mx")
+        cmd.AddControl(Me.m_pbAuci, "http://www.auci.gub.uy")
+        cmd.AddControl(Me.m_pbConacyt, "http://www.conacyt.mx")
+
         Me.UpdateControls()
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+        Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
+        cmd.RemoveControl(Me.m_pbIPN)
+        cmd.RemoveControl(Me.m_pbCicimar)
+        cmd.RemoveControl(Me.m_pbAuci)
+        cmd.RemoveControl(Me.m_pbConacyt)
+        MyBase.OnFormClosed(e)
     End Sub
 
 #End Region ' Overrides
@@ -78,26 +94,6 @@ Public Class frmConfig
         Handles m_btnCancel.Click
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
         Me.Close()
-    End Sub
-
-    Private Sub m_pbIPN_Click(sender As System.Object, e As System.EventArgs) _
-        Handles m_pbIPN.Click
-        Me.ShowSponsor("http://www.ipn.mx")
-    End Sub
-
-    Private Sub m_pbCicimar_Click(sender As System.Object, e As System.EventArgs) _
-        Handles m_pbCicimar.Click
-        Me.ShowSponsor("http://www.cicimar.ipn.mx")
-    End Sub
-
-    Private Sub m_pbAuci_Click(sender As System.Object, e As System.EventArgs) _
-        Handles m_pbAuci.Click
-        Me.ShowSponsor("http://www.auci.gub.uy")
-    End Sub
-
-    Private Sub m_pbConacyt_Click(sender As System.Object, e As System.EventArgs) _
-        Handles m_pbConacyt.Click
-        Me.ShowSponsor("http://www.conacyt.mx")
     End Sub
 
 #End Region ' Event handlers

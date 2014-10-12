@@ -98,7 +98,8 @@ Namespace Commands
 
         ''' ----------------------------------------------------------------------
         ''' <summary>
-        ''' Call to add a User Interface Control to a command.
+        ''' Connect the command to a User Interface Control. The command is fired 
+        ''' when the control is interacted with.
         ''' </summary>
         ''' <param name="objGUI">The control to add.</param>
         ''' <remarks>
@@ -109,12 +110,53 @@ Namespace Commands
         ''' state is changed.
         ''' </remarks>
         ''' ----------------------------------------------------------------------
-        Public Sub AddControl(ByVal objGUI As Object, Optional fnparms As Object() = Nothing)
+        Public Sub AddControl(ByVal objGUI As Object)
+            Me.AddControl(objGUI, Nothing)
+        End Sub
+
+        ''' ----------------------------------------------------------------------
+        ''' <summary>
+        ''' Connect the command to a User Interface Control. The command is fired 
+        ''' when the control is interacted with.
+        ''' </summary>
+        ''' <param name="objGUI">The control to add.</param>
+        ''' <param name="param">An parameter to pass to the command when it is invoked.</param>
+        ''' <remarks>
+        ''' The <see cref="cCommandHandler"/> predefines a few <see cref="cControlHandler"/> 
+        ''' types that interact with specific User Interface control classes. Ensure
+        ''' that the objGUI object has an associated cControlHandler available,
+        ''' otherwise the given Control will not be updated whenever the Command
+        ''' state is changed.
+        ''' </remarks>
+        ''' ----------------------------------------------------------------------
+        Public Sub AddControl(ByVal objGUI As Object, param As Object)
+            Dim parms As Object() = Nothing
+            If param IsNot Nothing Then parms = New Object() {param}
+            Me.AddControl(objGUI, parms)
+        End Sub
+
+        ''' ----------------------------------------------------------------------
+        ''' <summary>
+        ''' Connect the command to a User Interface Control. The command is fired 
+        ''' when the control is interacted with.
+        ''' </summary>
+        ''' <param name="objGUI">The control to add.</param>
+        ''' <param name="params">An array of parameters to pass to the command when
+        ''' it is invoked.</param>
+        ''' <remarks>
+        ''' The <see cref="cCommandHandler"/> predefines a few <see cref="cControlHandler"/> 
+        ''' types that interact with specific User Interface control classes. Ensure
+        ''' that the objGUI object has an associated cControlHandler available,
+        ''' otherwise the given Control will not be updated whenever the Command
+        ''' state is changed.
+        ''' </remarks>
+        ''' ----------------------------------------------------------------------
+        Public Sub AddControl(ByVal objGUI As Object, params As Object())
 
             Dim cmdh As cCommandHandler = Me.m_cmdh
             Dim t As Type = cmdh.GetControlHandlerType(objGUI)
             Dim objControlHandler As Object = Nothing
-            Dim objParms() As Object = {Me, objGUI, fnparms}
+            Dim objParms() As Object = {Me, objGUI, params}
             Try
                 Debug.Assert(t IsNot Nothing, "Control type not supported for automatic command handling!")
                 objControlHandler = Activator.CreateInstance(t, objParms)

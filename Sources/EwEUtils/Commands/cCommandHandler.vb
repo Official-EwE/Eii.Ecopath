@@ -50,11 +50,12 @@ Namespace Commands
 
             ' Register predefined command handler types
             Me.AddControlHandlerType("System.Windows.Forms.Button", GetType(cButtonControlHandler))
+            Me.AddControlHandlerType("System.Windows.Forms.PictureBox", GetType(cButtonControlHandler))
             Me.AddControlHandlerType("System.Windows.Forms.ToolStripMenuItem", GetType(cToolStripMenuItemControlHandler))
             Me.AddControlHandlerType("System.Windows.Forms.ToolStripButton", GetType(cToolStripButtonControlHandler))
             Me.AddControlHandlerType("System.Windows.Forms.ToolStripDropDownButton", GetType(ToolStripButtonDropDownControlHandler))
             Me.AddControlHandlerType("System.Windows.Forms.ToolStripSplitButton", GetType(cToolStripSplitButtonHandler))
-            Me.AddControlHandlerType("System.Windows.Forms.PictureBox", GetType(cButtonControlHandler))
+            Me.AddControlHandlerType("System.Windows.Forms.RichTextBox", GetType(cRichTextBoxControlHandler))
         End Sub
 
 #End Region ' Construction
@@ -75,6 +76,7 @@ Namespace Commands
                 Me.m_dictCommands.Add(c.Name.ToLower(), c)
             Catch ex As Exception
                 ' Kaboom
+                Debug.Assert(False, "Unable to add command")
             End Try
         End Sub
 
@@ -92,6 +94,7 @@ Namespace Commands
                 End If
             Catch ex As Exception
                 ' Kaboom
+                Debug.Assert(False, "Unable to remove command")
             End Try
         End Sub
 
@@ -121,6 +124,7 @@ Namespace Commands
                 lcmds.Clear()
             Catch ex As Exception
                 ' Kaploof
+                Debug.Assert(False, "Unable to clear command handler")
             End Try
             Debug.Assert(Me.m_dictCommands.Count = 0)
         End Sub
@@ -163,6 +167,7 @@ Namespace Commands
             Try
                 Me.AddControlHandlerType(obj.GetType().ToString(), t)
             Catch ex As Exception
+                Debug.Assert(False, "Unable to get control handler for this control type")
                 ' Kaboom
             End Try
         End Sub
@@ -179,6 +184,7 @@ Namespace Commands
             Try
                 Me.m_dictHandlerTypes.Add(str, t)
             Catch ex As Exception
+                Debug.Assert(False, "Unable to get control handler for this control type")
                 ' Kaboom
             End Try
         End Sub
@@ -194,6 +200,7 @@ Namespace Commands
                 Return GetControlHandlerType(obj.GetType().ToString())
             Catch ex As Exception
                 ' Kaboom
+                Debug.Assert(False, "Unable to get control handler for this control type")
                 Return Nothing
             End Try
         End Function
@@ -210,6 +217,7 @@ Namespace Commands
                 Return Me.m_dictHandlerTypes(str)
             Catch ex As Exception
                 ' Kaboom
+                Debug.Assert(False, "Unable to get control handler for this control type")
                 Return Nothing
             End Try
         End Function

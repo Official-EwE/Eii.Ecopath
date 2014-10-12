@@ -79,6 +79,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Supply-demand of energy.
+        '''</summary>
+        Friend ReadOnly Property LABEL_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("LABEL_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Log (demand, consumption).
+        '''</summary>
+        Friend ReadOnly Property LABEL_XAXIS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_XAXIS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Log (supply, predation).
+        '''</summary>
+        Friend ReadOnly Property LABEL_YAXIS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_YAXIS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Resilience data failed to save to {0}.
         '''</summary>
         Friend ReadOnly Property STATUS_SAVE_FAILED() As String
