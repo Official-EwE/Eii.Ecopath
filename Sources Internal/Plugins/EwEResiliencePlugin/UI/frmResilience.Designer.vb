@@ -43,22 +43,11 @@ Partial Class frmResilience
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmResilience))
-        Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_cbAutosave = New System.Windows.Forms.CheckBox()
         Me.m_btnRunEcosim = New System.Windows.Forms.Button()
+        Me.m_graph = New ZedGraph.ZedGraphControl()
+        Me.m_cbMonthly = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
-        '
-        'm_graph
-        '
-        resources.ApplyResources(Me.m_graph, "m_graph")
-        Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0.0R
-        Me.m_graph.ScrollMaxX = 0.0R
-        Me.m_graph.ScrollMaxY = 0.0R
-        Me.m_graph.ScrollMaxY2 = 0.0R
-        Me.m_graph.ScrollMinX = 0.0R
-        Me.m_graph.ScrollMinY = 0.0R
-        Me.m_graph.ScrollMinY2 = 0.0R
         '
         'm_cbAutosave
         '
@@ -72,19 +61,39 @@ Partial Class frmResilience
         Me.m_btnRunEcosim.Name = "m_btnRunEcosim"
         Me.m_btnRunEcosim.UseVisualStyleBackColor = True
         '
+        'm_graph
+        '
+        resources.ApplyResources(Me.m_graph, "m_graph")
+        Me.m_graph.Name = "m_graph"
+        Me.m_graph.ScrollGrace = 0.0R
+        Me.m_graph.ScrollMaxX = 0.0R
+        Me.m_graph.ScrollMaxY = 0.0R
+        Me.m_graph.ScrollMaxY2 = 0.0R
+        Me.m_graph.ScrollMinX = 0.0R
+        Me.m_graph.ScrollMinY = 0.0R
+        Me.m_graph.ScrollMinY2 = 0.0R
+        '
+        'm_cbMonthly
+        '
+        resources.ApplyResources(Me.m_cbMonthly, "m_cbMonthly")
+        Me.m_cbMonthly.Name = "m_cbMonthly"
+        Me.m_cbMonthly.UseVisualStyleBackColor = True
+        '
         'frmResilience
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_cbMonthly)
+        Me.Controls.Add(Me.m_graph)
         Me.Controls.Add(Me.m_btnRunEcosim)
         Me.Controls.Add(Me.m_cbAutosave)
-        Me.Controls.Add(Me.m_graph)
         Me.Name = "frmResilience"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_cbAutosave As System.Windows.Forms.CheckBox
     Private WithEvents m_btnRunEcosim As System.Windows.Forms.Button
+    Private WithEvents m_graph As ZedGraph.ZedGraphControl
+    Private WithEvents m_cbMonthly As System.Windows.Forms.CheckBox
 End Class

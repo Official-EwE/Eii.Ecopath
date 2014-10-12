@@ -43,17 +43,17 @@ Public Class cResilienceModel
         GC.SuppressFinalize(Me)
     End Sub
 
-    Public Event OnUpdated(sender As cResilienceData, time As Integer)
+    Public Event OnUpdated(sender As cResilienceData, time As Integer, bDone As Boolean)
 
     Public Sub Compute(iTime As Integer, simds As cEcosimDatastructures)
 
         If (iTime = 1) Then
-            Me.m_data.Resize(simds.NTimes, simds.NumYears)
+            Me.m_data.Resize(simds.NTimes - 1, simds.NumYears - 1)
         End If
 
         Dim SumEatenBy As Single = 0
         Dim SumEatenOf As Single = 0
-        Dim iYear As Integer = 1 + ((iTime - 1) Mod cCore.N_MONTHS)
+        Dim iYear As Integer = 1 + CInt((iTime - 1) / cCore.N_MONTHS)
 
         For i As Integer = 1 To Me.m_core.nGroups
             SumEatenBy += simds.Eatenby(i)
@@ -63,12 +63,12 @@ Public Class cResilienceModel
         YearEatenOf += SumEatenOf
 
         Try
-            Me.m_data.DemandAtT(iTime) = CSng(Math.Log(SumEatenOf))
-            Me.m_data.SupplyAtT(iTime) = -CSng(Math.Log(SumEatenBy))
+            Me.m_data.DemandAtT(iTime - 1) = CSng(Math.Log10(SumEatenOf))
+            Me.m_data.SupplyAtT(iTime - 1) = -CSng(Math.Log10(SumEatenBy))
 
             If ((iTime Mod cCore.N_MONTHS) = 0) Then
-                Me.m_data.DemandAtY(iYear) = CSng(Math.Log(YearEatenOf / cCore.N_MONTHS))
-                Me.m_data.SupplyAtY(iYear) = -CSng(Math.Log(YearEatenBy / cCore.N_MONTHS))
+                Me.m_data.DemandAtY(iYear - 1) = CSng(Math.Log10(YearEatenOf / cCore.N_MONTHS))
+                Me.m_data.SupplyAtY(iYear - 1) = -CSng(Math.Log10(YearEatenBy / cCore.N_MONTHS))
                 YearEatenOf = 0
                 YearEatenBy = 0
             End If
@@ -76,7 +76,7 @@ Public Class cResilienceModel
             'Whoah!
         End Try
 
-        Me.RaiseUpdate(iTime)
+        Me.RaiseUpdate(iTime, iTime = simds.NTimes)
 
     End Sub
 
@@ -88,9 +88,9 @@ Public Class cResilienceModel
 
 #Region " Internals "
 
-    Private Sub RaiseUpdate(time As Integer)
+    Private Sub RaiseUpdate(time As Integer, bDone As Boolean)
         Try
-            RaiseEvent OnUpdated(Me.m_data, time)
+            RaiseEvent OnUpdated(Me.m_data, time, bDone)
         Catch ex As Exception
 
         End Try

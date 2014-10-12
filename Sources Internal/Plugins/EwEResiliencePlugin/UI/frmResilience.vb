@@ -20,6 +20,7 @@
 Option Strict On
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -33,6 +34,12 @@ Public Class frmResilience
         Me.UIContext = uic
         Me.m_model = model
         Me.InitializeComponent()
+
+        Me.m_zgh = New cZedGraphHelper()
+        Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
+        Me.m_zgh.ConfigurePane(My.Resources.LABEL_CAPTION, My.Resources.LABEL_XAXIS, My.Resources.LABEL_YAXIS, False)
+        Me.m_zgh.AutoscalePane() = True
+
     End Sub
 
 #Region " Form overrides "
@@ -43,9 +50,6 @@ Public Class frmResilience
         If (Me.UIContext Is Nothing) Then Return
 
         Me.Text = My.Resources.CAPTION
-
-        Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
         AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
@@ -58,6 +62,8 @@ Public Class frmResilience
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         RemoveHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
+        Me.m_zgh.Detach()
+
         MyBase.OnFormClosed(e)
 
     End Sub
@@ -81,18 +87,49 @@ Public Class frmResilience
 
     Private Sub UpdatePlot()
 
-        Me.m_zgh.ConfigurePane(My.Resources.LABEL_CAPTION, My.Resources.LABEL_XAXIS, My.Resources.LABEL_YAXIS, True)
+        Dim data As cResilienceData = Me.m_model.Data
+        Dim bMonthly As Boolean = Me.m_cbMonthly.Checked
+        Dim strLabel As String = CStr(cSystemUtils.IIF(bMonthly, "Resilience (month)", "Resilience (annual averages)"))
+        Dim demand As Double() = CType(cSystemUtils.IIF(bMonthly, data.DemandAtT, data.DemandAtY), Double())
+        Dim supply As Double() = CType(cSystemUtils.IIF(bMonthly, data.SupplyAtT, data.SupplyAtY), Double())
+        Dim ppl As New ZedGraph.PointPairList(demand, supply)
+        Dim li As New ZedGraph.LineItem(strLabel, ppl, Drawing.Color.Black, ZedGraph.SymbolType.Circle)
+        Dim pane As ZedGraph.GraphPane = Me.m_zgh.GetPane(1)
+
+        li.Line.IsVisible = False
+
+        pane.CurveList.Clear()
+        pane.CurveList.Add(li)
+
         Me.m_zgh.RescaleAndRedraw()
 
     End Sub
+
+    Public Overrides ReadOnly Property IsRunForm As Boolean
+        Get
+            Return True
+        End Get
+    End Property
 
 #End Region ' Form overrides
 
 #Region " Events "
 
-    Private Sub OnCalculationsUpdated(sender As cResilienceData, iTime As Integer)
-        Dim data As cResilienceData = Me.m_model.Data
-        Console.WriteLine("Resilience {0}: supply {1}, demand {2}", iTime, data.SupplyAtT(iTime), data.DemandAtT(iTime))
+    Private Sub m_cbMonthly_CheckedChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbMonthly.CheckedChanged
+        Try
+            Me.UpdatePlot()
+        Catch ex As Exception
+            ' Plop
+        End Try
+    End Sub
+
+    Private Sub OnCalculationsUpdated(sender As cResilienceData, iTime As Integer, bDone As Boolean)
+        Try
+            If bDone Then Me.UpdatePlot()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub m_btnRunEcosim_Click(sender As System.Object, e As System.EventArgs) _

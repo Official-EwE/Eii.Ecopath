@@ -31,9 +31,13 @@ Public Class cResilienceData
         ReDim DemandAtY(nYears)
     End Sub
 
-    Public Property SupplyAtT As Single()
-    Public Property SupplyAtY As Single()
-    Public Property DemandAtT As Single()
-    Public Property DemandAtY As Single()
+    Public Property SupplyAtT As Double()
+    Public Property SupplyAtY As Double()
+    Public Property DemandAtT As Double()
+    Public Property DemandAtY As Double()
+
+    Public Function SaveToCSV(strFile As String, bAnnual As Boolean) As Boolean
+        Return True
+    End Function
 
 End Class
