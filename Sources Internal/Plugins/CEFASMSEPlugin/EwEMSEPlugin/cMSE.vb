@@ -1816,13 +1816,13 @@ Public Class cMSE
                 'Check projection is above minimum biomass
                 If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) <= iGrp.mLowerLimit Then
                     GoodDynamics = False
-                    GoodDynamics = True ' test to make it output the biomass trajectories - todo comment out
+                    'GoodDynamics = True ' test to make it output the biomass trajectories - todo comment out
                     Exit For
                 End If
                 'check the projection is above the max biomass
                 If Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep) > iGrp.mUpperLimit Then
                     GoodDynamics = False
-                    GoodDynamics = True ' test to make it output the biomass trajectories - todo comment out
+                    'GoodDynamics = True ' test to make it output the biomass trajectories - todo comment out
                     Exit For
                 End If
             Next
