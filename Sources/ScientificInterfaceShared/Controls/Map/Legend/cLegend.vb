@@ -442,7 +442,7 @@ Namespace Controls.Map
                 Case eLayerRenderStyle.Gradient
                     sLayerBox.Height *= 3
             End Select
-            sLayerBox.Width += (Me.LayerBoxWidth + Me.LayerBoxHSpacing)
+            sLayerBox.Width += (Me.LayerBoxWidth + Me.LayerBoxHSpacing * 3)
             sLayerBox.Height = Math.Max(Me.LayerBoxHeight, sLayerBox.Height)
 
             Return sLayerBox

@@ -451,6 +451,7 @@ Namespace Controls
 
             If (Me.ShowHoverMenu) Then
                 Me.m_hovermenu = New ucHoverMenu(Me.m_uic)
+                ' This can screw up zedgraphs in plug-ins
                 Me.m_hovermenu.Attach(Me.m_zgc)
                 Me.m_hovermenu.AddItem(My.Resources.ZoomInHS, My.Resources.GENERIC_ZOOM_IN, eHoverCommands.Zoomin)
                 Me.m_hovermenu.AddItem(My.Resources.ZoomOutHS, My.Resources.GENERIC_ZOOM_OUT, eHoverCommands.Zoomout)
