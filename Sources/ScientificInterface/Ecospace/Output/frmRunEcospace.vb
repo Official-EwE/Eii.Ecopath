@@ -34,6 +34,7 @@ Imports EwECore.Auxiliary
 Imports System.IO
 Imports EwEUtils.Utilities
 Imports System.Drawing.Imaging
+Imports EwEUtils.SystemUtilities
 
 #End Region
 
@@ -1452,7 +1453,8 @@ Namespace Ecospace
                 bmp.Save(strFileName, imgFormat)
                 bmp.Dispose()
 
-                Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_plottype), "")
+                'ToDo: globalize this
+                Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_plottype), SharedResources.SCALE_LOG)
 
                 msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
@@ -1471,6 +1473,14 @@ Namespace Ecospace
 
         End Sub
 
+        ''' <summary>
+        ''' Save a legend image.
+        ''' </summary>
+        ''' <param name="strFileName"></param>
+        ''' <param name="imgFormat"></param>
+        ''' <param name="strValueName">Name of the plotted variable.</param>
+        ''' <param name="strDataName"></param>
+        ''' <remarks></remarks>
         Private Sub SaveMapLegendImage(strFileName As String, imgFormat As ImageFormat, _
                                        strValueName As String, strDataName As String)
 
@@ -1478,13 +1488,26 @@ Namespace Ecospace
             Dim strFile As String = Path.Combine(Path.GetDirectoryName(strFileName), Path.GetFileNameWithoutExtension(strFileName))
             Dim strFilenameLegend As String = strFile & "_legend" & strExt
 
+            'Big hack: scale images between 
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
-            Dim sdummy(bm.InRow, bm.InCol) As Single : sdummy(1, 1) = -10 : sdummy(1, 2) = 10
+            Dim dx As Integer = bm.InCol
+            Dim dy As Integer = bm.InRow
+            Dim sdummy(dx, dy) As Single
+            Dim i As Integer = 0
+            For x As Integer = 1 To dx
+                For y As Integer = 1 To dy
+                    If bm.IsModelledCell(x, y) Then
+                        sdummy(x, y) = cSystemUtils.IIF(i = 0, 10, -10)
+                        i = (i + 1) Mod 2 'FlipFlop
+                    End If
+                Next y
+            Next x
 
             Dim lgd As New cLegend(Me.UIContext, strValueName)
             Dim r As cLayerRenderer = New cLayerRendererValue(New cVisualStyle())
             Dim data As New cEcospaceLayerSingle(Me.Core, sdummy, strDataName)
             Dim l As New cDisplayRasterLayer(Me.UIContext, data, r, Nothing)
+
             lgd.AddLayer(l)
             lgd.Save(strFilenameLegend, imgFormat)
 
@@ -1599,7 +1622,7 @@ Namespace Ecospace
 
                         ' Add legend file
                         Me.SaveMapLegendImage(strFileSub, imgFormat, _
-                                              String.Format(SharedResources.GENERIC_LABEL_DOUBLE, fmt.GetDescriptor(Me.m_plottype), grp.Name), "")
+                                              String.Format(SharedResources.GENERIC_LABEL_DOUBLE, fmt.GetDescriptor(Me.m_plottype), grp.Name), SharedResources.SCALE_LOG)
 
                     End If
                 Next

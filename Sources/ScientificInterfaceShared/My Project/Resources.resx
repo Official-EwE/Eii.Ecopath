@@ -3182,4 +3182,7 @@
   <data name="HEADER_RIGHT_LIMIT" xml:space="preserve">
     <value>Right limit</value>
   </data>
+  <data name="SCALE_LOG" xml:space="preserve">
+    <value>(Log)</value>
+  </data>
 </root>
