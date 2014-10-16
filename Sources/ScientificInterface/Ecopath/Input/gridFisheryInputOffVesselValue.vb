@@ -76,7 +76,6 @@ Namespace Ecopath.Input
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim intStanzaGroupIndex(core.nGroups) As Integer 'Hold the stanza group index
-            Dim intStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
 
@@ -104,15 +103,14 @@ Namespace Ecopath.Input
                     FillInRows(iRow, source)
                 Else 'Group is stanza
                     sg = core.StanzaGroups(intStanzaGroupIndex(source.Index))
-                    If intStanzaGroupIndex(source.Index) <> intStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
+                    If (Not dtStanzaCells.ContainsKey(sg)) Then
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         ' Complete row with dummy cells
-                        For i As Integer = 2 To core.nFleets + 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
-                        intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
+                        For i As Integer = 2 To Core.nFleets + 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         iRow = Me.AddRow
                     Else
                         hgcStanza = dtStanzaCells(sg)
