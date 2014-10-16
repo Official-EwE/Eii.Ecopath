@@ -150,7 +150,8 @@ Public Class cSpatialDataLoader
 
             If Not DataSet Is Nothing Then
                 'Added the DataSet to the DepthAdapter
-                Me.m_DepthAdapter.Dataset(0, 0) = DataSet
+                Dim conn As cSpatialDataConnection = Me.m_DepthAdapter.AddConnection(0)
+                conn.Dataset = DataSet
                 bReturn = True
             End If
 

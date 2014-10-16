@@ -140,8 +140,13 @@ Public Class cDepthDataAdapter
 
 #Region "Adapter Overrides "
 
-    Protected Overrides Function Adapt(bm As EwECore.cEcospaceBasemap, layer As EwECore.cEcospaceLayer, iConnection As Integer, _
-                                       iTime As Integer, dt As Date, dataExternal As EwEUtils.SpatialData.ISpatialRaster, dNoData As Double) As Boolean
+    Protected Overrides Function Adapt(bm As EwECore.cEcospaceBasemap, _
+                                       layer As EwECore.cEcospaceLayer, _
+                                       conn As EwECore.SpatialData.cSpatialDataConnection, _
+                                       iTime As Integer, _
+                                       dt As Date, _
+                                       dataExternal As EwEUtils.SpatialData.ISpatialRaster, _
+                                       dNoData As Double) As Boolean
         Dim bReturn As Boolean = False
         Try
 
@@ -150,7 +155,7 @@ Public Class cDepthDataAdapter
             'This can only be used to convert water cells to land. Not the other direction
             'If a cell has been converted to water it needs habitats, PP and capacity set
             'This has no way of knowing what these data should be
-            If Me.setDepthCells(bm, layer, iConnection, iTime, dt, dataExternal, dNoData) Then
+            If Me.setDepthCells(bm, layer, conn, iTime, dt, dataExternal, dNoData) Then
                 Me.InitSpatialChanges()
                 bReturn = True
             End If
@@ -167,7 +172,7 @@ Public Class cDepthDataAdapter
 
     Private Function setDepthCells(ByVal bm As cEcospaceBasemap, _
                                               ByVal layer As cEcospaceLayer, _
-                                              iConnection As Integer, _
+                                              ByVal conn As cSpatialDataConnection, _
                                               ByVal iTime As Integer, _
                                               ByVal dt As Date, _
                                               ByVal dataExternal As ISpatialRaster, _
@@ -201,7 +206,7 @@ Public Class cDepthDataAdapter
                     If (CDbl(layerDepth.Cell(iRow, iCol)) > 0) And (CellValue <> CDbl(layerDepth.Cell(iRow, iCol))) Then
                         'Depth has changed
                         'Set the new depth
-                        If Me.SetCell(layer, iConnection, iRow, iCol, CellValue) Then
+                        If Me.SetCell(layer, conn, iRow, iCol, CellValue) Then
                             'Keep track of which cells have changed
                             Me.m_bChanged(iRow, iCol) = True
 
