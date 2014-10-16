@@ -82,7 +82,6 @@ Namespace Ecopath.Input
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim intStanzaGroupIndex(Core.nGroups) As Integer 'Hold the stanza group index
-            Dim intStanzaGroupIndexPrev As Integer = -1
 
             Dim prop As cProperty = Nothing
 
@@ -132,7 +131,7 @@ Namespace Ecopath.Input
                     FillInRows(iRow, source, alSumRow, alSumAll)
                 Else 'Group is stanza
                     sg = Core.StanzaGroups(intStanzaGroupIndex(source.Index))
-                    If intStanzaGroupIndex(source.Index) <> intStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
+                    If Not dtStanzaCells.ContainsKey(sg) Then
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
@@ -140,7 +139,6 @@ Namespace Ecopath.Input
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         ' Complete row with dummy cells
                         For i As Integer = 2 To Core.nFleets + 2 : Me(iRow, i) = New EwERowHeaderCell() : Next
-                        intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
                         iRow = Me.AddRow
                     Else
                         hgcStanza = dtStanzaCells(sg)

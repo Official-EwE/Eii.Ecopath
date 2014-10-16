@@ -62,7 +62,7 @@ Namespace Ecopath.Input
             Dim group As cCoreGroupBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim iStanzaPrev As Integer = -1
+            Dim dt As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
 
             'Remove existing rows
@@ -76,15 +76,18 @@ Namespace Ecopath.Input
                     FillInRows(iRow, group)
                 Else
                     sg = Core.StanzaGroups(group.iStanza)
-                    If group.iStanza <> iStanzaPrev Then
+                    If Not dt.ContainsKey(sg) Then
                         hgcStanza = New EwEHierarchyGridCell()
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         For j As Integer = 2 To 2 : Me(iRow, j) = New EwERowHeaderCell() : Next
-                        iStanzaPrev = group.iStanza
+                        dt(sg) = hgcStanza
+                        iRow = Me.AddRow
+                    Else
+                        hgcStanza = dt(sg)
+                        iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
-                    iRow = Me.AddRow
                     hgcStanza.AddChildRow(iRow)
                     FillInRows(iRow, group, True)
                 End If
