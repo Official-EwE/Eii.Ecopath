@@ -147,10 +147,19 @@
     <Compile Include="cStockAssessmentModel.vb" />
     <Compile Include="cStockAssessmentParameters.vb" />
     <Compile Include="IMSEData.vb" />
+    <Compile Include="User interface\gridQuotaShares.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="User interface\frmEditAssessmentError.Designer.vb">
       <DependentUpon>frmEditAssessmentError.vb</DependentUpon>
     </Compile>
     <Compile Include="User interface\frmEditAssessmentError.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User interface\frmEditQuotaShares.Designer.vb">
+      <DependentUpon>frmEditQuotaShares.vb</DependentUpon>
+    </Compile>
+    <Compile Include="User interface\frmEditQuotaShares.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="User interface\gridErrorCVs.vb">
@@ -272,6 +281,9 @@
     <EmbeddedResource Include="User interface\frmEditDecreaseEffort.resx">
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="User interface\frmEditQuotaShares.resx">
+      <DependentUpon>frmEditQuotaShares.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmEditSurvivabilities.resx">
       <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
     </EmbeddedResource>
@@ -324,7 +336,9 @@
     <Content Include="Resources\StartHS.png" />
     <Content Include="Resources\StopHS.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
