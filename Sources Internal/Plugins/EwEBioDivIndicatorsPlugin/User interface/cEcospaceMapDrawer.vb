@@ -22,6 +22,7 @@ Option Strict On
 Imports System.Drawing
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -31,8 +32,8 @@ Imports ScientificInterfaceShared.Controls.Map
 Public Class cEcospaceMapDrawer
     Inherits cMapDrawerBase
 
-    Public Sub New(core As cCore)
-        MyBase.New(core)
+    Public Sub New(core As cCore, sg As cStyleGuide)
+        MyBase.New(core, sg)
     End Sub
 
     ''' <summary>The labels to use for each plot.</summary>
@@ -49,7 +50,7 @@ Public Class cEcospaceMapDrawer
         Dim RelScaler() As Single = Args.RelMapScaler
         Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
 
-   
+
         For i As Integer = 1 To Me.InRow
             For j As Integer = 1 To Me.InCol
                 If CBool(excl.Cell(i, j)) = False Then

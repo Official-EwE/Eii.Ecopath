@@ -135,7 +135,7 @@ Public Class cEcospaceMapWrapper
         If (lInfo.Count > 0) Then
             Me.m_drawers.Clear()
             For Each info In lInfo
-                Dim drawer As New cEcospaceMapDrawer(Me.m_uic.Core)
+                Dim drawer As New cEcospaceMapDrawer(Me.m_uic.Core, Me.m_uic.StyleGuide)
                 drawer.Colors = Me.m_colors
                 Me.m_drawers.Add(drawer)
             Next

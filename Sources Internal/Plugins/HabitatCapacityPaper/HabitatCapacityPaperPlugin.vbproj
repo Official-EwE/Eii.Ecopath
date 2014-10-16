@@ -7,7 +7,7 @@
     </ProductVersion>
     <SchemaVersion>
     </SchemaVersion>
-    <ProjectGuid>{57CFEE9E-24B2-4FC6-AB9C-32CA97DC9EC4}</ProjectGuid>
+    <ProjectGuid>{D65372F6-9446-4191-972E-C1C7D24A434C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>HabitatCapacityPaperPlugin</RootNamespace>
     <AssemblyName>HabitatCapacityPaperPlugin</AssemblyName>
