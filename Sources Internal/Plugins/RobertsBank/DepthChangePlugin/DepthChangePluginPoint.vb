@@ -432,26 +432,25 @@ Public Class cDepthChangePluginPoint
 
     Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Me"
+            Return "ewedevteam@gmail.com"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "you@someplace.com"
+            Return ""
         End Get
     End Property
 
     Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Provides a base for building a plugin"
+            Return ""
         End Get
     End Property
 
-
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "Base Plugin"
+            Return Me.ControlText
         End Get
     End Property
 
