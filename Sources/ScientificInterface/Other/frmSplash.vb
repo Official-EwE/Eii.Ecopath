@@ -26,25 +26,12 @@ Friend Class frmSplash
         frmSplash.g_instance = Me
     End Sub
 
-    ' Only works on form border, not on non-square content
-    'Protected Overrides ReadOnly Property CreateParams As System.Windows.Forms.CreateParams
-    '    Get
-    '        Dim cp As CreateParams = MyBase.CreateParams
-    '        cp.ClassStyle = cp.ClassStyle Or CS_DROPSHADOW
-    '        Return cp
-    '    End Get
-    'End Property
-
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Dim rc As Rectangle = Me.ClientRectangle()
         Dim ico As New Icon(cEwEIcon.Current(), rc.Size)
-        Me.m_img = New Bitmap(rc.Width, rc.Height)
-        Dim g As Graphics = Graphics.FromImage(Me.m_img)
-        g.FillRectangle(Brushes.Transparent, rc)
-        g.DrawIcon(ico, rc)
-        g.Dispose()
+        Me.m_img = Bitmap.FromHicon(ico.Handle)
         ico.Dispose()
 
         Me.CenterToScreen()
