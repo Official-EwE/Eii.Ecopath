@@ -239,7 +239,8 @@ Namespace SpatialData
             ' During the export process the dataset manager has to set its config file to the export path
             ' in order for file-based datasets to resolve absolute / relative paths. At the end of the
             ' export process the path is restored
-            Dim strRescue As String = Me.CurrentConfigFile
+            Dim strRescue As String = Me.m_strConfigFile
+            Me.m_strConfigFile = strFile
 
             ' Make sure save exceptions do not affect current configuration
             Try
