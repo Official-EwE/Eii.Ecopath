@@ -49,7 +49,7 @@ Namespace Ecospace
         Private m_man As cSpatialDataConnectionManager
         Private m_manSets As cSpatialDataSetManager
         Private m_filterVarName As eVarNameFlags = eVarNameFlags.NotSet
-        Private m_bOnlyShowConnected As Boolean = True
+        Private m_bOnlyShowConnected As Boolean = False
         Private m_nBaseCols As Integer = 0
         Private m_bmCell As BehaviorModels.CustomEvents = Nothing
 
@@ -80,6 +80,13 @@ Namespace Ecospace
                     Me.m_man = value.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
                     AddHandler m_bmCell.Click, AddressOf CellClick
+
+                    Dim bHasConnections As Boolean = False
+                    For Each adt As cSpatialDataAdapter In Me.m_man.Adapters
+                        bHasConnections = bHasConnections Or (adt.Connections().Length > 0)
+                    Next
+                    Me.m_bOnlyShowConnected = bHasConnections
+
                 End If
                 MyBase.UIContext = value
             End Set
