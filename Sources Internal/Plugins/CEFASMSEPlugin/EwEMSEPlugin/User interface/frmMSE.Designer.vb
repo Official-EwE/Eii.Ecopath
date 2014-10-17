@@ -78,6 +78,7 @@ Partial Class frmMSE
         Me.m_btnDecreaseEffort = New System.Windows.Forms.Button()
         Me.m_btnStockAssessment = New System.Windows.Forms.Button()
         Me.m_btnSAError = New System.Windows.Forms.Button()
+        Me.m_btnQuotaShares = New System.Windows.Forms.Button()
         Me.m_hdrStep3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblAvailableStrategies = New System.Windows.Forms.Label()
         Me.m_tbxNumAvailableFishingStrategies = New System.Windows.Forms.TextBox()
@@ -301,6 +302,7 @@ Partial Class frmMSE
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnDecreaseEffort, 0, 0)
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnStockAssessment, 2, 0)
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnSAError, 4, 0)
+        Me.m_tlpFishingControls.Controls.Add(Me.m_btnQuotaShares, 6, 0)
         Me.m_tlpFishingControls.Name = "m_tlpFishingControls"
         '
         'm_btnDecreaseEffort
@@ -320,6 +322,12 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_btnSAError, "m_btnSAError")
         Me.m_btnSAError.Name = "m_btnSAError"
         Me.m_btnSAError.UseVisualStyleBackColor = True
+        '
+        'm_btnQuotaShares
+        '
+        resources.ApplyResources(Me.m_btnQuotaShares, "m_btnQuotaShares")
+        Me.m_btnQuotaShares.Name = "m_btnQuotaShares"
+        Me.m_btnQuotaShares.UseVisualStyleBackColor = True
         '
         'm_hdrStep3
         '
@@ -537,4 +545,5 @@ Partial Class frmMSE
     Private WithEvents m_btnEditDiets As System.Windows.Forms.Button
     Private WithEvents m_btnStopCreateModels As System.Windows.Forms.Button
     Private WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents m_btnQuotaShares As System.Windows.Forms.Button
 End Class

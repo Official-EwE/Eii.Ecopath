@@ -24,8 +24,40 @@ Partial Class frmEditQuotaShares
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.m_btnSave = New System.Windows.Forms.Button()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_grid = New EwEMSEPlugin.gridQuotaShares()
         Me.SuspendLayout()
+        '
+        'm_btnSave
+        '
+        Me.m_btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_btnSave.Location = New System.Drawing.Point(514, 445)
+        Me.m_btnSave.Name = "m_btnSave"
+        Me.m_btnSave.Size = New System.Drawing.Size(75, 23)
+        Me.m_btnSave.TabIndex = 1
+        Me.m_btnSave.Text = "Save"
+        Me.m_btnSave.UseVisualStyleBackColor = True
+        '
+        'm_btnCancel
+        '
+        Me.m_btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_btnCancel.Location = New System.Drawing.Point(595, 445)
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.Size = New System.Drawing.Size(75, 23)
+        Me.m_btnCancel.TabIndex = 2
+        Me.m_btnCancel.Text = "Cancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
+        '
+        'm_ts
+        '
+        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_ts.Location = New System.Drawing.Point(0, 0)
+        Me.m_ts.Name = "m_ts"
+        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.m_ts.Size = New System.Drawing.Size(693, 25)
+        Me.m_ts.TabIndex = 0
         '
         'm_grid
         '
@@ -43,14 +75,15 @@ Partial Class frmEditQuotaShares
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
+        Me.m_grid.Data = Nothing
         Me.m_grid.DataName = "grid content"
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.Location = New System.Drawing.Point(12, 12)
+        Me.m_grid.Location = New System.Drawing.Point(12, 28)
         Me.m_grid.Name = "m_grid"
-        Me.m_grid.Size = New System.Drawing.Size(658, 249)
+        Me.m_grid.Size = New System.Drawing.Size(658, 411)
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -67,13 +100,22 @@ Partial Class frmEditQuotaShares
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(693, 362)
+        Me.ClientSize = New System.Drawing.Size(693, 489)
+        Me.Controls.Add(Me.m_ts)
+        Me.Controls.Add(Me.m_btnCancel)
+        Me.Controls.Add(Me.m_btnSave)
         Me.Controls.Add(Me.m_grid)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmEditQuotaShares"
         Me.Text = "frmEditQuotaShares"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_grid As EwEMSEPlugin.gridQuotaShares
+    Friend WithEvents m_btnSave As System.Windows.Forms.Button
+    Friend WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_ts As cEwEToolstrip
+
+
 End Class

@@ -644,4 +644,21 @@ Public Class frmMSE
 
 #End Region ' Path / model validation
   
+    Private Sub m_btnQuotaShares_Click(sender As System.Object, e As System.EventArgs) Handles m_btnQuotaShares.Click
+
+        If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
+
+        Try
+            Dim frmQuotaShares As New frmEditQuotaShares(Me.MSE)
+            frmQuotaShares.Init(Me.UIContext)
+            If frmQuotaShares.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                'Me.MSE.InvalidateConfigurationState(True)
+                Me.MSE.QuotaShares.Load()
+                Me.UpdateControls()
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "CEFAS.frmMSE::OnQuotaShares")
+        End Try
+
+    End Sub
 End Class

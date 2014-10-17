@@ -56,7 +56,8 @@ Public Class gridQuotaShares
 
 #End Region ' Internal defs
 
-    Private m_data As cQuotaShares = Nothing
+    Private mMSEPlugin As cMSE
+    Private m_data As List(Of cQuotaShares.QuotaShare) = Nothing
 
 #Region " Constructor "
 
@@ -69,12 +70,24 @@ Public Class gridQuotaShares
 
 #Region " Public access "
 
-    Public Sub Init(data As cQuotaShares)
-        Me.m_data = data
+    Public Sub Init(Plugin As cMSE, data As cQuotaShares)
+        mMSEPlugin = Plugin
+        Me.m_data = data.GetLstGrpShares
         Me.RefreshContent()
     End Sub
 
     Public Event onEdited()
+
+    Public Property Data As List(Of cQuotaShares.QuotaShare)
+        Get
+            Return Me.m_data
+        End Get
+        Set(value As List(Of cQuotaShares.QuotaShare))
+            Me.m_data = value
+            Me.FillData()
+        End Set
+
+    End Property
 
 #End Region ' Public access
 
@@ -125,7 +138,7 @@ Public Class gridQuotaShares
         Dim pm As cPropertyManager = Me.UIContext.PropertyManager
         Dim iRow As Integer = -1
         Dim cell As EwECell = Nothing
-        Dim lstShares As List(Of cQuotaShares.QuotaShare) = m_data.GetLstGrpShares
+        Dim lstShares As List(Of cQuotaShares.QuotaShare) = m_data
 
         'Dim lstOptions As New List(Of cMSE.DistributionType)
         'lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(cMSE.DistributionType)), IEnumerable(Of cMSE.DistributionType)))
@@ -170,32 +183,36 @@ Public Class gridQuotaShares
 
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-        If Rows(p.Row).Tag Is Nothing Then
-            'No Group in this row
-            Return True
-        End If
+        Dim tag As Object = Me.Rows(p.Row).Tag
+        If (tag Is Nothing) Then Return False
 
-        Try
+        Debug.Assert(TypeOf tag Is cQuotaShares.QuotaShare)
 
-            'Changing the value of the parameter 
-            'forces the model to init to the new value
-            'and redraws the interface
-            'so only update if the value is actually new 
-            Dim param As cQuotaShares.QuotaShare = DirectCast(Rows(p.Row).Tag, cQuotaShares.QuotaShare)
-            Dim newValue As Single = CSng(cell.GetValue(p))
+        Dim data As cQuotaShares.QuotaShare = DirectCast(tag, cQuotaShares.QuotaShare)
 
+        Select Case DirectCast(p.Column, eColumnTypes)
+            Case eColumnTypes.QuotaShare
+                data.mShare = CDbl(cell.GetValue(p))
+        End Select
 
-            If param.mShare <> newValue Then
-                param.mShare = newValue
-            End If
+        ' To Mark: First complete the edit, then notify the world. It was the other way around
+        MyBase.OnCellEdited(p, cell)
 
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString + ".OnCellEdited() Exception: " + ex.Message)
-        End Try
+        ' To Mark: I've added a 'lazy notification' to be fired after the entire celll edit bit has completed.
+        'Me.RaiseDataChangeEvent()
+        Me.BeginInvoke(New MethodInvoker(AddressOf RaiseDataChangeEvent))
 
-        Return MyBase.OnCellEdited(p, cell)
+        Return True
 
     End Function
+
+    Private Sub RaiseDataChangeEvent()
+        Try
+            RaiseEvent onEdited()
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
 #End Region ' Overrides
 
