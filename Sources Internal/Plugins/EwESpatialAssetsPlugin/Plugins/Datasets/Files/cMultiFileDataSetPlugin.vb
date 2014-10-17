@@ -708,7 +708,11 @@ Namespace SpatialData
                 Dim strTgt As String = Path.Combine(strAbsPath, Path.GetFileName(ds.m_lFiles(i).FileName))
 
                 Try
+                    ' Copy file
                     System.IO.File.Copy(strSrc, strTgt, True)
+                    ' Reroute to new location to finish export properly
+                    ds.m_lFiles(i).FileName = strTgt
+
                 Catch exd As DirectoryNotFoundException
                     If Not bIgnoreFileErrors Then
                         Dim msg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_EXPORT_ERROR_NOPATH, Me.Source, Me.DisplayName), _
