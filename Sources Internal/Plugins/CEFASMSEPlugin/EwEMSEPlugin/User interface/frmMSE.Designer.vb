@@ -539,11 +539,11 @@ Partial Class frmMSE
     Private WithEvents m_pbPathCompatible As System.Windows.Forms.PictureBox
     Private WithEvents m_btnCreateSurvDist As System.Windows.Forms.Button
     Private WithEvents m_btnSampleSurvivabilities As System.Windows.Forms.Button
-    Friend WithEvents m_btnStockAssessment As System.Windows.Forms.Button
-    Friend WithEvents m_btnSAError As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_btnEditDiets As System.Windows.Forms.Button
     Private WithEvents m_btnStopCreateModels As System.Windows.Forms.Button
     Private WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents m_btnQuotaShares As System.Windows.Forms.Button
+    Private WithEvents m_btnStockAssessment As System.Windows.Forms.Button
+    Private WithEvents m_btnSAError As System.Windows.Forms.Button
+    Private WithEvents m_btnQuotaShares As System.Windows.Forms.Button
 End Class
