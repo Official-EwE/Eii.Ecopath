@@ -9399,6 +9399,7 @@ Public Class cCore
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecospace) Then Return False
+
         Me.CloseEcotracerScenario()
 
         Try
@@ -9542,9 +9543,13 @@ Public Class cCore
             Me.m_mapInteractionManager.Clear()
 
             Me.m_EcospaceModelParams = Nothing
-
             Me.m_Ecospace.Clear()
 
+            'delegates
+            Me.m_SpaceInterfaceCallBack = Nothing
+            Me.m_Ecospace.TimeStepDelegate = Nothing
+
+            Me.m_EcoPathData.ActiveEcospaceScenario = -1
             Me.m_StateMonitor.SetEcospaceLoaded(False)
 
             ' Invoke plugin point
@@ -9552,15 +9557,6 @@ Public Class cCore
                 Me.PluginManager.EcospaceRunInvalidated()
                 Me.PluginManager.EcospaceCloseScenario()
             End If
-
-            'delegates
-            Me.m_SpaceInterfaceCallBack = Nothing
-            Me.m_Ecospace.TimeStepDelegate = Nothing
-
-
-            'ToDo_jb 19-Nov-2010 EcospaceData clear sets all the counters to zero then calls all redimxxx 
-            'instead it should set all the arrays to nothing
-            'Me.m_EcoSpaceData.Clear()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".CloseEcoSpaceScenario() Exception: " & ex.Message)
