@@ -1,5 +1,4 @@
-﻿
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -13,94 +12,87 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
 Imports System.IO
 Imports EwECore
-Imports EwECore.Ecopath
-Imports EwECore.Ecosim
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-
 Imports EwECore.SpatialData
-Imports EwESpatialAssetsPlugin
+Imports EwEUtils.Core
 
-#End Region
+#End Region ' Imports
 
+Friend Class cSpatialDataLoader
 
-Public Class cSpatialDataLoader
-
-#Region "Private Variables"
+#Region " Private variables "
 
     Private m_core As cCore
     Private m_plugin As cDepthChangePluginPoint
-    'For now the name of the Depth Dataset is hardwired
-    'this may have to change
-    Private m_DepthDSName As String = "Roberts Bank Depth"
-    Private m_SpatialConfigFile As String
-
     Private m_DepthAdapter As cDepthDataAdapter
 
     Private Shared m_isAdapterLoaded As Boolean = False
 
-#End Region
+#End Region ' Private variables
 
-#Region "Public Stuff"
+#Region " Public stuff "
 
-#Region "Methods"
+#Region " Methods "
 
-    Public Sub New(thePlugin As cDepthChangePluginPoint)
+    Public Sub New(plugin As cDepthChangePluginPoint)
 
-        Me.m_core = thePlugin.Core
-        Me.m_plugin = thePlugin
+        Me.m_core = plugin.Core
+        Me.m_plugin = plugin
+
+        My.Settings.Reload()
+        Me.LoadSpatialConfigFile(My.Settings.MRUConfig)
 
     End Sub
 
+    Public Function LoadSpatialConfigFile(strFile As String) As Boolean
 
-    Public Function LoadSpatialConfigFile(theConfigFile As String) As Boolean
+        If (String.IsNullOrWhiteSpace(strFile)) Then Return False
+
+        Dim msg As cMessage = Nothing
         Dim bLoaded As Boolean = False
 
         Try
-            Me.SpatialConfigFile = theConfigFile
+            Me.SpatialConfigFile = strFile
             If Me.ReadSpatialConfigFile() Then
                 bLoaded = True
+                My.Settings.MRUConfig = strFile
+                My.Settings.Save()
             End If 'Me.m_SpatialDataLoader.LoadSpatialConfigFile(filename)
 
         Catch ex As Exception
             bLoaded = False
         End Try
 
+        If (bLoaded) Then
+            msg = New cMessage("Depth plugin has loaded configuration file " & strFile, _
+                               eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
+            msg.Hyperlink = IO.Path.GetDirectoryName(strFile)
+        Else
+            msg = New cMessage("Failed to load spatial configuration file " & strFile, _
+                               eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+        End If
+        Me.m_core.Messages.SendMessage(msg)
+
         Debug.Assert(bLoaded, "Failed to Configure and Load Spatial data.")
         Return bLoaded
+
     End Function
 
-#End Region
+#End Region ' Methods
 
-#Region "Properties"
+#Region " Properties "
 
-    Public Property DepthDataSetName As String
-        Get
-            Return Me.m_DepthDSName
-        End Get
-        Set(value As String)
-            Me.m_DepthDSName = value
-        End Set
-    End Property
-
+    Public Property DepthDataSetName As String = "Roberts Bank Depth"
 
     Public Property SpatialConfigFile As String
-        Get
-            Return Me.m_SpatialConfigFile
-        End Get
-        Set(value As String)
-            Me.m_SpatialConfigFile = value
-        End Set
-    End Property
 
     Public ReadOnly Property DataSets() As List(Of EwEUtils.SpatialData.ISpatialDataSet)
         Get
@@ -108,12 +100,11 @@ Public Class cSpatialDataLoader
         End Get
     End Property
 
-#End Region
+#End Region ' Properties
 
-#End Region
+#End Region ' Public stuff
 
-#Region "Private Stuff"
-
+#Region " Private stuff "
 
     Private Function ReadSpatialConfigFile() As Boolean
 
@@ -138,7 +129,6 @@ Public Class cSpatialDataLoader
 
     End Function
 
-
     Public Function InitDepthDataSet() As Boolean
         Dim bReturn As Boolean = False
 
@@ -162,7 +152,6 @@ Public Class cSpatialDataLoader
         Debug.Assert(bReturn, Me.ToString + ".InitSpatialData() Failed to initialize the spatial data.")
         Return bReturn
     End Function
-
 
     Public Sub AddedDepthAdapter()
         Try
@@ -204,8 +193,6 @@ Public Class cSpatialDataLoader
         Return Nothing
     End Function
 
-
-
     Private Function getDataSetByName(name As String) As EwEUtils.SpatialData.ISpatialDataSet
 
         For Each ds As EwEUtils.SpatialData.ISpatialDataSet In Plugin.Core.SpatialDataConnectionManager.DatasetManager
@@ -223,7 +210,6 @@ Public Class cSpatialDataLoader
         End Get
     End Property
 
-
-#End Region
+#End Region ' Private stuff
 
 End Class

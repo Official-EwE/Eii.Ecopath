@@ -1,5 +1,4 @@
-﻿
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -13,46 +12,23 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
-
-Option Strict On
-Option Explicit On
-
+'
 
 #Region " Imports "
 
-Imports System.IO
+Option Strict On
+Option Explicit On
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
-#End Region
+#End Region ' Imports
 
-''' <summary>
-''' Base code that can be used as a template to create a new plug-in.
-''' </summary>
-''' <remarks>
-''' <para>This plugin responds to:</para>
-''' <list type="bullet">
-''' <item><description>loading a model,</description>></item>
-''' <item><description>saving a model,</description>></item>
-''' <item><description>closing a model,</description>></item>
-''' <item><description>initialization of the Core,</description>></item>
-''' <item><description>initialization of Ecopath,</description>></item>
-''' <item><description>initialization of Ecosim,</description>></item>
-''' <item><description>initialization of Ecospace.</description>></item>
-''' </list>
-''' <para>In order to run and test this plugin it must be integrated within the EwE6 scientific interface. 
-''' To achieve this, add this project to the EwE6 solution, and reference this project from within the 
-''' ScientificInterface. This ensures that your plug-in will be built with EwE6, and will be loaded by the 
-''' EwE6 plug-in manager when you run EwE6.</para>
-''' </remarks>
-''' 
 Public Class cDepthChangePluginPoint
     Implements EwEPlugin.IPlugin
     Implements EwEPlugin.ICorePlugin
@@ -64,7 +40,7 @@ Public Class cDepthChangePluginPoint
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
 
-#Region " Local variables"
+#Region " Private variables "
 
     ''' <summary>The core that this plug-in can use</summary>
     Private m_core As cCore
@@ -82,33 +58,31 @@ Public Class cDepthChangePluginPoint
     Private m_SpatialDataLoader As cSpatialDataLoader
     Private m_EwEIsChanged As Boolean
 
-#End Region
+#End Region ' Private variables
 
-#Region "Modeling Code"
+#Region " Modeling Code "
 
-#Region "Public Methods and Properties"
+#Region " Public Methods and Properties "
 
-    Public ReadOnly Property SpatialDataLoader As cSpatialDataLoader
+    Friend ReadOnly Property SpatialDataLoader As cSpatialDataLoader
         Get
             Return Me.m_SpatialDataLoader
         End Get
     End Property
 
+#End Region ' Public Methods and Properties
 
-#End Region
-
-#Region "Private stuff"
+#Region " Private stuff "
 
     Private Sub InitSpatialData()
         m_SpatialDataLoader = New cSpatialDataLoader(Me)
     End Sub
 
+#End Region ' Private stuff
 
-#End Region
+#End Region ' Modeling Code
 
-#End Region
-
-#Region "Plugin Code"
+#Region " Plugin Code "
 
 #Region "Ecopath, Ecosim and Ecospace events"
 
@@ -313,7 +287,7 @@ Public Class cDepthChangePluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Roberts Bank Spatial data."
+            Return "Roberts Bank Spatial data"
         End Get
     End Property
 
@@ -366,8 +340,7 @@ Public Class cDepthChangePluginPoint
             If Not bHasInterface Then
 
                 ' Create the EwE form-derived user interface for this plug-in
-                Me.m_form = New frmEwEPlugin()
-                Me.m_form.Init(Me)
+                Me.m_form = New frmEwEPlugin(Me)
                 ' Pass on the UI context to the form
                 Me.m_form.UIContext = m_uic
 
@@ -428,7 +401,7 @@ Public Class cDepthChangePluginPoint
 
 #End Region ' User Interface plug-in implementation
 
-#Region "IPlugin implementation"
+#Region " IPlugin implementation "
 
     Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
         Get
@@ -454,9 +427,9 @@ Public Class cDepthChangePluginPoint
         End Get
     End Property
 
-#End Region
+#End Region ' IPlugin implementation
 
-#End Region
+#End Region ' Plugin Code
 
 End Class
 
