@@ -312,6 +312,8 @@ Namespace Other
             Return DirectCast(lvi.Tag, cColorItem)
         End Function
 
+        Private m_bInUpdate As Boolean = False
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper method to enable and update UI controls.
@@ -326,6 +328,8 @@ Namespace Other
             Dim strDescription As String = ""
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
+            Me.m_bInUpdate = True
+
             If (item IsNot Nothing) Then
                 bShowForeground = (item.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet)
                 bShowBackground = (item.BackColorType <> cStyleGuide.eApplicationColorType.NotSet)
@@ -335,11 +339,11 @@ Namespace Other
 
             'Update the selection in combobox
             If (bShowForeground) Then
-                Me.UpdateColorComboboxItem(Me.m_cmbItemForeground, sg.ApplicationColor(item.ForeColorType))
+                Me.UpdateColorComboboxItem(Me.m_cmbItemForeground, item.ForeColor) ' sg.ApplicationColor(item.ForeColorType))
             End If
 
             If (bShowBackground) Then
-                Me.UpdateColorComboboxItem(Me.m_cmbItemBackground, sg.ApplicationColor(item.BackColorType))
+                Me.UpdateColorComboboxItem(Me.m_cmbItemBackground, item.BackColor) ' sg.ApplicationColor(item.BackColorType))
             End If
 
             ' Enable/disable foreground color related controls
@@ -357,6 +361,8 @@ Namespace Other
 
             ' Avoid confusion by blanking out the back color combo if no back color should be shown
             If Not bShowBackground Then Me.m_cmbItemBackground.SelectedIndex = -1
+
+            Me.m_bInUpdate = False
 
             ' Invalidate preview
             Me.m_plPreview.Invalidate()
@@ -389,7 +395,7 @@ Namespace Other
         Private Sub UpdateBackColor(ByVal ci As cColorItem, ByVal clr As Color)
 
             ' Sanity check
-            If ci Is Nothing Then Return
+            If (ci Is Nothing) Then Return
 
             ' Update the color in the data structure
             ci.BackColor = clr
@@ -599,6 +605,8 @@ Namespace Other
         Private Sub cbItemForeground_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbItemForeground.SelectedIndexChanged
 
+            If (Me.m_bInUpdate) Then Return
+
             Dim ci As cColorItem = Me.SelectedColor()
             Dim selClr As cKnownColorItem = DirectCast(Me.m_cmbItemForeground.SelectedItem, cKnownColorItem)
 
@@ -616,6 +624,8 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Private Sub cbItemBackground_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbItemBackground.SelectedIndexChanged
+
+            If (Me.m_bInUpdate) Then Return
 
             Dim ci As cColorItem = Me.SelectedColor()
             Dim selClr As cKnownColorItem = DirectCast(Me.m_cmbItemBackground.SelectedItem, cKnownColorItem)
