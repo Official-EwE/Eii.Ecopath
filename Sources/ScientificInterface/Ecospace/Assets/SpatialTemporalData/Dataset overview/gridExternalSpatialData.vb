@@ -98,14 +98,14 @@ Namespace Ecospace
             Me.Redim(1, Me.m_nBaseCols + cSpatialDataStructures.cMAX_CONN)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell("Ecospace map layer")
+            Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell("Enable external data")
 
             For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
                 Me(0, Me.m_nBaseCols + i - 1) = New EwEColumnHeaderCell(CStr(i))
             Next
 
-            Me.FixedColumnWidths = False
+            Me.FixedColumnWidths = True
             Me.FixedColumns = Me.m_nBaseCols
 
         End Sub

@@ -104,7 +104,7 @@ Namespace SpatialData
             ReDim Me.m_astrBackupFiles(iNumItems)
             ReDim Me.m_bIsEnabled(iNumItems)
 
-            For i As Integer = 0 To iNumItems - 1
+            For i As Integer = 0 To iNumItems
                 Me.m_bIsEnabled(i) = True
             Next
 

@@ -92,7 +92,7 @@ Friend Class cSpatialDataLoader
 
     Public Property DepthDataSetName As String = "Roberts Bank Depth"
 
-    Public Property SpatialConfigFile As String
+    Public Property SpatialConfigFile As String = ""
 
     Public ReadOnly Property DataSets() As List(Of EwEUtils.SpatialData.ISpatialDataSet)
         Get
@@ -132,6 +132,9 @@ Friend Class cSpatialDataLoader
     Public Function InitDepthDataSet() As Boolean
         Dim bReturn As Boolean = False
 
+        ' Sanity check
+        If (String.IsNullOrWhiteSpace(Me.DepthDataSetName)) Then Return False
+
         Try
             Debug.Assert(Me.m_DepthAdapter IsNot Nothing, "Oppss... DepthChangePluginPoint not configured correctly.")
             Dim DataSet As EwEUtils.SpatialData.ISpatialDataSet
@@ -142,6 +145,7 @@ Friend Class cSpatialDataLoader
                 'Added the DataSet to the DepthAdapter
                 Dim conn As cSpatialDataConnection = Me.m_DepthAdapter.AddConnection(0)
                 conn.Dataset = DataSet
+                My.Settings.MRUDataset = Me.DepthDataSetName
                 bReturn = True
             End If
 

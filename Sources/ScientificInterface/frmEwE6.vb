@@ -213,16 +213,19 @@ Public Class frmEwE6
     Private WithEvents m_cmdNewEcosimScenario As cCommand = Nothing
     Private WithEvents m_cmdLoadEcosimScenario As cCommand = Nothing
     'Private WithEvents m_cmdSaveEcosimScenario As cCommand = Nothing
+    Private WithEvents m_cmdCloseEcosimScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcosimScenarioAs As cCommand = Nothing
     Private WithEvents m_cmdDeleteEcosimScenario As cCommand = Nothing
     Private WithEvents m_cmdNewEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdLoadEcospaceScenario As cCommand = Nothing
     'Private WithEvents m_cmdSaveEcospaceScenario As cCommand = Nothing
+    Private WithEvents m_cmdCloseEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcospaceScenarioAS As cCommand = Nothing
     Private WithEvents m_cmdDeleteEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdNewEcotracerScenario As cCommand = Nothing
     Private WithEvents m_cmdLoadEcotracerScenario As cCommand = Nothing
     'Private WithEvents m_cmdSaveEcotracerScenario As cCommand = Nothing
+    Private WithEvents m_cmdCloseEcotracerScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcotracerScenarioAS As cCommand = Nothing
     Private WithEvents m_cmdDeleteEcotracerScenario As cCommand = Nothing
     Private WithEvents m_cmdCloseAllForms As cCommand = Nothing
@@ -475,6 +478,10 @@ Public Class frmEwE6
         'Me.m_cmdSaveEcosimScenario = New cCommand(cmdh, "SaveEcosimScenario")
         'Me.m_cmdSaveEcosimScenario.AddControl(Me.m_tsmiEcosimSave)
 
+        'Create and configure 'close ecosim scenario' command
+        Me.m_cmdCloseEcosimScenario = New cCommand(cmdh, "CloseEcosimScenario")
+        Me.m_cmdCloseEcosimScenario.AddControl(Me.m_tsmiEcosimClose)
+
         'Create and configure 'save ecosim scenario as' command
         Me.m_cmdSaveEcosimScenarioAs = New cCommand(cmdh, "SaveEcosimScenarioAs")
         Me.m_cmdSaveEcosimScenarioAs.AddControl(Me.m_tsmiEcosimSaveAs)
@@ -496,6 +503,10 @@ Public Class frmEwE6
         'Me.m_cmdSaveEcospaceScenario = New cCommand(cmdh, "SaveEcospaceScenario")
         'Me.m_cmdSaveEcospaceScenario.AddControl(Me.m_tsmiEcospaceSave)
 
+        'Create and configure 'close ecospace scenario' command
+        Me.m_cmdCloseEcospaceScenario = New cCommand(cmdh, "CloseEcospaceScenario")
+        Me.m_cmdCloseEcospaceScenario.AddControl(Me.m_tsmiEcospaceClose)
+
         'Create and configure 'save ecospace scenario as' command
         Me.m_cmdSaveEcospaceScenarioAS = New cCommand(cmdh, "SaveEcospaceScenarioAs")
         Me.m_cmdSaveEcospaceScenarioAS.AddControl(Me.m_tsmiEcospaceSaveAs)
@@ -516,6 +527,9 @@ Public Class frmEwE6
         ''Create and configure 'save ecotracer scenario' command
         'Me.m_cmdSaveEcotracerScenario = New cCommand(cmdh, "SaveEcotracerScenario")
         'Me.m_cmdSaveEcotracerScenario.AddControl(Me.m_tsmiEcotracerSave)
+
+        'Create and configure 'close ecotracer scenario' command
+        Me.m_cmdCloseEcotracerScenario = New cCommand(cmdh, "CloseEcotracerScenario")
 
         'Create and configure 'save ecotracer scenario as' command
         Me.m_cmdSaveEcotracerScenarioAS = New cCommand(cmdh, "SaveEcotracerScenarioAs")
@@ -3484,6 +3498,22 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
+    ''' Command handler; closes the current Ecosim scenario
+    ''' </summary>
+    Private Sub OnCloseEcosimScenario(ByVal cmd As cCommand) Handles m_cmdCloseEcosimScenario.OnInvoke
+        Me.Core.CloseEcosimScenario()
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; takes care of enabling and disabling the 
+    ''' <see cref="m_cmdCloseEcosimScenario">Close Ecosim Scenario</see> command.
+    ''' </summary>
+    Private Sub OnUpdateCloseEcosimScenario(ByVal cmd As cCommand) Handles m_cmdCloseEcosimScenario.OnUpdate
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcosimLoaded And Not m.IsBusy
+    End Sub
+
+    ''' <summary>
     ''' Command handler; saves an Ecosim scenario to a new name
     ''' </summary>
     Private Sub OnSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnInvoke
@@ -3759,6 +3789,17 @@ Public Class frmEwE6
         Handles m_cmdLoadEcospaceScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
+    End Sub
+
+    Private Sub OnCloseEcospaceScenario(ByVal cmd As cCommand) _
+        Handles m_cmdCloseEcospaceScenario.OnInvoke
+        Me.Core.CloseEcospaceScenario()
+    End Sub
+
+    Private Sub OnUpdateCloseEcospaceScenario(ByVal cmd As cCommand) _
+        Handles m_cmdCloseEcospaceScenario.OnUpdate
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -4235,6 +4276,24 @@ Public Class frmEwE6
         Handles m_cmdLoadEcotracerScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; closes the current Ecotracer scenario
+    ''' </summary>
+    Private Sub OnCloseEcotracerScenario(ByVal cmd As cCommand) _
+        Handles m_cmdLoadEcotracerScenario.OnInvoke
+        Me.Core.CloseEcotracerScenario()
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; takes care of enabling and disabling the 
+    ''' <see cref="m_cmdCloseEcotracerScenario">Close Ecotracer Scenario</see> command.
+    ''' </summary>
+    Private Sub OnUpdateCloseEcotracerScenario(ByVal cmd As cCommand) _
+        Handles m_cmdCloseEcotracerScenario.OnUpdate
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcotracerLoaded And Not m.IsBusy
     End Sub
 
     Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) _

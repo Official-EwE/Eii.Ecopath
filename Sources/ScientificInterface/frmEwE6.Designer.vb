@@ -60,6 +60,7 @@ Partial Public Class frmEwE6
         Dim m_tssHelp3 As System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceLoad = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcospaceClose = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceSaveAs = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDelete = New System.Windows.Forms.ToolStripMenuItem()
@@ -73,6 +74,7 @@ Partial Public Class frmEwE6
         Me.m_tsmiEcospaceInputMaps = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tssEcospace4 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsmiEcospaceDatasets = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcospaceManageConfigurations = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem()
@@ -148,7 +150,7 @@ Partial Public Class frmEwE6
         Me.m_tsbnAutosaveResults = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
-        Me.m_tsmiEcospaceManageConfigurations = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcosimClose = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -238,7 +240,7 @@ Partial Public Class frmEwE6
         '
         'MenuEcospace
         '
-        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceImportLayers, Me.m_tsmiEcospaceExportLayers, m_tssEcospace3, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDefineImportanceMaps, Me.m_tsmiEcospaceInputMaps, Me.m_tssEcospace4, Me.m_tsmiEcospaceDatasets, Me.m_tsmiEcospaceManageConfigurations})
+        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, Me.m_tsmiEcospaceClose, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceImportLayers, Me.m_tsmiEcospaceExportLayers, m_tssEcospace3, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDefineImportanceMaps, Me.m_tsmiEcospaceInputMaps, Me.m_tssEcospace4, Me.m_tsmiEcospaceDatasets, Me.m_tsmiEcospaceManageConfigurations})
         MenuEcospace.Name = "MenuEcospace"
         resources.ApplyResources(MenuEcospace, "MenuEcospace")
         '
@@ -251,6 +253,11 @@ Partial Public Class frmEwE6
         '
         resources.ApplyResources(Me.m_tsmiEcospaceLoad, "m_tsmiEcospaceLoad")
         Me.m_tsmiEcospaceLoad.Name = "m_tsmiEcospaceLoad"
+        '
+        'm_tsmiEcospaceClose
+        '
+        Me.m_tsmiEcospaceClose.Name = "m_tsmiEcospaceClose"
+        resources.ApplyResources(Me.m_tsmiEcospaceClose, "m_tsmiEcospaceClose")
         '
         'm_tsmiEcospaceSave
         '
@@ -316,6 +323,11 @@ Partial Public Class frmEwE6
         '
         resources.ApplyResources(Me.m_tsmiEcospaceDatasets, "m_tsmiEcospaceDatasets")
         Me.m_tsmiEcospaceDatasets.Name = "m_tsmiEcospaceDatasets"
+        '
+        'm_tsmiEcospaceManageConfigurations
+        '
+        Me.m_tsmiEcospaceManageConfigurations.Name = "m_tsmiEcospaceManageConfigurations"
+        resources.ApplyResources(Me.m_tsmiEcospaceManageConfigurations, "m_tsmiEcospaceManageConfigurations")
         '
         'sep3
         '
@@ -592,7 +604,7 @@ Partial Public Class frmEwE6
         '
         'MenuEcosim
         '
-        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, Me.m_tsmiEcosimDelete, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesExport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights})
+        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, Me.m_tsmiEcosimClose, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, Me.m_tsmiEcosimDelete, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesExport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights})
         Me.MenuEcosim.Name = "MenuEcosim"
         resources.ApplyResources(Me.MenuEcosim, "MenuEcosim")
         '
@@ -748,10 +760,10 @@ Partial Public Class frmEwE6
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
-        'm_tsmiEcospaceManageConfigurations
+        'm_tsmiEcosimClose
         '
-        Me.m_tsmiEcospaceManageConfigurations.Name = "m_tsmiEcospaceManageConfigurations"
-        resources.ApplyResources(Me.m_tsmiEcospaceManageConfigurations, "m_tsmiEcospaceManageConfigurations")
+        Me.m_tsmiEcosimClose.Name = "m_tsmiEcosimClose"
+        resources.ApplyResources(Me.m_tsmiEcosimClose, "m_tsmiEcosimClose")
         '
         'frmEwE6
         '
@@ -864,6 +876,8 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiHelpFeedback As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceDatasets As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceManageConfigurations As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceClose As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcosimClose As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 
