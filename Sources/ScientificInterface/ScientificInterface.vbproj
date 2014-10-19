@@ -1952,18 +1952,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
-      <Project>{317F27E7-08D2-4EB6-ABC8-DEA7D78951C9}</Project>
-      <Name>EwEAquamapsEnvDataImporterPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEBioDivIndicatorsPlugin\EwEBioDiversityIndicatorsPlugin.vbproj">
-      <Project>{ADA9F604-2A16-4816-9FE5-31487778902D}</Project>
-      <Name>EwEBioDiversityIndicatorsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
-      <Project>{C1081265-6A9D-4087-8BB5-E907D86FD719}</Project>
-      <Name>EwESpatialAssetsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
