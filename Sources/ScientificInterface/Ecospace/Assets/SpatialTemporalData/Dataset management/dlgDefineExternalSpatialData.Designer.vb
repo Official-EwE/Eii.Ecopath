@@ -48,16 +48,17 @@ Namespace Ecospace.Controls
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_btnConfigure = New System.Windows.Forms.Button()
             Me.m_cbEnableIndexing = New System.Windows.Forms.CheckBox()
-            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnSwitchConfig = New System.Windows.Forms.ToolStripButton()
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
-            Me.m_gridDatasets = New ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData()
             Me.m_btnCreate = New System.Windows.Forms.Button()
             Me.m_cmbTemplates = New System.Windows.Forms.ComboBox()
             Me.m_lblNew = New System.Windows.Forms.Label()
             Me.m_hdrExisting = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_ts.SuspendLayout()
+            Me.m_btnExport = New System.Windows.Forms.Button()
+            Me.m_lblConfig = New System.Windows.Forms.Label()
+            Me.m_lblConfigValue = New System.Windows.Forms.Label()
+            Me.m_hdrDefineConnections = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnManageConfigurations = New System.Windows.Forms.Button()
+            Me.m_gridDatasets = New ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData()
+            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.SuspendLayout()
             '
             'm_btnDelete
@@ -84,28 +85,61 @@ Namespace Ecospace.Controls
             Me.m_cbEnableIndexing.Name = "m_cbEnableIndexing"
             Me.m_cbEnableIndexing.UseVisualStyleBackColor = True
             '
-            'm_ts
+            'm_btnCreate
             '
-            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSwitchConfig, Me.ToolStripSeparator1, Me.m_tsbnExport})
-            resources.ApplyResources(Me.m_ts, "m_ts")
-            Me.m_ts.Name = "m_ts"
-            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            resources.ApplyResources(Me.m_btnCreate, "m_btnCreate")
+            Me.m_btnCreate.Name = "m_btnCreate"
+            Me.m_btnCreate.UseVisualStyleBackColor = True
             '
-            'm_tsbnSwitchConfig
+            'm_cmbTemplates
             '
-            resources.ApplyResources(Me.m_tsbnSwitchConfig, "m_tsbnSwitchConfig")
-            Me.m_tsbnSwitchConfig.Name = "m_tsbnSwitchConfig"
+            resources.ApplyResources(Me.m_cmbTemplates, "m_cmbTemplates")
+            Me.m_cmbTemplates.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbTemplates.FormattingEnabled = True
+            Me.m_cmbTemplates.Name = "m_cmbTemplates"
             '
-            'ToolStripSeparator1
+            'm_lblNew
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            resources.ApplyResources(Me.m_lblNew, "m_lblNew")
+            Me.m_lblNew.Name = "m_lblNew"
             '
-            'm_tsbnExport
+            'm_hdrExisting
             '
-            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
-            Me.m_tsbnExport.Name = "m_tsbnExport"
+            resources.ApplyResources(Me.m_hdrExisting, "m_hdrExisting")
+            Me.m_hdrExisting.CanCollapseParent = False
+            Me.m_hdrExisting.CollapsedParentHeight = 0
+            Me.m_hdrExisting.IsCollapsed = False
+            Me.m_hdrExisting.Name = "m_hdrExisting"
+            '
+            'm_btnExport
+            '
+            resources.ApplyResources(Me.m_btnExport, "m_btnExport")
+            Me.m_btnExport.Name = "m_btnExport"
+            Me.m_btnExport.UseVisualStyleBackColor = True
+            '
+            'm_lblConfig
+            '
+            resources.ApplyResources(Me.m_lblConfig, "m_lblConfig")
+            Me.m_lblConfig.Name = "m_lblConfig"
+            '
+            'm_lblConfigValue
+            '
+            resources.ApplyResources(Me.m_lblConfigValue, "m_lblConfigValue")
+            Me.m_lblConfigValue.Name = "m_lblConfigValue"
+            '
+            'm_hdrDefineConnections
+            '
+            resources.ApplyResources(Me.m_hdrDefineConnections, "m_hdrDefineConnections")
+            Me.m_hdrDefineConnections.CanCollapseParent = False
+            Me.m_hdrDefineConnections.CollapsedParentHeight = 0
+            Me.m_hdrDefineConnections.IsCollapsed = False
+            Me.m_hdrDefineConnections.Name = "m_hdrDefineConnections"
+            '
+            'm_btnManageConfigurations
+            '
+            resources.ApplyResources(Me.m_btnManageConfigurations, "m_btnManageConfigurations")
+            Me.m_btnManageConfigurations.Name = "m_btnManageConfigurations"
+            Me.m_btnManageConfigurations.UseVisualStyleBackColor = True
             '
             'm_gridDatasets
             '
@@ -139,31 +173,13 @@ Namespace Ecospace.Controls
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatasets.UIContext = Nothing
             '
-            'm_btnCreate
+            'CEwEHeaderLabel1
             '
-            resources.ApplyResources(Me.m_btnCreate, "m_btnCreate")
-            Me.m_btnCreate.Name = "m_btnCreate"
-            Me.m_btnCreate.UseVisualStyleBackColor = True
-            '
-            'm_cmbTemplates
-            '
-            resources.ApplyResources(Me.m_cmbTemplates, "m_cmbTemplates")
-            Me.m_cmbTemplates.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbTemplates.FormattingEnabled = True
-            Me.m_cmbTemplates.Name = "m_cmbTemplates"
-            '
-            'm_lblNew
-            '
-            resources.ApplyResources(Me.m_lblNew, "m_lblNew")
-            Me.m_lblNew.Name = "m_lblNew"
-            '
-            'm_hdrExisting
-            '
-            resources.ApplyResources(Me.m_hdrExisting, "m_hdrExisting")
-            Me.m_hdrExisting.CanCollapseParent = False
-            Me.m_hdrExisting.CollapsedParentHeight = 0
-            Me.m_hdrExisting.IsCollapsed = False
-            Me.m_hdrExisting.Name = "m_hdrExisting"
+            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
+            Me.CEwEHeaderLabel1.CanCollapseParent = False
+            Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
+            Me.CEwEHeaderLabel1.IsCollapsed = False
+            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
             '
             'dlgDefineExternalSpatialData
             '
@@ -171,23 +187,26 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_lblConfigValue)
+            Me.Controls.Add(Me.m_lblConfig)
+            Me.Controls.Add(Me.m_hdrDefineConnections)
+            Me.Controls.Add(Me.CEwEHeaderLabel1)
             Me.Controls.Add(Me.m_hdrExisting)
             Me.Controls.Add(Me.m_lblNew)
             Me.Controls.Add(Me.m_cmbTemplates)
-            Me.Controls.Add(Me.m_ts)
             Me.Controls.Add(Me.m_cbEnableIndexing)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_gridDatasets)
+            Me.Controls.Add(Me.m_btnManageConfigurations)
             Me.Controls.Add(Me.m_btnCreate)
             Me.Controls.Add(Me.m_btnConfigure)
+            Me.Controls.Add(Me.m_btnExport)
             Me.Controls.Add(Me.m_btnDelete)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "dlgDefineExternalSpatialData"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
-            Me.m_ts.ResumeLayout(False)
-            Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -197,14 +216,16 @@ Namespace Ecospace.Controls
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_btnConfigure As System.Windows.Forms.Button
         Private WithEvents m_cbEnableIndexing As System.Windows.Forms.CheckBox
-        Private WithEvents m_ts As cEwEToolstrip
-        Private WithEvents m_tsbnSwitchConfig As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_btnCreate As System.Windows.Forms.Button
         Private WithEvents m_cmbTemplates As System.Windows.Forms.ComboBox
         Private WithEvents m_lblNew As System.Windows.Forms.Label
         Private WithEvents m_hdrExisting As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnExport As System.Windows.Forms.Button
+        Private WithEvents m_lblConfig As System.Windows.Forms.Label
+        Private WithEvents m_lblConfigValue As System.Windows.Forms.Label
+        Private WithEvents m_hdrDefineConnections As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnManageConfigurations As System.Windows.Forms.Button
+        Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     End Class
 
 End Namespace

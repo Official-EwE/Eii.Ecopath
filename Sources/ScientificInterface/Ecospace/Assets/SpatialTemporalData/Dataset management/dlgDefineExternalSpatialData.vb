@@ -92,7 +92,9 @@ Namespace Ecospace.Controls
 
             MyBase.OnLoad(e)
 
-            'Me.m_tsbnExport.Image = ScientificInterfaceShared.My.Resources.ExportDatabaseHS
+            If (Me.UIContext Is Nothing) Then Return
+
+            Me.m_btnExport.Image = ScientificInterfaceShared.My.Resources.ExportDatabaseHS
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -102,6 +104,8 @@ Namespace Ecospace.Controls
 
             Me.CenterToParent()
             Me.Reload()
+            Me.UpdateControls()
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
@@ -128,8 +132,15 @@ Namespace Ecospace.Controls
             Me.m_btnCreate.Enabled = bHasTemplate
             Me.m_btnConfigure.Enabled = bHasSelection And bCanConfig
             Me.m_btnDelete.Enabled = bHasSelection
-            Me.m_tsbnExport.Enabled = bHasDS
+            Me.m_btnExport.Enabled = bHasDS
 
+            Me.m_lblConfigValue.Text = cStringUtils.CompactString(Me.m_manSets.CurrentConfigFile, Me.m_lblConfigValue.ClientSize.Width, Me.Font)
+
+        End Sub
+
+        Protected Overrides Sub OnResizeEnd(e As System.EventArgs)
+            MyBase.OnResizeEnd(e)
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Form overrides
@@ -137,7 +148,7 @@ Namespace Ecospace.Controls
 #Region " Event handlers "
 
         Private Sub OnCreateDataset(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnCreate.Click
+            Handles m_btnCreate.Click, m_btnManageConfigurations.Click
 
             Me.Cursor = Cursors.WaitCursor
             Try
@@ -161,7 +172,7 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub OnExport(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnExport.Click
+            Handles m_btnExport.Click
             Try
                 Dim dlg As New dlgExportSpatialData(Me.UIContext)
                 dlg.ShowDialog(Me)
@@ -215,8 +226,8 @@ Namespace Ecospace.Controls
             Me.Close()
         End Sub
 
-        Private Sub OnSwitchConfig(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnSwitchConfig.Click
+        Private Sub OnManageConfigurations(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnManageConfigurations.Click
             Try
                 Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("ManageSpatialDatasetConfigurations")
                 cmd.Invoke()
@@ -230,13 +241,10 @@ Namespace Ecospace.Controls
 
 #Region " Internals "
 
-        Private Property Varname As eVarNameFlags
+        Private ReadOnly Property Varname As eVarNameFlags
             Get
                 Return eVarNameFlags.NotSet
             End Get
-            Set(value As eVarNameFlags)
-
-            End Set
         End Property
 
         Private Property SelectedDataset As ISpatialDataSet
