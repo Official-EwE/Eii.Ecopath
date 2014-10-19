@@ -58,11 +58,11 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_lblMean = New System.Windows.Forms.Label()
         Me.m_lblSD = New System.Windows.Forms.Label()
         Me.m_btChangeShape = New System.Windows.Forms.Button()
+        Me.m_tbxMean = New System.Windows.Forms.TextBox()
+        Me.m_tbxSD = New System.Windows.Forms.TextBox()
         Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
         Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_tbxMean = New System.Windows.Forms.TextBox()
-        Me.m_tbxSD = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -157,6 +157,16 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_btChangeShape.Name = "m_btChangeShape"
         Me.m_btChangeShape.UseVisualStyleBackColor = True
         '
+        'm_tbxMean
+        '
+        resources.ApplyResources(Me.m_tbxMean, "m_tbxMean")
+        Me.m_tbxMean.Name = "m_tbxMean"
+        '
+        'm_tbxSD
+        '
+        resources.ApplyResources(Me.m_tbxSD, "m_tbxSD")
+        Me.m_tbxSD.Name = "m_tbxSD"
+        '
         'm_hdrReponse
         '
         resources.ApplyResources(Me.m_hdrReponse, "m_hdrReponse")
@@ -188,16 +198,6 @@ Partial Class dlgDefineMapResponseAssignments
         resources.ApplyResources(Me.m_hdrConfig, "m_hdrConfig")
         Me.m_hdrConfig.IsCollapsed = False
         Me.m_hdrConfig.Name = "m_hdrConfig"
-        '
-        'm_tbxMean
-        '
-        resources.ApplyResources(Me.m_tbxMean, "m_tbxMean")
-        Me.m_tbxMean.Name = "m_tbxMean"
-        '
-        'm_tbxSD
-        '
-        resources.ApplyResources(Me.m_tbxSD, "m_tbxSD")
-        Me.m_tbxSD.Name = "m_tbxSD"
         '
         'dlgDefineMapResponseAssignments
         '

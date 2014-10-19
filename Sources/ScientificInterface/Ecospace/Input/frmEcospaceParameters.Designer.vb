@@ -56,10 +56,6 @@ Namespace Ecospace
             Me.m_gbEffort = New System.Windows.Forms.GroupBox()
             Me.m_rbEcopathEffort = New System.Windows.Forms.RadioButton()
             Me.m_rbPredictEffort = New System.Windows.Forms.RadioButton()
-            Me.m_gbCapCalcs = New System.Windows.Forms.GroupBox()
-            Me.m_rbHab = New System.Windows.Forms.RadioButton()
-            Me.m_rbCap = New System.Windows.Forms.RadioButton()
-            Me.m_rbCapHap = New System.Windows.Forms.RadioButton()
             Me.m_gbIMB = New System.Windows.Forms.GroupBox()
             Me.m_cbMovePackets = New System.Windows.Forms.CheckBox()
             Me.m_tbNumPackets = New System.Windows.Forms.TextBox()
@@ -120,7 +116,6 @@ Namespace Ecospace
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
             Me.m_gbEffort.SuspendLayout()
-            Me.m_gbCapCalcs.SuspendLayout()
             Me.m_gbIMB.SuspendLayout()
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -203,9 +198,8 @@ Namespace Ecospace
             'm_tlpModelTop
             '
             resources.ApplyResources(Me.m_tlpModelTop, "m_tlpModelTop")
-            Me.m_tlpModelTop.Controls.Add(Me.m_gbEffort, 3, 0)
+            Me.m_tlpModelTop.Controls.Add(Me.m_gbEffort, 2, 0)
             Me.m_tlpModelTop.Controls.Add(m_gbModel, 0, 0)
-            Me.m_tlpModelTop.Controls.Add(Me.m_gbCapCalcs, 2, 0)
             Me.m_tlpModelTop.Controls.Add(Me.m_gbIMB, 1, 0)
             Me.m_tlpModelTop.Name = "m_tlpModelTop"
             '
@@ -230,35 +224,6 @@ Namespace Ecospace
             Me.m_rbPredictEffort.Name = "m_rbPredictEffort"
             Me.m_rbPredictEffort.TabStop = True
             Me.m_rbPredictEffort.UseVisualStyleBackColor = True
-            '
-            'm_gbCapCalcs
-            '
-            Me.m_gbCapCalcs.Controls.Add(Me.m_rbHab)
-            Me.m_gbCapCalcs.Controls.Add(Me.m_rbCap)
-            Me.m_gbCapCalcs.Controls.Add(Me.m_rbCapHap)
-            resources.ApplyResources(Me.m_gbCapCalcs, "m_gbCapCalcs")
-            Me.m_gbCapCalcs.Name = "m_gbCapCalcs"
-            Me.m_gbCapCalcs.TabStop = False
-            '
-            'm_rbHab
-            '
-            resources.ApplyResources(Me.m_rbHab, "m_rbHab")
-            Me.m_rbHab.Name = "m_rbHab"
-            Me.m_rbHab.TabStop = True
-            Me.m_rbHab.UseVisualStyleBackColor = True
-            '
-            'm_rbCap
-            '
-            resources.ApplyResources(Me.m_rbCap, "m_rbCap")
-            Me.m_rbCap.Name = "m_rbCap"
-            Me.m_rbCap.TabStop = True
-            Me.m_rbCap.UseVisualStyleBackColor = True
-            '
-            'm_rbCapHap
-            '
-            resources.ApplyResources(Me.m_rbCapHap, "m_rbCapHap")
-            Me.m_rbCapHap.Name = "m_rbCapHap"
-            Me.m_rbCapHap.UseVisualStyleBackColor = True
             '
             'm_gbIMB
             '
@@ -642,8 +607,6 @@ Namespace Ecospace
             Me.m_tlpModelTop.ResumeLayout(False)
             Me.m_gbEffort.ResumeLayout(False)
             Me.m_gbEffort.PerformLayout()
-            Me.m_gbCapCalcs.ResumeLayout(False)
-            Me.m_gbCapCalcs.PerformLayout()
             Me.m_gbIMB.ResumeLayout(False)
             Me.m_gbIMB.PerformLayout()
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).EndInit()
@@ -701,10 +664,6 @@ Namespace Ecospace
         Private WithEvents m_cbUseExact As System.Windows.Forms.CheckBox
         Private WithEvents m_cbContaminantTracing As System.Windows.Forms.CheckBox
         Private WithEvents m_nudMaxIterations As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Private WithEvents m_gbCapCalcs As System.Windows.Forms.GroupBox
-        Private WithEvents m_rbHab As System.Windows.Forms.RadioButton
-        Private WithEvents m_rbCap As System.Windows.Forms.RadioButton
-        Private WithEvents m_rbCapHap As System.Windows.Forms.RadioButton
         Private WithEvents m_gbEffort As System.Windows.Forms.GroupBox
         Private WithEvents m_lbNumThreads As System.Windows.Forms.Label
         Private WithEvents m_nudNumThreads As ScientificInterfaceShared.Controls.cEwENumericUpDown

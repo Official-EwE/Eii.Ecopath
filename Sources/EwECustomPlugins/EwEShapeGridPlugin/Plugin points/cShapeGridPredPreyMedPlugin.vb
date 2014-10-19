@@ -28,7 +28,7 @@ Public Class cShapeGridPredPreyMedPlugin
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Mediation functions grid"
+            Return My.Resources.GRID_MED_PREDPREY
         End Get
     End Property
 
@@ -40,13 +40,13 @@ Public Class cShapeGridPredPreyMedPlugin
 
     Public Overrides ReadOnly Property Description() As String
         Get
-            Return "Display of all mediation functions in a grid format"
+            Return My.Resources.DESC_MED_PREDPREY
         End Get
     End Property
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "ndMediationGrid"
+            Return "ndMediationXGrid"
         End Get
     End Property
 

@@ -52,15 +52,22 @@ Namespace Controls
             Me.m_btnCancel = New System.Windows.Forms.Button()
             Me.m_plPreview = New System.Windows.Forms.Panel()
             Me.m_lbShapeFunctionTypes = New System.Windows.Forms.ListBox()
+            Me.m_tlpParams = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lblDUnit = New System.Windows.Forms.Label()
+            Me.m_lblCUnit = New System.Windows.Forms.Label()
+            Me.m_lblBUnit = New System.Windows.Forms.Label()
+            Me.m_tbxE = New System.Windows.Forms.TextBox()
+            Me.m_lblE = New System.Windows.Forms.Label()
+            Me.m_lblAUnit = New System.Windows.Forms.Label()
+            Me.m_lblEUnit = New System.Windows.Forms.Label()
+            Me.m_btDefaults = New System.Windows.Forms.Button()
+            Me.m_tlpInput = New System.Windows.Forms.TableLayoutPanel()
             Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_tlpParams = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_tbxMaxValue = New System.Windows.Forms.TextBox()
-            Me.m_lblMax = New System.Windows.Forms.Label()
-            Me.m_btDefaults = New System.Windows.Forms.Button()
-            Me.Label1 = New System.Windows.Forms.Label()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
+            Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_tlpParams.SuspendLayout()
+            Me.m_tlpInput.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tbxC
@@ -130,6 +137,76 @@ Namespace Controls
             Me.m_lbShapeFunctionTypes.Name = "m_lbShapeFunctionTypes"
             Me.m_lbShapeFunctionTypes.Sorted = True
             '
+            'm_tlpParams
+            '
+            resources.ApplyResources(Me.m_tlpParams, "m_tlpParams")
+            Me.m_tlpParams.Controls.Add(Me.m_lblDUnit, 2, 3)
+            Me.m_tlpParams.Controls.Add(Me.m_lblCUnit, 2, 2)
+            Me.m_tlpParams.Controls.Add(Me.m_lblBUnit, 2, 1)
+            Me.m_tlpParams.Controls.Add(Me.m_lblA, 0, 0)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxA, 1, 0)
+            Me.m_tlpParams.Controls.Add(Me.m_lblB, 0, 1)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxB, 1, 1)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxC, 1, 2)
+            Me.m_tlpParams.Controls.Add(Me.m_lblC, 0, 2)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxE, 1, 4)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxD, 1, 3)
+            Me.m_tlpParams.Controls.Add(Me.m_lblD, 0, 3)
+            Me.m_tlpParams.Controls.Add(Me.m_lblE, 0, 4)
+            Me.m_tlpParams.Controls.Add(Me.m_lblAUnit, 2, 0)
+            Me.m_tlpParams.Controls.Add(Me.m_lblEUnit, 2, 4)
+            Me.m_tlpParams.Name = "m_tlpParams"
+            '
+            'm_lblDUnit
+            '
+            resources.ApplyResources(Me.m_lblDUnit, "m_lblDUnit")
+            Me.m_lblDUnit.Name = "m_lblDUnit"
+            '
+            'm_lblCUnit
+            '
+            resources.ApplyResources(Me.m_lblCUnit, "m_lblCUnit")
+            Me.m_lblCUnit.Name = "m_lblCUnit"
+            '
+            'm_lblBUnit
+            '
+            resources.ApplyResources(Me.m_lblBUnit, "m_lblBUnit")
+            Me.m_lblBUnit.Name = "m_lblBUnit"
+            '
+            'm_tbxE
+            '
+            resources.ApplyResources(Me.m_tbxE, "m_tbxE")
+            Me.m_tbxE.Name = "m_tbxE"
+            '
+            'm_lblE
+            '
+            resources.ApplyResources(Me.m_lblE, "m_lblE")
+            Me.m_lblE.Name = "m_lblE"
+            '
+            'm_lblAUnit
+            '
+            resources.ApplyResources(Me.m_lblAUnit, "m_lblAUnit")
+            Me.m_lblAUnit.Name = "m_lblAUnit"
+            '
+            'm_lblEUnit
+            '
+            resources.ApplyResources(Me.m_lblEUnit, "m_lblEUnit")
+            Me.m_lblEUnit.Name = "m_lblEUnit"
+            '
+            'm_btDefaults
+            '
+            resources.ApplyResources(Me.m_btDefaults, "m_btDefaults")
+            Me.m_btDefaults.Name = "m_btDefaults"
+            Me.m_btDefaults.UseVisualStyleBackColor = True
+            '
+            'm_tlpInput
+            '
+            resources.ApplyResources(Me.m_tlpInput, "m_tlpInput")
+            Me.m_tlpInput.Controls.Add(Me.m_hdrShape, 0, 0)
+            Me.m_tlpInput.Controls.Add(Me.m_lbShapeFunctionTypes, 0, 1)
+            Me.m_tlpInput.Controls.Add(Me.m_tlpParams, 0, 3)
+            Me.m_tlpInput.Controls.Add(Me.m_hdrParams, 0, 2)
+            Me.m_tlpInput.Name = "m_tlpInput"
+            '
             'm_hdrShape
             '
             Me.m_hdrShape.CanCollapseParent = False
@@ -140,74 +217,40 @@ Namespace Controls
             '
             'm_hdrParams
             '
-            resources.ApplyResources(Me.m_hdrParams, "m_hdrParams")
             Me.m_hdrParams.CanCollapseParent = False
             Me.m_hdrParams.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrParams, "m_hdrParams")
             Me.m_hdrParams.IsCollapsed = False
             Me.m_hdrParams.Name = "m_hdrParams"
-            '
-            'm_tlpParams
-            '
-            resources.ApplyResources(Me.m_tlpParams, "m_tlpParams")
-            Me.m_tlpParams.Controls.Add(Me.m_lblA, 0, 0)
-            Me.m_tlpParams.Controls.Add(Me.m_tbxA, 1, 0)
-            Me.m_tlpParams.Controls.Add(Me.m_lblB, 0, 1)
-            Me.m_tlpParams.Controls.Add(Me.m_tbxB, 1, 1)
-            Me.m_tlpParams.Controls.Add(Me.m_tbxC, 1, 2)
-            Me.m_tlpParams.Controls.Add(Me.m_lblC, 0, 2)
-            Me.m_tlpParams.Controls.Add(Me.m_tbxMaxValue, 1, 4)
-            Me.m_tlpParams.Controls.Add(Me.m_tbxD, 1, 3)
-            Me.m_tlpParams.Controls.Add(Me.m_lblD, 0, 3)
-            Me.m_tlpParams.Controls.Add(Me.m_lblMax, 0, 4)
-            Me.m_tlpParams.Name = "m_tlpParams"
-            '
-            'm_tbxMaxValue
-            '
-            resources.ApplyResources(Me.m_tbxMaxValue, "m_tbxMaxValue")
-            Me.m_tbxMaxValue.Name = "m_tbxMaxValue"
-            '
-            'm_lblMax
-            '
-            resources.ApplyResources(Me.m_lblMax, "m_lblMax")
-            Me.m_lblMax.Name = "m_lblMax"
-            '
-            'm_btDefaults
-            '
-            resources.ApplyResources(Me.m_btDefaults, "m_btDefaults")
-            Me.m_btDefaults.Name = "m_btDefaults"
-            Me.m_btDefaults.UseVisualStyleBackColor = True
-            '
-            'Label1
-            '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
             '
             'm_tbxName
             '
             resources.ApplyResources(Me.m_tbxName, "m_tbxName")
             Me.m_tbxName.Name = "m_tbxName"
             '
-            'dlgChangeShape
+            'm_lblName
+            '
+            resources.ApplyResources(Me.m_lblName, "m_lblName")
+            Me.m_lblName.Name = "m_lblName"
+            '
+            'dlgChangeShape2
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_lblName)
             Me.Controls.Add(Me.m_tbxName)
-            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.m_tlpInput)
             Me.Controls.Add(Me.m_btDefaults)
-            Me.Controls.Add(Me.m_tlpParams)
-            Me.Controls.Add(Me.m_lbShapeFunctionTypes)
-            Me.Controls.Add(Me.m_hdrShape)
-            Me.Controls.Add(Me.m_hdrParams)
             Me.Controls.Add(Me.m_plPreview)
             Me.Controls.Add(Me.m_btnOk)
             Me.Controls.Add(Me.m_btnCancel)
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-            Me.Name = "dlgChangeShape"
+            Me.Name = "dlgChangeShape2"
             Me.ShowInTaskbar = False
             Me.m_tlpParams.ResumeLayout(False)
             Me.m_tlpParams.PerformLayout()
+            Me.m_tlpInput.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -227,11 +270,17 @@ Namespace Controls
         Private WithEvents m_hdrShape As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_lbShapeFunctionTypes As System.Windows.Forms.ListBox
         Private WithEvents m_tlpParams As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_btDefaults As System.Windows.Forms.Button
-        Friend WithEvents m_lblMax As System.Windows.Forms.Label
-        Friend WithEvents m_tbxMaxValue As System.Windows.Forms.TextBox
-        Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_btDefaults As System.Windows.Forms.Button
+        Private WithEvents m_tlpInput As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_tbxE As System.Windows.Forms.TextBox
+        Private WithEvents m_lblDUnit As System.Windows.Forms.Label
+        Private WithEvents m_lblCUnit As System.Windows.Forms.Label
+        Private WithEvents m_lblBUnit As System.Windows.Forms.Label
+        Private WithEvents m_lblAUnit As System.Windows.Forms.Label
+        Private WithEvents m_lblE As System.Windows.Forms.Label
+        Private WithEvents m_lblEUnit As System.Windows.Forms.Label
         Private WithEvents m_tbxName As System.Windows.Forms.TextBox
+        Private WithEvents m_lblName As System.Windows.Forms.Label
 
     End Class
 

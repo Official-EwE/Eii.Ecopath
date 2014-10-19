@@ -18,6 +18,8 @@
 
 Option Strict On
 
+Imports System
+
 Namespace Core
 
 #Region " Core execution state "
@@ -542,7 +544,7 @@ Namespace Core
         LayerBiomassForcing
 
         LayerBiomassRelativeForcing
-    
+
         ''' <summary>Ecospace/MPA importance weight of the weight layer.</summary>
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type.</summary>
@@ -683,7 +685,7 @@ Namespace Core
         ''' <summary>Ecospace maximum number of iterations.</summary>
         MaxIterations
 
-        ''' <summary>How Capacity is calculated in Ecospace.</summary>
+        ''' <summary>How capacity is calculated in Ecospace.</summary>
         EcospaceCapCalType
 
         ''' <summary>Use the default Ecospace output directory structure as defined by the core.</summary>
@@ -1467,7 +1469,6 @@ Namespace Core
         ''' <summary>
         ''' Is this model coupled to an external model Ecospace model
         ''' </summary>
-        ''' <remarks>False by default.</remarks>
         IsEcospaceModelCoupled
 
         ''' <summary>Group assigned to a given taxon.</summary>
@@ -2792,12 +2793,10 @@ Namespace Core
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eEcospaceCapacityCalType As Integer
-        ''' <summary>Both capacity inputs and habitats are used to calculate capacity.</summary>
-        CapacityAndHabitat = 0
         ''' <summary>Only capacity inputs are used to calculate capacity. Habitats are ignored.</summary>
-        Capacity = 1
+        Capacity = 0
         ''' <summary>Only habitats are used to calculate capacity. Capacity inputs are ignored.</summary>
-        Habitat = 2
+        Habitat = 1
     End Enum
 
 #End Region ' Ecospace Capacity and Habitat

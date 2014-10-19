@@ -1105,12 +1105,9 @@ Public Class cEIIDataSource
             ecospaceDS.AdjustSpace = True
             ecospaceDS.UseExact = False
             ' ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
-            ecospaceDS.CapCalType = eEcospaceCapacityCalType.Capacity
 
             ecospaceDS.NewMultiStanza = False
             ecospaceDS.UseIBM = False
-
-            
 
         Catch ex As Exception
             bSucces = False
@@ -1129,6 +1126,7 @@ Public Class cEIIDataSource
 
         For i As Integer = 1 To ecospaceDS.NGroups
             ecospaceDS.GroupDBID(i) = i
+            ecospaceDS.CapCalType(i) = eEcospaceCapacityCalType.Capacity
         Next
 
         For i As Integer = 1 To ecospaceDS.nFleets
@@ -1192,6 +1190,10 @@ Public Class cEIIDataSource
     End Function
 
     Public Function RemoveEcospaceDriverLayer(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceDriverLayer
+        Return False
+    End Function
+
+    Public Function MoveEcospaceDriverLayer(iDBID As Integer, iPosition As Integer) As Boolean Implements DataSources.IEcospaceDatasource.MoveEcospaceDriverLayer
         Return False
     End Function
 
@@ -1616,6 +1618,5 @@ Public Class cEIIDataSource
 
 #End Region ' Methods replaced for Mono compatibility
 
-  
 End Class
 

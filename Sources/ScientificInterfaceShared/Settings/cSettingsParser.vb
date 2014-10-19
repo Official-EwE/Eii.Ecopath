@@ -102,13 +102,13 @@ Public Class cSettingsParser
     ''' <see cref="Buffer"/> with a paremeterized version of the data.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Default Public Property Parameter(strName As String) As String
+    Default Public Property Parameter(strName As String, Optional strDefault As String = "") As String
         Get
             strName = cFileUtils.ToValidFileName(strName, False)
             If (Me.m_dtParams.ContainsKey(strName)) Then
                 Return Me.m_dtParams(strName)
             End If
-            Return ""
+            Return strDefault
         End Get
         Set(value As String)
             strName = cFileUtils.ToValidFileName(strName, False)

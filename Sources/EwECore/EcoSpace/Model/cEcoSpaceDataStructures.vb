@@ -555,7 +555,10 @@ Public Class cEcospaceDataStructures
     ' Generate for each driver layer + 0 which is depth
     Public CapMaps As IEnviroInputMap()
 
-    Public CapCalType As EwEUtils.Core.eEcospaceCapacityCalType = EwEUtils.Core.eEcospaceCapacityCalType.Capacity
+    ''' <summary>
+    ''' Capacity calculation type per group
+    ''' </summary>
+    Public CapCalType() As EwEUtils.Core.eEcospaceCapacityCalType
 
     ''' <summary>
     ''' Nearest suitable map row (iPacket) for an IBM Packet by nStanzaGroups(nSplit), MaxStanzas, row, col
@@ -745,7 +748,7 @@ Public Class cEcospaceDataStructures
         End Get
         Set(ByVal value As Integer)
             m_ngroups = value
-            redimGroupDBID() 'implicit ??????
+            RedimGroups() 'implicit ??????
             'this is different then the other counters (nFleets....) 
             'which delay the dimensioning until the data is loaded
             'this may not be a good idea
@@ -1146,7 +1149,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Set the Map to its default size
     ''' </summary>
-     Public Sub DefaultBasemapDimensions()
+    Public Sub DefaultBasemapDimensions()
 
         If InRow = 0 Then InRow = 20 'number of map cell rows
         If InCol = 0 Then InCol = 20 'number of map cell columns
@@ -1635,11 +1638,12 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-    Public Sub redimGroupDBID()
+    Public Sub RedimGroups()
         Try
             'called for NGroups Public property
             ReDim GroupDBID(m_ngroups)
             ReDim EcopathGroupDBID(m_ngroups)
+            ReDim CapCalType(m_ngroups)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".redimGroupDBID() Error: " & ex.Message)
         End Try

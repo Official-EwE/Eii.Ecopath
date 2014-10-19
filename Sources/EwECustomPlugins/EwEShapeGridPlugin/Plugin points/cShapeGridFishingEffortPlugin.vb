@@ -28,7 +28,7 @@ Public Class cShapeGridFishingEffortPlugin
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Fishing effort functions grid"
+            Return My.Resources.GRID_FISHING_EFFORT
         End Get
     End Property
 
@@ -40,13 +40,13 @@ Public Class cShapeGridFishingEffortPlugin
 
     Public Overrides ReadOnly Property Description() As String
         Get
-            Return "Display of all fishing effort functions in a grid format"
+            Return My.Resources.DESC_FISHING_EFFORT
         End Get
     End Property
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "ndFishingEffortGrid"
+            Return "ndFishingEffortXGrid"
         End Get
     End Property
 

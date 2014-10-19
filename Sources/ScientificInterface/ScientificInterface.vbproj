@@ -180,6 +180,18 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgExportSpatialData.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\frmCapacityCalcType.Designer.vb">
+      <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\frmCapacityCalcType.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\gridCapacityCalcType.Designer.vb">
+      <DependentUpon>gridCapacityCalcType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\gridCapacityCalcType.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="frmEwE6.Designer.vb">
       <DependentUpon>frmEwE6.vb</DependentUpon>
     </Compile>
@@ -635,7 +647,7 @@
     <Compile Include="Ecospace\Input\frmEcospaceParameters.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridHabitatPreference.vb">
+    <Compile Include="Ecospace\Input\Capacity\Apply\gridHabitatPreference.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridDefineHabitats.vb">
@@ -852,6 +864,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgExportSpatialData.resx">
       <DependentUpon>dlgExportSpatialData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Capacity\Apply\frmCapacityCalcType.resx">
+      <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmEwE6.resx">
       <DependentUpon>frmEwE6.vb</DependentUpon>
@@ -1196,8 +1211,8 @@
     <EmbeddedResource Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.resx">
       <DependentUpon>frmApplyCapacity.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.resx">
-      <DependentUpon>frmCapacityFunction.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Input\Capacity\Shape\frmForagingResponse.resx">
+      <DependentUpon>frmForagingResponse.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Panels\StartPanel\frmStartPanel.resx">
       <DependentUpon>frmStartPanel.vb</DependentUpon>
@@ -1503,10 +1518,10 @@
     <Compile Include="Ecospace\Input\Capacity\Apply\gridApplyCapacity.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.Designer.vb">
-      <DependentUpon>frmCapacityFunction.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\Capacity\Shape\frmForagingResponse.Designer.vb">
+      <DependentUpon>frmForagingResponse.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.vb">
+    <Compile Include="Ecospace\Input\Capacity\Shape\frmForagingResponse.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Other\cMessageHistory.vb" />
@@ -1937,6 +1952,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
+      <Project>{317F27E7-08D2-4EB6-ABC8-DEA7D78951C9}</Project>
+      <Name>EwEAquamapsEnvDataImporterPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEBioDivIndicatorsPlugin\EwEBioDiversityIndicatorsPlugin.vbproj">
+      <Project>{ADA9F604-2A16-4816-9FE5-31487778902D}</Project>
+      <Name>EwEBioDiversityIndicatorsPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{C1081265-6A9D-4087-8BB5-E907D86FD719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>

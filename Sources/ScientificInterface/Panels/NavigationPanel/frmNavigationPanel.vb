@@ -252,7 +252,8 @@ Public Class frmNavigationPanel
             '.Add("ndMSEBatchParameters", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchParameters), "") ' ToDo: connect to help
 
             'Ecospace habitat capacity stuff...
-            .Add("ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityFunction), "") ' ToDo: connect to help
+            .Add("ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityCalcType), "") ' ToDo: connect to help
+            .Add("ndForagingResponse", eCoreExecutionState.EcospaceLoaded, GetType(frmForagingResponse), "") ' ToDo: connect to help
             .Add("ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyCapacity), "") ' ToDo: connect to help
 
         End With

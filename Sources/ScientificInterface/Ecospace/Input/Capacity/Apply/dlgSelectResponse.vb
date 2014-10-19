@@ -109,7 +109,7 @@ Namespace Ecospace
             Me.m_tslbFilter.Image = SharedResources.FilterHS
 
             Dim p As New cSettingsParser(Me.Settings)
-            Me.m_tstbFilter.Text = p("filter")
+            Me.m_tstbFilter.Text = p("filter", "")
             Me.m_tsbnCaseSensitive.Checked = (p("casesensitive") = "1")
 
             Me.LoadAvailableShapes()

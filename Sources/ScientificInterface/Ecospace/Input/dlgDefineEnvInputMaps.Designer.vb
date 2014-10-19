@@ -42,12 +42,16 @@ Namespace Ecospace
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineEnvInputMaps))
             Me.m_grid = New ScientificInterface.Ecospace.gridDefineEnvInputMaps()
             Me.epNumHabitats = New System.Windows.Forms.ErrorProvider(Me.components)
-            Me.m_btnAddHabitat = New System.Windows.Forms.Button()
+            Me.m_btnInsert = New System.Windows.Forms.Button()
             Me.m_btnRemoveHabitat = New System.Windows.Forms.Button()
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.OK_Button = New System.Windows.Forms.Button()
             Me.Cancel_Button = New System.Windows.Forms.Button()
             Me.m_btnKeep = New System.Windows.Forms.Button()
+            Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnMoveDown = New System.Windows.Forms.Button()
+            Me.m_btnMoveUp = New System.Windows.Forms.Button()
+            Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             CType(Me.epNumHabitats, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
@@ -64,30 +68,32 @@ Namespace Ecospace
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
             'epNumHabitats
             '
             Me.epNumHabitats.ContainerControl = Me
             '
-            'm_btnAddHabitat
+            'm_btnInsert
             '
-            resources.ApplyResources(Me.m_btnAddHabitat, "m_btnAddHabitat")
-            Me.m_btnAddHabitat.Name = "m_btnAddHabitat"
-            Me.m_btnAddHabitat.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnInsert, "m_btnInsert")
+            Me.m_btnInsert.Name = "m_btnInsert"
+            Me.m_btnInsert.UseVisualStyleBackColor = True
             '
             'm_btnRemoveHabitat
             '
@@ -119,19 +125,51 @@ Namespace Ecospace
             Me.m_btnKeep.Name = "m_btnKeep"
             Me.m_btnKeep.UseVisualStyleBackColor = True
             '
-            'dlgDefineInputMaps
+            'm_hdrOrder
+            '
+            resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
+            Me.m_hdrOrder.CanCollapseParent = False
+            Me.m_hdrOrder.CollapsedParentHeight = 0
+            Me.m_hdrOrder.IsCollapsed = False
+            Me.m_hdrOrder.Name = "m_hdrOrder"
+            '
+            'm_btnMoveDown
+            '
+            resources.ApplyResources(Me.m_btnMoveDown, "m_btnMoveDown")
+            Me.m_btnMoveDown.Name = "m_btnMoveDown"
+            Me.m_btnMoveDown.UseVisualStyleBackColor = True
+            '
+            'm_btnMoveUp
+            '
+            resources.ApplyResources(Me.m_btnMoveUp, "m_btnMoveUp")
+            Me.m_btnMoveUp.Name = "m_btnMoveUp"
+            Me.m_btnMoveUp.UseVisualStyleBackColor = True
+            '
+            'm_hdrEdit
+            '
+            resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+            Me.m_hdrEdit.CanCollapseParent = False
+            Me.m_hdrEdit.CollapsedParentHeight = 0
+            Me.m_hdrEdit.IsCollapsed = False
+            Me.m_hdrEdit.Name = "m_hdrEdit"
+            '
+            'dlgDefineEnvInputMaps
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.m_hdrEdit)
+            Me.Controls.Add(Me.m_hdrOrder)
+            Me.Controls.Add(Me.m_btnMoveDown)
+            Me.Controls.Add(Me.m_btnMoveUp)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnRemoveHabitat)
-            Me.Controls.Add(Me.m_btnAddHabitat)
+            Me.Controls.Add(Me.m_btnInsert)
             Me.Controls.Add(Me.m_grid)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "dlgDefineInputMaps"
+            Me.Name = "dlgDefineEnvInputMaps"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             CType(Me.epNumHabitats, System.ComponentModel.ISupportInitialize).EndInit()
@@ -142,11 +180,15 @@ Namespace Ecospace
         Private WithEvents m_grid As gridDefineEnvInputMaps
         Private WithEvents epNumHabitats As System.Windows.Forms.ErrorProvider
         Private WithEvents m_btnRemoveHabitat As System.Windows.Forms.Button
-        Private WithEvents m_btnAddHabitat As System.Windows.Forms.Button
+        Private WithEvents m_btnInsert As System.Windows.Forms.Button
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_btnKeep As System.Windows.Forms.Button
+        Private WithEvents m_hdrOrder As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnMoveDown As System.Windows.Forms.Button
+        Private WithEvents m_btnMoveUp As System.Windows.Forms.Button
+        Private WithEvents m_hdrEdit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
     End Class
 

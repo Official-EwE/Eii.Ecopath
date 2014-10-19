@@ -28,7 +28,7 @@ Public Class cShapeGridEggProductionPlugin
 
     Public Overrides ReadOnly Property ControlText As String
         Get
-            Return "Egg production functions grid"
+            Return My.Resources.GRID_EGGPROD
         End Get
     End Property
 
@@ -40,13 +40,13 @@ Public Class cShapeGridEggProductionPlugin
 
     Public Overrides ReadOnly Property Description As String
         Get
-            Return "Display of all egg produciton functions in a grid format"
+            Return My.Resources.DESC_EGGPROD
         End Get
     End Property
 
     Public Overrides ReadOnly Property Name As String
         Get
-            Return "ndEggProductionGrid"
+            Return "ndEggProductionXGrid"
         End Get
     End Property
 

@@ -74,10 +74,6 @@ Namespace Ecospace
 
             ''' <summary><see cref="cEcospaceBasemap">cEcospaceBasemap</see> associated with this Layer, if any.</summary>
             Private m_Layer As cEcospaceLayer = Nothing
-            ''' <summary>The status of a Layer in the interface.</summary>
-            Private m_status As eItemStatusTypes = eItemStatusTypes.Original
-            ''' <summary>Think positive</summary>
-            Private m_bEditable As Boolean = True
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -152,13 +148,6 @@ Namespace Ecospace
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public Property Status() As eItemStatusTypes
-                Get
-                    Return Me.m_status
-                End Get
-                Private Set(value As eItemStatusTypes)
-                    Me.m_status = value
-                End Set
-            End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -201,20 +190,20 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Property FlaggedForDeletion() As Boolean
                 Get
-                    Return Me.m_status = eItemStatusTypes.Removed
+                    Return (Me.Status = eItemStatusTypes.Removed)
                 End Get
                 Set(ByVal bDelete As Boolean)
-                    If Me.m_Layer IsNot Nothing Then
+                    If (Me.m_Layer IsNot Nothing) Then
                         If bDelete Then
-                            Me.m_status = eItemStatusTypes.Removed
+                            Me.Status = eItemStatusTypes.Removed
                         Else
-                            Me.m_status = eItemStatusTypes.Original
+                            Me.Status = eItemStatusTypes.Original
                         End If
                     Else
                         If bDelete Then
-                            Me.m_status = eItemStatusTypes.Invalid
+                            Me.Status = eItemStatusTypes.Invalid
                         Else
-                            Me.m_status = eItemStatusTypes.Added
+                            Me.Status = eItemStatusTypes.Added
                         End If
                     End If
                 End Set
@@ -226,13 +215,6 @@ Namespace Ecospace
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public Property IsEditable As Boolean
-                Get
-                    Return m_bEditable
-                End Get
-                Private Set(value As Boolean)
-                    Me.m_bEditable = value
-                End Set
-            End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -546,47 +528,48 @@ Namespace Ecospace
         ''' <summary>
         ''' Delete a row from the grid
         ''' </summary>
-        ''' <param name="iRow">The index of the row to delete.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub ToggleDeleteRow(Optional ByVal iRow As Integer = -1)
+        Public Sub ToggleDeleteRow()
 
-            If iRow = -1 Then iRow = Me.SelectedRow
+            For Each row As RowInfo In Me.Selection.SelectedRows
 
-            Dim iLayer As Integer = iRow - iFIRSTDATAROW
-            Dim li As cLayerInfo = Nothing
-            Dim strPrompt As String = ""
+                Dim iRow As Integer = row.Index
+                Dim iLayer As Integer = iRow - iFIRSTDATAROW
+                Dim li As cLayerInfo = Nothing
+                Dim strPrompt As String = ""
 
-            ' Validate
-            If iLayer < 0 Then Return
+                If (iLayer >= 0) Then
+                    li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
 
-            li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
+                    ' Depth row cannot be deleted
+                    If (li.IsEditable) Then
 
-            'This is the Depth row it canot be deleted
-            If Not li.IsEditable Then Return
+                        ' Toggle 'flagged for deletion' flag
+                        li.FlaggedForDeletion = Not li.FlaggedForDeletion
 
-            ' Toggle 'flagged for deletion' flag
-            li.FlaggedForDeletion = Not li.FlaggedForDeletion
+                        ' Check to see what is to happen to the Layer now
+                        Select Case li.Status
 
-            ' Check to see what is to happen to the Layer now
-            Select Case li.Status
+                            Case eItemStatusTypes.Original
+                                ' Clear removed status of the Layer
+                                Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
 
-                Case eItemStatusTypes.Original
-                    ' Clear removed status of the Layer
-                    Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
+                            Case eItemStatusTypes.Added
+                                ' Clear removed status of the Layer
+                                Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
 
-                Case eItemStatusTypes.Added
-                    ' Clear removed status of the Layer
-                    Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
+                            Case eItemStatusTypes.Removed
+                                ' Set removed status
+                                Me.m_alLayersRemoved.Add(Me.m_alLayers(iLayer))
 
-                Case eItemStatusTypes.Removed
-                    ' Set removed status
-                    Me.m_alLayersRemoved.Add(Me.m_alLayers(iLayer))
+                            Case eItemStatusTypes.Invalid
+                                ' Set removed status
+                                Me.m_alLayers.RemoveAt(iLayer)
 
-                Case eItemStatusTypes.Invalid
-                    ' Set removed status
-                    Me.m_alLayers.RemoveAt(iLayer)
-
-            End Select
+                        End Select
+                    End If
+                End If
+            Next
 
             Me.UpdateGrid()
 
@@ -624,24 +607,15 @@ Namespace Ecospace
         End Function
 
         ''' <summary>
-        ''' Add a row by creating a new layer.
-        ''' </summary>
-        Public Sub InsertRow()
-            If Not Me.CanAddRow() Then Return
-            Me.CreateLayer()
-        End Sub
-
-        ''' <summary>
         ''' Create a new layer.
         ''' </summary>
-        Private Sub CreateLayer()
-            Dim iRow As Integer = -1
+        Private Sub CreateLayer(iRow As Integer)
             Dim iLayer As Integer = -1
             Dim li As cLayerInfo = Nothing
             Dim lstrLayers As New List(Of String)
 
             ' Make fit
-            iRow = Math.Max(iFIRSTDATAROW, Me.RowsCount)
+            iRow = Math.Min(Math.Max(iRow, iFIRSTDATAROW), Me.RowsCount)
             iLayer = iRow - iFIRSTDATAROW
 
             ' Validate
@@ -663,13 +637,91 @@ Namespace Ecospace
             Me.SelectRow(li)
         End Sub
 
-        ''' <summary>
-        ''' States whether a row can be inserted at the indicated position.
-        ''' </summary>
-        Public Function CanAddRow() As Boolean
-            Return True
+        Public Sub InsertRow(Optional ByVal iRow As Integer = -1)
+
+            If iRow = -1 Then iRow = Math.Max(iFIRSTDATAROW, Me.SelectedRow())
+            If Not Me.CanInsertRow(iRow) Then Return
+            Me.CreateLayer(iRow)
+
+        End Sub
+
+        Public Function CanInsertRow(Optional ByVal iRow As Integer = -1) As Boolean
+            If iRow = -1 Then iRow = Math.Max(iFIRSTDATAROW, Me.SelectedRow())
+            Return (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount)
         End Function
 
+        Public Sub MoveRowUp(Optional ByVal iRow As Integer = -1)
+            Dim bMoveSelection As Boolean = (iRow = -1)
+
+            If iRow = -1 Then iRow = Me.SelectedRow()
+            If Not CanMoveRowUp(iRow) Then Return
+            Me.MoveRow(iRow, iRow - 1)
+
+            If bMoveSelection Then
+                Me.SelectRow(iRow - 1)
+            End If
+        End Sub
+
+        Public Function CanMoveRowUp(Optional ByVal iRow As Integer = -1) As Boolean
+
+            If iRow = -1 Then iRow = Me.SelectedRow()
+            If iRow < (iFIRSTDATAROW + 1) Then Return False
+            If (Me.RowsCount <= (iFIRSTDATAROW + 1)) Then Return False
+            If (iRow >= Me.RowsCount) Then Return False
+            Dim li1 As cLayerInfo = Me.m_alLayers(iRow - iFIRSTDATAROW)
+            Dim li2 As cLayerInfo = Me.m_alLayers(iRow - 1 - iFIRSTDATAROW)
+            Return li1.IsEditable And li2.IsEditable
+
+        End Function
+
+        Public Sub MoveRowDown(Optional ByVal iRow As Integer = -1)
+            Dim bMoveSelection As Boolean = (iRow = -1)
+
+            If iRow = -1 Then iRow = Me.SelectedRow()
+            If Not CanMoveRowDown(iRow) Then Return
+            Me.MoveRow(iRow, iRow + 1)
+
+            If bMoveSelection Then
+                Me.SelectRow(iRow + 1)
+            End If
+        End Sub
+
+        Public Function CanMoveRowDown(Optional ByVal iRow As Integer = -1) As Boolean
+            If iRow = -1 Then iRow = Me.SelectedRow()
+            If iRow < iFIRSTDATAROW Then Return False
+            If (Me.RowsCount <= (iFIRSTDATAROW + 1)) Then Return False
+            If (iRow >= Me.RowsCount - 1) Then Return False
+            Dim li1 As cLayerInfo = Me.m_alLayers(iRow - iFIRSTDATAROW)
+            Dim li2 As cLayerInfo = Me.m_alLayers(iRow + 1 - iFIRSTDATAROW)
+            Return li1.IsEditable And li2.IsEditable
+        End Function
+
+        Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
+
+            Dim objTemp As cLayerInfo = Nothing
+            Dim iStep As Integer = 1
+            Dim iFrom As Integer = iFromRow - iFIRSTDATAROW
+            Dim iTo As Integer = iToRow - iFIRSTDATAROW
+
+            ' Truncate
+            iFrom = Math.Max(0, Math.Min(Me.m_alLayers.Count - 1, iFrom))
+            iTo = Math.Max(0, Math.Min(Me.m_alLayers.Count - 1, iTo))
+
+            ' Nothing to do? abort
+            If iFrom = iTo Then Return
+            ' Determine direction of movement
+            If iFrom < iTo Then iStep = 1 Else iStep = -1
+
+            ' Swap rows (but do not swap the row at iTo because then we've gone 1 too far)
+            For iGroup As Integer = iFrom To iTo - iStep Step iStep
+                objTemp = Me.m_alLayers(iGroup + iStep)
+                Me.m_alLayers(iGroup + iStep) = Me.m_alLayers(iGroup)
+                Me.m_alLayers(iGroup) = objTemp
+                Me.UpdateRow(iGroup + iFIRSTDATAROW)
+                Me.UpdateRow(iGroup + iFIRSTDATAROW + iStep)
+            Next iGroup
+
+        End Sub
 #End Region ' Row manipulation 
 
 #Region " Admin "
@@ -748,8 +800,11 @@ Namespace Ecospace
                 li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
                 ' Check if this layer is newly added
                 bConfigurationChanged = bConfigurationChanged Or li.IsNew()
-                ' Check if this layer has been modified
-                bLayersChanged = bLayersChanged Or li.IsChanged()
+                If Not li.IsNew Then
+                    ' Check if this layer has been modified
+                    bLayersChanged = bLayersChanged Or li.IsChanged()
+                    bConfigurationChanged = bConfigurationChanged Or (li.Layer.Index <> (iLayer + 1))
+                End If
             Next iLayer
 
             If Me.m_alLayersRemoved.Count > 5 Then
@@ -811,13 +866,21 @@ Namespace Ecospace
                 If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
                 cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_APPLYCHANGES)
 
-                ' Add new Layers
-                For iLayer = 0 To Me.m_alLayers.Count - 1
+                iLayer = 0
+                ' Add and move Layers
+                While (bSuccess = True) And (iLayer < Me.m_alLayers.Count)
                     li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
                     If (li.IsNew()) Then
                         bSuccess = bSuccess And Me.Core.AddEcospaceDriverLayer(li.Name, li.Description, iDBID)
+                    Else
+                        If ((iLayer + 1) <> li.Layer.Index) Then
+                            If Not Me.Core.MoveDriverLayer(li.Layer.Index, iLayer + 1) Then
+                                bSuccess = False
+                            End If
+                        End If
                     End If
-                Next
+                    iLayer += 1
+                End While
 
                 ' Remove deleted (and confirmed) Layers
                 Dim iLayerRemove As Integer = 0

@@ -179,10 +179,10 @@ Public Class cEcospaceModelParameters
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(1, eVarNameFlags.EcospaceCapCalType, eStatusFlags.Null, eValueTypes.Int, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
+            'meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            'val = New cValue(1, eVarNameFlags.EcospaceCapCalType, eStatusFlags.Null, eValueTypes.Int, _
+            '                    meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            'm_values.Add(val.varName, val)
 
             meta = New cVariableMetaData()
             val = New cValue(1, eVarNameFlags.EcospaceIBMMovePacketOnStanza, eStatusFlags.Null, eValueTypes.Bool, _
@@ -630,22 +630,22 @@ Public Class cEcospaceModelParameters
 
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Set the <see cref="eEcospaceCapacityCalType">inputs</see> that Ecospace uses to calculate capacity.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property CapacityCalculationType() As eEcospaceCapacityCalType
+    ' ''' -----------------------------------------------------------------------
+    ' ''' <summary>
+    ' ''' Set the <see cref="eEcospaceCapacityCalType">inputs</see> that Ecospace uses to calculate capacity.
+    ' ''' </summary>
+    ' ''' -----------------------------------------------------------------------
+    'Public Property CapacityCalculationType() As eEcospaceCapacityCalType
 
-        Get
-            Return CType(GetVariable(eVarNameFlags.EcospaceCapCalType), eEcospaceCapacityCalType)
-        End Get
+    '    Get
+    '        Return CType(GetVariable(eVarNameFlags.EcospaceCapCalType), eEcospaceCapacityCalType)
+    '    End Get
 
-        Set(ByVal value As eEcospaceCapacityCalType)
-            SetVariable(eVarNameFlags.EcospaceCapCalType, value)
-        End Set
+    '    Set(ByVal value As eEcospaceCapacityCalType)
+    '        SetVariable(eVarNameFlags.EcospaceCapCalType, value)
+    '    End Set
 
-    End Property
+    'End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

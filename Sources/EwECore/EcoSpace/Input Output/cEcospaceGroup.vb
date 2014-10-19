@@ -99,6 +99,12 @@ Public Class cEcospaceGroup
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' Capacity calculations
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(1, eVarNameFlags.EcospaceCapCalType, eStatusFlags.Null, eValueTypes.Int, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
 
@@ -120,6 +126,23 @@ Public Class cEcospaceGroup
 #End Region
 
 #Region "Properties by dot (.) operator "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Set the <see cref="eEcospaceCapacityCalType">inputs</see> that Ecospace uses to calculate capacity.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property CapacityCalculationType() As eEcospaceCapacityCalType
+
+        Get
+            Return CType(GetVariable(eVarNameFlags.EcospaceCapCalType), eEcospaceCapacityCalType)
+        End Get
+
+        Set(ByVal value As eEcospaceCapacityCalType)
+            SetVariable(eVarNameFlags.EcospaceCapCalType, value)
+        End Set
+
+    End Property
 
     ''' <summary>Base dispersal</summary>
     Public Property MVel() As Single

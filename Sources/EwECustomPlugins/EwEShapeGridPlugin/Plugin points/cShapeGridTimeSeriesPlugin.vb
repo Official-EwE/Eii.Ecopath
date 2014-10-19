@@ -28,7 +28,7 @@ Public Class cShapeGridTimeSeriesPlugin
 
     Public Overrides ReadOnly Property ControlText As String
         Get
-            Return "Time series grid"
+            Return My.Resources.GRID_TIMESERIES
         End Get
     End Property
 
@@ -40,13 +40,13 @@ Public Class cShapeGridTimeSeriesPlugin
 
     Public Overrides ReadOnly Property Description As String
         Get
-            Return "Display of all loaded time series in a grid format"
+            Return My.Resources.DESC_TIMESERIES
         End Get
     End Property
 
     Public Overrides ReadOnly Property Name As String
         Get
-            Return "ndTimeSeriesGrid"
+            Return "ndTimeSeriesXGrid"
         End Get
     End Property
 
