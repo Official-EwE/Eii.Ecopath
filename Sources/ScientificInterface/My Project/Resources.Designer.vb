@@ -1870,6 +1870,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Enable external data.
+        '''</summary>
+        Public ReadOnly Property HEADER_DRIVER_ENABLED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DRIVER_ENABLED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath model file name.
         '''</summary>
         Public ReadOnly Property HEADER_ECOPATH_MODEL_NAME() As String
@@ -1893,6 +1902,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_FISHING_EFFORT_MULTIPLIER() As String
             Get
                 Return ResourceManager.GetString("HEADER_FISHING_EFFORT_MULTIPLIER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Input map.
+        '''</summary>
+        Public ReadOnly Property HEADER_MAP() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAP", resourceCulture)
             End Get
         End Property
         
