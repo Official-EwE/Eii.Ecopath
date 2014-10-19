@@ -13059,4 +13059,10 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="HEADER_SPATTEMP_CREATE_CONNECTION" xml:space="preserve">
     <value>Create new connection</value>
   </data>
+  <data name="HEADER_DRIVER_ENABLED" xml:space="preserve">
+    <value>Enable external data</value>
+  </data>
+  <data name="HEADER_MAP" xml:space="preserve">
+    <value>Input map</value>
+  </data>
 </root>
