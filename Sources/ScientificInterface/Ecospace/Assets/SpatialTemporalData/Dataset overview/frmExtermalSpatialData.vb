@@ -129,7 +129,7 @@ Namespace Ecospace
 
             Me.m_tsbnOnlyShowConnected.Checked = Me.m_gridApply.OnlyShowConnected
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
 
         End Sub
 
@@ -252,6 +252,12 @@ Namespace Ecospace
                     Me.m_gridApply.RefreshContent()
                     Me.m_toolbox.RefreshContent()
                     Me.m_map.RefreshContent()
+
+            End Select
+
+            Select Case msg.Type
+                Case eMessageType.GlobalSettingsChanged
+                    Me.UpdateControls()
 
             End Select
 

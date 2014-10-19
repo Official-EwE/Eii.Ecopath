@@ -67,10 +67,10 @@ Namespace Ecospace
             Me.m_tsbnShowRefMap = New System.Windows.Forms.ToolStripButton()
             Me.m_map = New ScientificInterface.Ecospace.ucSpatialTimeSeriesMap()
             Me.m_tsDatasets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnOnlyShowConnected = New System.Windows.Forms.ToolStripButton()
             Me.m_tslbAdapterFilter = New System.Windows.Forms.ToolStripLabel()
             Me.m_tscmbAdapterFilter = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_tsbnConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
             sep1 = New System.Windows.Forms.ToolStripSeparator()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -240,15 +240,10 @@ Namespace Ecospace
             'm_tsDatasets
             '
             Me.m_tsDatasets.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsDatasets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnConnections, sep1, Me.m_tsbnOnlyShowConnected, Me.m_tslbAdapterFilter, Me.m_tscmbAdapterFilter})
+            Me.m_tsDatasets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnConnections, sep1, Me.m_tslbAdapterFilter, Me.m_tscmbAdapterFilter, Me.m_tsbnOnlyShowConnected})
             resources.ApplyResources(Me.m_tsDatasets, "m_tsDatasets")
             Me.m_tsDatasets.Name = "m_tsDatasets"
             Me.m_tsDatasets.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tsbnConnections
-            '
-            resources.ApplyResources(Me.m_tsbnConnections, "m_tsbnConnections")
-            Me.m_tsbnConnections.Name = "m_tsbnConnections"
             '
             'm_tsbnOnlyShowConnected
             '
@@ -267,6 +262,11 @@ Namespace Ecospace
             Me.m_tscmbAdapterFilter.Name = "m_tscmbAdapterFilter"
             resources.ApplyResources(Me.m_tscmbAdapterFilter, "m_tscmbAdapterFilter")
             Me.m_tscmbAdapterFilter.Sorted = True
+            '
+            'm_tsbnConnections
+            '
+            resources.ApplyResources(Me.m_tsbnConnections, "m_tsbnConnections")
+            Me.m_tsbnConnections.Name = "m_tsbnConnections"
             '
             'm_toolbox
             '
