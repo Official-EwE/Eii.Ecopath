@@ -1981,7 +1981,6 @@ Public Class cEIIXMLDataSource
             ecospaceDS.AdjustSpace = (CInt(drow("AdjustSpace")) <> 0)
             ecospaceDS.UseExact = (CInt(drow("UseExact")) <> 0)
             ecospaceDS.Tol = CSng(Me.ReadSafe(drow, "Tolerance", 0.01!))
-            ecospaceDS.CapCalType = DirectCast(CInt(Me.ReadSafe(drow, "CapacityCalType", eEcospaceCapacityCalType.Capacity)), eEcospaceCapacityCalType)
 
             stanzaDS.NPacketsMultiplier = CSng(drow("NumPacketsMultiplier"))
 
@@ -2207,6 +2206,8 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.MigConcRow(iGroup) = CSng(drow("MigConcRow"))
                 ecospaceDS.MigConcCol(iGroup) = CSng(drow("MigConcCol"))
                 ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.ReadSafe(drow, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
+                ecospaceDS.CapCalType(iGroup) = DirectCast(CInt(Me.ReadSafe(drow, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
+
                 ' Monthly PrefRow
                 astrSplit = CStr(drow("PrefRow")).Split(CChar(" "))
                 For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
@@ -2512,7 +2513,7 @@ Public Class cEIIXMLDataSource
                     item.ScaleType = CType(Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
                 End If
 
-             Catch ex As Exception
+            Catch ex As Exception
                 bSucces = False
                 cLog.Write(ex, "DBDataSource::LoadDataAdapters")
             End Try
@@ -3177,6 +3178,10 @@ Public Class cEIIXMLDataSource
     End Function
 
     Public Function RemoveEcospaceDriverLayer(iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceDriverLayer
+        Return False
+    End Function
+
+    Public Function MoveEcospaceDriverLayer(iDBID As Integer, iPosition As Integer) As Boolean Implements DataSources.IEcospaceDatasource.MoveEcospaceDriverLayer
         Return False
     End Function
 

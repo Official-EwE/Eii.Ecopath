@@ -28,7 +28,7 @@ Public Class cShapeGridLandingsMediationPlugin
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Price elasticity functions grid"
+            Return My.Resources.GRID_MED_LANDINGS
         End Get
     End Property
 
@@ -40,13 +40,13 @@ Public Class cShapeGridLandingsMediationPlugin
 
     Public Overrides ReadOnly Property Description() As String
         Get
-            Return "Display of all price elasticity functions in a grid format"
+            Return My.Resources.DESC_MED_LANDINGS
         End Get
     End Property
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "ndPriceElasticityGrid"
+            Return "ndPriceElasticityXGrid"
         End Get
     End Property
 

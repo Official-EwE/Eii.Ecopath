@@ -29,6 +29,7 @@ Friend Class frmSplash
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        'pictureBox1.Image = Bitmap.FromHicon(New Icon(OpenFileDialog.FileName, New Size(48, 48)).Handle)
         Dim rc As Rectangle = Me.ClientRectangle()
         Dim ico As New Icon(cEwEIcon.Current(), rc.Size)
         Me.m_img = Bitmap.FromHicon(ico.Handle)

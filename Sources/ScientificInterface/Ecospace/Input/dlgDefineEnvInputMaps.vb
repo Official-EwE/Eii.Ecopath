@@ -57,6 +57,18 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
+        Private Sub OnMoveUp(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnMoveUp.Click
+            Me.m_grid.MoveRowUp()
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub OnMoveDown(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnMoveDown.Click
+            Me.m_grid.MoveRowDown()
+            Me.UpdateControls()
+        End Sub
+
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
 
@@ -79,7 +91,7 @@ Namespace Ecospace
         End Sub
 
         Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnAddHabitat.Click
+            Handles m_btnInsert.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
@@ -106,7 +118,9 @@ Namespace Ecospace
 #Region " Updating "
 
         Private Sub UpdateControls()
-            Me.m_btnAddHabitat.Enabled = Me.m_grid.CanAddRow()
+            Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
+            Me.m_btnMoveUp.Enabled = Me.m_grid.CanMoveRowUp()
+            Me.m_btnMoveDown.Enabled = Me.m_grid.CanMoveRowDown()
             Me.m_btnRemoveHabitat.Enabled = Me.m_grid.IsLayerRow() And (Not Me.m_grid.IsFlaggedForDeletionRow()) And (Me.m_grid.CanRemoveRow())
             Me.m_btnKeep.Enabled = Me.m_grid.IsLayerRow() And Me.m_grid.IsFlaggedForDeletionRow()
         End Sub

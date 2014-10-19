@@ -6731,15 +6731,9 @@ exitline:
     Private Sub setHabCapFromHabitat()
         Dim i As Integer, j As Integer, K As Integer
 
-        'If the CapCalType = Capacity then ONLY Capacity Inputs are used to calculate Capacity 
-        If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Capacity Then
-            'Habitat not used to compute capacity
-            Return
-        End If
 
         For K = 1 To Me.m_Data.NGroups
-
-            If Me.m_Data.isGroupHabCapChanged(K) Then
+            If Me.m_Data.isGroupHabCapChanged(K) And Me.m_Data.CapCalType(K) = eEcospaceCapacityCalType.Habitat Then
                 For i = 1 To Me.m_Data.InRow
                     For j = 1 To Me.m_Data.InCol
 
@@ -6750,12 +6744,12 @@ exitline:
                                 'No this group has habitat preferrences
                                 For ihab As Integer = 1 To Me.m_Data.NoHabitats
 
-                                    If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
-                                        '[capacity of cell] = sumof([habitat preference] * [percentage of habitat in cell])
-                                        Me.m_Data.HabCap(i, j, K) += Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
-                                    Else
-                                        Me.m_Data.HabCap(i, j, K) *= Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
-                                    End If
+                                    'If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
+                                    '[capacity of cell] = sumof([habitat preference] * [percentage of habitat in cell])
+                                    Me.m_Data.HabCap(i, j, K) += Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
+                                    'Else
+                                    '    Me.m_Data.HabCap(i, j, K) *= Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
+                                    'End If
 
                                 Next ihab
 
@@ -7050,16 +7044,10 @@ exitline:
 
         Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
 
-        'If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
-        If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
-            'Capacity input maps not used
-            Return False
-        End If
-
         bReturn = True
         For igrp = 1 To Me.m_Data.NGroups
             'Have the Habitat Capacity input maps changed
-            If Me.m_Data.isGroupHabCapChanged(igrp) Then
+            If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.Capacity Then
                 'Yes the map has changed
                 For irow = 1 To Me.m_Data.InRow
                     For icol = 1 To Me.m_Data.InCol
@@ -7287,11 +7275,11 @@ exitline:
         'Dim orgCap As Single
         If (Me.m_Data.CapMaps Is Nothing) Then Return False
 
-        'If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
-        If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
-            'Enviromental response maps not used
-            Return False
-        End If
+        ''If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
+        'If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
+        '    'Enviromental response maps not used
+        '    Return False
+        'End If
 
         For Each map As IEnviroInputMap In Me.m_Data.CapMaps
 
@@ -7300,7 +7288,7 @@ exitline:
                 'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
-                    If Me.m_Data.isGroupHabCapChanged(igrp) Then
+                    If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.Capacity Then
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
                             'System.Console.Write(igrp.ToString + ",")

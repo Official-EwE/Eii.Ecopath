@@ -51,7 +51,7 @@ Namespace Ecosim
         Public Sub New()
             MyBase.New()
 
-            Me.m_editor = New DataModels.EditorTextBox(GetType(Integer))
+            Me.m_editor = New DataModels.EditorTextBox(GetType(String))
             Me.m_bmRowCol = New BehaviorModels.CustomEvents()
             Me.m_bmCell = New BehaviorModels.CustomEvents()
 

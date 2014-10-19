@@ -9826,19 +9826,16 @@ Public Class cCore
 
             m_EcospaceModelParams.IBMMovePacketOnStanza = m_EcoSpaceData.MovePacketsAtStanzaEntry
 
-            m_EcospaceModelParams.CapacityCalculationType = m_EcoSpaceData.CapCalType
+            'm_EcospaceModelParams.CapacityCalculationType = m_EcoSpaceData.CapCalType
 
-            ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. Since this
-            '             value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
+            ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. 
+            '            Since this value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
             m_EcospaceModelParams.PacketsMultiplier = Me.m_Stanza.NPacketsMultiplier
-
 
             m_EcospaceModelParams.UseEffortDistThreshold = Me.m_EcoSpaceData.bUseEffortDistThreshold
             m_EcospaceModelParams.EffortDistThreshold = Me.m_EcoSpaceData.EffortDistThreshold
 
             m_EcospaceModelParams.UseLocalMemory = Me.m_EcoSpaceData.bUseLocalMemory
-
-
 
             m_EcospaceModelParams.ResetStatusFlags()
             m_EcospaceModelParams.AllowValidation = True
@@ -9884,11 +9881,8 @@ Public Class cCore
 
         m_EcoSpaceData.MovePacketsAtStanzaEntry = m_EcospaceModelParams.IBMMovePacketOnStanza
 
-        'cast the Integer from the interface into the Enum
-        m_EcoSpaceData.CapCalType = CType(m_EcospaceModelParams.CapacityCalculationType, eEcospaceCapacityCalType)
-
-        ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. Since this
-        '             value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
+        ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. 
+        '            Since this value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
         Me.m_Stanza.NPacketsMultiplier = m_EcospaceModelParams.PacketsMultiplier
 
         Me.m_tracerData.EcoSpaceConSimOn = m_EcospaceModelParams.ContaminantTracing
@@ -10163,6 +10157,7 @@ Public Class cCore
                 grp.MigrationEWCon = m_EcoSpaceData.MigConcCol(iGroup)
                 grp.BarrierAvoidanceWeight = m_EcoSpaceData.barrierAvoidanceWeight(iGroup)
                 grp.PP = m_EcoPathData.PP(iGroup)
+                grp.CapacityCalculationType = m_EcoSpaceData.CapCalType(iGroup)
 
                 For i = 0 To nHabitats - 1
                     grp.PreferredHabitat(i) = m_EcoSpaceData.PrefHab(iGroup, i)
@@ -10205,6 +10200,7 @@ Public Class cCore
             m_EcoSpaceData.MigConcCol(iGroup) = grp.MigrationEWCon
             m_EcoSpaceData.MigConcRow(iGroup) = grp.MigrationNSCon
             m_EcoSpaceData.barrierAvoidanceWeight(iGroup) = grp.BarrierAvoidanceWeight
+            m_EcoSpaceData.CapCalType(iGroup) = grp.CapacityCalculationType
 
             For i = 0 To nHabitats - 1
                 m_EcoSpaceData.PrefHab(iGroup, i) = grp.PreferredHabitat(i)
@@ -10883,7 +10879,7 @@ Public Class cCore
 
 #End Region ' Importance layers
 
-#Region " Capacity maps "
+#Region " Driver layers "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -10962,7 +10958,42 @@ Public Class cCore
         Return bsucces
     End Function
 
-#End Region ' Capacity maps
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Move a <see cref="cEcospaceLayerDriver"/> to a new position in the EwE model.
+    ''' </summary>
+    ''' <param name="iLayer"><see cref="cCoreInputOutputBase.Index">One-based index of 
+    ''' the environmental driver layer</see> to move.</param>
+    ''' <param name="iIndex">New, one-based position of the layer in the layer list.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function MoveDriverLayer(ByVal iLayer As Integer, ByVal iIndex As Integer) As Boolean
+        Dim bSucces As Boolean = False
+        Dim ds As IEcospaceDatasource = Nothing
+
+        ' Sanity checks
+        If (Not Me.CanSave(True)) Then Return False
+        If (Not TypeOf (Me.DataSource) Is IEcospaceDatasource) Then Return False
+
+        ' Increase batch count
+        If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
+
+        ds = DirectCast(DataSource, IEcospaceDatasource)
+        If ds.MoveEcospaceDriverLayer(Me.m_EcoSpaceData.EnvironmentalLayerDBID(iLayer), iIndex) Then
+
+            Me.DataAddedOrRemovedMessage("Ecospace driver layer order has changed.", eCoreComponentType.EcoPath, eDataTypes.EcospaceLayerDriver)
+            bSucces = True
+        End If
+
+        ' Decrease batch count
+        ReleaseBatchLock(eBatchChangeLevelFlags.Ecospace)
+
+        Return bSucces
+
+    End Function
+
+#End Region ' Driver layers
 
 #Region " Advection "
 
@@ -13367,23 +13398,14 @@ Public Class cCore
                     Case eVarNameFlags.EcospaceNumberSummaryTimeSteps, eVarNameFlags.EcospaceSummaryTimeEnd, eVarNameFlags.EcospaceSummaryTimeStart
                         Me.LoadEcospaceResults()
 
-                    Case eVarNameFlags.EcospaceCapCalType
-
-                        'Let Ecospace decide what to update in response
-                        If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
-                            'Capacity layer has changed
-                            'send out a message
-                            Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
-                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
-                        End If
-
                 End Select 'Select Case value.varName
 
 
             Case eDataTypes.EcospaceGroup
 
                 Select Case value.varName
-                    Case eVarNameFlags.PreferredHabitat
+                    Case eVarNameFlags.PreferredHabitat, _
+                         eVarNameFlags.EcospaceCapCalType
 
                         'Let Ecospace decide what to update in response
                         If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
@@ -13394,7 +13416,6 @@ Public Class cCore
                         End If
 
                 End Select
-
 
             Case eDataTypes.MonteCarlo
 

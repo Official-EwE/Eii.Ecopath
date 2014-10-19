@@ -7214,7 +7214,6 @@ Namespace DataSources
                 ecospaceDS.AdjustSpace = (CInt(reader("AdjustSpace")) <> 0)
                 ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
-                ecospaceDS.CapCalType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.CapacityAndHabitat)), eEcospaceCapacityCalType)
                 ecospaceDS.bUseEffortDistThreshold = CInt(Me.m_db.ReadSafe(reader, "UseEffortDistrThreshold", 0)) = 1
                 ecospaceDS.EffortDistThreshold = CSng(Me.m_db.ReadSafe(reader, "EffortDistrThreshold", 10000))
 
@@ -7420,7 +7419,6 @@ Namespace DataSources
                 If Me.Version >= 6.01 Then
                     drow("Tolerance") = ecospaceDS.Tol
                 End If
-                drow("CapacityCalType") = ecospaceDS.CapCalType
                 ' ------------------------------------------
                 drow("LastSaved") = cDateUtils.DateToJulian()
                 drow("LastSavedVersion") = cAssemblyUtils.GetVersion().ToString
@@ -8063,6 +8061,8 @@ Namespace DataSources
                     ecospaceDS.MigConcRow(iGroup) = CSng(reader("MigConcRow"))
                     ecospaceDS.MigConcCol(iGroup) = CSng(reader("MigConcCol"))
                     ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.m_db.ReadSafe(reader, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
+                    ecospaceDS.CapCalType(iGroup) = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
+
                     ' Monthly PrefRow
                     astrSplit = CStr(reader("PrefRow")).Split(CChar(" "))
                     For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
@@ -8197,6 +8197,7 @@ Namespace DataSources
                     drow("MigConcRow") = ecospaceDS.MigConcRow(iGroup)
                     drow("MigConcCol") = ecospaceDS.MigConcCol(iGroup)
                     drow("BarrierAvoidanceWeight") = ecospaceDS.barrierAvoidanceWeight(iGroup)
+                    drow("CapacityCalType") = ecospaceDS.CapCalType(iGroup)
 
                     sbTemp.Length = 0
                     For iMonth As Integer = 1 To cCore.N_MONTHS
@@ -9241,7 +9242,7 @@ Namespace DataSources
             Dim iLayer As Integer = 0
 
             Try
-                readerLayer = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0})", iScenarioID))
+                readerLayer = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
                 While readerLayer.Read()
 
                     iLayer += 1
@@ -9460,6 +9461,18 @@ Namespace DataSources
             End Try
             Return bSucces
 
+        End Function
+
+        Public Function MoveEcospaceDriverLayer(iDBID As Integer, iPosition As Integer) As Boolean _
+            Implements IEcospaceDatasource.MoveEcospaceDriverLayer
+            Dim bSucces As Boolean = True
+            Try
+                Me.m_db.Execute(String.Format("UPDATE EcospaceScenarioDriverLayer SET Sequence={1} WHERE (LayerID={0})", iDBID, iPosition))
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while moving ecospce driver layer {1}", ex.Message, iDBID))
+                bSucces = False
+            End Try
+            Return bSucces
         End Function
 
 #End Region ' Modify

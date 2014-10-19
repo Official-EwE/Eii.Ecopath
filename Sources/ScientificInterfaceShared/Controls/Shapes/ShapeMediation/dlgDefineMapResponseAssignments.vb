@@ -114,7 +114,16 @@ Public Class dlgDefineMapResponseAssignments
             'somehow set the Y2Axis label font size
             Me.m_zgh.GetPane(1).Y2Axis.Scale.MaxAuto = True
 
+            Dim liGroups As New List(Of Integer)
+            For iGrp As Integer = 1 To Me.m_uic.Core.nGroups
+                Dim grp As cEcospaceGroup = Me.m_uic.Core.EcospaceGroups(iGrp)
+                If (grp.CapacityCalculationType = eEcospaceCapacityCalType.Capacity) Then
+                    liGroups.Add(iGrp)
+                End If
+            Next
             Me.m_lbxGroups.Attach(Me.m_uic)
+            Me.m_lbxGroups.Populate(liGroups.toArray())
+
             Me.m_fpMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
             Me.m_fpMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
             Me.m_fpMean = New cEwEFormatProvider(Me.m_uic, Me.m_tbxMean, GetType(Single))
@@ -709,7 +718,6 @@ Public Class dlgDefineMapResponseAssignments
     End Sub
 
 #End Region ' Private Methods
-
 
 End Class
 

@@ -66,7 +66,7 @@ Public Class cDotSpatialUtils
         Dim strBasePath As String = Path.GetDirectoryName(Assembly.GetAssembly(GetType(cDotSpatialUtils)).Location)
 
         ' Build the path to the correct directory(s) for 32 and 64 bit binary dlls
-        If cSystemUtils.Is64Bit Then bitness = "win64" Else bitness = "win32"
+        If cSystemUtils.Is64BitProcess() Then bitness = "win64" Else bitness = "win32"
         'Hardwire the "Includes/GDAL" path so that it matches the directory structure in the development environment
         Dim strGDALPath As String = Path.Combine(strBasePath, "Includes", "GDAL", bitness)
         Dim bGDALFound As Boolean = False

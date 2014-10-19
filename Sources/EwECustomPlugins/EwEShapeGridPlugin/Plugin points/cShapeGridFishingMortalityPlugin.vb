@@ -28,7 +28,7 @@ Public Class cShapeGridFishingMortalityPlugin
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Fishing mortality functions grid"
+            Return My.Resources.GRID_FISHMORT
         End Get
     End Property
 
@@ -40,13 +40,13 @@ Public Class cShapeGridFishingMortalityPlugin
 
     Public Overrides ReadOnly Property Description() As String
         Get
-            Return "Display of all fishing mortality functions in a grid format"
+            Return My.Resources.DESC_FISHMORT
         End Get
     End Property
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "ndFishingMortalityGrid"
+            Return "ndFishingMortalityXGrid"
         End Get
     End Property
 

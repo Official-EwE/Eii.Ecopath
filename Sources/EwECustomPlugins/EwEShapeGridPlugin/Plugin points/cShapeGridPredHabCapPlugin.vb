@@ -28,7 +28,7 @@ Public Class cPluginPointHabitatCapacity
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Habitat Capacity functions grid"
+            Return My.Resources.GRID_HABCAP
         End Get
     End Property
 
@@ -40,13 +40,14 @@ Public Class cPluginPointHabitatCapacity
 
     Public Overrides ReadOnly Property Description() As String
         Get
-            Return "Display of all habitat capacity functions in a grid format"
+            Return My.Resources.DESC_HABCAP
         End Get
     End Property
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "ndHabCapGrid"
+            ' Sort at the end of it all
+            Return "ndForagingResponseXGrid"
         End Get
     End Property
 

@@ -30,7 +30,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Plug-in for EwE6 that computes additional biodiversity indocators")> 
 <Assembly: AssemblyCompany("ICM-CSIC")> 
 <Assembly: AssemblyProduct("EwEBioDiversityIndicatorsPlugin")> 
-<Assembly: AssemblyCopyright("Copyright © ICM-CSIC 2013")> 
+<Assembly: AssemblyCopyright("Copyright © ICM-CSIC 2014")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

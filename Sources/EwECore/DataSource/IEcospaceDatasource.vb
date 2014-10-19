@@ -236,6 +236,16 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Function RemoveEcospaceDriverLayer(ByVal iDBID As Integer) As Boolean
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move an ecospace driver layer to a different position in the sequence.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the layer to move.</param>
+        ''' <param name="iPosition">The new position of the layer in the layer sequence.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function MoveEcospaceDriverLayer(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
+
 #End Region ' Driver layers
 
     End Interface

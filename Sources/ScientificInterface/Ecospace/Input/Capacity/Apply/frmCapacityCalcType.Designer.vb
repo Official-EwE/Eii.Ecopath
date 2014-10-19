@@ -1,0 +1,105 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Option Explicit On
+Option Strict On
+
+Imports ScientificInterfaceShared.Forms
+
+#End Region
+
+Namespace Ecospace
+
+    Partial Class frmCapacityCalcType
+        Inherits frmEwEGrid
+
+        'Form overrides dispose to clean up the component list.
+        <System.Diagnostics.DebuggerNonUserCode()> _
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
+        End Sub
+
+        'Required by the Windows Form Designer
+        Private components As System.ComponentModel.IContainer
+
+        'NOTE: The following procedure is required by the Windows Form Designer
+        'It can be modified using the Windows Form Designer.  
+        'Do not modify it using the code editor.
+        <System.Diagnostics.DebuggerStepThrough()> _
+        Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCapacityCalcType))
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnUseOnlyHabitat = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnUseOnlyCapacity = New System.Windows.Forms.ToolStripButton()
+            Me.m_grid = New gridCapacityCalcType()
+            Me.m_tsMain.SuspendLayout()
+            Me.SuspendLayout()
+            '
+            'm_tsMain
+            '
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnUseOnlyHabitat, Me.m_tsbnUseOnlyCapacity})
+            resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+            Me.m_tsMain.Name = "m_tsMain"
+            Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnUseOnlyHabitat
+            '
+            resources.ApplyResources(Me.m_tsbnUseOnlyHabitat, "m_tsbnUseOnlyHabitat")
+            Me.m_tsbnUseOnlyHabitat.Name = "m_tsbnUseOnlyHabitat"
+            '
+            'm_tsbnUseOnlyCapacity
+            '
+            resources.ApplyResources(Me.m_tsbnUseOnlyCapacity, "m_tsbnUseOnlyCapacity")
+            Me.m_tsbnUseOnlyCapacity.Name = "m_tsbnUseOnlyCapacity"
+            '
+            'm_grid
+            '
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.Name = "m_grid"
+            '
+            'frmCapacityCalcType
+            '
+            resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_grid)
+            Me.Controls.Add(Me.m_tsMain)
+            Me.Name = "frmCapacityCalcType"
+            Me.m_tsMain.ResumeLayout(False)
+            Me.m_tsMain.PerformLayout()
+            Me.ResumeLayout(False)
+            Me.PerformLayout()
+
+        End Sub
+
+        Private WithEvents m_tsMain As cEwEToolstrip
+        Private WithEvents m_tsbnUseOnlyHabitat As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnUseOnlyCapacity As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_grid As gridCapacityCalcType
+
+    End Class
+
+End Namespace

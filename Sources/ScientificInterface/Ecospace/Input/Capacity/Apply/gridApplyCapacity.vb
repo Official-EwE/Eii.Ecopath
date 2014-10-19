@@ -42,6 +42,12 @@ Namespace Ecospace
     Public Class ucApplyMapResponseGrid
         Inherits Ecosim.gridApplyShapeBase
 
+#Region " Private vars "
+
+        Private m_lProps As New List(Of cProperty)
+
+#End Region ' Private vars
+
 #Region " Overrides "
 
         Protected Overrides Sub InitStyle()
@@ -87,35 +93,47 @@ Namespace Ecospace
                 Dim Manager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
                 Dim ShapeManager As cCapMapResponseManager = Me.Core.CapacityShapeManager
                 Dim ff As cForcingFunction
-                Dim label As String
+                Dim strLabel As String
 
-                For imap As Integer = 1 To Manager.nMaps
-                    Dim map As IEnviroInputMap = Manager.Map(imap)
-                    For igrp As Integer = 1 To Core.nGroups
-                        label = ""
+                For igrp As Integer = 1 To Core.nGroups
+                    Dim grp As cEcospaceGroup = Me.Core.EcospaceGroups(igrp)
+                    For imap As Integer = 1 To Manager.nMaps
+                        Dim map As IEnviroInputMap = Manager.Map(imap)
+                        strLabel = ""
                         Dim ishp As Integer = map.ResponseIndexForGroup(igrp)
                         If ishp > 0 Then
                             ff = ShapeManager.Item(ishp - 1)
-                            label = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name)
+                            strLabel = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name)
                         End If
 
-                        Me(igrp, imap + 1) = New Cells.Real.Cell(label)
+                        Me(igrp, imap + 1) = New EwECell(strLabel, GetType(String))
                         Me(igrp, imap + 1).DataModel = Me.m_editor
                         Me(igrp, imap + 1).Behaviors.Add(Me.m_bmCell)
-
                     Next
+
+                    Dim prop As cProperty = Me.PropertyManager.GetProperty(grp, eVarNameFlags.EcospaceCapCalType)
+                    Me.m_lProps.Add(prop)
+                    AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+
+                    Me.UpdateRow(grp)
 
                 Next
             Catch ex As Exception
 
             End Try
 
+        End Sub
 
+        Protected Overrides Sub ClearData()
+            For Each prop As cProperty In Me.m_lProps
+                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+            Next
+            MyBase.ClearData()
         End Sub
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
-            'Me.FixedColumnWidths = False
+            Me.FixedColumnWidths = False
         End Sub
 
         Public Overrides Sub ClearAllPairs()
@@ -180,6 +198,28 @@ Namespace Ecospace
             Catch ex As Exception
 
             End Try
+
+        End Sub
+
+        Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
+            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroup))
+        End Sub
+
+        Private Sub UpdateRow(grp As cEcospaceGroup)
+
+            Dim iGroup As Integer = grp.Index
+            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+            Dim mapManager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
+
+            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.Habitat) Then
+                style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
+            End If
+
+            For iMap As Integer = 1 To mapManager.nMaps
+                Dim cell As EwECell = CType(Me(iGroup, 1 + iMap), EwECell)
+                cell.Style = style
+                Me.InvalidateCell(cell)
+            Next
 
         End Sub
 
