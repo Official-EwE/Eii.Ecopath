@@ -90,13 +90,13 @@ Namespace Ecospace
             Me.Close()
         End Sub
 
-        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnInsert.Click
-            Me.m_grid.InsertRow()
+        Private Sub OnAddLayer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnAdd.Click
+            Me.m_grid.AppendRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRemoveLayer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnRemoveHabitat.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
@@ -118,7 +118,7 @@ Namespace Ecospace
 #Region " Updating "
 
         Private Sub UpdateControls()
-            Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
+            Me.m_btnAdd.Enabled = True
             Me.m_btnMoveUp.Enabled = Me.m_grid.CanMoveRowUp()
             Me.m_btnMoveDown.Enabled = Me.m_grid.CanMoveRowDown()
             Me.m_btnRemoveHabitat.Enabled = Me.m_grid.IsLayerRow() And (Not Me.m_grid.IsFlaggedForDeletionRow()) And (Me.m_grid.CanRemoveRow())
