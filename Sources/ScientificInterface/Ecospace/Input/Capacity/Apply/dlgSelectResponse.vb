@@ -483,22 +483,28 @@ Namespace Ecospace
             Try
                 If Me.m_seltype = eSelectionType.MapGroup Then
                     If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_nGroups Then
-                        m_map.ResponseIndexForGroup(m_iSelGrp) = Me.AppliedResponseIndex
+                        If Me.UIContext.Core.EcospaceGroups(Me.m_iSelGrp).CapacityCalculationType = eEcospaceCapacityCalType.Capacity Then
+                            m_map.ResponseIndexForGroup(m_iSelGrp) = Me.AppliedResponseIndex
+                        End If
                         Return True
                     End If
                 ElseIf Me.m_seltype = eSelectionType.Map Then
                     'Apply the same shape to all the groups of the current map
                     Dim iSelResponseShape As Integer = Me.AppliedResponseIndex
                     For igrp As Integer = 1 To Me.m_nGroups
-                        m_map.ResponseIndexForGroup(igrp) = iSelResponseShape
+                        If Me.UIContext.Core.EcospaceGroups(igrp).CapacityCalculationType = eEcospaceCapacityCalType.Capacity Then
+                            m_map.ResponseIndexForGroup(igrp) = iSelResponseShape
+                        End If
                     Next
 
                 ElseIf Me.m_seltype = eSelectionType.Group Then
                     'Apply the selected shape to the same group for all the maps
                     Dim iSelResponseShape As Integer = Me.AppliedResponseIndex
-                    For imap As Integer = 1 To Me.m_mapmanager.nMaps
-                        Me.m_mapmanager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
-                    Next
+                    If Me.UIContext.Core.EcospaceGroups(Me.m_iSelGrp).CapacityCalculationType = eEcospaceCapacityCalType.Capacity Then
+                        For imap As Integer = 1 To Me.m_mapmanager.nMaps
+                            Me.m_mapmanager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
+                        Next
+                    End If
                 End If
 
             Catch ex As Exception
