@@ -279,6 +279,7 @@ Namespace Other
                 Case "ndPlugins" : t = GetType(ucOptionsPlugins)
                 Case "ndMap" : t = GetType(ucOptionsMap)
                 Case "ndPedigree" : t = GetType(ucOptionsPedigree)
+                Case "ndWindow" : t = GetType(ucOptionsWindowSize)
                 Case "ndSpatialTemporal" : t = GetType(ucOptionsSpatialTemporal)
                 Case Else
                     Debug.Assert(False, "Node name not recognized")
@@ -315,6 +316,10 @@ Namespace Other
                 Case eApplicationOptionTypes.Autosave, eApplicationOptionTypes.FileLocations
                     t = GetType(ucOptionsFileManagement)
                     strNode = "ndAutosave"
+
+                Case eApplicationOptionTypes.Window
+                    t = GetType(ucOptionsWindowSize)
+                    strNode = "ndWindow"
 
                 Case eApplicationOptionTypes.Plugins
                     t = GetType(ucOptionsPlugins)
