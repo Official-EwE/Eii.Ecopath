@@ -45,18 +45,24 @@ Public Class cShapeFunctionFactory
         For Each c As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
             If (c.IsPublic) And (Not c.IsAbstract) And (GetType(cShapeFunction).IsAssignableFrom(c)) Then
                 Dim bCompatible As Boolean = False
-                fs = CType(Activator.CreateInstance(c), IShapeFunction)
 
-                If (shape Is Nothing) Then
-                    bCompatible = True
-                Else
-                    bCompatible = (fs.IsCompatible(shape.DataType))
-                End If
+                Try
+                    fs = CType(Activator.CreateInstance(c), IShapeFunction)
+                    If (shape Is Nothing) Then
+                        bCompatible = True
+                    Else
+                        bCompatible = (fs.IsCompatible(shape.DataType))
+                    End If
 
-                If (bCompatible) Then
-                    fs.Init(shape)
-                    lfs.Add(fs)
-                End If
+                    If (bCompatible) Then
+                        fs.Init(shape)
+                        lfs.Add(fs)
+                    End If
+                Catch ex As Exception
+                    Debug.Assert(False, ex.Message)
+                    cLog.Write(ex, "cShapeFunctionFactory.GetShapeFunctions(" & c.ToString & ")")
+                End Try
+
             End If
         Next
 
