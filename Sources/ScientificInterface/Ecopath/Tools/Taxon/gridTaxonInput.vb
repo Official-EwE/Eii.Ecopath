@@ -80,7 +80,13 @@ Namespace Ecopath.Input
                 Get
                     ' Do not try to properly capitalize; .NET has no built-in function for this that works under for all languages! Better not try to be too smart
                     ' Do not localize the genus + species formatting; keep it fixed here
-                    Return CStr(Me.m_propGenus.GetValue()) & " " & CStr(Me.m_propSpecies.GetValue())
+                    Dim strGenus As String = CStr(Me.m_propGenus.GetValue())
+                    Dim strSpecies As String = CStr(Me.m_propSpecies.GetValue())
+
+                    If String.IsNullOrWhiteSpace(strGenus) Or String.IsNullOrEmpty(strSpecies) Then
+                        Return CStr(Me.m_propName.GetValue())
+                    End If
+                    Return String.Format(SharedResources.GENERIC_LABEL_DOUBLE, strGenus, strSpecies)
                 End Get
                 Set(value As Object)
                     ' NOP
