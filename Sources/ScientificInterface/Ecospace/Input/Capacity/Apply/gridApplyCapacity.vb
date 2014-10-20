@@ -76,7 +76,7 @@ Namespace Ecospace
 
             For iGroup As Integer = 1 To Core.nGroups
                 group = Core.EcoPathGroupInputs(iGroup)
-                ' # Group name row header cells
+                ' # Group index row header cells
                 Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
 
@@ -154,6 +154,9 @@ Namespace Ecospace
 
                 Dim iGrp As Integer = e.Position.Row
                 Dim iMap As Integer = e.Position.Column - 1
+                Dim cell As EwECell = DirectCast(Me(e.Position.Row, e.Position.Column), EwECell)
+
+                If ((cell.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable) Then Return
 
                 Me.ShowSelectionDialog(dlgSelectResponse.eSelectionType.MapGroup, iGrp, iMap)
 
