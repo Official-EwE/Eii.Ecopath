@@ -637,18 +637,9 @@ Namespace Ecospace
             Me.SelectRow(li)
         End Sub
 
-        Public Sub InsertRow(Optional ByVal iRow As Integer = -1)
-
-            If iRow = -1 Then iRow = Math.Max(iFIRSTDATAROW, Me.SelectedRow())
-            If Not Me.CanInsertRow(iRow) Then Return
-            Me.CreateLayer(iRow)
-
+        Public Sub AppendRow()
+            Me.CreateLayer(Me.RowsCount)
         End Sub
-
-        Public Function CanInsertRow(Optional ByVal iRow As Integer = -1) As Boolean
-            If iRow = -1 Then iRow = Math.Max(iFIRSTDATAROW, Me.SelectedRow())
-            Return (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount)
-        End Function
 
         Public Sub MoveRowUp(Optional ByVal iRow As Integer = -1)
             Dim bMoveSelection As Boolean = (iRow = -1)

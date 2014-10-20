@@ -42,7 +42,7 @@ Namespace Ecospace
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineEnvInputMaps))
             Me.m_grid = New ScientificInterface.Ecospace.gridDefineEnvInputMaps()
             Me.epNumHabitats = New System.Windows.Forms.ErrorProvider(Me.components)
-            Me.m_btnInsert = New System.Windows.Forms.Button()
+            Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_btnRemoveHabitat = New System.Windows.Forms.Button()
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.OK_Button = New System.Windows.Forms.Button()
@@ -89,11 +89,11 @@ Namespace Ecospace
             '
             Me.epNumHabitats.ContainerControl = Me
             '
-            'm_btnInsert
+            'm_btnAdd
             '
-            resources.ApplyResources(Me.m_btnInsert, "m_btnInsert")
-            Me.m_btnInsert.Name = "m_btnInsert"
-            Me.m_btnInsert.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
+            Me.m_btnAdd.Name = "m_btnAdd"
+            Me.m_btnAdd.UseVisualStyleBackColor = True
             '
             'm_btnRemoveHabitat
             '
@@ -165,7 +165,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnRemoveHabitat)
-            Me.Controls.Add(Me.m_btnInsert)
+            Me.Controls.Add(Me.m_btnAdd)
             Me.Controls.Add(Me.m_grid)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
@@ -180,7 +180,7 @@ Namespace Ecospace
         Private WithEvents m_grid As gridDefineEnvInputMaps
         Private WithEvents epNumHabitats As System.Windows.Forms.ErrorProvider
         Private WithEvents m_btnRemoveHabitat As System.Windows.Forms.Button
-        Private WithEvents m_btnInsert As System.Windows.Forms.Button
+        Private WithEvents m_btnAdd As System.Windows.Forms.Button
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
