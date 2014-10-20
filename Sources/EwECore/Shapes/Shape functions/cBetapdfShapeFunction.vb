@@ -58,8 +58,9 @@ Public Class cBetapdfShapeFunction
     End Sub
 
     Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
-        Return (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
-               (datatype = EwEUtils.Core.eDataTypes.PriceMediation)
+        Return (datatype = eDataTypes.Mediation) Or _
+               (datatype = eDataTypes.PriceMediation) Or _
+               (datatype = eDataTypes.CapacityMediation)
     End Function
 
     Public Overrides ReadOnly Property nParameters As Integer
