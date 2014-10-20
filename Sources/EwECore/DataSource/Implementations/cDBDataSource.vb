@@ -3399,59 +3399,70 @@ Namespace DataSources
 
             writer = Me.m_db.GetWriter("EcopathTaxon")
 
-            drow = writer.NewRow()
-            drow("TaxonID") = iDBID
-            drow("CodeSAUP") = data.CodeSAUP
-            drow("CodeSLB") = data.CodeSLB
-            drow("CodeFB") = data.CodeFB
-            drow("CodeTaxon") = data.CodeFAO
-            drow("CodeLCID") = data.CodeLSID
-            drow("ClassName") = data.Class
-            drow("OrderName") = data.Order
-            drow("FamilyName") = data.Family
-            drow("GenusName") = data.Genus
-            drow("SpeciesName") = data.Species
-            drow("CommonName") = data.Common
-            drow("SourceName") = data.Source
-            drow("SourceKey") = data.SourceKey
-            drow("LastUpdated") = cDateUtils.DateToJulian()
-
-            ' Add bonus data if available
-            If TypeOf (data) Is ITaxonDetailsData Then
-                Dim dataDetails As ITaxonDetailsData = DirectCast(data, ITaxonDetailsData)
-                drow("EcologyType") = dataDetails.EcologyType
-                drow("OrganismType") = dataDetails.OrganismType
-                drow("ConservationStatus") = dataDetails.IUCNConservationStatus
-                drow("OccurrenceStatus") = dataDetails.OccurrenceStatus
-                drow("MeanWeight") = dataDetails.MeanWeight
-                drow("MeanLength") = dataDetails.MeanLength
-                drow("MaxLength") = dataDetails.MaxLength
-                drow("MeanLifeSpan") = dataDetails.MeanLifespan
-                drow("Winf") = dataDetails.Winf
-                drow("vbgfK") = dataDetails.vbgfK
-                drow("VulnerabiltyIndex") = dataDetails.VulnerabilityIndex
-            End If
-
-            writer.AddRow(drow)
-            bSucces = Me.m_db.ReleaseWriter(writer, bSucces)
-
-            If Not bIsStanza Then
-                writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+            Try
                 drow = writer.NewRow()
                 drow("TaxonID") = iDBID
-                drow("EcopathGroupID") = iTargetDBID
-                drow("Proportion") = sProportion
-                drow("PropCatch") = sProportion
+                drow("CodeSAUP") = data.CodeSAUP
+                drow("CodeSLB") = data.CodeSLB
+                drow("CodeFB") = data.CodeFB
+                drow("CodeTaxon") = data.CodeFAO
+                drow("CodeLCID") = data.CodeLSID
+                drow("ClassName") = data.Class
+                drow("OrderName") = data.Order
+                drow("FamilyName") = data.Family
+                drow("GenusName") = data.Genus
+                drow("SpeciesName") = data.Species
+                drow("CommonName") = data.Common
+                drow("SourceName") = data.Source
+                drow("SourceKey") = data.SourceKey
+                drow("LastUpdated") = cDateUtils.DateToJulian()
+
+                ' Add bonus data if available
+                If TypeOf (data) Is ITaxonDetailsData Then
+                    Dim dataDetails As ITaxonDetailsData = DirectCast(data, ITaxonDetailsData)
+                    drow("EcologyType") = dataDetails.EcologyType
+                    drow("OrganismType") = dataDetails.OrganismType
+                    drow("ConservationStatus") = dataDetails.IUCNConservationStatus
+                    drow("OccurrenceStatus") = dataDetails.OccurrenceStatus
+                    drow("MeanWeight") = dataDetails.MeanWeight
+                    drow("MeanLength") = dataDetails.MeanLength
+                    drow("MaxLength") = dataDetails.MaxLength
+                    drow("MeanLifeSpan") = dataDetails.MeanLifespan
+                    drow("Winf") = dataDetails.Winf
+                    drow("vbgfK") = dataDetails.vbgfK
+                    drow("VulnerabiltyIndex") = dataDetails.VulnerabilityIndex
+                End If
+
                 writer.AddRow(drow)
-                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
-            Else
-                writer = Me.m_db.GetWriter("EcopathStanzaTaxon")
-                drow = writer.NewRow()
-                drow("TaxonID") = iDBID
-                drow("StanzaID") = iTargetDBID
-                writer.AddRow(drow)
-                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
-            End If
+                bSucces = Me.m_db.ReleaseWriter(writer, bSucces)
+            Catch ex As Exception
+                bSucces = False
+                Me.LogMessage(String.Format("Error {0} occurred while adding taxon", ex.Message))
+            End Try
+
+            Try
+
+                If Not bIsStanza Then
+                    writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+                    drow = writer.NewRow()
+                    drow("TaxonID") = iDBID
+                    drow("EcopathGroupID") = iTargetDBID
+                    drow("Proportion") = sProportion
+                    drow("PropCatch") = sProportion
+                    writer.AddRow(drow)
+                    bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+                Else
+                    writer = Me.m_db.GetWriter("EcopathStanzaTaxon")
+                    drow = writer.NewRow()
+                    drow("TaxonID") = iDBID
+                    drow("StanzaID") = iTargetDBID
+                    writer.AddRow(drow)
+                    bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+                End If
+            Catch ex As Exception
+                bSucces = False
+                Me.LogMessage(String.Format("Error {0} occurred while adding taxon", ex.Message))
+            End Try
 
             Return bSucces
 
