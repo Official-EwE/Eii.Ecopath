@@ -67,18 +67,18 @@ Namespace Other
             MyBase.OnLoad(e)
 
             Dim frm As Form = Me.UIContext.FormMain
-            Dim szIn As Size = frm.ClientRectangle.Size
             Dim szOut As Size = frm.Size
+            Dim szIn As Size = frm.ClientRectangle.Size
 
             Me.m_szFrame = New Size(szOut.Width - szIn.Width, szOut.Height - szIn.Height)
 
             Me.m_fpW = New cEwEFormatProvider(Me.UIContext, Me.m_tbxW, GetType(Integer))
             Me.m_fpH = New cEwEFormatProvider(Me.UIContext, Me.m_tbxH, GetType(Integer))
-            Me.m_fpW.Value = frm.Width
-            Me.m_fpH.Value = frm.Height
+            Me.m_fpW.Value = szOut.Width
+            Me.m_fpH.Value = szOut.Height
 
             Me.m_bInUpdate = True
-            Me.m_rbIn.Checked = True
+            Me.m_rbOut.Checked = True
             Me.m_bInUpdate = False
 
         End Sub
@@ -104,7 +104,7 @@ Namespace Other
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IOptionsPage.OnChanged"/>
         ''' -------------------------------------------------------------------
-        Public Event OnOptionsPedigreeChanged(sender As IOptionsPage, args As System.EventArgs) _
+        Public Event OnOptionChanged(sender As IOptionsPage, args As System.EventArgs) _
               Implements IOptionsPage.OnChanged
 
         ''' -------------------------------------------------------------------
@@ -170,7 +170,7 @@ Namespace Other
 #End Region  ' Internals
 
         Private Sub OnSizeModeToggled(sender As System.Object, e As System.EventArgs) _
-            Handles m_rbOut.CheckedChanged, m_rbIn.CheckedChanged
+            Handles m_rbOut.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
 
