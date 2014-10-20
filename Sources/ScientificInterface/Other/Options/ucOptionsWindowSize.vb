@@ -33,12 +33,17 @@ Namespace Other
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' User control; implements the Options > Pedigree settings interface.
+    ''' User control; implements the Options > Window Size settings interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class ucOptionsPedigree
+    Public Class ucOptionsWindowSize
         Implements IOptionsPage
         Implements IUIElement
+
+        Private m_fpW As cEwEFormatProvider = Nothing
+        Private m_fpH As cEwEFormatProvider = Nothing
+        Private m_szFrame As Size
+        Private m_bInUpdate As Boolean = False
 
 #Region " Constructors "
 
@@ -46,9 +51,6 @@ Namespace Other
 
             Me.UIContext = uic
             Me.InitializeComponent()
-
-            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-            Me.m_cbShowPedigreeIndicators.Checked = sg.ShowPedigree
 
         End Sub
 
@@ -63,6 +65,22 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+
+            Dim frm As Form = Me.UIContext.FormMain
+            Dim szIn As Size = frm.ClientRectangle.Size
+            Dim szOut As Size = frm.Size
+
+            Me.m_szFrame = New Size(szOut.Width - szIn.Width, szOut.Height - szIn.Height)
+
+            Me.m_fpW = New cEwEFormatProvider(Me.UIContext, Me.m_tbxW, GetType(Integer))
+            Me.m_fpH = New cEwEFormatProvider(Me.UIContext, Me.m_tbxH, GetType(Integer))
+            Me.m_fpW.Value = frm.Width
+            Me.m_fpH.Value = frm.Height
+
+            Me.m_bInUpdate = True
+            Me.m_rbIn.Checked = True
+            Me.m_bInUpdate = False
+
         End Sub
 
 #End Region ' Event handlers
@@ -97,19 +115,15 @@ Namespace Other
 
             If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
 
-            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-
-            ' Apply colors to the style guide
-            sg.SuspendEvents()
-
             Try
-                sg.ShowPedigree = Me.m_cbShowPedigreeIndicators.Checked
+
+                Me.UIContext.FormMain.Size = Me.OuterSize
+
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "ucOptionsPedigree::Apply")
+                cLog.Write(ex, "ucOptionsWindowSize::Apply")
             End Try
 
-            sg.ResumeEvents()
             Return IOptionsPage.eApplyResultType.Success
 
         End Function
@@ -121,7 +135,7 @@ Namespace Other
                 Implements IOptionsPage.SetDefaults
 
             Try
-                Me.m_cbShowPedigreeIndicators.Checked = CBool(My.Settings.GetDefaultValue("ShowPedigree"))
+                Me.m_rbIn.Checked = True
             Catch ex As Exception
 
             End Try
@@ -136,6 +150,45 @@ Namespace Other
         End Function
 
 #End Region ' Public methods
+
+#Region " Internals "
+
+        Private Function OuterSize() As Size
+
+            Dim w As Integer = CInt(Me.m_fpW.Value)
+            Dim h As Integer = CInt(Me.m_fpH.Value)
+
+            If (Me.m_rbIn.Checked) Then
+                w += Me.m_szFrame.Width
+                h += Me.m_szFrame.Height
+            End If
+
+            Return New Size(w, h)
+
+        End Function
+
+#End Region  ' Internals
+
+        Private Sub OnSizeModeToggled(sender As System.Object, e As System.EventArgs) _
+            Handles m_rbOut.CheckedChanged, m_rbIn.CheckedChanged
+
+            If (Me.m_bInUpdate) Then Return
+
+            Dim w As Integer = CInt(Me.m_fpW.Value)
+            Dim h As Integer = CInt(Me.m_fpH.Value)
+
+            If Me.m_rbOut.Checked Then
+                w += Me.m_szFrame.Width
+                h += Me.m_szFrame.Height
+            Else
+                w -= Me.m_szFrame.Width
+                h -= Me.m_szFrame.Height
+            End If
+
+            Me.m_fpW.Value = w
+            Me.m_fpH.Value = h
+
+        End Sub
 
     End Class
 

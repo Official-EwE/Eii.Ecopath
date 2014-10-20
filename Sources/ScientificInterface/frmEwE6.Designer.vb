@@ -126,6 +126,7 @@ Partial Public Class frmEwE6
         Me.MenuEcosim = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcosimNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcosimLoad = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcosimClose = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcosimSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcosimSaveAs = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcosimDelete = New System.Windows.Forms.ToolStripMenuItem()
@@ -150,7 +151,6 @@ Partial Public Class frmEwE6
         Me.m_tsbnAutosaveResults = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
-        Me.m_tsmiEcosimClose = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -618,6 +618,11 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsmiEcosimLoad, "m_tsmiEcosimLoad")
         Me.m_tsmiEcosimLoad.Name = "m_tsmiEcosimLoad"
         '
+        'm_tsmiEcosimClose
+        '
+        Me.m_tsmiEcosimClose.Name = "m_tsmiEcosimClose"
+        resources.ApplyResources(Me.m_tsmiEcosimClose, "m_tsmiEcosimClose")
+        '
         'm_tsmiEcosimSave
         '
         Me.m_tsmiEcosimSave.Name = "m_tsmiEcosimSave"
@@ -759,11 +764,6 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
-        '
-        'm_tsmiEcosimClose
-        '
-        Me.m_tsmiEcosimClose.Name = "m_tsmiEcosimClose"
-        resources.ApplyResources(Me.m_tsmiEcosimClose, "m_tsmiEcosimClose")
         '
         'frmEwE6
         '
