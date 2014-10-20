@@ -179,6 +179,8 @@ Namespace Definitions
         FileLocations = Autosave
         ''' <summary>Presentation mode options.</summary>
         PresentationMode
+        ''' <summary>EwE main window options.</summary>
+        Window
         ''' <summary>Spatial-temporal options.</summary>
         SpatialTemporal
     End Enum
