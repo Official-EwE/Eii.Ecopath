@@ -80,6 +80,8 @@ Public Class cTaxonDataStructures
     Public TaxonOrganismType() As eOrganismTypes
     ''' <summary>Taxa IUCN csonservation status</summary>
     Public TaxonIUCNConservationStatus() As eIUCNConservationStatusTypes
+    ''' <summary>Taxa exploitaiton status</summary>
+    Public TaxonExploitationStatus() As eExploitationTypes
     ''' <summary>Taxa occurrence status</summary>
     Public TaxonOccurrenceStatus() As eOccurrenceStatusTypes
     Public TaxonMeanWeight() As Single
@@ -141,6 +143,7 @@ Public Class cTaxonDataStructures
         ReDim Me.TaxonEcologyType(Me.NumTaxon)
         ReDim Me.TaxonOrganismType(Me.NumTaxon)
         ReDim Me.TaxonIUCNConservationStatus(Me.NumTaxon)
+        ReDim Me.TaxonExploitationStatus(Me.NumTaxon)
         ReDim Me.TaxonOccurrenceStatus(Me.NumTaxon)
         ReDim Me.TaxonMeanWeight(Me.NumTaxon)
         ReDim Me.TaxonMeanLength(Me.NumTaxon)

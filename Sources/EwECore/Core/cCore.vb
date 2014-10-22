@@ -4249,6 +4249,7 @@ Public Class cCore
                 taxon.EcologyType = Me.m_TaxonData.TaxonEcologyType(iTaxon)
                 taxon.ProportionCatch = Me.m_TaxonData.TaxonPropCatch(iTaxon)
                 taxon.IUCNConservationStatus = Me.m_TaxonData.TaxonIUCNConservationStatus(iTaxon)
+                taxon.ExploitationStatus = Me.m_TaxonData.TaxonExploitationStatus(iTaxon)
                 taxon.OrganismType = Me.m_TaxonData.TaxonOrganismType(iTaxon)
                 taxon.OccurrenceStatus = Me.m_TaxonData.TaxonOccurrenceStatus(iTaxon)
                 taxon.MeanLength = Me.m_TaxonData.TaxonMeanLength(iTaxon)
@@ -4308,6 +4309,7 @@ Public Class cCore
         Me.m_TaxonData.TaxonSourceKey(iTaxon) = taxon.SourceKey
         Me.m_TaxonData.TaxonEcologyType(iTaxon) = taxon.EcologyType
         Me.m_TaxonData.TaxonIUCNConservationStatus(iTaxon) = taxon.IUCNConservationStatus
+        Me.m_TaxonData.TaxonExploitationStatus(iTaxon) = taxon.ExploitationStatus
         Me.m_TaxonData.TaxonOrganismType(iTaxon) = taxon.OrganismType
         Me.m_TaxonData.TaxonOccurrenceStatus(iTaxon) = taxon.OccurrenceStatus
         Me.m_TaxonData.TaxonMeanLength(iTaxon) = taxon.MeanLength

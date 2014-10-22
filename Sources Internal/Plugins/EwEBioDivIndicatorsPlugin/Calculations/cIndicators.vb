@@ -44,11 +44,6 @@ Public MustInherit Class cIndicators
     ''' <summary>Stanza data structures</summary>
     Private m_stanzaDS As cStanzaDatastructures = Nothing
 
-    ''' <summary>Flag stating whether the indicators have been computed.</summary>
-    Private m_bIsComputed As Boolean = False
-
-    Private m_sKemptonsQ As Single
-
     ' --- Trophic based ---
     ''' <summary>Tropic level of the catch indicator</summary>
     Private m_sTLC As Single
@@ -84,6 +79,8 @@ Public MustInherit Class cIndicators
     Private m_sPelB As Single
     ''' <summary>demersal over pelagic biomass indicator</summary>
     Private m_sDemPelB As Single
+    ''' <summary>Kempton's Q</summary>
+    Private m_sKemptonsQ As Single
 
     ' --- Catch ---
     ''' <summary>Total Catch indicator</summary>
@@ -260,6 +257,12 @@ Public MustInherit Class cIndicators
     ''' -----------------------------------------------------------------------
     Protected MustOverride Function ModelDiscards(ByVal iGroup As Integer) As Single
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Override to return the Kemptons' Q of a given group, as computed by the 
+    ''' underlying model.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Protected MustOverride Function ModelKemptionsQ() As Single
 
 #End Region ' Inputs 
@@ -988,14 +991,7 @@ Public MustInherit Class cIndicators
     ''' Get/set whether these indicators have been computed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property IsComputed As Boolean
-        Get
-            Return Me.m_bIsComputed
-        End Get
-        Private Set(value As Boolean)
-            Me.m_bIsComputed = value
-        End Set
-    End Property
+    Public Property IsComputed As Boolean = False
 
 #End Region ' Diagnostics
 

@@ -703,6 +703,7 @@
     <Compile Include="Style\Type formatters\cDatasourceTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cCompatibilityTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cObjectTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cExploitationTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cShapeFunctionFormatter.vb" />
     <Compile Include="Style\Type formatters\cSpatialDatasetCompatibilityFormatter.vb" />
     <Compile Include="Style\Type formatters\cShapeDataFormatter.vb" />

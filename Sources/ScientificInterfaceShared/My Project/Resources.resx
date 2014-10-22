@@ -3185,4 +3185,28 @@
   <data name="SCALE_LOG" xml:space="preserve">
     <value>(Log)</value>
   </data>
+  <data name="EXPLOITATIONSTATUS_DEPLETED" xml:space="preserve">
+    <value>Depleted|||Catches are well below historical levels, irrespective of the amount of fishing effort exerted</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_FULLYEXPLOITED" xml:space="preserve">
+    <value>Fully exploited|||The fishery is operating at or close to an optimal yield level, with no expected room for further expansion</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_MODERATELYEXPLOITED" xml:space="preserve">
+    <value>Moderately exploited|||Exploited with a low level of fishing effort. Believed to have some limited potential for expansion in total production</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_NOTEXPLOITED" xml:space="preserve">
+    <value>Not exploited</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_OVEREXPLOITED" xml:space="preserve">
+    <value>Overexploited|||The fishery is being exploited at above a level which is believed to be sustainable in the long term, with no potential room for further expansion and a higher risk of stock depletion/collapse</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_RECOVERING" xml:space="preserve">
+    <value>Recovering|||Catches are again increasing after having been depleted</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_UNDEREXPLOITED" xml:space="preserve">
+    <value>Underexploited|||Undeveloped or new fishery. Believed to have a significant potential for expansion in total production</value>
+  </data>
+  <data name="HEADER_EXPLOITATION_STATUS" xml:space="preserve">
+    <value>Exploitation status</value>
+  </data>
 </root>

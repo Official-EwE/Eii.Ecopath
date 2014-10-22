@@ -134,9 +134,10 @@ Namespace Ecopath.Input
 #Region " Private vars "
 
         Private m_editorEcology As EwEComboBoxCellEditor = Nothing
-        Private m_editorConservation As EwEComboBoxCellEditor = Nothing
         Private m_editorOrganism As EwEComboBoxCellEditor = Nothing
         Private m_editorOccurrence As EwEComboBoxCellEditor = Nothing
+        Private m_editorExploitation As EwEComboBoxCellEditor = Nothing
+        Private m_editorConservation As EwEComboBoxCellEditor = Nothing
 
         Private Enum eColumnTypes As Integer
             Hierarchy = 0
@@ -147,6 +148,7 @@ Namespace Ecopath.Input
             PropBiomass
             PropCatch
             Conservation
+            Exploitation
             VulIndex
             MeanLen
             MaxLen
@@ -161,9 +163,10 @@ Namespace Ecopath.Input
 
             ' Prepare editors
             Me.m_editorEcology = New EwEComboBoxCellEditor(New cEcologyTypeFormatter())
-            Me.m_editorConservation = New EwEComboBoxCellEditor(New cIUCNConservationTypeFormatter())
             Me.m_editorOrganism = New EwEComboBoxCellEditor(New cOrganismTypeFormatter())
             Me.m_editorOccurrence = New EwEComboBoxCellEditor(New cOccurrenceTypeFormatter())
+            Me.m_editorExploitation = New EwEComboBoxCellEditor(New cExploitationTypeFormatter())
+            Me.m_editorConservation = New EwEComboBoxCellEditor(New cIUCNConservationTypeFormatter())
 
         End Sub
 
@@ -182,6 +185,7 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.PropBiomass) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_B)
             Me(0, eColumnTypes.PropCatch) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_CATCH)
             Me(0, eColumnTypes.Conservation) = New EwEColumnHeaderCell(SharedResources.HEADER_IUCN_CONSERVATION_STATUS)
+            Me(0, eColumnTypes.Exploitation) = New EwEColumnHeaderCell(SharedResources.HEADER_EXPLOITATION_STATUS)
             Me(0, eColumnTypes.Occurrence) = New EwEColumnHeaderCell(SharedResources.HEADER_OCCURRENCE_STATUS)
             Me(0, eColumnTypes.MeanLen) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_LENGTH)
             Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell(SharedResources.HEADER_MAX_LENGTH)
@@ -296,6 +300,8 @@ Namespace Ecopath.Input
                     taxon.OccurrenceStatus = CType(cell.GetValue(p), eOccurrenceStatusTypes)
                 Case eColumnTypes.Organism
                     taxon.OrganismType = CType(cell.GetValue(p), eOrganismTypes)
+                Case eColumnTypes.Exploitation
+                    taxon.ExploitationStatus = CType(cell.GetValue(p), eExploitationTypes)
                 Case Else
 
             End Select
@@ -324,6 +330,8 @@ Namespace Ecopath.Input
             Me(iRow, eColumnTypes.Conservation).Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.Occurrence) = New SourceGrid2.Cells.Real.Cell(taxon.OccurrenceStatus, Me.m_editorOccurrence)
             Me(iRow, eColumnTypes.Occurrence).Behaviors.Add(Me.EwEEditHandler)
+            Me(iRow, eColumnTypes.Exploitation) = New SourceGrid2.Cells.Real.Cell(taxon.ExploitationStatus, Me.m_editorExploitation)
+            Me(iRow, eColumnTypes.Exploitation).Behaviors.Add(Me.EwEEditHandler)
 
             cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonProp)
             cell.SuppressZero = True

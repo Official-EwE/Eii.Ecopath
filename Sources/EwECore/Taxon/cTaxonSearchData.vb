@@ -61,6 +61,7 @@ Public Class cTaxonSearchData
     Private m_bExploited As Boolean = False
     Private m_ecology As eEcologyTypes = eEcologyTypes.NotSet
     Private m_conservation As eIUCNConservationStatusTypes = eIUCNConservationStatusTypes.NotSet
+    Private m_exploitation As eExploitationTypes = eExploitationTypes.NotSet
     Private m_occurrence As eOccurrenceStatusTypes = eOccurrenceStatusTypes.NotSet
     Private m_organism As eOrganismTypes = eOrganismTypes.Fishes
     Private m_sLastUpdated As Double = cDateUtils.DateToJulian(Date.Now())
@@ -314,6 +315,17 @@ Public Class cTaxonSearchData
         End Get
         Set(ByVal value As eIUCNConservationStatusTypes)
             Me.m_conservation = value
+        End Set
+    End Property
+
+    ''' <inheritdocs cref="ITaxonDetailsData.ExploitationStatus"/>
+    Public Property ExploitationStatus() As eExploitationTypes _
+        Implements ITaxonDetailsData.ExploitationStatus
+        Get
+            Return Me.m_exploitation
+        End Get
+        Set(ByVal value As eExploitationTypes)
+            Me.m_exploitation = value
         End Set
     End Property
 

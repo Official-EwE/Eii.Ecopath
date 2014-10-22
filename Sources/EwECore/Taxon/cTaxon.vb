@@ -155,6 +155,11 @@ Public Class cTaxon
         val = New cValue(New Integer, eVarNameFlags.IUCNConservationStatus, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.IUCNConservationStatus))
         m_values.Add(val.varName, val)
 
+        ' ExploitationStatus
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.ExploitationStatus, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.ExploitationStatus))
+        m_values.Add(val.varName, val)
+
         ' OccurrenceStatus
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Integer, eVarNameFlags.OccurrenceStatus, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.OccurrenceStatus))
@@ -524,7 +529,7 @@ Public Class cTaxon
     End Property
 
     ''' <summary>
-    ''' Get/set whether the taxon is exploited.
+    ''' Get/set the proportion of the catch of this taxon.
     ''' </summary>
     Public Property ProportionCatch() As Single
         Get
@@ -545,6 +550,19 @@ Public Class cTaxon
         End Get
         Set(ByVal value As eIUCNConservationStatusTypes)
             Me.SetVariable(eVarNameFlags.IUCNConservationStatus, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the <see cref="eExploitationTypes"/> for a taxon.
+    ''' </summary>
+    Public Property ExploitationStatus() As eExploitationTypes _
+        Implements ITaxonDetailsData.ExploitationStatus
+        Get
+            Return DirectCast(Me.GetVariable(eVarNameFlags.ExploitationStatus), eExploitationTypes)
+        End Get
+        Set(ByVal value As eExploitationTypes)
+            Me.SetVariable(eVarNameFlags.ExploitationStatus, value)
         End Set
     End Property
 
