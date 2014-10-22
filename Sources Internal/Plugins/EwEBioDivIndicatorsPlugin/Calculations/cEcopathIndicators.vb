@@ -88,9 +88,9 @@ Public Class cEcopathIndicators
     End Function
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cIndicators.KemptonsQ"/>
+    ''' <inheritdocs cref="cIndicators.ModelKemptionsQ"/>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function KemptonsQ() As Single
+    Protected Overrides Function ModelKemptionsQ() As Single
         Return Me.Core.EcoFunction.KemptonsQ(Me.EcopathDS.NumLiving, Me.EcopathDS.TTLX, Me.EcopathDS.B, 0.25)
     End Function
 

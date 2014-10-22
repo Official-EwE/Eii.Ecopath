@@ -139,9 +139,9 @@ Public Class cEcospaceIndicators
     End Function
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cIndicators.KemptonsQ"/>
+    ''' <inheritdocs cref="cIndicators.ModelKemptionsQ"/>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function KemptonsQ() As Single
+    Protected Overrides Function ModelKemptionsQ() As Single
         Return Me.m_ecospaceDS.KemptonsQ(Me.m_ptLocation.Y, Me.m_ptLocation.X)
     End Function
 

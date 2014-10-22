@@ -132,7 +132,7 @@ Public Class cEcosimIndicators
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cIndicators.KemptonsQ"/>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function KemptonsQ() As Single
+    Protected Overrides Function ModelKemptionsQ() As Single
         Return Me.EcosimDS.Kemptons(Me.Time)
     End Function
 

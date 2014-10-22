@@ -260,6 +260,8 @@ Public MustInherit Class cIndicators
     ''' -----------------------------------------------------------------------
     Protected MustOverride Function ModelDiscards(ByVal iGroup As Integer) As Single
 
+    Protected MustOverride Function ModelKemptionsQ() As Single
+
 #End Region ' Inputs 
 
 #Region " Computations "
@@ -471,7 +473,7 @@ Public MustInherit Class cIndicators
         Me.m_sDemB = sDemB
         Me.m_sPelB = sPelB
         Me.m_sDemPelB = CSng(cSystemUtils.IIF(sPelB = 0, 0, sDemB / sPelB))
-        Me.m_sKemptonsQ = 0
+        Me.m_sKemptonsQ = Me.ModelKemptionsQ()
 
         ' Catch indicators
         Me.m_sCT = sCT
@@ -752,7 +754,7 @@ Public MustInherit Class cIndicators
     ''' </summary>
     ''' <returns>The 'demersal biomass.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function KemptonsQ() As Single
+    Public Function KemptonsQ() As Single
         Return Me.m_sKemptonsQ
     End Function
 
