@@ -216,4 +216,17 @@ Public MustInherit Class cShapeFunction
         Return sMax
     End Function
 
+    Protected Function IsMediation(datatype As eDataTypes) As Boolean
+        Return (datatype = eDataTypes.Mediation) Or _
+               (datatype = eDataTypes.PriceMediation) Or _
+               (datatype = eDataTypes.CapacityMediation)
+    End Function
+
+    Protected Function IsForcing(datatype As eDataTypes) As Boolean
+        Return (datatype = eDataTypes.Forcing) Or _
+               (datatype = eDataTypes.EggProd) Or _
+               (datatype = eDataTypes.FishingEffort) Or _
+               (datatype = eDataTypes.FishMort)
+    End Function
+
 End Class

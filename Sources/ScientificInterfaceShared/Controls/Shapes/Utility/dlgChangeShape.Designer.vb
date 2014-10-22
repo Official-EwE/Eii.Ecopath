@@ -64,6 +64,7 @@ Namespace Controls
             Me.m_tlpInput = New System.Windows.Forms.TableLayoutPanel()
             Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnRefresh = New System.Windows.Forms.Button()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_tlpParams.SuspendLayout()
@@ -205,6 +206,7 @@ Namespace Controls
             Me.m_tlpInput.Controls.Add(Me.m_lbShapeFunctionTypes, 0, 1)
             Me.m_tlpInput.Controls.Add(Me.m_tlpParams, 0, 3)
             Me.m_tlpInput.Controls.Add(Me.m_hdrParams, 0, 2)
+            Me.m_tlpInput.Controls.Add(Me.m_btnRefresh, 0, 4)
             Me.m_tlpInput.Name = "m_tlpInput"
             '
             'm_hdrShape
@@ -223,6 +225,12 @@ Namespace Controls
             Me.m_hdrParams.IsCollapsed = False
             Me.m_hdrParams.Name = "m_hdrParams"
             '
+            'm_btnRefresh
+            '
+            resources.ApplyResources(Me.m_btnRefresh, "m_btnRefresh")
+            Me.m_btnRefresh.Name = "m_btnRefresh"
+            Me.m_btnRefresh.UseVisualStyleBackColor = True
+            '
             'm_tbxName
             '
             resources.ApplyResources(Me.m_tbxName, "m_tbxName")
@@ -233,7 +241,7 @@ Namespace Controls
             resources.ApplyResources(Me.m_lblName, "m_lblName")
             Me.m_lblName.Name = "m_lblName"
             '
-            'dlgChangeShape2
+            'dlgChangeShape
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -246,7 +254,7 @@ Namespace Controls
             Me.Controls.Add(Me.m_plPreview)
             Me.Controls.Add(Me.m_btnOk)
             Me.Controls.Add(Me.m_btnCancel)
-            Me.Name = "dlgChangeShape2"
+            Me.Name = "dlgChangeShape"
             Me.ShowInTaskbar = False
             Me.m_tlpParams.ResumeLayout(False)
             Me.m_tlpParams.PerformLayout()
@@ -281,6 +289,7 @@ Namespace Controls
         Private WithEvents m_lblEUnit As System.Windows.Forms.Label
         Private WithEvents m_tbxName As System.Windows.Forms.TextBox
         Private WithEvents m_lblName As System.Windows.Forms.Label
+        Friend WithEvents m_btnRefresh As System.Windows.Forms.Button
 
     End Class
 

@@ -68,8 +68,8 @@ Public Class cHyperbolicShapeFunction
         Me.ParamValue(3) = 0.75
     End Sub
 
-    Public Overrides Function IsCompatible(DataType As EwEUtils.Core.eDataTypes) As Boolean
-        Return True
+    Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
+        Return Me.IsForcing(datatype) Or Me.IsMediation(datatype)
     End Function
 
     Public Overrides ReadOnly Property nParameters As Integer

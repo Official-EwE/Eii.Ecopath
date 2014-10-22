@@ -97,9 +97,7 @@ Public Class cTrapezoidShapeFunction
     End Sub
 
     Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
-        Return (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
-               (datatype = EwEUtils.Core.eDataTypes.PriceMediation) Or _
-               (datatype = eDataTypes.CapacityMediation)
+        Return Me.IsMediation(datatype)
     End Function
 
     Public Overrides Property ParamValue(ByVal iParam As Integer) As Single

@@ -36,7 +36,7 @@ Namespace Controls
     ''' Interface to set the contour of a given shape to a 'common' primitive
     ''' </summary>
     ''' <remarks>
-    ''' EwE5: frmShaper.vb
+    ''' This code is loosely based on frmShaper.vb in EwE5.
     ''' </remarks>
     Public Class dlgChangeShape
 
@@ -219,9 +219,14 @@ Namespace Controls
 
         End Sub
 
+        Private Sub OnRefreshShape(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnRefresh.Click
+            Me.UpdatePreview()
+        End Sub
+
 #End Region ' Events
 
-#Region " Private method helpers "
+#Region " Internals "
 
         Private Sub UpdateControls()
 
@@ -314,7 +319,7 @@ Namespace Controls
             Return Me.m_shape.nPoints
         End Function
 
-#End Region ' Private method helpers
+#End Region ' Internals
 
     End Class
 

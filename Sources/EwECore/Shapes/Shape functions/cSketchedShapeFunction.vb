@@ -43,10 +43,7 @@ Public Class cSketchedShapeFunction
     End Sub
 
     Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
-        Return (datatype = EwEUtils.Core.eDataTypes.Forcing) Or _
-               (datatype = EwEUtils.Core.eDataTypes.Mediation) Or _
-               (datatype = EwEUtils.Core.eDataTypes.PriceMediation) Or _
-               (datatype = EwEUtils.Core.eDataTypes.CapacityMediation)
+         Return Me.IsForcing(datatype) or Me.IsMediation(datatype)
     End Function
 
     Public Overrides ReadOnly Property nParameters As Integer
