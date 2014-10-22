@@ -240,25 +240,28 @@ Public Class dlgDefineTaxa
         Catch ex As Exception
             cLog.Write(ex, "dlgDefineTaxa::m_btnAdd_Click")
         End Try
+        Me.UpdateControls()
     End Sub
 
     Private Sub m_btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnRemove.Click
         Try
-            Me.m_gridGroups.ToggleDeleteRows()
+            Me.m_gridGroups.DeleteRows(True)
             Me.m_gridResults.OnUsedTaxaChanged()
         Catch ex As Exception
             cLog.Write(ex, "dlgDefineTaxa::m_btnRemove_Click")
         End Try
+        Me.UpdateControls()
     End Sub
 
     Private Sub m_btnKeep_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnKeep.Click
         Try
-            Me.m_gridGroups.ToggleDeleteRows()
+            Me.m_gridGroups.DeleteRows(False)
         Catch ex As Exception
             cLog.Write(ex, "dlgDefineTaxa::m_btnKeep_Click")
         End Try
+        Me.UpdateControls()
     End Sub
 
     Private Sub m_btnProps_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
