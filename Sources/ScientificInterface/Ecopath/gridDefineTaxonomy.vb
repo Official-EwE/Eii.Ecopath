@@ -261,7 +261,7 @@ Public Class gridDefineTaxonomy
 
                 Debug.Assert(CInt(taxon.GetVariable(eVarNameFlags.DBID)) = Me.m_iDBIDTaxon)
 
-                If (taxon.Proportion <> Me.m_sProportion) Then Return True
+                If (Math.Round(taxon.Proportion, 5) <> Math.Round(Me.m_sProportion, 5)) Then Return True
                 If (taxon.iGroup <> Me.m_iGroup) Then Return True
                 If (taxon.iStanza <> Me.m_iStanza) Then Return True
                 If (taxon.CodeSAUP <> Me.CodeSAUP) Then Return True
@@ -961,48 +961,55 @@ Public Class gridDefineTaxonomy
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Set the delete state of all selected rows
+    ''' Set the delete state of all selected rows.
     ''' </summary>
+    ''' <param name="bDelete">The state to set rows to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub ToggleDeleteRows()
+    Public Sub DeleteRows(bDelete As Boolean)
 
         Dim sel As Selection = Me.Selection
+        Dim rows As RowInfo() = sel.SelectedRows
         Dim ti As cTaxonInfo = Nothing
-        Dim iRow As Integer = Me.SelectedRow
 
-        If (iRow <= 0) Then Return
+        For Each row As RowInfo In rows
+            Dim iRow As Integer = row.Index
 
-        ti = Me.TaxonInfo(iRow)
+            ti = Me.TaxonInfo(iRow)
 
-        If (ti IsNot Nothing) Then
-            ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
+            If (ti IsNot Nothing) Then
+                ti.FlaggedForDeletion = bDelete
 
-            ' Check to see what is to happen to the MPA now
-            Select Case ti.Status
+                ' Check to see what is to happen to the MPA now
+                If (bDelete) Then
+                    Select Case ti.Status
 
-                Case eItemStatusTypes.Original
-                    ' Clear removed status 
-                    Me.m_lTaxonInfoRemoved.Remove(ti)
+                        Case eItemStatusTypes.Original
+                            ' Clear removed status 
+                            Me.m_lTaxonInfoRemoved.Remove(ti)
+                            Me.UpdateRow(iRow)
+
+                        Case eItemStatusTypes.Added
+                            ' Remove new item
+                            Me.m_lTaxonInfo.Remove(ti)
+                            Me.RemoveTaxonRow(iRow)
+
+                        Case eItemStatusTypes.Removed
+                            ' Set removed status
+                            Me.m_lTaxonInfoRemoved.Add(ti)
+                            Me.UpdateRow(iRow)
+
+                        Case eItemStatusTypes.Invalid
+                            ' Set removed status
+                            Me.m_lTaxonInfo.Remove(ti)
+                            Me.RemoveTaxonRow(iRow)
+
+                    End Select
+                Else
                     Me.UpdateRow(iRow)
+                End If
 
-                Case eItemStatusTypes.Added
-                    ' Remove new item
-                    Me.m_lTaxonInfo.Remove(ti)
-                    Me.RemoveTaxonRow(iRow)
-
-                Case eItemStatusTypes.Removed
-                    ' Set removed status
-                    Me.m_lTaxonInfoRemoved.Add(ti)
-                    Me.UpdateRow(iRow)
-
-                Case eItemStatusTypes.Invalid
-                    ' Set removed status
-                    Me.m_lTaxonInfo.Remove(ti)
-                    Me.RemoveTaxonRow(iRow)
-
-            End Select
-
-        End If
+            End If
+        Next
 
     End Sub
 
@@ -1211,19 +1218,10 @@ Public Class gridDefineTaxonomy
                 Next
 
                 ' Remove deleted Taxons
-                Dim iTaxonRemove As Integer = 0
-                For iTaxon = 0 To Me.m_lTaxonInfoRemoved.Count - 1
-                    ti = DirectCast(Me.m_lTaxonInfoRemoved(iTaxonRemove), cTaxonInfo)
-                    If (Not ti.IsNew) Then
-                        If (Me.Core.RemoveTaxon(ti.TaxonIndex)) Then
-                            Me.m_lTaxonInfo.Remove(ti)
-                            Me.m_lTaxonInfoRemoved.Remove(ti)
-                        Else
-                            bSuccess = False
-                            iTaxonRemove += 1
-                        End If
-                    End If
+                For Each ti In Me.m_lTaxonInfoRemoved
+                    bSuccess = bSuccess And Me.Core.RemoveTaxon(ti.TaxonIndex)
                 Next
+                Me.m_lTaxonInfoRemoved.Clear()
 
             Catch ex As Exception
 
@@ -1233,8 +1231,6 @@ Public Class gridDefineTaxonomy
             Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
             cApplicationStatusNotifier.EndProgress(Me.Core)
 
-            ' Test whether new Taxons were loaded correctly
-            Debug.Assert(Me.m_lTaxonInfo.Count = Me.Core.nTaxon, "Dialog and core out of sync on Taxons")
         End If
 
         ' Update any changed taxa
@@ -1245,7 +1241,9 @@ Public Class gridDefineTaxonomy
         Next
 
         For Each ti In Me.m_lTaxonInfo
-            If Not ti.IsNew Then ti.ApplyChanges(dtTaxa(ti.TaxonID))
+            If (Not ti.IsNew And Not ti.FlaggedForDeletion) Then
+                ti.ApplyChanges(dtTaxa(ti.TaxonID))
+            End If
         Next
 
         Return bSuccess
