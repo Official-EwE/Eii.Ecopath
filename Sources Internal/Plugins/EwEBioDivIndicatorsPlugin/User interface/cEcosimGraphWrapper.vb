@@ -89,6 +89,7 @@ Public Class cEcosimGraphWrapper
         Dim lInfo As New List(Of cIndicatorSettings.cIndicatorInfo)
         Dim info As cIndicatorSettings.cIndicatorInfo = Nothing
         Dim gp As GraphPane = Nothing
+        Dim strLabelPane As String = ""
         Dim strLabelTime As String = SharedResources.UNIT_TIME_YEAR
         Dim strLabelValue As String = ""
         Dim settings As cIndicatorSettings = Me.m_settings
@@ -98,7 +99,6 @@ Public Class cEcosimGraphWrapper
         Dim sXMin As Single = 0
         Dim sXMax As Single = 0
 
-
         If (indSingle Is Nothing) Then
             ' Group mode
             If Not Object.ReferenceEquals(indGroup, Me.m_groupCurrent) Then
@@ -106,12 +106,17 @@ Public Class cEcosimGraphWrapper
                     lInfo.Add(indGroup.Indicator(i))
                 Next
             End If
+            strLabelPane = indGroup.Name
         Else
             ' Indicator mode
             If Not Object.ReferenceEquals(indSingle, Me.m_indCurrent) Then
                 lInfo.Add(indSingle)
             End If
+            strLabelPane = indSingle.Name
         End If
+
+        ' Set master pane title
+        Me.Configure(strLabelPane)
 
         If (lInfo.Count > 0) Then
             ' Create and configure panes
@@ -127,11 +132,10 @@ Public Class cEcosimGraphWrapper
                 End If
                 ' Make indicator panel pretty
                 Me.ConfigurePane(info.Name, strLabelTime, Nothing, strLabelValue, info.Units, False, iPane:=iPane)
-
             Next
         End If
 
-         Try
+        Try
             ' Next populate all panels
             For iPane As Integer = 1 To Me.NumPanes
                 ' Get pane for indicator iInd
