@@ -76,6 +76,21 @@ Namespace Ecopath.Input
                 MyBase.Dispose(bDisposing)
             End Sub
 
+            Protected Overrides Property Style As ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags
+                Get
+                    Dim strGenus As String = CStr(Me.m_propGenus.GetValue())
+                    Dim strSpecies As String = CStr(Me.m_propSpecies.GetValue())
+
+                    If String.IsNullOrWhiteSpace(strGenus) Or String.IsNullOrEmpty(strSpecies) Then
+                        Return cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
+                    End If
+                    Return cStyleGuide.eStyleFlags.Taxon Or cStyleGuide.eStyleFlags.NotEditable
+                End Get
+                Set(value As ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)
+                    ' NOP
+                End Set
+            End Property
+
             Protected Overrides Property Value(Optional bHonourNull As Boolean = True) As Object
                 Get
                     ' Do not try to properly capitalize; .NET has no built-in function for this that works under for all languages! Better not try to be too smart
@@ -296,7 +311,6 @@ Namespace Ecopath.Input
             Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(CStr(taxon.Index))
 
             cell = New PropertyRowHeaderChildCell(propScName)
-            cell.Style = cStyleGuide.eStyleFlags.Taxon
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.Name) = cell
             Me.RegisterLocalProperty(propScName)
