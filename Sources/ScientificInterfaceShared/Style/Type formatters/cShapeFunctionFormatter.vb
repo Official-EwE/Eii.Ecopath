@@ -53,7 +53,7 @@ Namespace Style
                 Dim fmt As New cShapeFunctionTypeFormatter()
                 Return fmt.GetDescriptor(DirectCast(value, cShapeFunction).ShapeFunctionType)
             ElseIf (TypeOf value Is EwEPlugin.IEcosimShapeFunctionPlugin) Then
-                Return DirectCast(value, EwEPlugin.IEcosimShapeFunctionPlugin).Name
+                Return DirectCast(value, EwEPlugin.IEcosimShapeFunctionPlugin).DisplayName
             End If
             ' Hmm
             Return value.ToString

@@ -61,11 +61,56 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Plug-in that provides a Sinoid shape function to EwE 6.
+        '''</summary>
+        Friend ReadOnly Property DESCIRPTION_SINOID() As String
+            Get
+                Return ResourceManager.GetString("DESCIRPTION_SINOID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plug-in that adds noise to a shape in EwE 6.
+        '''</summary>
+        Friend ReadOnly Property DESCRIPTION_NOISE() As String
+            Get
+                Return ResourceManager.GetString("DESCRIPTION_NOISE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Add noise.
+        '''</summary>
+        Friend ReadOnly Property NAME_NOISE() As String
+            Get
+                Return ResourceManager.GetString("NAME_NOISE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sinoid.
+        '''</summary>
+        Friend ReadOnly Property NAME_SINOID() As String
+            Get
+                Return ResourceManager.GetString("NAME_SINOID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Amplitude.
         '''</summary>
         Friend ReadOnly Property PARAM_AMPLITUDE() As String
             Get
                 Return ResourceManager.GetString("PARAM_AMPLITUDE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Bandwidth.
+        '''</summary>
+        Friend ReadOnly Property PARAM_BAND() As String
+            Get
+                Return ResourceManager.GetString("PARAM_BAND", resourceCulture)
             End Get
         End Property
         

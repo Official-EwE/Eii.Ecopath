@@ -32,4 +32,10 @@ Public Interface IEcosimShapeFunctionPlugin
     Inherits IPlugin
     Inherits EwEUtils.Core.IShapeFunction
 
+    ''' <summary>
+    ''' Returns the new of the function which will be displayed in the EwE
+    ''' user interface.
+    ''' </summary>
+    ReadOnly Property DisplayName() As String
+
 End Interface

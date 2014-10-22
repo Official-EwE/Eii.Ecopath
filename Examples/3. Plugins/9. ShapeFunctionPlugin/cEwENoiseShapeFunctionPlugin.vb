@@ -26,11 +26,10 @@ Imports EwEPlugin
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Example plug-in point to deliver a sinoid shape function to the Ecosim 
-''' 'Change Shape' user interfaces. Feel free, go wild, and add your own shapes.
+''' Example plug-in point to add noise to an existing shape.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cEwESinoidShapeFunctionPlugin
+Public Class cEwENoseShapeFunctionPlugin
     Implements EwEPlugin.IEcosimShapeFunctionPlugin
 
 #Region " Internal vars "
@@ -40,11 +39,6 @@ Public Class cEwESinoidShapeFunctionPlugin
     ''' <summary>The points of the shape</summary>
     Protected m_points As Single() = Nothing
 
-    ''' <summary>Degree-to-radians conversion factor.</summary>
-    Private Const cDegToRad As Single = Math.PI / 180.0!
-    ''' <summary>Another handy one.</summary>
-    Private Const cTwoPI As Single = Math.PI * 2.0!
-
 #End Region ' Internal vars
 
 #Region " Generic plug-in bits "
@@ -52,7 +46,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     Public ReadOnly Property Name As String _
         Implements EwEPlugin.IPlugin.Name
         Get
-            Return "EwE6.example.shapefunction.sinoid"
+            Return "EwE6.example.shapefunction.noise"
         End Get
     End Property
 
@@ -73,14 +67,14 @@ Public Class cEwESinoidShapeFunctionPlugin
     Public ReadOnly Property DisplayName As String _
         Implements EwEPlugin.IEcosimShapeFunctionPlugin.DisplayName
         Get
-            Return My.Resources.NAME_SINOID
+            Return My.Resources.NAME_NOISE
         End Get
     End Property
 
     Public ReadOnly Property Description As String _
         Implements EwEPlugin.IPlugin.Description
         Get
-            Return My.Resources.DESCIRPTION_SINOID
+            Return My.Resources.DESCRIPTION_NOISE
         End Get
     End Property
 
@@ -99,24 +93,9 @@ Public Class cEwESinoidShapeFunctionPlugin
 #Region " Shape parameters "
 
     ''' <summary>
-    ''' Y zero parameter of the Sinoid shape.
+    ''' Min noise value.
     ''' </summary>
-    Private Property YZero As Single
-
-    ''' <summary>
-    ''' Sinoid amplitude.
-    ''' </summary>
-    Private Property Amplitude As Single
-
-    ''' <summary>
-    ''' Number of sinoid repetitions.
-    ''' </summary>
-    Private Property Repetitions As Single
-
-    ''' <summary>
-    ''' Offset angle (in decimal degrees) to start the sinoid with.
-    ''' </summary>
-    Private Property Offset As Single
+    Private Property Band As Single = 0.1
 
 #End Region ' Shape parameters
 
@@ -126,47 +105,40 @@ Public Class cEwESinoidShapeFunctionPlugin
         Implements EwEUtils.Core.IShapeFunction.Init
 
         If (Not TypeOf shape Is cForcingFunction) Then Return
-        Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
-        Me.m_points = ff.ShapeData
+        Dim shp As cForcingFunction = DirectCast(shape, cForcingFunction)
+        Me.m_points = shp.ShapeData
 
     End Sub
 
     Public Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean _
         Implements EwEUtils.Core.IShapeFunction.IsCompatible
 
-        ' This shape function only applies to forcing functions
-        Return (datatype = EwEUtils.Core.eDataTypes.Forcing)
+        ' This shape function only applies to any type of function
+        Return True
 
     End Function
 
     Public Sub Defaults() _
         Implements EwEUtils.Core.IShapeFunction.Defaults
 
-        ' Pick some nice defaults
-        Me.YZero = 1
-        Me.Amplitude = 0.5
-        Me.Repetitions = 1
-        Me.Offset = 0
+        Me.Band = 0.1
 
     End Sub
 
     Public ReadOnly Property nParameters As Integer _
         Implements EwEUtils.Core.IShapeFunction.nParameters
         Get
-            ' Tell EwE that the Sinoid shape function has four configurable parameters
-            Return 4
+            ' Tell EwE that the noise shape function has three configurable parameters
+            Return 1
         End Get
     End Property
 
     Public ReadOnly Property ParamName(iParam As Integer) As String _
         Implements EwEUtils.Core.IShapeFunction.ParamName
         Get
-            ' Tell EwE the names of each configurable parameter
+            ' Tell the EwE interface the name of configurable parameter 'iParam'
             Select Case iParam
-                Case 1 : Return My.Resources.PARAM_YZERO
-                Case 2 : Return My.Resources.PARAM_AMPLITUDE
-                Case 3 : Return My.Resources.PARAM_REPETITION
-                Case 4 : Return My.Resources.PARAM_OFFSET
+                Case 1 : Return My.Resources.PARAM_BAND
             End Select
             Return "?"
         End Get
@@ -175,12 +147,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     Public ReadOnly Property ParamUnit(iParam As Integer) As String _
         Implements EwEUtils.Core.IShapeFunction.ParamUnit
         Get
-            ' Tell EwE the units of configurable parameters, if any
-            Select Case iParam
-                Case 4
-                    ' The 'offset' parameter must be specified in decimal degrees
-                    Return My.Resources.UNIT_OFFSET
-            End Select
+            ' No units for any of the noise function parameters
             Return ""
         End Get
     End Property
@@ -188,22 +155,16 @@ Public Class cEwESinoidShapeFunctionPlugin
     Public Property ParamValue(iParam As Integer) As Single _
         Implements EwEUtils.Core.IShapeFunction.ParamValue
         Get
-            ' Tell EwE the value of each configurable parameter
+            ' Tell EwE the values of each configurable parameter
             Select Case iParam
-                Case 1 : Return Me.YZero
-                Case 2 : Return Me.Amplitude
-                Case 3 : Return Me.Repetitions
-                Case 4 : Return Me.Offset
+                Case 1 : Return Me.Band
             End Select
             Return cCore.NULL_VALUE
         End Get
         Set(value As Single)
             ' Allow EwE to set the value of each configurable parameter
             Select Case iParam
-                Case 1 : Me.YZero = value
-                Case 2 : Me.Amplitude = value
-                Case 3 : Me.Repetitions = value
-                Case 4 : Me.Offset = value
+                Case 1 : Me.Band = value
             End Select
         End Set
     End Property
@@ -212,19 +173,13 @@ Public Class cEwESinoidShapeFunctionPlugin
         Implements EwEUtils.Core.IShapeFunction.Shape
 
         ' Tell EwE the actual shape, computed from the current parameter values
+        Dim pt As Integer = 1
+        Dim rnd As New Random()
 
-        Dim dStep As Double = (Me.Repetitions * 360.0!) / nPoints
-        Dim dAngle As Double = Me.Offset Mod 360.0!
-
-        For i As Integer = 1 To Math.Min(Me.m_points.Length, nPoints)
-            Me.m_points(i) = Me.YZero + CSng(Math.Sin(dAngle * cDegToRad)) * Me.Amplitude
-            dAngle = (dAngle + dStep) Mod 360.0!
-        Next
-
-        ' Complete the rest of the shape by repeating the last value until the end of the shape
-        For i As Integer = nPoints + 1 To Me.m_points.Length - 1
-            Me.m_points(i) = Me.m_points(nPoints)
-        Next
+        While (pt < Me.m_points.Length)
+            Me.m_points(pt) += CSng(Me.Band * rnd.NextDouble() - Me.Band / 2)
+            pt += 1
+        End While
 
         ' Done
         Return Me.m_points

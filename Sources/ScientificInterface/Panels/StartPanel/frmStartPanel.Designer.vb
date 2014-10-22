@@ -67,7 +67,6 @@ Partial Class frmStartPanel
         '
         'm_browser
         '
-        Me.m_browser.AllowWebBrowserDrop = False
         resources.ApplyResources(Me.m_browser, "m_browser")
         Me.m_browser.Name = "m_browser"
         Me.m_browser.ScriptErrorsSuppressed = True
