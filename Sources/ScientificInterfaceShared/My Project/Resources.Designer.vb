@@ -1348,6 +1348,69 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Depleted|||Catches are well below historical levels, irrespective of the amount of fishing effort exerted.
+        '''</summary>
+        Public ReadOnly Property EXPLOITATIONSTATUS_DEPLETED() As String
+            Get
+                Return ResourceManager.GetString("EXPLOITATIONSTATUS_DEPLETED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fully exploited|||The fishery is operating at or close to an optimal yield level, with no expected room for further expansion.
+        '''</summary>
+        Public ReadOnly Property EXPLOITATIONSTATUS_FULLYEXPLOITED() As String
+            Get
+                Return ResourceManager.GetString("EXPLOITATIONSTATUS_FULLYEXPLOITED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Moderately exploited|||Exploited with a low level of fishing effort. Believed to have some limited potential for expansion in total production.
+        '''</summary>
+        Public ReadOnly Property EXPLOITATIONSTATUS_MODERATELYEXPLOITED() As String
+            Get
+                Return ResourceManager.GetString("EXPLOITATIONSTATUS_MODERATELYEXPLOITED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Not exploited.
+        '''</summary>
+        Public ReadOnly Property EXPLOITATIONSTATUS_NOTEXPLOITED() As String
+            Get
+                Return ResourceManager.GetString("EXPLOITATIONSTATUS_NOTEXPLOITED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Overexploited|||The fishery is being exploited at above a level which is believed to be sustainable in the long term, with no potential room for further expansion and a higher risk of stock depletion/collapse.
+        '''</summary>
+        Public ReadOnly Property EXPLOITATIONSTATUS_OVEREXPLOITED() As String
+            Get
+                Return ResourceManager.GetString("EXPLOITATIONSTATUS_OVEREXPLOITED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Recovering|||Catches are again increasing after having been depleted.
+        '''</summary>
+        Public ReadOnly Property EXPLOITATIONSTATUS_RECOVERING() As String
+            Get
+                Return ResourceManager.GetString("EXPLOITATIONSTATUS_RECOVERING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Underexploited|||Undeveloped or new fishery. Believed to have a significant potential for expansion in total production.
+        '''</summary>
+        Public ReadOnly Property EXPLOITATIONSTATUS_UNDEREXPLOITED() As String
+            Get
+                Return ResourceManager.GetString("EXPLOITATIONSTATUS_UNDEREXPLOITED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property ExportDatabaseHS() As System.Drawing.Bitmap
@@ -4139,6 +4202,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_EXISTENCE_VALUE() As String
             Get
                 Return ResourceManager.GetString("HEADER_EXISTENCE_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Exploitation status.
+        '''</summary>
+        Public ReadOnly Property HEADER_EXPLOITATION_STATUS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_EXPLOITATION_STATUS", resourceCulture)
             End Get
         End Property
         

@@ -33,29 +33,55 @@ Namespace Core
     Public Interface ITaxonDetailsData
         Inherits ITaxonSearchData
 
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the <see cref="eEcologyTypes"/> for a taxon.
+        ''' </summary>
         Property EcologyType() As eEcologyTypes
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the <see cref="eOrganismTypes"/> for a taxon.
+        ''' </summary>
         Property OrganismType() As eOrganismTypes
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the <see cref="eIUCNConservationStatusTypes"/> for a taxon.
+        ''' </summary>
         Property IUCNConservationStatus() As eIUCNConservationStatusTypes
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the <see cref="eExploitationTypes"/> for a taxon.
+        ''' </summary>
+        Property ExploitationStatus() As eExploitationTypes
+        ''' <summary>
+        ''' Get/set the <see cref="eOccurrenceStatusTypes"/> for a taxon.
+        ''' </summary>
         Property OccurrenceStatus() As eOccurrenceStatusTypes
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the mean weight for a taxon.
+        ''' </summary>
         Property MeanWeight() As Single
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the mean life span for a taxon.
+        ''' </summary>
         Property MeanLifespan() As Single
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the mean length for a taxon.
+        ''' </summary>
         Property MeanLength() As Single
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the max length for a taxon.
+        ''' </summary>
         Property MaxLength() As Single
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the vulnerability index for a taxon.
+        ''' </summary>
         Property VulnerabilityIndex() As Integer
-        ''' <summary></summary>
+        ''' <summary>
+        ''' Get/set the asymptotic weight for a taxon.
+        ''' </summary>
         Property Winf() As Single
-        ''' <summary>Weight asymptotic</summary>
+        ''' <summary>
+        ''' Get/set the asymptotic weight for a taxon.
+        ''' </summary>
         Property vbgfK() As Single
-        ''' <summary>Von Bertalanffy Curvature parameter, K in taxon table</summary>
+        ''' <summary>Julian date when record was last updated.</summary>
         Property LastUpdated() As Double
 
     End Interface

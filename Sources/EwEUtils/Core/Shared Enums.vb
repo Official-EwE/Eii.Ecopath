@@ -1496,6 +1496,7 @@ Namespace Core
         OrganismType
         EcologyType
         IUCNConservationStatus
+        ExploitationStatus
         OccurrenceStatus
         TaxonMeanWeight
         TaxonMeanLength
@@ -2740,6 +2741,47 @@ Namespace Core
     End Enum
 
 #End Region ' Organism types
+
+#Region " Exploitation types "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating FAO classifications of commercial exploitation of
+    ''' species.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eExploitationTypes As Integer
+        ''' <summary>Exploitation status is unknown.</summary>
+        NotSet = 0
+        ''' <summary>Not being exploited.</summary>
+        ''' <remarks>Wouldn't that be nice...?</remarks>
+        NotExploited
+        ''' <summary>
+        ''' Undeveloped or new fishery. Believed to have a significant potential 
+        ''' for expansion in total production.
+        ''' </summary>
+        UnderExploited
+        ''' <summary>
+        ''' Exploited with a low level of fishing effort. Believed to have some 
+        ''' limited potential for expansion in total production.
+        ''' </summary>
+        ModeratelyExploited
+        ''' <summary>The fishery is operating at or close to an optimal yield level, 
+        ''' with no expected room for further expansion
+        ''' </summary>
+        FullyExploited
+        ''' <summary>The fishery is being exploited at above a level that is believed 
+        ''' to be sustainable in the long term, with no potential room for further 
+        ''' expansion and a higher risk of stock depletion/collapse</summary>
+        OverExploited
+        ''' <summary> Catches are well below historical levels, irrespective of the 
+        ''' amount of fishing effort exerted.</summary>
+        Depleted
+        ''' <summary>Catches are again increasing after having been depleted.</summary>
+        Recovering
+    End Enum
+
+#End Region ' Exploitation types
 
 #Region " Automated update types "
 

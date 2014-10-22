@@ -119,6 +119,8 @@ Public Class cTaxonAnalysis
                 avals = Me.m_taxonDS.TaxonOrganismType
             ElseIf TypeOf (value) Is eIUCNConservationStatusTypes Then
                 avals = Me.m_taxonDS.TaxonIUCNConservationStatus
+            ElseIf TypeOf (value) Is eExploitationTypes Then
+                avals = Me.m_taxonDS.TaxonExploitationStatus
             ElseIf TypeOf (value) Is eEcologyTypes Then
                 avals = Me.m_taxonDS.TaxonEcologyType
             ElseIf TypeOf (value) Is eOccurrenceStatusTypes Then
