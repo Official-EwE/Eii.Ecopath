@@ -1581,12 +1581,11 @@ Public Class cNetworkManager
             Dim TE2 As Single = Me.TotTransferEfficiency(2)
             Dim TE3 As Single = Me.TotTransferEfficiency(3)
             Dim TE4 As Single = Me.TotTransferEfficiency(4)
-            Dim TE As Single = CSng((TE2 * TE3 * TE4) ^ (1 / 3))
-            Dim PPRi As Single = Me.PPRTotPPHarvest(iGroup)
+            Dim TE As Single = CSng((TE2 * TE3 * TE4) ^ (1 / 3)) ' OK, NOT expressed in percent
+            Dim PPRi As Single = Me.PPRTotPPHarvest(iGroup)  ' OK, expressed in percent
 
-            ' Loss of prod for fn group: -PPRi*TE^(TLi-1) / ln(TE)
-            Return CSng(-1 * (PPRi * TE ^ (Me.m_epdata.TTLX(iGroup) - 1)) / Math.Log(TE))
-
+            ' Loss of Prod for fn group: -PPRi%*TE^(TLi-1) / ln(TE)
+            Return CSng(-PPRi * TE ^ (Me.m_epdata.TTLX(iGroup) - 1) / Math.Log(TE))
         End Get
     End Property
 
