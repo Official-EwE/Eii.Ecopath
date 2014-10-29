@@ -9402,8 +9402,6 @@ Public Class cCore
 
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecospace) Then Return False
 
-        Me.CloseEcotracerScenario()
-
         Try
 
             'For an Ecospace scenario to load there must be an Ecosim scenario loaded
@@ -9419,6 +9417,7 @@ Public Class cCore
             Me.CloseEcospaceScenario()
 
             Me.m_EcoPathData.ActiveEcospaceScenario = -1
+            Me.SpatialDataConnectionManager.DatasetManager.Reload(True)
 
             ds = DirectCast(DataSource, IEcospaceDatasource)
             If Not ds.LoadEcospaceScenario(Me.m_EcoPathData.EcospaceScenarioDBID(iScenario)) Then

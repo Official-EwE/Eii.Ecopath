@@ -67,6 +67,8 @@ Namespace Ecospace.Controls
         Private m_mhEcospace As cMessageHandler = Nothing
         Private m_man As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
+        Private m_vmDescriptionHdr As SourceGrid2.VisualModels.IVisualModel
+        Private m_vmDescriptionCell As SourceGrid2.VisualModels.IVisualModel
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -82,6 +84,8 @@ Namespace Ecospace.Controls
 
         Public Sub New()
             MyBase.New()
+            Me.m_vmDescriptionHdr = New cEwEGridColumnHeaderVisualizer(ContentAlignment.MiddleLeft)
+            Me.m_vmDescriptionCell = New cEwECellVisualizer(ContentAlignment.MiddleLeft)
         End Sub
 
         Protected Overrides Sub Dispose(disposing As Boolean)
@@ -138,6 +142,7 @@ Namespace Ecospace.Controls
             Me(0, eColumnTypes.DateFrom) = New EwEColumnHeaderCell(SharedResources.HEADER_FROM)
             Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+            Me(0, eColumnTypes.Description).VisualModel = Me.m_vmDescriptionHdr
 
             Me.Selection.SelectionMode = GridSelectionMode.Row
             Me.Selection.EnableMultiSelection = False
@@ -205,6 +210,7 @@ Namespace Ecospace.Controls
                 Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Name).VisualModel = vizKiddo
                 Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Description).VisualModel = Me.m_vmDescriptionCell
                 Me(iRow, eColumnTypes.DateFrom) = New EwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.DateTo) = New EwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me.Rows(iRow).Tag = ds

@@ -129,6 +129,7 @@ Namespace Ecospace.Controls
             Dim bHasSelection As Boolean = (ds IsNot Nothing)
             Dim bCanConfig As Boolean = (TypeOf ds Is IConfigurable)
 
+            Me.m_cmbTemplates.Enabled = bHasTemplate
             Me.m_btnCreate.Enabled = bHasTemplate
             Me.m_btnConfigure.Enabled = bHasSelection And bCanConfig
             Me.m_btnDelete.Enabled = bHasSelection
@@ -272,9 +273,10 @@ Namespace Ecospace.Controls
                 Me.m_bHasDatasetTemplates = True
             Next
 
-            If (Me.m_bHasDatasetTemplates) Then
-                Me.m_cmbTemplates.SelectedIndex = 0
+            If (Not Me.m_bHasDatasetTemplates) Then
+                Me.m_cmbTemplates.Items.Add(My.Resources.VALUE_NOTEMPLATES)
             End If
+            Me.m_cmbTemplates.SelectedIndex = 0
 
         End Sub
 

@@ -143,6 +143,10 @@ Namespace SpatialData
             End Get
         End Property
 
+        Public Function Reload(Optional bClearFirst As Boolean = True) As Boolean
+            Me.Load(Me.CurrentConfigFile, bClearFirst)
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Initializes the manager with datasets, loaded from persistent storage.
