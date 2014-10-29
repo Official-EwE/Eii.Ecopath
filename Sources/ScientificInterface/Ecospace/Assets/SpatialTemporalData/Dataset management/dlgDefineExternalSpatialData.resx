@@ -355,7 +355,7 @@
     <value>m_hdrExisting</value>
   </data>
   <data name="&gt;&gt;m_hdrExisting.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11464.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11494.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExisting.Parent" xml:space="preserve">
     <value>$this</value>
@@ -481,7 +481,7 @@
     <value>m_hdrDefineConnections</value>
   </data>
   <data name="&gt;&gt;m_hdrDefineConnections.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11464.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11494.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDefineConnections.Parent" xml:space="preserve">
     <value>$this</value>
@@ -535,7 +535,7 @@
     <value>m_gridDatasets</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.11464.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData, EwE6, Version=6.5.11494.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatasets.Parent" xml:space="preserve">
     <value>$this</value>
@@ -543,37 +543,37 @@
   <data name="&gt;&gt;m_gridDatasets.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="CEwEHeaderLabel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="m_hdrSharing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="CEwEHeaderLabel1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrSharing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="CEwEHeaderLabel1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrSharing.Location" type="System.Drawing.Point, System.Drawing">
     <value>594, 182</value>
   </data>
-  <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrSharing.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 18</value>
   </data>
-  <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrSharing.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="CEwEHeaderLabel1.Text" xml:space="preserve">
+  <data name="m_hdrSharing.Text" xml:space="preserve">
     <value>Sharing</value>
   </data>
-  <data name="CEwEHeaderLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrSharing.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel1</value>
+  <data name="&gt;&gt;m_hdrSharing.Name" xml:space="preserve">
+    <value>m_hdrSharing</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11464.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  <data name="&gt;&gt;m_hdrSharing.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11494.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSharing.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSharing.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -588,9 +588,6 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Define external spatial temporal connections</value>
   </data>
@@ -598,6 +595,6 @@
     <value>dlgDefineExternalSpatialData</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11464.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11494.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -58,7 +58,7 @@ Namespace Ecospace.Controls
             Me.m_hdrDefineConnections = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnManageConfigurations = New System.Windows.Forms.Button()
             Me.m_gridDatasets = New ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData()
-            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrSharing = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.SuspendLayout()
             '
             'm_btnDelete
@@ -173,13 +173,13 @@ Namespace Ecospace.Controls
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatasets.UIContext = Nothing
             '
-            'CEwEHeaderLabel1
+            'm_hdrSharing
             '
-            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
-            Me.CEwEHeaderLabel1.CanCollapseParent = False
-            Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
-            Me.CEwEHeaderLabel1.IsCollapsed = False
-            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+            resources.ApplyResources(Me.m_hdrSharing, "m_hdrSharing")
+            Me.m_hdrSharing.CanCollapseParent = False
+            Me.m_hdrSharing.CollapsedParentHeight = 0
+            Me.m_hdrSharing.IsCollapsed = False
+            Me.m_hdrSharing.Name = "m_hdrSharing"
             '
             'dlgDefineExternalSpatialData
             '
@@ -190,7 +190,7 @@ Namespace Ecospace.Controls
             Me.Controls.Add(Me.m_lblConfigValue)
             Me.Controls.Add(Me.m_lblConfig)
             Me.Controls.Add(Me.m_hdrDefineConnections)
-            Me.Controls.Add(Me.CEwEHeaderLabel1)
+            Me.Controls.Add(Me.m_hdrSharing)
             Me.Controls.Add(Me.m_hdrExisting)
             Me.Controls.Add(Me.m_lblNew)
             Me.Controls.Add(Me.m_cmbTemplates)
@@ -225,7 +225,7 @@ Namespace Ecospace.Controls
         Private WithEvents m_lblConfigValue As System.Windows.Forms.Label
         Private WithEvents m_hdrDefineConnections As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnManageConfigurations As System.Windows.Forms.Button
-        Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_hdrSharing As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     End Class
 
 End Namespace
