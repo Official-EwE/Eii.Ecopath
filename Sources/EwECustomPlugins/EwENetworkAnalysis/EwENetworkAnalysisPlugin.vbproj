@@ -121,7 +121,7 @@
     <Compile Include="Interface\Ascendency\cByGroup.vb" />
     <Compile Include="Interface\Ascendency\cTotal.vb" />
     <Compile Include="Interface\cFlowFromDetritus.vb" />
-    <Compile Include="Interface\cLossOfProductionIndex.vb" />
+    <Compile Include="Interface\cLossinProductionIndex.vb" />
     <Compile Include="Interface\CyclesAndPathways\cCyclingAndPathLen.vb" />
     <Compile Include="Interface\CyclesAndPathways\CyclesAll\cCyclesPathways.vb" />
     <Compile Include="Interface\CyclesAndPathways\CyclesAll\cSummaryCyclesPathways.vb" />

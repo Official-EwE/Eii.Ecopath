@@ -1589,6 +1589,22 @@ Public Class cNetworkManager
         End Get
     End Property
 
+    Public ReadOnly Property Psust(iGroup As Integer) As Single
+        Get
+            Return CSng(Math.Max(0, Math.Min(1, 1 - Lindex(iGroup) / 0.18)))
+        End Get
+    End Property
+
+    Public ReadOnly Property PsustTot() As Single
+        Get
+            Dim l As Single = 0
+            For i As Integer = 1 To nGroups
+                l += Lindex(i)
+            Next
+            Return CSng(Math.Max(0, Math.Min(1, 1 - l / 0.18)))
+        End Get
+    End Property
+
     ''' <summary>
     ''' Absolute L-index over time (Ecosim)
     ''' </summary>
@@ -1604,6 +1620,24 @@ Public Class cNetworkManager
     Public ReadOnly Property LIndexPlot() As Single()
         Get
             Return Me.m_econetwork.RelativeLIndex
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Absolute Psust over time (Ecosim)
+    ''' </summary>
+    Public ReadOnly Property PsustEcosim() As Single()
+        Get
+            Return Me.m_econetwork.AbsolutePsust
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Relative Psust over time (Ecosim)
+    ''' </summary>
+    Public ReadOnly Property PsustPlot() As Single()
+        Get
+            Return Me.m_econetwork.RelativePsust
         End Get
     End Property
 

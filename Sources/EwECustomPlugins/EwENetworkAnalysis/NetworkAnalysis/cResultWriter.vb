@@ -70,7 +70,8 @@ Public Class cResultWriter
         TOT_TE
         CATCH_PPR
         CATCH_DET_REQ
-        LOSS_OF_PROD
+        LINDEX
+        PSUST
     End Enum
 
     Private m_manager As cNetworkManager = Nothing
@@ -387,7 +388,8 @@ Public Class cResultWriter
                     Case eColTypes.TOT_TE : asValues(j) += Me.m_manager.TotTransferEfficiencyEcosim(i)
                     Case eColTypes.CATCH_PPR : asValues(j) += Me.m_manager.RaiseToPPEcosim(i)
                     Case eColTypes.CATCH_DET_REQ : asValues(j) += Me.m_manager.RaiseToDetEcosim(i)
-                    Case eColTypes.LOSS_OF_PROD : asValues(j) += Me.m_manager.LIndexEcosim(i)
+                    Case eColTypes.LINDEX : asValues(j) += Me.m_manager.LIndexEcosim(i)
+                    Case eColTypes.PSUST : asValues(j) += Me.m_manager.PsustEcosim(i)
                 End Select
 
                 ' Processing annual averages?

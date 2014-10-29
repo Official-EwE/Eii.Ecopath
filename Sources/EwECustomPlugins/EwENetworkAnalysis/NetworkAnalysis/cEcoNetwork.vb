@@ -310,7 +310,8 @@ Public Class cEcoNetwork
     Public RelativeKemptonsPlot() As Single
     Public RelativeLIndex() As Single
     Public AbsoluteLIndex() As Single
-    Public AbsoluteLIndex2() As Single
+    Public RelativePsust() As Single
+    Public AbsolutePsust() As Single
 
     'Trophic level of catch
     Public TLCatchPlot() As Single
@@ -3359,7 +3360,8 @@ NextPivot:
             ReDim TLCatchPlot(m_esdata.NTimes)
             ReDim RelativeLIndex(m_esdata.NTimes)
             ReDim AbsoluteLIndex(m_esdata.NTimes)
-            ReDim AbsoluteLIndex2(m_esdata.NTimes)
+            ReDim RelativePsust(m_esdata.NTimes)
+            ReDim AbsolutePsust(m_esdata.NTimes)
 
             'ReDim Elect(m_epdata.NumLiving, m_epdata.NumGroups, m_esdata.NTimes)
             'ReDim TLSim(m_epdata.NumGroups)
@@ -3454,9 +3456,9 @@ NextPivot:
 
                 ' -PPRi*TE^(TLi-1) / ln(TE)
                 Dim PPR As Single = 0
-                Dim s As Single = 0
+                Dim sToTL As Single = 0
                 For i As Integer = 1 To Me.m_core.nLivingGroups
-                    s += Me.m_manager.LIndex(i)
+                    sToTL += Me.m_manager.Lindex(i)
                     PPR += Me.m_manager.PPRTotPPHarvest(i)
                 Next
 
@@ -3464,10 +3466,11 @@ NextPivot:
                 Dim TLC As Single = Me.m_esdata.TLC(iTime) - 1
                 Dim l As Single = -CSng(PPR * TE ^ TLC / Math.Log(TE))
 
-                AbsoluteLIndex(iTime) = s
-                'AbsoluteLIndex2(iTime) = s
-                RelativeLIndex(iTime) = s / AbsoluteLIndex(1)
+                AbsoluteLIndex(iTime) = sToTL
+                RelativeLIndex(iTime) = AbsoluteLIndex(iTime) / AbsoluteLIndex(1)
 
+                AbsolutePsust(iTime) = Me.m_manager.PsustTot()
+                RelativePsust(iTime) = AbsolutePsust(iTime) / AbsolutePsust(1)
             End If
 
         Catch ex As Exception

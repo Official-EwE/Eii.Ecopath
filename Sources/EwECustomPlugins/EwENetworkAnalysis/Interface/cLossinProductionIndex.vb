@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Controls
 #End Region ' Imports
 
 <CLSCompliant(False)> _
-Public Class cLossOfProductionIndex
+Public Class cLossinProductionIndex
     Inherits cContentManager
 
     Public Sub New()
@@ -71,7 +71,9 @@ Public Class cLossOfProductionIndex
         ReDim astrRowContent(Grid.Columns.Count)
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
-        astrRowContent(2) = "L-index"
+        astrRowContent(2) = My.Resources.COL_HDR_LINDEX
+        astrRowContent(3) = My.Resources.COL_HDR_PSUST
+
         Grid.Rows(0).SetValues(astrRowContent)
         Grid.Rows(0).Visible = True
 
@@ -79,14 +81,16 @@ Public Class cLossOfProductionIndex
             astrRowContent(0) = CStr(i)
             astrRowContent(1) = NetworkManager.GroupName(i)
             astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.Lindex(i))
+            astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.Psust(i))
             LindexTot += NetworkManager.Lindex(i)
             Grid.Rows(i).SetValues(astrRowContent)
             Grid.Rows(i).Visible = True
         Next
 
         astrRowContent(0) = ""
-        astrRowContent(1) = "Total"
+        astrRowContent(1) = My.Resources.ROW_HDR_TOTAL
         astrRowContent(2) = Me.StyleGuide.FormatNumber(LindexTot)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.PsustTot())
         Grid.Rows(NetworkManager.nLivingGroups + 1).SetValues(astrRowContent)
 
         For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
@@ -104,7 +108,7 @@ Public Class cLossOfProductionIndex
     Private Sub SetUpGridColumn()
 
         'DataGrid.RowCount = 1
-        Grid.ColumnCount = 3
+        Grid.ColumnCount = 4
 
         SetGridColumnPropertyDefault(Grid)
 
