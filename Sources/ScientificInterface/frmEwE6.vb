@@ -690,6 +690,9 @@ Public Class frmEwE6
 
         Me.m_cmdExportEcosimResultsToCSV = New cEcosimSaveDataCommand(cmdh)
 
+        Me.m_tslbReadOnly.Image = SharedResources.ProtectFormHS
+        Me.m_tslbReadOnly.Enabled = False
+
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
         AddHandler Application.Idle, AddressOf Me.m_pluginMenuHandler.OnIdle
@@ -1437,8 +1440,10 @@ Public Class frmEwE6
         Me.m_tsModel.Path = Me.SelectedFileName
         If Not Me.Core.StateMonitor.HasEcopathLoaded Then
             Me.Text = strCaption
+            Me.m_tslbReadOnly.Visible = False
         Else
             Me.Text = String.Format(SharedResources.GENERIC_LABEL_CAPTION, strCaption, model.Name)
+            Me.m_tslbReadOnly.Visible = Me.Core.DataSource.IsReadOnly
         End If
 
     End Sub

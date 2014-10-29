@@ -151,6 +151,7 @@ Partial Public Class frmEwE6
         Me.m_tsbnAutosaveResults = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -700,7 +701,7 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnBeta, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, sep3, Me.m_tsbnAutosaveResults, Me.m_tsbnFeedback})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnBeta, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, sep3, Me.m_tsbnAutosaveResults, Me.m_tsbnFeedback, Me.m_tslbReadOnly})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
@@ -764,6 +765,14 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
+        '
+        'm_tslbReadOnly
+        '
+        Me.m_tslbReadOnly.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tslbReadOnly.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.m_tslbReadOnly.Image = Global.ScientificInterface.My.Resources.Resources.Warning
+        Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
+        resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
         '
         'frmEwE6
         '
@@ -878,6 +887,7 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiEcospaceManageConfigurations As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceClose As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcosimClose As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents m_tslbReadOnly As System.Windows.Forms.ToolStripLabel
 
 End Class
 

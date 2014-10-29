@@ -492,7 +492,7 @@ Public Class frmNetworkAnalysis
                     Me.m_contentmanager = New cLindemanSpine()
 
                 Case eNetworkAnalysisPageTypes.Lindex
-                    Me.m_contentmanager = New cLossOfProductionIndex()
+                    Me.m_contentmanager = New cLossinProductionIndex()
 
                 Case eNetworkAnalysisPageTypes.WithoutPrimaryProductionRequiredEstimate
                     Me.m_contentmanager = New cIndicesWithoutPPREst()

@@ -385,6 +385,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to L-index.
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_LINDEX() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_LINDEX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Living (t/km²).
         '''</summary>
         Friend ReadOnly Property COL_HDR_LIVING_TKM2() As String
@@ -642,6 +651,15 @@ Namespace My.Resources
         Friend ReadOnly Property COL_HDR_PROP_FLOW_DET() As String
             Get
                 Return ResourceManager.GetString("COL_HDR_PROP_FLOW_DET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Psust.
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_PSUST() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_PSUST", resourceCulture)
             End Get
         End Property
         
