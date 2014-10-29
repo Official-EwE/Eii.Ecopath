@@ -40,9 +40,9 @@ Namespace Controls.EwEGrid
     Public Class cEwEGridColumnHeaderVisualizer
         : Inherits SourceGrid2.VisualModels.Header
 
-        Public Sub New()
+        Public Sub New(Optional ByVal alignment As ContentAlignment = ContentAlignment.MiddleCenter)
             MyBase.New(False)
-            Me.TextAlignment = ContentAlignment.MiddleCenter
+            Me.TextAlignment = alignment
             Me.WordWrap = True
             Me.AlignTextToImage = True
         End Sub

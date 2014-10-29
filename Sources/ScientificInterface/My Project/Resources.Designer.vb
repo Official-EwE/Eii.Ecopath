@@ -4285,6 +4285,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (No templates available, are you missing a plug-in?).
+        '''</summary>
+        Public ReadOnly Property VALUE_NOTEMPLATES() As String
+            Get
+                Return ResourceManager.GetString("VALUE_NOTEMPLATES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to AaBbCcYyZz.
         '''</summary>
         Public ReadOnly Property VALUE_PREVIEW() As String
