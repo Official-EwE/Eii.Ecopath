@@ -2327,6 +2327,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Expected data was not read or converted correctly for layer {0}, time {1}, ext({2},{3}) to ({4},{5}), cell size {6}.
+        '''</summary>
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_POP_FAILED_LOAD() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_POP_FAILED_LOAD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Expected data could not be accessed for layer {0}, time {1}, ext({2},{3}) to ({4},{5}), cell size {6}.
+        '''</summary>
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_POP_FAILED_LOCK() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_POP_FAILED_LOCK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to A critical data error has occurred while applying new stanza data: {0}.
         '''</summary>
         Friend Shared ReadOnly Property STANZA_APPLY_DATAERROR() As String

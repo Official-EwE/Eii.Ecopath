@@ -180,6 +180,7 @@ Namespace SpatialData
         Public Overridable Function Populate(ByVal iTime As Integer, ByVal dNoData As Double, _
                                              Optional ByVal layer As cEcospaceLayer = Nothing) As Boolean
 
+            Dim strMsg As String = ""
             Dim msg As cMessage = Nothing
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim dataExternal As ISpatialRaster = Nothing
@@ -211,11 +212,17 @@ Namespace SpatialData
                             dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
 
                             If (ds.HasDataAtT(dt)) Then
+
+                                ' Internal log, no need to translate
+                                strMsg = "cSpatialDataAdapter::Populate({0}) dataset {1} trying to load data for T{2}, ext({3},{4}) to ({5},{6})"
+                                cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
+
+                                ' Start logging with data is expected
+                                Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, layer)
+
                                 ' #Yes: Can lock that data?
                                 If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
                                     ' #Yes: start process of extracting external data
-                                    Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, layer)
-
                                     ' Sanity check
                                     Debug.Assert(ds.IsLocked, "Dataset is not locked - something is wrong")
 
@@ -256,27 +263,23 @@ Namespace SpatialData
                                         dataExternal.Dispose()
                                         dataExternal = Nothing
 
-                                        ' Notify core - use AddedOrRemoved flag to not dirty the DB; just broadcast the layer change
-                                        ' Me.m_core.onChanged(layer, eMessageType.DataAddedOrRemoved)
-
                                     Else
-                                        Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) external data missing for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
+                                        strMsg = My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOAD
                                         cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
                                         Me.m_core.SpatialOperationLog.LogOperation(strMsg, eStatusFlags.ErrorEncountered)
                                         bSuccess = False
-
                                     End If
 
                                     ' Unlock dataset
                                     ds.Unlock()
-                                    Me.m_core.SpatialOperationLog.EndLayerLog()
                                 Else
-                                    Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} failed to load data for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
+                                    strMsg = My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOCK
                                     cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
+                                    bSuccess = False
                                 End If
-                            Else
-                                Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} missing data for T{2}, ext({3},{4}) to ({5},{6})"
-                                cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
+
+                                ' Done logging
+                                Me.m_core.SpatialOperationLog.EndLayerLog()
                             End If
                         End If
                     Next
