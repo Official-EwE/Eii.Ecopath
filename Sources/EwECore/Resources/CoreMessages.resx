@@ -1236,4 +1236,12 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>An error occurred while exporting. {0}</value>
     <comment>{0}=excepption text</comment>
   </data>
+  <data name="SPATIALTEMPORAL_POP_FAILED_LOAD" xml:space="preserve">
+    <value>Expected data was not read or converted correctly for layer {0}, time {1}, ext({2},{3}) to ({4},{5}), cell size {6}</value>
+    <comment>external data failed to convert to Ecospace raster format</comment>
+  </data>
+  <data name="SPATIALTEMPORAL_POP_FAILED_LOCK" xml:space="preserve">
+    <value>Expected data could not be accessed for layer {0}, time {1}, ext({2},{3}) to ({4},{5}), cell size {6}</value>
+    <comment>external data failed to lock</comment>
+  </data>
 </root>
