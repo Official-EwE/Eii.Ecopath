@@ -217,12 +217,13 @@ Namespace SpatialData
                                 strMsg = "cSpatialDataAdapter::Populate({0}) dataset {1} trying to load data for T{2}, ext({3},{4}) to ({5},{6})"
                                 cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
 
-                                ' Start logging with data is expected
-                                Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, layer)
-
                                 ' #Yes: Can lock that data?
                                 If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
                                     ' #Yes: start process of extracting external data
+
+                                    ' Start logging the operations on successfully locked data
+                                    Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, layer)
+
                                     ' Sanity check
                                     Debug.Assert(ds.IsLocked, "Dataset is not locked - something is wrong")
 
@@ -272,15 +273,16 @@ Namespace SpatialData
 
                                     ' Unlock dataset
                                     ds.Unlock()
+
+                                    ' Done logging
+                                    Me.m_core.SpatialOperationLog.EndLayerLog()
                                 Else
                                     strMsg = My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOCK
                                     cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
                                     bSuccess = False
                                 End If
 
-                                ' Done logging
-                                Me.m_core.SpatialOperationLog.EndLayerLog()
-                            End If
+                              End If
                         End If
                     Next
                 End If
