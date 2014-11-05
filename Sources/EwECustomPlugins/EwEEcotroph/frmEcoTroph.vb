@@ -349,7 +349,8 @@ Public Class frmEcotroph
         'MsgBox("on est sur " & e.ColumnIndex & e.ColumnIndex)
         If (e.ColumnIndex >= 0 And e.RowIndex >= 0) Then
             '  MsgBox(Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).ToString)
-
+            Try
+                
             Select Case e.ColumnIndex
                 Case 0
                     ETinputdata.groupname(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
@@ -368,6 +369,9 @@ Public Class frmEcotroph
 
                     ETinputdata.catches(e.ColumnIndex - 6)(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
             End Select
+            Catch ex As Exception
+                MessageBox.Show("Problem in modifying data, do you respect decimal seperator ?: " & ex.Message)
+            End Try
 
 
         End If
