@@ -63,10 +63,6 @@ Partial Class frmEcotroph
         Me.beta = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.TopD = New System.Windows.Forms.MaskedTextBox()
-        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.RectangleShape3 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape2 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape1 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.log_scale_diagnose = New System.Windows.Forms.CheckBox()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
@@ -252,7 +248,7 @@ Partial Class frmEcotroph
         Me.GroupBox3.Controls.Add(Me.beta)
         Me.GroupBox3.Controls.Add(Me.Label5)
         Me.GroupBox3.Controls.Add(Me.TopD)
-        Me.GroupBox3.Controls.Add(Me.ShapeContainer1)
+
         Me.GroupBox3.Location = New System.Drawing.Point(4, 45)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(884, 155)
@@ -447,34 +443,7 @@ Partial Class frmEcotroph
         Me.TopD.Text = "04"
         Me.TopD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'ShapeContainer1
-        '
-        Me.ShapeContainer1.Location = New System.Drawing.Point(3, 16)
-        Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape3, Me.RectangleShape2, Me.RectangleShape1})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(878, 136)
-        Me.ShapeContainer1.TabIndex = 29
-        Me.ShapeContainer1.TabStop = False
-        '
-        'RectangleShape3
-        '
-        Me.RectangleShape3.Location = New System.Drawing.Point(120, 66)
-        Me.RectangleShape3.Name = "RectangleShape3"
-        Me.RectangleShape3.Size = New System.Drawing.Size(181, 61)
-        Me.RectangleShape3.Visible = False
-        '
-        'RectangleShape2
-        '
-        Me.RectangleShape2.Location = New System.Drawing.Point(12, 66)
-        Me.RectangleShape2.Name = "RectangleShape2"
-        Me.RectangleShape2.Size = New System.Drawing.Size(104, 61)
-        '
-        'RectangleShape1
-        '
-        Me.RectangleShape1.Location = New System.Drawing.Point(11, 3)
-        Me.RectangleShape1.Name = "RectangleShape1"
-        Me.RectangleShape1.Size = New System.Drawing.Size(288, 54)
+
         '
         'GroupBox5
         '
@@ -1536,10 +1505,7 @@ Partial Class frmEcotroph
     Friend WithEvents beta As System.Windows.Forms.MaskedTextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents TopD As System.Windows.Forms.MaskedTextBox
-    Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
-    Friend WithEvents RectangleShape3 As Microsoft.VisualBasic.PowerPacks.RectangleShape
-    Friend WithEvents RectangleShape2 As Microsoft.VisualBasic.PowerPacks.RectangleShape
-    Friend WithEvents RectangleShape1 As Microsoft.VisualBasic.PowerPacks.RectangleShape
+ 
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
     Friend WithEvents log_scale_diagnose As System.Windows.Forms.CheckBox
     Friend WithEvents PictureBox5 As System.Windows.Forms.PictureBox
