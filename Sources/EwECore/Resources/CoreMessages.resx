@@ -614,18 +614,18 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>Unable to modify indicated variable</comment>
   </data>
   <data name="VARIABLE_VALIDATION_CLEARED" xml:space="preserve">
-    <value>Variable '{0}' cleared.</value>
+    <value>Variable '{0}' cleared</value>
     <comment>{0}=variable name</comment>
   </data>
   <data name="VARIABLE_VALIDATION_ERROR" xml:space="preserve">
     <value>Error during validation of variable.</value>
   </data>
   <data name="VARIABLE_VALIDATION_FAILED" xml:space="preserve">
-    <value>Value '{1}' rejected for variable '{0}'.</value>
+    <value>Value '{1}' rejected for variable '{0}'</value>
     <comment>{0}=variable name, {1}=value</comment>
   </data>
   <data name="VARIABLE_VALIDATION_PASSED" xml:space="preserve">
-    <value>Value '{1}' accepted for variable '{0}'.</value>
+    <value>Value '{1}' accepted for variable '{0}'</value>
     <comment>{0}=variable name, {1}=value</comment>
   </data>
   <data name="TIMESERIES_LOAD_FAILED" xml:space="preserve">
@@ -641,7 +641,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=error message</comment>
   </data>
   <data name="TIMESERIES_UNLOAD_SUCCESS" xml:space="preserve">
-    <value>Time Series unloaded successfully.</value>
+    <value>Time Series unloaded successfully</value>
   </data>
   <data name="IMPORT_PROGRESS_PEDIGREE" xml:space="preserve">
     <value>Importing pedigree</value>
@@ -740,11 +740,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=path</comment>
   </data>
   <data name="VARIABLE_VALIDATION_FAILED_EVEN" xml:space="preserve">
-    <value>Value '{1}' for variable '{0}' must be even.</value>
+    <value>Value '{1}' for variable '{0}' must be even</value>
     <comment>{0}=variable name, {1}=value</comment>
   </data>
   <data name="VARIABLE_VALIDATION_FAILED_ODD" xml:space="preserve">
-    <value>Value '{1}' for variable '{0}' must be odd.</value>
+    <value>Value '{1}' for variable '{0}' must be odd</value>
     <comment>{0}=variable name, {1}=value</comment>
   </data>
   <data name="PSD_MISSING_INPUT" xml:space="preserve">
@@ -1221,9 +1221,6 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Plug-in {0} sandboxed</value>
     <comment>{0}=plugin module name</comment>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="SPATIALTEMPORAL_EXPORT_ERROR" xml:space="preserve">
     <value>Failed to export data set(s) to {1}</value>
     <comment>{0}=dataset count, {1}=folder</comment>
@@ -1243,5 +1240,12 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="SPATIALTEMPORAL_POP_FAILED_LOCK" xml:space="preserve">
     <value>Expected data could not be accessed for layer {0}, time {1}, ext({2},{3}) to ({4},{5}), cell size {6}</value>
     <comment>external data failed to lock</comment>
+  </data>
+  <data name="DIETCOMP_MISSING" xml:space="preserve">
+    <value>Diets for group {0} have not been entered</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="DIETCOMP_PROMPT_MISSING" xml:space="preserve">
+    <value>Diets for one or more groups have not been entered</value>
   </data>
 </root>

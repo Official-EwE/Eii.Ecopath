@@ -227,6 +227,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Diets for group {0} have not been entered.
+        '''</summary>
+        Friend Shared ReadOnly Property DIETCOMP_MISSING() As String
+            Get
+                Return ResourceManager.GetString("DIETCOMP_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Diet Comp does not sum to one..
         '''</summary>
         Friend Shared ReadOnly Property DIETCOMP_NOT_SUM_ONE() As String
@@ -241,6 +250,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property DIETCOMP_PROMPT_CORRECTTO15PERC() As String
             Get
                 Return ResourceManager.GetString("DIETCOMP_PROMPT_CORRECTTO15PERC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Diets for one or more groups have not been entered.
+        '''</summary>
+        Friend Shared ReadOnly Property DIETCOMP_PROMPT_MISSING() As String
+            Get
+                Return ResourceManager.GetString("DIETCOMP_PROMPT_MISSING", resourceCulture)
             End Get
         End Property
         
@@ -2543,15 +2561,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to .
-        '''</summary>
-        Friend Shared ReadOnly Property String1() As String
-            Get
-                Return ResourceManager.GetString("String1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to One or more cv values cannot be read.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_CVFORMAT() As String
@@ -2777,7 +2786,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Time Series unloaded successfully..
+        '''  Looks up a localized string similar to Time Series unloaded successfully.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_UNLOAD_SUCCESS() As String
             Get
@@ -2831,7 +2840,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Variable &apos;{0}&apos; cleared..
+        '''  Looks up a localized string similar to Variable &apos;{0}&apos; cleared.
         '''</summary>
         Friend Shared ReadOnly Property VARIABLE_VALIDATION_CLEARED() As String
             Get
@@ -2849,7 +2858,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Value &apos;{1}&apos; rejected for variable &apos;{0}&apos;..
+        '''  Looks up a localized string similar to Value &apos;{1}&apos; rejected for variable &apos;{0}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property VARIABLE_VALIDATION_FAILED() As String
             Get
@@ -2858,7 +2867,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be even..
+        '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be even.
         '''</summary>
         Friend Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_EVEN() As String
             Get
@@ -2867,7 +2876,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be odd..
+        '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be odd.
         '''</summary>
         Friend Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_ODD() As String
             Get
@@ -2876,7 +2885,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Value &apos;{1}&apos; accepted for variable &apos;{0}&apos;..
+        '''  Looks up a localized string similar to Value &apos;{1}&apos; accepted for variable &apos;{0}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property VARIABLE_VALIDATION_PASSED() As String
             Get
