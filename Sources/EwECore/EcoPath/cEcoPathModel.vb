@@ -2233,10 +2233,12 @@ nextJ:
             Dim iPrey As Integer
             Dim sSum As Single
             Dim sTolerance As Single
-            Dim msgFeedback As cFeedbackMessage = Nothing
+            Dim msgMissing As cMessage = Nothing
+            Dim msgSumToOne As cFeedbackMessage = Nothing
             Dim msgMaintenance As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
             Dim reply As eMessageReply = eMessageReply.YES
+            Dim bMissing As Boolean = False
             Dim bSumToOne As Boolean = True
 
             sTolerance = 0.001
@@ -2248,18 +2250,36 @@ nextJ:
                     ' #Yes: determine diet sum
                     sSum = 0
                     For iPrey = 0 To m_Data.NumGroups Step 1
-                        sSum = sSum + m_Data.DC(iPred, iPrey)
+                        sSum += m_Data.DC(iPred, iPrey)
                     Next
-                    ' Found diet sum <> 0?
-                    If sSum <> 0 And Math.Abs(sSum - 1) > sTolerance Then
+
+                    ' JS 4Nov14 - EwE course feedback: should warn when a predator has no diet!
+                    If (sSum <= 0) Then
+
+                        bMissing = True
+                        bSumToOne = False
+
+                        If (msgMissing Is Nothing) Then
+                            msgMissing = New cMessage(
+                                My.Resources.CoreMessages.DIETCOMP_PROMPT_MISSING, _
+                                eMessageType.DataValidation, eCoreComponentType.EcoPath, eMessageImportance.Critical)
+                        End If
+
+                        ' Attach variable status
+                        vs = New cVariableStatus(eStatusFlags.MissingParameter, _
+                                String.Format(My.Resources.CoreMessages.DIETCOMP_MISSING, Me.m_Data.GroupName(iPred)), _
+                                eVarNameFlags.DietComp, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, iPred)
+                        msgMissing.AddVariable(vs)
+
+                    ElseIf (Math.Abs(sSum - 1) > sTolerance) Then
                         ' #Yes: does not sum to one!
                         bSumToOne = False
 
                         ' No message ready?
-                        If (msgFeedback Is Nothing) Then
+                        If (msgSumToOne Is Nothing) Then
 
                             ' #Yes: prepare message
-                            msgFeedback = New cFeedbackMessage( _
+                            msgSumToOne = New cFeedbackMessage( _
                                     My.Resources.CoreMessages.DIETCOMP_PROMPT_SUMTOONE, _
                                     eCoreComponentType.EcoPath, eMessageType.DietComp, eMessageImportance.Warning, _
                                     eMessageReplyStyle.YES_NO)
@@ -2271,45 +2291,50 @@ nextJ:
                                 String.Format(My.Resources.CoreMessages.DIETCOMP_SUMTOONE_PRED, Me.m_Data.GroupName(iPred)), _
                                 eVarNameFlags.DietComp, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, iPred)
 
-                        msgFeedback.AddVariable(vs)
+                        msgSumToOne.AddVariable(vs)
                         msgMaintenance.AddVariable(vs)
 
                     End If
                 End If
             Next
 
-            ' Found any diets that did not sum to 1?
-            If (bSumToOne = False) Then
-                ' #Yes: has message to send?
-                If (msgFeedback IsNot Nothing) Then
-                    ' #Yes: send message and grab reply
-                    Me.NotifyCore(msgFeedback)
-                    reply = msgFeedback.Reply
-                End If
-            End If
-
-            ' Any diets that did not sum, and needing to fix?
-            If (bSumToOne = False) And (reply = eMessageReply.YES) Then
-                ' #Yes: make diets sum to one
-                For iPred = 1 To m_Data.NumLiving Step 1
-                    If m_Data.PP(iPred) < 1 Then
-                        sSum = 0
-                        For iPrey = 0 To m_Data.NumGroups Step 1
-                            sSum = sSum + m_Data.DC(iPred, iPrey)
-                        Next
-                        If sSum <> 0 And Math.Abs(sSum - 1) > sTolerance Then
-                            For iPrey = 0 To m_Data.NumGroups Step 1
-                                m_Data.DC(iPred, iPrey) = m_Data.DC(iPred, iPrey) / sSum
-                            Next
-                            m_Data.DietsModified = True
-                        End If
+            ' Found any missing diets?
+            If (bMissing = True) Then
+                Me.NotifyCore(msgMissing)
+            Else
+                ' Found any diets that did not sum to 1?
+                If (bSumToOne = False) Then
+                    ' #Yes: has message to send?
+                    If (msgSumToOne IsNot Nothing) Then
+                        ' #Yes: send message and grab reply
+                        Me.NotifyCore(msgSumToOne)
+                        reply = msgSumToOne.Reply
                     End If
-                Next
-                bSumToOne = True
+                End If
 
-                If m_Data.DietsModified Then
-                    ' Notify the core that data has changed
-                    Me.NotifyCore(msgMaintenance)
+                ' Any diets that did not sum, and needing to fix?
+                If (bSumToOne = False) And (reply = eMessageReply.YES) Then
+                    ' #Yes: make diets sum to one
+                    For iPred = 1 To m_Data.NumLiving Step 1
+                        If m_Data.PP(iPred) < 1 Then
+                            sSum = 0
+                            For iPrey = 0 To m_Data.NumGroups Step 1
+                                sSum = sSum + m_Data.DC(iPred, iPrey)
+                            Next
+                            If sSum <> 0 And Math.Abs(sSum - 1) > sTolerance Then
+                                For iPrey = 0 To m_Data.NumGroups Step 1
+                                    m_Data.DC(iPred, iPrey) = m_Data.DC(iPred, iPrey) / sSum
+                                Next
+                                m_Data.DietsModified = True
+                            End If
+                        End If
+                    Next
+                    bSumToOne = True
+
+                    If m_Data.DietsModified Then
+                        ' Notify the core that data has changed
+                        Me.NotifyCore(msgMaintenance)
+                    End If
                 End If
             End If
 
