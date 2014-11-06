@@ -58,7 +58,7 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Me.m_tsbnUseOnlyHabitat.Image = SharedResources.Habitat
-            Me.m_tsbnUseOnlyCapacity.Image = SharedResources.CalculatorHS
+            Me.m_tsbnUseOnlyCapacity.Image = SharedResources.FunctionHS
 
             For i As Integer = 1 To Me.Core.nGroups
                 Dim grp As cEcospaceGroup = Me.Core.EcospaceGroups(i)
