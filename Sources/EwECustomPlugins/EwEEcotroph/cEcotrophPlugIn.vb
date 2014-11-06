@@ -215,6 +215,8 @@ Public Class cEcotrophPlugin
         ETinputdatafromEP.numfleet = epdata.NumFleet
         ETinputdatafromEP.catches = New Single(epdata.NumFleet)() {}
         ETinputdata.catches = New Single(epdata.NumFleet)() {}
+        'ETinputdata.comments = 
+
         ETinputdata.ModelName = epdata.ModelName
         ETinputdata.Modeldescription = epdata.ModelDescription
 

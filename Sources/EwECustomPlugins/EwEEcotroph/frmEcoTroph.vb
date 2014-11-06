@@ -206,43 +206,47 @@ Public Class frmEcotroph
 
         'a retester ou alors tester si les données sont dispo
         EcoTroph.cEcotrophPlugin.etCore.RunEcoPath()
+
         ETgridinput.BringToFront()
+        
         If Not (IsNothing(ETinputdatafromEP.TL)) Then
 
             Dim DataGrid As DataGridView = Me.ETgridinput
+            'Ajout de cela pour corriger bug decouvert 06/11/2014 quand on chargeait 2 fois le modèle, il mettait input data à null
+            Me.ETgridinput.Rows.Clear()
 
             For igrp As Integer = 0 To ETinputdatafromEP.TL.Length - 2
-                If (DataGrid.RowCount < ETinputdatafromEP.TL.Length) Then
-                    DataGrid.Rows.Add()
-                End If
-                DataGrid.Item(0, igrp).Value() = ETinputdatafromEP.groupname(igrp + 1)
-                DataGrid.Item(1, igrp).Value() = ETinputdatafromEP.TL(igrp + 1)
-                DataGrid.Item(2, igrp).Value() = ETinputdatafromEP.B(igrp + 1)
-                DataGrid.Item(3, igrp).Value() = ETinputdatafromEP.PROD(igrp + 1)
-                DataGrid.Item(4, igrp).Value() = ETinputdatafromEP.accessibility(igrp + 1)
-                DataGrid.Item(5, igrp).Value() = ETinputdatafromEP.OI(igrp + 1)
+            If (DataGrid.RowCount < ETinputdatafromEP.TL.Length) Then
+                DataGrid.Rows.Add()
+            End If
+            DataGrid.Item(0, igrp).Value() = ETinputdatafromEP.groupname(igrp + 1)
+            DataGrid.Item(1, igrp).Value() = ETinputdatafromEP.TL(igrp + 1)
+            DataGrid.Item(2, igrp).Value() = ETinputdatafromEP.B(igrp + 1)
+            DataGrid.Item(3, igrp).Value() = ETinputdatafromEP.PROD(igrp + 1)
+            DataGrid.Item(4, igrp).Value() = ETinputdatafromEP.accessibility(igrp + 1)
+            DataGrid.Item(5, igrp).Value() = ETinputdatafromEP.OI(igrp + 1)
+        Next
+        commentaires.Text = ETinputdata.numfleet
+
+        DataGrid.ColumnCount = 6 + ETinputdatafromEP.numfleet
+        For ifleet As Integer = 0 To ETinputdatafromEP.numfleet - 1
+            DataGrid.Columns(6 + ifleet).Name = ETinputdatafromEP.fleetname(ifleet + 1)
+            For igrp As Integer = 0 To ETinputdatafromEP.TL.Length - 2
+                DataGrid.Item(6 + ifleet, igrp).Value() = ETinputdatafromEP.catches(ifleet)(igrp + 1)
+
             Next
-            commentaires.Text = ETinputdata.numfleet
-
-            DataGrid.ColumnCount = 6 + ETinputdatafromEP.numfleet
-            For ifleet As Integer = 0 To ETinputdatafromEP.numfleet - 1
-                DataGrid.Columns(6 + ifleet).Name = ETinputdatafromEP.fleetname(ifleet + 1)
-                For igrp As Integer = 0 To ETinputdatafromEP.TL.Length - 2
-                    DataGrid.Item(6 + ifleet, igrp).Value() = ETinputdatafromEP.catches(ifleet)(igrp + 1)
-
-                Next
-                DataGrid.Columns(4).DefaultCellStyle.BackColor = Drawing.Color.BurlyWood
-            Next
-
-            ETinputdata.numfleet = ETinputdatafromEP.numfleet
-            If Not (IsNothing(ETinputdata.comments)) Then commentaires.Text = ETinputdata.comments Else commentaires.Text = ""
-            If Not (IsNothing(ETinputdata.ModelName)) Then Modelname.Text = ETinputdata.ModelName Else Modelname.Text = ""
-            If Not (IsNothing(ETinputdata.Modeldescription)) Then modeldescription.Text = ETinputdata.Modeldescription Else modeldescription.Text = ""
-            Button2.Enabled = True
-            Button3.Enabled = True
-            Button4.Enabled = True
+            DataGrid.Columns(4).DefaultCellStyle.BackColor = Drawing.Color.BurlyWood
+        Next
+        'ETinputdata = ETinputdatafromEP
+        ETinputdata.numfleet = ETinputdatafromEP.numfleet
+        'If Not (IsNothing(ETinputdata.comments)) Then commentaires.Text = ETinputdata.comments Else commentaires.Text = ""
+        If Not (IsNothing(ETinputdata.ModelName)) Then Modelname.Text = ETinputdata.ModelName Else Modelname.Text = ""
+        If Not (IsNothing(ETinputdata.Modeldescription)) Then modeldescription.Text = ETinputdata.Modeldescription Else modeldescription.Text = ""
+        Button2.Enabled = True
+        Button3.Enabled = True
+        Button4.Enabled = True
         Else
-            MsgBox(My.Resources.NO_MODEL_DATA)
+        MsgBox(My.Resources.NO_MODEL_DATA)
         End If
 
         ' frmET.ETgridinput.DataSource = ETinput
