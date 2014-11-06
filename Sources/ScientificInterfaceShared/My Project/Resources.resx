@@ -3209,4 +3209,7 @@
   <data name="HEADER_EXPLOITATION_STATUS" xml:space="preserve">
     <value>Exploitation status</value>
   </data>
+  <data name="AUTOSAVE_ECOSPACEREGIONSUMMARY" xml:space="preserve">
+    <value>Ecospace summary per region</value>
+  </data>
 </root>
