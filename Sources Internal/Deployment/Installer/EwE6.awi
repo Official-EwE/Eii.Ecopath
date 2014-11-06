@@ -11,7 +11,7 @@
 \par }
 Flags182
 HeaderPath.\EwE6Header.bmpIconPath.\Ecopath_install.icoLogoPath.\EwE5Logo.bmp
-NetPageURL:http://www.microsoft.com/download/en/details.aspx?id=17851OpenNetPage1ProductNameEcopath with EcosimProductPath5${ProgramsPath}\Ecopath with Ecosim ${ProductVersion}ProductVersion6.4.2SupportEmailewedevteam@gmail.comUninstallTitle${ProductName}UserMenu0WindowTitle ${ProductName} ${ProductVersion}
+NetPageURL:http://www.microsoft.com/download/en/details.aspx?id=17851OpenNetPage1ProductNameEcopath with EcosimProductPath5${ProgramsPath}\Ecopath with Ecosim ${ProductVersion}ProductVersion6.5 previewSupportEmailewedevteam@gmail.comUninstallTitle${ProductName}UserMenu0WindowTitle ${ProductName} ${ProductVersion}
 bCopyForCD0bEULA1bReadme0
 bShowAgree1bSilentUninstall1bUninstallExecBefore0	l.English1	!0.0.dest${ProductPath}\EwE6.exe	!0.0.dscr,Launch Ecopath with Ecosim ${ProductVersion}!0.0.hk0!0.0.ici-1	!0.0.path8${ProductMenu}\Ecopath with Ecosim ${ProductVersion}.lnk	!0.0.show1	!0.0.type6	!0.0.wdir${ProductPath}\	!0.1.dest${ProductPath}\EwE6.exe	!0.1.dscr,Launch Ecopath with Ecosim ${ProductVersion}!0.1.hk0!0.1.ici-1	!0.1.path8${DesktopPath}\Ecopath with Ecosim ${ProductVersion}.lnk	!0.1.show1	!0.1.type6	!0.1.wdir${ProductPath}\!0.10.CallInst0!0.10.RegAsm0!0.10.RegCom0!0.10.RegGAC0!0.10.RegTLB0
 !0.10.dest${ProductPath}\ZedGraph.dll
@@ -97,4 +97,4 @@ End If
 !10.2.type6!10.3.CallInst0!10.3.RegAsm0!10.3.RegCom0!10.3.RegGAC0!10.3.RegTLB0
 !10.3.dest:${MyDocumentsPath}\EwE sample databases\Ocean ECOST.ewemdb
 !10.3.path6C:\BuildBot\slave\Ecopath6\Database\Ocean ECOST.ewemdb
-!10.3.type0!10.chk0!10.desc7Add an economic value chain model to Ecopath and Ecosim!10.erm0!10.exu0!10.nmPlug-in: Value Chain	!10.pdescInstalling value chain plug-in	!10.vareq0!10.vis1#crc#1995f6d4
+!10.3.type0!10.chk0!10.desc7Add an economic value chain model to Ecopath and Ecosim!10.erm0!10.exu0!10.nmPlug-in: Value Chain	!10.pdescInstalling value chain plug-in	!10.vareq0!10.vis1#crc#91a61a1c
