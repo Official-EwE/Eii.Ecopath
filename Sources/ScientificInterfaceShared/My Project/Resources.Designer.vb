@@ -182,6 +182,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecospace summary per region.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_ECOSPACEREGIONSUMMARY() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_ECOSPACEREGIONSUMMARY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecotracer run results.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOTRACER() As String
