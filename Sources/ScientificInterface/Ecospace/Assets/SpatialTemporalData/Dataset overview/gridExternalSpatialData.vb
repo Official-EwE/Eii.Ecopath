@@ -180,7 +180,6 @@ Namespace Ecospace
                                 Me(iRow, j + Me.m_nBaseCols) = New Cells.Real.Cell("")
                                 Me(iRow, j + Me.m_nBaseCols).Behaviors.Add(Me.m_bmCell)
                                 Me(iRow, j + Me.m_nBaseCols).VisualModel = New VisualModels.Common()
-                                Me.ConnectionAtCell(iRow, j + Me.m_nBaseCols) = conn
                             Next
                             hgcGroup.AddChildRow(iRow)
 
@@ -235,6 +234,8 @@ Namespace Ecospace
                 Dim cmd As cEcospaceConfigureConnectionCommand = CType(Me.UIContext.CommandHandler.GetCommand(cEcospaceConfigureConnectionCommand.cCOMMAND_NAME), cEcospaceConfigureConnectionCommand)
                 cmd.Invoke(info.Layer, Me.ConnectionAtCell(e.Position))
 
+                Me.UpdateDatasetRow(e.Position.Row)
+
             Catch ex As Exception
                 ' Whoah
             End Try
@@ -271,22 +272,22 @@ Namespace Ecospace
             End Set
         End Property
 
-        Private Property ConnectionAtCell(p As Position) As cSpatialDataConnection
+        Private ReadOnly Property ConnectionAtCell(p As Position) As cSpatialDataConnection
             Get
                 Return Me.ConnectionAtCell(p.Row, p.Column)
             End Get
-            Set(value As cSpatialDataConnection)
-                Me.ConnectionAtCell(p.Row, p.Column) = value
-            End Set
         End Property
 
-        Private Property ConnectionAtCell(iRow As Integer, iCol As Integer) As cSpatialDataConnection
+        Private ReadOnly Property ConnectionAtCell(iRow As Integer, iCol As Integer) As cSpatialDataConnection
             Get
-                Return DirectCast(Me(iRow, iCol).Tag, cSpatialDataConnection)
+                Dim info As cConnectionInfo = Me.InfoAtRow(iRow)
+                Dim conns As cSpatialDataConnection() = info.Adapter.Connections(info.Layer.Index)
+                Dim conn As cSpatialDataConnection = Nothing
+                Dim iConn As Integer = iCol - Me.m_nBaseCols
+
+                If (iConn < 0) Or (iConn >= conns.Length) Then Return Nothing
+                Return conns(iConn)
             End Get
-            Set(value As cSpatialDataConnection)
-                Me(iRow, iCol).Tag = value
-            End Set
         End Property
 
         Private Property InfoAtRow(iRow As Integer) As cConnectionInfo
