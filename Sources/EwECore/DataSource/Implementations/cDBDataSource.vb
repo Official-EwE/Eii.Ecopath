@@ -7525,7 +7525,7 @@ Namespace DataSources
                 drow("RelCinMap") = cStringUtils.ArrayToString(asNewMap)
                 drow("RegionMap") = "" ' Region map empty for new scenario
                 drow("ExclusionMap") = "" ' Exclusion map empty for new scenario
-                drow("CapacityCalType") = eEcospaceCapacityCalType.Capacity
+                ' drow("CapacityCalType") = eEcospaceCapacityCalType.Capacity
                 drow("PredictEffort") = True
                 writer.AddRow(drow)
 
