@@ -23,14 +23,28 @@ Public Class cRunParameters
 
     Public OutputFileName As String
     Public RunTimes As cRunPeriods
-    Public UpperBound As Single
-    Public LowerBound As Single
     Public lstLayers As List(Of IEnviroInputMap)
+    Public Delta As Single
+
+    Public ReadOnly Property LowerBound As Single
+        Get
+            Dim temp As Single = 1 - Delta
+            If temp < 0 Then temp = 0
+            Return temp
+        End Get
+    End Property
+
+    Public ReadOnly Property UpperBound As Single
+        Get
+            Return 1 + Delta
+        End Get
+    End Property
+
 
     Private m_core As cCore
 
     Public Sub New(theCore As cCore)
-
+        Me.OutputFileName = "C:\Users\Joe\Documents\Projects\EwE\Ecopath6\Sources Internal\Plugins\EcospaceSensitivityAnalysis\B_out.csv"
         Me.m_core = theCore
         Me.setDefaults()
 
@@ -38,8 +52,7 @@ Public Class cRunParameters
 
     Private Sub setDefaults()
         RunTimes = New cRunPeriods(2015, 5)
-        UpperBound = 1.2
-        LowerBound = 0.8
+        Delta = 0.2
         Me.setDefaultMapLayers()
     End Sub
 
@@ -50,9 +63,7 @@ Public Class cRunParameters
         Me.lstLayers = New List(Of IEnviroInputMap)
         For iMap As Integer = 1 To mapManager.nMaps
             'Not Depth or Hard sediment
-            If mapManager.Map(iMap).Layer.VarName <> EwEUtils.Core.eVarNameFlags.LayerDepth _
-                And Not mapManager.Map(iMap).Layer.Name.Trim.ToLower.Contains("hard sediment") Then
-
+            If Not mapManager.Map(iMap).Layer.Name.Trim.ToLower.Contains("hard sediment") Then
                 Me.lstLayers.Add(mapManager.Map(iMap))
             End If
 
@@ -94,7 +105,6 @@ Public Class cRunManager
     Private m_TrialNumber As Integer
     Private m_waitLock As ManualResetEvent
 
-    'Private m_curSpaceRun As Integer
     Private m_bStop As Boolean
 
     Private m_parameters As cRunParameters
@@ -194,21 +204,23 @@ Public Class cRunManager
 
             For Each map As IEnviroInputMap In Me.RunParameters.lstLayers
 
+                Dim AltPercent As Single = Me.RunParameters.UpperBound
                 Me.StoreResponse(map)
 
-                Me.AlterResponse(map, Me.RunParameters.UpperBound)
+                Me.AlterResponse(map, AltPercent)
                 Me.m_RunSpace.Run()
-                Me.dumpB(Me.RunParameters.UpperBound)
+                Me.writeResponseAlterationResults(map, AltPercent)
 
                 Me.RestoreResponse()
 
-                Me.AlterResponse(map, Me.RunParameters.LowerBound)
+                AltPercent = Me.RunParameters.LowerBound
+                Me.AlterResponse(map, AltPercent)
                 Me.m_RunSpace.Run()
-                Me.dumpB(Me.RunParameters.LowerBound)
+                Me.writeResponseAlterationResults(map, AltPercent)
 
                 Me.RestoreResponse()
 
-            Next
+            Next map
 
 
         Catch ex As Exception
@@ -231,7 +243,7 @@ Public Class cRunManager
     Private Sub RunsCompleted()
         Try
             Me.m_isRunning = False
-            Me.m_waitLock.Set()
+            'Me.m_waitLock.Set()
         Catch ex As Exception
 
         End Try
@@ -245,14 +257,25 @@ Public Class cRunManager
         End If
 
         Me.SaveRun()
-
-        ''Completed the second run
-        ''let the MonteCarlo go
-        'If Me.m_curSpaceRun = 2 Then
-        '    Me.m_waitLock.Set()
-        'End If
+    
 
     End Sub
+
+    Private Sub writeResponseAlterationResults(Map As IEnviroInputMap, PercentageOfChange As Single)
+
+        Dim strm As StreamWriter
+        strm = New StreamWriter(Me.RunParameters.OutputFileName, True)
+
+        strm.Write(Map.Layer.Name + "," + PercentageOfChange.ToString)
+        For igrp As Integer = 1 To Me.core.nGroups
+            strm.Write("," + Me.m_curB(igrp).ToString)
+        Next
+        strm.WriteLine()
+        strm.Close()
+
+    End Sub
+
+
 
     Private Sub StoreResponse(map As IEnviroInputMap)
 
@@ -260,7 +283,7 @@ Public Class cRunManager
         For igrp As Integer = 1 To Me.core.nGroups
             Dim iResponseIndex As Integer = map.ResponseIndexForGroup(igrp)
             If iResponseIndex > 0 Then
-                Dim ResponFunct As cForcingFunction = Me.core.CapacityShapeManager.Item(iResponseIndex)
+                Dim ResponFunct As cForcingFunction = Me.core.CapacityShapeManager.Item(iResponseIndex - 1)
                 m_lstResponseFunctions.Add(New cResponseFunctionValuePair(ResponFunct))
             End If
         Next
@@ -276,7 +299,6 @@ Public Class cRunManager
 
     Private Sub AlterResponse(map As IEnviroInputMap, PercentToAlter As Single)
 
-        ' For Each map As IEnviroInputMap In Me.RunParameters.lstLayers
         For igrp As Integer = 1 To Me.core.nGroups
             Dim iResponseIndex As Integer = map.ResponseIndexForGroup(igrp)
             If iResponseIndex > 0 Then
@@ -284,11 +306,10 @@ Public Class cRunManager
                 Me.setResponseFunction(iResponseIndex, PercentToAlter)
             End If
         Next
-        ' Next
     End Sub
 
     Private Sub setResponseFunction(iResponseIndex As Integer, Percentage As Single)
-        Dim ResponFunct As cForcingFunction = Me.core.CapacityShapeManager.Item(iResponseIndex)
+        Dim ResponFunct As cForcingFunction = Me.core.CapacityShapeManager.Item(iResponseIndex - 1)
 
         ResponFunct.LockUpdates()
         For ipt As Integer = 1 To ResponFunct.nPoints
@@ -296,116 +317,11 @@ Public Class cRunManager
         Next
         ResponFunct.UnlockUpdates()
 
-
     End Sub
-
 
     Private Sub SaveRun()
-        writeResults()
-        writeEcopathPars()
+        'writeResults()
+        'writeEcopathPars()
     End Sub
-
-    Private Sub writeResults()
-
-        Try
-            'Only save complete runs
-            If Me.m_bStop Then Return
-
-            Dim strm As StreamWriter
-            strm = New StreamWriter(Me.RunParameters.OutputFileName, True)
-            'filename for the output file
-            'this allows a row of data to be recognised once all the data is merged into one file
-            Dim filename As String = Path.GetFileName(Me.RunParameters.OutputFileName)
-
-            Dim sumB As Single
-            strm.Write(filename + ", " + Me.m_TrialNumber.ToString + ", " + RunType)
-            For igrp As Integer = 1 To m_plugin.Core.nGroups
-                sumB = 0
-                'The Zero index in ResultsByGroup(type,group,year) is Biomass
-                For it As Integer = Me.m_RunSpace.StartOfLastYear To Me.m_RunSpace.StartOfLastYear + Me.m_RunSpace.nTimeStepPerYear
-                    sumB += m_plugin.EcoSpaceData.ResultsByGroup(0, igrp, it)
-                Next it
-
-                'Average of the last year
-                strm.Write(", " + (sumB / Me.m_RunSpace.nTimeStepPerYear).ToString)
-
-            Next igrp
-            strm.WriteLine()
-
-            strm.Close()
-            'System.Console.WriteLine()
-
-        Catch ex As Exception
-
-        End Try
-
-
-    End Sub
-
-
-    Public Function getEcopathParFile(Optional filename As String = "") As String
-        'Create the Ecopath Parameters filename
-        If String.IsNullOrWhiteSpace(filename) Then filename = Me.RunParameters.OutputFileName
-        Dim parFile As String = Path.GetFileNameWithoutExtension(filename)
-        parFile = String.Concat(parFile, "_Ecopath_Pars.csv")
-        Return Path.Combine(Path.GetDirectoryName(filename), parFile)
-    End Function
-
-
-    Private Sub writeEcopathPars()
-
-        Try
-            ''Only save complete runs
-            'If Me.m_bStop Then Return
-
-            'If String.Compare(RunType, "After", True) = 0 Then
-            '    'Only do this for the before run
-            '    'Parameters will be the same for both runs
-            '    Return
-            'End If
-
-            ''Create the Ecopath Parameters filename
-            'Dim parFile As String = Me.getEcopathParFile
-
-            'Dim strm As StreamWriter
-            'strm = New StreamWriter(parFile, True)
-            ''filename for the output file
-            ''this allows a row of data to be recognised once all the data is merged into one file
-            'Dim filename As String = Path.GetFileName(Me.RunParameters.OutputFileName)
-            'Dim epdata As cEcopathDataStructures = Me.m_plugin.EcoPathData
-
-            'For ipar As Integer = 0 To 4
-            '    strm.Write(filename + ", " + Me.m_TrialNumber.ToString + ", " + Me.m_parNames(ipar))
-            '    For igrp As Integer = 1 To m_plugin.Core.nGroups
-            '        Dim value As Single
-            '        Select Case ipar
-            '            Case 0
-            '                value = epdata.B(igrp)
-            '            Case 1
-            '                value = epdata.PB(igrp)
-            '            Case 2
-            '                value = epdata.QB(igrp)
-            '            Case 3
-            '                value = epdata.EE(igrp)
-            '            Case 4
-            '                value = epdata.BA(igrp)
-            '        End Select
-
-            '        strm.Write(", " + value.ToString)
-
-            '    Next igrp
-            '    strm.WriteLine()
-            'Next ipar
-
-            'strm.Close()
-            'System.Console.WriteLine()
-
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
-
 
 End Class
