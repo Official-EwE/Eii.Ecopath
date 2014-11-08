@@ -62,9 +62,13 @@ Public Class cEcospaceSensitivityPluginPoint
     Implements EwEPlugin.INavigationTreeItemPlugin
     ''Plugin points for running Ecospace with the Monte Carlo
     'Implements EwEPlugin.IMonteCarloPlugin
-    'Implements EwEPlugin.IEcospaceRunCompletedPlugin
+    Implements EwEPlugin.IEcospaceRunCompletedPlugin
+    Implements EwEPlugin.IEcospaceEndTimestepPlugin
+
+
     ''Not needed
-    ''Implements EwEPlugin.IEcospaceEndTimestepPlugin
+
+ 
 
     'Implements EwEPlugin.ISearchPlugin
 
@@ -90,16 +94,6 @@ Public Class cEcospaceSensitivityPluginPoint
 
 #Region "Public Methods"
 
-    'Public Sub DoSomething(ByVal Value As Single)
-
-    '    MsgBox("Hi from DoSomething(). Your value = " + Value.ToString, MsgBoxStyle.Information)
-    '    System.Console.WriteLine(Value.ToString)
-
-    'End Sub
-
-    'Public Sub OpenModel(ByVal filename As String)
-    '    Me.m_core.LoadModel(filename)
-    'End Sub
 
 #End Region
 
@@ -230,53 +224,29 @@ Public Class cEcospaceSensitivityPluginPoint
 
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
         Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
+
+        Me.m_runManager.Init(Me)
+
     End Sub
 
 
-    'Public Sub MontCarloInitialized(MonteCarloAsObject As Object) Implements EwEPlugin.IMonteCarloPlugin.MontCarloInitialized
-    '    Try
+    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
 
-    '        'Me.m_MonteCarlo = DirectCast(MonteCarloAsObject, cEcosimMonteCarlo)
-    '        Me.m_runManager.Init(Me)
+    End Sub
 
-    '        Me.m_runManager.configMonteCarlo()
+    Public Sub EcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements EwEPlugin.IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
+        Dim spaceData As cEcospaceDataStructures = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
+        Dim bio() As Single = New Single(Me.Core.nGroups) {}
+        For igrp As Integer = 1 To Me.Core.nGroups
+            bio(igrp) = spaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
+        Next
 
-    '    Catch ex As Exception
-
-    '    End Try
-    'End Sub
-
-    'Public Sub MonteCarloBalancedEcopathModel(ByVal WaitLock As ManualResetEvent, TrialNumber As Integer, nIterations As Integer) Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
-
-    '    'WaitLock.Reset()
-
-    '    If Me.m_runManager.Run(WaitLock, TrialNumber) Then
-
-    '    End If
-
-    '    ' WaitLock.Set()
-
-    'End Sub
-
-   
-
-    'Public Sub SearchInitialized(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.SearchInitialized
-
-    'End Sub
+        Me.RunManager.setBiomass(bio)
 
 
-    'Public Sub PostRunSearchResults(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.PostRunSearchResults
-
-    'End Sub
-
-    'Public Sub SearchCompleted(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.SearchCompleted
-
-    'End Sub
+    End Sub
 
 
-    'Public Sub SearchIterationsStarting() Implements EwEPlugin.ISearchPlugin.SearchIterationsStarting
-    '    Me.m_runManager.isConfigured()
-    'End Sub
 
 #End Region
 
@@ -353,7 +323,7 @@ Public Class cEcospaceSensitivityPluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Ecospace Monte Carlo"
+            Return "Ecospace Sensitivity"
         End Get
     End Property
 

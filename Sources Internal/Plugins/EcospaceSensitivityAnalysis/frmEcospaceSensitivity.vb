@@ -83,8 +83,6 @@ Public Class frmEcospaceSensitivity
     End Sub
 
 
-
-
     Private Sub UpdateParameters()
 
         If Me.m_inInit Then Return
@@ -121,36 +119,10 @@ Public Class frmEcospaceSensitivity
     End Sub
 
 
-    Private Sub m_btOutput_Click(sender As System.Object, e As System.EventArgs)
-        'Dim SFD As New SaveFileDialog
-
-        'SFD.FileName = "RBT_Ecospace_MonteCarlo.csv"
-        'SFD.Filter = "*.csv|*.csv|*.*|*.*"
-        'SFD.FilterIndex = 0
-
-        'SFD.OverwritePrompt = False
-
-        'If SFD.ShowDialog = Windows.Forms.DialogResult.OK Then
-        '    Dim filename As String = SFD.FileName
-
-        '    If File.Exists(filename) Then
-        '        If MsgBox("Selected output file already exists. Do you want to overwrite it?" + vbCrLf + "Yes to overwrite." + vbCrLf + "No to append new results.", _
-        '            MsgBoxStyle.YesNo, "Ecospace MonteCarlo.") = MsgBoxResult.Yes Then
-        '            Try
-        '                File.Delete(filename)
-        '                File.Delete(Me.RunManager.getEcopathParFile(filename))
-        '            Catch ex As Exception
-
-        '            End Try
-        '        End If
-        '    End If
-
-        '    Me.m_plugin.RunManager.RunParameters.OutputFileName = filename
-
-        '    Me.UpdateControls()
-
-        'End If
-
+    Private Sub m_btRun_Click(sender As System.Object, e As System.EventArgs) Handles m_btRun.Click
+        Me.RunManager.Run()
     End Sub
+
+
 
 End Class

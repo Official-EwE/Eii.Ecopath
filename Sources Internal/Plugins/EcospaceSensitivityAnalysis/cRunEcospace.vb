@@ -26,8 +26,6 @@ Imports EwECore.Ecospace
 
 #End Region
 
-
-
 Public Class cRunEcospace
 
     Private Ecospace As cEcoSpace
@@ -45,7 +43,7 @@ Public Class cRunEcospace
 
     Public Sub SetRunParameters(ByVal parameters As cRunPeriods)
 
-        Core.EwEModel.FirstYear = parameters.StartYear
+        '  Core.EwEModel.FirstYear = parameters.StartYear
         Core.EcospaceModelParameters.TotalTime = parameters.nYears
 
         nTimeStepPerYear = CInt(Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)

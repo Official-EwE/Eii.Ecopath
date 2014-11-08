@@ -19,12 +19,13 @@ Public Class cRunParameters
 
     Public OutputFileName As String
 
-    Public BeforeRun As cRunPeriods
-    Public AfterRun As cRunPeriods
+    Public RunTimes As cRunPeriods
+
+    Public NumberOfRuns As Integer
 
     Public Sub New()
-        BeforeRun = New cRunPeriods(1995, 10)
-        AfterRun = New cRunPeriods(2015, 15)
+        RunTimes = New cRunPeriods(2015, 10)
+        NumberOfRuns = 5
     End Sub
 
 End Class
@@ -49,6 +50,8 @@ Public Class cRunManager
 
     Private m_parNames() As String
 
+    Private m_curB() As Single
+
     Public Property RunParameters As cRunParameters
 
         Get
@@ -59,14 +62,20 @@ Public Class cRunManager
         End Set
     End Property
 
+    Public Sub setBiomass(biomass() As Single)
+        m_curB = biomass
+    End Sub
+
     Public Sub StopRun()
-        '   Me.m_plugin.MonteCarlo.StopTrial = True
         Me.m_plugin.EcoSpace.m_StopRun = True
         m_bStop = True
     End Sub
 
     Public Sub isConfigured()
         Me.m_isConfig = True
+
+        'Not for now
+        Return
 
         Dim msg As String
         If Not Directory.Exists(Path.GetDirectoryName(Me.RunParameters.OutputFileName)) Then
@@ -96,22 +105,16 @@ Public Class cRunManager
         core = Me.m_plugin.Core
         Me.m_RunSpace = New cRunEcospace
 
-        '  m_plugin.MonteCarlo.maxEcopathTries = 1000000
-
         m_parNames = New String() {"Biomass", "P/B", "Q/B", "EE", "BA"}
 
     End Sub
 
-    Public Function Run(ByVal WaitLock As ManualResetEvent, ByVal TrialNumber As Integer) As Boolean
+    Public Function Run() As Boolean
 
-        If Not Me.m_isConfig Then
-            Return False
-        End If
+        'If Not Me.m_isConfig Then
+        '    Return False
+        'End If
 
-        m_TrialNumber = TrialNumber
-        m_waitLock = WaitLock
-
-        m_waitLock.Reset()
         Dim runthread As New Thread(AddressOf RunOnThread)
         runthread.Start()
 
@@ -124,20 +127,25 @@ Public Class cRunManager
 
         Try
 
-            m_bStop = False
-            m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
-            ' m_curSpaceRun = 1
-            RunType = "Before"
-            m_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
-            Me.m_RunSpace.Run()
+            Me.m_bStop = False
+            Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
 
-            ' m_curSpaceRun = 2
+            For irun As Integer = 1 To Me.RunParameters.NumberOfRuns
 
-            If Not Me.m_bStop Then
-                RunType = "After"
-                m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
+                Me.m_RunSpace.SetRunParameters(Me.RunParameters.RunTimes)
+
                 Me.m_RunSpace.Run()
-            End If
+
+                'Process the data from the end of the run
+                'Get the average biomass for the last time step 
+                'and dump it to file
+                System.Console.Write("Ecospace B")
+                For igrp As Integer = 1 To Me.core.nGroups
+                    System.Console.Write("," + Me.m_curB(igrp).ToString)
+                Next
+                System.Console.WriteLine()
+            Next
+
 
         Catch ex As Exception
 
@@ -280,18 +288,6 @@ Public Class cRunManager
     End Sub
 
 
-    Public Sub configMonteCarlo()
-
-        Dim MC As cMonteCarloManager = Me.core.EcosimMonteCarlo
-        'For now set BA to 0 for all groups
-        'until we sort out how to deal with the 
-        'BA BA/B variation
-        For igrp As Integer = 1 To core.nGroups
-            MC.Groups(igrp).BAcv = 0.0
-        Next
-
-
-    End Sub
 
 
 End Class

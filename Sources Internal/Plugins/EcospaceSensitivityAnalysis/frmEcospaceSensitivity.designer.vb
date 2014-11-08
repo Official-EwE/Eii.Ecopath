@@ -38,7 +38,17 @@ Partial Class frmEcospaceSensitivity
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.m_btRun = New System.Windows.Forms.Button()
         Me.SuspendLayout()
+        '
+        'm_btRun
+        '
+        Me.m_btRun.Location = New System.Drawing.Point(12, 25)
+        Me.m_btRun.Name = "m_btRun"
+        Me.m_btRun.Size = New System.Drawing.Size(147, 24)
+        Me.m_btRun.TabIndex = 0
+        Me.m_btRun.Text = "Run (For Testing)"
+        Me.m_btRun.UseVisualStyleBackColor = True
         '
         'frmEcospaceSensitivity
         '
@@ -46,12 +56,14 @@ Partial Class frmEcospaceSensitivity
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(566, 334)
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_btRun)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmEcospaceSensitivity"
         Me.ShowInTaskbar = False
-        Me.TabText = "Ecospace RBT MonteCarlo"
-        Me.Text = "Ecospace RBT MonteCarlo"
+        Me.TabText = "Ecospace Sensitivity"
+        Me.Text = "Ecospace Sensitivity Analysis"
         Me.ResumeLayout(False)
 
     End Sub
+    Friend WithEvents m_btRun As System.Windows.Forms.Button
 End Class
