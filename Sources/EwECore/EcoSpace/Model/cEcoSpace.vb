@@ -1314,7 +1314,7 @@ Public Class cEcoSpace
     ''' <remarks></remarks>
     Private Sub AccumulateFitStats()
 
-        System.Console.WriteLine("Warning: Ecospace.AccumulateFitStats() not called for debugging Monthly Timeseries.")
+        'System.Console.WriteLine("Warning: Ecospace.AccumulateFitStats() not called for debugging Monthly Timeseries.")
         Return
 
         'Try
@@ -4178,7 +4178,7 @@ exitline:
         waitOb = Nothing
 
         stpwTotRunTime.Stop()
-        System.Console.WriteLine("EffortDistribution wall time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        'System.Console.WriteLine("EffortDistribution wall time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
 
         'GC.Collect()
 
