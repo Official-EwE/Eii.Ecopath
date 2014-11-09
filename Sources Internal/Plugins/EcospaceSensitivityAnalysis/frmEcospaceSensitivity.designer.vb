@@ -39,6 +39,8 @@ Partial Class frmEcospaceSensitivity
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.m_btRun = New System.Windows.Forms.Button()
+        Me.m_pbTotalProgress = New System.Windows.Forms.ProgressBar()
+        Me.m_pbRunProgress = New System.Windows.Forms.ProgressBar()
         Me.SuspendLayout()
         '
         'm_btRun
@@ -50,12 +52,30 @@ Partial Class frmEcospaceSensitivity
         Me.m_btRun.Text = "Run (For Testing)"
         Me.m_btRun.UseVisualStyleBackColor = True
         '
+        'm_pbTotalProgress
+        '
+        Me.m_pbTotalProgress.Location = New System.Drawing.Point(12, 103)
+        Me.m_pbTotalProgress.Name = "m_pbTotalProgress"
+        Me.m_pbTotalProgress.Size = New System.Drawing.Size(489, 23)
+        Me.m_pbTotalProgress.Step = 1
+        Me.m_pbTotalProgress.TabIndex = 1
+        '
+        'm_pbRunProgress
+        '
+        Me.m_pbRunProgress.Location = New System.Drawing.Point(12, 74)
+        Me.m_pbRunProgress.Name = "m_pbRunProgress"
+        Me.m_pbRunProgress.Size = New System.Drawing.Size(489, 23)
+        Me.m_pbRunProgress.Step = 1
+        Me.m_pbRunProgress.TabIndex = 2
+        '
         'frmEcospaceSensitivity
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(566, 334)
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_pbRunProgress)
+        Me.Controls.Add(Me.m_pbTotalProgress)
         Me.Controls.Add(Me.m_btRun)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmEcospaceSensitivity"
@@ -66,4 +86,6 @@ Partial Class frmEcospaceSensitivity
 
     End Sub
     Friend WithEvents m_btRun As System.Windows.Forms.Button
+    Friend WithEvents m_pbTotalProgress As System.Windows.Forms.ProgressBar
+    Friend WithEvents m_pbRunProgress As System.Windows.Forms.ProgressBar
 End Class

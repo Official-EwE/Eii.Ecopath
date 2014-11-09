@@ -56,9 +56,17 @@ Public Class frmEcospaceSensitivity
 
             Dim model As cEwEModel = Me.Core.EwEModel
 
+            AddHandler Me.RunManager.OnTimeStep, AddressOf Me.onEcospaceTimeStep
+
         End If
 
     End Sub
+
+    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        RemoveHandler Me.RunManager.OnTimeStep, AddressOf Me.onEcospaceTimeStep
+    End Sub
+
+
 
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
@@ -120,7 +128,19 @@ Public Class frmEcospaceSensitivity
 
 
     Private Sub m_btRun_Click(sender As System.Object, e As System.EventArgs) Handles m_btRun.Click
+        Me.m_pbTotalProgress.Value = 0
         Me.RunManager.Run()
+    End Sub
+
+
+    Private Sub onEcospaceTimeStep(TotalPercentDone As Single, RunPercentDone As Single, MapName As String)
+        Try
+            Me.m_pbRunProgress.Value = CInt(RunPercentDone * 100)
+            Me.m_pbTotalProgress.Value = CInt(TotalPercentDone * 100)
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
 

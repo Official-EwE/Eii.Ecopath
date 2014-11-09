@@ -9,12 +9,18 @@ Imports System.Threading
 Public Class cRunPeriods
 
     Public StartYear As Integer
-    Public nYears As Integer
+    Public nYears As Single
 
     Public Sub New(Start As Integer, NumberOfYears As Integer)
         StartYear = Start
         nYears = NumberOfYears
     End Sub
+
+    Public Sub New(theCore As cCore)
+        StartYear = theCore.EwEModel.FirstYear
+        nYears = theCore.EcospaceModelParameters.TotalTime
+    End Sub
+
 
 End Class
 
@@ -51,9 +57,13 @@ Public Class cRunParameters
     End Sub
 
     Private Sub setDefaults()
-        RunTimes = New cRunPeriods(2015, 5)
-        Delta = 0.2
+
+        'Use the current Ecospace configuration
+        'as the default years
+        RunTimes = New cRunPeriods(Me.m_core)
+        Delta = 0.9 ' 0.2
         Me.setDefaultMapLayers()
+
     End Sub
 
     Private Sub setDefaultMapLayers()
@@ -77,23 +87,36 @@ Public Class cRunManager
 
     Private Class cResponseFunctionValuePair
         Public orgData() As Single
-        Public orgShape As cForcingFunction
+        Public orgResponseFunct As cEnviroResponseFunction
 
-        Public Sub New(Shape As cForcingFunction)
-            orgShape = Shape
-            Me.store()
+        Public Sub New(Shape As cEnviroResponseFunction)
+            orgResponseFunct = Shape
+            Me.Store()
         End Sub
 
-        Public Sub store()
-            orgData = New Single(orgShape.ShapeData.Length - 1) {}
-            Array.Copy(orgShape.ShapeData, orgData, orgShape.ShapeData.Length)
+        Public Sub Store()
+            'Store the original value of the response function
+            orgData = New Single(orgResponseFunct.ShapeData.Length - 1) {}
+            Array.Copy(orgResponseFunct.ShapeData, orgData, orgResponseFunct.ShapeData.Length)
         End Sub
 
-        Public Sub restore()
-            orgShape.ShapeData = orgData
+        Public Sub Restore()
+            orgResponseFunct.ShapeData = orgData
         End Sub
+
+        Public Sub Alter(PercentageToAlter As Single)
+
+            For ipt As Integer = 1 To orgResponseFunct.nPoints
+                orgResponseFunct.ShapeData(ipt) = orgResponseFunct.ShapeData(ipt) * PercentageToAlter
+            Next
+
+        End Sub
+
     End Class
 
+
+    ''' <summary>Core thread synchronization object for thread marshalling.</summary>
+    Private m_SyncObj As System.Threading.SynchronizationContext = Nothing
 
     Private m_RunSpace As cRunEcospace
     Private m_plugin As cEcospaceSensitivityPluginPoint
@@ -115,7 +138,14 @@ Public Class cRunManager
 
     Private m_lstResponseFunctions As List(Of cResponseFunctionValuePair)
 
+    Private m_curTotTime As Integer
+    Private m_curTimeStep As Integer
+    Private m_curMapName As String
 
+    Private m_TotTimeSteps As Integer
+    Private m_RunTimeSteps As Integer
+
+    Public Event OnTimeStep(TotalPercentDone As Single, RunPercentDone As Single, MapName As String)
 
     Public Property RunParameters As cRunParameters
 
@@ -133,8 +163,13 @@ Public Class cRunManager
         End Get
     End Property
 
-    Public Sub setBiomass(biomass() As Single)
+    Public Sub setBiomass(biomass() As Single, itime As Integer)
         m_curB = biomass
+        Me.m_curTotTime += 1
+        Me.m_curTimeStep = itime
+        ' If itime Mod 12 = 0 Then
+        Me.MarshallOnTimeStep()
+        '  End If
     End Sub
 
     Public Sub StopRun()
@@ -186,6 +221,9 @@ Public Class cRunManager
         'End If
 
         Me.m_isRunning = True
+        Me.m_curTotTime = 0
+        Me.m_TotTimeSteps = calcTotalTimeStep()
+
         Dim runthread As New Thread(AddressOf RunOnThread)
         runthread.Start()
 
@@ -193,30 +231,51 @@ Public Class cRunManager
 
     End Function
 
+    Private Sub MarshallOnTimeStep()
+        Try
+            Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnTimeStep), Nothing)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub fireOnTimeStep(arg As Object)
+        Dim TotalPercentDone As Single = CSng(Me.m_curTotTime / Me.m_TotTimeSteps)
+        Dim RunPercentDone As Single = CSng(Me.m_curTimeStep / Me.m_RunTimeSteps)
+        RaiseEvent OnTimeStep(TotalPercentDone, RunPercentDone, Me.m_curMapName)
+    End Sub
+
 
     Private Sub RunOnThread()
 
         Try
+            Dim AltPercent As Single
 
             Me.m_bStop = False
             Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
-            Me.m_RunSpace.SetRunParameters(Me.RunParameters.RunTimes)
+            ' Me.m_RunSpace.SetRunParameters(Me.RunParameters.RunTimes)
+
+            'Run and Write Baseline run
+            Me.m_RunSpace.Run()
+            Me.m_curMapName = "BaseLine"
+            Me.RunCompleted("BaseLine", 0.0)
 
             For Each map As IEnviroInputMap In Me.RunParameters.lstLayers
+                Me.m_curMapName = map.Layer.Name
 
-                Dim AltPercent As Single = Me.RunParameters.UpperBound
-                Me.StoreResponse(map)
+                AltPercent = Me.RunParameters.LowerBound
+                Me.StoreOrginalResponse(map)
 
-                Me.AlterResponse(map, AltPercent)
+                Me.AlterResponse(AltPercent)
                 Me.m_RunSpace.Run()
-                Me.writeResponseAlterationResults(map, AltPercent)
+                Me.RunCompleted(map.Layer.Name, AltPercent)
 
                 Me.RestoreResponse()
 
-                AltPercent = Me.RunParameters.LowerBound
-                Me.AlterResponse(map, AltPercent)
+                AltPercent = Me.RunParameters.UpperBound
+                Me.AlterResponse(AltPercent)
                 Me.m_RunSpace.Run()
-                Me.writeResponseAlterationResults(map, AltPercent)
+                Me.RunCompleted(map.Layer.Name, AltPercent)
 
                 Me.RestoreResponse()
 
@@ -230,6 +289,15 @@ Public Class cRunManager
         Me.RunsCompleted()
 
     End Sub
+
+
+    Private Function calcTotalTimeStep() As Integer
+
+        Dim nruns As Integer = Me.RunParameters.lstLayers.Count * 2 + 1
+        Me.m_RunTimeSteps = Me.core.nEcospaceTimeSteps
+        Return Me.m_RunTimeSteps * nruns
+
+    End Function
 
 
     Private Sub dumpB(Percentage As Single)
@@ -257,16 +325,25 @@ Public Class cRunManager
         End If
 
         Me.SaveRun()
-    
+
 
     End Sub
 
-    Private Sub writeResponseAlterationResults(Map As IEnviroInputMap, PercentageOfChange As Single)
+    Private Sub RunCompleted(RunName As String, PercentageOfChange As Single)
+
+        Me.m_curTimeStep = 0
+        Me.writeResponseAlterationResults(RunName, PercentageOfChange)
+
+        Me.MarshallOnTimeStep()
+
+    End Sub
+
+    Private Sub writeResponseAlterationResults(RunName As String, PercentageOfChange As Single)
 
         Dim strm As StreamWriter
         strm = New StreamWriter(Me.RunParameters.OutputFileName, True)
 
-        strm.Write(Map.Layer.Name + "," + PercentageOfChange.ToString)
+        strm.Write(RunName + "," + PercentageOfChange.ToString)
         For igrp As Integer = 1 To Me.core.nGroups
             strm.Write("," + Me.m_curB(igrp).ToString)
         Next
@@ -277,45 +354,33 @@ Public Class cRunManager
 
 
 
-    Private Sub StoreResponse(map As IEnviroInputMap)
+    Private Sub StoreOrginalResponse(map As IEnviroInputMap)
 
         m_lstResponseFunctions = New List(Of cResponseFunctionValuePair)
         For igrp As Integer = 1 To Me.core.nGroups
             Dim iResponseIndex As Integer = map.ResponseIndexForGroup(igrp)
             If iResponseIndex > 0 Then
-                Dim ResponFunct As cForcingFunction = Me.core.CapacityShapeManager.Item(iResponseIndex - 1)
+                Dim ResponFunct As cEnviroResponseFunction = DirectCast(Me.core.CapacityShapeManager.Item(iResponseIndex - 1), cEnviroResponseFunction)
                 m_lstResponseFunctions.Add(New cResponseFunctionValuePair(ResponFunct))
             End If
         Next
+
     End Sub
 
     Private Sub RestoreResponse()
 
-        For Each pair In m_lstResponseFunctions
-            pair.restore()
+        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
+            pair.Restore()
         Next
+
     End Sub
 
 
-    Private Sub AlterResponse(map As IEnviroInputMap, PercentToAlter As Single)
+    Private Sub AlterResponse(PercentToAlter As Single)
 
-        For igrp As Integer = 1 To Me.core.nGroups
-            Dim iResponseIndex As Integer = map.ResponseIndexForGroup(igrp)
-            If iResponseIndex > 0 Then
-                'System.Console.WriteLine("Response for map = " + map.Layer.Name + " group = " + igrp.ToString + " response = " + iResponseIndex.ToString)
-                Me.setResponseFunction(iResponseIndex, PercentToAlter)
-            End If
+        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
+            pair.Alter(PercentToAlter)
         Next
-    End Sub
-
-    Private Sub setResponseFunction(iResponseIndex As Integer, Percentage As Single)
-        Dim ResponFunct As cForcingFunction = Me.core.CapacityShapeManager.Item(iResponseIndex - 1)
-
-        ResponFunct.LockUpdates()
-        For ipt As Integer = 1 To ResponFunct.nPoints
-            ResponFunct.ShapeData(ipt) = ResponFunct.ShapeData(ipt) * Percentage
-        Next
-        ResponFunct.UnlockUpdates()
 
     End Sub
 
@@ -324,4 +389,10 @@ Public Class cRunManager
         'writeEcopathPars()
     End Sub
 
+    Public Sub New()
+
+        Me.m_SyncObj = System.Threading.SynchronizationContext.Current
+        'if there is no current context then create a new one on this thread. 
+        If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
+    End Sub
 End Class

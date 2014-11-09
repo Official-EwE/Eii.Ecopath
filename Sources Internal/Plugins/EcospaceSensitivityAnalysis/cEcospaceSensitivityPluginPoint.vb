@@ -243,7 +243,8 @@ Public Class cEcospaceSensitivityPluginPoint
                 bio(igrp) = spaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
             Next
 
-            Me.RunManager.setBiomass(bio)
+            Me.RunManager.setBiomass(bio, iTime)
+
 
         End If
 
