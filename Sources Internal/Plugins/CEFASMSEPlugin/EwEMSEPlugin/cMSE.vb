@@ -1534,9 +1534,7 @@ Public Class cMSE
 
         'Save FleetEffortTable to CSV
         'swFleetEffort.Write("Model,Strategy,FleetNumber,FleetName")
-        For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-            swFleetEffort.Write("," & iTimeStep)
-        Next
+
         swFleetEffort.WriteLine()
         For iRow = 0 To FleetEffortTable.Rows.Count - 1
             Dim RowData As Data.DataRow
@@ -1863,7 +1861,7 @@ Public Class cMSE
                 TrajectoryTable.Rows.Add(iModel, m_currentStrategy.Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, BiomassVals)
 
                 ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
-                                           m_core.EcoPathGroupOutputs(iGrp).Name, "Biomass", BiomassProjected.Min)
+                                           m_core.EcoPathGroupOutputs(iGrp).Name, "BiomassMin", BiomassProjected.Min)
                 ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
                                            m_core.EcoPathGroupOutputs(iGrp).Name, "BiomassEnd", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, Me._simdata.NTimes))
                 ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
