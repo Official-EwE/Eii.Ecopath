@@ -41,15 +41,15 @@ Public Class cRunEcospace
 
     End Sub
 
-    Public Sub SetRunParameters(ByVal parameters As cRunPeriods)
+    'Public Sub SetRunParameters(ByVal parameters As cRunPeriods)
 
-        '  Core.EwEModel.FirstYear = parameters.StartYear
-        Core.EcospaceModelParameters.TotalTime = parameters.nYears
+    '    '  Core.EwEModel.FirstYear = parameters.StartYear
+    '    Core.EcospaceModelParameters.TotalTime = parameters.nYears
 
-        nTimeStepPerYear = CInt(Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
-        StartOfLastYear = CInt((Core.EcospaceModelParameters.TotalTime - 1) * nTimeStepPerYear)
+    '    nTimeStepPerYear = CInt(Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+    '    StartOfLastYear = CInt((Core.EcospaceModelParameters.TotalTime - 1) * nTimeStepPerYear)
 
-    End Sub
+    'End Sub
 
 
     Public Sub Run()

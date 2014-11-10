@@ -6,29 +6,29 @@ Imports EwECore
 Imports System.IO
 Imports System.Threading
 
-Public Class cRunPeriods
+'Public Class cRunPeriods
 
-    Public StartYear As Integer
-    Public nYears As Single
+'    Public StartYear As Integer
+'    Public nYears As Single
 
-    Public Sub New(Start As Integer, NumberOfYears As Integer)
-        StartYear = Start
-        nYears = NumberOfYears
-    End Sub
+'    Public Sub New(Start As Integer, NumberOfYears As Integer)
+'        StartYear = Start
+'        nYears = NumberOfYears
+'    End Sub
 
-    Public Sub New(theCore As cCore)
-        StartYear = theCore.EwEModel.FirstYear
-        nYears = theCore.EcospaceModelParameters.TotalTime
-    End Sub
+'    Public Sub New(theCore As cCore)
+'        StartYear = theCore.EwEModel.FirstYear
+'        nYears = theCore.EcospaceModelParameters.TotalTime
+'    End Sub
 
 
-End Class
+'End Class
 
 
 Public Class cRunParameters
 
     Public OutputFileName As String
-    Public RunTimes As cRunPeriods
+    'Public RunTimes As cRunPeriods
     Public lstLayers As List(Of IEnviroInputMap)
     Public Delta As Single
 
@@ -60,7 +60,7 @@ Public Class cRunParameters
 
         'Use the current Ecospace configuration
         'as the default years
-        RunTimes = New cRunPeriods(Me.m_core)
+        'RunTimes = New cRunPeriods(Me.m_core)
         Delta = 0.9 ' 0.2
         Me.setDefaultMapLayers()
 
@@ -84,6 +84,11 @@ End Class
 
 
 Public Class cRunManager
+
+    Public Enum eEcospaceSensitivityStates
+        Stopped
+        Running
+    End Enum
 
     Private Class cResponseFunctionValuePair
         Public orgData() As Single
@@ -145,7 +150,11 @@ Public Class cRunManager
     Private m_TotTimeSteps As Integer
     Private m_RunTimeSteps As Integer
 
-    Public Event OnTimeStep(TotalPercentDone As Single, RunPercentDone As Single, MapName As String)
+    Private m_curState As eEcospaceSensitivityStates
+
+    Public Event OnProgress(TotalPercentDone As Single, RunPercentDone As Single, MapName As String)
+
+    Public Event OnStateChange(State As eEcospaceSensitivityStates)
 
     Public Property RunParameters As cRunParameters
 
@@ -168,25 +177,24 @@ Public Class cRunManager
         Me.m_curTotTime += 1
         Me.m_curTimeStep = itime
         ' If itime Mod 12 = 0 Then
-        Me.MarshallOnTimeStep()
+        Me.MarshallOnProgress()
         '  End If
     End Sub
 
     Public Sub StopRun()
         Me.m_plugin.EcoSpace.m_StopRun = True
-        m_bStop = True
+        Me.m_bStop = True
     End Sub
 
     Public Sub isConfigured()
         Me.m_isConfig = True
 
-        'Not for now
-        Return
-
         Dim msg As String
         If Not Directory.Exists(Path.GetDirectoryName(Me.RunParameters.OutputFileName)) Then
             Me.m_isConfig = False
             msg = "No output file defined"
+            MsgBox("Ecospace Sensitivity is not properly configured. Please stop the search and fix the following issues." + vbCrLf + msg)
+            Me.StopRun()
         End If
 
         'If File.Exists(OutputFilename) Then
@@ -200,9 +208,9 @@ Public Class cRunManager
         '    End If
         'End If
 
-        If Not Me.m_isConfig Then
-            MsgBox("Ecospace MonteCarlo is not properly configured. Please stop the search and fix the following issues." + vbCrLf + msg)
-        End If
+        'If Not Me.m_isConfig Then
+        '    MsgBox("Ecospace Sensitivity is not properly configured. Please stop the search and fix the following issues." + vbCrLf + msg)
+        'End If
     End Sub
 
 
@@ -220,6 +228,9 @@ Public Class cRunManager
         '    Return False
         'End If
 
+
+        Me.setState(eEcospaceSensitivityStates.Running)
+
         Me.m_isRunning = True
         Me.m_curTotTime = 0
         Me.m_TotTimeSteps = calcTotalTimeStep()
@@ -231,18 +242,43 @@ Public Class cRunManager
 
     End Function
 
-    Private Sub MarshallOnTimeStep()
+
+    Public ReadOnly Property State As eEcospaceSensitivityStates
+        Get
+            Return Me.m_curState
+        End Get
+    End Property
+
+
+    Private Sub setState(newState As eEcospaceSensitivityStates)
+        Me.m_curState = newState
+        Me.MarshallOnStateChanged(Me.m_curState)
+    End Sub
+
+    Private Sub MarshallOnProgress()
         Try
-            Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnTimeStep), Nothing)
+            Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnProgress), Nothing)
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Private Sub fireOnTimeStep(arg As Object)
+    Private Sub fireOnStateChanged(arg As Object)
+        RaiseEvent OnStateChange(Me.m_curState)
+    End Sub
+
+    Private Sub MarshallOnStateChanged(NewState As eEcospaceSensitivityStates)
+        Try
+            Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnStateChanged), NewState)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub fireOnProgress(arg As Object)
         Dim TotalPercentDone As Single = CSng(Me.m_curTotTime / Me.m_TotTimeSteps)
         Dim RunPercentDone As Single = CSng(Me.m_curTimeStep / Me.m_RunTimeSteps)
-        RaiseEvent OnTimeStep(TotalPercentDone, RunPercentDone, Me.m_curMapName)
+        RaiseEvent OnProgress(TotalPercentDone, RunPercentDone, Me.m_curMapName)
     End Sub
 
 
@@ -252,15 +288,17 @@ Public Class cRunManager
             Dim AltPercent As Single
 
             Me.m_bStop = False
-            Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
-            ' Me.m_RunSpace.SetRunParameters(Me.RunParameters.RunTimes)
+
+            Me.initForRun()
 
             'Run and Write Baseline run
             Me.m_RunSpace.Run()
             Me.m_curMapName = "BaseLine"
-            Me.RunCompleted("BaseLine", 0.0)
+            Me.SaveRun(Me.m_curMapName, 0.0)
 
             For Each map As IEnviroInputMap In Me.RunParameters.lstLayers
+                If Me.m_bStop Then Exit For
+
                 Me.m_curMapName = map.Layer.Name
 
                 AltPercent = Me.RunParameters.LowerBound
@@ -268,14 +306,16 @@ Public Class cRunManager
 
                 Me.AlterResponse(AltPercent)
                 Me.m_RunSpace.Run()
-                Me.RunCompleted(map.Layer.Name, AltPercent)
+                If Me.m_bStop Then Exit For
+                Me.SaveRun(map.Layer.Name, AltPercent)
 
                 Me.RestoreResponse()
 
                 AltPercent = Me.RunParameters.UpperBound
                 Me.AlterResponse(AltPercent)
                 Me.m_RunSpace.Run()
-                Me.RunCompleted(map.Layer.Name, AltPercent)
+                If Me.m_bStop Then Exit For
+                Me.SaveRun(map.Layer.Name, AltPercent)
 
                 Me.RestoreResponse()
 
@@ -287,6 +327,15 @@ Public Class cRunManager
         End Try
 
         Me.RunsCompleted()
+
+    End Sub
+
+    Private Sub initForRun()
+
+
+        Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
+        Me.m_TotTimeSteps = Me.calcTotalTimeStep()
+        Me.writeResponseAlterationHeader()
 
     End Sub
 
@@ -311,30 +360,18 @@ Public Class cRunManager
     Private Sub RunsCompleted()
         Try
             Me.m_isRunning = False
-            'Me.m_waitLock.Set()
+            Me.setState(eEcospaceSensitivityStates.Stopped)
         Catch ex As Exception
 
         End Try
 
     End Sub
 
-    Public Sub OnEcospaceRunCompleted()
-
-        If Not Me.m_isConfig Then
-            Return
-        End If
-
-        Me.SaveRun()
-
-
-    End Sub
-
-    Private Sub RunCompleted(RunName As String, PercentageOfChange As Single)
+    Private Sub SaveRun(RunName As String, PercentageOfChange As Single)
 
         Me.m_curTimeStep = 0
         Me.writeResponseAlterationResults(RunName, PercentageOfChange)
-
-        Me.MarshallOnTimeStep()
+        Me.MarshallOnProgress()
 
     End Sub
 
@@ -346,6 +383,23 @@ Public Class cRunManager
         strm.Write(RunName + "," + PercentageOfChange.ToString)
         For igrp As Integer = 1 To Me.core.nGroups
             strm.Write("," + Me.m_curB(igrp).ToString)
+        Next
+        strm.WriteLine()
+        strm.Close()
+
+    End Sub
+
+    Private Sub writeResponseAlterationHeader()
+
+        Dim strm As StreamWriter
+        'Delete the old file if it exists
+        strm = New StreamWriter(Me.RunParameters.OutputFileName, False)
+
+        strm.Write(Me.core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecospace))
+        strm.WriteLine()
+        strm.Write("Run_Type,Percentage_Alteration")
+        For igrp As Integer = 1 To Me.core.nGroups
+            strm.Write("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.m_plugin.EcoPathData.GroupName(igrp)))
         Next
         strm.WriteLine()
         strm.Close()
@@ -384,15 +438,14 @@ Public Class cRunManager
 
     End Sub
 
-    Private Sub SaveRun()
-        'writeResults()
-        'writeEcopathPars()
-    End Sub
 
     Public Sub New()
 
         Me.m_SyncObj = System.Threading.SynchronizationContext.Current
         'if there is no current context then create a new one on this thread. 
         If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
+
+        Me.m_curState = eEcospaceSensitivityStates.Stopped
+
     End Sub
 End Class

@@ -29,15 +29,17 @@ Public Class frmEcospaceSensitivity
 
     Private m_inInit As Boolean
 
+    Private m_lstParControls As List(Of Control)
+
     Public Sub New()
+
+        Me.m_lstParControls = New List(Of Control)
 
         ' This call is required by the designer.
         Me.InitializeComponent()
 
 
     End Sub
-
-
 
     Public Overrides ReadOnly Property IsRunForm As Boolean
         Get
@@ -56,14 +58,23 @@ Public Class frmEcospaceSensitivity
 
             Dim model As cEwEModel = Me.Core.EwEModel
 
-            AddHandler Me.RunManager.OnTimeStep, AddressOf Me.onEcospaceTimeStep
+            m_lstParControls = New List(Of Control)
+            m_lstParControls.Add(Me.m_txBounds)
+            m_lstParControls.Add(Me.m_lbBounds)
+            m_lstParControls.Add(Me.m_lbOutputFile)
+            m_lstParControls.Add(Me.m_btOuputFile)
+
+            AddHandler Me.RunManager.OnProgress, AddressOf Me.onEcospaceTimeStep
+            AddHandler Me.RunManager.OnStateChange, AddressOf Me.onStateChanged
+
 
         End If
 
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
-        RemoveHandler Me.RunManager.OnTimeStep, AddressOf Me.onEcospaceTimeStep
+        RemoveHandler Me.RunManager.OnProgress, AddressOf Me.onEcospaceTimeStep
+        RemoveHandler Me.RunManager.OnStateChange, AddressOf Me.onStateChanged
     End Sub
 
 
@@ -75,18 +86,47 @@ Public Class frmEcospaceSensitivity
 
             Me.m_inInit = True
 
-            'Me.m_txBeforeStart.Text = Me.RunManager.RunParameters.BeforeRun.StartYear.ToString
-            'Me.m_txBeforeNYears.Text = Me.RunManager.RunParameters.BeforeRun.nYears.ToString
-            'Me.m_txAfterStart.Text = Me.RunManager.RunParameters.AfterRun.StartYear.ToString
-            'Me.m_txAfterNYears.Text = Me.RunManager.RunParameters.AfterRun.nYears.ToString
+            setRunState()
 
-            'If Not String.IsNullOrWhiteSpace(Me.RunManager.RunParameters.OutputFileName) Then
-            '    Me.m_lbOutputFile.Text = Path.GetFileName("'" + Me.RunManager.RunParameters.OutputFileName) + "' in directory '" + Path.GetDirectoryName(Me.RunManager.RunParameters.OutputFileName) + "'"
-            'End If
+            Me.m_txBounds.Text = EwEUtils.Utilities.cStringUtils.FormatNumber(RunManager.RunParameters.Delta)
+
+            If Not String.IsNullOrWhiteSpace(Me.RunManager.RunParameters.OutputFileName) Then
+                Me.m_lbOutputFile.Text = Path.GetFileName("'" + Me.RunManager.RunParameters.OutputFileName) + "' in directory '" + Path.GetDirectoryName(Me.RunManager.RunParameters.OutputFileName) + "'"
+            End If
 
             Me.m_inInit = False
 
         End If
+
+    End Sub
+
+    Private Sub setRunState()
+
+        Select Case Me.RunManager.State
+            Case cRunManager.eEcospaceSensitivityStates.Running
+
+                Me.m_btStopRun.Enabled = True
+                Me.m_btRun.Enabled = False
+
+                For Each con As Control In Me.m_lstParControls
+                    con.Enabled = False
+                Next
+
+
+            Case cRunManager.eEcospaceSensitivityStates.Stopped
+
+                Me.m_btStopRun.Enabled = False
+                Me.m_btRun.Enabled = True
+
+                For Each con As Control In Me.m_lstParControls
+                    con.Enabled = True
+                Next
+
+                Me.m_pbRunProgress.Value = 0
+                Me.m_pbTotalProgress.Value = 0
+
+        End Select
+
 
     End Sub
 
@@ -96,22 +136,14 @@ Public Class frmEcospaceSensitivity
         If Me.m_inInit Then Return
 
         If Me.RunManager IsNot Nothing Then
-            'Me.RunManager.RunParameters.BeforeRun.StartYear = Me.toInt(Me.m_txBeforeStart)
-            'Me.RunManager.RunParameters.BeforeRun.nYears = Me.toInt(Me.m_txBeforeNYears)
-            'Me.RunManager.RunParameters.AfterRun.StartYear = Me.toInt(Me.m_txAfterStart)
-            'Me.RunManager.RunParameters.AfterRun.nYears = Me.toInt(Me.m_txAfterNYears)
+            Dim dTemp As Single
+            If Single.TryParse(Me.m_txBounds.Text, dTemp) Then
+                Me.RunManager.RunParameters.Delta = dTemp
+            End If
+
         End If
 
     End Sub
-
-    Private Function toInt(TextBox As TextBox) As Integer
-        Dim value As Integer
-        If Integer.TryParse(TextBox.Text, value) Then
-            Return value
-        End If
-        Return 0
-    End Function
-
 
     Private ReadOnly Property RunManager As cRunManager
         Get
@@ -143,6 +175,56 @@ Public Class frmEcospaceSensitivity
 
     End Sub
 
+    Private Sub onStateChanged(newState As cRunManager.eEcospaceSensitivityStates)
+        Try
+
+            setRunState()
+           
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
 
+
+    Private Sub m_btOuputFile_Click(sender As System.Object, e As System.EventArgs) Handles m_btOuputFile.Click
+        Dim SFD As New SaveFileDialog
+
+        SFD.FileName = Me.m_plugin.RunManager.RunParameters.OutputFileName
+        SFD.Filter = "*.csv|*.csv|*.*|*.*"
+        SFD.FilterIndex = 0
+
+        'SFD.OverwritePrompt = False
+
+        If SFD.ShowDialog = Windows.Forms.DialogResult.OK Then
+            Dim filename As String = SFD.FileName
+
+            'If File.Exists(filename) Then
+            '    If MsgBox("Selected output file already exists. Do you want to overwrite it?" + vbCrLf + "Yes to overwrite." + vbCrLf + "No to append new results.", _
+            '        MsgBoxStyle.YesNo, "Ecospace Sensitivity.") = MsgBoxResult.Yes Then
+            '        Try
+            '            File.Delete(filename)
+            '            File.Delete(Me.RunManager.getEcopathParFile(filename))
+            '        Catch ex As Exception
+
+            '        End Try
+            '    End If
+            'End If
+
+            Me.m_plugin.RunManager.RunParameters.OutputFileName = filename
+
+            Me.UpdateControls()
+
+        End If
+    End Sub
+
+    Private Sub m_btStopRun_Click(sender As System.Object, e As System.EventArgs) Handles m_btStopRun.Click
+
+        Me.RunManager.StopRun()
+
+    End Sub
+
+    Private Sub m_txBounds_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_txBounds.TextChanged
+        UpdateParameters()
+    End Sub
 End Class
