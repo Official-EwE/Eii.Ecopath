@@ -96,6 +96,7 @@
     <Compile Include="cEcospaceSensitivityPluginPoint.vb" />
     <Compile Include="cRunEcospace.vb" />
     <Compile Include="cRunManager.vb" />
+    <Compile Include="cRunParameters.vb" />
     <Compile Include="frmEcospaceSensitivity.designer.vb">
       <DependentUpon>frmEcospaceSensitivity.vb</DependentUpon>
     </Compile>

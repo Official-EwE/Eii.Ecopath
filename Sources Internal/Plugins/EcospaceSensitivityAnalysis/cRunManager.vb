@@ -1,102 +1,66 @@
-﻿Option Explicit On
-Option Strict On
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
 
+Option Explicit On
+Option Strict On
 
 Imports EwECore
 Imports System.IO
 Imports System.Threading
 
-'Public Class cRunPeriods
-
-'    Public StartYear As Integer
-'    Public nYears As Single
-
-'    Public Sub New(Start As Integer, NumberOfYears As Integer)
-'        StartYear = Start
-'        nYears = NumberOfYears
-'    End Sub
-
-'    Public Sub New(theCore As cCore)
-'        StartYear = theCore.EwEModel.FirstYear
-'        nYears = theCore.EcospaceModelParameters.TotalTime
-'    End Sub
-
-
-'End Class
-
-
-Public Class cRunParameters
-
-    Public OutputFileName As String
-    'Public RunTimes As cRunPeriods
-    Public lstLayers As List(Of IEnviroInputMap)
-    Public Delta As Single
-
-    Public ReadOnly Property LowerBound As Single
-        Get
-            Dim temp As Single = 1 - Delta
-            If temp < 0 Then temp = 0
-            Return temp
-        End Get
-    End Property
-
-    Public ReadOnly Property UpperBound As Single
-        Get
-            Return 1 + Delta
-        End Get
-    End Property
-
-
-    Private m_core As cCore
-
-    Public Sub New(theCore As cCore)
-        Me.OutputFileName = "C:\Users\Joe\Documents\Projects\EwE\Ecopath6\Sources Internal\Plugins\EcospaceSensitivityAnalysis\B_out.csv"
-        Me.m_core = theCore
-        Me.setDefaults()
-
-    End Sub
-
-    Private Sub setDefaults()
-
-        'Use the current Ecospace configuration
-        'as the default years
-        'RunTimes = New cRunPeriods(Me.m_core)
-        Delta = 0.9 ' 0.2
-        Me.setDefaultMapLayers()
-
-    End Sub
-
-    Private Sub setDefaultMapLayers()
-        Dim mapManager As cMapResponseInteractionManager = Me.m_core.CapacityMapInteractionManager
-        Dim map As IEnviroInputMap = Nothing
-
-        Me.lstLayers = New List(Of IEnviroInputMap)
-        For iMap As Integer = 1 To mapManager.nMaps
-            'Not Depth or Hard sediment
-            If Not mapManager.Map(iMap).Layer.Name.Trim.ToLower.Contains("hard sediment") Then
-                Me.lstLayers.Add(mapManager.Map(iMap))
-            End If
-
-        Next iMap
-    End Sub
-
-End Class
-
 
 Public Class cRunManager
+
+#Region "Definitions"
+
+    Public Event OnProgress(TotalPercentDone As Single, RunPercentDone As Single, MapName As String)
+
+    Public Event OnStateChange(State As eEcospaceSensitivityStates)
+
+#Region "Public Events"
+
+#End Region
+
+#Region "Public definitions"
 
     Public Enum eEcospaceSensitivityStates
         Stopped
         Running
     End Enum
 
+#End Region
+
+#Region "Internal class definitions"
+
     Private Class cResponseFunctionValuePair
         Public orgData() As Single
         Public orgResponseFunct As cEnviroResponseFunction
+        Public iGroup As Integer
 
         Public Sub New(Shape As cEnviroResponseFunction)
             orgResponseFunct = Shape
             Me.Store()
+        End Sub
+
+
+        Public Sub New(Shape As cEnviroResponseFunction, iGroupIndex As Integer)
+            orgResponseFunct = Shape
+            Me.iGroup = iGroupIndex
         End Sub
 
         Public Sub Store()
@@ -117,8 +81,26 @@ Public Class cRunManager
 
         End Sub
 
+        Public Sub removeResponse(map As IEnviroInputMap)
+
+            Debug.Assert(map.ResponseIndexForGroup(Me.iGroup) = Me.orgResponseFunct.Index)
+            map.ResponseIndexForGroup(Me.iGroup) = 0
+
+        End Sub
+
+        Public Sub RestoreResponse(map As IEnviroInputMap)
+
+            map.ResponseIndexForGroup(Me.iGroup) = Me.orgResponseFunct.Index
+
+        End Sub
+
     End Class
 
+#End Region
+
+#End Region
+
+#Region "Private variables"
 
     ''' <summary>Core thread synchronization object for thread marshalling.</summary>
     Private m_SyncObj As System.Threading.SynchronizationContext = Nothing
@@ -152,9 +134,22 @@ Public Class cRunManager
 
     Private m_curState As eEcospaceSensitivityStates
 
-    Public Event OnProgress(TotalPercentDone As Single, RunPercentDone As Single, MapName As String)
 
-    Public Event OnStateChange(State As eEcospaceSensitivityStates)
+#End Region
+
+#Region "Public Properties and Methods"
+
+
+    Public Sub New()
+
+        Me.m_SyncObj = System.Threading.SynchronizationContext.Current
+        'if there is no current context then create a new one on this thread. 
+        If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
+
+        Me.m_curState = eEcospaceSensitivityStates.Stopped
+
+    End Sub
+
 
     Public Property RunParameters As cRunParameters
 
@@ -242,7 +237,6 @@ Public Class cRunManager
 
     End Function
 
-
     Public ReadOnly Property State As eEcospaceSensitivityStates
         Get
             Return Me.m_curState
@@ -250,36 +244,10 @@ Public Class cRunManager
     End Property
 
 
-    Private Sub setState(newState As eEcospaceSensitivityStates)
-        Me.m_curState = newState
-        Me.MarshallOnStateChanged(Me.m_curState)
-    End Sub
+#End Region
 
-    Private Sub MarshallOnProgress()
-        Try
-            Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnProgress), Nothing)
-        Catch ex As Exception
+#Region "Private Methods"
 
-        End Try
-    End Sub
-
-    Private Sub fireOnStateChanged(arg As Object)
-        RaiseEvent OnStateChange(Me.m_curState)
-    End Sub
-
-    Private Sub MarshallOnStateChanged(NewState As eEcospaceSensitivityStates)
-        Try
-            Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnStateChanged), NewState)
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-    Private Sub fireOnProgress(arg As Object)
-        Dim TotalPercentDone As Single = CSng(Me.m_curTotTime / Me.m_TotTimeSteps)
-        Dim RunPercentDone As Single = CSng(Me.m_curTimeStep / Me.m_RunTimeSteps)
-        RaiseEvent OnProgress(TotalPercentDone, RunPercentDone, Me.m_curMapName)
-    End Sub
 
 
     Private Sub RunOnThread()
@@ -330,11 +298,126 @@ Public Class cRunManager
 
     End Sub
 
+    Private Function calcRemovalTimeSteps() As Integer
+
+        Dim n As Integer
+        Me.m_RunTimeSteps = Me.core.nEcospaceTimeSteps
+
+        For Each map As IEnviroInputMap In Me.RunParameters.lstLayers
+            For igrp As Integer = 1 To Me.core.nGroups
+                If map.ResponseIndexForGroup(igrp) > 0 Then
+                    n += 1
+                End If
+            Next
+        Next
+
+        Return Me.m_RunTimeSteps * n + 1
+
+    End Function
+
+
+    Public Function RunRemoval() As Boolean
+
+        'If Not Me.m_isConfig Then
+        '    Return False
+        'End If
+
+
+        Me.setState(eEcospaceSensitivityStates.Running)
+
+        Me.m_isRunning = True
+        Me.m_curTotTime = 0
+        Me.m_TotTimeSteps = calcRemovalTimeSteps()
+
+        Dim runthread As New Thread(AddressOf RunRemovalOnThread)
+        runthread.Start()
+
+        Return True
+
+    End Function
+
+
+    Private Sub RunRemovalOnThread()
+
+        Try
+            Dim AltPercent As Single
+
+            Me.m_bStop = False
+
+            Me.initForRun()
+
+            'Run and Write Baseline run
+            Me.m_RunSpace.Run()
+            Me.m_curMapName = "BaseLine"
+            Me.SaveRun(Me.m_curMapName, 0.0)
+
+            For Each map As IEnviroInputMap In Me.RunParameters.lstLayers
+                If Me.m_bStop Then Exit For
+
+                Me.StoreResponseGroup(map)
+
+                For Each resFunction As cResponseFunctionValuePair In Me.m_lstResponseFunctions
+                    If Me.m_bStop Then Exit For
+                    resFunction.removeResponse(map)
+
+                    Me.m_RunSpace.Run()
+                    If Me.m_bStop Then Exit For
+                    Me.SaveRun(map.Layer.Name, resFunction.iGroup)
+
+                    resFunction.RestoreResponse(map)
+                Next
+
+            Next map
+
+
+        Catch ex As Exception
+
+        End Try
+
+        Me.RunsCompleted()
+
+    End Sub
+
+
+
+    Private Sub setState(newState As eEcospaceSensitivityStates)
+        Me.m_curState = newState
+        Me.MarshallOnStateChanged(Me.m_curState)
+    End Sub
+
+    Private Sub MarshallOnProgress()
+        Try
+            Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnProgress), Nothing)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub fireOnStateChanged(arg As Object)
+        RaiseEvent OnStateChange(Me.m_curState)
+    End Sub
+
+    Private Sub MarshallOnStateChanged(NewState As eEcospaceSensitivityStates)
+        Try
+            Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnStateChanged), NewState)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub fireOnProgress(arg As Object)
+        Dim TotalPercentDone As Single = CSng(Me.m_curTotTime / Me.m_TotTimeSteps)
+        Dim RunPercentDone As Single = CSng(Me.m_curTimeStep / Me.m_RunTimeSteps)
+        RaiseEvent OnProgress(TotalPercentDone, RunPercentDone, Me.m_curMapName)
+    End Sub
+
+
+
     Private Sub initForRun()
 
 
         Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
-        Me.m_TotTimeSteps = Me.calcTotalTimeStep()
+        ' Me.m_TotTimeSteps = Me.calcTotalTimeStep()
         Me.writeResponseAlterationHeader()
 
     End Sub
@@ -421,10 +504,15 @@ Public Class cRunManager
 
     End Sub
 
-    Private Sub RestoreResponse()
+    Private Sub StoreResponseGroup(map As IEnviroInputMap)
 
-        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
-            pair.Restore()
+        m_lstResponseFunctions = New List(Of cResponseFunctionValuePair)
+        For igrp As Integer = 1 To Me.core.nGroups
+            Dim iResponseIndex As Integer = map.ResponseIndexForGroup(igrp)
+            If iResponseIndex > 0 Then
+                Dim ResponFunct As cEnviroResponseFunction = DirectCast(Me.core.CapacityShapeManager.Item(iResponseIndex - 1), cEnviroResponseFunction)
+                m_lstResponseFunctions.Add(New cResponseFunctionValuePair(ResponFunct, igrp))
+            End If
         Next
 
     End Sub
@@ -438,14 +526,33 @@ Public Class cRunManager
 
     End Sub
 
+    Private Sub RestoreResponse()
 
-    Public Sub New()
-
-        Me.m_SyncObj = System.Threading.SynchronizationContext.Current
-        'if there is no current context then create a new one on this thread. 
-        If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
-
-        Me.m_curState = eEcospaceSensitivityStates.Stopped
+        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
+            pair.Restore()
+        Next
 
     End Sub
+
+
+
+    Private Sub RemoveResponse(PercentToAlter As Single)
+
+        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
+            pair.Alter(PercentToAlter)
+        Next
+
+    End Sub
+
+    Private Sub RestoreRemoval()
+
+        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
+            pair.Restore()
+        Next
+
+    End Sub
+
+#End Region
+
+
 End Class
