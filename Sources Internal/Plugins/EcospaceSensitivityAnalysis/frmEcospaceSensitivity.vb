@@ -64,6 +64,8 @@ Public Class frmEcospaceSensitivity
             m_lstParControls.Add(Me.m_lbOutputFile)
             m_lstParControls.Add(Me.m_btOuputFile)
 
+            Me.PopulateFileList()
+
             AddHandler Me.RunManager.OnProgress, AddressOf Me.onEcospaceTimeStep
             AddHandler Me.RunManager.OnStateChange, AddressOf Me.onStateChanged
 
@@ -75,6 +77,15 @@ Public Class frmEcospaceSensitivity
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
         RemoveHandler Me.RunManager.OnProgress, AddressOf Me.onEcospaceTimeStep
         RemoveHandler Me.RunManager.OnStateChange, AddressOf Me.onStateChanged
+    End Sub
+
+    Private Sub PopulateFileList()
+        Dim item As ListViewItem
+        For Each pair As cLayerFilePair In Me.RunManager.RunParameters.lstFiles
+            item = Me.m_lvFiles.Items.Add(pair.MapLayer.Layer.Name)
+            item.SubItems.Add(pair.File)
+            item.Tag = pair
+        Next
     End Sub
 
 
@@ -200,21 +211,7 @@ Public Class frmEcospaceSensitivity
 
         If SFD.ShowDialog = Windows.Forms.DialogResult.OK Then
             Dim filename As String = SFD.FileName
-
-            'If File.Exists(filename) Then
-            '    If MsgBox("Selected output file already exists. Do you want to overwrite it?" + vbCrLf + "Yes to overwrite." + vbCrLf + "No to append new results.", _
-            '        MsgBoxStyle.YesNo, "Ecospace Sensitivity.") = MsgBoxResult.Yes Then
-            '        Try
-            '            File.Delete(filename)
-            '            File.Delete(Me.RunManager.getEcopathParFile(filename))
-            '        Catch ex As Exception
-
-            '        End Try
-            '    End If
-            'End If
-
             Me.m_plugin.RunManager.RunParameters.OutputFileName = filename
-
             Me.UpdateControls()
 
         End If
@@ -229,4 +226,45 @@ Public Class frmEcospaceSensitivity
     Private Sub m_txBounds_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_txBounds.TextChanged
         UpdateParameters()
     End Sub
+
+
+    Private Sub On_lvFiles_DoubleClick(sender As System.Object, e As System.EventArgs) Handles m_lvFiles.DoubleClick
+
+        Dim selItem As ListViewItem = Me.m_lvFiles.SelectedItems.Item(0)
+        If selItem Is Nothing Then Return
+        Try
+            Debug.Assert(selItem.Tag IsNot Nothing)
+
+            Dim pair As cLayerFilePair = DirectCast(selItem.Tag, cLayerFilePair)
+
+            Dim fn As String = Me.selectFile
+            If Not String.IsNullOrEmpty(fn) Then
+                pair.File = fn
+            End If
+            selItem.Text = pair.MapLayer.Layer.Name
+            selItem.SubItems(1).Text = pair.File
+
+        Catch ex As Exception
+
+        End Try
+       
+
+    End Sub
+
+    Private Function selectFile() As String
+        Dim Ofd As New OpenFileDialog
+
+        Ofd.Filter = "*.asc|*.asc|*.*|*.*"
+        Ofd.FilterIndex = 0
+
+        If Ofd.ShowDialog = Windows.Forms.DialogResult.OK Then
+            Return Ofd.FileName
+        End If
+
+        Return String.Empty
+
+
+    End Function
+
+
 End Class

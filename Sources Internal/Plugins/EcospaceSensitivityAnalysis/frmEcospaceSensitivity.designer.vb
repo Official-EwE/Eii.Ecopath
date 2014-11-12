@@ -48,6 +48,9 @@ Partial Class frmEcospaceSensitivity
         Me.m_btStopRun = New System.Windows.Forms.Button()
         Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.CEwEHeaderLabel2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lvFiles = New System.Windows.Forms.ListView()
+        Me.HeaderLayer = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.HeaderFile = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SuspendLayout()
         '
         'm_btRun
@@ -63,9 +66,9 @@ Partial Class frmEcospaceSensitivity
         '
         Me.m_pbTotalProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_pbTotalProgress.Location = New System.Drawing.Point(11, 327)
+        Me.m_pbTotalProgress.Location = New System.Drawing.Point(11, 448)
         Me.m_pbTotalProgress.Name = "m_pbTotalProgress"
-        Me.m_pbTotalProgress.Size = New System.Drawing.Size(563, 26)
+        Me.m_pbTotalProgress.Size = New System.Drawing.Size(602, 26)
         Me.m_pbTotalProgress.Step = 1
         Me.m_pbTotalProgress.TabIndex = 1
         '
@@ -73,9 +76,9 @@ Partial Class frmEcospaceSensitivity
         '
         Me.m_pbRunProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_pbRunProgress.Location = New System.Drawing.Point(11, 297)
+        Me.m_pbRunProgress.Location = New System.Drawing.Point(11, 418)
         Me.m_pbRunProgress.Name = "m_pbRunProgress"
-        Me.m_pbRunProgress.Size = New System.Drawing.Size(563, 24)
+        Me.m_pbRunProgress.Size = New System.Drawing.Size(602, 24)
         Me.m_pbRunProgress.Step = 1
         Me.m_pbRunProgress.TabIndex = 2
         '
@@ -86,7 +89,7 @@ Partial Class frmEcospaceSensitivity
         Me.m_lbOutputFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_lbOutputFile.Location = New System.Drawing.Point(161, 173)
         Me.m_lbOutputFile.Name = "m_lbOutputFile"
-        Me.m_lbOutputFile.Size = New System.Drawing.Size(414, 24)
+        Me.m_lbOutputFile.Size = New System.Drawing.Size(453, 24)
         Me.m_lbOutputFile.TabIndex = 3
         '
         'm_btOuputFile
@@ -132,7 +135,7 @@ Partial Class frmEcospaceSensitivity
         Me.CEwEHeaderLabel1.IsCollapsed = False
         Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(12, 100)
         Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(563, 31)
+        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(602, 31)
         Me.CEwEHeaderLabel1.TabIndex = 8
         Me.CEwEHeaderLabel1.Text = "Parameters"
         Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -144,19 +147,46 @@ Partial Class frmEcospaceSensitivity
         Me.CEwEHeaderLabel2.CanCollapseParent = False
         Me.CEwEHeaderLabel2.CollapsedParentHeight = 0
         Me.CEwEHeaderLabel2.IsCollapsed = False
-        Me.CEwEHeaderLabel2.Location = New System.Drawing.Point(11, 270)
+        Me.CEwEHeaderLabel2.Location = New System.Drawing.Point(11, 391)
         Me.CEwEHeaderLabel2.Name = "CEwEHeaderLabel2"
-        Me.CEwEHeaderLabel2.Size = New System.Drawing.Size(563, 12)
+        Me.CEwEHeaderLabel2.Size = New System.Drawing.Size(602, 12)
         Me.CEwEHeaderLabel2.TabIndex = 9
         Me.CEwEHeaderLabel2.Text = "Progress"
         Me.CEwEHeaderLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'm_lvFiles
+        '
+        Me.m_lvFiles.Activation = System.Windows.Forms.ItemActivation.TwoClick
+        Me.m_lvFiles.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_lvFiles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.HeaderLayer, Me.HeaderFile})
+        Me.m_lvFiles.FullRowSelect = True
+        Me.m_lvFiles.HideSelection = False
+        Me.m_lvFiles.Location = New System.Drawing.Point(15, 212)
+        Me.m_lvFiles.MultiSelect = False
+        Me.m_lvFiles.Name = "m_lvFiles"
+        Me.m_lvFiles.Size = New System.Drawing.Size(598, 145)
+        Me.m_lvFiles.TabIndex = 10
+        Me.m_lvFiles.UseCompatibleStateImageBehavior = False
+        Me.m_lvFiles.View = System.Windows.Forms.View.Details
+        '
+        'HeaderLayer
+        '
+        Me.HeaderLayer.Text = "Driver layer"
+        Me.HeaderLayer.Width = 100
+        '
+        'HeaderFile
+        '
+        Me.HeaderFile.Text = ".asc file"
+        Me.HeaderFile.Width = 400
         '
         'frmEcospaceSensitivity
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(587, 365)
+        Me.ClientSize = New System.Drawing.Size(626, 486)
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_lvFiles)
         Me.Controls.Add(Me.CEwEHeaderLabel2)
         Me.Controls.Add(Me.CEwEHeaderLabel1)
         Me.Controls.Add(Me.m_btStopRun)
@@ -186,4 +216,7 @@ Partial Class frmEcospaceSensitivity
     Friend WithEvents m_btStopRun As System.Windows.Forms.Button
     Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Friend WithEvents CEwEHeaderLabel2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents m_lvFiles As System.Windows.Forms.ListView
+    Friend WithEvents HeaderLayer As System.Windows.Forms.ColumnHeader
+    Friend WithEvents HeaderFile As System.Windows.Forms.ColumnHeader
 End Class

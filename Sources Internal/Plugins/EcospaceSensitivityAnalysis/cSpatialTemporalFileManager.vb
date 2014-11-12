@@ -16,6 +16,10 @@
 ' ===============================================================================
 '
 
+#Const VER_OLD = 1
+#Const VER_NEW = 2
+#Const SpatialTemp_Framework_Version = VER_OLD
+
 Option Explicit On
 Option Strict On
 
@@ -24,35 +28,31 @@ Imports EwECore.SpatialData
 Imports System.IO
 Imports System.Threading
 
-#Const VER_OLD = 1
-#Const VER_NEW = 2
-#Const SpatialTemp_Framework_Version = VER_OLD
-
-
 Public Class cSpatialTemporalFileManager
-
     Private Core As cCore
     Private Manager As EwECore.SpatialData.cSpatialDataSetManager
 
-    Public Sub New(theCore As ccore)
+    Public Sub New(theCore As cCore)
         Me.Core = theCore
         Me.Manager = Core.SpatialDataConnectionManager.DatasetManager
+
     End Sub
 
     Public Sub SwapFiles(sourceFile As String)
-
-        Debug.Assert(False, Me.ToString + ".SwapFiles() Not Implemented!")
         'WARNING NOT IMPLEMENTED
         'In theory this is a better way to do this
         'Swap the name of the file in the dataset
+
+        Debug.Assert(False, Me.ToString + ".SwapFiles() Not Implemented!")
+
         Dim ds As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
+
         'Get the data set for this Layer and VarName
         'This will have to be different in the old and new version of the spatial temporal framework
         'which can/could be hidden behind preprocessor directives
         ds = Me.getDataSet()
 
         ds.File(ds.TimeSteps(0)) = sourceFile
-
 
     End Sub
 
@@ -77,16 +77,10 @@ Public Class cSpatialTemporalFileManager
         Dim layerDSs() As EwEUtils.SpatialData.ISpatialDataSet = Me.Manager.Datasets(EwEUtils.Core.eVarNameFlags.LayerDepth)
         ds = layerDSs(0)
 
-
-
-
-
         mfDs = DirectCast(ds, EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin)
         Return mfDs
 
     End Function
-
-
 
 #End If
 

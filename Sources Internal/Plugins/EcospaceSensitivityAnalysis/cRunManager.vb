@@ -529,13 +529,13 @@ Public Class cRunManager
 
     Private Sub SwapFiles(sourceFile As String, destinationFile As String)
 
-        Me.m_FileManager.SwapFiles(sourceFile)
+        'Me.m_FileManager.SwapFiles(sourceFile)
 
-        'If File.Exists(destinationFile) Then
-        '    File.Delete(destinationFile)
-        'End If
+        If File.Exists(destinationFile) Then
+            File.Delete(destinationFile)
+        End If
 
-        'File.Copy(sourceFile, destinationFile)
+        File.Copy(sourceFile, destinationFile)
 
     End Sub
 
@@ -578,12 +578,12 @@ Public Class cRunManager
         Dim strmNew As New StreamWriter(NewFile)
         Dim ascFile As New cASCIIReaderWriter(Me.core)
 
-        Dim x(,) As Single = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
-        Dim orgData(,) As Single = Me.getLayerData(OrgLayer)
+        Dim orgData(,) As Single = Me.getCoreLayerData(OrgLayer)
         ascFile.ReadASCFile(strmOrg)
         after = ascFile.data
         strmOrg.Close()
 
+        Dim x(,) As Single = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
         'x = b +(a-b)*delta
         For ir As Integer = 1 To Me.SpaceData.InRow
             For ic As Integer = 1 To Me.SpaceData.InCol
@@ -595,10 +595,9 @@ Public Class cRunManager
         ascFile.SaveASCFile(strmNew)
         strmNew.Close()
 
-
     End Sub
 
-    Private Function getLayerData(Layer As cEcospaceLayer) As Single(,)
+    Private Function getCoreLayerData(Layer As cEcospaceLayer) As Single(,)
 
         Dim CoreData(,,) As Single = Me.SpaceData.EnvironmentalLayerMap
         Dim temp(,) = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
