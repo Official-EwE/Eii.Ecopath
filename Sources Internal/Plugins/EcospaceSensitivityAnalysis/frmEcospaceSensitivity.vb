@@ -161,9 +161,9 @@ Public Class frmEcospaceSensitivity
 
     Private Sub m_btRun_Click(sender As System.Object, e As System.EventArgs) Handles m_btRun.Click
         Me.m_pbTotalProgress.Value = 0
-        ' Me.RunManager.Run()
+        Me.RunManager.Run()
 
-        Me.RunManager.RunRemoval()
+        'Me.RunManager.RunRemoval()
     End Sub
 
 

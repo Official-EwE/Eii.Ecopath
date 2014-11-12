@@ -93,10 +93,12 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cASCIIReaderWriter.vb" />
     <Compile Include="cEcospaceSensitivityPluginPoint.vb" />
     <Compile Include="cRunEcospace.vb" />
     <Compile Include="cRunManager.vb" />
     <Compile Include="cRunParameters.vb" />
+    <Compile Include="cSpatialTemporalFileManager.vb" />
     <Compile Include="frmEcospaceSensitivity.designer.vb">
       <DependentUpon>frmEcospaceSensitivity.vb</DependentUpon>
     </Compile>
@@ -157,6 +159,10 @@
     <ProjectReference Include="..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
       <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{C1081265-6A9D-4087-8BB5-E907D86FD719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

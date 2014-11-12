@@ -23,16 +23,15 @@ Imports EwECore
 Imports System.IO
 Imports System.Threading
 
-
 Public Class cRunManager
 
 #Region "Definitions"
 
+#Region "Public Events"
+
     Public Event OnProgress(TotalPercentDone As Single, RunPercentDone As Single, MapName As String)
 
     Public Event OnStateChange(State As eEcospaceSensitivityStates)
-
-#Region "Public Events"
 
 #End Region
 
@@ -52,35 +51,13 @@ Public Class cRunManager
         Public orgResponseFunct As cEnviroResponseFunction
         Public iGroup As Integer
 
-        Public Sub New(Shape As cEnviroResponseFunction)
-            orgResponseFunct = Shape
-            Me.Store()
-        End Sub
-
-
+     
         Public Sub New(Shape As cEnviroResponseFunction, iGroupIndex As Integer)
             orgResponseFunct = Shape
             Me.iGroup = iGroupIndex
         End Sub
 
-        Public Sub Store()
-            'Store the original value of the response function
-            orgData = New Single(orgResponseFunct.ShapeData.Length - 1) {}
-            Array.Copy(orgResponseFunct.ShapeData, orgData, orgResponseFunct.ShapeData.Length)
-        End Sub
-
-        Public Sub Restore()
-            orgResponseFunct.ShapeData = orgData
-        End Sub
-
-        Public Sub Alter(PercentageToAlter As Single)
-
-            For ipt As Integer = 1 To orgResponseFunct.nPoints
-                orgResponseFunct.ShapeData(ipt) = orgResponseFunct.ShapeData(ipt) * PercentageToAlter
-            Next
-
-        End Sub
-
+     
         Public Sub removeResponse(map As IEnviroInputMap)
 
             Debug.Assert(map.ResponseIndexForGroup(Me.iGroup) = Me.orgResponseFunct.Index)
@@ -96,6 +73,44 @@ Public Class cRunManager
 
     End Class
 
+
+    Private Class cMapLayer
+        Public MapLayer As IEnviroInputMap
+
+        Private m_orgLayerData(,) As Single
+        Private manager As cRunManager
+
+        Public Sub New(RunManager As cRunManager, map As IEnviroInputMap)
+            Me.manager = RunManager
+            Me.MapLayer = map
+            Me.storeOrgData()
+        End Sub
+
+        Private Sub storeOrgData()
+           
+            Me.storeLayerData(Me.MapLayer.Layer.Index)
+
+        End Sub
+
+        Private Sub storeLayerData(iLayer As Integer)
+
+            Dim data(,,) As Single = Me.manager.SpaceData.EnvironmentalLayerMap
+            m_orgLayerData = New Single(Me.manager.SpaceData.InRow, Me.manager.SpaceData.InCol) {}
+            For ir As Integer = 1 To Me.manager.SpaceData.InRow
+                For ic As Integer = 1 To Me.manager.SpaceData.InCol
+                    m_orgLayerData(ir, ic) = data(iLayer, ir, ic)
+                Next ic
+            Next ir
+
+        End Sub
+
+
+
+
+
+    End Class
+
+
 #End Region
 
 #End Region
@@ -107,6 +122,7 @@ Public Class cRunManager
 
     Private m_RunSpace As cRunEcospace
     Private m_plugin As cEcospaceSensitivityPluginPoint
+    Private m_FileManager As cSpatialTemporalFileManager
 
     Private core As cCore
     Private RunType As String
@@ -134,11 +150,13 @@ Public Class cRunManager
 
     Private m_curState As eEcospaceSensitivityStates
 
+    Private m_orgBackupFile As String
+    Private m_upperFile As String
+    Private m_lowerFile As String
 
 #End Region
 
 #Region "Public Properties and Methods"
-
 
     Public Sub New()
 
@@ -164,6 +182,12 @@ Public Class cRunManager
     Public ReadOnly Property isRunning As Boolean
         Get
             Return Me.m_isRunning
+        End Get
+    End Property
+
+    Public ReadOnly Property SpaceData As cEcospaceDataStructures
+        Get
+            Return Me.m_plugin.EcoSpaceData
         End Get
     End Property
 
@@ -214,6 +238,7 @@ Public Class cRunManager
         core = Me.m_plugin.Core
         Me.m_parameters = New cRunParameters(core)
         Me.m_RunSpace = New cRunEcospace
+        Me.m_FileManager = New cSpatialTemporalFileManager(core)
 
     End Sub
 
@@ -248,8 +273,6 @@ Public Class cRunManager
 
 #Region "Private Methods"
 
-
-
     Private Sub RunOnThread()
 
         Try
@@ -262,32 +285,31 @@ Public Class cRunManager
             'Run and Write Baseline run
             Me.m_RunSpace.Run()
             Me.m_curMapName = "BaseLine"
-            Me.SaveRun(Me.m_curMapName, 0.0)
+            Me.SaveRun(Me.m_curMapName, 1.0)
 
-            For Each map As IEnviroInputMap In Me.RunParameters.lstLayers
+            For Each pair As cLayerFilePair In Me.RunParameters.lstFiles
                 If Me.m_bStop Then Exit For
 
-                Me.m_curMapName = map.Layer.Name
+                Me.m_curMapName = pair.MapLayer.Layer.Name
 
                 AltPercent = Me.RunParameters.LowerBound
-                Me.StoreOrginalResponse(map)
+                Me.CreateBoundsFiles(pair)
 
-                Me.AlterResponse(AltPercent)
+                Me.SwapFiles(Me.m_lowerFile, pair.File)
+
                 Me.m_RunSpace.Run()
                 If Me.m_bStop Then Exit For
-                Me.SaveRun(map.Layer.Name, AltPercent)
-
-                Me.RestoreResponse()
+                Me.SaveRun(pair.MapLayer.Layer.Name, AltPercent)
 
                 AltPercent = Me.RunParameters.UpperBound
-                Me.AlterResponse(AltPercent)
+                Me.SwapFiles(Me.m_upperFile, pair.File)
                 Me.m_RunSpace.Run()
                 If Me.m_bStop Then Exit For
-                Me.SaveRun(map.Layer.Name, AltPercent)
+                Me.SaveRun(pair.MapLayer.Layer.Name, AltPercent)
 
-                Me.RestoreResponse()
+                Me.CleanUpFiles(pair.File)
 
-            Next map
+            Next pair
 
 
         Catch ex As Exception
@@ -340,7 +362,6 @@ Public Class cRunManager
     Private Sub RunRemovalOnThread()
 
         Try
-            Dim AltPercent As Single
 
             Me.m_bStop = False
 
@@ -369,7 +390,6 @@ Public Class cRunManager
 
             Next map
 
-
         Catch ex As Exception
 
         End Try
@@ -377,8 +397,6 @@ Public Class cRunManager
         Me.RunsCompleted()
 
     End Sub
-
-
 
     Private Sub setState(newState As eEcospaceSensitivityStates)
         Me.m_curState = newState
@@ -415,12 +433,14 @@ Public Class cRunManager
 
     Private Sub initForRun()
 
-
         Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
         ' Me.m_TotTimeSteps = Me.calcTotalTimeStep()
         Me.writeResponseAlterationHeader()
 
+
     End Sub
+
+
 
 
     Private Function calcTotalTimeStep() As Integer
@@ -490,19 +510,53 @@ Public Class cRunManager
     End Sub
 
 
+    Private Sub CreateBoundsFiles(LayerFilePair As cLayerFilePair)
 
-    Private Sub StoreOrginalResponse(map As IEnviroInputMap)
+        Me.m_orgBackupFile = Path.Combine(Path.GetDirectoryName(LayerFilePair.File), Path.GetFileNameWithoutExtension(LayerFilePair.File) + ".org.asc")
+        If File.Exists(Me.m_orgBackupFile) Then
+            File.Delete(Me.m_orgBackupFile)
+        End If
+        File.Copy(LayerFilePair.File, Me.m_orgBackupFile)
+        Debug.Assert(File.Exists(Me.m_orgBackupFile))
 
-        m_lstResponseFunctions = New List(Of cResponseFunctionValuePair)
-        For igrp As Integer = 1 To Me.core.nGroups
-            Dim iResponseIndex As Integer = map.ResponseIndexForGroup(igrp)
-            If iResponseIndex > 0 Then
-                Dim ResponFunct As cEnviroResponseFunction = DirectCast(Me.core.CapacityShapeManager.Item(iResponseIndex - 1), cEnviroResponseFunction)
-                m_lstResponseFunctions.Add(New cResponseFunctionValuePair(ResponFunct))
-            End If
-        Next
+        Me.m_lowerFile = Path.Combine(Path.GetDirectoryName(LayerFilePair.File), Path.GetFileNameWithoutExtension(LayerFilePair.File) + ".lower.asc")
+        Me.AlterBoundsFiles(LayerFilePair.MapLayer.Layer, LayerFilePair.File, Me.m_lowerFile, Me.RunParameters.LowerBound)
+
+        Me.m_upperFile = Path.Combine(Path.GetDirectoryName(LayerFilePair.File), Path.GetFileNameWithoutExtension(LayerFilePair.File) + ".upper.asc")
+        Me.AlterBoundsFiles(LayerFilePair.MapLayer.Layer, LayerFilePair.File, Me.m_upperFile, Me.RunParameters.UpperBound)
 
     End Sub
+
+    Private Sub SwapFiles(sourceFile As String, destinationFile As String)
+
+        Me.m_FileManager.SwapFiles(sourceFile)
+
+        'If File.Exists(destinationFile) Then
+        '    File.Delete(destinationFile)
+        'End If
+
+        'File.Copy(sourceFile, destinationFile)
+
+    End Sub
+
+    Private Sub CleanUpFiles(OriginalFile As String)
+
+        Me.SwapFiles(Me.m_orgBackupFile, OriginalFile)
+
+        If File.Exists(Me.m_orgBackupFile) Then
+            File.Delete(Me.m_orgBackupFile)
+        End If
+
+        If File.Exists(Me.m_lowerFile) Then
+            File.Delete(Me.m_lowerFile)
+        End If
+
+        If File.Exists(Me.m_upperFile) Then
+            File.Delete(Me.m_upperFile)
+        End If
+
+    End Sub
+
 
     Private Sub StoreResponseGroup(map As IEnviroInputMap)
 
@@ -517,42 +571,47 @@ Public Class cRunManager
 
     End Sub
 
+    Private Sub AlterBoundsFiles(OrgLayer As cEcospaceLayer, orgfile As String, NewFile As String, Percentage As Single)
 
-    Private Sub AlterResponse(PercentToAlter As Single)
+        Dim after(,) As Single
+        Dim strmOrg As New StreamReader(orgfile)
+        Dim strmNew As New StreamWriter(NewFile)
+        Dim ascFile As New cASCIIReaderWriter(Me.core)
 
-        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
-            pair.Alter(PercentToAlter)
+        Dim x(,) As Single = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
+        Dim orgData(,) As Single = Me.getLayerData(OrgLayer)
+        ascFile.ReadASCFile(strmOrg)
+        after = ascFile.data
+        strmOrg.Close()
+
+        'x = b +(a-b)*delta
+        For ir As Integer = 1 To Me.SpaceData.InRow
+            For ic As Integer = 1 To Me.SpaceData.InCol
+                x(ir, ic) = orgData(ir, ic) + (after(ir, ic) - orgData(ir, ic)) * Percentage
+            Next
         Next
+
+        ascFile.data = x
+        ascFile.SaveASCFile(strmNew)
+        strmNew.Close()
+
 
     End Sub
 
-    Private Sub RestoreResponse()
+    Private Function getLayerData(Layer As cEcospaceLayer) As Single(,)
 
-        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
-            pair.Restore()
-        Next
+        Dim CoreData(,,) As Single = Me.SpaceData.EnvironmentalLayerMap
+        Dim temp(,) = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
+        For ir As Integer = 1 To Me.SpaceData.InRow
+            For ic As Integer = 1 To Me.SpaceData.InCol
+                temp(ir, ic) = CoreData(Layer.Index, ir, ic)
+            Next ic
+        Next ir
 
-    End Sub
+        Return temp
 
-
-
-    Private Sub RemoveResponse(PercentToAlter As Single)
-
-        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
-            pair.Alter(PercentToAlter)
-        Next
-
-    End Sub
-
-    Private Sub RestoreRemoval()
-
-        For Each pair As cResponseFunctionValuePair In m_lstResponseFunctions
-            pair.Restore()
-        Next
-
-    End Sub
+    End Function
 
 #End Region
-
 
 End Class

@@ -25,12 +25,30 @@ Imports System.IO
 Imports System.Threading
 
 
+Public Class cLayerFilePair
+    Public MapLayer As IEnviroInputMap
+    Public File As String
+
+    Public Sub New(layer As IEnviroInputMap, FileName As String)
+        MapLayer = layer
+        File = FileName
+    End Sub
+
+End Class
+
+
 Public Class cRunParameters
 
     Public OutputFileName As String
     'Public RunTimes As cRunPeriods
     Public lstLayers As List(Of IEnviroInputMap)
+    Public lstFiles As List(Of cLayerFilePair)
     Public Delta As Single
+
+    Public Const DEPTH_FILE As String = "C:\Users\Joe\Documents\Projects\EwE\EwE RBT\Model\post-depth\depth_after.asc"
+    Public Const SALINITY_FILE As String = "C:\Users\Joe\Documents\Projects\EwE\EwE RBT\Model\post-salinity50\sal_50p_avg_after.asc"
+    Public Const WAVE_FILE As String = "C:\Users\Joe\Documents\Projects\EwE\EwE RBT\Model\post-wave\Waveheight 90p_avg.asc"
+    Public Const CURRENT_FILE As String = "C:\Users\Joe\Documents\Projects\EwE\EwE RBT\Model\post-current\Ubot 90p_avg.asc"
 
     Public ReadOnly Property LowerBound As Single
         Get
@@ -63,6 +81,8 @@ Public Class cRunParameters
         'RunTimes = New cRunPeriods(Me.m_core)
         Delta = 0.9 ' 0.2
         Me.setDefaultMapLayers()
+        Me.setDefaultLayerFiles()
+        Me.HardwireFileNames()
 
     End Sub
 
@@ -78,6 +98,38 @@ Public Class cRunParameters
             End If
 
         Next iMap
+
+    End Sub
+
+
+    Private Sub setDefaultLayerFiles()
+
+        Me.lstFiles = New List(Of cLayerFilePair)
+        For Each layer As IEnviroInputMap In Me.lstLayers
+            Me.lstFiles.Add(New cLayerFilePair(layer, Nothing))
+        Next
+
+    End Sub
+
+
+    Private Sub HardwireFileNames()
+        For Each pair As cLayerFilePair In Me.lstFiles
+
+            If pair.MapLayer.Layer.Name.Contains("Salinity") Then
+                pair.File = SALINITY_FILE
+
+            ElseIf pair.MapLayer.Layer.Name.Contains("Wave") Then
+                pair.File = WAVE_FILE
+
+            ElseIf pair.MapLayer.Layer.Name.Contains("Depth") Then
+                pair.File = DEPTH_FILE
+
+            ElseIf pair.MapLayer.Layer.Name.Contains("Ubot") Then
+                pair.File = CURRENT_FILE
+
+            End If
+
+        Next
     End Sub
 
 End Class
