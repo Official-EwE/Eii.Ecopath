@@ -70,7 +70,8 @@ Public Class Strategies
 
         For Each iStrategy In Me
             For iHCR = 1 To iStrategy.Count
-                If iStrategy.Item(iHCR - 1).GroupF.DBID = iGrp Then
+                'If iStrategy.Item(iHCR - 1).GroupF.DBID = iGrp Then
+                If iStrategy.Item(iHCR - 1).GroupF.Index = iGrp Then
                     Return True
                 End If
             Next

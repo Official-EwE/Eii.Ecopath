@@ -448,7 +448,7 @@ Public Class cStockAssessmentModel
         Dim StartT As Integer = iModelTimeStep - 12
 
         'Sum the biomass from the previous year
-        For it As Integer = StartT To StartT + 12
+        For it As Integer = StartT To StartT + 11
             For igrp As Integer = 1 To ngrps
                 avgB(igrp) += Me.m_MSE.EcosimData.ResultsOverTime(0, igrp, it)
             Next igrp
@@ -506,7 +506,7 @@ Public Class cStockAssessmentModel
         Dim StartT As Integer = itime - 12
 
         'Sum the biomass from the previous year
-        For it As Integer = StartT To StartT + 12
+        For it As Integer = StartT To StartT + 11
             For igrp As Integer = 1 To ngrps
                 avgCatch(igrp) += Me.m_MSE.EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it)
             Next igrp
