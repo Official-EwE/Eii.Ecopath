@@ -39,16 +39,16 @@ End Class
 
 Public Class cRunParameters
 
-    Public OutputFileName As String
-    'Public RunTimes As cRunPeriods
-    Public lstLayers As List(Of IEnviroInputMap)
-    Public lstFiles As List(Of cLayerFilePair)
+    Public BoundsOutput As String
+    Public RemovalOutput As String
+    Public lstRemovalLayers As List(Of IEnviroInputMap)
+    Public lstBoundsFiles As List(Of cLayerFilePair)
     Public Delta As Single
 
-    Public Const DEPTH_FILE As String = "C:\Users\Joe\Documents\Projects\EwE\EwE RBT\Model\post-depth\depth_after.asc"
-    Public Const SALINITY_FILE As String = "C:\Users\Joe\Documents\Projects\EwE\EwE RBT\Model\post-salinity50\sal_50p_avg_after.asc"
-    Public Const WAVE_FILE As String = "C:\Users\Joe\Documents\Projects\EwE\EwE RBT\Model\post-wave\Waveheight 90p_avg.asc"
-    Public Const CURRENT_FILE As String = "C:\Users\Joe\Documents\Projects\EwE\EwE RBT\Model\post-current\Ubot 90p_avg.asc"
+    Public Const DEPTH_FILE As String = "depth_after.asc"
+    Public Const SALINITY_FILE As String = "sal_50p_avg_after.asc"
+    Public Const WAVE_FILE As String = "Waveheight 90p_avg.asc"
+    Public Const CURRENT_FILE As String = "Ubot 90p_avg.asc"
 
     Public ReadOnly Property LowerBound As Single
         Get
@@ -68,7 +68,8 @@ Public Class cRunParameters
     Private m_core As cCore
 
     Public Sub New(theCore As cCore)
-        Me.OutputFileName = "C:\Users\Joe\Documents\Projects\EwE\Ecopath6\Sources Internal\Plugins\EcospaceSensitivityAnalysis\B_out.csv"
+        Me.BoundsOutput = "Ecospace_Avg_Biomass_Bounds.csv"
+        Me.RemovalOutput = "Ecospace_Avg_Bomass_Removal.csv"
         Me.m_core = theCore
         Me.setDefaults()
 
@@ -79,7 +80,7 @@ Public Class cRunParameters
         'Use the current Ecospace configuration
         'as the default years
         'RunTimes = New cRunPeriods(Me.m_core)
-        Delta = 0.9 ' 0.2
+        Delta = 0.2 ' 0.2
         Me.setDefaultMapLayers()
         Me.setDefaultLayerFiles()
         Me.HardwireFileNames()
@@ -90,11 +91,11 @@ Public Class cRunParameters
         Dim mapManager As cMapResponseInteractionManager = Me.m_core.CapacityMapInteractionManager
         Dim map As IEnviroInputMap = Nothing
 
-        Me.lstLayers = New List(Of IEnviroInputMap)
+        Me.lstRemovalLayers = New List(Of IEnviroInputMap)
         For iMap As Integer = 1 To mapManager.nMaps
             'Not Depth or Hard sediment
             If Not mapManager.Map(iMap).Layer.Name.Trim.ToLower.Contains("hard sediment") Then
-                Me.lstLayers.Add(mapManager.Map(iMap))
+                Me.lstRemovalLayers.Add(mapManager.Map(iMap))
             End If
 
         Next iMap
@@ -104,16 +105,16 @@ Public Class cRunParameters
 
     Private Sub setDefaultLayerFiles()
 
-        Me.lstFiles = New List(Of cLayerFilePair)
-        For Each layer As IEnviroInputMap In Me.lstLayers
-            Me.lstFiles.Add(New cLayerFilePair(layer, Nothing))
+        Me.lstBoundsFiles = New List(Of cLayerFilePair)
+        For Each layer As IEnviroInputMap In Me.lstRemovalLayers
+            Me.lstBoundsFiles.Add(New cLayerFilePair(layer, Nothing))
         Next
 
     End Sub
 
 
     Private Sub HardwireFileNames()
-        For Each pair As cLayerFilePair In Me.lstFiles
+        For Each pair As cLayerFilePair In Me.lstBoundsFiles
 
             If pair.MapLayer.Layer.Name.Contains("Salinity") Then
                 pair.File = SALINITY_FILE

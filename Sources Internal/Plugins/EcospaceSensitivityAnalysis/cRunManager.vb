@@ -44,20 +44,26 @@ Public Class cRunManager
 
 #End Region
 
-#Region "Internal class definitions"
+#Region "Internal definitions"
+
+    Public Enum eRunTypes
+        Bounds
+        Removal
+    End Enum
+
 
     Private Class cResponseFunctionValuePair
         Public orgData() As Single
         Public orgResponseFunct As cEnviroResponseFunction
         Public iGroup As Integer
 
-     
+
         Public Sub New(Shape As cEnviroResponseFunction, iGroupIndex As Integer)
             orgResponseFunct = Shape
             Me.iGroup = iGroupIndex
         End Sub
 
-     
+
         Public Sub removeResponse(map As IEnviroInputMap)
 
             Debug.Assert(map.ResponseIndexForGroup(Me.iGroup) = Me.orgResponseFunct.Index)
@@ -87,7 +93,7 @@ Public Class cRunManager
         End Sub
 
         Private Sub storeOrgData()
-           
+
             Me.storeLayerData(Me.MapLayer.Layer.Index)
 
         End Sub
@@ -103,10 +109,6 @@ Public Class cRunManager
             Next ir
 
         End Sub
-
-
-
-
 
     End Class
 
@@ -125,8 +127,6 @@ Public Class cRunManager
     Private m_FileManager As cSpatialTemporalFileManager
 
     Private core As cCore
-    Private RunType As String
-    Private m_isConfig As Boolean
 
     Private m_TrialNumber As Integer
     Private m_waitLock As ManualResetEvent
@@ -154,6 +154,8 @@ Public Class cRunManager
     Private m_upperFile As String
     Private m_lowerFile As String
 
+    Private m_RunType As eRunTypes
+
 #End Region
 
 #Region "Public Properties and Methods"
@@ -179,6 +181,13 @@ Public Class cRunManager
         End Set
     End Property
 
+    Public ReadOnly Property runType As eRunTypes
+        Get
+            Return Me.m_RunType
+        End Get
+    End Property
+
+
     Public ReadOnly Property isRunning As Boolean
         Get
             Return Me.m_isRunning
@@ -192,12 +201,13 @@ Public Class cRunManager
     End Property
 
     Public Sub setBiomass(biomass() As Single, itime As Integer)
+
+
         m_curB = biomass
         Me.m_curTotTime += 1
         Me.m_curTimeStep = itime
-        ' If itime Mod 12 = 0 Then
         Me.MarshallOnProgress()
-        '  End If
+
     End Sub
 
     Public Sub StopRun()
@@ -205,32 +215,45 @@ Public Class cRunManager
         Me.m_bStop = True
     End Sub
 
-    Public Sub isConfigured()
-        Me.m_isConfig = True
-
+    Public Function isBoundsConfigured() As Boolean
+        Dim lstMsgs As New List(Of String)
         Dim msg As String
-        If Not Directory.Exists(Path.GetDirectoryName(Me.RunParameters.OutputFileName)) Then
-            Me.m_isConfig = False
-            msg = "No output file defined"
-            MsgBox("Ecospace Sensitivity is not properly configured. Please stop the search and fix the following issues." + vbCrLf + msg)
-            Me.StopRun()
+        If Not Directory.Exists(Path.GetDirectoryName(Me.RunParameters.BoundsOutput)) Then
+            lstMsgs.Add("No ouput file defined.")
         End If
 
-        'If File.Exists(OutputFilename) Then
-        '    If MsgBox("Selected output file already exists. Do you want to overwrite it?" + vbCrLf + "Yes to overwrite" + vbCrLf + "No to append new results.", _
-        '              MsgBoxStyle.YesNo, "Ecospace MonteCarlo.") = MsgBoxResult.Yes Then
-        '        Try
-        '            File.Delete(OutputFilename)
-        '        Catch ex As Exception
+        For Each pair In Me.RunParameters.lstBoundsFiles
+            If Not File.Exists(pair.File) Then
+                lstMsgs.Add("Invalid input file for Drive Layer '" + pair.MapLayer.Layer.Name + "'.")
+            End If
+        Next
 
-        '        End Try
-        '    End If
-        'End If
+        If lstMsgs.Count > 0 Then
+            For Each mg As String In lstMsgs
+                msg += vbCrLf + mg
+            Next
 
-        'If Not Me.m_isConfig Then
-        '    MsgBox("Ecospace Sensitivity is not properly configured. Please stop the search and fix the following issues." + vbCrLf + msg)
-        'End If
-    End Sub
+            MsgBox("Ecospace sensitivity parameter uncertainty is not properly configured. Please fix the following issues." + msg)
+            Me.StopRun()
+            Return False
+
+        End If
+
+        Return True
+
+    End Function
+
+    Public Function isRemovalConfigured() As Boolean
+        If Not Directory.Exists(Path.GetDirectoryName(Me.RunParameters.RemovalOutput)) Then
+            MsgBox("Ecospace sensitivity  to removal is not properly configured. Please select a valid output file")
+            Me.StopRun()
+            Return False
+        End If
+
+        Return True
+
+    End Function
+
 
 
     Public Sub Init(thePlugin As cEcospaceSensitivityPluginPoint)
@@ -242,23 +265,25 @@ Public Class cRunManager
 
     End Sub
 
-    Public Function Run() As Boolean
-
-        'If Not Me.m_isConfig Then
-        '    Return False
-        'End If
+    Public Function RunBounds() As Boolean
 
 
-        Me.setState(eEcospaceSensitivityStates.Running)
+        If Me.isBoundsConfigured Then
+            Me.m_RunType = eRunTypes.Bounds
+            Me.setState(eEcospaceSensitivityStates.Running)
 
-        Me.m_isRunning = True
-        Me.m_curTotTime = 0
-        Me.m_TotTimeSteps = calcTotalTimeStep()
+            Me.m_isRunning = True
+            Me.m_curTotTime = 0
+            Me.m_TotTimeSteps = calcTotalTimeSteps()
 
-        Dim runthread As New Thread(AddressOf RunOnThread)
-        runthread.Start()
+            Dim runthread As New Thread(AddressOf RunOnThread)
+            runthread.Start()
+            Return True
 
-        Return True
+        End If
+
+        Return False
+
 
     End Function
 
@@ -287,7 +312,7 @@ Public Class cRunManager
             Me.m_curMapName = "BaseLine"
             Me.SaveRun(Me.m_curMapName, 1.0)
 
-            For Each pair As cLayerFilePair In Me.RunParameters.lstFiles
+            For Each pair As cLayerFilePair In Me.RunParameters.lstBoundsFiles
                 If Me.m_bStop Then Exit For
 
                 Me.m_curMapName = pair.MapLayer.Layer.Name
@@ -320,39 +345,73 @@ Public Class cRunManager
 
     End Sub
 
+
+
+
+    Private Function calcTotalTimeSteps() As Integer
+
+        If Me.m_RunType = eRunTypes.Bounds Then
+            Return Me.calcBoundsTimeSteps
+        ElseIf Me.m_RunType = eRunTypes.Removal Then
+            Return Me.calcRemovalTimeSteps
+        End If
+
+        Debug.Assert(False, "Oppss failed to set the total number of time steps.")
+        Return 0
+
+    End Function
+
+
+    Private Function calcBoundsTimeSteps() As Integer
+
+        Dim nSpinUpSteps As Integer = 0
+        If Me.SpaceData.UseSpinUp Then
+            nSpinUpSteps = CInt(SpaceData.SpinUpYears * CInt(1.0 / SpaceData.TimeStep))
+        End If
+
+        Me.m_RunTimeSteps = Me.core.nEcospaceTimeSteps + nSpinUpSteps
+        Dim nruns As Integer = Me.RunParameters.lstRemovalLayers.Count * 2 + 1
+
+        Return Me.m_RunTimeSteps * nruns
+
+    End Function
+
+
     Private Function calcRemovalTimeSteps() As Integer
+        Dim nRuns As Integer
+        Dim nSpinUpSteps As Integer = 0
 
-        Dim n As Integer
-        Me.m_RunTimeSteps = Me.core.nEcospaceTimeSteps
+        If Me.SpaceData.UseSpinUp Then
+            nSpinUpSteps = CInt(SpaceData.SpinUpYears * CInt(1.0 / SpaceData.TimeStep))
+        End If
+        Me.m_RunTimeSteps = Me.core.nEcospaceTimeSteps + nSpinUpSteps
 
-        For Each map As IEnviroInputMap In Me.RunParameters.lstLayers
+        For Each map As IEnviroInputMap In Me.RunParameters.lstRemovalLayers
             For igrp As Integer = 1 To Me.core.nGroups
                 If map.ResponseIndexForGroup(igrp) > 0 Then
-                    n += 1
+                    nRuns += 1
                 End If
             Next
         Next
 
-        Return Me.m_RunTimeSteps * n + 1
+        Return Me.m_RunTimeSteps * nRuns + 1
 
     End Function
 
 
     Public Function RunRemoval() As Boolean
 
-        'If Not Me.m_isConfig Then
-        '    Return False
-        'End If
+        If isRemovalConfigured() Then
+            Me.m_RunType = eRunTypes.Removal
+            Me.setState(eEcospaceSensitivityStates.Running)
 
+            Me.m_isRunning = True
+            Me.m_curTotTime = 0
+            Me.m_TotTimeSteps = calcRemovalTimeSteps()
 
-        Me.setState(eEcospaceSensitivityStates.Running)
-
-        Me.m_isRunning = True
-        Me.m_curTotTime = 0
-        Me.m_TotTimeSteps = calcRemovalTimeSteps()
-
-        Dim runthread As New Thread(AddressOf RunRemovalOnThread)
-        runthread.Start()
+            Dim runthread As New Thread(AddressOf RunRemovalOnThread)
+            runthread.Start()
+        End If
 
         Return True
 
@@ -372,7 +431,7 @@ Public Class cRunManager
             Me.m_curMapName = "BaseLine"
             Me.SaveRun(Me.m_curMapName, 0.0)
 
-            For Each map As IEnviroInputMap In Me.RunParameters.lstLayers
+            For Each map As IEnviroInputMap In Me.RunParameters.lstRemovalLayers
                 If Me.m_bStop Then Exit For
 
                 Me.StoreResponseGroup(map)
@@ -434,23 +493,9 @@ Public Class cRunManager
     Private Sub initForRun()
 
         Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
-        ' Me.m_TotTimeSteps = Me.calcTotalTimeStep()
         Me.writeResponseAlterationHeader()
 
-
     End Sub
-
-
-
-
-    Private Function calcTotalTimeStep() As Integer
-
-        Dim nruns As Integer = Me.RunParameters.lstLayers.Count * 2 + 1
-        Me.m_RunTimeSteps = Me.core.nEcospaceTimeSteps
-        Return Me.m_RunTimeSteps * nruns
-
-    End Function
-
 
     Private Sub dumpB(Percentage As Single)
         System.Console.Write("Ecospace B Percentage," + Percentage.ToString)
@@ -470,20 +515,20 @@ Public Class cRunManager
 
     End Sub
 
-    Private Sub SaveRun(RunName As String, PercentageOfChange As Single)
+    Private Sub SaveRun(RunName As String, ColumnValue As Single)
 
         Me.m_curTimeStep = 0
-        Me.writeResponseAlterationResults(RunName, PercentageOfChange)
+        Me.writeResponseAlterationResults(RunName, ColumnValue)
         Me.MarshallOnProgress()
 
     End Sub
 
-    Private Sub writeResponseAlterationResults(RunName As String, PercentageOfChange As Single)
+    Private Sub writeResponseAlterationResults(RunName As String, ColumnValue As Single)
 
         Dim strm As StreamWriter
-        strm = New StreamWriter(Me.RunParameters.OutputFileName, True)
+        strm = New StreamWriter(Me.getOuputFile(), True)
 
-        strm.Write(RunName + "," + PercentageOfChange.ToString)
+        strm.Write(RunName + "," + ColumnValue.ToString)
         For igrp As Integer = 1 To Me.core.nGroups
             strm.Write("," + Me.m_curB(igrp).ToString)
         Next
@@ -496,11 +541,11 @@ Public Class cRunManager
 
         Dim strm As StreamWriter
         'Delete the old file if it exists
-        strm = New StreamWriter(Me.RunParameters.OutputFileName, False)
+        strm = New StreamWriter(Me.getOuputFile(), False)
 
         strm.Write(Me.core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecospace))
         strm.WriteLine()
-        strm.Write("Run_Type,Percentage_Alteration")
+        strm.Write("Driver_Layer," + Me.getColHeader())
         For igrp As Integer = 1 To Me.core.nGroups
             strm.Write("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.m_plugin.EcoPathData.GroupName(igrp)))
         Next
@@ -508,6 +553,29 @@ Public Class cRunManager
         strm.Close()
 
     End Sub
+
+    Private Function getOuputFile() As String
+        If Me.m_RunType = eRunTypes.Bounds Then
+            Return Me.RunParameters.BoundsOutput
+        Else
+            Return Me.RunParameters.RemovalOutput
+        End If
+
+        Return ""
+    End Function
+
+
+    Private Function getColHeader() As String
+
+        If Me.m_RunType = eRunTypes.Bounds Then
+            Return "Percentage_Alteration"
+        Else
+            Return "Group_Index"
+        End If
+
+        Return ""
+
+    End Function
 
 
     Private Sub CreateBoundsFiles(LayerFilePair As cLayerFilePair)

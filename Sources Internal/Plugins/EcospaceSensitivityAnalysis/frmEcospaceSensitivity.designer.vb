@@ -38,47 +38,59 @@ Partial Class frmEcospaceSensitivity
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.m_btRun = New System.Windows.Forms.Button()
         Me.m_pbTotalProgress = New System.Windows.Forms.ProgressBar()
         Me.m_pbRunProgress = New System.Windows.Forms.ProgressBar()
         Me.m_lbOutputFile = New System.Windows.Forms.Label()
         Me.m_btOuputFile = New System.Windows.Forms.Button()
-        Me.m_txBounds = New System.Windows.Forms.TextBox()
-        Me.m_lbBounds = New System.Windows.Forms.Label()
         Me.m_btStopRun = New System.Windows.Forms.Button()
-        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.CEwEHeaderLabel2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lvFiles = New System.Windows.Forms.ListView()
         Me.HeaderLayer = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.HeaderFile = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.CEwEHeaderLabel3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lbBounds = New System.Windows.Forms.Label()
+        Me.m_txBounds = New System.Windows.Forms.TextBox()
+        Me.m_lbBoundsPar = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_btRunRemoval = New System.Windows.Forms.Button()
+        Me.m_btStopRemoval = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_ttFiles = New System.Windows.Forms.ToolTip(Me.components)
+        Me.CEwEHeaderLabel4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_btRemovalOutput = New System.Windows.Forms.Button()
+        Me.m_lbRemoval = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'm_btRun
         '
-        Me.m_btRun.Location = New System.Drawing.Point(14, 25)
+        Me.m_btRun.Location = New System.Drawing.Point(25, 32)
         Me.m_btRun.Name = "m_btRun"
-        Me.m_btRun.Size = New System.Drawing.Size(141, 27)
+        Me.m_btRun.Size = New System.Drawing.Size(141, 23)
         Me.m_btRun.TabIndex = 0
-        Me.m_btRun.Text = "Run bounds testing"
+        Me.m_btRun.Text = "Run bounds"
         Me.m_btRun.UseVisualStyleBackColor = True
         '
         'm_pbTotalProgress
         '
-        Me.m_pbTotalProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_pbTotalProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_pbTotalProgress.Location = New System.Drawing.Point(11, 448)
+        Me.m_pbTotalProgress.Location = New System.Drawing.Point(25, 529)
         Me.m_pbTotalProgress.Name = "m_pbTotalProgress"
-        Me.m_pbTotalProgress.Size = New System.Drawing.Size(602, 26)
+        Me.m_pbTotalProgress.Size = New System.Drawing.Size(879, 26)
         Me.m_pbTotalProgress.Step = 1
         Me.m_pbTotalProgress.TabIndex = 1
         '
         'm_pbRunProgress
         '
-        Me.m_pbRunProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_pbRunProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_pbRunProgress.Location = New System.Drawing.Point(11, 418)
+        Me.m_pbRunProgress.Location = New System.Drawing.Point(25, 483)
         Me.m_pbRunProgress.Name = "m_pbRunProgress"
-        Me.m_pbRunProgress.Size = New System.Drawing.Size(602, 24)
+        Me.m_pbRunProgress.Size = New System.Drawing.Size(879, 24)
         Me.m_pbRunProgress.Step = 1
         Me.m_pbRunProgress.TabIndex = 2
         '
@@ -87,58 +99,28 @@ Partial Class frmEcospaceSensitivity
         Me.m_lbOutputFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_lbOutputFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_lbOutputFile.Location = New System.Drawing.Point(161, 173)
+        Me.m_lbOutputFile.Location = New System.Drawing.Point(188, 93)
         Me.m_lbOutputFile.Name = "m_lbOutputFile"
-        Me.m_lbOutputFile.Size = New System.Drawing.Size(453, 24)
+        Me.m_lbOutputFile.Size = New System.Drawing.Size(716, 23)
         Me.m_lbOutputFile.TabIndex = 3
         '
         'm_btOuputFile
         '
-        Me.m_btOuputFile.Location = New System.Drawing.Point(11, 173)
+        Me.m_btOuputFile.Location = New System.Drawing.Point(41, 93)
         Me.m_btOuputFile.Name = "m_btOuputFile"
-        Me.m_btOuputFile.Size = New System.Drawing.Size(144, 25)
+        Me.m_btOuputFile.Size = New System.Drawing.Size(141, 23)
         Me.m_btOuputFile.TabIndex = 4
         Me.m_btOuputFile.Text = "Output file..."
         Me.m_btOuputFile.UseVisualStyleBackColor = True
         '
-        'm_txBounds
-        '
-        Me.m_txBounds.Location = New System.Drawing.Point(161, 134)
-        Me.m_txBounds.Name = "m_txBounds"
-        Me.m_txBounds.Size = New System.Drawing.Size(66, 20)
-        Me.m_txBounds.TabIndex = 5
-        '
-        'm_lbBounds
-        '
-        Me.m_lbBounds.AutoSize = True
-        Me.m_lbBounds.Location = New System.Drawing.Point(11, 137)
-        Me.m_lbBounds.Name = "m_lbBounds"
-        Me.m_lbBounds.Size = New System.Drawing.Size(112, 13)
-        Me.m_lbBounds.TabIndex = 6
-        Me.m_lbBounds.Text = "Percentage of bounds"
-        '
         'm_btStopRun
         '
-        Me.m_btStopRun.Location = New System.Drawing.Point(14, 55)
+        Me.m_btStopRun.Location = New System.Drawing.Point(172, 32)
         Me.m_btStopRun.Name = "m_btStopRun"
-        Me.m_btStopRun.Size = New System.Drawing.Size(141, 27)
+        Me.m_btStopRun.Size = New System.Drawing.Size(141, 23)
         Me.m_btStopRun.TabIndex = 7
         Me.m_btStopRun.Text = "Stop run"
         Me.m_btStopRun.UseVisualStyleBackColor = True
-        '
-        'CEwEHeaderLabel1
-        '
-        Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CEwEHeaderLabel1.CanCollapseParent = False
-        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
-        Me.CEwEHeaderLabel1.IsCollapsed = False
-        Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(12, 100)
-        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(602, 31)
-        Me.CEwEHeaderLabel1.TabIndex = 8
-        Me.CEwEHeaderLabel1.Text = "Parameters"
-        Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'CEwEHeaderLabel2
         '
@@ -147,9 +129,9 @@ Partial Class frmEcospaceSensitivity
         Me.CEwEHeaderLabel2.CanCollapseParent = False
         Me.CEwEHeaderLabel2.CollapsedParentHeight = 0
         Me.CEwEHeaderLabel2.IsCollapsed = False
-        Me.CEwEHeaderLabel2.Location = New System.Drawing.Point(11, 391)
+        Me.CEwEHeaderLabel2.Location = New System.Drawing.Point(11, 447)
         Me.CEwEHeaderLabel2.Name = "CEwEHeaderLabel2"
-        Me.CEwEHeaderLabel2.Size = New System.Drawing.Size(602, 12)
+        Me.CEwEHeaderLabel2.Size = New System.Drawing.Size(916, 12)
         Me.CEwEHeaderLabel2.TabIndex = 9
         Me.CEwEHeaderLabel2.Text = "Progress"
         Me.CEwEHeaderLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -162,10 +144,10 @@ Partial Class frmEcospaceSensitivity
         Me.m_lvFiles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.HeaderLayer, Me.HeaderFile})
         Me.m_lvFiles.FullRowSelect = True
         Me.m_lvFiles.HideSelection = False
-        Me.m_lvFiles.Location = New System.Drawing.Point(15, 212)
+        Me.m_lvFiles.Location = New System.Drawing.Point(41, 185)
         Me.m_lvFiles.MultiSelect = False
         Me.m_lvFiles.Name = "m_lvFiles"
-        Me.m_lvFiles.Size = New System.Drawing.Size(598, 145)
+        Me.m_lvFiles.Size = New System.Drawing.Size(863, 112)
         Me.m_lvFiles.TabIndex = 10
         Me.m_lvFiles.UseCompatibleStateImageBehavior = False
         Me.m_lvFiles.View = System.Windows.Forms.View.Details
@@ -180,20 +162,162 @@ Partial Class frmEcospaceSensitivity
         Me.HeaderFile.Text = ".asc file"
         Me.HeaderFile.Width = 400
         '
+        'CEwEHeaderLabel3
+        '
+        Me.CEwEHeaderLabel3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CEwEHeaderLabel3.CanCollapseParent = False
+        Me.CEwEHeaderLabel3.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel3.IsCollapsed = False
+        Me.CEwEHeaderLabel3.Location = New System.Drawing.Point(11, 10)
+        Me.CEwEHeaderLabel3.Name = "CEwEHeaderLabel3"
+        Me.CEwEHeaderLabel3.Size = New System.Drawing.Size(916, 19)
+        Me.CEwEHeaderLabel3.TabIndex = 11
+        Me.CEwEHeaderLabel3.Text = "Bounds testing"
+        Me.CEwEHeaderLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'm_lbBounds
+        '
+        Me.m_lbBounds.AutoSize = True
+        Me.m_lbBounds.Location = New System.Drawing.Point(41, 139)
+        Me.m_lbBounds.Name = "m_lbBounds"
+        Me.m_lbBounds.Size = New System.Drawing.Size(112, 13)
+        Me.m_lbBounds.TabIndex = 11
+        Me.m_lbBounds.Text = "Percentage of bounds"
+        '
+        'm_txBounds
+        '
+        Me.m_txBounds.Location = New System.Drawing.Point(187, 136)
+        Me.m_txBounds.Name = "m_txBounds"
+        Me.m_txBounds.Size = New System.Drawing.Size(66, 20)
+        Me.m_txBounds.TabIndex = 10
+        '
+        'm_lbBoundsPar
+        '
+        Me.m_lbBoundsPar.CanCollapseParent = False
+        Me.m_lbBoundsPar.CollapsedParentHeight = 0
+        Me.m_lbBoundsPar.IsCollapsed = False
+        Me.m_lbBoundsPar.Location = New System.Drawing.Point(23, 69)
+        Me.m_lbBoundsPar.Name = "m_lbBoundsPar"
+        Me.m_lbBoundsPar.Size = New System.Drawing.Size(881, 21)
+        Me.m_lbBoundsPar.TabIndex = 12
+        Me.m_lbBoundsPar.Text = "Parameters"
+        Me.m_lbBoundsPar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'CEwEHeaderLabel1
+        '
+        Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CEwEHeaderLabel1.CanCollapseParent = False
+        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel1.IsCollapsed = False
+        Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(11, 317)
+        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(917, 20)
+        Me.CEwEHeaderLabel1.TabIndex = 13
+        Me.CEwEHeaderLabel1.Text = "Removal"
+        Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'm_btRunRemoval
+        '
+        Me.m_btRunRemoval.Location = New System.Drawing.Point(25, 340)
+        Me.m_btRunRemoval.Name = "m_btRunRemoval"
+        Me.m_btRunRemoval.Size = New System.Drawing.Size(141, 23)
+        Me.m_btRunRemoval.TabIndex = 14
+        Me.m_btRunRemoval.Text = "Run removal"
+        Me.m_btRunRemoval.UseVisualStyleBackColor = True
+        '
+        'm_btStopRemoval
+        '
+        Me.m_btStopRemoval.Location = New System.Drawing.Point(172, 340)
+        Me.m_btStopRemoval.Name = "m_btStopRemoval"
+        Me.m_btStopRemoval.Size = New System.Drawing.Size(141, 23)
+        Me.m_btStopRemoval.TabIndex = 15
+        Me.m_btStopRemoval.Text = "Stop run"
+        Me.m_btStopRemoval.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(41, 169)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(127, 13)
+        Me.Label1.TabIndex = 16
+        Me.Label1.Text = "Select external driver files"
+        '
+        'CEwEHeaderLabel4
+        '
+        Me.CEwEHeaderLabel4.CanCollapseParent = False
+        Me.CEwEHeaderLabel4.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel4.IsCollapsed = False
+        Me.CEwEHeaderLabel4.Location = New System.Drawing.Point(23, 375)
+        Me.CEwEHeaderLabel4.Name = "CEwEHeaderLabel4"
+        Me.CEwEHeaderLabel4.Size = New System.Drawing.Size(881, 27)
+        Me.CEwEHeaderLabel4.TabIndex = 17
+        Me.CEwEHeaderLabel4.Text = "Parameters"
+        Me.CEwEHeaderLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'm_btRemovalOutput
+        '
+        Me.m_btRemovalOutput.Location = New System.Drawing.Point(41, 405)
+        Me.m_btRemovalOutput.Name = "m_btRemovalOutput"
+        Me.m_btRemovalOutput.Size = New System.Drawing.Size(141, 23)
+        Me.m_btRemovalOutput.TabIndex = 19
+        Me.m_btRemovalOutput.Text = "Output file..."
+        Me.m_btRemovalOutput.UseVisualStyleBackColor = True
+        '
+        'm_lbRemoval
+        '
+        Me.m_lbRemoval.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_lbRemoval.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_lbRemoval.Location = New System.Drawing.Point(187, 405)
+        Me.m_lbRemoval.Name = "m_lbRemoval"
+        Me.m_lbRemoval.Size = New System.Drawing.Size(717, 23)
+        Me.m_lbRemoval.TabIndex = 18
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(23, 467)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(116, 13)
+        Me.Label2.TabIndex = 20
+        Me.Label2.Text = "Ecospace run progress"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(22, 513)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(92, 13)
+        Me.Label3.TabIndex = 21
+        Me.Label3.Text = "Total run progress"
+        '
         'frmEcospaceSensitivity
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(626, 486)
+        Me.ClientSize = New System.Drawing.Size(940, 577)
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_lvFiles)
-        Me.Controls.Add(Me.CEwEHeaderLabel2)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.m_btRemovalOutput)
+        Me.Controls.Add(Me.m_lbRemoval)
+        Me.Controls.Add(Me.CEwEHeaderLabel4)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.m_btStopRemoval)
+        Me.Controls.Add(Me.m_btRunRemoval)
         Me.Controls.Add(Me.CEwEHeaderLabel1)
-        Me.Controls.Add(Me.m_btStopRun)
+        Me.Controls.Add(Me.m_lbBoundsPar)
         Me.Controls.Add(Me.m_lbBounds)
         Me.Controls.Add(Me.m_txBounds)
+        Me.Controls.Add(Me.CEwEHeaderLabel3)
         Me.Controls.Add(Me.m_btOuputFile)
+        Me.Controls.Add(Me.m_lvFiles)
         Me.Controls.Add(Me.m_lbOutputFile)
+        Me.Controls.Add(Me.CEwEHeaderLabel2)
+        Me.Controls.Add(Me.m_btStopRun)
         Me.Controls.Add(Me.m_pbRunProgress)
         Me.Controls.Add(Me.m_pbTotalProgress)
         Me.Controls.Add(Me.m_btRun)
@@ -211,12 +335,23 @@ Partial Class frmEcospaceSensitivity
     Friend WithEvents m_pbRunProgress As System.Windows.Forms.ProgressBar
     Friend WithEvents m_lbOutputFile As System.Windows.Forms.Label
     Friend WithEvents m_btOuputFile As System.Windows.Forms.Button
-    Friend WithEvents m_txBounds As System.Windows.Forms.TextBox
-    Friend WithEvents m_lbBounds As System.Windows.Forms.Label
     Friend WithEvents m_btStopRun As System.Windows.Forms.Button
-    Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Friend WithEvents CEwEHeaderLabel2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Friend WithEvents m_lvFiles As System.Windows.Forms.ListView
     Friend WithEvents HeaderLayer As System.Windows.Forms.ColumnHeader
     Friend WithEvents HeaderFile As System.Windows.Forms.ColumnHeader
+    Friend WithEvents CEwEHeaderLabel3 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents m_lbBounds As System.Windows.Forms.Label
+    Friend WithEvents m_txBounds As System.Windows.Forms.TextBox
+    Friend WithEvents m_lbBoundsPar As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents m_btRunRemoval As System.Windows.Forms.Button
+    Friend WithEvents m_btStopRemoval As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents m_ttFiles As System.Windows.Forms.ToolTip
+    Friend WithEvents CEwEHeaderLabel4 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents m_btRemovalOutput As System.Windows.Forms.Button
+    Friend WithEvents m_lbRemoval As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
 End Class

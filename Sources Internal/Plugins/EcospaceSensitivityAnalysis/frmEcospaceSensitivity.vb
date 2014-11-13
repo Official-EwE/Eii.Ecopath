@@ -63,6 +63,11 @@ Public Class frmEcospaceSensitivity
             m_lstParControls.Add(Me.m_lbBounds)
             m_lstParControls.Add(Me.m_lbOutputFile)
             m_lstParControls.Add(Me.m_btOuputFile)
+            m_lstParControls.Add(Me.m_lvFiles)
+            m_lstParControls.Add(Me.m_btRemovalOutput)
+            m_lstParControls.Add(Me.m_lbRemoval)
+
+            Me.m_ttFiles.SetToolTip(Me.m_lvFiles, "Double click row to select external driver file.")
 
             Me.PopulateFileList()
 
@@ -81,7 +86,7 @@ Public Class frmEcospaceSensitivity
 
     Private Sub PopulateFileList()
         Dim item As ListViewItem
-        For Each pair As cLayerFilePair In Me.RunManager.RunParameters.lstFiles
+        For Each pair As cLayerFilePair In Me.RunManager.RunParameters.lstBoundsFiles
             item = Me.m_lvFiles.Items.Add(pair.MapLayer.Layer.Name)
             item.SubItems.Add(pair.File)
             item.Tag = pair
@@ -101,8 +106,12 @@ Public Class frmEcospaceSensitivity
 
             Me.m_txBounds.Text = EwEUtils.Utilities.cStringUtils.FormatNumber(RunManager.RunParameters.Delta)
 
-            If Not String.IsNullOrWhiteSpace(Me.RunManager.RunParameters.OutputFileName) Then
-                Me.m_lbOutputFile.Text = Path.GetFileName("'" + Me.RunManager.RunParameters.OutputFileName) + "' in directory '" + Path.GetDirectoryName(Me.RunManager.RunParameters.OutputFileName) + "'"
+            If Not String.IsNullOrWhiteSpace(Me.RunManager.RunParameters.BoundsOutput) Then
+                Me.m_lbOutputFile.Text = Path.GetFileName("'" + Me.RunManager.RunParameters.BoundsOutput) + "' in directory '" + Path.GetDirectoryName(Me.RunManager.RunParameters.BoundsOutput) + "'"
+            End If
+
+            If Not String.IsNullOrWhiteSpace(Me.RunManager.RunParameters.RemovalOutput) Then
+                Me.m_lbRemoval.Text = Path.GetFileName("'" + Me.RunManager.RunParameters.RemovalOutput) + "' in directory '" + Path.GetDirectoryName(Me.RunManager.RunParameters.RemovalOutput) + "'"
             End If
 
             Me.m_inInit = False
@@ -114,10 +123,20 @@ Public Class frmEcospaceSensitivity
     Private Sub setRunState()
 
         Select Case Me.RunManager.State
+
             Case cRunManager.eEcospaceSensitivityStates.Running
 
-                Me.m_btStopRun.Enabled = True
-                Me.m_btRun.Enabled = False
+                If Me.RunManager.runType = cRunManager.eRunTypes.Bounds Then
+                    Me.m_btStopRun.Enabled = True
+                    Me.m_btRun.Enabled = False
+                    Me.m_btRunRemoval.Enabled = False
+                    Me.m_btStopRemoval.Enabled = False
+                Else
+                    Me.m_btStopRun.Enabled = False
+                    Me.m_btRun.Enabled = False
+                    Me.m_btRunRemoval.Enabled = False
+                    Me.m_btStopRemoval.Enabled = True
+                End If
 
                 For Each con As Control In Me.m_lstParControls
                     con.Enabled = False
@@ -126,8 +145,11 @@ Public Class frmEcospaceSensitivity
 
             Case cRunManager.eEcospaceSensitivityStates.Stopped
 
-                Me.m_btStopRun.Enabled = False
                 Me.m_btRun.Enabled = True
+                Me.m_btRunRemoval.Enabled = True
+
+                Me.m_btStopRun.Enabled = False
+                Me.m_btStopRemoval.Enabled = False
 
                 For Each con As Control In Me.m_lstParControls
                     con.Enabled = True
@@ -137,7 +159,6 @@ Public Class frmEcospaceSensitivity
                 Me.m_pbTotalProgress.Value = 0
 
         End Select
-
 
     End Sub
 
@@ -172,9 +193,7 @@ Public Class frmEcospaceSensitivity
 
     Private Sub m_btRun_Click(sender As System.Object, e As System.EventArgs) Handles m_btRun.Click
         Me.m_pbTotalProgress.Value = 0
-        Me.RunManager.Run()
-
-        'Me.RunManager.RunRemoval()
+        Me.RunManager.RunBounds()
     End Sub
 
 
@@ -192,18 +211,17 @@ Public Class frmEcospaceSensitivity
         Try
 
             setRunState()
-           
+
         Catch ex As Exception
 
         End Try
     End Sub
 
 
-
     Private Sub m_btOuputFile_Click(sender As System.Object, e As System.EventArgs) Handles m_btOuputFile.Click
         Dim SFD As New SaveFileDialog
 
-        SFD.FileName = Me.m_plugin.RunManager.RunParameters.OutputFileName
+        SFD.FileName = Me.m_plugin.RunManager.RunParameters.BoundsOutput
         SFD.Filter = "*.csv|*.csv|*.*|*.*"
         SFD.FilterIndex = 0
 
@@ -211,7 +229,7 @@ Public Class frmEcospaceSensitivity
 
         If SFD.ShowDialog = Windows.Forms.DialogResult.OK Then
             Dim filename As String = SFD.FileName
-            Me.m_plugin.RunManager.RunParameters.OutputFileName = filename
+            Me.m_plugin.RunManager.RunParameters.BoundsOutput = filename
             Me.UpdateControls()
 
         End If
@@ -237,7 +255,7 @@ Public Class frmEcospaceSensitivity
 
             Dim pair As cLayerFilePair = DirectCast(selItem.Tag, cLayerFilePair)
 
-            Dim fn As String = Me.selectFile
+            Dim fn As String = Me.selectFile(pair.MapLayer.Layer.Name)
             If Not String.IsNullOrEmpty(fn) Then
                 pair.File = fn
             End If
@@ -247,15 +265,15 @@ Public Class frmEcospaceSensitivity
         Catch ex As Exception
 
         End Try
-       
 
     End Sub
 
-    Private Function selectFile() As String
+    Private Function selectFile(LayerName As String) As String
         Dim Ofd As New OpenFileDialog
 
         Ofd.Filter = "*.asc|*.asc|*.*|*.*"
         Ofd.FilterIndex = 0
+        Ofd.Title = "Select input driver file for " + LayerName
 
         If Ofd.ShowDialog = Windows.Forms.DialogResult.OK Then
             Return Ofd.FileName
@@ -263,8 +281,27 @@ Public Class frmEcospaceSensitivity
 
         Return String.Empty
 
-
     End Function
 
+    Private Sub m_btStopRemoval_Click(sender As System.Object, e As System.EventArgs) Handles m_btStopRemoval.Click
+        Me.RunManager.StopRun()
+    End Sub
 
+    Private Sub m_btRunRemoval_Click(sender As System.Object, e As System.EventArgs) Handles m_btRunRemoval.Click
+        Me.RunManager.RunRemoval()
+    End Sub
+
+    Private Sub m_btRemovalOutput_Click(sender As System.Object, e As System.EventArgs) Handles m_btRemovalOutput.Click
+        Dim SFD As New SaveFileDialog
+
+        SFD.FileName = Me.RunManager.RunParameters.RemovalOutput
+        SFD.Filter = "*.csv|*.csv|*.*|*.*"
+        SFD.FilterIndex = 0
+
+        If SFD.ShowDialog = Windows.Forms.DialogResult.OK Then
+            Dim filename As String = SFD.FileName
+            Me.RunManager.RunParameters.RemovalOutput = filename
+            Me.UpdateControls()
+        End If
+    End Sub
 End Class
