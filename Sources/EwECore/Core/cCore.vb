@@ -3490,8 +3490,13 @@ Public Class cCore
 #End If
 
         Try
+            'work from the top down Tracer to Path
+            Me.CloseEcotracerScenario()
+            Me.CloseEcospaceScenario()
+            Me.CloseEcosimScenario()
+
             ' Has data source?
-            If (DataSource IsNot Nothing) Then
+            If (Me.DataSource IsNot Nothing) Then
                 ' #Yes: has open connection?
                 If DataSource.Connection IsNot Nothing Then
                     ' '#Yes: close plug-in data sources, close plug-in 
@@ -3511,11 +3516,6 @@ Public Class cCore
         End Try
 
         Try
-            'work from the top down Tracer to Path
-            Me.CloseEcotracerScenario()
-            Me.CloseEcospaceScenario()
-            Me.CloseEcosimScenario()
-
             ' Forget model
             Me.m_StateMonitor.SetEcopathLoaded(False)
             Me.m_StateMonitor.UpdateDataState(Nothing)
