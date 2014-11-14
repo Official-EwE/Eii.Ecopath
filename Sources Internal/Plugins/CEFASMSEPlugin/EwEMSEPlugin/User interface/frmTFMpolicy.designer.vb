@@ -69,6 +69,7 @@ Partial Class frmTFMpolicy
         Me.m_gridRegulations = New EwEMSEPlugin.gridRegulations()
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_tsbnEditHCR = New System.Windows.Forms.ToolStripButton()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -200,7 +201,7 @@ Partial Class frmTFMpolicy
         '
         resources.ApplyResources(Me.m_tsHCR, "m_tsHCR")
         Me.m_tsHCR.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsHCR.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAddHCR, Me.m_tsbnDeleteHCR})
+        Me.m_tsHCR.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAddHCR, Me.m_tsbnEditHCR, Me.m_tsbnDeleteHCR})
         Me.m_tsHCR.Name = "m_tsHCR"
         Me.m_tsHCR.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
@@ -284,6 +285,12 @@ Partial Class frmTFMpolicy
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
+        'm_tsbnEditHCR
+        '
+        Me.m_tsbnEditHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnEditHCR, "m_tsbnEditHCR")
+        Me.m_tsbnEditHCR.Name = "m_tsbnEditHCR"
+        '
         'frmTFMpolicy
         '
         Me.AcceptButton = Me.m_btnSave
@@ -336,6 +343,7 @@ Partial Class frmTFMpolicy
     Private WithEvents m_hdrRegulations As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_gridRegulations As gridRegulations
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
+    Private WithEvents m_tsbnEditHCR As System.Windows.Forms.ToolStripButton
 
 End Class
 

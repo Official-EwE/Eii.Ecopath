@@ -569,6 +569,9 @@ Public Class frmTFMpolicy
 
 #End Region ' Dragging
 
+    Private Sub m_tsbnEditHCR_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnEditHCR.Click
+
+    End Sub
 End Class
 
 

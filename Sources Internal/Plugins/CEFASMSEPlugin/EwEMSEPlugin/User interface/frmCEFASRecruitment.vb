@@ -50,7 +50,7 @@ Public Class frmCEFASRecruitment
     Private m_qehGrid As cQuickEditHandler = Nothing
 
     Private m_Assessment As cStockAssessmentModel
-    Private m_inInit As Boolean
+    Private m_bInitialized As Boolean = False
 
     Private m_mse As cMSE
 
@@ -75,7 +75,6 @@ Public Class frmCEFASRecruitment
 
     Public Sub New(UI As cUIContext, MSE As cMSE)
         MyBase.New()
-        Me.m_inInit = True
         Me.UIContext = UI
 
         Me.m_mse = MSE
@@ -84,7 +83,7 @@ Public Class frmCEFASRecruitment
         Me.InitializeComponent()
     End Sub
 
-#Region " Events "
+#Region " Overrides "
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
@@ -127,7 +126,8 @@ Public Class frmCEFASRecruitment
             cMSEUtils.LogError(New cMessage("Error while loading Stock Recruitment form.", eMessageType.Any, eCoreComponentType.Plugin, eMessageImportance.Warning), ex.Message)
         End Try
 
-        Me.m_inInit = False
+        Me.m_bInitialized = True
+        Me.UpdateControls()
 
     End Sub
 
@@ -147,13 +147,21 @@ Public Class frmCEFASRecruitment
 
     End Sub
 
+    Protected Overrides Sub UpdateControls()
+        Me.m_grid.Enabled = Me.m_Assessment.UseAssessment
+    End Sub
+
+#End Region ' Overrides 
+
+#Region " Events "
+
     Private Sub HandleGridSelectionChanged(ByVal selection As CellVirtualCollection) _
         Handles m_grid.OnSelectionChanged
         ' Update group selection according to user actions in the grid
         Me.Group = Me.m_grid.Group
     End Sub
 
-    Private Sub tsbtDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSetDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnDefaults.Click
         Try
             Me.m_Assessment.Defaults()
@@ -176,16 +184,16 @@ Public Class frmCEFASRecruitment
         Me.Close()
     End Sub
 
-
     Private Sub OnUseAssessment(sender As System.Object, e As System.EventArgs) Handles m_chkUseAssessment.CheckedChanged
-        If Me.m_inInit Then Return
+        If Not Me.m_bInitialized Then Return
         Me.m_Assessment.UseAssessment = Me.m_chkUseAssessment.Checked
+        Me.UpdateControls()
     End Sub
 
-    Private Sub onParameterChanged(ByVal iGroupIndex As Integer)
+    Private Sub OnParameterChanged(ByVal iGroupIndex As Integer)
+        ' A relevant property has changed: redraw the graph
         Try
-            If Me.m_inInit Then Return
-            ' A relevant property has changed: redraw the graph
+            If Not Me.m_bInitialized Then Return
             Me.RedrawGraph()
         Catch ex As Exception
             cLog.Write(ex, "CefasMSE:frmCEFASRecruitment.onParameterChanged")
@@ -210,7 +218,7 @@ Public Class frmCEFASRecruitment
             ' Unregister
             If (Me.m_group IsNot Nothing) Then
                 'RemoveHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
-                RemoveHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
+                RemoveHandler Me.m_group.onParameterChanged, AddressOf OnParameterChanged
             End If
 
             ' Update
@@ -219,7 +227,7 @@ Public Class frmCEFASRecruitment
             ' Register
             If (Me.m_group IsNot Nothing) Then
                 'AddHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
-                AddHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
+                AddHandler Me.m_group.onParameterChanged, AddressOf OnParameterChanged
             End If
 
             ' Redraw the graph

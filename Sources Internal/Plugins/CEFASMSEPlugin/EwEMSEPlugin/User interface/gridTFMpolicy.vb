@@ -104,14 +104,14 @@ Public Class gridTargetFishingMortalityPolicy
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.BioGroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell(My.Resources.HEADER_LIMIT_LOWER_B, cStyleGuide.eUnitType.Currency)
-        Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell(My.Resources.HEADER_LIMIT_UPPER_B, cStyleGuide.eUnitType.Currency)
+        Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell(My.Resources.HEADER_LIMIT_LOWER_B)
+        Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell(My.Resources.HEADER_LIMIT_UPPER_B)
         Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell(My.Resources.HEADER_FMORT_GROUP)
         Me(0, eColumnTypes.MaxF) = New EwEColumnHeaderCell(SharedResources.HEADER_FISHINGMORTALITY)
         Me(0, eColumnTypes.CostFunction) = New EwEColumnHeaderCell(My.Resources.HEADER_COST_FUNCTION_TYPE)
 
         Me.FixedColumns = 2
-        Me.FixedColumnWidths = False
+        Me.FixedColumnWidths = True
         Me.AllowBlockSelect = False
 
     End Sub

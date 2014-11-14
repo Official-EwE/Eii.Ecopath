@@ -60,6 +60,7 @@ Public Class frmEditQuotaShares
 
         Me.m_bIsDirty = False
         Me.UpdateControls()
+        Me.CenterToParent()
 
     End Sub
 

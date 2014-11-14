@@ -99,6 +99,8 @@ Partial Class frmMSE
         Me.m_rbEwEDefaultPath = New System.Windows.Forms.RadioButton()
         Me.m_hdrStep1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnChangePath = New System.Windows.Forms.Button()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbEII = New System.Windows.Forms.PictureBox()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -109,6 +111,8 @@ Partial Class frmMSE
         Me.m_plStep1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.m_pbPathCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel2.SuspendLayout()
+        CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_tbxNModels2Run
@@ -367,6 +371,7 @@ Partial Class frmMSE
         'm_pbCefas
         '
         Me.m_pbCefas.BackColor = System.Drawing.Color.White
+        Me.m_pbCefas.BackgroundImage = Global.EwEMSEPlugin.My.Resources.Resources.Cefas_logo
         resources.ApplyResources(Me.m_pbCefas, "m_pbCefas")
         Me.m_pbCefas.Name = "m_pbCefas"
         Me.m_pbCefas.TabStop = False
@@ -388,8 +393,8 @@ Partial Class frmMSE
         Me.m_tlpLayout.Controls.Add(Me.m_plStep2, 0, 1)
         Me.m_tlpLayout.Controls.Add(Me.m_plStep3, 0, 2)
         Me.m_tlpLayout.Controls.Add(Me.m_plStep4, 0, 3)
-        Me.m_tlpLayout.Controls.Add(Me.m_pbCefas, 0, 4)
         Me.m_tlpLayout.Controls.Add(Me.m_plStep1, 0, 0)
+        Me.m_tlpLayout.Controls.Add(Me.TableLayoutPanel2, 0, 4)
         Me.m_tlpLayout.Name = "m_tlpLayout"
         '
         'm_plStep1
@@ -468,6 +473,21 @@ Partial Class frmMSE
         Me.m_btnChangePath.Name = "m_btnChangePath"
         Me.m_btnChangePath.UseVisualStyleBackColor = True
         '
+        'TableLayoutPanel2
+        '
+        Me.TableLayoutPanel2.BackColor = System.Drawing.Color.White
+        resources.ApplyResources(Me.TableLayoutPanel2, "TableLayoutPanel2")
+        Me.TableLayoutPanel2.Controls.Add(Me.m_pbCefas, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_pbEII, 1, 0)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        '
+        'm_pbEII
+        '
+        Me.m_pbEII.BackgroundImage = Global.EwEMSEPlugin.My.Resources.Resources.EII
+        resources.ApplyResources(Me.m_pbEII, "m_pbEII")
+        Me.m_pbEII.Name = "m_pbEII"
+        Me.m_pbEII.TabStop = False
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -489,6 +509,8 @@ Partial Class frmMSE
         Me.m_plStep1.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.m_pbPathCompatible, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel2.ResumeLayout(False)
+        CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -546,4 +568,6 @@ Partial Class frmMSE
     Private WithEvents m_btnStockAssessment As System.Windows.Forms.Button
     Private WithEvents m_btnSAError As System.Windows.Forms.Button
     Private WithEvents m_btnQuotaShares As System.Windows.Forms.Button
+    Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_pbEII As System.Windows.Forms.PictureBox
 End Class

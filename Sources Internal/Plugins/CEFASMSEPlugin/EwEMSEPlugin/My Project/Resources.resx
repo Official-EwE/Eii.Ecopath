@@ -238,12 +238,10 @@
     <value>Fishing Mort. Group</value>
   </data>
   <data name="HEADER_LIMIT_LOWER_B" xml:space="preserve">
-    <value>Lower biomass limit (k{0})</value>
-    <comment>{0}=unit</comment>
+    <value>Lower biomass limit (kt)</value>
   </data>
   <data name="HEADER_LIMIT_UPPER_B" xml:space="preserve">
-    <value>Upper biomass limit (k{0})</value>
-    <comment>{0}=unit</comment>
+    <value>Upper biomass limit (kt)</value>
   </data>
   <data name="HEADER_MAXRELFEEDTIME" xml:space="preserve">
     <value>Max. rel. feeding time</value>
@@ -366,5 +364,11 @@
   </data>
   <data name="StopHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\StopHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EII" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\eii.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cefas_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\cefas_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
