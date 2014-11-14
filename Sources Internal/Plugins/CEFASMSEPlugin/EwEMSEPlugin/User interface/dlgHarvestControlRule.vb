@@ -23,6 +23,8 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Style
 
 Public Class dlgHarvestControlRule
 
@@ -41,12 +43,13 @@ Public Class dlgHarvestControlRule
         End Property
     End Class
 
-#Region "Private variables and Properties"
+#Region " Private vars "
 
-    Private m_Plugin As cMSE
-    Private m_strategy As Strategy
-    Private m_HRC As HCR_Group
-    Private m_isValid As Boolean = True
+    Private m_Plugin As cMSE = Nothing
+    Private m_strategy As Strategy = Nothing
+    Private m_HRC As HCR_Group = Nothing
+    Private m_bIsValid As Boolean = True
+    Private m_bInitialized As Boolean = False
 
     Private ReadOnly Property Core As EwECore.cCore
         Get
@@ -54,9 +57,9 @@ Public Class dlgHarvestControlRule
         End Get
     End Property
 
-#End Region
+#End Region ' Private vars
 
-#Region "Public Properties"
+#Region " Public Properties "
 
     Public ReadOnly Property HarvestControlRule As HCR_Group
         Get
@@ -64,66 +67,78 @@ Public Class dlgHarvestControlRule
         End Get
     End Property
 
-#End Region
+#End Region ' Public Properties
 
-#Region "Initialization Construction"
+#Region " Initialization Construction "
 
-    Public Sub Init(MSEPlugin As cMSE, curStrategy As Strategy)
-        m_Plugin = MSEPlugin
-        m_strategy = curStrategy
+    Public Sub Init(MSEPlugin As cMSE, curStrategy As Strategy, Optional curHCR As HCR_Group = Nothing)
+        Me.m_Plugin = MSEPlugin
+        Me.m_strategy = curStrategy
+        Me.m_HRC = curHCR
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         MyBase.OnLoad(e)
 
-        m_HRC = New HCR_Group(m_Plugin.Core)
+        If (Me.m_HRC Is Nothing) Then
+            Me.m_HRC = New HCR_Group(m_Plugin.Core)
+        End If
 
         For igrp As Integer = 1 To Me.Core.nGroups
             If Core.EcoPathGroupInputs(igrp).IsFished Then
-                Me.m_cbBiomassGroups.Items.Add(New cCoreInputOutputControlItem(Core.EcoPathGroupInputs(igrp)))
+                Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(igrp)
+                Dim i As Integer = Me.m_cmbBiomassGroups.Items.Add(grp)
+                If (Object.ReferenceEquals(grp, Me.m_HRC.GroupB)) Then
+                    Me.m_cmbBiomassGroups.SelectedIndex = i
+                End If
             End If
         Next
 
         For igrp As Integer = 1 To Me.Core.nGroups
             If Core.EcoPathGroupInputs(igrp).IsFished Then
-                Me.m_cbFMortGroups.Items.Add(New cCoreInputOutputControlItem(Core.EcoPathGroupInputs(igrp)))
+                Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(igrp)
+                Dim i As Integer = Me.m_cmbFMortGroups.Items.Add(grp)
+                If (Object.ReferenceEquals(grp, Me.m_HRC.GroupF)) Then
+                    Me.m_cmbFMortGroups.SelectedIndex = i
+                End If
             End If
         Next
 
-        m_cbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Target))
-        m_cbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Conservation))
-        m_cbCostFunctions.SelectedIndex = 0
+        Me.m_cmbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Target))
+        Me.m_cmbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Conservation))
+        Me.m_cmbCostFunctions.SelectedIndex = cSystemUtils.IIF(Me.m_HRC.TypeOfHCR = HCRType.Target, 0, 1)
 
-        Me.CenterToParent()
+        Me.m_bInitialized = True
+        Me.CenterToScreen()
+
+        Me.UpdateHRC()
 
     End Sub
 
     Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
         'If not a valid rule stop the form from closing to let the user correct the rule
-        e.Cancel = Not Me.m_isValid
+        e.Cancel = Not Me.m_bIsValid
         MyBase.OnFormClosing(e)
 
     End Sub
 
-#End Region
+#End Region ' Initialization Construction
 
-#Region "Control event handlers"
+#Region " Control event handlers "
+
 
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles OK_Button.Click
 
-        ' JS 02Oct13: globalized this message
-        ' JS 02Oct13: replaced message box with cMessages
-
         ' Think positive
-        Me.m_isValid = True
+        Me.m_bIsValid = True
 
         Dim validationstring As String = ""
 
         If Me.m_strategy.Contains(Me.HarvestControlRule) Then
             'Failed vaidation rule already exists in strategy
-            Me.m_isValid = False
+            Me.m_bIsValid = False
             Me.m_Plugin.InformUser(My.Resources.ERROR_HARVESTRULE_DUPLICATE, EwEUtils.Core.eMessageImportance.Critical)
             ' Don't bother checking the other validation. Just boot out
             Return
@@ -131,7 +146,7 @@ Public Class dlgHarvestControlRule
 
         If Not Me.HarvestControlRule.isValid(validationstring) Then
             'If the Harvest Rule is not valid set the DialogResult to Cancel so the rule is not used
-            Me.m_isValid = False
+            Me.m_bIsValid = False
             Me.m_Plugin.InformUser(String.Format(My.Resources.ERROR_HARVESTRULE_INVALID, validationstring), EwEUtils.Core.eMessageImportance.Critical)
             Return
         End If
@@ -144,67 +159,75 @@ Public Class dlgHarvestControlRule
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.m_isValid = True
+        Me.m_bIsValid = True
         Me.Close()
     End Sub
 
-    Private Sub cbBiomassGroups_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbBiomassGroups.SelectedIndexChanged, m_cbFMortGroups.SelectedIndexChanged
+    Private Sub OnFormatGroupComboItem(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_cmbBiomassGroups.Format, m_cmbFMortGroups.Format
+        Dim fmt As New cCoreInterfaceFormatter()
+        e.Value = fmt.GetDescriptor(e.ListItem, eDescriptorTypes.Name)
+    End Sub
+
+    Private Sub OnGroupSelected(sender As System.Object, e As System.EventArgs) _
+        Handles m_cmbBiomassGroups.SelectedIndexChanged, m_cmbFMortGroups.SelectedIndexChanged
+
+        If Not Me.m_bInitialized Then Return
+
         Try
-            updateHRC()
+            UpdateHRC()
         Catch ex As Exception
             cLog.Write(ex)
         End Try
     End Sub
 
-    Private Sub updateHRC()
+    Private Sub OnCostFunctionSelected(sender As System.Object, e As System.EventArgs) _
+        Handles m_cmbCostFunctions.SelectedIndexChanged
 
-        Dim selItem As cCoreInputOutputControlItem = Nothing
+        If Not Me.m_bInitialized Then Return
+
+        Try
+            Me.UpdateHRC()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
+#End Region ' Control event handlers
+
+#Region " Internals "
+
+    Private Sub UpdateHRC()
+
         Dim grpOut As cEcoPathGroupOutput = Nothing
+        Dim sVal As Single = 0
 
         ' Group Biomass
-        selItem = DirectCast(m_cbBiomassGroups.SelectedItem, cCoreInputOutputControlItem)
-        If (selItem IsNot Nothing) Then
+        Me.m_HRC.GroupB = DirectCast(m_cmbBiomassGroups.SelectedItem, cEcoPathGroupInput)
 
-            Me.m_HRC.GroupB = DirectCast(selItem.Source, cEcoPathGroupInput)
+        If (Me.m_HRC.GroupB IsNot Nothing) Then
+            sVal = grpOut.Biomass
             grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupB.Index)
-
-            Me.m_HRC.LowerLimit = grpOut.Biomass * 0.1
-            Me.m_HRC.UpperLimit = grpOut.Biomass * 0.4
-
+        Else
+            sVal = 0
         End If
+        Me.m_HRC.LowerLimit = sVal * 0.1
+        Me.m_HRC.UpperLimit = sVal * 0.4
 
         ' Fishing Mort
-        selItem = DirectCast(m_cbFMortGroups.SelectedItem, cCoreInputOutputControlItem)
-        If selItem IsNot Nothing Then
-
-            Me.m_HRC.GroupF = DirectCast(selItem.Source, cEcoPathGroupInput)
-
+        Me.m_HRC.GroupF = DirectCast(m_cmbFMortGroups.SelectedItem, cEcoPathGroupInput)
+        If (Me.m_HRC.GroupF IsNot Nothing) Then
             grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupF.Index)
             Me.m_HRC.MaxF = grpOut.MortCoFishRate
-
+        Else
+            Me.m_HRC.MaxF = 0
         End If
-
-        ' Cost function
-        'If (Me.m_cbCostFunctions.SelectedItem IsNot Nothing) Then
-        '    Dim item As cHCRTypeItem = DirectCast(Me.m_cbCostFunctions.SelectedItem, cHCRTypeItem)
-        '    Me.m_HRC.CostFunction = item.[Function]
-        'End If
 
         ' Oooh
         Me.m_tbxRule.Text = Me.m_HRC.ToString()
 
     End Sub
 
-    Private Sub cbCostFunctions_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbCostFunctions.SelectedIndexChanged
-        Try
-            Me.updateHRC()
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-    End Sub
-
-#End Region
+#End Region ' Internals
 
 End Class

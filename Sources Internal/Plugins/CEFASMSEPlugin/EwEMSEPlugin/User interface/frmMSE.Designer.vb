@@ -477,8 +477,8 @@ Partial Class frmMSE
         '
         Me.TableLayoutPanel2.BackColor = System.Drawing.Color.White
         resources.ApplyResources(Me.TableLayoutPanel2, "TableLayoutPanel2")
-        Me.TableLayoutPanel2.Controls.Add(Me.m_pbCefas, 0, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.m_pbEII, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_pbCefas, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_pbEII, 3, 0)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         '
         'm_pbEII

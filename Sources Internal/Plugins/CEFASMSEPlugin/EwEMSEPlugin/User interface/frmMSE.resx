@@ -1477,13 +1477,13 @@
     <value>Fill</value>
   </data>
   <data name="m_pbCefas.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 5</value>
+    <value>46, 5</value>
   </data>
   <data name="m_pbCefas.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
   </data>
   <data name="m_pbCefas.Size" type="System.Drawing.Size, System.Drawing">
-    <value>261, 74</value>
+    <value>198, 74</value>
   </data>
   <data name="m_pbCefas.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>Zoom</value>
@@ -1876,7 +1876,7 @@
     <value>3</value>
   </data>
   <data name="TableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="m_pbEII.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -1885,13 +1885,13 @@
     <value>Fill</value>
   </data>
   <data name="m_pbEII.Location" type="System.Drawing.Point, System.Drawing">
-    <value>276, 5</value>
+    <value>295, 5</value>
   </data>
   <data name="m_pbEII.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
   </data>
   <data name="m_pbEII.Size" type="System.Drawing.Size, System.Drawing">
-    <value>262, 74</value>
+    <value>198, 74</value>
   </data>
   <data name="m_pbEII.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
@@ -1936,7 +1936,7 @@
     <value>4</value>
   </data>
   <data name="TableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbCefas" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbEII" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50,Absolute,20,Absolute,20,Absolute,20" /&gt;&lt;Rows Styles="Percent,100,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbCefas" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbEII" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,7.692307,Percent,38.46154,Percent,7.692307,Percent,38.46154,Percent,7.692307" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlpLayout.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>

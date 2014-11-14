@@ -319,7 +319,7 @@ Public Class frmTFMpolicy
     Private Sub OnAddHCR(sender As Object, e As System.EventArgs) Handles m_tsbnAddHCR.Click
 
         'Ask the user to create a new HCR_Group
-        Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule
+        Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule()
         HRCDialogue.Init(Me.m_MSE, Me.m_SelectedStrategy)
         HRCDialogue.ShowDialog()
 
@@ -332,6 +332,15 @@ Public Class frmTFMpolicy
         End If
 
         Me.UpdateControls()
+
+    End Sub
+
+    Private Sub OnEditHCR(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnEditHCR.Click
+
+        Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule()
+        HRCDialogue.Init(Me.m_MSE, Me.m_SelectedStrategy, Me.m_HCR)
+        HRCDialogue.ShowDialog()
 
     End Sub
 
@@ -441,10 +450,11 @@ Public Class frmTFMpolicy
         MyBase.UpdateControls()
 
         Dim bHasStrategy As Boolean = (Me.m_tscmStrategies.SelectedIndex >= 0)
-        Dim bHasHCR As Boolean = (Me.m_grid.SelectedStrategy IsNot Nothing)
+        Dim bHasHCR As Boolean = (Me.m_HCR IsNot Nothing)
 
         Me.m_tsbnDeleteStrategy.Enabled = bHasStrategy
         Me.m_tsbnAddHCR.Enabled = bHasStrategy
+        Me.m_tsbnEditHCR.Enabled = bHasHCR
         Me.m_tsbnDeleteHCR.Enabled = bHasHCR
 
         Me.m_btnSave.Enabled = Not Me.m_bStrategiesSaved
@@ -569,9 +579,6 @@ Public Class frmTFMpolicy
 
 #End Region ' Dragging
 
-    Private Sub m_tsbnEditHCR_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnEditHCR.Click
-
-    End Sub
 End Class
 
 
