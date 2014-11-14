@@ -52,6 +52,8 @@ Public Class cSpatialTemporalFileManager
         'which can/could be hidden behind preprocessor directives
         ds = Me.getDataSet()
 
+        'Hardwire to the first file in the list
+        'that will be only file
         ds.File(ds.TimeSteps(0)) = sourceFile
 
     End Sub
@@ -59,8 +61,12 @@ Public Class cSpatialTemporalFileManager
 #If SpatialTemp_Framework_Version = VER_OLD Then
 
     Private Function getDataSet() As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
+        'HACK proof of concept 
+        'Hardwire to get the Depth dataset
         Dim mfDs As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
         Dim ds As EwEUtils.SpatialData.ISpatialDataSet
+        'This will be the Depth dataset 
+        'cause that's the first one in the list
         ds = Me.Manager.Item(0)
 
         mfDs = DirectCast(ds, EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin)
