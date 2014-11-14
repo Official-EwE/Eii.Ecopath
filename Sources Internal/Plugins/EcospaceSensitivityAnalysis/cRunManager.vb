@@ -156,6 +156,8 @@ Public Class cRunManager
 
     Private m_RunType As eRunTypes
 
+    Private m_nBTimeSteps As Integer
+
 #End Region
 
 #Region "Public Properties and Methods"
@@ -202,8 +204,13 @@ Public Class cRunManager
 
     Public Sub setBiomass(biomass() As Single, itime As Integer)
 
+        If itime > Me.m_RunTimeSteps - 12 Then
+            Me.m_nBTimeSteps += 1
+            For i As Integer = 1 To Me.core.nGroups
+                m_curB(i) += biomass(i)
+            Next i
+        End If
 
-        m_curB = biomass
         Me.m_curTotTime += 1
         Me.m_curTimeStep = itime
         Me.MarshallOnProgress()
@@ -492,6 +499,8 @@ Public Class cRunManager
 
     Private Sub initForRun()
 
+        Me.m_curB = New Single(Me.core.nGroups) {}
+        Me.m_nBTimeSteps = 0
         Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
         Me.writeResponseAlterationHeader()
 
@@ -516,6 +525,11 @@ Public Class cRunManager
     End Sub
 
     Private Sub SaveRun(RunName As String, ColumnValue As Single)
+        Debug.Assert(Me.m_nBTimeSteps > 0, "Ok something is very wrong. SaveRun() was called before the last year of the model was reached.")
+        'average the biomass over the last year
+        For i As Integer = 1 To Me.core.nGroups
+            Me.m_curB(i) = Me.m_curB(i) / Me.m_nBTimeSteps
+        Next
 
         Me.m_curTimeStep = 0
         Me.writeResponseAlterationResults(RunName, ColumnValue)
