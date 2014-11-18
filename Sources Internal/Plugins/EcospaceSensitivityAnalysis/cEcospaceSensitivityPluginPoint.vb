@@ -236,17 +236,17 @@ Public Class cEcospaceSensitivityPluginPoint
 
     Public Sub EcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements EwEPlugin.IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
 
-        If Me.RunManager.isRunning Then
-            Dim spaceData As cEcospaceDataStructures = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
-            Dim bio() As Single = New Single(Me.Core.nGroups) {}
-            For igrp As Integer = 1 To Me.Core.nGroups
-                bio(igrp) = spaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
-            Next
+        Try
 
-            Me.RunManager.setBiomass(bio, iTime)
+            If Me.RunManager.isRunning Then
+                Dim spaceData As cEcospaceDataStructures = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
+                Me.RunManager.onEcospaceTimeStep(spaceData, iTime)
+            End If
 
+        Catch ex As Exception
 
-        End If
+        End Try
+
 
     End Sub
 

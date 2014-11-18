@@ -68,8 +68,8 @@ Public Class cRunParameters
     Private m_core As cCore
 
     Public Sub New(theCore As cCore)
-        Me.BoundsOutput = "Ecospace_Avg_Biomass_Bounds.csv"
-        Me.RemovalOutput = "Ecospace_Avg_Bomass_Removal.csv"
+        Me.BoundsOutput = "Ecospace_Avg_Biomass_InputFactors.csv"
+        Me.RemovalOutput = "Ecospace_Avg_Bomass_GroupResponses.csv"
         Me.m_core = theCore
         Me.setDefaults()
 

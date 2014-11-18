@@ -30,47 +30,51 @@ Imports System.Threading
 
 Public Class cSpatialTemporalFileManager
     Private Core As cCore
-    Private Manager As EwECore.SpatialData.cSpatialDataSetManager
+    Private ConManager As EwECore.SpatialData.cSpatialDataConnectionManager
 
     Public Sub New(theCore As cCore)
         Me.Core = theCore
-        Me.Manager = Core.SpatialDataConnectionManager.DatasetManager
+        Me.ConManager = Core.SpatialDataConnectionManager
 
     End Sub
 
-    Public Sub SwapFiles(sourceFile As String)
-        'WARNING NOT IMPLEMENTED
-        'In theory this is a better way to do this
-        'Swap the name of the file in the dataset
+    Public Sub SwapFiles(Layer As cEcospaceLayer, sourceFile As String)
+        'WARNING HARDWIRED FOR THE RBT FILES
 
-        Debug.Assert(False, Me.ToString + ".SwapFiles() Not Implemented!")
-
-        Dim ds As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
+        Dim ds As EwEUtils.SpatialData.ISpatialDataSet
+        Dim mfds As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
 
         'Get the data set for this Layer and VarName
         'This will have to be different in the old and new version of the spatial temporal framework
         'which can/could be hidden behind preprocessor directives
-        ds = Me.getDataSet()
-
-        'Hardwire to the first file in the list
-        'that will be only file
-        ds.File(ds.TimeSteps(0)) = sourceFile
+        ds = Me.getDataSet(Layer)
+        If ds IsNot Nothing Then
+            mfds = DirectCast(ds, EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin)
+            'Hardwire to the first file in the list
+            'it will be only file
+            mfds.File(ds.TimeSteps(0)) = sourceFile
+        End If
 
     End Sub
 
 #If SpatialTemp_Framework_Version = VER_OLD Then
 
-    Private Function getDataSet() As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
-        'HACK proof of concept 
-        'Hardwire to get the Depth dataset
-        Dim mfDs As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
+    
+    Private Function getDataSet(Layer As cEcospaceLayer) As EwEUtils.SpatialData.ISpatialDataSet
         Dim ds As EwEUtils.SpatialData.ISpatialDataSet
-        'This will be the Depth dataset 
-        'cause that's the first one in the list
-        ds = Me.Manager.Item(0)
 
-        mfDs = DirectCast(ds, EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin)
-        Return mfDs
+        For Each adt As cSpatialDataAdapter In Me.ConManager.Adapters
+            If adt.VarName = Layer.VarName Then
+                For iConn As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                    ds = adt.Dataset(Layer.Index, iConn)
+                    If ds IsNot Nothing Then
+                        Return ds
+                    End If
+                Next
+            End If
+        Next
+
+        Return Nothing
 
     End Function
 
@@ -89,12 +93,5 @@ Public Class cSpatialTemporalFileManager
     End Function
 
 #End If
-
-
-
-
-
-
-
 
 End Class

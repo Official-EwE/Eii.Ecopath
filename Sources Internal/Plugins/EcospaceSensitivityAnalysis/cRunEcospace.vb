@@ -55,7 +55,6 @@ Public Class cRunEcospace
     Public Sub Run()
         Core.StopEcospace()
         Core.RunEcoSpace(Nothing, False)
-
     End Sub
 
 End Class

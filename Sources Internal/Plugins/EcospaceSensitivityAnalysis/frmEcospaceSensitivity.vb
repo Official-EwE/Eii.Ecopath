@@ -93,8 +93,6 @@ Public Class frmEcospaceSensitivity
         Next
     End Sub
 
-
-
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
@@ -304,4 +302,5 @@ Public Class frmEcospaceSensitivity
             Me.UpdateControls()
         End If
     End Sub
+
 End Class

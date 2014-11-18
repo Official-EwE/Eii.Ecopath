@@ -156,8 +156,6 @@ Public Class cRunManager
 
     Private m_RunType As eRunTypes
 
-    Private m_nBTimeSteps As Integer
-
 #End Region
 
 #Region "Public Properties and Methods"
@@ -202,21 +200,42 @@ Public Class cRunManager
         End Get
     End Property
 
-    Public Sub setBiomass(biomass() As Single, itime As Integer)
+    Public Sub onEcospaceTimeStep(EcospaceData As cEcospaceDataStructures, itime As Integer)
+        Try
 
-        If itime > Me.m_RunTimeSteps - 12 Then
-            Me.m_nBTimeSteps += 1
-            For i As Integer = 1 To Me.core.nGroups
-                m_curB(i) += biomass(i)
-            Next i
-        End If
+            Me.m_curTotTime += 1
+            Me.m_curTimeStep += 1
 
-        Me.m_curTotTime += 1
-        Me.m_curTimeStep = itime
-        Me.MarshallOnProgress()
+            Me.MarshallOnProgress()
+
+        Catch ex As Exception
+            Me.ExceptionMessage("onEcospaceTimeStep()", ex)
+        End Try
 
     End Sub
 
+    Public Sub setBiomass(EcospaceData As cEcospaceDataStructures, itime As Integer)
+        'Try
+
+        '    If Me.m_curTimeStep > Me.m_RunTimeSteps - 12 Then
+        '        'Me.m_nBTimeSteps += 1
+        '        For igrp As Integer = 1 To Me.core.nGroups
+        '            m_curB(igrp) += SpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, itime)
+        '        Next igrp
+        '    End If
+
+        'Catch ex As Exception
+        '    Me.ExceptionMessage("setBiomass()", ex)
+        'End Try
+
+    End Sub
+
+    Private Sub ExceptionMessage(Source As String, ex As Exception, Optional msg As String = "")
+        EwEUtils.Core.cLog.Write(ex, Source)
+        System.Console.WriteLine("Exception: " + Source + ex.Message)
+    End Sub
+
+  
     Public Sub StopRun()
         Me.m_plugin.EcoSpace.m_StopRun = True
         Me.m_bStop = True
@@ -274,7 +293,6 @@ Public Class cRunManager
 
     Public Function RunBounds() As Boolean
 
-
         If Me.isBoundsConfigured Then
             Me.m_RunType = eRunTypes.Bounds
             Me.setState(eEcospaceSensitivityStates.Running)
@@ -290,7 +308,6 @@ Public Class cRunManager
         End If
 
         Return False
-
 
     End Function
 
@@ -308,44 +325,52 @@ Public Class cRunManager
     Private Sub RunOnThread()
 
         Try
-            Dim AltPercent As Single
-
+            Dim pair As cLayerFilePair
             Me.m_bStop = False
-
             Me.initForRun()
 
             'Run and Write Baseline run
             Me.m_RunSpace.Run()
-            Me.m_curMapName = "BaseLine"
-            Me.SaveRun(Me.m_curMapName, 1.0)
+            'If the user stopped the run don't do any of the processing
+            If Not Me.m_bStop Then
 
-            For Each pair As cLayerFilePair In Me.RunParameters.lstBoundsFiles
-                If Me.m_bStop Then Exit For
+                Me.m_curMapName = "BaseLine"
+                Me.IterationCompleted(Me.m_curMapName, 0.0)
 
-                Me.m_curMapName = pair.MapLayer.Layer.Name
+                For Each pair In Me.RunParameters.lstBoundsFiles
+                    If Me.m_bStop Then Exit For
 
-                AltPercent = Me.RunParameters.LowerBound
-                Me.CreateBoundsFiles(pair)
+                    Me.m_curMapName = pair.MapLayer.Layer.Name
 
-                Me.SwapFiles(Me.m_lowerFile, pair.File)
+                    Me.CreateBoundsFiles(pair)
 
-                Me.m_RunSpace.Run()
-                If Me.m_bStop Then Exit For
-                Me.SaveRun(pair.MapLayer.Layer.Name, AltPercent)
+                    Me.SwapFiles(pair.MapLayer.Layer, Me.m_lowerFile, pair.File)
+                    'Me.SwapFiles(Me.m_lowerFile, pair.File)
 
-                AltPercent = Me.RunParameters.UpperBound
-                Me.SwapFiles(Me.m_upperFile, pair.File)
-                Me.m_RunSpace.Run()
-                If Me.m_bStop Then Exit For
-                Me.SaveRun(pair.MapLayer.Layer.Name, AltPercent)
+                    Me.m_RunSpace.Run()
+                    If Me.m_bStop Then Exit For
+                    Me.IterationCompleted(pair.MapLayer.Layer.Name, Me.RunParameters.LowerBound)
 
+                    Me.SwapFiles(pair.MapLayer.Layer, Me.m_upperFile, pair.File)
+                    ' Me.SwapFiles(Me.m_lowerFile, pair.File)
+                    Me.m_RunSpace.Run()
+                    If Me.m_bStop Then Exit For
+                    Me.IterationCompleted(pair.MapLayer.Layer.Name, Me.RunParameters.UpperBound)
+
+                    Me.CleanUpFiles(pair.File)
+
+                Next pair
+
+            End If
+
+            'If the user stopped the run while in the loop
+            'then we need to clean up the input files
+            If Me.m_bStop And pair IsNot Nothing Then
                 Me.CleanUpFiles(pair.File)
-
-            Next pair
-
+            End If
 
         Catch ex As Exception
-
+            Me.ExceptionMessage("RunOnThread()", ex)
         End Try
 
         Me.RunsCompleted()
@@ -401,7 +426,7 @@ Public Class cRunManager
             Next
         Next
 
-        Return Me.m_RunTimeSteps * nRuns + 1
+        Return Me.m_RunTimeSteps * (nRuns + 1)
 
     End Function
 
@@ -436,7 +461,8 @@ Public Class cRunManager
             'Run and Write Baseline run
             Me.m_RunSpace.Run()
             Me.m_curMapName = "BaseLine"
-            Me.SaveRun(Me.m_curMapName, 0.0)
+            Me.IterationCompleted(Me.m_curMapName, 0)
+            'Me.SaveRun(Me.m_curMapName, 0.0)
 
             For Each map As IEnviroInputMap In Me.RunParameters.lstRemovalLayers
                 If Me.m_bStop Then Exit For
@@ -449,7 +475,7 @@ Public Class cRunManager
 
                     Me.m_RunSpace.Run()
                     If Me.m_bStop Then Exit For
-                    Me.SaveRun(map.Layer.Name, resFunction.iGroup)
+                    Me.IterationCompleted(map.Layer.Name, resFunction.iGroup)
 
                     resFunction.RestoreResponse(map)
                 Next
@@ -457,7 +483,7 @@ Public Class cRunManager
             Next map
 
         Catch ex As Exception
-
+            Me.ExceptionMessage("RunRemovalOnThread()", ex)
         End Try
 
         Me.RunsCompleted()
@@ -473,7 +499,7 @@ Public Class cRunManager
         Try
             Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnProgress), Nothing)
         Catch ex As Exception
-
+            Me.ExceptionMessage("MarshallOnProgress", ex)
         End Try
     End Sub
 
@@ -485,7 +511,7 @@ Public Class cRunManager
         Try
             Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnStateChanged), NewState)
         Catch ex As Exception
-
+            Me.ExceptionMessage("MarshallOnStateChanged", ex)
         End Try
     End Sub
 
@@ -500,9 +526,8 @@ Public Class cRunManager
     Private Sub initForRun()
 
         Me.m_curB = New Single(Me.core.nGroups) {}
-        Me.m_nBTimeSteps = 0
         Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.EcoSpace)
-        Me.writeResponseAlterationHeader()
+        Me.writeResultsHeader()
 
     End Sub
 
@@ -519,25 +544,33 @@ Public Class cRunManager
             Me.m_isRunning = False
             Me.setState(eEcospaceSensitivityStates.Stopped)
         Catch ex As Exception
-
+            Me.ExceptionMessage("RunsCompleted()", ex)
         End Try
 
     End Sub
 
-    Private Sub SaveRun(RunName As String, ColumnValue As Single)
-        Debug.Assert(Me.m_nBTimeSteps > 0, "Ok something is very wrong. SaveRun() was called before the last year of the model was reached.")
-        'average the biomass over the last year
-        For i As Integer = 1 To Me.core.nGroups
-            Me.m_curB(i) = Me.m_curB(i) / Me.m_nBTimeSteps
-        Next
+    Private Sub IterationCompleted(RunName As String, ColumnValue As Single)
 
+        Me.SaveRun(RunName, ColumnValue)
         Me.m_curTimeStep = 0
-        Me.writeResponseAlterationResults(RunName, ColumnValue)
         Me.MarshallOnProgress()
 
     End Sub
 
-    Private Sub writeResponseAlterationResults(RunName As String, ColumnValue As Single)
+
+    Private Sub SaveRun(RunName As String, ColumnValue As Single)
+        Dim startB As Single, EndB As Single
+        'average the biomass over the last year
+        For i As Integer = 1 To Me.core.nGroups
+            Me.SpaceData.getSumBiom(i, startB, EndB)
+            Me.m_curB(i) = EndB
+        Next
+
+        Me.writeResults(RunName, ColumnValue)
+         
+    End Sub
+
+    Private Sub writeResults(RunName As String, ColumnValue As Single)
 
         Dim strm As StreamWriter
         strm = New StreamWriter(Me.getOuputFile(), True)
@@ -551,20 +584,24 @@ Public Class cRunManager
 
     End Sub
 
-    Private Sub writeResponseAlterationHeader()
+    Private Sub writeResultsHeader()
+        Try
 
-        Dim strm As StreamWriter
-        'Delete the old file if it exists
-        strm = New StreamWriter(Me.getOuputFile(), False)
+            Dim strm As StreamWriter
+            'Delete the old file if it exists
+            strm = New StreamWriter(Me.getOuputFile(), False)
 
-        strm.Write(Me.core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecospace))
-        strm.WriteLine()
-        strm.Write("Driver_Layer," + Me.getColHeader())
-        For igrp As Integer = 1 To Me.core.nGroups
-            strm.Write("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.m_plugin.EcoPathData.GroupName(igrp)))
-        Next
-        strm.WriteLine()
-        strm.Close()
+            strm.Write(Me.core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecospace))
+            strm.WriteLine()
+            strm.Write("Driver_Layer," + Me.getColHeader())
+            For igrp As Integer = 1 To Me.core.nGroups
+                strm.Write("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.m_plugin.EcoPathData.GroupName(igrp)))
+            Next
+            strm.WriteLine()
+            strm.Close()
+        Catch ex As Exception
+            Me.ExceptionMessage("writeResultsHeader", ex)
+        End Try
 
     End Sub
 
@@ -594,12 +631,12 @@ Public Class cRunManager
 
     Private Sub CreateBoundsFiles(LayerFilePair As cLayerFilePair)
 
-        Me.m_orgBackupFile = Path.Combine(Path.GetDirectoryName(LayerFilePair.File), Path.GetFileNameWithoutExtension(LayerFilePair.File) + ".org.asc")
-        If File.Exists(Me.m_orgBackupFile) Then
-            File.Delete(Me.m_orgBackupFile)
-        End If
-        File.Copy(LayerFilePair.File, Me.m_orgBackupFile)
-        Debug.Assert(File.Exists(Me.m_orgBackupFile))
+        'Me.m_orgBackupFile = Path.Combine(Path.GetDirectoryName(LayerFilePair.File), Path.GetFileNameWithoutExtension(LayerFilePair.File) + ".org.asc")
+        'If File.Exists(Me.m_orgBackupFile) Then
+        '    File.Delete(Me.m_orgBackupFile)
+        'End If
+        'File.Copy(LayerFilePair.File, Me.m_orgBackupFile)
+        'Debug.Assert(File.Exists(Me.m_orgBackupFile))
 
         Me.m_lowerFile = Path.Combine(Path.GetDirectoryName(LayerFilePair.File), Path.GetFileNameWithoutExtension(LayerFilePair.File) + ".lower.asc")
         Me.AlterBoundsFiles(LayerFilePair.MapLayer.Layer, LayerFilePair.File, Me.m_lowerFile, Me.RunParameters.LowerBound)
@@ -609,25 +646,43 @@ Public Class cRunManager
 
     End Sub
 
+    Private Sub SwapFiles(layer As cEcospaceLayer, sourceFile As String, destinationFile As String)
+
+        Me.m_FileManager.SwapFiles(layer, sourceFile)
+
+        'If File.Exists(sourceFile) Then
+
+        '    If File.Exists(destinationFile) Then
+        '        File.Delete(destinationFile)
+        '    End If
+
+        '    File.Copy(sourceFile, destinationFile)
+        'End If
+
+    End Sub
+
     Private Sub SwapFiles(sourceFile As String, destinationFile As String)
 
         'Me.m_FileManager.SwapFiles(sourceFile)
 
-        If File.Exists(destinationFile) Then
-            File.Delete(destinationFile)
-        End If
+        If File.Exists(sourceFile) Then
 
-        File.Copy(sourceFile, destinationFile)
+            If File.Exists(destinationFile) Then
+                File.Delete(destinationFile)
+            End If
+
+            File.Copy(sourceFile, destinationFile)
+        End If
 
     End Sub
 
     Private Sub CleanUpFiles(OriginalFile As String)
 
-        Me.SwapFiles(Me.m_orgBackupFile, OriginalFile)
+        'Me.SwapFiles(Me.m_orgBackupFile, OriginalFile)
 
-        If File.Exists(Me.m_orgBackupFile) Then
-            File.Delete(Me.m_orgBackupFile)
-        End If
+        'If File.Exists(Me.m_orgBackupFile) Then
+        '    File.Delete(Me.m_orgBackupFile)
+        'End If
 
         If File.Exists(Me.m_lowerFile) Then
             File.Delete(Me.m_lowerFile)
@@ -659,6 +714,7 @@ Public Class cRunManager
         Dim strmOrg As New StreamReader(orgfile)
         Dim strmNew As New StreamWriter(NewFile)
         Dim ascFile As New cASCIIReaderWriter(Me.core)
+        Dim a As Single, b As Single
 
         Dim orgData(,) As Single = Me.getCoreLayerData(OrgLayer)
         ascFile.ReadASCFile(strmOrg)
@@ -666,10 +722,20 @@ Public Class cRunManager
         strmOrg.Close()
 
         Dim x(,) As Single = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
+        'a = new data, after the change
+        'b = orginal data, before the change
         'x = b +(a-b)*delta
         For ir As Integer = 1 To Me.SpaceData.InRow
             For ic As Integer = 1 To Me.SpaceData.InCol
-                x(ir, ic) = orgData(ir, ic) + (after(ir, ic) - orgData(ir, ic)) * Percentage
+                b = orgData(ir, ic)
+                If b < 0 Then b = 0
+                a = after(ir, ic)
+
+                If after(ir, ic) > 0 Then
+                    x(ir, ic) = b + (a - b) * Percentage
+                Else
+                    x(ir, ic) = cCore.NULL_VALUE
+                End If
             Next
         Next
 
@@ -680,15 +746,32 @@ Public Class cRunManager
     End Sub
 
     Private Function getCoreLayerData(Layer As cEcospaceLayer) As Single(,)
+        Dim temp(,) As Single
 
-        Dim CoreData(,,) As Single = Me.SpaceData.EnvironmentalLayerMap
-        Dim temp(,) = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
-        For ir As Integer = 1 To Me.SpaceData.InRow
-            For ic As Integer = 1 To Me.SpaceData.InCol
-                temp(ir, ic) = CoreData(Layer.Index, ir, ic)
-            Next ic
-        Next ir
+        If Layer.VarName = EwEUtils.Core.eVarNameFlags.LayerDepth Then
 
+            temp = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
+            For ir As Integer = 1 To Me.SpaceData.InRow
+                For ic As Integer = 1 To Me.SpaceData.InCol
+                    temp(ir, ic) = Me.SpaceData.Depth(ir, ic)
+                Next ic
+            Next ir
+
+        ElseIf Layer.VarName = EwEUtils.Core.eVarNameFlags.LayerDriver Then
+
+
+            Dim CoreData(,,) As Single = Me.SpaceData.EnvironmentalLayerMap
+            temp = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
+            For ir As Integer = 1 To Me.SpaceData.InRow
+                For ic As Integer = 1 To Me.SpaceData.InCol
+                    temp(ir, ic) = CoreData(Layer.Index, ir, ic)
+                Next ic
+            Next ir
+
+
+        End If
+
+        Debug.Assert(temp IsNot Nothing, "Failed to read original raster data from core.")
         Return temp
 
     End Function
