@@ -18,7 +18,7 @@
 
 #Const VER_OLD = 1
 #Const VER_NEW = 2
-#Const SpatialTemp_Framework_Version = VER_OLD
+#Const SpatialTemp_Framework_Version = VER_NEW
 
 Option Explicit On
 Option Strict On
@@ -80,15 +80,15 @@ Public Class cSpatialTemporalFileManager
 
 #ElseIf SpatialTemp_Framework_Version = VER_NEW Then
 
-      Private Function getDataSet() As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
-        Dim mfDs As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
-        Dim ds As EwEUtils.SpatialData.ISpatialDataSet
+    Private Function getDataSet(Layer As cEcospaceLayer) As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
+        'Dim mfDs As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
+        'Dim ds As EwEUtils.SpatialData.ISpatialDataSet
 
-        Dim layerDSs() As EwEUtils.SpatialData.ISpatialDataSet = Me.Manager.Datasets(EwEUtils.Core.eVarNameFlags.LayerDepth)
-        ds = layerDSs(0)
+        'Dim layerDSs() As EwEUtils.SpatialData.ISpatialDataSet = Me.Manager.Datasets(EwEUtils.Core.eVarNameFlags.LayerDepth)
+        'ds = layerDSs(0)
 
-        mfDs = DirectCast(ds, EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin)
-        Return mfDs
+        'mfDs = DirectCast(ds, EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin)
+        'Return mfDs
 
     End Function
 
