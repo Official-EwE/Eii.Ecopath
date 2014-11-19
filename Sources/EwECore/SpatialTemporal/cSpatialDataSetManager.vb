@@ -376,7 +376,7 @@ Namespace SpatialData
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Add
             Me.m_lAvailable.Add(item)
             ' Assign ID if necessary
-            If (item.GUID = Nothing) Then
+            If (Guid.Equals(Guid.Empty, item.GUID)) Then
                 item.GUID = Guid.NewGuid()
             End If
         End Sub
@@ -512,8 +512,27 @@ Namespace SpatialData
         End Property
 
         Public Function Find(ByVal guidDS As Guid) As ISpatialDataSet
+
+            If Guid.Equals(guidDS, Guid.Empty) Then
+                Console.WriteLine("Cannot search for an unknown dataset")
+                Return Nothing
+            End If
+
             For Each ds As ISpatialDataSet In Me.m_lAvailable
                 If (guidDS.Equals(ds.GUID)) Then Return ds
+            Next
+            Return Nothing
+        End Function
+
+        Public Function Find(ByVal strName As String) As ISpatialDataSet
+
+            If String.IsNullOrWhiteSpace(strName) Then
+                Console.WriteLine("Cannot search for an unknown dataset")
+                Return Nothing
+            End If
+
+            For Each ds As ISpatialDataSet In Me.m_lAvailable
+                If (String.Compare(ds.DisplayName, strName, True) = 0) Then Return ds
             Next
             Return Nothing
         End Function
@@ -730,8 +749,18 @@ Namespace SpatialData
                         xnData.InnerXml = cfg.DatasetConfig
 
                         ds.Configuration(doc) = xnData
-                        ds.GUID = guidDS
-                        Me.m_lAvailable.Add(ds)
+
+                        ' Try to find Dataset by name 
+                        Dim ds2 As ISpatialDataSet = Me.Find(ds.DisplayName)
+                        If (ds2 IsNot Nothing) Then
+                            ' Ok, use that one
+                            ds = ds2
+                        Else
+                            ' Dataset is new? try to complement GUID and use it as a virtual dataset
+                            If Guid.Equals(Guid.Empty, guidDS) Then guidDS = Guid.NewGuid
+                            ds.GUID = guidDS
+                            Me.m_lAvailable.Add(ds)
+                        End If
 
                         ' This dataset is obtained from the model, not from a properly defined dataset
                         Me.IsVirtual(ds) = True
@@ -740,6 +769,8 @@ Namespace SpatialData
                 Catch ex As Exception
                     cLog.Write(ex, "cSpatialDatasetManager.CreateDataset " & cfg.DatasetTypeName)
                 End Try
+
+
             End If
 
             Return ds
