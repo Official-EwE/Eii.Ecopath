@@ -61,6 +61,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property AUCI() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("AUCI", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Resilience data.
         '''</summary>
         Friend ReadOnly Property AUTOSAVE_NAME() As String
@@ -79,11 +89,50 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Supply-demand of energy.
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property cicimar_color() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("cicimar_color", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property CONACYT() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("CONACYT", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property EscudoIPN1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("EscudoIPN1", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Supply-demand of energy ({0}) {1}.
         '''</summary>
         Friend ReadOnly Property LABEL_CAPTION() As String
             Get
                 Return ResourceManager.GetString("LABEL_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Trend.
+        '''</summary>
+        Friend ReadOnly Property LABEL_TREND() As String
+            Get
+                Return ResourceManager.GetString("LABEL_TREND", resourceCulture)
             End Get
         End Property
         

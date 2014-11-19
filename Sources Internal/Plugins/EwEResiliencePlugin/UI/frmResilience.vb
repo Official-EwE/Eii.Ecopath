@@ -18,16 +18,24 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Controls
+Imports EwECore
+Imports EwEUtils.Commands
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
 Public Class frmResilience
 
+#Region " Internal vars "
+
     Private m_model As cResilienceModel = Nothing
-    Private m_zgh As cZedGraphHelper = Nothing
+    Private m_graph As cResilienceGraph = Nothing
+
+#End Region ' Internal vars
 
     Public Sub New(uic As cUIContext, model As cResilienceModel)
         MyBase.New()
@@ -35,10 +43,8 @@ Public Class frmResilience
         Me.m_model = model
         Me.InitializeComponent()
 
-        Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
-        Me.m_zgh.ConfigurePane(My.Resources.LABEL_CAPTION, My.Resources.LABEL_XAXIS, My.Resources.LABEL_YAXIS, False)
-        Me.m_zgh.AutoscalePane() = True
+        Me.m_graph = New cResilienceGraph()
+        Me.m_graph.Attach(Me.UIContext, Me.m_zgc, Me.m_model.Data, "")
 
     End Sub
 
@@ -54,15 +60,27 @@ Public Class frmResilience
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
         AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
 
+        Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
+        cmd.AddControl(Me.m_pbIPN, "http://www.ipn.mx")
+        cmd.AddControl(Me.m_pbCicimar, "http://www.cicimar.ipn.mx")
+        cmd.AddControl(Me.m_pbAuci, "http://www.auci.gub.uy")
+        cmd.AddControl(Me.m_pbConacyt, "http://www.conacyt.mx")
+
         Me.UpdateControls()
-        Me.UpdatePlot()
+        Me.UpdateGraph()
 
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         RemoveHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
-        Me.m_zgh.Detach()
+        Me.m_graph.Detach()
+
+        Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
+        cmd.RemoveControl(Me.m_pbIPN)
+        cmd.RemoveControl(Me.m_pbCicimar)
+        cmd.RemoveControl(Me.m_pbAuci)
+        cmd.RemoveControl(Me.m_pbConacyt)
 
         MyBase.OnFormClosed(e)
 
@@ -81,33 +99,39 @@ Public Class frmResilience
     End Sub
 
     Protected Overrides Sub UpdateControls()
+
+        If Me.m_model.Data.Calculated Then
+            Me.m_slider.Enabled = True
+            Me.m_cbAnnual.Enabled = True
+            Me.m_slider.Minimum = 1
+
+            If Me.m_cbAnnual.Checked Then
+                Me.m_slider.Maximum = Me.m_model.Data.NumYears
+            Else
+                Me.m_slider.Maximum = Me.m_model.Data.NumTimeSteps
+            End If
+        Else
+            Me.m_slider.Enabled = False
+            Me.m_cbAnnual.Enabled = False
+        End If
+
         Me.m_cbAutosave.Checked = My.Settings.Autosave
+
         MyBase.UpdateControls()
     End Sub
 
-    Private Sub UpdatePlot()
+    Private Sub UpdateGraph()
 
-        Dim data As cResilienceData = Me.m_model.Data
-        Dim bMonthly As Boolean = Me.m_cbMonthly.Checked
-        Dim strLabel As String = CStr(cSystemUtils.IIF(bMonthly, "Resilience (month)", "Resilience (annual averages)"))
-        Dim demand As Double() = CType(cSystemUtils.IIF(bMonthly, data.DemandAtT, data.DemandAtY), Double())
-        Dim supply As Double() = CType(cSystemUtils.IIF(bMonthly, data.SupplyAtT, data.SupplyAtY), Double())
-        Dim ppl As New ZedGraph.PointPairList(demand, supply)
-        Dim li As New ZedGraph.LineItem(strLabel, ppl, Drawing.Color.Black, ZedGraph.SymbolType.Circle)
-        Dim pane As ZedGraph.GraphPane = Me.m_zgh.GetPane(1)
+        Me.m_graph.Time = Me.m_slider.Value
+        Me.m_graph.Annual = Me.m_cbAnnual.Checked
 
-        li.Line.IsVisible = False
-
-        pane.CurveList.Clear()
-        pane.CurveList.Add(li)
-
-        Me.m_zgh.RescaleAndRedraw()
+        Me.m_graph.Refresh()
 
     End Sub
 
     Public Overrides ReadOnly Property IsRunForm As Boolean
         Get
-            Return True
+            Return False
         End Get
     End Property
 
@@ -115,27 +139,21 @@ Public Class frmResilience
 
 #Region " Events "
 
-    Private Sub m_cbMonthly_CheckedChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbMonthly.CheckedChanged
-        Try
-            Me.UpdatePlot()
-        Catch ex As Exception
-            ' Plop
-        End Try
-    End Sub
-
     Private Sub OnCalculationsUpdated(sender As cResilienceData, iTime As Integer, bDone As Boolean)
         Try
-            If bDone Then Me.UpdatePlot()
+            If bDone Then Me.UpdateGraph()
+            Me.UpdateControls()
         Catch ex As Exception
-
+            Debug.Assert(False)
         End Try
     End Sub
 
-    Private Sub m_btnRunEcosim_Click(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnRunEcosim.Click
+    Private Sub OnToggleAnnual(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbAnnual.CheckedChanged
         Try
-            Me.Core.RunEcoSim()
+            Me.m_graph.Annual = Me.m_cbAnnual.Checked
+            Me.UpdateControls()
+            Me.UpdateGraph()
         Catch ex As Exception
             Debug.Assert(False)
         End Try
@@ -146,6 +164,15 @@ Public Class frmResilience
         Try
             My.Settings.Autosave = Me.m_cbAutosave.Checked
             Me.Core.OnSettingsChanged()
+        Catch ex As Exception
+            Debug.Assert(False)
+        End Try
+    End Sub
+
+    Private Sub OnTimeSliderChanged(sender As Object, e As System.EventArgs) _
+        Handles m_slider.ValueChanged
+        Try
+            Me.UpdateGraph()
         Catch ex As Exception
             Debug.Assert(False)
         End Try

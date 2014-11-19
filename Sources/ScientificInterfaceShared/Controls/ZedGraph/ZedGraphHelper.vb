@@ -339,8 +339,7 @@ Namespace Controls
         ' == Legend ==
         ''' <summary>States whether this instance should show a legend if left to 'default'</summary>
         Private m_bShowLegend As Boolean = True
-        Private m_bAllowDuplicatesOnLegend As Boolean = False
-
+ 
         '== Axis labels ==
         ''' <summary>States whether this instance should show axis labels.</summary>
         Private m_bShowAxisLabels As Boolean = True
@@ -415,6 +414,12 @@ Namespace Controls
 
 #Region " Public interfaces "
 
+        ''' <summary>
+        ''' Diagnostics, returns whether the helper is currently attached to an
+        ''' existing graph.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Function IsAttached() As Boolean
             Return Me.m_zgc IsNot Nothing
         End Function
@@ -529,12 +534,10 @@ Namespace Controls
             Get
                 Return Me.m_nPanels
             End Get
-
             Set(ByVal value As Integer)
                 Me.m_nPanels = value
                 Me.ChangeNumPanels()
             End Set
-
         End Property
 
         ''' ---------------------------------------------------------------
@@ -547,14 +550,7 @@ Namespace Controls
         ''' graph content will not be affected.
         ''' </remarks>
         ''' ---------------------------------------------------------------
-        Public Property AllowDuplicatesOnLegend As Boolean
-            Get
-                Return Me.m_bAllowDuplicatesOnLegend
-            End Get
-            Set(value As Boolean)
-                Me.m_bAllowDuplicatesOnLegend = value
-            End Set
-        End Property
+        Public Property AllowDuplicatesOnLegend As Boolean = False
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -862,11 +858,11 @@ Namespace Controls
                                 End If
 
 #If DEBUG Then
-'                                ' Validate line content
-'                                For ipt As Integer = 0 To li.Points.Count - 1
-'                                    Dim pt As PointPair = li.Points(ipt)
-'                                    Debug.Assert(cNumberUtils.IsFinite(CSng(pt.X)) And cNumberUtils.IsFinite(CSng(pt.Y)), "Point contains infinite values")
-'                                Next
+                                '                                ' Validate line content
+                                '                                For ipt As Integer = 0 To li.Points.Count - 1
+                                '                                    Dim pt As PointPair = li.Points(ipt)
+                                '                                    Debug.Assert(cNumberUtils.IsFinite(CSng(pt.X)) And cNumberUtils.IsFinite(CSng(pt.Y)), "Point contains infinite values")
+                                '                                Next
 #End If
                                 Select Case Me.CurveType(li)
 
@@ -1209,7 +1205,8 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Property IsLegendVisible() As Boolean
             Get
-                Return Me.m_bShowLegend
+                Dim gp As GraphPane = Me.GetPane(1)
+                Return gp.Legend.IsVisible
             End Get
             Set(ByVal value As Boolean)
                 If (value <> Me.m_bShowLegend) Then
@@ -1992,6 +1989,132 @@ Namespace Controls
 
 #End Region ' Pane value querying
 
+#Region " Regression line "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Find a linear regression line for a list of points. The regression
+        ''' includes standard errors for slope and intercept, and provides the
+        ''' measure of correlation.
+        ''' </summary>
+        ''' <param name="ppl"></param>
+        ''' <param name="sSlope"></param>
+        ''' <param name="sSlopeStdErr"></param>
+        ''' <param name="sIntercept"></param>
+        ''' <param name="sInterceptStdErr"></param>
+        ''' <param name="sCorrelation"></param>
+        ''' <param name="sMin"></param>
+        ''' <param name="sMax"></param>
+        ''' <param name="iSampleSize"></param>
+        ''' <remarks>
+        ''' After Joe Hui's Particle Size Distribution implementation.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Protected Sub FindRegression(ByVal ppl As PointPairList, _
+                                     ByRef sSlope As Single, ByRef sSlopeStdErr As Single, _
+                                     ByRef sIntercept As Single, ByRef sInterceptStdErr As Single, _
+                                     ByRef sCorrelation As Single, ByRef sMin As Single, ByRef sMax As Single, _
+                                     ByRef iSampleSize As Integer)
+
+            Dim ptp As PointPair = Nothing
+            Dim dXValue As Double = 0
+            Dim dYValue As Double = 0
+            Dim dSumX As Double = 0
+            Dim dSumY As Double = 0
+            Dim dSumXSq As Double = 0
+            Dim dSumYSq As Double = 0
+            Dim dSumXY As Double = 0
+            Dim iNum As Integer = 0
+            Dim dXMin As Double = Double.MaxValue
+            Dim dXMax As Double = Double.MinValue
+            Dim dXMean As Double
+            Dim dYMean As Double
+            Dim dSumXdevYdev As Double = 0
+            Dim dSumXdevSq As Double = 0
+            Dim dSumYdevSq As Double = 0
+            Dim dXStdDev As Double
+            Dim dYStdDev As Double
+            Dim dEstStdErr As Double
+
+            For i As Integer = 0 To ppl.Count - 1
+                ptp = ppl(i)
+                dXValue = ptp.X
+                dYValue = ptp.Y
+                dSumX += dXValue
+                dSumY += dYValue
+                dSumXSq += dXValue * dXValue
+                dSumYSq += dYValue * dYValue
+                dSumXY += dXValue * dYValue
+
+                dXMin = Math.Min(dXValue, dXMin)
+                dXMax = Math.Max(dXValue, dXMax)
+                iNum += 1
+            Next
+
+            If (iNum > 0) Then
+                dXMean = dSumX / iNum
+                dYMean = dSumY / iNum
+            End If
+
+            For i As Integer = 0 To ppl.Count - 1
+                ptp = ppl(i)
+                dXValue = ptp.X
+                dYValue = ptp.Y
+                dSumXdevYdev += ((dXValue - dXMean) * (dYValue - dYMean))
+                dSumXdevSq += ((dXValue - dXMean) ^ 2)
+                dSumYdevSq += ((dYValue - dYMean) ^ 2)
+            Next
+
+            sSlope = CSng(dSumXdevYdev / dSumXdevSq)
+            sIntercept = CSng(dYMean - sSlope * dXMean)
+
+            dXStdDev = Math.Sqrt(dSumXdevSq / (iNum - 1))
+            dYStdDev = Math.Sqrt(dSumYdevSq / (iNum - 1))
+            dEstStdErr = Math.Sqrt((iNum - 1) * (dYStdDev ^ 2 - sSlope ^ 2 * dXStdDev ^ 2) / (iNum - 2))
+            sSlopeStdErr = CSng(dEstStdErr / (Math.Sqrt(iNum - 1) * dXStdDev))
+            sInterceptStdErr = CSng(dEstStdErr * Math.Sqrt((1 / iNum) + (dXMean ^ 2 / ((iNum - 1) * dXStdDev ^ 2))))
+
+            sCorrelation = CSng((iNum * dSumXY - dSumX * dSumY) / _
+                           (Math.Sqrt(iNum * dSumXSq - dSumX ^ 2) * Math.Sqrt(iNum * dSumYSq - dSumY ^ 2)))
+            sMin = CSng(dXMin)
+            sMax = CSng(dXMax)
+            iSampleSize = iNum
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Find a linear regression line for a list of points.
+        ''' </summary>
+        ''' <param name="ppl"></param>
+        ''' <param name="sSlope"></param>
+        ''' <param name="sIntercept"></param>
+        ''' <param name="iSampleSize"></param>
+        ''' -------------------------------------------------------------------       
+        Protected Sub FindRegression(ByVal ppl As PointPairList, _
+                                     ByRef sSlope As Single, ByRef sIntercept As Single, _
+                                     ByRef iSampleSize As Integer)
+
+            Dim ptp As PointPair = Nothing
+            Dim s0 As Integer = 0
+            Dim s1, s2, t0, t1 As Double
+
+            For i As Integer = 0 To ppl.Count - 1
+                ptp = ppl(i)
+                s0 += 1
+                s1 = s1 + ptp.X
+                s2 = s2 + ptp.X * ptp.X
+                t0 = t0 + ptp.Y
+                t1 = t1 + ptp.X * ptp.Y
+            Next
+
+            sSlope = CSng((s0 * t1 - s1 * t0) / (s0 * s2 - s1 * s1))
+            sIntercept = CSng((s2 * t0 - s1 * t1) / (s0 * s2 - s1 * s1))
+
+        End Sub
+
+#End Region ' Regression line
+
 #End Region ' Public interfaces
 
 #Region " Events "
@@ -2474,6 +2597,8 @@ Namespace Controls
             Else
                 gp.Legend.IsVisible = bShow
             End If
+
+            Me.UpdateHoverMenuItems()
             Me.m_zgc.Invalidate()
 
         End Sub

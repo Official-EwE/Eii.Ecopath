@@ -1761,9 +1761,12 @@ Public Class cMSE
         nSuccessfullyProjectedModels = 0
 
         'This outputs information that can be used to resolve issues with the biomass limits are exceeded
-        Dim DiagnosticOutput4BiomassLimits = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "BadDynamicsTrajectories.csv"), True)
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "BadDynamicsTrajectories.csv"), True)
         Dim MaxBiomass As Single
         Dim MinBiomass As Single
+
+        If Me.m_core.SaveWithFileHeader Then writer.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+
         For Each iGrp In BiomassLimits.lstBiomassLimits
             MaxBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, OriginalNTimesteps + 1)
             MinBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, OriginalNTimesteps + 1)
@@ -1775,7 +1778,7 @@ Public Class cMSE
                     MinBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep)
                 End If
             Next
-            DiagnosticOutput4BiomassLimits.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", _
+            writer.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", _
                         cStringUtils.FormatNumber(iModel), _
                         cStringUtils.ToCSVField(m_currentStrategy.Name), _
                         cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp.mGroup.Index).Name), _
@@ -1787,7 +1790,7 @@ Public Class cMSE
                         cStringUtils.FormatNumber(iGrp.mLowerLimit), _
                         cStringUtils.FormatNumber(MinBiomass <= iGrp.mLowerLimit))
         Next
-        cMSEUtils.ReleaseWriter(DiagnosticOutput4BiomassLimits)
+        cMSEUtils.ReleaseWriter(writer)
 
         'Check whether the biomass for any species goes beneath or hits zero
         For iGrp As Integer = 1 To m_core.nLivingGroups
@@ -2059,10 +2062,6 @@ Public Class cMSE
     End Sub
 
     Private Sub GenerateInputStructure()
-
-        ' JS 12Oct13: Fixed path usage
-        ' JS 12Oct13: Used standard CSV field reading/writing
-        ' JS 12Oct13: Used standard readers/writers, and made robust
 
         Dim nLiving As Integer = m_core.nLivingGroups
         Dim nGroups As Integer = m_core.nGroups

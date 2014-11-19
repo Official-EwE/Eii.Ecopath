@@ -24,20 +24,110 @@ Imports EwECore
 
 Public Class cResilienceData
 
-    Public Sub Resize(nTimes As Integer, nYears As Integer)
-        ReDim SupplyAtT(nTimes)
-        ReDim SupplyAtY(nYears)
-        ReDim DemandAtT(nTimes)
-        ReDim DemandAtY(nYears)
+    Public Structure sBounds
+
+        ''' <summary>Minimum supply</summary>
+        Public Property smin As Single
+        ''' <summary>Maximum supply</summary>
+        Public Property smax As Single
+        ''' <summary>Minimum demand</summary>
+        Public Property dmin As Single
+        ''' <summary>Maximum demand</summary>
+        Public Property dmax As Single
+
+        Public Sub Init()
+            Me.dmax = Single.MinValue
+            Me.dmin = Single.MaxValue
+            Me.smax = Single.MinValue
+            Me.smin = Single.MaxValue
+        End Sub
+
+    End Structure
+
+    Private m_nGroups As Integer = 0
+    Private m_nTimes As Integer = 0
+    Private m_nYears As Integer = 0
+    Private m_boundsT As New sBounds
+    Private m_boundsY As New sBounds
+    Private m_bCalculated As Boolean = False
+
+    Public Sub Resize(nGroups As Integer, nTimes As Integer, nYears As Integer)
+
+        Me.m_nGroups = nGroups
+        Me.m_nTimes = nTimes
+        Me.m_nYears = nYears
+
+        ReDim GroupSupplyAtT(nGroups, nTimes + 1)
+        ReDim GroupSupplyAtY(nGroups, nYears + 1)
+        ReDim GroupDemandAtT(nGroups, nTimes + 1)
+        ReDim GroupDemandAtY(nGroups, nYears + 1)
+
+        Me.m_bCalculated = False
+
     End Sub
 
-    Public Property SupplyAtT As Double()
-    Public Property SupplyAtY As Double()
-    Public Property DemandAtT As Double()
-    Public Property DemandAtY As Double()
+    Public ReadOnly Property NumGroups As Integer
+        Get
+            Return Me.m_nGroups
+        End Get
+    End Property
 
-    Public Function SaveToCSV(strFile As String, bAnnual As Boolean) As Boolean
+    Public ReadOnly Property NumTimeSteps As Integer
+        Get
+            Return Me.m_nTimes
+        End Get
+    End Property
+
+    Public ReadOnly Property NumYears As Integer
+        Get
+            Return Me.m_nYears
+        End Get
+    End Property
+
+    Public Property GroupSupplyAtT As Single(,)
+    Public Property GroupSupplyAtY As Single(,)
+    Public Property GroupDemandAtT As Single(,)
+    Public Property GroupDemandAtY As Single(,)
+
+    Public Function DataboundsT() As sBounds
+        Return Me.m_boundsT
+    End Function
+
+    Public Function DataboundsY() As sBounds
+        Return Me.m_boundsT
+    End Function
+
+    Public ReadOnly Property Calculated As Boolean
+        Get
+            Return Me.m_bCalculated
+        End Get
+    End Property
+
+    Public Function SaveToCSV(core As cCore, strFile As String, bAnnual As Boolean) As Boolean
         Return True
     End Function
+
+    Public Sub CalculateStats()
+
+        Me.m_boundsT.Init()
+        Me.m_boundsY.Init()
+        For i As Integer = 1 To Me.m_nGroups
+            For t As Integer = 0 To Me.m_nTimes - 1
+                Me.m_boundsT.dmin = Math.Min(Me.m_boundsT.dmin, Me.GroupDemandAtT(i, t))
+                Me.m_boundsT.dmax = Math.Max(Me.m_boundsT.dmax, Me.GroupDemandAtT(i, t))
+                Me.m_boundsT.smin = Math.Min(Me.m_boundsT.smin, Me.GroupSupplyAtT(i, t))
+                Me.m_boundsT.smax = Math.Max(Me.m_boundsT.smax, Me.GroupSupplyAtT(i, t))
+            Next
+            For t As Integer = 0 To Me.m_nYears - 1
+                Me.m_boundsY.dmin = Math.Min(Me.m_boundsY.dmin, Me.GroupDemandAtY(i, t))
+                Me.m_boundsY.dmax = Math.Max(Me.m_boundsY.dmax, Me.GroupDemandAtY(i, t))
+                Me.m_boundsY.smin = Math.Min(Me.m_boundsY.smin, Me.GroupSupplyAtY(i, t))
+                Me.m_boundsY.smax = Math.Max(Me.m_boundsY.smax, Me.GroupSupplyAtY(i, t))
+            Next t
+        Next i
+
+        Me.m_bCalculated = True
+
+    End Sub
 
 End Class

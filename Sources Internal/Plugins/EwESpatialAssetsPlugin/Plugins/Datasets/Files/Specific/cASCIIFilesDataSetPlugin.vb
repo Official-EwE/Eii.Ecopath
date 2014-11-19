@@ -300,6 +300,9 @@ Namespace SpatialData
             Dim iCol As Integer = 0
             Dim iRow As Integer = 0
             Dim strLine As String = ""
+            Dim bRowCountError As Boolean = False
+            Dim bColCountError As Boolean = False
+            Dim bValueError As Boolean = False
             Dim bDataCorrect As Boolean = True
 
             Try
@@ -313,15 +316,18 @@ Namespace SpatialData
                     If (bits.Length <> rs.NumColumns) Then
                         ' #No: do not accept this data
                         bDataCorrect = False
+                        bColCountError = True
                     Else
                         ' #Yes: process row data
                         For iCol = 0 To rs.NumColumns - 1
-                            bDataCorrect = bDataCorrect And Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
+                            bValueError = bValueError Or Not Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
+                            bDataCorrect = bDataCorrect And Not bValueError
                         Next iCol
                         iRow += 1
                     End If
 
                     If (iRow > rs.NumRows) Then
+                        bRowCountError = True
                         bDataCorrect = False
                     End If
 
@@ -335,6 +341,10 @@ Namespace SpatialData
             If (Not bDataCorrect) Then
                 rs = Nothing
             End If
+
+            If bRowCountError Then Me.LogMessage("", eStatusFlags.MissingParameter)
+            If bColCountError Then Me.LogMessage("", eStatusFlags.MissingParameter)
+            If bValueError Then Me.LogMessage("", eStatusFlags.ErrorEncountered)
 
             Return bDataCorrect
 

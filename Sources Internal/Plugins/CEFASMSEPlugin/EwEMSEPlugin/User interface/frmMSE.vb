@@ -135,6 +135,13 @@ Public Class frmMSE
         Me.m_btnCreateSurvDist.Visible = False
         Me.m_btnDeleteResults.Visible = False
 #End If
+
+        ' Credits
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+        cmd.AddControl(Me.m_pbCefas, "http://www.cefas.defra.gov.uk")
+        cmd.AddControl(Me.m_pbEII, "http://www.ecopathinternational.org")
+
         Me.UpdateControls()
 
     End Sub
@@ -165,6 +172,11 @@ Public Class frmMSE
 
             Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
             RemoveHandler mon.OnInvalidated, AddressOf OnMSEStateChanged
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.RemoveControl(Me.m_pbCefas)
+            cmd.RemoveControl(Me.m_pbEII)
 
         End If
 
@@ -383,7 +395,8 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub OnEditDiets(sender As System.Object, e As System.EventArgs) Handles m_btnEditDiets.Click
+    Private Sub OnEditDiets(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnEditDiets.Click
 
         If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
         Try
@@ -399,6 +412,24 @@ Public Class frmMSE
 
     End Sub
 
+    Private Sub OnEditQuotaShares(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnQuotaShares.Click
+
+        If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
+
+        Try
+            Dim frmQuotaShares As New frmEditQuotaShares(Me.MSE)
+            frmQuotaShares.Init(Me.UIContext)
+            If frmQuotaShares.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                'Me.MSE.InvalidateConfigurationState(True)
+                Me.MSE.QuotaShares.Load()
+                Me.UpdateControls()
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "CEFAS.frmMSE::OnQuotaShares")
+        End Try
+
+    End Sub
     Private Sub OnShowTFM(sender As System.Object, e As System.EventArgs) _
         Handles m_btnReviewTFM.Click
 
@@ -643,22 +674,5 @@ Public Class frmMSE
     End Function
 
 #End Region ' Path / model validation
-  
-    Private Sub m_btnQuotaShares_Click(sender As System.Object, e As System.EventArgs) Handles m_btnQuotaShares.Click
-
-        If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
-
-        Try
-            Dim frmQuotaShares As New frmEditQuotaShares(Me.MSE)
-            frmQuotaShares.Init(Me.UIContext)
-            If frmQuotaShares.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                'Me.MSE.InvalidateConfigurationState(True)
-                Me.MSE.QuotaShares.Load()
-                Me.UpdateControls()
-            End If
-        Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnQuotaShares")
-        End Try
-
-    End Sub
+ 
 End Class

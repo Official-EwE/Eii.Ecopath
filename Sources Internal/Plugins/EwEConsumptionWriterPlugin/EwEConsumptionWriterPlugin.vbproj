@@ -190,7 +190,6 @@
     <Content Include="Resources\cicimar-color.png" />
     <Content Include="Resources\CONACYT.png" />
     <Content Include="Resources\EscudoIPN1.jpg" />
-    <Content Include="Resources\IPN-color.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

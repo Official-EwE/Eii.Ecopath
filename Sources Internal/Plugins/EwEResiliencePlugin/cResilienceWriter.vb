@@ -23,6 +23,7 @@ Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -59,7 +60,54 @@ Public Class cResilienceWriter
 
 #Region " Internals "
 
-    Private Function SaveDataToFile(bAnnual As Boolean) As Boolean
+    Private Function SaveDataToFile(ByVal bAnnual As Boolean) As Boolean
+
+        Dim sw As StreamWriter = Nothing
+        Dim grp As cEcoPathGroupInput = Nothing
+        Dim n As Integer = 0
+
+        Try
+            sw = New StreamWriter(Me.GetOutputFileName(Me.OutputPath, bAnnual))
+        Catch ex As Exception
+            ' ToDo: send failure message
+            Return False
+        End Try
+
+        If (Me.m_core.SaveWithFileHeader) Then sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+
+        ' Header
+        sw.Write(cSystemUtils.IIF(bAnnual, "Year", "Time"))
+        For i As Integer = 1 To Me.m_core.nGroups
+            grp = Me.m_core.EcoPathGroupInputs(i)
+            If grp.IsConsumer Then
+                sw.Write("," & cStringUtils.ToCSVField("Supply " & grp.Name))
+                sw.Write("," & cStringUtils.ToCSVField("Demand " & grp.Name))
+            End If
+        Next
+        sw.WriteLine()
+
+        ' Body
+        n = cSystemUtils.IIF(bAnnual, Me.m_data.NumYears, Me.m_data.NumTimeSteps)
+        For t As Integer = 0 To n - 1
+            sw.Write(cStringUtils.ToCSVField(t))
+            For i As Integer = 1 To Me.m_core.nGroups
+                grp = Me.m_core.EcoPathGroupInputs(i)
+                If grp.IsConsumer Then
+                    If bAnnual Then
+                        sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupSupplyAtY(i, t)))
+                        sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupDemandAtY(i, t)))
+                    Else
+                        sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupSupplyAtT(i, t)))
+                        sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupDemandAtT(i, t)))
+                    End If
+                End If
+            Next i
+            sw.WriteLine()
+        Next t
+
+        sw.Flush()
+        sw.Close()
+
         Return True
     End Function
 
@@ -78,20 +126,11 @@ Public Class cResilienceWriter
         If bSaveAnnual Then
             strFileName = "Resilience_annual"
         Else
-            strFileName = "Resilience"
+            strFileName = "Resilience_monthly"
         End If
 
         Return Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
 
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get default model details to report in output file.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Function GetModelDetails() As String
-        Return Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim)
     End Function
 
 #End Region ' Internals

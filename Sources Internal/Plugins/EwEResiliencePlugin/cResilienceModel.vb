@@ -19,6 +19,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -30,8 +31,8 @@ Public Class cResilienceModel
     Private m_data As cResilienceData = Nothing
 
     ' -- Internals --
-    Private Property YearEatenBy As Single
-    Private Property YearEatenOf As Single
+    Private Property EatenByYear As Single()
+    Private Property EatenOfYear As Single()
 
     Public Sub New(core As cCore)
         Me.m_core = core
@@ -48,35 +49,37 @@ Public Class cResilienceModel
     Public Sub Compute(iTime As Integer, simds As cEcosimDatastructures)
 
         If (iTime = 1) Then
-            Me.m_data.Resize(simds.NTimes - 1, simds.NumYears - 1)
+            Me.m_data.Resize(simds.nGroups, simds.NTimes - 1, simds.NumYears - 1)
+            ReDim EatenByYear(simds.nGroups)
+            ReDim EatenOfYear(simds.nGroups)
         End If
 
-        Dim SumEatenBy As Single = 0
-        Dim SumEatenOf As Single = 0
         Dim iYear As Integer = 1 + CInt((iTime - 1) / cCore.N_MONTHS)
 
         For i As Integer = 1 To Me.m_core.nGroups
-            SumEatenBy += simds.Eatenby(i)
-            SumEatenOf += simds.Eatenof(i)
+            EatenByYear(i) += simds.Eatenby(i)
+            EatenOfYear(i) += simds.Eatenof(i)
+
+            Me.m_data.GroupSupplyAtT(i, iTime - 1) = -cSystemUtils.IIF(simds.Eatenby(i) = 0, 0, CSng(Math.Log10(simds.Eatenby(i))))
+            Me.m_data.GroupDemandAtT(i, iTime - 1) = cSystemUtils.IIF(simds.Eatenof(i) = 0, 0, CSng(Math.Log10(simds.Eatenof(i))))
+
+            Try
+                If ((iTime Mod cCore.N_MONTHS) = 0) Then
+                    Me.m_data.GroupSupplyAtY(i, iYear - 1) = -cSystemUtils.IIF(EatenByYear(i) = 0, 0, CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
+                    Me.m_data.GroupDemandAtY(i, iYear - 1) = cSystemUtils.IIF(EatenOfYear(i) = 0, 0, CSng(Math.Log10(EatenOfYear(i) / cCore.N_MONTHS)))
+                    EatenOfYear(i) = 0
+                    EatenByYear(i) = 0
+                End If
+            Catch ex As Exception
+                'Whoah!
+            End Try
         Next
-        YearEatenBy += SumEatenBy
-        YearEatenOf += SumEatenOf
 
-        Try
-            Me.m_data.DemandAtT(iTime - 1) = CSng(Math.Log10(SumEatenOf))
-            Me.m_data.SupplyAtT(iTime - 1) = -CSng(Math.Log10(SumEatenBy))
+        If (iTime = simds.NTimes) Then
+            Me.m_data.CalculateStats()
+        End If
 
-            If ((iTime Mod cCore.N_MONTHS) = 0) Then
-                Me.m_data.DemandAtY(iYear - 1) = CSng(Math.Log10(YearEatenOf / cCore.N_MONTHS))
-                Me.m_data.SupplyAtY(iYear - 1) = -CSng(Math.Log10(YearEatenBy / cCore.N_MONTHS))
-                YearEatenOf = 0
-                YearEatenBy = 0
-            End If
-        Catch ex As Exception
-            'Whoah!
-        End Try
-
-        Me.RaiseUpdate(iTime, iTime = simds.NTimes)
+        Me.RaiseUpdate(iTime, Me.m_data.Calculated)
 
     End Sub
 

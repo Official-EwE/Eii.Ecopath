@@ -3212,4 +3212,10 @@
   <data name="AUTOSAVE_ECOSPACEREGIONSUMMARY" xml:space="preserve">
     <value>Ecospace summary per region</value>
   </data>
+  <data name="GENERAL_LABEL_ANNUAL" xml:space="preserve">
+    <value>Annual</value>
+  </data>
+  <data name="GENERAL_LABEL_MONTHLY" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
 </root>

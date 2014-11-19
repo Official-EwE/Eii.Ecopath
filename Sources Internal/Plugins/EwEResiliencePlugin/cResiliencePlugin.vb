@@ -104,7 +104,7 @@ Public Class cResiliencePlugin
 
     Public Function AutoSaveSubPath() As String _
         Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
-        ' No fancy sub directories
+        ' No fancy sub-directories
         Return ""
     End Function
 
@@ -202,7 +202,7 @@ Public Class cResiliencePlugin
     Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState _
         Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-            Return eCoreExecutionState.EcosimLoaded
+            Return eCoreExecutionState.EcosimCompleted
         End Get
     End Property
 
