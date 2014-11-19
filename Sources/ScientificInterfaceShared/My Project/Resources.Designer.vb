@@ -1795,6 +1795,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Annual.
+        '''</summary>
+        Public ReadOnly Property GENERAL_LABEL_ANNUAL() As String
+            Get
+                Return ResourceManager.GetString("GENERAL_LABEL_ANNUAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monthly.
+        '''</summary>
+        Public ReadOnly Property GENERAL_LABEL_MONTHLY() As String
+            Get
+                Return ResourceManager.GetString("GENERAL_LABEL_MONTHLY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to : (colon).
         '''</summary>
         Public ReadOnly Property GENERIC_CHAR_COLON() As String

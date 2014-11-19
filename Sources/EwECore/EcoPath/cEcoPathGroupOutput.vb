@@ -1347,7 +1347,7 @@ Public Class cEcoPathGroupOutput
 
     End Property
 
-    Public Property PBOutputStatus() As eStatusFlags
+    Public Property PBStatus() As eStatusFlags
 
         Get
             Return GetStatus(eVarNameFlags.PBOutput)
@@ -1355,6 +1355,19 @@ Public Class cEcoPathGroupOutput
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.PBInput, value)
+        End Set
+
+    End Property
+
+    <Obsolete("Use PBStatus instead")> _
+    Public Property PBOutputStatus() As eStatusFlags
+
+        Get
+            Return Me.PBStatus
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            Me.PBStatus = value
         End Set
 
     End Property
