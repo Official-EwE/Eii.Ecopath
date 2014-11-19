@@ -61,7 +61,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that converts GIS vector data to a Ecospace raster with polygon/cell area cell overlap ratios. For this, every cell area / polygon area overlap ratio is calculated, and the ratio [0, 1] is stored in the raster. This method becomes slow for large polygon data sets..
+        '''  Looks up a localized string similar to Convert GIS vector data to a Ecospace raster with polygon/cell area cell overlap ratios. For this, every cell area / polygon area overlap ratio is calculated, and the ratio [0, 1] is stored in the raster. This method becomes slow for large polygon data sets..
         '''</summary>
         Friend ReadOnly Property CONVERTER_AREARASTER_DESCR() As String
             Get
@@ -79,7 +79,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that converts GIS vector data to a Ecospace raster using the vector data as a mask, where either values inside or outside the vector data are rasterized..
+        '''  Looks up a localized string similar to Convert GIS vector data to a Ecospace raster using the vector data as a mask, where either values inside or outside the vector data are rasterized..
         '''</summary>
         Friend ReadOnly Property CONVERTER_COOKIECUTTER_DESCR() As String
             Get
@@ -97,7 +97,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that converts GIS raster or polygon data to a value raster compatible with Ecospace. Executed GIS raster operations are Clip and Resample..
+        '''  Looks up a localized string similar to Convert GIS raster or polygon data to a value raster compatible with Ecospace. Executed GIS raster operations are Clip and Resample..
         '''</summary>
         Friend ReadOnly Property CONVERTER_DIRECTRASTER_DESCR() As String
             Get
@@ -115,7 +115,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that converts the attribute values of GIS vector data (points, multi-points and polygones) to a raster compatible with Ecospace..
+        '''  Looks up a localized string similar to Convert GIS vector data (points, multi-points and polygones) to a raster compatible with Ecospace, where a certain vector attribute is matched to an Ecospace entity (MPA, habitat, region, group, ..).
         '''</summary>
         Friend ReadOnly Property CONVERTER_DIRECTVECTOR_DESCR() As String
             Get
@@ -133,7 +133,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Plugin that converts GIS isobar (height contours) to a Ecospace depth map..
+        '''  Looks up a localized string similar to Convert GIS isobar (height contours) to a Ecospace depth map..
         '''</summary>
         Friend ReadOnly Property CONVERTER_ISOBAR_DESCR() As String
             Get

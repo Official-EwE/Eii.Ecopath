@@ -118,31 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CONVERTER_AREARASTER_DESCR" xml:space="preserve">
-    <value>Plugin that converts GIS vector data to a Ecospace raster with polygon/cell area cell overlap ratios. For this, every cell area / polygon area overlap ratio is calculated, and the ratio [0, 1] is stored in the raster. This method becomes slow for large polygon data sets.</value>
+    <value>Convert GIS vector data to a Ecospace raster with polygon/cell area cell overlap ratios. For this, every cell area / polygon area overlap ratio is calculated, and the ratio [0, 1] is stored in the raster. This method becomes slow for large polygon data sets.</value>
   </data>
   <data name="CONVERTER_AREARASTER_NAME" xml:space="preserve">
     <value>Area ratios</value>
   </data>
   <data name="CONVERTER_COOKIECUTTER_DESCR" xml:space="preserve">
-    <value>Plugin that converts GIS vector data to a Ecospace raster using the vector data as a mask, where either values inside or outside the vector data are rasterized.</value>
+    <value>Convert GIS vector data to a Ecospace raster using the vector data as a mask, where either values inside or outside the vector data are rasterized.</value>
   </data>
   <data name="CONVERTER_COOKIECUTTER_NAME" xml:space="preserve">
     <value>Masked conversion</value>
   </data>
   <data name="CONVERTER_DIRECTRASTER_DESCR" xml:space="preserve">
-    <value>Plugin that converts GIS raster or polygon data to a value raster compatible with Ecospace. Executed GIS raster operations are Clip and Resample.</value>
+    <value>Convert GIS raster or polygon data to a value raster compatible with Ecospace. Executed GIS raster operations are Clip and Resample.</value>
   </data>
   <data name="CONVERTER_DIRECTRASTER_NAME" xml:space="preserve">
     <value>Raster interpolation</value>
   </data>
   <data name="CONVERTER_DIRECTVECTOR_DESCR" xml:space="preserve">
-    <value>Plugin that converts the attribute values of GIS vector data (points, multi-points and polygones) to a raster compatible with Ecospace.</value>
+    <value>Convert GIS vector data (points, multi-points and polygones) to a raster compatible with Ecospace, where a certain vector attribute is matched to an Ecospace entity (MPA, habitat, region, group, ..)</value>
   </data>
   <data name="CONVERTER_DIRECTVECTOR_NAME" xml:space="preserve">
     <value>Vector conversion</value>
   </data>
   <data name="CONVERTER_ISOBAR_DESCR" xml:space="preserve">
-    <value>Plugin that converts GIS isobar (height contours) to a Ecospace depth map.</value>
+    <value>Convert GIS isobar (height contours) to a Ecospace depth map.</value>
   </data>
   <data name="CONVERTER_ISOBAR_NAME" xml:space="preserve">
     <value>Isobar conversion</value>
