@@ -1035,7 +1035,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=raster data summary</comment>
   </data>
   <data name="STATUS_SPATIALTEMPORAL_LOADING" xml:space="preserve">
-    <value>Loading external data for '{0}' at time {1} ({2:yyyy/MM/dd})</value>
+    <value>Accessing external data for '{0}' at time {1} ({2:yyyy/MM/dd})</value>
     <comment>{0}=layer name, {1}=time step, {2}=date (formatted)</comment>
   </data>
   <data name="OUTPUT_DIRECTORY_MISSING" xml:space="preserve">
