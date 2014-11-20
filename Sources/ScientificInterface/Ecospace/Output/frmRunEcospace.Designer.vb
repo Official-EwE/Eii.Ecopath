@@ -56,6 +56,7 @@ Namespace Ecospace
             Me.m_plLabelOptions = New System.Windows.Forms.Panel()
             Me.m_cbInvertColor = New System.Windows.Forms.CheckBox()
             Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox()
+            Me.m_cbShowDateInLabel = New System.Windows.Forms.CheckBox()
             Me.m_cbShowLabels = New System.Windows.Forms.CheckBox()
             Me.m_hdrLabelOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plDistribution = New System.Windows.Forms.Panel()
@@ -187,6 +188,7 @@ Namespace Ecospace
             '
             Me.m_plLabelOptions.Controls.Add(Me.m_cbInvertColor)
             Me.m_plLabelOptions.Controls.Add(Me.m_cmbLabelPos)
+            Me.m_plLabelOptions.Controls.Add(Me.m_cbShowDateInLabel)
             Me.m_plLabelOptions.Controls.Add(Me.m_cbShowLabels)
             Me.m_plLabelOptions.Controls.Add(Me.m_hdrLabelOptions)
             resources.ApplyResources(Me.m_plLabelOptions, "m_plLabelOptions")
@@ -205,6 +207,14 @@ Namespace Ecospace
             Me.m_cmbLabelPos.FormattingEnabled = True
             Me.m_cmbLabelPos.Items.AddRange(New Object() {resources.GetString("m_cmbLabelPos.Items"), resources.GetString("m_cmbLabelPos.Items1"), resources.GetString("m_cmbLabelPos.Items2"), resources.GetString("m_cmbLabelPos.Items3"), resources.GetString("m_cmbLabelPos.Items4"), resources.GetString("m_cmbLabelPos.Items5"), resources.GetString("m_cmbLabelPos.Items6"), resources.GetString("m_cmbLabelPos.Items7"), resources.GetString("m_cmbLabelPos.Items8")})
             Me.m_cmbLabelPos.Name = "m_cmbLabelPos"
+            '
+            'm_cbShowDateInLabel
+            '
+            resources.ApplyResources(Me.m_cbShowDateInLabel, "m_cbShowDateInLabel")
+            Me.m_cbShowDateInLabel.Checked = True
+            Me.m_cbShowDateInLabel.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbShowDateInLabel.Name = "m_cbShowDateInLabel"
+            Me.m_cbShowDateInLabel.UseVisualStyleBackColor = True
             '
             'm_cbShowLabels
             '
@@ -552,6 +562,7 @@ Namespace Ecospace
         Friend WithEvents m_rbRelBiomassGraph As System.Windows.Forms.RadioButton
         Friend WithEvents m_rbCatchGraph As System.Windows.Forms.RadioButton
         Private WithEvents m_hdrGraphTypes As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_cbShowDateInLabel As System.Windows.Forms.CheckBox
 
 
     End Class
