@@ -174,8 +174,12 @@ Namespace Ecospace
 
             If Me.ShowLabels Then
 
-                Dim strLabel As String = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, _
-                                                       Me.m_core.EcospaceGroups(iItem).Name, Me.Date)
+                Dim strLabel As String = ""
+                If Me.ShowDateInLabel Then
+                    strLabel = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, Me.m_core.EcospaceGroups(iItem).Name, Me.Date)
+                Else
+                    strLabel = Me.m_core.EcospaceGroups(iItem).Name
+                End If
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()
 

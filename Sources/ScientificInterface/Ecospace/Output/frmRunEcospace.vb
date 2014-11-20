@@ -131,6 +131,7 @@ Namespace Ecospace
         Private m_bShowMPA As Boolean = True
         Private m_bShowIBM As Boolean = True
         Private m_bShowLabels As Boolean = True
+        Private m_bShowDateInLabel As Boolean = True
         Private m_bInvertLabelColor As Boolean = False
         Private m_labelposHorz As StringAlignment = StringAlignment.Near
         Private m_labelposVert As StringAlignment = StringAlignment.Near
@@ -546,6 +547,7 @@ Namespace Ecospace
                         drawer.RectList = rectList
                         drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
                         drawer.ShowLabels = Me.m_bShowLabels
+                        drawer.ShowDateInLabel = Me.m_bShowDateInLabel
                         drawer.Date = strDate
                         drawer.InvertLabelColors = Me.m_bInvertLabelColor
                         drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
@@ -779,10 +781,13 @@ Namespace Ecospace
             'Display the group name
             If Me.m_bShowLabels Then
 
-                Dim strLabel As String = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, _
-                                                       Core.EcospaceFleets(iFleet), strDate)
+                Dim strLabel As String = ""
+                If Me.m_bShowDateInLabel Then
+                    strLabel = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, Core.EcospaceFleets(iFleet).Name, strDate)
+                Else
+                    strLabel = Core.EcospaceFleets(iFleet).Name
+                End If
 
-                Dim fltName As String = Core.EcospaceFleets(iFleet).Name
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()
 
@@ -791,7 +796,7 @@ Namespace Ecospace
 
                 If Me.m_bInvertLabelColor Then br = Brushes.White
 
-                g.DrawString(fltName, Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend), br, rcPos, fmt)
+                g.DrawString(strLabel, Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend), br, rcPos, fmt)
             End If
 
         End Sub
@@ -951,8 +956,15 @@ Namespace Ecospace
             Handles m_cbShowLabels.CheckedChanged
 
             Me.m_bShowLabels = Me.m_cbShowLabels.Checked
-            Me.m_cbInvertColor.Enabled = Me.m_bShowLabels
-            Me.m_cmbLabelPos.Enabled = Me.m_bShowLabels
+            Me.UpdateControls()
+            Me.RefreshMap()
+
+        End Sub
+
+        Private Sub OnShowLabelTimeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbShowDateInLabel.CheckedChanged
+
+            Me.m_bShowDateInLabel = Me.m_cbShowDateInLabel.Checked
             Me.RefreshMap()
 
         End Sub
@@ -1355,6 +1367,10 @@ Namespace Ecospace
 
             Me.m_cmbRunType.SelectedIndex = iIndex
             Me.m_cmbRunType.Enabled = (Me.IsRunning = False)
+
+            Me.m_cbShowDateInLabel.Enabled = Me.m_bShowLabels
+            Me.m_cmbLabelPos.Enabled = Me.m_bShowLabels
+            Me.m_cbInvertColor.Enabled = Me.m_bShowLabels
 
             Me.m_hoverMenu.IsEnabled(eHoverCommands.SaveImageGeoRef) = (Me.m_plottype <> ePlotTypes.Effort) And (Me.Core.StateMonitor.HasEcospaceRan)
 

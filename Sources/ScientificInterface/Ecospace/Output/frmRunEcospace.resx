@@ -358,13 +358,13 @@
     <value>True</value>
   </data>
   <data name="m_cbInvertColor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 46</value>
+    <value>4, 70</value>
   </data>
   <data name="m_cbInvertColor.Size" type="System.Drawing.Size, System.Drawing">
     <value>79, 17</value>
   </data>
   <data name="m_cbInvertColor.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_cbInvertColor.Text" xml:space="preserve">
     <value>&amp;Invert color</value>
@@ -412,13 +412,13 @@
     <value>Bottom - right</value>
   </data>
   <data name="m_cmbLabelPos.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 69</value>
+    <value>22, 93</value>
   </data>
   <data name="m_cmbLabelPos.Size" type="System.Drawing.Size, System.Drawing">
     <value>182, 21</value>
   </data>
   <data name="m_cmbLabelPos.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_cmbLabelPos.Name" xml:space="preserve">
     <value>m_cmbLabelPos</value>
@@ -431,6 +431,36 @@
   </data>
   <data name="&gt;&gt;m_cmbLabelPos.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_cbShowDateInLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbShowDateInLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbShowDateInLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 47</value>
+  </data>
+  <data name="m_cbShowDateInLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 17</value>
+  </data>
+  <data name="m_cbShowDateInLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_cbShowDateInLabel.Text" xml:space="preserve">
+    <value>Show &amp;date in label</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowDateInLabel.Name" xml:space="preserve">
+    <value>m_cbShowDateInLabel</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowDateInLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowDateInLabel.Parent" xml:space="preserve">
+    <value>m_plLabelOptions</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowDateInLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_cbShowLabels.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -457,7 +487,7 @@
     <value>m_plLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_cbShowLabels.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_hdrLabelOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -487,13 +517,13 @@
     <value>m_hdrLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Parent" xml:space="preserve">
     <value>m_plLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_plLabelOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -502,7 +532,7 @@
     <value>3, 365</value>
   </data>
   <data name="m_plLabelOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 99</value>
+    <value>204, 122</value>
   </data>
   <data name="m_plLabelOptions.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -742,7 +772,7 @@
     <value>m_hdrDist</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Parent" xml:space="preserve">
     <value>m_plDistribution</value>
@@ -889,7 +919,7 @@
     <value>m_hdrDispOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Parent" xml:space="preserve">
     <value>m_plDisplayOptions</value>
@@ -982,7 +1012,7 @@
     <value>m_hdrRunning</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Parent" xml:space="preserve">
     <value>m_plRun</value>
@@ -1276,7 +1306,7 @@
     <value>m_hdrGraphTypes</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Parent" xml:space="preserve">
     <value>m_plGraphTypes</value>
@@ -1288,7 +1318,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plGraphTypes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 470</value>
+    <value>3, 493</value>
   </data>
   <data name="m_plGraphTypes.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 132</value>
@@ -1387,7 +1417,7 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
     <value>m_tabMap</value>
@@ -1543,6 +1573,6 @@
     <value>frmRunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
