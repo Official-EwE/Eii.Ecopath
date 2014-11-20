@@ -95,6 +95,7 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>Current year that is being executed.</summary>
     Public YearNow As Integer = 0
+
     ''' <summary>Current month that is being executed.</summary>
     Public MonthNow As Integer = 0
 
@@ -308,10 +309,18 @@ Public Class cEcospaceDataStructures
 
     Public lstRegions As New List(Of Single(,,))
 
-    Public ResultsCatchRegionGearGroup(,,,) As Single 'ResultsCatchRegionGearGroup( NoRegions, nFleets, NGroups, ntimesteps)
-    Public ResultsByFleet(,,) As Single 'ResultsByFleet(nvars,nFleets,NumberOfTimeSteps)
-    Public ResultsByFleetGroup(,,,) As Single 'ResultsByFleetGroup(nvars,nFleets,nGroups,NumberOfTimeSteps)
-    Public ResultsRegionGroup(,,) As Single 'ResultsRegionGroup(region, group, timestep)
+    ''' <summary>ResultsCatchRegionGearGroup( nRegions, nFleets, nGroups, nTimesteps)</summary>
+    Public ResultsCatchRegionGearGroup(,,,) As Single
+    ''' <summary>ResultsCatchRegionGearGroup( nRegions, nFleets, nGroups, nYears)</summary>
+    Public ResultsCatchRegionGearGroupYear(,,,) As Single
+    ''' <summary>ResultsByFleet(nvars,nFleets,NumberOfTimeSteps)</summary>
+    Public ResultsByFleet(,,) As Single
+    ''' <summary>ResultsByFleetGroup(nvars, nFleets, nGroups, nTimesteps)</summary>
+    Public ResultsByFleetGroup(,,,) As Single
+    ''' <summary>ResultsRegionGroup(nRegions, nGroups, nTimesteps)</summary>
+    Public ResultsRegionGroup(,,) As Single
+    ''' <summary>ResultsRegionGroup(nRegions, nGroups, nYears)</summary>
+    Public ResultsRegionGroupYear(,,) As Single
 
     ''' <summary> Summarized time step data </summary>
     ''' <remarks>populated in sumarizeTimeStepData()</remarks>
@@ -1669,7 +1678,9 @@ Public Class cEcospaceDataStructures
             Me.allocate(ResultsByFleetGroup, [Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length, nFleets, NGroups, NumberOfTimeSteps)
 
             Me.allocate(ResultsRegionGroup, nRegions, NGroups, NumberOfTimeSteps)
+            Me.allocate(ResultsRegionGroupYear, nRegions, NGroups, CInt(NumberOfTimeSteps / Me.NumStep + 1))
             Me.allocate(ResultsCatchRegionGearGroup, nRegions, nFleets, NGroups, NumberOfTimeSteps)
+            Me.allocate(ResultsCatchRegionGearGroupYear, nRegions, nFleets, NGroups, CInt(NumberOfTimeSteps / Me.NumStep + 1))
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & ex.Message)

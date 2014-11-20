@@ -256,18 +256,9 @@ Public Class cEcoSpace
     ''' <summary>
     ''' Cumulative itime step array index at the current user selected time step.
     ''' </summary>
-    ''' <remarks></remarks>
     Private itt As Integer
 
     Private HabAreaUsed() As Single
-
-    'jb Moved to cEcospaceDataStructures to fix bug in cIMBSolver.GrowSurvivePackets()
-    ' ''' <summary>
-    ' ''' Total number of habitat area cells
-    ' ''' Any cell with a depth > 0 of any habitat type
-    ' ''' </summary>
-    ' ''' <remarks>computed in CalcHabitatArea()</remarks>
-    'Public ThabArea_ As Single
 
     Private totalIterThread() As Integer 'total number of solvegrid iterations for each thread
 
@@ -309,8 +300,6 @@ Public Class cEcoSpace
 
     ''' <summary>Does the Spin-Up base biomass need initialization</summary>
     Private bInitSpinUpBase As Boolean
-
-    Private iFitCurYear As Integer
 
 #End Region
 
@@ -915,6 +904,7 @@ Public Class cEcoSpace
 
             'Zero the cummulative time step counter
             itt = 0
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'START OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1135,6 +1125,10 @@ Public Class cEcoSpace
 
                     For irgn = 0 To Me.m_Data.nRegions
                         Me.m_Data.ResultsRegionGroup(irgn, ip, itt) /= Me.m_Data.nCellsInRegion(irgn)
+                        Me.m_Data.ResultsRegionGroupYear(irgn, ip, Me.m_Data.YearNow) += Me.m_Data.ResultsRegionGroup(irgn, ip, itt)
+                        If ((itt Mod Me.m_Data.NumStep) = 0) Then
+                            Me.m_Data.ResultsRegionGroupYear(irgn, ip, Me.m_Data.YearNow) /= Me.m_Data.NumStep
+                        End If
                     Next irgn
 
                 Next ip
@@ -2313,8 +2307,6 @@ Public Class cEcoSpace
             Me.iSpinUpYear = 0
             'Spin-Up biomass base has not been initialized yet
             Me.bInitSpinUpBase = True
-
-            Me.iFitCurYear = 0
 
             'For debugging Effort Zones code
             'sets up some zones with modified effort
@@ -5277,6 +5269,7 @@ exitline:
 
                         For irgn As Integer = 0 To m_Data.nRegions
                             m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) += solver.ResultsCatchRegionGearGroup(irgn, iflt, igrp)
+                            m_Data.ResultsCatchRegionGearGroupYear(irgn, iflt, igrp, m_Data.YearNow) += solver.ResultsCatchRegionGearGroup(irgn, iflt, igrp)
                         Next irgn
 
                     Next igrp
@@ -5333,6 +5326,9 @@ exitline:
                         nInReg = m_Data.nCellsInRegion(irgn)
                         If nInReg = 0 Then nInReg = 1
                         m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) /= nInReg
+                        If ((itt Mod Me.m_Data.NumStep) = 0) Then
+                            m_Data.ResultsCatchRegionGearGroupYear(irgn, iflt, igrp, Me.m_Data.YearNow) /= Me.m_Data.NumStep
+                        End If
                     Next irgn
 
                 Next igrp

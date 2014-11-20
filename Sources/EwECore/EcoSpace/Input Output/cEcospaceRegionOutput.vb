@@ -61,7 +61,9 @@ Public Class cEcospaceRegionOutput
         Try
             m_CoreArrays.Clear()
             m_CoreArrays.Add(eVarNameFlags.EcospaceRegionBiomass, New c3DResultsWrapper(m_spacedata.ResultsRegionGroup, Me.Index))
+            m_CoreArrays.Add(eVarNameFlags.EcospaceRegionBiomassYear, New c3DResultsWrapper(m_spacedata.ResultsRegionGroupYear, Me.Index))
             m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatch, New c4DResultsWrapperFirstFixed(m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
+            m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatchYear, New c4DResultsWrapperFirstFixed(m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Init() Error: " & ex.Message)
             cLog.Write(ex)
@@ -135,7 +137,6 @@ Public Class cEcospaceRegionOutput
         End Set
     End Property
 
-
     Public Property CatchFleetGroupStart(ByVal iFleet As Integer, ByVal iGroup As Integer) As Single
         Get
             Try
@@ -144,7 +145,6 @@ Public Class cEcospaceRegionOutput
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
             End Try
-
         End Get
 
         Set(ByVal value As Single)
@@ -165,7 +165,6 @@ Public Class cEcospaceRegionOutput
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
             End Try
-
         End Get
 
         Set(ByVal value As Single)
@@ -175,35 +174,50 @@ Public Class cEcospaceRegionOutput
                 Debug.Assert(False, ex.Message)
             End Try
         End Set
-
     End Property
 
-    Public ReadOnly Property BiomassByTime(ByVal iGroup As Integer, ByVal iTime As Integer) As Single
+    Public ReadOnly Property BiomassByTime(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
         Get
             Try
-                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionBiomass, iGroup, iTime), Single)
+                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionBiomass, iGroup, iTimeStep), Single)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
             End Try
-
         End Get
-
     End Property
 
-
-    Public ReadOnly Property CatchFleetGroupTime(ByVal FleetIndex As Integer, ByVal GroupIndex As Integer, ByVal TimeIndex As Integer) As Single
-
+    Public ReadOnly Property BiomassByYear(ByVal iGroup As Integer, ByVal iYear As Integer) As Single
         Get
             Try
-                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionFleetGroupCatch, FleetIndex, GroupIndex, TimeIndex), Single)
+                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionBiomassYear, iGroup, iYear), Single)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
             End Try
-
         End Get
+    End Property
 
+    Public ReadOnly Property CatchFleetGroupTime(ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+        Get
+            Try
+                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionFleetGroupCatch, iFleet, iGroup, iTimeStep), Single)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                Return cCore.NULL_VALUE
+            End Try
+        End Get
+    End Property
+
+    Public ReadOnly Property CatchFleetGroupYear(ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal iYear As Integer) As Single
+        Get
+            Try
+                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionFleetGroupCatchYear, iFleet, iGroup, iYear), Single)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                Return cCore.NULL_VALUE
+            End Try
+        End Get
     End Property
 
 #End Region

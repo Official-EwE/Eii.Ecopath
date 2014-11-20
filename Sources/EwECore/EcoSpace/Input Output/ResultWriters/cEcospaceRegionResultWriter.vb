@@ -243,15 +243,22 @@ Public Class cEcospaceRegionResultWriter
             strName = r.Name
 
             ' For all data (0 = biomass, 1 = catch))
-            For iData As Integer = 0 To 1
+            For iData As Integer = 0 To 3
                 ' Define file name and data descriptor
-                If (iData = 0) Then
-                    strFile = cFileUtils.ToValidFileName(String.Format("{0}_biomass.csv", strName), False)
-                    strDescriptor = "Biomass by region"
-                Else
-                    strFile = cFileUtils.ToValidFileName(String.Format("{0}_catch.csv", strName), False)
-                    strDescriptor = "Catch by region"
-                End If
+                Select Case iData
+                    Case 0
+                        strFile = cFileUtils.ToValidFileName(String.Format("{0}_biomass.csv", strName), False)
+                        strDescriptor = "Biomass by region"
+                    Case 1
+                        strFile = cFileUtils.ToValidFileName(String.Format("{0}_biomass_annual.csv", strName), False)
+                        strDescriptor = "Annual biomass by region"
+                    Case 2
+                        strFile = cFileUtils.ToValidFileName(String.Format("{0}_catch.csv", strName), False)
+                        strDescriptor = "Catch by region"
+                    Case 3
+                        strFile = cFileUtils.ToValidFileName(String.Format("{0}_catch_annual.csv", strName), False)
+                        strDescriptor = "Annual catch by region"
+                End Select
 
                 ' Start writing
                 sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
@@ -262,11 +269,16 @@ Public Class cEcospaceRegionResultWriter
                     sw.WriteLine()
                 End If
 
-                If iData = 0 Then
-                    Me.WriteBiomassData(sw, r)
-                Else
-                    Me.WriteCatchData(sw, r)
-                End If
+                Select Case iData
+                    Case 0
+                        Me.WriteBiomassData(sw, r, False)
+                    Case 1
+                        Me.WriteBiomassData(sw, r, True)
+                    Case 2
+                        Me.WriteCatchData(sw, r, False)
+                    Case 3
+                        Me.WriteCatchData(sw, r, True)
+                End Select
 
                 ' Clean up
                 sw.Flush()
@@ -285,12 +297,20 @@ Public Class cEcospaceRegionResultWriter
     ''' <param name="sw">The streamwriter to write to.</param>
     ''' <param name="r">The region to write for.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteBiomassData(sw As StreamWriter, r As cEcospaceRegionOutput)
+    Private Sub WriteBiomassData(sw As StreamWriter, r As cEcospaceRegionOutput, bAnnual As Boolean)
 
         Dim g As cCoreGroupBase = Nothing
+        Dim n As Integer = 0
 
         ' Write data header
-        sw.Write("TimeStep")
+        If (bAnnual) Then
+            sw.Write("Year")
+            n = Me.m_core.nEcospaceYears
+        Else
+            sw.Write("TimeStep")
+            n = Me.m_core.nEcospaceTimeSteps
+        End If
+
         For iGroup As Integer = 1 To Me.m_core.nGroups
             g = Me.m_core.EcoPathGroupInputs(iGroup)
             sw.Write("," & cStringUtils.ToCSVField(g.Name))
@@ -298,11 +318,15 @@ Public Class cEcospaceRegionResultWriter
         sw.WriteLine()
 
         ' Write data block
-        For iTime As Integer = 1 To Me.m_core.nEcospaceTimeSteps
+        For iTime As Integer = 1 To n
             sw.Write(iTime)
             For iGroup As Integer = 1 To Me.m_core.nGroups
                 sw.Write(",")
-                sw.Write(cStringUtils.FormatNumber(r.BiomassByTime(iGroup, iTime)))
+                If (bAnnual) Then
+                    sw.Write(cStringUtils.FormatNumber(r.BiomassByYear(iGroup, iTime)))
+                Else
+                    sw.Write(cStringUtils.FormatNumber(r.BiomassByTime(iGroup, iTime)))
+                End If
             Next iGroup
             sw.WriteLine()
         Next iTime
@@ -316,12 +340,13 @@ Public Class cEcospaceRegionResultWriter
     ''' <param name="sw">The streamwriter to write to.</param>
     ''' <param name="r">The region to write for.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteCatchData(sw As StreamWriter, r As cEcospaceRegionOutput)
+    Private Sub WriteCatchData(sw As StreamWriter, r As cEcospaceRegionOutput, bAnnual As Boolean)
 
         Dim fleet As cFleetInput = Nothing
         Dim group As cCoreGroupBase = Nothing
         Dim lCatches As New List(Of cCatch)
         Dim [catch] As cCatch = Nothing
+        Dim n As Integer = 0
 
         ' Gather all catches
         For iFleet As Integer = 1 To Me.m_core.nFleets
@@ -339,7 +364,13 @@ Public Class cEcospaceRegionResultWriter
         Dim sb1 As New StringBuilder()
         Dim sb2 As New StringBuilder()
         sb1.Append("Fleet")
-        sb2.Append("Timestep")
+        If (bAnnual) Then
+            sb2.Append("Year")
+            n = Me.m_core.nEcospaceYears
+        Else
+            sb2.Append("Timestep")
+            n = Me.m_core.nEcospaceTimeSteps
+        End If
         For iLanding As Integer = 0 To lCatches.Count - 1
             [catch] = lCatches(iLanding)
             sb1.Append("," & cStringUtils.ToCSVField([catch].FleetName))
@@ -351,12 +382,16 @@ Public Class cEcospaceRegionResultWriter
         sb2.Clear()
 
         ' Write data block
-        For iTime As Integer = 1 To Me.m_core.nEcospaceTimeSteps
+        For iTime As Integer = 1 To n
             sw.Write(iTime)
             For iLanding As Integer = 0 To lCatches.Count - 1
                 [catch] = lCatches(iLanding)
                 sw.Write(",")
-                sw.Write(cStringUtils.FormatNumber(r.CatchFleetGroupTime([catch].FleetIndex, [catch].GroupIndex, iTime)))
+                If (bAnnual) Then
+                    sw.Write(cStringUtils.FormatNumber(r.CatchFleetGroupYear([catch].FleetIndex, [catch].GroupIndex, iTime)))
+                Else
+                    sw.Write(cStringUtils.FormatNumber(r.CatchFleetGroupTime([catch].FleetIndex, [catch].GroupIndex, iTime)))
+                End If
             Next iLanding
             sw.WriteLine()
         Next iTime
