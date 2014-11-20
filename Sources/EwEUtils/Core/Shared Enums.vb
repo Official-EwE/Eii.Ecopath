@@ -602,17 +602,19 @@ Namespace Core
         ''' <summary>Biomass of a group in a region for the start summary period </summary>
         EcospaceRegionBiomassStart
 
-        ''' <summary> Biomass of a group in a region for the end summary period</summary>
+        ''' <summary>Biomass of a group in a region for the end summary period</summary>
         EcospaceRegionBiomassEnd
 
         ''' <summary>Biomass of catch in a region for the start summary period </summary>
         EcospaceRegionCatchStart
 
-        ''' <summary> Biomass of catch in a region for the end summary period</summary>
+        ''' <summary>Biomass of catch in a region for the end summary period</summary>
         EcospaceRegionCatchEnd
 
-        ''' <summary> Biomass of catch in a region by fleet, group and time </summary>
+        ''' <summary>Biomass of catch in a region by fleet, group, and time step.</summary>
         EcospaceRegionFleetGroupCatch
+        ''' <summary>Biomass of catch in a region by fleet, group, and year</summary>
+        EcospaceRegionFleetGroupCatchYear
 
         ''' <summary>Time in Years of the Start summary time period </summary>
         EcospaceSummaryTimeStart
@@ -636,8 +638,12 @@ Namespace Core
         ''' <summary> Ecospace Value over time </summary>
         EcospaceGroupValueOverTime
 
-        ''' <summary> Ecospace Biomass by region over time averaged over all the cells in a region for each timestep </summary>
+        ''' <summary> Ecospace Biomass by region over time averaged over all the cells in a region for each timestep.
+        ''' <seealso cref="EcospaceRegionBiomassYear"/></summary>
         EcospaceRegionBiomass
+        ''' <summary> Ecospace Biomass by region over time averaged over all the cells in a region, per year.
+        ''' <seealso cref="EcospaceRegionBiomass"/></summary>
+        EcospaceRegionBiomassYear
 
         ''' <summary> Ecospace yearly average profit by fleet  </summary>
         EcospaceFleetProfit
