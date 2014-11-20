@@ -149,6 +149,13 @@ Namespace Controls.Map
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether date should be shown in the label
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property ShowDateInLabel As Boolean
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Get/set the date of the current time step.
         ''' </summary>
         ''' -----------------------------------------------------------------------
