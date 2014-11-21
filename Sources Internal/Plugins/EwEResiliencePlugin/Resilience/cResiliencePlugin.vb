@@ -89,17 +89,17 @@ Public Class cResiliencePlugin
     Public Property AutoSave As Boolean _
         Implements EwEPlugin.IAutoSavePlugin.AutoSave
         Get
-            Return My.Settings.Autosave
+            Return My.Settings.AutosaveResilience
         End Get
         Set(value As Boolean)
-            My.Settings.Autosave = value
+            My.Settings.AutosaveResilience = value
             My.Settings.Save()
         End Set
     End Property
 
     Public Function AutoSaveName() As String _
         Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
-        Return My.Resources.AUTOSAVE_NAME
+        Return My.Resources.RESIL_AUTOSAVE_NAME
     End Function
 
     Public Function AutoSaveSubPath() As String _
@@ -167,7 +167,7 @@ Public Class cResiliencePlugin
     Public Sub EcosimRunCompletedPost(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
 
-        If My.Settings.Autosave Then
+        If My.Settings.AutosaveResilience Then
             Dim writer As New cResilienceWriter(Me.m_core, Me.m_model.Data)
             writer.SaveDataToFile()
         End If
@@ -188,7 +188,7 @@ Public Class cResiliencePlugin
     Public ReadOnly Property ControlText As String _
         Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return My.Resources.CAPTION
+            Return My.Resources.RESIL_CAPTION
         End Get
     End Property
 

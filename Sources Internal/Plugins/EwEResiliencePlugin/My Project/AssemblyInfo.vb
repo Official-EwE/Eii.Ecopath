@@ -26,10 +26,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EwEResiliencePlugin")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
+<Assembly: AssemblyDescription("Plug-in for EwE that writes Consumption data with Ecosim, and that provides a visualization of Resilience")> 
+<Assembly: AssemblyCompany("Instituto Politécnico Nacional, Ecopath International Initiative")> 
 <Assembly: AssemblyProduct("EwEResiliencePlugin")> 
-<Assembly: AssemblyCopyright("Copyright ©  2014")> 
+<Assembly: AssemblyCopyright("Copyright © IPN & EII 2014 - ")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

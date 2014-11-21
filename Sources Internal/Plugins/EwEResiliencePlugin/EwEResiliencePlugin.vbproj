@@ -110,10 +110,18 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cResilienceData.vb" />
-    <Compile Include="cResilienceModel.vb" />
-    <Compile Include="cResilienceWriter.vb" />
-    <Compile Include="cResiliencePlugin.vb" />
+    <Compile Include="ConsumptionWriter\cConsumptionWriter.vb" />
+    <Compile Include="ConsumptionWriter\cConsWriterPlugin.vb" />
+    <Compile Include="ConsumptionWriter\UI\frmConfig.Designer.vb">
+      <DependentUpon>frmConfig.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ConsumptionWriter\UI\frmConfig.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Resilience\cResilienceData.vb" />
+    <Compile Include="Resilience\cResilienceModel.vb" />
+    <Compile Include="Resilience\cResilienceWriter.vb" />
+    <Compile Include="Resilience\cResiliencePlugin.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -130,22 +138,25 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="My Project\Settings.vb" />
-    <Compile Include="UI\cResilienceGraph.vb" />
-    <Compile Include="UI\frmResilience.Designer.vb">
+    <Compile Include="Resilience\UI\cResilienceGraph.vb" />
+    <Compile Include="Resilience\UI\frmResilience.Designer.vb">
       <DependentUpon>frmResilience.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmResilience.vb">
+    <Compile Include="Resilience\UI\frmResilience.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ConsumptionWriter\UI\frmConfig.resx">
+      <DependentUpon>frmConfig.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmResilience.resx">
+    <EmbeddedResource Include="Resilience\UI\frmResilience.resx">
       <DependentUpon>frmResilience.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -154,6 +165,7 @@
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="app.config" />
+    <None Include="ConsumptionWriter\Documentation\EwEConsumptionWriter.docx" />
     <None Include="EwEResiliencePlugin.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -166,7 +178,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Documentation\" />
+    <Folder Include="Resilience\Documentation\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">

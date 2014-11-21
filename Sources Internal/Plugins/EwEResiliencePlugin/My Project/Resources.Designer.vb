@@ -71,24 +71,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Resilience data.
-        '''</summary>
-        Friend ReadOnly Property AUTOSAVE_NAME() As String
-            Get
-                Return ResourceManager.GetString("AUTOSAVE_NAME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Resilience.
-        '''</summary>
-        Friend ReadOnly Property CAPTION() As String
-            Get
-                Return ResourceManager.GetString("CAPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property cicimar_color() As System.Drawing.Bitmap
@@ -109,6 +91,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Consumption matrices.
+        '''</summary>
+        Friend ReadOnly Property CONSWR_AUTOSAVE_ITEM() As String
+            Get
+                Return ResourceManager.GetString("CONSWR_AUTOSAVE_ITEM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Consumption writer options....
+        '''</summary>
+        Friend ReadOnly Property CONSWR_MENU_ITEM() As String
+            Get
+                Return ResourceManager.GetString("CONSWR_MENU_ITEM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Consumption matrices failed to save to {0}.
+        '''</summary>
+        Friend ReadOnly Property CONSWR_STATUS_SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("CONSWR_STATUS_SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Consumption matrices saved to {0}.
+        '''</summary>
+        Friend ReadOnly Property CONSWR_STATUS_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("CONSWR_STATUS_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property EscudoIPN1() As System.Drawing.Bitmap
@@ -119,56 +137,74 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Resilience data.
+        '''</summary>
+        Friend ReadOnly Property RESIL_AUTOSAVE_NAME() As String
+            Get
+                Return ResourceManager.GetString("RESIL_AUTOSAVE_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Resilience.
+        '''</summary>
+        Friend ReadOnly Property RESIL_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("RESIL_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Supply-demand of energy ({0}) {1}.
         '''</summary>
-        Friend ReadOnly Property LABEL_CAPTION() As String
+        Friend ReadOnly Property RESIL_LABEL_CAPTION() As String
             Get
-                Return ResourceManager.GetString("LABEL_CAPTION", resourceCulture)
+                Return ResourceManager.GetString("RESIL_LABEL_CAPTION", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Trend.
         '''</summary>
-        Friend ReadOnly Property LABEL_TREND() As String
+        Friend ReadOnly Property RESIL_LABEL_TREND() As String
             Get
-                Return ResourceManager.GetString("LABEL_TREND", resourceCulture)
+                Return ResourceManager.GetString("RESIL_LABEL_TREND", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Log (demand, consumption).
         '''</summary>
-        Friend ReadOnly Property LABEL_XAXIS() As String
+        Friend ReadOnly Property RESIL_LABEL_XAXIS() As String
             Get
-                Return ResourceManager.GetString("LABEL_XAXIS", resourceCulture)
+                Return ResourceManager.GetString("RESIL_LABEL_XAXIS", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Log (supply, predation).
         '''</summary>
-        Friend ReadOnly Property LABEL_YAXIS() As String
+        Friend ReadOnly Property RESIL_LABEL_YAXIS() As String
             Get
-                Return ResourceManager.GetString("LABEL_YAXIS", resourceCulture)
+                Return ResourceManager.GetString("RESIL_LABEL_YAXIS", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Resilience data failed to save to {0}.
         '''</summary>
-        Friend ReadOnly Property STATUS_SAVE_FAILED() As String
+        Friend ReadOnly Property RESIL_STATUS_SAVE_FAILED() As String
             Get
-                Return ResourceManager.GetString("STATUS_SAVE_FAILED", resourceCulture)
+                Return ResourceManager.GetString("RESIL_STATUS_SAVE_FAILED", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Resilience data saved to {0}.
         '''</summary>
-        Friend ReadOnly Property STATUS_SAVE_SUCCESS() As String
+        Friend ReadOnly Property RESIL_STATUS_SAVE_SUCCESS() As String
             Get
-                Return ResourceManager.GetString("STATUS_SAVE_SUCCESS", resourceCulture)
+                Return ResourceManager.GetString("RESIL_STATUS_SAVE_SUCCESS", resourceCulture)
             End Get
         End Property
     End Module

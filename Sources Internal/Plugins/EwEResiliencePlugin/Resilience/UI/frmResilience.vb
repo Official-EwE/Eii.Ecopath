@@ -55,7 +55,7 @@ Public Class frmResilience
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Me.Text = My.Resources.CAPTION
+        Me.Text = My.Resources.RESIL_CAPTION
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
         AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
@@ -115,7 +115,7 @@ Public Class frmResilience
             Me.m_cbAnnual.Enabled = False
         End If
 
-        Me.m_cbAutosave.Checked = My.Settings.Autosave
+        Me.m_cbAutosave.Checked = My.Settings.AutosaveResilience
 
         MyBase.UpdateControls()
     End Sub
@@ -162,7 +162,7 @@ Public Class frmResilience
     Private Sub OnToggleAutosave(sender As System.Object, e As System.EventArgs) _
         Handles m_cbAutosave.CheckedChanged
         Try
-            My.Settings.Autosave = Me.m_cbAutosave.Checked
+            My.Settings.AutosaveResilience = Me.m_cbAutosave.Checked
             Me.Core.OnSettingsChanged()
         Catch ex As Exception
             Debug.Assert(False)

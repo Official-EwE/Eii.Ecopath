@@ -45,11 +45,11 @@ Public Class cResilienceWriter
         Dim bSuccess As Boolean = Me.SaveDataToFile(True) And Me.SaveDataToFile(False)
 
         If (bSuccess) Then
-            msg = New cMessage(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.OutputPath), _
+            msg = New cMessage(String.Format(My.Resources.RESIL_STATUS_SAVE_SUCCESS, Me.OutputPath), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             msg.Hyperlink = Me.OutputPath
         Else
-            msg = New cMessage(String.Format(My.Resources.STATUS_SAVE_FAILED, Me.OutputPath), _
+            msg = New cMessage(String.Format(My.Resources.RESIL_STATUS_SAVE_FAILED, Me.OutputPath), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
         End If
         Me.m_core.Messages.SendMessage(msg)
