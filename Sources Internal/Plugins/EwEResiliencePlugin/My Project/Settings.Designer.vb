@@ -57,48 +57,60 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property AutosaveConsumption() As Boolean
+        Public Property ConsAutosave() As Boolean
             Get
-                Return CType(Me("AutosaveConsumption"),Boolean)
+                Return CType(Me("ConsAutosave"),Boolean)
             End Get
             Set
-                Me("AutosaveConsumption") = value
+                Me("ConsAutosave") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property IncludeDetritus() As Boolean
+        Public Property ConsIncludeDetritus() As Boolean
             Get
-                Return CType(Me("IncludeDetritus"),Boolean)
+                Return CType(Me("ConsIncludeDetritus"),Boolean)
             End Get
             Set
-                Me("IncludeDetritus") = value
+                Me("ConsIncludeDetritus") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property IncludeImportAndSum() As Boolean
+        Public Property ConsIncludeImportAndSum() As Boolean
             Get
-                Return CType(Me("IncludeImportAndSum"),Boolean)
+                Return CType(Me("ConsIncludeImportAndSum"),Boolean)
             End Get
             Set
-                Me("IncludeImportAndSum") = value
+                Me("ConsIncludeImportAndSum") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property AutosaveResilience() As Boolean
+        Public Property ResilAutosave() As Boolean
             Get
-                Return CType(Me("AutosaveResilience"),Boolean)
+                Return CType(Me("ResilAutosave"),Boolean)
             End Get
             Set
-                Me("AutosaveResilience") = value
+                Me("ResilAutosave") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ResilShowAnnual() As Boolean
+            Get
+                Return CType(Me("ResilShowAnnual"),Boolean)
+            End Get
+            Set
+                Me("ResilShowAnnual") = value
             End Set
         End Property
     End Class

@@ -165,7 +165,7 @@ Public Class cResilienceGraph
         ppl = New ZedGraph.PointPairList()
         ppl.Add(xmin, a + b * xmin)
         ppl.Add(xmax, a + b * xmax)
-        li = New ZedGraph.LineItem(My.Resources.RESIL_LABEL_TREND, ppl, Drawing.Color.Blue, ZedGraph.SymbolType.None)
+        li = New ZedGraph.LineItem(My.Resources.RESIL_LABEL_TREND, ppl, Drawing.Color.Black, ZedGraph.SymbolType.None)
         li.Line.IsVisible = True
         pane.CurveList.Add(li)
 

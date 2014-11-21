@@ -66,6 +66,9 @@ Public Class frmResilience
         cmd.AddControl(Me.m_pbAuci, "http://www.auci.gub.uy")
         cmd.AddControl(Me.m_pbConacyt, "http://www.conacyt.mx")
 
+        Me.m_cbAutosave.Checked = My.Settings.ResilAutosave
+        Me.m_cbAnnual.Checked = My.Settings.ResilShowAnnual
+
         Me.UpdateControls()
         Me.UpdateGraph()
 
@@ -81,6 +84,10 @@ Public Class frmResilience
         cmd.RemoveControl(Me.m_pbCicimar)
         cmd.RemoveControl(Me.m_pbAuci)
         cmd.RemoveControl(Me.m_pbConacyt)
+
+        My.Settings.ResilAutosave = Me.m_cbAutosave.Checked
+        My.Settings.ResilShowAnnual = Me.m_cbAnnual.Checked
+        My.Settings.Save()
 
         MyBase.OnFormClosed(e)
 
@@ -115,7 +122,7 @@ Public Class frmResilience
             Me.m_cbAnnual.Enabled = False
         End If
 
-        Me.m_cbAutosave.Checked = My.Settings.AutosaveResilience
+        Me.m_cbAutosave.Checked = My.Settings.ResilAutosave
 
         MyBase.UpdateControls()
     End Sub
@@ -162,7 +169,7 @@ Public Class frmResilience
     Private Sub OnToggleAutosave(sender As System.Object, e As System.EventArgs) _
         Handles m_cbAutosave.CheckedChanged
         Try
-            My.Settings.AutosaveResilience = Me.m_cbAutosave.Checked
+            My.Settings.ResilAutosave = Me.m_cbAutosave.Checked
             Me.Core.OnSettingsChanged()
         Catch ex As Exception
             Debug.Assert(False)

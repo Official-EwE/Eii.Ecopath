@@ -40,9 +40,9 @@ Public Class frmConfig
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_cbAutosave.Checked = My.Settings.AutosaveConsumption
-        Me.m_cbIncludeDetritus.Checked = My.Settings.IncludeDetritus
-        Me.m_cbIncludeImportAndSum.Checked = My.Settings.IncludeImportAndSum
+        Me.m_cbAutosave.Checked = My.Settings.ConsAutosave
+        Me.m_cbIncludeDetritus.Checked = My.Settings.ConsIncludeDetritus
+        Me.m_cbIncludeImportAndSum.Checked = My.Settings.ConsIncludeImportAndSum
 
         Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
         cmd.AddControl(Me.m_pbIPN, "http://www.ipn.mx")
@@ -80,9 +80,9 @@ Public Class frmConfig
     Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles m_btnOK.Click
 
-        My.Settings.AutosaveConsumption = Me.m_cbAutosave.Checked
-        My.Settings.IncludeDetritus = Me.m_cbIncludeDetritus.Checked
-        My.Settings.IncludeImportAndSum = Me.m_cbIncludeImportAndSum.Checked
+        My.Settings.ConsAutosave = Me.m_cbAutosave.Checked
+        My.Settings.ConsIncludeDetritus = Me.m_cbIncludeDetritus.Checked
+        My.Settings.ConsIncludeImportAndSum = Me.m_cbIncludeImportAndSum.Checked
         My.Settings.Save()
 
         Me.DialogResult = Windows.Forms.DialogResult.OK

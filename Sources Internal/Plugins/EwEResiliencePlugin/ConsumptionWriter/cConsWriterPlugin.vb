@@ -86,10 +86,10 @@ Public Class cConsWriterPlugin
     Public Property AutoSave As Boolean _
         Implements EwEPlugin.IAutoSavePlugin.AutoSave
         Get
-            Return My.Settings.AutosaveConsumption
+            Return My.Settings.ConsAutosave
         End Get
         Set(value As Boolean)
-            My.Settings.AutosaveConsumption = value
+            My.Settings.ConsAutosave = value
             My.Settings.Save()
         End Set
     End Property
@@ -144,7 +144,7 @@ Public Class cConsWriterPlugin
         Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Try
             Me.m_simds = CType(EcosimDatastructures, cEcosimDatastructures)
-            If My.Settings.AutosaveConsumption Then
+            If My.Settings.ConsAutosave Then
                 Me.m_writer = New cConsumptionWriter(Me.m_core, m_pathds, m_simds)
             End If
         Catch ex As Exception

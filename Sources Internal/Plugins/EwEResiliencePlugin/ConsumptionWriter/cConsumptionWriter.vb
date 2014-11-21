@@ -59,7 +59,7 @@ Public Class cConsumptionWriter
         Dim nMax As Integer = Me.m_core.nLivingGroups
         Dim nGroups As Integer = Me.m_core.nGroups
 
-        If My.Settings.IncludeDetritus Then
+        If My.Settings.ConsIncludeDetritus Then
             nMax = Me.m_core.nGroups
         End If
 
@@ -103,7 +103,7 @@ Public Class cConsumptionWriter
                     sw.Write(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(i).Name))
                 Next
 
-                If My.Settings.IncludeImportAndSum Then
+                If My.Settings.ConsIncludeImportAndSum Then
                     sw.Write(",Import,Sum")
                 End If
                 sw.WriteLine()
@@ -115,7 +115,7 @@ Public Class cConsumptionWriter
                         sw.Write(cStringUtils.FormatSingle(data(j, i)))
                         sSum += data(j, i)
                     Next
-                    If My.Settings.IncludeImportAndSum Then
+                    If My.Settings.ConsIncludeImportAndSum Then
                         sw.Write(",")
                         sw.Write(cStringUtils.FormatSingle(data(j, nGroups + 1)))
                         sw.Write(",")
