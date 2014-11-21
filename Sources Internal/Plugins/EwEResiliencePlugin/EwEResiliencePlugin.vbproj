@@ -166,6 +166,7 @@
     </None>
     <None Include="app.config" />
     <None Include="ConsumptionWriter\Documentation\EwEConsumptionWriter.docx" />
+    <None Include="ConsumptionWriter\Documentation\EwEConsumptionWriter.pdf" />
     <None Include="EwEResiliencePlugin.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -176,10 +177,10 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="Resilience\Documentation\EwEResilience.docx" />
+    <None Include="Resilience\Documentation\EwEResilience.pdf" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resilience\Documentation\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
