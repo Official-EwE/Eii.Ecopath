@@ -110,6 +110,8 @@ Public Class cBiomassLimits
         If Not File.Exists(Me.mFileName) Then
             'message of some sort
             Return False
+        Else
+            breturn = True
         End If
 
         Try
