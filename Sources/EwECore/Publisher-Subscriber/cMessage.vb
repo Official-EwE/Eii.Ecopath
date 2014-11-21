@@ -39,6 +39,9 @@ Public Class cMessage
     ''' encouraged to use these variables to provide detailed event feedback.</summary>
     Private m_variables As New List(Of cVariableStatus)
 
+    ''' <summary><see cref="eMessageImportance">Importance</see> of the message.</summary>
+    Private m_importance As eMessageImportance = eMessageImportance.Maintenance
+
 #End Region ' Private variables
 
 #Region " Constructor "
@@ -157,6 +160,18 @@ Public Class cMessage
 
     ''' <inheritdocs cref="IMessage.Importance"/>
     Public Overridable Property Importance() As eMessageImportance Implements IMessage.Importance
+        Get
+            ' Return highest importance of this message and its variables
+            Dim imp As eMessageImportance = Me.m_importance
+            For Each vs As cVariableStatus In Me.m_variables
+                imp = DirectCast(Math.Max(imp, vs.Importance), eMessageImportance)
+            Next
+            Return imp
+        End Get
+        Set(value As eMessageImportance)
+            Me.m_importance = value
+        End Set
+    End Property
 
     ''' <inheritdocs cref="IMessage.DataType"/>
     Public Overridable Property DataType() As eDataTypes Implements IMessage.DataType

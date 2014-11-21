@@ -2519,25 +2519,28 @@ Namespace Core
     ''' <summary>
     ''' Flag indicating the relative importance/severity of a message.
     ''' </summary>
+    ''' <remarks>
+    ''' Per 21 November 2014 importance values are ordered by severity.
+    ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Enum eMessageImportance
         ''' <summary>Maintenance messages typically indicate a synchronization event
         ''' in the EwE application.</summary>
-        Maintenance
-        ''' <summary>Information messages typically indicate an event that may be of
-        ''' interest to a human user of EwE.</summary>
-        Information
-        ''' <summary>Warning messages indicating that the system has run in a problem
-        ''' and could not complete an operation.</summary>
-        Warning
-        ''' <summary>Critical messages indicate the the system has run into an error
-        ''' that it could not recover from. This is the most severe type of message.</summary>
-        Critical
+        Maintenance = 0
         ''' <summary>Progress messages typically indicate incremental status
         ''' information about a lengthy operation.</summary>
-        Progress
+        Progress = 1
+        ''' <summary>Information messages typically indicate an event that may be of
+        ''' interest to a human user of EwE.</summary>
+        Information = 2
         ''' <summary>Questions are used to poll the user for regular info.</summary>
-        Question
+        Question = 3
+        ''' <summary>Warning messages indicating that the system has run in a problem
+        ''' and could not complete an operation.</summary>
+        Warning = 4
+        ''' <summary>Critical messages indicate the the system has run into an error
+        ''' that it could not recover from. This is the most severe type of message.</summary>
+        Critical = 5
     End Enum
 
 #End Region ' Message Importance

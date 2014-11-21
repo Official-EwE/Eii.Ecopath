@@ -109,7 +109,7 @@ Public Class cMessageHistory
             Me.m_bSuppressed = msg.Suppressed
 
             For Each vs As cVariableStatus In msg.Variables
-                Me.m_lItems.Add(New cHistoryItem(pm, vs, msg.Importance, Me.m_source))
+                Me.m_lItems.Add(New cHistoryItem(pm, vs, Me.m_source))
             Next
 
             ' Is Feedback message?
@@ -160,15 +160,12 @@ Public Class cMessageHistory
         ''' to obtain abstract value representation from.</param>
         ''' <param name="vs"><see cref="cVariableStatus">variable status</see>
         ''' to create item for.</param>
-        ''' <param name="imp"><see cref="eMessageImportance">message importance</see>,
-        ''' inherited from the parent message.</param>
         ''' -------------------------------------------------------------------
         Private Sub New(ByVal pm As cPropertyManager, _
                         ByVal vs As cVariableStatus, _
-                        ByVal imp As eMessageImportance, _
                         ByVal source As eCoreComponentType)
 
-            Me.New(vs.Message, imp)
+            Me.New(vs.Message, DirectCast(Math.Max(vs.Importance, eMessageImportance.Information), eMessageImportance))
             Me.m_strValueID = pm.ExtractPropertyID(vs)
             Me.m_source = source
 

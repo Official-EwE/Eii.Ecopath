@@ -34,43 +34,6 @@ Imports EwEUtils.Core
 '''</history>
 Public Class cVariableStatus
 
-    ''' <summary>Name of the Variable this Status or Message applies to </summary>
-    Public VarName As eVarNameFlags
-
-    ''' <summary>
-    ''' The Data structure/class this variable belongs to 
-    ''' </summary>
-    ''' <remarks>I.e Inputs for EcoPath are eDataTypes.EcoPathInputs</remarks>
-    Public DataType As eDataTypes
-
-    ''' <summary>Status of this variable </summary>
-    Public Status As eStatusFlags
-
-    ''' <summary>Descriptive message</summary>
-    Public Message As String
-
-    ''' <summary>Source of the message. I.e. EcoPath, EcoSim...</summary>
-    Public Source As eCoreComponentType
-
-    ''' <summary>Index of the item in its containing list (was iGroup)</summary>
-    Public Index As Integer
-
-    ''' <summary>
-    ''' Index to the array element for this variable i.e. DietComp(iArrayIndex)
-    ''' </summary>
-    Public iArrayIndex As Integer
-
-    ''' <summary>
-    ''' Reference to the <see cref="ICoreInterface">ICoreInterface</see> data object that holds this variable
-    ''' </summary>
-    Public CoreDataObject As ICoreInterface
-
-    ''' <summary>
-    ''' Reference to the secundary <see cref="ICoreInterface">ICoreInterface</see> data object that represents
-    ''' the index on an indexed variable.
-    ''' </summary>
-    Public CoreDataObjectSecundary As ICoreInterface
-
     Sub New()
         VarName = eVarNameFlags.NotSet
         DataType = eDataTypes.NotSet
@@ -211,5 +174,57 @@ Public Class cVariableStatus
                (String.Compare(Me.Message, vsCompare.Message) = 0)
 
     End Function
+
+#Region " Public properties "
+
+    ''' <summary>Name of the Variable this Status or Message applies to </summary>
+    Public Property VarName As eVarNameFlags
+
+    ''' <summary>
+    ''' The Data structure/class this variable belongs to 
+    ''' </summary>
+    ''' <remarks>I.e Inputs for EcoPath are eDataTypes.EcoPathInputs</remarks>
+    Public Property DataType As eDataTypes
+
+    ''' <summary>Status of this variable </summary>
+    Public Property Status As eStatusFlags
+
+    ''' <summary>
+    ''' Infer a <see cref="eMessageImportance"/> value from the message <see cref="Status"/>.
+    ''' </summary>
+    Public ReadOnly Property Importance As eMessageImportance
+        Get
+            If ((Me.Status And eStatusFlags.ErrorEncountered) > 0) Then Return eMessageImportance.Critical
+            If ((Me.Status And (eStatusFlags.FailedValidation Or eStatusFlags.MissingParameter Or eStatusFlags.MissingParameter)) > 0) Then Return eMessageImportance.Warning
+            Return eMessageImportance.Information
+        End Get
+    End Property
+
+    ''' <summary>Descriptive message</summary>
+    Public Property Message As String
+
+    ''' <summary>Source of the message. I.e. EcoPath, EcoSim...</summary>
+    Public Property Source As eCoreComponentType
+
+    ''' <summary>Index of the item in its containing list (was iGroup)</summary>
+    Public Property Index As Integer
+
+    ''' <summary>
+    ''' Index to the array element for this variable i.e. DietComp(iArrayIndex)
+    ''' </summary>
+    Public Property iArrayIndex As Integer
+
+    ''' <summary>
+    ''' Reference to the <see cref="ICoreInterface">ICoreInterface</see> data object that holds this variable
+    ''' </summary>
+    Public Property CoreDataObject As ICoreInterface
+
+    ''' <summary>
+    ''' Reference to the secundary <see cref="ICoreInterface">ICoreInterface</see> data object that represents
+    ''' the index on an indexed variable.
+    ''' </summary>
+    Public Property CoreDataObjectSecundary As ICoreInterface
+
+#End Region ' Public properties
 
 End Class

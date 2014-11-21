@@ -2931,15 +2931,15 @@ Public Class cCore
                     End If
 
                 Catch ex As Exception
-                cLog.Write(ex, "cCore::UpdateDataSource")
-                ' Whoah
-                msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
-                                      eMessageType.DataImport, _
-                                      eCoreComponentType.DataSource, _
-                                      eMessageImportance.Warning)
-                Me.m_publisher.SendMessage(msg)
-                Return False
-            End Try
+                    cLog.Write(ex, "cCore::UpdateDataSource")
+                    ' Whoah
+                    msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
+                                          eMessageType.DataImport, _
+                                          eCoreComponentType.DataSource, _
+                                          eMessageImportance.Warning)
+                    Me.m_publisher.SendMessage(msg)
+                    Return False
+                End Try
 
                 ' Run updates
                 If Not dbUpd.UpdateDatabase(db) Then
@@ -6847,7 +6847,7 @@ Public Class cCore
         If (Not TypeOf (DataSource) Is IEcosimDatasource) Then Return bSucces
         If (Me.ActiveEcosimScenarioIndex <= 0) Then Return bSucces
 
-         ' Clear duplicates
+        ' Clear duplicates
         Me.RemoveEcosimScenario(Me.FindObjectByName(Me.m_EcoSimScenarios, strName))
 
         ds = DirectCast(DataSource, IEcosimDatasource)
