@@ -394,7 +394,7 @@ Namespace Controls.Map
 
         Private Sub ucLayer_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.DoubleClick
             Select Case Me.GetArea(Me.PointToClient(MousePosition))
-                Case eAreaTypes.None
+                Case eAreaTypes.None, eAreaTypes.Editable
                     Me.EditLayerConnection()
                 Case Else
                     Me.EditLayer(eLayerEditTypes.EditData)
