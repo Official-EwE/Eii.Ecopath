@@ -103,7 +103,7 @@ Namespace Controls.Map.Layers
                 If (value IsNot Nothing) And (Me.Font IsNot Nothing) Then
 
                     If bOutOfRange Then
-                        Using br As New SolidBrush(Color.Magenta)
+                        Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.LargeCheckerBoard, Color.Gray, Color.LightGray)
                             g.FillRectangle(br, rc)
                         End Using
                     Else

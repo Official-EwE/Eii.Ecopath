@@ -77,6 +77,54 @@ Namespace Ecospace
 
         End Sub
 
+#Region " Events "
+
+        Private Sub m_nudNoRegions_GotFocus(sender As Object, e As System.EventArgs) _
+            Handles m_nudNoRegions.GotFocus
+            Me.m_rbCustomMax.Checked = True
+        End Sub
+
+        Private Sub m_nudClusterSize_GotFocus(sender As Object, e As System.EventArgs) _
+            Handles m_nudClusterSize.GotFocus
+            Me.m_rbFromHabitats.Checked = True
+        End Sub
+
+        Private Sub OnCreateOptionChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_rbCustomMax.CheckedChanged, m_rbFromMPAs.CheckedChanged, m_rbFromHabitats.CheckedChanged
+            Try
+                Me.UpdateControls()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnOK.Click
+
+            If Me.m_rbCustomMax.Checked Then
+                Me.ChangeNumRegions()
+            ElseIf Me.m_rbFromMPAs.Checked Then
+                Me.CreateMPARegions()
+            Else
+                Me.CreateHabitatRegions()
+            End If
+            Me.Close()
+
+        End Sub
+
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnCancel.Click
+            Try
+                Me.Close()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+#End Region ' Events
+
+#Region " Internals "
+
         Private Sub UpdateControls()
 
             Dim bHasSel As Boolean = (Me.m_rbCustomMax.Checked Or Me.m_rbFromMPAs.Checked Or Me.m_rbFromHabitats.Checked)
@@ -90,8 +138,19 @@ Namespace Ecospace
             Dim regions As cEcospaceLayerRegion = bm.LayerRegion
             Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
             Dim nReg As Integer = CInt(Me.m_nudNoRegions.Value)
+            Dim iMaxReg As Integer = 0
 
-            If (nReg < regions.MaxValue) Then
+            ' JS 22Nov14: cannot trust the region layer maxvalue, which is fixed in the case of regions
+            '             need to test actual region layer
+            For ir As Integer = 1 To bm.InRow
+                For ic As Integer = 1 To bm.InCol
+                    If bm.IsModelledCell(ir, ic) Then
+                        iMaxReg = Math.Max(iMaxReg, CInt(regions.Cell(ir, ic)))
+                    End If
+                Next
+            Next
+
+            If (nReg < iMaxReg) Then
                 ' ToDo: globalize this
                 Dim fmsg As New cFeedbackMessage("There are cells that will no longer be assigned to regions if you continue.", _
                                                  EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Question, _
@@ -158,33 +217,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnCreateOptionChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_rbCustomMax.CheckedChanged, m_rbFromMPAs.CheckedChanged, m_rbFromHabitats.CheckedChanged
-
-            Me.UpdateControls()
-
-        End Sub
-
-        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnOK.Click
-
-            If Me.m_rbCustomMax.Checked Then
-                Me.ChangeNumRegions()
-            ElseIf Me.m_rbFromMPAs.Checked Then
-                Me.CreateMPARegions()
-            Else
-                Me.CreateHabitatRegions()
-            End If
-            Me.Close()
-
-        End Sub
-
-        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnCancel.Click
-
-            Me.Close()
-
-        End Sub
+#End Region ' Internals
 
     End Class
 

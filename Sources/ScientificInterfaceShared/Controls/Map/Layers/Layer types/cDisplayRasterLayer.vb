@@ -162,7 +162,7 @@ Namespace Controls.Map.Layers
 
             MyBase.New(uic, renderer)
 
-            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
 #If DEBUG Then
             Me.m_mh.Name = "UI::cRasterLayer " & Me.m_varName.ToString
 #End If
@@ -547,7 +547,8 @@ Namespace Controls.Map.Layers
 
             If (Me.Data Is Nothing) Then Return
 
-            If (msg.DataType = Me.Data.DataType) Then
+            ' JS 22Nov14: also respond to Ecospace param settings
+            If (msg.DataType = Me.Data.DataType) Or (msg.DataType = eDataTypes.EcospaceModelParameter) Then
                 ' Trigger update
                 Me.Update(eChangeFlags.Map, False)
             End If
