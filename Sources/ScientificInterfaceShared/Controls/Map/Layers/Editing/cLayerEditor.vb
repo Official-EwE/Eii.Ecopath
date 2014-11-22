@@ -445,8 +445,9 @@ Namespace Controls.Map.Layers
                 Dim bEditable As Boolean = (Me.m_bEditable = True) And (Me.IsReadOnly = False)
 
                 If (Me.m_layer IsNot Nothing) Then
-                    ' External data cannot be edited
-                    bEditable = bEditable And (Not Me.m_layer.IsExternal)
+                    ' JS 22Nov14: this makes it hard to play with data. Removed constraint
+                    '' External data cannot be edited
+                    'bEditable = bEditable And (Not Me.m_layer.IsExternal)
                     ' Invisible data cannot be edited
                     If (Me.m_layer.Renderer IsNot Nothing) Then bEditable = bEditable And Me.m_layer.Renderer.IsVisible
                 Else
