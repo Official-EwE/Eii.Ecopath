@@ -241,6 +241,12 @@ Namespace Controls.Map.Layers
             End Get
         End Property
 
+        Public Overridable ReadOnly Property GetProperty() As cProperty
+            Get
+                Return Nothing
+            End Get
+        End Property
+
 #End Region ' Public properties
 
 #Region " Internals "

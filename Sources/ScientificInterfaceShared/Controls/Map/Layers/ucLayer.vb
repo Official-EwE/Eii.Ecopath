@@ -41,9 +41,7 @@ Namespace Controls.Map
         Private m_uic As cUIContext = Nothing
         ''' <summary>Layer</summary>
         Private m_layer As cDisplayLayer = Nothing
-        ''' <summary>Parent layer group</summary>
-        Private m_lgParent As ucLayerGroup = Nothing
-        ''' <summary>States whether the mouse is hovering over the control.</summary>
+          ''' <summary>States whether the mouse is hovering over the control.</summary>
         Private m_bHovering As Boolean = False
 
         ' Images cache for faster rendering
@@ -72,9 +70,16 @@ Namespace Controls.Map
             Me.m_uic = uic
             Me.m_layer = l
 
-            AddHandler m_layer.LayerChanged, AddressOf OnLayerChanged
+            AddHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
+
             ' Kick off
             Me.OnLayerChanged(l, cDisplayLayer.eChangeFlags.Descriptive)
+
+            Dim p As cProperty = Me.m_layer.GetProperty()
+            If (p IsNot Nothing) Then
+                AddHandler p.PropertyChanged, AddressOf OnLayerPropertyChanged
+                OnLayerPropertyChanged(p, cProperty.eChangeFlags.All)
+            End If
 
         End Sub
 
@@ -84,8 +89,13 @@ Namespace Controls.Map
                 ' Remove from event handler
                 RemoveHandler m_layer.LayerChanged, AddressOf OnLayerChanged
 
+                Dim p As cProperty = Me.m_layer.GetProperty()
+                If (p IsNot Nothing) Then
+                    RemoveHandler p.PropertyChanged, AddressOf OnLayerPropertyChanged
+                End If
+
+                Me.LayerGroup = Nothing
                 Me.m_layer = Nothing
-                Me.m_lgParent = Nothing
 
                 If components IsNot Nothing Then
                     components.Dispose()
@@ -105,13 +115,6 @@ Namespace Controls.Map
         End Property
 
         Public Property LayerGroup() As ucLayerGroup
-            Get
-                Return Me.m_lgParent
-            End Get
-            Set(ByVal value As ucLayerGroup)
-                Me.m_lgParent = value
-            End Set
-        End Property
 
 #End Region ' Properties
 
@@ -130,17 +133,13 @@ Namespace Controls.Map
             Else
                 ' Just redraw whenever there is time
                 Me.Invalidate()
-
-                If (TypeOf l Is cDisplayRasterLayer) Then
-                    Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
-                    Dim pm As cPropertyManager = Me.m_uic.PropertyManager
-                    Dim prop As cProperty = pm.GetProperty(rl.Source, eVarNameFlags.Name)
-
-                    If prop IsNot Nothing Then
-                        cToolTipShared.GetInstance().SetToolTip(Me, prop.GetRemark)
-                    End If
-                End If
             End If
+
+        End Sub
+
+        Private Sub OnLayerPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
+            Me.Invalidate()
+            cToolTipShared.GetInstance().SetToolTip(Me, prop.GetRemark)
         End Sub
 
         Public Sub EditLayer(ByVal edittype As eLayerEditTypes)
@@ -268,7 +267,7 @@ Namespace Controls.Map
             Dim rcVisible As Rectangle = Nothing
             Dim rcLabel As Rectangle = Nothing
             Dim rcPreview As Rectangle = Nothing
-            Dim prop As cProperty = Nothing
+            Dim prop As cProperty = Me.m_layer.GetProperty()
             Dim img As Image = Nothing
             Dim fmt As New StringFormat()
 

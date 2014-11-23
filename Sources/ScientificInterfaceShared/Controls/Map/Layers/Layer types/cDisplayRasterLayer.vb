@@ -532,6 +532,14 @@ Namespace Controls.Map.Layers
             End Get
         End Property
 
+        Public Overrides ReadOnly Property GetProperty As Properties.cProperty
+            Get
+                If (Me.m_uic Is Nothing) Then Return Nothing
+                Dim pm As cPropertyManager = Me.m_uic.PropertyManager
+                Return pm.GetProperty(Me.Source, Me.VarName, Me.SourceSec)
+            End Get
+        End Property
+
 #End Region ' Public properties
 
 #Region " Events "
