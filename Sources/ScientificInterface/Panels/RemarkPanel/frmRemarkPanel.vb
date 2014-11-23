@@ -113,6 +113,10 @@ Public Class frmRemarkPanel
     ''' -----------------------------------------------------------------------
     Private Sub OnSelectionChanged(mon As cSelectionMonitor)
 
+        If Me.m_bHasPendingChanges Then
+            Me.Apply()
+        End If
+
         For Each p As cProperty In Me.m_lProps
             RemoveHandler p.PropertyChanged, AddressOf OnPropertyChanged
         Next
@@ -192,8 +196,8 @@ Public Class frmRemarkPanel
         Me.HasPendingChanges = False
         Me.m_bInUpdate = True
         Try
-            For Each p As cProperty In Me.m_mon.Selection
-                p.SetRemark(strRemark)
+            For Each p As cProperty In Me.m_lProps
+                If Not p.IsDisposed Then p.SetRemark(strRemark)
             Next p
         Catch ex As Exception
             cLog.Write(ex, "frmRemarkPanel::Apply")
