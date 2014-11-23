@@ -349,14 +349,10 @@ Namespace Controls.Map
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME)
             Dim sc As cPropertySelectionCommand = Nothing
-            Dim pm As cPropertyManager = Me.m_uic.PropertyManager
             Dim prop As cProperty = Nothing
 
             If (Not Object.ReferenceEquals(layer, Nothing)) Then
-                If (TypeOf layer Is cDisplayRasterLayer) Then
-                    Dim rsl As cDisplayRasterLayer = DirectCast(layer, cDisplayRasterLayer)
-                    prop = pm.GetProperty(rsl.Source, rsl.VarName, rsl.SourceSec)
-                End If
+                prop = layer.GetProperty()
             End If
 
             If (cmd IsNot Nothing) And (prop IsNot Nothing) Then
