@@ -105,14 +105,11 @@ Public Class cBiomassLimits
 
         'Strategy = New Strategy(Path.GetFileNameWithoutExtension(StrategyFile), StratCounter, StrategyFile, mCore, mMSE)
 
-        'Save the Strategy to the file pass into its constructor
+        'Save the Strategy to the file pass into its constructor        
+        Me.Clear()
 
-        If Not File.Exists(Me.mFileName) Then
-            'message of some sort
-            Return False
-        Else
-            breturn = True
-        End If
+        ' If nothing to load then run with defaults
+        If Not File.Exists(Me.mFileName) Then Return True
 
         Try
 
