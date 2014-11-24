@@ -1121,15 +1121,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace is set to run with more than twelve time steps per year, while external data can only be delivered for the first day of a month. Your model may not be able to obtain the correct data for every time step. Do you want to continue?.
-        '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Ecotracer scenario &apos;{0}&apos; failed to load. {1}.
         '''</summary>
         Friend Shared ReadOnly Property ECOTRACER_LOAD_FAILED() As String
@@ -2345,6 +2336,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Some external spatial-temporal data connections will not be able to access their data. Do you want to continue?.
+        '''</summary>
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_MISSINGDATA() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_MISSINGDATA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Data connection {0} cannot locate its data.
+        '''</summary>
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_MISSINGDATA_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_MISSINGDATA_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Expected data was not read or converted correctly for layer {0}, time {1}, ext({2},{3}) to ({4},{5}), cell size {6}.
         '''</summary>
         Friend Shared ReadOnly Property SPATIALTEMPORAL_POP_FAILED_LOAD() As String
@@ -2359,6 +2368,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property SPATIALTEMPORAL_POP_FAILED_LOCK() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_POP_FAILED_LOCK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace is set to run with more than twelve time steps per year, while external data can only be delivered for the first day of a month. Your model may not be able to obtain the correct data for every time step. Do you want to continue?.
+        '''</summary>
+        Friend Shared ReadOnly Property SPATIALTEMPORAL_TOOMANYTIMESTEPS() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_TOOMANYTIMESTEPS", resourceCulture)
             End Get
         End Property
         

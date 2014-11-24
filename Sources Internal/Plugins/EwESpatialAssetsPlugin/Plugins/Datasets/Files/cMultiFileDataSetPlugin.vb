@@ -485,9 +485,11 @@ Namespace SpatialData
                                 Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
 
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
-                                If (xnChild.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
-                                    ' JS 06Nov13: added file exist check when loading dataset metadata
-                                    If (Boolean.Parse(xnChild.Attributes("Indexed").InnerText)) And IO.File.Exists(f.FileName) Then
+                                ' JS 06Nov13: added file exist check when loading dataset metadata
+                                If Not IO.File.Exists(f.FileName) Then
+                                    f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
+                                ElseIf (xnChild.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
+                                    If (Boolean.Parse(xnChild.Attributes("Indexed").InnerText)) Then
                                         f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed
                                         f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("lonmin").InnerText, GetType(Single))), _
                                                             CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("latmax").InnerText, GetType(Single))))
