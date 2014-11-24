@@ -5922,11 +5922,11 @@ exitline:
         '        'for simulation years 0=first simulation year)
         '        'assumes first simulation year is first calendar year in data csv file
         'On Local Error GoTo exitSub
-        Dim i As Long, j As Long, iDyear As Integer, Zstat As Single
+        'Dim i As Long, j As Long, iDyear As Integer, Zstat As Single
         Dim Erpred() As Single
         Dim Ss As Single
         'Dim Cnt As Long
-        Dim bCountStat As Boolean
+        'Dim bCountStat As Boolean
 
         Dim SpNObs() As Integer
         Dim SpSumZ() As Single
