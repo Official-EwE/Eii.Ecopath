@@ -8675,6 +8675,8 @@ Public Class cCore
                         'make sure Ecospace is not paused
                         Me.m_Ecospace.isPaused = False
 
+                        Me.m_spatialOperationLog.BeginRun()
+
                         Me.m_stpwSpaceTimer = Stopwatch.StartNew
                         Me.m_spaceSaveTime = 0
 
@@ -8737,6 +8739,13 @@ Public Class cCore
                 cLog.Write(ex, "cCore::onEcospaceRunCompleted SaveResults")
             End Try
 
+            ' Did a spatial temporal error occur?
+            If Not Me.m_spatialOperationLog.EndRun() Then
+                ' ToDo: globalize this
+                Me.m_publisher.AddMessage(New cFeedbackMessage("Ecospace experienced problems with external spatial temporal data", _
+                                                               eCoreComponentType.EcoSpace, eMessageType.DataImport, eMessageImportance.Warning, eMessageReplyStyle.OK))
+            End If
+
             Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
                           eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
 
@@ -8772,7 +8781,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns>True if all groups are above so min value. False otherwise</returns>
     ''' -----------------------------------------------------------------------
-    Private Function CheckHabitats() As Boolean
+    Public Function CheckHabitats() As Boolean
         Dim igrp As Integer
         Dim msg As cFeedbackMessage = Nothing
         Dim vs As cVariableStatus = Nothing
@@ -8829,7 +8838,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function CheckExternalSpatialTemporalData() As Boolean
+    Public Function CheckExternalSpatialTemporalData() As Boolean
 
         If (Me.m_spatialdataconnectionManager.NumConnectedAdapters = 0) Then Return True
 
