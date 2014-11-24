@@ -103,9 +103,6 @@ Public Class cBiomassLimits
         Dim recs() As String
         Dim breturn As Boolean = False
 
-        'Strategy = New Strategy(Path.GetFileNameWithoutExtension(StrategyFile), StratCounter, StrategyFile, mCore, mMSE)
-
-        'Save the Strategy to the file pass into its constructor        
         Me.Clear()
 
         ' If nothing to load then run with defaults
