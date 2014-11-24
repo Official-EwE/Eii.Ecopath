@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Database
 
 #End Region ' Imports
 
@@ -219,7 +220,7 @@ Public Class cData
         End Set
     End Property
 
-    Private Sub OnElementChanged(ByVal element As cOOPStorable)
+    Private Sub OnElementChanged(ByVal element As cEwEDatabase.cOOPStorable)
         Me.IsChanged = True
     End Sub
 
@@ -703,7 +704,7 @@ Public Class cData
     ''' Helper: connect producer unit fleet from DBID
     ''' </summary>
     ''' <param name="obj"></param>
-    Private Sub OnChanged(ByVal obj As cOOPStorable)
+    Private Sub OnChanged(ByVal obj As cEwEDatabase.cOOPStorable)
         If TypeOf obj Is cProducerUnit Then
             Dim prod As cProducerUnit = DirectCast(obj, cProducerUnit)
             prod.Fleet = Me.FindEcopathFleetByID(prod.EcopathFleetID)
@@ -940,7 +941,7 @@ Public Class cData
         link.Source.RemoveLink(link)
     End Sub
 
-    Public Sub OnGroupLinkChanged(ByVal unit As cOOPStorable)
+    Public Sub OnGroupLinkChanged(ByVal unit As cEwEDatabase.cOOPStorable)
         If TypeOf unit Is cLinkLandings Then
             Dim mu As cLinkLandings = DirectCast(unit, cLinkLandings)
             mu.Group = Me.FindEcopathGroupByID(mu.EcopathGroupID)

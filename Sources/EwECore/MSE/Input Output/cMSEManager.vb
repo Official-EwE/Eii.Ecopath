@@ -434,9 +434,9 @@ Namespace MSE
                     'no control type has been set for any fleet(s)
                     'ask the user what to do
                     Dim response As eMessageReply
-                    Dim fbMess As New cFeedbackMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_VALIDATION_QUOTAS), _
-                                                                       eCoreComponentType.MSE, eMessageType.DataValidation, _
-                                                                       eMessageImportance.Warning, eMessageReplyStyle.YES_NO)
+                    Dim fbMess As New cFeedbackMessage(My.Resources.CoreMessages.MSE_VALIDATION_QUOTAS, _
+                                                       eCoreComponentType.MSE, eMessageType.DataValidation, _
+                                                       eMessageImportance.Warning, eMessageReplyStyle.YES_NO)
                     Me.m_core.Messages.SendMessage(fbMess)
                     response = fbMess.Reply
 

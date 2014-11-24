@@ -272,7 +272,7 @@ Namespace MSY
                     iNumSteps += CInt(Me.m_msyData.MaxRelF / (Me.m_msyData.MaxRelF * Me.m_msyData.FStepSize))
                 End If
             Next
-            Me.StartProgress(cStringUtils.Localize(My.Resources.CoreMessages.GENERIC_STATUS_INITIALIZING), iNumSteps)
+            Me.StartProgress(My.Resources.CoreMessages.GENERIC_STATUS_INITIALIZING, iNumSteps)
 
             Try
 
