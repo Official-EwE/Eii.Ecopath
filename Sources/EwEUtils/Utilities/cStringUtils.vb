@@ -1659,38 +1659,93 @@ Namespace Utilities
 
 #Region " Localization "
 
-        Public Shared Function Localize(strMask As String, val1 As Object) As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <para>Safe string formatting to substitute one value into a <see cref="String.Format">string format 
+        ''' mask</see>.</para>
+        ''' <para>If the formatting fails, the original mask is returned and the 
+        ''' failure is recorded in the EwE error log.</para>
+        ''' </summary>
+        ''' <param name="strMask">The string mask to use for formatting, containing
+        ''' only one placeholder {0}.</param>
+        ''' <param name="val1">The one value to substitute into the mask.</param>
+        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Localize(ByVal strMask As String, ByVal val1 As Object) As String
             Try
                 Return String.Format(strMask, val1)
             Catch ex As Exception
-                cLog.Write(ex, "Localization error")
+                Debug.Assert(False, "Localization error on " & strMask)
+                cLog.Write(ex, "Localization error on " & strMask)
             End Try
             Return strMask
         End Function
 
-        Public Shared Function Localize(strMask As String, val1 As Object, val2 As Object) As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <para>Safe string formatting to substitute two different values into 
+        ''' a <see cref="String.Format">string format mask</see>.</para>
+        ''' <para>If the formatting fails, the original mask is returned and the 
+        ''' failure is recorded in the EwE error log.</para>
+        ''' </summary>
+        ''' <param name="strMask">The string mask to use for formatting, containing
+        ''' two placeholders {0} and {1}.</param>
+        ''' <param name="val1">The first value to substitute into the mask.</param>
+        ''' <param name="val2">The second value to substitute into the mask.</param>
+        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Localize(ByVal strMask As String, ByVal val1 As Object, ByVal val2 As Object) As String
             Try
                 Return String.Format(strMask, val1, val2)
             Catch ex As Exception
-                cLog.Write(ex, "Localization error")
+                Debug.Assert(False, "Localization error on " & strMask)
+                cLog.Write(ex, "Localization error on " & strMask)
             End Try
             Return strMask
         End Function
 
-        Public Shared Function Localize(strMask As String, val1 As Object, val2 As Object, val3 As Object) As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <para>Safe string formatting to substitute three different values into 
+        ''' a <see cref="String.Format">string format mask</see>.</para>
+        ''' <para>If the formatting fails, the original mask is returned and the 
+        ''' failure is recorded in the EwE error log.</para>
+        ''' </summary>
+        ''' <param name="strMask">The string mask to use for formatting, containing
+        ''' three placeholders {0}, {1} and {2}.</param>
+        ''' <param name="val1">The first value to substitute into the mask.</param>
+        ''' <param name="val2">The second value to substitute into the mask.</param>
+        ''' <param name="val3">The third value to substitute into the mask.</param>
+        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Localize(ByVal strMask As String, ByVal val1 As Object, ByVal val2 As Object, ByVal val3 As Object) As String
             Try
                 Return String.Format(strMask, val1, val2, val3)
             Catch ex As Exception
-                cLog.Write(ex, "Localization error")
+                Debug.Assert(False, "Localization error on " & strMask)
+                cLog.Write(ex, "Localization error on " & strMask)
             End Try
             Return strMask
         End Function
 
-        Public Shared Function Localize(strMask As String, vals As Object()) As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <para>Safe string formatting to substitute an array of different values into 
+        ''' a <see cref="String.Format">string format mask</see>.</para>
+        ''' <para>If the formatting fails, the original mask is returned and the 
+        ''' failure is recorded in the EwE error log.</para>
+        ''' </summary>
+        ''' <param name="strMask">The string mask to use for formatting, containing
+        ''' three placeholders {0}, {1} and {2}.</param>
+        ''' <param name="vals">The values to substitute into the mask.</param>
+        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Localize(ByVal strMask As String, ByVal vals As Object()) As String
             Try
                 Return String.Format(strMask, vals)
             Catch ex As Exception
-                cLog.Write(ex, "Localization error")
+                Debug.Assert(False, "Localization error on " & strMask)
+                cLog.Write(ex, "Localization error on " & strMask)
             End Try
             Return strMask
         End Function
