@@ -73,7 +73,7 @@ Namespace SpatialData
             ' File missing?
             If (Not System.IO.File.Exists(strFileName)) Then
                 ' #Yes: report error
-                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.ErrorEncountered)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.MissingParameter)
                 ' Run away
                 Return False
             End If
@@ -83,7 +83,7 @@ Namespace SpatialData
                 reader = New StreamReader(strFileName)
             Catch ex As Exception
                 ' Panic!
-                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.MissingParameter)
                 Return False
             End Try
 
@@ -91,12 +91,12 @@ Namespace SpatialData
                 ' Able to read header?
                 If (Not Me.ReadHeader(reader, rs)) Then
                     ' #No: log error
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED_ASCIIHEADER, strFileName), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED_ASCIIHEADER, strFileName), eStatusFlags.MissingParameter)
                 Else
                     ' Able to read body?
                     If (Not Me.ReadBody(reader, rs)) Then
                         ' #No: log error
-                        Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED_ASCIIBODY, strFileName), eStatusFlags.ErrorEncountered)
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED_ASCIIBODY, strFileName), eStatusFlags.MissingParameter)
                     Else
                         ' #Yes: create internal raster to wrap the data
                         Me.m_raster = New cSpatialRaster(rs)
@@ -108,7 +108,7 @@ Namespace SpatialData
                 End If
             Catch ex As Exception
                 ' Log generic panic message
-                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.MissingParameter)
             End Try
 
             ' Clean up
@@ -339,7 +339,7 @@ Namespace SpatialData
 
             If bRowCountError Then Me.LogMessage("", eStatusFlags.MissingParameter)
             If bColCountError Then Me.LogMessage("", eStatusFlags.MissingParameter)
-            If bValueError Then Me.LogMessage("", eStatusFlags.ErrorEncountered)
+            If bValueError Then Me.LogMessage("", eStatusFlags.FailedValidation)
 
             Return bDataCorrect
 

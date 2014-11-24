@@ -94,7 +94,7 @@ Namespace SpatialData
                                           bm.PosBottomRight.X, bm.PosTopLeft.Y))
                 Me.LogMessage("Loaded Ecospace CSV from " & strFileName, eStatusFlags.OK)
             Else
-                Me.LogMessage("Failed to load Ecospace CSV " & strFileName, eStatusFlags.ErrorEncountered)
+                Me.LogMessage("Failed to load Ecospace CSV " & strFileName, eStatusFlags.MissingParameter)
             End If
 
             Return Me.m_bLoaded

@@ -552,7 +552,7 @@ Namespace SpatialData
                 End If
 
                 If (Not File.Exists(strFileName)) Then
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.MissingParameter)
                     Me.StoreExtent(Nothing)
                     Return False
                 End If
@@ -563,12 +563,12 @@ Namespace SpatialData
                     Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
                     Return True
                 Else
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ""), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ""), eStatusFlags.MissingParameter)
                     Return False
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.MissingParameter)
                 ' Log an error
                 Me.StoreExtent(Nothing)
                 ' Failed

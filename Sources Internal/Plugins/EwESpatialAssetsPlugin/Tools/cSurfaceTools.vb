@@ -74,7 +74,8 @@ Public Class cSurfaceTools
 
         If (Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection)) Then
             fs.Reproject(cDotSpatialUtils.EcospaceProjection)
-            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
+            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), _
+                                                         eStatusFlags.ValueComputed)
         End If
 
         ' -----
@@ -99,7 +100,7 @@ Public Class cSurfaceTools
         iNumRejected = cVectorTools.CheckUsablePolygons(featToConvert, True, True)
 
         If ((iNumRejected > 0) And (log IsNot Nothing)) Then
-            log.LogOperation(cStringUtils.Localize(My.Resources.STATUS_POLYGONSFAILED_INVALID, iNumRejected), eStatusFlags.ErrorEncountered)
+            log.LogOperation(cStringUtils.Localize(My.Resources.STATUS_POLYGONSFAILED_INVALID, iNumRejected), eStatusFlags.MissingParameter)
         End If
 
         ' -----
@@ -158,7 +159,7 @@ Public Class cSurfaceTools
                         Catch ex As Exception
                             ' Woops
                             If (log IsNot Nothing) Then
-                                log.LogOperation(cStringUtils.Localize("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.ErrorEncountered)
+                                log.LogOperation(cStringUtils.Localize("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.MissingParameter)
                             End If
                             ' Do not obliterate polygon, keep plowing on
                             'polyToConvert = Nothing
@@ -223,7 +224,7 @@ Public Class cSurfaceTools
         iNumRejected = cVectorTools.CheckUsablePolygons(featToConvert, True, True)
 
         If ((iNumRejected > 0) And (log IsNot Nothing)) Then
-            log.LogOperation(cStringUtils.Localize(My.Resources.STATUS_POLYGONSFAILED_INVALID, iNumRejected), eStatusFlags.ErrorEncountered)
+            log.LogOperation(cStringUtils.Localize(My.Resources.STATUS_POLYGONSFAILED_INVALID, iNumRejected), eStatusFlags.MissingParameter)
         End If
 
         ' -----
@@ -280,7 +281,7 @@ Public Class cSurfaceTools
                             Catch ex As Exception
                                 ' Woops
                                 If (log IsNot Nothing) Then
-                                    log.LogOperation(cStringUtils.Localize("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.ErrorEncountered)
+                                    log.LogOperation(cStringUtils.Localize("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.MissingParameter)
                                 End If
                                 ' Do not obliterate polygon, keep plowing on
                                 'polyToConvert = Nothing

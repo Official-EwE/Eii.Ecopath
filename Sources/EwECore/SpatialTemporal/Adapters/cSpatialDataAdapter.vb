@@ -231,7 +231,8 @@ Namespace SpatialData
                                         ' The raster returned here MUST have the extent and projection compatible with Ecospace
                                         dataExternal = ds.GetRaster(cv, cValueID.getDataTypeID(layer.DataType, layer.DBID))
                                     Catch ex As Exception
-                                        Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+                                        Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), _
+                                                                                   eStatusFlags.MissingParameter)
                                         cLog.Write(ex, "cSpatialDataAdapter::Populate(" & layer.ToString() & ")")
                                         bSuccess = False
                                     End Try
@@ -265,9 +266,9 @@ Namespace SpatialData
                                         dataExternal = Nothing
 
                                     Else
-                                        strMsg = My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOAD
-                                        cLog.Write(cStringUtils.Localize(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
-                                        Me.m_core.SpatialOperationLog.LogOperation(strMsg, eStatusFlags.ErrorEncountered)
+                                        strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOAD, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
+                                        Me.m_core.SpatialOperationLog.LogOperation(strMsg, eStatusFlags.MissingParameter)
+                                        cLog.Write(strMsg)
                                         bSuccess = False
                                     End If
 
@@ -277,8 +278,8 @@ Namespace SpatialData
                                     ' Done logging
                                     Me.m_core.SpatialOperationLog.EndLayerLog()
                                 Else
-                                    strMsg = My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOCK
-                                    cLog.Write(cStringUtils.Localize(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
+                                    strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOCK, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize)
+                                    cLog.Write(strMsg)
                                     bSuccess = False
                                 End If
 
@@ -380,11 +381,13 @@ Namespace SpatialData
                 'System.Console.WriteLine(layer.Name + " mean = " + (sum / n).ToString)
 
                 If bSuccess Then
-                    Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()), eStatusFlags.OK)
+                    Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()), _
+                                                               eStatusFlags.OK)
                 End If
 
             Catch ex As Exception
-                Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+                Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), _
+                                                           eStatusFlags.FailedValidation)
                 cLog.Write(ex, "cSpatialDataAdapter::Adapt(" & layer.ToString() & ")")
                 bSuccess = False
             End Try
@@ -416,7 +419,8 @@ Namespace SpatialData
                 Dim strMsg As String = "cSpatialDataAdapter::SetCell({0}) at ({1},{2})={3}: exception {4}"
                 cLog.Write(ex, cStringUtils.Localize(strMsg, layer.ToString, iCol, iRow, sCellValueAtT))
 
-                Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_ADAPTERROR, iRow, iCol, sCellValueAtT, ex.Message), eStatusFlags.ErrorEncountered)
+                Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_ADAPTERROR, iRow, iCol, sCellValueAtT, ex.Message), _
+                                                           eStatusFlags.MissingParameter)
                 Return False
             End Try
             Return True
