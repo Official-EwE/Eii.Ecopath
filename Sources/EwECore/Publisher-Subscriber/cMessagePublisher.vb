@@ -173,8 +173,10 @@ Public Class cMessagePublisher
             End If
 
             ' JS 27sep07: log only messages of certain importance
+            ' JS 24nov14: also log questions
             Select Case Message.Importance
-                Case eMessageImportance.Critical, eMessageImportance.Warning, eMessageImportance.Information
+                Case eMessageImportance.Critical, eMessageImportance.Warning, _
+                     eMessageImportance.Information, eMessageImportance.Question
 
                     ' JS 07jun13: allow message filtering
                     If (Me.PluginManager IsNot Nothing) Then
