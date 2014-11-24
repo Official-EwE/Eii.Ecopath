@@ -23,6 +23,7 @@ Option Explicit On
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -247,7 +248,7 @@ Public Class cConverterPicker
 
         Try
             Dim dlg As New ScientificInterfaceShared.Controls.dlgConfig(Me.m_uic)
-            Return (dlg.ShowDialog(String.Format(SharedResources.CAPTION_GENERIC_EDIT, strTitle), _
+            Return (dlg.ShowDialog(cStringUtils.Localize(SharedResources.CAPTION_GENERIC_EDIT, strTitle), _
                                    cfg.GetConfigUI()) = DialogResult.OK)
         Catch ex As Exception
             ' Whoah!

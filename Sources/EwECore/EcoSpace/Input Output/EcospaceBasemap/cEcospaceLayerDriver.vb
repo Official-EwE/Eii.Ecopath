@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -69,7 +70,7 @@ Public Class cEcospaceLayerDriver
     End Sub
 
     Protected Overrides Function DefaultName() As String
-        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_DRIVER, Me.Index)
+        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_DRIVER, Me.Index)
     End Function
 
 #End Region ' Constructor

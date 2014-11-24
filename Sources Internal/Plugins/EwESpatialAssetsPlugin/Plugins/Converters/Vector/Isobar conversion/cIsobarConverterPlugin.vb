@@ -19,16 +19,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports System.Drawing
 Imports DotSpatial.Data
 Imports EwECore
 Imports EwECore.SpatialData
-Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports System.Xml
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -69,7 +66,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataConverter.IsCompatible"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function IsCompatible(ds As ISpatialDataSet) As Boolean 
+        Public Overrides Function IsCompatible(ds As ISpatialDataSet) As Boolean
             If (ds Is Nothing) Then Return False
             Return (ds.ConversionFormat = "DotSpatialVector") And (ds.VarName = eVarNameFlags.LayerDepth)
         End Function
@@ -98,7 +95,7 @@ Namespace SpatialData
             End If
 
             ' Log
-            Me.LogMessage(String.Format(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
+            Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
 
             ' Perform conversion
             If (TypeOf data Is IRaster) Then
@@ -111,10 +108,10 @@ Namespace SpatialData
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 
-                    Me.LogMessage(String.Format(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                 End Try
 
             End If
@@ -126,7 +123,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataConverter.DisplayName"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides ReadOnly Property DisplayName As String 
+        Public Overrides ReadOnly Property DisplayName As String
             Get
                 Return My.Resources.CONVERTER_ISOBAR_NAME
 
@@ -134,9 +131,9 @@ Namespace SpatialData
                 '    Return My.Resources.CONVERTER_ISOBAR_NAME
                 'Else
                 '    ' ToDo: globalize this
-                '    'Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                '    'Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, _
                 '    '                     My.Resources.CONVERTER_ISOBAR_NAME, _
-                '    '                     String.Format(SharedResources.GENERIC_LABEL_DOUBLE, "Field", Me.AttributeName))
+                '    '                     cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, "Field", Me.AttributeName))
                 '    Return (My.Resources.CONVERTER_ISOBAR_NAME & " using values from " & Me.AttributeName)
                 'End If
 

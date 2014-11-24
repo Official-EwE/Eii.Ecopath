@@ -26,6 +26,7 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -102,6 +103,8 @@ Namespace Controls
                 ByVal iXMax As Integer, _
                 ByVal sYMax As Single)
 
+            ' ToDo: localize this
+
             Dim strLabel As String = ""
             Dim sLabelXScale As Single = 1.0!
             Dim sLabelXPos As Single = 0.0!
@@ -162,7 +165,7 @@ Namespace Controls
 
                     strLabel = j.ToString
                     If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
-                        strLabel = String.Format("x{0}", strLabel)
+                        strLabel = cStringUtils.Localize("x{0}", strLabel)
                     End If
                     g.DrawString(strLabel, Me.Font, brTmp, rcImage.Left + 5, yPos)
                     g.DrawLine(penTmp, rcImage.Left, yPos, rcImage.Left + 3, yPos)
@@ -175,7 +178,7 @@ Namespace Controls
                         strLabel = sg.FormatNumber(sYMax * (3 - j) / 3)
 
                         If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
-                            strLabel = String.Format("x{0}", strLabel)
+                            strLabel = cStringUtils.Localize("x{0}", strLabel)
                         End If
                         g.DrawString(strLabel, Me.Font, brTmp, rcImage.Left + 5, yPos)
                         g.DrawLine(penTmp, rcImage.Left, yPos, rcImage.Left + 3, yPos)
@@ -183,7 +186,7 @@ Namespace Controls
                 End If
 
                 ' Display shape ID (=index in manager list) + 1
-                strLabel = String.Format(My.Resources.GENERIC_LABEL_INDEXED, (DirectCast(Me.Shape, cShapeData).Index), Me.Shape.Name)
+                strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, (DirectCast(Me.Shape, cShapeData).Index), Me.Shape.Name)
                 g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
 
                 ' Dispose the pen, brush and font we created and let the system garbage collect them.

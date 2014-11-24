@@ -541,7 +541,7 @@ Namespace Ecospace
             Next
 
             ' Format new hab with an autonumber value based on existing names
-            hi = New cHabitatInfo(String.Format(SharedResources.DEFAULT_NEWHABITAT_NUM, _
+            hi = New cHabitatInfo(cStringUtils.Localize(SharedResources.DEFAULT_NEWHABITAT_NUM, _
                     cStringUtils.GetNextNumber(lstrHabitats.ToArray(), SharedResources.DEFAULT_NEWHABITAT_NUM)))
             Me.m_alHabitats.Insert(iHabitat, hi)
 
@@ -626,7 +626,7 @@ Namespace Ecospace
                 ElseIf Not Me.IsNameUnique(hi.Name, hi) Then
                     If Not lstrHandled.Contains(hi.Name) Then
                         fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                             String.Format(My.Resources.PROMPT_DUPLICATE_NAME, hi.Name), _
+                                                             cStringUtils.Localize(My.Resources.PROMPT_DUPLICATE_NAME, hi.Name), _
                                                              eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
                         lstrHandled.Add(hi.Name)
                     End If
@@ -698,7 +698,7 @@ Namespace Ecospace
 
             If (Me.m_alHabitatsRemoved.Count > 5) Then
 
-                strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT, Me.m_alHabitatsRemoved.Count)
+                strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT, Me.m_alHabitatsRemoved.Count)
                 Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
@@ -725,7 +725,7 @@ Namespace Ecospace
                     hi = DirectCast(Me.m_alHabitatsRemoved(iHabitat), cHabitatInfo)
                     If (Not hi.IsNew()) Then
 
-                        strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT, hi.Name)
+                        strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT, hi.Name)
                         Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                         Me.UIContext.Core.Messages.SendMessage(fmsg)
 

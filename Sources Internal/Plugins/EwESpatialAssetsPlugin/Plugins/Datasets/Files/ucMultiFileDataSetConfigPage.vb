@@ -298,7 +298,7 @@ Namespace SpatialData
             Dim ofd As New OpenFileDialog()
             Dim sbFileName As New StringBuilder()
 
-            ofd.Title = String.Format(My.Resources.PROMPT_SELECTFILES, Me.m_tbxName.Text)
+            ofd.Title = cStringUtils.Localize(My.Resources.PROMPT_SELECTFILES, Me.m_tbxName.Text)
             ofd.Multiselect = True
             ofd.InitialDirectory = Me.AbsolutePath()
             ofd.Filter = Me.m_dataset.DialogReadFilter(True, False, True)

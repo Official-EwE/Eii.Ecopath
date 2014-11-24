@@ -23,6 +23,7 @@ Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -482,17 +483,17 @@ Namespace Ecosim
             Me.m_ptLast.X = ptPredPrey.X
             Me.m_ptLast.Y = ptPredPrey.Y
 
-            If ptPredPrey.X > 0 Then strPred = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.X, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name)
-            If ptPredPrey.Y > 0 Then strPrey = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.Y, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
+            If ptPredPrey.X > 0 Then strPred = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.X, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name)
+            If ptPredPrey.Y > 0 Then strPrey = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.Y, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
 
             ' Format tooltip
             If (ptPredPrey.X <> 0) Or (ptPredPrey.Y <> 0) Then
                 If (ptPredPrey.X = 0) Then
-                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREY, strPrey)
+                    strToolTip = cStringUtils.Localize(My.Resources.GENERIC_TOOLTIP_PREY, strPrey)
                 ElseIf (ptPredPrey.Y = 0) Then
-                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREDATOR, strPred)
+                    strToolTip = cStringUtils.Localize(My.Resources.GENERIC_TOOLTIP_PREDATOR, strPred)
                 Else
-                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREDPREY, strPred, strPrey)
+                    strToolTip = cStringUtils.Localize(My.Resources.GENERIC_TOOLTIP_PREDPREY, strPred, strPrey)
                 End If
             End If
 

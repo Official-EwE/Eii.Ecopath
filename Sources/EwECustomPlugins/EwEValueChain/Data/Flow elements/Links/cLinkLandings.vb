@@ -168,9 +168,10 @@ Public Class cLinkLandings
 
     Public Overrides Property Name() As String
         Get
+            ' ToDo: globalize this
             If (Me.m_group Is Nothing) Then Return "! No group"
             Dim fmt As New cCoreInterfaceFormatter()
-            Return String.Format("Landings of {0}", fmt.GetDescriptor(Me.m_group, eDescriptorTypes.Name))
+            Return cStringUtils.Localize("Landings of {0}", fmt.GetDescriptor(Me.m_group, eDescriptorTypes.Name))
         End Get
         Set(ByVal value As String)
             ' NOP

@@ -843,7 +843,7 @@ Namespace Ecosim
                     End If
 
                 Case ePlot.Biomass
-                    Return String.Format(SharedResources.GENERIC_LABEL_UNIT, StyleGuide.GetUnitString(cStyleGuide.eUnitType.Currency))
+                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNIT, StyleGuide.GetUnitString(cStyleGuide.eUnitType.Currency))
 
                 Case ePlot.FeedingTime
                     Return ""
@@ -852,17 +852,17 @@ Namespace Ecosim
                      ePlot.FleetFishingMortality, _
                      ePlot.Mortality, _
                      ePlot.PredationMortality
-                    Return String.Format(SharedResources.GENERIC_LABEL_PERUNIT, StyleGuide.GetUnitString(cStyleGuide.eUnitType.Time))
+                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_PERUNIT, StyleGuide.GetUnitString(cStyleGuide.eUnitType.Time))
 
                 Case ePlot.Prey
                     Return SharedResources.HEADER_PREY_PERCENTAGE
 
                 Case ePlot.Value
-                    Return String.Format(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
+                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
                                        StyleGuide.GetUnitString(cStyleGuide.eUnitType.Monetary), StyleGuide.GetUnitString(cStyleGuide.eUnitType.Biomass))
 
                 Case ePlot.[Catch]
-                    Return String.Format(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
+                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
                                          StyleGuide.GetUnitString(cStyleGuide.eUnitType.Currency), StyleGuide.GetUnitString(cStyleGuide.eUnitType.Time))
             End Select
 

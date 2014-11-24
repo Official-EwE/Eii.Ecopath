@@ -24,12 +24,11 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -191,7 +190,7 @@ Namespace Ecospace.Basemap
             Debug.Assert(Me.m_data IsNot Nothing, Me.ToString + ".ReadCSVFile() cEcospaceImportExportXYData has not been initialized correctly.")
 
             If Not Me.m_data.ReadXYFile(Me.m_tbInput.Text, Me.RowField, Me.ColField) Then
-                Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_READ, Me.m_tbInput.Text), _
+                Dim msg As New cMessage(cStringUtils.Localize(SharedResources.FILE_LOAD_ERROR_READ, Me.m_tbInput.Text), _
                                         eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
                 Me.m_uic.Core.Messages.SendMessage(msg)
                 bSuccess = False

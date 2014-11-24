@@ -19,18 +19,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports System.Drawing
 Imports System.IO
-Imports System.Xml
+Imports System.Windows.Forms
 Imports DotSpatial.Data
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -59,7 +54,7 @@ Namespace SpatialData
                                                             ByVal bImage As Boolean, _
                                                             ByVal bVector As Boolean) As String
             Get
-                Return String.Format("{0}|*.asc", My.Resources.DIALOGFILTER_ASCII)
+                Return cStringUtils.Localize("{0}|*.asc", My.Resources.DIALOGFILTER_ASCII)
             End Get
         End Property
 
@@ -78,7 +73,7 @@ Namespace SpatialData
             ' File missing?
             If (Not System.IO.File.Exists(strFileName)) Then
                 ' #Yes: report error
-                Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.ErrorEncountered)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.ErrorEncountered)
                 ' Run away
                 Return False
             End If
@@ -88,7 +83,7 @@ Namespace SpatialData
                 reader = New StreamReader(strFileName)
             Catch ex As Exception
                 ' Panic!
-                Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
                 Return False
             End Try
 
@@ -96,24 +91,24 @@ Namespace SpatialData
                 ' Able to read header?
                 If (Not Me.ReadHeader(reader, rs)) Then
                     ' #No: log error
-                    Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED_ASCIIHEADER, strFileName), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED_ASCIIHEADER, strFileName), eStatusFlags.ErrorEncountered)
                 Else
                     ' Able to read body?
                     If (Not Me.ReadBody(reader, rs)) Then
                         ' #No: log error
-                        Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED_ASCIIBODY, strFileName), eStatusFlags.ErrorEncountered)
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED_ASCIIBODY, strFileName), eStatusFlags.ErrorEncountered)
                     Else
                         ' #Yes: create internal raster to wrap the data
                         Me.m_raster = New cSpatialRaster(rs)
                         ' Update index
                         Me.StoreExtent(rs.Extent)
                         ' Log success
-                        Me.LogMessage(String.Format(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
                     End If
                 End If
             Catch ex As Exception
                 ' Log generic panic message
-                Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
             End Try
 
             ' Clean up

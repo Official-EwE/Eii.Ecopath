@@ -74,7 +74,7 @@ Public Class cSurfaceTools
 
         If (Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection)) Then
             fs.Reproject(cDotSpatialUtils.EcospaceProjection)
-            If (log IsNot Nothing) Then log.LogOperation(String.Format(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
+            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
         End If
 
         ' -----
@@ -90,7 +90,7 @@ Public Class cSurfaceTools
                 featToConvert.AddFeature(fs.Features(i))
             Next
 
-            If (log IsNot Nothing) Then log.LogOperation(String.Format(My.Resources.OPERATION_EXTRACTPLOYGONS, strFilter), eStatusFlags.ValueComputed)
+            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTPLOYGONS, strFilter), eStatusFlags.ValueComputed)
         Else
             ' #No: grab entire feature set
             featToConvert = fs
@@ -99,7 +99,7 @@ Public Class cSurfaceTools
         iNumRejected = cVectorTools.CheckUsablePolygons(featToConvert, True, True)
 
         If ((iNumRejected > 0) And (log IsNot Nothing)) Then
-            log.LogOperation(String.Format(My.Resources.STATUS_POLYGONSFAILED_INVALID, iNumRejected), eStatusFlags.ErrorEncountered)
+            log.LogOperation(cStringUtils.Localize(My.Resources.STATUS_POLYGONSFAILED_INVALID, iNumRejected), eStatusFlags.ErrorEncountered)
         End If
 
         ' -----
@@ -112,7 +112,7 @@ Public Class cSurfaceTools
         rs.NoDataValue = 0
         'rs.Reproject(fs.Projection)
 
-        If (log IsNot Nothing) Then log.LogOperation(String.Format(My.Resources.OPERATION_EXTRACTPLOYGONS, strFilter), eStatusFlags.ValueComputed)
+        If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTPLOYGONS, strFilter), eStatusFlags.ValueComputed)
 
         ' ToDo: This loop can be sped up by only processing those cells that overlap with the extent of the dataset
         ' For all cols, rows
@@ -158,7 +158,7 @@ Public Class cSurfaceTools
                         Catch ex As Exception
                             ' Woops
                             If (log IsNot Nothing) Then
-                                log.LogOperation(String.Format("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.ErrorEncountered)
+                                log.LogOperation(cStringUtils.Localize("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.ErrorEncountered)
                             End If
                             ' Do not obliterate polygon, keep plowing on
                             'polyToConvert = Nothing
@@ -215,7 +215,7 @@ Public Class cSurfaceTools
 
         If (Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection)) Then
             fs.Reproject(cDotSpatialUtils.EcospaceProjection)
-            If (log IsNot Nothing) Then log.LogOperation(String.Format(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
+            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
         End If
 
         featToConvert = fs
@@ -223,7 +223,7 @@ Public Class cSurfaceTools
         iNumRejected = cVectorTools.CheckUsablePolygons(featToConvert, True, True)
 
         If ((iNumRejected > 0) And (log IsNot Nothing)) Then
-            log.LogOperation(String.Format(My.Resources.STATUS_POLYGONSFAILED_INVALID, iNumRejected), eStatusFlags.ErrorEncountered)
+            log.LogOperation(cStringUtils.Localize(My.Resources.STATUS_POLYGONSFAILED_INVALID, iNumRejected), eStatusFlags.ErrorEncountered)
         End If
 
         ' -----
@@ -240,7 +240,7 @@ Public Class cSurfaceTools
         Debug.Assert(cNumberUtils.Approximates(rs.CellWidth, dCellWidth, dCellWidth * 0.1))
         Debug.Assert(cNumberUtils.Approximates(dCellHeight, dCellWidth, rs.CellHeight * 0.1))
 
-        If (log IsNot Nothing) Then log.LogOperation(String.Format(My.Resources.OPERATION_EXTRACTPLOYGONS, ""), eStatusFlags.ValueComputed)
+        If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTPLOYGONS, ""), eStatusFlags.ValueComputed)
 
         ' ToDo: This loop can be sped up by only processing those cells that overlap with the extent of the dataset
         ' For all cols, rows
@@ -280,7 +280,7 @@ Public Class cSurfaceTools
                             Catch ex As Exception
                                 ' Woops
                                 If (log IsNot Nothing) Then
-                                    log.LogOperation(String.Format("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.ErrorEncountered)
+                                    log.LogOperation(cStringUtils.Localize("An error occurred in RasterizeArea({0}.{1}). {2}", iRow, iCol, ex.Message), eStatusFlags.ErrorEncountered)
                                 End If
                                 ' Do not obliterate polygon, keep plowing on
                                 'polyToConvert = Nothing

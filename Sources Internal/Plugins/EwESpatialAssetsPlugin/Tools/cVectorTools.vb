@@ -26,6 +26,7 @@ Imports DotSpatial.Projections
 Imports DotSpatial.Topology
 Imports EwECore
 Imports EwECore.SpatialData
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -104,7 +105,7 @@ Public Class cVectorTools
 
         If (Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection)) Then
             fs.Reproject(cDotSpatialUtils.EcospaceProjection)
-            If (log IsNot Nothing) Then log.LogOperation(String.Format(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
+            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
         End If
 
         Dim dtAttribs As DataTable = fs.DataTable

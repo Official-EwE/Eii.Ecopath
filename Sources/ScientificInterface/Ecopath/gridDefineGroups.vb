@@ -1294,7 +1294,7 @@ Public Class gridDefineGroups
             lstrGroupNames.Add(Me.m_lgiGroups(i).Name)
         Next i
         gi = New cGroupInfo( _
-            String.Format(SharedResources.DEFAULT_NEWGROUP_NUM, _
+            cStringUtils.Localize(SharedResources.DEFAULT_NEWGROUP_NUM, _
                           cStringUtils.GetNextNumber(lstrGroupNames.ToArray, SharedResources.DEFAULT_NEWGROUP_NUM)))
         Me.m_lgiGroups.Insert(iGroup, gi)
 
@@ -1614,7 +1614,7 @@ Public Class gridDefineGroups
             ElseIf Not Me.IsNameUnique(gi.Name, gi) Then
                 If Not lstrHandled.Contains(gi.Name) Then
                     fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                         String.Format(My.Resources.PROMPT_DUPLICATE_NAME, gi.Name), _
+                                                         cStringUtils.Localize(My.Resources.PROMPT_DUPLICATE_NAME, gi.Name), _
                                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
                     lstrHandled.Add(gi.Name)
                 End If
@@ -1687,7 +1687,7 @@ Public Class gridDefineGroups
                     ' Youngest group must have age 0
                     If gi.StanzaAge <> 0 Then
                         gi.StanzaAge = 0
-                        strPrompt = String.Format(My.Resources.ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED, si.Name)
+                        strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED, si.Name)
                         Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                         Me.UIContext.Core.Messages.SendMessage(msg)
                         Me.UpdateStanzaColumns()
@@ -1695,7 +1695,7 @@ Public Class gridDefineGroups
                 Else
                     ' Cannot have two groups of the same age within a stanza
                     If gi.StanzaAge = giPrev.StanzaAge Then
-                        strPrompt = String.Format(My.Resources.ECOPATH_EDITGROUPSSTANZA_AGECONFLICT, giPrev.Name, gi.Name, si.Name)
+                        strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_AGECONFLICT, giPrev.Name, gi.Name, si.Name)
                         Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                         Me.UIContext.Core.Messages.SendMessage(msg)
                         Return False
@@ -1830,7 +1830,7 @@ Public Class gridDefineGroups
             ' Only prompt for removal of pre-existing groups
             If (Not gi.IsNew()) Then
 
-                strPrompt = String.Format(My.Resources.ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT, gi.Name)
+                strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT, gi.Name)
                 Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
@@ -1903,7 +1903,7 @@ Public Class gridDefineGroups
                 Else
                     If ((iGroup + 1) <> gi.GroupIndex) Then
                         If Not Me.Core.MoveGroup(gi.GroupIndex, iGroup + 1) Then
-                            sb.AppendLine(String.Format(My.Resources.ECOPATH_MOVEGROUP_ERROR, gi.Name))
+                            sb.AppendLine(cStringUtils.Localize(My.Resources.ECOPATH_MOVEGROUP_ERROR, gi.Name))
                             bSuccess = False
                         End If
                     End If
@@ -1921,7 +1921,7 @@ Public Class gridDefineGroups
                         Me.m_lgiGroups.Remove(gi)
                         Me.m_lgiGroupsRemoved.Remove(gi)
                     Else
-                        sb.AppendLine(String.Format(My.Resources.ECOPATH_DELETEGROUP_ERROR, gi.Name))
+                        sb.AppendLine(cStringUtils.Localize(My.Resources.ECOPATH_DELETEGROUP_ERROR, gi.Name))
                         bSuccess = False
                     End If
                 End If
@@ -1938,7 +1938,7 @@ Public Class gridDefineGroups
                         Me.m_lsiStanza.Remove(si)
                         Me.m_lsiStanzaRemoved.Remove(si)
                     Else
-                        sb.AppendLine(String.Format(My.Resources.ECOPATH_DELETESTANZA_ERROR, si.Name))
+                        sb.AppendLine(cStringUtils.Localize(My.Resources.ECOPATH_DELETESTANZA_ERROR, si.Name))
                         bSuccess = False
                     End If
                 End If
@@ -1963,7 +1963,7 @@ Public Class gridDefineGroups
                         aiStartAge(i) = gi.StanzaAge
                     Next
                     If Not Me.Core.AppendStanza(si.Name, aiGroupID, aiStartAge, iStanzaID) Then
-                        sb.AppendLine(String.Format(My.Resources.ECOPATH_ADDSTANZA_ERROR, si.Name))
+                        sb.AppendLine(cStringUtils.Localize(My.Resources.ECOPATH_ADDSTANZA_ERROR, si.Name))
                         bSuccess = False
                     End If
                 End If
@@ -1993,7 +1993,7 @@ Public Class gridDefineGroups
                         Next
 
                         If bSuccess = False Then
-                            sb.AppendLine(String.Format(My.Resources.ECOPATH_UPDATESTANZA_ERROR, si.Name))
+                            sb.AppendLine(cStringUtils.Localize(My.Resources.ECOPATH_UPDATESTANZA_ERROR, si.Name))
                         End If
                     End If
                 End If

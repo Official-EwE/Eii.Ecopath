@@ -330,7 +330,7 @@ Public Class cNetworkManager
         If (Me.m_pathwaystate = ePathways.ToConsumer) And (Me.m_iPathwayToGroup = iToGroup) Then Return True
 
         cApplicationStatusNotifier.StartProgress(Me.m_core, _
-                                                 String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSUMER, Me.GroupName(iToGroup)))
+                                                 cStringUtils.Localize(My.Resources.STATUS_FINDING_PATHWAYS_CONSUMER, Me.GroupName(iToGroup)))
         Try
             Me.AllowStopNetworkAnalysis()
             Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumer, iToGroup, 0, nPaths, nArrows)
@@ -364,7 +364,7 @@ Public Class cNetworkManager
            (Me.m_iPathwayViaGroup = iViaGroup) Then Return True
 
         cApplicationStatusNotifier.StartProgress(Me.m_core, _
-                                                 String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSPREY, _
+                                                 cStringUtils.Localize(My.Resources.STATUS_FINDING_PATHWAYS_CONSPREY, _
                                                                Me.GroupName(iToGroup), _
                                                                Me.GroupName(iViaGroup)))
 
@@ -398,8 +398,7 @@ Public Class cNetworkManager
         If (Me.m_pathwaystate = ePathways.FromPrey) And _
            (Me.m_iPathwayFromGroup = iFromGroup) Then Return True
 
-        cApplicationStatusNotifier.StartProgress(Me.m_core, String.Format(My.Resources.STATUS_FINDING_PATHWAYS_PREY, _
-                                        Me.GroupName(iFromGroup)))
+        cApplicationStatusNotifier.StartProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_FINDING_PATHWAYS_PREY, Me.GroupName(iFromGroup)))
 
         Try
             Me.AllowStopNetworkAnalysis()
@@ -503,7 +502,7 @@ Public Class cNetworkManager
 
         Catch ex As Exception
             cLog.Write(ex)
-            Core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_ERROR_ECOSIM, ex.Message), _
+            Core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_ECOSIM, ex.Message), _
                                                    eMessageType.ErrorEncountered, _
                                                    eCoreComponentType.Plugin, eMessageImportance.Critical))
             Return False

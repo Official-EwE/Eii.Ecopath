@@ -235,21 +235,21 @@ Namespace Import
                     ' #Yes: perform import of this model
 
                     ' Set global application status
-                    cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, String.Format(My.Resources.STATUS_MODEL_IMPORTING, setting.EwE6ModelName))
+                    cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, cStringUtils.Localize(My.Resources.STATUS_MODEL_IMPORTING, setting.EwE6ModelName))
 
                     ' Set local import status
-                    Me.SetImportStatus(True, String.Format(My.Resources.STATUS_IMPORTING_MODEL, setting.ModelInfo.Name))
+                    Me.SetImportStatus(True, cStringUtils.Localize(My.Resources.STATUS_IMPORTING_MODEL, setting.ModelInfo.Name))
 
                     ' Actual import successful?
                     If Me.m_wizard.Import(setting) Then
                         ' #Yes: report succes
-                        Me.SetImportStatus(True, String.Format(My.Resources.STATUS_IMPORTING_MODEL_SUCCESS, setting.ModelInfo.Name, setting.EwE6ModelName))
+                        Me.SetImportStatus(True, cStringUtils.Localize(My.Resources.STATUS_IMPORTING_MODEL_SUCCESS, setting.ModelInfo.Name, setting.EwE6ModelName))
                     Else
                         ' #No: report failure
                         If String.IsNullOrEmpty(setting.LogFile) Then
-                            Me.SetImportStatus(True, String.Format(My.Resources.STATUS_IMPORTING_MODEL_CANCELLED, setting.ModelInfo.Name))
+                            Me.SetImportStatus(True, cStringUtils.Localize(My.Resources.STATUS_IMPORTING_MODEL_CANCELLED, setting.ModelInfo.Name))
                         Else
-                            Me.SetImportStatus(True, String.Format(My.Resources.STATUS_IMPORTING_MODEL_FAILED, setting.ModelInfo.Name, setting.LogFile))
+                            Me.SetImportStatus(True, cStringUtils.Localize(My.Resources.STATUS_IMPORTING_MODEL_FAILED, setting.ModelInfo.Name, setting.LogFile))
                         End If
                     End If
 

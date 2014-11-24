@@ -370,7 +370,7 @@ Public Class cEIIXMLDataSource
             Next
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading EcopathModel", ex.Message))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcopathModel", ex.Message))
             bSucces = False
         End Try
 
@@ -454,7 +454,7 @@ Public Class cEIIXMLDataSource
                 'ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(Me.ReadSafe(row, "PoolColor", "0")), Globalization.NumberStyles.HexNumber)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
                 bSucces = False
             End Try
 
@@ -510,7 +510,7 @@ Public Class cEIIXMLDataSource
                 ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
                 If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
                     If (ecopathDS.DCInput(iPred, iPrey) <> 0) Then
-                        cLog.Write(String.Format("Database error on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
+                        cLog.Write(cStringUtils.Localize("Database error on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
                     End If
                 End If
 
@@ -522,7 +522,7 @@ Public Class cEIIXMLDataSource
             dt.Clear()
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
             bSucces = False
         End Try
 
@@ -621,11 +621,11 @@ Public Class cEIIXMLDataSource
                 stanzaDS.BaseStanzaCB(iStanza) = Math.Max(1, Math.Min(stanzaDS.Nstanza(iStanza), stanzaDS.BaseStanzaCB(iStanza)))
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
                 bSucces = False
             End Try
 
-            'rdLifeStage = Me..Getdrow(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
+            'rdLifeStage = Me..Getdrow(cStringUtils.Localize("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
             rdLifeStage.DefaultView.RowFilter = "StanzaID=" & CInt(row("StanzaID"))
             rdLifeStage.DefaultView.Sort = "AgeStart ASC"
             iLifeStage = 0
@@ -647,7 +647,7 @@ Public Class cEIIXMLDataSource
                     stanzaDS.Age1(iStanza, iLifeStage) = CInt(rowStage("AgeStart"))
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
+                    Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
                     bSucces = False
                 End Try
 
@@ -719,7 +719,7 @@ Public Class cEIIXMLDataSource
             dtFleets.Clear()
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading EcopathFleet {1}", ex.Message, iFleet))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcopathFleet {1}", ex.Message, iFleet))
             bSucces = False
         End Try
 
@@ -748,14 +748,14 @@ Public Class cEIIXMLDataSource
                     ecopathDS.Market(iFleet, iGroup) = CSng(drow("price"))
                     ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.ReadSafe(drow, "DiscardMortality", 0.0!))
                 Else
-                    Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
+                    Me.LogMessage(cStringUtils.Localize("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
                     bSucces = False
                 End If
 
             Next
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading catch {1}, {2}", ex.Message, iGroup, iFleet))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading catch {1}, {2}", ex.Message, iGroup, iFleet))
             bSucces = False
         End Try
 
@@ -787,7 +787,7 @@ Public Class cEIIXMLDataSource
             dt.Clear()
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
             bSucces = False
         End Try
 
@@ -869,7 +869,7 @@ Public Class cEIIXMLDataSource
                 iScenario += 1
             Next
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading ecosim scenario definition {1}", ex.Message, iScenario))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading ecosim scenario definition {1}", ex.Message, iScenario))
             bSucces = False
         End Try
 
@@ -910,7 +910,7 @@ Public Class cEIIXMLDataSource
                 iScenario += 1
             Next
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
             bSucces = False
         End Try
 
@@ -970,7 +970,7 @@ Public Class cEIIXMLDataSource
                 tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(drow, "Contact", ""))
                 tsDS.nDatasetFirstYear(iDataset) = CInt(drow("FirstYear"))
                 tsDS.nDatasetNumPoints(iDataset) = CInt(drow("NumYears"))
-                tsDS.nDatasetNumTimeSeries(iDataset) = 0 ' CInt(Me.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(drow("DatasetID")))))
+                tsDS.nDatasetNumTimeSeries(iDataset) = 0 ' CInt(Me.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(drow("DatasetID")))))
                 iDataset += 1
             Next
         Catch ex As Exception
@@ -1042,7 +1042,7 @@ Public Class cEIIXMLDataSource
                 ecosimDS.UseVarPQ = False
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Scenario {1}", ex.Message, iScenarioID))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
         Next
@@ -1157,7 +1157,7 @@ Public Class cEIIXMLDataSource
                 ' Me.LoadFishMortShape(CInt(drow("FishMortShapeID")), iGroup)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iGroup))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iGroup))
                 bSucces = False
             End Try
         Next
@@ -1230,7 +1230,7 @@ Public Class cEIIXMLDataSource
                 ' JS 10Aug07: Don't fail in case FishRateShape is missing. Only those present are loaded, only those loaded are saved.
                 '             Since these shapes do not need to be present we can be somewhat forgiving in this particular case.
                 If Not LoadFishingRateShape(dtFishMort, iShapeID, iFleet) Then
-                    Me.LogMessage(String.Format("Warning: Fishing rate shape {0} is referenced but not present in database for EcoSim fleet {1} (ID {2})", iShapeID, iFleet, iFleetID))
+                    Me.LogMessage(cStringUtils.Localize("Warning: Fishing rate shape {0} is referenced but not present in database for EcoSim fleet {1} (ID {2})", iShapeID, iFleet, iFleetID))
                 End If
             End If
 
@@ -1415,7 +1415,7 @@ Public Class cEIIXMLDataSource
                         'bSucces = bSucces And Me.LoadFishMortShape(iShapeID, iFishingMortShape)
 
                     Case Else
-                        Debug.Assert(False, String.Format("Cannot load invalid shapetype {0} for shape ID {1}", shapeDataType, iShapeID))
+                        Debug.Assert(False, cStringUtils.Localize("Cannot load invalid shapetype {0} for shape ID {1}", shapeDataType, iShapeID))
 
                 End Select
 
@@ -1465,7 +1465,7 @@ Public Class cEIIXMLDataSource
         Dim astrZScale() As String
         Dim bSucces As Boolean = True
 
-        'drowShape = Me.Getdrow(String.Format("SELECT * FROM EcosimShapeEggProd WHERE (ShapeID={0})", iShapeID))
+        'drowShape = Me.Getdrow(cStringUtils.Localize("SELECT * FROM EcosimShapeEggProd WHERE (ShapeID={0})", iShapeID))
         dt.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
         Try
             drow = dt.DefaultView.ToTable.Rows(0)
@@ -1492,7 +1492,7 @@ Public Class cEIIXMLDataSource
             ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading EggShape {1}", ex.Message, iShapeID))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EggShape {1}", ex.Message, iShapeID))
             bSucces = False
         End Try
         dt.DefaultView.RowFilter = ""
@@ -1541,7 +1541,7 @@ Public Class cEIIXMLDataSource
             ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading TimeShape {1}", ex.Message, iShapeID))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading TimeShape {1}", ex.Message, iShapeID))
             bSucces = False
         End Try
         dtTime.DefaultView.RowFilter = ""
@@ -1560,7 +1560,7 @@ Public Class cEIIXMLDataSource
         Dim astrZScale() As String
         Dim bSucces As Boolean = True
 
-        'drowShape = Me.Getdrow(String.Format("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
+        'drowShape = Me.Getdrow(cStringUtils.Localize("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
         dtMed.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
 
         Try
@@ -1592,7 +1592,7 @@ Public Class cEIIXMLDataSource
             medData.XAxisMax(iMediationShape) = CSng(Me.ReadSafe(drow, "XAxisMax", 1))
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
             bSucces = False
         End Try
 
@@ -1630,7 +1630,7 @@ Public Class cEIIXMLDataSource
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading ForcingMatrix", ex.Message))
                 bSucces = False
             End Try
         Next
@@ -1695,12 +1695,12 @@ Public Class cEIIXMLDataSource
                         End If
                         ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = appl
                     Else
-                        Me.LogMessage(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
+                        Me.LogMessage(cStringUtils.Localize("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
                     End If
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading PredPreyInteraction", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading PredPreyInteraction", ex.Message))
                 bSucces = False
             End Try
         Next
@@ -1742,11 +1742,11 @@ Public Class cEIIXMLDataSource
                 If iShape > -1 Then
                     ecosimDS.PriceMedData.PriceMedFuncNum(iGroup, iFleet, iFNo(iGroup, iFleet)) = iShape
                 Else
-                    Me.LogMessage(String.Format("Shape {0} cannot be used for landings interactions; assignment discarded", iShapeID))
+                    Me.LogMessage(cStringUtils.Localize("Shape {0} cannot be used for landings interactions; assignment discarded", iShapeID))
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Landing interaction", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Landing interaction", ex.Message))
                 bSucces = False
             End Try
         Next
@@ -1786,7 +1786,7 @@ Public Class cEIIXMLDataSource
                     medData.MedWeights(iGroup, iShape) = CSng(drow("MedWeights"))
                 End If
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading group MediationWeights", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading group MediationWeights", ex.Message))
                 bSucces = False
             End Try
         Next
@@ -1804,7 +1804,7 @@ Public Class cEIIXMLDataSource
                     medData.MedWeights(iFleet + ecosimDS.nGroups, iShape) = CSng(drow("MedWeights"))
                 End If
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading fleet MediationWeights", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading fleet MediationWeights", ex.Message))
                 bSucces = False
             End Try
         Next
@@ -1825,7 +1825,7 @@ Public Class cEIIXMLDataSource
                     medData.MedPriceWeights(iGroup, iFleet, iShape) = CSng(drow("MedWeights"))
                 End If
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading group MediationWeights", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading group MediationWeights", ex.Message))
                 bSucces = False
             End Try
         Next
@@ -1875,7 +1875,7 @@ Public Class cEIIXMLDataSource
                 End If ' Is valid stanza
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading stanza shape assignments", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading stanza shape assignments", ex.Message))
                 bSucces = False
             End Try
         Next
@@ -1907,7 +1907,7 @@ Public Class cEIIXMLDataSource
                 ecosimDS.FishRateGearDBID(iFishingRateShape) = iShapeID
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading FishingRate {1}", ex.Message, iShapeID))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading FishingRate {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
         Next
@@ -1951,7 +1951,7 @@ Public Class cEIIXMLDataSource
         ecospaceDS.SetDefaults()
         spatialDS.SetDefaults()
 
-        ' drow = Me.Getdrow(String.Format("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
+        ' drow = Me.Getdrow(cStringUtils.Localize("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
         dtScenario.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
 
         Try
@@ -1997,7 +1997,7 @@ Public Class cEIIXMLDataSource
             End Select
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace Scenario {1}", ex.Message, iScenarioID))
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace Scenario {1}", ex.Message, iScenarioID))
             bSucces = False
         End Try
 
@@ -2095,7 +2095,7 @@ Public Class cEIIXMLDataSource
                                            ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                 i += 1
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace habitat for habitat {1}", ex.Message, i))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace habitat for habitat {1}", ex.Message, i))
                 bSucces = False
             End Try
         Next
@@ -2112,7 +2112,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.HabChange(3, iSequence) = CInt(drow("Change"))
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace habitat changes for time {1}, Sequence {2}", ex.Message, iTime, iSequence))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace habitat changes for time {1}, Sequence {2}", ex.Message, iTime, iSequence))
                 bSucces = False
             End Try
         Next
@@ -2156,7 +2156,7 @@ Public Class cEIIXMLDataSource
                 iMPA += 1
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioMPA {1}", ex.Message, iMPA))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcospaceScenarioMPA {1}", ex.Message, iMPA))
                 bSucces = False
             End Try
         Next
@@ -2224,7 +2224,7 @@ Public Class cEIIXMLDataSource
                                            ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))
                 bSucces = False
             End Try
         Next
@@ -2260,8 +2260,8 @@ Public Class cEIIXMLDataSource
                 sPreference = CSng(Me.ReadSafe(drow, "Preference", 1.0))
                 ' Sanity check
                 If (iGroup = -1) Or (iHabitat = -1) Then
-                    If (iGroup = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
-                    If (iHabitat = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Habitat ID {1} no longer exist", iHabitatID))
+                    If (iGroup = -1) Then Me.LogMessage(cStringUtils.Localize("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
+                    If (iHabitat = -1) Then Me.LogMessage(cStringUtils.Localize("LoadEcospaceGroupHabitats: Habitat ID {1} no longer exist", iHabitatID))
                 Else
                     ' Flag as preferred
                     ecospaceDS.PrefHab(iGroup, 0) = 0
@@ -2269,7 +2269,7 @@ Public Class cEIIXMLDataSource
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
                 bSucces = False
             End Try
         Next
@@ -2308,7 +2308,7 @@ Public Class cEIIXMLDataSource
                 iFleet += 1
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace fleet {1}", ex.Message, iFleet))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace fleet {1}", ex.Message, iFleet))
                 bSucces = False
             End Try
         Next
@@ -2342,7 +2342,7 @@ Public Class cEIIXMLDataSource
                     ecospaceDS.GearHab(iFleet, iHabitat) = True
                 End If
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioHabitatFishery for iFleet {1}, iHabitat {2}", ex.Message, iFleet, iHabitat))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcospaceScenarioHabitatFishery for iFleet {1}, iHabitat {2}", ex.Message, iFleet, iHabitat))
                 bSucces = False
             End Try
         Next
@@ -2371,7 +2371,7 @@ Public Class cEIIXMLDataSource
                     ecospaceDS.MPAfishery(iFleet, iMPA) = True
                 End If
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading ReadEcospaceMPAFishery for iFleet {1}, iMPA {2}", ex.Message, iFleet, iMPA))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading ReadEcospaceMPAFishery for iFleet {1}, iMPA {2}", ex.Message, iFleet, iMPA))
                 bSucces = False
             End Try
         Next

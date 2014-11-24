@@ -485,7 +485,7 @@ Namespace SpatialData
                                 Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
 
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
-                                ' JS 06Nov13: added file exist check when loading dataset metadata
+                                ' JS 24Nov14: Fixed file exist check when loading dataset metadata
                                 If Not IO.File.Exists(f.FileName) Then
                                     f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
                                 ElseIf (xnChild.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
@@ -717,7 +717,7 @@ Namespace SpatialData
 
                 Catch exd As DirectoryNotFoundException
                     If Not bIgnoreFileErrors Then
-                        Dim msg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_EXPORT_ERROR_NOPATH, Me.Source, Me.DisplayName), _
+                        Dim msg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_EXPORT_ERROR_NOPATH, Me.Source, Me.DisplayName), _
                                                         eCoreComponentType.External, eMessageType.DataExport, _
                                                         eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                         msg.Reply = eMessageReply.NO
@@ -730,7 +730,7 @@ Namespace SpatialData
                     End If
                 Catch exf As FileNotFoundException
                     If Not bIgnoreFileErrors Then
-                        Dim msg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_EXPORT_ERROR_NOFILES, Me.DisplayName), _
+                        Dim msg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_EXPORT_ERROR_NOFILES, Me.DisplayName), _
                                                         eCoreComponentType.External, eMessageType.DataExport, _
                                                         eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                         msg.Reply = eMessageReply.NO

@@ -22,17 +22,17 @@
 Option Strict On
 Option Explicit On
 
-Imports ZedGraph
-Imports System.Windows.Forms
-Imports ScientificInterfaceShared
 Imports System.Drawing
-Imports System.IO
-Imports EwEUtils.Commands
 Imports System.Drawing.Imaging
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports System.IO
+Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region ' Imports
 
@@ -125,7 +125,7 @@ Public Class cPlotOfMixedTrophicImpact
                             Case eLabelStyle.Number
                                 strLabel = CStr(j)
                             Case eLabelStyle.All
-                                strLabel = String.Format(SharedResources.GENERIC_LABEL_INDEXED, j, NetworkManager.GroupName(j))
+                                strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, j, NetworkManager.GroupName(j))
                         End Select
                     Else
                         Select Case Me.m_labelstyle
@@ -134,7 +134,7 @@ Public Class cPlotOfMixedTrophicImpact
                             Case eLabelStyle.Number
                                 strLabel = CStr(j - NetworkManager.nGroups)
                             Case eLabelStyle.All
-                                strLabel = String.Format(SharedResources.GENERIC_LABEL_INDEXED, j - NetworkManager.nGroups, NetworkManager.FleetName(j - NetworkManager.nGroups))
+                                strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, j - NetworkManager.nGroups, NetworkManager.FleetName(j - NetworkManager.nGroups))
                         End Select
                     End If
                     m_astrLabelsX(aIDS(j)) = strLabel
@@ -167,11 +167,11 @@ Public Class cPlotOfMixedTrophicImpact
         End Using
         Try
             bmp.Save(strFileName)
-            msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, strFileName), _
+            msg = New cMessage(cStringUtils.Localize(SharedResources.GENERIC_FILESAVE_SUCCES, strFileName), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             msg.Hyperlink = Path.GetDirectoryName(strFileName)
         Catch ex As Exception
-            msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, strFileName), _
+            msg = New cMessage(cStringUtils.Localize(SharedResources.GENERIC_FILESAVE_FAILURE, strFileName), _
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
         End Try
         bmp.Dispose()

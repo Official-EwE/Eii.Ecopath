@@ -217,7 +217,7 @@ Public Class cEcotracerResultWriter
     ''' <param name="strReason">Reason of failure, most likely the text obtained from an exception.</param>
     ''' -------------------------------------------------------------------
     Protected Sub SendErrorMessage(ByVal strPath As String, ByVal strReason As String)
-        Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_FAILED, strPath, strReason), _
+        Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_FAILED, strPath, strReason), _
                                            eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
         Me.m_core.Messages.SendMessage(msg)
     End Sub
@@ -229,7 +229,7 @@ Public Class cEcotracerResultWriter
     ''' <param name="strPath">Output file name.</param>
     ''' -------------------------------------------------------------------
     Protected Function SendSuccessMessage(ByVal strPath As String) As cMessage
-        Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_SUCCESS, strPath), _
+        Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_SUCCESS, strPath), _
                                            eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Information)
         msg.Hyperlink = Path.GetDirectoryName(strPath)
         Me.m_core.Messages.SendMessage(msg)

@@ -19,10 +19,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore.EcoSeed
 Imports System.Threading
+Imports EwECore.EcoSeed
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -322,7 +323,7 @@ Public Class cMPAOptManager
         Catch ex As Exception
             cLog.Write(ex)
             Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
-            Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MPAOPT_ERROR, ex.Message), _
+            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MPAOPT_ERROR, ex.Message), _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
                                                         eMessageImportance.Critical))
             Me.ReleaseWait()

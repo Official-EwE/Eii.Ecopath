@@ -185,7 +185,7 @@ Namespace Controls
                 Case eShapeCommandTypes.Filter
                     Return True
                 Case Else
-                    ' Debug.Assert(False, String.Format("Command {0} not supported", cmd))
+                    ' Debug.Assert(False, cStringUtils.Localize("Command {0} not supported", cmd))
             End Select
             Return False
 
@@ -405,7 +405,7 @@ Namespace Controls
                 lTypes.Add(eTimeSeriesType.NotSet)
 
                 For i As Integer = 0 To lAdmin.Count - 1
-                    lstrFilters.Add(String.Format(My.Resources.GENERIC_LABEL_DETAILED, lAdmin(i).Name, lAdmin(i).NumShapes))
+                    lstrFilters.Add(cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, lAdmin(i).Name, lAdmin(i).NumShapes))
                     lTypes.Add(lAdmin(i).TimeSeriesType)
                 Next
 
@@ -500,7 +500,7 @@ Namespace Controls
 
             ' Concoct a new name based on the numbered strings that are found
             iNextTSNumber = cStringUtils.GetNextNumber(lstrTSNames.ToArray(), My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES)
-            strNewTSName = String.Format(My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES, iNextTSNumber)
+            strNewTSName = cStringUtils.Localize(My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES, iNextTSNumber)
 
             ' Generate TS data
             For Each shape As cShapeData In ashapes
@@ -562,9 +562,9 @@ Namespace Controls
 
             ' Prompt for confirmation
             If ashapes.Length = 1 Then
-                strMessage = String.Format(My.Resources.PROMPT_TIMESERIES_DELETE, ashapes(0).Name)
+                strMessage = cStringUtils.Localize(My.Resources.PROMPT_TIMESERIES_DELETE, ashapes(0).Name)
             Else
-                strMessage = String.Format(My.Resources.PROMPT_TIMESERIES_DELETE_MULTIPLE, ashapes.Length)
+                strMessage = cStringUtils.Localize(My.Resources.PROMPT_TIMESERIES_DELETE_MULTIPLE, ashapes.Length)
             End If
 
             fms = New cFeedbackMessage(strMessage, _

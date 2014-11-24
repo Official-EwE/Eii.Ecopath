@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Database
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -50,7 +51,7 @@ Namespace Database
 
             Public Function Compare(ByVal x As cDBUpdate, ByVal y As cDBUpdate) As Integer _
                     Implements IComparer(Of cDBUpdate).Compare
-                Return CInt(IIf(x.UpdateVersion < y.UpdateVersion, -1, 1))
+                Return CInt(IIF(x.UpdateVersion < y.UpdateVersion, -1, 1))
             End Function
 
         End Class
@@ -226,7 +227,7 @@ Namespace Database
                     ' #Yes: able to start transaction?
                     If db.BeginTransaction() Then
                         ' Do not publicly report updates that always run
-                        Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion, update.UpdateDescription), _
+                        Me.ReportUpdateStatus(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion, update.UpdateDescription), _
                                               eMessageImportance.Maintenance)
 
                         Try
@@ -238,12 +239,12 @@ Namespace Database
                                 db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
                             Else
                                 ' #No: report a generic error
-                                Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED, update.UpdateVersion))
+                                Me.ReportUpdateStatus(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED, update.UpdateVersion))
                             End If
 
                         Catch ex As Exception
                             ' Woops!
-                            Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED_DETAIL, update.UpdateVersion, ex.Message))
+                            Me.ReportUpdateStatus(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED_DETAIL, update.UpdateVersion, ex.Message))
                             bSucces = False
                         End Try
 

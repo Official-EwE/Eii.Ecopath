@@ -547,12 +547,12 @@ Namespace SpatialData
 
                 Dim strFileName As String = Me.SourceFileName()
                 If (Me.m_dsSourceData IsNot Nothing) Then
-                    Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_SKIPPED, strFileName), eStatusFlags.OK)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_SKIPPED, strFileName), eStatusFlags.OK)
                     Return True
                 End If
 
                 If (Not File.Exists(strFileName)) Then
-                    Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.ErrorEncountered)
                     Me.StoreExtent(Nothing)
                     Return False
                 End If
@@ -560,15 +560,15 @@ Namespace SpatialData
                 Me.m_dsSourceData = cDotSpatialUtils.OpenFile(strFileName)
                 If (m_dsSourceData IsNot Nothing) Then
                     Me.StoreExtent(Me.m_dsSourceData.Extent)
-                    Me.LogMessage(String.Format(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
                     Return True
                 Else
-                    Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED, ""), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ""), eStatusFlags.ErrorEncountered)
                     Return False
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
                 ' Log an error
                 Me.StoreExtent(Nothing)
                 ' Failed

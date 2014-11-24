@@ -195,10 +195,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         ' Is there a time step in the file name?
         If (iModelTimeStep > 0) Then
             ' #Yes: include it in the file name
-            strTimestep = String.Format("-{0:00000}", iModelTimeStep)
+            strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
         End If
 
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", _
+        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", _
                                                                                        cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), _
                                                                          False)
         Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
@@ -230,10 +230,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         ' Is there a time step in the file name?
         If (iModelTimeStep > 0) Then
             ' #Yes: include it in the file name
-            strTimestep = String.Format("-{0:00000}", iModelTimeStep)
+            strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
         End If
 
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", _
+        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", _
                                                                                        cin.GetVarName(varname), fltName, strTimestep, strExt.Replace(".", "")), _
                                                                          False)
         Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))

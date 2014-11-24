@@ -152,7 +152,7 @@ Public Class cDataOutputer
         'Create the functional group files
         If mFunctionalGroupData.Count > 0 Then
             For Each i In mFunctionalGroupData
-                fileName = cFileUtils.ToValidFileName(String.Format(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
+                fileName = cFileUtils.ToValidFileName(cStringUtils.Localize(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
                 Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
@@ -171,7 +171,7 @@ Public Class cDataOutputer
         'Create the fishery group files
         If mFisheriesData.Count > 0 Then
             For Each i In mFisheriesData
-                fileName = cFileUtils.ToValidFileName(String.Format(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
+                fileName = cFileUtils.ToValidFileName(cStringUtils.Localize(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
                 Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
@@ -190,7 +190,7 @@ Public Class cDataOutputer
         'Create the indicator files
         If mIndicators.Count > 0 Then
             For Each i In mIndicators
-                fileName = cFileUtils.ToValidFileName(String.Format(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
+                fileName = cFileUtils.ToValidFileName(cStringUtils.Localize(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
                 Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
@@ -209,7 +209,7 @@ Public Class cDataOutputer
         'Create the indicator files
         If mDiagnostics.Count > 0 Then
             For Each i In mDiagnostics
-                fileName = cFileUtils.ToValidFileName(String.Format(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
+                fileName = cFileUtils.ToValidFileName(cStringUtils.Localize(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
                 Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
@@ -327,13 +327,13 @@ Public Class cDataOutputer
 #Region " Message "
 
     Private Sub PrepareExportMessage()
-        Me.mMsg = New cMessage(String.Format(My.Resources.GENERIC_SAVE, Me.PPath), _
+        Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE, Me.PPath), _
                                         eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
         Me.mMsg.Hyperlink = PPath
     End Sub
 
     Private Sub LogException(ByVal strError As String)
-        Me.mMsg = New cMessage(String.Format(My.Resources.GENERIC_SAVE_EXCEPTION, Me.PPath, strError), _
+        Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE_EXCEPTION, Me.PPath, strError), _
                                eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
     End Sub
 
@@ -351,11 +351,11 @@ Public Class cDataOutputer
         Select Case Me.mOutputType
             Case eOutputTypes.CSV
                 vs = New cVariableStatus(status, _
-                                         String.Format(My.Resources.GENERIC_SAVE_CSV, strName, strFile), _
+                                         cStringUtils.Localize(My.Resources.GENERIC_SAVE_CSV, strName, strFile), _
                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSim, 0)
             Case eOutputTypes.Excel
                 vs = New cVariableStatus(status, _
-                                         String.Format(My.Resources.GENERIC_SAVE_EXCEL, strName, strFile), _
+                                         cStringUtils.Localize(My.Resources.GENERIC_SAVE_EXCEL, strName, strFile), _
                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSim, 0)
         End Select
         Me.mMsg.AddVariable(vs)

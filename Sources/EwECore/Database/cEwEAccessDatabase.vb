@@ -116,12 +116,12 @@ Namespace Database
                         Dim db As New cEwEAccessDatabase()
                         datResult = db.Open(strDatabase, format)
                         If (datResult = eDatasourceAccessType.Opened) Then
-                            db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, strAuthor))
+                            db.Execute(cStringUtils.Localize("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, strAuthor))
                             Try
                                 ' Egg - over-easy but slightly obfuscated ;)
                                 If strModelName.ToLower().Contains(cStringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then
-                                    db.Execute(String.Format("UPDATE EcopathGroup SET GroupName='{0}' WHERE GroupID=1", cStringUtils.Shift("Dijdlfo!tiju")))
-                                    db.Execute(String.Format("UPDATE EcopathFleet SET FleetName='{0}' WHERE FleetID=1", cStringUtils.Shift("Tfbm!cbtifst")))
+                                    db.Execute(cStringUtils.Localize("UPDATE EcopathGroup SET GroupName='{0}' WHERE GroupID=1", cStringUtils.Shift("Dijdlfo!tiju")))
+                                    db.Execute(cStringUtils.Localize("UPDATE EcopathFleet SET FleetName='{0}' WHERE FleetID=1", cStringUtils.Shift("Tfbm!cbtifst")))
                                 End If
                             Catch ex As Exception
                                 ' Do not let eggs make the pot explode
@@ -196,7 +196,7 @@ Namespace Database
                 'Able to open?
                 If datResult = eDatasourceAccessType.Opened Then
                     ' #Yes: Fix model name after copying
-                    Me.Execute(String.Format("UPDATE EcopathModel SET NAME='{0}' WHERE (ModelID=1)", strModelName))
+                    Me.Execute(cStringUtils.Localize("UPDATE EcopathModel SET NAME='{0}' WHERE (ModelID=1)", strModelName))
                 Else
                     ' #No: Open ye olde database
                     Me.Open(strDatabaseFrom)
@@ -244,9 +244,9 @@ Namespace Database
             ' Try to assemble connection string
             Select Case databaseType
                 Case eDataSourceTypes.Access2003
-                    Me.m_conn.ConnectionString = String.Format(m_strConnectionMDB, strDatabase)
+                    Me.m_conn.ConnectionString = cStringUtils.Localize(m_strConnectionMDB, strDatabase)
                 Case eDataSourceTypes.Access2007
-                    Me.m_conn.ConnectionString = String.Format(m_strConnectionACCDB, strDatabase)
+                    Me.m_conn.ConnectionString = cStringUtils.Localize(m_strConnectionACCDB, strDatabase)
                 Case eDataSourceTypes.NotSet
                     Me.m_conn.ConnectionString = ""
                     datResult = eDatasourceAccessType.Failed_UnknownType
@@ -278,15 +278,15 @@ Namespace Database
                             ' OleDb got into trouble
                             datResult = eDatasourceAccessType.Failed_Unknown
                     End Select
-                    cLog.Write(String.Format("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
+                    cLog.Write(cStringUtils.Localize("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
 
                 Catch ex As InvalidOperationException
                     datResult = eDatasourceAccessType.Failed_OSUnsupported
-                    cLog.Write(String.Format("Open DB: InvalidOperationException {0} when opening {1}", ex.Message, strDatabase))
+                    cLog.Write(cStringUtils.Localize("Open DB: InvalidOperationException {0} when opening {1}", ex.Message, strDatabase))
 
                 Catch ex As Exception
                     datResult = eDatasourceAccessType.Failed_Unknown
-                    cLog.Write(String.Format("Open DB: Exception {0} when opening {1}", ex.Message, strDatabase))
+                    cLog.Write(cStringUtils.Localize("Open DB: Exception {0} when opening {1}", ex.Message, strDatabase))
 
                 End Try
 
@@ -367,13 +367,13 @@ Namespace Database
                 adapter.DeleteCommand = cmdBuilder.GetDeleteCommand(True)
 
             Catch ex As InvalidOperationException
-                cLog.Write(String.Format("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
-                Debug.Assert(False, String.Format("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
+                cLog.Write(cStringUtils.Localize("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
+                Debug.Assert(False, cStringUtils.Localize("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
                 adapter = Nothing
 
             Catch ex As Exception
-                cLog.Write(String.Format("Error when opening adapter for query {0}: {1}", strSQL, ex.Message))
-                Debug.Assert(False, String.Format("Error when opening adapter for query {0}: {1}", strSQL, ex.Message))
+                cLog.Write(cStringUtils.Localize("Error when opening adapter for query {0}: {1}", strSQL, ex.Message))
+                Debug.Assert(False, cStringUtils.Localize("Error when opening adapter for query {0}: {1}", strSQL, ex.Message))
                 adapter = Nothing
             End Try
 
@@ -406,9 +406,9 @@ Namespace Database
             ' Try to assemble connection string
             Select Case dst
                 Case eDataSourceTypes.Access2003
-                    conn.ConnectionString = String.Format(m_strConnectionMDB, strDatabase)
+                    conn.ConnectionString = cStringUtils.Localize(m_strConnectionMDB, strDatabase)
                 Case eDataSourceTypes.Access2007
-                    conn.ConnectionString = String.Format(m_strConnectionACCDB, strDatabase)
+                    conn.ConnectionString = cStringUtils.Localize(m_strConnectionACCDB, strDatabase)
                 Case eDataSourceTypes.NotSet
                     conn.ConnectionString = ""
                     datResult = eDatasourceAccessType.Failed_UnknownType
@@ -504,8 +504,8 @@ Namespace Database
                 End If
 
                 ' Set up connections
-                strConnectionFrom = String.Format(strConnection, strFileFrom)
-                strConnectionTo = String.Format(strConnection, strFileTo)
+                strConnectionFrom = cStringUtils.Localize(strConnection, strFileFrom)
+                strConnectionTo = cStringUtils.Localize(strConnection, strFileTo)
 
                 ' Attempt to Compact
                 result = comp.Compact(strFileFrom, strConnectionFrom, strFileTo, strConnectionTo)

@@ -53,7 +53,7 @@ Namespace Database
     '''            ' Get model
     '''            model = lModes(i)
     '''            ' Import the model
-    '''            If (dmImp.Import(model.ID, String.Format("EwE6_{0}.mdb", model.Name))) Then
+    '''            If (dmImp.Import(model.ID, cStringUtils.Localize("EwE6_{0}.mdb", model.Name))) Then
     '''               ' Count Succes
     '''               nSucces += 1
     '''            End If
@@ -383,7 +383,7 @@ Namespace Database
             If iScenarioID <= 0 Then
                 Return strKey
             Else
-                Return String.Format("{0}@{1}({2})", strKey, dtScenario.ToString, iScenarioID)
+                Return cStringUtils.Localize("{0}@{1}({2})", strKey, dtScenario.ToString, iScenarioID)
             End If
         End Function
 
@@ -601,7 +601,7 @@ Namespace Database
             ' ECOPATH
             ' -------
 
-            Me.LogProgress(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_MODEL, Me.m_strModelName))
+            Me.LogProgress(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_PROGRESS_MODEL, Me.m_strModelName))
             Me.ImportModels()
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_PEDIGREE)
             Me.ImportPedigree()
@@ -752,7 +752,7 @@ Namespace Database
             ' Clear table
             Me.m_dbEwE6.Execute("DELETE * FROM EcopathModel")
 
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Models] where modelName='{0}'", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Models] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbEwE6.GetWriter("EcopathModel")
@@ -825,7 +825,7 @@ Namespace Database
             drow("EcosimVulMultAll") = Me.FixValue(reader, "Ecosim vulMultAll")
             writer.AddRow(drow)
             If Not writer.Commit() Then
-                Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_ERROR_COMMIT, "model"), _
+                Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_ERROR_COMMIT, "model"), _
                               eMessageType.DataImport, eMessageImportance.Critical, True)
             End If
 
@@ -866,7 +866,7 @@ Namespace Database
             ' Clear table(s)
             Me.m_dbEwE6.Execute("DELETE * FROM Stanza")
 
-            readerStanza = m_dbEwE5.GetReader(String.Format("SELECT * from [Group Stanza] where modelName='{0}' ORDER BY StanzaName, Sequence ASC", Me.m_strModelName))
+            readerStanza = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Stanza] where modelName='{0}' ORDER BY StanzaName, Sequence ASC", Me.m_strModelName))
             If Object.ReferenceEquals(readerStanza, Nothing) Then Return
 
             writerStanza = m_dbEwE6.GetWriter("Stanza")
@@ -913,7 +913,7 @@ Namespace Database
                         Me.AddRemark(readerStanza("remarks"), eDataTypes.Stanza, iStanzaID, eVarNameFlags.Name)
                     Else
                         ' Import error: stanza config missing essential first stage
-                        Me.LogMessage(String.Format("Multi-stanza configuration {0} missing essential first life stage. This stanza configuration cannot be imported.", strStanzaName), _
+                        Me.LogMessage(cStringUtils.Localize("Multi-stanza configuration {0} missing essential first life stage. This stanza configuration cannot be imported.", strStanzaName), _
                                 eMessageType.DataImport, eMessageImportance.Information, True)
                     End If
                 End If
@@ -995,8 +995,8 @@ Namespace Database
             Dim sTemp As Single = 0.0
             Dim nSequence As Integer = 1 ' Renumber sequence field
 
-            Dim nNumGroups As Integer = CInt(m_dbEwE5.GetValue(String.Format("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}'", Me.m_strModelName)))
-            Dim nNumLiving As Integer = CInt(m_dbEwE5.GetValue(String.Format("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}' AND (TYPE <= 1)", Me.m_strModelName)))
+            Dim nNumGroups As Integer = CInt(m_dbEwE5.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}'", Me.m_strModelName)))
+            Dim nNumLiving As Integer = CInt(m_dbEwE5.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}' AND (TYPE <= 1)", Me.m_strModelName)))
 
             If (nNumGroups = nNumLiving) Then
                 ' Need to murder one group?
@@ -1005,7 +1005,7 @@ Namespace Database
             ' Clear table(s)
             Me.m_dbEwE6.Execute("DELETE * FROM EcopathGroup")
 
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * FROM [Group Info] WHERE modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Group Info] WHERE modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbEwE6.GetWriter("EcopathGroup")
@@ -1023,7 +1023,7 @@ Namespace Database
                 sTemp = CSng(Me.FixValue(reader, "Area"))
                 If (sTemp <= 0 Or sTemp > 1) Then
                     sTemp = 1.0
-                    Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_FIX_GROUPAREA, _
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_GROUPAREA, _
                             CStr(reader("groupName")), _
                             sTemp), _
                             eMessageType.DataImport, eMessageImportance.Information, True)
@@ -1042,7 +1042,7 @@ Namespace Database
                 If CInt(reader("Type")) = 1 Then
                     ' For producers set the GS to 0
                     sTemp = 0.0
-                    Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_FIX_GROUPUNASSIM, _
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_GROUPUNASSIM, _
                             CStr(reader("groupName")), _
                             sTemp), _
                             eMessageType.DataImport, eMessageImportance.Information, True)
@@ -1131,7 +1131,7 @@ Namespace Database
             Dim nPredatorID As Integer = 0
             Dim sValue As Single = 0.0
 
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Group x Group] where modelName='{0}'", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group x Group] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbEwE6.GetWriter("EcopathDietComp")
@@ -1152,7 +1152,7 @@ Namespace Database
                 ' If there should be any leftover diet for a producer then get rid of it
                 sValue = CSng(Me.FixValue(reader, "diet"))
                 ' Is a producer with no q/b? (carbon models can have this)
-                readerPred = m_dbEwE6.GetReader(String.Format("SELECT Type, ConsBiom FROM EcopathGroup WHERE (GroupID={0})", nPredatorID))
+                readerPred = m_dbEwE6.GetReader(cStringUtils.Localize("SELECT Type, ConsBiom FROM EcopathGroup WHERE (GroupID={0})", nPredatorID))
                 readerPred.Read()
                 If CSng(readerPred("ConsBiom")) <= 0.0 And CSng(readerPred("Type")) = 1.0 Then
                     ' #Yes: set diet components to 0
@@ -1201,7 +1201,7 @@ Namespace Database
             dt = writer.GetDataTable()
 
             ' Merge EwE5 Group Size data with EwE6 GroupInfo for non-stanza groups
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Group size] where modelName='{0}'", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group size] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             While reader.Read()
@@ -1210,7 +1210,7 @@ Namespace Database
                 ' Get EwE6 GroupID for this record
                 nGroupID = Me.HashKey(eDataTypes.EcoPathGroupInput, strGroupName)
                 ' Find row(s) in GroupInfo that correspond to this GroupID
-                drowSelect = dt.Select(String.Format("GroupID={0}", nGroupID))
+                drowSelect = dt.Select(cStringUtils.Localize("GroupID={0}", nGroupID))
 
                 If (drowSelect.Length = 1) Then
 
@@ -1238,14 +1238,14 @@ Namespace Database
             Me.m_dbEwE5.ReleaseReader(reader)
 
             ' Read stanza vbK values
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT groupName, vbK from [Group Stanza] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT groupName, vbK from [Group Stanza] where modelName='{0}'", Me.m_strModelName))
             If reader IsNot Nothing Then
 
                 While reader.Read()
                     strGroupName = CStr(reader("groupName"))
                     ' Get EwE6 GroupID for this record
                     nGroupID = Me.HashKey(eDataTypes.EcoPathGroupInput, strGroupName)
-                    drowSelect = dt.Select(String.Format("GroupID={0}", nGroupID))
+                    drowSelect = dt.Select(cStringUtils.Localize("GroupID={0}", nGroupID))
 
                     If (drowSelect.Length = 1) Then
                         drow = drowSelect(0)
@@ -1274,7 +1274,7 @@ Namespace Database
             ' Clear table(s)
             Me.m_dbEwE6.Execute("DELETE * FROM EcopathFleet")
 
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Gear] where modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Gear] where modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbEwE6.GetWriter("EcopathFleet")
@@ -1328,7 +1328,7 @@ Namespace Database
             Dim nGroupID As Integer = 0
             Dim nFleetID As Integer = 0
 
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Catch] where modelName='{0}'", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Catch] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbEwE6.GetWriter("EcopathCatch")
@@ -1377,7 +1377,7 @@ Namespace Database
             Dim drowFK As DataRow = Nothing
             Dim nGroupID As Integer = 0
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Catch Codes] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Catch Codes] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcopathCatchCode")
@@ -1410,7 +1410,7 @@ Namespace Database
             Dim nGroupID As Integer = 0
             Dim nFleetID As Integer = 0
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Discard Fate] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Discard Fate] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcopathDiscardFate")
@@ -1450,7 +1450,7 @@ Namespace Database
             Dim nGroupID As Integer = 0
             Dim varName As eVarNameFlags = eVarNameFlags.NotSet
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [BasicParam Remarks] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [BasicParam Remarks] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             While reader.Read()
@@ -1492,7 +1492,7 @@ Namespace Database
             Dim iLevelID As Integer = 1
 
             ' Check if defaults need to be discarded
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT DISTINCT Parameter FROM Pedigree"))
+            reader = Me.m_dbEwE5.GetReader("SELECT DISTINCT Parameter FROM Pedigree")
             Dim lVars As New List(Of eVarNameFlags)
             While reader.Read
                 Select Case CInt(reader("Parameter"))
@@ -1509,7 +1509,7 @@ Namespace Database
 
             Try
                 For Each varName In lVars
-                    Me.m_dbEwE6.Execute(String.Format("DELETE FROM [Pedigree] WHERE VarName='{0}'", cin.GetVarName(varName)))
+                    Me.m_dbEwE6.Execute(cStringUtils.Localize("DELETE FROM [Pedigree] WHERE VarName='{0}'", cin.GetVarName(varName)))
                 Next
             Catch ex As Exception
 
@@ -1579,7 +1579,7 @@ Namespace Database
 
         Private Sub ImportEcoranger()
 
-            Dim reader As IDataReader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [EcoRanger] where modelName='{0}'", Me.m_strModelName))
+            Dim reader As IDataReader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [EcoRanger] where modelName='{0}'", Me.m_strModelName))
             If (reader Is Nothing) Then Return
             Me.LogMessage(My.Resources.CoreMessages.IMPORT_WARNING_ECORANGER, eMessageType.DataImport, eMessageImportance.Information, True)
             Me.m_dbEwE5.ReleaseReader(reader)
@@ -1603,7 +1603,7 @@ Namespace Database
             ' Clear table(s)
             Me.m_dbEwE6.Execute("DELETE * FROM EcosimScenario")
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return False
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenario")
@@ -1679,7 +1679,7 @@ Namespace Database
             Dim bHasGroup As Boolean = False
 
             ' JS 070212: Every Ecopath group should have an Ecosim counterpart
-            reader = Me.m_dbEwE6.GetReader(String.Format("SELECT * from EcopathGroup"))
+            reader = Me.m_dbEwE6.GetReader("SELECT * from EcopathGroup")
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenarioGroup")
@@ -1694,12 +1694,12 @@ Namespace Database
                 For Each strGroup In dtEcopathGroups.Keys
 
                     ' Report sub-status
-                    Me.LogProgress(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMGROUPS_AT, strScenario, strGroup), Me.m_iStep)
+                    Me.LogProgress(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMGROUPS_AT, strScenario, strGroup), Me.m_iStep)
 
                     ' .. create a new ecosim group
 
                     ' Check if an ecosim group exists for this ecopath group, ecosim scenario combination
-                    reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
+                    reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
                             Me.m_strModelName, strScenario, strGroup))
 
                     bHasGroup = reader.Read()
@@ -1751,7 +1751,7 @@ Namespace Database
                         End If
                     Else
                         ' #No: the new group will get all default values
-                        Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSIMGROUP, _
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSIMGROUP, _
                                 iGroupID, _
                                 strGroup, _
                                 strScenario), _
@@ -1762,7 +1762,7 @@ Namespace Database
                             drow("FishMortShapeID") = Me.HashKey(eDataTypes.FishMort, strGroup, eDataTypes.EcoSimScenario, iScenarioID)
                         Else
                             ' Notify world
-                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_FIX_CREATEFISHMORTSHAPE, _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEFISHMORTSHAPE, _
                                     Me.m_iNextShapeID, _
                                     strGroup, _
                                     strScenario), _
@@ -1815,7 +1815,7 @@ Namespace Database
             Dim strJuvinile As String = ""
             Dim bWarned As Boolean = False
 
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim Pairs] where modelName='{0}'", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim Pairs] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             While reader.Read
@@ -1826,17 +1826,17 @@ Namespace Database
                 End If
 
                 Try
-                    readerTmp = m_dbEwE5.GetReader(String.Format("SELECT * from [Group Info] where modelName='{0}' and sequence={1}", Me.m_strModelName, reader("iadult")))
+                    readerTmp = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Info] where modelName='{0}' and sequence={1}", Me.m_strModelName, reader("iadult")))
                     readerTmp.Read()
                     strAdult = CStr(readerTmp("groupName"))
                     Me.m_dbEwE5.ReleaseReader(readerTmp)
 
-                    readerTmp = m_dbEwE5.GetReader(String.Format("SELECT * from [Group Info] where modelName='{0}' and sequence={1}", Me.m_strModelName, reader("ijuv")))
+                    readerTmp = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Info] where modelName='{0}' and sequence={1}", Me.m_strModelName, reader("ijuv")))
                     readerTmp.Read()
                     strJuvinile = CStr(readerTmp("groupName"))
                     Me.m_dbEwE5.ReleaseReader(readerTmp)
 
-                    Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_PAIRDETAILS, _
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_PAIRDETAILS, _
                             CStr(reader("npairs")), _
                             strJuvinile, _
                             strAdult), _
@@ -1877,12 +1877,12 @@ Namespace Database
                 For Each strFleet As String In dtFleets.Keys
 
                     ' Report sub-status
-                    Me.LogProgress(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMFLEETS_AT, strScenario, strFleet), Me.m_iStep)
+                    Me.LogProgress(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMFLEETS_AT, strScenario, strFleet), Me.m_iStep)
 
                     ' Grab foreign keys
                     iEcopathFleetID = Me.HashKey(eDataTypes.FleetInput, strFleet)
 
-                    reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'", _
+                    reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'", _
                                                               Me.m_strModelName, strFleet, strScenario))
                     ' Assume no shape is read
                     iShapeID = 0
@@ -1905,7 +1905,7 @@ Namespace Database
                     drow("FleetID") = iFleetID
                     drow("FishRateShapeID") = iShapeID
 
-                    readerEcopath = m_dbEwE5.GetReader(String.Format("SELECT * FROM [Gear] WHERE (gearName='{0}')", strFleet))
+                    readerEcopath = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Gear] WHERE (gearName='{0}')", strFleet))
                     readerEcopath.Read()
 
                     drow("EPower") = Me.FixValue(readerEcopath, "EPower", 3.0!)
@@ -1962,7 +1962,7 @@ Namespace Database
             '           remarks writer, or can have local scope, to be passed on to the writing methods.
 
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [Ecosim nshapes] WHERE modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Ecosim nshapes] WHERE modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcosimShape")
@@ -2002,7 +2002,7 @@ Namespace Database
                         ' Found dual assignment?
                         If (bIsEggShape And bIsTimeShape) Then
                             ' VERIFY_JS: Check with VC how to import dual assigned Forcing shapes (egg and time)
-                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS, _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS, _
                                     iShapeNumber, _
                                     shapeDataType.ToString()), _
                                     eMessageType.DataImport, eMessageImportance.Information, True)
@@ -2028,7 +2028,7 @@ Namespace Database
                         ' Import failed?
                         If (iAssignedShapeID = cCore.NULL_VALUE) Then
                             ' #Yes: report failure
-                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGNOTIMPORTED, iShapeNumber, shapeDataType.ToString), _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGNOTIMPORTED, iShapeNumber, shapeDataType.ToString), _
                                     eMessageType.DataImport, eMessageImportance.Information, True)
                         Else
                             ' #No: remember how shape was imported
@@ -2043,7 +2043,7 @@ Namespace Database
                     Else
                         ' This indicates a programming error
                         Debug.Assert(False, "Shape type " & shapeDataType & " unknown")
-                        Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGDUPLICATE, _
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGDUPLICATE, _
                                 iShapeNumber, _
                                 shapeDataType.ToString()), _
                                 eMessageType.DataImport, eMessageImportance.Information, True)
@@ -2051,7 +2051,7 @@ Namespace Database
                     End If ' Valid ShapeType is set
                 Else
                     ' Invalid shape number
-                    Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGTYPEMISSING, _
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGTYPEMISSING, _
                             iShapeNumber), _
                             eMessageType.DataImport, eMessageImportance.Information, True)
                 End If ' Not imported yet
@@ -2218,7 +2218,7 @@ Namespace Database
 
             Catch ex As Exception
                 ' No need to localize, send to log only
-                Me.LogMessage(String.Format("Forcing data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message), _
+                Me.LogMessage(cStringUtils.Localize("Forcing data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message), _
                         eMessageType.DataImport, eMessageImportance.Information)
                 Return cCore.NULL_VALUE
             End Try
@@ -2255,14 +2255,14 @@ Namespace Database
                     Dim nShapeNumber As Integer = CInt(Me.m_dbEwE6.GetValue("SELECT COUNT(*) FROM EcosimShapeMediation"))
 
                     ' JS 19April 2010 (Sascha is 5!!!): do NOT adjust title; this will cripple ability to find duplicates
-                    'fsd.Title = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
+                    'fsd.Title = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeMediation")
                     drow = writer.NewRow()
                     drow("IMedBase") = fsd.IMedBase
                     drow("zScale") = fsd.ZScale
                     ' New in EwE6
-                    drow("Title") = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
+                    drow("Title") = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
                     drow("Yzero") = fsd.Yzero
                     drow("Ybase") = fsd.YBase
                     drow("Yend") = fsd.YBase
@@ -2312,7 +2312,7 @@ Namespace Database
 
             Catch ex As Exception
                 ' No need to localize, send to log only
-                Me.LogMessage(String.Format("Effort or Mort shape data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message), _
+                Me.LogMessage(cStringUtils.Localize("Effort or Mort shape data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message), _
                         eMessageType.DataImport, eMessageImportance.Information)
                 Return cCore.NULL_VALUE
             End Try
@@ -2324,7 +2324,7 @@ Namespace Database
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeFishRate")
                     drow = writer.NewRow()
-                    drow("Title") = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_FISHRATESHAPE, CInt(nShapeNumber + 1))
+                    drow("Title") = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_FISHRATESHAPE, CInt(nShapeNumber + 1))
                     drow("zScale") = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "FishRateGear", "")))
 
                 Case eDataTypes.FishMort
@@ -2332,7 +2332,7 @@ Namespace Database
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeFishMort")
                     drow = writer.NewRow()
-                    drow("Title") = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_FISHMORTSHAPE, CInt(nShapeNumber + 1))
+                    drow("Title") = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_FISHMORTSHAPE, CInt(nShapeNumber + 1))
                     drow("zScale") = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "FishRateNo", "")))
 
                 Case Else
@@ -2377,7 +2377,7 @@ Namespace Database
 
             Catch ex As Exception
                 ' No need to localize, send to log only
-                Me.LogMessage(String.Format("Failed to create dummy shape {0}: {1}", iShapeID, ex.Message), _
+                Me.LogMessage(cStringUtils.Localize("Failed to create dummy shape {0}: {1}", iShapeID, ex.Message), _
                         eMessageType.DataImport, eMessageImportance.Information)
                 Return False
             End Try
@@ -2402,7 +2402,7 @@ Namespace Database
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeMediation")
                     drow = writer.NewRow()
                     ' New in EwE6
-                    drow("Title") = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
+                    drow("Title") = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
                     ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
 
@@ -2411,14 +2411,14 @@ Namespace Database
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeFishRate")
                     drow = writer.NewRow()
-                    drow("Title") = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_FISHRATESHAPE, CInt(nShapeNumber + 1))
+                    drow("Title") = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_FISHRATESHAPE, CInt(nShapeNumber + 1))
 
                 Case eDataTypes.FishMort
                     Dim nShapeNumber As Integer = CInt(Me.m_dbEwE6.GetValue("SELECT COUNT(*) FROM EcosimShapeFishMort"))
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeFishMort")
                     drow = writer.NewRow()
-                    drow("Title") = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_FISHMORTSHAPE, CInt(nShapeNumber + 1))
+                    drow("Title") = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_FISHMORTSHAPE, CInt(nShapeNumber + 1))
 
                 Case Else
                     Debug.Assert(False, "Shape type not set during import; cannot continue")
@@ -2449,7 +2449,7 @@ Namespace Database
             Dim drow As DataRow = Nothing
 
             ' Resolve Scenario dependent forcing shapes
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [Ecosim] WHERE modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Ecosim] WHERE modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenario")
@@ -2477,7 +2477,7 @@ Namespace Database
                 If ((iNutShapeID + iSalinityShapeID) > 0) Then
                     ' #Yes: venture yonder, Jimmy
                     dt = writer.GetDataTable()
-                    drowSelect = dt.Select(String.Format("ScenarioID={0}", iScenarioID))
+                    drowSelect = dt.Select(cStringUtils.Localize("ScenarioID={0}", iScenarioID))
                     If (drowSelect.Length = 1) Then
                         ' Sanity check
                         drow = drowSelect(0)
@@ -2509,7 +2509,7 @@ Namespace Database
 
             Me.m_dbEwE6.Execute("DELETE * FROM EcosimStanzaShape")
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT groupName, stanzaName, EggProdShape, HatchCode FROM [Group Stanza] WHERE (modelName='{0}')", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT groupName, stanzaName, EggProdShape, HatchCode FROM [Group Stanza] WHERE (modelName='{0}')", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             ' Determine number of ecosim scenarios
@@ -2557,7 +2557,7 @@ Namespace Database
                             End If
                         Else
                             ' Multiple ecosim scenarios: do not import, throw a warning
-                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_MULTISTANZASHAPE, CStr(reader("stanzaName"))), _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_MULTISTANZASHAPE, CStr(reader("stanzaName"))), _
                                         eMessageType.DataImport, eMessageImportance.Information, True)
                         End If
                     End If
@@ -2599,10 +2599,10 @@ Namespace Database
         Private Function IsUsedAsTimeShape(ByVal nShapeNumber As Integer) As Boolean
             If (Me.m_dbEwE5.GetVersion < 1.705) Then
                 Dim strDetectEggSQL As String = "SELECT COUNT(*) FROM [ECOSIM NXN] WHERE (modelName='{0}') AND (seasonType={1})"
-                Return CInt(Me.m_dbEwE5.GetValue(String.Format(strDetectEggSQL, Me.m_strModelName, nShapeNumber))) > 0
+                Return CInt(Me.m_dbEwE5.GetValue(cStringUtils.Localize(strDetectEggSQL, Me.m_strModelName, nShapeNumber))) > 0
             Else
                 Dim strDetectEggSQL As String = "SELECT COUNT(*) FROM [ECOSIM NXN Forcing] WHERE (modelName='{0}') AND (FunctionNumber={1}) AND (IsMedFunction=False)"
-                Return CInt(Me.m_dbEwE5.GetValue(String.Format(strDetectEggSQL, Me.m_strModelName, nShapeNumber))) > 0
+                Return CInt(Me.m_dbEwE5.GetValue(cStringUtils.Localize(strDetectEggSQL, Me.m_strModelName, nShapeNumber))) > 0
             End If
         End Function
 
@@ -2619,7 +2619,7 @@ Namespace Database
         Private Function IsUsedAsEggShape(ByVal nShapeNumber As Integer) As Boolean
             ' EggShapes in EwE5 are assigned to stanza groups independent of scenario!
             Dim strDetectEggSQL As String = "SELECT COUNT(*) FROM [GROUP STANZA] WHERE (modelName='{0}') AND (EggProdShape={1})"
-            Return CInt(Me.m_dbEwE5.GetValue(String.Format(strDetectEggSQL, Me.m_strModelName, nShapeNumber))) > 0
+            Return CInt(Me.m_dbEwE5.GetValue(cStringUtils.Localize(strDetectEggSQL, Me.m_strModelName, nShapeNumber))) > 0
         End Function
 
         Private Sub ImportEcosimNxN()
@@ -2631,7 +2631,7 @@ Namespace Database
             Dim iScenarioID As Integer = 0
             Dim drow As DataRow = Nothing
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim NxN] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim NxN] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenarioForcingMatrix")
@@ -2705,7 +2705,7 @@ Namespace Database
             Dim iFleetID As Integer = 0
             Dim iShapeID As Integer = 0
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim MedWeights] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim MedWeights] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writerGroup = Me.m_dbEwE6.GetWriter("EcosimScenarioShapeMedWeightsGroup")
@@ -2765,7 +2765,7 @@ Namespace Database
             Dim iFFApplication As eForcingFunctionApplication = 0
 
             ' EwE6: Shape type explicitly identifies a shape type
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim NxN Forcing] where modelName='{0}'", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim NxN Forcing] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenarioPredPreyShape")
@@ -2822,7 +2822,7 @@ Namespace Database
             Dim strDatasetLast As String = ""
             Dim iNumYears As Integer = 0
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [Time Series] WHERE modelName='{0}' ORDER BY Dataset", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Time Series] WHERE modelName='{0}' ORDER BY Dataset", Me.m_strModelName))
             writer = Me.m_dbEwE6.GetWriter("EcosimTimeSeriesDataset")
 
             While reader.Read()
@@ -2894,9 +2894,9 @@ Namespace Database
             Dim strMemo As String = ""
 
             If (Me.m_dbEwE5.GetVersion >= 1.62) Then
-                reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Time Series] where modelName='{0}' ORDER BY SequenceNo ASC", Me.m_strModelName))
+                reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Time Series] where modelName='{0}' ORDER BY SequenceNo ASC", Me.m_strModelName))
             Else
-                reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Time Series] where modelName='{0}'", Me.m_strModelName))
+                reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Time Series] where modelName='{0}'", Me.m_strModelName))
             End If
 
             If Object.ReferenceEquals(reader, Nothing) Then Return
@@ -2987,7 +2987,7 @@ Namespace Database
 
                         ' Is this fleet missing?
                         If (iFleetID = 0) Then
-                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESFLEET, _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESFLEET, _
                                 Me.FixValue(reader, "DatName", ""), _
                                 Me.FixValue(reader, "Dataset", ""), _
                                 CInt(reader("Pool"))), _
@@ -3031,7 +3031,7 @@ Namespace Database
 
                         ' Is this group missing?
                         If (iGroupID = 0) Then
-                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESIERIESGROUP, _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_TIMESIERIESGROUP, _
                                     Me.FixValue(reader, "DatName", ""), _
                                     Me.FixValue(reader, "Dataset", ""), _
                                     CInt(reader("Pool"))), _
@@ -3064,7 +3064,7 @@ Namespace Database
 
                     Case eTimeSeriesCategoryType.NotSet
                         'Trying to import unkown time series type - ignore this TS
-                        Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESTYPE, _
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESTYPE, _
                                 Me.FixValue(reader, "DatName", ""), _
                                 Me.FixValue(reader, "Dataset", ""), _
                                 eType.ToString()), _
@@ -3107,7 +3107,7 @@ Namespace Database
             ' Clear table(s)
             Me.m_dbEwE6.Execute("DELETE * FROM EcospaceScenario")
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace] WHERE modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace] WHERE modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return False
 
             writer = Me.m_dbEwE6.GetWriter("EcospaceScenario")
@@ -3144,7 +3144,7 @@ Namespace Database
                 ' JS 28nov06: habitats now db-linked in EcospaceScenarioHabitat table to allow any number of habitats
                 'If sDBVers < 1.557 Then  'first read to old habitats below then update below
                 '    For i As Integer = 0 To 8
-                '        drow(String.Format("Habitat{0}", i)) = Me.FixValue(reader, String.Format("Habitat{0}", i))
+                '        drow(cStringUtils.Localize("Habitat{0}", i)) = Me.FixValue(reader, cStringUtils.Localize("Habitat{0}", i))
                 '    Next
                 'End If
 
@@ -3214,7 +3214,7 @@ Namespace Database
             Next
 
             ' Now import habitat information using most recent EwE5 format
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * FROM [Ecospace habitats] WHERE modelName='{0}'", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Ecospace habitats] WHERE modelName='{0}'", Me.m_strModelName))
             While reader.Read()
                 ' Resolve scenario ID
                 iScenarioID = Me.HashKey(eDataTypes.EcoSpaceScenario, CStr(reader("scenario")))
@@ -3255,7 +3255,7 @@ Namespace Database
             Dim nHabChanges As Integer = 0
 
             ' Import habitat changes
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [Ecospace habitat changes] WHERE modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Ecospace habitat changes] WHERE modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcospaceScenarioHabitatChange")
@@ -3284,7 +3284,7 @@ Namespace Database
                         writer.AddRow(drow)
                     Catch ex As Exception
                         ' No need to localize, log only
-                        Me.LogMessage(String.Format("Incomplete habitat change information for scenario {0}, time step {1} not read", CStr(reader("Scenario")), reader("HabTime")))
+                        Me.LogMessage(cStringUtils.Localize("Incomplete habitat change information for scenario {0}, time step {1} not read", CStr(reader("Scenario")), reader("HabTime")))
                     End Try
                 Next
 
@@ -3305,7 +3305,7 @@ Namespace Database
             Dim strMPA As String = ""
             Dim sbMPA As StringBuilder = Nothing
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace MPA] WHERE modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace MPA] WHERE modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcospaceScenarioMPA")
@@ -3381,7 +3381,7 @@ Namespace Database
                     iEcopathGroupID = Me.HashKey(eDataTypes.EcoPathGroupInput, strEcopathGroup)
 
                     ' Check if an ecospace group exists for this ecopath group, ecosim scenario combination
-                    reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSpace N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
+                    reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [EcoSpace N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
                             Me.m_strModelName, strEcospaceScenario, strEcopathGroup))
 
                     bHasGroup = reader.Read()
@@ -3423,7 +3423,7 @@ Namespace Database
                         drow("PrefCol") = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "PrefCol", "0")), CChar(" "), 5)
                     Else
                         ' #No: the new group will get all default values
-                        Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEGROUP, _
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEGROUP, _
                                 iGroupID, _
                                 strEcopathGroup, _
                                 strEcospaceScenario), _
@@ -3531,7 +3531,7 @@ Namespace Database
                         Me.LogProgress("Importing maps for scenario " & strEcospaceScenario & ", fleet " & strEcopathFleet)
 
                         ' Generate an Ecospace fleet entry
-                        reader = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace Gear] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
+                        reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace Gear] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
                                                                   Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
                         bHasFleet = reader.Read()
 
@@ -3558,7 +3558,7 @@ Namespace Database
                             ReDim astrPort(nRows * nCols)
                             For iRow As Integer = 0 To nRows : For iCol As Integer = 0 To nCols : astrPort(iRow * nCols + iCol) = "" : Next : Next
                             Try
-                                readerSub = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
+                                readerSub = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
                                                                              Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
 
                                 If readerSub IsNot Nothing Then
@@ -3644,7 +3644,7 @@ Namespace Database
                         If bHasFleet Then
                             Me.AddRemark(reader("remark"), eDataTypes.EcospaceFleet, iFleetID, eVarNameFlags.Name)
                         Else
-                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEFLEET, _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEFLEET, _
                                     iFleetID, _
                                     strEcopathFleet, _
                                     strEcospaceScenario), _
@@ -3692,7 +3692,7 @@ Namespace Database
             Dim nCols As Integer = 1
             Dim iNumRegions As Integer = 0
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace] WHERE modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace] WHERE modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcospaceScenario")
@@ -3781,7 +3781,7 @@ Namespace Database
                 Dim iKey As Integer = 0
 
                 ' Habitats
-                readerSub = Me.m_dbEwE5.GetReader(String.Format("SELECT HabitatNo FROM [Ecospace habitats] WHERE modelName='{0}' AND Scenario='{1}'", Me.m_strModelName, strScenario))
+                readerSub = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT HabitatNo FROM [Ecospace habitats] WHERE modelName='{0}' AND Scenario='{1}'", Me.m_strModelName, strScenario))
                 writerSub = Me.m_dbEwE6.GetWriter("EcospaceScenarioHabitat")
                 dtSub = writerSub.GetDataTable()
                 While readerSub.Read()
@@ -3798,7 +3798,7 @@ Namespace Database
                 Me.m_dbEwE6.ReleaseWriter(writerSub)
 
                 ' MPAs
-                readerSub = Me.m_dbEwE5.GetReader(String.Format("SELECT MPANo FROM [EcoSpace MPA] WHERE modelName='{0}' AND Scenario='{1}'", Me.m_strModelName, strScenario))
+                readerSub = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT MPANo FROM [EcoSpace MPA] WHERE modelName='{0}' AND Scenario='{1}'", Me.m_strModelName, strScenario))
                 writerSub = Me.m_dbEwE6.GetWriter("EcospaceScenarioMPA")
                 dtSub = writerSub.GetDataTable()
                 While readerSub.Read()
@@ -3832,7 +3832,7 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 1
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [EcoTracer] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [EcoTracer] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return False
 
             writer = Me.m_dbEwE6.GetWriter("EcotracerScenario")
@@ -3880,7 +3880,7 @@ Namespace Database
             Dim iScenarioID As Integer = 0
             Dim iGroupID As Integer = 0
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [EcoTracer N] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [EcoTracer N] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcotracerScenarioGroup")
@@ -4123,7 +4123,7 @@ Namespace Database
             ' Alpha is not set in EwE5 - remove opacity when any color is present
             If (r > 0) Or (g > 0) Or (b > 0) Then a = 255
 
-            Return String.Format("{0:x2}{1:x2}{2:x2}{3:x2}", a, r, g, b)
+            Return cStringUtils.Localize("{0:x2}{1:x2}{2:x2}{3:x2}", a, r, g, b)
 
         End Function
 

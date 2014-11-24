@@ -20,6 +20,7 @@ Option Strict On
 
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 ''' <summary>
 ''' Multi-stanza group
@@ -195,7 +196,7 @@ Public Class cStanzaGroup
             Return m_core.CalculateStanza(Me)
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_DATAERROR, ex.Message), _
+            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_DATAERROR, ex.Message), _
                     eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
@@ -220,7 +221,7 @@ Public Class cStanzaGroup
 
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_APPLY_DATAERROR, ex.Message), _
+            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_APPLY_DATAERROR, ex.Message), _
                     eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
@@ -237,7 +238,7 @@ Public Class cStanzaGroup
             Return CalculateParameters()
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CANCEL_DATAERROR, ex.Message), _
+            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CANCEL_DATAERROR, ex.Message), _
                 eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
@@ -266,7 +267,7 @@ Public Class cStanzaGroup
                     bOk = False
                     grp = Me.m_core.EcoPathGroupInputs(Me.iGroups(ist))
                     vs = New cVariableStatus(grp, eStatusFlags.MissingParameter, _
-                                             String.Format(My.Resources.CoreMessages.STANZA_MORT_MISSING, grp.Name), _
+                                             cStringUtils.Localize(My.Resources.CoreMessages.STANZA_MORT_MISSING, grp.Name), _
                                              eVarNameFlags.StanzaMortaility, _
                                              Me.m_dataType, Me.m_coreComponent, grp.Index, cCore.NULL_VALUE)
                     msg.AddVariable(vs)
@@ -279,7 +280,7 @@ Public Class cStanzaGroup
 
                 bOk = False
                 vs = New cVariableStatus(Me, eStatusFlags.MissingParameter, _
-                                         String.Format(My.Resources.CoreMessages.STANZA_LEADING_MISSING, Me.Name), _
+                                         cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADING_MISSING, Me.Name), _
                                          eVarNameFlags.LeadingBiomass, _
                                          Me.m_dataType, Me.m_coreComponent, Me.Index, cCore.NULL_VALUE)
                 msg.AddVariable(vs)

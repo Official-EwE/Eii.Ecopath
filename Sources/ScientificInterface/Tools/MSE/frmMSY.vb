@@ -88,9 +88,9 @@ Public Class frmMSY
             Me.m_btnStop.Enabled = False
 
             Dim sb As New StringBuilder()
-            sb.AppendLine(String.Format(My.Resources.MSE_ITERATION_HEADER, cStringUtils.vbTab))
+            sb.AppendLine(cStringUtils.Localize(My.Resources.MSE_ITERATION_HEADER, cStringUtils.vbTab))
             For i As Integer = 1 To Me.UIContext.Core.nFleets
-                sb.AppendLine(String.Format(My.Resources.MSE_ITERATION_LINE, cStringUtils.vbTab, i, Me.StyleGuide.FormatNumber(MSY(i))))
+                sb.AppendLine(cStringUtils.Localize(My.Resources.MSE_ITERATION_LINE, cStringUtils.vbTab, i, Me.StyleGuide.FormatNumber(MSY(i))))
             Next
             Me.txtMSYresults.Text = sb.ToString
         End If
@@ -100,12 +100,12 @@ Public Class frmMSY
     Private Sub OnMSYProgress(ByVal MSYProgress As MSE.cMSYProgressArgs)
 
         Try
-            Me.m_lbFleet.Text = String.Format(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, m_nFleets)
-            Me.m_lblIter.Text = String.Format(SharedResources.GENERIC_VALUE_ITERATION, MSYProgress.Iteration)
-            Me.m_lblEffort.Text = String.Format(My.Resources.MSE_EFFORT_VALUE, Me.StyleGuide.FormatNumber(MSYProgress.CurrentEffort))
+            Me.m_lbFleet.Text = cStringUtils.Localize(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, m_nFleets)
+            Me.m_lblIter.Text = cStringUtils.Localize(SharedResources.GENERIC_VALUE_ITERATION, MSYProgress.Iteration)
+            Me.m_lblEffort.Text = cStringUtils.Localize(My.Resources.MSE_EFFORT_VALUE, Me.StyleGuide.FormatNumber(MSYProgress.CurrentEffort))
             If MSYProgress.CurrentEffort > 0 Then MSY(MSYProgress.FleetIndex) = MSYProgress.CurrentEffort
 
-            cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, m_nFleets), CSng(MSYProgress.FleetIndex / m_nFleets))
+            cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, m_nFleets), CSng(MSYProgress.FleetIndex / m_nFleets))
 
             'the DoEvents can be removed once the MSY is running on a thread 
             Application.DoEvents()

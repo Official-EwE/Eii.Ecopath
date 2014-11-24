@@ -19,18 +19,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports System.Drawing
-Imports System.IO
-Imports System.Xml
 Imports DotSpatial.Data
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -60,7 +53,7 @@ Namespace SpatialData
                                                             ByVal bImage As Boolean, _
                                                             ByVal bVector As Boolean) As String
             Get
-                Return String.Format("{0}|*.csv", My.Resources.DIALOGFILTER_CSV)
+                Return cStringUtils.Localize("{0}|*.csv", My.Resources.DIALOGFILTER_CSV)
             End Get
         End Property
 

@@ -604,8 +604,8 @@ Imports EwEUtils.Core
             lstrFleetNames.Add(Me.m_lfiFleets(i).Name)
         Next i
 
-        fi = New cFleetInfo(String.Format(SharedResources.DEFAULT_NEWFLEET_NUM, _
-                cStringUtils.GetNextNumber(lstrFleetNames.ToArray, SharedResources.DEFAULT_NEWFLEET_NUM)))
+        fi = New cFleetInfo(cStringUtils.Localize(SharedResources.DEFAULT_NEWFLEET_NUM, _
+                                                  cStringUtils.GetNextNumber(lstrFleetNames.ToArray, SharedResources.DEFAULT_NEWFLEET_NUM)))
         Me.m_lfiFleets.Insert(iFleet, fi)
 
         Me.UpdateGrid()
@@ -800,7 +800,7 @@ Imports EwEUtils.Core
             ElseIf Not Me.IsNameUnique(fi.Name, fi) Then
                 If Not lstrHandled.Contains(fi.Name) Then
                     fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                         String.Format(My.Resources.PROMPT_DUPLICATE_NAME, fi.Name), _
+                                                         cStringUtils.Localize(My.Resources.PROMPT_DUPLICATE_NAME, fi.Name), _
                                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
                     lstrHandled.Add(fi.Name)
                 End If
@@ -873,7 +873,7 @@ Imports EwEUtils.Core
             fi = DirectCast(Me.m_lfiFleetsRemoved(iFleet), cFleetInfo)
             If (Not fi.IsNew()) Then
 
-                strPrompt = String.Format(My.Resources.ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT, fi.Name)
+                strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT, fi.Name)
 
                 Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)

@@ -18,9 +18,10 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Drawing
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports System.Drawing
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -179,7 +180,7 @@ Namespace SpatialData
                     c = ds.Cache
 
                     Try
-                        strMessage = String.Format(My.Resources.CoreMessages.STATUS_INDEXING_DATASET, ds.DisplayName)
+                        strMessage = cStringUtils.Localize(My.Resources.CoreMessages.STATUS_INDEXING_DATASET, ds.DisplayName)
                         Me.OnSpatialIndexUpdated(strMessage, eProgressState.Start, 0)
 
                         While Not bDone

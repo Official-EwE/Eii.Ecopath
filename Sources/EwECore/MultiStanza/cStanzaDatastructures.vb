@@ -17,6 +17,7 @@
 '
 
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 Public Class cStanzaDatastructures
 
@@ -321,7 +322,7 @@ Public Class cStanzaDatastructures
             If (i <> Me.BaseStanza(iStanza)) Then
                 Me.BaseStanza(iStanza) = i
                 vs = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                         String.Format(My.Resources.CoreMessages.STANZA_LEADINGB_ADJUSTED, Me.StanzaName(iStanza)), _
+                                         cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADINGB_ADJUSTED, Me.StanzaName(iStanza)), _
                                          EwEUtils.Core.eVarNameFlags.LeadingBiomass, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
                 msg.AddVariable(vs)
             End If
@@ -331,7 +332,7 @@ Public Class cStanzaDatastructures
             If (i <> Me.BaseStanzaCB(iStanza)) Then
                 Me.BaseStanzaCB(iStanza) = i
                 vs = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                         String.Format(My.Resources.CoreMessages.STANZA_LEADINGCB_ADJUSTED, Me.StanzaName(iStanza)), _
+                                         cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADINGCB_ADJUSTED, Me.StanzaName(iStanza)), _
                                          EwEUtils.Core.eVarNameFlags.LeadingCB, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
                 msg.AddVariable(vs)
             End If

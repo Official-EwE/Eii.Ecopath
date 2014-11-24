@@ -24,6 +24,7 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
@@ -456,7 +457,7 @@ Namespace Ecospace
                 ' Wrap this in a core map layer to handle projections
                 ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core, _
                                                      Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
-                                                     String.Format(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
+                                                     cStringUtils.Localize(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
                 layerTmp = New cDisplayRasterLayer(Me.UIContext, ldataTmp, Nothing, Nothing)
                 ' Add the layer to the stash to save
@@ -560,7 +561,7 @@ Namespace Ecospace
                 Case eMPAOptimizationModels.RandomSearch
                     Me.m_rbRandom.Checked = True
                 Case Else
-                    Debug.Assert(False, String.Format("Unsupported search type selected {0}", CInt(prop.GetValue())))
+                    Debug.Assert(False, cStringUtils.Localize("Unsupported search type selected {0}", CInt(prop.GetValue())))
             End Select
             Me.m_bInUpdate = False
         End Sub

@@ -968,7 +968,8 @@ Imports SourceGrid2.Cells
             lstrLevelNames.Add(Me.ActiveConfig.Levels(i).Name)
         Next i
 
-        lvlInfo = New cPedigreeLevelInfo(String.Format("Estimate type {0}", _
+        ' ToDo: globalize this!
+        lvlInfo = New cPedigreeLevelInfo(cStringUtils.Localize("Estimate type {0}", _
                 cStringUtils.GetNextNumber(lstrLevelNames.ToArray, "Estimate type {0}")))
         Me.ActiveConfig.Levels.Insert(iLevel, lvlInfo)
 

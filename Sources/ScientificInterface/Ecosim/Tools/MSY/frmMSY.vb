@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwECore.MSY
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
@@ -493,7 +494,7 @@ Namespace Ecosim
                 Case eViewDataModeType.Catch
                     strYAxisLabel = SharedResources.HEADER_RELATIVE_CATCH
                 Case eViewDataModeType.BiomassAndCatch
-                    strYAxisLabel = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, _
+                    strYAxisLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, _
                                                   SharedResources.HEADER_RELATIVEBIOMASS, _
                                                   SharedResources.HEADER_RELATIVE_CATCH)
                 Case eViewDataModeType.Value
@@ -516,7 +517,7 @@ Namespace Ecosim
 
             End Select
 
-            Me.m_zgh.ConfigurePane(String.Format(My.Resources.HEADER_MSY, strTarget), strXAxisLabel, strYAxisLabel, True)
+            Me.m_zgh.ConfigurePane(cStringUtils.Localize(My.Resources.HEADER_MSY, strTarget), strXAxisLabel, strYAxisLabel, True)
             Dim gp As GraphPane = Me.m_zgh.GetPane(1)
             gp.CurveList.Clear()
             gp.YAxis.Scale.Min = 0
@@ -617,7 +618,7 @@ Namespace Ecosim
                             Next r
 
                             ' Create line
-                            strLabel = String.Format(SharedResources.GENERIC_LABEL_DETAILED, grp.Name, strDataName)
+                            strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, grp.Name, strDataName)
                             li = Me.m_zgh.CreateLineItem(grp, ppl, Me.GetLabel(strLabel, strPostfix))
                             li.Line.Style = style
                             lli.Add(li)
@@ -654,7 +655,7 @@ Namespace Ecosim
                                 ppl.Add(r.FCur, r.Catch(i) / base.Catch(i))
 
                                 bPlotFMSY = False
-                                If r.FCur = optimum.Fopt(i) Then
+                                If r.FCur = optimum.FOpt(i) Then
                                     If Me.m_results.SelMode = eMSYFSelectionModeType.Groups Then
                                         bPlotFMSY = (i = Me.m_results.Selection)
                                     Else
@@ -667,7 +668,7 @@ Namespace Ecosim
                                     pplFMSY.Add(r.FCur, 0)
                                     pplFMSY.Add(r.FCur, r.Catch(i) / base.Catch(i))
 
-                                    strLabel = String.Format(My.Resources.MSY_LABEL_FMSY, grp.Name)
+                                    strLabel = cStringUtils.Localize(My.Resources.MSY_LABEL_FMSY, grp.Name)
                                     liFMSY = New LineItem(Me.GetLabel(strLabel, strPostfix), pplFMSY, _
                                                           Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), SymbolType.Diamond)
                                     liFMSY.Line.Style = style
@@ -683,7 +684,7 @@ Namespace Ecosim
                             Next r
 
                             ' Create line
-                            strLabel = String.Format(SharedResources.GENERIC_LABEL_DETAILED, grp.Name, strDataName)
+                            strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, grp.Name, strDataName)
                             li = Me.m_zgh.CreateLineItem(grp, ppl, Me.GetLabel(strLabel, strPostfix))
                             li.Line.Style = style
                             li.Line.Width *= 2
@@ -705,7 +706,7 @@ Namespace Ecosim
 
         Private Function GetLabel(ByVal strLabel As String, ByVal strPostfix As String) As String
             If String.IsNullOrWhiteSpace(strPostfix) Then Return strLabel
-            Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, strLabel, strPostfix)
+            Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strLabel, strPostfix)
         End Function
 
 #End Region ' Plotting

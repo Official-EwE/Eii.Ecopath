@@ -137,7 +137,7 @@ Public Class cTransferEfficiency
 
         If TRavgP(2) > 0 And TRavgP(3) > 0 And TRavgP(4) > 0 Then
             TRavgP(0) = CSng((TRavgP(2) * TRavgP(3) * TRavgP(4)) ^ (1 / 3))
-            strRowContent(0) = String.Format(My.Resources.STR_FROM_PRIM_PRODUCER, Me.UIContext.StyleGuide.FormatNumber(100.0 * TRavgP(0)))
+            strRowContent(0) = cStringUtils.Localize(My.Resources.STR_FROM_PRIM_PRODUCER, Me.UIContext.StyleGuide.FormatNumber(100.0 * TRavgP(0)))
         End If
         For i As Integer = 1 To Grid.Columns.Count - 1
             strRowContent(i) = ""
@@ -147,7 +147,7 @@ Public Class cTransferEfficiency
 
         If TRavgD(2) > 0 And TRavgD(3) > 0 And TRavgD(4) > 0 Then
             TRavgD(0) = CSng((TRavgD(2) * TRavgD(3) * TRavgD(4)) ^ (1 / 3))
-            strRowContent(0) = String.Format(My.Resources.STR_FROM_DET, Me.UIContext.StyleGuide.FormatNumber(100.0 * TRavgD(0)))
+            strRowContent(0) = cStringUtils.Localize(My.Resources.STR_FROM_DET, Me.UIContext.StyleGuide.FormatNumber(100.0 * TRavgD(0)))
         End If
         For i As Integer = 1 To Grid.Columns.Count - 1
             strRowContent(i) = ""
@@ -157,7 +157,7 @@ Public Class cTransferEfficiency
 
         If TRavgT(2) > 0 And TRavgT(3) > 0 And TRavgT(4) > 0 Then
             TRavgT(0) = CSng((TRavgT(2) * TRavgT(3) * TRavgT(4)) ^ (1 / 3))
-            strRowContent(0) = String.Format(My.Resources.STR_TOTAL, Me.UIContext.StyleGuide.FormatNumber(100.0 * TRavgT(0)))
+            strRowContent(0) = cStringUtils.Localize(My.Resources.STR_TOTAL, Me.UIContext.StyleGuide.FormatNumber(100.0 * TRavgT(0)))
         End If
         For i As Integer = 1 To Grid.Columns.Count - 1
             strRowContent(i) = ""

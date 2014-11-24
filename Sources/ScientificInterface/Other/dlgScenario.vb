@@ -202,7 +202,7 @@ Namespace Wizard
 
             ' Init create dialog
             Me.tbNameCreate.Text = Me.GetNewScenarioName()
-            Me.tbDescriptionCreate.Text = String.Format(My.Resources.GENERIC_DEFAULT_DESCRIPTION, Date.Now().ToShortDateString(), Date.Now().ToShortTimeString())
+            Me.tbDescriptionCreate.Text = cStringUtils.Localize(My.Resources.GENERIC_DEFAULT_DESCRIPTION, Date.Now().ToShortDateString(), Date.Now().ToShortTimeString())
             Me.tbAuthorCreate.Text = Me.UIContext.Core.EwEModel.Author
             Me.tbContactCreate.Text = Me.UIContext.Core.EwEModel.Contact
 
@@ -362,7 +362,7 @@ Namespace Wizard
             End If
             ' - last saved date
             If (scenario.LastSaved > 0) Then
-                astrColumns(eColumnTypes.LastSaved) = String.Format("{0:g}", cDateUtils.JulianToDate(scenario.LastSaved))
+                astrColumns(eColumnTypes.LastSaved) = cStringUtils.Localize("{0:g}", cDateUtils.JulianToDate(scenario.LastSaved))
             Else
                 astrColumns(eColumnTypes.LastSaved) = ""
             End If
@@ -594,7 +594,7 @@ Namespace Wizard
             If Object.ReferenceEquals(scenario, Nothing) Then Return
 
             ' Ask for confirmation
-            Dim strMessage As String = String.Format(My.Resources.SCENARIO_CONFIRMDELETE_PROMPT, scenario.Name)
+            Dim strMessage As String = cStringUtils.Localize(My.Resources.SCENARIO_CONFIRMDELETE_PROMPT, scenario.Name)
             Dim fmsg As New cFeedbackMessage(strMessage, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.UIContext.Core.Messages.SendMessage(fmsg)
 

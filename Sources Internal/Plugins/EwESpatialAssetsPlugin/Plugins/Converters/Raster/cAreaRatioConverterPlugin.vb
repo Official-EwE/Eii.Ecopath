@@ -18,14 +18,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports System.Drawing
 Imports DotSpatial.Data
 Imports EwECore
 Imports EwECore.SpatialData
-Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -50,14 +49,14 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataConverter.IsConfigured"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function IsConfigured() As Boolean 
+        Public Overrides Function IsConfigured() As Boolean
             Return True
         End Function
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataConverter.IsCompatible"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function IsCompatible(ds As ISpatialDataSet) As Boolean 
+        Public Overrides Function IsCompatible(ds As ISpatialDataSet) As Boolean
             If (ds Is Nothing) Then Return False
             Return (ds.ConversionFormat = "DotSpatialVector")
         End Function
@@ -69,7 +68,7 @@ Namespace SpatialData
                                           ByVal ptfTL As PointF, _
                                           ByVal ptfBR As PointF, _
                                           ByVal dCellSize As Double, _
-                                          ByVal strFile As String) As ISpatialRaster 
+                                          ByVal strFile As String) As ISpatialRaster
 
             Dim log As cSpatialOperationLog = Nothing
             Dim rstResult As IRaster = Nothing
@@ -86,7 +85,7 @@ Namespace SpatialData
             End If
 
             ' Log
-            Me.LogMessage(String.Format(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
+            Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
 
             ' Perform conversion
             If (TypeOf data Is IRaster) Then
@@ -99,10 +98,10 @@ Namespace SpatialData
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 
-                    Me.LogMessage(String.Format(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                 End Try
 
             End If
@@ -114,7 +113,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataConverter.DisplayName"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides ReadOnly Property DisplayName As String 
+        Public Overrides ReadOnly Property DisplayName As String
             Get
                 Return My.Resources.CONVERTER_AREARASTER_NAME
             End Get

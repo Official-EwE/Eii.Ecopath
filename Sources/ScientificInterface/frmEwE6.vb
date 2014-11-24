@@ -28,6 +28,7 @@ Imports System.Threading
 Imports EwECore
 Imports EwECore.Database
 Imports EwECore.DataSources
+Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
@@ -39,6 +40,7 @@ Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
 Imports ScientificInterface.Ecospace.Basemap
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports ScientificInterface.Ecospace.Controls
 Imports ScientificInterface.Ecotracer
 Imports ScientificInterface.Other
 Imports ScientificInterface.Wizard
@@ -47,8 +49,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
-Imports EwECore.SpatialData
-Imports ScientificInterface.Ecospace.Controls
 
 #End Region ' Imports
 
@@ -1355,7 +1355,7 @@ Public Class frmEwE6
         Select Case comp
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
-                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)), _
+                Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)), _
                                strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
@@ -1370,14 +1370,14 @@ Public Class frmEwE6
                 End If
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
-                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
+                Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
                                strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
 
             Case cEwEDatabase.eCompatibilityTypes.EwE6
                 ' Yippee
 
             Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
-                If Me.AskFeedback(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
+                If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
                                   eMessageImportance.Question, _
                                   eCoreComponentType.DataSource, _
                                   eMessageReplyStyle.YES_NO, _
@@ -1406,16 +1406,16 @@ Public Class frmEwE6
 
         Select Case atResult
             Case eDatasourceAccessType.Failed_ReadOnly
-                strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_READONLY, strFileName)
+                strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_ACCESS_READONLY, strFileName)
             Case eDatasourceAccessType.Failed_OSUnsupported
-                strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_OS, strFileName)
+                strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_ACCESS_OS, strFileName)
                 strHyperlink = "http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=13255"
             Case eDatasourceAccessType.Failed_FileNotFound
-                strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_404, strFileName)
+                strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_ACCESS_404, strFileName)
             Case eDatasourceAccessType.Failed_CannotSave
-                strMessage = String.Format(My.Resources.STATUS_MODEL_SAVE_404, strFileName)
+                strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_SAVE_404, strFileName)
             Case Else
-                strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_FAILED, strFileName)
+                strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_ACCESS_FAILED, strFileName)
         End Select
 
         Me.SendMessage(strMessage, eMessageImportance.Warning, eCoreComponentType.DataSource, strHyperlink:=strHyperlink)
@@ -1434,7 +1434,7 @@ Public Class frmEwE6
     Private Sub UpdateModelControls()
 
         Dim an As AssemblyName = Assembly.GetAssembly(GetType(cCore)).GetName
-        Dim strCaption As String = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, an.Version.ToString)
+        Dim strCaption As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, an.Version.ToString)
         Dim model As cEwEModel = Me.Core.EwEModel
 
         Me.m_tsModel.Path = Me.SelectedFileName
@@ -1442,7 +1442,7 @@ Public Class frmEwE6
             Me.Text = strCaption
             Me.m_tslbReadOnly.Visible = False
         Else
-            Me.Text = String.Format(SharedResources.GENERIC_LABEL_CAPTION, strCaption, model.Name)
+            Me.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_CAPTION, strCaption, model.Name)
             Me.m_tslbReadOnly.Visible = Me.Core.DataSource.IsReadOnly
         End If
 
@@ -1489,7 +1489,7 @@ Public Class frmEwE6
                 End If
 
                 tsmi = New ToolStripMenuItem()
-                tsmi.Text = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                tsmi.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, _
                                           Me.Core.TimeSeriesDataset(i).Name, _
                                           fmt.GetDescriptor(Me.Core.TimeSeriesDataset(i).TimeSeriesInterval).ToLower())
                 tsmi.Tag = Me.Core.TimeSeriesDataset(i)
@@ -1708,7 +1708,7 @@ Public Class frmEwE6
             Dim str As String() = CStr(alMRU.Item(i)).Split(New Char() {";"c})
 
             item = New ToolStripMenuItem()
-            item.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXED, i + 1, str(0))
+            item.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, i + 1, str(0))
             item.Tag = str(0)
 
             'Add event handler to invoke the model
@@ -2050,7 +2050,7 @@ Public Class frmEwE6
             Select Case loadsource
 
                 Case eLoadSourceType.MRU
-                    If Me.AskFeedback(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
+                    If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
                                       replystyle:=eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
                         Me.RemoveModelMRU(strFileName)
                         Me.PopulateModelMRUDropdown()
@@ -2059,7 +2059,7 @@ Public Class frmEwE6
                 Case eLoadSourceType.User, _
                      eLoadSourceType.CommandLine
                     ' Unable to load model, show generic error
-                    Me.SendMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
+                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
                                    eMessageImportance.Warning, eCoreComponentType.DataSource)
 
                 Case eLoadSourceType.API
@@ -2103,7 +2103,7 @@ Public Class frmEwE6
 
                 Case eLoadSourceType.User, eLoadSourceType.CommandLine
                     ' Unable to load model, show generic error
-                    Me.SendMessage(String.Format(My.Resources.PROMPT_INVALIDMODEL, strFileName), _
+                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_INVALIDMODEL, strFileName), _
                                    eMessageImportance.Warning, eCoreComponentType.DataSource)
 
                 Case eLoadSourceType.API
@@ -2133,7 +2133,7 @@ Public Class frmEwE6
             My.Settings.Save()
             Return True
         Else
-            Dim msg As New cMessage(String.Format(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Critical)
+            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Critical)
             Me.Core.Messages.SendMessage(msg)
             ds.Close()
             Return False
@@ -2182,7 +2182,7 @@ Public Class frmEwE6
         Select Case format
             Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
                 If File.Exists(strFileName) Then
-                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName), _
+                    Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName), _
                                                      eCoreComponentType.DataSource, eMessageType.DataValidation, _
                                                      eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                     fmsg.Reply = eMessageReply.NO
@@ -2203,11 +2203,11 @@ Public Class frmEwE6
         Select Case atResult
 
             Case eDatasourceAccessType.Success, eDatasourceAccessType.Opened
-                strPrompt = String.Format(My.Resources.PROMPT_MODELCREATED, strFileName)
+                strPrompt = cStringUtils.Localize(My.Resources.PROMPT_MODELCREATED, strFileName)
                 importance = eMessageImportance.Information
 
             Case eDatasourceAccessType.Failed_CannotSave
-                strPrompt = String.Format(My.Resources.PROMPT_INVALIDTARGETPATH, strFileName)
+                strPrompt = cStringUtils.Localize(My.Resources.PROMPT_INVALIDTARGETPATH, strFileName)
                 importance = eMessageImportance.Critical
 
                 ' Should not occur
@@ -2226,7 +2226,7 @@ Public Class frmEwE6
                 importance = eMessageImportance.Critical
 
             Case eDatasourceAccessType.Failed_Unknown
-                strPrompt = String.Format(My.Resources.PROMPT_CREATE_GENERICERROR, strFileName)
+                strPrompt = cStringUtils.Localize(My.Resources.PROMPT_CREATE_GENERICERROR, strFileName)
                 importance = eMessageImportance.Critical
 
         End Select
@@ -2377,7 +2377,7 @@ Public Class frmEwE6
 
         If (es IsNot Nothing) Then
             ' #Yes: Load it
-            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_LOADING, es.Name))
+            cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSIM_LOADING, es.Name))
             bSucces = Me.Core.LoadEcosimScenario(es)
             cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
@@ -2397,7 +2397,7 @@ Public Class frmEwE6
 
         Dim bSucces As Boolean = False
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_CREATING, strName))
+        cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSIM_CREATING, strName))
         bSucces = Me.Core.NewEcosimScenario(strName, strDescription, strAuthor, strContact)
         cApplicationStatusNotifier.EndProgress(Me.Core)
         Return bSucces
@@ -2493,7 +2493,7 @@ Public Class frmEwE6
 
         Dim bSucces As Boolean = False
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_CREATING, strName))
+        cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_CREATING, strName))
         bSucces = Me.Core.NewEcospaceScenario(strName, strDescription, _
             strAuthor, strContact, iNumRows, iNumCols, sLatTL, sLonTL, sCellSize)
         cApplicationStatusNotifier.EndProgress(Me.Core)
@@ -2514,7 +2514,7 @@ Public Class frmEwE6
 
         If (es IsNot Nothing) Then
             ' #Yes: Load it
-            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_LOADING, es.Name))
+            cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_LOADING, es.Name))
             bSucces = Me.Core.LoadEcospaceScenario(es)
             cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
@@ -2594,7 +2594,7 @@ Public Class frmEwE6
 
         Dim bSucces As Boolean = False
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_CREATING, strName))
+        cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOTRACER_CREATING, strName))
         bSucces = Me.Core.NewEcotracerScenario(strName, strDescription, strAuthor, strContact)
         cApplicationStatusNotifier.EndProgress(Me.Core)
         Return bSucces
@@ -2614,7 +2614,7 @@ Public Class frmEwE6
 
         If (es IsNot Nothing) Then
             ' #Yes: Load it
-            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_LOADING, es.Name))
+            cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOTRACER_LOADING, es.Name))
             bSucces = Me.Core.LoadEcotracerScenario(es)
             cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
@@ -3134,7 +3134,7 @@ Public Class frmEwE6
             Next
         End If
         cmd.Checked = (nAutoSaving > 0)
-        cmd.Status = String.Format("{0} EwE component(s) are auto-saving results", nAutoSaving)
+        cmd.Status = cStringUtils.Localize("{0} EwE component(s) are auto-saving results", nAutoSaving)
     End Sub
 
     ''' <summary>
@@ -3530,12 +3530,12 @@ Public Class frmEwE6
             ' Overwriting?
             If dlg.Scenario IsNot Nothing Then
                 ' #Yes: prompt for overwrite confirmation
-                Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                 Me.Core.Messages.SendMessage(fmsg)
 
                 If (fmsg.Reply = eMessageReply.YES) Then
                     ' #Overwrite
-                    cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_SAVING, dlg.ScenarioName))
+                    cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSIM_SAVING, dlg.ScenarioName))
                     Try
                         Me.Core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                     Catch ex As Exception
@@ -3549,7 +3549,7 @@ Public Class frmEwE6
             End If
 
             ' Add scenario under new name
-            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_CREATING, dlg.ScenarioName))
+            cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSIM_CREATING, dlg.ScenarioName))
             Try
                 Me.Core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
             Catch ex As Exception
@@ -3664,7 +3664,7 @@ Public Class frmEwE6
             Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
         ElseIf (TypeOf Me.m_cmdEcosimLoadTimeSeries.Tag Is cTimeSeriesDataset) Then
             Dim ds As cTimeSeriesDataset = DirectCast(Me.m_cmdEcosimLoadTimeSeries.Tag, cTimeSeriesDataset)
-            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_TIMESERIES_LOADING, ds.Name))
+            cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_TIMESERIES_LOADING, ds.Name))
             Me.Core.LoadTimeSeries(ds, True)
             cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
@@ -3832,13 +3832,13 @@ Public Class frmEwE6
                 ' About to overwrite?
                 If (Not Object.ReferenceEquals(scenarioTarget, Nothing)) Then
                     ' #Yes: prompt for overwrite confirmation
-                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                    Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                     Me.Core.Messages.SendMessage(fmsg)
 
                     If (fmsg.Reply = eMessageReply.YES) Then
 
                         ' #Overwrite
-                        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_SAVING, dlg.ScenarioName))
+                        cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_SAVING, dlg.ScenarioName))
                         Try
                             Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                         Catch ex As Exception
@@ -3852,7 +3852,7 @@ Public Class frmEwE6
                 End If
 
                 ' Add scenario
-                cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_CREATING, dlg.ScenarioName))
+                cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_CREATING, dlg.ScenarioName))
                 Try
                     Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                 Catch ex As Exception
@@ -4312,12 +4312,12 @@ Public Class frmEwE6
             ' Overwriting?
             If (dlg.Scenario IsNot Nothing) Then
                 ' #Yes: prompt for overwrite confirmation
-                Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                 Me.Core.Messages.SendMessage(fmsg)
 
                 If (fmsg.Reply = eMessageReply.YES) Then
                     ' #Overwrite
-                    cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_SAVING, dlg.ScenarioName))
+                    cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOTRACER_SAVING, dlg.ScenarioName))
                     Try
                         Me.Core.SaveEcotracerScenario(DirectCast(dlg.Scenario, cEcotracerScenario))
                     Catch ex As Exception
@@ -4330,7 +4330,7 @@ Public Class frmEwE6
             End If
 
             ' Add scenario under new name
-            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_CREATING, dlg.ScenarioName))
+            cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOTRACER_CREATING, dlg.ScenarioName))
             Me.Core.SaveEcotracerScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
             cApplicationStatusNotifier.EndProgress(Me.Core)
 

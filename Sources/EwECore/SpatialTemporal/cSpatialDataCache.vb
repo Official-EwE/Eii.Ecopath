@@ -125,7 +125,7 @@ Namespace SpatialData
                 Try
                     bSucces = bSucces And cFileUtils.DeleteDirectory(strCachePath)
                 Catch ex As Exception
-                    cLog.Write(ex, String.Format("cSpatialDataCache::Clear {0}", strCachePath))
+                    cLog.Write(ex, cStringUtils.Localize("cSpatialDataCache::Clear {0}", strCachePath))
                     bSucces = False
                 End Try
             Next strCachePath
@@ -149,7 +149,7 @@ Namespace SpatialData
             Try
                 cFileUtils.DeleteDirectory(strCachePath)
             Catch ex As Exception
-                cLog.Write(ex, String.Format("cSpatialDataCache::Clear {0}", strCachePath))
+                cLog.Write(ex, cStringUtils.Localize("cSpatialDataCache::Clear {0}", strCachePath))
                 Return False
             End Try
             Return True
@@ -245,7 +245,7 @@ Namespace SpatialData
 
             Dim strDSFolder As String = Me.GetCacheFolder(ds)
             Dim strBoxFolder As String = Path.Combine(strDSFolder, _
-                                                      String.Format("[{0},{1}-{2},{3}]", cStringUtils.FormatSingle(ptfTL.X), cStringUtils.FormatSingle(ptfBR.Y), cStringUtils.FormatSingle(ptfBR.X), cStringUtils.FormatSingle(ptfTL.Y)))
+                                                      cStringUtils.Localize("[{0},{1}-{2},{3}]", cStringUtils.FormatSingle(ptfTL.X), cStringUtils.FormatSingle(ptfBR.Y), cStringUtils.FormatSingle(ptfBR.X), cStringUtils.FormatSingle(ptfTL.Y)))
             Dim strCacheFolder As String = System.IO.Path.Combine(strBoxFolder, cStringUtils.FormatSingle(CSng(dCellSize)))
 
             If (Not cFileUtils.IsDirectoryAvailable(strCacheFolder, bCreateIfMissing)) Then
@@ -278,7 +278,7 @@ Namespace SpatialData
                                           bCreateIfMissing As Boolean) As String
 
             Dim strPath As String = GetCacheFolder(ds, ptfTL, ptfBR, dCellSize, True)
-            Dim strFileName As String = cFileUtils.ToValidFileName(String.Format("{0}[{1}]{2}", dt.ToString("yyyy-MM-dd"), strFilter, strExt), bCreateIfMissing)
+            Dim strFileName As String = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}[{1}]{2}", dt.ToString("yyyy-MM-dd"), strFilter, strExt), bCreateIfMissing)
 
             Return System.IO.Path.Combine(strPath, strFileName)
 

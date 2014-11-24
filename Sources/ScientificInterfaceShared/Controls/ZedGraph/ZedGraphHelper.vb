@@ -166,7 +166,7 @@ Namespace Controls
                     If Not String.IsNullOrEmpty(Me.m_strLabel) Then Return Me.m_strLabel
                     ' Deduct from source
                     If Me.m_source IsNot Nothing Then
-                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, _
+                        Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, _
                                              Me.m_source.Index, Me.m_source.Name)
                     End If
                     ' Hmm...
@@ -339,7 +339,7 @@ Namespace Controls
         ' == Legend ==
         ''' <summary>States whether this instance should show a legend if left to 'default'</summary>
         Private m_bShowLegend As Boolean = True
- 
+
         '== Axis labels ==
         ''' <summary>States whether this instance should show axis labels.</summary>
         Private m_bShowAxisLabels As Boolean = True
@@ -1419,13 +1419,13 @@ Namespace Controls
                 End If
 
                 Dim pp As PointPair = curve(iPoint)
-                Return String.Format(My.Resources.GENERIC_LABEL_POINT, _
+                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_POINT, _
                                      curve.Label.Text, _
                                      Me.StyleGuide.FormatNumber(pp.X), _
                                      Me.StyleGuide.FormatNumber(pp.Y))
             ElseIf curve.IsPie Then
                 Dim slice As PieItem = DirectCast(curve, PieItem)
-                Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, _
+                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, _
                                      slice.Label.Text, _
                                      Me.StyleGuide.FormatNumber(slice.Value))
             End If
@@ -1470,9 +1470,9 @@ Namespace Controls
                             Case 0
                                 ' NOP
                             Case 1
-                                strDisplayText = String.Format(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)))
+                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)))
                             Case 2
-                                strDisplayText = String.Format(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
+                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
                             Case Else
                                 Debug.Assert(False)
                         End Select
@@ -1931,7 +1931,7 @@ Namespace Controls
             If cmdFS.Result = DialogResult.OK Then
                 If Me.WriteDataToCSV(cmdFS.FileName) Then
                     ' ToDo: globalize this
-                    Dim msg As New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, "Graph data", cmdFS.FileName), _
+                    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.GENERIC_FILESAVE_SUCCES, "Graph data", cmdFS.FileName), _
                                             eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = Path.GetDirectoryName(cmdFS.FileName)
                     Me.m_uic.Core.Messages.SendMessage(msg)

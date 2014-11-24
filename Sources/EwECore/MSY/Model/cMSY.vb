@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore.Ecosim
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -234,7 +235,7 @@ Namespace MSY
                 Dim iNumSteps As Integer = CInt(Me.m_Fmax / Me.m_Fstep)
                 Dim strAssessment As String = Me.m_msyData.AssessmentType.ToString
 
-                Me.StartProgress(String.Format(My.Resources.CoreMessages.MSY_STATUS_RUNNING, strAssessment), iNumSteps)
+                Me.StartProgress(cStringUtils.Localize(My.Resources.CoreMessages.MSY_STATUS_RUNNING, strAssessment), iNumSteps)
                 bRan = runSingleSpecies()
                 Me.EndProgress()
 
@@ -271,7 +272,7 @@ Namespace MSY
                     iNumSteps += CInt(Me.m_msyData.MaxRelF / (Me.m_msyData.MaxRelF * Me.m_msyData.FStepSize))
                 End If
             Next
-            Me.StartProgress(String.Format(My.Resources.CoreMessages.GENERIC_STATUS_INITIALIZING), iNumSteps)
+            Me.StartProgress(cStringUtils.Localize(My.Resources.CoreMessages.GENERIC_STATUS_INITIALIZING), iNumSteps)
 
             Try
 
@@ -281,7 +282,7 @@ Namespace MSY
                         Me.m_msyData.iSelGroupFleet = iGrp
 
                         If Me.InitForRun() Then
-                            Me.m_strStatus = String.Format(My.Resources.CoreMessages.FMSY_STATUS_RUNNING, strAssessment, Me.m_pathData.GroupName(iGrp))
+                            Me.m_strStatus = cStringUtils.Localize(My.Resources.CoreMessages.FMSY_STATUS_RUNNING, strAssessment, Me.m_pathData.GroupName(iGrp))
                             If Not Me.runSingleSpecies() Then
                                 'WTF
                                 'Failed to run the single species MSY search
@@ -1067,7 +1068,7 @@ Namespace MSY
 
             For i As Integer = 1 To Me.m_msyData.nGroups
                 t = Me.m_FOptTracker(i)
-                r.Fopt(i) = t.FOpt
+                r.FOpt(i) = t.FOpt
                 r.IsFopt(i) = t.IsFopt()
             Next
             Me.m_msyData.Optimum = r

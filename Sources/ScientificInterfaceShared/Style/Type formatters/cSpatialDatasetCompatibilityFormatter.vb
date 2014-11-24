@@ -82,7 +82,7 @@ Namespace Style
 
                 ' Special cases
                 If (val = cDatasetCompatilibity.eCompatibilityTypes.Errors) Then
-                    strBit = String.Format(strBit, comp.NumError)
+                    strBit = cStringUtils.Localize(strBit, comp.NumError)
                 End If
             Catch ex As Exception
                 Debug.Assert(False, "Malformed resource")
@@ -115,15 +115,15 @@ Namespace Style
                     Return Me.GetDescriptor(comp, eDescriptorTypes.Description)
 
                 Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                    Return String.Format(My.Resources.COMPATIBILITY_SUMMARY_NOINDEX, _
-                                         CInt(Math.Ceiling(100 * iNumOverlap / Math.Max(1, iNumTS))))
+                    Return cStringUtils.Localize(My.Resources.COMPATIBILITY_SUMMARY_NOINDEX, _
+                                                 CInt(Math.Ceiling(100 * iNumOverlap / Math.Max(1, iNumTS))))
 
             End Select
 
-            Return String.Format(My.Resources.COMPATIBILITY_SUMMARY, _
-                                 CInt(Math.Ceiling(100 * iNumOverlap / Math.Max(1, iNumTS))), _
-                                 CInt(Math.Ceiling(100 * iNumPartial / Math.Max(1, iNumOverlap))), _
-                                 CInt(Math.Ceiling(100 * iNumFull / Math.Max(1, iNumOverlap))))
+            Return cStringUtils.Localize(My.Resources.COMPATIBILITY_SUMMARY, _
+                                         CInt(Math.Ceiling(100 * iNumOverlap / Math.Max(1, iNumTS))), _
+                                         CInt(Math.Ceiling(100 * iNumPartial / Math.Max(1, iNumOverlap))), _
+                                         CInt(Math.Ceiling(100 * iNumFull / Math.Max(1, iNumOverlap))))
         End Function
 
     End Class

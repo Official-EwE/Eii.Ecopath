@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -696,7 +697,7 @@ Public Class dlgManageTimeSeries
         ' So far so good?
         If (bSucces = True) Then
             ' #Yes: start importing
-            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, String.Format(My.Resources.STATUS_IMPORTING_DATASET, Me.DatasetName))
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, cStringUtils.Localize(My.Resources.STATUS_IMPORTING_DATASET, Me.DatasetName))
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
                     If Me.m_uic.Core.ImportEcosimTimeSeries(ts, iDataset) Then

@@ -22,6 +22,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
@@ -133,7 +134,7 @@ Public Class frmShapeValue
         If (shape Is Nothing) Then
             Me.m_editMode = eDialogEditModeType.AddTimeSeries
         Else
-            Me.m_editMode = DirectCast(IIf(TypeOf shape Is cTimeSeries, eDialogEditModeType.EditTimeSeries, eDialogEditModeType.EditForcing), eDialogEditModeType)
+            Me.m_editMode = DirectCast(IIF(TypeOf shape Is cTimeSeries, eDialogEditModeType.EditTimeSeries, eDialogEditModeType.EditForcing), eDialogEditModeType)
         End If
 
         ' Determine display mode
@@ -260,7 +261,7 @@ Public Class frmShapeValue
 
     Private Sub cmbViewAs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_cmbViewAs.SelectedIndexChanged
-        Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.nPoints))
+        Me.NumPoints = CInt(IIF(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.nPoints))
         If Not Me.m_bInUpdate Then
             Me.m_grid.SetValues(Me.m_shape, Me.NumPoints, Me.m_displayMode)
         End If
@@ -341,7 +342,7 @@ Public Class frmShapeValue
 
         Me.IsSeasonal = Me.m_shape.IsSeasonal
 
-        Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.nPoints))
+        Me.NumPoints = CInt(IIF(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.nPoints))
         Me.m_grid.SetValues(Me.m_shape, Me.NumPoints, Me.m_displayMode)
 
     End Sub
@@ -399,7 +400,7 @@ Public Class frmShapeValue
         'Set the plot title
         Me.Text = My.Resources.HEADER_ADD
         m_txtName.Enabled = True
-        m_txtName.Text = String.Format(My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES, iNextTS)
+        m_txtName.Text = cStringUtils.Localize(My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES, iNextTS)
 
         m_lblWeight.Visible = True
         m_txtWeight.Visible = True
@@ -508,7 +509,7 @@ Public Class frmShapeValue
         Dim asValues As Single() = Nothing
         Dim bSucces As Boolean = True
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_TIMESERIES_ADDING, m_txtName.Text))
+        cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_TIMESERIES_ADDING, m_txtName.Text))
 
         strName = m_txtName.Text
         ' Parse value using UI number settings
@@ -617,7 +618,7 @@ Public Class frmShapeValue
             Case eTimeSeriesCategoryType.Fleet
                 m_lblPoolCode.Text = My.Resources.LABEL_FLEET
                 For i As Integer = 1 To Me.Core.nFleets
-                    m_cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXED, i, Me.Core.FleetInputs(i).Name))
+                    m_cmbPoolCode.Items.Add(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, i, Me.Core.FleetInputs(i).Name))
                 Next
                 If Me.m_shape IsNot Nothing Then
                     fts = CType(Me.m_shape, cFleetTimeSeries)
@@ -628,7 +629,7 @@ Public Class frmShapeValue
             Case eTimeSeriesCategoryType.Group
                 m_lblPoolCode.Text = My.Resources.LABEL_GROUP
                 For i As Integer = 1 To Me.Core.nGroups
-                    m_cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXED, i, Me.Core.EcoPathGroupInputs(i).Name))
+                    m_cmbPoolCode.Items.Add(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, i, Me.Core.EcoPathGroupInputs(i).Name))
                 Next
                 If (Me.m_shape IsNot Nothing) Then
                     gts = CType(Me.m_shape, cGroupTimeSeries)
@@ -660,7 +661,7 @@ Public Class frmShapeValue
             Return Me.m_cmbViewAs.SelectedIndex = 1
         End Get
         Set(ByVal value As Boolean)
-            Me.m_cmbViewAs.SelectedIndex = CInt(IIf(value, 1, 0))
+            Me.m_cmbViewAs.SelectedIndex = CInt(IIF(value, 1, 0))
         End Set
     End Property
 

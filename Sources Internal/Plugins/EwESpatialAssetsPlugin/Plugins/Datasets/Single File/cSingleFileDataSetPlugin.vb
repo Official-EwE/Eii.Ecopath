@@ -76,7 +76,7 @@ Namespace SpatialData
                     Return Me.m_strName
                 End If
                 If (Not String.IsNullOrWhiteSpace(Me.Source)) Then
-                    Return String.Format(My.Resources.DATASET_SINGLE_DISPLAYNAME, Path.GetFileName(Me.Source))
+                    Return cStringUtils.Localize(My.Resources.DATASET_SINGLE_DISPLAYNAME, Path.GetFileName(Me.Source))
                 End If
                 Return My.Resources.DATASET_SINGLE_NAME
             End Get

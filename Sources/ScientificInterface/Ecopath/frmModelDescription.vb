@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -166,7 +167,7 @@ Public Class frmModelDescription
 #Region " Currency "
 
     Private Sub PatchCurrencyUnitRadioButtonText(ByVal rb As RadioButton, ByVal uct As eUnitCurrencyType)
-        rb.Text = String.Format(rb.Text, Me.StyleGuide.CurrencyUnitText(uct))
+        rb.Text = cStringUtils.Localize(rb.Text, Me.StyleGuide.CurrencyUnitText(uct))
     End Sub
 
     Private Sub OnUnitCurrencyRadioChanged(ByVal sender As Object, ByVal eventargs As EventArgs) _

@@ -242,7 +242,7 @@ Public Class cPluginPoint
                                         Path.ChangeExtension(strModelName, cDataSourceFactory.GetDefaultExtension(Me.m_data.OutputFormat)))
 
             ' Go Jimmy
-            cApplicationStatusNotifier.StartProgress(Me.m_core, String.Format(My.Resources.STATUS_GENERATING_MODEL, strModelName))
+            cApplicationStatusNotifier.StartProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_GENERATING_MODEL, strModelName))
             Try
                 DBCreated = Me.m_generator.SaveModel(cFileUtils.ToValidFileName(strModelPath, True), strModelName, iTime, _
                                                      Me.m_data.BACalcMode, Me.m_data.BAAverageYears, Me.m_data.WPower)

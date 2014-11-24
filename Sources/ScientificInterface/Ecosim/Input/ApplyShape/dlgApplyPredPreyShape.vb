@@ -21,13 +21,10 @@
 Option Strict On
 Option Explicit On
 
-Imports System.Windows.Forms
-Imports System.Drawing
-Imports System.Drawing.Drawing2D
 Imports EwECore
-Imports ScientificInterface.Other
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -129,7 +126,7 @@ Namespace Ecosim
                     Next
 
                 Case Else
-                    Debug.Assert(False, String.Format("Invalid editmode {0} provided, expected Pred or Prey", editMode.ToString))
+                    Debug.Assert(False, cStringUtils.Localize("Invalid editmode {0} provided, expected Pred or Prey", editMode.ToString))
 
             End Select
 
@@ -174,17 +171,17 @@ Namespace Ecosim
             ' Load Prey and predator pair name
             Select Case m_editMode
                 Case eEditMode.PredPrey
-                    Me.m_lblTarget.Text = String.Format(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblSource.Text = String.Format(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.Prey
-                    Me.m_lblTarget.Text = String.Format(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblSource.Text = String.Format(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
                 Case eEditMode.Predator
-                    Me.m_lblTarget.Text = String.Format(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
-                    Me.m_lblSource.Text = String.Format(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.All
-                    Me.m_lblSource.Text = String.Format(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
-                    Me.m_lblTarget.Text = String.Format(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
             End Select
 
             Me.UpdateControls()
@@ -371,7 +368,7 @@ Namespace Ecosim
                 Case eShapeCategoryTypes.Mediation
                     Me.Text = My.Resources.ECOSIM_CAPTION_APPLYMED
                 Case Else
-                    Debug.Assert(False, String.Format("Mode {0} not supported by dialog", Me.m_shapeMode.ToString()))
+                    Debug.Assert(False, cStringUtils.Localize("Mode {0} not supported by dialog", Me.m_shapeMode.ToString()))
             End Select
 
             For Each shape As cForcingFunction In Me.m_uic.Core.ForcingShapeManager
@@ -469,7 +466,7 @@ Namespace Ecosim
                 If (Not bFound) And _
                    (iNumApplied < Me.m_InteractionManager.MaxNShapes) Then
                     ' #Yes: add
-                    itemSrc = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shapeSelected.Index, shapeSelected.Name))
+                    itemSrc = New ListViewItem(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, shapeSelected.Index, shapeSelected.Name))
                     itemSrc.ImageIndex = Me.m_lFFs.IndexOf(shapeSelected)
                     itemSrc.SubItems.Add("")
                     itemSrc.Tag = shapeSelected
@@ -575,7 +572,7 @@ Namespace Ecosim
             If Me.m_lFFs.Count > 0 Then
 
                 For Each ff As cForcingFunction In Me.m_lFFs
-                    item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name))
+                    item = New ListViewItem(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name))
                     item.ImageIndex = Me.m_lFFs.IndexOf(ff)
                     item.Tag = ff
                     Me.m_lvAllShapes.Items.Add(item)
@@ -600,11 +597,11 @@ Namespace Ecosim
                 Dim ffappl As eForcingFunctionApplication
 
                 If ppi Is Nothing Then Return
-                For i As Integer = 1 To ppi.NAppliedShapes
+                For i As Integer = 1 To ppi.nAppliedShapes
 
                     ppi.getShape(i, shape, ffappl)
 
-                    item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
+                    item = New ListViewItem(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
                     item.ImageIndex = Me.m_lFFs.IndexOf(shape)
                     item.SubItems.Add("")
                     item.Tag = shape

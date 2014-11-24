@@ -582,7 +582,7 @@ Namespace Style
                 i += 1
             End While
 
-            Return String.Format(My.Resources.GENERIC_LABEL_DOUBLE, Me.FormatNumber(CInt(size)), astrUnits(i))
+            Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, Me.FormatNumber(CInt(size)), astrUnits(i))
 
         End Function
 
@@ -677,19 +677,19 @@ Namespace Style
             If (strUnitMask IsNot Nothing) And (Not String.IsNullOrEmpty(strUnitMask)) Then
                 Select Case aUnitTypes.Length
                     Case 0
-                        Return String.Format(strUnitMask, strValue)
+                        Return cStringUtils.Localize(strUnitMask, strValue)
                     Case 1
-                        Return String.Format(strUnitMask, strValue, _
+                        Return cStringUtils.Localize(strUnitMask, strValue, _
                                                        Me.GetUnitString(aUnitTypes(0)))
                     Case 2
-                        Return String.Format(strUnitMask, strValue, _
+                        Return cStringUtils.Localize(strUnitMask, strValue, _
                                                        Me.GetUnitString(aUnitTypes(0)), _
                                                        Me.GetUnitString(aUnitTypes(1)))
                     Case Else
                         Debug.Assert(False)
                 End Select
             End If
-            Return String.Format(strUnitMask, strValue)
+            Return cStringUtils.Localize(strUnitMask, strValue)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -719,9 +719,9 @@ Namespace Style
                         Case 0
                             Debug.Assert(False)
                         Case 1
-                            Return String.Format(strUnitMask, Me.GetUnitString(aUnitTypes(0)))
+                            Return cStringUtils.Localize(strUnitMask, Me.GetUnitString(aUnitTypes(0)))
                         Case 2
-                            Return String.Format(strUnitMask, Me.GetUnitString(aUnitTypes(0)), Me.GetUnitString(aUnitTypes(1)))
+                            Return cStringUtils.Localize(strUnitMask, Me.GetUnitString(aUnitTypes(0)), Me.GetUnitString(aUnitTypes(1)))
                         Case Else
                             Debug.Assert(False)
                     End Select

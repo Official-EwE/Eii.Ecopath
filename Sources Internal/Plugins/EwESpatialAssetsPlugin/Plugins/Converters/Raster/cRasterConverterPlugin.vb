@@ -19,16 +19,14 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports System.Drawing
+Imports System.Xml
 Imports DotSpatial.Data
+Imports DotSpatial.Topology
 Imports EwECore
-Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports DotSpatial.Topology
-Imports System.Xml
 
 #End Region ' Imports
 
@@ -86,7 +84,7 @@ Namespace SpatialData
             End If
 
             ' Log
-            Me.LogMessage(String.Format(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
+            Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
 
             ' Perform conversion
             If (TypeOf data Is IRaster) Then
@@ -134,14 +132,14 @@ Namespace SpatialData
                             rs = rstResult
 
                             ' Log
-                            Me.LogMessage(String.Format(My.Resources.OPERATION_EXTRACTRASTER, cDotSpatialUtils.FormatExtent(rs.Bounds), cDotSpatialUtils.FormatRasterGrid(rs)), eStatusFlags.ValueComputed)
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTRASTER, cDotSpatialUtils.FormatExtent(rs.Bounds), cDotSpatialUtils.FormatRasterGrid(rs)), eStatusFlags.ValueComputed)
                             ' Converted data must be cached
                             bMustCache = True
 
                         End If
                     Else
                         ' Log
-                        Me.LogMessage(String.Format(My.Resources.STATUS_NO_OVERLAP, cDotSpatialUtils.FormatExtent(rs.Bounds)), eStatusFlags.ErrorEncountered)
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_NO_OVERLAP, cDotSpatialUtils.FormatExtent(rs.Bounds)), eStatusFlags.ErrorEncountered)
                         Return Nothing
                     End If
 
@@ -166,7 +164,7 @@ Namespace SpatialData
                         Debug.Assert(cNumberUtils.Approximates(dCellSize, rstResult.Bounds.CellHeight, dCellSize * cDotSpatialUtils.EQUALS_FACTOR))
 
                         ' Log
-                        Me.LogMessage(String.Format(My.Resources.OPERATION_RESAMPLE, cDotSpatialUtils.FormatRasterGrid(rstResult), cDotSpatialUtils.FormatRasterStats(rs)), eStatusFlags.ValueComputed)
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_RESAMPLE, cDotSpatialUtils.FormatRasterGrid(rstResult), cDotSpatialUtils.FormatRasterStats(rs)), eStatusFlags.ValueComputed)
                     Else
                         rstResult = rs
                     End If
@@ -176,12 +174,12 @@ Namespace SpatialData
                         ' #Yes: save
                         rstResult.SaveAs(strFile)
                         ' Log
-                        Me.LogMessage(String.Format(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
                     End If
 
                 Catch ex As Exception
                     ' Log
-                    Me.LogMessage(String.Format(My.Resources.STATUS_RASTERCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_RASTERCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                     Return Nothing
                 End Try
 

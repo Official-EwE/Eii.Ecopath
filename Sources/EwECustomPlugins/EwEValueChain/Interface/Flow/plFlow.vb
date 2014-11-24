@@ -32,6 +32,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -835,7 +836,7 @@ Public Class plFlow
         ' Has a mask?
         If Not String.IsNullOrEmpty(strMask) Then
             ' #Yes: concoct a name with an autonumber
-            strName = String.Format(strMask, EwEUtils.Utilities.cStringUtils.GetNextNumber(lstrNames.ToArray, strMask))
+            strName = cStringUtils.Localize(strMask, EwEUtils.Utilities.cStringUtils.GetNextNumber(lstrNames.ToArray, strMask))
         End If
 
         ' (try to) create unit
@@ -959,7 +960,7 @@ Public Class plFlow
 
         If Me.m_data.Parameters.DeletePrompt Then
 
-            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_DELETEUNIT, unit.Name), _
+            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_DELETEUNIT, unit.Name), _
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.m_uic.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply <> eMessageReply.YES) Then Return False
@@ -973,7 +974,7 @@ Public Class plFlow
     Public Function ConvertUnit(ByVal unit As cUnit, ByVal convertTo As cUnitFactory.eUnitType) As Boolean
 
         Dim fmt As New cUnitTypeFormatter()
-        Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.GetDescriptor(unit.UnitType), fmt.GetDescriptor(convertTo)), _
+        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.GetDescriptor(unit.UnitType), fmt.GetDescriptor(convertTo)), _
                                          eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
         fmsg.Reply = eMessageReply.YES
         fmsg.Suppressable = True
@@ -1087,7 +1088,7 @@ Public Class plFlow
 
         If Me.m_data.Parameters.DeletePrompt Then
 
-            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_DELETELINK, link.Name), EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_DELETELINK, link.Name), EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.m_uic.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply <> eMessageReply.YES) Then Return False
 

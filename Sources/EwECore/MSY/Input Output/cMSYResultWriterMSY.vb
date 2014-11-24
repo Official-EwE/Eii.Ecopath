@@ -315,7 +315,7 @@ Namespace MSY
         ''' <inheritdocs cref="cMSYResultWriterBase.ErrorMessage"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Function ErrorMessage(strPath As String, strReason As String) As cMessage
-            Return New cMessage(String.Format(My.Resources.CoreMessages.MSY_RESULTS_SAVE_FAILED, strPath, strReason), _
+            Return New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_RESULTS_SAVE_FAILED, strPath, strReason), _
                                 eMessageType.DataExport, eCoreComponentType.MSY, eMessageImportance.Information)
         End Function
 
@@ -323,7 +323,7 @@ Namespace MSY
         ''' <inheritdocs cref="cMSYResultWriterBase.SuccessMessage"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Function SuccessMessage(strPath As String) As cMessage
-            Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.MSY_RESULTS_SAVE_SUCCESS, strPath), _
+            Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_RESULTS_SAVE_SUCCESS, strPath), _
                                                eMessageType.DataExport, eCoreComponentType.MSY, eMessageImportance.Information)
             msg.Hyperlink = Path.GetDirectoryName(strPath)
             Return msg

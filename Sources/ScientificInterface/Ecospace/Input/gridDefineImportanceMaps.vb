@@ -597,7 +597,7 @@ Namespace Ecospace
 
             ' Format new layer with an autonumber value based on existing names
             Dim iNextNum As Integer = cStringUtils.GetNextNumber(lstrLayers.ToArray(), SharedResources.DEFAULT_NEWLAYER_NUM)
-            Dim strName As String = String.Format(SharedResources.DEFAULT_NEWLAYER_NUM, iNextNum)
+            Dim strName As String = cStringUtils.Localize(SharedResources.DEFAULT_NEWLAYER_NUM, iNextNum)
 
             li = New cLayerInfo(strName, "", 1.0!)
             Me.m_alLayers.Insert(iLayer, li)
@@ -697,7 +697,7 @@ Namespace Ecospace
 
             If Me.m_alLayersRemoved.Count > 5 Then
 
-                strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT, Me.m_alLayersRemoved.Count)
+                strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT, Me.m_alLayersRemoved.Count)
                 Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
@@ -724,7 +724,7 @@ Namespace Ecospace
                     li = DirectCast(Me.m_alLayersRemoved(iLayer), cLayerInfo)
                     If (Not li.IsNew()) Then
 
-                        strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT, li.Name)
+                        strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT, li.Name)
                         Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                         Me.UIContext.Core.Messages.SendMessage(fmsg)
 

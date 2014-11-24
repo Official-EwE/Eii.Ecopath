@@ -283,7 +283,7 @@ Public Class cCore
                 Case eCoreCounterTypes.nMSEBatchTFM
                     Return Me.MSEBatchManager.BatchData.nTFM
                 Case Else
-                    'Debug.Assert(False, String.Format("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
+                    'Debug.Assert(False, cStringUtils.Localize("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
                     Return NULL_VALUE
             End Select
 
@@ -696,7 +696,7 @@ Public Class cCore
             Try
                 ' ToDo_JS: globalize this
                 Dim an As Reflection.AssemblyName = cAssemblyUtils.GetAssemblyName(GetType(cCore))
-                Return String.Format("{0} (compiled {1})", cAssemblyUtils.GetVersion(an), cAssemblyUtils.GetCompileDate(an).ToShortDateString)
+                Return cStringUtils.Localize("{0} (compiled {1})", cAssemblyUtils.GetVersion(an), cAssemblyUtils.GetCompileDate(an).ToShortDateString)
             Catch ex As Exception
                 Return ""
             End Try
@@ -1291,7 +1291,7 @@ Public Class cCore
                 m_validators = New cValidatorManager(Me)
             Catch ex As Exception
                 'the validation manager creates all the validators. Make sure we know if something went wrong
-                Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.CORE_INIT_CRITICAL_VALIDATORS, ex.Message), _
+                Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.CORE_INIT_CRITICAL_VALIDATORS, ex.Message), _
                         eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical)
                 'the message publisher is declared with the new operator so it already exists 
                 m_publisher.AddMessage(msg)
@@ -1301,7 +1301,7 @@ Public Class cCore
 
         Catch ex As Exception
             'Major Error ???????
-            Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.CORE_INIT_CRITICAL_GENERIC, ex.Message), _
+            Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.CORE_INIT_CRITICAL_GENERIC, ex.Message), _
                     eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical)
             'the message publisher is declared with the new operator so it already exists 
             m_publisher.AddMessage(msg)
@@ -1749,13 +1749,13 @@ Public Class cCore
         If TypeOf ts Is cGroupTimeSeries Then
             If (ts.DatPool <= 0 Or ts.DatPool > nGroups) Then
                 status = eStatusFlags.ErrorEncountered
-                strStatus = String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, ts.DatPool)
+                strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, ts.DatPool)
             Else
                 If (ts.TimeSeriesType = eTimeSeriesType.FishingMortality) Or (ts.TimeSeriesType = eTimeSeriesType.FishingMortalityRef) Then
                     ' JS 12May11: Allow F for groups that are not fished
                     'If Not Me.EcoPathGroupInputs(ts.DatPool).IsFished Then
                     '    status = eStatusFlags.ErrorEncountered
-                    '    strStatus = String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_GROUP_NOTFISHED, Me.m_EcoPathData.GroupName(ts.DatPool))
+                    '    strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_GROUP_NOTFISHED, Me.m_EcoPathData.GroupName(ts.DatPool))
                     'End If
                 End If
             End If
@@ -1764,7 +1764,7 @@ Public Class cCore
         If TypeOf ts Is cFleetTimeSeries Then
             If (ts.DatPool <= 0 Or ts.DatPool > nFleets) Then
                 status = eStatusFlags.ErrorEncountered
-                strStatus = String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, ts.DatPool)
+                strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, ts.DatPool)
             End If
         End If
 
@@ -1815,14 +1815,14 @@ Public Class cCore
             If String.IsNullOrEmpty(strDataset) Then
                 strText = My.Resources.CoreMessages.TIMESERIES_UNLOAD_SUCCESS
             Else
-                strText = String.Format(My.Resources.CoreMessages.TIMESERIES_LOAD_SUCCESS, strDataset)
+                strText = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_LOAD_SUCCESS, strDataset)
             End If
             msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.TimeSeries, eMessageImportance.Information, eDataTypes.TimeSeriesDataset)
         Else
             If String.IsNullOrEmpty(strDataset) Then
-                strText = String.Format(My.Resources.CoreMessages.TIMESERIES_UNLOAD_FAILED, strError)
+                strText = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_UNLOAD_FAILED, strError)
             Else
-                strText = String.Format(My.Resources.CoreMessages.TIMESERIES_LOAD_FAILED, strDataset, strError)
+                strText = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_LOAD_FAILED, strDataset, strError)
             End If
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.TimeSeries, eMessageImportance.Warning, eDataTypes.TimeSeriesDataset)
         End If
@@ -2893,7 +2893,7 @@ Public Class cCore
                     If File.Exists(strSrc) Then
 
                         ' User wants to make a backup?
-                        Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, db.Name), _
+                        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, db.Name), _
                                                          eCoreComponentType.DataSource, eMessageType.Any, _
                                                          eMessageImportance.Information, _
                                                          eMessageReplyStyle.YES_NO_CANCEL)
@@ -2912,12 +2912,12 @@ Public Class cCore
                             bSucces = cFileUtils.CreateBackup(strSrc, strDest)
 
                             If bSucces Then
-                                msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest), _
+                                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest), _
                                                         eMessageType.DataImport, _
                                                         eCoreComponentType.DataSource, _
                                                         eMessageImportance.Information)
                             Else
-                                msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
+                                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
                                                         eMessageType.DataImport, _
                                                         eCoreComponentType.DataSource, _
                                                         eMessageImportance.Warning)
@@ -2934,7 +2934,7 @@ Public Class cCore
                 Catch ex As Exception
                     cLog.Write(ex, "cCore::UpdateDataSource")
                     ' Whoah
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
                                           eMessageType.DataImport, _
                                           eCoreComponentType.DataSource, _
                                           eMessageImportance.Warning)
@@ -2945,7 +2945,7 @@ Public Class cCore
                 ' Run updates
                 If Not dbUpd.UpdateDatabase(db) Then
                     ' Database update failed
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, Version.ToString), _
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, Version.ToString), _
                                        eMessageType.DataImport, _
                                        eCoreComponentType.DataSource, _
                                        eMessageImportance.Critical)
@@ -2954,7 +2954,7 @@ Public Class cCore
                     Return False
                 Else
                     ' Database update failed
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, Version.ToString), _
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, Version.ToString), _
                                        eMessageType.DataImport, _
                                        eCoreComponentType.DataSource, _
                                        eMessageImportance.Information)
@@ -3041,8 +3041,8 @@ Public Class cCore
             End If
 
             ' Set up connections
-            strConnectionFrom = String.Format(strConnection, strFileFrom)
-            strConnectionTo = String.Format(strConnection, strFileTo)
+            strConnectionFrom = cStringUtils.Localize(strConnection, strFileFrom)
+            strConnectionTo = cStringUtils.Localize(strConnection, strFileTo)
 
             If Me.PluginManager.CompactDatabase(dst, strFileFrom, "", strFileTo, "", result) Then
 
@@ -3184,10 +3184,10 @@ Public Class cCore
         Dim strText As String = ""
 
         If String.IsNullOrEmpty(strError) Then
-            strText = String.Format(My.Resources.CoreMessages.ECOPATH_LOAD_SUCCESS, ds.ToString())
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_LOAD_SUCCESS, ds.ToString())
             msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoPath, eMessageImportance.Information)
         Else
-            strText = String.Format(My.Resources.CoreMessages.ECOPATH_LOAD_FAILED, ds.ToString(), strError)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_LOAD_FAILED, ds.ToString(), strError)
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
         End If
 
@@ -3383,7 +3383,7 @@ Public Class cCore
         If (Not Me.DataSource.IsReadOnly) Then Return True
 
         If bSendMessage Then
-            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MODEL_READONLY, Me.EwEModel.Name), _
+            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MODEL_READONLY, Me.EwEModel.Name), _
                                     eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
             Me.Messages.SendMessage(msg)
         End If
@@ -3450,7 +3450,7 @@ Public Class cCore
             ' Oh we're happy now!
             Return True
         Else
-            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOPATH_SAVE_FAILED, DataSource.ToString), eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning))
+            Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_SAVE_FAILED, DataSource.ToString), eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning))
             cLog.Write("cCore.SaveModel() Failed to save the current model") 'the current model name will be in the log file
             Return False
         End If
@@ -4940,7 +4940,7 @@ Public Class cCore
             End If
 
         Catch ex As Exception
-            msg = CreateMessage(String.Format(My.Resources.CoreMessages.ECOPATH_RUN_ERROR_EXCEPTION, ex.Message), _
+            msg = CreateMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RUN_ERROR_EXCEPTION, ex.Message), _
                     eCoreComponentType.EcoPath, eMessageType.ErrorEncountered)
             m_publisher.AddMessage(msg)
 
@@ -6489,10 +6489,10 @@ Public Class cCore
         Dim strText As String = ""
 
         If String.IsNullOrEmpty(strError) Then
-            strText = String.Format(My.Resources.CoreMessages.ECOSIM_LOAD_SUCCESS, strScenarioName)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_LOAD_SUCCESS, strScenarioName)
             msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSim, eMessageImportance.Information)
         Else
-            strText = String.Format(My.Resources.CoreMessages.ECOSIM_LOAD_FAILED, strScenarioName, strError)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_LOAD_FAILED, strScenarioName, strError)
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
         End If
 
@@ -6507,10 +6507,10 @@ Public Class cCore
         Dim strText As String = ""
 
         If bSucces Then
-            strText = String.Format(My.Resources.CoreMessages.ECOSIM_SAVE_SUCCESS, strScenarioName)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_SUCCESS, strScenarioName)
             msg = New cMessage(strText, eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Information)
         Else
-            strText = String.Format(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strScenarioName, strError)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strScenarioName, strError)
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
         End If
 
@@ -8244,7 +8244,7 @@ Public Class cCore
             If Not Me.HasNonDefaultVulnerabilty(sDefaultValue) Then Return True
 
             If Not bQuiet Then
-                fmsg = New cFeedbackMessage(String.Format(My.Resources.CoreMessages.VULNERABILITIES_PROMPT_RESET, sDefaultValue), _
+                fmsg = New cFeedbackMessage(cStringUtils.Localize(My.Resources.CoreMessages.VULNERABILITIES_PROMPT_RESET, sDefaultValue), _
                                             eCoreComponentType.EcoSim, eMessageType.Any, _
                                             eMessageImportance.Information, _
                                             eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
@@ -8704,7 +8704,7 @@ Public Class cCore
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_RUN_ERROR, ex.Message), _
+            Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_RUN_ERROR, ex.Message), _
                                       eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
 
             Return False
@@ -8799,7 +8799,7 @@ Public Class cCore
                 For Each igrp In FailedGroups
                     Dim avgCap As Single = Me.m_EcoSpaceData.TotHabCap(igrp) / Me.m_EcoSpaceData.nWaterCells * 100
 
-                    strMsg = String.Format(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcoPathData.GroupName(igrp), avgCap)
+                    strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcoPathData.GroupName(igrp), avgCap)
                     vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, _
                                              eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
 
@@ -8856,15 +8856,10 @@ Public Class cCore
             Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATA, _
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
             For Each conn As ISpatialDataSet In problems
-                Try
-                    Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
-                                                  String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATA_DETAIL, conn.DisplayName), _
-                                                  eVarNameFlags.Name, eDataTypes.External, eCoreComponentType.External, 0)
-                    fmsg.AddVariable(vs)
-                Catch ex As Exception
-                    Debug.Assert(False, "Localization error")
-                    cLog.Write(ex, "cCore.CheckExternalSpatialTemporalData")
-                End Try
+                Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
+                                              cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATA_DETAIL, conn.DisplayName), _
+                                              eVarNameFlags.Name, eDataTypes.External, eCoreComponentType.External, 0)
+                fmsg.AddVariable(vs)
             Next
 
             fmsg.ReplyStyle = eMessageReplyStyle.YES_NO
@@ -8873,11 +8868,10 @@ Public Class cCore
 
             Me.m_publisher.SendMessage(fmsg)
 
-            If (fmsg.Reply = eMessageReply.NO) Then
-                Return False
-            End If
+            If (fmsg.Reply = eMessageReply.NO) Then Return False
+
         End If
-            Return True
+        Return True
 
     End Function
 
@@ -9309,10 +9303,10 @@ Public Class cCore
         Dim strText As String = ""
 
         If String.IsNullOrEmpty(strError) Then
-            strText = String.Format(My.Resources.CoreMessages.ECOSPACE_LOAD_SUCCESS, strScenarioName)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_LOAD_SUCCESS, strScenarioName)
             msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         Else
-            strText = String.Format(My.Resources.CoreMessages.ECOSPACE_LOAD_FAILED, strScenarioName, strError)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_LOAD_FAILED, strScenarioName, strError)
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
         End If
 
@@ -9328,10 +9322,10 @@ Public Class cCore
         Dim strText As String = ""
 
         If bSucces Then
-            strText = String.Format(My.Resources.CoreMessages.ECOSPACE_SAVE_SUCCES, strScenarioName)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVE_SUCCES, strScenarioName)
             msg = New cMessage(strText, eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         Else
-            strText = String.Format(My.Resources.CoreMessages.ECOSPACE_SAVE_FAILED, strScenarioName, strError)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVE_FAILED, strScenarioName, strError)
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
         End If
 
@@ -10509,7 +10503,7 @@ Public Class cCore
         ds = DirectCast(DataSource, IEcospaceDatasource)
         If ds.AddEcospaceHabitat(strHabitatName, iHabitatID) Then
             ' Broadcast update
-            Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace habitat {0} has been added", strHabitatName), _
+            Me.m_publisher.AddMessage(New cMessage(cStringUtils.Localize("Ecospace habitat {0} has been added", strHabitatName), _
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
@@ -10676,7 +10670,7 @@ Public Class cCore
             '' This has effects throughout the Ecospace scenario - reload it
             'bSucces = Me.LoadEcospaceScenario(Me.ActiveEcospaceScenarioIndex)
             ' Broadcast update
-            Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace MPA {0} has been added", strMPAName), _
+            Me.m_publisher.AddMessage(New cMessage(cStringUtils.Localize("Ecospace MPA {0} has been added", strMPAName), _
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
@@ -10763,7 +10757,7 @@ Public Class cCore
                 'convert the Database ID into an iGroup
                 iFleet = Array.IndexOf(m_EcoSpaceData.FleetDBID, fleet.DBID)
                 fleet.Index = iFleet
-                Debug.Assert(iFleet >= 0 And iFleet <= Me.nFleets, String.Format("LoadEcospaceFleets() failed to find iFleet for Ecospace DBID {0}.", fleet.DBID))
+                Debug.Assert(iFleet >= 0 And iFleet <= Me.nFleets, cStringUtils.Localize("LoadEcospaceFleets() failed to find iFleet for Ecospace DBID {0}.", fleet.DBID))
 
                 'this will call the cCore.getCounter() with the counter type
                 'and only resize the arrays if getCounter() is different from the existing size
@@ -10860,7 +10854,7 @@ Public Class cCore
         ds = DirectCast(DataSource, IEcospaceDatasource)
         If ds.AppendEcospaceImportanceLayer(strName, strDescription, sWeight, iID) Then
             ' Broadcast update
-            Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace importance layer {0} has been added", strName), _
+            Me.m_publisher.AddMessage(New cMessage(cStringUtils.Localize("Ecospace importance layer {0} has been added", strName), _
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
@@ -10938,7 +10932,7 @@ Public Class cCore
         ds = DirectCast(DataSource, IEcospaceDatasource)
         If ds.AddEcospaceDriverLayer(strName, strDescription, iDBID) Then
             ' Broadcast update
-            Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace driver layer {0} has been added", strName), _
+            Me.m_publisher.AddMessage(New cMessage(cStringUtils.Localize("Ecospace driver layer {0} has been added", strName), _
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
@@ -11203,7 +11197,7 @@ Public Class cCore
             Dim leadingB As Integer
             Dim leadingCB As Integer
             'maybe not the correct messagetype but it seems to work
-            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, stanza.Name), _
+            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, stanza.Name), _
                                             eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.Stanza)
             ReDim Bio(nLifeStages)
             ReDim Bat(nLifeStages) 'in this case the Bat() is ignored so no need to populate it
@@ -11988,10 +11982,10 @@ Public Class cCore
         Dim strText As String = ""
 
         If String.IsNullOrEmpty(strError) Then
-            strText = String.Format(My.Resources.CoreMessages.ECOTRACER_LOAD_SUCCESS, strScenario)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOTRACER_LOAD_SUCCESS, strScenario)
             msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.Ecotracer, eMessageImportance.Information)
         Else
-            strText = String.Format(My.Resources.CoreMessages.ECOTRACER_LOAD_FAILED, strScenario, strError)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOTRACER_LOAD_FAILED, strScenario, strError)
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
         End If
 
@@ -12007,10 +12001,10 @@ Public Class cCore
         Dim strText As String = ""
 
         If bSucces Then
-            strText = String.Format(My.Resources.CoreMessages.ECOTRACER_SAVE_SUCCES, strScenarioName)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOTRACER_SAVE_SUCCES, strScenarioName)
             msg = New cMessage(strText, eMessageType.DataModified, eCoreComponentType.Ecotracer, eMessageImportance.Information)
         Else
-            strText = String.Format(My.Resources.CoreMessages.ECOTRACER_SAVE_FAILED, strScenarioName, strError)
+            strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOTRACER_SAVE_FAILED, strScenarioName, strError)
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
         End If
 
@@ -12685,11 +12679,11 @@ Public Class cCore
 
                 If Me.m_EcoSimData.relQ(iflt, igrp) > 0 Then
                     'passed validation
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                 End If
 
@@ -12699,11 +12693,11 @@ Public Class cCore
 
                 If iSecondaryIndex > Me.FishingPolicyManager.ObjectiveParameters.BaseYear Then
                     'passed validation
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                 End If
 
@@ -12716,11 +12710,11 @@ Public Class cCore
                 If value > 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And _
                                 value > m_EcoSpaceData.SumStart(0) Then
                     'passed validation
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -12734,11 +12728,11 @@ Public Class cCore
                 If value >= 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And _
                                 value < m_EcoSpaceData.SumStart(1) Then
                     'passed validation
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -12752,11 +12746,11 @@ Public Class cCore
                 'end of the last summary period is still in bounds
                 If value > 0 And m_EcoSpaceData.SumStart(1) + CSng(value * m_EcoSpaceData.TimeStep) <= m_EcoSpaceData.TotalTime Then
                     'passed validation
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -12773,11 +12767,11 @@ Public Class cCore
 
                 If value > 0 And value <= m_EcoSpaceData.TotalTime And value >= Me.m_MPAOptData.EcoSpaceStartYear + Me.m_MPAOptData.MinRunLength Then
                     'passed validation
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -12789,11 +12783,11 @@ Public Class cCore
 
                 If value > 0 And value < m_EcoSpaceData.TotalTime And value + Me.m_MPAOptData.MinRunLength <= Me.m_MPAOptData.EcoSpaceEndYear Then
                     'passed validation
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -12808,11 +12802,11 @@ Public Class cCore
                 End If
 
                 If otherVal = 0 Then
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION)
+                    ValueObject.ValidationMessage = My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                 End If
 
@@ -12825,14 +12819,14 @@ Public Class cCore
 
                 If (man IsNot Nothing) Then
                     If value <= 0 Then
-                        ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                         ValueObject.ValidationStatus = eStatusFlags.OK
                         ValueObject.ValidationStatus = eStatusFlags.Null
                     ElseIf value > man.NumLevels Then
-                        ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION)
+                        ValueObject.ValidationMessage = My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION
                         ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                     Else
-                        ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                         ValueObject.ValidationStatus = eStatusFlags.OK
                         ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                     End If
@@ -12870,12 +12864,12 @@ Public Class cCore
         'is the end of the summary periods in bounds
         If endsummary <= m_EcoSimData.NumYears Then
             'passed validation
-            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.OK
             ValueObject.Status(cCore.NULL_VALUE) = eStatusFlags.OK
         Else
             'failed validation
-            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.FailedValidation
         End If
 
@@ -12885,7 +12879,7 @@ Public Class cCore
     Private Function GetAffectedVariableStatus(ByVal obj As cCoreInputOutputBase, ByVal varName As eVarNameFlags, Optional ByVal iSecIndex As Integer = cCore.NULL_VALUE) As cVariableStatus
         Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Return New cVariableStatus(obj, eStatusFlags.OK, _
-                                   String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_ADJUSTED, cni.GetVarName(varName)), _
+                                   cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_ADJUSTED, cni.GetVarName(varName)), _
                                    varName, iSecIndex)
     End Function
 
@@ -13813,10 +13807,10 @@ Public Class cCore
         Handles m_pluginManager.AssemblyAdded
 
         If (String.IsNullOrWhiteSpace(paAdded.Sandbox)) Then
-            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_LOADED, Path.GetFileNameWithoutExtension(paAdded.Filename)), _
+            Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_LOADED, Path.GetFileNameWithoutExtension(paAdded.Filename)), _
                                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
         Else
-            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_SANDBOXED, Path.GetFileNameWithoutExtension(paAdded.Filename)), _
+            Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_SANDBOXED, Path.GetFileNameWithoutExtension(paAdded.Filename)), _
                                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
         End If
         'AddHandler paAdded.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
@@ -13831,7 +13825,7 @@ Public Class cCore
     Private Sub m_pluginManager_AssemblyRemoved(ByVal paRemoved As EwEPlugin.cPluginAssembly) _
         Handles m_pluginManager.AssemblyRemoved
 
-        m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_UNLOADED, Path.GetFileNameWithoutExtension(paRemoved.Filename)), _
+        m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_UNLOADED, Path.GetFileNameWithoutExtension(paRemoved.Filename)), _
                                              eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
         'RemoveHandler paRemoved.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
     End Sub
@@ -13866,7 +13860,7 @@ Public Class cCore
         End If
 
         Dim fmsg As New cFeedbackMessage( _
-                String.Format(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, ex.Message, Environment.NewLine), _
+                cStringUtils.Localize(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, ex.Message, Environment.NewLine), _
                 eCoreComponentType.External, eMessageType.Any, _
                 eMessageImportance.Warning, _
                 eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)

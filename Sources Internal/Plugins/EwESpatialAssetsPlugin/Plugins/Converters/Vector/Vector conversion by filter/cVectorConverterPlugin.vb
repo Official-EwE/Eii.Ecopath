@@ -24,9 +24,9 @@ Imports System.Drawing
 Imports DotSpatial.Data
 Imports EwECore
 Imports EwECore.SpatialData
-Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -93,7 +93,7 @@ Namespace SpatialData
             End If
 
             ' Log
-            Me.LogMessage(String.Format(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
+            Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
 
             ' Get Ecospace raster bounds
             Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
@@ -109,12 +109,12 @@ Namespace SpatialData
                         ' #Yes: extract features that match the filter
                         Dim lFeatures As List(Of IFeature) = fs.SelectByAttribute(Me.AttributeFilter)
                         fs = New FeatureSet(lFeatures)
-                        Me.LogMessage(String.Format(My.Resources.OPERATION_EXTRACTPLOYGONS, Me.AttributeFilter), eStatusFlags.ValueComputed)
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTPLOYGONS, Me.AttributeFilter), eStatusFlags.ValueComputed)
                     End If
 
                     If Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection) Then
                         fs.Reproject(cDotSpatialUtils.EcospaceProjection)
-                        Me.LogMessage(String.Format(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
                     End If
 
                     ' Rasterize the features
@@ -123,10 +123,10 @@ Namespace SpatialData
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 
-                    Me.LogMessage(String.Format(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                 End Try
             Else
                 ' Log error

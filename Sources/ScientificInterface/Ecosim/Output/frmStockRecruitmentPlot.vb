@@ -24,6 +24,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 
@@ -67,7 +68,7 @@ Namespace Ecosim
             End Property
 
             Public Overrides Function ToString() As String
-                Return String.Format(SharedResources.GENERIC_LABEL_INDEXED, Me.m_sStock, Me.m_sRecruitment)
+                Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, Me.m_sStock, Me.m_sRecruitment)
             End Function
         End Class
 
@@ -134,7 +135,7 @@ Namespace Ecosim
 
             Public ReadOnly Property Title() As String
                 Get
-                    Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, Me.m_grpStart.Name, Me.m_grpEnd.Name)
+                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, Me.m_grpStart.Name, Me.m_grpEnd.Name)
                 End Get
             End Property
 
@@ -179,8 +180,8 @@ Namespace Ecosim
             Me.LoadGroups()
             Me.m_zgh.Attach(Me.UIContext, Me.m_plot)
             Me.m_zgh.ConfigurePane(My.Resources.SR_PLOT_TITLE, _
-                                   String.Format(My.Resources.SR_PLOT_X_AXIS, String.Empty), _
-                                   String.Format(SharedResources.HEADER_RECRUITMENT_UNIT, String.Empty), _
+                                   cStringUtils.Localize(My.Resources.SR_PLOT_X_AXIS, String.Empty), _
+                                   cStringUtils.Localize(SharedResources.HEADER_RECRUITMENT_UNIT, String.Empty), _
                                    False)
 
             Dim m_SyncObj As System.Threading.SynchronizationContext = System.Threading.SynchronizationContext.Current
@@ -263,7 +264,7 @@ Namespace Ecosim
                 Me.IsRunning = bEcosimRunning
 
                 ' Configure run/stop button
-                Me.m_btnRun.Text = IIf(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN)
+                Me.m_btnRun.Text = IIF(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN)
                 Me.m_btnRun.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
                 ' Reflect change immediately
                 Me.m_btnRun.Update()
@@ -336,7 +337,7 @@ Namespace Ecosim
 
                     pane.ReverseTransform(ptMouse, x, y)
                     item = pane.AddCurve("", New Double() {0.0, x}, New Double() {0.0, y}, Color.Black, SymbolType.None)
-                    m_lblPt.Text = String.Format(My.Resources.ECOSIM_SR_SLOPELABEL, _
+                    m_lblPt.Text = cStringUtils.Localize(My.Resources.ECOSIM_SR_SLOPELABEL, _
                                                sg.FormatNumber(CSng(x)), sg.FormatNumber(CSng(y)), _
                                                sg.FormatNumber(CSng(y / x)))
                     RemoveSlopeCurve(item)
@@ -516,8 +517,8 @@ Namespace Ecosim
                 End If
             Next
 
-            Me.m_plot.GraphPane.XAxis.Title.Text = String.Format(My.Resources.SR_PLOT_X_AXIS, strTitleX)
-            Me.m_plot.GraphPane.YAxis.Title.Text = String.Format(SharedResources.HEADER_RECRUITMENT_UNIT, strTitleY)
+            Me.m_plot.GraphPane.XAxis.Title.Text = cStringUtils.Localize(My.Resources.SR_PLOT_X_AXIS, strTitleX)
+            Me.m_plot.GraphPane.YAxis.Title.Text = cStringUtils.Localize(SharedResources.HEADER_RECRUITMENT_UNIT, strTitleY)
 
             Me.m_plot.AxisChange()
             Me.m_plot.Refresh()
