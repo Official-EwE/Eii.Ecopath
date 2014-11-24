@@ -25,8 +25,9 @@ Imports EwEPlugin
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -90,7 +91,7 @@ Namespace Ecospace.Controls
             Me.m_iLayer = layer.Index
             Me.m_bIsScaling = (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase)
 
-            Me.Text = String.Format(Me.Text, layer.Name)
+            Me.Text = cStringUtils.Localize(Me.Text, layer.Name)
 
             Me.UIContext = uic
 
@@ -425,7 +426,7 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
-        Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) 
+        Private Sub OnScaleChanged(sender As Object, e As System.EventArgs)
 
             If Me.m_bInUpdate Then Return
 
@@ -478,14 +479,14 @@ Namespace Ecospace.Controls
                 Select Case ssda.CalculateScaleFromEcopathTimePeriod(m_iLayer, conn, iStartTimeStep, dScale)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
-                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX), _
+                        msg = New cMessage(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX, _
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Information)
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
                          cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, dtStartDate.ToShortDateString()), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, dtStartDate.ToShortDateString()), _
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, dtStartDate.ToShortDateString()), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, dtStartDate.ToShortDateString()), _
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case Else
                         ' Only when ok

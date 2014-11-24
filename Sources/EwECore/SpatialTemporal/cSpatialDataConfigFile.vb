@@ -204,7 +204,7 @@ Namespace SpatialData
 #End If
                                     End If
                                     Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
-                                                                  String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_DETAIL, strTypeName), _
+                                                                  cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_DETAIL, strTypeName), _
                                                                   eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSpace, 0)
                                     msgWarning.AddVariable(vs)
                                 End If
@@ -403,11 +403,11 @@ Namespace SpatialData
                 If (bExporting) Then
                     ' Send export status message
                     If bSuccess Then
-                        msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_SUCCESS, nExported, strPath), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_SUCCESS, nExported, strPath), _
                                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                         msg.Hyperlink = strPath
                     Else
-                        msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_ERROR, strPath), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_ERROR, strPath), _
                                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
                     End If
                 End If
@@ -415,7 +415,7 @@ Namespace SpatialData
             Catch ex As Exception
                 bSuccess = False
 
-                msg = New cMessage(String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_EXCEPTION, strPath), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_EXCEPTION, strPath), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 If (bExporting) Then
                     msg.Importance = eMessageImportance.Critical

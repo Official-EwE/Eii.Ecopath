@@ -246,7 +246,7 @@ Namespace Other
                     Dim strPrompt As String = My.Resources.PROMPT_CACHE_CLEAR
 
                     If (lSizeUnused > 0) Then
-                        Dim fmsg As New cFeedbackMessage(String.Format(strPrompt, sg.FormatMemory(lSizeBefore), sg.FormatMemory(lSizeUnused)), _
+                        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(strPrompt, sg.FormatMemory(lSizeBefore), sg.FormatMemory(lSizeUnused)), _
                                                          eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                         core.Messages.SendMessage(fmsg)
 
@@ -262,7 +262,7 @@ Namespace Other
                         cache.Clear()
                     End If
 
-                    Dim msg As New cMessage(String.Format(My.Resources.STATUS_CACHECLEARED, sg.FormatMemory(lSizeBefore - cache.GetSize())), _
+                    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_CACHECLEARED, sg.FormatMemory(lSizeBefore - cache.GetSize())), _
                          eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
                     core.Messages.SendMessage(msg)
 
@@ -410,7 +410,7 @@ Namespace Other
 
         Private Function ToDefaultString(strA As String, strB As String) As String
             If Not String.IsNullOrWhiteSpace(strA) And Not String.IsNullOrWhiteSpace(strB) Then
-                Return String.Format(SharedResources.GENERIC_LABEL_A_AT_B, strA, strB)
+                Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_A_AT_B, strA, strB)
             End If
             If Not String.IsNullOrWhiteSpace(strA) Then Return strA
             If Not String.IsNullOrWhiteSpace(strB) Then Return strB
@@ -447,7 +447,7 @@ Namespace Other
             Me.m_btnExport.Enabled = (man.Datasets.Count > 0)
 
             Me.m_lblCacheLocationValue.Text = cStringUtils.CompactString(cache.RootFolder, Me.m_lblCacheLocationValue.ClientSize.Width, Me.Font)
-            Me.m_lblCacheSizeValue.Text = String.Format(My.Resources.GENERIC_VALUE_CACHEMEMORY, _
+            Me.m_lblCacheSizeValue.Text = cStringUtils.Localize(My.Resources.GENERIC_VALUE_CACHEMEMORY, _
                                                         sg.FormatMemory(cache.GetSize()), _
                                                         sg.FormatMemory(cache.GetUnusedSize(man)))
 

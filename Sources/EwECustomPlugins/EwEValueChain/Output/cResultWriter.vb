@@ -92,7 +92,7 @@ Public Class cResultWriter
             sw = New StreamWriter(strFile, False)
         Catch ex As Exception
             ' Waah!
-            Me.m_msg = New cMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_FAILED, Path.GetDirectoryName(strFile), ex.Message), _
+            Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_FAILED, Path.GetDirectoryName(strFile), ex.Message), _
                                     eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
             Return False
         End Try
@@ -129,11 +129,11 @@ Public Class cResultWriter
         If (Me.m_msg Is Nothing) Then
             ' #No: create one
             If bNotifyUser Then
-                Me.m_msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
+                Me.m_msg = New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
                                                 EwEUtils.Core.eCoreComponentType.External, eMessageType.DataExport, _
                                                 eMessageImportance.Information, eMessageReplyStyle.OK)
             Else
-                Me.m_msg = New cMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
+                Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
                                         eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
             End If
             ' Set hyperlink
@@ -141,7 +141,7 @@ Public Class cResultWriter
         End If
 
         ' Add status to message
-        vs = New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.PROMPT_SAVERESULT_DETAIL, strFile), _
+        vs = New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_SAVERESULT_DETAIL, strFile), _
                                  EwEUtils.Core.eVarNameFlags.NotSet, EwEUtils.Core.eDataTypes.NotSet, EwEUtils.Core.eCoreComponentType.External, 0)
         Me.m_msg.AddVariable(vs)
 
@@ -177,9 +177,9 @@ Public Class cResultWriter
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return ""
 
         If String.IsNullOrWhiteSpace(strItem) Then
-            strFile = String.Format("valuechain_{0}.csv", agg.ToString())
+            strFile = cStringUtils.Localize("valuechain_{0}.csv", agg.ToString())
         Else
-            strFile = String.Format("valuechain_{0}_{1}.csv", agg.ToString(), strItem)
+            strFile = cStringUtils.Localize("valuechain_{0}_{1}.csv", agg.ToString(), strItem)
         End If
 
         Return Path.Combine(strPath, cFileUtils.ToValidFileName(strFile, False))

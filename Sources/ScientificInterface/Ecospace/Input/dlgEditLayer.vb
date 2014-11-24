@@ -365,7 +365,7 @@ Namespace Ecospace.Basemap.Layers
             End If
 
             Me.m_tsddImport.Enabled = bEditable
-            Me.Text = String.Format(My.Resources.ECOSPACE_CAPTION_EDITLAYER, Me.m_tbNameValue.Text)
+            Me.Text = cStringUtils.Localize(My.Resources.ECOSPACE_CAPTION_EDITLAYER, Me.m_tbNameValue.Text)
 
         End Sub
 

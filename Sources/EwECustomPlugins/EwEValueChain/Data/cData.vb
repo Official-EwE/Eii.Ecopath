@@ -20,11 +20,9 @@
 
 Option Strict On
 Imports System.IO
-Imports System.Reflection
 Imports EwECore
-Imports EwEUtils.Database
-Imports EwEUtils.Database.cEwEDatabase
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
@@ -162,7 +160,7 @@ Public Class cData
                 Catch ex As Exception
 
                 End Try
-                Me.SendMessage(String.Format(My.Resources.STATUS_MERGED, Path.GetFileName(strOldDBName), Path.GetFileName(strModelName)), _
+                Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_MERGED, Path.GetFileName(strOldDBName), Path.GetFileName(strModelName)), _
                                eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Information)
 
             End If
@@ -636,7 +634,7 @@ Public Class cData
         If (unit Is Nothing) Then Return
 
         ' Assign core
-        unit.core = Me.Core
+        unit.Core = Me.Core
 
         ' Add
         Me.m_lUnits.Add(unit)
@@ -816,7 +814,7 @@ Public Class cData
         ' Check for already present link
         If unitSource.HasTarget(unitTarget, group) Then
             Dim fmt As New cCoreInterfaceFormatter()
-            Me.SendMessage(String.Format(My.Resources.ERROR_LINK_DUPLICATE, fmt.GetDescriptor(group)))
+            Me.SendMessage(cStringUtils.Localize(My.Resources.ERROR_LINK_DUPLICATE, fmt.GetDescriptor(group)))
             bError = True
             Return Nothing
         End If

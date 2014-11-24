@@ -18,12 +18,10 @@
 
 Option Strict On
 
-Imports EwECore
-Imports EwECore.Ecosim
-Imports EwECore.MSE
 Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 Namespace MSE
 
@@ -436,7 +434,7 @@ Namespace MSE
                     'no control type has been set for any fleet(s)
                     'ask the user what to do
                     Dim response As eMessageReply
-                    Dim fbMess As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_QUOTAS), _
+                    Dim fbMess As New cFeedbackMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_VALIDATION_QUOTAS), _
                                                                        eCoreComponentType.MSE, eMessageType.DataValidation, _
                                                                        eMessageImportance.Warning, eMessageReplyStyle.YES_NO)
                     Me.m_core.Messages.SendMessage(fbMess)
@@ -481,7 +479,7 @@ Namespace MSE
 
             '    fixedGroups = fixedGroups.Remove(fixedGroups.Length - 2)
 
-            '    Me.m_core.Messages.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_FIXEDESCAPEMENT, fixedGroups), _
+            '    Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_VALIDATION_FIXEDESCAPEMENT, fixedGroups), _
             '            eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
             'End If
 
@@ -510,7 +508,7 @@ Namespace MSE
 
             '        'strip off the last ', '
             '        fleets = fleets.Remove(fleets.Length - 2)
-            '        Me.m_core.Messages.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_EFFORT, fleets), _
+            '        Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_VALIDATION_EFFORT, fleets), _
             '                                    eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
             '    End If
 
@@ -1170,7 +1168,7 @@ Namespace MSE
 
                     If Me.m_MSEdata.lstNonOptSolutions.Count > 0 Then
                         'LP Solver failed to find optimal solution for 1 or more timesteps
-                        Dim msg As String = String.Format(My.Resources.CoreMessages.MSE_LPSOLVER_NONOPTIMAL, Me.m_MSEdata.lstNonOptSolutions.Count)
+                        Dim msg As String = cStringUtils.Localize(My.Resources.CoreMessages.MSE_LPSOLVER_NONOPTIMAL, Me.m_MSEdata.lstNonOptSolutions.Count)
                         Me.m_core.Messages.AddMessage(New cMessage(msg, eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Warning))
                     End If
 

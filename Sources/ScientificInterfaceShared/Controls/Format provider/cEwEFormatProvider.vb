@@ -21,10 +21,9 @@
 Option Strict On
 Option Explicit On
 
-Imports System.Drawing
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports 
@@ -84,7 +83,7 @@ Namespace Controls
                 End If
 
                 ' Development time sanity check
-                Debug.Assert(wrapper IsNot Nothing, String.Format("ControlWrapperFactory: control {0} not supported", ctrl.GetType().ToString()))
+                Debug.Assert(wrapper IsNot Nothing, cStringUtils.Localize("ControlWrapperFactory: control {0} not supported", ctrl.GetType().ToString()))
 
                 ' Pass on UI context
                 wrapper.UIContext = uic
@@ -727,7 +726,7 @@ Namespace Controls
 
                 Catch e As Exception
                     ' Throw dev. time error
-                    Debug.Assert(False, String.Format("Failed to wrap combo box {0}", ctrl.ToString()))
+                    Debug.Assert(False, cStringUtils.Localize("Failed to wrap combo box {0}", ctrl.ToString()))
                     ' Report failure
                     bSucces = False
                 End Try
@@ -1026,7 +1025,7 @@ Namespace Controls
 
                 Catch e As Exception
                     ' Throw dev. time error
-                    Debug.Assert(False, String.Format("Failed to wrap checkbox {0}", ctrl.ToString()))
+                    Debug.Assert(False, cStringUtils.Localize("Failed to wrap checkbox {0}", ctrl.ToString()))
                     ' Report failure
                     bSucces = False
                 End Try

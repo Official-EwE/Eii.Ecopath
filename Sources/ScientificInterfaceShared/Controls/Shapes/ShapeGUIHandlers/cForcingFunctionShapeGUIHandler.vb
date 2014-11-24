@@ -331,7 +331,7 @@ Namespace Controls
                     End Try
 
                 Case Else
-                    'Debug.Assert(False, String.Format("Command {0} not supported", cmd))
+                    'Debug.Assert(False, cStringUtils.Localize("Command {0} not supported", cmd))
             End Select
         End Sub
 
@@ -587,9 +587,9 @@ Namespace Controls
 
             ' Ask for permission to perform irreversible action
             If ashapes.Length = 1 Then
-                strMessage = String.Format(My.Resources.PROMPT_SHAPE_DELETE, ashapes(0).Name)
+                strMessage = cStringUtils.Localize(My.Resources.PROMPT_SHAPE_DELETE, ashapes(0).Name)
             Else
-                strMessage = String.Format(My.Resources.PROMPT_SHAPE_DELETE_MULTIPLE, ashapes.Length)
+                strMessage = cStringUtils.Localize(My.Resources.PROMPT_SHAPE_DELETE_MULTIPLE, ashapes.Length)
             End If
             fms = New cFeedbackMessage(strMessage, _
                                        eCoreComponentType.ShapesManager, _
@@ -712,7 +712,7 @@ Namespace Controls
 
             ' Concoct a new name based on the numbered strings that are found
             iNextShapeNumber = cStringUtils.GetNextNumber(lstrFFNames.ToArray(), Me.NewShapeNameMask)
-            Return String.Format(Me.NewShapeNameMask, iNextShapeNumber)
+            Return cStringUtils.Localize(Me.NewShapeNameMask, iNextShapeNumber)
 
         End Function
 

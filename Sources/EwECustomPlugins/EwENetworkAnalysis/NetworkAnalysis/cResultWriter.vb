@@ -196,7 +196,7 @@ Public Class cResultWriter
 
         Dim strPath As String = Path.GetDirectoryName(strFileName)
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-            Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_NOACCESS, strPath), True, strPath)
+            Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVE_NOACCESS, strPath), True, strPath)
             Return False
         End If
 
@@ -204,11 +204,11 @@ Public Class cResultWriter
         If (sw IsNot Nothing) Then
             sw.Write(strData)
             sw.Close()
-            Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_SUCCESS, strFileName), False, strPath)
+            Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVE_SUCCESS, strFileName), False, strPath)
             Return True
         End If
 
-        Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_FAILED, strFileName), True, strPath)
+        Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVE_FAILED, strFileName), True, strPath)
         Return False
 
     End Function

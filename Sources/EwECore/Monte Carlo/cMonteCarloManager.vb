@@ -20,10 +20,11 @@
 
 Option Strict On
 Imports EwECore.Ecopath
-Imports EwECore.EcoSim
+Imports EwECore.Ecosim
 Imports System
 Imports System.Threading
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -161,30 +162,30 @@ Public Class cMonteCarloManager
     Public Sub Run()
         Dim thrdMC As Thread
 
-            Try
-                If m_core.StateMonitor.HasEcosimLoaded Then
+        Try
+            If m_core.StateMonitor.HasEcosimLoaded Then
 
-                    Me.SetWait()
-                    Me.update()
+                Me.SetWait()
+                Me.update()
 
-                    thrdMC = New Thread(AddressOf m_mc.Run)
-                    thrdMC.Start()
+                thrdMC = New Thread(AddressOf m_mc.Run)
+                thrdMC.Start()
 
-                Else 'If m_core.StateMonitor.HasEcosimLoaded Then
+            Else 'If m_core.StateMonitor.HasEcosimLoaded Then
 
-                    'no ecosim scenario loaded
-                    m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOSIM_MISSING, eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
+                'no ecosim scenario loaded
+                m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOSIM_MISSING, eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
 
-                End If
+            End If
 
-            Catch ex As Exception
-                cLog.Write(ex)
-                Me.ReleaseWait()
-                m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_RUN_ERROR, ex.Message), _
-                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
-            End Try
+        Catch ex As Exception
+            cLog.Write(ex)
+            Me.ReleaseWait()
+            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_RUN_ERROR, ex.Message), _
+                                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
+        End Try
 
-            m_core.Messages.sendAllMessages()
+        m_core.Messages.sendAllMessages()
 
         Return
 
@@ -329,7 +330,7 @@ Public Class cMonteCarloManager
 
             'tell the core to reload groups from modified Ecopath inputs
             m_core.onChanged(Me, eMessageType.DataModified)
- 
+
             Me.LoadGroups()
 
             'run ecopath with the new parameters
@@ -343,7 +344,7 @@ Public Class cMonteCarloManager
         Catch ex As Exception
             Debug.Assert(False)
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_APPLY_ERROR, ex.Message), _
+            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_APPLY_ERROR, ex.Message), _
                                                      eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
         End Try
 

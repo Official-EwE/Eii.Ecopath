@@ -19,14 +19,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Properties
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
-Imports EwEUtils.Commands
-Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -81,9 +75,9 @@ Namespace Controls.EwEGrid
                         Case 0
                             ' NOP
                         Case 1
-                            strDisplayText = String.Format(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)))
+                            strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)))
                         Case 2
-                            strDisplayText = String.Format(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
+                            strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
                         Case Else
                             Debug.Assert(False)
                     End Select

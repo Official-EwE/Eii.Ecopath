@@ -207,7 +207,7 @@ Namespace Controls.Map
             ' Populate zoom combo
             Me.m_tscbZoomPercent.Items.Clear()
             For iZoomPercent As Integer = 0 To Me.m_aiZoomLevels.Length - 1
-                Me.m_tscbZoomPercent.Items.Add(String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, Me.m_aiZoomLevels(iZoomPercent)))
+                Me.m_tscbZoomPercent.Items.Add(cStringUtils.Localize(SharedResources.GENERIC_VALUE_PERCENTAGE, Me.m_aiZoomLevels(iZoomPercent)))
             Next
             Me.m_tscbZoomPercent.SelectedIndex = Me.m_iZoomLevelIndex
 
@@ -305,7 +305,7 @@ Namespace Controls.Map
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim strFileName As String = ""
 
-            cmdFS.Invoke(cFileUtils.ToValidFileName(String.Format("{0}_{1}", model.Name, scenario.Name), False), SharedResources.FILEFILTER_IMAGE)
+            cmdFS.Invoke(cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_{1}", model.Name, scenario.Name), False), SharedResources.FILEFILTER_IMAGE)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 
                 Select Case cmdFS.FilterIndex
@@ -324,7 +324,7 @@ Namespace Controls.Map
                 End Select
 
                 For Each ctrlZoom As ucMapZoom In Me.m_lZoomContainers
-                    strFileName = String.Format("{0}-{1}", cmdFS.FileName, ctrlZoom.Map.Text)
+                    strFileName = cStringUtils.Localize("{0}-{1}", cmdFS.FileName, ctrlZoom.Map.Text)
                     ctrlZoom.Map.SaveToBitmap(cmdFS.FileName, format)
                 Next
             End If

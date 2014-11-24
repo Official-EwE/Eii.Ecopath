@@ -19,11 +19,12 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports EwECore.Database
 Imports EwECore.DataSources
 Imports EwEUtils.Core
 Imports EwEUtils.Database
-Imports System.IO
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -108,6 +109,8 @@ Public Class cEcopathModelFromEcosim
                               ByVal iNumYearsAverage As Integer, _
                               ByVal WeightPower As Single) As eDatasourceAccessType
 
+        ' ToDo: localize this
+
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
         Try
@@ -145,13 +148,13 @@ Public Class cEcopathModelFromEcosim
         Catch ex As Exception
             atResult = eDatasourceAccessType.Failed_Unknown
             cLog.Write(ex)
-            Me.LogSuccess(String.Format("Error generating model '{0}': {1}", strFileName, ex.Message), False)
+            Me.LogSuccess(cStringUtils.Localize("Error generating model '{0}': {1}", strFileName, ex.Message), False)
         End Try
 
         If (atResult = eDatasourceAccessType.Created) Then
-            Me.LogSuccess(String.Format("Model successfully saved to '{0}'", strFileName), True)
+            Me.LogSuccess(cStringUtils.Localize("Model successfully saved to '{0}'", strFileName), True)
         Else
-            Me.LogSuccess(String.Format("Failed to save mode to '{0}'", strFileName), False)
+            Me.LogSuccess(cStringUtils.Localize("Failed to save mode to '{0}'", strFileName), False)
         End If
 
         Return atResult

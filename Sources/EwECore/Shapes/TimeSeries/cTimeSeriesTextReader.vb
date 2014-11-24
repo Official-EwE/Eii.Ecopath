@@ -20,11 +20,10 @@
 
 Option Strict On
 
-Imports EwECore.DataSources
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports System.IO
 Imports System.Text
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -379,7 +378,7 @@ Public MustInherit Class cTimeSeriesTextReader
 
             ' Pool code
             If Not cStringUtils.BeginsWithOneOf(astrCols(0), New String() {"pool", "group", "fleet"}) Then
-                Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLLINEMISSING, astrCols(0)), iLineNumber)
+                Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLLINEMISSING, astrCols(0)), iLineNumber)
                 bSucces = False
             End If
             If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
@@ -396,7 +395,7 @@ Public MustInherit Class cTimeSeriesTextReader
 
             ' Dat type
             If Not cStringUtils.BeginsWithOneOf(astrCols(0), New String() {"type", "code", "dat"}) Then
-                Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPELINEMISSING, astrCols(0)), iLineNumber)
+                Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPELINEMISSING, astrCols(0)), iLineNumber)
                 bSucces = False
             End If
 
@@ -435,7 +434,7 @@ Public MustInherit Class cTimeSeriesTextReader
                     Me.m_iNumPoints += 1
 
                     If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
-                        Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARVALUEMISSING, iYear), iLineNumber)
+                        Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARVALUEMISSING, iYear), iLineNumber)
                         bSucces = False
                     End If
 
@@ -549,13 +548,13 @@ Public MustInherit Class cTimeSeriesTextReader
                     Case eTimeSeriesCategoryType.Group
                         ' Group index cannot exceed core nGroups
                         If aiDatPool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups) Then
-                            Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, aiDatPool(i - 1)), iLineNumber - 1)
+                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, aiDatPool(i - 1)), iLineNumber - 1)
                         End If
 
                     Case eTimeSeriesCategoryType.Fleet
                         'Fleet index cannot exceed core nFleets
                         If aiDatPool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nFleets) Then
-                            Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, aiDatPool(i - 1)), iLineNumber - 1)
+                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, aiDatPool(i - 1)), iLineNumber - 1)
                         End If
 
                     Case eTimeSeriesCategoryType.Forcing

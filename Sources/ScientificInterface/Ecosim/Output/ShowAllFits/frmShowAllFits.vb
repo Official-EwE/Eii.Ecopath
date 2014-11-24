@@ -132,10 +132,10 @@ Namespace Ecosim
                     ' ===============
                     strTitle = plot.TimeSeries.Name
                     If Me.m_chkShowWeight.Checked Then
-                        strTitle = String.Format(SharedResources.GENERIC_LABEL_DETAILED, strTitle, Me.StyleGuide.FormatNumber(plot.TimeSeries.WtType))
+                        strTitle = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strTitle, Me.StyleGuide.FormatNumber(plot.TimeSeries.WtType))
                     End If
                     If Me.m_chkShowSS.Checked Then
-                        strTitle = String.Format(SharedResources.GENERIC_LABEL_INDEXED, strTitle, Me.StyleGuide.FormatNumber(plot.TimeSeries.DataSS))
+                        strTitle = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, strTitle, Me.StyleGuide.FormatNumber(plot.TimeSeries.DataSS))
                     End If
 
                     g.DrawString(strTitle, ftCaption, Brushes.Black, sPosX + szPosName.Width, sPosY + szPosName.Height)
@@ -483,6 +483,8 @@ Namespace Ecosim
 
         Private Sub SaveToCSV(ByVal strPath As String)
 
+            ' ToDo: localize this?
+
             Dim strFileName As String = Me.Core.EwEModel.Name
             Dim strTargetPath As String = ""
             Dim ts As cTimeSeries = Nothing
@@ -493,7 +495,7 @@ Namespace Ecosim
 
             If String.IsNullOrEmpty(strPath) Then Return
 
-            msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_SUCCESS, strPath), _
+            msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strPath), _
                                eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information)
 
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_PLEASE_WAIT)
@@ -514,7 +516,7 @@ Namespace Ecosim
                         sw = New StreamWriter(strTargetPath, False)
                     Catch ex As Exception
                         ' Notify user
-                        msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
                                 eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                         bSucces = False
                     End Try
@@ -545,16 +547,16 @@ Namespace Ecosim
                                     End If
                                 Case 2
                                     If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
-                                        sw.Write(cStringUtils.ToCSVField(String.Format("Predicted {0} Z", ts.Name)))
+                                        sw.Write(cStringUtils.ToCSVField(cStringUtils.Localize("Predicted {0} Z", ts.Name)))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField(String.Format("Observed {0} Z", ts.Name)))
+                                        sw.Write(cStringUtils.ToCSVField(cStringUtils.Localize("Observed {0} Z", ts.Name)))
                                         sw.Write(",")
                                     End If
                                 Case 3
                                     If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
-                                        sw.Write(cStringUtils.ToCSVField(String.Format("Predicted {0} Yield", ts.Name)))
+                                        sw.Write(cStringUtils.ToCSVField(cStringUtils.Localize("Predicted {0} Yield", ts.Name)))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField(String.Format("Observed {0} Yield", ts.Name)))
+                                        sw.Write(cStringUtils.ToCSVField(cStringUtils.Localize("Observed {0} Yield", ts.Name)))
                                         sw.Write(",")
                                     End If
                             End Select
@@ -611,7 +613,7 @@ Namespace Ecosim
                             sw.WriteLine()
                         Next
                     Catch ex As Exception
-                        msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
                                            eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                         bSucces = False
                     Finally
@@ -709,7 +711,7 @@ Namespace Ecosim
             Try
                 dlg.ShowDialog()
             Catch ex As Exception
-                msg = New cMessage(String.Format(My.Resources.STATUS_PRINT_PREVIEW_FAILED, ex.Message), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_PRINT_PREVIEW_FAILED, ex.Message), _
                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
                 Me.Core.Messages.SendMessage(msg)
             End Try

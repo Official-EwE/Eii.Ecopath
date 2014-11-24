@@ -23,12 +23,10 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.SearchObjectives
-Imports ScientificInterface.Controls
-Imports ScientificInterface.Ecosim
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
+Imports EwEUtils.Utilities
 Imports ZedGraph
 
 #End Region
@@ -733,6 +731,8 @@ Friend Class cMSEPlotter
 
     Private Sub PlotComparison()
 
+        ' ToDo: localize this
+
         Try
 
             Dim ipane As Integer
@@ -765,10 +765,10 @@ Friend Class cMSEPlotter
                     Next
 
                     If iData = 0 Then
-                        strLabel = String.Format("Label 1 {0}", data.Name)
+                        strLabel = cStringUtils.Localize("Label 1 {0}", data.Name)
                         clr = Color.Blue
                     Else
-                        strLabel = String.Format("Label 2 {0}", data.Name)
+                        strLabel = cStringUtils.Localize("Label 2 {0}", data.Name)
                         clr = Color.Red
                     End If
                     Dim Line As LineItem = Me.m_zgh.CreateLineItem(strLabel, eLineType.ModelData, clr, ppl)

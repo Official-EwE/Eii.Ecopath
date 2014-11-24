@@ -1074,7 +1074,7 @@ Namespace EcoSeed
             writer.WriteLine("Row,Col,Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
 
             ' ToDo: send at end of autosave, include result
-            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSEED_RESULTS_SAVE_SUCCESS, Path.Combine(Me.m_strOutputPath, c_FILENAME)), _
+            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSEED_RESULTS_SAVE_SUCCESS, Path.Combine(Me.m_strOutputPath, c_FILENAME)), _
                                     eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             msg.Hyperlink = Me.m_strOutputPath
             Me.SendMessage(msg)

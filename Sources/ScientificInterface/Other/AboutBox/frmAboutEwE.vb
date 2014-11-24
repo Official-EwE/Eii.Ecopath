@@ -20,12 +20,12 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwEUtils.Commands
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Commands
 
 #End Region ' Imports 
 
@@ -66,10 +66,10 @@ Namespace Other
             cmd.AddControl(Me.m_rtbLicense)
 
             ' Format generic page
-            Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
+            Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
-            Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VERSION, cCore.Version, strBitApp)
-            Me.m_lbCopyright.Text = String.Format(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
+            Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version, strBitApp)
+            Me.m_lbCopyright.Text = cStringUtils.Localize(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format RTF content pages
             Me.m_rtbTeam.Rtf = StyleRTF(My.Resources.team)

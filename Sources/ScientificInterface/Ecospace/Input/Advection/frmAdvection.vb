@@ -23,8 +23,8 @@ Imports EwECore
 Imports EwECore.Ecospace.Advection
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 
@@ -254,7 +254,7 @@ Namespace Ecospace.Advection
 
             If (iIter Mod 100 = 0) Then
                 ' Update app status
-                cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_ADVECTION_ITERATION, iIter), -1)
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ADVECTION_ITERATION, iIter), -1)
             End If
 
             ' Update data layer

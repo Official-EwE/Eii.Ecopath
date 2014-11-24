@@ -510,7 +510,7 @@ Namespace Ecosim
             Me.m_lbResults.Items.Clear()
 
             Dim data As cF2TSResults = Me.m_F2TSManager.Results
-            Me.LogProgress(String.Format(My.Resources.FIT2TS_PROGRESS_RUNSTARTED, data.BaseSS))
+            Me.LogProgress(cStringUtils.Localize(My.Resources.FIT2TS_PROGRESS_RUNSTARTED, data.BaseSS))
 
             If (Me.m_dlgSensOfSS IsNot Nothing) Then
                 Me.m_dlgSensOfSS.OnRunStarted(runType, nSteps)
@@ -537,7 +537,7 @@ Namespace Ecosim
                 Case eRunType.Search
                     'retrieve search analysis result
                     Dim rsltSearch As cSearchResults = CType(data, cSearchResults)
-                    Me.LogProgress(String.Format(My.Resources.FIT2TS_PROGRESS_RUNSTEP, rsltSearch.iStep, rsltSearch.IterSS))
+                    Me.LogProgress(cStringUtils.Localize(My.Resources.FIT2TS_PROGRESS_RUNSTEP, rsltSearch.iStep, rsltSearch.IterSS))
 
                     ' Reload shape
                     If Me.m_F2TSManager.AnomalySearch Then
@@ -567,7 +567,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub OnRunStopped(ByVal runType As eRunType)
 
-            Me.LogProgress(String.Format(My.Resources.FIT2TS_PROGRESS_RUNCOMPLETED, Date.Now().ToShortTimeString))
+            Me.LogProgress(cStringUtils.Localize(My.Resources.FIT2TS_PROGRESS_RUNCOMPLETED, Date.Now().ToShortTimeString))
 
             If (Me.m_dlgSensOfSS IsNot Nothing) Then
                 Me.m_dlgSensOfSS.OnRunStopped(runType)

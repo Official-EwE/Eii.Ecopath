@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -77,7 +78,7 @@ Public Class cEcospaceLayerImportance
 #Region " Overrides "
 
     Protected Overrides Function DefaultName() As String
-        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_IMPORTANCE, Me.Index)
+        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_IMPORTANCE, Me.Index)
     End Function
 
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object

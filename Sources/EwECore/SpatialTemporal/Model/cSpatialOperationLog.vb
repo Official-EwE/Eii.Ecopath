@@ -60,6 +60,8 @@ Namespace SpatialData
         Private m_bLogStarted As Boolean = False
         Private m_strLogFileName As String = ""
 
+        Private m_bRunOK As Boolean = True
+
 #End Region ' Private vars
 
 #Region " Construction / destruction "
@@ -93,6 +95,15 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Start collection run diagnostics.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Friend Sub BeginRun()
+            Me.m_bRunOK = True
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Notify the log that the spatial framework has begun processing external
         ''' data for a map layer at a given time step. To finish processing
         ''' the layer call <see cref="EndLayerLog"/>.
@@ -107,7 +118,7 @@ Namespace SpatialData
                 Me.EndLayerLog()
             End If
 
-            Me.m_msgCurrent = New cMessage(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_LOADING, layer.Name, timestep, dt), _
+            Me.m_msgCurrent = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_LOADING, layer.Name, timestep, dt), _
                                            eMessageType.GISOperation, eCoreComponentType.External, eMessageImportance.Information)
             Me.m_vn = layer.VarName
             Me.m_iIndex = layer.Index
@@ -151,7 +162,19 @@ Namespace SpatialData
                 Me.m_msgCurrent.AddVariable(New cVariableStatus(status, strMsg, Me.m_vn, eDataTypes.External, eCoreComponentType.External, Me.m_iIndex))
             End If
 
+            Me.m_bRunOK = Me.m_bRunOK And (status = eStatusFlags.OK)
+
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Stop collecting run information.
+        ''' </summary>
+        ''' <returns>True if all spatial operations completed without errors.</returns>
+        ''' -------------------------------------------------------------------
+        Friend Function EndRun() As Boolean
+            Return Me.m_bRunOK
+        End Function
 
 #End Region ' Public access
 
@@ -160,7 +183,7 @@ Namespace SpatialData
         Private Sub OnCoreStateChanged(csm As cCoreStateMonitor)
             If Not csm.IsEcospaceRunning Then
                 If Me.m_bLogStarted Then
-                    Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_SAVED, Me.m_strLogFileName), _
+                    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_SAVED, Me.m_strLogFileName), _
                                             eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = Path.GetDirectoryName(Me.m_strLogFileName)
                     Me.m_core.Messages.SendMessage(msg)

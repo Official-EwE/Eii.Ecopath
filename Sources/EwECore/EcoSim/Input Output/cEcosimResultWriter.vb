@@ -98,7 +98,7 @@ Namespace Ecosim
 
             ' Try to make sure that the output path is there
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-                msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING), _
                                    eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                 Me.m_core.Messages.SendMessage(msg)
                 Return False
@@ -111,7 +111,7 @@ Namespace Ecosim
                         If (tsMonthly <> TriState.True) Then bSucces = bSucces And Me.WriteResults(strPath, outputtype, False)
 
                         If Not bSucces Then
-                            msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), _
+                            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), _
                                                eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
                             Me.m_core.Messages.SendMessage(msg)
                         End If
@@ -124,7 +124,7 @@ Namespace Ecosim
             Next
 
             If bSucces Then
-                msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath), _
                                    eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                 ' Provide hyperlink to the directory with the files
                 msg.Hyperlink = strPath

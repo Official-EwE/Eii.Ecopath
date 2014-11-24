@@ -21,13 +21,10 @@
 Option Strict On
 Option Explicit On
 
-Imports System.Windows.Forms
-Imports System.Drawing
-Imports System.Drawing.Drawing2D
 Imports EwECore
-Imports ScientificInterface.Other
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -136,7 +133,7 @@ Namespace Ecosim
                     Next
 
                 Case Else
-                    Debug.Assert(False, String.Format("Invalid editmode {0} provided", editMode.ToString))
+                    Debug.Assert(False, cStringUtils.Localize("Invalid editmode {0} provided", editMode.ToString))
 
             End Select
 
@@ -174,13 +171,13 @@ Namespace Ecosim
             ' Set labels
             Select Case m_editMode
                 Case eEditMode.FleetGroup
-                    Me.Text = String.Format(My.Resources.CAPTION_PRICEELASTICITY_LANDING, _
+                    Me.Text = cStringUtils.Localize(My.Resources.CAPTION_PRICEELASTICITY_LANDING, _
                                             Me.m_iSelFleet, Me.m_strSelFleet, _
                                             Me.m_iSelGroup, Me.m_strSelGroup)
                 Case eEditMode.Group
-                    Me.Text = String.Format(My.Resources.CAPTION_PRICEELASTICITY_GROUP, Me.m_iSelGroup, Me.m_strSelGroup)
+                    Me.Text = cStringUtils.Localize(My.Resources.CAPTION_PRICEELASTICITY_GROUP, Me.m_iSelGroup, Me.m_strSelGroup)
                 Case eEditMode.Fleet
-                    Me.Text = String.Format(My.Resources.CAPTION_PRICEELASTICITY_FLEET, Me.m_iSelFleet, Me.m_strSelFleet)
+                    Me.Text = cStringUtils.Localize(My.Resources.CAPTION_PRICEELASTICITY_FLEET, Me.m_iSelFleet, Me.m_strSelFleet)
                 Case eEditMode.All
                     Me.Text = My.Resources.CAPTION_PRICEELASTICITY_ALL
             End Select
@@ -417,7 +414,7 @@ Namespace Ecosim
                 If (Not bFound) And _
                    (iNumApplied < Me.m_InteractionManager.MaxNShapes) Then
                     ' #Yes: add
-                    itemSrc = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shapeSelected.Index, shapeSelected.Name))
+                    itemSrc = New ListViewItem(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, shapeSelected.Index, shapeSelected.Name))
                     itemSrc.ImageIndex = Me.m_lFFs.IndexOf(shapeSelected)
                     itemSrc.SubItems.Add("")
                     itemSrc.Tag = shapeSelected
@@ -523,7 +520,7 @@ Namespace Ecosim
             If Me.m_lFFs.Count > 0 Then
 
                 For Each ff As cForcingFunction In Me.m_lFFs
-                    item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name))
+                    item = New ListViewItem(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name))
                     item.ImageIndex = Me.m_lFFs.IndexOf(ff)
                     item.Tag = ff
                     Me.m_lvAllShapes.Items.Add(item)
@@ -548,11 +545,11 @@ Namespace Ecosim
                 Dim ffappl As eForcingFunctionApplication
 
                 If ppi Is Nothing Then Return
-                For i As Integer = 1 To ppi.NAppliedShapes
+                For i As Integer = 1 To ppi.nAppliedShapes
 
                     ppi.getShape(i, shape, ffappl)
 
-                    item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
+                    item = New ListViewItem(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
                     item.ImageIndex = Me.m_lFFs.IndexOf(shape)
                     item.SubItems.Add("")
                     item.Tag = shape

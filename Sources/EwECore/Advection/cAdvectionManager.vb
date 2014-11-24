@@ -19,9 +19,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore.Ecosim
 Imports System.Threading
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -305,7 +305,7 @@ Namespace Ecospace.Advection
 
             Catch ex As Exception
                 cLog.Write(ex)
-                m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message), _
+                m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message), _
                                                          eMessageType.ErrorEncountered, _
                                                          eCoreComponentType.EcoSpace, _
                                                          eMessageImportance.Critical, _

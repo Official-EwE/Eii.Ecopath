@@ -21,10 +21,11 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore
-Imports ZedGraph
 Imports System.ComponentModel
+Imports EwECore
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
+Imports ZedGraph
 
 #End Region
 
@@ -368,7 +369,7 @@ Namespace Controls
                 'lstPts.Add(Xmax, resShape.ShapeData(resShape.XMax))
 
                 'need a way to find the color of the shape
-                Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(resShape)), _
+                Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(resShape)), _
                                                              lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
                 pane.CurveList.Add(il)
 
@@ -420,11 +421,11 @@ Namespace Controls
                     ' Is a landings interaction?
                     If (medLandings.iFleetIndex > 0) Then
                         Dim sourceSec As cCoreInputOutputBase = Me.m_uic.Core.FleetInputs(medLandings.iFleetIndex)
-                        strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAILED, _
+                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, _
                                                  fmt.GetDescriptor(source), _
                                                  fmt.GetDescriptor(sourceSec))
                     Else
-                        strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
+                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, _
                                                  fmt.GetDescriptor(source), _
                                                  My.Resources.GENERIC_VALUE_ALL)
                     End If
@@ -493,7 +494,7 @@ Namespace Controls
 
                     If (medLandings.iFleetIndex > 0) Then
                         Dim FleetSource As cCoreInputOutputBase = Me.m_uic.Core.FleetInputs(medLandings.iFleetIndex)
-                        strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAILED, _
+                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, _
                                                  fmt.GetDescriptor(valSource), _
                                                  fmt.GetDescriptor(FleetSource))
 
@@ -503,7 +504,7 @@ Namespace Controls
                         varname = EwEUtils.Core.eVarNameFlags.Landings
 
                     Else
-                        strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
+                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, _
                                                  fmt.GetDescriptor(valSource), _
                                                  My.Resources.GENERIC_VALUE_ALL)
                     End If

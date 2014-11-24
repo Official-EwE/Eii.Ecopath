@@ -469,13 +469,13 @@ Namespace Ecospace
             fmt.LineAlignment = StringAlignment.Center
 
             If (Me.m_iTimeStep >= 0) Then
-                sbText.AppendLine(String.Format(My.Resources.CAPTION_TIMESTEP, _
+                sbText.AppendLine(cStringUtils.Localize(My.Resources.CAPTION_TIMESTEP, _
                                                 Me.m_iTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStep).ToShortDateString()))
             End If
 
             If (Me.m_ds IsNot Nothing) Then
                 Dim sdf As New cSpatialDatasetFormatter()
-                sbText.AppendLine(String.Format(My.Resources.CAPTION_DATASET, sdf.GetDescriptor(Me.m_ds)))
+                sbText.AppendLine(cStringUtils.Localize(My.Resources.CAPTION_DATASET, sdf.GetDescriptor(Me.m_ds)))
             End If
 
             Dim szfTextSize As SizeF = g.MeasureString(sbText.ToString, tmpFont, rc.Size, fmt)

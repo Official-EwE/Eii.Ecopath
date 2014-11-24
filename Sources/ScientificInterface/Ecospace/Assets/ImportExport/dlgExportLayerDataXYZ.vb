@@ -24,10 +24,10 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -218,11 +218,11 @@ Namespace Ecospace.Basemap
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             If (bSuccess) Then
-                msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_SUCCESS, strFile), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strFile), _
                                    eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFile)
             Else
-                msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strFile), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strFile), _
                                    eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Critical)
             End If
 

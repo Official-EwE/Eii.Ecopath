@@ -23,6 +23,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
@@ -55,7 +56,7 @@ Public Class ucEditFlow
 
         Dim levels As Single() = Me.m_plFlow.ZoomLevels
         For i As Integer = 0 To levels.Length - 1
-            Dim ctrl As New ToolStripMenuItem(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_VALUE_PERCENTAGE, levels(i) * 100), Nothing, AddressOf OnZoom)
+            Dim ctrl As New ToolStripMenuItem(cStringUtils.Localize(ScientificInterfaceShared.My.Resources.GENERIC_VALUE_PERCENTAGE, levels(i) * 100), Nothing, AddressOf OnZoom)
             ctrl.Tag = levels(i)
             Me.m_tsddZoom.DropDownItems.Add(ctrl)
         Next
@@ -305,7 +306,7 @@ Public Class ucEditFlow
         '        tsi = New ToolStripMenuItem()
         '        tsi.Tag = fd
         '        tsi.Text = fd.Name
-        '        tsi.ToolTipText = String.Format("View diagram '{0}'", fd.Name)
+        '        tsi.ToolTipText = cStringUtils.Localize("View diagram '{0}'", fd.Name)
         '        AddHandler tsi.Click, AddressOf OnSelectDiagram
         '        .Add(tsi)
         '    Next

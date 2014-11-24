@@ -21,8 +21,8 @@ Option Strict On
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -308,7 +308,7 @@ Public Class cDatasetPicker
 
             Try
                 Dim dlg As New ScientificInterfaceShared.Controls.dlgConfig(Me.m_uic)
-                Return (dlg.ShowDialog(String.Format(SharedResources.CAPTION_GENERIC_EDIT, strTitle), cfg.GetConfigUI()) = DialogResult.OK)
+                Return (dlg.ShowDialog(cStringUtils.Localize(SharedResources.CAPTION_GENERIC_EDIT, strTitle), cfg.GetConfigUI()) = DialogResult.OK)
             Catch ex As Exception
                 ' Whoah!
                 Return False

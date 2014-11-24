@@ -64,7 +64,7 @@ Namespace Style
                 astrBits = strDescr.Split("|"c)
                 iNumBits = astrBits.Length
             Else
-                Return String.Format(My.Resources.VARIABLE_UNNAMED, strVar)
+                Return cStringUtils.Localize(My.Resources.VARIABLE_UNNAMED, strVar)
             End If
 
             For i As Integer = 0 To descriptor

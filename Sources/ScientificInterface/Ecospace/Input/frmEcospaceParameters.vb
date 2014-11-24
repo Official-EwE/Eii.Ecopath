@@ -23,6 +23,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -96,12 +97,14 @@ Namespace Ecospace
 
             Public Sub New(item As IEcospaceResultsWriter)
                 Me.m_items = New IEcospaceResultsWriter() {item}
-                Me.m_strLabel = String.Format("Save as {0} maps", Me.Extensions)
+                ' ToDo: globalize this
+                Me.m_strLabel = cStringUtils.Localize("Save as {0} maps", Me.Extensions)
             End Sub
 
             Public Sub New(items As IEcospaceResultsWriter())
                 Me.m_items = items
-                Me.m_strLabel = String.Format("Save maps in multiple formats ({0})", Me.Extensions)
+                ' ToDo: globalize this
+                Me.m_strLabel = cStringUtils.Localize("Save maps in multiple formats ({0})", Me.Extensions)
             End Sub
 
             Public Overrides Function ToString() As String

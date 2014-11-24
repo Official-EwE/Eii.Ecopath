@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
@@ -194,7 +195,7 @@ Namespace Ecospace.Controls
 
             ' Spatial overlap col
             If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
-                strVal = String.Format(SharedResources.VALUE_INDEXED_PERCENT, CInt(Math.Ceiling(100 * comp.NumIndexed / (comp.NumOverlappingTimeSteps + 1))))
+                strVal = cStringUtils.Localize(SharedResources.VALUE_INDEXED_PERCENT, CInt(Math.Ceiling(100 * comp.NumIndexed / (comp.NumOverlappingTimeSteps + 1))))
             Else
                 Dim fmt As New cSpatialDatasetCompatibilityFormatter()
                 strVal = fmt.GetDescriptor(comp, eDescriptorTypes.Abbreviation)

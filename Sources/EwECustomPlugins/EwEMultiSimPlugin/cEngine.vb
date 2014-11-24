@@ -241,7 +241,7 @@ Friend Class cEngine
         Me.m_iNumSteps = Me.m_astrFiles.Length
 
         If Me.m_bCreateRunFolder Then
-            Me.m_strOutFolder = Path.Combine(strOutFolder, cFileUtils.ToValidFileName(String.Format("Run {0} {1}", strDate, strScope), False))
+            Me.m_strOutFolder = Path.Combine(strOutFolder, cFileUtils.ToValidFileName(cStringUtils.Localize("Run {0} {1}", strDate, strScope), False))
         Else
             Me.m_strOutFolder = strOutFolder
         End If
@@ -318,12 +318,12 @@ Friend Class cEngine
 
             sw.Close()
 
-            msg = New cMessage(String.Format(My.Resources.STATUS_EXAMPLE_SUCCESS, strFileSample), _
+            msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXAMPLE_SUCCESS, strFileSample), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             msg.Hyperlink = strOutFolder
         Catch ex As Exception
 
-            msg = New cMessage(String.Format(My.Resources.STATUS_EXAMPLE_FAILED, strFileSample, ex.Message), _
+            msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXAMPLE_FAILED, strFileSample, ex.Message), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             bSuccess = False
 
@@ -377,7 +377,7 @@ Friend Class cEngine
 
                     ' Add error
                     Me.m_valDetails.Add(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                            String.Format(My.Resources.VAL_FN_DUPLICATE, ff.Name), _
+                                                            cStringUtils.Localize(My.Resources.VAL_FN_DUPLICATE, ff.Name), _
                                                             eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0))
                     Me.m_valStatus = Me.m_valStatus Or eStatusFlags.ErrorEncountered
                 End If
@@ -533,19 +533,19 @@ Friend Class cEngine
 
                 If Not Me.m_bStopRun Then
                     Me.m_core.SetStopRunDelegate(AddressOf StopRun)
-                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, String.Format(My.Resources.STATUS_LOADING, strFileShort), CSng((1 + i * 4) / (iNum * 4)))
+                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_LOADING, strFileShort), CSng((1 + i * 4) / (iNum * 4)))
                     Me.ReadCSVIntoFF(strFile)
                 End If
 
                 If Not Me.m_bStopRun Then
                     Me.m_core.SetStopRunDelegate(AddressOf StopRun)
-                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, String.Format(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
+                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
                     Me.m_core.RunEcoSim(Nothing, False)
                 End If
 
                 If Not Me.m_bStopRun Then
                     Me.m_core.SetStopRunDelegate(AddressOf StopRun)
-                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, String.Format(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
+                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
                     Me.WriteResults(strFolder, strFile, Me.m_options)
                 End If
 
@@ -633,14 +633,14 @@ Friend Class cEngine
         ' == Prepare result message ==
 
         If (Me.m_valStatus = eStatusFlags.OK) Then
-            msg = New cFeedbackMessage(String.Format(My.Resources.VAL_RESULT_SUCCESS, scenario.Name), _
+            msg = New cFeedbackMessage(cStringUtils.Localize(My.Resources.VAL_RESULT_SUCCESS, scenario.Name), _
                                        eCoreComponentType.External, eMessageType.DataExport, _
                                        eMessageImportance.Information, eMessageReplyStyle.OK)
         ElseIf ((Me.m_valStatus And eStatusFlags.ErrorEncountered) = 0) Then
-            msg = New cMessage(String.Format(My.Resources.VAL_RESULT_WARNING, Me.m_log.FileName), _
+            msg = New cMessage(cStringUtils.Localize(My.Resources.VAL_RESULT_WARNING, Me.m_log.FileName), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
         Else
-            msg = New cMessage(String.Format(My.Resources.VAL_RESULT_FAILED, Me.m_log.FileName), _
+            msg = New cMessage(cStringUtils.Localize(My.Resources.VAL_RESULT_FAILED, Me.m_log.FileName), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
         End If
 
@@ -671,7 +671,7 @@ Friend Class cEngine
         Dim status As eStatusFlags = eStatusFlags.OK
         Dim vsInfo As cVariableStatus = Nothing
 
-        Me.m_log.Add(String.Format(My.Resources.VAL_CSV_READ, strFileName))
+        Me.m_log.Add(cStringUtils.Localize(My.Resources.VAL_CSV_READ, strFileName))
 
         If File.Exists(strFileName) Then
 
@@ -694,7 +694,7 @@ Friend Class cEngine
                         iNumMissing += 1
                         ' Log event
                         vsInfo = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                                     String.Format(My.Resources.VAL_CSV_FN_MISSING, strFileName, strName), _
+                                                     cStringUtils.Localize(My.Resources.VAL_CSV_FN_MISSING, strFileName, strName), _
                                                      eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                         Me.m_valDetails.Add(vsInfo)
                         status = status Or vsInfo.Status
@@ -715,21 +715,21 @@ Friend Class cEngine
                     Me.m_valDetails.Add(vsInfo)
                 Else
                     vsInfo = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                                 String.Format(My.Resources.VAL_CSV_SUMMARY_MISSING, strFileName, iNumMissing), _
+                                                 cStringUtils.Localize(My.Resources.VAL_CSV_SUMMARY_MISSING, strFileName, iNumMissing), _
                                                  eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                     Me.m_valDetails.Add(vsInfo)
                 End If
 
             Catch ex As Exception
                 vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                             String.Format(My.Resources.VAL_CSV_READ_ERROR, strFileName, ex.Message), _
+                                             cStringUtils.Localize(My.Resources.VAL_CSV_READ_ERROR, strFileName, ex.Message), _
                                              eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                 Me.m_valDetails.Add(vsInfo)
                 status = status Or vsInfo.Status
             End Try
         Else
             vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                         String.Format(My.Resources.VAL_CSV_READ_MISSING, strFileName), _
+                                         cStringUtils.Localize(My.Resources.VAL_CSV_READ_MISSING, strFileName), _
                                          eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
             Me.m_valDetails.Add(vsInfo)
             status = status Or vsInfo.Status

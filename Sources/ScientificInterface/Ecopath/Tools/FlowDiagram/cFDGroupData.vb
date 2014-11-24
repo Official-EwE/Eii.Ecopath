@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -113,7 +114,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Public ReadOnly Property BiomassLabel(sBiomass As Single) As String _
               Implements IFlowDiagramData.ValueLabel
             Get
-                Return String.Format(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, Me.UIContext.StyleGuide.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK))
+                Return cStringUtils.Localize(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, Me.UIContext.StyleGuide.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK))
             End Get
         End Property
 

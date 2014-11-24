@@ -56,7 +56,7 @@ Public Class cEcospaceCSVMapResultsWriter
             Me.WriteGroupFileHeaders(eVarNameFlags.EcospaceMapCatch)
             Me.WriteFleetFileHeaders(eVarNameFlags.EcospaceMapEffort)
         Catch ex As Exception
-            Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message), _
+            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message), _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
     End Sub
@@ -90,7 +90,7 @@ Public Class cEcospaceCSVMapResultsWriter
                             End If
                         Catch ex As IOException
                             cLog.Write(ex)
-                            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
+                            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
                                                    eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
                             Me.m_core.Messages.SendMessage(msg)
                         End Try
@@ -116,7 +116,7 @@ Public Class cEcospaceCSVMapResultsWriter
                 End If
             Catch ex As IOException
                 cLog.Write(ex)
-                Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
                                        eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
                 Me.m_core.Messages.SendMessage(msg)
             End Try
@@ -128,7 +128,7 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.EndWrite"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Sub EndWrite()
-        Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_EXPORT_CSV_SUCCESS, Me.m_OutputPath), _
+        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_CSV_SUCCESS, Me.m_OutputPath), _
                                 eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         ' Provide hyperlink to the directory with the files
         msg.Hyperlink = Me.m_OutputPath

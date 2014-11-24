@@ -979,7 +979,7 @@ Public Class cMPARandomSearch
         writer.WriteLine("Objective weights for run")
         writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Boundary")
         writer.WriteLine()
-        writer.WriteLine(String.Format("{0},{1},{2},{3},{4}", _
+        writer.WriteLine(cStringUtils.Localize("{0},{1},{2},{3},{4}", _
                 cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue)), _
                 cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment)), _
                 cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb)), _
@@ -989,7 +989,7 @@ Public Class cMPARandomSearch
         writer.WriteLine()
         writer.WriteLine("Base Values")
         writer.WriteLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Boundary")
-        writer.WriteLine(String.Format("{0},{1},{2},{3},{4},{5}", _
+        writer.WriteLine(cStringUtils.Localize("{0},{1},{2},{3},{4},{5}", _
                 cStringUtils.FormatNumber(TotValBase), _
                 cStringUtils.FormatNumber(EmployBase), _
                 cStringUtils.FormatNumber(ManValueBase), _
@@ -1004,7 +1004,7 @@ Public Class cMPARandomSearch
 
         ' ToDo: globalize this
         ' ToDo: send at end of autosave, include result
-        Dim msg As New cMessage(String.Format("MPA search output saved to '{0}", Path.Combine(Me.m_strOutputPath, c_FILENAME)), _
+        Dim msg As New cMessage(cStringUtils.Localize("MPA search output saved to '{0}", Path.Combine(Me.m_strOutputPath, c_FILENAME)), _
                                 eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Me.m_strOutputPath
         Me.SendMessage(msg)
@@ -1028,7 +1028,7 @@ Public Class cMPARandomSearch
                 writer.WriteLine("{0},{1},{2}", cell.Row, cell.Col, cell.iMPA)
             Next
             writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
-            writer.WriteLine(String.Format("{0},{1},{2},{3},{4}", _
+            writer.WriteLine(cStringUtils.Localize("{0},{1},{2},{3},{4}", _
                    cStringUtils.FormatNumber(Me.m_data.objFuncEconomicValue), _
                    cStringUtils.FormatNumber(Me.m_data.objFuncSocialValue), _
                    cStringUtils.FormatNumber(Me.m_data.objFuncMandatedValue), _

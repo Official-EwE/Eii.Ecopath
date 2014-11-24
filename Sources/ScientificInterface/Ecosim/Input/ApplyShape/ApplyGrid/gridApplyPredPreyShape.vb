@@ -27,6 +27,7 @@ Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceLibrary
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -198,19 +199,19 @@ Namespace Ecosim
                         Dim sb As New StringBuilder()
 
                         If PPI IsNot Nothing Then
-                            For i As Integer = 1 To PPI.NAppliedShapes
+                            For i As Integer = 1 To PPI.nAppliedShapes
                                 PPI.getShape(i, shape, aplType)
 
                                 ' Is med?
                                 If (TypeOf shape Is cMediationFunction) Then
                                     If ((Me.m_applyShapeMode And eShapeCategoryTypes.Mediation) = eShapeCategoryTypes.Mediation) Then
                                         If sb.Length > 0 Then sb.Append(" ")
-                                        sb.Append(String.Format(My.Resources.ECOSIM_APPLYFF_FFTYPE_MEDIATION, shape.Index))
+                                        sb.Append(cStringUtils.Localize(My.Resources.ECOSIM_APPLYFF_FFTYPE_MEDIATION, shape.Index))
                                     End If
                                 Else
                                     If ((Me.m_applyShapeMode And eShapeCategoryTypes.Forcing) = eShapeCategoryTypes.Forcing) Then
                                         If sb.Length > 0 Then sb.Append(" ")
-                                        sb.Append(String.Format(My.Resources.ECOSIM_APPLYFF_FFTYPE_FORCING, shape.Index))
+                                        sb.Append(cStringUtils.Localize(My.Resources.ECOSIM_APPLYFF_FFTYPE_FORCING, shape.Index))
                                     End If
                                 End If
                             Next

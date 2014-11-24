@@ -26,6 +26,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 Imports EwEUtils.Commands
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -78,7 +79,7 @@ Public Class dlgDefineMapResponseAssignments
         Me.m_zgh.ShowPointValue = True
 
         Try
-            Me.Text = String.Format(Me.Text, New cShapeDataFormatter().GetDescriptor(Me.m_shape))
+            Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().GetDescriptor(Me.m_shape))
         Catch ex As Exception
             ' Whoah!
         End Try
@@ -122,7 +123,7 @@ Public Class dlgDefineMapResponseAssignments
                 End If
             Next
             Me.m_lbxGroups.Attach(Me.m_uic)
-            Me.m_lbxGroups.Populate(liGroups.toArray())
+            Me.m_lbxGroups.Populate(liGroups.ToArray())
 
             Me.m_fpMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
             Me.m_fpMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
@@ -417,7 +418,7 @@ Public Class dlgDefineMapResponseAssignments
         Dim sd As Single = CSng(Me.m_fpSD.Value)
 
         'Compute half the width in the same units as SD (x axis units)
-        Dim halfwidth As Single = SD * widthSD / 2.0F
+        Dim halfwidth As Single = sd * widthSD / 2.0F
         XMin = mean - halfwidth
         XMax = mean + halfwidth
 
@@ -563,7 +564,7 @@ Public Class dlgDefineMapResponseAssignments
             'add the last point out at the end of the graph
             lstPts.Add(Xmax, Me.m_shape.ShapeData(Me.m_shape.nPoints) * YScale)
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(Me.m_shape)), _
+            Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(Me.m_shape)), _
                                                          lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
@@ -699,7 +700,7 @@ Public Class dlgDefineMapResponseAssignments
                 y2max = Math.Max(histPts(ipt).Y, y2max)
             Next
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map.Layer)), _
+            Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map.Layer)), _
                                                          lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Histogram)
 
             il.IsY2Axis = True

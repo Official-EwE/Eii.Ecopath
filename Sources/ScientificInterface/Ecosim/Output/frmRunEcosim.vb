@@ -25,6 +25,7 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports ScientificInterface.Controls
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -454,7 +455,7 @@ Namespace Ecosim
                     If Not Me.m_zgp.ShowMultipleRuns Then
                         Me.m_zgp.Clear()
                     End If
-                    Me.m_zgp.CreateRun(String.Format(SharedResources.GENERIC_VAUE_RUN_X, (Me.m_zgp.NumRuns + 1)))
+                    Me.m_zgp.CreateRun(cStringUtils.Localize(SharedResources.GENERIC_VAUE_RUN_X, (Me.m_zgp.NumRuns + 1)))
                     Me.PopulateRunsBox()
                     Me.PopulateGroupBox()
                 End If
@@ -917,7 +918,7 @@ Namespace Ecosim
                     Next
 
                     ' Add line to graph.
-                    lLines.Add(Me.m_zgp.CreateLine(gts, ppl, String.Format(SharedResources.GENERIC_LABEL_DETAILED, ts.Name, group.Name)))
+                    lLines.Add(Me.m_zgp.CreateLine(gts, ppl, cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, ts.Name, group.Name)))
                 End If
             Next iTS
 

@@ -616,7 +616,7 @@ Public Class cEcoSpace
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            m_publisher.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_GENERIC_ERROR, ex.Message), _
+            m_publisher.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_GENERIC_ERROR, ex.Message), _
                                                 eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
             bsuccess = False
         End Try
@@ -674,7 +674,7 @@ Public Class cEcoSpace
         Catch ex As Exception
             started = False
             Debug.Assert(False, ex.Message)
-            m_publisher.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_GENERIC_ERROR, ex.Message), _
+            m_publisher.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_GENERIC_ERROR, ex.Message), _
                                                eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
         End Try
 
@@ -7126,7 +7126,7 @@ exitline:
             End If
 
         Catch ex As Exception
-            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_HABCAP_COMPUTE_ERROR, ex.Message), _
+            Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_HABCAP_COMPUTE_ERROR, ex.Message), _
                                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
 

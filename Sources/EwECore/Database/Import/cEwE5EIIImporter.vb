@@ -20,11 +20,9 @@
 
 Option Strict On
 Imports System.IO
-Imports EwECore.Database
 Imports EwEUtils.Core
 Imports EwEUtils.Database
-Imports System.Text
-Imports EwECore.DataSources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -811,7 +809,7 @@ Namespace Database
                     drow("Immigration") = Me.m_data.Immig(iGroup)
                     drow("Emigration") = Me.m_data.Emigration(iGroup)
                     drow("EmigRate") = Me.m_data.Emig(iGroup)
-                    drow("PoolColor") = String.Format("{0:x8}", 0)
+                    drow("PoolColor") = cStringUtils.Localize("{0:x8}", 0)
 
                     writer.AddRow(drow)
 
@@ -895,14 +893,14 @@ Namespace Database
                     drow("FixedCost") = Me.m_data.CostPct(iFleet, eCostIndex.Fixed)
                     drow("SailingCost") = Me.m_data.CostPct(iFleet, eCostIndex.Sail)
                     drow("variableCost") = Me.m_data.CostPct(iFleet, eCostIndex.CUPE)
-                    drow("PoolColor") = String.Format("{0:x8}", 0)
+                    drow("PoolColor") = cStringUtils.Localize("{0:x8}", 0)
 
                     writer.AddRow(drow)
 
                 Next iFleet
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathFleet", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcopathFleet", ex.Message))
                 bSucces = False
             End Try
             Me.m_dbEwE6.ReleaseWriter(writer, True)
@@ -945,7 +943,7 @@ Namespace Database
                     Next iGroup
                 Next iFleet
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving catch", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving catch", ex.Message))
                 bSucces = False
             End Try
             Me.m_dbEwE6.ReleaseWriter(writer)
@@ -979,7 +977,7 @@ Namespace Database
                     Next iGroup
                 Next iFleet
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving DiscardFate", ex.Message))
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving DiscardFate", ex.Message))
                 bSucces = False
             End Try
 

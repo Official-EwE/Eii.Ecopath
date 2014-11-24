@@ -803,6 +803,8 @@ Public Class cF2TSManager
     ''' -------------------------------------------------------------------
     Public Function SaveToCSV(strFilename As String) As Boolean
 
+        ' ToDo: localize this
+
         If (Me.HasRunSens = False) Then Return False
 
         Dim vblocks(,) As Integer = Me.VulnerabilityBlocks
@@ -812,7 +814,7 @@ Public Class cF2TSManager
         Try
             sw = New StreamWriter(strFilename, False)
         Catch ex As Exception
-            msg = New cMessage(String.Format("Unable to Sensitivity CSV file {0}. {1}", strFilename, ex.Message), _
+            msg = New cMessage(cStringUtils.Localize("Unable to Sensitivity CSV file {0}. {1}", strFilename, ex.Message), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             Me.m_core.Messages.SendMessage(msg)
             Return False
@@ -839,7 +841,7 @@ Public Class cF2TSManager
         sw.Flush()
         sw.Close()
 
-        msg = New cMessage(String.Format("Saved sensitivity CSV file {0}.", strFilename), _
+        msg = New cMessage(cStringUtils.Localize("Saved sensitivity CSV file {0}.", strFilename), _
                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Path.GetDirectoryName(strFilename)
         Me.m_core.Messages.SendMessage(msg)

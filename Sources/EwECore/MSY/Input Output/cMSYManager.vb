@@ -23,6 +23,7 @@ Option Strict On
 Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -130,7 +131,7 @@ Namespace MSY
             Catch ex As Exception
                 cLog.Write(ex, "cMSYManager::IsAllowedToRun")
                 System.Console.WriteLine(Me.ToString & ".IsAllowedToRun() Exception: " & ex.Message)
-                Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MSY_ERROR_RUN, ex.Message), eMessageType.Any, eCoreComponentType.MSY, eMessageImportance.Critical)
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_ERROR_RUN, ex.Message), eMessageType.Any, eCoreComponentType.MSY, eMessageImportance.Critical)
                 Me.SendMessage(msg)
             End Try
 
@@ -266,7 +267,7 @@ Namespace MSY
             Catch ex As Exception
                 cLog.Write(ex, "cMSYManager::RunFMSY")
                 System.Console.WriteLine(Me.ToString & ".RunFMSY() Exception: " & ex.Message)
-                Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MSY_ERROR_RUN_FMSY, ex.Message), eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_ERROR_RUN_FMSY, ex.Message), eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                 Me.SendMessage(msg)
             End Try
 

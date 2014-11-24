@@ -20,9 +20,10 @@
 
 Option Strict On
 Imports System.Threading
+Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwECore
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -212,11 +213,11 @@ Public Class frmUpdateComponents
         Else
             Select Case result
                 Case eAutoUpdateTypes.Checking
-                    strText = String.Format(My.Resources.STATUS_UPDATE_CHECKING_COMP, strName)
+                    strText = cStringUtils.Localize(My.Resources.STATUS_UPDATE_CHECKING_COMP, strName)
                 Case eAutoUpdateTypes.Downloading
-                    strText = String.Format(My.Resources.STATUS_UPDATE_DOWNLOADING_COMP, strName)
+                    strText = cStringUtils.Localize(My.Resources.STATUS_UPDATE_DOWNLOADING_COMP, strName)
                 Case eAutoUpdateTypes.Done
-                    strText = String.Format(My.Resources.STATUS_UPDATE_DONE_COMP, strName)
+                    strText = cStringUtils.Localize(My.Resources.STATUS_UPDATE_DONE_COMP, strName)
             End Select
         End If
 
@@ -255,30 +256,30 @@ Public Class frmUpdateComponents
 
             Case eAutoUpdateResultTypes.Error_Download
                 vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                        String.Format(My.Resources.STATUS_UPDATE_ERROR_DOWNLOAD, strName), _
+                                        cStringUtils.Localize(My.Resources.STATUS_UPDATE_ERROR_DOWNLOAD, strName), _
                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
                 Me.m_bSuccess = False
 
             Case eAutoUpdateResultTypes.Error_Generic
                 vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                        String.Format(My.Resources.STATUS_UPDATE_ERROR_GENERIC, strName), _
+                                        cStringUtils.Localize(My.Resources.STATUS_UPDATE_ERROR_GENERIC, strName), _
                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
                 Me.m_bSuccess = False
 
             Case eAutoUpdateResultTypes.Error_Replace
                 vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                         String.Format(My.Resources.STATUS_UPDATE_ERROR_WRITE, strName), _
+                                         cStringUtils.Localize(My.Resources.STATUS_UPDATE_ERROR_WRITE, strName), _
                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
                 Me.m_bSuccess = False
 
             Case eAutoUpdateResultTypes.Success_NoActionRequired
                 vs = New cVariableStatus(eStatusFlags.OK, _
-                                        String.Format(My.Resources.STATUS_UPDATE_NO_ACTION, strName), _
+                                        cStringUtils.Localize(My.Resources.STATUS_UPDATE_NO_ACTION, strName), _
                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
 
             Case eAutoUpdateResultTypes.Success_Updated
                 vs = New cVariableStatus(eStatusFlags.OK, _
-                                        String.Format(".", strName), _
+                                        cStringUtils.Localize(".", strName), _
                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
 
         End Select
@@ -330,7 +331,7 @@ Public Class frmUpdateComponents
     ''' -----------------------------------------------------------------------
     Private Function OverwritePrompt(ByVal strPlugin As String) As Boolean
 
-        Dim strPrompt As String = String.Format(My.Resources.PROMPT_UPDATE_MIGRATION, strPlugin)
+        Dim strPrompt As String = cStringUtils.Localize(My.Resources.PROMPT_UPDATE_MIGRATION, strPlugin)
         Dim bCheck As Boolean = False
         Dim bOverwrite As Boolean = False
 

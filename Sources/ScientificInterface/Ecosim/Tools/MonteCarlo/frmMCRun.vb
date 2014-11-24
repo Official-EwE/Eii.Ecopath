@@ -24,6 +24,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterface.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
@@ -380,7 +381,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnEETolChanged(ByVal sender As Object, ByVal e As system.EventArgs)
+        Private Sub OnEETolChanged(ByVal sender As Object, ByVal e As System.EventArgs)
             If Me.m_mcmanager IsNot Nothing Then
                 Try
                     Me.m_mcmanager.EcopathEETolerance = CSng(Me.m_fpEETol.Value)
@@ -688,7 +689,7 @@ Namespace Ecosim
             Dim line As LineItem = Nothing
 
             Me.m_nTrials += 1
-            Me.m_plothelper.CreateRun(String.Format(SharedResources.GENERIC_VALUE_ITERATION, Me.m_nTrials))
+            Me.m_plothelper.CreateRun(cStringUtils.Localize(SharedResources.GENERIC_VALUE_ITERATION, Me.m_nTrials))
             Me.m_lpplIteration.Clear()
 
             If (Me.m_mcmanager.ShowBiomassTrajectories = True) Then
@@ -699,8 +700,8 @@ Namespace Ecosim
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
-                    Dim strGroupName As String = String.Format(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name)
-                    Dim strTrialLabel As String = String.Format(My.Resources.GENERIC_LABEL_TRIAL, Me.m_nTrials, strGroupName)
+                    Dim strGroupName As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name)
+                    Dim strTrialLabel As String = cStringUtils.Localize(My.Resources.GENERIC_LABEL_TRIAL, Me.m_nTrials, strGroupName)
                     line = Me.m_plothelper.CreateLine(group, Me.m_lpplIteration(iGroup - 1), strTrialLabel)
                     Me.m_plothelper.Metadata(line, "SS") = Me.m_mcmanager.SS
 

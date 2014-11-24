@@ -21,11 +21,12 @@
 Option Strict On
 Option Explicit On
 
+Imports System.Threading
+Imports EwECore.MSE
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports System.Threading
-Imports EwECore.MSE
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -3022,7 +3023,7 @@ Namespace Ecosim
 
                     ' Add detail
                     vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                             String.Format(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, medData.MediationTitles(i)), _
+                                             cStringUtils.Localize(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, medData.MediationTitles(i)), _
                                              eVarNameFlags.MedFunctNumber, eDataTypes.Mediation, eCoreComponentType.EcoSim, i)
                     msg.AddVariable(vs)
                     ' Flag med fn as unusable
@@ -3099,7 +3100,7 @@ Namespace Ecosim
 
                         ' Add detail
                         vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                                 String.Format(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, PriceMedData.MediationTitles(iShp)), _
+                                                 cStringUtils.Localize(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, PriceMedData.MediationTitles(iShp)), _
                                                  eVarNameFlags.MedFunctNumber, eDataTypes.Mediation, eCoreComponentType.EcoSim, iShp)
                         msg.AddVariable(vs)
                         ' Flag med fn as unusable
@@ -3586,7 +3587,7 @@ Namespace Ecosim
                 If vbK = 0 Then
                     '  MsgBox("Enter K of VBGF") : Exit Sub
                     Me.m_publisher.SendMessage( _
-                            New cMessage(String.Format(My.Resources.CoreMessages.STANZA_KinVGBF_MISSING, Me.m_stanza.StanzaName(isp)), _
+                            New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_KinVGBF_MISSING, Me.m_stanza.StanzaName(isp)), _
                             eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
                     Return False
                 End If
@@ -4391,7 +4392,7 @@ Namespace Ecosim
                 For j = 1 To nGroups
                     If m_Data.Consumption(i, j) > 0 Then
                         If Tcon(i, j) < 1 Then
-                            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, m_EPData.GroupName(i), m_EPData.GroupName(j)), _
+                            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, m_EPData.GroupName(i), m_EPData.GroupName(j)), _
                                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
                             Me.m_publisher.AddMessage(msg)
                             'assign remaining consumption by j of i to the i,j arena

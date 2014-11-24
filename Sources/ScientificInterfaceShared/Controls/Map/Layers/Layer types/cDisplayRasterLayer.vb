@@ -20,13 +20,12 @@
 
 Option Strict On
 Imports EwECore
-Imports EwECore.Auxiliary
+Imports EwECore.SpatialData
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls.Map
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
-Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -619,12 +618,12 @@ Namespace Controls.Map.Layers
 
                         Select Case m_aUnitTypes.Length
                             Case 0
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Name)
+                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name)
                             Case 1
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Name, _
+                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name, _
                                                                sg.GetUnitString(m_aUnitTypes(0)))
                             Case 2
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Name, _
+                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name, _
                                                                sg.GetUnitString(m_aUnitTypes(0)), _
                                                                sg.GetUnitString(m_aUnitTypes(1)))
                             Case Else

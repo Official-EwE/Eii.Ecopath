@@ -646,7 +646,7 @@ Namespace Ecospace
                 lstrMPAs.Add(mi.Name)
             Next
 
-            mi = New cMPAInfo(String.Format(SharedResources.DEFAULT_NEWMPA_NUM, _
+            mi = New cMPAInfo(cStringUtils.Localize(SharedResources.DEFAULT_NEWMPA_NUM, _
                     cStringUtils.GetNextNumber(lstrMPAs.ToArray(), SharedResources.DEFAULT_NEWMPA_NUM)))
             Me.m_alMPAs.Insert(iMPA, mi)
 
@@ -731,7 +731,7 @@ Namespace Ecospace
                 ElseIf Not Me.IsNameUnique(hi.Name, hi) Then
                     If Not lstrHandled.Contains(hi.Name) Then
                         fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                             String.Format(My.Resources.PROMPT_DUPLICATE_NAME, hi.Name), _
+                                                             cStringUtils.Localize(My.Resources.PROMPT_DUPLICATE_NAME, hi.Name), _
                                                              eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
                         lstrHandled.Add(hi.Name)
                     End If
@@ -809,7 +809,7 @@ Namespace Ecospace
 
             If (iDeleteCount > 0) Then
 
-                strPrompt = String.Format(My.Resources.ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT, iDeleteCount)
+                strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT, iDeleteCount)
                 Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 

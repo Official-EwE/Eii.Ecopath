@@ -22,8 +22,8 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Utilities
 Imports ScientificInterface.Wizard
-Imports ScientificInterface.Ecosim
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -82,7 +82,7 @@ Namespace Ecosim
                 Case eDialogModeType.SaveScenario
                     strCaption = My.Resources.ECOSIM_SCENARIO_SAVEAS_CAPTION
             End Select
-            Return String.Format(strCaption, strEwEModelName)
+            Return cStringUtils.Localize(strCaption, strEwEModelName)
         End Function
 
         Protected Overrides Function DeleteScenario(ByVal scenario As EwECore.cEwEScenario) As Boolean

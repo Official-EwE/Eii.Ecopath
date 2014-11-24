@@ -21,6 +21,7 @@
 Option Strict On
 Option Explicit On
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region 'Imports
 
@@ -100,14 +101,14 @@ Public Class cPSDModel
 
                 ' JS: add variable status to report missing L or W 
                 If (m_psd.WinfInput(i) < 0 And m_psd.LooInput(i) < 0) Then
-                    str = String.Format(My.Resources.CoreMessages.PSD_REQ_LW, Me.m_Data.GroupName(i))
+                    str = cStringUtils.Localize(My.Resources.CoreMessages.PSD_REQ_LW, Me.m_Data.GroupName(i))
                     vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                     msg.AddVariable(vs)
                 End If
 
                 ' JS: add variable status to report missing K in VGBF
                 If (m_Data.vbK(i) <= 0) Then
-                    str = String.Format(My.Resources.CoreMessages.PSD_REQ_K_VBGF, Me.m_Data.GroupName(i))
+                    str = cStringUtils.Localize(My.Resources.CoreMessages.PSD_REQ_K_VBGF, Me.m_Data.GroupName(i))
                     vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                     msg.AddVariable(vs)
                 End If
@@ -135,7 +136,7 @@ Public Class cPSDModel
                 m_msgPub.SendMessage(msg)
             End If
         Catch ex As Exception
-            cLog.Write(String.Format("cPSDModel.NotifyCore(...) Failed to post message {0}.", msg.ToString()))
+            cLog.Write(cStringUtils.Localize("cPSDModel.NotifyCore(...) Failed to post message {0}.", msg.ToString()))
         End Try
 
     End Sub

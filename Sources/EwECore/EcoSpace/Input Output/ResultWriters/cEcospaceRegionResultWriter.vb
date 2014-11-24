@@ -165,10 +165,10 @@ Public Class cEcospaceRegionResultWriter
             For iData As Integer = 0 To 1
                 ' Define file name and data descriptor
                 If (iData = 0) Then
-                    strFile = cFileUtils.ToValidFileName(String.Format("Biomass_{0}.csv", strName), False)
+                    strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("Biomass_{0}.csv", strName), False)
                     strDescriptor = "Biomass by region"
                 Else
-                    strFile = cFileUtils.ToValidFileName(String.Format("Catch_{0}.csv", strName), False)
+                    strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("Catch_{0}.csv", strName), False)
                     strDescriptor = "Catch by region"
                 End If
 
@@ -247,16 +247,16 @@ Public Class cEcospaceRegionResultWriter
                 ' Define file name and data descriptor
                 Select Case iData
                     Case 0
-                        strFile = cFileUtils.ToValidFileName(String.Format("{0}_biomass.csv", strName), False)
+                        strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_biomass.csv", strName), False)
                         strDescriptor = "Biomass by region"
                     Case 1
-                        strFile = cFileUtils.ToValidFileName(String.Format("{0}_biomass_annual.csv", strName), False)
+                        strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_biomass_annual.csv", strName), False)
                         strDescriptor = "Annual biomass by region"
                     Case 2
-                        strFile = cFileUtils.ToValidFileName(String.Format("{0}_catch.csv", strName), False)
+                        strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_catch.csv", strName), False)
                         strDescriptor = "Catch by region"
                     Case 3
-                        strFile = cFileUtils.ToValidFileName(String.Format("{0}_catch_annual.csv", strName), False)
+                        strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_catch_annual.csv", strName), False)
                         strDescriptor = "Annual catch by region"
                 End Select
 

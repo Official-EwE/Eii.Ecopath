@@ -22,6 +22,7 @@ Imports EwECore.Ecosim
 Imports EwEUtils.Core
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 
 
 Namespace FitToTimeSeries
@@ -307,7 +308,7 @@ Namespace FitToTimeSeries
 
             Catch ex As Exception
 
-                AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
+                AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Critical))
@@ -419,7 +420,7 @@ Namespace FitToTimeSeries
 
             Catch ex As Exception
                 ' Woops
-                AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
+                AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Critical))
@@ -548,7 +549,7 @@ Namespace FitToTimeSeries
                 ' Done
 
             Catch ex As Exception
-                AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
+                AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Critical))
@@ -984,7 +985,7 @@ Namespace FitToTimeSeries
                 Me.m_runstoppedHandler(Me.RunState)
                 Me.RunState = eRunType.Idle
 
-                AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.F2TS_ERROR_ESTIMATION, ex.Message), _
+                AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR_ESTIMATION, ex.Message), _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Warning))
