@@ -37,6 +37,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 
@@ -8637,9 +8638,9 @@ Public Class cCore
                 InitEcospaceOutputs()
                 InitEcotracerOutputs()
 
-                If checkHabitats() Then
+                If CheckHabitats() Then
 
-                    If CheckSpatialDataTimeSteps() Then
+                    If CheckExternalSpatialTemporalData() Then
 
                         ' Write detailed info
                         cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s), start year " & Me.EcosimFirstYear, eVerboseLevel.Detailed)
@@ -8771,7 +8772,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns>True if all groups are above so min value. False otherwise</returns>
     ''' -----------------------------------------------------------------------
-    Private Function checkHabitats() As Boolean
+    Private Function CheckHabitats() As Boolean
         Dim igrp As Integer
         Dim msg As cFeedbackMessage = Nothing
         Dim vs As cVariableStatus = Nothing
@@ -8828,13 +8829,13 @@ Public Class cCore
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function CheckSpatialDataTimeSteps() As Boolean
+    Private Function CheckExternalSpatialTemporalData() As Boolean
 
         If (Me.m_spatialdataconnectionManager.NumConnectedAdapters = 0) Then Return True
 
         ' Allow a bit of room for rounding errors
         If (Math.Round(1 / Me.m_EcoSpaceData.TimeStep, 3) > cCore.N_MONTHS) Then
-            Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS, _
+            Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_TOOMANYTIMESTEPS, _
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
             fmsg.ReplyStyle = eMessageReplyStyle.YES_NO
             fmsg.Suppressable = True
@@ -8847,7 +8848,36 @@ Public Class cCore
             End If
 
         End If
-        Return True
+
+        ' Check if all connections are able to deliver data
+        Dim problems As ISpatialdataset() = Me.m_spatialdataconnectionManager.InvalidConnections()
+        If (problems.Length > 0) Then
+
+            Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATA, _
+                                             eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
+            For Each conn As ISpatialDataSet In problems
+                Try
+                    Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
+                                                  String.Format(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATA_DETAIL, conn.DisplayName), _
+                                                  eVarNameFlags.Name, eDataTypes.External, eCoreComponentType.External, 0)
+                    fmsg.AddVariable(vs)
+                Catch ex As Exception
+                    Debug.Assert(False, "Localization error")
+                    cLog.Write(ex, "cCore.CheckExternalSpatialTemporalData")
+                End Try
+            Next
+
+            fmsg.ReplyStyle = eMessageReplyStyle.YES_NO
+            fmsg.Suppressable = True
+            fmsg.Reply = eMessageReply.YES
+
+            Me.m_publisher.SendMessage(fmsg)
+
+            If (fmsg.Reply = eMessageReply.NO) Then
+                Return False
+            End If
+        End If
+            Return True
 
     End Function
 

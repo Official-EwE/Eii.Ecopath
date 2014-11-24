@@ -226,6 +226,32 @@ Namespace SpatialData
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns an array of all <see cref="ISpatialDataset">data sets</see>
+        ''' that are known to be missing data.
+        ''' </summary>
+        ''' <returns>An array of all <see cref="cSpatialDataConnection">connections</see>
+        ''' that are known to be missing data.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function InvalidConnections() As ISpatialDataSet()
+
+            Dim problems As New List(Of ISpatialDataSet)
+
+            For Each adt As cSpatialDataAdapter In Me.Adapters
+                For Each conn As cSpatialDataConnection In adt.Connections()
+                    If conn.IsConfigured() Then
+                        Dim comp As New cDatasetCompatilibity(Me.m_core, conn.Dataset)
+                        If (comp.NumError > 0) And (Not problems.Contains(conn.Dataset)) Then
+                            problems.Add(conn.Dataset)
+                        End If
+                    End If
+                Next
+            Next
+            Return problems.ToArray()
+
+        End Function
+
 #End Region ' Generic information
 
 #Region " Adapters "

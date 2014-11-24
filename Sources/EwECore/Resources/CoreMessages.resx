@@ -1071,7 +1071,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="ECOPATH_NEGATIVE_RESPIR_WARNING" xml:space="preserve">
     <value>WARNING : Respiration cannot be negative. Summary statistics for the system are suppressed. Please check parameters and rerun program.</value>
   </data>
-  <data name="ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS" xml:space="preserve">
+  <data name="SPATIALTEMPORAL_TOOMANYTIMESTEPS" xml:space="preserve">
     <value>Ecospace is set to run with more than twelve time steps per year, while external data can only be delivered for the first day of a month. Your model may not be able to obtain the correct data for every time step. Do you want to continue?</value>
   </data>
   <data name="STATUS_SPATIALTERMPORAL_CALCULATING" xml:space="preserve">
@@ -1247,5 +1247,12 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   </data>
   <data name="DIETCOMP_PROMPT_MISSING" xml:space="preserve">
     <value>Diets for one or more groups have not been entered</value>
+  </data>
+  <data name="SPATIALTEMPORAL_MISSINGDATA" xml:space="preserve">
+    <value>Some external spatial-temporal data connections will not be able to access their data. Do you want to continue?</value>
+  </data>
+  <data name="SPATIALTEMPORAL_MISSINGDATA_DETAIL" xml:space="preserve">
+    <value>Data connection {0} cannot locate its data</value>
+    <comment>{0}=dataset name</comment>
   </data>
 </root>
