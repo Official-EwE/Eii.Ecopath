@@ -29,6 +29,7 @@ Imports System.Globalization
 Imports System.Security.Cryptography
 Imports System.Collections.Generic
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -1655,6 +1656,46 @@ Namespace Utilities
         End Property
 
 #End Region ' Microsoft.VisualBasic alternatives
+
+#Region " Localization "
+
+        Public Shared Function Localize(strMask As String, val1 As Object) As String
+            Try
+                Return String.Format(strMask, val1)
+            Catch ex As Exception
+                cLog.Write(ex, "Localization error")
+            End Try
+            Return strMask
+        End Function
+
+        Public Shared Function Localize(strMask As String, val1 As Object, val2 As Object) As String
+            Try
+                Return String.Format(strMask, val1, val2)
+            Catch ex As Exception
+                cLog.Write(ex, "Localization error")
+            End Try
+            Return strMask
+        End Function
+
+        Public Shared Function Localize(strMask As String, val1 As Object, val2 As Object, val3 As Object) As String
+            Try
+                Return String.Format(strMask, val1, val2, val3)
+            Catch ex As Exception
+                cLog.Write(ex, "Localization error")
+            End Try
+            Return strMask
+        End Function
+
+        Public Shared Function Localize(strMask As String, vals As Object()) As String
+            Try
+                Return String.Format(strMask, vals)
+            Catch ex As Exception
+                cLog.Write(ex, "Localization error")
+            End Try
+            Return strMask
+        End Function
+
+#End Region ' Localization
 
     End Class
 
