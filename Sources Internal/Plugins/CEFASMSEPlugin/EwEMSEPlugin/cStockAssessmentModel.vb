@@ -730,8 +730,9 @@ Public Class cStockAssessmentModel
     End Function
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
+
+        Dim strm As StreamWriter = Nothing
         Dim breturn As Boolean
-        Dim strm As StreamWriter
 
         Try
 

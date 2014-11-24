@@ -54,7 +54,7 @@ Namespace SpatialData
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="IConfigurablePlugin.GetConfigUI"/>
+        ''' <inheritdocs cref="IConfigurable.GetConfigUI"/>
         ''' -----------------------------------------------------------------------
         Public Function GetConfigUI() As System.Windows.Forms.Control _
             Implements IConfigurable.GetConfigUI

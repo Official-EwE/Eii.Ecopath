@@ -100,12 +100,14 @@ Public Class gridErrorCVs
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
+        ' ToDo: localize this
+
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
 
         Me.Redim(1, iNumCols)
 
-        Dim colName As String
-        Dim errorCaption As String
+        Dim colName As String = ""
+        Dim errorCaption As String = ""
         Select Case Me.m_CurSelectedDataType
             Case frmEditAssessmentError.eErrorDataType.FleetImplementationError
                 colName = SharedResources.HEADER_FLEETNAME

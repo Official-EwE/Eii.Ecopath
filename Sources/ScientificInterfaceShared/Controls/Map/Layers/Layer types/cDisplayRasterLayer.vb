@@ -118,7 +118,7 @@ Namespace Controls.Map.Layers
         ''' This is a hack solution. <see cref="cEcospaceLayer">Basemap layers</see> are not exposed as true
         ''' <see cref="EwECore.ValueWrapper.cValue">core value objects</see>. To provide layers with common GUI issues
         ''' such as remark feedback and broadcasted updates, as well as the ability to attach 
-        ''' <see cref="cVisualStyle">Visual Styles</see> to layers, this hidden property is used.
+        ''' <see cref="EwECore.Auxiliary.cVisualStyle">Visual Styles</see> to layers, this hidden property is used.
         ''' </remarks>
         Private m_propBacklink As cProperty = Nothing
 

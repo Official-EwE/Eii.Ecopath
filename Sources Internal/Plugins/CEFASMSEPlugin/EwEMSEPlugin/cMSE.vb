@@ -2073,7 +2073,7 @@ Public Class cMSE
         Dim qb(nTrials, nLiving) As Single
         Dim ee(nTrials, nLiving) As Single
         Dim TimeFindingBalanced As New Stopwatch
-        Dim csv As CsvReader
+
         'Dim nPPers As Integer 'number of primary producers
         'Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
         'Const PQThreshold As Double = 0.5
