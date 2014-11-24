@@ -266,7 +266,7 @@ Namespace SpatialData
                                         dataExternal = Nothing
 
                                     Else
-                                        strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOAD, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
+                                        strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOAD, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize)
                                         Me.m_core.SpatialOperationLog.LogOperation(strMsg, eStatusFlags.MissingParameter)
                                         cLog.Write(strMsg)
                                         bSuccess = False
