@@ -1222,8 +1222,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=plugin module name</comment>
   </data>
   <data name="SPATIALTEMPORAL_EXPORT_ERROR" xml:space="preserve">
-    <value>Failed to export data set(s) to {1}</value>
-    <comment>{0}=dataset count, {1}=folder</comment>
+    <value>Failed to export data set(s) to {0}</value>
+    <comment>{0}=folder</comment>
   </data>
   <data name="SPATIALTEMPORAL_EXPORT_SUCCESS" xml:space="preserve">
     <value>{0} data set(s) successfully exported to {1}. This folder is ready to be transferred to another computer</value>
