@@ -2291,7 +2291,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Failed to export data set(s) to {1}.
+        '''  Looks up a localized string similar to Failed to export data set(s) to {0}.
         '''</summary>
         Friend Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_ERROR() As String
             Get
