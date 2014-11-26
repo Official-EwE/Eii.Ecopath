@@ -64,7 +64,7 @@ Public Class cEffortLimits
         Implements IMSEData.Defaults
         For i As Integer = 1 To Me.m_core.nFleets
             'Me.Value(i) = cEffortLimits.NoHCR_F
-            Me.Value(i) = 1
+            Me.Value(i) = 0.1
         Next
         Me.m_bChanged = False
     End Sub

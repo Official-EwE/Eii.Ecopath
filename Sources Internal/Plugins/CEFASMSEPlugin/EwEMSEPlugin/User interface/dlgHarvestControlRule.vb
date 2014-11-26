@@ -136,7 +136,7 @@ Public Class dlgHarvestControlRule
 
         Dim validationstring As String = ""
 
-        If Me.m_strategy.AlreadyContainsATarg(Me.HarvestControlRule) And Me.HarvestControlRule.TypeOfHCR = HCRType.Target Then
+        If Me.m_strategy.Contains(Me.HarvestControlRule) And Me.HarvestControlRule.TypeOfHCR = HCRType.Target Then
             'Failed vaidation rule already exists in strategy
             Me.m_bIsValid = False
             Me.m_Plugin.InformUser(My.Resources.ERROR_HARVESTRULE_DUPLICATE, EwEUtils.Core.eMessageImportance.Critical)
@@ -222,6 +222,8 @@ Public Class dlgHarvestControlRule
         Else
             Me.m_HRC.MaxF = 0
         End If
+
+        Me.m_HRC.TypeOfHCR = CType(m_cmbCostFunctions.SelectedItem, cHCRTypeItem).Function
 
         ' Oooh
         Me.m_tbxRule.Text = Me.m_HRC.ToString()

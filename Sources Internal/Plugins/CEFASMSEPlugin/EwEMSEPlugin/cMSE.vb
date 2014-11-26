@@ -2073,7 +2073,7 @@ Public Class cMSE
         Dim qb(nTrials, nLiving) As Single
         Dim ee(nTrials, nLiving) As Single
         Dim TimeFindingBalanced As New Stopwatch
-
+        Dim csv As CsvReader
         'Dim nPPers As Integer 'number of primary producers
         'Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
         'Const PQThreshold As Double = 0.5
@@ -2772,7 +2772,10 @@ Public Class cMSE
                             End If
 
                             'Limit the effort if it is greater than the max allowable 
-                            If Emax < m_ecosim.EcosimData.FishRateGear(iFleet, iTime) Then m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
+                            If Emax < m_ecosim.EcosimData.FishRateGear(iFleet, iTime) Then
+                                m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
+                            End If
+
 
                             'Alters the discard parameters 
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
@@ -2856,7 +2859,6 @@ Public Class cMSE
                 If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
                     _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 Else
-
                     'Make sure the fleet is regulated if we are going add error to Effort Implementation
                     If Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None Then
                         'Add uncertainty to the regulated Effort 

@@ -81,7 +81,7 @@ Public Class Strategy
 #Region " IList implementation "
 
     Public Sub Add(item As HCR_Group) Implements ICollection(Of HCR_Group).Add
-        If Not Me.AlreadyContainsATarg(item) Then
+        If Not Me.Contains(item) Or item.TypeOfHCR = HCRType.Conservation Then
             Me.m_HCRsList.Add(item)
         End If
     End Sub
@@ -89,15 +89,6 @@ Public Class Strategy
     Public Sub Clear() Implements ICollection(Of HCR_Group).Clear
         Me.m_HCRsList.Clear()
     End Sub
-
-    Public Function AlreadyContainsATarg(item As HCR_Group) As Boolean
-        For Each Rule As HCR_Group In Me
-            If Object.ReferenceEquals(item.GroupB, Rule.GroupB) And Object.ReferenceEquals(item.GroupF, Rule.GroupF) And Rule.TypeOfHCR = HCRType.Target Then
-                Return True
-            End If
-        Next
-        Return False
-    End Function
 
     Public Function Contains(item As HCR_Group) As Boolean Implements ICollection(Of HCR_Group).Contains
         For Each Rule As HCR_Group In Me
