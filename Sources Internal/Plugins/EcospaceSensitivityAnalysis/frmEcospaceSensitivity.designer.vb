@@ -71,7 +71,7 @@ Partial Class frmEcospaceSensitivity
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_pbTotalProgress.Location = New System.Drawing.Point(14, 529)
         Me.m_pbTotalProgress.Name = "m_pbTotalProgress"
-        Me.m_pbTotalProgress.Size = New System.Drawing.Size(1149, 26)
+        Me.m_pbTotalProgress.Size = New System.Drawing.Size(1167, 26)
         Me.m_pbTotalProgress.Step = 1
         Me.m_pbTotalProgress.TabIndex = 1
         '
@@ -81,7 +81,7 @@ Partial Class frmEcospaceSensitivity
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_pbRunProgress.Location = New System.Drawing.Point(14, 483)
         Me.m_pbRunProgress.Name = "m_pbRunProgress"
-        Me.m_pbRunProgress.Size = New System.Drawing.Size(1149, 24)
+        Me.m_pbRunProgress.Size = New System.Drawing.Size(1167, 24)
         Me.m_pbRunProgress.Step = 1
         Me.m_pbRunProgress.TabIndex = 2
         '
@@ -92,7 +92,7 @@ Partial Class frmEcospaceSensitivity
         Me.m_lbOutputFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_lbOutputFile.Location = New System.Drawing.Point(161, 96)
         Me.m_lbOutputFile.Name = "m_lbOutputFile"
-        Me.m_lbOutputFile.Size = New System.Drawing.Size(998, 23)
+        Me.m_lbOutputFile.Size = New System.Drawing.Size(1016, 23)
         Me.m_lbOutputFile.TabIndex = 3
         '
         'm_btStopRun
@@ -113,7 +113,7 @@ Partial Class frmEcospaceSensitivity
         Me.CEwEHeaderLabel2.IsCollapsed = False
         Me.CEwEHeaderLabel2.Location = New System.Drawing.Point(11, 447)
         Me.CEwEHeaderLabel2.Name = "CEwEHeaderLabel2"
-        Me.CEwEHeaderLabel2.Size = New System.Drawing.Size(1149, 12)
+        Me.CEwEHeaderLabel2.Size = New System.Drawing.Size(1167, 12)
         Me.CEwEHeaderLabel2.TabIndex = 9
         Me.CEwEHeaderLabel2.Text = "Progress"
         Me.CEwEHeaderLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -143,7 +143,7 @@ Partial Class frmEcospaceSensitivity
         Me.CEwEHeaderLabel1.IsCollapsed = False
         Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(11, 317)
         Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(1150, 20)
+        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(1168, 20)
         Me.CEwEHeaderLabel1.TabIndex = 13
         Me.CEwEHeaderLabel1.Text = "Sensitivity to functional group responses"
         Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -175,7 +175,7 @@ Partial Class frmEcospaceSensitivity
         Me.CEwEHeaderLabel4.IsCollapsed = False
         Me.CEwEHeaderLabel4.Location = New System.Drawing.Point(11, 375)
         Me.CEwEHeaderLabel4.Name = "CEwEHeaderLabel4"
-        Me.CEwEHeaderLabel4.Size = New System.Drawing.Size(1149, 27)
+        Me.CEwEHeaderLabel4.Size = New System.Drawing.Size(1167, 27)
         Me.CEwEHeaderLabel4.TabIndex = 17
         Me.CEwEHeaderLabel4.Text = "Parameters"
         Me.CEwEHeaderLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -196,7 +196,7 @@ Partial Class frmEcospaceSensitivity
         Me.m_lbRemoval.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_lbRemoval.Location = New System.Drawing.Point(161, 405)
         Me.m_lbRemoval.Name = "m_lbRemoval"
-        Me.m_lbRemoval.Size = New System.Drawing.Size(1002, 23)
+        Me.m_lbRemoval.Size = New System.Drawing.Size(1020, 23)
         Me.m_lbRemoval.TabIndex = 18
         '
         'Label2
@@ -237,7 +237,7 @@ Partial Class frmEcospaceSensitivity
         Me.m_lvFiles.Location = New System.Drawing.Point(14, 181)
         Me.m_lvFiles.MultiSelect = False
         Me.m_lvFiles.Name = "m_lvFiles"
-        Me.m_lvFiles.Size = New System.Drawing.Size(1145, 112)
+        Me.m_lvFiles.Size = New System.Drawing.Size(1163, 112)
         Me.m_lvFiles.TabIndex = 10
         Me.m_lvFiles.UseCompatibleStateImageBehavior = False
         Me.m_lvFiles.View = System.Windows.Forms.View.Details
@@ -270,7 +270,7 @@ Partial Class frmEcospaceSensitivity
         Me.m_lbBoundsPar.IsCollapsed = False
         Me.m_lbBoundsPar.Location = New System.Drawing.Point(11, 72)
         Me.m_lbBoundsPar.Name = "m_lbBoundsPar"
-        Me.m_lbBoundsPar.Size = New System.Drawing.Size(1149, 21)
+        Me.m_lbBoundsPar.Size = New System.Drawing.Size(1167, 21)
         Me.m_lbBoundsPar.TabIndex = 12
         Me.m_lbBoundsPar.Text = "Parameters"
         Me.m_lbBoundsPar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -293,7 +293,7 @@ Partial Class frmEcospaceSensitivity
         Me.CEwEHeaderLabel3.IsCollapsed = False
         Me.CEwEHeaderLabel3.Location = New System.Drawing.Point(11, 10)
         Me.CEwEHeaderLabel3.Name = "CEwEHeaderLabel3"
-        Me.CEwEHeaderLabel3.Size = New System.Drawing.Size(1149, 19)
+        Me.CEwEHeaderLabel3.Size = New System.Drawing.Size(1167, 19)
         Me.CEwEHeaderLabel3.TabIndex = 11
         Me.CEwEHeaderLabel3.Text = "Sensitivity to changes in input factors"
         Me.CEwEHeaderLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -302,7 +302,7 @@ Partial Class frmEcospaceSensitivity
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1173, 574)
+        Me.ClientSize = New System.Drawing.Size(1191, 579)
         Me.ControlBox = False
         Me.Controls.Add(Me.m_lvFiles)
         Me.Controls.Add(Me.Label1)

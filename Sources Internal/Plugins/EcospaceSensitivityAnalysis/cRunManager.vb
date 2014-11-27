@@ -235,7 +235,7 @@ Public Class cRunManager
         System.Console.WriteLine("Exception: " + Source + ex.Message)
     End Sub
 
-  
+
     Public Sub StopRun()
         Me.m_plugin.EcoSpace.m_StopRun = True
         Me.m_bStop = True
@@ -567,7 +567,7 @@ Public Class cRunManager
         Next
 
         Me.writeResults(RunName, ColumnValue)
-         
+
     End Sub
 
     Private Sub writeResults(RunName As String, ColumnValue As Single)
