@@ -94,13 +94,25 @@ Namespace Other
             Dim core As cCore = Me.UIContext.Core
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
             Dim cfg As cSpatialDataConfigFile = CType(Me.m_lvDatasets.SelectedItems(0).Tag, cSpatialDataConfigFile)
+            Dim bSuccess As Boolean = False
             Dim strFileName As String = ""
 
             If (cfg IsNot Nothing) Then
                 strFileName = cfg.FileName
             End If
 
-            man.Load(strFileName, True)
+            Try
+                Me.UIContext.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
+                Try
+                    bSuccess = man.Load(strFileName, True)
+                Catch ex As Exception
+                    bSuccess = False
+                End Try
+                core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
+            End Try
             Me.UpdateConfigFileList()
 
         End Sub
@@ -316,20 +328,19 @@ Namespace Other
 
             If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
 
-            Try
+            'Try
 
-                'Me.UIContext.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
-                'Try
-                '    bSuccess = man.Load(strFile, True)
-                'Catch ex As Exception
-                '    bSuccess = False
-                'End Try
-                'core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
-
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
-            End Try
+            'Me.UIContext.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
+            'Try
+            '    bSuccess = man.Load(strFile, True)
+            'Catch ex As Exception
+            '    bSuccess = False
+            'End Try
+            'core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
+            'Catch ex As Exception
+            '    Debug.Assert(False, ex.Message)
+            '    cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
+            'End Try
 
             man.IsIndexingAllowed = Me.m_cbAllowIndexing.Checked
 
