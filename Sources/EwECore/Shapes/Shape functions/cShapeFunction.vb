@@ -30,6 +30,8 @@ Imports EwEUtils.Utilities
 Public MustInherit Class cShapeFunction
     Implements EwEUtils.Core.IShapeFunction
 
+
+
 #Region " Private vars "
 
     ''' <summary>This original value is extracted from EwE5.</summary>
@@ -83,7 +85,7 @@ Public MustInherit Class cShapeFunction
     ''' enum to locate the function that was used.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property ShapeFunctionType As EwECore.eShapeFunctionType
+    Public MustOverride ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType Implements EwEUtils.Core.IShapeFunction.ShapeFunctionType
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IShapeFunction.Defaults"/>
@@ -190,6 +192,8 @@ Public MustInherit Class cShapeFunction
         Dim shp As cForcingFunction = DirectCast(obj, cForcingFunction)
 
         Debug.Assert(Me.IsCompatible(shp.DataType))
+
+        shp.ShapeFunctionType = Me.ShapeFunctionType
 
         shp.ShapeData = Me.m_points
         For i As Integer = 1 To Me.nParameters

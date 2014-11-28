@@ -20,26 +20,6 @@ Option Strict On
 Imports EwEUtils.Core
 Imports System.ComponentModel
 
-#Region "Public Enumerators"
-
-''' <summary>
-''' The type of function used to create a shape.
-''' </summary>
-Public Enum eShapeFunctionType
-    NotSet = 0
-    Linear
-    Sigmoid
-    Hyperbolic
-    Exponential
-    Betapdf
-    Normal
-    RightShoulder
-    LeftShoulder
-    Trapezoid
-End Enum
-
-#End Region
-
 #Region " Shape manager base class "
 
 ''' <summary>
@@ -784,7 +764,6 @@ Public Class cCapMapResponseManager
 
         Dim dbID As Integer
 
-
         If m_core.AddShape(strName, m_DataType, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
 
             Dim medFunct As cEnviroResponseFunction
@@ -793,6 +772,8 @@ Public Class cCapMapResponseManager
             medFunct = New cEnviroResponseFunction(m_Data, Me, Me.m_medData, dbID, m_DataType)
             medFunct.ID = m_shapes.Count
             medFunct.Load()
+
+            medFunct.ShapeFunctionType = shapeType
 
             'Add the new shape to the list 
             MyBase.Add(medFunct)

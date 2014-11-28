@@ -19,6 +19,9 @@
 
 Option Strict On
 
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+
 #End Region ' Imports
 
 Namespace Core
@@ -98,6 +101,9 @@ Namespace Core
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function Apply(ByVal shape As Object) As Boolean
+
+
+        ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
 
     End Interface
 

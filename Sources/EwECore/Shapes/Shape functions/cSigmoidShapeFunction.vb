@@ -79,9 +79,9 @@ Public Class cSigmoidShapeFunction
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwECore.eShapeFunctionType
+    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
         Get
-            Return eShapeFunctionType.Sigmoid
+            Return EwEUtils.Core.eShapeFunctionType.Sigmoid
         End Get
     End Property
 End Class

@@ -67,7 +67,7 @@ Public Class cBetapdfShapeFunction
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwECore.eShapeFunctionType
+    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
         Get
             Return eShapeFunctionType.Betapdf
         End Get

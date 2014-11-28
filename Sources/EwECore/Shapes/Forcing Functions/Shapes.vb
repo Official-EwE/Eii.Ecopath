@@ -1415,6 +1415,7 @@ Public Class cEnviroResponseFunction
     Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
                    ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
         MyBase.New(EcoSimData, Manager, data, DBID, DataType)
+
     End Sub
 
     Public Overrides Function Update() As Boolean

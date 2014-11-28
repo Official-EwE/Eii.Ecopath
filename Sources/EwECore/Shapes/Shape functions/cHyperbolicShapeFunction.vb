@@ -78,9 +78,9 @@ Public Class cHyperbolicShapeFunction
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwECore.eShapeFunctionType
+    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
         Get
-            Return eShapeFunctionType.Hyperbolic
+            Return EwEUtils.Core.eShapeFunctionType.Hyperbolic
         End Get
     End Property
 End Class

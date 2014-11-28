@@ -86,9 +86,9 @@ Public Class cSketchedShapeFunction
 
     End Function
 
-    Public Overrides ReadOnly Property ShapeFunctionType As eShapeFunctionType
+    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
         Get
-            Return eShapeFunctionType.NotSet
+            Return EwEUtils.Core.eShapeFunctionType.NotSet
         End Get
     End Property
 
