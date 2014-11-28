@@ -98,14 +98,30 @@ Namespace Controls
                 End If
             Next
 
+            'set the function type based on the function type of the current shape
             If (Me.m_lbShapeFunctionTypes.SelectedIndex = -1) Then
-                Me.m_lbShapeFunctionTypes.SelectedIndex = 0
+                Me.m_lbShapeFunctionTypes.SelectedIndex = getShapeTypeIndex(Me.m_shape.ShapeFunctionType)
             End If
 
             Me.UpdatePreview()
             Me.UpdateControls()
 
+
         End Sub
+
+        Private Function getShapeTypeIndex(shapeType As EwEUtils.Core.eShapeFunctionType) As Integer
+            Dim iShpIndex As Integer
+            For Each sft As Object In Me.m_lbShapeFunctionTypes.Items
+
+                If DirectCast(sft, IShapeFunction).ShapeFunctionType = shapeType Then
+                    Return iShpIndex
+                End If
+
+                iShpIndex += 1
+            Next sft
+
+            Return 0
+        End Function
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 

@@ -724,6 +724,9 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub CreateShape(ByVal strName As String)
             ' Create new shape
+
+
+
             Dim shapeNew As cForcingFunction = ShapeManager.CreateNewShape(strName, Nothing)
             ' Validate
             If Object.ReferenceEquals(shapeNew, Nothing) Then Return

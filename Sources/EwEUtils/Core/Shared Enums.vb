@@ -3003,7 +3003,7 @@ Namespace Core
 
 #End Region ' Log levels
 
-#Region " Shape resolution "
+#Region " Shapes "
 
     ''' <summary>
     ''' Enumerated type stating the temporal resolution of shapes.
@@ -3016,6 +3016,24 @@ Namespace Core
         ''' <summary>Shapes represent annual data.</summary>
         Annual = 2
     End Enum
+
+
+    ''' <summary>
+    ''' The type of function used to create a shape.
+    ''' </summary>
+    Public Enum eShapeFunctionType
+        NotSet = 0
+        Linear
+        Sigmoid
+        Hyperbolic
+        Exponential
+        Betapdf
+        Normal
+        RightShoulder
+        LeftShoulder
+        Trapezoid
+    End Enum
+
 
 #End Region ' Shape resolution
 

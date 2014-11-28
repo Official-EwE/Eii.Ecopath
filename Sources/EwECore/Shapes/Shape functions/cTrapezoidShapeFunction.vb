@@ -163,7 +163,7 @@ Public Class cTrapezoidShapeFunction
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwECore.eShapeFunctionType
+    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
         Get
             Return eShapeFunctionType.Trapezoid
         End Get

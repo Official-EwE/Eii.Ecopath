@@ -65,9 +65,9 @@ Public Class cLinearShapeFunction
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwECore.eShapeFunctionType
+    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
         Get
-            Return eShapeFunctionType.Linear
+            Return EwEUtils.Core.eShapeFunctionType.Linear
         End Get
     End Property
 End Class

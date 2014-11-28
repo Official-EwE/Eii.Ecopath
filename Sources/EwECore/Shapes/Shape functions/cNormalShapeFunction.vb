@@ -41,6 +41,7 @@ Public Class cNormalShapeFunction
                 Case 2 : Return My.Resources.CoreDefaults.PARAM_SD_RIGHT
                 Case 3 : Return My.Resources.CoreDefaults.PARAM_SD_WIDTH
                 Case 4 : Return My.Resources.CoreDefaults.PARAM_MEAN
+                Case 5 : Return "Max. Value"
             End Select
             Return MyBase.ParamName(iParam)
         End Get
@@ -139,6 +140,8 @@ Public Class cNormalShapeFunction
         Me.ParamValue(1) = 1
         Me.ParamValue(2) = 1
         Me.ParamValue(3) = 10
+        Me.ParamValue(4) = 0
+        Me.ParamValue(5) = 1
     End Sub
 
     Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
@@ -147,13 +150,13 @@ Public Class cNormalShapeFunction
 
     Public Overrides ReadOnly Property nParameters As Integer
         Get
-            Return 3
+            Return 5
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwECore.eShapeFunctionType
+    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
         Get
-            Return eShapeFunctionType.Normal
+            Return EwEUtils.Core.eShapeFunctionType.Normal
         End Get
     End Property
 End Class
