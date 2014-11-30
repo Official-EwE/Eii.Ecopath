@@ -310,7 +310,7 @@ Namespace Ecospace.Controls
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
                          cDatasetCompatilibity.eCompatibilityTypes.NotSet
-                        ' No tooltip
+                        strText = pos.m_ds.DisplayName
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors
                         strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.m_ds.DisplayName, iStep)
@@ -353,6 +353,9 @@ Namespace Ecospace.Controls
 
                 ' Paint matrix shifted to X and Y scroll position
                 e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, AutoScrollPosition.Y)
+                For i As Integer = 0 To Me.m_lInfo.Count - 1
+                    Me.DrawDatasetIndicator(e.Graphics, Me.m_lInfo(i), i = Me.m_iSelectedIndex)
+                Next
                 Me.DrawGrid(e.Graphics, New Rectangle(0, c_headerheight, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, Me.ClientRectangle.Height - c_headerheight))
                 For i As Integer = 0 To Me.m_lInfo.Count - 1
                     Me.DrawDataset(e.Graphics, Me.m_lInfo(i), i = Me.m_iSelectedIndex)
@@ -547,7 +550,29 @@ Namespace Ecospace.Controls
         End Sub
 
         ''' <summary>
-        ''' 
+        ''' Draw a shaded area to indicate the presence of a dataset. This area falls below the time step grid
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' <param name="pos"></param>
+        Private Sub DrawDatasetIndicator(ByVal g As Graphics, _
+                                         ByVal pos As cDatasetInfo, _
+                                         ByVal bSelected As Boolean)
+
+            Dim rcBar As Rectangle = Me.DatasetArea(pos)
+            Dim rcBack As Rectangle = New Rectangle(-Me.AutoScrollPosition.X, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
+            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
+
+            ' Fill back bar
+            Using br As New SolidBrush(cColorUtils.GetVariant(cStyleGuide.GetColor(comp), 0.75))
+                g.FillRectangle(br, rcBack)
+            End Using
+            g.DrawLine(Pens.White, rcBack.X, rcBack.Y, rcBack.X + rcBack.Width, rcBack.Y)
+
+        End Sub
+
+
+        ''' <summary>
+        ''' Draw the actual dataset bar, data points and labels
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="pos"></param>
@@ -561,11 +586,14 @@ Namespace Ecospace.Controls
             Dim rcDot As New Rectangle(rcBar.X, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
             Dim rcImg As New Rectangle(rcBar.X, CInt(rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_imgradius), 2 * c_imgradius, 2 * c_imgradius)
 
-            Dim clrBar As Color = SystemColors.ButtonFace
+            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
+            Dim clrBar As Color = cStyleGuide.GetColor(comp)
             Dim clrText As Color = SystemColors.ControlText
             Dim clrOutline As Color
 
-            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
+            ' Is off-screen?
+            Dim bOutRight As Boolean = (rcBar.X > AutoScrollPosition.X + Me.ClientRectangle.Width)
+            Dim bOutLeft As Boolean = ((rcBar.X + rcBar.Width) < AutoScrollPosition.X)
 
             If bSelected Then
                 clrText = SystemColors.HighlightText
@@ -581,6 +609,7 @@ Namespace Ecospace.Controls
             Using p As New Pen(clrOutline)
                 g.DrawRectangle(p, rcBar)
             End Using
+
             ' Draw text within bar area, but as much on-screen as possible
             Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                 rcLabel.Width = rcBack.Width
@@ -635,7 +664,10 @@ Namespace Ecospace.Controls
         Private Function DatasetFromPoint(pt As Point) As cDatasetInfo
             If (pt.Y < c_headerheight) Then Return Nothing
             For Each pos As cDatasetInfo In Me.m_lInfo
-                If Me.DatasetArea(pos).Contains(pt) Then Return pos
+                ' JS 30Nov14: only test Y-coordinate fit
+                'If Me.DatasetArea(pos).Contains(pt) Then Return pos
+                Dim area As Rectangle = Me.DatasetArea(pos)
+                If ((pt.Y >= area.Y) And (pt.Y <= (area.Y + area.Height))) Then Return pos
             Next
             Return Nothing
         End Function

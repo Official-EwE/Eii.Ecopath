@@ -247,7 +247,6 @@ Namespace Style
             ''' set to the <see cref="cCore.NULL_VALUE">Core NULL value</see>.</summary>
             Null = CInt(eStatusFlags.Null)
 
-
             ''' <summary>Bit-pattern mask to separate core statuses from GUI statuses.</summary>
             CoreStatusFlagsMask = 4095
 
@@ -255,21 +254,17 @@ Namespace Style
             ' GUI-specific flags
             '-----------------------------------------------------------------
 
-            '''' <summary>EcoSim GUI flag.</summary>
-            '''' <remarks>JS 31may07: Is this style used at all?</remarks>
-            'FishingPressure = 4096 ' 2^12
+            ''' <summary>Ecospace GUI flag.</summary>
+            Generic = 4096 ' 2^12
 
-            '''' <summary>EcoSim GUI flag.</summary>
-            '''' <remarks>JS 31may07: Is this style used at all?</remarks>
-            'Profit = 8192 ' 2^13
+            ''' <summary>EcoSim GUI flag.</summary>
+            Profit = 8192 ' 2^13
 
-            '''' <summary>EcoSim GUI flag.</summary>
-            '''' <remarks>JS 31may07: Is this style used at all?</remarks>
-            'TotalCatch = 16384 ' 2^14
+            ''' <summary>EcoSim GUI flag.</summary>
+            TotalCatch = 16384 ' 2^14
 
-            '''' <summary>EcoSim GUI flag</summary>
-            '''' <remarks>JS 31may07: Is this style used at all?</remarks>
-            'TrophicLink = 32768 ' 2^15
+            ''' <summary>EcoSim GUI flag</summary>
+            TrophicLink = 32768 ' 2^15
 
             ''' <summary>EcoPath GUI flag; indicates whether a value has associated remarks.</summary>
             Remarks = 65536 ' 2^16
@@ -2114,6 +2109,29 @@ Namespace Style
                     Debug.Assert(False)
             End Select
             Return Nothing
+        End Function
+
+        Public Shared Function GetColor(comp As SpatialData.cDatasetCompatilibity) As Color
+            Select Case comp.Compatibility
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NotSet
+                    Return Color.LightGray
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.Errors
+                    Return Color.OrangeRed
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
+                    Return Color.Yellow
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
+                    Return Color.LightGray
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
+                    Return Color.Yellow
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
+                    Return Color.Yellow
+                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
+                    Return Color.LightGreen
+                Case Else
+                    Debug.Assert(False)
+            End Select
+            Return Nothing
+
         End Function
 
 #End Region ' Images
