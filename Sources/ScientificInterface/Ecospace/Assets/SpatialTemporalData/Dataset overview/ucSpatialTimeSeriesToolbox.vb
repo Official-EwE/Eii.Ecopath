@@ -389,7 +389,7 @@ Namespace Ecospace.Controls
                     If msg.Type = eMessageType.DataAddedOrRemoved Then
                         Me.RefreshContent()
                     End If
-                Case eDataTypes.EcoSpaceScenario
+                Case eDataTypes.EcoSpaceScenario, eDataTypes.EcospaceModelParameter
                     Me.RefreshContent()
                 Case eDataTypes.EcospaceSpatialDataSource
                     Me.RefreshContent()
@@ -517,7 +517,10 @@ Namespace Ecospace.Controls
                 For i As Integer = 0 To Me.m_uic.Core.nEcospaceYears Step 5
                     Dim sx As Single = i * sStepsPerYear * Me.m_iTimestepSize
                     g.DrawString(CStr(iYear + i), ft, SystemBrushes.ControlText, sx, 0.0!)
-                    g.DrawLine(SystemPens.ControlLightLight, rc.X + sx, rc.Y, rc.X + sx, rc.Y + rc.Height)
+                    Using p As New Pen(SystemColors.ControlDarkDark, 1)
+                        p.DashStyle = DashStyle.Dot
+                        g.DrawLine(p, rc.X + sx, rc.Y, rc.X + sx, rc.Y + rc.Height)
+                    End Using
                 Next
             End Using
 
@@ -536,7 +539,7 @@ Namespace Ecospace.Controls
 
             Using p As New Pen(SystemColors.ControlDarkDark, 1)
                 p.DashStyle = DashStyle.Dot
-                For i As Integer = 0 To Me.m_uic.Core.nEcospaceYears Step 5
+                For i As Integer = 0 To Me.m_uic.Core.nEcospaceYears
                     Dim sx As Single = i * sStepsPerYear * Me.m_iTimestepSize
                     g.DrawLine(p, rc.X + sx, rc.Y, sx, rc.Y + rc.Height)
                 Next

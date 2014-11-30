@@ -323,6 +323,18 @@ Namespace SpatialData
             End Get
         End Property
 
+        Public ReadOnly Property Status As eStatusFlags
+            Get
+                Return Me.ToStatus(Me.Compatibility)
+            End Get
+        End Property
+
+        Public ReadOnly Property StatusAt(iTimeStep As Integer) As eStatusFlags
+            Get
+                Return Me.ToStatus(Me.CompatibilityAt(iTimeStep))
+            End Get
+        End Property
+
 #End Region ' Public access
 
 #Region " Internals "
@@ -404,6 +416,23 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Function ToRect(ptfTL As PointF, ptfBR As PointF) As RectangleF
             Return New RectangleF(ptfTL.X, ptfBR.Y, ptfBR.X - ptfTL.X, ptfTL.Y - ptfBR.Y)
+        End Function
+
+        Private Function ToStatus(flag As eCompatibilityTypes) As eStatusFlags
+            Select Case flag
+                Case eCompatibilityTypes.NotSet
+                    Return eStatusFlags.Null
+                Case eCompatibilityTypes.TemporalNotIndexed
+                    Return eStatusFlags.Null
+                Case eCompatibilityTypes.NoSpatial, eCompatibilityTypes.NoTemporal
+                    Return eStatusFlags.MissingParameter
+                Case eCompatibilityTypes.Errors
+                    Return eStatusFlags.ErrorEncountered
+                Case eCompatibilityTypes.PartialSpatial
+                    Return eStatusFlags.MissingParameter
+                Case eCompatibilityTypes.TotalOverlap
+                    Return eStatusFlags.OK
+            End Select
         End Function
 
 #End Region ' Internals
