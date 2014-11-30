@@ -192,28 +192,38 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim core As cCore = Me.UIContext.Core
+            Dim bm As cEcospaceBasemap = core.EcospaceBasemap
             Dim mpa As cEcospaceLayerMPA = bm.LayerMPA
-            Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
+            Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
             Dim regions As cEcospaceLayerRegion = bm.LayerRegion
             Dim sValMax As Single = 0
             Dim iHabMax As Integer = 0
+            Dim nRegions As Integer = Me.UIContext.Core.nHabitats - 1
 
-            parms.nRegions = Me.UIContext.Core.nHabitats
+            core.SetBatchLock(cCore.eBatchLockType.Update)
+            parms.nRegions = nRegions
+            Try
 
-            For iRow As Integer = 1 To bm.InRow
-                For iCol As Integer = 1 To bm.InCol
-                    sValMax = 0
-                    iHabMax = 0
-                    For iHab As Integer = 1 To parms.nRegions
-                        Dim sVal As Single = CSng(bm.LayerHabitat(iHab).Cell(iRow, iCol))
-                        If sVal > sValMax Then
-                            sValMax = sVal : iHabMax = iHab
-                        End If
-                    Next
-                    regions.Cell(iRow, iCol) = iHabMax
-                Next iCol
-            Next iRow
+                For iRow As Integer = 1 To bm.InRow
+                    For iCol As Integer = 1 To bm.InCol
+                        sValMax = 0
+                        iHabMax = 0
+                        For iHab As Integer = 1 To nRegions
+                            Dim sVal As Single = CSng(bm.LayerHabitat(iHab).Cell(iRow, iCol))
+                            If sVal > sValMax Then
+                                sValMax = sVal : iHabMax = iHab
+                            End If
+                        Next
+                        regions.Cell(iRow, iCol) = iHabMax
+                    Next iCol
+                Next iRow
+            Catch ex As Exception
+
+            End Try
+            core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+            regions.Invalidate()
+            core.onChanged(regions)
 
         End Sub
 
