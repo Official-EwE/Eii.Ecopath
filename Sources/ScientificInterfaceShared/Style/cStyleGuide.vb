@@ -254,17 +254,7 @@ Namespace Style
             ' GUI-specific flags
             '-----------------------------------------------------------------
 
-            ''' <summary>Ecospace GUI flag.</summary>
-            Generic = 4096 ' 2^12
-
-            ''' <summary>EcoSim GUI flag.</summary>
-            Profit = 8192 ' 2^13
-
-            ''' <summary>EcoSim GUI flag.</summary>
-            TotalCatch = 16384 ' 2^14
-
-            ''' <summary>EcoSim GUI flag</summary>
-            TrophicLink = 32768 ' 2^15
+            ' There is room for 3 flags (2^13, 2^14, and 2^15) here
 
             ''' <summary>EcoPath GUI flag; indicates whether a value has associated remarks.</summary>
             Remarks = 65536 ' 2^16
@@ -2112,23 +2102,17 @@ Namespace Style
         End Function
 
         Public Shared Function GetColor(comp As SpatialData.cDatasetCompatilibity) As Color
-            Select Case comp.Compatibility
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NotSet
+            Select Case comp.Status
+                Case eStatusFlags.Null
                     Return Color.LightGray
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.Errors
+                Case eStatusFlags.ErrorEncountered
                     Return Color.OrangeRed
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
+                Case eStatusFlags.MissingParameter
                     Return Color.Yellow
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                    Return Color.LightGray
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                    Return Color.Yellow
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                    Return Color.Yellow
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
+                Case eStatusFlags.OK
                     Return Color.LightGreen
                 Case Else
-                    Debug.Assert(False)
+                    Debug.Assert(False, "Status not supported")
             End Select
             Return Nothing
 

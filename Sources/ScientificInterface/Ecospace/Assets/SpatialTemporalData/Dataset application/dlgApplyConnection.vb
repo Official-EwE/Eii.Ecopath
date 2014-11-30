@@ -168,6 +168,10 @@ Namespace Ecospace.Controls
             ' Start listening to grid events
             AddHandler Me.m_gridConnections.OnSelectionChanged, AddressOf OnSelectDS
 
+            ' ToDo: globalize this
+            cToolTipShared.GetInstance().SetToolTip(Me.m_btnAdd, "Connect")
+            cToolTipShared.GetInstance().SetToolTip(Me.m_btnRemove, "Disconnect")
+
             Me.m_bInUpdate = False
             Me.CenterToParent()
 
