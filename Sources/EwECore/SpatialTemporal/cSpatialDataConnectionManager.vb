@@ -231,6 +231,9 @@ Namespace SpatialData
         ''' Returns an array of all <see cref="ISpatialDataset">data sets</see>
         ''' that are known to be missing data.
         ''' </summary>
+        ''' <param name="bEnabledOnly">If true, only <see cref="ISpatialDataset">data sets</see>
+        ''' that are <see cref="cSpatialDataAdapter.IsEnabled">enabled</see> are
+        ''' checked. If false, all <see cref="ISpatialDataset">data sets</see> are checked.</param>
         ''' <returns>An array of all <see cref="cSpatialDataConnection">connections</see>
         ''' that are known to be missing data.</returns>
         ''' -------------------------------------------------------------------
