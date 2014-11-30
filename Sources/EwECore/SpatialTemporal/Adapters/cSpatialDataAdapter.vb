@@ -611,6 +611,17 @@ Namespace SpatialData
 
 #Region " Connections "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return configured connections for this adapter.
+        ''' </summary>
+        ''' <param name="iLayer">The one-based index of the layer to return connections for.
+        ''' If less than one, cnofigured connections for all layers in the adapter are returned.</param>
+        ''' <param name="bEnabledOnly">If true, only those layers specified by <paramref name="iLayer"/>
+        ''' that are <see cref="IsEnabled">enabled</see> are examined. If this flag is False, 
+        ''' all layers specified by <paramref name="iLayer"/> are examined.</param>
+        ''' <returns>Configured connections for this adapter.</returns>
+        ''' -------------------------------------------------------------------
         Public Function Connections(Optional iLayer As Integer = -1, _
                                     Optional bEnabledOnly As Boolean = False) As cSpatialDataConnection()
 
@@ -618,8 +629,8 @@ Namespace SpatialData
             Dim iTo As Integer = iLayer
             Dim lConn As New List(Of cSpatialDataConnection)
 
-            If iFrom = -1 Then iFrom = 1
-            If iTo = -1 Then iTo = Me.MaxLength
+            If (iFrom <= 0) Then iFrom = 1
+            If (iTo <= 0) Then iTo = Me.MaxLength
             For iLayer = iFrom To iTo
                 If Me.IsEnabled(iLayer) Or (bEnabledOnly = False) Then
                     If Me.m_connections(iLayer).Count > 0 Then
