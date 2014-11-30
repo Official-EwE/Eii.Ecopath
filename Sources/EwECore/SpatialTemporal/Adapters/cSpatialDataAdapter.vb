@@ -611,7 +611,8 @@ Namespace SpatialData
 
 #Region " Connections "
 
-        Public Function Connections(Optional iLayer As Integer = -1) As cSpatialDataConnection()
+        Public Function Connections(Optional iLayer As Integer = -1, _
+                                    Optional bEnabledOnly As Boolean = False) As cSpatialDataConnection()
 
             Dim iFrom As Integer = iLayer
             Dim iTo As Integer = iLayer
@@ -620,8 +621,10 @@ Namespace SpatialData
             If iFrom = -1 Then iFrom = 1
             If iTo = -1 Then iTo = Me.MaxLength
             For iLayer = iFrom To iTo
-                If Me.m_connections(iLayer).Count > 0 Then
-                    lConn.AddRange(Me.m_connections(iLayer))
+                If Me.IsEnabled(iLayer) Or (bEnabledOnly = False) Then
+                    If Me.m_connections(iLayer).Count > 0 Then
+                        lConn.AddRange(Me.m_connections(iLayer))
+                    End If
                 End If
             Next
 

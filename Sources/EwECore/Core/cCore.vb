@@ -8859,7 +8859,7 @@ Public Class cCore
         End If
 
         ' Check if all connections are able to deliver data
-        Dim problems As ISpatialdataset() = Me.m_spatialdataconnectionManager.InvalidConnections()
+        Dim problems As ISpatialDataSet() = Me.m_spatialdataconnectionManager.InvalidConnections(True)
         If (problems.Length > 0) Then
 
             Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATA, _
@@ -13432,6 +13432,9 @@ Public Class cCore
                     Case eVarNameFlags.EcospaceNumberSummaryTimeSteps, eVarNameFlags.EcospaceSummaryTimeEnd, eVarNameFlags.EcospaceSummaryTimeStart
                         Me.LoadEcospaceResults()
 
+                    Case eVarNameFlags.EcospaceRegionNumber
+                        Me.EcospaceBasemap.LayerRegion.Invalidate()
+
                 End Select 'Select Case value.varName
 
 
@@ -13496,14 +13499,15 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Interface for Non cCoreInputOutputBase object to report changes to the core
+    ''' Interface for non-<see cref="cCoreInputOutputBase"/> object to report changes to the core
     ''' </summary>
-    ''' <param name="obj">reference to a ICoreInterface object that has changed its data.</param>
-    ''' <param name="TypeOfChange">How the object was changed </param>
+    ''' <param name="obj">Reference to a <see cref="ICoreInterface"/> instance
+    ''' that has changed its data.</param>
+    ''' <param name="TypeOfChange">Flag stating how the object was changed</param>
     ''' <remarks> <para>This provides a public generic interface for any core object to communicate with the core. 
     ''' The nature of the comunication can be defined by the ICoreInterface object.</para> 
     ''' <para>Not all core objects can be fit into a cCoreInputOutputBase interface. This 
-    ''' provides a way for these object to comumicate changes with the core.</para>
+    ''' provides a way for these object to comumicate changes to the core.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Sub onChanged(ByVal obj As ICoreInterface, _

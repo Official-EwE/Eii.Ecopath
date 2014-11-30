@@ -234,12 +234,12 @@ Namespace SpatialData
         ''' <returns>An array of all <see cref="cSpatialDataConnection">connections</see>
         ''' that are known to be missing data.</returns>
         ''' -------------------------------------------------------------------
-        Public Function InvalidConnections() As ISpatialDataSet()
+        Public Function InvalidConnections(bEnabledOnly As Boolean) As ISpatialDataSet()
 
             Dim problems As New List(Of ISpatialDataSet)
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
-                For Each conn As cSpatialDataConnection In adt.Connections()
+                For Each conn As cSpatialDataConnection In adt.Connections(bEnabledOnly:=bEnabledOnly)
                     If conn.IsConfigured() Then
                         Dim comp As New cDatasetCompatilibity(Me.m_core, conn.Dataset)
                         If (comp.NumError > 0) And (Not problems.Contains(conn.Dataset)) Then
