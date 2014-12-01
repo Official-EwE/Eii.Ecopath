@@ -150,9 +150,9 @@ Partial Class frmDistributionParameters
         Me.Controls.Add(Me.m_btnSave)
         Me.Controls.Add(Me.m_btnCancel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmDistributionParameters"
+        Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()

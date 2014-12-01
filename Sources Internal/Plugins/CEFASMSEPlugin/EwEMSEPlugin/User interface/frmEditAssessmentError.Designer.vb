@@ -125,7 +125,6 @@ Partial Class frmEditAssessmentError
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnSave)
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmEditAssessmentError"
         Me.ShowIcon = False

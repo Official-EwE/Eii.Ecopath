@@ -110,7 +110,6 @@ Public Class dlgHarvestControlRule
         Me.m_cmbCostFunctions.SelectedIndex = cSystemUtils.IIF(Me.m_HRC.TypeOfHCR = HCRType.Target, 0, 1)
 
         Me.m_bInitialized = True
-        Me.CenterToScreen()
 
         Me.UpdateHRC()
 

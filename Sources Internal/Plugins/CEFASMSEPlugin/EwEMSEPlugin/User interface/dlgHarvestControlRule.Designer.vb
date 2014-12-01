@@ -144,7 +144,6 @@ Partial Class dlgHarvestControlRule
         Me.Controls.Add(Me.m_cmbFMortGroups)
         Me.Controls.Add(Me.m_cmbBiomassGroups)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgHarvestControlRule"
         Me.ShowInTaskbar = False

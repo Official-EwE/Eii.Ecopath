@@ -51,7 +51,7 @@ Partial Class frmEditSurvivabilities
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_grid = New EwEMSEPlugin.gridSurviveDistParameters()
-        Me.m_ts = New cEwEToolstrip()
+        Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.SuspendLayout()
         '
         'm_btnSave
@@ -102,7 +102,9 @@ Partial Class frmEditSurvivabilities
         'm_ts
         '
         resources.ApplyResources(Me.m_ts, "m_ts")
+        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_ts.Name = "m_ts"
+        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'frmEditSurvivabilities
         '
@@ -114,7 +116,6 @@ Partial Class frmEditSurvivabilities
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnSave)
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmEditSurvivabilities"
         Me.ShowIcon = False

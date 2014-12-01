@@ -110,13 +110,11 @@ Partial Class frmEditDecreaseEffort
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
-        Me.ControlBox = False
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_btnSave)
         Me.Controls.Add(Me.m_btnCancel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmEditDecreaseEffort"
         Me.ShowInTaskbar = False

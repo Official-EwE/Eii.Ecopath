@@ -62,6 +62,7 @@ Partial Class frmTFMpolicy
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
         Me.m_tsHCR = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnAddHCR = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnEditHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnDeleteHCR = New System.Windows.Forms.ToolStripButton()
         Me.m_hdrHCR = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpRegulations = New System.Windows.Forms.TableLayoutPanel()
@@ -69,7 +70,6 @@ Partial Class frmTFMpolicy
         Me.m_gridRegulations = New EwEMSEPlugin.gridRegulations()
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
-        Me.m_tsbnEditHCR = New System.Windows.Forms.ToolStripButton()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -170,7 +170,7 @@ Partial Class frmTFMpolicy
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
         resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.AutoStretchColumnsToFitWidth = True
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
         Me.m_grid.AutoStretchRowsToFitHeight = False
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -179,7 +179,7 @@ Partial Class frmTFMpolicy
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
         Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FixedColumnWidths = True
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.HarvestControlRule = Nothing
@@ -210,6 +210,12 @@ Partial Class frmTFMpolicy
         Me.m_tsbnAddHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_tsbnAddHCR, "m_tsbnAddHCR")
         Me.m_tsbnAddHCR.Name = "m_tsbnAddHCR"
+        '
+        'm_tsbnEditHCR
+        '
+        Me.m_tsbnEditHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnEditHCR, "m_tsbnEditHCR")
+        Me.m_tsbnEditHCR.Name = "m_tsbnEditHCR"
         '
         'm_tsbnDeleteHCR
         '
@@ -285,12 +291,6 @@ Partial Class frmTFMpolicy
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
-        'm_tsbnEditHCR
-        '
-        Me.m_tsbnEditHCR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.m_tsbnEditHCR, "m_tsbnEditHCR")
-        Me.m_tsbnEditHCR.Name = "m_tsbnEditHCR"
-        '
         'frmTFMpolicy
         '
         Me.AcceptButton = Me.m_btnSave
@@ -300,10 +300,10 @@ Partial Class frmTFMpolicy
         Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnSave)
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmTFMpolicy"
         Me.ShowIcon = False
+        Me.ShowInTaskbar = False
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel1.PerformLayout()
         Me.m_scMain.Panel2.ResumeLayout(False)

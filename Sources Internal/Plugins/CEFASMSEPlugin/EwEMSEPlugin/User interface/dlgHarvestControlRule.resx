@@ -450,7 +450,7 @@ Conservation: produces an F that is always below the F defined by the HCR, (prov
     <value>732, 348</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterParent</value>
+    <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Add harvest control rule (HCR)</value>

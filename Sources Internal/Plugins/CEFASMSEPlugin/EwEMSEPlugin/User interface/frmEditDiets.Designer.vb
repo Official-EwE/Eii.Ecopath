@@ -114,7 +114,6 @@ Partial Class frmEditDiets
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnSave)
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmEditDiets"
         Me.ShowIcon = False

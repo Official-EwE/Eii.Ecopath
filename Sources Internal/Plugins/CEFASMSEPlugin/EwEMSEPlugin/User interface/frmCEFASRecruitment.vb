@@ -119,7 +119,6 @@ Public Class frmCEFASRecruitment
 
             Me.m_chkUseAssessment.Checked = Me.m_Assessment.UseAssessment
 
-            Me.CenterToParent()
             Me.RedrawGraph()
 
         Catch ex As Exception

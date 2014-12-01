@@ -110,7 +110,6 @@ Public Class frmDistributionParameters
         Me.m_tscmPathOrSim.SelectedIndex = eParameterSet.Ecopath
 
         Me.m_bIsDirty = False
-        Me.CenterToParent()
         Me.UpdateControls()
 
     End Sub
