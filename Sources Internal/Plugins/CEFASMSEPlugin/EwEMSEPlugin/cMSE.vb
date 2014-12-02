@@ -266,8 +266,7 @@ Public Class cMSE
 
 #End Region ' Construction
 
-#Region "Pubic methods"
-
+#Region " Public methods "
 
     ''' <summary>
     ''' Interactively resolve MSE folder conflicts.
@@ -426,9 +425,9 @@ Public Class cMSE
 
     End Function
 
-#End Region
+#End Region ' Public methods
 
-#Region "Threading"
+#Region " Threading "
 
     Private Sub runCreateModelsThread()
 
@@ -477,7 +476,7 @@ Public Class cMSE
         End Try
     End Sub
 
-#End Region 'Threading
+#End Region ' Threading
 
 #Region " Diagnostics and state management "
 
@@ -714,7 +713,7 @@ Public Class cMSE
 
 #End Region ' Diagnostics and state management
 
-#Region "File I/O and other file related 'stuff'"
+#Region " File I/O and other file related 'stuff' "
 
     Public ReadOnly Property DataPath As String
         Get
@@ -826,6 +825,7 @@ Public Class cMSE
     End Function
 
     Private Function InitMonteCarloParamX(ByVal strPath As String, ByVal ParamName As eParamName) As Boolean
+
         Dim csvParamX As CsvReader
         Dim MonteCarlo As cMonteCarloManager = m_core.EcosimMonteCarlo
         Dim MCGroup As cMonteCarloGroup
@@ -1053,7 +1053,6 @@ Public Class cMSE
 
     End Sub
 
-
     'Private Function LoadCostFunctionsCSV()
     '    Dim CostFunctionReader As CsvReader
     '    Dim CostFunctionArray(,) As String
@@ -1135,9 +1134,9 @@ Public Class cMSE
 
     End Sub
 
-#End Region 'File I/O
+#End Region ' File I/O
 
-#Region "MonteCarlo state save and restore "
+#Region " MonteCarlo state save and restore "
 
     ''' <summary>
     ''' Save any variable that will be changed so the model can be restore to it's original state 
@@ -1197,8 +1196,6 @@ Public Class cMSE
         End Try
 
     End Sub
-
-
 
     Private Sub SaveOriginalParameters()
 
@@ -1295,9 +1292,9 @@ Public Class cMSE
 
     End Sub
 
-#End Region 'MonteCarlo state save and restore
+#End Region ' MonteCarlo state save and restore
 
-#Region "Private modeling code"
+#Region " Private modeling code "
 
     ''' <summary>
     ''' Resets the effort to the maximum specifed effort for the project time steps
@@ -1606,7 +1603,6 @@ Public Class cMSE
 
     End Sub
 
-
     Private Sub initFishedByHCR(curStrategy As Strategy)
         'Clear the data from the last Strategy
         FleetsThatFishHCRGrp.Clear()
@@ -1625,7 +1621,6 @@ Public Class cMSE
 
     End Sub
 
-
     Private Sub initTechnologyCreep()
 
         'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
@@ -1641,7 +1636,6 @@ Public Class cMSE
     ''' </summary>
     ''' <param name="iTrial"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Private Function updateDietMatrixFromCSVFile(ByVal iTrial As Integer) As Boolean
 
         Dim GoodDynamics As Boolean = True
@@ -1883,7 +1877,6 @@ Public Class cMSE
 
     Private Function updateEcopathEcosimParameters(iModel As Integer) As Boolean
 
-
         'Update the Ecopath and Ecosim parameters from the data read into memory by Me.readEcopathEcosimParameters()
         Me.updateParametersFromMemory(iModel)
         Survivability.ConfigCoreWithSurvivabilities(iModel)
@@ -1894,17 +1887,13 @@ Public Class cMSE
         'Diet matrix parameters are stored in file by iTrial
         'Read the file and update the dietmatrix parameters
         Return Me.updateDietMatrixFromCSVFile(iModel)
-        Return True
-
 
     End Function
-
 
     ''' <summary>
     ''' Populte the Ecopath and Ecosim parameter with values read into memory by Me.readEcopathEcosimParameters()
     ''' </summary>
     ''' <param name="itrial"></param>
-    ''' <remarks></remarks>
     Private Sub updateParametersFromMemory(itrial As Integer)
 
         For igrp = 1 To m_core.nLivingGroups
@@ -1944,14 +1933,12 @@ Public Class cMSE
 
     End Sub
 
-
     ''' <summary>
     ''' Initialize the biomass and fleet results files
     ''' </summary>
     ''' <param name="msgReport"></param>
     ''' <param name="strmGroup"></param>
     ''' <param name="strmFleet"></param>
-    ''' <remarks></remarks>
     Private Sub initResultFiles(ByVal msgReport As cMessage, ByRef strmGroup As StreamWriter, ByRef strmFleet As StreamWriter)
 
         'Output the final results
@@ -1975,8 +1962,8 @@ Public Class cMSE
     End Sub
 
     Private Function initTrialTrajectoryFile(msgReport As cMessage, iModel As Integer) As StreamWriter
-        Dim strm As StreamWriter
-        strm = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Model" & iModel & ".csv"), False)
+
+        Dim strm As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTrajectories, "Model" & iModel & ".csv"), False)
         If Me.m_core.SaveWithFileHeader Then strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
         strm.Write("GroupNumber,Group,Strategy")
         msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Model" & iModel & ".csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
@@ -1986,11 +1973,12 @@ Public Class cMSE
         Next
         strm.WriteLine()
         Return strm
+
     End Function
 
     Private Function initTrajectoryEffortFiles(msgReport As cMessage) As StreamWriter
-        Dim strm As StreamWriter
-        strm = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "EffortTrajectories.csv"), False)
+
+        Dim strm As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "EffortTrajectories.csv"), False)
         If Me.m_core.SaveWithFileHeader Then strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
         strm.Write("Model,Strategy,FleetNumber,FleetName")
         msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "EffortTrajectories.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
@@ -2000,13 +1988,12 @@ Public Class cMSE
         Next
         strm.WriteLine()
         Return strm
+
     End Function
-
-
 
     Private Sub initTrajectoryByGroupFiles(ByVal msgReport As cMessage, ByVal TrajectoryList As List(Of StreamWriter))
 
-        For igrp = 1 To m_core.nLivingGroups
+        For igrp As Integer = 1 To m_core.nLivingGroups
 
             Dim strFile As String = cFileUtils.ToValidFileName(m_core.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False)
             Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.ResultsTraj2, strFile))
@@ -2017,7 +2004,7 @@ Public Class cMSE
             TrajectoryList.Add(writer)
             If Me.m_core.SaveWithFileHeader Then TrajectoryList(igrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
             TrajectoryList(igrp - 1).Write("Model,Strategy")
-            For iTime = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+            For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                 TrajectoryList(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
             Next
             TrajectoryList(igrp - 1).WriteLine()
@@ -2232,7 +2219,6 @@ Public Class cMSE
 
     End Sub
 
-
     Private Function getEcosimResults() As Boolean
         Try
             'Because we ran Ecosim directly from cEcosimModel.Run() instead of via the core cCore.RunEcosim()
@@ -2258,8 +2244,6 @@ Public Class cMSE
         Return Nothing
 
     End Function
-
-
 
     Private Function CalcFfromHCR(ByRef Biomass As Single, ByRef MinBiomass As Single, ByRef MaxBiomass As Single, ByRef FMax As Single) As Double
 
@@ -2329,8 +2313,6 @@ Public Class cMSE
 
     End Function
 
-
-
     'This is just a diagnostics routine that outputs to console the Biomass for each living group at a particular iteration
     Private Sub dumpEcopathParameters(ByVal iteration As Integer)
         Dim nliving As Integer = Me.m_core.nLivingGroups
@@ -2376,7 +2358,6 @@ Public Class cMSE
 
     End Function
 
-
     Private Sub NormalizeDiet(ByRef DietMatrix(,) As Single)
         Dim dietsum As Single
         Dim tol As Single = 0.001
@@ -2403,7 +2384,6 @@ Public Class cMSE
         End If
 
     End Sub
-
 
     Public Sub CreateRCode()
         Dim writer As StreamWriter = New StreamWriter("C:\Users\Mark\Desktop\vbcreatedRcode.txt", False)
@@ -2441,7 +2421,6 @@ Public Class cMSE
                 End If
             Next
             writer.WriteLine(")")
-
         Next
 
         writer.Write("prednames = c(")
@@ -2458,9 +2437,9 @@ Public Class cMSE
 
     End Sub
 
-#End Region 'Private modeling code
+#End Region ' Private modeling code
 
-#Region "Distributions and sampling code"
+#Region " Distributions and sampling code "
 
     Public Function DirichletSample2(ByVal nDimensions As Integer, ByVal alpha() As Single, ByRef DietMultiplier As Double) As Single()
         Dim gamma(nDimensions - 1) As Single
@@ -2622,11 +2601,9 @@ Public Class cMSE
 
     End Sub
 
+#End Region ' Distributions and sampling code
 
-
-#End Region 'Distributions and sampling code
-
-#Region "EwE Events onEcosimInitialized()..."
+#Region " EwE Events onEcosimInitialized()... "
 
     Public Sub onEcosimInitialized(ByVal EcosimDatastructures As cEcosimDatastructures)
 
@@ -2643,20 +2620,16 @@ Public Class cMSE
     End Sub
 
     Public Sub onEcosimRunBeginning(ByVal EcosimDatastructures As cEcosimDatastructures)
-
         Try
             Me.StockAssessment.InitForRun()
         Catch ex As Exception
 
         End Try
-
     End Sub
-
 
     Public Sub onEcopathInitialized(ByVal EcopathData As cEcopathDataStructures)
         Me._pathdata = EcopathData
     End Sub
-
 
     Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
         ' JS 13Oct13: Fixed CurDir vulnerability in lpsolve
@@ -2881,7 +2854,7 @@ Public Class cMSE
 
     End Sub
 
-#End Region 'EwE Events onEcosimInitialized()...
+#End Region ' EwE Events onEcosimInitialized()...
 
 #Region " Helper methods "
 
@@ -3098,7 +3071,7 @@ Public Class cMSE
 
 #End Region ' Configurable settings
 
-#Region "Dead Code"
+#Region " Dead Code "
 
 #If 0 Then
 
@@ -3167,8 +3140,6 @@ Public Class cMSE
 
     End Sub
 
-#End If
-
     'Commented out because redundant 3-9-13
 
     'Public Sub Create2DimParams(ByVal ParamName As String)
@@ -3224,11 +3195,7 @@ Public Class cMSE
     '        csvout.Dispose()
     '    Next
 
-
-
-
     'End Sub
-
 
     'Private Sub CalculateFError(ByRef eps() As Double)
     '    Dim Fopt(mCore.nGroups - 1) As Double
@@ -3239,6 +3206,9 @@ Public Class cMSE
     '        Next
     '    Next
     'End Sub
-#End Region
+
+#End If
+
+#End Region ' Dead Code
 
 End Class

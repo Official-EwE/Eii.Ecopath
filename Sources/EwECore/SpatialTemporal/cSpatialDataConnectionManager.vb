@@ -84,9 +84,6 @@ Namespace SpatialData
         Private m_core As cCore = Nothing
         Private m_data As cSpatialDataStructures = Nothing
 
-        ''' <summary>Pre-determined number of configured data connections</summary>
-        Private m_iNumConfigured As Integer = cCore.NULL_VALUE
-
 #End Region ' Variables
 
 #Region " Construction/ destruction "
@@ -149,9 +146,6 @@ Namespace SpatialData
                 Next i
             Next adt
 
-            ' Invalidate connection count
-            Me.m_iNumConfigured = cCore.NULL_VALUE
-
             Me.Update(eMessageType.DataAddedOrRemoved)
 
         End Sub
@@ -205,9 +199,6 @@ Namespace SpatialData
                 Next i
             Next adt
 
-            ' Invalidate connection count
-            Me.m_iNumConfigured = cCore.NULL_VALUE
-
             Me.Update(eMessageType.DataAddedOrRemoved)
 
         End Sub
@@ -219,10 +210,17 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumConnectedAdapters As Integer
             Get
-                If (Me.m_iNumConfigured = cCore.NULL_VALUE) Then
-                    Me.UpdateConnectionCount()
-                End If
-                Return Me.m_iNumConfigured
+                Dim n As Integer = 0
+                For Each adt As cSpatialDataAdapter In Me.Adapters
+                    For i As Integer = 1 To adt.MaxLength
+                        If adt.IsEnabled(i) Then
+                            For Each conn As cSpatialDataConnection In adt.Connections(i)
+                                If conn.IsConfigured() Then n += 1
+                            Next
+                        End If
+                    Next
+                Next
+                Return n
             End Get
         End Property
 
@@ -520,21 +518,6 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub Clear()
             Me.m_data.DataAdapters.Clear()
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Update the count of configured adapters.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub UpdateConnectionCount()
-
-            Me.m_iNumConfigured = 0
-            For Each adt As cSpatialDataAdapter In Me.Adapters
-                For Each conn As cSpatialDataConnection In adt.Connections()
-                    If conn.IsConfigured() Then m_iNumConfigured += 1
-                Next
-            Next
         End Sub
 
 #End Region ' Internals

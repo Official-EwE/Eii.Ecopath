@@ -118,68 +118,17 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_nudClusterSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_nudClusterSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>170, 98</value>
-  </data>
-  <data name="m_nudClusterSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 20</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_nudClusterSize.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;m_nudClusterSize.Name" xml:space="preserve">
-    <value>m_nudClusterSize</value>
-  </data>
-  <data name="&gt;&gt;m_nudClusterSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudClusterSize.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudClusterSize.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="m_lblClusterSize.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblClusterSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>48, 100</value>
-  </data>
-  <data name="m_lblClusterSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 13</value>
-  </data>
-  <data name="m_lblClusterSize.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="m_lblClusterSize.Text" xml:space="preserve">
-    <value>Cluster &amp;size:</value>
-  </data>
-  <data name="&gt;&gt;m_lblClusterSize.Name" xml:space="preserve">
-    <value>m_lblClusterSize</value>
-  </data>
-  <data name="&gt;&gt;m_lblClusterSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblClusterSize.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblClusterSize.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_nudNoRegions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_nudNoRegions.Location" type="System.Drawing.Point, System.Drawing">
     <value>170, 29</value>
   </data>
   <data name="m_nudNoRegions.Size" type="System.Drawing.Size, System.Drawing">
     <value>115, 20</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_nudNoRegions.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
@@ -193,13 +142,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudNoRegions.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>6</value>
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>210, 131</value>
+    <value>210, 116</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -226,7 +175,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 131</value>
+    <value>129, 116</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -364,7 +313,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>297, 166</value>
+    <value>297, 151</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Define regions</value>
