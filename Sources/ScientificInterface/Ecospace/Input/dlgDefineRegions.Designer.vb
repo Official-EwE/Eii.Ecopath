@@ -42,8 +42,6 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineRegions))
-            Me.m_nudClusterSize = New System.Windows.Forms.NumericUpDown()
-            Me.m_lblClusterSize = New System.Windows.Forms.Label()
             Me.m_nudNoRegions = New System.Windows.Forms.NumericUpDown()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_btnCancel = New System.Windows.Forms.Button()
@@ -51,22 +49,8 @@ Namespace Ecospace
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_rbFromMPAs = New System.Windows.Forms.RadioButton()
             Me.m_rbFromHabitats = New System.Windows.Forms.RadioButton()
-            CType(Me.m_nudClusterSize, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNoRegions, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
-            '
-            'm_nudClusterSize
-            '
-            resources.ApplyResources(Me.m_nudClusterSize, "m_nudClusterSize")
-            Me.m_nudClusterSize.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
-            Me.m_nudClusterSize.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.m_nudClusterSize.Name = "m_nudClusterSize"
-            Me.m_nudClusterSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
-            '
-            'm_lblClusterSize
-            '
-            resources.ApplyResources(Me.m_lblClusterSize, "m_lblClusterSize")
-            Me.m_lblClusterSize.Name = "m_lblClusterSize"
             '
             'm_nudNoRegions
             '
@@ -125,22 +109,17 @@ Namespace Ecospace
             Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_btnCancel)
             Me.Controls.Add(Me.m_btnOK)
-            Me.Controls.Add(Me.m_nudClusterSize)
-            Me.Controls.Add(Me.m_lblClusterSize)
             Me.Controls.Add(Me.m_nudNoRegions)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "dlgDefineRegions"
             Me.ShowInTaskbar = False
-            CType(Me.m_nudClusterSize, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNoRegions, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_nudClusterSize As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_lblClusterSize As System.Windows.Forms.Label
         Private WithEvents m_nudNoRegions As System.Windows.Forms.NumericUpDown
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_btnCancel As System.Windows.Forms.Button

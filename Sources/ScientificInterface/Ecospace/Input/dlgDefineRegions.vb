@@ -51,23 +51,7 @@ Namespace Ecospace
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Dim iNumRegions As Integer = Me.UIContext.Core.nRegions
-            Me.m_nudNoRegions.Value = iNumRegions
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-            Dim iNumH2O As Integer = bm.InRow * bm.InCol
-            Dim iMinCluster As Integer = 1
-            Dim iMaxCluster As Integer = Math.Max(bm.InRow, bm.InCol)
-
-            ' Try to set to no more than 500 cells
-            Dim bFound As Boolean = (iNumH2O < 500)
-            While Not bFound
-                iMinCluster += 1
-                bFound = ((iNumH2O / (iMinCluster * iMinCluster)) < 500)
-            End While
-
-            Me.m_nudClusterSize.Value = iMinCluster
-            Me.m_nudClusterSize.Minimum = iMinCluster
-            Me.m_nudClusterSize.Maximum = iMaxCluster
+            Me.m_nudNoRegions.Value = Me.UIContext.Core.nRegions
 
             Me.m_rbFromHabitats.Enabled = (Me.UIContext.Core.nHabitats > 0)
             Me.m_rbFromMPAs.Enabled = (Me.UIContext.Core.nMPAs > 0)
@@ -82,11 +66,6 @@ Namespace Ecospace
         Private Sub m_nudNoRegions_GotFocus(sender As Object, e As System.EventArgs) _
             Handles m_nudNoRegions.GotFocus
             Me.m_rbCustomMax.Checked = True
-        End Sub
-
-        Private Sub m_nudClusterSize_GotFocus(sender As Object, e As System.EventArgs) _
-            Handles m_nudClusterSize.GotFocus
-            Me.m_rbFromHabitats.Checked = True
         End Sub
 
         Private Sub OnCreateOptionChanged(sender As System.Object, e As System.EventArgs) _
@@ -201,7 +180,6 @@ Namespace Ecospace
             Dim iHabMax As Integer = 0
             Dim nRegions As Integer = Me.UIContext.Core.nHabitats - 1
 
-            core.SetBatchLock(cCore.eBatchLockType.Update)
             parms.nRegions = nRegions
             Try
 
@@ -221,7 +199,6 @@ Namespace Ecospace
             Catch ex As Exception
 
             End Try
-            core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
             regions.Invalidate()
             core.onChanged(regions)
 

@@ -42,6 +42,7 @@ Public Class cEwEStatusBar
     ''' <summary>The core state monitor offering events to observe.</summary>
     Private m_csm As cCoreStateMonitor = Nothing
     Private m_selmon As cSelectionMonitor = Nothing
+    Private m_mhSpatConfig As cMessageHandler = Nothing
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -84,12 +85,21 @@ Public Class cEwEStatusBar
         AddHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
         AddHandler Me.m_selmon.OnSelectionChanged, AddressOf OnSelectionChanged
 
+        Me.m_mhSpatConfig = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+        Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSpatConfig)
+#If DEBUG Then
+        Me.m_mhSpatConfig.Name = "cEwEStatusBar:Ecospace"
+#End If
     End Sub
 
     Public Sub Detach()
 
         ' Sanity checks
         Debug.Assert(Me.m_uic IsNot Nothing)
+
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhSpatConfig)
+        Me.m_mhSpatConfig.Dispose()
+        Me.m_mhSpatConfig = Nothing
 
         RemoveHandler Me.m_csm.CoreDataStateEvent, AddressOf OnCoreDataStateEvent
         RemoveHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
@@ -141,6 +151,12 @@ Public Class cEwEStatusBar
             Me.m_uic.Core.StopRun()
         Catch ex As Exception
         End Try
+    End Sub
+
+    Private Sub OnCoreMessage(ByRef msg As cMessage)
+        If msg.Type = eMessageType.DataModified Then
+            Me.UpdateModelPanes()
+        End If
     End Sub
 
 #End Region ' Events
@@ -215,9 +231,10 @@ Public Class cEwEStatusBar
                                            spaceScenario.Name, _
                                            Me.ToTooltipLabel(spaceScenario.Description))
                 Dim man As cSpatialDataConnectionManager = core.SpatialDataConnectionManager
-                If man.NumConnectedAdapters > 0 Then
+                Dim n As Integer = man.NumConnectedAdapters
+                If (n > 0) Then
                     strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, spaceScenario.Name, _
-                                            cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_CONNECTIONS, man.NumConnectedAdapters))
+                                            cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_CONNECTIONS, n))
                 Else
                     strName = spaceScenario.Name
                 End If
