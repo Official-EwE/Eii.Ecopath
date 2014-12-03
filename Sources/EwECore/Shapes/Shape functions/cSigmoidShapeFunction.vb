@@ -18,8 +18,7 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -62,6 +61,9 @@ Public Class cSigmoidShapeFunction
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Defaults"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Sub Defaults()
         Me.ParamValue(1) = 0.0
         Me.ParamValue(2) = 2.0
@@ -69,20 +71,30 @@ Public Class cSigmoidShapeFunction
         Me.ParamValue(4) = 3.0
     End Sub
 
-    Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
-        Return Me.IsForcing(datatype) or Me.IsMediation(datatype)
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
+        Return Me.IsForcing(datatype) Or Me.IsMediation(datatype)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.nParameters"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
             Return 4
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ShapeFunctionType"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ShapeFunctionType As Long
         Get
-            Return EwEUtils.Core.eShapeFunctionType.Sigmoid
+            Return eShapeFunctionType.Sigmoid
         End Get
     End Property
+
 End Class
 

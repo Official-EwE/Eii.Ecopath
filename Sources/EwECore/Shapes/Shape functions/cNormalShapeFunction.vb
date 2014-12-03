@@ -18,15 +18,10 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
-''' <summary>
-''' 
-''' </summary>
-''' <remarks></remarks>
 Public Class cNormalShapeFunction
     Inherits cShapeFunction
 
@@ -34,8 +29,12 @@ Public Class cNormalShapeFunction
         MyBase.New()
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ParamName"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
+            ' ToDo: globalize this
             Select Case iParam
                 Case 1 : Return My.Resources.CoreDefaults.PARAM_SD_LEFT
                 Case 2 : Return My.Resources.CoreDefaults.PARAM_SD_RIGHT
@@ -136,6 +135,9 @@ Public Class cNormalShapeFunction
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Defaults"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Sub Defaults()
         Me.ParamValue(1) = 1
         Me.ParamValue(2) = 1
@@ -144,19 +146,29 @@ Public Class cNormalShapeFunction
         Me.ParamValue(5) = 1
     End Sub
 
-    Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
         Return Me.IsMediation(datatype)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.nParameters"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
             Return 5
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ShapeFunctionType"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ShapeFunctionType As Long
         Get
-            Return EwEUtils.Core.eShapeFunctionType.Normal
+            Return eShapeFunctionType.Normal
         End Get
     End Property
+
 End Class

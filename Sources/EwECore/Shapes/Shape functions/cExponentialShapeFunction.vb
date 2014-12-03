@@ -18,8 +18,7 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -42,7 +41,10 @@ Public Class cExponentialShapeFunction
             Dim sYZero As Single = Me.ParamValue(1)
             Dim sYEnd As Single = Me.ParamValue(2)
             Dim sYBase As Single = Me.ParamValue(3)
-            Dim expK As Single
+            Dim expK As Single = 0.0!
+
+            ' Protect against misuse
+            nPoints = Math.Min(nPoints, Me.m_points.Length - 1)
 
             If sYZero > 0 Then
                 expK = CSng((1 / cShapeFunction.xBase) * Math.Log(sYBase / sYZero))
@@ -61,25 +63,37 @@ Public Class cExponentialShapeFunction
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Defaults"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Sub Defaults()
         Me.ParamValue(1) = 1.0
         Me.ParamValue(2) = 5.0
         Me.ParamValue(3) = 0.2
     End Sub
 
-    Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
         Return Me.IsForcing(datatype) Or Me.IsMediation(datatype)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.nParameters"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
             Return 3
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ShapeFunctionType"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ShapeFunctionType As Long
         Get
-            Return EwEUtils.Core.eShapeFunctionType.Exponential
+            Return eShapeFunctionType.Exponential
         End Get
     End Property
 

@@ -100,7 +100,7 @@ Namespace Controls
 
             'set the function type based on the function type of the current shape
             If (Me.m_lbShapeFunctionTypes.SelectedIndex = -1) Then
-                Me.m_lbShapeFunctionTypes.SelectedIndex = getShapeTypeIndex(Me.m_shape.ShapeFunctionType)
+                Me.m_lbShapeFunctionTypes.SelectedIndex = GetShapeTypeIndex(Me.m_shape.ShapeFunctionType)
             End If
 
             Me.UpdatePreview()
@@ -108,20 +108,6 @@ Namespace Controls
 
 
         End Sub
-
-        Private Function getShapeTypeIndex(shapeType As EwEUtils.Core.eShapeFunctionType) As Integer
-            Dim iShpIndex As Integer
-            For Each sft As Object In Me.m_lbShapeFunctionTypes.Items
-
-                If DirectCast(sft, IShapeFunction).ShapeFunctionType = shapeType Then
-                    Return iShpIndex
-                End If
-
-                iShpIndex += 1
-            Next sft
-
-            Return 0
-        End Function
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
@@ -321,7 +307,6 @@ Namespace Controls
             Me.m_plPreview.Invalidate()
         End Sub
 
-
         Private Function nDisplayPoints() As Integer
             If Me.m_shape.IsSeasonal Then Return cCore.N_MONTHS
             Return Me.m_shape.ShapeData.Length - 1
@@ -333,6 +318,20 @@ Namespace Controls
                 Return Me.m_uic.Core.nEcosimYears * cCore.N_MONTHS
             End If
             Return Me.m_shape.nPoints
+        End Function
+
+        Private Function GetShapeTypeIndex(shapeType As Long) As Integer
+
+            ' JS 3dec14: do not rely on for each to return items in a known order
+            'For Each sft As Object In Me.m_lbShapeFunctionTypes.Items
+            For iShp As Integer = 0 To Me.m_lbShapeFunctionTypes.Items.Count - 1
+                Dim sft As IShapeFunction = DirectCast(Me.m_lbShapeFunctionTypes.Items(iShp), IShapeFunction)
+                If (sft.ShapeFunctionType = shapeType) Then
+                    Return iShp
+                End If
+            Next
+            Return 0
+
         End Function
 
 #End Region ' Internals

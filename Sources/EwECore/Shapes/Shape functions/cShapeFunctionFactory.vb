@@ -24,17 +24,28 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Base class for implementing EwE core shape functions.
+''' Factory for delivering <see cref="IShapeFunction">shape functions</see> that
+''' can be used to reshape a particular <see cref="cForcingFunction"/>. This class
+''' also takes <see cref="EwEPlugin.IEcosimShapeFunctionPlugin">shape functions 
+''' delivered by plug-ins</see> into account.
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cShapeFunctionFactory
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Returns all <see cref="IShapeFunction">shape functions</see> compatible
+    ''' with a given shape.
     ''' </summary>
-    ''' <param name="shape"></param>
-    ''' <param name="pm">Ignored for now.</param>
-    ''' <returns></returns>
+    ''' <param name="shape">The <see cref="cForcingFunction"/> to find compatible
+    ''' <see cref="IShapeFunction">shape functions</see> for.</param>
+    ''' <param name="pm">The <see cref="cPluginManager"/> to find plug-in shapes for.</param>
+    ''' <returns>
+    ''' An array of compatible <see cref="IShapeFunction">shape function</see> instances.
+    ''' </returns> 
+    ''' -----------------------------------------------------------------------
     Public Shared Function GetShapeFunctions(ByVal shape As cForcingFunction, _
                                              Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction()
 

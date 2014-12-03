@@ -379,7 +379,7 @@ Public Class cEcosimDatastructures
         Dim ZScale As Single
 
         'jb added to keep track of the type of function used to create a shape e.g. Sigmoid.........
-        Dim ShapeFunctionType As eShapeFunctionType
+        Dim ShapeFunctionType As Long
     End Structure
 
     'there is one ShapeParameters array for each type of shape that has parameters Mediation and Forcing

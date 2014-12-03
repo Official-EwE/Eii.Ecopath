@@ -144,7 +144,7 @@ Namespace DataSources
                              ByVal sYBase As Single, _
                              ByVal sYend As Single, _
                              ByVal sSteep As Single, _
-                             ByVal functionType As eShapeFunctionType) As Boolean
+                             ByVal functionType As Long) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -160,6 +160,7 @@
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_07.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_08.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_09.vb" />
+    <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_10.vb" />
     <Compile Include="DataSource\Implementations\cEIIDataSource.vb" />
     <Compile Include="DataSource\Implementations\cEIIXMLDataSource.vb" />
     <Compile Include="EcoPath\cEcopathResultWriter.vb" />

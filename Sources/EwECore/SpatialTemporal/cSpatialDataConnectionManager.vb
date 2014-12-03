@@ -253,6 +253,7 @@ Namespace SpatialData
 
         End Function
 
+
 #End Region ' Generic information
 
 #Region " Adapters "

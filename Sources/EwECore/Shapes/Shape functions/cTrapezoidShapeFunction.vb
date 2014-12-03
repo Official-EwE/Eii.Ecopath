@@ -89,6 +89,9 @@ Public Class cTrapezoidShapeFunction
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Defaults"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Sub Defaults()
         Me.ParamValue(1) = 1.0F
         Me.ParamValue(2) = 2.0F
@@ -96,10 +99,16 @@ Public Class cTrapezoidShapeFunction
         Me.ParamValue(4) = 4.0F
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
         Return Me.IsMediation(datatype)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ParamValue"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Property ParamValue(ByVal iParam As Integer) As Single
         Get
             Return MyBase.ParamValue(iParam)
@@ -144,6 +153,9 @@ Public Class cTrapezoidShapeFunction
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ParamName"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
             ' ToDo: globalize this
@@ -157,18 +169,27 @@ Public Class cTrapezoidShapeFunction
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.nParameters"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
             Return 4
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ShapeFunctionType"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ShapeFunctionType As Long
         Get
             Return eShapeFunctionType.Trapezoid
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Apply"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Function Apply(obj As Object) As Boolean
         If MyBase.Apply(obj) Then
             Dim shape As cEnviroResponseFunction = TryCast(obj, cEnviroResponseFunction)

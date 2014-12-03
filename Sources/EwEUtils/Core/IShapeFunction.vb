@@ -102,8 +102,13 @@ Namespace Core
         ''' -------------------------------------------------------------------
         Function Apply(ByVal shape As Object) As Boolean
 
-
-        ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return a (hopefully) unique identifier for a particular shape function,
+        ''' regardless if this function is built-in to EwE or is provided by a plug-in.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property ShapeFunctionType() As Long
 
     End Interface
 
