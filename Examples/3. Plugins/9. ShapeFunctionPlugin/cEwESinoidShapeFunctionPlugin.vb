@@ -123,7 +123,7 @@ Public Class cEwESinoidShapeFunctionPlugin
 #Region " Shape function "
 
     Public Sub Init(shape As Object) _
-        Implements EwEUtils.Core.IShapeFunction.Init
+        Implements IEcosimShapeFunctionPlugin.Init
 
         If (Not TypeOf shape Is cForcingFunction) Then Return
         Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
@@ -139,7 +139,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     End Sub
 
     Public Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean _
-        Implements EwEUtils.Core.IShapeFunction.IsCompatible
+        Implements IEcosimShapeFunctionPlugin.IsCompatible
 
         ' This shape function only applies to forcing functions
         Return (datatype = EwEUtils.Core.eDataTypes.Forcing)
@@ -147,7 +147,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     End Function
 
     Public Sub Defaults() _
-        Implements EwEUtils.Core.IShapeFunction.Defaults
+        Implements IEcosimShapeFunctionPlugin.Defaults
 
         ' Pick some nice defaults
         Me.YZero = 1
@@ -158,7 +158,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     End Sub
 
     Public ReadOnly Property nParameters As Integer _
-        Implements EwEUtils.Core.IShapeFunction.nParameters
+        Implements IEcosimShapeFunctionPlugin.nParameters
         Get
             ' Tell EwE that the Sinoid shape function has four configurable parameters
             Return 4
@@ -166,7 +166,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     End Property
 
     Public ReadOnly Property ParamName(iParam As Integer) As String _
-        Implements EwEUtils.Core.IShapeFunction.ParamName
+        Implements IEcosimShapeFunctionPlugin.ParamName
         Get
             ' Tell EwE the names of each configurable parameter
             Select Case iParam
@@ -180,7 +180,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     End Property
 
     Public ReadOnly Property ParamUnit(iParam As Integer) As String _
-        Implements EwEUtils.Core.IShapeFunction.ParamUnit
+        Implements IEcosimShapeFunctionPlugin.ParamUnit
         Get
             ' Tell EwE the units of configurable parameters, if any
             Select Case iParam
@@ -193,7 +193,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     End Property
 
     Public Property ParamValue(iParam As Integer) As Single _
-        Implements EwEUtils.Core.IShapeFunction.ParamValue
+        Implements IEcosimShapeFunctionPlugin.ParamValue
         Get
             ' Tell EwE the value of each configurable parameter
             Select Case iParam
@@ -216,7 +216,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     End Property
 
     Public Function Shape(nPoints As Integer) As Single() _
-        Implements EwEUtils.Core.IShapeFunction.Shape
+        Implements IEcosimShapeFunctionPlugin.Shape
 
         ' Tell EwE the actual shape, computed from the current parameter values
 
@@ -239,7 +239,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     End Function
 
     Public Function Apply(shape As Object) As Boolean _
-        Implements EwEUtils.Core.IShapeFunction.Apply
+        Implements IEcosimShapeFunctionPlugin.Apply
 
         If (Not TypeOf shape Is cForcingFunction) Then Return False
         Dim shp As cForcingFunction = DirectCast(shape, cForcingFunction)
@@ -257,7 +257,7 @@ Public Class cEwESinoidShapeFunctionPlugin
     End Function
 
     Public ReadOnly Property ShapeFunctionType As Long _
-        Implements EwEUtils.Core.IShapeFunction.ShapeFunctionType
+        Implements IEcosimShapeFunctionPlugin.ShapeFunctionType
         Get
             ' This is quite a random number
             Return -421300667
