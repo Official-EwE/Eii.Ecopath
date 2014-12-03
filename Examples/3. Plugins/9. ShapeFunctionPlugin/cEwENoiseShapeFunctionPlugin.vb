@@ -102,7 +102,7 @@ Public Class cEwENoseShapeFunctionPlugin
 #Region " Shape function "
 
     Public Sub Init(shape As Object) _
-        Implements EwEUtils.Core.IShapeFunction.Init
+        Implements IEcosimShapeFunctionPlugin.Init
 
         If (Not TypeOf shape Is cForcingFunction) Then Return
         Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
@@ -119,7 +119,7 @@ Public Class cEwENoseShapeFunctionPlugin
     End Sub
 
     Public Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean _
-        Implements EwEUtils.Core.IShapeFunction.IsCompatible
+        Implements IEcosimShapeFunctionPlugin.IsCompatible
 
         ' This shape function only applies to any type of function
         Return True
@@ -127,14 +127,14 @@ Public Class cEwENoseShapeFunctionPlugin
     End Function
 
     Public Sub Defaults() _
-        Implements EwEUtils.Core.IShapeFunction.Defaults
+        Implements IEcosimShapeFunctionPlugin.Defaults
 
         Me.Band = 0.1
 
     End Sub
 
     Public ReadOnly Property nParameters As Integer _
-        Implements EwEUtils.Core.IShapeFunction.nParameters
+        Implements IEcosimShapeFunctionPlugin.nParameters
         Get
             ' Tell EwE that the noise shape function has three configurable parameters
             Return 1
@@ -142,7 +142,7 @@ Public Class cEwENoseShapeFunctionPlugin
     End Property
 
     Public ReadOnly Property ParamName(iParam As Integer) As String _
-        Implements EwEUtils.Core.IShapeFunction.ParamName
+        Implements IEcosimShapeFunctionPlugin.ParamName
         Get
             ' Tell the EwE interface the name of configurable parameter 'iParam'
             Select Case iParam
@@ -153,7 +153,7 @@ Public Class cEwENoseShapeFunctionPlugin
     End Property
 
     Public ReadOnly Property ParamUnit(iParam As Integer) As String _
-        Implements EwEUtils.Core.IShapeFunction.ParamUnit
+        Implements IEcosimShapeFunctionPlugin.ParamUnit
         Get
             ' No units for any of the noise function parameters
             Return ""
@@ -161,7 +161,7 @@ Public Class cEwENoseShapeFunctionPlugin
     End Property
 
     Public Property ParamValue(iParam As Integer) As Single _
-        Implements EwEUtils.Core.IShapeFunction.ParamValue
+        Implements IEcosimShapeFunctionPlugin.ParamValue
         Get
             ' Tell EwE the values of each configurable parameter
             Select Case iParam
@@ -178,7 +178,7 @@ Public Class cEwENoseShapeFunctionPlugin
     End Property
 
     Public Function Shape(nPoints As Integer) As Single() _
-        Implements EwEUtils.Core.IShapeFunction.Shape
+        Implements IEcosimShapeFunctionPlugin.Shape
 
         ' Tell EwE the actual shape, computed from the current parameter values
         Dim pt As Integer = 1
@@ -195,7 +195,7 @@ Public Class cEwENoseShapeFunctionPlugin
     End Function
 
     Public ReadOnly Property ShapeFunctionType As Long _
-        Implements EwEUtils.Core.IShapeFunction.ShapeFunctionType
+        Implements IEcosimShapeFunctionPlugin.ShapeFunctionType
         Get
             ' This is quite a random number
             Return -421300666
@@ -203,7 +203,7 @@ Public Class cEwENoseShapeFunctionPlugin
     End Property
 
     Public Function Apply(shape As Object) As Boolean _
-        Implements EwEUtils.Core.IShapeFunction.Apply
+        Implements IEcosimShapeFunctionPlugin.Apply
 
         If (Not TypeOf shape Is cForcingFunction) Then Return False
         Dim shp As cForcingFunction = DirectCast(shape, cForcingFunction)
