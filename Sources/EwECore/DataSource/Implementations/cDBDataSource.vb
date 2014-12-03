@@ -6258,7 +6258,7 @@ Namespace DataSources
                                     ByVal sYBase As Single, _
                                     ByVal sYend As Single, _
                                     ByVal sSteep As Single, _
-                                    ByVal functionType As eShapeFunctionType) As Boolean _
+                                    ByVal functionType As Long) As Boolean _
                 Implements IEcosimDatasource.AppendShape
 
             If Me.AppendShapeImpl(strShapeName, shapeType, iShapeID, asData, sYZero, sYBase, sYend, sSteep, functionType) Then
@@ -6294,7 +6294,7 @@ Namespace DataSources
                                          ByVal sYBase As Single, _
                                          ByVal sYend As Single, _
                                          ByVal sSteep As Single, _
-                                         ByVal functionType As eShapeFunctionType) As Boolean
+                                         ByVal functionType As Long) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData

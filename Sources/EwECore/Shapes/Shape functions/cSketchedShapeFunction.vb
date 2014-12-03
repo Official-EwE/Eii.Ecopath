@@ -20,6 +20,7 @@
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -38,22 +39,36 @@ Public Class cSketchedShapeFunction
         Me.ParamValue(1) = Me.Max
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Defaults"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Sub Defaults()
         ' NOP
     End Sub
 
-    Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
-         Return Me.IsForcing(datatype) or Me.IsMediation(datatype)
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
+        Return Me.IsForcing(datatype) Or Me.IsMediation(datatype)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.nParameters"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
             Return 1
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ParamName"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
+            ' ToDo: globalize this
+
             Select Case iParam
                 Case 1 : Return "Max"
             End Select
@@ -86,9 +101,12 @@ Public Class cSketchedShapeFunction
 
     End Function
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Defaults"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ShapeFunctionType As Long
         Get
-            Return EwEUtils.Core.eShapeFunctionType.NotSet
+            Return eShapeFunctionType.NotSet
         End Get
     End Property
 

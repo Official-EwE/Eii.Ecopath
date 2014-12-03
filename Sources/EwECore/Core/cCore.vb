@@ -1108,7 +1108,7 @@ Public Class cCore
             Optional ByVal asData As Single() = Nothing, _
             Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
             Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As Boolean
+            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As Boolean
 
         'the data source will allocate space in the EcoSim data arrays
         Dim ds As IEcosimDatasource = Nothing

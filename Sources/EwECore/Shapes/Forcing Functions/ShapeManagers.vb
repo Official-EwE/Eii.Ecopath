@@ -63,7 +63,7 @@ Public MustInherit Class cBaseShapeManager
     Public MustOverride Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
             Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
             Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As cForcingFunction
+            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
 
     ''' <summary>
     ''' Number of points in the data for this type of shape. This is specific to a ShapeManger implementation.
@@ -482,7 +482,7 @@ Public Class cForcingFunctionManager
     Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
             Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
             Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As cForcingFunction
+            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
 
         Dim dbID As Integer
         Dim shape As cForcingFunction
@@ -590,7 +590,7 @@ Public Class cMediationManager
     Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
             Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
             Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As cForcingFunction
+            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
 
         Dim dbID As Integer
         Dim medFunct As cMediationFunction
@@ -676,7 +676,7 @@ Public Class cLandingsMediationManager
     Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
             Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
             Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As cForcingFunction
+            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
 
         Dim dbID As Integer
         Dim medFunct As cLandingsMediationFunction
@@ -760,7 +760,7 @@ Public Class cCapMapResponseManager
     Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
             Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
             Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As cForcingFunction
+            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
 
         Dim dbID As Integer
 
@@ -1146,7 +1146,7 @@ Public Class cFishingEffortManger
     ''' Fishing Rate shapes can not be created
     ''' </summary>
     ''' <returns>Always Nothing.</returns>
-    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData() As Single, Optional ByVal sYZero As Single = 0.0, Optional ByVal sYBase As Single = 0.0, Optional ByVal sYEnd As Single = 0.0, Optional ByVal sSteep As Single = 0.0, Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As cForcingFunction
+    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData() As Single, Optional ByVal sYZero As Single = 0.0, Optional ByVal sYBase As Single = 0.0, Optional ByVal sYEnd As Single = 0.0, Optional ByVal sSteep As Single = 0.0, Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
         Return Nothing
     End Function
 
@@ -1211,7 +1211,7 @@ Public Class cFishingMortalityManger
     ''' Fish Mort shapes can not be created
     ''' </summary>
     ''' <returns>Always Nothing</returns>
-    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData() As Single, Optional ByVal sYZero As Single = 0.0, Optional ByVal sYBase As Single = 0.0, Optional ByVal sYEnd As Single = 0.0, Optional ByVal sSteep As Single = 0.0, Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As cForcingFunction
+    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData() As Single, Optional ByVal sYZero As Single = 0.0, Optional ByVal sYBase As Single = 0.0, Optional ByVal sYEnd As Single = 0.0, Optional ByVal sSteep As Single = 0.0, Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
         Return Nothing
     End Function
 

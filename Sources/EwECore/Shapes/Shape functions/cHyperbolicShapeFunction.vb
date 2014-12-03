@@ -18,8 +18,7 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -62,25 +61,38 @@ Public Class cHyperbolicShapeFunction
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.Defaults"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Sub Defaults()
         Me.ParamValue(1) = 1.0
         Me.ParamValue(2) = 3.0
         Me.ParamValue(3) = 0.75
     End Sub
 
-    Public Overrides Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
         Return Me.IsForcing(datatype) Or Me.IsMediation(datatype)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.nParameters"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
             Return 3
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ShapeFunctionType"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ShapeFunctionType As Long
         Get
-            Return EwEUtils.Core.eShapeFunctionType.Hyperbolic
+            Return eShapeFunctionType.Hyperbolic
         End Get
     End Property
+
 End Class

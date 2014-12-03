@@ -129,6 +129,13 @@ Public Class cEwESinoidShapeFunctionPlugin
         Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
         Me.m_points = ff.ShapeData
 
+        If (ff.ShapeFunctionType <> Me.ShapeFunctionType) Then Return
+
+        Me.ParamValue(1) = ff.YZero
+        Me.ParamValue(2) = ff.YEnd
+        Me.ParamValue(3) = ff.YBase
+        Me.ParamValue(4) = ff.Steep
+
     End Sub
 
     Public Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean _
@@ -237,10 +244,25 @@ Public Class cEwESinoidShapeFunctionPlugin
         If (Not TypeOf shape Is cForcingFunction) Then Return False
         Dim shp As cForcingFunction = DirectCast(shape, cForcingFunction)
         shp.ShapeData = Me.m_points
+        shp.ShapeFunctionType = Me.ShapeFunctionType
+
+        ' Store configuration parameters
+        shp.YZero = Me.ParamValue(1)
+        shp.YEnd = Me.ParamValue(2)
+        shp.YBase = Me.ParamValue(3)
+        shp.Steep = Me.ParamValue(4)
 
         Return True
 
     End Function
+
+    Public ReadOnly Property ShapeFunctionType As Long _
+        Implements EwEUtils.Core.IShapeFunction.ShapeFunctionType
+        Get
+            ' This is quite a random number
+            Return -421300667
+        End Get
+    End Property
 
 #End Region ' Shape function
 

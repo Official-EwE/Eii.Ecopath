@@ -52,7 +52,7 @@ Public Class cForcingFunction
     Protected m_Steep As Single
     Protected m_ZScale As Single
 
-    Protected m_ShapeFunctionType As eShapeFunctionType
+    Protected m_ShapeFunctionType As Long
     Protected m_ForcingApplicationType As eForcingApplicationTypes
 
     'this flag is used to stop updating during initialization
@@ -107,11 +107,11 @@ Public Class cForcingFunction
         End Set
     End Property
 
-    Public Property ShapeFunctionType() As eShapeFunctionType
+    Public Property ShapeFunctionType() As Long
         Get
             Return Me.m_ShapeFunctionType
         End Get
-        Set(ByVal value As eShapeFunctionType)
+        Set(ByVal value As Long)
             Me.m_ShapeFunctionType = value
             Me.Update()
         End Set

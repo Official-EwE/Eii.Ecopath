@@ -3003,7 +3003,7 @@ Public Class cEIIXMLDataSource
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
     Function AppendShape(ByVal strShapeName As String, ByVal shapeType As eDataTypes, ByRef iDBID As Integer, _
-            ByVal asData As Single(), ByVal sYZero As Single, ByVal sYBase As Single, ByVal sYend As Single, ByVal sSteep As Single, ByVal functionType As eShapeFunctionType) As Boolean _
+            ByVal asData As Single(), ByVal sYZero As Single, ByVal sYBase As Single, ByVal sYend As Single, ByVal sSteep As Single, ByVal functionType As Long) As Boolean _
             Implements IEcosimDatasource.AppendShape
 
         Dim b_return As Boolean

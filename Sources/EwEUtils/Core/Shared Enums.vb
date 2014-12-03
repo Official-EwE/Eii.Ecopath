@@ -3017,11 +3017,10 @@ Namespace Core
         Annual = 2
     End Enum
 
-
     ''' <summary>
     ''' The type of function used to create a shape.
     ''' </summary>
-    Public Enum eShapeFunctionType
+    Public Enum eShapeFunctionType As Long
         NotSet = 0
         Linear
         Sigmoid
@@ -3033,7 +3032,6 @@ Namespace Core
         LeftShoulder
         Trapezoid
     End Enum
-
 
 #End Region ' Shape resolution
 

@@ -49,7 +49,7 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
-            Dim strValue As String = value.ToString
+            Dim strValue As String = DirectCast(value, eShapeFunctionType).ToString
             Dim strDescr As String = cResourceUtils.LoadString("SHAPEFUNCTION_" & strValue.ToUpper, Me.GetType.Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0

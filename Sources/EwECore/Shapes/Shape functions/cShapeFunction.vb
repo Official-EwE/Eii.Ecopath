@@ -18,19 +18,17 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Text
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base class for implementing EwE core shape functions.
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Public MustInherit Class cShapeFunction
     Implements EwEUtils.Core.IShapeFunction
-
-
 
 #Region " Private vars "
 
@@ -60,9 +58,10 @@ Public MustInherit Class cShapeFunction
         If (Not TypeOf obj Is cForcingFunction) Then Return
 
         Dim shp As cForcingFunction = DirectCast(obj, cForcingFunction)
+        Me.m_points = shp.ShapeData
+
         If (shp.ShapeFunctionType <> Me.ShapeFunctionType) Then Return
 
-        Me.m_points = shp.ShapeData
         For i As Integer = 1 To Me.nParameters
             Select Case i
                 Case 1 : Me.ParamValue(i) = shp.YZero
@@ -80,12 +79,13 @@ Public MustInherit Class cShapeFunction
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>
-    ''' This will have to change once shape functions are delivered by 
+    ''' <para>This will have to change once shape functions are delivered by 
     ''' plug-ins. Then, a class name will have to be used instead of an
-    ''' enum to locate the function that was used.
+    ''' enum to locate the function that was used.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property ShapeFunctionType As EwEUtils.Core.eShapeFunctionType Implements EwEUtils.Core.IShapeFunction.ShapeFunctionType
+    Public MustOverride ReadOnly Property ShapeFunctionType As Long _
+        Implements EwEUtils.Core.IShapeFunction.ShapeFunctionType
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IShapeFunction.Defaults"/>
@@ -193,7 +193,7 @@ Public MustInherit Class cShapeFunction
 
         Debug.Assert(Me.IsCompatible(shp.DataType))
 
-        shp.ShapeFunctionType = Me.ShapeFunctionType
+        shp.ShapeFunctionType = CType(Me.ShapeFunctionType, eShapeFunctionType)
 
         shp.ShapeData = Me.m_points
         For i As Integer = 1 To Me.nParameters
@@ -233,4 +233,7 @@ Public MustInherit Class cShapeFunction
                (datatype = eDataTypes.FishMort)
     End Function
 
+    Public Function ShapeFunctionType1() As Long
+
+    End Function
 End Class
