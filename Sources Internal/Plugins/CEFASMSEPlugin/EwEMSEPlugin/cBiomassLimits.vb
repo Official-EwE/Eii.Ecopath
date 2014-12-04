@@ -116,6 +116,8 @@ Public Class cBiomassLimits
                 buff = reader.ReadLine()        'Skip the row of headers
                 buff = reader.ReadLine()
 
+                breturn = True
+
                 Do Until reader.EndOfStream
 
                     recs = buff.Split(","c)
@@ -132,7 +134,6 @@ Public Class cBiomassLimits
                     ' Only add valid BiomassLimits!
                     Me.Add(tempBiomassLimit)
 
-                    breturn = True
                     buff = reader.ReadLine()
                 Loop
 
