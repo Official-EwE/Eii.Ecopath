@@ -778,8 +778,7 @@ Namespace Ecospace.Controls
                 Case cSpatialScalarDataAdapterBase.eScaleType.Relative
                     Me.m_rbRelative.Checked = True
             End Select
-            ' ToDo: use format provider here
-            Me.m_tbxScale.Text = CStr(conn.Scale)
+            Me.m_fpScale.Value = conn.Scale
 
             Me.m_bInUpdate = bInUpdate
 
