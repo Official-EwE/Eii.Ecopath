@@ -4206,7 +4206,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Acitve.
+        '''  Looks up a localized string similar to Active.
         '''</summary>
         Public ReadOnly Property HEADER_ENVINPUT_ACTIVE() As String
             Get

@@ -3045,7 +3045,7 @@
     <value>Biomass relative forcing</value>
   </data>
   <data name="HEADER_ENVINPUT_ACTIVE" xml:space="preserve">
-    <value>Acitve</value>
+    <value>Active</value>
   </data>
   <data name="HEADER_OVERLAP_SPATIAL" xml:space="preserve">
     <value>Spat. overlap</value>
