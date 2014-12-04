@@ -119,6 +119,7 @@ Public Class frmMSE
         Me.m_rbCustomPath.Checked = Not Me.MSE.UseEwEPath
         Me.m_rbWriteAlways.Checked = Me.MSE.WriteAllResults
         Me.m_hdrStep2.IsCollapsed = True
+        Me.m_hdrStep3.IsCollapsed = True
 
         Me.m_bInUpdate = False
 
