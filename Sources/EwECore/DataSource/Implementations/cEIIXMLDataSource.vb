@@ -969,8 +969,12 @@ Public Class cEIIXMLDataSource
                 tsDS.strDatasetAuthor(iDataset) = CStr(Me.ReadSafe(drow, "Author", ""))
                 tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(drow, "Contact", ""))
                 tsDS.nDatasetFirstYear(iDataset) = CInt(drow("FirstYear"))
-                tsDS.nDatasetNumPoints(iDataset) = CInt(drow("NumYears"))
                 tsDS.nDatasetNumTimeSeries(iDataset) = 0 ' CInt(Me.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(drow("DatasetID")))))
+
+                'tsDS.nDatasetNumPoints(iDataset) = CInt(drow("NumYears"))
+                tsDS.nDatasetNumPoints(iDataset) = CInt(drow("NumPoints"))
+                tsDS.DataSetIntervals(iDataset) = CType(CInt(drow("DataInterval")), eTSDataSetInterval)
+
                 iDataset += 1
             Next
         Catch ex As Exception
@@ -2458,9 +2462,10 @@ Public Class cEIIXMLDataSource
                 Dim iGroup As Integer = Array.IndexOf(ecospaceDS.GroupDBID, CInt(drow("GroupID")))
                 Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(drow("ShapeID")))
                 Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(drow("VarDBID")))
-                Dim varName As eVarNameFlags = cin.GetVarName(CStr(drow("VarName")))
+                'Dim varName As eVarNameFlags = cin.GetVarName(CStr(drow("VarName")))
 
-                If (iGroup > 0) And (iShape > 0) And (varName <> eVarNameFlags.NotSet) Then
+                'If (iGroup > 0) And (iShape > 0) And (varName <> eVarNameFlags.NotSet) Then
+                If (iGroup > 0) And (iShape > 0) Then
                     ' Map pos 0 indicates Depth, any other ID indicates a Driver map
                     ecospaceDS.CapMapFunctions(Math.Max(0, iMap), iGroup) = iShape
                 End If
