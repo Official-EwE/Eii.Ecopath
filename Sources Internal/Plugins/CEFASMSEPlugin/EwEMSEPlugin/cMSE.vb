@@ -1533,8 +1533,8 @@ Public Class cMSE
         'Save FleetEffortTable to CSV
         'swFleetEffort.Write("Model,Strategy,FleetNumber,FleetName")
 
-        swFleetEffort.WriteLine()
         For iRow = 0 To FleetEffortTable.Rows.Count - 1
+            swFleetEffort.WriteLine()
             Dim RowData As Data.DataRow
             Dim EffortVals() As Single
             RowData = FleetEffortTable.Rows(iRow)
@@ -1545,7 +1545,6 @@ Public Class cMSE
             For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                 swFleetEffort.Write("," & cStringUtils.FormatNumber(EffortVals(iTimeStep - 1)))
             Next
-            swFleetEffort.WriteLine()
         Next
 
         'Save the FleetCatchTable to CSV
@@ -1987,7 +1986,6 @@ Public Class cMSE
         For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
             strm.Write("," & cStringUtils.FormatNumber(iTime))
         Next
-        strm.WriteLine()
         Return strm
 
     End Function
@@ -2828,9 +2826,10 @@ Public Class cMSE
 
             End If
 
-            'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
+
             For iFleet = 1 To m_core.nFleets
                 If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
+                    'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
                     _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 Else
                     'Make sure the fleet is regulated if we are going add error to Effort Implementation
@@ -2842,7 +2841,8 @@ Public Class cMSE
                         '   CV can be included in the interface
                         '   Random number generator needs to be seeded at the same time as the stock assessment model
                         _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
-
+                    Else
+                        _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                     End If 'Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None
 
                 End If
