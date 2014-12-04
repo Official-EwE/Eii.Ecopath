@@ -117,7 +117,7 @@ Public Class frmMSE
 
         Me.m_rbEwEDefaultPath.Checked = Me.MSE.UseEwEPath
         Me.m_rbCustomPath.Checked = Not Me.MSE.UseEwEPath
-
+        Me.m_rbWriteAlways.Checked = Me.MSE.WriteAllResults
         Me.m_hdrStep2.IsCollapsed = True
 
         Me.m_bInUpdate = False
@@ -353,8 +353,9 @@ Public Class frmMSE
     End Sub
 
     Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnRun.Click, Button1.Click
+        Handles m_btnRun.Click
         Try
+            Me.MSE.WriteAllResults = Me.m_rbWriteAlways.Checked
             Me.MSE.LoadSampledParams()
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnRun")

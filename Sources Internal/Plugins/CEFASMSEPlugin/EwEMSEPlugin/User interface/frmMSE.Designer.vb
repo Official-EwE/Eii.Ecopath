@@ -101,6 +101,7 @@ Partial Class frmMSE
         Me.m_btnChangePath = New System.Windows.Forms.Button()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
+        Me.m_rbWriteAlways = New System.Windows.Forms.CheckBox()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -292,6 +293,7 @@ Partial Class frmMSE
         '
         'm_plStep3
         '
+        Me.m_plStep3.Controls.Add(Me.m_rbWriteAlways)
         Me.m_plStep3.Controls.Add(Me.m_tlpFishingControls)
         Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
         Me.m_plStep3.Controls.Add(Me.m_btnReviewTFM)
@@ -335,8 +337,8 @@ Partial Class frmMSE
         '
         'm_hdrStep3
         '
-        Me.m_hdrStep3.CanCollapseParent = False
-        Me.m_hdrStep3.CollapsedParentHeight = 0
+        Me.m_hdrStep3.CanCollapseParent = True
+        Me.m_hdrStep3.CollapsedParentHeight = 76
         resources.ApplyResources(Me.m_hdrStep3, "m_hdrStep3")
         Me.m_hdrStep3.IsCollapsed = False
         Me.m_hdrStep3.Name = "m_hdrStep3"
@@ -488,6 +490,12 @@ Partial Class frmMSE
         Me.m_pbEII.Name = "m_pbEII"
         Me.m_pbEII.TabStop = False
         '
+        'm_rbWriteAlways
+        '
+        resources.ApplyResources(Me.m_rbWriteAlways, "m_rbWriteAlways")
+        Me.m_rbWriteAlways.Name = "m_rbWriteAlways"
+        Me.m_rbWriteAlways.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -570,4 +578,5 @@ Partial Class frmMSE
     Private WithEvents m_btnQuotaShares As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_pbEII As System.Windows.Forms.PictureBox
+    Private WithEvents m_rbWriteAlways As System.Windows.Forms.CheckBox
 End Class

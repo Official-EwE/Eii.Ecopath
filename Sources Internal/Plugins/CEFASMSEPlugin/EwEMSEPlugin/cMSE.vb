@@ -352,7 +352,6 @@ Public Class cMSE
 
     End Sub
 
-
     Public Function CreateModels() As Boolean
         Dim bsuccess As Boolean = True
 
@@ -424,6 +423,8 @@ Public Class cMSE
         Return distpath.Save() And distsim.Save()
 
     End Function
+
+    Public Property WriteAllResults As Boolean = False
 
 #End Region ' Public methods
 
@@ -1471,7 +1472,7 @@ Public Class cMSE
                         'End of Strategy loop
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                        If GoodDynamics Then
+                        If GoodDynamics Or Me.WriteAllResults Then
                             SaveResults2CSV(FleetEffortTable, FleetCatchTable, ResultsTable, TrajectoryTable, _
                                             swFleetEffort, swFleet, swGroup, TrajectoryCsv, Trajectory2Csv)
                         End If
