@@ -401,10 +401,12 @@ Namespace Ecospace.Controls
                 If (Me.m_bIsScaling) Then
                     If (Me.m_rbAbsolute.Checked) Then
                         conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Absolute
+                        Me.m_fpScale.Enabled = False
                     Else
                         conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        conn.Scale = CSng(Me.m_fpScale.Value)
+                        Me.m_fpScale.Enabled = True
                     End If
-                    conn.Scale = CSng(Me.m_fpScale.Value)
 
                     ' Invalidate the cached data for this dataset
                     ' ToDo_JS: Make dataset clearing more sublte. 
@@ -419,15 +421,6 @@ Namespace Ecospace.Controls
                 Debug.Assert(False, ex.Message)
             End Try
 
-        End Sub
-
-        Private Sub OnEnterScaleTextBox(sender As Object, e As System.EventArgs) _
-            Handles m_tbxScale.Enter
-            Try
-                Me.m_rbRelative.Checked = True
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
         End Sub
 
         Private Sub OnScaleChanged(sender As Object, e As System.EventArgs)
