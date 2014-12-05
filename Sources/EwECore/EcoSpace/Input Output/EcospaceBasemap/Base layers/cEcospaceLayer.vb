@@ -55,8 +55,6 @@ Public MustInherit Class cEcospaceLayer
     Private m_data As Object = Nothing
     ''' <summary>Type of the data.</summary>
     Private m_typeValue As Type = Nothing
-    ''' <summary>User description of layer.</summary>
-    Protected m_description As String
 
 #End Region ' Private variables
 
@@ -226,13 +224,6 @@ Public MustInherit Class cEcospaceLayer
     End Property
 
     Public Overridable Property Description() As String
-        Get
-            Return Me.m_description
-        End Get
-        Set(value As String)
-            Me.m_description = value
-        End Set
-    End Property
 
     ' This function does not require a GetVariable/SetVariable counterpart
     Public MustOverride Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
@@ -278,7 +269,7 @@ Public MustInherit Class cEcospaceLayer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' States if layer is receiving data from an external source.
+    ''' Get if layer is receiving data from an external source.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property IsExternalData() As Boolean
@@ -290,6 +281,24 @@ Public MustInherit Class cEcospaceLayer
             Return adapter.IsConnected(Me.Index)
         End Get
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get whether this layer can be enabled and disabled.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overridable ReadOnly Property CanDisable As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set if the layer is enabled for its intended purposes.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Property IsEnabled() As Boolean = True
 
 #End Region ' Cell manipulation
 
@@ -345,5 +354,6 @@ Public MustInherit Class cEcospaceLayer
 
 #End Region ' Overrides
 
+   
 End Class
 

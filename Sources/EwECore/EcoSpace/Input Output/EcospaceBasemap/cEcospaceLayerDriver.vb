@@ -98,6 +98,21 @@ Public Class cEcospaceLayerDriver
         End Set
     End Property
 
+    Public Overrides ReadOnly Property CanDisable As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
+    Public Overrides Property IsEnabled As Boolean
+        Get
+            Return Me.IsCapacityMapActive()
+        End Get
+        Set(value As Boolean)
+            Me.ActivateCapacityMap(value)
+        End Set
+    End Property
+
 #End Region ' Overrides
 
 #Region " Properties by dot (.) operator "
@@ -112,5 +127,27 @@ Public Class cEcospaceLayerDriver
     End Property
 
 #End Region ' Properties by dot (.) operator
+
+#Region " Internals "
+
+    Private Function ActivateCapacityMap(bEnable As Boolean) As Boolean
+        Dim manager As cMapResponseInteractionManager = Me.m_core.CapacityMapInteractionManager
+        Dim map As IEnviroInputMap = manager.Map(Me)
+        If (map IsNot Nothing) Then
+            map.isLayerActive = bEnable
+        End If
+        Return IsCapacityMapActive()
+    End Function
+
+    Private Function IsCapacityMapActive() As Boolean
+        Dim manager As cMapResponseInteractionManager = Me.m_core.CapacityMapInteractionManager
+        Dim map As IEnviroInputMap = manager.Map(Me)
+        If (map IsNot Nothing) Then
+            Return map.isLayerActive
+        End If
+        Return True
+    End Function
+
+#End Region ' Internals
 
 End Class

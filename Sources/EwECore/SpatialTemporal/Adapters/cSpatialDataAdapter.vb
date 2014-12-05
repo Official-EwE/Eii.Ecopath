@@ -143,7 +143,7 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="iLayer">The one-based index of the layer to query.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsEnabled(ByVal iLayer As Integer) As Boolean
+        Public Overridable Property IsEnabled(ByVal iLayer As Integer) As Boolean
             Get
                 Return Me.m_bIsEnabled(iLayer)
             End Get
@@ -164,6 +164,24 @@ Namespace SpatialData
         Public ReadOnly Property VarName() As eVarNameFlags
             Get
                 Return Me.m_varName
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the status for the underlying layer.
+        ''' </summary>
+        ''' <param name="iLayer">The one-based index of the layer to query.</param>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property Status(ByVal iLayer As Integer) As eStatusFlags
+            Get
+                ' This is hack!
+                If (Me.m_varName = eVarNameFlags.LayerDriver) Then
+                    Dim manager As cMapResponseInteractionManager = Me.m_core.CapacityMapInteractionManager
+                    Dim map As IEnviroInputMap = Nothing
+
+                End If
+                Return eStatusFlags.OK
             End Get
         End Property
 
@@ -198,7 +216,7 @@ Namespace SpatialData
 
             For Each layer In layers
 
-                If Me.IsEnabled(layer.Index) Then
+                If layer.IsEnabled() And Me.IsEnabled(layer.Index) Then
 
                     For Each conn As cSpatialDataConnection In Me.m_connections(layer.Index)
                         ' Is ready to go?

@@ -253,6 +253,12 @@ Namespace Ecospace
                     Me.m_toolbox.RefreshContent()
                     Me.m_map.RefreshContent()
 
+                Case Else
+                    ' Could be a layer change. This test could be massively improved ;)
+                    If msg.Type = eMessageType.DataModified Then
+                        Me.m_gridApply.RefreshContent()
+                    End If
+
             End Select
 
             Select Case msg.Type
