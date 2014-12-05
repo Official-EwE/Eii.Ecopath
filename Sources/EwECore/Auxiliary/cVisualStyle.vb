@@ -16,14 +16,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports  "
+#Region " Imports "
 
 Option Strict On
 
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.IO
-Imports System.Text
+Imports System.Runtime.Serialization.Formatters
 Imports System.Runtime.Serialization.Formatters.Binary
 
 #End Region ' Imports 
@@ -292,7 +292,7 @@ Namespace Auxiliary
         ''' Get/set the Auxillary data that contains this visual style.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-         Friend Property Container() As cAuxiliaryData
+        Friend Property Container() As cAuxiliaryData
             Get
                 Return Me.m_container
             End Get
@@ -324,12 +324,13 @@ Namespace Auxiliary
         Public Shared Function StyleToString(ByVal vs As cVisualStyle) As String
 
             Dim strResult As String = String.Empty
-            Dim bf As New BinaryFormatter()
+            Dim bf As New Binary.BinaryFormatter()
             Dim ms As New MemoryStream()
 
             If (vs Is Nothing) Then Return ""
 
             ' Write object to mem stream
+            bf.AssemblyFormat = FormatterAssemblyStyle.Simple
             bf.Serialize(ms, vs)
             strResult = System.Convert.ToBase64String(ms.ToArray(), Base64FormattingOptions.None)
 
@@ -343,11 +344,15 @@ Namespace Auxiliary
         Public Shared Function StringToStyle(ByVal str As String) As cVisualStyle
 
             Dim vsResult As cVisualStyle = Nothing
+
+            If String.IsNullOrEmpty(str) Then Return vsResult
+
             Dim bf As New BinaryFormatter()
             Dim ms As MemoryStream = Nothing
             Dim ab As Byte() = Nothing
 
-            If String.IsNullOrEmpty(str) Then Return vsResult
+            ' Ignore assembly version differences
+            bf.AssemblyFormat = FormatterAssemblyStyle.Simple
 
             Try
                 ab = System.Convert.FromBase64String(str)
