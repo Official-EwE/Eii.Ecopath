@@ -52,7 +52,7 @@ Namespace Ecospace
             LayerIndex = 0
             LayerName
             LayerDescription
-            LayerIsActive
+            LayerIsCApacityEnabled
             LayerStatus
         End Enum
 
@@ -96,8 +96,9 @@ Namespace Ecospace
                     Me.Description = fmt.GetDescriptor(Layer.VarName, eDescriptorTypes.Description)
                 End If
                 Me.Status = eItemStatusTypes.Original
-                Me.IsActive = True
+                Me.IsCapacityEnabled = True
                 Me.IsEditable = bEditable
+                Me.LayerID = Layer.DBID
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -111,7 +112,7 @@ Namespace Ecospace
                 Me.Name = strName
                 Me.Description = strDescription
                 Me.Status = eItemStatusTypes.Added
-                Me.IsActive = True
+                Me.IsCapacityEnabled = True
                 Me.IsEditable = True
             End Sub
 
@@ -224,7 +225,9 @@ Namespace Ecospace
             ''' This logic really belongs in a dedicated interface.
             ''' </remarks>
             ''' -------------------------------------------------------------------
-            Public Property IsActive() As Boolean
+            Public Property IsCapacityEnabled() As Boolean
+
+            Public Property LayerID As Integer
 
         End Class
 
@@ -238,7 +241,6 @@ Namespace Ecospace
         Public Sub New()
 
             MyBase.New()
-            Me.FixedColumnWidths = False
 
         End Sub
 
@@ -255,6 +257,7 @@ Namespace Ecospace
 
             Me.Selection.SelectionMode = GridSelectionMode.Row
             Me.Selection.EnableMultiSelection = False
+            Me.AllowBlockSelect = False
 
             ' JS 15Apr07: there will be no context menu item until we have a better idea
             Me.ContextMenu = Nothing
@@ -266,13 +269,14 @@ Namespace Ecospace
             Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
             Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
-            Me(0, eColumnTypes.LayerIsActive) = New EwEColumnHeaderCell(SharedResources.HEADER_ENVINPUT_ACTIVE)
+            Me(0, eColumnTypes.LayerIsCApacityEnabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED_CAPACITY)
 
             ' Layer index cell
             Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             ' Fix index column only; Layer name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
+            Me.FixedColumnWidths = True
 
         End Sub
 
@@ -285,29 +289,22 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub FillData()
 
-            Dim Layer As cEcospaceLayerDriver = Nothing
+            Dim layer As cEcospaceLayerDriver = Nothing
             Dim li As cLayerInfo = Nothing
-            Dim CapManager As cMapResponseInteractionManager = Me.Core.CapacityMapInteractionManager
-            Dim EnviroMap As IEnviroInputMap
 
             ' Populate local administration from a snapshot of the live data
 
             Dim depth As cEcospaceLayer = Me.Core.EcospaceBasemap.LayerDepth
             'Depth layer cannot be deleted
             li = New cLayerInfo(depth, bEditable:=False)
-            li.IsActive = CapManager.Map(depth).isLayerActive
+            li.IsCapacityEnabled = depth.IsEnabled
             Me.m_alLayers.Add(li)
 
             ' Make snapshot of Layer configuration
             For iLayer As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
-                Layer = Me.Core.EcospaceBasemap.LayerDriver(iLayer)
-                'Find the IEnviroInputMap that this layer is attached to
-                EnviroMap = CapManager.Map(Layer)
-                'For debugging just make sure
-                Debug.Assert(EnviroMap IsNot Nothing, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer " + Layer.Name)
-
-                li = New cLayerInfo(Layer)
-                li.IsActive = EnviroMap.isLayerActive
+                layer = Me.Core.EcospaceBasemap.LayerDriver(iLayer)
+                li = New cLayerInfo(layer)
+                li.IsCapacityEnabled = layer.IsEnabled()
                 Me.m_alLayers.Add(li)
             Next
 
@@ -322,7 +319,7 @@ Namespace Ecospace
             Me.Columns(eColumnTypes.LayerIndex).Width = 40
             Me.Columns(eColumnTypes.LayerName).Width = 120
             Me.Columns(eColumnTypes.LayerDescription).Width = 200
-            Me.Columns(eColumnTypes.LayerIsActive).Width = 50
+            Me.Columns(eColumnTypes.LayerIsCApacityEnabled).Width = 50
 
         End Sub
 
@@ -363,8 +360,8 @@ Namespace Ecospace
                 Me(iRow, eColumnTypes.LayerDescription) = New EwECell("", GetType(String), style)
                 If li.IsEditable Then Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerIsActive) = New Cells.Real.CheckBox(False)
-                Me(iRow, eColumnTypes.LayerIsActive).Behaviors.Add(Me.EwEEditHandler)
+                Me(iRow, eColumnTypes.LayerIsCApacityEnabled) = New Cells.Real.CheckBox(False)
+                Me(iRow, eColumnTypes.LayerIsCApacityEnabled).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iRow, eColumnTypes.LayerStatus) = New EwEStatusCell(eItemStatusTypes.Original)
             Next
@@ -416,8 +413,8 @@ Namespace Ecospace
             pos = New Position(iRow, eColumnTypes.LayerDescription)
             aCells(eColumnTypes.LayerDescription).SetValue(pos, CStr(li.Description))
 
-            pos = New Position(iRow, eColumnTypes.LayerIsActive)
-            aCells(eColumnTypes.LayerIsActive).SetValue(pos, CBool(li.IsActive))
+            pos = New Position(iRow, eColumnTypes.LayerIsCApacityEnabled)
+            aCells(eColumnTypes.LayerIsCApacityEnabled).SetValue(pos, CBool(li.IsCapacityEnabled))
 
             pos = New Position(iRow, eColumnTypes.LayerStatus)
             aCells(eColumnTypes.LayerStatus).SetValue(pos, li.Status)
@@ -495,8 +492,8 @@ Namespace Ecospace
             Try
                 Dim li As cLayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), cLayerInfo)
                 Select Case DirectCast(p.Column, eColumnTypes)
-                    Case eColumnTypes.LayerIsActive
-                        li.IsActive = CBool(cell.GetValue(p))
+                    Case eColumnTypes.LayerIsCApacityEnabled
+                        li.IsCapacityEnabled = CBool(cell.GetValue(p))
                     Case Else
                         ' NOP
                 End Select
@@ -586,7 +583,7 @@ Namespace Ecospace
         End Function
 
         Public Function CanRemoveRow(Optional ByVal iRow As Integer = -1) As Boolean
-            If iRow = -1 Then iRow = Me.SelectedRow()
+            If (iRow <= 0) Then iRow = Me.SelectedRow()
             If iRow = -1 Then Return False
             Return Me.m_alLayers(iRow - 1).IsEditable
         End Function
@@ -778,7 +775,6 @@ Namespace Ecospace
             Dim bConfigurationChanged As Boolean = False
             Dim bLayersChanged As Boolean = False
             Dim li As cLayerInfo = Nothing
-            Dim iDBID As Integer = Nothing
             Dim Layer As cEcospaceLayerDriver = Nothing
             Dim iLayer As Integer = 0
             Dim bSuccess As Boolean = True
@@ -794,7 +790,9 @@ Namespace Ecospace
                 If Not li.IsNew Then
                     ' Check if this layer has been modified
                     bLayersChanged = bLayersChanged Or li.IsChanged()
-                    bConfigurationChanged = bConfigurationChanged Or (li.Layer.Index <> (iLayer + 1))
+                    ' This test got screwed up because the depth layer - which is no environmental driver layer - was inserted
+                    'bConfigurationChanged = bConfigurationChanged Or (li.Layer.Index <> (iLayer + 1))
+                    bConfigurationChanged = bConfigurationChanged Or ((li.Layer.VarName = eVarNameFlags.LayerDriver) And (li.Layer.Index <> iLayer))
                 End If
             Next iLayer
 
@@ -862,7 +860,7 @@ Namespace Ecospace
                 While (bSuccess = True) And (iLayer < Me.m_alLayers.Count)
                     li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
                     If (li.IsNew()) Then
-                        bSuccess = bSuccess And Me.Core.AddEcospaceDriverLayer(li.Name, li.Description, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddEcospaceDriverLayer(li.Name, li.Description, li.LayerID)
                     Else
                         If ((iLayer + 1) <> li.Layer.Index) Then
                             If Not Me.Core.MoveDriverLayer(li.Layer.Index, iLayer + 1) Then
@@ -902,26 +900,34 @@ Namespace Ecospace
 
             ' Update core objects
             If (bLayersChanged) Then
-                ' For each local layer admin unit
-                'Skip the Depth layer in the first index
-                'It's not in the EcospaceBasemap.LayerDriver(iLayTest) list
-                For iLayer = 1 To Me.m_alLayers.Count - 1
-                    ' Get local admin unit
-                    li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
-                    ' Has it changed?
-                    If (li.IsChanged()) Then
+
+                If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Update) Then Return False
+
+                Try
+
+                    ' For each local layer admin unit
+                    'Skip the Depth layer in the first index
+                    'It's not in the EcospaceBasemap.LayerDriver(iLayTest) list
+                    For iLayer = 1 To Me.m_alLayers.Count - 1
+                        ' Get local admin unit
+                        li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
                         ' Find core layer with same BDID (cannot use cached cEcospaceBasemap instances since the core has reloaded)
                         Dim bFound As Boolean = False
                         ' For every core layer instance (and yes, this array is one-based)
                         For iLayTest As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
                             ' Get core layer instance
                             Dim layTest As cEcospaceLayerDriver = Me.Core.EcospaceBasemap.LayerDriver(iLayTest)
-                            ' Has matching ID?
-                            If (layTest.getID = li.Layer.getID) Then
-                                ' #Yes: Update
-                                layTest.Name = li.Name
-                                layTest.Description = li.Description
-                                ' Are we relieved or what!
+                            ' Is this 'our' layer?
+                            If (layTest.DBID = li.LayerID) Then
+                                ' Has it changed?
+                                If (li.IsChanged()) Then
+                                    layTest.Name = li.Name
+                                    layTest.Description = li.Description
+                                    ' Are we relieved or what!
+                                End If
+                                ' Set enabled state
+                                layTest.IsEnabled = li.IsCapacityEnabled
+                                Core.onChanged(layTest, eMessageType.DataModified)
                                 bFound = True
                             End If
                         Next
@@ -930,37 +936,12 @@ Namespace Ecospace
                             ' #No?! Uh oh...
                             Debug.Assert(False, ">> Internal panic: Unable to apply changes to layer id " & li.Layer.getID)
                         End If
-                    End If
-                Next
-            End If
-
-
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Blunt dumbness 
-            'Update all isActive flag on all the layers
-            'Newly added and removed layers will be update in the CapManager by the core
-            Dim CapManager As cMapResponseInteractionManager = Me.Core.CapacityMapInteractionManager
-            Dim EnviroMap As IEnviroInputMap
-            For iLayer = 0 To Me.m_alLayers.Count - 1
-                li = Me.m_alLayers(iLayer)
-                Try
-                    'Ok this is a little dicey
-                    'Lookup the Enviro map based on the layer name
-                    'Can't use the layer because m_alLayers has not re-load new layers
-                    'you could fish the layer out of the EcospaceBasemap.LayerDriver(li) and use that to get the enviromap
-                    EnviroMap = CapManager.Map(li.Name)
-                    If Not li.IsNew() Then
-                        'For debugging make sure we got the correct layer
-                        Debug.Assert(EnviroMap.Layer.getID = li.Layer.getID, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer.")
-                    End If
-                    Debug.Assert(EnviroMap IsNot Nothing, Me.ToString + " Error no Capacity Map for Enviromental Driver Layer.")
-                    EnviroMap.isLayerActive = li.IsActive
-
+                    Next
                 Catch ex As Exception
-                    cLog.Write(ex, Me.ToString + " Failed to find CapacityMapInteractionManager.Map() for Enviromental Driver Layer.")
+
                 End Try
-            Next iLayer
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                Return Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+            End If
 
             Return bSuccess
 

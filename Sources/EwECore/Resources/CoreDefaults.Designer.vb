@@ -407,6 +407,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Max..
+        '''</summary>
+        Friend Shared ReadOnly Property PARAM_MAX() As String
+            Get
+                Return ResourceManager.GetString("PARAM_MAX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Mean.
         '''</summary>
         Friend Shared ReadOnly Property PARAM_MEAN() As String
@@ -479,7 +488,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Yend.
+        '''  Looks up a localized string similar to Y end.
         '''</summary>
         Friend Shared ReadOnly Property PARAM_YEND() As String
             Get

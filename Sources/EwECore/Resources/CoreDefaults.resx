@@ -245,6 +245,9 @@
   <data name="PARAM_LEFTPOINT" xml:space="preserve">
     <value>Left point</value>
   </data>
+  <data name="PARAM_MAX" xml:space="preserve">
+    <value>Max.</value>
+  </data>
   <data name="PARAM_MEAN" xml:space="preserve">
     <value>Mean</value>
   </data>
@@ -270,7 +273,7 @@
     <value>Y base</value>
   </data>
   <data name="PARAM_YEND" xml:space="preserve">
-    <value>Yend</value>
+    <value>Y end</value>
   </data>
   <data name="PARAM_YZERO" xml:space="preserve">
     <value>Y zero</value>

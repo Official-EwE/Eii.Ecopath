@@ -4206,11 +4206,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Active.
+        '''  Looks up a localized string similar to Drive capacity.
         '''</summary>
-        Public ReadOnly Property HEADER_ENVINPUT_ACTIVE() As String
+        Public ReadOnly Property HEADER_ENABLED_CAPACITY() As String
             Get
-                Return ResourceManager.GetString("HEADER_ENVINPUT_ACTIVE", resourceCulture)
+                Return ResourceManager.GetString("HEADER_ENABLED_CAPACITY", resourceCulture)
             End Get
         End Property
         

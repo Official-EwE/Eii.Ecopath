@@ -105,7 +105,6 @@ Namespace Ecospace
                 Me(0, Me.m_nBaseCols + i - 1) = New EwEColumnHeaderCell(CStr(i))
             Next
 
-            Me.FixedColumnWidths = True
             Me.FixedColumns = Me.m_nBaseCols
 
         End Sub
@@ -165,7 +164,7 @@ Namespace Ecospace
                             Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(layer.Name)
                             Me(iRow, eColumnTypes.Name).VisualModel = vizChild
 
-                            Me(iRow, eColumnTypes.Enabled) = New SourceGrid2.Cells.Real.CheckBox(adt.IsEnabled(layer.Index))
+                            Me(iRow, eColumnTypes.Enabled) = New EwECheckboxCell(adt.IsEnabled(layer.Index))
                             Me(iRow, eColumnTypes.Enabled).Behaviors.Add(Me.EwEEditHandler)
 
                             Dim conns As cSpatialDataConnection() = adt.Connections(layer.Index)
@@ -177,9 +176,8 @@ Namespace Ecospace
                                 Else
                                     conn = Nothing
                                 End If
-                                Me(iRow, j + Me.m_nBaseCols) = New Cells.Real.Cell("")
+                                Me(iRow, j + Me.m_nBaseCols) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.OK)
                                 Me(iRow, j + Me.m_nBaseCols).Behaviors.Add(Me.m_bmCell)
-                                Me(iRow, j + Me.m_nBaseCols).VisualModel = New VisualModels.Common()
                             Next
                             hgcGroup.AddChildRow(iRow)
 
@@ -195,12 +193,25 @@ Namespace Ecospace
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
             Me.AllowBlockSelect = False
+            Me.FixedColumnWidths = True
         End Sub
 
         Protected Sub UpdateDatasetRow(iRow As Integer)
 
             Dim iNumDefined As Integer = 0
             Dim iNumConnected As Integer = 0
+            Dim info As cConnectionInfo = Me.InfoAtRow(iRow)
+
+            If (info Is Nothing) Then Return
+
+            Dim bEnabled As Boolean = (Not info.Layer.CanDisable) Or (info.Layer.IsEnabled)
+
+            Dim c As IEwECell = CType(Me(iRow, eColumnTypes.Enabled), IEwECell)
+            If (bEnabled) Then
+                c.Style = c.Style And Not cStyleGuide.eStyleFlags.NotEditable
+            Else
+                c.Style = c.Style Or cStyleGuide.eStyleFlags.NotEditable
+            End If
 
             For j As Integer = Me.m_nBaseCols To Me.ColumnsCount - 1
 
@@ -212,12 +223,15 @@ Namespace Ecospace
                     If (ds IsNot Nothing) Then
                         strText = ds.DisplayName
                     End If
-                    'If (Not conn.Adapter.IsConnected(conn.Layer.Index, iConn)) Then
-                    '    status = cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND
-                    'End If
                 End If
 
-                'Me(iRow, j).VisualModel.BackColor = Me.StyleGuide.ApplicationColor(status)
+                c = CType(Me(iRow, j), IEwECell)
+                If (bEnabled) Then
+                    c.Style = c.Style And Not cStyleGuide.eStyleFlags.NotEditable
+                Else
+                    c.Style = c.Style Or cStyleGuide.eStyleFlags.NotEditable
+                End If
+
                 Me(iRow, j).Value = strText
                 Me.AutoSizeColumn(j, 20)
             Next

@@ -58,7 +58,6 @@ Namespace Ecospace
             '
             'm_grid
             '
-            Me.m_grid.AllowBlockSelect = True
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10

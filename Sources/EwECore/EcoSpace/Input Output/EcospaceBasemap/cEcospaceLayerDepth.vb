@@ -104,4 +104,10 @@ Public Class cEcospaceLayerDepth
         Return My.Resources.CoreDefaults.CORE_DEFAULT_DEPTH
     End Function
 
+    Public Overrides ReadOnly Property CanDisable As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
 End Class

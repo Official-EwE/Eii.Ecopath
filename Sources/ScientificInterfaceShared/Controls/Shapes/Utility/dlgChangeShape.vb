@@ -81,8 +81,6 @@ Namespace Controls
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Me.CenterToParent()
-
             ' Add shape name 
             Me.m_tbxName.Text = Me.m_shape.Name
 
@@ -98,14 +96,12 @@ Namespace Controls
                 End If
             Next
 
-            'set the function type based on the function type of the current shape
-            If (Me.m_lbShapeFunctionTypes.SelectedIndex = -1) Then
-                Me.m_lbShapeFunctionTypes.SelectedIndex = GetShapeTypeIndex(Me.m_shape.ShapeFunctionType)
-            End If
+            ' Initialize shape function
+            Me.m_lbShapeFunctionTypes.SelectedIndex = Me.GetShapeTypeIndex(Me.m_shape.ShapeFunctionType)
 
             Me.UpdatePreview()
             Me.UpdateControls()
-
+            Me.CenterToScreen()
 
         End Sub
 
