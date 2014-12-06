@@ -284,10 +284,10 @@ Public MustInherit Class cEcospaceLayer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get whether this layer can be enabled and disabled.
+    ''' Get whether this layer can be <see cref="IsActive">deactivated</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Overridable ReadOnly Property CanDisable As Boolean
+    Public Overridable ReadOnly Property CanDeactivate As Boolean
         Get
             Return False
         End Get
@@ -295,10 +295,11 @@ Public MustInherit Class cEcospaceLayer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set if the layer is enabled for its intended purposes.
+    ''' Get/set if the layer is active. This can have different meanings for
+    ''' different layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Overridable Property IsEnabled() As Boolean = True
+    Public Overridable Property IsActive() As Boolean = True
 
 #End Region ' Cell manipulation
 

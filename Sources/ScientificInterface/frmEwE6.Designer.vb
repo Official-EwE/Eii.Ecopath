@@ -150,8 +150,8 @@ Partial Public Class frmEwE6
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbnAutosaveResults = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
-        Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
+        Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -760,12 +760,6 @@ Partial Public Class frmEwE6
         Me.m_tsbnFeedback.ForeColor = System.Drawing.SystemColors.Highlight
         Me.m_tsbnFeedback.Name = "m_tsbnFeedback"
         '
-        'm_ssMain
-        '
-        resources.ApplyResources(Me.m_ssMain, "m_ssMain")
-        Me.m_ssMain.Name = "m_ssMain"
-        Me.m_ssMain.ShowItemToolTips = True
-        '
         'm_tslbReadOnly
         '
         Me.m_tslbReadOnly.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -773,6 +767,12 @@ Partial Public Class frmEwE6
         Me.m_tslbReadOnly.Image = Global.ScientificInterface.My.Resources.Resources.Warning
         Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
+        '
+        'm_ssMain
+        '
+        resources.ApplyResources(Me.m_ssMain, "m_ssMain")
+        Me.m_ssMain.Name = "m_ssMain"
+        Me.m_ssMain.ShowItemToolTips = True
         '
         'frmEwE6
         '

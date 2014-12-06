@@ -1126,7 +1126,7 @@ Public Class cEIIDataSource
 
         For i As Integer = 1 To ecospaceDS.NGroups
             ecospaceDS.GroupDBID(i) = i
-            ecospaceDS.CapCalType(i) = eEcospaceCapacityCalType.Capacity
+            ecospaceDS.CapCalType(i) = eEcospaceCapacityCalType.EnvResponses
         Next
 
         For i As Integer = 1 To ecospaceDS.nFleets

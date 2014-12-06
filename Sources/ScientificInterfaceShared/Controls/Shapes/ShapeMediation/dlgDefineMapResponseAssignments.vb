@@ -118,7 +118,7 @@ Public Class dlgDefineMapResponseAssignments
             Dim liGroups As New List(Of Integer)
             For iGrp As Integer = 1 To Me.m_uic.Core.nGroups
                 Dim grp As cEcospaceGroup = Me.m_uic.Core.EcospaceGroups(iGrp)
-                If (grp.CapacityCalculationType = eEcospaceCapacityCalType.Capacity) Then
+                If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Then
                     liGroups.Add(iGrp)
                 End If
             Next

@@ -1960,11 +1960,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Use capacity.
+        '''  Looks up a localized string similar to Use environmental responses.
         '''</summary>
-        Public ReadOnly Property HEADER_USE_CAPACITY() As String
+        Public ReadOnly Property HEADER_USE_ENVRESPONSES() As String
             Get
-                Return ResourceManager.GetString("HEADER_USE_CAPACITY", resourceCulture)
+                Return ResourceManager.GetString("HEADER_USE_ENVRESPONSES", resourceCulture)
             End Get
         End Property
         

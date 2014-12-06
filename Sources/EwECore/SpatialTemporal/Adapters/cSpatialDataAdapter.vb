@@ -216,7 +216,7 @@ Namespace SpatialData
 
             For Each layer In layers
 
-                If layer.IsEnabled() And Me.IsEnabled(layer.Index) Then
+                If layer.IsActive() And Me.IsEnabled(layer.Index) Then
 
                     For Each conn As cSpatialDataConnection In Me.m_connections(layer.Index)
                         ' Is ready to go?

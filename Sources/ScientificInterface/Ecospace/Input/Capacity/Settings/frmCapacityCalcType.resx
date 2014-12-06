@@ -145,7 +145,7 @@
   <data name="m_tsbnUseOnlyHabitat.Text" xml:space="preserve">
     <value>Use only habitats</value>
   </data>
-  <data name="m_tsbnUseOnlyCapacity.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="m_tsbnUseOnlyEnvResponses.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
@@ -160,14 +160,14 @@
         TgDQASA1MVpwzwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="m_tsbnUseOnlyCapacity.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbnUseOnlyEnvResponses.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="m_tsbnUseOnlyCapacity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 22</value>
+  <data name="m_tsbnUseOnlyEnvResponses.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 20</value>
   </data>
-  <data name="m_tsbnUseOnlyCapacity.Text" xml:space="preserve">
-    <value>Use only capacity</value>
+  <data name="m_tsbnUseOnlyEnvResponses.Text" xml:space="preserve">
+    <value>Use only environmental responses</value>
   </data>
   <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -183,7 +183,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11520.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11635.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -208,7 +208,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridCapacityCalcType, EwE6, Version=6.5.11520.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.gridCapacityCalcType, EwE6, Version=6.5.11635.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -229,7 +229,7 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Habitat based foraging</value>
+    <value>Group capacity model</value>
   </data>
   <data name="&gt;&gt;m_tsbnUseOnlyHabitat.Name" xml:space="preserve">
     <value>m_tsbnUseOnlyHabitat</value>
@@ -237,16 +237,16 @@
   <data name="&gt;&gt;m_tsbnUseOnlyHabitat.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbnUseOnlyCapacity.Name" xml:space="preserve">
-    <value>m_tsbnUseOnlyCapacity</value>
+  <data name="&gt;&gt;m_tsbnUseOnlyEnvResponses.Name" xml:space="preserve">
+    <value>m_tsbnUseOnlyEnvResponses</value>
   </data>
-  <data name="&gt;&gt;m_tsbnUseOnlyCapacity.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsbnUseOnlyEnvResponses.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmCapacityCalcType</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.11520.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.11635.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

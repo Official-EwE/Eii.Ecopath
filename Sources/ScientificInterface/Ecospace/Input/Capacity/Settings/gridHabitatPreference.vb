@@ -166,7 +166,7 @@ Namespace Ecospace
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
             Dim mapManager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
 
-            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.Capacity) Then
+            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Then
                 style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
             End If
 
