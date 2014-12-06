@@ -18,7 +18,7 @@
 
 Namespace Ecospace
 
-    Partial Class dlgDefineEnvInputMaps
+    Partial Class dlgDefineEnvDriverMaps
         Inherits System.Windows.Forms.Form
 
         'Form overrides dispose to clean up the component list.
@@ -39,8 +39,8 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineEnvInputMaps))
-            Me.m_grid = New ScientificInterface.Ecospace.gridDefineEnvInputMaps()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineEnvDriverMaps))
+            Me.m_grid = New ScientificInterface.Ecospace.gridDefineEnvDriverMaps()
             Me.epNumHabitats = New System.Windows.Forms.ErrorProvider(Me.components)
             Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_btnRemoveHabitat = New System.Windows.Forms.Button()
@@ -58,6 +58,7 @@ Namespace Ecospace
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = False
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
@@ -152,7 +153,7 @@ Namespace Ecospace
             Me.m_hdrEdit.IsCollapsed = False
             Me.m_hdrEdit.Name = "m_hdrEdit"
             '
-            'dlgDefineEnvInputMaps
+            'dlgDefineEnvDriverMaps
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -168,7 +169,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_grid)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "dlgDefineEnvInputMaps"
+            Me.Name = "dlgDefineEnvDriverMaps"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             CType(Me.epNumHabitats, System.ComponentModel.ISupportInitialize).EndInit()
@@ -176,7 +177,7 @@ Namespace Ecospace
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_grid As gridDefineEnvInputMaps
+        Private WithEvents m_grid As gridDefineEnvDriverMaps
         Private WithEvents epNumHabitats As System.Windows.Forms.ErrorProvider
         Private WithEvents m_btnRemoveHabitat As System.Windows.Forms.Button
         Private WithEvents m_btnAdd As System.Windows.Forms.Button

@@ -47,7 +47,7 @@ Public Class cPluginPointHabitatCapacity
     Public Overrides ReadOnly Property Name() As String
         Get
             ' Sort at the end of it all
-            Return "ndForagingResponseXGrid"
+            Return "ndXForagingResponseGrid"
         End Get
     End Property
 

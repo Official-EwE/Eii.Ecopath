@@ -7043,7 +7043,7 @@ exitline:
         bReturn = True
         For igrp = 1 To Me.m_Data.NGroups
             'Have the Habitat Capacity input maps changed
-            If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.Capacity Then
+            If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses Then
                 'Yes the map has changed
                 For irow = 1 To Me.m_Data.InRow
                     For icol = 1 To Me.m_Data.InCol
@@ -7284,7 +7284,7 @@ exitline:
                 'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
-                    If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.Capacity Then
+                    If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses Then
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
                             'System.Console.Write(igrp.ToString + ",")

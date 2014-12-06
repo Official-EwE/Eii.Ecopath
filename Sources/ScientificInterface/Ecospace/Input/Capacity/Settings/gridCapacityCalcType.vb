@@ -68,7 +68,7 @@ Namespace Ecospace
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.FromHabitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
-            Me(0, eColumnTypes.FromEnvDrivers) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_CAPACITY)
+            Me(0, eColumnTypes.FromEnvDrivers) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
 
             For iGroup As Integer = 1 To Core.nGroups
 
@@ -120,12 +120,12 @@ Namespace Ecospace
                         Case eColumnTypes.FromHabitat
                             Dim val As eEcospaceCapacityCalType = CType(cSystemUtils.IIF(CBool(cell.GetValue(p)) = True, _
                                                                                          eEcospaceCapacityCalType.Habitat, _
-                                                                                         eEcospaceCapacityCalType.Capacity), eEcospaceCapacityCalType)
+                                                                                         eEcospaceCapacityCalType.EnvResponses), eEcospaceCapacityCalType)
                             Me.m_lProps(p.Row - 1).SetValue(val)
                         Case eColumnTypes.FromEnvDrivers
                             Dim val As eEcospaceCapacityCalType = CType(cSystemUtils.IIF(CBool(cell.GetValue(p)) = False, _
                                                                                          eEcospaceCapacityCalType.Habitat, _
-                                                                                         eEcospaceCapacityCalType.Capacity), eEcospaceCapacityCalType)
+                                                                                         eEcospaceCapacityCalType.EnvResponses), eEcospaceCapacityCalType)
                             Me.m_lProps(p.Row - 1).SetValue(val)
                     End Select
 
@@ -153,7 +153,7 @@ Namespace Ecospace
             Me(iGroup, eColumnTypes.FromHabitat).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.Habitat)
             Me.InvalidateCell(Me(iGroup, eColumnTypes.FromHabitat))
 
-            Me(iGroup, eColumnTypes.FromEnvDrivers).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.Capacity)
+            Me(iGroup, eColumnTypes.FromEnvDrivers).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses)
             Me.InvalidateCell(Me(iGroup, eColumnTypes.FromEnvDrivers))
 
         End Sub

@@ -201,7 +201,7 @@
     <Compile Include="Plugin points\cShapeGridForcingPlugin.vb" />
     <Compile Include="Plugin points\cShapeGridLandingsMediationPlugin.vb" />
     <Compile Include="Plugin points\cShapeGridPlugin.vb" />
-    <Compile Include="Plugin points\cShapeGridPredHabCapPlugin.vb" />
+    <Compile Include="Plugin points\cPluginPointHabitatCapacity.vb" />
     <Compile Include="Plugin points\cShapeGridPredPreyMedPlugin.vb" />
     <Compile Include="Plugin points\cShapeGridTimeSeriesPlugin.vb" />
   </ItemGroup>

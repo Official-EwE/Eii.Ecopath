@@ -4016,7 +4016,7 @@ Public Class frmEwE6
     ''' </summary>
     Private Sub OnInvokeDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnInvoke
         Try
-            Dim dlg As New dlgDefineEnvInputMaps(Me.UIContext)
+            Dim dlg As New dlgDefineEnvDriverMaps(Me.UIContext)
             dlg.ShowDialog(Me)
         Catch ex As Exception
 

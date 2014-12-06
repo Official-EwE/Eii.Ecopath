@@ -204,7 +204,7 @@ Namespace Ecospace
 
             If (info Is Nothing) Then Return
 
-            Dim bEnabled As Boolean = (Not info.Layer.CanDisable) Or (info.Layer.IsEnabled)
+            Dim bEnabled As Boolean = (Not info.Layer.CanDeactivate) Or (info.Layer.IsActive)
 
             Dim c As IEwECell = CType(Me(iRow, eColumnTypes.Enabled), IEwECell)
             If (bEnabled) Then

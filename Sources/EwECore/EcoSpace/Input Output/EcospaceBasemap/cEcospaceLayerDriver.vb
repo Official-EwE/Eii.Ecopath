@@ -98,13 +98,13 @@ Public Class cEcospaceLayerDriver
         End Set
     End Property
 
-    Public Overrides ReadOnly Property CanDisable As Boolean
+    Public Overrides ReadOnly Property CanDeactivate As Boolean
         Get
             Return True
         End Get
     End Property
 
-    Public Overrides Property IsEnabled As Boolean
+    Public Overrides Property IsActive As Boolean
         Get
             Return Me.IsCapacityMapActive()
         End Get

@@ -32,7 +32,7 @@ Namespace Ecospace
     ''' Dialog, implementing the Ecospace Edit Input Maps user interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class dlgDefineEnvInputMaps
+    Public Class dlgDefineEnvDriverMaps
 
 #Region " Private variables "
 

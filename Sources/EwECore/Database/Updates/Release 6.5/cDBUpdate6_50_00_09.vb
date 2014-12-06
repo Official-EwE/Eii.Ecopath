@@ -58,7 +58,7 @@ Friend Class cDBUpdate6_50_00_09
         End If
 
         Dim reader As IDataReader = db.GetReader("SELECT * FROM EcospaceScenario")
-        Dim ct As eEcospaceCapacityCalType = eEcospaceCapacityCalType.Capacity
+        Dim ct As eEcospaceCapacityCalType = eEcospaceCapacityCalType.EnvResponses
         Dim bSuccess As Boolean = True
         Dim iScenarioID As Integer = 0
         Dim bHasHabitats As Boolean = False
@@ -70,10 +70,10 @@ Friend Class cDBUpdate6_50_00_09
                 bHasHabitats = (CInt(db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitat WHERE ScenarioID={0}", iScenarioID), 0)) > 0)
 
                 ' Assume that new model uses capacity
-                ct = eEcospaceCapacityCalType.Capacity
+                ct = eEcospaceCapacityCalType.EnvResponses
 
                 ' Unless capacity calculation is set to habitats AND there are habitats defined for this scenario
-                If (CInt(db.ReadSafe(reader, "CapacityCalType", 0)) = 0) and bHasHabitats Then
+                If (CInt(db.ReadSafe(reader, "CapacityCalType", 0)) = 0) And bHasHabitats Then
                     ct = eEcospaceCapacityCalType.Habitat
                 End If
 

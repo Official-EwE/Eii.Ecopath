@@ -180,16 +180,28 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgExportSpatialData.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\frmCapacityCalcType.Designer.vb">
-      <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityDrivers.Designer.vb">
+      <DependentUpon>frmCapacityDrivers.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\frmCapacityCalcType.vb">
+    <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityDrivers.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\gridCapacityCalcType.Designer.vb">
+    <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityDrivers.Designer.vb">
+      <DependentUpon>gridCapacityDrivers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityDrivers.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.Designer.vb">
+      <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityCalcType.Designer.vb">
       <DependentUpon>gridCapacityCalcType.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\gridCapacityCalcType.vb">
+    <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityCalcType.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="frmEwE6.Designer.vb">
@@ -328,10 +340,10 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesToolbox.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineEnvInputMaps.Designer.vb">
-      <DependentUpon>dlgDefineEnvInputMaps.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\dlgDefineEnvDriverMaps.Designer.vb">
+      <DependentUpon>dlgDefineEnvDriverMaps.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineEnvInputMaps.vb">
+    <Compile Include="Ecospace\Input\dlgDefineEnvDriverMaps.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgEditLayer.Designer.vb">
@@ -653,7 +665,7 @@
     <Compile Include="Ecospace\Input\frmEcospaceParameters.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\gridHabitatPreference.vb">
+    <Compile Include="Ecospace\Input\Capacity\Settings\gridHabitatPreference.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridDefineHabitats.vb">
@@ -871,8 +883,11 @@
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgExportSpatialData.resx">
       <DependentUpon>dlgExportSpatialData.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Capacity\Apply\frmCapacityCalcType.resx">
+    <EmbeddedResource Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.resx">
       <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Capacity\Settings\frmCapacityDrivers.resx">
+      <DependentUpon>frmCapacityDrivers.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmEwE6.resx">
       <DependentUpon>frmEwE6.vb</DependentUpon>
@@ -913,8 +928,8 @@
       <DependentUpon>dlgDefineImportanceMaps.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgDefineEnvInputMaps.resx">
-      <DependentUpon>dlgDefineEnvInputMaps.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineEnvDriverMaps.resx">
+      <DependentUpon>dlgDefineEnvDriverMaps.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgEditLayer.resx">
@@ -1636,7 +1651,7 @@
     <Compile Include="Ecospace\Assets\ImportExport\dlgImportLayerDataXYZ.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridDefineEnvInputMaps.vb">
+    <Compile Include="Ecospace\Input\gridDefineEnvDriverMaps.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cEcospaceZedGraphHelper.vb">

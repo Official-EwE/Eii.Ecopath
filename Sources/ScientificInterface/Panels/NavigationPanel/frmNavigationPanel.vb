@@ -206,7 +206,6 @@ Public Class frmNavigationPanel
             .Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceDispersal), "Dispersal.htm")
             .Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceParameters), "Ecospace parameters.htm")
             .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Basemap.frmEcospaceMap), "Basemap.htm") ' ToDo: connect to help
-            .Add("ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridHabitatPreference), "Assign habitats.htm")
             .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceFishery), "Ecospace Fishery.htm")
             .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.dlgEcospaceScenario)) ' ToDo: connect to help
             .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmRunEcospace), "Run Ecospace.htm")
@@ -251,10 +250,12 @@ Public Class frmNavigationPanel
             ' '' .Add("ndMSEBatchTAC", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchTAC), "") ' ToDo: connect to help
             '.Add("ndMSEBatchParameters", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchParameters), "") ' ToDo: connect to help
 
-            'Ecospace habitat capacity stuff...
-            .Add("ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityCalcType), "") ' ToDo: connect to help
-            .Add("ndForagingResponse", eCoreExecutionState.EcospaceLoaded, GetType(frmForagingResponse), "") ' ToDo: connect to help
+            'Ecospace habitat capacity
+            .Add("ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmForagingResponse), "") ' ToDo: connect to help
+            .Add("ndHabCapModel", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityCalcType), "") ' ToDo: connect to help
+            .Add("ndHabCapDrivers", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityDrivers), "") ' ToDo: connect to help
             .Add("ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyCapacity), "") ' ToDo: connect to help
+            .Add("ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridHabitatPreference), "Assign habitats.htm")
 
         End With
 
