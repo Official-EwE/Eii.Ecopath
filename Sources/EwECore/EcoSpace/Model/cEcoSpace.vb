@@ -1966,7 +1966,9 @@ Public Class cEcoSpace
             Me.m_Data.isCapacityChanged = True
             Me.m_Data.setHabCapGroupIsChanged(True)
             'Now reset capacity
+            Me.m_Data.hasCapInitialized = False
             SetHabCap()
+            Me.m_Data.hasCapInitialized = True
 
             'first set density map for all pools to no movement equilibrium
             SetBiomassesEcospace()
@@ -6823,16 +6825,18 @@ exitline:
 
     Private Sub ClearHabCapGroups(isCapChanged() As Boolean)
 
-        'Array.Clear(m_Data.HabCap, 0, m_Data.HabCap.Length)
-        'Array.Clear(m_Data.TotHabCap, 0, m_Data.TotHabCap.Length)
-        'Array.Clear(m_Data.MaxHabCap, 0, m_Data.MaxHabCap.Length)
-
-
         For igrp As Integer = 1 To Me.m_Data.NGroups
 
             If isCapChanged(igrp) Then
+
+                'If capacity has not initialized then clear out the max and total values
+                If Not Me.m_Data.hasCapInitialized Then
+
+                    m_Data.MaxHabCap(igrp) = 0.0F
+                End If
+
                 m_Data.TotHabCap(igrp) = 0.0F
-                m_Data.MaxHabCap(igrp) = 0.0F
+
                 For irow As Integer = 1 To Me.m_Data.InRow
                     For icol As Integer = 1 To Me.m_Data.InCol
 
@@ -7075,7 +7079,9 @@ exitline:
         'make sure the habitat capacity has been set
         Me.m_Data.isCapacityChanged = True
         Me.m_Data.setHabCapGroupIsChanged(True)
+        Me.m_Data.hasCapInitialized = False
         Me.SetHabCap()
+        Me.m_Data.hasCapInitialized = True
 
         'Makes sure the number of water cells has been set
         If Me.m_Data.nWaterCells <= 0 Then
@@ -7141,16 +7147,17 @@ exitline:
         'now normalize the capacity map
         For iGrp = 1 To Me.m_Data.NGroups
             If Me.m_Data.isGroupHabCapChanged(iGrp) Then
-
-                Me.m_Data.TotHabCap(iGrp) = 0.0
-                Me.m_Data.MaxHabCap(iGrp) = 0
-                For ir = 1 To Me.m_Data.InRow
-                    For ic = 1 To Me.m_Data.InCol
-                        If Me.m_Data.Depth(ir, ic) > 0 Then
-                            m_Data.MaxHabCap(iGrp) = Math.Max(Me.m_Data.HabCap(ir, ic, iGrp), m_Data.MaxHabCap(iGrp))
-                        End If
+                'Capacity Model has a one time initialization of the max capacity used for normalization
+                If Not Me.m_Data.hasCapInitialized Then
+                    For ir = 1 To Me.m_Data.InRow
+                        For ic = 1 To Me.m_Data.InCol
+                            If Me.m_Data.Depth(ir, ic) > 0 Then
+                                m_Data.MaxHabCap(iGrp) = Math.Max(Me.m_Data.HabCap(ir, ic, iGrp), m_Data.MaxHabCap(iGrp))
+                            End If
+                        Next
                     Next
-                Next
+                End If
+
                 Dim tempmax As Single = 0
                 'Normalize and get the total cap by group
                 For ir = 1 To Me.m_Data.InRow
@@ -7160,6 +7167,7 @@ exitline:
                             Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / Me.m_Data.MaxHabCap(iGrp)
                             'Greater than min Capacity
                             If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP '0.000001F
+
                             'sum of capacity
                             Me.m_Data.TotHabCap(iGrp) += Me.m_Data.HabCap(ir, ic, iGrp)
                             tempmax = Math.Max(Me.m_Data.HabCap(ir, ic, iGrp), tempmax)
