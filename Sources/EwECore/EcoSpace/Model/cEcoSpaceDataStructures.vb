@@ -700,6 +700,13 @@ Public Class cEcospaceDataStructures
 
     Public isGroupHabCapChanged() As Boolean
 
+    ''' <summary>
+    ''' The Capacity model has a "one time" initialization of  <see cref="MaxHabCap"></see> value used for normalization of inputs.
+    ''' This Flag gets set to True once MaxHabCap() has been set 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hasCapInitialized As Boolean
+
 #End Region
 
 #Region "Private Data"
