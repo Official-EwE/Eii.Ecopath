@@ -204,6 +204,9 @@ Public MustInherit Class cShapeFunction
                 Case 4 : shp.Steep = Me.ParamValue(i)
             End Select
         Next
+
+        Return True
+
     End Function
 
     ''' -----------------------------------------------------------------------
