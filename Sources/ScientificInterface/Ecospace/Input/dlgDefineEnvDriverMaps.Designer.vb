@@ -58,7 +58,6 @@ Namespace Ecospace
             '
             'm_grid
             '
-            Me.m_grid.AllowBlockSelect = False
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
@@ -153,7 +152,7 @@ Namespace Ecospace
             Me.m_hdrEdit.IsCollapsed = False
             Me.m_hdrEdit.Name = "m_hdrEdit"
             '
-            'dlgDefineEnvDriverMaps
+            'dlgDefineEnvInputMaps
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -169,7 +168,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_grid)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "dlgDefineEnvDriverMaps"
+            Me.Name = "dlgDefineEnvInputMaps"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             CType(Me.epNumHabitats, System.ComponentModel.ISupportInitialize).EndInit()

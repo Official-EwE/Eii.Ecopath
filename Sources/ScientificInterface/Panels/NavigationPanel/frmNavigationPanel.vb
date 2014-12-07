@@ -253,7 +253,7 @@ Public Class frmNavigationPanel
             'Ecospace habitat capacity
             .Add("ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmForagingResponse), "") ' ToDo: connect to help
             .Add("ndHabCapModel", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityCalcType), "") ' ToDo: connect to help
-            .Add("ndHabCapDrivers", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityDrivers), "") ' ToDo: connect to help
+            '.Add("ndHabCapDrivers", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityDrivers), "") ' ToDo: connect to help
             .Add("ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyCapacity), "") ' ToDo: connect to help
             .Add("ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridHabitatPreference), "Assign habitats.htm")
 

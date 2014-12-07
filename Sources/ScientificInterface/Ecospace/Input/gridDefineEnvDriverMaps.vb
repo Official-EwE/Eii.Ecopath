@@ -52,6 +52,7 @@ Namespace Ecospace
             LayerIndex = 0
             LayerName
             LayerDescription
+            LayerIsCApacityEnabled
             LayerStatus
         End Enum
 
@@ -81,13 +82,22 @@ Namespace Ecospace
             ''' <param name="Layer">The <see cref="cEcospaceLayerDriver"/> to
             ''' initialize this instance from. If set, this instance represents a
             ''' Layer currently active in the EwE model.</param>
+            ''' <param name="bEditable">States if the layer can be edited.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal Layer As cEcospaceLayer)
+            Public Sub New(ByVal Layer As cEcospaceLayer, Optional bEditable As Boolean = True)
                 Debug.Assert(Layer IsNot Nothing)
                 Me.m_Layer = Layer
                 Me.Name = Layer.Name
-                Me.Description = DirectCast(Layer, cEcospaceLayerDriver).Description
+                If (TypeOf Layer Is cEcospaceLayerDriver) Then
+                    Me.Description = DirectCast(Layer, cEcospaceLayerDriver).Description
+                Else
+                    ' Fixed description
+                    Dim fmt As New cVarnameTypeFormatter()
+                    Me.Description = fmt.GetDescriptor(Layer.VarName, eDescriptorTypes.Description)
+                End If
                 Me.Status = eItemStatusTypes.Original
+                Me.IsCapacityEnabled = True
+                Me.IsEditable = bEditable
                 Me.LayerID = Layer.DBID
             End Sub
 
@@ -97,10 +107,13 @@ Namespace Ecospace
             ''' </summary>
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal strName As String)
+            Public Sub New(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single)
                 Me.m_Layer = Nothing
                 Me.Name = strName
+                Me.Description = strDescription
                 Me.Status = eItemStatusTypes.Added
+                Me.IsCapacityEnabled = True
+                Me.IsEditable = True
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -108,14 +121,14 @@ Namespace Ecospace
             ''' Get/set the name of this administrative unit.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Property Name() As String = ""
+            Public Property Name() As String
 
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Get/set the description of this administrative unit.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Property Description() As String = ""
+            Public Property Description() As String
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -142,7 +155,7 @@ Namespace Ecospace
             ''' Get/set whether the user has confirmed an action on this object.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Property Confirmed() As Boolean = False
+            Public Property Confirmed() As Boolean
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -197,6 +210,23 @@ Namespace Ecospace
                 End Set
             End Property
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get whether the layer can be modified.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public Property IsEditable As Boolean
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set whether the layer is active for capacity calculations.
+            ''' </summary>
+            ''' <remarks>
+            ''' This logic really belongs in a dedicated interface.
+            ''' </remarks>
+            ''' -------------------------------------------------------------------
+            Public Property IsCapacityEnabled() As Boolean
+
             Public Property LayerID As Integer
 
         End Class
@@ -239,6 +269,7 @@ Namespace Ecospace
             Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
             Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+            Me(0, eColumnTypes.LayerIsCApacityEnabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED_CAPACITY)
 
             ' Layer index cell
             Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
@@ -261,10 +292,19 @@ Namespace Ecospace
             Dim layer As cEcospaceLayerDriver = Nothing
             Dim li As cLayerInfo = Nothing
 
+            ' Populate local administration from a snapshot of the live data
+
+            Dim depth As cEcospaceLayer = Me.Core.EcospaceBasemap.LayerDepth
+            'Depth layer cannot be deleted
+            li = New cLayerInfo(depth, bEditable:=False)
+            li.IsCapacityEnabled = depth.IsActive
+            Me.m_alLayers.Add(li)
+
             ' Make snapshot of Layer configuration
             For iLayer As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
                 layer = Me.Core.EcospaceBasemap.LayerDriver(iLayer)
                 li = New cLayerInfo(layer)
+                li.IsCapacityEnabled = layer.IsActive
                 Me.m_alLayers.Add(li)
             Next
 
@@ -276,9 +316,12 @@ Namespace Ecospace
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
 
-            Me.Columns(eColumnTypes.LayerIndex).Width = 40
-            Me.Columns(eColumnTypes.LayerName).Width = 120
-            Me.Columns(eColumnTypes.LayerDescription).Width = 200
+            'Me.Columns(eColumnTypes.LayerIndex).Width = 40
+            'Me.Columns(eColumnTypes.LayerName).Width = 120
+            'Me.Columns(eColumnTypes.LayerDescription).Width = 200
+            'Me.Columns(eColumnTypes.LayerIsCApacityEnabled).Width = 50
+
+            Me.AutoSizeColumnRange(eColumnTypes.LayerIndex, eColumnTypes.LayerStatus, 0, 0)
 
         End Sub
 
@@ -303,15 +346,24 @@ Namespace Ecospace
 
                 li = DirectCast(Me.m_alLayers(iRow - iFIRSTDATAROW), cLayerInfo)
 
+                If (li.IsEditable) Then
+                    style = cStyleGuide.eStyleFlags.OK
+                Else
+                    style = cStyleGuide.eStyleFlags.NotEditable
+                End If
+
                 ewec = New EwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.LayerIndex) = ewec
 
                 Me(iRow, eColumnTypes.LayerName) = New EwECell("", GetType(String), style)
-                Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
+                If li.IsEditable Then Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iRow, eColumnTypes.LayerDescription) = New EwECell("", GetType(String), style)
-                Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
+                If li.IsEditable Then Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
+
+                Me(iRow, eColumnTypes.LayerIsCApacityEnabled) = New Cells.Real.CheckBox(False)
+                Me(iRow, eColumnTypes.LayerIsCApacityEnabled).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iRow, eColumnTypes.LayerStatus) = New EwEStatusCell(eItemStatusTypes.Original)
             Next
@@ -352,6 +404,8 @@ Namespace Ecospace
             ri.Tag = li
             aCells = ri.GetCells()
 
+            Dim bEditable As Boolean = li.IsEditable
+
             pos = New Position(iRow, eColumnTypes.LayerIndex)
             aCells(eColumnTypes.LayerIndex).SetValue(pos, CInt(iRow))
 
@@ -360,6 +414,9 @@ Namespace Ecospace
 
             pos = New Position(iRow, eColumnTypes.LayerDescription)
             aCells(eColumnTypes.LayerDescription).SetValue(pos, CStr(li.Description))
+
+            pos = New Position(iRow, eColumnTypes.LayerIsCApacityEnabled)
+            aCells(eColumnTypes.LayerIsCApacityEnabled).SetValue(pos, CBool(li.IsCapacityEnabled))
 
             pos = New Position(iRow, eColumnTypes.LayerStatus)
             aCells(eColumnTypes.LayerStatus).SetValue(pos, li.Status)
@@ -387,6 +444,9 @@ Namespace Ecospace
             If Not Me.AllowUpdates Then Return True
 
             Dim li As cLayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), cLayerInfo)
+
+            'Depth row can't be edited
+            If Not li.IsEditable Then Return True
 
             Try
 
@@ -427,6 +487,38 @@ Namespace Ecospace
 
         End Function
 
+        Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+            If Not Me.AllowUpdates Then Return True
+
+            Try
+                Dim li As cLayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), cLayerInfo)
+                Select Case DirectCast(p.Column, eColumnTypes)
+                    Case eColumnTypes.LayerIsCApacityEnabled
+                        li.IsCapacityEnabled = CBool(cell.GetValue(p))
+                    Case Else
+                        ' NOP
+                End Select
+            Catch ex As Exception
+
+            End Try
+            Return MyBase.OnCellValueChanged(p, cell)
+
+        End Function
+
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Cell click handler, called in response to clicking button-like cells.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+
+            Select Case DirectCast(p.Column, eColumnTypes)
+            End Select
+
+        End Sub
+
 #End Region ' Grid interaction
 
 #Region " Row manipulation "
@@ -448,29 +540,33 @@ Namespace Ecospace
                 If (iLayer >= 0) Then
                     li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
 
-                    ' Toggle 'flagged for deletion' flag
-                    li.FlaggedForDeletion = Not li.FlaggedForDeletion
+                    ' Depth row cannot be deleted
+                    If (li.IsEditable) Then
 
-                    ' Check to see what is to happen to the Layer now
-                    Select Case li.Status
+                        ' Toggle 'flagged for deletion' flag
+                        li.FlaggedForDeletion = Not li.FlaggedForDeletion
 
-                        Case eItemStatusTypes.Original
-                            ' Clear removed status of the Layer
-                            Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
+                        ' Check to see what is to happen to the Layer now
+                        Select Case li.Status
 
-                        Case eItemStatusTypes.Added
-                            ' Clear removed status of the Layer
-                            Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
+                            Case eItemStatusTypes.Original
+                                ' Clear removed status of the Layer
+                                Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
 
-                        Case eItemStatusTypes.Removed
-                            ' Set removed status
-                            Me.m_alLayersRemoved.Add(Me.m_alLayers(iLayer))
+                            Case eItemStatusTypes.Added
+                                ' Clear removed status of the Layer
+                                Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
 
-                        Case eItemStatusTypes.Invalid
-                            ' Set removed status
-                            Me.m_alLayers.RemoveAt(iLayer)
+                            Case eItemStatusTypes.Removed
+                                ' Set removed status
+                                Me.m_alLayersRemoved.Add(Me.m_alLayers(iLayer))
 
-                    End Select
+                            Case eItemStatusTypes.Invalid
+                                ' Set removed status
+                                Me.m_alLayers.RemoveAt(iLayer)
+
+                        End Select
+                    End If
                 End If
             Next
 
@@ -490,8 +586,8 @@ Namespace Ecospace
 
         Public Function CanRemoveRow(Optional ByVal iRow As Integer = -1) As Boolean
             If (iRow <= 0) Then iRow = Me.SelectedRow()
-            If (iRow = -1) Then Return False
-            Return True
+            If iRow = -1 Then Return False
+            Return Me.m_alLayers(iRow - 1).IsEditable
         End Function
 
         ''' <summary>
@@ -533,7 +629,7 @@ Namespace Ecospace
             Dim iNextNum As Integer = cStringUtils.GetNextNumber(lstrLayers.ToArray(), SharedResources.DEFAULT_NEWLAYER_NUM)
             Dim strName As String = cStringUtils.Localize(SharedResources.DEFAULT_NEWLAYER_NUM, iNextNum)
 
-            li = New cLayerInfo(strName)
+            li = New cLayerInfo(strName, "", 1.0!)
             Me.m_alLayers.Insert(iLayer, li)
 
             Me.UpdateGrid()
@@ -562,7 +658,9 @@ Namespace Ecospace
             If iRow < (iFIRSTDATAROW + 1) Then Return False
             If (Me.RowsCount <= (iFIRSTDATAROW + 1)) Then Return False
             If (iRow >= Me.RowsCount) Then Return False
-            Return True
+            Dim li1 As cLayerInfo = Me.m_alLayers(iRow - iFIRSTDATAROW)
+            Dim li2 As cLayerInfo = Me.m_alLayers(iRow - 1 - iFIRSTDATAROW)
+            Return li1.IsEditable And li2.IsEditable
 
         End Function
 
@@ -583,7 +681,9 @@ Namespace Ecospace
             If iRow < iFIRSTDATAROW Then Return False
             If (Me.RowsCount <= (iFIRSTDATAROW + 1)) Then Return False
             If (iRow >= Me.RowsCount - 1) Then Return False
-            Return True
+            Dim li1 As cLayerInfo = Me.m_alLayers(iRow - iFIRSTDATAROW)
+            Dim li2 As cLayerInfo = Me.m_alLayers(iRow + 1 - iFIRSTDATAROW)
+            Return li1.IsEditable And li2.IsEditable
         End Function
 
         Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
@@ -612,7 +712,6 @@ Namespace Ecospace
             Next iGroup
 
         End Sub
-
 #End Region ' Row manipulation 
 
 #Region " Admin "
@@ -798,7 +897,7 @@ Namespace Ecospace
                 cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 ' Test whether new Layers were loaded correctly 
-                Debug.Assert(Me.m_alLayers.Count = Me.Core.nEnvironmentalDriverLayers, ">> Internal panic: Dialog and core out of sync on Layers")
+                Debug.Assert(Me.m_alLayers.Count - 1 = Me.Core.nEnvironmentalDriverLayers, ">> Internal panic: Dialog and core out of sync on Layers")
             End If
 
             ' Update core objects
@@ -826,10 +925,12 @@ Namespace Ecospace
                                 If (li.IsChanged()) Then
                                     layTest.Name = li.Name
                                     layTest.Description = li.Description
+                                    ' Are we relieved or what!
                                 End If
-                                bFound = True
-                                ' Notify core
+                                ' Set enabled state
+                                layTest.IsActive = li.IsCapacityEnabled
                                 Core.onChanged(layTest, eMessageType.DataModified)
+                                bFound = True
                             End If
                         Next
                         ' All went well?
