@@ -195,7 +195,7 @@ Public Class cTrapezoidShapeFunction
             Dim shape As cEnviroResponseFunction = TryCast(obj, cEnviroResponseFunction)
             If shape IsNot Nothing Then
                 'set the extent of the data in the shape
-                shape.ResponseLeftLimit = Math.Max(0, Me.ParamValue(1))
+                shape.ResponseLeftLimit = Me.ParamValue(1)
                 shape.ResponseRightLimit = Me.ParamValue(4)
             End If
 
