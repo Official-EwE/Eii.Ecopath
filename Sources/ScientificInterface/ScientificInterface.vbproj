@@ -180,18 +180,6 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgExportSpatialData.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityDrivers.Designer.vb">
-      <DependentUpon>frmCapacityDrivers.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityDrivers.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityDrivers.Designer.vb">
-      <DependentUpon>gridCapacityDrivers.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityDrivers.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.Designer.vb">
       <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
     </Compile>
@@ -885,9 +873,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.resx">
       <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Capacity\Settings\frmCapacityDrivers.resx">
-      <DependentUpon>frmCapacityDrivers.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmEwE6.resx">
       <DependentUpon>frmEwE6.vb</DependentUpon>
