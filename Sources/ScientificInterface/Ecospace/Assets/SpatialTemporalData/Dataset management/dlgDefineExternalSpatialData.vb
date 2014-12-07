@@ -149,7 +149,7 @@ Namespace Ecospace.Controls
 #Region " Event handlers "
 
         Private Sub OnCreateDataset(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnCreate.Click, m_btnManageConfigurations.Click
+            Handles m_btnCreate.Click
 
             Me.Cursor = Cursors.WaitCursor
             Try
