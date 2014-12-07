@@ -488,8 +488,9 @@ Namespace Ecospace.Controls
                     Case Else
                         ' Only when ok
                         Me.m_fpScale.Value = CSng(dScale)
-                        'conn.Scale = CSng(dScale)
-                        'conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        conn.Scale = CSng(dScale)
+                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        Me.LayerChanged()
 
                 End Select
 
@@ -515,6 +516,23 @@ Namespace Ecospace.Controls
 
         Private Sub OnOK(sender As Object, e As System.EventArgs) _
             Handles m_btnOK.Click
+
+            Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection()
+            If (conn IsNot Nothing) Then
+                Try
+                    If (Me.m_rbAbsolute.Checked) Then
+                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Absolute
+                        Me.m_fpScale.Enabled = False
+                    Else
+                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        conn.Scale = CSng(Me.m_fpScale.Value)
+                        Me.m_fpScale.Enabled = True
+                    End If
+                    Me.LayerChanged()
+                Catch ex As Exception
+                    Debug.Assert(False, ex.Message)
+                End Try
+            End If
 
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
