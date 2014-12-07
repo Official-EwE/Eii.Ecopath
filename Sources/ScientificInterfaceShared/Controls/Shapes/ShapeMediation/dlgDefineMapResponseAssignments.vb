@@ -164,7 +164,7 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Sub InitToShapeType()
 
-        If (Me.CanEditMinMax) Then
+        If (Me.ShowMinMax) Then
             RemoveHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
             RemoveHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
         End If
@@ -176,7 +176,7 @@ Public Class dlgDefineMapResponseAssignments
 
         If (Me.m_shape Is Nothing) Then Return
 
-        If (Me.CanEditMinMax) Then
+        If (Me.ShowMinMax) Then
             AddHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
             AddHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
         End If
@@ -366,7 +366,7 @@ Public Class dlgDefineMapResponseAssignments
 
         Dim bCanAddGroup As Boolean = (Me.m_lbxGroups.SelectedItems.Count > 0)
         Dim bCanRemoveGroup As Boolean = (Me.m_tvMaps.SelectedNode IsNot Nothing)
-        Dim bCanSetMinMax As Boolean = Me.CanEditMinMax() Or True
+        Dim bCanSetMinMax As Boolean = Me.ShowMinMax() Or True
         Dim bCanSetMeanSD As Boolean = Me.CanEditMeanSD()
 
         ' ToDo: globalize this
@@ -439,19 +439,26 @@ Public Class dlgDefineMapResponseAssignments
 
     End Function
 
+    Private Function ShowMinMax() As Boolean
+
+        If (Me.m_shape Is Nothing) Then Return False
+        Return True
+
+    End Function
+
+
     Private Function CanEditMinMax() As Boolean
 
         If (Me.m_shape Is Nothing) Then Return False
 
-        Return True
+        If Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal Or _
+            Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder Or _
+            Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder Or _
+             Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid Then
+            Return False
+        End If
 
-        'If Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal Or _
-        '    Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder Or _
-        '    Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder Or _
-        '     Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid Then
-        '    Return False
-        'End If
-        'Return True
+        Return True
 
     End Function
 
@@ -624,10 +631,6 @@ Public Class dlgDefineMapResponseAssignments
 
         Me.m_bInUpdate = True
 
-        '' Never use blunt string parsing in EwE6 UI to adhere to EwE number formatting behaviour
-        'Me.m_tbxXMax.Text = Me.m_map.Max.ToString
-        'Me.m_tbxXMin.Text = Me.m_map.Min.ToString
-
         Me.m_fpMin.Value = Me.m_map.Min
         Me.m_fpMax.Value = Me.m_map.Max
 
@@ -639,18 +642,20 @@ Public Class dlgDefineMapResponseAssignments
     Private Sub ApplyMinMax()
         If Me.m_bInUpdate Then Return
 
+        Debug.Assert(Me.ShowMinMax())
+
         'Not all shapes use the Min and Mix data range
-        Debug.Assert(Me.CanEditMinMax())
+        If Me.CanEditMinMax() Then
+            Try
+                Me.m_shape.LockUpdates()
+                Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
+                Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
+                Me.m_shape.UnlockUpdates(True)
+            Catch ex As Exception
 
-        Try
-            Me.m_shape.LockUpdates()
-            Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
-            Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
-            Me.m_shape.UnlockUpdates(True)
-            Me.UpdatePlots()
-        Catch ex As Exception
+            End Try
+        End If ' If Me.CanEditMinMax() Then
 
-        End Try
         Me.UpdatePlots()
 
     End Sub
