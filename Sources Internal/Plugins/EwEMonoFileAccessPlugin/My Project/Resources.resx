@@ -123,8 +123,19 @@
   <data name="FILEFILTER_EII" xml:space="preserve">
     <value>Enhanced EII file|*.eiixml</value>
   </data>
+  <data name="MENU_ITEM" xml:space="preserve">
+    <value>Save Model Database To .eiixml File...</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="mono" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\mono.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAVE_FAILED" xml:space="preserve">
+    <value>EIIXML file failed to save to {0}</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="SAVE_SUCCESS" xml:space="preserve">
+    <value>EIIXML file saved to {0}</value>
+    <comment>{0}=file name</comment>
   </data>
 </root>

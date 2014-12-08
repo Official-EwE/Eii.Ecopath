@@ -79,12 +79,39 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Save Model Database To .eiixml File....
+        '''</summary>
+        Friend ReadOnly Property MENU_ITEM() As String
+            Get
+                Return ResourceManager.GetString("MENU_ITEM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property mono() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mono", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EIIXML file failed to save to {0}.
+        '''</summary>
+        Friend ReadOnly Property SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EIIXML file saved to {0}.
+        '''</summary>
+        Friend ReadOnly Property SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("SAVE_SUCCESS", resourceCulture)
             End Get
         End Property
     End Module

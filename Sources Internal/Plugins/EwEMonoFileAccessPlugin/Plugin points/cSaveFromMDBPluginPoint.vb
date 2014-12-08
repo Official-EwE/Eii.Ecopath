@@ -71,7 +71,7 @@ Public Class cSavePluginPoint
 
     Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Save Model Database To .eiixml File..."
+            Return My.Resources.MENU_ITEM
         End Get
     End Property
 
@@ -113,11 +113,14 @@ Public Class cSavePluginPoint
 
             ds = cDataSourceFactory.Create(EwEUtils.Core.eDataSourceTypes.EIIXML)
             If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strPath) Then
-                ' ToDo: globalize this
-                msg = New cMessage("EIIXML database saved to " & strPath, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg = New cMessage(cStringUtils.Localize(My.Resources.SAVE_SUCCESS, strPath), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strPath)
-                Me.m_core.Messages.SendMessage(msg)
+            Else
+                msg = New cMessage(cStringUtils.Localize(My.Resources.SAVE_FAILED, strPath), _
+                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             End If
+            Me.m_core.Messages.SendMessage(msg)
             ds.Close()
 
         Catch ex As Exception
