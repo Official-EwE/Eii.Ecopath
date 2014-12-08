@@ -2511,9 +2511,9 @@ Public Class cEIIXMLDataSource
                     Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, iConn)
                     item.DatasetGUID = CStr(Me.ReadSafe(drow, "DatasetGUID", ""))
                     item.DatasetTypeName = CStr(Me.ReadSafe(drow, "DatasetTypeName", ""))
-                    item.DatasetConfig = CStr(Me.ReadSafe(drow, "DatasetCfg", ""))
+                    item.DatasetConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "DatasetCfg", "")))
                     item.ConverterTypeName = CStr(Me.ReadSafe(drow, "ConverterTypeName", ""))
-                    item.ConverterConfig = CStr(Me.ReadSafe(drow, "ConverterCfg", ""))
+                    item.ConverterConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "ConverterCfg", "")))
                     item.Scale = CSng(Me.ReadSafe(drow, "Scale", 1.0!))
                     item.ScaleType = CType(Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
                 End If
@@ -2629,16 +2629,33 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function Field(rd As IDataReader, strCol As String) As String
+    Private Function ToFieldValue(rd As IDataReader, strCol As String) As String
 
         Dim data As Object = rd(strCol)
+        Dim bIsXML As Boolean = False
 
         If Convert.IsDBNull(data) Then Return ""
 
         If (TypeOf data Is String) Then
-            Dim strData As String = CStr(data).Replace("""", "")
-            If (strData.IndexOfAny(New Char() {";"c, ","c}) > -1) Then
-                Return """" & strData & """"
+            Dim strData As String = CStr(data)
+            ' is XML?
+            If (strData.IndexOf("<"c) > -1) Then
+                Try
+                    Dim reader As XmlReader = XmlReader.Create(New StringReader(strData))
+                    bIsXML = reader.Read()
+                Catch ex As Exception
+                    bIsXML = False
+                End Try
+            End If
+
+            If bIsXML Then
+                strData = Web.HttpUtility.UrlEncode(strData)
+            Else
+                ' Remove all quotes from within a field value
+                strData = strData.Replace("""", "")
+                If (strData.IndexOfAny(New Char() {";"c, ","c}) > -1) Then
+                    Return """" & strData & """"
+                End If
             End If
             Return strData
         End If
@@ -2703,7 +2720,7 @@ Public Class cEIIXMLDataSource
             sb.Length = 0
             For i As Integer = 0 To astrCols.Length - 1
                 If (i > 0) Then sb.Append(",")
-                Dim strValue As String = Me.Field(row, astrCols(i))
+                Dim strValue As String = Me.ToFieldValue(row, astrCols(i))
                 sb.Append(strValue)
                 iNum += 1
             Next
