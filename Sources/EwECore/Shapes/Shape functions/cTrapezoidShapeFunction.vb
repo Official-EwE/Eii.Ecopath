@@ -158,12 +158,11 @@ Public Class cTrapezoidShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
-            ' ToDo: globalize this
             Select Case iParam
-                Case 1 : Return "Left bottom"
-                Case 2 : Return "Left top"
-                Case 3 : Return "Right top"
-                Case 4 : Return "Right bottom"
+                Case 1 : Return My.Resources.CoreDefaults.PARAM_LEFT_BOTTOM
+                Case 2 : Return My.Resources.CoreDefaults.PARAM_LEFT_TOP
+                Case 3 : Return My.Resources.CoreDefaults.PARAM_RIGHT_TOP
+                Case 4 : Return My.Resources.CoreDefaults.PARAM_RIGHT_BOTTOM
             End Select
             Return "?"
         End Get

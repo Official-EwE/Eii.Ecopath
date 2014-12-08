@@ -34,7 +34,6 @@ Public Class cNormalShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
-            ' ToDo: globalize this
             Select Case iParam
                 Case 1 : Return My.Resources.CoreDefaults.PARAM_SD_LEFT
                 Case 2 : Return My.Resources.CoreDefaults.PARAM_SD_RIGHT
