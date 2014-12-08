@@ -40,7 +40,7 @@ Public Class cNormalShapeFunction
                 Case 2 : Return My.Resources.CoreDefaults.PARAM_SD_RIGHT
                 Case 3 : Return My.Resources.CoreDefaults.PARAM_SD_WIDTH
                 Case 4 : Return My.Resources.CoreDefaults.PARAM_MEAN
-                Case 5 : Return "Max. Value"
+                Case 5 : Return My.Resources.CoreDefaults.PARAM_MAX
             End Select
             Return MyBase.ParamName(iParam)
         End Get
@@ -78,13 +78,14 @@ Public Class cNormalShapeFunction
             Dim dx As Single = Wsd / (nPoints - 1)
             'Start X
             Dim x0 As Single = -Wsd * 0.5F
+            Dim max As Single = Me.ParamValue(5)
             Dim x As Single
             For i As Integer = 1 To nPoints
                 If i > nPtHalf Then
                     sd = sYEnd + 0.0000001F
                 End If
                 x = x0 + dx * (i - 1)
-                Me.m_points(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
+                Me.m_points(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2)) * max
             Next
 
             'xxxxxxALTERNATIVE WAY TO USE THE PARAMETERS NOT IMPLEMENTED HERE xxxxxxxxxxxx
@@ -170,5 +171,20 @@ Public Class cNormalShapeFunction
             Return eShapeFunctionType.Normal
         End Get
     End Property
+
+    Public Overrides Sub Init(obj As Object)
+        MyBase.Init(obj)
+
+        If (Me.ShapeFunctionType <> eShapeFunctionType.Normal) Then Return
+
+        ' Max cannot be stored yet. For now, deduct max from shape
+        Dim max As Single = Single.MinValue
+        For Each val As Single In Me.m_points
+            max = Math.Max(val, max)
+        Next
+        If (max <= 0) Then max = 1
+        Me.ParamValue(5) = max
+
+    End Sub
 
 End Class
