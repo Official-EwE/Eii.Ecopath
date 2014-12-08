@@ -408,14 +408,14 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Convert a lat/lon area into a vertically flipped rectangle for easy comparison.
+        ''' Convert a lat/lon area into an extent rectangle.
         ''' </summary>
         ''' <param name="ptfTL"></param>
         ''' <param name="ptfBR"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Private Function ToRect(ptfTL As PointF, ptfBR As PointF) As RectangleF
-            Return New RectangleF(ptfTL.X, ptfBR.Y, ptfBR.X - ptfTL.X, ptfTL.Y - ptfBR.Y)
+            Return New RectangleF(ptfTL.X, ptfTL.Y, ptfBR.X - ptfTL.X, ptfBR.Y - ptfTL.Y)
         End Function
 
         Private Function ToStatus(flag As eCompatibilityTypes) As eStatusFlags

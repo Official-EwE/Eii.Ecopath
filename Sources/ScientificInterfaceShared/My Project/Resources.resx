@@ -2098,21 +2098,6 @@
   <data name="SHAPEFUNCTION_SIGMOID" xml:space="preserve">
     <value>Sigmoid</value>
   </data>
-  <data name="LABEL_A" xml:space="preserve">
-    <value>A:</value>
-  </data>
-  <data name="LABEL_B" xml:space="preserve">
-    <value>B:</value>
-  </data>
-  <data name="LABEL_YBASE" xml:space="preserve">
-    <value>Y &amp;base:</value>
-  </data>
-  <data name="LABEL_YEND" xml:space="preserve">
-    <value>Y &amp;end:</value>
-  </data>
-  <data name="LABEL_YZERO" xml:space="preserve">
-    <value>Y &amp;zero:</value>
-  </data>
   <data name="ECOSIM_DEFAULT_NEWCAPACITYSHAPE" xml:space="preserve">
     <value>Foraging response {0}</value>
     <comment>The default name for a new Ecosim capacity shape. {0}: autonumber</comment>
@@ -3070,9 +3055,6 @@
   <data name="GENERIC_SHOW_HIDDEN" xml:space="preserve">
     <value>Show hidden nodes</value>
   </data>
-  <data name="LABEL_TITLE" xml:space="preserve">
-    <value>Title</value>
-  </data>
   <data name="GENERIC_VALUE_CREATE_PENDING" xml:space="preserve">
     <value>(to create)</value>
   </data>
@@ -3120,9 +3102,6 @@
   </data>
   <data name="SHAPEFUNCTION_RIGHTSHOULDER" xml:space="preserve">
     <value>Right shoulder</value>
-  </data>
-  <data name="LABEL_WIDTH" xml:space="preserve">
-    <value>Width:</value>
   </data>
   <data name="HEADER_METHOD" xml:space="preserve">
     <value>Method</value>
