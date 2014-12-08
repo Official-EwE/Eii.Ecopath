@@ -245,6 +245,14 @@
   <data name="PARAM_LEFTPOINT" xml:space="preserve">
     <value>Left point</value>
   </data>
+  <data name="PARAM_LEFT_BOTTOM" xml:space="preserve">
+    <value>Left bottom</value>
+    <comment>Trapezoid parameter</comment>
+  </data>
+  <data name="PARAM_LEFT_TOP" xml:space="preserve">
+    <value>Left top</value>
+    <comment>Trapezoid parameter</comment>
+  </data>
   <data name="PARAM_MAX" xml:space="preserve">
     <value>Max.</value>
   </data>
@@ -253,6 +261,14 @@
   </data>
   <data name="PARAM_RIGHTPOINT" xml:space="preserve">
     <value>Right point</value>
+  </data>
+  <data name="PARAM_RIGHT_BOTTOM" xml:space="preserve">
+    <value>Right bottom</value>
+    <comment>Trapezoid parameter</comment>
+  </data>
+  <data name="PARAM_RIGHT_TOP" xml:space="preserve">
+    <value>Right top</value>
+    <comment>Trapezoid parameter</comment>
   </data>
   <data name="PARAM_SD_LEFT" xml:space="preserve">
     <value>SD left</value>
