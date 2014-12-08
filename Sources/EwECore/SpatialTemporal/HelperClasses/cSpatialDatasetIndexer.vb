@@ -231,7 +231,7 @@ Namespace SpatialData
             If (Me.m_core IsNot Nothing) Then
                 Try
                     Dim msg As New cProgressMessage(state, 1, sProgress, strMessage, eMessageType.Progress, eDataTypes.EcospaceSpatialDataConnection)
-                    msg.Source = eCoreComponentType.External
+                    msg.Source = eCoreComponentType.EcoSpace
                     Me.m_core.Messages.SendMessage(msg)
 
                 Catch ex As Exception

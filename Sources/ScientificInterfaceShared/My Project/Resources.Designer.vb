@@ -6849,24 +6849,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to A:.
-        '''</summary>
-        Public ReadOnly Property LABEL_A() As String
-            Get
-                Return ResourceManager.GetString("LABEL_A", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to B:.
-        '''</summary>
-        Public ReadOnly Property LABEL_B() As String
-            Get
-                Return ResourceManager.GetString("LABEL_B", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Choose folder....
         '''</summary>
         Public ReadOnly Property LABEL_CHOOSE_FOLDER() As String
@@ -6881,15 +6863,6 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_SET() As String
             Get
                 Return ResourceManager.GetString("LABEL_SET", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Title.
-        '''</summary>
-        Public ReadOnly Property LABEL_TITLE() As String
-            Get
-                Return ResourceManager.GetString("LABEL_TITLE", resourceCulture)
             End Get
         End Property
         
@@ -6926,42 +6899,6 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_VALUE_UPTO() As String
             Get
                 Return ResourceManager.GetString("LABEL_VALUE_UPTO", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Width:.
-        '''</summary>
-        Public ReadOnly Property LABEL_WIDTH() As String
-            Get
-                Return ResourceManager.GetString("LABEL_WIDTH", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Y &amp;base:.
-        '''</summary>
-        Public ReadOnly Property LABEL_YBASE() As String
-            Get
-                Return ResourceManager.GetString("LABEL_YBASE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Y &amp;end:.
-        '''</summary>
-        Public ReadOnly Property LABEL_YEND() As String
-            Get
-                Return ResourceManager.GetString("LABEL_YEND", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Y &amp;zero:.
-        '''</summary>
-        Public ReadOnly Property LABEL_YZERO() As String
-            Get
-                Return ResourceManager.GetString("LABEL_YZERO", resourceCulture)
             End Get
         End Property
         

@@ -70,6 +70,7 @@ Namespace Ecospace.Controls
         Private m_iSelectedTimeStep As Integer = -1
 
         Private m_mhSpace As cMessageHandler = Nothing
+        Private m_mhSpatial As cMessageHandler = Nothing
 
         Private m_bmpError As Bitmap
         Private m_bmpWarning As Bitmap
@@ -131,6 +132,7 @@ Namespace Ecospace.Controls
 #If DEBUG Then
                     Me.m_mhSpace.Name = "ucSpatialTimeSeriesToolbox::m_mhSpace"
 #End If
+
                 End If
             End Set
         End Property
@@ -358,7 +360,7 @@ Namespace Ecospace.Controls
                 Next
                 Me.DrawGrid(e.Graphics, New Rectangle(0, c_headerheight, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, Me.ClientRectangle.Height - c_headerheight))
                 For i As Integer = 0 To Me.m_lInfo.Count - 1
-                    Me.DrawDataset(e.Graphics, Me.m_lInfo(i), i = Me.m_iSelectedIndex)
+                    Me.DrawDataset(e.Graphics, Me.m_lInfo(i), False) ' i = Me.m_iSelectedIndex)
                 Next
                 e.Graphics.ResetTransform()
 
@@ -383,10 +385,9 @@ Namespace Ecospace.Controls
 
             Select Case msg.DataType
                 Case eDataTypes.EcospaceSpatialDataConnection
-                    If msg.Type = eMessageType.DataModified Then
+                    If (msg.Type = eMessageType.DataModified) Or (msg.Type = eMessageType.Progress) Then
                         Me.Invalidate()
-                    End If
-                    If msg.Type = eMessageType.DataAddedOrRemoved Then
+                    ElseIf (msg.Type = eMessageType.DataAddedOrRemoved) Then
                         Me.RefreshContent()
                     End If
                 Case eDataTypes.EcoSpaceScenario, eDataTypes.EcospaceModelParameter

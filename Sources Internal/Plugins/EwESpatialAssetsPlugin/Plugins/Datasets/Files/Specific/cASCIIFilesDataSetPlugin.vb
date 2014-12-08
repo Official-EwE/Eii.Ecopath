@@ -45,6 +45,25 @@ Namespace SpatialData
 
 #Region " Overrides "
 
+        Public Overrides Function GetExtentAtT(ByVal dt As Date, _
+                                               ByRef ptfTL As System.Drawing.PointF, _
+                                               ByRef ptfBR As System.Drawing.PointF) As Boolean
+
+            Dim bOK As Boolean = MyBase.GetExtentAtT(dt, ptfTL, ptfBR)
+
+            If (bOK) Then
+                ' De-spationalize
+                Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+                Dim dx As Single = ptfBR.X - ptfTL.X
+                Dim dy As Single = ptfBR.Y - ptfTL.Y
+                ptfTL = New PointF(bm.PosTopLeft.X, bm.PosTopLeft.Y)
+                ptfBR = New PointF(bm.PosTopLeft.X + dx, bm.PosTopLeft.Y - dy)
+            End If
+
+            Return bOK
+
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the dialog read filter for files supported by the AAAS reader.
@@ -100,8 +119,8 @@ Namespace SpatialData
                     Else
                         ' #Yes: create internal raster to wrap the data
                         Me.m_raster = New cSpatialRaster(rs)
-                        ' Update index
-                        Me.StoreExtent(rs.Extent)
+                        '' Update index
+                        'Me.StoreExtent(rs.Extent)
                         ' Log success
                         Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
                     End If
@@ -262,6 +281,7 @@ Namespace SpatialData
                 If (bIsCenterX) Then sXLLpos -= sCellSize / 2
                 If (bIsCenterY) Then sYLLpos -= sCellSize / 2
 
+                ' JS7Dec14: looks strange but is totally OK
                 Me.StoreExtent(New Extent(sXLLpos, sYLLpos, sXLLpos + sCellSize * nCols, sYLLpos + nRows * sCellSize))
 
                 ' Generate raster
