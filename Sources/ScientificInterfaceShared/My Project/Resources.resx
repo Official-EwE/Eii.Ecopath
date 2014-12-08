@@ -168,9 +168,6 @@
   <data name="SHAPE_TYPE_TO_SEASONAL_CAPTION" xml:space="preserve">
     <value>Change shape type</value>
   </data>
-  <data name="LABEL_GROUP" xml:space="preserve">
-    <value>&amp;Group:</value>
-  </data>
   <data name="GENERIC_LABEL_INDEXED" xml:space="preserve">
     <value>{0}: {1}</value>
     <comment>{0}=index, {1}=name</comment>
@@ -195,9 +192,6 @@
   <data name="FILEFILTER_IMAGE" xml:space="preserve">
     <value>Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff</value>
     <comment>| separated list of image filters. Order: bitmap, jpeg, gif, png, tiff</comment>
-  </data>
-  <data name="LABEL_FLEET" xml:space="preserve">
-    <value>&amp;Fleet:</value>
   </data>
   <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
     <value>Ecotracer relative concentration</value>
@@ -373,7 +367,7 @@
     <value>..\Resources\ImportXMLHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LABEL_SET" xml:space="preserve">
-    <value>&amp;Set:</value>
+    <value>Set</value>
     <comment>Text label for Quick Edit interface in Grid toolbars</comment>
   </data>
   <data name="STATUS_APPLYVALUES" xml:space="preserve">
@@ -2110,18 +2104,6 @@
   <data name="LABEL_B" xml:space="preserve">
     <value>B:</value>
   </data>
-  <data name="LABEL_SD_LEFT" xml:space="preserve">
-    <value>SD &amp;left:</value>
-  </data>
-  <data name="LABEL_SD_RIGHT" xml:space="preserve">
-    <value>SD &amp;right:</value>
-  </data>
-  <data name="LABEL_SD_WIDTH" xml:space="preserve">
-    <value>SD &amp;width:</value>
-  </data>
-  <data name="LABEL_STEEPNESS" xml:space="preserve">
-    <value>&amp;Steepness:</value>
-  </data>
   <data name="LABEL_YBASE" xml:space="preserve">
     <value>Y &amp;base:</value>
   </data>
@@ -3139,15 +3121,6 @@
   <data name="SHAPEFUNCTION_RIGHTSHOULDER" xml:space="preserve">
     <value>Right shoulder</value>
   </data>
-  <data name="LABEL_LEFTPOINT" xml:space="preserve">
-    <value>Left point:</value>
-  </data>
-  <data name="LABEL_MEAN" xml:space="preserve">
-    <value>Mean:</value>
-  </data>
-  <data name="LABEL_RIGHTPOINT" xml:space="preserve">
-    <value>Right point:</value>
-  </data>
   <data name="LABEL_WIDTH" xml:space="preserve">
     <value>Width:</value>
   </data>
@@ -3217,5 +3190,26 @@
   </data>
   <data name="GENERAL_LABEL_MONTHLY" xml:space="preserve">
     <value>Monthly</value>
+  </data>
+  <data name="HEADER_MAP_HISTOGRAM" xml:space="preserve">
+    <value>Map histogram</value>
+  </data>
+  <data name="HEADER_PLOT_MAX" xml:space="preserve">
+    <value>Plot max</value>
+  </data>
+  <data name="HEADER_PLOT_MEAN" xml:space="preserve">
+    <value>Mean</value>
+  </data>
+  <data name="HEADER_PLOT_MIN" xml:space="preserve">
+    <value>Plot min</value>
+  </data>
+  <data name="HEADER_STANDARDDEVIATION" xml:space="preserve">
+    <value>SD</value>
+  </data>
+  <data name="HEADER_X_MAX" xml:space="preserve">
+    <value>X max</value>
+  </data>
+  <data name="HEADER_X_MIN" xml:space="preserve">
+    <value>X min</value>
   </data>
 </root>

@@ -110,7 +110,7 @@ Namespace Controls.EwEGrid
             Me.m_sep = New ToolStripSeparator()
 
             ' Create quick edit label
-            Me.m_lblSet = New ToolStripLabel(My.Resources.LABEL_SET)
+            Me.m_lblSet = New ToolStripLabel(cStyleGuide.ToLabel(My.Resources.LABEL_SET))
 
             ' Create quick edit text box
             Me.m_ttbValue = New ToolStripTextBox("~tsqeValue")
