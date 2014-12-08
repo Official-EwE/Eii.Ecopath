@@ -398,6 +398,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Left bottom.
+        '''</summary>
+        Friend Shared ReadOnly Property PARAM_LEFT_BOTTOM() As String
+            Get
+                Return ResourceManager.GetString("PARAM_LEFT_BOTTOM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Left top.
+        '''</summary>
+        Friend Shared ReadOnly Property PARAM_LEFT_TOP() As String
+            Get
+                Return ResourceManager.GetString("PARAM_LEFT_TOP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Left point.
         '''</summary>
         Friend Shared ReadOnly Property PARAM_LEFTPOINT() As String
@@ -421,6 +439,24 @@ Namespace My.Resources
         Friend Shared ReadOnly Property PARAM_MEAN() As String
             Get
                 Return ResourceManager.GetString("PARAM_MEAN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Right bottom.
+        '''</summary>
+        Friend Shared ReadOnly Property PARAM_RIGHT_BOTTOM() As String
+            Get
+                Return ResourceManager.GetString("PARAM_RIGHT_BOTTOM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Right top.
+        '''</summary>
+        Friend Shared ReadOnly Property PARAM_RIGHT_TOP() As String
+            Get
+                Return ResourceManager.GetString("PARAM_RIGHT_TOP", resourceCulture)
             End Get
         End Property
         
