@@ -4935,6 +4935,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Map histogram.
+        '''</summary>
+        Public ReadOnly Property HEADER_MAP_HISTOGRAM() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAP_HISTOGRAM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Max length (cm).
         '''</summary>
         Public ReadOnly Property HEADER_MAX_LENGTH() As String
@@ -5462,6 +5471,33 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_PHYLUM() As String
             Get
                 Return ResourceManager.GetString("HEADER_PHYLUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plot max.
+        '''</summary>
+        Public ReadOnly Property HEADER_PLOT_MAX() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PLOT_MAX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mean.
+        '''</summary>
+        Public ReadOnly Property HEADER_PLOT_MEAN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PLOT_MEAN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plot min.
+        '''</summary>
+        Public ReadOnly Property HEADER_PLOT_MIN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PLOT_MIN", resourceCulture)
             End Get
         End Property
         
@@ -6020,6 +6056,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_SS() As String
             Get
                 Return ResourceManager.GetString("HEADER_SS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to SD.
+        '''</summary>
+        Public ReadOnly Property HEADER_STANDARDDEVIATION() As String
+            Get
+                Return ResourceManager.GetString("HEADER_STANDARDDEVIATION", resourceCulture)
             End Get
         End Property
         
@@ -6690,6 +6735,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to X max.
+        '''</summary>
+        Public ReadOnly Property HEADER_X_MAX() As String
+            Get
+                Return ResourceManager.GetString("HEADER_X_MAX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to X min.
+        '''</summary>
+        Public ReadOnly Property HEADER_X_MIN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_X_MIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} (/{1}).
         '''</summary>
         Public ReadOnly Property HEADER_X_PER_UNIT() As String
@@ -6813,92 +6876,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &amp;Fleet:.
-        '''</summary>
-        Public ReadOnly Property LABEL_FLEET() As String
-            Get
-                Return ResourceManager.GetString("LABEL_FLEET", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to &amp;Group:.
-        '''</summary>
-        Public ReadOnly Property LABEL_GROUP() As String
-            Get
-                Return ResourceManager.GetString("LABEL_GROUP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Left point:.
-        '''</summary>
-        Public ReadOnly Property LABEL_LEFTPOINT() As String
-            Get
-                Return ResourceManager.GetString("LABEL_LEFTPOINT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Mean:.
-        '''</summary>
-        Public ReadOnly Property LABEL_MEAN() As String
-            Get
-                Return ResourceManager.GetString("LABEL_MEAN", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Right point:.
-        '''</summary>
-        Public ReadOnly Property LABEL_RIGHTPOINT() As String
-            Get
-                Return ResourceManager.GetString("LABEL_RIGHTPOINT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to SD &amp;left:.
-        '''</summary>
-        Public ReadOnly Property LABEL_SD_LEFT() As String
-            Get
-                Return ResourceManager.GetString("LABEL_SD_LEFT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to SD &amp;right:.
-        '''</summary>
-        Public ReadOnly Property LABEL_SD_RIGHT() As String
-            Get
-                Return ResourceManager.GetString("LABEL_SD_RIGHT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to SD &amp;width:.
-        '''</summary>
-        Public ReadOnly Property LABEL_SD_WIDTH() As String
-            Get
-                Return ResourceManager.GetString("LABEL_SD_WIDTH", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to &amp;Set:.
+        '''  Looks up a localized string similar to Set.
         '''</summary>
         Public ReadOnly Property LABEL_SET() As String
             Get
                 Return ResourceManager.GetString("LABEL_SET", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to &amp;Steepness:.
-        '''</summary>
-        Public ReadOnly Property LABEL_STEEPNESS() As String
-            Get
-                Return ResourceManager.GetString("LABEL_STEEPNESS", resourceCulture)
             End Get
         End Property
         

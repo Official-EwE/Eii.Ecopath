@@ -36,7 +36,6 @@ Imports EwEUtils.Utilities
 Public Class dlgDefineMapResponseAssignments
 
     'ToDo  update graph interface from edit dialog 
-    'ToDo Localize text
 
 #Region " Private variables "
 
@@ -103,8 +102,7 @@ Public Class dlgDefineMapResponseAssignments
 
             Me.m_zgh.GetPane(1).Y2Axis.IsVisible = True
 
-            ' ToDo: Globalize this
-            Me.m_zgh.GetPane(1).Y2Axis.Title.Text = "Map histogram"
+            Me.m_zgh.GetPane(1).Y2Axis.Title.Text = My.Resources.HEADER_MAP_HISTOGRAM
             Me.m_zgh.GetPane(1).Y2Axis.Title.IsVisible = True
             Me.m_zgh.GetPane(1).Y2Axis.Title.FontSpec = Me.m_zgh.GetPane(1).YAxis.Title.FontSpec
 
@@ -362,25 +360,23 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Sub UpdateControls()
 
-        ' ToDo JS: this will be connected to IShapeFunction behaviour
+        ' ToDo JS: this must be connected to IShapeFunction behaviour
 
         Dim bCanAddGroup As Boolean = (Me.m_lbxGroups.SelectedItems.Count > 0)
         Dim bCanRemoveGroup As Boolean = (Me.m_tvMaps.SelectedNode IsNot Nothing)
         Dim bCanSetMinMax As Boolean = Me.ShowMinMax() Or True
         Dim bCanSetMeanSD As Boolean = Me.CanEditMeanSD()
 
-        ' ToDo: globalize this
-        Dim strXMin As String = "x min"
-        Dim strXMax As String = "x max"
-        Dim strMean As String = "mean"
-        Dim strSD As String = "SD" ' All caps
+        Dim strXMin As String = My.Resources.HEADER_X_MIN
+        Dim strXMax As String = My.Resources.HEADER_X_MAX
+        Dim strMean As String = My.Resources.HEADER_MEAN
+        Dim strSD As String = My.Resources.HEADER_STANDARDDEVIATION
 
         Select Case Me.m_shape.ShapeFunctionType
 
             Case eShapeFunctionType.Normal
-                ' ToDo: globalize this
-                strXMin = "plot min"
-                strXMax = "plot max"
+                strXMin = My.Resources.HEADER_PLOT_MIN
+                strXMax = My.Resources.HEADER_PLOT_MAX
 
                 'Me.m_tbxMean.Text = Me.m_shape.Steep.ToString
                 'Me.m_tbxSD.Text = Me.m_SD.ToString
@@ -388,9 +384,8 @@ Public Class dlgDefineMapResponseAssignments
             Case eShapeFunctionType.LeftShoulder, _
                  eShapeFunctionType.RightShoulder, _
                  eShapeFunctionType.Trapezoid
-                ' ToDo: globalize this
-                strXMin = "plot min"
-                strXMax = "plot max"
+                strXMin = My.Resources.HEADER_PLOT_MIN
+                strXMax = My.Resources.HEADER_PLOT_MAX
 
             Case Else
                 ' NOP
@@ -428,6 +423,8 @@ Public Class dlgDefineMapResponseAssignments
 
         Debug.Assert(Not (Me.m_shape.ResponseLeftLimit = 0 And Me.m_shape.ResponseRightLimit = 0), "Opps X Axis has not been set!")
 
+        ' ToDo: better connect to shapes. cShapeData should gain some attributes to report a mean, SW, range, etc.
+        '       In other words, cShapeData may have to gain explicit distribution parameters
         Dim mean As Single = Me.m_shape.Steep
         Dim widthSD As Single = Me.m_shape.YBase
         Dim range As Single = mean - Me.m_shape.ResponseLeftLimit
@@ -441,20 +438,19 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Function ShowMinMax() As Boolean
 
-        If (Me.m_shape Is Nothing) Then Return False
-        Return True
+        Return (Me.m_shape IsNot Nothing)
 
     End Function
-
 
     Private Function CanEditMinMax() As Boolean
 
         If (Me.m_shape Is Nothing) Then Return False
 
-        If Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal Or _
-            Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder Or _
-            Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder Or _
-             Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid Then
+        ' ToDo: the shape itself should somehow be able to report this
+        If ((Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal) Or _
+            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder) Or _
+            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder) Or _
+            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid)) Then
             Return False
         End If
 
@@ -466,6 +462,7 @@ Public Class dlgDefineMapResponseAssignments
 
         If (Me.m_shape Is Nothing) Then Return False
 
+        ' ToDo: the shape itself should somehow be able to report this
         Select Case Me.m_shape.ShapeFunctionType
             Case eShapeFunctionType.Normal : Return True
         End Select

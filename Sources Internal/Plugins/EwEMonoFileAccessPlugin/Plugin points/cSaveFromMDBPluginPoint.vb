@@ -25,6 +25,7 @@ Imports EwECore.Database
 Imports EwECore.DataSources
 Imports EwEPlugin
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -89,6 +90,8 @@ Public Class cSavePluginPoint
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Dim ofd As New OpenFileDialog()
+        Dim msg As cMessage = Nothing
+
         ofd.Filter = My.Resources.FILEFILTER_DB
         ofd.CheckFileExists = True
         ofd.RestoreDirectory = True
@@ -108,7 +111,12 @@ Public Class cSavePluginPoint
                 Path.GetFileNameWithoutExtension(ofd.FileName) & ".eiixml")
 
             ds = cDataSourceFactory.Create(EwEUtils.Core.eDataSourceTypes.EIIXML)
-            DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strPath)
+            If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strPath) Then
+                ' ToDo: globalize this
+                msg = New cMessage("EIIXML database saved to " & strPath, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(strPath)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
             ds.Close()
 
         Catch ex As Exception

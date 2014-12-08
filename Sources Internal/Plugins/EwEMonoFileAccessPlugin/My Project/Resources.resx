@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FILEFILTER_DB" xml:space="preserve">
-    <value>EwE databases|*.ewemdb;*.accdb;*.mdb;*.accdb</value>
+    <value>EwE databases|*.ewemdb;*.eweaccdb;*.mdb;*.accdb</value>
   </data>
   <data name="FILEFILTER_EII" xml:space="preserve">
     <value>Enhanced EII file|*.eiixml</value>
