@@ -249,9 +249,14 @@ Namespace Ecospace
                     Me.m_map.RefreshContent()
 
                 Case eDataTypes.EcospaceSpatialDataConnection, eDataTypes.EcospaceSpatialDataSource
-                    Me.m_gridApply.RefreshContent()
-                    Me.m_toolbox.RefreshContent()
-                    Me.m_map.RefreshContent()
+
+                    ' Optimization
+                    If (msg.Type <> eMessageType.Progress) Then
+                        Me.m_gridApply.RefreshContent()
+                        Me.m_map.RefreshContent()
+                    End If
+
+                    ' Toolbox takes care of itself
 
                 Case Else
                     ' Could be a layer change. This test could be massively improved ;)
