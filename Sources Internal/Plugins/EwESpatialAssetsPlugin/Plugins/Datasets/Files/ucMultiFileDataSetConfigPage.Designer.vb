@@ -44,10 +44,9 @@ Namespace SpatialData
             Me.m_hdrFiles = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpConfig = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plTime = New System.Windows.Forms.Panel()
-            Me.m_cbSeasonal = New System.Windows.Forms.CheckBox()
-            Me.m_cmbInterval = New System.Windows.Forms.ComboBox()
-            Me.m_lblIntervalWith = New System.Windows.Forms.Label()
-            Me.m_mtbSeasonalEnd = New System.Windows.Forms.MaskedTextBox()
+            Me.m_nudSpacing = New System.Windows.Forms.NumericUpDown()
+            Me.m_lblSpace2 = New System.Windows.Forms.Label()
+            Me.m_lblSpace1 = New System.Windows.Forms.Label()
             Me.m_mtbIntervalStart = New System.Windows.Forms.MaskedTextBox()
             Me.m_rbFromName = New System.Windows.Forms.RadioButton()
             Me.m_rbFromDate = New System.Windows.Forms.RadioButton()
@@ -56,6 +55,8 @@ Namespace SpatialData
             Me.m_hdrTime = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnSetTime = New System.Windows.Forms.Button()
             Me.m_plFiles = New System.Windows.Forms.Panel()
+            Me.m_mtbSeasonalEnd = New System.Windows.Forms.MaskedTextBox()
+            Me.m_cbSeasonal = New System.Windows.Forms.CheckBox()
             Me.m_lblLocationSample = New System.Windows.Forms.Label()
             Me.m_lblLocation = New System.Windows.Forms.Label()
             Me.m_plDescription = New System.Windows.Forms.Panel()
@@ -65,6 +66,7 @@ Namespace SpatialData
             CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpConfig.SuspendLayout()
             Me.m_plTime.SuspendLayout()
+            CType(Me.m_nudSpacing, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plFiles.SuspendLayout()
             Me.m_plDescription.SuspendLayout()
             Me.SuspendLayout()
@@ -109,7 +111,7 @@ Namespace SpatialData
             '
             Me.m_colError.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
             Me.m_colError.Frozen = True
-            Me.m_colError.HeaderText = ""
+            Me.m_colError.HeaderText = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_CORESTATUSFLAGSMASK
             Me.m_colError.Name = "m_colError"
             Me.m_colError.ReadOnly = True
             Me.m_colError.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
@@ -225,8 +227,9 @@ Namespace SpatialData
             '
             'm_plTime
             '
-            Me.m_plTime.Controls.Add(Me.m_cmbInterval)
-            Me.m_plTime.Controls.Add(Me.m_lblIntervalWith)
+            Me.m_plTime.Controls.Add(Me.m_nudSpacing)
+            Me.m_plTime.Controls.Add(Me.m_lblSpace2)
+            Me.m_plTime.Controls.Add(Me.m_lblSpace1)
             Me.m_plTime.Controls.Add(Me.m_mtbIntervalStart)
             Me.m_plTime.Controls.Add(Me.m_rbFromName)
             Me.m_plTime.Controls.Add(Me.m_rbFromDate)
@@ -240,45 +243,33 @@ Namespace SpatialData
             Me.m_plTime.Size = New System.Drawing.Size(444, 90)
             Me.m_plTime.TabIndex = 0
             '
-            'm_cbSeasonal
+            'm_nudSpacing
             '
-            Me.m_cbSeasonal.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_cbSeasonal.AutoSize = True
-            Me.m_cbSeasonal.Location = New System.Drawing.Point(7, 246)
-            Me.m_cbSeasonal.Name = "m_cbSeasonal"
-            Me.m_cbSeasonal.Size = New System.Drawing.Size(126, 17)
-            Me.m_cbSeasonal.TabIndex = 11
-            Me.m_cbSeasonal.Text = "&Data is seasonal until"
-            Me.m_cbSeasonal.UseVisualStyleBackColor = True
+            Me.m_nudSpacing.Location = New System.Drawing.Point(193, 21)
+            Me.m_nudSpacing.Maximum = New Decimal(New Integer() {120, 0, 0, 0})
+            Me.m_nudSpacing.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudSpacing.Name = "m_nudSpacing"
+            Me.m_nudSpacing.Size = New System.Drawing.Size(55, 20)
+            Me.m_nudSpacing.TabIndex = 11
+            Me.m_nudSpacing.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
-            'm_cmbInterval
+            'm_lblSpace2
             '
-            Me.m_cmbInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbInterval.FormattingEnabled = True
-            Me.m_cmbInterval.Items.AddRange(New Object() {"month", "3 months", "6 months", "year", "decade"})
-            Me.m_cmbInterval.Location = New System.Drawing.Point(255, 20)
-            Me.m_cmbInterval.Name = "m_cmbInterval"
-            Me.m_cmbInterval.Size = New System.Drawing.Size(87, 21)
-            Me.m_cmbInterval.TabIndex = 4
+            Me.m_lblSpace2.AutoSize = True
+            Me.m_lblSpace2.Location = New System.Drawing.Point(254, 23)
+            Me.m_lblSpace2.Name = "m_lblSpace2"
+            Me.m_lblSpace2.Size = New System.Drawing.Size(47, 13)
+            Me.m_lblSpace2.TabIndex = 3
+            Me.m_lblSpace2.Text = "month(s)"
             '
-            'm_lblIntervalWith
+            'm_lblSpace1
             '
-            Me.m_lblIntervalWith.AutoSize = True
-            Me.m_lblIntervalWith.Location = New System.Drawing.Point(138, 23)
-            Me.m_lblIntervalWith.Name = "m_lblIntervalWith"
-            Me.m_lblIntervalWith.Size = New System.Drawing.Size(111, 13)
-            Me.m_lblIntervalWith.TabIndex = 3
-            Me.m_lblIntervalWith.Text = " spaced evenly every "
-            '
-            'm_mtbSeasonalEnd
-            '
-            Me.m_mtbSeasonalEnd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_mtbSeasonalEnd.Location = New System.Drawing.Point(139, 244)
-            Me.m_mtbSeasonalEnd.Mask = "0000/00"
-            Me.m_mtbSeasonalEnd.Name = "m_mtbSeasonalEnd"
-            Me.m_mtbSeasonalEnd.Size = New System.Drawing.Size(52, 20)
-            Me.m_mtbSeasonalEnd.TabIndex = 2
-            Me.m_mtbSeasonalEnd.Text = "195001"
+            Me.m_lblSpace1.AutoSize = True
+            Me.m_lblSpace1.Location = New System.Drawing.Point(136, 23)
+            Me.m_lblSpace1.Name = "m_lblSpace1"
+            Me.m_lblSpace1.Size = New System.Drawing.Size(51, 13)
+            Me.m_lblSpace1.TabIndex = 3
+            Me.m_lblSpace1.Text = " , spaced"
             '
             'm_mtbIntervalStart
             '
@@ -373,6 +364,27 @@ Namespace SpatialData
             Me.m_plFiles.Size = New System.Drawing.Size(444, 266)
             Me.m_plFiles.TabIndex = 1
             '
+            'm_mtbSeasonalEnd
+            '
+            Me.m_mtbSeasonalEnd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_mtbSeasonalEnd.Location = New System.Drawing.Point(139, 244)
+            Me.m_mtbSeasonalEnd.Mask = "0000/00"
+            Me.m_mtbSeasonalEnd.Name = "m_mtbSeasonalEnd"
+            Me.m_mtbSeasonalEnd.Size = New System.Drawing.Size(52, 20)
+            Me.m_mtbSeasonalEnd.TabIndex = 2
+            Me.m_mtbSeasonalEnd.Text = "195001"
+            '
+            'm_cbSeasonal
+            '
+            Me.m_cbSeasonal.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_cbSeasonal.AutoSize = True
+            Me.m_cbSeasonal.Location = New System.Drawing.Point(7, 246)
+            Me.m_cbSeasonal.Name = "m_cbSeasonal"
+            Me.m_cbSeasonal.Size = New System.Drawing.Size(126, 17)
+            Me.m_cbSeasonal.TabIndex = 11
+            Me.m_cbSeasonal.Text = "&Data is seasonal until"
+            Me.m_cbSeasonal.UseVisualStyleBackColor = True
+            '
             'm_lblLocationSample
             '
             Me.m_lblLocationSample.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -456,6 +468,7 @@ Namespace SpatialData
             Me.m_tlpConfig.ResumeLayout(False)
             Me.m_plTime.ResumeLayout(False)
             Me.m_plTime.PerformLayout()
+            CType(Me.m_nudSpacing, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plFiles.ResumeLayout(False)
             Me.m_plFiles.PerformLayout()
             Me.m_plDescription.ResumeLayout(False)
@@ -479,13 +492,12 @@ Namespace SpatialData
         Private WithEvents m_hdrDescription As Controls.cEwEHeaderLabel
         Private WithEvents m_tbxDatePart As System.Windows.Forms.TextBox
         Private WithEvents m_hdrFiles As Controls.cEwEHeaderLabel
-        Private WithEvents m_cmbInterval As System.Windows.Forms.ComboBox
         Private WithEvents m_mtbIntervalStart As System.Windows.Forms.MaskedTextBox
         Private WithEvents m_rbInterval As System.Windows.Forms.RadioButton
         Private WithEvents m_btnSetTime As System.Windows.Forms.Button
         Private WithEvents m_rbFromDate As System.Windows.Forms.RadioButton
         Private WithEvents m_rbFromName As System.Windows.Forms.RadioButton
-        Private WithEvents m_lblIntervalWith As System.Windows.Forms.Label
+        Private WithEvents m_lblSpace1 As System.Windows.Forms.Label
         Private WithEvents m_cmbVarName As System.Windows.Forms.ComboBox
         Private WithEvents m_lblVariable As System.Windows.Forms.Label
         Private WithEvents m_cbSeasonal As System.Windows.Forms.CheckBox
@@ -495,6 +507,8 @@ Namespace SpatialData
         Private WithEvents m_colError As System.Windows.Forms.DataGridViewImageColumn
         Private WithEvents m_colFileName As System.Windows.Forms.DataGridViewTextBoxColumn
         Private WithEvents m_colTime As EwESpatialAssetsPlugin.cCalendarColumn
+        Friend WithEvents m_nudSpacing As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblSpace2 As System.Windows.Forms.Label
 
     End Class
 

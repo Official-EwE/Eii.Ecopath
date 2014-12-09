@@ -66,14 +66,6 @@ Namespace SpatialData
 
 #Region " Private vars "
 
-        Private Enum eIntervalType
-            Month = 0
-            ThreeMonths
-            HalfYear
-            Year
-            Decade
-        End Enum
-
         Private m_dataset As cMultiFileDataSetPlugin = Nothing
         Private m_lFiles As New List(Of cFileEntry)
         Private m_strSource As String = ""
@@ -115,8 +107,6 @@ Namespace SpatialData
 
             Me.m_tbxName.Text = Me.m_dataset.DisplayName
             Me.m_tbxDescription.Text = Me.m_dataset.DataDescription
-
-            Me.m_cmbInterval.SelectedIndex = 0
 
             Me.m_cbSeasonal.Checked = Me.m_dataset.IsSeasonal
             Me.m_mtbSeasonalEnd.ValidatingType = GetType(Date)
@@ -311,39 +301,46 @@ Namespace SpatialData
             'ofd.FileName = sbFileName.ToString()
 
             If (ofd.ShowDialog() = DialogResult.OK) Then
+                cApplicationStatusNotifier.StartProgress(Me.UIContext.Core)
+                Try
 
-                ' Merge file list
-                Dim lFilesTemp As cFileEntry() = Me.m_lFiles.ToArray()
-                Dim strFile As String = ""
-                Dim bFound As Boolean = False
+                    ' Merge file list
+                    Dim lFilesTemp As cFileEntry() = Me.m_lFiles.ToArray()
+                    Dim strFile As String = ""
+                    Dim bFound As Boolean = False
 
-                Me.m_lFiles.Clear()
+                    Me.m_lFiles.Clear()
 
-                For i As Integer = 0 To ofd.FileNames.Length - 1
+                    For i As Integer = 0 To ofd.FileNames.Length - 1
 
-                    strFile = ofd.FileNames(i)
-                    bFound = False
+                        strFile = ofd.FileNames(i)
+                        bFound = False
 
-                    ' Maintain original file def, if already present
-                    For Each fe As cFileEntry In lFilesTemp
-                        If (cFileUtils.Equals(fe.FileName, strFile, True)) Then
+                        ' Maintain original file def, if already present
+                        For Each fe As cFileEntry In lFilesTemp
+                            If (cFileUtils.Equals(fe.FileName, strFile, True)) Then
+                                Me.m_lFiles.Add(fe)
+                                bFound = True
+                                Exit For
+                            End If
+                        Next
+
+                        If (Not bFound) Then
+                            Dim dt As DateTime = Me.ToFileDate(i, ofd.FileNames(i))
+                            Dim fe As New cFileEntry(ofd.FileNames(i), dt)
                             Me.m_lFiles.Add(fe)
-                            bFound = True
-                            Exit For
                         End If
                     Next
 
-                    If (Not bFound) Then
-                        Dim dt As DateTime = Me.ToFileDate(i, ofd.FileNames(i))
-                        Dim fe As New cFileEntry(ofd.FileNames(i), dt)
-                        Me.m_lFiles.Add(fe)
-                    End If
-                Next
+                    Me.m_strSource = Path.GetDirectoryName(Me.m_lFiles(0).FileName)
 
-                Me.m_strSource = Path.GetDirectoryName(Me.m_lFiles(0).FileName)
+                    Me.UpdateGrid()
+                    Me.UpdateControls()
+                Catch ex As Exception
 
-                Me.UpdateGrid()
-                Me.UpdateControls()
+                End Try
+                cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
+
             End If
 
         End Sub
@@ -466,11 +463,10 @@ Namespace SpatialData
         Private Function ToFileDate(iFile As Integer, strFile As String) As Date
 
             Dim dtStart As Date = CType(Me.m_mtbIntervalStart.ValidateText, Date)
-            Dim interval As eIntervalType = DirectCast(Me.m_cmbInterval.SelectedIndex, eIntervalType)
             Dim dt As Date
 
             If Me.m_rbInterval.Checked Then
-                dt = Me.GetDateFromInterval(dtStart.Year, dtStart.Month, iFile, interval)
+                dt = Me.GetDateFromInterval(dtStart.Year, dtStart.Month, iFile)
             ElseIf Me.m_rbFromName.Checked Then
                 dt = Me.GetDateFromFileName(Path.Combine(Me.m_strSource, strFile))
             ElseIf Me.m_rbFromDate.Checked Then
@@ -480,22 +476,11 @@ Namespace SpatialData
 
         End Function
 
-        Private Function GetDateFromInterval(ByVal iYear As Integer, ByVal iMonth As Integer, ByVal iFile As Integer, ByVal interval As eIntervalType) As Date
+        Private Function GetDateFromInterval(ByVal iYear As Integer, ByVal iMonth As Integer, ByVal iFile As Integer) As Date
 
             Dim dt As New Date(iYear, iMonth, 1)
-            Select Case interval
-                Case eIntervalType.Month
-                    Return dt.AddMonths(iFile)
-                Case eIntervalType.ThreeMonths
-                    Return dt.AddMonths(iFile * 3)
-                Case eIntervalType.HalfYear
-                    Return dt.AddMonths(iFile * 6)
-                Case eIntervalType.Year
-                    Return dt.AddYears(iFile)
-                Case eIntervalType.Decade
-                    Return dt.AddYears(iFile * 10)
-            End Select
-            Return Date.MinValue
+            Dim iSpacing As Integer = CInt(Me.m_nudSpacing.Value)
+            Return dt.AddMonths(iFile * iSpacing)
 
         End Function
 
