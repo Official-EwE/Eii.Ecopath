@@ -465,7 +465,7 @@ Namespace SpatialData
         ''' will be preserved, and only for layers of type single, integer or boolean.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Friend Sub SaveLayerData()
+        Friend Overridable Sub SaveLayerData()
 
             ' Wipe, just in case
             For i As Integer = 0 To Me.m_core.GetCoreCounter(Me.m_coreCounter)
@@ -528,7 +528,7 @@ Namespace SpatialData
         ''' <seealso cref="SaveLayerData"/>
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Sub RestoreLayerData()
+        Friend Overridable Sub RestoreLayerData()
 
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim iNumRow As Integer = bm.InRow
