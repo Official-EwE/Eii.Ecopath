@@ -149,6 +149,8 @@ Namespace Ecospace.Controls
 
             Me.m_bInUpdate = True
 
+            Me.m_tsbnShowAllAvailable.Image = SharedResources.FilterHS
+
             ' Kick!
             Me.FillSourceDatasetBox()
 
@@ -236,6 +238,12 @@ Namespace Ecospace.Controls
 #End Region ' Manage connections 
 
 #Region " Candidate connections "
+
+
+        Private Sub OnToggleFilterConnections(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnShowAllAvailable.Click
+            Me.FillSourceDatasetBox()
+        End Sub
 
         Private Sub OnAddDataset(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAdd.Click, m_lbSourceDatasets.DoubleClick
@@ -547,7 +555,11 @@ Namespace Ecospace.Controls
 
         Private Sub FillSourceDatasetBox()
 
-            Me.m_lbSourceDatasets.Filter = Me.m_adt.VarName
+            If (Me.m_tsbnShowAllAvailable.Checked) Then
+                Me.m_lbSourceDatasets.Filter = eVarNameFlags.NotSet
+            Else
+                Me.m_lbSourceDatasets.Filter = Me.m_adt.VarName
+            End If
 
         End Sub
 

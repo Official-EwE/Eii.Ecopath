@@ -60,6 +60,8 @@ Namespace Ecospace.Controls
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnShowAllAvailable = New System.Windows.Forms.ToolStripButton()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
@@ -248,7 +250,7 @@ Namespace Ecospace.Controls
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineConnections})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnShowAllAvailable, Me.ToolStripSeparator1, Me.m_tsbnDefineConnections})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -313,6 +315,17 @@ Namespace Ecospace.Controls
             Me.m_cbEnabled.Name = "m_cbEnabled"
             Me.m_cbEnabled.UseVisualStyleBackColor = True
             '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
+            'm_tsbnShowAllAvailable
+            '
+            Me.m_tsbnShowAllAvailable.CheckOnClick = True
+            resources.ApplyResources(Me.m_tsbnShowAllAvailable, "m_tsbnShowAllAvailable")
+            Me.m_tsbnShowAllAvailable.Name = "m_tsbnShowAllAvailable"
+            '
             'dlgApplyConnection
             '
             resources.ApplyResources(Me, "$this")
@@ -375,6 +388,8 @@ Namespace Ecospace.Controls
         Private WithEvents m_lbSourceDatasets As cSpatialDatasetListbox
         Friend WithEvents m_pbCompat As System.Windows.Forms.PictureBox
         Private WithEvents m_cbEnabled As System.Windows.Forms.CheckBox
+        Friend WithEvents m_tsbnShowAllAvailable As System.Windows.Forms.ToolStripButton
+        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
 
     End Class
 
