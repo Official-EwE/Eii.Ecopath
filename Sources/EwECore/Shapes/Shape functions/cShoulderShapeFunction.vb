@@ -151,6 +151,20 @@ Public MustInherit Class cShoulderShapeFunction
 
 #End Region ' Internals
 
+    Public Overrides Function Apply(obj As Object) As Boolean
+        If MyBase.Apply(obj) Then
+            Dim shape As cEnviroResponseFunction = TryCast(obj, cEnviroResponseFunction)
+            If shape IsNot Nothing Then
+                'set the extent of the data in the shape
+                Dim left As Single = 0 'Me.ParamValue(1)
+                If Me.ParamValue(1) < 0 Then left = Me.ParamValue(1) - 1.0F
+                shape.ResponseLeftLimit = left
+                shape.ResponseRightLimit = Me.ParamValue(3)
+            End If
+
+        End If
+    End Function
+
 End Class
 
 Public Class cRightShoulderShapeFunction
