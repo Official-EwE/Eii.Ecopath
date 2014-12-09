@@ -21,6 +21,8 @@ Imports System.Math
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 
+#Region "Public Class definitions"
+
 Public Class cRowCol
     Public Property Row As Integer
     Public Property Col As Integer
@@ -32,6 +34,21 @@ Public Class cRowCol
         Return "Row: " & Me.Row & ", col: " & Me.Col
     End Function
 End Class
+
+
+Public Class cForcingMapIndexPair
+
+    Public data(,) As Single
+    Public iLayerIndex As Integer
+
+    Public Sub New(IndexOfLayer As Integer, EcospaceData As cEcospaceDataStructures)
+        iLayerIndex = IndexOfLayer
+        data = New Single(EcospaceData.InRow, EcospaceData.InCol) {}
+    End Sub
+
+End Class
+
+#End Region
 
 Public Class cEcospaceDataStructures
 
@@ -707,6 +724,8 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public hasCapInitialized As Boolean
 
+    Public ForcingMaps As cForcingMapIndexPair()
+
 #End Region
 
 #Region "Private Data"
@@ -754,7 +773,7 @@ Public Class cEcospaceDataStructures
         Next
     End Sub
 
-   
+
 
     ''' <summary>Number of Base Groups (Ecopath) </summary>
     ''' <remarks>This was nvar in EwE5</remarks>
@@ -1566,26 +1585,6 @@ Public Class cEcospaceDataStructures
             Me.allocate(TL, InRow, InCol, NGroups)
             Me.allocate(TLc, InRow, InCol)
             Me.allocate(KemptonsQ, InRow, InCol)
-
-            'jb not used in 6
-            'Me.allocate(DepthOrig, InRow + 1, InCol + 1)   'for use with habitat change
-            'Me.allocate(HabTypeorig, InRow + 1, InCol + 1)  'for use with habitat change
-            'Me.allocate(MPAorig, InRow + 1, InCol + 1)      'for use with habitat change
-            'Me.allocate(RelPPorig, InRow + 1, InCol + 1)      'for use with habitat change
-            'Me.allocate(RelCinorig, InRow + 1, InCol + 1)     'for use with habitat change
-
-
-            'In cEcospace redimed in RedimForRun()
-            'Me.allocate(E, InRow + 1, InCol + 1, nvartot)
-            'Me.allocate(BcwNomig, InRow + 1, InCol + 1, nvartot)
-            'Me.allocate(CNomig, InRow + 1, InCol + 1, nvartot)
-            'Me.allocate(dNomig, InRow + 1, InCol + 1, nvartot)
-            'Me.allocate(Enomig, InRow + 1, InCol + 1, nvartot)
-            'Me.allocate(F, InRow + 1, InCol + 1, nvartot)
-            'Me.allocate(AMm, InRow + 1, InCol + 1, nvartot)
-            'Me.allocate(C, InRow + 1, InCol + 1, nvartot)
-            'Me.allocate(d, InRow + 1, InCol + 1, nvartot)
-            'Me.allocate(Bcw, InRow + 1, InCol + 1, nvartot)
 
             For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 

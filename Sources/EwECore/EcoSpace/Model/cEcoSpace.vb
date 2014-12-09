@@ -1104,6 +1104,8 @@ Public Class cEcoSpace
                 'sum biomass after Multistanza updates
                 Array.Clear(Btime, 0, Btime.Length)
 
+                Me.RestoreForcedBiomass()
+
                 For ip = 0 To m_Data.NGroups
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
@@ -1118,7 +1120,7 @@ Public Class cEcoSpace
                             End If
                         Next j
                     Next i
-
+                    'Debug.Assert(ip <> 67)
                     'Average across all the cells
                     Btime(ip) /= m_Data.nWaterCells
                     If Btime(ip) = 0 Then Btime(ip) = 0.0000000001
@@ -1398,6 +1400,31 @@ Public Class cEcoSpace
             cLog.Write(ex, "cEcospace.SetSpatialTempData()")
             Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
         End Try
+    End Sub
+
+
+    Private Sub RestoreForcedBiomass()
+        Dim i As Integer
+
+        For Each pair As cForcingMapIndexPair In Me.m_Data.ForcingMaps
+            i += 1
+            If pair IsNot Nothing Then
+                Try
+                    For ir As Integer = 1 To Me.m_Data.InRow
+                        For ic As Integer = 1 To Me.m_Data.InCol
+                            If Me.m_Data.Depth(ir, ic) > 0 And pair.data(ir, ic) > 0 Then
+                                Me.m_Data.Bcell(ir, ic, pair.iLayerIndex) = pair.data(ir, ic)
+                            End If
+                        Next ic
+                    Next ir
+
+                Catch ex As Exception
+                    Debug.Assert(False, "Oppss... " + ex.Message)
+                End Try
+
+            End If 'If pair IsNot Nothing Then
+        Next pair
+
     End Sub
 
     ''' <summary>
@@ -2328,6 +2355,8 @@ Public Class cEcoSpace
         Try
             ' Preserve base RelPP, either loaded or sketched
             Me.m_Data.setBaseRelPP()
+
+            Me.m_Data.ForcingMaps = New cForcingMapIndexPair(Me.m_Data.NGroups) {}
 
             If (Me.m_SpatialData IsNot Nothing) Then
                 For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters

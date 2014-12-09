@@ -80,8 +80,20 @@ Namespace SpatialData
                                              ByVal sValueAtT As Double) As Boolean
 
             If (conn.ScaleType = eScaleType.Relative) Then
-                sValueAtT *= conn.Scale
+                If sValueAtT <> cCore.NULL_VALUE Then
+                    sValueAtT *= conn.Scale
+                End If
             End If
+
+            Try
+                'Store the forced biomass
+                'So it can be restored later in the timestep
+                Me.m_spaceData.ForcingMaps(layer.Index).data(iRow, iCol) = CSng(sValueAtT)
+            Catch ex As Exception
+
+            End Try
+
+
             Return MyBase.SetCell(layer, conn, iRow, iCol, sValueAtT)
 
         End Function
@@ -94,6 +106,30 @@ Namespace SpatialData
             conn.ScaleType = eScaleType.Relative
             Return MyBase.NewConnection()
         End Function
+
+        Public Overrides Sub InitRun()
+            MyBase.InitRun()
+
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim iNumRow As Integer = bm.InRow
+            Dim iNumCol As Integer = bm.InCol
+            Try
+
+                ' For all layers
+                For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
+                    ' Is driven by external data?
+                    If (Me.IsConnected(layer.Index) And layer.IsExternalData And Me.IsEnabled(layer.Index)) Then
+                        Me.m_spaceData.ForcingMaps(layer.Index) = New cForcingMapIndexPair(layer.Index, Me.m_spaceData)
+                    End If
+
+                Next layer
+
+            Catch ex As Exception
+
+            End Try
+
+
+        End Sub
 
 #End Region ' Overrides
 
