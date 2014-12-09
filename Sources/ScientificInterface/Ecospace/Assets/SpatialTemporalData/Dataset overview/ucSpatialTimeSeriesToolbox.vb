@@ -385,7 +385,9 @@ Namespace Ecospace.Controls
 
             Select Case msg.DataType
                 Case eDataTypes.EcospaceSpatialDataConnection
-                    If (msg.Type = eMessageType.DataModified) Or (msg.Type = eMessageType.Progress) Then
+                    If (msg.Type = eMessageType.DataModified) Then
+                        Me.Invalidate()
+                    ElseIf (msg.Type = eMessageType.Progress) Then
                         Me.Invalidate()
                     ElseIf (msg.Type = eMessageType.DataAddedOrRemoved) Then
                         Me.RefreshContent()
@@ -653,6 +655,14 @@ Namespace Ecospace.Controls
             Next
 
         End Sub
+
+        Private Function DatasetPos(ds As ISpatialDataSet) As cDatasetInfo
+            If ds Is Nothing Then Return Nothing
+            For Each pos As cDatasetInfo In Me.m_lInfo
+                If Object.ReferenceEquals(pos.m_ds, ds) Then Return pos
+            Next
+            Return Nothing
+        End Function
 
         Private Function DatasetArea(pos As cDatasetInfo) As Rectangle
             Dim iStart As Integer = pos.m_iTimeStart * Me.m_iTimestepSize
