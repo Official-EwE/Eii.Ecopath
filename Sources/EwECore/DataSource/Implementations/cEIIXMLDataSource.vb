@@ -2529,7 +2529,6 @@ Public Class cEIIXMLDataSource
                 cLog.Write(ex, "cEIIXMLDataSource::LoadDataAdapters")
             End Try
 
-            Return bSucces
         Next
         dt.Clear()
         Return bSucces
