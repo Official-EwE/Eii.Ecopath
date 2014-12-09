@@ -130,25 +130,25 @@ Public Class cTrapezoidShapeFunction
 
             ' JS ported from JoeB's logic in dlgChangeShape
 
-            'This only sort of works
-            'The idea is to translate the object
-            'if one of the points is to far to the right.
-            'Because we don't know the point positions before the edit 
-            'we can't figure out the shift for the translate
-            'So just fake it...
-            If (a1 > b1) Then
-                shift = a1 - a0
-                MyBase.ParamValue(2) += shift
-                MyBase.ParamValue(3) += shift
-                MyBase.ParamValue(4) += shift
-            ElseIf (b1 > c1) Then
-                shift = b1 - b0
-                MyBase.ParamValue(3) += shift
-                MyBase.ParamValue(4) += shift
-            ElseIf (c1 > d1) Then
-                shift = c1 - c0
-                MyBase.ParamValue(4) += shift
-            End If
+            ''This only sort of works
+            ''The idea is to translate the object
+            ''if one of the points is to far to the right.
+            ''Because we don't know the point positions before the edit 
+            ''we can't figure out the shift for the translate
+            ''So just fake it...
+            'If (a1 > b1) Then
+            '    shift = a1 - a0
+            '    MyBase.ParamValue(2) += shift
+            '    MyBase.ParamValue(3) += shift
+            '    MyBase.ParamValue(4) += shift
+            'ElseIf (b1 > c1) Then
+            '    shift = b1 - b0
+            '    MyBase.ParamValue(3) += shift
+            '    MyBase.ParamValue(4) += shift
+            'ElseIf (c1 > d1) Then
+            '    shift = c1 - c0
+            '    MyBase.ParamValue(4) += shift
+            'End If
 
         End Set
     End Property
@@ -194,7 +194,9 @@ Public Class cTrapezoidShapeFunction
             Dim shape As cEnviroResponseFunction = TryCast(obj, cEnviroResponseFunction)
             If shape IsNot Nothing Then
                 'set the extent of the data in the shape
-                shape.ResponseLeftLimit = Me.ParamValue(1)
+                Dim left As Single = 0
+                If Me.ParamValue(1) < 0 Then left = Me.ParamValue(1)
+                shape.ResponseLeftLimit = left
                 shape.ResponseRightLimit = Me.ParamValue(4)
             End If
 
