@@ -69,6 +69,30 @@ Namespace SpatialData
             m_baseLayers = New Single(n)(,) {}
             m_IsBaseInitialized = New Boolean(n) {}
 
+            Me.InitForcingMaps()
+
+        End Sub
+
+        Private Sub InitForcingMaps()
+
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim iNumRow As Integer = bm.InRow
+            Dim iNumCol As Integer = bm.InCol
+            Try
+
+                ' For all layers
+                For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
+                    ' Is driven by external data?
+                    If (Me.IsConnected(layer.Index) And layer.IsExternalData And Me.IsEnabled(layer.Index)) Then
+                        Me.m_spaceData.ForcingMaps(layer.Index) = New cForcingMapIndexPair(layer.Index, Me.m_spaceData)
+                    End If
+
+                Next layer
+
+            Catch ex As Exception
+
+            End Try
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -92,15 +116,25 @@ Namespace SpatialData
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
             Try
-                'Debug.Assert(Me.DataScaleType(layer.Index, iConnection) = eScaleType.Relative, Me.ToString + ".SetCell() Warning scale type should be 'Relative'")
 
+                Dim value As Double
                 If sValueAtT <> cCore.NULL_VALUE Then
                     'External data is the pattern of biomass distribution relative to the Ecospace base biomass
                     'B = [B base at t=zero] * [B external] * [1/mean B external at t=zero]
-                    layer.Cell(iRow, iCol) = CDbl(Me.m_baseLayers(layer.Index)(iRow, iCol)) * sValueAtT * conn.Scale
+                    value = CDbl(Me.m_baseLayers(layer.Index)(iRow, iCol)) * sValueAtT * conn.Scale
                 Else
-                    layer.Cell(iRow, iCol) = sValueAtT
+                    value = sValueAtT
                 End If
+
+                layer.Cell(iRow, iCol) = value
+
+                Try
+                    'Store the forced biomass
+                    'So it can be restored later in the timestep
+                    Me.m_spaceData.ForcingMaps(layer.Index).data(iRow, iCol) = CSng(value)
+                Catch ex As Exception
+
+                End Try
 
                 Return True
 
