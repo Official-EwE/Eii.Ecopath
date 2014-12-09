@@ -457,7 +457,7 @@ Namespace Controls.Map.Layers
                 Return bEditable
             End Get
             Set(ByVal value As Boolean)
-                Dim bEditable As Boolean = value And Not Me.IsReadOnly
+                Dim bEditable As Boolean = value
                 If (bEditable <> Me.m_bEditable) Then
                     Me.m_bEditable = bEditable
                     ' Send out change notification

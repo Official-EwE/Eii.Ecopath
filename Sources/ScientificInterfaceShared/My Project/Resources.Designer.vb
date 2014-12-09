@@ -497,6 +497,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Public ReadOnly Property CaseSensitive() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("CaseSensitive", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Public ReadOnly Property certificate() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("certificate", resourceCulture)
@@ -1720,6 +1730,16 @@ Namespace My.Resources
         Public ReadOnly Property FilterHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("FilterHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property FilterHS_off() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("FilterHS_off", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

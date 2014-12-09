@@ -84,8 +84,10 @@ Namespace Controls
             Weight
             ''' <summary>Define mediation items.</summary>
             DefineMediation
-            ''' <summary>Filter display of shapes.</summary>
-            Filter
+            ''' <summary>Filter display of shapes by a list of options provuded by the handler.</summary>
+            FilterList
+            ''' <summary>Filter display of shapes by a name filter, set by the handler.</summary>
+            FilterName
             ''' <summary>Set view mode for reflecting information in a different way.</summary>
             ViewMode
             ''' <summary>Set whether all data on an axis can be shown, or only used data.</summary>
@@ -110,6 +112,9 @@ Namespace Controls
         Private m_color As Color = Nothing
         ''' <summary>Selected <see cref="cShapeData">shapes</see>.</summary>
         Private m_ashapeSelected() As cShapeData = Nothing
+
+        Private m_strTextFilter As String = ""
+        Private m_bTextFilterCaseSensitive As Boolean = False
 
 #End Region ' Private variables
 
@@ -458,6 +463,30 @@ Namespace Controls
             End Get
             Set(ByVal value As Integer)
                 ' NOP
+            End Set
+        End Property
+
+        Public Property TextFilter As String
+            Get
+                Return Me.m_strTextFilter
+            End Get
+            Set(value As String)
+                If (String.Compare(Me.m_strTextFilter, value, False) <> 0) Then
+                    Me.m_strTextFilter = value
+                    Me.Refresh()
+                End If
+            End Set
+        End Property
+
+        Public Property IsTextFilterCaseSensitive As Boolean
+            Get
+                Return Me.m_bTextFilterCaseSensitive
+            End Get
+            Set(value As Boolean)
+                If (value <> Me.m_bTextFilterCaseSensitive) Then
+                    Me.m_bTextFilterCaseSensitive = value
+                    Me.Refresh()
+                End If
             End Set
         End Property
 

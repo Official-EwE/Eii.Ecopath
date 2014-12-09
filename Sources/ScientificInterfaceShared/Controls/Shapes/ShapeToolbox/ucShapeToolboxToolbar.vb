@@ -85,7 +85,10 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.m_tsbSetTo0)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToEcopathBaseline, Me.m_tsbSetToBaseline)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToValue, Me.m_tsbSetToValue)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Filter, Me.m_tscmbFilter)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.FilterList, Me.m_tscmbFilter)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.FilterName, Me.m_tslFilter)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.FilterName, Me.m_tstbxFilterName)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.FilterName, Me.m_tsbnFilterCase)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowExtraData, Me.m_tsbnShowExtraData)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DiscardExtraData, Me.m_tsbnDiscardExtraData)
 
@@ -225,6 +228,24 @@ Namespace Controls
                 ' Hmm
             End Try
 
+        End Sub
+
+        Private Sub OnToggleCase(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnFilterCase.Click
+            Try
+                Me.Handler.IsTextFilterCaseSensitive = Me.m_tsbnFilterCase.Checked
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnFilterTextChanged(sender As Object, e As System.EventArgs) _
+            Handles m_tstbxFilterName.TextChanged
+            Try
+                Me.Handler.TextFilter = Me.m_tstbxFilterName.Text
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #End Region ' Event handlers

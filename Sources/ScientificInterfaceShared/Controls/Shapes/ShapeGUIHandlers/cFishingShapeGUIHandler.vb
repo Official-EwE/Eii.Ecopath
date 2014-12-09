@@ -59,6 +59,9 @@ Namespace Controls
                 Case eShapeCommandTypes.Modify
                     Return True
 
+                Case eShapeCommandTypes.FilterName
+                    Return True
+
             End Select
             Return False
         End Function
@@ -88,6 +91,9 @@ Namespace Controls
                      eShapeCommandTypes.SetToValue, _
                      eShapeCommandTypes.SetToEcopathBaseline
                     Return bHasSelection
+
+                Case eShapeCommandTypes.FilterName
+                    Return True
 
             End Select
             Return False
