@@ -218,6 +218,8 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.DiscardExtraData
                     Return True
+                Case eShapeCommandTypes.FilterName
+                    Return True
                 Case Else
                     Return False
             End Select
@@ -261,6 +263,9 @@ Namespace Controls
                 Case eShapeCommandTypes.ShowExtraData, _
                     eShapeCommandTypes.DiscardExtraData
                     If (cmdX IsNot Nothing) Then Return cmdX.Enabled
+
+                Case eShapeCommandTypes.FilterName
+                    Return True
 
             End Select
             Return False
@@ -771,7 +776,19 @@ Namespace Controls
         ''' <returns>True if forcing function should be included in the list.</returns>
         ''' -------------------------------------------------------------------
         Protected Overridable Function IncludeShape(ByVal shape As cShapeData) As Boolean
-            Return True
+
+            Dim bUseShape As Boolean = True
+
+            If (Not String.IsNullOrWhiteSpace(Me.TextFilter)) Then
+                If (Me.IsTextFilterCaseSensitive) Then
+                    bUseShape = (shape.Name.IndexOf(Me.TextFilter, StringComparison.CurrentCulture) > -1)
+                Else
+                    bUseShape = (shape.Name.IndexOf(Me.TextFilter, StringComparison.CurrentCultureIgnoreCase) > -1)
+                End If
+            End If
+
+            Return bUseShape
+
         End Function
 
         ''' -------------------------------------------------------------------

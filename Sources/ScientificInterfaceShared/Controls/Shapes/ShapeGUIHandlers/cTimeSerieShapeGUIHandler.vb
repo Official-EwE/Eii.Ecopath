@@ -182,7 +182,7 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.ResetAll
                     Return False
-                Case eShapeCommandTypes.Filter
+                Case eShapeCommandTypes.FilterList
                     Return True
                 Case Else
                     ' Debug.Assert(False, cStringUtils.Localize("Command {0} not supported", cmd))
@@ -208,7 +208,7 @@ Namespace Controls
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Import, _
                      cShapeGUIHandler.eShapeCommandTypes.Load, _
-                     cShapeGUIHandler.eShapeCommandTypes.Filter
+                     cShapeGUIHandler.eShapeCommandTypes.FilterList
                     Return True
 
                 Case cShapeGUIHandler.eShapeCommandTypes.SetWeight

@@ -64,176 +64,113 @@ Namespace Ecospace
             '
             'OK_Button
             '
-            Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.OK_Button.Location = New System.Drawing.Point(434, 351)
+            resources.ApplyResources(Me.OK_Button, "OK_Button")
             Me.OK_Button.Name = "OK_Button"
-            Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-            Me.OK_Button.TabIndex = 0
-            Me.OK_Button.Text = "OK"
             '
             'Cancel_Button
             '
-            Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.Cancel_Button, "Cancel_Button")
             Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Cancel_Button.Location = New System.Drawing.Point(507, 351)
             Me.Cancel_Button.Name = "Cancel_Button"
-            Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-            Me.Cancel_Button.TabIndex = 1
-            Me.Cancel_Button.Text = "Cancel"
             '
             'm_lvAllShapes
             '
-            Me.m_lvAllShapes.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_lvAllShapes, "m_lvAllShapes")
             Me.m_lvAllShapes.FullRowSelect = True
             Me.m_lvAllShapes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
             Me.m_lvAllShapes.HideSelection = False
-            Me.m_lvAllShapes.Location = New System.Drawing.Point(0, 18)
-            Me.m_lvAllShapes.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lvAllShapes.MultiSelect = False
             Me.m_lvAllShapes.Name = "m_lvAllShapes"
             Me.m_lvAllShapes.ShowItemToolTips = True
-            Me.m_lvAllShapes.Size = New System.Drawing.Size(264, 295)
-            Me.m_lvAllShapes.TabIndex = 1
             Me.m_lvAllShapes.UseCompatibleStateImageBehavior = False
             Me.m_lvAllShapes.View = System.Windows.Forms.View.List
             '
             'm_lvAppliedShapes
             '
-            Me.m_lvAppliedShapes.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_lvAppliedShapes, "m_lvAppliedShapes")
             Me.m_lvAppliedShapes.FullRowSelect = True
             Me.m_lvAppliedShapes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
             Me.m_lvAppliedShapes.HideSelection = False
-            Me.m_lvAppliedShapes.Location = New System.Drawing.Point(296, 18)
-            Me.m_lvAppliedShapes.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lvAppliedShapes.Name = "m_lvAppliedShapes"
-            Me.m_lvAppliedShapes.Size = New System.Drawing.Size(264, 295)
-            Me.m_lvAppliedShapes.TabIndex = 3
             Me.m_lvAppliedShapes.UseCompatibleStateImageBehavior = False
             '
             'm_btnRemove
             '
-            Me.m_btnRemove.Anchor = System.Windows.Forms.AnchorStyles.Left
-            Me.m_btnRemove.Image = CType(resources.GetObject("m_btnRemove.Image"), System.Drawing.Image)
-            Me.m_btnRemove.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_btnRemove.Location = New System.Drawing.Point(3, 148)
+            resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
             Me.m_btnRemove.Name = "m_btnRemove"
-            Me.m_btnRemove.Size = New System.Drawing.Size(26, 23)
-            Me.m_btnRemove.TabIndex = 9
             Me.m_btnRemove.UseVisualStyleBackColor = True
             '
             'm_btnAdd
             '
-            Me.m_btnAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
-            Me.m_btnAdd.Image = CType(resources.GetObject("m_btnAdd.Image"), System.Drawing.Image)
-            Me.m_btnAdd.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_btnAdd.Location = New System.Drawing.Point(3, 119)
+            resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
             Me.m_btnAdd.Name = "m_btnAdd"
-            Me.m_btnAdd.Size = New System.Drawing.Size(26, 23)
-            Me.m_btnAdd.TabIndex = 8
             Me.m_btnAdd.UseVisualStyleBackColor = True
             '
             'm_tlMain
             '
-            Me.m_tlMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tlMain.ColumnCount = 3
-            Me.m_tlMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-            Me.m_tlMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            resources.ApplyResources(Me.m_tlMain, "m_tlMain")
             Me.m_tlMain.Controls.Add(Me.m_lvAllShapes, 0, 1)
             Me.m_tlMain.Controls.Add(Me.m_lvAppliedShapes, 2, 1)
             Me.m_tlMain.Controls.Add(Me.m_plButtons, 1, 1)
             Me.m_tlMain.Controls.Add(Me.m_hdrResp, 0, 0)
             Me.m_tlMain.Controls.Add(Me.m_hdrApplied, 2, 0)
-            Me.m_tlMain.Location = New System.Drawing.Point(12, 32)
             Me.m_tlMain.Name = "m_tlMain"
-            Me.m_tlMain.RowCount = 2
-            Me.m_tlMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_tlMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlMain.Size = New System.Drawing.Size(560, 313)
-            Me.m_tlMain.TabIndex = 10
             '
             'm_plButtons
             '
             Me.m_plButtons.Controls.Add(Me.m_btnAdd)
             Me.m_plButtons.Controls.Add(Me.m_btnRemove)
-            Me.m_plButtons.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plButtons.Location = New System.Drawing.Point(264, 18)
-            Me.m_plButtons.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_plButtons, "m_plButtons")
             Me.m_plButtons.Name = "m_plButtons"
-            Me.m_plButtons.Size = New System.Drawing.Size(32, 295)
-            Me.m_plButtons.TabIndex = 5
             '
             'm_hdrResp
             '
             Me.m_hdrResp.CanCollapseParent = False
             Me.m_hdrResp.CollapsedParentHeight = 0
-            Me.m_hdrResp.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_hdrResp, "m_hdrResp")
             Me.m_hdrResp.IsCollapsed = False
-            Me.m_hdrResp.Location = New System.Drawing.Point(0, 0)
-            Me.m_hdrResp.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrResp.Name = "m_hdrResp"
-            Me.m_hdrResp.Size = New System.Drawing.Size(264, 18)
-            Me.m_hdrResp.TabIndex = 6
-            Me.m_hdrResp.Text = "Response functions"
-            Me.m_hdrResp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_hdrApplied
             '
             Me.m_hdrApplied.CanCollapseParent = False
             Me.m_hdrApplied.CollapsedParentHeight = 0
-            Me.m_hdrApplied.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_hdrApplied, "m_hdrApplied")
             Me.m_hdrApplied.IsCollapsed = False
-            Me.m_hdrApplied.Location = New System.Drawing.Point(296, 0)
-            Me.m_hdrApplied.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrApplied.Name = "m_hdrApplied"
-            Me.m_hdrApplied.Size = New System.Drawing.Size(264, 18)
-            Me.m_hdrApplied.TabIndex = 7
-            Me.m_hdrApplied.Text = "Applied responses"
-            Me.m_hdrApplied.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslbFilter, Me.m_tstbFilter, Me.m_tsbnCaseSensitive})
-            Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
+            resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            Me.m_tsMain.Size = New System.Drawing.Size(584, 25)
-            Me.m_tsMain.TabIndex = 13
-            Me.m_tsMain.Text = "ToolStrip1"
             '
             'm_tslbFilter
             '
             Me.m_tslbFilter.Name = "m_tslbFilter"
-            Me.m_tslbFilter.Size = New System.Drawing.Size(36, 22)
-            Me.m_tslbFilter.Text = "&Filter:"
+            resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
             '
             'm_tstbFilter
             '
             Me.m_tstbFilter.Name = "m_tstbFilter"
-            Me.m_tstbFilter.Size = New System.Drawing.Size(125, 25)
+            resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
             '
             'm_tsbnCaseSensitive
             '
             Me.m_tsbnCaseSensitive.AutoToolTip = False
             Me.m_tsbnCaseSensitive.CheckOnClick = True
             Me.m_tsbnCaseSensitive.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbnCaseSensitive.Image = CType(resources.GetObject("m_tsbnCaseSensitive.Image"), System.Drawing.Image)
-            Me.m_tsbnCaseSensitive.ImageTransparentColor = System.Drawing.Color.Magenta
+            resources.ApplyResources(Me.m_tsbnCaseSensitive, "m_tsbnCaseSensitive")
             Me.m_tsbnCaseSensitive.Name = "m_tsbnCaseSensitive"
-            Me.m_tsbnCaseSensitive.Size = New System.Drawing.Size(25, 22)
-            Me.m_tsbnCaseSensitive.Text = "Aa"
-            Me.m_tsbnCaseSensitive.ToolTipText = "Search case sensitive"
             '
             'dlgSelectResponse
             '
             Me.AcceptButton = Me.OK_Button
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
-            Me.ClientSize = New System.Drawing.Size(584, 386)
             Me.Controls.Add(Me.m_tsMain)
             Me.Controls.Add(Me.m_tlMain)
             Me.Controls.Add(Me.OK_Button)
@@ -241,11 +178,8 @@ Namespace Ecospace
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.MinimumSize = New System.Drawing.Size(390, 228)
             Me.Name = "dlgSelectResponse"
             Me.ShowInTaskbar = False
-            Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-            Me.Text = "Apply environmental response function"
             Me.m_tlMain.ResumeLayout(False)
             Me.m_plButtons.ResumeLayout(False)
             Me.m_tsMain.ResumeLayout(False)

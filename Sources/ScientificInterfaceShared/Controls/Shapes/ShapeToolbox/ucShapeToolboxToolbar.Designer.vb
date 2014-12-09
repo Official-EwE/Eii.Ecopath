@@ -61,13 +61,16 @@ Namespace Controls
             Me.m_ts3 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnShowExtraData = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnDiscardExtraData = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnFilterCase = New System.Windows.Forms.ToolStripButton()
+            Me.m_tstbxFilterName = New System.Windows.Forms.ToolStripTextBox()
+            Me.m_tslFilter = New System.Windows.Forms.ToolStripLabel()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToBaseline, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter, Me.m_ts3, Me.m_tsbnShowExtraData, Me.m_tsbnDiscardExtraData})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToBaseline, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter, Me.m_ts3, Me.m_tsbnShowExtraData, Me.m_tsbnDiscardExtraData, Me.m_tsbnFilterCase, Me.m_tstbxFilterName, Me.m_tslFilter})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -217,6 +220,33 @@ Namespace Controls
             Me.m_tsbnDiscardExtraData.Size = New System.Drawing.Size(104, 22)
             Me.m_tsbnDiscardExtraData.Text = "Discard extra data"
             '
+            'm_tsbnFilterCase
+            '
+            Me.m_tsbnFilterCase.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tsbnFilterCase.CheckOnClick = True
+            Me.m_tsbnFilterCase.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbnFilterCase.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnFilterCase.Name = "m_tsbnFilterCase"
+            Me.m_tsbnFilterCase.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            Me.m_tsbnFilterCase.Size = New System.Drawing.Size(25, 22)
+            Me.m_tsbnFilterCase.Text = "Aa"
+            Me.m_tsbnFilterCase.ToolTipText = "Name filter is case-sensitive"
+            '
+            'm_tstbxFilterName
+            '
+            Me.m_tstbxFilterName.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tstbxFilterName.Name = "m_tstbxFilterName"
+            Me.m_tstbxFilterName.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            Me.m_tstbxFilterName.Size = New System.Drawing.Size(100, 25)
+            '
+            'm_tslFilter
+            '
+            Me.m_tslFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tslFilter.Image = Global.ScientificInterfaceShared.My.Resources.Resources.FilterHS
+            Me.m_tslFilter.Name = "m_tslFilter"
+            Me.m_tslFilter.Size = New System.Drawing.Size(52, 22)
+            Me.m_tslFilter.Text = "Filter:"
+            '
             'ucShapeToolboxToolbar
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -248,6 +278,9 @@ Namespace Controls
         Private WithEvents m_ts3 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsbnShowExtraData As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnDiscardExtraData As System.Windows.Forms.ToolStripButton
+        Friend WithEvents m_tslFilter As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tsbnFilterCase As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tstbxFilterName As System.Windows.Forms.ToolStripTextBox
 
     End Class
 

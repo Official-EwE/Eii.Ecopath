@@ -1955,7 +1955,6 @@ Public Class cEIIXMLDataSource
         ecospaceDS.SetDefaults()
         spatialDS.SetDefaults()
 
-        ' drow = Me.Getdrow(cStringUtils.Localize("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
         dtScenario.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
 
         Try
@@ -2498,29 +2497,36 @@ Public Class cEIIXMLDataSource
                 Dim iLayer As Integer = Array.IndexOf(spaceDS.getLayerIDs(var), CInt(Me.ReadSafe(drow, "LayerID", 1)))
                 Dim iConn As Integer = -1
 
-                For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
-                    Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, i)
-                    If (item IsNot Nothing) And (iConn = -1) Then
-                        If String.IsNullOrWhiteSpace(item.DatasetGUID) Then
-                            iConn = i
+                ' May link to unknown layer
+                If (iLayer > 0) Then
+                    ' Find next available connection slot
+                    For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                        Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, i)
+                        If (item IsNot Nothing) And (iConn = -1) Then
+                            If String.IsNullOrWhiteSpace(item.DatasetGUID) Then
+                                iConn = i
+                            End If
                         End If
-                    End If
-                Next
+                    Next
 
-                If (iConn > 0) Then
-                    Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, iConn)
-                    item.DatasetGUID = CStr(Me.ReadSafe(drow, "DatasetGUID", ""))
-                    item.DatasetTypeName = CStr(Me.ReadSafe(drow, "DatasetTypeName", ""))
-                    item.DatasetConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "DatasetCfg", "")))
-                    item.ConverterTypeName = CStr(Me.ReadSafe(drow, "ConverterTypeName", ""))
-                    item.ConverterConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "ConverterCfg", "")))
-                    item.Scale = CSng(Me.ReadSafe(drow, "Scale", 1.0!))
-                    item.ScaleType = CType(Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
+                    If (iConn > 0) Then
+                        Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, iConn)
+                        item.DatasetGUID = CStr(Me.ReadSafe(drow, "DatasetGUID", ""))
+                        item.DatasetTypeName = CStr(Me.ReadSafe(drow, "DatasetTypeName", ""))
+                        item.DatasetConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "DatasetCfg", "")))
+                        item.ConverterTypeName = CStr(Me.ReadSafe(drow, "ConverterTypeName", ""))
+                        item.ConverterConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "ConverterCfg", "")))
+                        item.Scale = CSng(Me.ReadSafe(drow, "Scale", 1.0!))
+                        item.ScaleType = CType(Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
+
+                        ' These datasets are 'virtual', obtained from a foreign model but not properly defined
+
+                    End If
                 End If
 
             Catch ex As Exception
                 bSucces = False
-                cLog.Write(ex, "DBDataSource::LoadDataAdapters")
+                cLog.Write(ex, "cEIIXMLDataSource::LoadDataAdapters")
             End Try
 
             Return bSucces
