@@ -218,7 +218,7 @@ Namespace Controls
             Me.m_tsbnDiscardExtraData.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnDiscardExtraData.Name = "m_tsbnDiscardExtraData"
             Me.m_tsbnDiscardExtraData.Size = New System.Drawing.Size(104, 22)
-            Me.m_tsbnDiscardExtraData.Text = "Discard extra data"
+            Me.m_tsbnDiscardExtraData.Text = "Discard e&xtra data"
             '
             'm_tsbnFilterCase
             '
@@ -278,9 +278,9 @@ Namespace Controls
         Private WithEvents m_ts3 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsbnShowExtraData As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnDiscardExtraData As System.Windows.Forms.ToolStripButton
-        Friend WithEvents m_tslFilter As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tsbnFilterCase As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tstbxFilterName As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tslFilter As System.Windows.Forms.ToolStripLabel
 
     End Class
 

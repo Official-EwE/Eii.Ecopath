@@ -184,6 +184,8 @@ Namespace Controls
                     Return False
                 Case eShapeCommandTypes.FilterList
                     Return True
+                Case eShapeCommandTypes.FilterName
+                    Return True
                 Case Else
                     ' Debug.Assert(False, cStringUtils.Localize("Command {0} not supported", cmd))
             End Select
@@ -208,7 +210,8 @@ Namespace Controls
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Import, _
                      cShapeGUIHandler.eShapeCommandTypes.Load, _
-                     cShapeGUIHandler.eShapeCommandTypes.FilterList
+                     cShapeGUIHandler.eShapeCommandTypes.FilterList, _
+                     eShapeCommandTypes.FilterName
                     Return True
 
                 Case cShapeGUIHandler.eShapeCommandTypes.SetWeight
@@ -671,7 +674,7 @@ Namespace Controls
                     End Try
                 End If
 
-                If (bIncludeShape) Then
+                If (bIncludeShape And MyBase.IncludeShape(ts)) Then
                     Me.m_lShapes.Add(ts)
                 End If
             Next
