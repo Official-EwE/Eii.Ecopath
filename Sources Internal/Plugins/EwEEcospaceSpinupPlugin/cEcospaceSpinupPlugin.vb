@@ -248,8 +248,8 @@ Public Class cEcospaceSpinupPlugin
                 For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
                     'Biomass at the current time step
                     Bt = Me.EcoSpaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, igrp, iTime)
-                    If iTime > 12 Then
-                        BtMinus1 = Me.EcoSpaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, igrp, iTime - 12)
+                    If iTime > 1 Then
+                        BtMinus1 = Me.EcoSpaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, igrp, iTime - 1)
                     Else
                         BtMinus1 = Bt
                     End If
