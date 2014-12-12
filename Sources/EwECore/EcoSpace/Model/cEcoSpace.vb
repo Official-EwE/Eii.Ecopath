@@ -1412,7 +1412,7 @@ Public Class cEcoSpace
                 Try
                     For ir As Integer = 1 To Me.m_Data.InRow
                         For ic As Integer = 1 To Me.m_Data.InCol
-                            If Me.m_Data.Depth(ir, ic) > 0 And pair.data(ir, ic) > 0 Then
+                            If Me.m_Data.Depth(ir, ic) > 0 Then
                                 Me.m_Data.Bcell(ir, ic, pair.iLayerIndex) = pair.data(ir, ic)
                             End If
                         Next ic
@@ -5391,7 +5391,7 @@ exitline:
                 'biomass
                 m_Data.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTimeStep) = Btime(igrp)
                 'relative biomass
-                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp) '  Me.m_EPdata.B(igrp) ' to use Ecopath base '
+                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp) ' Me.m_EPdata.B(igrp) ' to use Ecopath base '
 
             Next igrp
 

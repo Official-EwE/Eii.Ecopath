@@ -7587,6 +7587,8 @@ Public Class cCore
 
             Me.m_SearchData.redimTime(m_EcoSimData.NumYears)
 
+            ' Me.EcospaceModelParameters.TotalTime = m_EcoSimData.NumYears
+
             Me.m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
             'changed the run length for ecospace reset the summary periods to defaults
             Me.m_EcoSpaceData.setDefaultSummaryPeriod()
@@ -8659,6 +8661,7 @@ Public Class cCore
                         Me.m_EcospaceResultsWriters.Clear()
                         If Me.Autosave(eAutosaveTypes.Ecospace) Then
                             Me.m_EcospaceResultsWriters.Add(New cEcospaceRegionResultWriter())
+                            Me.m_EcospaceResultsWriters.Add(New cEcospaceAvgModelAreaResultsWriter())
                         End If
                         If Me.Autosave(eAutosaveTypes.EcospaceMaps) Then
                             For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.EcospaceMaps).Split(";"c)
