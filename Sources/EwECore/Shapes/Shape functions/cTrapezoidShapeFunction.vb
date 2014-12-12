@@ -115,20 +115,22 @@ Public Class cTrapezoidShapeFunction
         End Get
         Set(value As Single)
 
-            Dim a0 As Single = Me.ParamValue(1)
-            Dim b0 As Single = Me.ParamValue(2)
-            Dim c0 As Single = Me.ParamValue(3)
-            Dim d0 As Single = Me.ParamValue(4)
-            Dim shift As Single
+            'Dim a0 As Single = Me.ParamValue(1)
+            'Dim b0 As Single = Me.ParamValue(2)
+            'Dim c0 As Single = Me.ParamValue(3)
+            'Dim d0 As Single = Me.ParamValue(4)
+            'Dim shift As Single
 
             MyBase.ParamValue(iParam) = value
 
-            Dim a1 As Single = Me.ParamValue(1)
-            Dim b1 As Single = Me.ParamValue(2)
-            Dim c1 As Single = Me.ParamValue(3)
-            Dim d1 As Single = Me.ParamValue(4)
+            'Dim a1 As Single = Me.ParamValue(1)
+            'Dim b1 As Single = Me.ParamValue(2)
+            'Dim c1 As Single = Me.ParamValue(3)
+            'Dim d1 As Single = Me.ParamValue(4)
 
             ' JS ported from JoeB's logic in dlgChangeShape
+            'jb somehow this messes up in the port...
+            'disable it for now
 
             ''This only sort of works
             ''The idea is to translate the object
