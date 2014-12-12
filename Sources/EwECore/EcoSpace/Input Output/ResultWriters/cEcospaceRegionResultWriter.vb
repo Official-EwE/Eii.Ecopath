@@ -236,7 +236,7 @@ Public Class cEcospaceRegionResultWriter
         Dim sValue As Single = 0
 
         ' For all groups
-        For iRegion As Integer = 0 To Me.m_core.nRegions
+        For iRegion As Integer = 1 To Me.m_core.nRegions
 
             ' Get region name
             r = Me.m_core.EcospaceRegionOutput(iRegion)
@@ -248,42 +248,48 @@ Public Class cEcospaceRegionResultWriter
                 Select Case iData
                     Case 0
                         strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_biomass.csv", strName), False)
-                        strDescriptor = "Biomass by region"
+                        strDescriptor = "Average biomass by region"
                     Case 1
                         strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_biomass_annual.csv", strName), False)
-                        strDescriptor = "Annual biomass by region"
+                        strDescriptor = "Annual average biomass by region"
                     Case 2
                         strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_catch.csv", strName), False)
-                        strDescriptor = "Catch by region"
+                        strDescriptor = "Average catch by region"
                     Case 3
                         strFile = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_catch_annual.csv", strName), False)
-                        strDescriptor = "Annual catch by region"
+                        strDescriptor = "Annual average catch by region"
                 End Select
 
-                ' Start writing
-                sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
-                If Me.m_core.SaveWithFileHeader Then
-                    sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-                    sw.WriteLine("Data," & cStringUtils.ToCSVField(strDescriptor))
-                    sw.WriteLine("Region," & cStringUtils.ToCSVField(strName))
-                    sw.WriteLine()
-                End If
+                Try
+                    ' Start writing
+                    sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
+                    If Me.m_core.SaveWithFileHeader Then
+                        sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
+                        sw.WriteLine("Data," & cStringUtils.ToCSVField(strDescriptor))
+                        sw.WriteLine("Region," & cStringUtils.ToCSVField(strName))
+                        sw.WriteLine("Region area km2," & cStringUtils.ToCSVField(Me.m_core.m_EcoSpaceData.nCellsInRegion(iRegion) * Me.m_core.EcospaceBasemap.CellLength() ^ 2))
+                        sw.WriteLine("Number of cells," & cStringUtils.ToCSVField(Me.m_core.m_EcoSpaceData.nCellsInRegion(iRegion)))
+                        sw.WriteLine()
+                    End If
 
-                Select Case iData
-                    Case 0
-                        Me.WriteBiomassData(sw, r, False)
-                    Case 1
-                        Me.WriteBiomassData(sw, r, True)
-                    Case 2
-                        Me.WriteCatchData(sw, r, False)
-                    Case 3
-                        Me.WriteCatchData(sw, r, True)
-                End Select
+                    Select Case iData
+                        Case 0
+                            Me.WriteBiomassData(sw, r, False)
+                        Case 1
+                            Me.WriteBiomassData(sw, r, True)
+                        Case 2
+                            Me.WriteCatchData(sw, r, False)
+                        Case 3
+                            Me.WriteCatchData(sw, r, True)
+                    End Select
 
-                ' Clean up
-                sw.Flush()
-                sw.Close()
-                sw.Dispose()
+                    ' Clean up
+                    sw.Flush()
+                    sw.Close()
+                    sw.Dispose()
+                Catch ex As Exception
+                    cLog.Write(ex, "Failed to save Ecospace average biomass file for " + strDescriptor)
+                End Try
 
             Next iData
         Next iRegion
