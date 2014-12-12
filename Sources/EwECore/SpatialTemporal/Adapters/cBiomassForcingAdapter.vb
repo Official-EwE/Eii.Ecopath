@@ -131,6 +131,14 @@ Namespace SpatialData
 
         End Sub
 
+        Friend Overrides Sub RestoreLayerData()
+            'Don't restore Biomass forcing data to it's original state
+        End Sub
+
+        Friend Overrides Sub SaveLayerData()
+            'Don't restore Biomass forcing data to it's original state
+        End Sub
+
 #End Region ' Overrides
 
     End Class
