@@ -51,8 +51,8 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             LayerIndex = 0
             LayerName
-            LayerDescription
             LayerIsCApacityEnabled
+            LayerDescription
             LayerStatus
         End Enum
 
