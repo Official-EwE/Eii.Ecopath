@@ -139,6 +139,22 @@ Namespace SpatialData
             'Don't restore Biomass forcing data to it's original state
         End Sub
 
+        Public Overrides Function calScalar(SumOverPeriod As Double, nMapCells As Double) As Double
+            Try
+                'Return Average of the input biomass
+                'For biomass forcing we can not be certain what the scalar is.
+                'It could be a unit conversion value.
+                'It could be used to scale the input biomass to the Ecopath base.
+                'It could be just a straight scaler to increase or decrease the values.
+                'For this just return the average over the map and time period 
+                'The user can use this to create a scalar if they need.
+                Return SumOverPeriod / nMapCells
+            Catch ex As Exception
+                cLog.Write(ex, "Failed to calculate map scale value")
+            End Try
+            Return 1.0
+        End Function
+
 #End Region ' Overrides
 
     End Class
