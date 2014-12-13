@@ -38,6 +38,7 @@ Namespace SpatialData
     Public Class cSpatialScalarDataAdapter
         Inherits cSpatialScalarDataAdapterBase
 
+
 #Region " Constructor "
 
         Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
@@ -68,6 +69,7 @@ Namespace SpatialData
 
 #End Region ' Overrides
 
+      
     End Class
 
 #End Region
@@ -146,7 +148,7 @@ Namespace SpatialData
             Dim iTSMax As Integer = 1
             Dim rs As ISpatialRaster = Nothing
             Dim dMapTotValue As Double = 0.0
-            Dim iNumWaterCells As Long = 0
+            Dim iNumWaterCells As Integer = 0
             Dim msg As cProgressMessage = Nothing
 
             ' Determine time steps with overlap
@@ -204,7 +206,7 @@ Namespace SpatialData
             If dMapTotValue = 0 Then dMapTotValue = 1
             If iNumWaterCells = 0 Then iNumWaterCells = 1
 
-            dScale = (iNumWaterCells / dMapTotValue)
+            dScale = Me.calScalar(dMapTotValue, iNumWaterCells)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'jb 30-July-2012 changed DataScale to be used as a divider
             'to be compatiable with RellPP scaler cEcospaceDataStructures.PPScale
@@ -217,6 +219,27 @@ Namespace SpatialData
             Return cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap 'comp.Compatibility
 
         End Function
+
+        ''' <summary>
+        ''' Calculates a scale value base on the sum and number of cells over the time period.
+        ''' </summary>
+        ''' <param name="SumOverPeriod">Sum of values over the time period.</param>
+        ''' <param name="nMapCells">Total number of cells included in the sum.</param>
+        ''' <returns> (1 / mean)</returns>
+        ''' <remarks>Default scalar for relative adapters. Return the mean scalar as a multiplier.</remarks>
+        Public Overridable Function calScalar(SumOverPeriod As Double, nMapCells As Double) As Double
+            Try
+                'This is the default value for a relative scalar that is used as multiplier 
+                'RelPP and Relative biomass can use this 
+                'Biomass forcing overrides this to return the average
+                Return nMapCells / SumOverPeriod
+            Catch ex As Exception
+                cLog.Write(ex, "Failed to calculate scale value.")
+            End Try
+            'Ohh... my...
+            Return 1.0
+        End Function
+
 
 #End Region ' Public access
 
