@@ -52,6 +52,8 @@ Namespace Ecospace.Controls
             Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrConnections = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnShowAllAvailable = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnDefineConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -60,8 +62,6 @@ Namespace Ecospace.Controls
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tsbnShowAllAvailable = New System.Windows.Forms.ToolStripButton()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
@@ -255,6 +255,17 @@ Namespace Ecospace.Controls
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
+            'm_tsbnShowAllAvailable
+            '
+            Me.m_tsbnShowAllAvailable.CheckOnClick = True
+            resources.ApplyResources(Me.m_tsbnShowAllAvailable, "m_tsbnShowAllAvailable")
+            Me.m_tsbnShowAllAvailable.Name = "m_tsbnShowAllAvailable"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
             'm_tsbnDefineConnections
             '
             resources.ApplyResources(Me.m_tsbnDefineConnections, "m_tsbnDefineConnections")
@@ -314,17 +325,6 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_cbEnabled, "m_cbEnabled")
             Me.m_cbEnabled.Name = "m_cbEnabled"
             Me.m_cbEnabled.UseVisualStyleBackColor = True
-            '
-            'ToolStripSeparator1
-            '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
-            '
-            'm_tsbnShowAllAvailable
-            '
-            Me.m_tsbnShowAllAvailable.CheckOnClick = True
-            resources.ApplyResources(Me.m_tsbnShowAllAvailable, "m_tsbnShowAllAvailable")
-            Me.m_tsbnShowAllAvailable.Name = "m_tsbnShowAllAvailable"
             '
             'dlgApplyConnection
             '

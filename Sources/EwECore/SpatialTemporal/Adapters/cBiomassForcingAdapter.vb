@@ -155,6 +155,12 @@ Namespace SpatialData
             Return 1.0
         End Function
 
+        Public Overrides ReadOnly Property ScalarText As String
+            Get
+                Return My.Resources.CoreMessages.ADAPTER_BIOMASSFORCING_SCALAR_TEXT
+            End Get
+        End Property
+
 #End Region ' Overrides
 
     End Class
