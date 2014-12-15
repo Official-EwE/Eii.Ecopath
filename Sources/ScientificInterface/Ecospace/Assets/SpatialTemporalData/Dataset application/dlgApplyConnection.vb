@@ -625,8 +625,19 @@ Namespace Ecospace.Controls
 
             Me.m_plScalarAdapter.Enabled = bHasConnectionSelected And bNeedsScaling
             Me.m_plScalarAdapter.Visible = bNeedsScaling
-            ' Allow calc of scaling even if spatial compatibility has not been assessed yet, for indexing may have been turned off
-            Me.m_btnCalculate.Enabled = bNeedsScaling And bIsConfigured
+
+            If bNeedsScaling And bIsConfigured Then
+                ' Allow calc of scaling even if spatial compatibility has not been assessed yet, for indexing may have been turned off
+                Me.m_btnCalculate.Enabled = True
+                Try
+                    Dim adapt As cSpatialScalarDataAdapterBase = DirectCast(conn.Adapter, cSpatialScalarDataAdapterBase)
+                    Me.m_btnCalculate.Text = adapt.ScalarText
+                Catch ex As Exception
+
+                End Try
+            Else
+                Me.m_btnCalculate.Enabled = False
+            End If
 
             Me.m_btnAdd.Enabled = bCanAddDS
             Me.m_btnRemove.Enabled = bCanRemoveDS
