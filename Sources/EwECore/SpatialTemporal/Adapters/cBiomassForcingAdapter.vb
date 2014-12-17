@@ -33,11 +33,9 @@ Namespace SpatialData
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cBiomassForcingAdapter
-        Inherits cSpatialScalarDataAdapterBase
+        Inherits cForcingAdapterBase
 
 #Region " Private vars "
-
-        Private m_spaceData As cEcospaceDataStructures
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Warning this hardwires the scale value
@@ -61,14 +59,6 @@ Namespace SpatialData
 #Region " Overrides "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cSpatialScalarDataAdapter.Initialize"/>.
-        ''' -------------------------------------------------------------------
-        Friend Overrides Sub Initialize()
-            MyBase.Initialize()
-            Me.m_spaceData = Me.m_core.m_EcoSpaceData
-        End Sub
-
-        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
         ''' <remarks>Overridden to scale values prior to being set in the 
         ''' Ecospace data structures.</remarks>
@@ -88,11 +78,10 @@ Namespace SpatialData
             Try
                 'Store the forced biomass
                 'So it can be restored later in the timestep
-                Me.m_spaceData.ForcingMaps(layer.Index).data(iRow, iCol) = CSng(sValueAtT)
+                Me.m_ForcingMaps(layer.Index).data(iRow, iCol) = CSng(sValueAtT)
             Catch ex As Exception
 
             End Try
-
 
             Return MyBase.SetCell(layer, conn, iRow, iCol, sValueAtT)
 
@@ -107,37 +96,41 @@ Namespace SpatialData
             Return MyBase.NewConnection()
         End Function
 
-        Public Overrides Sub InitRun()
-            MyBase.InitRun()
+        'Public Overrides Sub InitRun()
+        '    MyBase.InitRun()
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim iNumRow As Integer = bm.InRow
-            Dim iNumCol As Integer = bm.InCol
-            Try
+        '    Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        '    Dim iNumRow As Integer = bm.InRow
+        '    Dim iNumCol As Integer = bm.InCol
 
-                ' For all layers
-                For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
-                    ' Is driven by external data?
-                    If (Me.IsConnected(layer.Index) And layer.IsExternalData And Me.IsEnabled(layer.Index)) Then
-                        Me.m_spaceData.ForcingMaps(layer.Index) = New cForcingMapIndexPair(layer.Index, Me.m_spaceData)
-                    End If
+        '    Me.InitForcingMaps()
 
-                Next layer
-
-            Catch ex As Exception
-
-            End Try
+        'End Sub
 
 
-        End Sub
+        'Private Sub InitForcingMaps()
 
-        Friend Overrides Sub RestoreLayerData()
-            'Don't restore Biomass forcing data to it's original state
-        End Sub
+        '    Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        '    Dim iNumRow As Integer = bm.InRow
+        '    Dim iNumCol As Integer = bm.InCol
+        '    Try
 
-        Friend Overrides Sub SaveLayerData()
-            'Don't restore Biomass forcing data to it's original state
-        End Sub
+        '        ' For all layers
+        '        For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
+        '            ' Is driven by external data?
+        '            If (Me.IsConnected(layer.Index) And layer.IsExternalData And Me.IsEnabled(layer.Index)) Then
+        '                Me.m_spaceData.ForcingMaps(layer.Index) = New cForcingMapIndexPair(layer.Index, Me.m_spaceData)
+        '            End If
+
+        '        Next layer
+
+        '    Catch ex As Exception
+
+        '    End Try
+
+        'End Sub
+
+
 
         Public Overrides Function calScalar(SumOverPeriod As Double, nMapCells As Double) As Double
             Try

@@ -206,13 +206,9 @@ Namespace SpatialData
             If dMapTotValue = 0 Then dMapTotValue = 1
             If iNumWaterCells = 0 Then iNumWaterCells = 1
 
+            'Get the scalar value from a function
+            'So different adapters can use a different scalar calculation
             dScale = Me.calScalar(dMapTotValue, iNumWaterCells)
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'jb 30-July-2012 changed DataScale to be used as a divider
-            'to be compatiable with RellPP scaler cEcospaceDataStructures.PPScale
-            'this makes debugging easier
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            ' dScale = (dMapTotValue / iNumWaterCells) 'mean across all the applicable cells
 
             ' Report for the calculation period
             Dim comp As New cDatasetCompatilibity(Me.m_core, ds, iTSMin, iTSMax - iTSMin)
