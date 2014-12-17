@@ -35,11 +35,9 @@ Namespace SpatialData
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Class cBiomassRelativeAdapter
-        Inherits cSpatialScalarDataAdapterBase
+        Inherits cForcingAdapterBase
 
 #Region " Private vars "
-
-        Private m_spaceData As cEcospaceDataStructures
 
         ''' <summary>Ragged array used to store the base map by Layer</summary>
         Private m_baseLayers()(,) As Single
@@ -69,41 +67,39 @@ Namespace SpatialData
             m_baseLayers = New Single(n)(,) {}
             m_IsBaseInitialized = New Boolean(n) {}
 
-            Me.InitForcingMaps()
-
         End Sub
 
-        Private Sub InitForcingMaps()
+        'Private Sub InitForcingMaps()
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim iNumRow As Integer = bm.InRow
-            Dim iNumCol As Integer = bm.InCol
-            Try
+        '    Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        '    Dim iNumRow As Integer = bm.InRow
+        '    Dim iNumCol As Integer = bm.InCol
+        '    Try
 
-                ' For all layers
-                For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
-                    ' Is driven by external data?
-                    If (Me.IsConnected(layer.Index) And layer.IsExternalData And Me.IsEnabled(layer.Index)) Then
-                        Me.m_spaceData.ForcingMaps(layer.Index) = New cForcingMapIndexPair(layer.Index, Me.m_spaceData)
-                    End If
+        '        ' For all layers
+        '        For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
+        '            ' Is driven by external data?
+        '            If (Me.IsConnected(layer.Index) And layer.IsExternalData And Me.IsEnabled(layer.Index)) Then
+        '                Me.m_spaceData.ForcingMaps(layer.Index) = New cForcingMapIndexPair(layer.Index, Me.m_spaceData)
+        '            End If
 
-                Next layer
+        '        Next layer
 
-            Catch ex As Exception
+        '    Catch ex As Exception
 
-            End Try
+        '    End Try
 
-        End Sub
+        'End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cSpatialScalarDataAdapter.Initialize"/>.
-        ''' -------------------------------------------------------------------
-        Friend Overrides Sub Initialize()
-            MyBase.Initialize()
-            Me.m_spaceData = Me.m_core.m_EcoSpaceData
-            Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)
+        ' ''' -------------------------------------------------------------------
+        ' ''' <inheritdocs cref="cSpatialScalarDataAdapter.Initialize"/>.
+        ' ''' -------------------------------------------------------------------
+        'Friend Overrides Sub Initialize()
+        '    MyBase.Initialize()
+        '    Me.m_spaceData = Me.m_core.m_EcoSpaceData
+        '    Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)
 
-        End Sub
+        'End Sub
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
@@ -131,9 +127,9 @@ Namespace SpatialData
                 Try
                     'Store the forced biomass
                     'So it can be restored later in the timestep
-                    Me.m_spaceData.ForcingMaps(layer.Index).data(iRow, iCol) = CSng(value)
+                    Me.m_ForcingMaps(layer.Index).data(iRow, iCol) = CSng(value)
                 Catch ex As Exception
-
+                    Debug.Assert(False)
                 End Try
 
                 Return True
@@ -151,46 +147,35 @@ Namespace SpatialData
                                                   ByVal conn As cSpatialDataConnection, ByVal iTime As Integer, ByVal dt As Date,
                                                   ByVal dataExternal As ISpatialRaster, ByVal dNoData As Double) As Boolean
 
-            Try
-                'This is a "First Chance" initialization of the base layers 
-                If Not Me.m_IsBaseInitialized(layer.Index) Then
-                    Me.InitializeBaseLayer(layer.Index)
-                End If
-
-            Catch ex As Exception
-                'Ok what now....
-                'I don't think this can happen. Really I promise...
-                Debug.Assert(False, Me.ToString + ".Adapt() Exception: " + ex.Message)
-                Return False
-            End Try
+            'This is a "First Chance" initialization of the base layers 
+            Me.InitializeBaseLayer(layer.Index)
 
             Return MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
 
         End Function
-
-
-        Friend Overrides Sub RestoreLayerData()
-            'Don't restore Biomass forcing data to it's original state
-        End Sub
-
-        Friend Overrides Sub SaveLayerData()
-            'Don't restore Biomass forcing data to it's original state
-        End Sub
 
 #End Region ' Overrides
 
 #Region "Internal methods"
 
         ''' <summary>
-        ''' Copy the base map from the layer for this 
+        ''' Keep a copy of the base map for this layer
         ''' </summary>
         ''' <param name="iLayer"></param>
         ''' <remarks>First Chance initialization. This should only be called once.</remarks>
         Private Sub InitializeBaseLayer(iLayer As Integer)
 
-            Debug.Assert(Me.m_IsBaseInitialized(iLayer) = False, Me.ToString + ".InitializeBaseLayer() already initialized! It should be be called again for this layer.")
+            If Me.m_IsBaseInitialized(iLayer) Then
+                'First Chance Initialization
+                'Only do this once at the start of the run
+                'Me.m_IsBaseInitialized(iLayer) is reset at the start of each run in InitRun()
+                Return
+            End If
 
             Try
+                'If this Assert fires something is wrong in the code
+                'InitializeBaseLayer() should only be called once at the start of each run and cleared between runs
+                Debug.Assert(m_baseLayers(iLayer) Is Nothing, Me.ToString + ".InitializeBaseLayer() Trying to initialize a layer that has already been initialized.")
 
                 Dim n As Integer = Me.m_core.GetCoreCounter(m_coreCounter)
                 Dim layer() As cEcospaceLayer = Me.m_core.EcospaceBasemap.Layers(Me.m_varName)
@@ -205,6 +190,7 @@ Namespace SpatialData
                     Next
                 Next
 
+                'Stop initialization from being called multiple times...
                 Me.m_IsBaseInitialized(iLayer) = True
 
             Catch ex As Exception

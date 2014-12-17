@@ -35,19 +35,6 @@ Public Class cRowCol
     End Function
 End Class
 
-
-Public Class cForcingMapIndexPair
-
-    Public data(,) As Single
-    Public iLayerIndex As Integer
-
-    Public Sub New(IndexOfLayer As Integer, EcospaceData As cEcospaceDataStructures)
-        iLayerIndex = IndexOfLayer
-        data = New Single(EcospaceData.InRow, EcospaceData.InCol) {}
-    End Sub
-
-End Class
-
 #End Region
 
 Public Class cEcospaceDataStructures
@@ -723,8 +710,6 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks></remarks>
     Public hasCapInitialized As Boolean
-
-    Public ForcingMaps As cForcingMapIndexPair()
 
 #End Region
 

@@ -1404,26 +1404,64 @@ Public Class cEcoSpace
 
 
     Private Sub RestoreForcedBiomass()
-        Dim i As Integer
 
-        For Each pair As cForcingMapIndexPair In Me.m_Data.ForcingMaps
-            i += 1
-            If pair IsNot Nothing Then
-                Try
-                    For ir As Integer = 1 To Me.m_Data.InRow
-                        For ic As Integer = 1 To Me.m_Data.InCol
-                            If Me.m_Data.Depth(ir, ic) > 0 Then
-                                Me.m_Data.Bcell(ir, ic, pair.iLayerIndex) = pair.data(ir, ic)
-                            End If
-                        Next ic
-                    Next ir
+        Try
 
-                Catch ex As Exception
-                    Debug.Assert(False, "Oppss... " + ex.Message)
-                End Try
+            If (Me.m_SpatialData IsNot Nothing) Then
+                For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
+                    If (src IsNot Nothing) Then
+                        Try
+                            src.RestoreForcing(Me.m_Data)
+                        Catch ex As Exception
+                            cLog.Write(ex, "cEcospace.SetSpatialTempData " & src.Name & "(" & src.Index & ")")
+                        End Try
+                    End If
+                Next
+            End If
 
-            End If 'If pair IsNot Nothing Then
-        Next pair
+        Catch ex As Exception
+            '  Debug.Assert(False, ex.StackTrace)
+            cLog.Write(ex, "cEcospace.SetSpatialTempData()")
+            Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
+        End Try
+
+
+        'Dim i As Integer
+
+        'Try
+
+        '    For Each pair As cForcingMapIndexPair In Me.m_Data.ForcingMaps
+        '        i += 1
+        '        If pair IsNot Nothing Then
+        '            'Only restore the biomass if this timestep was forced
+        '            'If not leave the predicted biomass in place for the next timestep
+        '            If pair.isTimeStepForced Then
+        '                Try
+        '                    For ir As Integer = 1 To Me.m_Data.InRow
+        '                        For ic As Integer = 1 To Me.m_Data.InCol
+        '                            If Me.m_Data.Depth(ir, ic) > 0 Then
+        '                                Me.m_Data.Bcell(ir, ic, pair.iLayerIndex) = pair.data(ir, ic)
+        '                            End If
+        '                        Next ic
+        '                    Next ir
+
+        '                Catch ex As Exception
+        '                    Debug.Assert(False, "Oppss... " + ex.Message)
+        '                    cLog.Write(ex, "Failed to restore forced biomass for group " + i.ToString)
+        '                End Try
+        '            End If
+
+        '            'Re-set the isTimeStepForced Flag
+        '            'this will be set to True next time the adapter loads data for a timestep
+        '            pair.isTimeStepForced = False
+
+        '        End If 'If pair IsNot Nothing Then
+        '    Next pair
+
+        'Catch ex As Exception
+
+        'End Try
+
 
     End Sub
 
@@ -2355,8 +2393,6 @@ Public Class cEcoSpace
         Try
             ' Preserve base RelPP, either loaded or sketched
             Me.m_Data.setBaseRelPP()
-
-            Me.m_Data.ForcingMaps = New cForcingMapIndexPair(Me.m_Data.NGroups) {}
 
             If (Me.m_SpatialData IsNot Nothing) Then
                 For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters

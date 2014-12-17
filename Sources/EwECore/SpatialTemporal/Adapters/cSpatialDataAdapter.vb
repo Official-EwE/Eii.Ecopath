@@ -386,7 +386,7 @@ Namespace SpatialData
                                 ' #Yes: set value
                                 bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, sValue)
                                 'sum += CDbl(layer.Cell(iRow, iCol))
-                                n += 1
+                                'n += 1
                             End If
                         Else
                             bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, dNoData)
@@ -575,6 +575,13 @@ Namespace SpatialData
             Next layer
 
         End Sub
+
+
+        Public Overridable Function RestoreForcing(SpaceData As cEcospaceDataStructures) As Boolean
+            'Only forcing adapters have data to restore
+            Return True
+
+        End Function
 
 #End Region ' Layer rescue
 
