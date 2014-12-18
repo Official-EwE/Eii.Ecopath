@@ -1128,8 +1128,8 @@ Public Class cEcoSpace
                     For irgn = 0 To Me.m_Data.nRegions
                         Me.m_Data.ResultsRegionGroup(irgn, ip, itt) /= Me.m_Data.nCellsInRegion(irgn)
                         Me.m_Data.ResultsRegionGroupYear(irgn, ip, Me.m_Data.YearNow) += Me.m_Data.ResultsRegionGroup(irgn, ip, itt)
-                        If ((itt Mod Me.m_Data.NumStep) = 0) Then
-                            Me.m_Data.ResultsRegionGroupYear(irgn, ip, Me.m_Data.YearNow) /= Me.m_Data.NumStep
+                        If ((itt Mod Me.m_Data.nTimeStepsPerYear) = 0) Then
+                            Me.m_Data.ResultsRegionGroupYear(irgn, ip, Me.m_Data.YearNow) /= Me.m_Data.nTimeStepsPerYear
                         End If
                     Next irgn
 

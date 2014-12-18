@@ -299,10 +299,11 @@ Public Class cEcospaceDataStructures
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Summary data
 
-    '''' <summary>Number of timesteps the model ran for. Used to average data over the run.</summary>
-    'Public nSumTimeSteps As Integer
-
-    Public NumStep As Integer       'Number of time steps for averaging summary window data
+    ''' <summary>
+    ''' Number of time steps for averaging summary window data
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public NumStep As Integer
 
     ''' <summary>Start time of the first and second summary data period. In Years </summary>
     ''' <remarks> Data is summarized over two time periods set by SumStart(0) and SumStart(1). The number of time steps to summarize over is set in NumStep.
@@ -334,11 +335,6 @@ Public Class cEcospaceDataStructures
 
     ''' <summary> Sum of landings across all cells by Group/Fleet for the current timestep </summary>
     Public Landings(,) As Single
-
-    ' ''' <summary>Number of variables in ResultsXXX arrays </summary>
-    'Public Const N_RESULTS_GROUPS As Integer = 6 '3
-    'Public Const N_RESULTS_FLEETS As Integer = 3
-    'Public Const N_RESULTS_FLEETGROUPS As Integer = 1
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -805,6 +801,20 @@ Public Class cEcospaceDataStructures
             Return CInt(TotalTime * (1 / TimeStep))
         End Get
 
+    End Property
+
+
+
+    ''' <summary>
+    ''' Number of Ecospace time steps per year at the current <see cref="TimeStep">time step</see>
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property nTimeStepsPerYear As Integer
+        Get
+            Return CInt(1 / TimeStep)
+        End Get
     End Property
 
 #End Region
