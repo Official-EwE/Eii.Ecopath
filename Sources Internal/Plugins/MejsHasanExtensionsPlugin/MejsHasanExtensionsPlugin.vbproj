@@ -205,6 +205,10 @@
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
       <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{C1081265-6A9D-4087-8BB5-E907D86FD719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
