@@ -224,22 +224,22 @@ Namespace SpatialData
                         'Only restore the biomass if this timestep was forced
                         'If not leave the predicted biomass in place for the next timestep
                         If pair.isTimeStepForced Then
+
                             Try
                                 For ir As Integer = 1 To SpaceData.InRow
                                     For ic As Integer = 1 To SpaceData.InCol
                                         'Don't restore data that is cCore.NULL_VALUE(-9999) or cForcingMapIndexPair.NULL_CELL(-6666)in the original forcing data
                                         'At the start of each timestep all the values in cForcingMapIndexPair.data(r,c) are set to NULL_CELL 
-                                        'this acts as a mask for cells that were never forced.
+                                        'this acts as a mask for cells that were not forced.
                                         'The external data only sets modeled cells that are <> cCore.NULL_VALUE to forcing values. 
                                         'In cForcingMapIndexPair.data() cCore.NULL_VALUE = not modeled,  cForcingMapIndexPair.NULL_CELL = modeled but not forced
                                         If SpaceData.Depth(ir, ic) > 0 And _
                                             pair.data(ir, ic) <> cCore.NULL_VALUE And _
                                             pair.data(ir, ic) <> cForcingMapIndexPair.NULL_CELL Then
 
-                                            'The check for cForcingMapIndexPair.NULL_CELL allows 
                                             SpaceData.Bcell(ir, ic, pair.iLayerIndex) = pair.data(ir, ic)
                                         End If
-                                        'For debugging missing data from external data
+                                        'For debugging missing data from external forcing
                                         'If pair.data(ir, ic) = cForcingMapIndexPair.NULL_CELL Then n += 1
                                     Next ic
                                 Next ir
@@ -258,13 +258,29 @@ Namespace SpatialData
                 Next pair
 
             Catch ex As Exception
-
+                cLog.Write(ex, "Failed to restore forced data.")
             End Try
 
         End Function
 
+        Protected Overridable Sub saveForcedCell(iLayerIndex As Integer, ByVal iRow As Integer, ByVal iCol As Integer, ByVal sValueAtT As Double)
+
+            Debug.Assert(Me.m_ForcingMaps(iLayerIndex) IsNot Nothing, Me.ToString + ".saveForcedCell() Layer index not set to valid layer!")
+            Try
+                'Store the forced biomass
+                'So it can be restored later in the timestep
+                Me.m_ForcingMaps(iLayerIndex).data(iRow, iCol) = CSng(sValueAtT)
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
 
         Protected Sub setIsForced(iLayerIndex As Integer)
+
+            Debug.Assert(Me.m_ForcingMaps(iLayerIndex) IsNot Nothing, Me.ToString + ".setIsForced() Layer index not set to valid layer!")
+
             Try
                 Dim pair As cForcingMapIndexPair = Me.m_ForcingMaps(iLayerIndex)
                 pair.isTimeStepForced = True

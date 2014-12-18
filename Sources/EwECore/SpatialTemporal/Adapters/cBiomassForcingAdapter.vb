@@ -71,17 +71,13 @@ Namespace SpatialData
 
             If (conn.ScaleType = eScaleType.Relative) Then
                 If sValueAtT <> cCore.NULL_VALUE Then
+                    'Cells outside the modeled area can/will be -9999
+                    'don't scale these 
                     sValueAtT *= conn.Scale
                 End If
             End If
 
-            Try
-                'Store the forced biomass
-                'So it can be restored later in the timestep
-                Me.m_ForcingMaps(layer.Index).data(iRow, iCol) = CSng(sValueAtT)
-            Catch ex As Exception
-
-            End Try
+            Me.saveForcedCell(layer.Index, iRow, iCol, sValueAtT)
 
             Return MyBase.SetCell(layer, conn, iRow, iCol, sValueAtT)
 
