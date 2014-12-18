@@ -69,37 +69,6 @@ Namespace SpatialData
 
         End Sub
 
-        'Private Sub InitForcingMaps()
-
-        '    Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        '    Dim iNumRow As Integer = bm.InRow
-        '    Dim iNumCol As Integer = bm.InCol
-        '    Try
-
-        '        ' For all layers
-        '        For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
-        '            ' Is driven by external data?
-        '            If (Me.IsConnected(layer.Index) And layer.IsExternalData And Me.IsEnabled(layer.Index)) Then
-        '                Me.m_spaceData.ForcingMaps(layer.Index) = New cForcingMapIndexPair(layer.Index, Me.m_spaceData)
-        '            End If
-
-        '        Next layer
-
-        '    Catch ex As Exception
-
-        '    End Try
-
-        'End Sub
-
-        ' ''' -------------------------------------------------------------------
-        ' ''' <inheritdocs cref="cSpatialScalarDataAdapter.Initialize"/>.
-        ' ''' -------------------------------------------------------------------
-        'Friend Overrides Sub Initialize()
-        '    MyBase.Initialize()
-        '    Me.m_spaceData = Me.m_core.m_EcoSpaceData
-        '    Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)
-
-        'End Sub
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
@@ -122,17 +91,9 @@ Namespace SpatialData
                     value = sValueAtT
                 End If
 
-                layer.Cell(iRow, iCol) = value
+                Me.saveForcedCell(layer.Index, iRow, iCol, sValueAtT)
 
-                Try
-                    'Store the forced biomass
-                    'So it can be restored later in the timestep
-                    Me.m_ForcingMaps(layer.Index).data(iRow, iCol) = CSng(value)
-                Catch ex As Exception
-                    Debug.Assert(False)
-                End Try
-
-                Return True
+                Return MyBase.SetCell(layer, conn, iRow, iCol, sValueAtT)
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString + ".SetCell() Exception: " + ex.Message)
