@@ -257,6 +257,7 @@ Namespace Ecospace
             '
             'm_nudNumThreads
             '
+            Me.m_nudNumThreads.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudNumThreads, "m_nudNumThreads")
             Me.m_nudNumThreads.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudNumThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -265,6 +266,7 @@ Namespace Ecospace
             '
             'm_nudMaxIterations
             '
+            Me.m_nudMaxIterations.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudMaxIterations, "m_nudMaxIterations")
             Me.m_nudMaxIterations.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudMaxIterations.Name = "m_nudMaxIterations"
@@ -520,16 +522,19 @@ Namespace Ecospace
             '
             'm_nudEast
             '
+            Me.m_nudEast.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudEast, "m_nudEast")
             Me.m_nudEast.Name = "m_nudEast"
             '
             'm_nudSouth
             '
+            Me.m_nudSouth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
             Me.m_nudSouth.Name = "m_nudSouth"
             '
             'm_nudRowCount
             '
+            Me.m_nudRowCount.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudRowCount, "m_nudRowCount")
             Me.m_nudRowCount.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
             Me.m_nudRowCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -538,6 +543,7 @@ Namespace Ecospace
             '
             'm_nudCellLength
             '
+            Me.m_nudCellLength.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudCellLength, "m_nudCellLength")
             Me.m_nudCellLength.Minimum = New Decimal(New Integer() {1, 0, 0, 589824})
             Me.m_nudCellLength.Name = "m_nudCellLength"
@@ -545,6 +551,7 @@ Namespace Ecospace
             '
             'm_nudColCount
             '
+            Me.m_nudColCount.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudColCount, "m_nudColCount")
             Me.m_nudColCount.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
             Me.m_nudColCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -553,6 +560,7 @@ Namespace Ecospace
             '
             'm_nudCellSize
             '
+            Me.m_nudCellSize.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudCellSize, "m_nudCellSize")
             Me.m_nudCellSize.Minimum = New Decimal(New Integer() {1, 0, 0, 589824})
             Me.m_nudCellSize.Name = "m_nudCellSize"
@@ -560,11 +568,13 @@ Namespace Ecospace
             '
             'm_nudWest
             '
+            Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudWest, "m_nudWest")
             Me.m_nudWest.Name = "m_nudWest"
             '
             'm_nudNorth
             '
+            Me.m_nudNorth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
             Me.m_nudNorth.Name = "m_nudNorth"
             '
