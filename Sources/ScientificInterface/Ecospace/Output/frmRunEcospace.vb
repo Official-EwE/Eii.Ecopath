@@ -1577,7 +1577,7 @@ Namespace Ecospace
         Private Sub SaveMapGeoRefImages(strFileName As String, imgFormat As ImageFormat)
 
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
-            Dim rc As New Rectangle(0, 0, bm.InCol * 100, bm.InRow * 100)
+            Dim rc As New Rectangle(0, 0, bm.InCol * 10, bm.InRow * 10)
             Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
             bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
 
