@@ -450,7 +450,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Define mediating groups and fleets.
+        '''  Looks up a localized string similar to Define mediating groups and fleets for &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS() As String
             Get
@@ -459,7 +459,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Define supply.
+        '''  Looks up a localized string similar to Define supply for &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property CAPTION_DEFINE_MEDIATING_LANDINGS() As String
             Get

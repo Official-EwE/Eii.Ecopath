@@ -360,7 +360,7 @@ Namespace Ecospace.Controls
                 Next
                 Me.DrawGrid(e.Graphics, New Rectangle(0, c_headerheight, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, Me.ClientRectangle.Height - c_headerheight))
                 For i As Integer = 0 To Me.m_lInfo.Count - 1
-                    Me.DrawDataset(e.Graphics, Me.m_lInfo(i), False) ' i = Me.m_iSelectedIndex)
+                    Me.DrawDataset(e.Graphics, Me.m_lInfo(i), i = Me.m_iSelectedIndex)
                 Next
                 e.Graphics.ResetTransform()
 
@@ -596,23 +596,25 @@ Namespace Ecospace.Controls
             Dim clrBar As Color = cStyleGuide.GetColor(comp)
             Dim clrText As Color = SystemColors.ControlText
             Dim clrOutline As Color
+            Dim iWidthOutline As Integer = 1
 
             ' Is off-screen?
             Dim bOutRight As Boolean = (rcBar.X > AutoScrollPosition.X + Me.ClientRectangle.Width)
             Dim bOutLeft As Boolean = ((rcBar.X + rcBar.Width) < AutoScrollPosition.X)
 
             If bSelected Then
-                clrText = SystemColors.HighlightText
-                clrBar = SystemColors.Highlight
+                clrOutline = SystemColors.Highlight
+                iWidthOutline = 2
+            Else
+                clrOutline = cColorUtils.GetVariant(clrBar, -0.5)
             End If
-            clrOutline = cColorUtils.GetVariant(clrBar, -0.5)
 
             ' Fill area bar
             Using br As New SolidBrush(clrBar)
                 g.FillRectangle(br, rcBar)
             End Using
             ' Draw outline
-            Using p As New Pen(clrOutline)
+            Using p As New Pen(clrOutline, iWidthOutline)
                 g.DrawRectangle(p, rcBar)
             End Using
 

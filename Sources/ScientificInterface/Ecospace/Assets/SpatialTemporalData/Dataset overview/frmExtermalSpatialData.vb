@@ -105,6 +105,7 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Me.m_tsbnConnections.Image = SharedResources.Database
+            Me.m_tslbFilter.Image = SharedResources.FilterHS
 
             Try
                 Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditSpatialDatasets")
@@ -113,21 +114,19 @@ Namespace Ecospace
                 Debug.Assert(False)
             End Try
 
-            Me.m_tsbnOnlyShowConnected.Image = SharedResources.FilterHS
-            Me.m_tslbAdapterFilter.Image = SharedResources.FilterHS
 
             ' Fill filter combo
-            Me.m_tscmbAdapterFilter.Items.Add(New cSpatialDataAdapterFilterItem(Nothing))
+            Me.m_tscmbLayerVariable.Items.Add(New cSpatialDataAdapterFilterItem(Nothing))
             For Each adt As cSpatialDataAdapter In Me.Core.SpatialDataConnectionManager.Adapters
-                Me.m_tscmbAdapterFilter.Items.Add(New cSpatialDataAdapterFilterItem(adt))
+                Me.m_tscmbLayerVariable.Items.Add(New cSpatialDataAdapterFilterItem(adt))
             Next
-            Me.m_tscmbAdapterFilter.SelectedIndex = 0
+            Me.m_tscmbLayerVariable.SelectedIndex = 0
 
             Me.m_tsbnShowRefMap.Checked = Me.m_map.ShowReferenceMap
             Me.m_tsbnShowGrid.Checked = Me.m_map.ShowGrid
             Me.m_toolbox.SelectedTimeStep = 0
 
-            Me.m_tsbnOnlyShowConnected.Checked = Me.m_gridApply.OnlyShowConnected
+            Me.m_tsbnOnlyShowConnectedLayers.Checked = Me.m_gridApply.OnlyShowConnected
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
 
@@ -187,10 +186,10 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnSelectType(sender As System.Object, e As System.EventArgs) _
-            Handles m_tscmbAdapterFilter.SelectedIndexChanged
+        Private Sub OnFilterByLayerVariable(sender As System.Object, e As System.EventArgs) _
+            Handles m_tscmbLayerVariable.SelectedIndexChanged
 
-            Dim t As cSpatialDataAdapterFilterItem = DirectCast(Me.m_tscmbAdapterFilter.SelectedItem, cSpatialDataAdapterFilterItem)
+            Dim t As cSpatialDataAdapterFilterItem = DirectCast(Me.m_tscmbLayerVariable.SelectedItem, cSpatialDataAdapterFilterItem)
             Dim vn As eVarNameFlags = eVarNameFlags.NotSet
 
             If (t IsNot Nothing) Then
@@ -230,9 +229,9 @@ Namespace Ecospace
             Me.m_map.ShowGrid = Me.m_tsbnShowGrid.Checked
         End Sub
 
-        Private Sub OnToggleOnlyShowConnected(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnOnlyShowConnected.Click
-            Me.m_gridApply.OnlyShowConnected = Me.m_tsbnOnlyShowConnected.Checked
+        Private Sub OnToggleOnlyShowConnectedLayers(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnOnlyShowConnectedLayers.Click
+            Me.m_gridApply.OnlyShowConnected = Me.m_tsbnOnlyShowConnectedLayers.Checked
         End Sub
 
 #End Region ' Control events

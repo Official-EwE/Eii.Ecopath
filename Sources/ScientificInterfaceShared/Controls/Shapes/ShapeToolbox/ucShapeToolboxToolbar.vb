@@ -85,8 +85,8 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.m_tsbSetTo0)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToEcopathBaseline, Me.m_tsbSetToBaseline)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToValue, Me.m_tsbSetToValue)
+            Me.UpdateCommand(New cShapeGUIHandler.eShapeCommandTypes() {cShapeGUIHandler.eShapeCommandTypes.FilterList, cShapeGUIHandler.eShapeCommandTypes.FilterName}, Me.m_tslFilter)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.FilterList, Me.m_tscmbFilter)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.FilterName, Me.m_tslFilter)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.FilterName, Me.m_tstbxFilterName)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.FilterName, Me.m_tsbnFilterCase)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowExtraData, Me.m_tsbnShowExtraData)
@@ -117,6 +117,18 @@ Namespace Controls
             End If
         End Sub
 
+        Private Sub UpdateCommand(ByVal cmds As cShapeGUIHandler.eShapeCommandTypes(), ByVal tsi As ToolStripItem)
+            If (Me.m_handler Is Nothing) Then Return
+            Dim bSupport As Boolean = False
+            For Each cmd As cShapeGUIHandler.eShapeCommandTypes In cmds
+                If Me.m_handler.SupportCommand(cmd) Then
+                    tsi.Enabled = (Me.m_handler.EnableCommand(cmd))
+                    bSupport = True
+                End If
+            Next
+            tsi.Visible = bSupport
+
+        End Sub
 #End Region ' Helper methods
 
 #Region " Event handlers "

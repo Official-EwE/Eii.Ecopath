@@ -67,10 +67,10 @@ Namespace Ecospace
             Me.m_tsbnShowRefMap = New System.Windows.Forms.ToolStripButton()
             Me.m_map = New ScientificInterface.Ecospace.ucSpatialTimeSeriesMap()
             Me.m_tsDatasets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnOnlyShowConnected = New System.Windows.Forms.ToolStripButton()
-            Me.m_tslbAdapterFilter = New System.Windows.Forms.ToolStripLabel()
-            Me.m_tscmbAdapterFilter = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tsbnConnections = New System.Windows.Forms.ToolStripButton()
+            Me.m_tslbFilter = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tscmbLayerVariable = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_tsbnOnlyShowConnectedLayers = New System.Windows.Forms.ToolStripButton()
             Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
             sep1 = New System.Windows.Forms.ToolStripSeparator()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -142,7 +142,7 @@ Namespace Ecospace
             Me.m_gridApply.DataName = "grid content"
             resources.ApplyResources(Me.m_gridApply, "m_gridApply")
             Me.m_gridApply.Filter = EwEUtils.Core.eVarNameFlags.NotSet
-            Me.m_gridApply.FixedColumnWidths = False
+            Me.m_gridApply.FixedColumnWidths = True
             Me.m_gridApply.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridApply.GridToolTipActive = True
             Me.m_gridApply.IsLayoutSuspended = False
@@ -240,33 +240,34 @@ Namespace Ecospace
             'm_tsDatasets
             '
             Me.m_tsDatasets.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsDatasets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnConnections, sep1, Me.m_tslbAdapterFilter, Me.m_tscmbAdapterFilter, Me.m_tsbnOnlyShowConnected})
+            Me.m_tsDatasets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnConnections, sep1, Me.m_tslbFilter, Me.m_tscmbLayerVariable, Me.m_tsbnOnlyShowConnectedLayers})
             resources.ApplyResources(Me.m_tsDatasets, "m_tsDatasets")
             Me.m_tsDatasets.Name = "m_tsDatasets"
             Me.m_tsDatasets.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tsbnOnlyShowConnected
-            '
-            Me.m_tsbnOnlyShowConnected.CheckOnClick = True
-            resources.ApplyResources(Me.m_tsbnOnlyShowConnected, "m_tsbnOnlyShowConnected")
-            Me.m_tsbnOnlyShowConnected.Name = "m_tsbnOnlyShowConnected"
-            '
-            'm_tslbAdapterFilter
-            '
-            Me.m_tslbAdapterFilter.Name = "m_tslbAdapterFilter"
-            resources.ApplyResources(Me.m_tslbAdapterFilter, "m_tslbAdapterFilter")
-            '
-            'm_tscmbAdapterFilter
-            '
-            Me.m_tscmbAdapterFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_tscmbAdapterFilter.Name = "m_tscmbAdapterFilter"
-            resources.ApplyResources(Me.m_tscmbAdapterFilter, "m_tscmbAdapterFilter")
-            Me.m_tscmbAdapterFilter.Sorted = True
             '
             'm_tsbnConnections
             '
             resources.ApplyResources(Me.m_tsbnConnections, "m_tsbnConnections")
             Me.m_tsbnConnections.Name = "m_tsbnConnections"
+            '
+            'm_tslbFilter
+            '
+            Me.m_tslbFilter.Name = "m_tslbFilter"
+            resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
+            '
+            'm_tscmbLayerVariable
+            '
+            Me.m_tscmbLayerVariable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbLayerVariable.Name = "m_tscmbLayerVariable"
+            resources.ApplyResources(Me.m_tscmbLayerVariable, "m_tscmbLayerVariable")
+            Me.m_tscmbLayerVariable.Sorted = True
+            '
+            'm_tsbnOnlyShowConnectedLayers
+            '
+            Me.m_tsbnOnlyShowConnectedLayers.CheckOnClick = True
+            Me.m_tsbnOnlyShowConnectedLayers.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnOnlyShowConnectedLayers, "m_tsbnOnlyShowConnectedLayers")
+            Me.m_tsbnOnlyShowConnectedLayers.Name = "m_tsbnOnlyShowConnectedLayers"
             '
             'm_toolbox
             '
@@ -305,8 +306,8 @@ Namespace Ecospace
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_toolbox As ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox
         Private WithEvents m_tsDatasets As ScientificInterfaceShared.Controls.cEwEToolstrip
-        Private WithEvents m_tscmbAdapterFilter As System.Windows.Forms.ToolStripComboBox
-        Private WithEvents m_tslbAdapterFilter As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tscmbLayerVariable As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents m_tslbFilter As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_map As ScientificInterface.Ecospace.ucSpatialTimeSeriesMap
         Private WithEvents m_tsMap As cEwEToolstrip
         Private WithEvents m_tsbnZoomMap As System.Windows.Forms.ToolStripButton
@@ -321,7 +322,7 @@ Namespace Ecospace
         Private WithEvents m_tpConnections As System.Windows.Forms.TabPage
         Private WithEvents m_tpMap As System.Windows.Forms.TabPage
         Private WithEvents m_gridApply As gridExternalSpatialData
-        Private WithEvents m_tsbnOnlyShowConnected As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnOnlyShowConnectedLayers As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnConnections As System.Windows.Forms.ToolStripButton
     End Class
 
