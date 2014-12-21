@@ -354,6 +354,144 @@
   <data name="m_tlpOptions.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="m_tbxAutosaveTimeSteps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxAutosaveTimeSteps.Location" type="System.Drawing.Point, System.Drawing">
+    <value>70, 43</value>
+  </data>
+  <data name="m_tbxAutosaveTimeSteps.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 20</value>
+  </data>
+  <data name="m_tbxAutosaveTimeSteps.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAutosaveTimeSteps.Name" xml:space="preserve">
+    <value>m_tbxAutosaveTimeSteps</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAutosaveTimeSteps.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAutosaveTimeSteps.Parent" xml:space="preserve">
+    <value>m_plAutosave</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAutosaveTimeSteps.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblAutosaveTimeSteps.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblAutosaveTimeSteps.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 46</value>
+  </data>
+  <data name="m_lblAutosaveTimeSteps.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 13</value>
+  </data>
+  <data name="m_lblAutosaveTimeSteps.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_lblAutosaveTimeSteps.Text" xml:space="preserve">
+    <value>Time steps:</value>
+  </data>
+  <data name="&gt;&gt;m_lblAutosaveTimeSteps.Name" xml:space="preserve">
+    <value>m_lblAutosaveTimeSteps</value>
+  </data>
+  <data name="&gt;&gt;m_lblAutosaveTimeSteps.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblAutosaveTimeSteps.Parent" xml:space="preserve">
+    <value>m_plAutosave</value>
+  </data>
+  <data name="&gt;&gt;m_lblAutosaveTimeSteps.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_cbAutoSavePNG.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbAutoSavePNG.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 21</value>
+  </data>
+  <data name="m_cbAutoSavePNG.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 17</value>
+  </data>
+  <data name="m_cbAutoSavePNG.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_cbAutoSavePNG.Text" xml:space="preserve">
+    <value>&amp;Autosave map images</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoSavePNG.Name" xml:space="preserve">
+    <value>m_cbAutoSavePNG</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoSavePNG.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoSavePNG.Parent" xml:space="preserve">
+    <value>m_plAutosave</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoSavePNG.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_hdrAutosave.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_hdrAutosave.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrAutosave.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_hdrAutosave.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_hdrAutosave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 18</value>
+  </data>
+  <data name="m_hdrAutosave.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_hdrAutosave.Text" xml:space="preserve">
+    <value>Image auto-saving</value>
+  </data>
+  <data name="m_hdrAutosave.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAutosave.Name" xml:space="preserve">
+    <value>m_hdrAutosave</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAutosave.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAutosave.Parent" xml:space="preserve">
+    <value>m_plAutosave</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAutosave.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_plAutosave.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_plAutosave.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 493</value>
+  </data>
+  <data name="m_plAutosave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 68</value>
+  </data>
+  <data name="m_plAutosave.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_plAutosave.Name" xml:space="preserve">
+    <value>m_plAutosave</value>
+  </data>
+  <data name="&gt;&gt;m_plAutosave.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_plAutosave.Parent" xml:space="preserve">
+    <value>m_tlpOptions</value>
+  </data>
+  <data name="&gt;&gt;m_plAutosave.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_cbInvertColor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -517,7 +655,7 @@
     <value>m_hdrLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Parent" xml:space="preserve">
     <value>m_plLabelOptions</value>
@@ -547,7 +685,7 @@
     <value>m_tlpOptions</value>
   </data>
   <data name="&gt;&gt;m_plLabelOptions.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -772,7 +910,7 @@
     <value>m_hdrDist</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Parent" xml:space="preserve">
     <value>m_plDistribution</value>
@@ -832,7 +970,7 @@
     <value>m_tlpOptions</value>
   </data>
   <data name="&gt;&gt;m_plDistribution.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_btnDisplayGroups1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -919,7 +1057,7 @@
     <value>m_hdrDispOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Parent" xml:space="preserve">
     <value>m_plDisplayOptions</value>
@@ -979,7 +1117,7 @@
     <value>m_tlpOptions</value>
   </data>
   <data name="&gt;&gt;m_plDisplayOptions.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_plRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1012,7 +1150,7 @@
     <value>m_hdrRunning</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Parent" xml:space="preserve">
     <value>m_plRun</value>
@@ -1141,7 +1279,7 @@
     <value>m_tlpOptions</value>
   </data>
   <data name="&gt;&gt;m_plRun.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_rbCatchGraph.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1306,7 +1444,7 @@
     <value>m_hdrGraphTypes</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Parent" xml:space="preserve">
     <value>m_plGraphTypes</value>
@@ -1318,7 +1456,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plGraphTypes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 493</value>
+    <value>3, 567</value>
   </data>
   <data name="m_plGraphTypes.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 132</value>
@@ -1336,7 +1474,7 @@
     <value>m_tlpOptions</value>
   </data>
   <data name="&gt;&gt;m_plGraphTypes.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_tlpOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1345,7 +1483,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tlpOptions.RowCount" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_tlpOptions.Size" type="System.Drawing.Size, System.Drawing">
     <value>210, 738</value>
@@ -1366,7 +1504,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plLabelOptions" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plDistribution" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plDisplayOptions" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plRun" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plGraphTypes" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plAutosave" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plLabelOptions" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plDistribution" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plDisplayOptions" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plRun" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plGraphTypes" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -1417,7 +1555,7 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
     <value>m_tabMap</value>
@@ -1500,6 +1638,30 @@
   <data name="&gt;&gt;m_tabPlot.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="TabPage1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="TabPage1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>828, 708</value>
+  </data>
+  <data name="TabPage1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="TabPage1.Text" xml:space="preserve">
+    <value>TabPage1</value>
+  </data>
+  <data name="&gt;&gt;TabPage1.Name" xml:space="preserve">
+    <value>TabPage1</value>
+  </data>
+  <data name="&gt;&gt;TabPage1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TabPage1.Parent" xml:space="preserve">
+    <value>m_tcOutputs</value>
+  </data>
+  <data name="&gt;&gt;TabPage1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="m_tcOutputs.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 5</value>
   </data>
@@ -1573,6 +1735,6 @@
     <value>frmRunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11554.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

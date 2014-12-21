@@ -238,14 +238,15 @@ Namespace Controls
             Me.m_tstbxFilterName.Name = "m_tstbxFilterName"
             Me.m_tstbxFilterName.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
             Me.m_tstbxFilterName.Size = New System.Drawing.Size(100, 25)
+            Me.m_tstbxFilterName.ToolTipText = "Filter by name"
             '
             'm_tslFilter
             '
             Me.m_tslFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tslFilter.Image = Global.ScientificInterfaceShared.My.Resources.Resources.FilterHS
             Me.m_tslFilter.Name = "m_tslFilter"
-            Me.m_tslFilter.Size = New System.Drawing.Size(52, 22)
-            Me.m_tslFilter.Text = "Filter:"
+            Me.m_tslFilter.Size = New System.Drawing.Size(26, 22)
+            Me.m_tslFilter.Text = ":"
             '
             'ucShapeToolboxToolbar
             '

@@ -91,6 +91,12 @@ Namespace Ecospace
             Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
+            Me.TabPage1 = New System.Windows.Forms.TabPage()
+            Me.m_plAutosave = New System.Windows.Forms.Panel()
+            Me.m_hdrAutosave = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbAutoSavePNG = New System.Windows.Forms.CheckBox()
+            Me.m_lblAutosaveTimeSteps = New System.Windows.Forms.Label()
+            Me.m_tbxAutosaveTimeSteps = New System.Windows.Forms.TextBox()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -106,6 +112,7 @@ Namespace Ecospace
             Me.m_tcOutputs.SuspendLayout()
             Me.m_tabMap.SuspendLayout()
             Me.m_tabPlot.SuspendLayout()
+            Me.m_plAutosave.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -177,11 +184,12 @@ Namespace Ecospace
             'm_tlpOptions
             '
             resources.ApplyResources(Me.m_tlpOptions, "m_tlpOptions")
+            Me.m_tlpOptions.Controls.Add(Me.m_plAutosave, 0, 3)
             Me.m_tlpOptions.Controls.Add(Me.m_plLabelOptions, 0, 2)
             Me.m_tlpOptions.Controls.Add(Me.m_plDistribution, 0, 0)
             Me.m_tlpOptions.Controls.Add(Me.m_plDisplayOptions, 0, 1)
-            Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 5)
-            Me.m_tlpOptions.Controls.Add(Me.m_plGraphTypes, 0, 3)
+            Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 6)
+            Me.m_tlpOptions.Controls.Add(Me.m_plGraphTypes, 0, 4)
             Me.m_tlpOptions.Name = "m_tlpOptions"
             '
             'm_plLabelOptions
@@ -444,6 +452,7 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tcOutputs, "m_tcOutputs")
             Me.m_tcOutputs.Controls.Add(Me.m_tabMap)
             Me.m_tcOutputs.Controls.Add(Me.m_tabPlot)
+            Me.m_tcOutputs.Controls.Add(Me.TabPage1)
             Me.m_tcOutputs.Name = "m_tcOutputs"
             Me.m_tcOutputs.SelectedIndex = 0
             '
@@ -486,6 +495,45 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
             '
+            'TabPage1
+            '
+            resources.ApplyResources(Me.TabPage1, "TabPage1")
+            Me.TabPage1.Name = "TabPage1"
+            Me.TabPage1.UseVisualStyleBackColor = True
+            '
+            'm_plAutosave
+            '
+            Me.m_plAutosave.Controls.Add(Me.m_tbxAutosaveTimeSteps)
+            Me.m_plAutosave.Controls.Add(Me.m_lblAutosaveTimeSteps)
+            Me.m_plAutosave.Controls.Add(Me.m_cbAutoSavePNG)
+            Me.m_plAutosave.Controls.Add(Me.m_hdrAutosave)
+            resources.ApplyResources(Me.m_plAutosave, "m_plAutosave")
+            Me.m_plAutosave.Name = "m_plAutosave"
+            '
+            'm_hdrAutosave
+            '
+            Me.m_hdrAutosave.CanCollapseParent = True
+            Me.m_hdrAutosave.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrAutosave, "m_hdrAutosave")
+            Me.m_hdrAutosave.IsCollapsed = False
+            Me.m_hdrAutosave.Name = "m_hdrAutosave"
+            '
+            'm_cbAutoSavePNG
+            '
+            resources.ApplyResources(Me.m_cbAutoSavePNG, "m_cbAutoSavePNG")
+            Me.m_cbAutoSavePNG.Name = "m_cbAutoSavePNG"
+            Me.m_cbAutoSavePNG.UseVisualStyleBackColor = True
+            '
+            'm_lblAutosaveTimeSteps
+            '
+            resources.ApplyResources(Me.m_lblAutosaveTimeSteps, "m_lblAutosaveTimeSteps")
+            Me.m_lblAutosaveTimeSteps.Name = "m_lblAutosaveTimeSteps"
+            '
+            'm_tbxAutosaveTimeSteps
+            '
+            resources.ApplyResources(Me.m_tbxAutosaveTimeSteps, "m_tbxAutosaveTimeSteps")
+            Me.m_tbxAutosaveTimeSteps.Name = "m_tbxAutosaveTimeSteps"
+            '
             'frmRunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -512,6 +560,8 @@ Namespace Ecospace
             Me.m_tcOutputs.ResumeLayout(False)
             Me.m_tabMap.ResumeLayout(False)
             Me.m_tabPlot.ResumeLayout(False)
+            Me.m_plAutosave.ResumeLayout(False)
+            Me.m_plAutosave.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -555,7 +605,6 @@ Namespace Ecospace
         Friend WithEvents m_txFMax As System.Windows.Forms.TextBox
         Friend WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_legend As ScientificInterfaceShared.Controls.ucLegendBar
-        Friend WithEvents m_plGraphTypes As System.Windows.Forms.Panel
         Friend WithEvents m_rbConsumpGraph As System.Windows.Forms.RadioButton
         Friend WithEvents m_rbPredMortGraph As System.Windows.Forms.RadioButton
         Friend WithEvents m_rbFishMortGraph As System.Windows.Forms.RadioButton
@@ -563,6 +612,13 @@ Namespace Ecospace
         Friend WithEvents m_rbCatchGraph As System.Windows.Forms.RadioButton
         Private WithEvents m_hdrGraphTypes As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_cbShowDateInLabel As System.Windows.Forms.CheckBox
+        Private WithEvents m_plAutosave As System.Windows.Forms.Panel
+        Private WithEvents m_tbxAutosaveTimeSteps As System.Windows.Forms.TextBox
+        Private WithEvents m_hdrAutosave As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+        Private WithEvents m_plGraphTypes As System.Windows.Forms.Panel
+        Private WithEvents m_cbAutoSavePNG As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblAutosaveTimeSteps As System.Windows.Forms.Label
 
 
     End Class

@@ -97,7 +97,6 @@ Namespace Ecospace
 
         Private m_graphData As Dictionary(Of ePlotTypes, Single(,))
 
-
         ' -- bits to remember, ugh --
 
         Private m_BaseCatch() As Single
@@ -120,10 +119,10 @@ Namespace Ecospace
         Private m_drawers As List(Of cMapDrawerBase)
         Private m_nMapsPerThread As Integer
 
-        Private m_bmpBiomassMap As Bitmap
+        Private m_bmpBiomassMap As Bitmap = Nothing
 
         'jb added
-        Private m_spaceStats As cEcospaceStats
+        Private m_spaceStats As cEcospaceStats = Nothing
 
         ' -- plot settings --
         Private m_plottype As ePlotTypes = ePlotTypes.RelB
@@ -154,6 +153,9 @@ Namespace Ecospace
         ' -- Hoover menu --
         Private m_hoverMenu As ucHoverMenu = Nothing
 
+        ' -- Autosave images --
+        Private m_iAutosaveTS As Integer()
+
         Protected Enum eHoverCommands As Integer
             SaveImage
             SaveImageGeoRef
@@ -164,9 +166,8 @@ Namespace Ecospace
 #Region " Construction and Destruction "
 
         Public Sub New()
-
+            MyBase.New()
             Me.InitializeComponent()
-
         End Sub
 
 #End Region ' Construction and Destruction
@@ -300,12 +301,12 @@ Namespace Ecospace
 
             Me.m_bInUpdate = True
             Dim pm As cPropertyManager = Me.PropertyManager
-            Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
             ' Start listening to props
-            Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
-            Me.m_bpUseIBM = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
-            Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
+            Me.m_bpConTracing = DirectCast(pm.GetProperty(parms, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
+            Me.m_bpUseIBM = DirectCast(pm.GetProperty(parms, eVarNameFlags.UseIBM), cBooleanProperty)
+            Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(parms, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
 
             ' Initially collapse labels
             Me.m_hdrLabelOptions.IsCollapsed = True
@@ -346,6 +347,8 @@ Namespace Ecospace
 
             'Scaler for the fishing mort map legend
             Me.m_txFMax.Text = Me.m_FishingMortMax.ToString
+
+            Me.m_cbAutoSavePNG.Checked = parms.SavePNG()
 
             'Start tracking ConcTracing setting
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
@@ -805,53 +808,7 @@ Namespace Ecospace
 
 #Region " Events "
 
-        Private Sub ClearResults()
-
-            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
-
-            For i As Integer = 1 To Me.Core.nGroups - 1
-                For j As Integer = 1 To Me.Core.nEcospaceTimeSteps - 1
-                    Me.m_RelBiomassResults(i, j) = 0
-                Next j
-                Me.m_BaseBiomassResults(i) = 0
-            Next i
-
-            'clear the arrays in the graph data dictionary
-            'this will leave them dimensioned but clear of the old data
-            For Each dataarray As Single(,) In Me.m_graphData.Values
-                Array.Clear(dataarray, 0, dataarray.Length)
-            Next
-
-            ' Reset plot drawer if overlay is not needed
-            If Me.m_bOverlay = False Then
-                Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, parms.NumberOfTimeStepsPerYear)
-            Else
-                Me.m_zgh.Overlay(Me.Core.nGroups)
-            End If
-            Me.RefreshPlot()
-            Me.RefreshMap()
-        End Sub
-
-        Private Sub UpdateGraph()
-
-            Dim useLogScale As Boolean = False
-            If Me.m_graphPlotType = ePlotTypes.RelB Then
-                useLogScale = True
-            End If
-            Me.m_zgh.useLogScale = useLogScale
-
-            Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
-
-            Dim orgTime As Integer = Me.m_iTimeStepPrev
-            Me.m_iTimeStepPrev = 0
-            Me.RefreshPlot()
-            Me.UpdateBiomassPlot()
-            Me.m_iTimeStepPrev = orgTime
-
-        End Sub
-
-
-        Private Sub btnRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnRun.Click
+        Private Sub OnRun(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnRun.Click
 
             Me.ClearResults()
 
@@ -860,11 +817,32 @@ Namespace Ecospace
             'Me.IsRunning = True
             Me.m_iTimeStepCur = 0
             Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.Core.StopEcospace))
-            Me.IsRunning = Me.Core.RunEcoSpace(AddressOf onEcospaceTimeStep)
+            Me.IsRunning = Me.Core.RunEcoSpace(AddressOf OnEcospaceTimeStep)
+
+            ' Hack: make a once-per-run assessment for which time steps to save images
+
+            ' Save map image
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
+            If (parms.SavePNG) Then
+
+                ' Big hack: checking for which time steps to save data
+                Dim strTS As String = Me.m_tbxAutosaveTimeSteps.Text
+                Dim iTS As Integer = 0
+                Dim liTS As New List(Of Integer)
+
+                If Not String.IsNullOrWhiteSpace(strTS) Then
+                    For Each strBit As String In strTS.Split(","c)
+                        If (Integer.TryParse(strBit, iTS) = True) And (iTS > 0) Then
+                            liTS.Add(iTS)
+                        End If
+                    Next
+                End If
+                Me.m_iAutosaveTS = liTS.ToArray
+            End If
 
         End Sub
 
-        Private Sub m_btnStop_Click(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnStop(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_btnStop.Click
 
             Me.Core.StopEcospace()
@@ -911,18 +889,31 @@ Namespace Ecospace
             Me.m_bOverlay = m_cbOverlay.Checked
         End Sub
 
-        Private Sub m_cbDisplayGroup_GotFocus(ByVal sender As Object, ByVal e As EventArgs) _
-            Handles m_cmbDisplayItem.GotFocus
-            Me.ShowItemMode = eShowItemType.ShowSingle
-        End Sub
+        'Private Sub m_cbDisplayGroup_GotFocus(ByVal sender As Object, ByVal e As EventArgs) _
+        '    Handles m_cmbDisplayItem.GotFocus
+        '    Me.ShowItemMode = eShowItemType.ShowSingle
+        'End Sub
 
         Private Sub OnSelectGroupToShow(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_cmbDisplayItem.SelectedIndexChanged
-            Me.ItemToShow = (Me.m_cmbDisplayItem.SelectedIndex + 1)
-            ' Me.UpdateGraph()
+            Try
+                Me.ItemToShow = (Me.m_cmbDisplayItem.SelectedIndex + 1)
+                ' Me.UpdateGraph()
+            Catch ex As Exception
+
+            End Try
         End Sub
 
-        Private Sub rbDisplayOption_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnAutosaveTimeStepsChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_cbAutoSavePNG.CheckedChanged
+            Try
+                Me.Core.EcospaceModelParameters.SavePNG = Me.m_cbAutoSavePNG.Checked
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnDisplayOptionCheckChanged(ByVal sender As Object, ByVal e As EventArgs) _
                 Handles m_rbShowAll.CheckedChanged, m_rbShowNonHidden.CheckedChanged, m_rbShowSingle.CheckedChanged
 
             If Me.m_rbShowAll.Checked Then Me.ShowItemMode = eShowItemType.ShowAll
@@ -1092,7 +1083,7 @@ Namespace Ecospace
             End If
 
             Dim fmt As ImageFormat = ImageFormat.Png
-            Dim strFile As String = Me.GetMapFileName(fmt)
+            Dim strFile As String = Me.AskMapFileName(fmt)
 
             If String.IsNullOrWhiteSpace(strFile) Then Return
 
@@ -1127,11 +1118,13 @@ Namespace Ecospace
 
 #Region " Ecospace Events/Delegates "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' This GUI event handler will be called for every time step of the Ecospace model run. 
+        ''' Ecospace end-of-timestep callback. 
         ''' </summary>
         ''' <param name="TimeStepData">Data from the current time step</param>
-        Private Sub onEcospaceTimeStep(ByRef TimeStepData As cEcospaceTimestep)
+        ''' -------------------------------------------------------------------
+        Private Sub OnEcospaceTimeStep(ByRef TimeStepData As cEcospaceTimestep)
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
@@ -1195,8 +1188,22 @@ Namespace Ecospace
             Me.m_pbMap.Invalidate()
             Me.UpdateControls()
 
-            'Hack dump out the maps
-            'HACKAutoDumpCurMap(TimeStepData)
+            ' Save map image
+            If (parms.SavePNG) Then
+
+                Dim bSave As Boolean = True
+                If (Me.m_iAutosaveTS IsNot Nothing) Then
+                    If (Me.m_iAutosaveTS.Count > 0) Then
+                        bSave = Me.m_iAutosaveTS.Contains(TimeStepData.iTimeStep)
+                    End If
+                End If
+
+                If (bSave) Then
+                    Dim strFile As String = Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), _
+                                                         Me.m_plottype.ToString & String.Format("-{0:00000}", TimeStepData.iTimeStep))
+                    Me.SaveMapGeoRefImages(strFile, ImageFormat.Png)
+                End If
+            End If
 
         End Sub
 
@@ -1269,19 +1276,48 @@ Namespace Ecospace
 
 #Region " Internal implementation "
 
-        ''' <summary>
-        ''' Hack to automatically dump the currently selected maps to file every second month. 
-        ''' </summary>
-        ''' <param name="TimeStepData"></param>
-        ''' <remarks></remarks>
-        Private Sub HACKAutoDumpCurMap(TimeStepData As cEcospaceTimestep)
+        Private Sub ClearResults()
 
-            If TimeStepData.iTimeStep Mod 2 <> 0 Then
-                Dim year As Integer = CInt(1 + Math.Truncate(TimeStepData.TimeStepinYears))
-                Dim month As Integer = CInt((TimeStepData.TimeStepinYears - (year - 1)) * 12)
-                Dim fn As String = Path.Combine(Me.Core.OutputPath, "EcoSpaceMap_Year=" + year.ToString + "_Month=" + month.ToString + "_TS=" + TimeStepData.iTimeStep.ToString + ".png")
-                Me.SaveMapImage(fn, ImageFormat.Jpeg)
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+
+            For i As Integer = 1 To Me.Core.nGroups - 1
+                For j As Integer = 1 To Me.Core.nEcospaceTimeSteps - 1
+                    Me.m_RelBiomassResults(i, j) = 0
+                Next j
+                Me.m_BaseBiomassResults(i) = 0
+            Next i
+
+            'clear the arrays in the graph data dictionary
+            'this will leave them dimensioned but clear of the old data
+            For Each dataarray As Single(,) In Me.m_graphData.Values
+                Array.Clear(dataarray, 0, dataarray.Length)
+            Next
+
+            ' Reset plot drawer if overlay is not needed
+            If Me.m_bOverlay = False Then
+                Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, parms.NumberOfTimeStepsPerYear)
+            Else
+                Me.m_zgh.Overlay(Me.Core.nGroups)
             End If
+            Me.RefreshPlot()
+            Me.RefreshMap()
+        End Sub
+
+        Private Sub UpdateGraph()
+
+            Dim useLogScale As Boolean = False
+            If Me.m_graphPlotType = ePlotTypes.RelB Then
+                useLogScale = True
+            End If
+            Me.m_zgh.useLogScale = useLogScale
+
+            Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+
+            Dim orgTime As Integer = Me.m_iTimeStepPrev
+            Me.m_iTimeStepPrev = 0
+            Me.RefreshPlot()
+            Me.UpdateBiomassPlot()
+            Me.m_iTimeStepPrev = orgTime
 
         End Sub
 
@@ -1425,7 +1461,14 @@ Namespace Ecospace
 
 #Region " Image saving "
 
-        Private Function GetMapFileName(ByRef imgFormat As ImageFormat) As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Ask the user for a location to save a map image.
+        ''' </summary>
+        ''' <param name="imgFormat"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function AskMapFileName(ByRef imgFormat As ImageFormat) As String
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
@@ -1469,7 +1512,6 @@ Namespace Ecospace
                 bmp.Save(strFileName, imgFormat)
                 bmp.Dispose()
 
-                'ToDo: globalize this
                 Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_plottype), SharedResources.SCALE_LOG)
 
                 msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName), _
@@ -1489,6 +1531,7 @@ Namespace Ecospace
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Save a legend image.
         ''' </summary>
@@ -1496,7 +1539,7 @@ Namespace Ecospace
         ''' <param name="imgFormat"></param>
         ''' <param name="strValueName">Name of the plotted variable.</param>
         ''' <param name="strDataName"></param>
-        ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
         Private Sub SaveMapLegendImage(strFileName As String, imgFormat As ImageFormat, _
                                        strValueName As String, strDataName As String)
 
@@ -1588,17 +1631,23 @@ Namespace Ecospace
             End Select
 
             Dim mapArgs As New cMapDrawerArgs(maptype, scaler, Me.m_FishingMortMax)
-            Dim strExt As String = IO.Path.GetExtension(strFileName)
-            Dim strFile As String = Path.Combine(Path.GetDirectoryName(strFileName), Path.GetFileNameWithoutExtension(strFileName))
+            Dim strExt As String = "." & imgFormat.ToString.ToLower
+            Dim strDir As String = Path.GetDirectoryName(strFileName)
+            Dim strFile As String = Path.Combine(strDir, Path.GetFileNameWithoutExtension(strFileName))
             Dim msg As cMessage = Nothing
             Dim g As Graphics = Nothing
+
+            If Not cFileUtils.IsDirectoryAvailable(strDir, True) Then
+                Debug.Assert(False)
+                Return
+            End If
 
             Try
 
                 For iGroup As Integer = 1 To Me.Core.nGroups
 
                     Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
-                    Dim strFileSub As String = strFile & "_" & cFileUtils.ToValidFileName(grp.Name, False) & strExt
+                    Dim strFileSub As String = Path.Combine(strDir, cFileUtils.ToValidFileName(grp.Name, False) & "_" & Path.GetFileNameWithoutExtension(strFileName) & strExt)
                     Dim bShowGroup As Boolean = False
 
                     Select Case Me.ShowItemMode
@@ -1645,7 +1694,7 @@ Namespace Ecospace
 
                 msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName), _
                        eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                msg.Hyperlink = IO.Path.GetDirectoryName(strFileName)
+                msg.Hyperlink = strDir
             Catch ex As Exception
                 msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, My.Resources.HEADER_MAP_IMAGES, strFileName, ex.Message), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)

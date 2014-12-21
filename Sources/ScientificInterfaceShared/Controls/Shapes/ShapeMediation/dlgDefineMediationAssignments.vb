@@ -23,6 +23,8 @@ Option Strict On
 
 Imports EwECore
 Imports ZedGraph
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 #End Region
 
@@ -375,12 +377,13 @@ Namespace Controls
             Me.m_btnAdd.Enabled = (Me.m_tvAvailable.SelectedNode IsNot Nothing)
             Me.m_btnRemove.Enabled = (Me.m_grid.SelectedItems.Length > 0)
 
+            Dim ftm As New cShapeDataFormatter()
             If Me.m_bIsLandingsInteractions Then
-                Me.Text = My.Resources.CAPTION_DEFINE_MEDIATING_LANDINGS
+                Me.Text = cStringUtils.Localize(My.Resources.CAPTION_DEFINE_MEDIATING_LANDINGS, ftm.GetDescriptor(Me.m_medfn))
                 Me.m_lblAvailable.Text = My.Resources.HEADER_AVAILABLE_LANDINGS
                 Me.m_lblAssigned.Text = My.Resources.HEADER_ASSIGNED_LANDINGS
             Else
-                Me.Text = My.Resources.CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS
+                Me.Text = cStringUtils.Localize(My.Resources.CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS, ftm.GetDescriptor(Me.m_medfn))
                 Me.m_lblAvailable.Text = My.Resources.HEADER_AVAILABLE_GROUPS_FLEETS
                 Me.m_lblAssigned.Text = My.Resources.HEADER_ASSIGNED_GROUPS_FLEETS
             End If

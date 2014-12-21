@@ -73,9 +73,9 @@ Namespace Core
         ''' <returns>Full path of the file</returns>
         ''' <remarks></remarks>
         Function GetGroupFileName(ByVal varname As eVarNameFlags, _
-                                                   ByVal iGrp As Integer, _
-                                                   ByVal strExt As String, _
-                                                   Optional ByVal iModelTimeStep As Integer = -9999) As String
+                                  ByVal iGrp As Integer, _
+                                  ByVal strExt As String, _
+                                  Optional ByVal iModelTimeStep As Integer = -9999) As String
 
         ''' <summary>
         ''' Return the full path this writer will use for this Varname, Group, File extention and timestep.
@@ -87,10 +87,9 @@ Namespace Core
         ''' <returns>Full path of the file</returns>
         ''' <remarks></remarks>
         Function GetFleetFileName(ByVal varname As eVarNameFlags, _
-                                                   ByVal iFlt As Integer, _
-                                                   ByVal strExt As String, _
-                                                   Optional ByVal iModelTimeStep As Integer = -9999) As String
-
+                                  ByVal iFlt As Integer, _
+                                  ByVal strExt As String, _
+                                  Optional ByVal iModelTimeStep As Integer = -9999) As String
 
     End Interface
 

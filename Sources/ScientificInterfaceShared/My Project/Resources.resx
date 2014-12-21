@@ -1933,10 +1933,12 @@
     <value>Available landings</value>
   </data>
   <data name="CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS" xml:space="preserve">
-    <value>Define mediating groups and fleets</value>
+    <value>Define mediating groups and fleets for '{0}'</value>
+    <comment>{0}=function name</comment>
   </data>
   <data name="CAPTION_DEFINE_MEDIATING_LANDINGS" xml:space="preserve">
-    <value>Define supply</value>
+    <value>Define supply for '{0}'</value>
+    <comment>{0}=function name</comment>
   </data>
   <data name="PROMPT_DEFINE_MEDIATING_GROUPSANDFLEETS" xml:space="preserve">
     <value>Define mediating groups and fleets...</value>

@@ -305,6 +305,23 @@ Public Class cEcospaceModelParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set whether Ecospace should automatically save PNG files for every
+    ''' time step.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property SavePNG As Boolean
+        Get
+            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = True) And _
+                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".png", True) = 0)
+        End Get
+        Set(value As Boolean)
+            Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = value
+            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".png"
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get/set the number of time steps per year for this model. Internally,
     ''' this value will be recalculated to the ratio of the time step size (years).
     ''' </summary>
