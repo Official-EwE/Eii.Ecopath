@@ -308,8 +308,12 @@ Namespace Ecospace
             Me.m_bpUseIBM = DirectCast(pm.GetProperty(parms, eVarNameFlags.UseIBM), cBooleanProperty)
             Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(parms, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
 
-            ' Initially collapse labels
+            ' Initially collapse some headers
             Me.m_hdrLabelOptions.IsCollapsed = True
+            Me.m_hdrGraphTypes.IsCollapsed = True
+            Me.m_hdrAutosave.IsCollapsed = Not parms.SavePNG
+
+            Me.m_cbAutoSavePNG.Checked = parms.SavePNG()
 
             Me.InitCoreParams()
             Me.InitUIParams()
@@ -347,8 +351,6 @@ Namespace Ecospace
 
             'Scaler for the fishing mort map legend
             Me.m_txFMax.Text = Me.m_FishingMortMax.ToString
-
-            Me.m_cbAutoSavePNG.Checked = parms.SavePNG()
 
             'Start tracking ConcTracing setting
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
