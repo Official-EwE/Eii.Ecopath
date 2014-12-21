@@ -96,7 +96,6 @@ Namespace Ecospace
             Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
-            Me.TabPage1 = New System.Windows.Forms.TabPage()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -485,7 +484,6 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tcOutputs, "m_tcOutputs")
             Me.m_tcOutputs.Controls.Add(Me.m_tabMap)
             Me.m_tcOutputs.Controls.Add(Me.m_tabPlot)
-            Me.m_tcOutputs.Controls.Add(Me.TabPage1)
             Me.m_tcOutputs.Name = "m_tcOutputs"
             Me.m_tcOutputs.SelectedIndex = 0
             '
@@ -527,12 +525,6 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinX = 0.0R
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
-            '
-            'TabPage1
-            '
-            resources.ApplyResources(Me.TabPage1, "TabPage1")
-            Me.TabPage1.Name = "TabPage1"
-            Me.TabPage1.UseVisualStyleBackColor = True
             '
             'frmRunEcospace
             '
@@ -615,7 +607,6 @@ Namespace Ecospace
         Private WithEvents m_plAutosave As System.Windows.Forms.Panel
         Private WithEvents m_tbxAutosaveTimeSteps As System.Windows.Forms.TextBox
         Private WithEvents m_hdrAutosave As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
         Private WithEvents m_plGraphTypes As System.Windows.Forms.Panel
         Private WithEvents m_cbAutoSavePNG As System.Windows.Forms.CheckBox
         Private WithEvents m_lblAutosaveTimeSteps As System.Windows.Forms.Label
