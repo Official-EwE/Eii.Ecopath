@@ -238,13 +238,13 @@
     <value>3, 23</value>
   </data>
   <data name="m_rbShowAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 17</value>
+    <value>130, 17</value>
   </data>
   <data name="m_rbShowAll.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_rbShowAll.Text" xml:space="preserve">
-    <value>Show &amp;all</value>
+    <value>Show &amp;all groups/fleets</value>
   </data>
   <data name="&gt;&gt;m_rbShowAll.Name" xml:space="preserve">
     <value>m_rbShowAll</value>
@@ -451,7 +451,7 @@
     <value>1</value>
   </data>
   <data name="m_hdrAutosave.Text" xml:space="preserve">
-    <value>Image auto-saving</value>
+    <value>Auto-save images</value>
   </data>
   <data name="m_hdrAutosave.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>

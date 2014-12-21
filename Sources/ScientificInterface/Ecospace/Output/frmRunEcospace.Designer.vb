@@ -53,6 +53,11 @@ Namespace Ecospace
             Me.m_pbMap = New System.Windows.Forms.PictureBox()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plAutosave = New System.Windows.Forms.Panel()
+            Me.m_tbxAutosaveTimeSteps = New System.Windows.Forms.TextBox()
+            Me.m_lblAutosaveTimeSteps = New System.Windows.Forms.Label()
+            Me.m_cbAutoSavePNG = New System.Windows.Forms.CheckBox()
+            Me.m_hdrAutosave = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plLabelOptions = New System.Windows.Forms.Panel()
             Me.m_cbInvertColor = New System.Windows.Forms.CheckBox()
             Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox()
@@ -92,17 +97,13 @@ Namespace Ecospace
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
             Me.TabPage1 = New System.Windows.Forms.TabPage()
-            Me.m_plAutosave = New System.Windows.Forms.Panel()
-            Me.m_hdrAutosave = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_cbAutoSavePNG = New System.Windows.Forms.CheckBox()
-            Me.m_lblAutosaveTimeSteps = New System.Windows.Forms.Label()
-            Me.m_tbxAutosaveTimeSteps = New System.Windows.Forms.TextBox()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
             Me.m_tlpOptions.SuspendLayout()
+            Me.m_plAutosave.SuspendLayout()
             Me.m_plLabelOptions.SuspendLayout()
             Me.m_plDistribution.SuspendLayout()
             Me.m_plDisplayOptions.SuspendLayout()
@@ -112,7 +113,6 @@ Namespace Ecospace
             Me.m_tcOutputs.SuspendLayout()
             Me.m_tabMap.SuspendLayout()
             Me.m_tabPlot.SuspendLayout()
-            Me.m_plAutosave.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -191,6 +191,39 @@ Namespace Ecospace
             Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 6)
             Me.m_tlpOptions.Controls.Add(Me.m_plGraphTypes, 0, 4)
             Me.m_tlpOptions.Name = "m_tlpOptions"
+            '
+            'm_plAutosave
+            '
+            Me.m_plAutosave.Controls.Add(Me.m_tbxAutosaveTimeSteps)
+            Me.m_plAutosave.Controls.Add(Me.m_lblAutosaveTimeSteps)
+            Me.m_plAutosave.Controls.Add(Me.m_cbAutoSavePNG)
+            Me.m_plAutosave.Controls.Add(Me.m_hdrAutosave)
+            resources.ApplyResources(Me.m_plAutosave, "m_plAutosave")
+            Me.m_plAutosave.Name = "m_plAutosave"
+            '
+            'm_tbxAutosaveTimeSteps
+            '
+            resources.ApplyResources(Me.m_tbxAutosaveTimeSteps, "m_tbxAutosaveTimeSteps")
+            Me.m_tbxAutosaveTimeSteps.Name = "m_tbxAutosaveTimeSteps"
+            '
+            'm_lblAutosaveTimeSteps
+            '
+            resources.ApplyResources(Me.m_lblAutosaveTimeSteps, "m_lblAutosaveTimeSteps")
+            Me.m_lblAutosaveTimeSteps.Name = "m_lblAutosaveTimeSteps"
+            '
+            'm_cbAutoSavePNG
+            '
+            resources.ApplyResources(Me.m_cbAutoSavePNG, "m_cbAutoSavePNG")
+            Me.m_cbAutoSavePNG.Name = "m_cbAutoSavePNG"
+            Me.m_cbAutoSavePNG.UseVisualStyleBackColor = True
+            '
+            'm_hdrAutosave
+            '
+            Me.m_hdrAutosave.CanCollapseParent = True
+            Me.m_hdrAutosave.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrAutosave, "m_hdrAutosave")
+            Me.m_hdrAutosave.IsCollapsed = False
+            Me.m_hdrAutosave.Name = "m_hdrAutosave"
             '
             'm_plLabelOptions
             '
@@ -501,39 +534,6 @@ Namespace Ecospace
             Me.TabPage1.Name = "TabPage1"
             Me.TabPage1.UseVisualStyleBackColor = True
             '
-            'm_plAutosave
-            '
-            Me.m_plAutosave.Controls.Add(Me.m_tbxAutosaveTimeSteps)
-            Me.m_plAutosave.Controls.Add(Me.m_lblAutosaveTimeSteps)
-            Me.m_plAutosave.Controls.Add(Me.m_cbAutoSavePNG)
-            Me.m_plAutosave.Controls.Add(Me.m_hdrAutosave)
-            resources.ApplyResources(Me.m_plAutosave, "m_plAutosave")
-            Me.m_plAutosave.Name = "m_plAutosave"
-            '
-            'm_hdrAutosave
-            '
-            Me.m_hdrAutosave.CanCollapseParent = True
-            Me.m_hdrAutosave.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrAutosave, "m_hdrAutosave")
-            Me.m_hdrAutosave.IsCollapsed = False
-            Me.m_hdrAutosave.Name = "m_hdrAutosave"
-            '
-            'm_cbAutoSavePNG
-            '
-            resources.ApplyResources(Me.m_cbAutoSavePNG, "m_cbAutoSavePNG")
-            Me.m_cbAutoSavePNG.Name = "m_cbAutoSavePNG"
-            Me.m_cbAutoSavePNG.UseVisualStyleBackColor = True
-            '
-            'm_lblAutosaveTimeSteps
-            '
-            resources.ApplyResources(Me.m_lblAutosaveTimeSteps, "m_lblAutosaveTimeSteps")
-            Me.m_lblAutosaveTimeSteps.Name = "m_lblAutosaveTimeSteps"
-            '
-            'm_tbxAutosaveTimeSteps
-            '
-            resources.ApplyResources(Me.m_tbxAutosaveTimeSteps, "m_tbxAutosaveTimeSteps")
-            Me.m_tbxAutosaveTimeSteps.Name = "m_tbxAutosaveTimeSteps"
-            '
             'frmRunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -547,6 +547,8 @@ Namespace Ecospace
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.m_tlpOptions.ResumeLayout(False)
+            Me.m_plAutosave.ResumeLayout(False)
+            Me.m_plAutosave.PerformLayout()
             Me.m_plLabelOptions.ResumeLayout(False)
             Me.m_plLabelOptions.PerformLayout()
             Me.m_plDistribution.ResumeLayout(False)
@@ -560,8 +562,6 @@ Namespace Ecospace
             Me.m_tcOutputs.ResumeLayout(False)
             Me.m_tabMap.ResumeLayout(False)
             Me.m_tabPlot.ResumeLayout(False)
-            Me.m_plAutosave.ResumeLayout(False)
-            Me.m_plAutosave.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
