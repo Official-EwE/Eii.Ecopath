@@ -307,6 +307,8 @@ Namespace Ecospace.Controls
             If (pos IsNot Nothing) Then
                 Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
                 Dim iStep As Integer = TimestepFromPoint(ptClick)
+                Dim dtStep As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStep)
+                Dim strDate As String = dtStep.ToShortDateString
 
                 Select Case comp.CompatibilityAt(iStep)
 
@@ -315,19 +317,19 @@ Namespace Ecospace.Controls
                         strText = pos.m_ds.DisplayName
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.m_ds.DisplayName, iStep)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.m_ds.DisplayName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_NOSPATIAL, pos.m_ds.DisplayName, iStep)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_NOSPATIAL, pos.m_ds.DisplayName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_PARTIALSPATIAL, pos.m_ds.DisplayName, iStep)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_PARTIALSPATIAL, pos.m_ds.DisplayName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_FULLSPATIAL, pos.m_ds.DisplayName, iStep)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_FULLSPATIAL, pos.m_ds.DisplayName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_UNKNOWN, pos.m_ds.DisplayName, iStep)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_UNKNOWN, pos.m_ds.DisplayName, iStep, strDate)
 
                 End Select
             End If

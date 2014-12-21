@@ -3411,7 +3411,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Spatial data for {0} at time {1} entirely overlaps with your model area.
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1}, {2} entirely overlaps with your model area.
         '''</summary>
         Public ReadOnly Property SPATIALTEMP_STATUS_T_FULLSPATIAL() As String
             Get
@@ -3420,7 +3420,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Spatial data for {0} at time {1} cannot be located.
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1}, {2} cannot be located.
         '''</summary>
         Public ReadOnly Property SPATIALTEMP_STATUS_T_MISSING() As String
             Get
@@ -3429,7 +3429,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Spatial data for {0} at time {1} does not overlap with your model area.
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1}, {2} does not overlap with your model area.
         '''</summary>
         Public ReadOnly Property SPATIALTEMP_STATUS_T_NOSPATIAL() As String
             Get
@@ -3438,7 +3438,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Spatial data for {0} at time {1} partially overlaps with your model area.
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1}, {2} partially overlaps with your model area.
         '''</summary>
         Public ReadOnly Property SPATIALTEMP_STATUS_T_PARTIALSPATIAL() As String
             Get
@@ -3447,7 +3447,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Spatial data for {0} at time {1} has not been verified yet.
+        '''  Looks up a localized string similar to Spatial data for {0} at time {1}, {2} has not been verified yet.
         '''</summary>
         Public ReadOnly Property SPATIALTEMP_STATUS_T_UNKNOWN() As String
             Get
