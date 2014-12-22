@@ -197,7 +197,7 @@ Public Class cMSEUtils
             Case eMSEPaths.Results : Return "Results"
             Case eMSEPaths.ResultsTrajectories : Return "Results\Trajectories"
             Case eMSEPaths.ResultsTraj2 : Return "Results\Trajectories2"
-            Case eMSEPaths.Strategies : Return "Strategies"
+            Case eMSEPaths.Strategies : Return "HCRs"
             Case eMSEPaths.Regulations : Return "Regulations"
             Case eMSEPaths.BiomassLimits : Return "BiomassLimits"
             Case eMSEPaths.StockAssessment : Return "StockAssessment"

@@ -1340,6 +1340,7 @@ Public Class cMSE
         Dim swGroup As StreamWriter = Nothing
         Dim swFleet As StreamWriter = Nothing
         Dim swFleetEffort As StreamWriter = Nothing
+        Dim swBadDynamics As StreamWriter = Nothing
 
         Try
 
@@ -1370,6 +1371,8 @@ Public Class cMSE
 
             'Prepare the effort trajectory csv with the column headings
             swFleetEffort = Me.initTrajectoryEffortFiles(msgReport)
+
+            swBadDynamics = Me.initBadDynamicsFile(msgReport)
 
             ReDim TargConsQuota(m_core.nGroups - 1, 1)
             ReDim MinEffortThisYear(m_core.nFleets - 1)
@@ -1458,7 +1461,7 @@ Public Class cMSE
 
                             If Me.RunEcosim() Then
                                 'Save the Ecosim results
-                                GoodDynamics = Me.SaveResults2RAM(iModel, nResultIters, nFleetIters, ResultsTable, FleetCatchTable, FleetEffortTable, TrajectoryTable, BiomassLimits)
+                                GoodDynamics = Me.SaveResults2RAM(iModel, nResultIters, nFleetIters, ResultsTable, FleetCatchTable, FleetEffortTable, TrajectoryTable, BiomassLimits, swBadDynamics)
                             Else
                                 GoodDynamics = False
                                 nFailedModels += 1
@@ -1517,6 +1520,7 @@ Public Class cMSE
         cMSEUtils.ReleaseWriter(swGroup)
         cMSEUtils.ReleaseWriter(swFleet)
         cMSEUtils.ReleaseWriter(swFleetEffort)
+        cMSEUtils.ReleaseWriter(swBadDynamics)
 
         Me.StockAssessment.RunEnded()
 
@@ -1746,7 +1750,7 @@ Public Class cMSE
     Private Function SaveResults2RAM(ByVal iModel As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
                                         ByVal NumberIterationsAlreadyInFleets As Integer, ByRef ResultsTable As DataTable,
                                         ByRef FleetCatchTable As DataTable, ByRef FleetEffortTable As DataTable,
-                                        ByRef TrajectoryTable As DataTable, ByRef BiomassLimits As cBiomassLimits) As Boolean
+                                        ByRef TrajectoryTable As DataTable, ByRef BiomassLimits As cBiomassLimits, ByRef swBadDynamics As StreamWriter) As Boolean
 
         Dim GoodDynamics As Boolean = True
 
@@ -1755,11 +1759,11 @@ Public Class cMSE
         nSuccessfullyProjectedModels = 0
 
         'This outputs information that can be used to resolve issues with the biomass limits are exceeded
-        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "BadDynamicsTrajectories.csv"), True)
+        'Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "BadDynamicsTrajectories.csv"), True)
         Dim MaxBiomass As Single
         Dim MinBiomass As Single
 
-        If Me.m_core.SaveWithFileHeader Then writer.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+
 
         For Each iGrp In BiomassLimits.lstBiomassLimits
             MaxBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, OriginalNTimesteps + 1)
@@ -1772,7 +1776,8 @@ Public Class cMSE
                     MinBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, iTimeStep)
                 End If
             Next
-            writer.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", _
+            swBadDynamics.WriteLine()
+            swBadDynamics.Write("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", _
                         cStringUtils.FormatNumber(iModel), _
                         cStringUtils.ToCSVField(m_currentStrategy.Name), _
                         cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp.mGroup.Index).Name), _
@@ -1784,7 +1789,6 @@ Public Class cMSE
                         cStringUtils.FormatNumber(iGrp.mLowerLimit), _
                         cStringUtils.FormatNumber(MinBiomass <= iGrp.mLowerLimit))
         Next
-        cMSEUtils.ReleaseWriter(writer)
 
         'Check whether the biomass for any species goes beneath or hits zero
         For iGrp As Integer = 1 To m_core.nLivingGroups
@@ -1972,6 +1976,17 @@ Public Class cMSE
             strm.Write("," & cStringUtils.FormatNumber(iTime))
         Next
         strm.WriteLine()
+        Return strm
+
+    End Function
+
+    Private Function initBadDynamicsFile(msgReport As cMessage) As StreamWriter
+
+        Dim strm As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "BadDynamicsTrajectories.csv"), False)
+        If Me.m_core.SaveWithFileHeader Then strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+        strm.Write("iModel,StrategyName,GroupName,MaxB,UpperLim,MaxB/UpperLim,MaxB>UpperLim,MinB,LowerLim, MinB<=LowerLim")
+        msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "BadDynamicsTrajectories.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
         Return strm
 
     End Function
@@ -2747,7 +2762,6 @@ Public Class cMSE
                             If Emax < m_ecosim.EcosimData.FishRateGear(iFleet, iTime) Then
                                 m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
                             End If
-
 
                             'Alters the discard parameters 
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
