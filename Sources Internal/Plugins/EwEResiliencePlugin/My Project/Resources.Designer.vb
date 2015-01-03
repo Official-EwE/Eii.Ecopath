@@ -155,7 +155,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Supply-demand of energy ({0}) {1}.
+        '''  Looks up a localized string similar to Supply-demand of energy ({0} {1}). Resilience: {2}.
         '''</summary>
         Friend ReadOnly Property RESIL_LABEL_CAPTION() As String
             Get

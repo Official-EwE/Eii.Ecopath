@@ -268,7 +268,7 @@ Namespace Controls
                         If (i <= value.nParameters) Then
                             ' Configure labels
                             lblName.Visible = True
-                            lblName.Text = cStyleGuide.ToLabel(value.ParamName(i))
+                            lblName.Text = cStyleGuide.ToControlLabel(value.ParamName(i))
                             lblUnit.Visible = True
                             lblUnit.Text = value.ParamUnit(i)
                             ' Configure textbox and format provider

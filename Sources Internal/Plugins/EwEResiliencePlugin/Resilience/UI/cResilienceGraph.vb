@@ -106,6 +106,7 @@ Public Class cResilienceGraph
         Dim ppl As ZedGraph.PointPairList = Nothing
         Dim pplReg As ZedGraph.PointPairList = Nothing
         Dim li As ZedGraph.LineItem = Nothing
+        Dim sg As cStyleGuide = Me.UIContext.StyleGuide
         Dim fmt As New cCoreInterfaceFormatter()
         Dim strScale As String = ""
         Dim grp As cEcoPathGroupInput = Nothing
@@ -171,16 +172,17 @@ Public Class cResilienceGraph
 
         ' Prepare graph title
         If (Me.Annual) Then
-            strScale = SharedResources.GENERAL_LABEL_ANNUAL
+            strScale = SharedResources.GENERAL_LABEL_YEAR
         Else
-            strScale = SharedResources.GENERAL_LABEL_MONTHLY
+            strScale = SharedResources.GENERAL_LABEL_MONTH
         End If
 
         Dim t As Integer = Me.Time
         If (Me.Annual) Then
             If (Me.Core.EcosimFirstYear > 0) Then t = Me.Core.EcosimFirstYear - 1 + t
         End If
-        pane.Title.Text = String.Format(My.Resources.RESIL_LABEL_CAPTION, strScale, t)
+
+        pane.Title.Text = cStringUtils.ToSentenceCase(cStringUtils.Localize(My.Resources.RESIL_LABEL_CAPTION, strScale, t, sg.FormatNumber(b)))
 
         ' ToDo: fix axis ranges for the plot
 

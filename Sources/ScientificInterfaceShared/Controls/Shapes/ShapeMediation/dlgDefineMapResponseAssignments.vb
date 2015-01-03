@@ -394,13 +394,13 @@ Public Class dlgDefineMapResponseAssignments
         Me.m_btnAdd.Enabled = bCanAddGroup
         Me.m_btnRemove.Enabled = bCanRemoveGroup
 
-        Me.m_lblXMin.Text = cStyleGuide.ToLabel(strXMin)
-        Me.m_lblXMax.Text = cStyleGuide.ToLabel(strXMax)
+        Me.m_lblXMin.Text = cStyleGuide.ToControlLabel(strXMin)
+        Me.m_lblXMax.Text = cStyleGuide.ToControlLabel(strXMax)
         Me.m_fpMin.Enabled = bCanSetMinMax
         Me.m_fpMax.Enabled = bCanSetMinMax
 
-        Me.m_lblMean.Text = cStyleGuide.ToLabel(strMean)
-        Me.m_lblSD.Text = cStyleGuide.ToLabel(strSD)
+        Me.m_lblMean.Text = cStyleGuide.ToControlLabel(strMean)
+        Me.m_lblSD.Text = cStyleGuide.ToControlLabel(strSD)
         Me.m_fpMean.Enabled = bCanSetMeanSD
         Me.m_fpSD.Enabled = bCanSetMeanSD
 
