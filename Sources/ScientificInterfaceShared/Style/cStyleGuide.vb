@@ -30,6 +30,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Drawing
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
+Imports System.Text
 
 #End Region ' Imports
 
@@ -2142,36 +2143,70 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Convert a string to a label to be kept in a given control.
+        ''' Convert a string to a Windows Forms Control label.
         ''' </summary>
         ''' <param name="strLabel"></param>
         ''' <param name="parent">Not used yet. At some point, the parent control needs
         ''' to be scanned for existing keyboard shortcuts to prevent duplicates.</param>
-        ''' <returns></returns>
+        ''' <remarks>Windows Forms control labels are formatted to sentence case.</remarks>
+        ''' <returns>A string that can be used as a Windows Forms Control label.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToLabel(ByVal strLabel As String, Optional ByVal parent As Control = Nothing) As String
+        Public Shared Function ToControlLabel(ByVal strLabel As String, _
+                                              Optional ByVal parent As Control = Nothing, _
+                                              Optional ByVal bAssignShortcut As Boolean = True) As String
+
+            Dim sb As New StringBuilder()
+
+            ' Strip out character sequences that this method will replenish
+            If bAssignShortcut Then strLabel = strLabel.Replace("&", "")
+            strLabel = strLabel.Replace(":", "")
+
             If cSystemUtils.IsRightToLeft() Then
-                Return ":" & cStringUtils.ToTitlecase(strLabel) & "&"
+                sb.Append(":")
+                sb.Append(cStringUtils.ToSentenceCase(strLabel))
+                If bAssignShortcut Then sb.Append("&")
             Else
-                Return "&" & cStringUtils.ToTitlecase(strLabel) & ":"
+                If bAssignShortcut Then sb.Append("&")
+                sb.Append(cStringUtils.ToSentenceCase(strLabel))
+                sb.Append(":")
             End If
+
+            Return sb.ToString()
+
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Convert a string to a menu item label.
+        ''' Convert a string to a Windows Forms menu item label.
         ''' </summary>
         ''' <param name="strLabel"></param>
         ''' <param name="parent">Not used yet. At some point, the parent meu needs
         ''' to be scanned for existing keyboard shortcuts to prevent duplicates.</param>
+        ''' <remarks>Windows Forms menu labels are formatted to title case.</remarks>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToMenu(ByVal strLabel As String, Optional ByVal parent As MenuItem = Nothing) As String
+        Public Shared Function ToMenuLabel(ByVal strLabel As String, _
+                                           Optional ByVal parent As MenuItem = Nothing, _
+                                           Optional ByVal bAssignShortcut As Boolean = True) As String
+
+            Dim sb As New StringBuilder()
+
+            ' Strip out character sequences that this method will replenish
+            If bAssignShortcut Then strLabel = strLabel.Replace("&", "")
+            strLabel = strLabel.Replace("...", "")
+
             If cSystemUtils.IsRightToLeft() Then
-                Return "..." & cStringUtils.ToTitlecase(strLabel) & "&"
+                sb.Append("...")
+                sb.Append(cStringUtils.ToSentenceCase(strLabel))
+                If bAssignShortcut Then sb.Append("&")
             Else
-                Return "&" & cStringUtils.ToTitlecase(strLabel) & "..."
+                If bAssignShortcut Then sb.Append("&")
+                sb.Append(cStringUtils.ToSentenceCase(strLabel))
+                sb.Append("...")
             End If
+
+            Return sb.ToString()
+
         End Function
 
 #End Region ' Labels, headers and menus 

@@ -616,7 +616,7 @@ Public Class frmShapeValue
         'Load pool code combo box based on the selected time series type
         Select Case cTimeSeriesFactory.TimeSeriesCategory(SelectedTimeSeriesType())
             Case eTimeSeriesCategoryType.Fleet
-                m_lblPoolCode.Text = cStyleGuide.ToLabel(My.Resources.HEADER_FLEET)
+                m_lblPoolCode.Text = cStyleGuide.ToControlLabel(My.Resources.HEADER_FLEET)
                 For i As Integer = 1 To Me.Core.nFleets
                     m_cmbPoolCode.Items.Add(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, i, Me.Core.FleetInputs(i).Name))
                 Next
@@ -627,7 +627,7 @@ Public Class frmShapeValue
                     End If
                 End If
             Case eTimeSeriesCategoryType.Group
-                m_lblPoolCode.Text = cStyleGuide.ToLabel(My.Resources.HEADER_GROUP)
+                m_lblPoolCode.Text = cStyleGuide.ToControlLabel(My.Resources.HEADER_GROUP)
                 For i As Integer = 1 To Me.Core.nGroups
                     m_cmbPoolCode.Items.Add(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, i, Me.Core.EcoPathGroupInputs(i).Name))
                 Next

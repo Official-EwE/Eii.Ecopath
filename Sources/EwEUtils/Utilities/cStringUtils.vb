@@ -1059,48 +1059,132 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Converts a string to proper title case, honouring reading order and
-        ''' periods.
+        ''' Converts a string to proper title case, capitalizing every word in 
+        ''' a sentence and turning all other characters to lower case. Note that
+        ''' all-caps words are unaffected. This method takes text reading order 
+        ''' and sentence breaks (periods) into account.
         ''' </summary>
         ''' <param name="strExpression">The string to convert.</param>
         ''' <returns>A string in proper title case.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToTitlecase(ByVal strExpression As String) As String
+        Public Shared Function ToTitleCase(ByVal strExpression As String) As String
 
             Dim bR2L As Boolean = cSystemUtils.IsRightToLeft()
-            Dim astrBits() As String
+            Dim astrSentences() As String = Nothing
+            Dim astrBits() As String = Nothing
             Dim sbOUt As New StringBuilder()
 
             If bR2L Then
-                astrBits = strExpression.Split(New String() {" ."}, System.StringSplitOptions.RemoveEmptyEntries)
+                astrSentences = strExpression.Split(New String() {" ."}, System.StringSplitOptions.RemoveEmptyEntries)
             Else
-                astrBits = strExpression.Split(New String() {". "}, System.StringSplitOptions.RemoveEmptyEntries)
+                astrSentences = strExpression.Split(New String() {". "}, System.StringSplitOptions.RemoveEmptyEntries)
             End If
 
-            ' Protect all words that are pure upper case. The rest will be turned to lower case
-            For i As Integer = 0 To astrBits.Length - 1
-                If (String.Compare(astrBits(i), astrBits(i).ToUpper, False) <> 0) Then
-                    astrBits(i) = astrBits(i).ToLower()
+            For j As Integer = 0 To astrSentences.Length - 1
+
+                ' Split sentence into words
+                astrBits = astrSentences(j).Trim.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                ' Protect all words that are pure upper case. The rest will be turned to lower case
+                For i As Integer = 0 To astrBits.Length - 1
+                    If (String.Compare(astrBits(i), astrBits(i).ToUpper, False) <> 0) Then
+                        astrBits(i) = astrBits(i).ToLower()
+                    End If
+                Next
+
+                ' Combine sentences
+                If (j > 0) Then
+                    If bR2L Then
+                        sbOUt.Append(" .")
+                    Else
+                        sbOUt.Append(". ")
+                    End If
                 End If
+
+                ' Capitalize all words within a sentence
+                For i As Integer = 0 To astrBits.Length - 1
+                    astrBits(i) = astrBits(i).Trim
+                    If Not String.IsNullOrWhiteSpace(astrBits(i)) Then
+                        Dim c As Char() = astrBits(i).Trim.ToCharArray
+                        If bR2L Then
+                            c(c.Length - 1) = Char.ToUpper(c(c.Length - 1))
+                        Else
+                            c(0) = Char.ToUpper(c(0))
+                        End If
+                        If (i > 0) Then sbOUt.Append(" ")
+                        sbOUt.Append(c)
+                    End If
+                Next
+
             Next
 
-            For i As Integer = 0 To astrBits.Length - 1
-                astrBits(i) = astrBits(i).Trim
-                If Not String.IsNullOrWhiteSpace(astrBits(i)) Then
-                    Dim c As Char() = astrBits(i).Trim.ToCharArray
-                    If bR2L Then
-                        c(c.Length - 1) = Char.ToUpper(c(c.Length - 1))
-                        If (i > 0) Then
-                            sbOUt.Append(" .")
-                        End If
-                    Else
-                        c(0) = Char.ToUpper(c(0))
-                        If (i > 0) Then
-                            sbOUt.Append(". ")
-                        End If
+            Return sbOUt.ToString()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Converts a string to proper sentence case, capitalizing only the first
+        ''' (or last, depending on reading order) word in a sentence and turning 
+        ''' all other characters to lower case. 
+        ''' Note that all-caps words are unaffected. Sentences are detected from periods.
+        ''' </summary>
+        ''' <param name="strExpression">The string to convert.</param>
+        ''' <returns>A string in proper sentence case.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToSentenceCase(ByVal strExpression As String) As String
+
+            Dim bR2L As Boolean = cSystemUtils.IsRightToLeft()
+            Dim astrSentences() As String = Nothing
+            Dim astrBits() As String = Nothing
+            Dim sbOUt As New StringBuilder()
+
+            If bR2L Then
+                astrSentences = strExpression.Split(New String() {" ."}, System.StringSplitOptions.RemoveEmptyEntries)
+            Else
+                astrSentences = strExpression.Split(New String() {". "}, System.StringSplitOptions.RemoveEmptyEntries)
+            End If
+
+            For j As Integer = 0 To astrSentences.Length - 1
+
+                ' Split sentence into words
+                astrBits = astrSentences(j).Trim.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                ' Protect all words that are pure upper case. The rest will be turned to lower case
+                For i As Integer = 0 To astrBits.Length - 1
+                    If (String.Compare(astrBits(i), astrBits(i).ToUpper, False) <> 0) Then
+                        astrBits(i) = astrBits(i).ToLower()
                     End If
-                    sbOUt.Append(c)
+                Next
+
+                ' Combine sentences
+                If (j > 0) Then
+                    If bR2L Then
+                        sbOUt.Append(" .")
+                    Else
+                        sbOUt.Append(". ")
+                    End If
                 End If
+
+                ' Capitalize only the first (or last) word of a sentence
+                For i As Integer = 0 To astrBits.Length - 1
+                    astrBits(i) = astrBits(i).Trim
+                    If Not String.IsNullOrWhiteSpace(astrBits(i)) Then
+                        Dim c As Char() = astrBits(i).Trim.ToCharArray
+                        If bR2L Then
+                            If (i = astrBits.Length - 1) Then
+                                c(c.Length - 1) = Char.ToUpper(c(c.Length - 1))
+                            End If
+                        Else
+                            If (i = 0) Then
+                                c(0) = Char.ToUpper(c(0))
+                            End If
+                        End If
+                        If (i > 0) Then sbOUt.Append(" ")
+                        sbOUt.Append(c)
+                    End If
+                Next
+
             Next
 
             Return sbOUt.ToString()

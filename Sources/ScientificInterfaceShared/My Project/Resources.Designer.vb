@@ -1824,11 +1824,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Month.
+        '''</summary>
+        Public ReadOnly Property GENERAL_LABEL_MONTH() As String
+            Get
+                Return ResourceManager.GetString("GENERAL_LABEL_MONTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Monthly.
         '''</summary>
         Public ReadOnly Property GENERAL_LABEL_MONTHLY() As String
             Get
                 Return ResourceManager.GetString("GENERAL_LABEL_MONTHLY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Year.
+        '''</summary>
+        Public ReadOnly Property GENERAL_LABEL_YEAR() As String
+            Get
+                Return ResourceManager.GetString("GENERAL_LABEL_YEAR", resourceCulture)
             End Get
         End Property
         
