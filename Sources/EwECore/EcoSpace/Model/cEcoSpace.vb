@@ -2034,6 +2034,8 @@ Public Class cEcoSpace
             Me.m_Data.hasCapInitialized = False
             SetHabCap()
             Me.m_Data.hasCapInitialized = True
+            'Debug.Assert(False, "hasCapInitialized = False for debugging")
+            'Me.m_Data.hasCapInitialized = False
 
             'first set density map for all pools to no movement equilibrium
             SetBiomassesEcospace()
