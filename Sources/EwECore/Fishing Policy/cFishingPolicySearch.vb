@@ -1146,11 +1146,25 @@ endline:    ' '
                                    m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ExistValue
                 End If
 
-                'System.Console.WriteLine("FUNC=" & returnvalue.ToString)
-                'For i = 1 To n
-                '    System.Console.Write(X(i).ToString & ", ")
-                'Next
-                'System.Console.WriteLine("")
+                'Is the objective function value a valid number
+                If Double.IsNaN(returnvalue) Or Double.IsInfinity(returnvalue) Then
+                    'Nope...
+                    'figure out which criteria value is an invalid number
+                    'and dump it to the log
+                    Dim enumNames As String
+                    For icrt As Integer = 0 To CritValue.Length - 1
+                        If Double.IsNaN(CritValue(icrt)) Or Double.IsInfinity(CritValue(icrt)) Then
+                            Dim enumname As String = [Enum].GetName(GetType(eSearchCriteriaResultTypes), icrt)
+                            enumNames += enumname + " "
+                            cLog.Write("Fishing Policy Search criteria value " + enumname + " is invalid.")
+                        End If
+                    Next
+
+                    returnvalue = 1.0E+20
+                    'Bump out of the search with an error message
+                    SearchFailed = True
+                    addMessage("Fishing Policy Search Error: Invalid optimization value for " + enumNames, eMessageType.ErrorEncountered)
+                End If
 
                 Return returnvalue
 
