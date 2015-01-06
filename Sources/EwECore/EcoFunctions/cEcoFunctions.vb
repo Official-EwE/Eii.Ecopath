@@ -16,6 +16,8 @@
 ' ===============================================================================
 '
 
+Option Strict On
+
 Imports EwEUtils.Core
 
 ''' <summary>
@@ -64,6 +66,8 @@ Public Class cEcoFunctions
         Dim upper As Single
         Dim NumGr As Integer
 
+        Dim returnValue As Single
+
         Try
 
             'Debug.Assert(m_core IsNot Nothing, Me.ToString & " not initialized properly!")
@@ -109,15 +113,22 @@ Public Class cEcoFunctions
             Next
             'after i rounds we have sorted all groups after biomasses in Rank()
             'Now we can find the percentiles:
-            Lower = Quan * NumGr    'm_epdata.NumLiving           'e.g., 0.25* m_epdata.NumLiving
-            upper = (1 - Quan) * NumGr  'm_epdata.NumLiving
+            Lower = Quan * NumGr
+            upper = (1 - Quan) * NumGr
             BLower = (Lower - CInt(Lower - 0.5)) * Bio(Rank(CInt(Lower - 0.5))) + (1 - (Lower - CInt(Lower - 0.5))) * Bio(Rank(CInt(Lower - 0.5) + 1))
             BUpper = (1 - (upper - CInt(upper - 0.5))) * Bio(Rank(CInt(upper - 0.5))) + (upper - CInt(upper - 0.5)) * Bio(Rank(CInt(upper - 0.5) + 1))
+
+            'jb 6-Jan-2014 make sure Log(BUpper / BLower) is not 1.0 to avoid a /zero error
+            Dim BioRatio As Double = BUpper / BLower
+            'Debug.Assert(Not bRatio = 1.0)
+            If BioRatio = 1.0 Then BioRatio = 1.0 + 0.0000000001
             'We can now calculate Kemptons Q-index:
-            Return CSng(NumGr / Math.Log(BUpper / BLower) / 2)
+            returnValue = CSng(NumGr / Math.Log(BioRatio) / 2)
             'Using the equation from Kemptons Species diversity index:
-            'Q= St / [ 2 log(Pi0.25ST/Pi0.75St)] wher Piq is the proportional abundance of the qth most abundant species
+            'Q= St / [ 2 log(Piq*0.25ST/Piq*0.75St)] where Piq is the proportional abundance of the qth most abundant species
             'exitFunction:
+
+            Debug.Assert(Not Single.IsInfinity(returnValue))
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -127,10 +138,10 @@ Public Class cEcoFunctions
                 Dim msg As New cMessage("Error in FunctionKemptonsQ() " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical, EwEUtils.Core.eDataTypes.NotSet)
                 Me.m_core.Messages.SendMessage(msg)
             End If
-            Return False
+            Return 0.0
         End Try
 
-        Return True
+        Return returnValue
 
     End Function
 
@@ -284,7 +295,7 @@ Public Class cMatrixCalc
 
             bserrcode = matbsS(A, B, X)          'Backsolve system
             'If bserrcode Then Error bserrcode
-            If bserrcode Then
+            If bserrcode <> 0 Then
                 Debug.Assert(False)
                 Return bserrcode
             End If
@@ -409,14 +420,14 @@ Public Class cMatrixCalc
                     'SWAP rpvt(pvt), rpvt(bestrow)      'necessary, count it and permute
                     Temp = rpvt(pvt)
                     rpvt(pvt) = rpvt(bestrow)
-                    rpvt(bestrow) = Temp
+                    rpvt(bestrow) = CInt(Temp)
                 End If                                  'rpvt or cpvt. Note: the rows and
                 If cpvt(pvt) <> cpvt(bestcol) Then    'columns are not actually switched,
                     count = count + 1                    'only the order in which they are
                     'SWAP cpvt(pvt), cpvt(bestcol)      'used.
                     Temp! = cpvt(pvt)
                     cpvt(pvt) = cpvt(bestrow)
-                    cpvt(bestrow) = Temp!
+                    cpvt(bestrow) = CInt(Temp)
                 End If
                 'Eliminate all values below the pivot
                 rp = rpvt(pvt)
@@ -437,7 +448,7 @@ Public Class cMatrixCalc
             If A(rpvt(Up), cpvt(Up)) = 0.0 Then
                 'if last pivot is zero or pivot drop is
                 'too large, A is singular, send back error
-                OkToContinue = 0
+                OkToContinue = False
                 'DispError 0, "Last pivot is zero or pivot drop is too large."
                 'Debug.Assert(False, "matlus: Last pivot is zero or pivot drop is too large.")
                 Return 199
@@ -448,13 +459,13 @@ Public Class cMatrixCalc
                 Return 199
             End If
 
-            If ErrCode Then
-                'DispError 0, "pivot is not identically zero."
-                'Error ErrCode
-                'jb I don't think this can happen
-                Debug.Assert(False)
-                Return ErrCode
-            End If
+            'If ErrCode Then
+            '    'DispError 0, "pivot is not identically zero."
+            '    'Error ErrCode
+            '    'jb I don't think this can happen
+            '    Debug.Assert(False)
+            '    Return ErrCode
+            'End If
 
         Catch ex As Exception
             OkToContinue = False
