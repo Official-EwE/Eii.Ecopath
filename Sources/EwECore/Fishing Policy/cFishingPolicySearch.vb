@@ -1160,8 +1160,9 @@ endline:    ' '
                         End If
                     Next
 
+                    'If there was an error the returnvalue will not matter
+                    'SearchFailed will force the search to stop
                     returnvalue = 1.0E+20
-                    'Bump out of the search with an error message
                     SearchFailed = True
                     addMessage("Fishing Policy Search Error: Invalid optimization value for " + enumNames, eMessageType.ErrorEncountered)
                 End If
@@ -1169,7 +1170,8 @@ endline:    ' '
                 Return returnvalue
 
             Catch ex As Exception
-
+                'If there was an error the returnvalue will not matter
+                'SearchFailed will force the search to stop
                 FUNC = 1.0E+20
                 SearchFailed = True
 
