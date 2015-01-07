@@ -1426,8 +1426,6 @@ Public Class cMSE
                 TrajectoryTable.Columns.Add("GroupName", GetType(String))
                 TrajectoryTable.Columns.Add("Biomass", GetType(Single()))
 
-                ResetEffortToMax(OriginalNTimesteps + 1, m_core.EcoSimModelParameters.NumberYears * m_ecosim.EcosimData.NumStepsPerYear)
-
                 cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iModel), CSng(iModel / nModels))
 
                 'Only run the Strategies if the parameters loaded
@@ -1453,7 +1451,7 @@ Public Class cMSE
                             'Set the CurrentStrategy used by onEcosimTimeStep()
                             m_currentStrategy = curStrategy
 
-
+                            ResetEffortToMax(OriginalNTimesteps + 1, m_core.EcoSimModelParameters.NumberYears * m_ecosim.EcosimData.NumStepsPerYear)
 
                             'Get a list of all fleets that fish the groups that have HCRs
                             'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
@@ -1828,7 +1826,7 @@ Public Class cMSE
             If GoodDynamics = False Then Exit For
         Next
 
-        If GoodDynamics = False Then
+        If GoodDynamics = False And Not Me.WriteAllResults Then
             Console.WriteLine("This set of parameters is no good")
         Else
 
@@ -2807,6 +2805,7 @@ Public Class cMSE
                             'Find the weakest stock
                             'Calculate effort that would catch all weakest stock quota
                             'Set it for this fleet
+                            'If m_currentStrategy.Name = "high_weak_cod" Then Stop
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
                                 If (m_ecopath.EcopathData.Landing(iFleet, iGrp) + m_ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 Then
                                     If TargConsQuota(iGrp - 1, 0) <> cEffortLimits.NoHCR_F Then
@@ -2821,16 +2820,16 @@ Public Class cMSE
                                         If Elim_Conservation < Elim_Target Then Elim = Elim_Conservation
                                         If Elim_Conservation >= Elim_Target Then Elim = Elim_Target
                                     End If
-                                End If
-                                'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
-                                If Elim < MinEffortThisYear(iFleet - 1) Then
-                                    Elim = MinEffortThisYear(iFleet - 1)
-                                ElseIf Elim > MaxEffortThisYear(iFleet - 1) Then
-                                    Elim = MaxEffortThisYear(iFleet - 1)
-                                End If
-                                Debug.Assert(Elim >= 0)
-                                If _simdata.FishRateGear(iFleet, iTime) > Elim Then
-                                    _simdata.FishRateGear(iFleet, iTime) = Elim
+                                    'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
+                                    If Elim < MinEffortThisYear(iFleet - 1) Then
+                                        Elim = MinEffortThisYear(iFleet - 1)
+                                    ElseIf Elim > MaxEffortThisYear(iFleet - 1) Then
+                                        Elim = MaxEffortThisYear(iFleet - 1)
+                                    End If
+                                    Debug.Assert(Elim >= 0)
+                                    If _simdata.FishRateGear(iFleet, iTime) > Elim Then
+                                        _simdata.FishRateGear(iFleet, iTime) = Elim
+                                    End If
                                 End If
                             Next iGrp
                         Case cRegulations.eRegMethod.None
