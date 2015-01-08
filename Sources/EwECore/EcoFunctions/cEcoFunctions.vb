@@ -120,7 +120,7 @@ Public Class cEcoFunctions
 
             'jb 6-Jan-2014 make sure Log(BUpper / BLower) is not 1.0 to avoid a /zero error
             Dim BioRatio As Double = BUpper / BLower
-            'Debug.Assert(Not bRatio = 1.0)
+            'Debug.Assert(Not BioRatio = 1.0)
             If BioRatio = 1.0 Then BioRatio = 1.0 + 0.0000000001
             'We can now calculate Kemptons Q-index:
             returnValue = CSng(NumGr / Math.Log(BioRatio) / 2)
