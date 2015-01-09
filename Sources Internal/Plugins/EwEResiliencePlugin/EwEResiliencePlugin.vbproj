@@ -98,6 +98,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.5072.22113, Culture=neutral, PublicKeyToken=dd4210ebb9723de9, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
     <Reference Include="ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
       <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
     </Reference>
@@ -121,7 +124,7 @@
     <Compile Include="Resilience\cResilienceData.vb" />
     <Compile Include="Resilience\cResilienceModel.vb" />
     <Compile Include="Resilience\cResilienceWriter.vb" />
-    <Compile Include="Resilience\cResiliencePlugin.vb" />
+    <Compile Include="Resilience\Plugin points\cResiliencePlugin.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -138,11 +141,28 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="My Project\Settings.vb" />
-    <Compile Include="Resilience\UI\cResilienceGraph.vb" />
+    <Compile Include="Resilience\Plugin points\cNavTreeAcknowledgements.vb" />
+    <Compile Include="Resilience\Plugin points\cNavTreeResilience.vb" />
+    <Compile Include="Resilience\Plugin points\cNavTreeRoot.vb" />
+    <Compile Include="Resilience\Plugin points\cNavTreeSupplyDemand.vb" />
+    <Compile Include="Resilience\Plugin points\cResiliencePluginBase.vb" />
     <Compile Include="Resilience\UI\frmResilience.Designer.vb">
       <DependentUpon>frmResilience.vb</DependentUpon>
     </Compile>
     <Compile Include="Resilience\UI\frmResilience.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Resilience\UI\cResilienceGraph.vb" />
+    <Compile Include="Resilience\UI\frmAcknowledgements.Designer.vb">
+      <DependentUpon>frmAcknowledgements.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Resilience\UI\frmAcknowledgements.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Resilience\UI\frmSupplyDemand.Designer.vb">
+      <DependentUpon>frmSupplyDemand.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Resilience\UI\frmSupplyDemand.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -156,8 +176,14 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resilience\UI\frmAcknowledgements.resx">
+      <DependentUpon>frmAcknowledgements.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resilience\UI\frmResilience.resx">
       <DependentUpon>frmResilience.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resilience\UI\frmSupplyDemand.resx">
+      <DependentUpon>frmSupplyDemand.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -200,10 +226,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\AUCI.png" />
     <Content Include="Resources\cicimar-color.png" />
     <Content Include="Resources\CONACYT.png" />
-    <Content Include="Resources\EscudoIPN1.jpg" />
+    <Content Include="Resources\IPN-color.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

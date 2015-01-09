@@ -73,6 +73,8 @@ Namespace SpatialData
             Me.DBID = -1
             Me.AllowValidation = True
 
+            Me.Initialize()
+
         End Sub
 
 #End Region ' Constructor
@@ -92,7 +94,7 @@ Namespace SpatialData
         ''' Initialize the adapter in response to an Ecospace scenario (re)load.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Overridable Sub Initialize()
+        Public Overridable Sub Initialize()
 
             Dim iNumItems As Integer = Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter)) + 1
 

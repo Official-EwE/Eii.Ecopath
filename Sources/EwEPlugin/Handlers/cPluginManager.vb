@@ -433,7 +433,10 @@ Public Class cPluginManager
 
 #Region " Public assembly management "
 
-    ''' <summary>Dictionary of <see cref="cPluginAssembly">Plugin assemblies</see>.</summary>
+    ''' <summary>
+    ''' Dictionary of <see cref="cPluginAssembly">Plugin assemblies</see> 
+    ''' that have already been loaded by the plugin manager.
+    ''' </summary>
     Private m_dictAssemblies As New Dictionary(Of String, cPluginAssembly)
 
     ''' -----------------------------------------------------------------------
@@ -483,7 +486,13 @@ Public Class cPluginManager
                     Else
                         bLoadPlugin = (alDisabledPlugins.IndexOf(fi.FullName) = -1)
                     End If
-                    Me.LoadPluginAssembly(fi.FullName, bLoadPlugin)
+
+                    If bLoadPlugin Then
+                        Me.LoadPluginAssembly(fi.FullName)
+                    Else
+                        cLog.Write("Plug-in " & fi.FullName & " is disabled from loading via user settings", eVerboseLevel.Standard)
+                        RaiseEvent AssemblyUserDisabled(fi.FullName)
+                    End If
                 Catch ex As Exception
                     ' Ignore this
                     cLog.Write(ex, eVerboseLevel.Detailed, "cPluginManager.LoadPlugins " & fi.FullName)
@@ -501,11 +510,9 @@ Public Class cPluginManager
     ''' Load EwE plugins from a file.
     ''' </summary>
     ''' <param name="strFileName">The file name to load plugins from.</param>
-    ''' <param name="bEnable">Flag stating that the plug-in is allowed to load.</param>
     ''' <returns>True if this assembly was loaded and contained plugins.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadPluginAssembly(ByVal strFileName As String, _
-                                        ByVal bEnable As Boolean) As Boolean
+    Private Function LoadPluginAssembly(ByVal strFileName As String) As Boolean
 
         Dim clsType As Type = Nothing
         Dim clsInterface As Type = Nothing
@@ -535,7 +542,7 @@ Public Class cPluginManager
             If (clsAssembly Is Nothing) Then Return False
 
             ' Create plugin assembly and set initial enabled state
-            plugAssem = New cPluginAssembly(clsAssembly, bEnable, strSandbox)
+            plugAssem = New cPluginAssembly(clsAssembly, True, strSandbox)
             plugAssem.Filename = strFileName
 
             ' Set compatible flag for EwE assemblies
@@ -768,7 +775,7 @@ Public Class cPluginManager
     ''' <summary>
     ''' Assembly added delegate.
     ''' </summary>
-    ''' <param name="paAdded">The add plugin assembly.</param>
+    ''' <param name="paAdded">The plugin assembly that was added.</param>
     ''' -----------------------------------------------------------------------
     Public Delegate Sub AssemblyAddedHandler(ByVal paAdded As cPluginAssembly)
 
@@ -783,7 +790,7 @@ Public Class cPluginManager
     ''' <summary>
     ''' Assembly removed delegate.
     ''' </summary>
-    ''' <param name="paRemoved">The add plugin assembly.</param>
+    ''' <param name="paRemoved">The plugin assembly that was removed.</param>
     ''' -----------------------------------------------------------------------
     Public Delegate Sub AssemblyRemovedHandler(ByVal paRemoved As cPluginAssembly)
 
@@ -798,6 +805,7 @@ Public Class cPluginManager
     ''' <summary>
     ''' A plugin has thrown an exception delegate.
     ''' </summary>
+    ''' <param name="PluginException">The exception that was thrown.</param>
     ''' -----------------------------------------------------------------------
     Public Delegate Sub PluginExceptionHandler(ByVal PluginException As cPluginException)
 
@@ -812,6 +820,8 @@ Public Class cPluginManager
     ''' <summary>
     ''' A plugin enabled state change delegate.
     ''' </summary>
+    ''' <param name="ip">The GUI plug-in that changed enabled state.</param>
+    ''' <param name="bEnable">The new enabled state of the plug-in.</param>
     ''' -----------------------------------------------------------------------
     Friend Delegate Sub PluginEnabledHandler(ByVal ip As IGUIPlugin, ByVal bEnable As Boolean)
 
@@ -821,6 +831,22 @@ Public Class cPluginManager
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Friend Event PluginEnabled As PluginEnabledHandler
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' A plugin disabled by the user delegate.
+    ''' </summary>
+    ''' <param name="strPluginName">The name of the plug-in that was not loaded
+    ''' because user settings prohibited this.</param>
+    ''' -----------------------------------------------------------------------
+    Public Delegate Sub AssemblyUserDisabledHandler(ByVal strPluginName As String)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' A plug-in was not loaded because user settings prohibited this.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Event AssemblyUserDisabled As AssemblyUserDisabledHandler
 
 #End Region ' Assembly management
 

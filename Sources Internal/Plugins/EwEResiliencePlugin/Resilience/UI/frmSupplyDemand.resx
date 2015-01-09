@@ -117,51 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="RESIL_AUTOSAVE_NAME" xml:space="preserve">
-    <value>Resilience data</value>
-  </data>
-  <data name="RESIL_CAPTION" xml:space="preserve">
-    <value>Resilience</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cicimar_color" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\cicimar-color.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="m_cbAutosave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
-  <data name="CONACYT" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\conacyt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_cbAutosave.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="RESIL_LABEL_CAPTION" xml:space="preserve">
-    <value>Supply-demand of energy ({0} {1}). Resilience: {2}</value>
-    <comment>{0}=scale, {1}=time, {2}=resilience</comment>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_cbAutosave.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 454</value>
   </data>
-  <data name="RESIL_LABEL_XAXIS" xml:space="preserve">
-    <value>Log (demand, consumption)</value>
+  <data name="m_cbAutosave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 17</value>
   </data>
-  <data name="RESIL_LABEL_YAXIS" xml:space="preserve">
-    <value>Log (supply, predation)</value>
+  <data name="m_cbAutosave.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="RESIL_STATUS_SAVE_FAILED" xml:space="preserve">
-    <value>Resilience data failed to save to {0}</value>
+  <data name="m_cbAutosave.Text" xml:space="preserve">
+    <value>&amp;Auto-save resilience data</value>
   </data>
-  <data name="RESIL_STATUS_SAVE_SUCCESS" xml:space="preserve">
-    <value>Resilience data saved to {0}</value>
+  <data name="&gt;&gt;m_cbAutosave.Name" xml:space="preserve">
+    <value>m_cbAutosave</value>
   </data>
-  <data name="RESIL_LABEL_TREND" xml:space="preserve">
-    <value>Trend</value>
+  <data name="&gt;&gt;m_cbAutosave.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="CONSWR_AUTOSAVE_ITEM" xml:space="preserve">
-    <value>Consumption matrices</value>
+  <data name="&gt;&gt;m_cbAutosave.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="CONSWR_MENU_ITEM" xml:space="preserve">
-    <value>Consumption writer options...</value>
+  <data name="&gt;&gt;m_cbAutosave.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="CONSWR_STATUS_SAVE_FAILED" xml:space="preserve">
-    <value>Consumption matrices failed to save to {0}</value>
+  <data name="m_zgc.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="CONSWR_STATUS_SAVE_SUCCESS" xml:space="preserve">
-    <value>Consumption matrices saved to {0}</value>
+  <data name="m_zgc.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 9</value>
   </data>
-  <data name="IPN_color" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ipn-color.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="m_zgc.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_zgc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>634, 435</value>
+  </data>
+  <data name="m_zgc.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_zgc.Name" xml:space="preserve">
+    <value>m_zgc</value>
+  </data>
+  <data name="&gt;&gt;m_zgc.Type" xml:space="preserve">
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+  </data>
+  <data name="&gt;&gt;m_zgc.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_zgc.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_slider.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_slider.Location" type="System.Drawing.Point, System.Drawing">
+    <value>228, 451</value>
+  </data>
+  <data name="m_slider.Size" type="System.Drawing.Size, System.Drawing">
+    <value>418, 20</value>
+  </data>
+  <data name="m_slider.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_slider.Name" xml:space="preserve">
+    <value>m_slider</value>
+  </data>
+  <data name="&gt;&gt;m_slider.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.11700.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_slider.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_slider.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_cbAnnual.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="m_cbAnnual.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbAnnual.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbAnnual.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 454</value>
+  </data>
+  <data name="m_cbAnnual.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 17</value>
+  </data>
+  <data name="m_cbAnnual.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_cbAnnual.Text" xml:space="preserve">
+    <value>&amp;Annual</value>
+  </data>
+  <data name="&gt;&gt;m_cbAnnual.Name" xml:space="preserve">
+    <value>m_cbAnnual</value>
+  </data>
+  <data name="&gt;&gt;m_cbAnnual.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbAnnual.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbAnnual.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>658, 483</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Supply/demand</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>frmSupplyDemand</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11700.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

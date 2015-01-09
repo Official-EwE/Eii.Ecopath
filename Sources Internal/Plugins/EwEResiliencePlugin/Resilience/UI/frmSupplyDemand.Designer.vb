@@ -18,7 +18,7 @@
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
-Partial Class frmResilience
+Partial Class frmSupplyDemand
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -41,15 +41,12 @@ Partial Class frmResilience
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmResilience))
+        Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSupplyDemand))
         Me.m_cbAutosave = New System.Windows.Forms.CheckBox()
         Me.m_zgc = New ZedGraph.ZedGraphControl()
-        Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_plGraph = New System.Windows.Forms.Panel()
         Me.m_slider = New ScientificInterfaceShared.Controls.ucSlider()
         Me.m_cbAnnual = New System.Windows.Forms.CheckBox()
-        Me.m_tlpContent.SuspendLayout()
-        Me.m_plGraph.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_cbAutosave
@@ -70,21 +67,6 @@ Partial Class frmResilience
         Me.m_zgc.ScrollMinY = 0.0R
         Me.m_zgc.ScrollMinY2 = 0.0R
         '
-        'm_tlpContent
-        '
-        resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
-        Me.m_tlpContent.Controls.Add(Me.m_plGraph, 0, 0)
-        Me.m_tlpContent.Name = "m_tlpContent"
-        '
-        'm_plGraph
-        '
-        Me.m_plGraph.Controls.Add(Me.m_slider)
-        Me.m_plGraph.Controls.Add(Me.m_zgc)
-        Me.m_plGraph.Controls.Add(Me.m_cbAnnual)
-        Me.m_plGraph.Controls.Add(Me.m_cbAutosave)
-        resources.ApplyResources(Me.m_plGraph, "m_plGraph")
-        Me.m_plGraph.Name = "m_plGraph"
-        '
         'm_slider
         '
         resources.ApplyResources(Me.m_slider, "m_slider")
@@ -100,23 +82,22 @@ Partial Class frmResilience
         Me.m_cbAnnual.Name = "m_cbAnnual"
         Me.m_cbAnnual.UseVisualStyleBackColor = True
         '
-        'frmResilience
+        'frmSupplyDemand
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_tlpContent)
-        Me.Name = "frmResilience"
-        Me.m_tlpContent.ResumeLayout(False)
-        Me.m_plGraph.ResumeLayout(False)
-        Me.m_plGraph.PerformLayout()
+        Me.Controls.Add(Me.m_slider)
+        Me.Controls.Add(Me.m_cbAnnual)
+        Me.Controls.Add(Me.m_zgc)
+        Me.Controls.Add(Me.m_cbAutosave)
+        Me.Name = "frmSupplyDemand"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_cbAutosave As System.Windows.Forms.CheckBox
     Private WithEvents m_zgc As ZedGraph.ZedGraphControl
-    Private WithEvents m_plGraph As System.Windows.Forms.Panel
-    Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_slider As ScientificInterfaceShared.Controls.ucSlider
     Private WithEvents m_cbAnnual As System.Windows.Forms.CheckBox
 End Class

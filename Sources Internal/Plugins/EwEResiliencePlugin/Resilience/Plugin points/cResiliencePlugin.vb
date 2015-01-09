@@ -25,64 +25,39 @@ Imports ScientificInterfaceShared.Controls
 #End Region ' Imports
 
 Public Class cResiliencePlugin
-    Implements EwEPlugin.IUIContextPlugin
+    Inherits cResiliencePluginBase
     Implements EwEPlugin.IAutoSavePlugin
     Implements EwEPlugin.IEcopathRunInitializedPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IDisposedPlugin
 
 #Region " Private vars "
 
-    Private m_uic As cUIContext = Nothing
-    Private m_core As cCore = Nothing
     Private m_pathds As cEcopathDataStructures = Nothing
     Private m_simds As cEcosimDatastructures = Nothing
-    Private m_frm As frmResilience = Nothing
     Private m_model As cResilienceModel = Nothing
 
 #End Region ' Private vars
 
-#Region " Generic plug-in bits "
+#Region " Singleton "
 
-    Public ReadOnly Property Author As String _
-        Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "F. Arreguín-Sánchez, M. Zetina-Rejon, J. Steenbeek"
-        End Get
-    End Property
+    Private Shared g_inst As cResiliencePlugin = Nothing
 
-    Public ReadOnly Property Contact As String _
-        Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "mailto:farregui@ipn.mx"
-        End Get
-    End Property
+    Public Shared Function GetInstance() As cResiliencePlugin
+        Return g_inst
+    End Function
 
-    Public ReadOnly Property Description As String _
-        Implements EwEPlugin.IPlugin.Description
-        Get
-            Return "Plug-in for the EwE6 software to estimate, save and display resilience, as demonstrated in 'Measuring resilience in aquatic trophic networks from supply–demand-of-energy relationships'"
-        End Get
-    End Property
+#End Region ' Singleton
 
-    Public Sub Initialize(core As Object) _
-        Implements EwEPlugin.IPlugin.Initialize
-        Me.m_core = DirectCast(core, cCore)
-        Me.m_model = New cResilienceModel(Me.m_core)
+#Region " Constructor "
+
+    Public Sub New()
+        g_inst = Me
     End Sub
 
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
-        Get
-            ' Navigation tree nodes are sorted by name. 
-            ' With the name prefix 'ndX' the resilience node ends up at the bottom of the Ecosim output nodes list
-            Return "ndXEcosimResilience"
-        End Get
-    End Property
-
-#End Region ' Generic plug-in bits
+#End Region ' Constructor
 
 #Region " Autosave implementation "
 
@@ -114,18 +89,6 @@ Public Class cResiliencePlugin
     End Function
 
 #End Region ' Autosave implementation
-
-#Region " UIC integration "
-
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
-        Try
-            Me.m_uic = CType(uic, cUIContext)
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-#End Region ' UIC integration
 
 #Region " Ecopath integration "
 
@@ -176,78 +139,29 @@ Public Class cResiliencePlugin
 
 #End Region ' Ecosim integration
 
-#Region " UI integration "
-
-    Public ReadOnly Property ControlImage As System.Drawing.Image _
-        Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property Model As cResilienceModel
         Get
-            Return Nothing
+            Return Me.m_model
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+    Public Overrides ReadOnly Property Name As String
         Get
-            Return My.Resources.RESIL_CAPTION
+            Return "ndResilience-00-Core"
         End Get
     End Property
 
-    Public ReadOnly Property ControlTooltipText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
-        Get
-            Return ""
-        End Get
-    End Property
-
-    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
-        Get
-            Return eCoreExecutionState.EcosimCompleted
-        End Get
-    End Property
-
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
-        Try
-            If (Not Me.HasUI()) Then
-                Me.m_frm = New frmResilience(Me.m_uic, Me.m_model)
-                frmPlugin = Me.m_frm
-            End If
-        Catch ex As Exception
-
-        End Try
+    Public Overrides Sub Initialize(core As Object)
+        MyBase.Initialize(core)
+        Me.m_model = New cResilienceModel(Me.m_core)
     End Sub
 
-    Public ReadOnly Property NavigationTreeItemLocation As String _
-        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
-        Get
-            Return "ndTimeDynamic\ndEcosimOutput"
-        End Get
-    End Property
+    Protected Overrides Sub Dispose()
 
-#End Region ' UI integration
-
-#Region " Disposal "
-
-    Public Sub Dispose() Implements EwEPlugin.IDisposedPlugin.Dispose
-
-        If (Me.m_frm IsNot Nothing) Then
-            Me.m_frm.Dispose()
-            Me.m_frm = Nothing
-        End If
+        Me.m_model.Dispose()
         Me.m_model = Nothing
+        MyBase.Dispose()
 
     End Sub
-
-#End Region ' Disposal
-
-#Region " Internals "
-
-    Private Function HasUI() As Boolean
-        If (Me.m_frm Is Nothing) Then Return False
-        Return (Not Me.m_frm.IsDisposed)
-    End Function
-
-#End Region ' Internals
 
 End Class

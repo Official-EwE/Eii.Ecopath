@@ -1,4 +1,21 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmConfig
     Inherits System.Windows.Forms.Form
 
@@ -73,7 +90,7 @@ Partial Class frmConfig
         '
         'm_pbIPN
         '
-        Me.m_pbIPN.BackgroundImage = My.Resources.EscudoIPN1
+        Me.m_pbIPN.BackgroundImage = My.Resources.IPN_color
         resources.ApplyResources(Me.m_pbIPN, "m_pbIPN")
         Me.m_pbIPN.Name = "m_pbIPN"
         Me.m_pbIPN.TabStop = False
@@ -97,7 +114,7 @@ Partial Class frmConfig
         '
         'm_pbAuci
         '
-        Me.m_pbAuci.BackgroundImage = My.Resources.AUCI
+        Me.m_pbAuci.BackgroundImage = Nothing
         resources.ApplyResources(Me.m_pbAuci, "m_pbAuci")
         Me.m_pbAuci.Name = "m_pbAuci"
         Me.m_pbAuci.TabStop = False

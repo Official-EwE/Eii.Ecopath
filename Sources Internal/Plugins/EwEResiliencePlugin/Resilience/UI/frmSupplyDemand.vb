@@ -28,7 +28,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
-Public Class frmResilience
+Public Class frmSupplyDemand
 
 #Region " Internal vars "
 
