@@ -306,6 +306,8 @@ Namespace FishingPolicy
                 Me.m_pluginManager.SearchIterationsStarting()
             End If
 
+            Me.m_ecosim.bStopRunning = False
+
             'get the base values used by FUNC to tell the change between the current run and the base run
             m_ecosim.RunModelValue(TotalTime, m_searchData.Frates, nBlocksUsed)
 
@@ -608,15 +610,13 @@ Namespace FishingPolicy
                 Dim i As Integer, Estfn As Double
 
                 'do not mess with the following parameters-used by Fletch
-                StepSize = 0.001
-                'eps = 0.000001
-                eps = 0.1
+                StepSize = 0.0001
+                eps = 0.000001
                 Gtol = 0.0000000001
                 mode = 1
-                maxfn = MaxNoOfIterations    '200
+                maxfn = MaxNoOfIterations
                 iprint = 1
                 For i = 1 To X.Length - 1 : Xm(i) = X(i) : Next
-                '      iprintresid = 0
 
                 Estfn = FUNC(X, n)
                 printstats(0.0, 0, 0, Estfn, n, X, G)
@@ -859,7 +859,10 @@ pte:        ' continue
             Alpha = 2 * Alpha
             GoTo 32
 40:         '    continue
-            If (Alpha < aeps) Then GoTo 92
+            If (Alpha < aeps) Then
+                GoTo 92
+            End If
+
             If (ifn >= maxfn) Then GoTo 90
             Alpha = 0.5 * Alpha
 
@@ -886,7 +889,10 @@ pte:        ' continue
             intt = 1
             GoTo 30
 49:         '  continue
-            If (tot < aeps) Then GoTo 92
+            If (tot < aeps) Then
+                GoTo 92
+            End If
+
 50:         '   continue
             Alpha = tot
 
