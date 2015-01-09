@@ -197,6 +197,7 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Public Function GetControlHandlerType(ByVal obj As Object) As Type
             Try
+                Debug.Assert(obj IsNot Nothing)
                 Return GetControlHandlerType(obj.GetType().ToString())
             Catch ex As Exception
                 ' Kaboom

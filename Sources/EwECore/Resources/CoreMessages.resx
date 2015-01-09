@@ -1261,4 +1261,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="ADAPTER_RELATIVE_SCALAR_TEXT" xml:space="preserve">
     <value>Relative scalar</value>
   </data>
+  <data name="STATUS_PLUGIN_USERDISABLED" xml:space="preserve">
+    <value>Plug-in {0} disabled from loading via user settings</value>
+    <comment>{0}=plugin module name</comment>
+  </data>
 </root>

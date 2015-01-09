@@ -56,7 +56,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialScalarDataAdapter.Initialize"/>.
         ''' -------------------------------------------------------------------
-        Friend Overrides Sub Initialize()
+        Public Overrides Sub Initialize()
             MyBase.Initialize()
             Me.m_spaceData = Me.m_core.m_EcoSpaceData
         End Sub

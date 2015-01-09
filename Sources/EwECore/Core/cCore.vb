@@ -13846,14 +13846,22 @@ Public Class cCore
         'RemoveHandler paRemoved.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
     End Sub
 
-    Private Sub OnPluginAssemblyStateChanged(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
+    Private Sub m_pluginManager_AssemblyUserDisabled(strPluginName As String) _
+        Handles m_pluginManager.AssemblyUserDisabled
 
-        If (pa Is Nothing) Then Return
-        If (pa.Plugins(GetType(IEconomicData)) IsNot Nothing) Then
-            Me.OnEconomicDataPluginEnabled()
-        End If
+        m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_USERDISABLED, Path.GetFileNameWithoutExtension(strPluginName)), _
+                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
 
     End Sub
+
+    'Private Sub OnPluginAssemblyStateChanged(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
+
+    '    If (pa Is Nothing) Then Return
+    '    If (pa.Plugins(GetType(IEconomicData)) IsNot Nothing) Then
+    '        Me.OnEconomicDataPluginEnabled()
+    '    End If
+
+    'End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
