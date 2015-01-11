@@ -46,7 +46,7 @@ Partial Class frmResilience
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plGraph = New System.Windows.Forms.Panel()
         Me.m_zgc = New ZedGraph.ZedGraphControl()
-        Me.m_tsMain = New cEwEToolstrip()
+        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnAutosave = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnSaveNow = New System.Windows.Forms.ToolStripButton()
         Me.m_tlpContent.SuspendLayout()
@@ -81,9 +81,11 @@ Partial Class frmResilience
         '
         'm_tsMain
         '
+        Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAutosave, Me.m_tsbnSaveNow})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
+        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'm_tsbnAutosave
         '

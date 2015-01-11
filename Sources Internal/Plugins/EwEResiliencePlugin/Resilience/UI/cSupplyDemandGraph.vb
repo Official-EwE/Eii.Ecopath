@@ -192,8 +192,6 @@ Public Class cSupplyDemandGraph
 
         pane.Title.Text = cStringUtils.ToSentenceCase(cStringUtils.Localize(My.Resources.RESIL_LABEL_CAPTION, strScale, t, sg.FormatNumber(b)))
 
-        ' ToDo: fix axis ranges for the plot
-
         ' Done
         Me.RescaleAndRedraw()
 

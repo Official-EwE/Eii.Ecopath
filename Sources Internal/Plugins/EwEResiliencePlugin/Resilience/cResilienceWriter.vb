@@ -39,12 +39,16 @@ Public Class cResilienceWriter
     ''' <summary>Resilience data to use</summary>
     Private m_data As cResilienceData = Nothing
 
+    Private m_lstrErrors As New List(Of String)
+
     Public Sub New(core As cCore, data As cResilienceData)
         Me.m_core = core
         Me.m_data = data
     End Sub
 
     Public Function Write() As Boolean
+
+        Me.m_lstrErrors.Clear()
 
         Dim msg As cMessage = Nothing
         Dim bSuccess As Boolean = Me.SaveSupplyDemand(True) And _
@@ -59,6 +63,9 @@ Public Class cResilienceWriter
         Else
             msg = New cMessage(String.Format(My.Resources.RESIL_STATUS_SAVE_FAILED, Me.OutputPath), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+            For Each str As String In Me.m_lstrErrors
+                msg.AddVariable(New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+            Next
         End If
         Me.m_core.Messages.SendMessage(msg)
 
@@ -76,18 +83,18 @@ Public Class cResilienceWriter
 
     Private Function SaveSupplyDemand(ByVal bAnnual As Boolean) As Boolean
 
-        Dim sw As StreamWriter = Nothing
+        Dim sw As StreamWriter = Me.Writer(Me.SupplyDemandFileName(Me.OutputPath, bAnnual))
         Dim grp As cEcoPathGroupInput = Nothing
         Dim n As Integer = 0
+        Dim t0 As Integer = 0
 
-        Try
-            sw = New StreamWriter(Me.SupplyDemandFileName(Me.OutputPath, bAnnual))
-        Catch ex As Exception
-            ' ToDo: send failure message
-            Return False
-        End Try
+        If (sw Is Nothing) Then Return False
 
         If (Me.m_core.SaveWithFileHeader) Then sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+
+        If (bAnnual) Then
+            If (Me.m_core.EcosimFirstYear > 0) Then t0 = Me.m_core.EcosimFirstYear - 1
+        End If
 
         ' Header
         sw.Write(cSystemUtils.IIF(bAnnual, "Year", "Time"))
@@ -102,8 +109,8 @@ Public Class cResilienceWriter
 
         ' Body
         n = cSystemUtils.IIF(bAnnual, Me.m_data.NumYears, Me.m_data.NumTimeSteps)
-        For t As Integer = 0 To n - 1
-            sw.Write(cStringUtils.ToCSVField(t))
+        For t As Integer = 1 To n
+            sw.Write(cStringUtils.ToCSVField(t0 + t))
             For i As Integer = 1 To Me.m_core.nGroups
                 grp = Me.m_core.EcoPathGroupInputs(i)
                 If grp.IsConsumer Then
@@ -126,7 +133,7 @@ Public Class cResilienceWriter
     End Function
 
     Private Function SupplyDemandFileName(ByVal strPath As String, _
-                                       ByVal bSaveAnnual As Boolean) As String
+                                          ByVal bSaveAnnual As Boolean) As String
 
         Dim strFileName As String = ""
         Dim strExt As String = ".csv"
@@ -143,16 +150,16 @@ Public Class cResilienceWriter
 
     Private Function SaveResilience(ByVal bAnnual As Boolean) As Boolean
 
-        Dim sw As StreamWriter = Nothing
+        Dim sw As StreamWriter = Me.Writer(Me.ResilienceFileName(Me.OutputPath, bAnnual))
         Dim grp As cEcoPathGroupInput = Nothing
         Dim n As Integer = 0
+        Dim t0 As Integer = 0
 
-        Try
-            sw = New StreamWriter(Me.ResilienceFileName(Me.OutputPath, bAnnual))
-        Catch ex As Exception
-            ' ToDo: send failure message
-            Return False
-        End Try
+        If (bAnnual) Then
+            If (Me.m_core.EcosimFirstYear > 0) Then t0 = Me.m_core.EcosimFirstYear - 1
+        End If
+
+        If (sw Is Nothing) Then Return False
 
         If (Me.m_core.SaveWithFileHeader) Then sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
 
@@ -162,8 +169,8 @@ Public Class cResilienceWriter
 
         ' Body
         n = cSystemUtils.IIF(bAnnual, Me.m_data.NumYears, Me.m_data.NumTimeSteps)
-        For t As Integer = 0 To n - 1
-            sw.Write(cStringUtils.ToCSVField(t))
+        For t As Integer = 1 To n
+            sw.Write(cStringUtils.ToCSVField(t0 + t))
             If bAnnual Then
                 sw.Write("," & cStringUtils.ToCSVField(Me.m_data.ResilienceAtY(t)))
             Else
@@ -191,6 +198,24 @@ Public Class cResilienceWriter
         End If
 
         Return Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
+
+    End Function
+
+    Private Function Writer(ByVal strFile As String) As StreamWriter
+
+        Dim strPath As String = Path.GetDirectoryName(strFile)
+
+        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
+            Me.m_lstrErrors.Add(cStringUtils.Localize(My.Resources.ERROR_NODIR, strPath))
+            Return Nothing
+        End If
+
+        Try
+            Return New StreamWriter(strFile)
+        Catch ex As Exception
+            Me.m_lstrErrors.Add(ex.Message)
+        End Try
+        Return Nothing
 
     End Function
 

@@ -73,7 +73,7 @@ Public Class cResilienceGraph
         Me.m_data = data
 
         Me.Configure(strTitle)
-        Me.ConfigurePane(My.Resources.RESIL_LABEL_CAPTION, "Time (year)", "Resilience", False)
+        Me.ConfigurePane("Resilience", "Time (year)", "Resilience", False)
         Me.AutoscalePane() = True
         Me.ShowPointValue = True
 
@@ -105,14 +105,14 @@ Public Class cResilienceGraph
 
         pane.CurveList.Clear()
         ppl = New PointPairList()
-        For i As Integer = 0 To Me.m_data.NumTimeSteps
+        For i As Integer = 1 To Me.m_data.NumTimeSteps
             ppl.Add(i / 12, Me.m_data.ResilienceAtT(i))
         Next
         li = New ZedGraph.LineItem("Resilience (month)", ppl, Color.Black, SymbolType.None)
         pane.CurveList.Add(li)
 
         ppl = New PointPairList()
-        For i As Integer = 0 To Me.m_data.NumYears - 1
+        For i As Integer = 1 To Me.m_data.NumYears
             ppl.Add(i, Me.m_data.ResilienceAtY(i))
         Next
         li = New ZedGraph.LineItem("Resilience (year)", ppl, Color.Blue, SymbolType.Circle)

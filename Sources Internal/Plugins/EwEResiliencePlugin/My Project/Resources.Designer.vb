@@ -117,6 +117,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Folder {0} cannot be created.
+        '''</summary>
+        Friend ReadOnly Property ERROR_NODIR() As String
+            Get
+                Return ResourceManager.GetString("ERROR_NODIR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property FixedAxesHS() As System.Drawing.Bitmap
