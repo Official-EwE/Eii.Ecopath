@@ -27,6 +27,11 @@ Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Writer that saves supply, demand, and resilience data to csv file.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cResilienceWriter
 
     ''' <summary>EwE core to use</summary>
@@ -39,10 +44,13 @@ Public Class cResilienceWriter
         Me.m_data = data
     End Sub
 
-    Public Function SaveDataToFile() As Boolean
+    Public Function Write() As Boolean
 
         Dim msg As cMessage = Nothing
-        Dim bSuccess As Boolean = Me.SaveDataToFile(True) And Me.SaveDataToFile(False)
+        Dim bSuccess As Boolean = Me.SaveSupplyDemand(True) And _
+                                  Me.SaveSupplyDemand(False) And _
+                                  Me.SaveResilience(True) And _
+                                  Me.SaveResilience(False)
 
         If (bSuccess) Then
             msg = New cMessage(String.Format(My.Resources.RESIL_STATUS_SAVE_SUCCESS, Me.OutputPath), _
@@ -60,14 +68,20 @@ Public Class cResilienceWriter
 
 #Region " Internals "
 
-    Private Function SaveDataToFile(ByVal bAnnual As Boolean) As Boolean
+    Private ReadOnly Property OutputPath As String
+        Get
+            Return Me.m_core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim)
+        End Get
+    End Property
+
+    Private Function SaveSupplyDemand(ByVal bAnnual As Boolean) As Boolean
 
         Dim sw As StreamWriter = Nothing
         Dim grp As cEcoPathGroupInput = Nothing
         Dim n As Integer = 0
 
         Try
-            sw = New StreamWriter(Me.GetOutputFileName(Me.OutputPath, bAnnual))
+            sw = New StreamWriter(Me.SupplyDemandFileName(Me.OutputPath, bAnnual))
         Catch ex As Exception
             ' ToDo: send failure message
             Return False
@@ -111,14 +125,61 @@ Public Class cResilienceWriter
         Return True
     End Function
 
-    Private ReadOnly Property OutputPath As String
-        Get
-            Return Me.m_core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim)
-        End Get
-    End Property
-
-    Private Function GetOutputFileName(ByVal strPath As String, _
+    Private Function SupplyDemandFileName(ByVal strPath As String, _
                                        ByVal bSaveAnnual As Boolean) As String
+
+        Dim strFileName As String = ""
+        Dim strExt As String = ".csv"
+
+        If bSaveAnnual Then
+            strFileName = "SupplyDemand_annual"
+        Else
+            strFileName = "SupplyDemand_monthly"
+        End If
+
+        Return Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
+
+    End Function
+
+    Private Function SaveResilience(ByVal bAnnual As Boolean) As Boolean
+
+        Dim sw As StreamWriter = Nothing
+        Dim grp As cEcoPathGroupInput = Nothing
+        Dim n As Integer = 0
+
+        Try
+            sw = New StreamWriter(Me.ResilienceFileName(Me.OutputPath, bAnnual))
+        Catch ex As Exception
+            ' ToDo: send failure message
+            Return False
+        End Try
+
+        If (Me.m_core.SaveWithFileHeader) Then sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+
+        ' Header
+        sw.Write(cSystemUtils.IIF(bAnnual, "Year", "Time"))
+        sw.WriteLine(",Resilience")
+
+        ' Body
+        n = cSystemUtils.IIF(bAnnual, Me.m_data.NumYears, Me.m_data.NumTimeSteps)
+        For t As Integer = 0 To n - 1
+            sw.Write(cStringUtils.ToCSVField(t))
+            If bAnnual Then
+                sw.Write("," & cStringUtils.ToCSVField(Me.m_data.ResilienceAtY(t)))
+            Else
+                sw.Write("," & cStringUtils.ToCSVField(Me.m_data.ResilienceAtT(t)))
+            End If
+            sw.WriteLine()
+        Next t
+
+        sw.Flush()
+        sw.Close()
+
+        Return True
+    End Function
+
+    Private Function ResilienceFileName(ByVal strPath As String, _
+                                        ByVal bSaveAnnual As Boolean) As String
 
         Dim strFileName As String = ""
         Dim strExt As String = ".csv"

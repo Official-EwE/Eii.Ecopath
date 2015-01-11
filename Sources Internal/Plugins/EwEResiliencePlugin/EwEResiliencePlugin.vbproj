@@ -146,13 +146,14 @@
     <Compile Include="Resilience\Plugin points\cNavTreeRoot.vb" />
     <Compile Include="Resilience\Plugin points\cNavTreeSupplyDemand.vb" />
     <Compile Include="Resilience\Plugin points\cResiliencePluginBase.vb" />
+    <Compile Include="Resilience\UI\cResilienceGraph.vb" />
     <Compile Include="Resilience\UI\frmResilience.Designer.vb">
       <DependentUpon>frmResilience.vb</DependentUpon>
     </Compile>
     <Compile Include="Resilience\UI\frmResilience.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Resilience\UI\cResilienceGraph.vb" />
+    <Compile Include="Resilience\UI\cSupplyDemandGraph.vb" />
     <Compile Include="Resilience\UI\frmAcknowledgements.Designer.vb">
       <DependentUpon>frmAcknowledgements.vb</DependentUpon>
     </Compile>
@@ -228,6 +229,7 @@
   <ItemGroup>
     <Content Include="Resources\cicimar-color.png" />
     <Content Include="Resources\CONACYT.png" />
+    <Content Include="Resources\FixedAxesHS.png" />
     <Content Include="Resources\IPN-color.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

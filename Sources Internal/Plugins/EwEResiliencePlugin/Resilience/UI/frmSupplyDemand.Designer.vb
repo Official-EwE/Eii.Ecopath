@@ -22,7 +22,6 @@ Partial Class frmSupplyDemand
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -39,21 +38,20 @@ Partial Class frmSupplyDemand
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSupplyDemand))
-        Me.m_cbAutosave = New System.Windows.Forms.CheckBox()
         Me.m_zgc = New ZedGraph.ZedGraphControl()
         Me.m_slider = New ScientificInterfaceShared.Controls.ucSlider()
+        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tsbnAutosave = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnSaveNow = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnDynamicScales = New System.Windows.Forms.ToolStripButton()
+        Me.m_lblTime = New System.Windows.Forms.Label()
         Me.m_cbAnnual = New System.Windows.Forms.CheckBox()
+        Me.m_tsMain.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'm_cbAutosave
-        '
-        resources.ApplyResources(Me.m_cbAutosave, "m_cbAutosave")
-        Me.m_cbAutosave.Name = "m_cbAutosave"
-        Me.m_cbAutosave.UseVisualStyleBackColor = True
         '
         'm_zgc
         '
@@ -76,6 +74,41 @@ Partial Class frmSupplyDemand
         Me.m_slider.Name = "m_slider"
         Me.m_slider.NumKnobs = 1
         '
+        'm_tsMain
+        '
+        Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAutosave, Me.m_tsbnSaveNow, Me.ToolStripSeparator1, Me.m_tsbnDynamicScales})
+        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+        Me.m_tsMain.Name = "m_tsMain"
+        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        '
+        'm_tsbnAutosave
+        '
+        Me.m_tsbnAutosave.CheckOnClick = True
+        resources.ApplyResources(Me.m_tsbnAutosave, "m_tsbnAutosave")
+        Me.m_tsbnAutosave.Name = "m_tsbnAutosave"
+        '
+        'm_tsbnSaveNow
+        '
+        resources.ApplyResources(Me.m_tsbnSaveNow, "m_tsbnSaveNow")
+        Me.m_tsbnSaveNow.Name = "m_tsbnSaveNow"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+        '
+        'm_tsbnDynamicScales
+        '
+        Me.m_tsbnDynamicScales.CheckOnClick = True
+        resources.ApplyResources(Me.m_tsbnDynamicScales, "m_tsbnDynamicScales")
+        Me.m_tsbnDynamicScales.Name = "m_tsbnDynamicScales"
+        '
+        'm_lblTime
+        '
+        resources.ApplyResources(Me.m_lblTime, "m_lblTime")
+        Me.m_lblTime.Name = "m_lblTime"
+        '
         'm_cbAnnual
         '
         resources.ApplyResources(Me.m_cbAnnual, "m_cbAnnual")
@@ -87,17 +120,25 @@ Partial Class frmSupplyDemand
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_slider)
         Me.Controls.Add(Me.m_cbAnnual)
+        Me.Controls.Add(Me.m_lblTime)
+        Me.Controls.Add(Me.m_tsMain)
+        Me.Controls.Add(Me.m_slider)
         Me.Controls.Add(Me.m_zgc)
-        Me.Controls.Add(Me.m_cbAutosave)
         Me.Name = "frmSupplyDemand"
+        Me.m_tsMain.ResumeLayout(False)
+        Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents m_cbAutosave As System.Windows.Forms.CheckBox
     Private WithEvents m_zgc As ZedGraph.ZedGraphControl
     Private WithEvents m_slider As ScientificInterfaceShared.Controls.ucSlider
-    Private WithEvents m_cbAnnual As System.Windows.Forms.CheckBox
+    Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
+    Private WithEvents m_tsbnAutosave As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnSaveNow As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbnDynamicScales As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_lblTime As System.Windows.Forms.Label
+    Friend WithEvents m_cbAnnual As System.Windows.Forms.CheckBox
 End Class

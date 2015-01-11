@@ -42,4 +42,8 @@ Public Class cNavTreeResilience
         End Get
     End Property
 
+    Protected Overrides Function GetUI() As System.Windows.Forms.Form
+        Return New frmResilience(Me.m_uic, cResiliencePlugin.GetInstance().Model)
+    End Function
+
 End Class

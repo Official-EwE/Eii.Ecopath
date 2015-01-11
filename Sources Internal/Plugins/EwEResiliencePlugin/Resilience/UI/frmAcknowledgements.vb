@@ -41,7 +41,9 @@ Public Class frmAcknowledgements
         cmd.AddControl(Me.m_pbIPN, "http://www.ipn.mx")
         cmd.AddControl(Me.m_pbCicimar, "http://www.cicimar.ipn.mx")
         cmd.AddControl(Me.m_pbConacyt, "http://www.conacyt.mx")
-        ' cmd.AddControl(Me.m_rtbAcknowledgements, "mailto:mzetina@ipn.mx")
+
+        ' No command handler for label controls
+        'cmd.AddControl(Me.m_llAcknowledgements, "mailto:mzetina@ipn.mx")
 
     End Sub
 
@@ -56,6 +58,17 @@ Public Class frmAcknowledgements
 
         MyBase.OnFormClosed(e)
 
+    End Sub
+
+    Private Sub OnContact(sender As Object, e As System.EventArgs) _
+        Handles m_lblAcknowledgements.Click
+
+        Try
+            Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke("mailto:mzetina@ipn.mx")
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 End Class

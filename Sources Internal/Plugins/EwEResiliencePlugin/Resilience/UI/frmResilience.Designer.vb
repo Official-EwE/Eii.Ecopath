@@ -41,22 +41,31 @@ Partial Class frmResilience
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmResilience))
-        Me.m_cbAutosave = New System.Windows.Forms.CheckBox()
-        Me.m_zgc = New ZedGraph.ZedGraphControl()
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plGraph = New System.Windows.Forms.Panel()
-        Me.m_slider = New ScientificInterfaceShared.Controls.ucSlider()
-        Me.m_cbAnnual = New System.Windows.Forms.CheckBox()
+        Me.m_zgc = New ZedGraph.ZedGraphControl()
+        Me.m_tsMain = New cEwEToolstrip()
+        Me.m_tsbnAutosave = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnSaveNow = New System.Windows.Forms.ToolStripButton()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plGraph.SuspendLayout()
+        Me.m_tsMain.SuspendLayout()
         Me.SuspendLayout()
         '
-        'm_cbAutosave
+        'm_tlpContent
         '
-        resources.ApplyResources(Me.m_cbAutosave, "m_cbAutosave")
-        Me.m_cbAutosave.Name = "m_cbAutosave"
-        Me.m_cbAutosave.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
+        Me.m_tlpContent.Controls.Add(Me.m_plGraph, 0, 0)
+        Me.m_tlpContent.Name = "m_tlpContent"
+        '
+        'm_plGraph
+        '
+        Me.m_plGraph.Controls.Add(Me.m_zgc)
+        Me.m_plGraph.Controls.Add(Me.m_tsMain)
+        resources.ApplyResources(Me.m_plGraph, "m_plGraph")
+        Me.m_plGraph.Name = "m_plGraph"
         '
         'm_zgc
         '
@@ -70,35 +79,22 @@ Partial Class frmResilience
         Me.m_zgc.ScrollMinY = 0.0R
         Me.m_zgc.ScrollMinY2 = 0.0R
         '
-        'm_tlpContent
+        'm_tsMain
         '
-        resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
-        Me.m_tlpContent.Controls.Add(Me.m_plGraph, 0, 0)
-        Me.m_tlpContent.Name = "m_tlpContent"
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAutosave, Me.m_tsbnSaveNow})
+        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+        Me.m_tsMain.Name = "m_tsMain"
         '
-        'm_plGraph
+        'm_tsbnAutosave
         '
-        Me.m_plGraph.Controls.Add(Me.m_slider)
-        Me.m_plGraph.Controls.Add(Me.m_zgc)
-        Me.m_plGraph.Controls.Add(Me.m_cbAnnual)
-        Me.m_plGraph.Controls.Add(Me.m_cbAutosave)
-        resources.ApplyResources(Me.m_plGraph, "m_plGraph")
-        Me.m_plGraph.Name = "m_plGraph"
+        Me.m_tsbnAutosave.CheckOnClick = True
+        resources.ApplyResources(Me.m_tsbnAutosave, "m_tsbnAutosave")
+        Me.m_tsbnAutosave.Name = "m_tsbnAutosave"
         '
-        'm_slider
+        'm_tsbnSaveNow
         '
-        resources.ApplyResources(Me.m_slider, "m_slider")
-        Me.m_slider.CurrentKnob = 0
-        Me.m_slider.Maximum = 100
-        Me.m_slider.Minimum = 0
-        Me.m_slider.Name = "m_slider"
-        Me.m_slider.NumKnobs = 1
-        '
-        'm_cbAnnual
-        '
-        resources.ApplyResources(Me.m_cbAnnual, "m_cbAnnual")
-        Me.m_cbAnnual.Name = "m_cbAnnual"
-        Me.m_cbAnnual.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_tsbnSaveNow, "m_tsbnSaveNow")
+        Me.m_tsbnSaveNow.Name = "m_tsbnSaveNow"
         '
         'frmResilience
         '
@@ -110,13 +106,15 @@ Partial Class frmResilience
         Me.m_tlpContent.ResumeLayout(False)
         Me.m_plGraph.ResumeLayout(False)
         Me.m_plGraph.PerformLayout()
+        Me.m_tsMain.ResumeLayout(False)
+        Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents m_cbAutosave As System.Windows.Forms.CheckBox
-    Private WithEvents m_zgc As ZedGraph.ZedGraphControl
     Private WithEvents m_plGraph As System.Windows.Forms.Panel
     Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_slider As ScientificInterfaceShared.Controls.ucSlider
-    Private WithEvents m_cbAnnual As System.Windows.Forms.CheckBox
+    Private WithEvents m_zgc As ZedGraph.ZedGraphControl
+    Private WithEvents m_tsMain As cEwEToolstrip
+    Private WithEvents m_tsbnAutosave As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnSaveNow As System.Windows.Forms.ToolStripButton
 End Class

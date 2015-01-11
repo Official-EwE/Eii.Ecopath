@@ -33,7 +33,7 @@ Public Class frmSupplyDemand
 #Region " Internal vars "
 
     Private m_model As cResilienceModel = Nothing
-    Private m_graph As cResilienceGraph = Nothing
+    Private m_graph As cSupplyDemandGraph = Nothing
 
 #End Region ' Internal vars
 
@@ -43,7 +43,8 @@ Public Class frmSupplyDemand
         Me.m_model = model
         Me.InitializeComponent()
 
-        Me.m_graph = New cResilienceGraph()
+        ' Graph initialized here instead of in OnLoad to prevent form rescale issues in OnLoad
+        Me.m_graph = New cSupplyDemandGraph()
         Me.m_graph.Attach(Me.UIContext, Me.m_zgc, Me.m_model.Data, "")
 
     End Sub
@@ -55,12 +56,13 @@ Public Class frmSupplyDemand
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Me.Text = My.Resources.RESIL_CAPTION
-
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
         AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
 
-        Me.m_cbAutosave.Checked = My.Settings.ResilAutosave
+        Me.m_tsbnAutosave.Image = SharedResources.saveOutputHS
+        Me.m_tsbnSaveNow.Image = SharedResources.saveHS
+        Me.m_tsbnDynamicScales.Image = My.Resources.FixedAxesHS
+
         Me.m_cbAnnual.Checked = My.Settings.ResilShowAnnual
 
         Me.UpdateControls()
@@ -73,7 +75,7 @@ Public Class frmSupplyDemand
         RemoveHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
         Me.m_graph.Detach()
 
-        My.Settings.ResilAutosave = Me.m_cbAutosave.Checked
+        My.Settings.ResilAutosave = Me.m_tsbnAutosave.Checked
         My.Settings.ResilShowAnnual = Me.m_cbAnnual.Checked
         My.Settings.Save()
 
@@ -110,7 +112,7 @@ Public Class frmSupplyDemand
             Me.m_cbAnnual.Enabled = False
         End If
 
-        Me.m_cbAutosave.Checked = My.Settings.ResilAutosave
+        Me.m_tsbnAutosave.Checked = My.Settings.ResilAutosave
 
         MyBase.UpdateControls()
     End Sub
@@ -119,6 +121,7 @@ Public Class frmSupplyDemand
 
         Me.m_graph.Time = Me.m_slider.Value
         Me.m_graph.Annual = Me.m_cbAnnual.Checked
+        Me.m_lblTime.Text = CStr(Me.m_slider.Value)
 
         Me.m_graph.Refresh()
 
@@ -155,12 +158,32 @@ Public Class frmSupplyDemand
     End Sub
 
     Private Sub OnToggleAutosave(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbAutosave.CheckedChanged
+        Handles m_tsbnAutosave.Click
         Try
-            My.Settings.ResilAutosave = Me.m_cbAutosave.Checked
+            My.Settings.ResilAutosave = Me.m_tsbnAutosave.Checked
             Me.Core.OnSettingsChanged()
         Catch ex As Exception
             Debug.Assert(False)
+        End Try
+    End Sub
+
+    Private Sub OnToggleDynamicAxis(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnDynamicScales.Click
+        Try
+            Me.m_graph.FixedScale = (Me.m_tsbnDynamicScales.Checked = False)
+            Me.UpdateGraph()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnSaveNow(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnSaveNow.Click
+        Try
+            Dim writer As New cResilienceWriter(Me.UIContext.Core, Me.m_model.Data)
+            writer.Write()
+        Catch ex As Exception
+
         End Try
     End Sub
 

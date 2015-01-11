@@ -264,45 +264,6 @@
   <data name="m_tlpSonsors.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbIPN" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbCicimar" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbConacyt" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333,Absolute,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="m_rtbAcknowledgements.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_rtbAcknowledgements.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 12</value>
-  </data>
-  <data name="m_rtbAcknowledgements.Size" type="System.Drawing.Size, System.Drawing">
-    <value>620, 204</value>
-  </data>
-  <data name="m_rtbAcknowledgements.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_rtbAcknowledgements.Text" xml:space="preserve">
-    <value>Acknowledgments:
-
-Instituto Politécnico Nacional -Centro Interdisciplinario de Ciencias Marinas (IPN-CICIMAR)
-Consejo Nacional de Ciencia y Tecnología (CONACyT)
-
-Reference:
-Arreguı́n-Sánchez, F., 2014. Measuring resilience in aquatic trophic networks from supply-demand of energy relationships. Ecological Modelling 272, 271-276.
-
-Contact:
-Dr. Manuel J. Zetina-Rejon, mzetina@ipn.mx
-
-Project grant:
-CONACyT project 155900 &amp; grant 206762</value>
-  </data>
-  <data name="&gt;&gt;m_rtbAcknowledgements.Name" xml:space="preserve">
-    <value>m_rtbAcknowledgements</value>
-  </data>
-  <data name="&gt;&gt;m_rtbAcknowledgements.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rtbAcknowledgements.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rtbAcknowledgements.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_hdrSponsors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -325,12 +286,54 @@ CONACyT project 155900 &amp; grant 206762</value>
     <value>m_hdrSponsors</value>
   </data>
   <data name="&gt;&gt;m_hdrSponsors.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11700.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11709.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSponsors.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrSponsors.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lblAcknowledgements.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_lblAcknowledgements.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
+    <value>376, 14</value>
+  </data>
+  <data name="m_lblAcknowledgements.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 9</value>
+  </data>
+  <data name="m_lblAcknowledgements.Size" type="System.Drawing.Size, System.Drawing">
+    <value>620, 210</value>
+  </data>
+  <data name="m_lblAcknowledgements.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_lblAcknowledgements.Text" xml:space="preserve">
+    <value>Acknowledgments:
+
+Instituto Politécnico Nacional -Centro Interdisciplinario de Ciencias Marinas (IPN-CICIMAR)
+Consejo Nacional de Ciencia y Tecnología (CONACyT)
+
+Reference:
+Arreguı́n-Sánchez, F., 2014. Measuring resilience in aquatic trophic networks from supply-demand of energy relationships. Ecological Modelling 272, 271-276.
+
+Contact:
+Dr. Manuel J. Zetina-Rejon, mzetina@ipn.mx
+
+Project grant:
+CONACyT project 155900 &amp; grant 206762</value>
+  </data>
+  <data name="&gt;&gt;m_lblAcknowledgements.Name" xml:space="preserve">
+    <value>m_lblAcknowledgements</value>
+  </data>
+  <data name="&gt;&gt;m_lblAcknowledgements.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblAcknowledgements.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblAcknowledgements.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -352,6 +355,6 @@ CONACyT project 155900 &amp; grant 206762</value>
     <value>frmAcknowledgements</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11700.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11709.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -46,8 +46,8 @@ Partial Class frmAcknowledgements
         Me.m_pbIPN = New System.Windows.Forms.PictureBox()
         Me.m_pbCicimar = New System.Windows.Forms.PictureBox()
         Me.m_pbConacyt = New System.Windows.Forms.PictureBox()
-        Me.m_rtbAcknowledgements = New System.Windows.Forms.RichTextBox()
         Me.m_hdrSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblAcknowledgements = New System.Windows.Forms.LinkLabel()
         Me.m_tlpSonsors.SuspendLayout()
         CType(Me.m_pbIPN, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbCicimar, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -84,13 +84,6 @@ Partial Class frmAcknowledgements
         Me.m_pbConacyt.Name = "m_pbConacyt"
         Me.m_pbConacyt.TabStop = False
         '
-        'm_rtbAcknowledgements
-        '
-        resources.ApplyResources(Me.m_rtbAcknowledgements, "m_rtbAcknowledgements")
-        Me.m_rtbAcknowledgements.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.m_rtbAcknowledgements.Name = "m_rtbAcknowledgements"
-        Me.m_rtbAcknowledgements.ReadOnly = True
-        '
         'm_hdrSponsors
         '
         resources.ApplyResources(Me.m_hdrSponsors, "m_hdrSponsors")
@@ -99,14 +92,23 @@ Partial Class frmAcknowledgements
         Me.m_hdrSponsors.IsCollapsed = False
         Me.m_hdrSponsors.Name = "m_hdrSponsors"
         '
+        'm_lblAcknowledgements
+        '
+        Me.m_lblAcknowledgements.ActiveLinkColor = System.Drawing.SystemColors.Highlight
+        resources.ApplyResources(Me.m_lblAcknowledgements, "m_lblAcknowledgements")
+        Me.m_lblAcknowledgements.LinkColor = System.Drawing.SystemColors.HotTrack
+        Me.m_lblAcknowledgements.Name = "m_lblAcknowledgements"
+        Me.m_lblAcknowledgements.TabStop = True
+        Me.m_lblAcknowledgements.UseCompatibleTextRendering = True
+        '
         'frmAcknowledgements
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_lblAcknowledgements)
         Me.Controls.Add(Me.m_hdrSponsors)
-        Me.Controls.Add(Me.m_rtbAcknowledgements)
         Me.Controls.Add(Me.m_tlpSonsors)
         Me.Name = "frmAcknowledgements"
         Me.ShowInTaskbar = False
@@ -122,6 +124,6 @@ Partial Class frmAcknowledgements
     Private WithEvents m_pbIPN As System.Windows.Forms.PictureBox
     Private WithEvents m_pbCicimar As System.Windows.Forms.PictureBox
     Private WithEvents m_pbConacyt As System.Windows.Forms.PictureBox
-    Private WithEvents m_rtbAcknowledgements As System.Windows.Forms.RichTextBox
     Private WithEvents m_hdrSponsors As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_lblAcknowledgements As System.Windows.Forms.LinkLabel
 End Class

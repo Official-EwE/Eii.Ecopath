@@ -38,13 +38,12 @@ Public Class frmResilience
 #End Region ' Internal vars
 
     Public Sub New(uic As cUIContext, model As cResilienceModel)
+
         MyBase.New()
+
         Me.UIContext = uic
         Me.m_model = model
         Me.InitializeComponent()
-
-        Me.m_graph = New cResilienceGraph()
-        Me.m_graph.Attach(Me.UIContext, Me.m_zgc, Me.m_model.Data, "")
 
     End Sub
 
@@ -55,13 +54,14 @@ Public Class frmResilience
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Me.Text = My.Resources.RESIL_CAPTION
-
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
         AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
 
-        Me.m_cbAutosave.Checked = My.Settings.ResilAutosave
-        Me.m_cbAnnual.Checked = My.Settings.ResilShowAnnual
+        Me.m_graph = New cResilienceGraph()
+        Me.m_graph.Attach(Me.UIContext, Me.m_zgc, Me.m_model.Data, "")
+
+        Me.m_tsbnAutosave.Image = SharedResources.saveOutputHS
+        Me.m_tsbnSaveNow.Image = SharedResources.saveHS
 
         Me.UpdateControls()
         Me.UpdateGraph()
@@ -73,8 +73,7 @@ Public Class frmResilience
         RemoveHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
         Me.m_graph.Detach()
 
-        My.Settings.ResilAutosave = Me.m_cbAutosave.Checked
-        My.Settings.ResilShowAnnual = Me.m_cbAnnual.Checked
+        My.Settings.ResilAutosave = Me.m_tsbnAutosave.Checked
         My.Settings.Save()
 
         MyBase.OnFormClosed(e)
@@ -95,30 +94,12 @@ Public Class frmResilience
 
     Protected Overrides Sub UpdateControls()
 
-        If Me.m_model.Data.Calculated Then
-            Me.m_slider.Enabled = True
-            Me.m_cbAnnual.Enabled = True
-            Me.m_slider.Minimum = 1
-
-            If Me.m_cbAnnual.Checked Then
-                Me.m_slider.Maximum = Me.m_model.Data.NumYears
-            Else
-                Me.m_slider.Maximum = Me.m_model.Data.NumTimeSteps
-            End If
-        Else
-            Me.m_slider.Enabled = False
-            Me.m_cbAnnual.Enabled = False
-        End If
-
-        Me.m_cbAutosave.Checked = My.Settings.ResilAutosave
-
+        Me.m_tsbnAutosave.Checked = My.Settings.ResilAutosave
         MyBase.UpdateControls()
+
     End Sub
 
     Private Sub UpdateGraph()
-
-        Me.m_graph.Time = Me.m_slider.Value
-        Me.m_graph.Annual = Me.m_cbAnnual.Checked
 
         Me.m_graph.Refresh()
 
@@ -143,33 +124,24 @@ Public Class frmResilience
         End Try
     End Sub
 
-    Private Sub OnToggleAnnual(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbAnnual.CheckedChanged
-        Try
-            Me.m_graph.Annual = Me.m_cbAnnual.Checked
-            Me.UpdateControls()
-            Me.UpdateGraph()
-        Catch ex As Exception
-            Debug.Assert(False)
-        End Try
-    End Sub
-
     Private Sub OnToggleAutosave(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbAutosave.CheckedChanged
+        Handles m_tsbnAutosave.Click
+
         Try
-            My.Settings.ResilAutosave = Me.m_cbAutosave.Checked
+            My.Settings.ResilAutosave = Me.m_tsbnAutosave.Checked
             Me.Core.OnSettingsChanged()
         Catch ex As Exception
             Debug.Assert(False)
         End Try
     End Sub
 
-    Private Sub OnTimeSliderChanged(sender As Object, e As System.EventArgs) _
-        Handles m_slider.ValueChanged
+    Private Sub OnSaveNow(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnSaveNow.Click
         Try
-            Me.UpdateGraph()
+            Dim writer As New cResilienceWriter(Me.UIContext.Core, Me.m_model.Data)
+            writer.Write()
         Catch ex As Exception
-            Debug.Assert(False)
+
         End Try
     End Sub
 

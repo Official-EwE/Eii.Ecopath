@@ -61,6 +61,8 @@ Public Class cResilienceData
         ReDim GroupSupplyAtY(nGroups, nYears + 1)
         ReDim GroupDemandAtT(nGroups, nTimes + 1)
         ReDim GroupDemandAtY(nGroups, nYears + 1)
+        ReDim ResilienceAtT(nTimes + 1)
+        ReDim ResilienceAtY(nYears + 1)
 
         Me.m_bCalculated = False
 
@@ -88,6 +90,8 @@ Public Class cResilienceData
     Public Property GroupSupplyAtY As Single(,)
     Public Property GroupDemandAtT As Single(,)
     Public Property GroupDemandAtY As Single(,)
+    Public Property ResilienceAtT As Single()
+    Public Property ResilienceAtY As Single()
 
     Public Function DataboundsT() As sBounds
         Return Me.m_boundsT
@@ -107,7 +111,7 @@ Public Class cResilienceData
         Return True
     End Function
 
-    Public Sub CalculateStats()
+    Public Sub CalculateBounds()
 
         Me.m_boundsT.Init()
         Me.m_boundsY.Init()

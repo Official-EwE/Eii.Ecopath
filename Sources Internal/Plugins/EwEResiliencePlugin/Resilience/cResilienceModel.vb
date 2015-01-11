@@ -63,10 +63,13 @@ Public Class cResilienceModel
             Me.m_data.GroupSupplyAtT(i, iTime - 1) = -cSystemUtils.IIF(simds.Eatenby(i) = 0, 0, CSng(Math.Log10(simds.Eatenby(i))))
             Me.m_data.GroupDemandAtT(i, iTime - 1) = cSystemUtils.IIF(simds.Eatenof(i) = 0, 0, CSng(Math.Log10(simds.Eatenof(i))))
 
+            Me.CalculateResilience(Me.m_data.GroupSupplyAtT, Me.m_data.GroupDemandAtT, iTime - 1, Me.m_data.ResilienceAtT)
+
             Try
                 If ((iTime Mod cCore.N_MONTHS) = 0) Then
                     Me.m_data.GroupSupplyAtY(i, iYear - 1) = -cSystemUtils.IIF(EatenByYear(i) = 0, 0, CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
                     Me.m_data.GroupDemandAtY(i, iYear - 1) = cSystemUtils.IIF(EatenOfYear(i) = 0, 0, CSng(Math.Log10(EatenOfYear(i) / cCore.N_MONTHS)))
+                    Me.CalculateResilience(Me.m_data.GroupSupplyAtY, Me.m_data.GroupDemandAtY, iYear - 1, Me.m_data.ResilienceAtY)
                     EatenOfYear(i) = 0
                     EatenByYear(i) = 0
                 End If
@@ -76,7 +79,7 @@ Public Class cResilienceModel
         Next
 
         If (iTime = simds.NTimes) Then
-            Me.m_data.CalculateStats()
+            Me.m_data.CalculateBounds()
         End If
 
         Me.RaiseUpdate(iTime, Me.m_data.Calculated)
@@ -97,6 +100,27 @@ Public Class cResilienceModel
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub CalculateResilience(ByVal Supply As Single(,), ByVal Demand As Single(,), ByVal Time As Integer, ByVal Resilience As Single())
+
+        'Dim sSlope As Single
+        'Dim sIntercept As Single
+
+        Dim s0 As Integer = 0
+        Dim s1, s2, t0, t1 As Double
+
+        For i As Integer = 1 To Me.m_core.nGroups
+            s0 += 1
+            s1 = s1 + Demand(i, Time)
+            s2 = s2 + Demand(i, Time) * Demand(i, Time)
+            t0 = t0 + Supply(i, Time)
+            t1 = t1 + Demand(i, Time) * Supply(i, Time)
+        Next
+
+        'sSlope = CSng((s0 * t1 - s1 * t0) / (s0 * s2 - s1 * s1))
+        Resilience(Time) = CSng((s2 * t0 - s1 * t1) / (s0 * s2 - s1 * s1))
+
     End Sub
 
 #End Region ' Internals

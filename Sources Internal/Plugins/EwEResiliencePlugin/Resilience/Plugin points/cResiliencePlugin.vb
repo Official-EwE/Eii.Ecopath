@@ -132,7 +132,7 @@ Public Class cResiliencePlugin
 
         If My.Settings.ResilAutosave Then
             Dim writer As New cResilienceWriter(Me.m_core, Me.m_model.Data)
-            writer.SaveDataToFile()
+            writer.Write()
         End If
 
     End Sub
