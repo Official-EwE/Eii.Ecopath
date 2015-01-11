@@ -3172,10 +3172,14 @@ Public Class frmEwE6
         Else
             ' #No: presume we're talking files here. Let the OS deal with it
             Try
-                ' Launch folder via Explorer
-                Process.Start("explorer.exe", strURL)
+                ' JS 10Jan15: Do not even use explorer; just use default protocol handlers
+                'Process.Start("explorer.exe", strURL)
+                System.Diagnostics.Process.Start(strURL)
             Catch ex As Exception
-                ' No need to panic
+                ' Failed to launch
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SHELL_FAILURE, ex.Message), _
+                                        eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+                Me.Core.Messages.SendMessage(msg)
             End Try
         End If
 
@@ -3293,17 +3297,14 @@ Public Class frmEwE6
 
     Private Sub OnReportBug(cmd As cCommand) Handles m_cmdHelpReportIssue.OnInvoke
 
-        Dim strError As String = ""
+        Debug.Assert(Not Me.m_cmdBrowseURI.IsInvoking)
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_LAUNCHING_EMAIL)
-        If Not cBugReporter.InvokeBugReport(My.Resources.GENERIC_CAPTION, "ewedevteam@gmail.com", Me.m_pluginManager) Then
-            Dim msg As New cMessage(My.Resources.PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT, _
-                                    eMessageType.NotSet, _
-                                    eCoreComponentType.External, _
-                                    eMessageImportance.Warning)
-            Me.Core.Messages.SendMessage(msg)
-        End If
-        cApplicationStatusNotifier.EndProgress(Me.Core)
+        Try
+            Dim strReport As String = cBugReporter.BugReport(My.Resources.GENERIC_CAPTION, "ewedevteam@gmail.com", Me.m_pluginManager)
+            Me.m_cmdBrowseURI.Invoke(strReport)
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

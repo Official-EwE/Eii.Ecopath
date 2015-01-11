@@ -7292,9 +7292,6 @@ Description: {1}</value>
     <value>Completed '{0}'</value>
     <comment>{0}=component name</comment>
   </data>
-  <data name="STATUS_LAUNCHING_EMAIL" xml:space="preserve">
-    <value>Launching e-mail client...</value>
-  </data>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION" xml:space="preserve">
     <value>Model validation errors|Values indicating that the model rejected a recent input</value>
   </data>
@@ -7554,9 +7551,6 @@ Location: {1}</value>
   </data>
   <data name="OPTIONS_COLORDLG_ECOSPACE_MAPLOT_BACKGROUND_COLOR" xml:space="preserve">
     <value>Map background|Background colour to use for maps</value>
-  </data>
-  <data name="PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT" xml:space="preserve">
-    <value>Ecopath was unable launch your default email program. Please send your bug report to us at ewedevteam@gmail.com, and please state the version of the software that you are using.</value>
   </data>
   <data name="OPTIONS_FONTDLG_TITLE" xml:space="preserve">
     <value>Title|Font for titles of graphs and figures</value>
@@ -13073,5 +13067,9 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="VALUE_NOTEMPLATES" xml:space="preserve">
     <value>(No templates available, are you missing a plug-in?)</value>
+  </data>
+  <data name="PROMPT_SHELL_FAILURE" xml:space="preserve">
+    <value>Failed to launch command. {0}</value>
+    <comment>{0}=exception message</comment>
   </data>
 </root>

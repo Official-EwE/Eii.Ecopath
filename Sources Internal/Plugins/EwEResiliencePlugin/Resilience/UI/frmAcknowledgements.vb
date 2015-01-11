@@ -43,7 +43,7 @@ Public Class frmAcknowledgements
         cmd.AddControl(Me.m_pbConacyt, "http://www.conacyt.mx")
 
         ' No command handler for label controls
-        'cmd.AddControl(Me.m_llAcknowledgements, "mailto:mzetina@ipn.mx")
+        'cmd.AddControl(Me.m_llAcknowledgements, "mailto:mzetina@ipn.mx?subject=Question about Resilience plug-in")
 
     End Sub
 
@@ -65,7 +65,7 @@ Public Class frmAcknowledgements
 
         Try
             Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            cmd.Invoke("mailto:mzetina@ipn.mx")
+            cmd.Invoke("mailto:mzetina@ipn.mx?subject=Question%20about%20Resilience%20plug-in")
         Catch ex As Exception
 
         End Try

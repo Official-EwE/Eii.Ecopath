@@ -2847,15 +2847,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath was unable launch your default email program. Please send your bug report to us at ewedevteam@gmail.com, and please state the version of the software that you are using..
-        '''</summary>
-        Public ReadOnly Property PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to An error occurred while trying to connect to &apos;{0}&apos;: {1}.
         '''</summary>
         Public ReadOnly Property PROMPT_ERROR_CONNECTION() As String
@@ -3101,6 +3092,15 @@ Namespace My.Resources
         Public ReadOnly Property PROMPT_SELECT_REFIMAGE() As String
             Get
                 Return ResourceManager.GetString("PROMPT_SELECT_REFIMAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to launch command. {0}.
+        '''</summary>
+        Public ReadOnly Property PROMPT_SHELL_FAILURE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SHELL_FAILURE", resourceCulture)
             End Get
         End Property
         
@@ -3740,15 +3740,6 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_IMPORTING_MODEL_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("STATUS_IMPORTING_MODEL_SUCCESS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Launching e-mail client....
-        '''</summary>
-        Public ReadOnly Property STATUS_LAUNCHING_EMAIL() As String
-            Get
-                Return ResourceManager.GetString("STATUS_LAUNCHING_EMAIL", resourceCulture)
             End Get
         End Property
         
