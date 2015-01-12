@@ -43,7 +43,7 @@ Public Class cNavTreeRoot
     Public Overridable ReadOnly Property ControlText As String _
         Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return My.Resources.RESIL_CAPTION
+            Return My.Resources.NAVTREE_ROOT
         End Get
     End Property
 

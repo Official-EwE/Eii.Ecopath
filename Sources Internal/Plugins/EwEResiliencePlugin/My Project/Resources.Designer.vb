@@ -136,6 +136,87 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Resilience.
+        '''</summary>
+        Friend ReadOnly Property GRAPH_RES_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("GRAPH_RES_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Resilience (annual).
+        '''</summary>
+        Friend ReadOnly Property GRAPH_RES_LINE_ANNUAL() As String
+            Get
+                Return ResourceManager.GetString("GRAPH_RES_LINE_ANNUAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reslience (monthly).
+        '''</summary>
+        Friend ReadOnly Property GRAPH_RES_LINE_MONTHLY() As String
+            Get
+                Return ResourceManager.GetString("GRAPH_RES_LINE_MONTHLY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time.
+        '''</summary>
+        Friend ReadOnly Property GRAPH_RES_XAXIS_LABEL() As String
+            Get
+                Return ResourceManager.GetString("GRAPH_RES_XAXIS_LABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Computed resilience.
+        '''</summary>
+        Friend ReadOnly Property GRAPH_RES_YAXIS_LABEL() As String
+            Get
+                Return ResourceManager.GetString("GRAPH_RES_YAXIS_LABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Supply-demand of energy ({0} {1}). Resilience: {2}.
+        '''</summary>
+        Friend ReadOnly Property GRAPH_SD_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("GRAPH_SD_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Computed resilience.
+        '''</summary>
+        Friend ReadOnly Property GRAPH_SD_TREND() As String
+            Get
+                Return ResourceManager.GetString("GRAPH_SD_TREND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Log (demand, consumption).
+        '''</summary>
+        Friend ReadOnly Property GRAPH_SD_XAXIS_LABEL() As String
+            Get
+                Return ResourceManager.GetString("GRAPH_SD_XAXIS_LABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Log (supply, predation).
+        '''</summary>
+        Friend ReadOnly Property GRAPH_SD_YAXIS_LABEL() As String
+            Get
+                Return ResourceManager.GetString("GRAPH_SD_YAXIS_LABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property IPN_color() As System.Drawing.Bitmap
@@ -146,56 +227,47 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Resilience data.
+        '''  Looks up a localized string similar to Resilience acknowledgements.
         '''</summary>
-        Friend ReadOnly Property RESIL_AUTOSAVE_NAME() As String
+        Friend ReadOnly Property NAVTREE_ACKNOWLEDGEMENTS() As String
             Get
-                Return ResourceManager.GetString("RESIL_AUTOSAVE_NAME", resourceCulture)
+                Return ResourceManager.GetString("NAVTREE_ACKNOWLEDGEMENTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Resilience plot.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_RESILIENCE() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_RESILIENCE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Resilience.
         '''</summary>
-        Friend ReadOnly Property RESIL_CAPTION() As String
+        Friend ReadOnly Property NAVTREE_ROOT() As String
             Get
-                Return ResourceManager.GetString("RESIL_CAPTION", resourceCulture)
+                Return ResourceManager.GetString("NAVTREE_ROOT", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Supply-demand of energy ({0} {1}). Resilience: {2}.
+        '''  Looks up a localized string similar to Supply / demand plot.
         '''</summary>
-        Friend ReadOnly Property RESIL_LABEL_CAPTION() As String
+        Friend ReadOnly Property NAVTREE_SUPPLY_DEMAND() As String
             Get
-                Return ResourceManager.GetString("RESIL_LABEL_CAPTION", resourceCulture)
+                Return ResourceManager.GetString("NAVTREE_SUPPLY_DEMAND", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Trend.
+        '''  Looks up a localized string similar to Resilience plug-in data.
         '''</summary>
-        Friend ReadOnly Property RESIL_LABEL_TREND() As String
+        Friend ReadOnly Property RESIL_AUTOSAVE_NAME() As String
             Get
-                Return ResourceManager.GetString("RESIL_LABEL_TREND", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Log (demand, consumption).
-        '''</summary>
-        Friend ReadOnly Property RESIL_LABEL_XAXIS() As String
-            Get
-                Return ResourceManager.GetString("RESIL_LABEL_XAXIS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Log (supply, predation).
-        '''</summary>
-        Friend ReadOnly Property RESIL_LABEL_YAXIS() As String
-            Get
-                Return ResourceManager.GetString("RESIL_LABEL_YAXIS", resourceCulture)
+                Return ResourceManager.GetString("RESIL_AUTOSAVE_NAME", resourceCulture)
             End Get
         End Property
         

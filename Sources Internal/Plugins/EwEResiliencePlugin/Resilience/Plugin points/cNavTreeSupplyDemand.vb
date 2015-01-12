@@ -32,7 +32,7 @@ Public Class cNavTreeSupplyDemand
 
     Public Overrides ReadOnly Property ControlText As String
         Get
-            Return "Supply/demand"
+            Return My.Resources.NAVTREE_SUPPLY_DEMAND
         End Get
     End Property
 

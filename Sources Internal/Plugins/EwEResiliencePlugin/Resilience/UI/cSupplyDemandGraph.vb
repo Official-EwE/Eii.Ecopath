@@ -73,7 +73,7 @@ Public Class cSupplyDemandGraph
         Me.m_data = data
 
         Me.Configure(strTitle)
-        Me.ConfigurePane(My.Resources.RESIL_LABEL_CAPTION, My.Resources.RESIL_LABEL_XAXIS, My.Resources.RESIL_LABEL_YAXIS, False)
+        Me.ConfigurePane(My.Resources.GRAPH_SD_CAPTION, My.Resources.GRAPH_SD_XAXIS_LABEL, My.Resources.GRAPH_SD_YAXIS_LABEL, False)
         Me.AutoscalePane() = True
         Me.ShowPointValue = True
 
@@ -121,6 +121,8 @@ Public Class cSupplyDemandGraph
         Dim n As Integer = 0
 
         pane.CurveList.Clear()
+
+        If (Not Me.m_data.Calculated) Then Return
 
         pplReg = New PointPairList()
 
@@ -174,7 +176,7 @@ Public Class cSupplyDemandGraph
         ppl = New ZedGraph.PointPairList()
         ppl.Add(xmin, a + b * xmin)
         ppl.Add(xmax, a + b * xmax)
-        li = New ZedGraph.LineItem(My.Resources.RESIL_LABEL_TREND, ppl, Drawing.Color.Black, ZedGraph.SymbolType.None)
+        li = New ZedGraph.LineItem(My.Resources.GRAPH_SD_TREND, ppl, Drawing.Color.Black, ZedGraph.SymbolType.None)
         li.Line.IsVisible = True
         pane.CurveList.Add(li)
 
@@ -190,7 +192,7 @@ Public Class cSupplyDemandGraph
             If (Me.Core.EcosimFirstYear > 0) Then t = Me.Core.EcosimFirstYear - 1 + t
         End If
 
-        pane.Title.Text = cStringUtils.ToSentenceCase(cStringUtils.Localize(My.Resources.RESIL_LABEL_CAPTION, strScale, t, sg.FormatNumber(b)))
+        pane.Title.Text = cStringUtils.ToSentenceCase(cStringUtils.Localize(My.Resources.GRAPH_SD_CAPTION, strScale, t, sg.FormatNumber(b)))
 
         ' Done
         Me.RescaleAndRedraw()

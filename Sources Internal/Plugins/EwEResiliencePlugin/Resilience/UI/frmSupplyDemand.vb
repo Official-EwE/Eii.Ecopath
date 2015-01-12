@@ -19,11 +19,8 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -43,10 +40,6 @@ Public Class frmSupplyDemand
         Me.m_model = model
         Me.InitializeComponent()
 
-        ' Graph initialized here instead of in OnLoad to prevent form rescale issues in OnLoad
-        Me.m_graph = New cSupplyDemandGraph()
-        Me.m_graph.Attach(Me.UIContext, Me.m_zgc, Me.m_model.Data, "")
-
     End Sub
 
 #Region " Form overrides "
@@ -55,6 +48,9 @@ Public Class frmSupplyDemand
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
+
+        Me.m_graph = New cSupplyDemandGraph()
+        Me.m_graph.Attach(Me.UIContext, Me.m_zgc, Me.m_model.Data, "")
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
         AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated

@@ -68,12 +68,6 @@ Public Class cResilienceData
 
     End Sub
 
-    Public ReadOnly Property NumGroups As Integer
-        Get
-            Return Me.m_nGroups
-        End Get
-    End Property
-
     Public ReadOnly Property NumTimeSteps As Integer
         Get
             Return Me.m_nTimes
@@ -106,10 +100,6 @@ Public Class cResilienceData
             Return Me.m_bCalculated
         End Get
     End Property
-
-    Public Function SaveToCSV(core As cCore, strFile As String, bAnnual As Boolean) As Boolean
-        Return True
-    End Function
 
     Public Sub CalculateBounds()
 

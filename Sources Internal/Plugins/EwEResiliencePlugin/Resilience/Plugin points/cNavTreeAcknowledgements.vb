@@ -32,7 +32,7 @@ Public Class cNavTreeAcknowledgements
 
     Public Overrides ReadOnly Property ControlText As String
         Get
-            Return "Resilience acknowledgements"
+            Return My.Resources.NAVTREE_ACKNOWLEDGEMENTS
         End Get
     End Property
 
