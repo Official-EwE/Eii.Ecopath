@@ -235,7 +235,7 @@ Namespace SpatialData
             xaFile.Value = Convert.ToString(Me.IsSourceRelative)
             xnFile.Attributes.Append(xaFile)
 
-            xaFile = doc.CreateAttribute("DateRef")
+            xaFile = doc.CreateAttribute("Date")
             xaFile.Value = cStringUtils.FormatDate(Me.m_dtStart, "d")
             xnFile.Attributes.Append(xaFile)
 
@@ -245,19 +245,19 @@ Namespace SpatialData
 
             If (Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed) Then
 
-                xaFile = doc.CreateAttribute("lonmin")
+                xaFile = doc.CreateAttribute("LonMin")
                 xaFile.Value = cStringUtils.FormatSingle(Me.m_ptTL.X)
                 xnFile.Attributes.Append(xaFile)
 
-                xaFile = doc.CreateAttribute("lonmax")
+                xaFile = doc.CreateAttribute("LonMax")
                 xaFile.Value = cStringUtils.FormatSingle(Me.m_ptBR.X)
                 xnFile.Attributes.Append(xaFile)
 
-                xaFile = doc.CreateAttribute("latmin")
+                xaFile = doc.CreateAttribute("LatMin")
                 xaFile.Value = cStringUtils.FormatSingle(Me.m_ptBR.Y)
                 xnFile.Attributes.Append(xaFile)
 
-                xaFile = doc.CreateAttribute("latmax")
+                xaFile = doc.CreateAttribute("LatMax")
                 xaFile.Value = cStringUtils.FormatSingle(Me.m_ptTL.Y)
                 xnFile.Attributes.Append(xaFile)
 
@@ -294,6 +294,7 @@ Namespace SpatialData
                         Case "Description" : Me.DataDescription = xn.InnerText
                         Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
                         Case "File"
+                            ' -- Source --
                             Me.Source = xn.Attributes("Source").InnerText
                             If (xn.Attributes.GetNamedItem("IsSourceRelative") IsNot Nothing) Then
                                 Me.IsSourceRelative = Boolean.Parse(xn.Attributes("IsSourceRelative").InnerText)
@@ -301,8 +302,16 @@ Namespace SpatialData
                                 Me.IsSourceRelative = False
                             End If
 
-                            Dim strDate As String = xn.Attributes("DateRef").InnerText
-                            Dim dt As DateTime = cStringUtils.ConvertToDate(strDate)
+                            ' -- Date --
+                            Dim strDate As String = ""
+                            Dim dt As DateTime = Nothing
+                            If (xn.Attributes.GetNamedItem("DateRef") IsNot Nothing) Then
+                                strDate = xn.Attributes("DateRef").InnerText
+                                dt = cStringUtils.ConvertToDate(strDate, "dd/MM/yyyy")
+                            Else
+                                strDate = xn.Attributes("Date").InnerText
+                                dt = cStringUtils.ConvertToDate(strDate)
+                            End If
                             If (dt = DateTime.MinValue) Or (dt = DateTime.MaxValue) Then
                                 Me.m_dtStart = DateTime.MinValue
                                 Me.m_dtEnd = DateTime.MaxValue
@@ -310,6 +319,8 @@ Namespace SpatialData
                                 Me.m_dtStart = dt
                                 Me.m_dtEnd = dt
                             End If
+
+                            ' -- Index status --
                             Me.m_indexstatus = ISpatialDataSet.eIndexStatus.NotIndexed
                             If (xn.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
                                 ' JS 06Nov13: added file exist check when loading dataset metadata

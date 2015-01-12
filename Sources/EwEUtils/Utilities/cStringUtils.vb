@@ -660,30 +660,30 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Format a date.
+        ''' Format a date for persistent storage.
         ''' </summary>
         ''' <param name="dtValue">The date to format.</param>
         ''' <param name="strFormat">Optional date formatting flag (http://msdn.microsoft.com/en-us/library/zdtaw1bw%28v=vs.110%29.aspx)</param>
-        ''' <returns>A date in en-US format.</returns>
+        ''' <returns>A formatted date.</returns>
         ''' <remarks>
         ''' http://www.w3.org/TR/NOTE-datetime
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Shared Function FormatDate(ByVal dtValue As DateTime, _
-                                          Optional ByVal strFormat As String = "dd/MM/yyyy") As String
+                                          Optional ByVal strFormat As String = "yyyy-MM-dd") As String
             Return dtValue.ToString(strFormat)
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Read a date from a en-US formatted string.
+        ''' Read a date from a formatted string.
         ''' </summary>
         ''' <param name="strDate">The date to read.</param>
         ''' <param name="strFormat">Optional date formatting flag (http://msdn.microsoft.com/en-us/library/zdtaw1bw%28v=vs.110%29.aspx)</param>
         ''' <returns>The date, of Date.MinValue if an error occurred.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function ConvertToDate(ByVal strDate As String, _
-                                             Optional ByVal strFormat As String = "dd/MM/yyyy") As DateTime
+                                             Optional ByVal strFormat As String = "yyyy-MM-dd") As DateTime
             Dim dt As DateTime
             If (DateTime.TryParseExact(strDate, strFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, dt)) Then
                 Return dt
@@ -707,7 +707,7 @@ Namespace Utilities
             'addresses, allows for the following domains:
             'com,edu,info,gov,int,mil,net,org,biz,name,museum,coop,aero,pro,tv
             Dim strPattern As String = "^[-a-zA-Z0-9][-.a-zA-Z0-9]*@[-.a-zA-Z0-9]+(\.[-.a-zA-Z0-9]+)*\." & _
-                                       "(com|edu|info|gov|int|mil|net|org|biz|name|museum|coop|aero|pro|tv|[a-zA-Z]{2})$"
+                                       "(com|edu|info|gov|int|mil|net|org|biz|name|museum|coop|aero|pro|tv|xxx|[a-zA-Z]{2})$"
             Dim regexCheck As New Regex(strPattern, RegexOptions.IgnorePatternWhitespace)
             Dim bIsEmailAddress As Boolean = False
 

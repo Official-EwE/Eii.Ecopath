@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -186,6 +187,7 @@ Namespace Ecospace.Controls
                     hgc = New EwEHierarchyGridCell()
                     Me(iRow, 0) = hgc
 
+                    ' ToDo_JS: globalize this
                     If (vnLast = eVarNameFlags.NotSet) Then
                         strVar = "(Generic)"
                     Else
@@ -202,8 +204,8 @@ Namespace Ecospace.Controls
 
                 Dim strTStart As String = SharedResources.GENERIC_VALUE_FIRSTTIMESTEP
                 Dim strTEnd As String = ""
-                If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = ds.TimeStart.ToShortDateString
-                If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = ds.TimeEnd.ToShortDateString
+                If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = Me.StyleGuide.FormatDate(ds.TimeStart, False)
+                If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = Me.StyleGuide.FormatDate(ds.TimeEnd, False)
 
                 iRow = Me.AddRow()
                 Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iDS))

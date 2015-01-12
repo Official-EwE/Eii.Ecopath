@@ -397,7 +397,7 @@ Namespace SpatialData
                 xa.Value = strFile
                 xnChild.Attributes.Append(xa)
 
-                xa = doc.CreateAttribute("DateRef")
+                xa = doc.CreateAttribute("Date")
                 xa.Value = cStringUtils.FormatDate(tf.Date)
                 xnChild.Attributes.Append(xa)
 
@@ -407,19 +407,19 @@ Namespace SpatialData
 
                 If (tf.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed) Then
 
-                    xa = doc.CreateAttribute("lonmin")
+                    xa = doc.CreateAttribute("LonMin")
                     xa.Value = cStringUtils.FormatSingle(tf.TopLeft.X)
                     xnChild.Attributes.Append(xa)
 
-                    xa = doc.CreateAttribute("lonmax")
+                    xa = doc.CreateAttribute("LonMax")
                     xa.Value = cStringUtils.FormatSingle(tf.BottomRight.X)
                     xnChild.Attributes.Append(xa)
 
-                    xa = doc.CreateAttribute("latmin")
+                    xa = doc.CreateAttribute("LatMin")
                     xa.Value = cStringUtils.FormatSingle(tf.BottomRight.Y)
                     xnChild.Attributes.Append(xa)
 
-                    xa = doc.CreateAttribute("latmax")
+                    xa = doc.CreateAttribute("LatMax")
                     xa.Value = cStringUtils.FormatSingle(tf.TopLeft.Y)
                     xnChild.Attributes.Append(xa)
 
@@ -480,8 +480,18 @@ Namespace SpatialData
 
                             For Each xnChild In xn.ChildNodes
                                 Dim strName As String = Me.ToRelativePath(xnChild.Attributes("Name").InnerText, Me.Source)
-                                Dim strDate As String = xnChild.Attributes("DateRef").InnerText
-                                Dim dt As DateTime = cStringUtils.ConvertToDate(strDate)
+
+                                ' -- Date --
+                                Dim strDate As String = ""
+                                Dim dt As DateTime = Nothing
+                                If (xnChild.Attributes.GetNamedItem("DateRef") IsNot Nothing) Then
+                                    strDate = xnChild.Attributes("DateRef").InnerText
+                                    dt = cStringUtils.ConvertToDate(strDate, "dd/MM/yyyy")
+                                Else
+                                    strDate = xnChild.Attributes("Date").InnerText
+                                    dt = cStringUtils.ConvertToDate(strDate)
+                                End If
+
                                 Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
 
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed

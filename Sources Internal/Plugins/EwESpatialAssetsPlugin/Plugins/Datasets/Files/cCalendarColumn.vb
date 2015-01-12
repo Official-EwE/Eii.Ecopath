@@ -18,6 +18,7 @@
 
 Imports System
 Imports System.Windows.Forms
+Imports System.Globalization
 
 Public Class cCalendarColumn
     Inherits DataGridViewColumn
@@ -103,7 +104,7 @@ Class cCalendarEditingControl
 
     Public Sub New()
         Me.Format = DateTimePickerFormat.Custom
-        Me.CustomFormat = "yyyy/MM/dd"
+        Me.CustomFormat = "yyyy/MM"
         Me.ShowUpDown = True
     End Sub
 
@@ -111,19 +112,15 @@ Class cCalendarEditingControl
         Implements IDataGridViewEditingControl.EditingControlFormattedValue
 
         Get
-            Return Me.Value.ToShortDateString()
+            Return Me.Value.ToString(Me.CustomFormat)
         End Get
 
         Set(ByVal value As Object)
-            Try
-                ' This will throw an exception of the string is 
-                ' null, empty, or not in the format of a DateTime.
-                Me.Value = DateTime.Parse(CStr(value))
-            Catch
-                ' In the case of an exception, just use the default
-                ' value so we're not left with a null value.
+            ' This will throw an exception of the string is 
+            ' null, empty, or not in the format of a DateTime.
+            If Not DateTime.TryParseExact(CStr(value), Me.CustomFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, Me.Value) Then
                 Me.Value = DateTime.Now
-            End Try
+            End If
         End Set
 
     End Property
