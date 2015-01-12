@@ -572,6 +572,20 @@ Namespace Style
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Format a date for display in the user interface.
+        ''' </summary>
+        ''' <param name="dt">The date to format.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function FormatDate(dt As DateTime, Optional bShowDay As Boolean = True) As String
+            If bShowDay Then
+                Return dt.ToString("yyyy/MM/dd")
+            End If
+            Return dt.ToString("yyyy/MM")
+        End Function
+
 #End Region ' Number formatting
 
 #Region " Units "
