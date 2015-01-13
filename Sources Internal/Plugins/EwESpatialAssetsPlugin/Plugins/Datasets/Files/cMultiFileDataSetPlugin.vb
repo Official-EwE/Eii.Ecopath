@@ -350,6 +350,7 @@ Namespace SpatialData
             Dim xn As XmlNode = Nothing
             Dim xa As XmlAttribute = Nothing
             Dim xnChild As XmlNode = Nothing
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
             xnMaster = doc.CreateElement("Configuration")
 
@@ -362,24 +363,24 @@ Namespace SpatialData
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Variable")
-            xn.InnerText = CStr(CInt(Me.VarName))
+            xn.InnerText = cin.GetVarName(Me.VarName)
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Source")
+            xa = doc.CreateAttribute("IsRelative")
             If (Me.IsSourceRelative) Then
                 xn.InnerText = Me.ToRelativePath(Me.Source)
+                xa.Value = Convert.ToString(True)
             Else
                 xn.InnerText = Me.Source
+                xa.Value = Convert.ToString(False)
             End If
-            xnMaster.AppendChild(xn)
-
-            xn = doc.CreateElement("IsSourceRelative")
-            xn.InnerText = Convert.ToString(Me.IsSourceRelative)
+            xn.Attributes.Append(xa)
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Seasonal")
             xn.InnerText = Convert.ToString(Me.IsSeasonal)
-            xa = doc.CreateAttribute("DateRef")
+            xa = doc.CreateAttribute("EndDate")
             xa.InnerText = cStringUtils.FormatDate(Me.SeasonsEnd)
             xn.Attributes.Append(xa)
             xnMaster.AppendChild(xn)
@@ -389,13 +390,12 @@ Namespace SpatialData
 
             For Each tf As cTemporalFile In Me.m_lFiles
 
+                Dim strFile As String = tf.FileName
+
                 xnChild = doc.CreateElement("File")
 
-                xa = doc.CreateAttribute("Name")
-                Dim strFile As String = tf.FileName
                 strFile = Me.ToRelativePath(strFile, Me.Source)
-                xa.Value = strFile
-                xnChild.Attributes.Append(xa)
+                xnChild.InnerText = strFile
 
                 xa = doc.CreateAttribute("Date")
                 xa.Value = cStringUtils.FormatDate(tf.Date)
@@ -449,6 +449,7 @@ Namespace SpatialData
             Dim xn As XmlNode = Nothing
             Dim xa As XmlAttribute = Nothing
             Dim xnChild As XmlNode = Nothing
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
             If (String.Compare(node.Name, "Configuration") <> 0) Then Return False
 
@@ -462,16 +463,29 @@ Namespace SpatialData
                             Me.DataDescription = xn.InnerText
                         Case "Source"
                             Me.Source = xn.InnerText
+                            Me.IsSourceRelative = False
+                            If xn.Attributes.GetNamedItem("IsRelative") IsNot Nothing Then
+                                Me.IsSourceRelative = Convert.ToBoolean(xn.Attributes("IsRelative").InnerText)
+                            End If
                         Case "IsSourceRelative"
+                            ' Backwards compatibility
                             Me.IsSourceRelative = Convert.ToBoolean(xn.InnerText)
                         Case "Variable"
-                            Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                            Me.VarName = cin.GetVarName(xn.InnerText)
+                            ' Backwards compatibility
+                            If (Me.VarName = eVarNameFlags.NotSet And cStringUtils.IsNumber(xn.InnerText)) Then
+                                Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                            End If
                         Case "Seasonal"
                             Me.IsSeasonal = Convert.ToBoolean(xn.InnerText)
                             Me.SeasonsEnd = Date.MaxValue
+                            ' Backwards compatibility
                             If xn.Attributes.GetNamedItem("DateRef") IsNot Nothing Then
-                                Me.SeasonsEnd = cStringUtils.ConvertToDate(xn.Attributes("DateRef").InnerText)
+                                Me.SeasonsEnd = cStringUtils.ConvertToDate(xn.Attributes("DateRef").InnerText, "dd/MM/yyyy")
+                            ElseIf (xn.Attributes.GetNamedItem("EndDate") IsNot Nothing) Then
+                                Me.SeasonsEnd = cStringUtils.ConvertToDate(xn.Attributes("EndDate").InnerText)
                             End If
+
                         Case "Files"
 
                             If (Me.IsSourceRelative) Then
@@ -479,11 +493,20 @@ Namespace SpatialData
                             End If
 
                             For Each xnChild In xn.ChildNodes
-                                Dim strName As String = Me.ToRelativePath(xnChild.Attributes("Name").InnerText, Me.Source)
+
+                                Dim strName As String = ""
+
+                                ' Backwards compatibility
+                                If (xnChild.Attributes.GetNamedItem("Name") IsNot Nothing) Then
+                                    strName = Me.ToRelativePath(xnChild.Attributes("Name").InnerText, Me.Source)
+                                Else
+                                    strName = Me.ToRelativePath(xnChild.InnerText, Me.Source)
+                                End If
 
                                 ' -- Date --
                                 Dim strDate As String = ""
                                 Dim dt As DateTime = Nothing
+                                ' Backwards compatibility
                                 If (xnChild.Attributes.GetNamedItem("DateRef") IsNot Nothing) Then
                                     strDate = xnChild.Attributes("DateRef").InnerText
                                     dt = cStringUtils.ConvertToDate(strDate, "dd/MM/yyyy")

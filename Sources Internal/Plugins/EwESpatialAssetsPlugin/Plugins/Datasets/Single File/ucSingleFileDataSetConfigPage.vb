@@ -65,6 +65,8 @@ Friend Class ucSingleFileDataSetConfigPage
         End If
         Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
 
+        Me.UpdateControls()
+
         If String.IsNullOrWhiteSpace(Me.m_dataset.Source) Then
             Me.DoBrowse()
         End If

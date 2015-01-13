@@ -693,7 +693,7 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Method for determining if a string represents a valid email address.
+        ''' Check if a string represents a valid email address.
         ''' </summary>
         ''' <param name="strEmail">Email address to validate</param>
         ''' <returns>True is valid, false if not valid</returns>
@@ -702,7 +702,7 @@ Namespace Utilities
         ''' way of checking an address provided.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function IsValidEmail(ByVal strEmail As String) As Boolean
+        Public Shared Function IsEmail(ByVal strEmail As String) As Boolean
             'regular expression pattern for valid email
             'addresses, allows for the following domains:
             'com,edu,info,gov,int,mil,net,org,biz,name,museum,coop,aero,pro,tv
@@ -716,6 +716,18 @@ Namespace Utilities
             End If
 
             Return bIsEmailAddress
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Check if a string represents a number.
+        ''' </summary>
+        ''' <param name="strValue">The string to check.</param>
+        ''' <returns>True if the string could be parsed into a double value.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IsNumber(ByVal strValue As String) As Boolean
+            Dim dDummy As Double = 0
+            Return Double.TryParse(strValue, dDummy)
         End Function
 
         ''' -------------------------------------------------------------------

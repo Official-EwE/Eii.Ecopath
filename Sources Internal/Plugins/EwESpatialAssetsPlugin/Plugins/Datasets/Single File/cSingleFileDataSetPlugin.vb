@@ -27,6 +27,7 @@ Imports DotSpatial.Data
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports EwECore
 
 #End Region ' Imports
 
@@ -206,6 +207,7 @@ Namespace SpatialData
             Dim xn As XmlNode = Nothing
             Dim xnFile As XmlNode = Nothing
             Dim xaFile As XmlAttribute = Nothing
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
             xnMaster = doc.CreateElement("Configuration")
 
@@ -218,20 +220,17 @@ Namespace SpatialData
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Variable")
-            xn.InnerText = CStr(CInt(Me.VarName))
+            xn.InnerText = cin.GetVarName(Me.VarName)
             xnMaster.AppendChild(xn)
 
             xnFile = doc.CreateElement("File")
-
-            xaFile = doc.CreateAttribute("Source")
             If (Me.IsSourceRelative) Then
-                xaFile.Value = Me.ToRelativePath(Me.Source)
+                xnFile.InnerText = Me.ToRelativePath(Me.Source)
             Else
-                xaFile.Value = Me.Source
+                xnFile.InnerText = Me.Source
             End If
-            xnFile.Attributes.Append(xaFile)
 
-            xaFile = doc.CreateAttribute("IsSourceRelative")
+            xaFile = doc.CreateAttribute("IsRelative")
             xaFile.Value = Convert.ToString(Me.IsSourceRelative)
             xnFile.Attributes.Append(xaFile)
 
@@ -283,6 +282,7 @@ Namespace SpatialData
         Protected Overrides Function FromXML(ByVal doc As XmlDocument, ByVal node As XmlNode) As Boolean
 
             Dim xn As XmlNode = Nothing
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
             If (String.Compare(node.Name, "Configuration") <> 0) Then Return False
 
@@ -290,21 +290,41 @@ Namespace SpatialData
 
                 For Each xn In node.ChildNodes
                     Select Case xn.Name
-                        Case "Name" : Me.m_strName = xn.InnerText
-                        Case "Description" : Me.DataDescription = xn.InnerText
-                        Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                        Case "Name"
+                            Me.m_strName = xn.InnerText
+
+                        Case "Description"
+                            Me.DataDescription = xn.InnerText
+
+                        Case "Variable"
+                            Me.VarName = cin.GetVarName(xn.InnerText)
+                            ' Backwards compatibility
+                            If (Me.VarName = eVarNameFlags.NotSet And cStringUtils.IsNumber(xn.InnerText)) Then
+                                Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                            End If
+
                         Case "File"
                             ' -- Source --
-                            Me.Source = xn.Attributes("Source").InnerText
+                            ' Backwards compatibility
+                            If (xn.Attributes.GetNamedItem("Source") IsNot Nothing) Then
+                                Me.Source = xn.Attributes("Source").InnerText
+                            Else
+                                Me.Source = xn.InnerText
+                            End If
+
+                            Me.IsSourceRelative = False
+                            If (xn.Attributes.GetNamedItem("IsRelative") IsNot Nothing) Then
+                                Me.IsSourceRelative = Boolean.Parse(xn.Attributes("IsRelative").InnerText)
+                            End If
+                            ' Backwards compatibility
                             If (xn.Attributes.GetNamedItem("IsSourceRelative") IsNot Nothing) Then
                                 Me.IsSourceRelative = Boolean.Parse(xn.Attributes("IsSourceRelative").InnerText)
-                            Else
-                                Me.IsSourceRelative = False
                             End If
 
                             ' -- Date --
                             Dim strDate As String = ""
                             Dim dt As DateTime = Nothing
+                            ' Backwards compatibility
                             If (xn.Attributes.GetNamedItem("DateRef") IsNot Nothing) Then
                                 strDate = xn.Attributes("DateRef").InnerText
                                 dt = cStringUtils.ConvertToDate(strDate, "dd/MM/yyyy")

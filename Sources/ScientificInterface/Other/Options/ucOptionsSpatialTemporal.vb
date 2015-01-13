@@ -402,7 +402,7 @@ Namespace Other
                 Else
                     lvi.SubItems.Add("")
                 End If
-                lvi.SubItems.Add(Me.ToDefaultString(cfg.Author, cfg.Source))
+                lvi.SubItems.Add(Me.ToDefaultString(cfg.Author, cfg.Station))
                 lvi.SubItems.Add(Me.ToDefaultString(cfg.Contact))
                 lvi.SubItems.Add(cfg.FileName)
                 lvi.Tag = cfg
