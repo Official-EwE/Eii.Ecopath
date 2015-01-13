@@ -9874,6 +9874,9 @@ Public Class cCore
 
             m_EcospaceModelParams.UseLocalMemory = Me.m_EcoSpaceData.bUseLocalMemory
 
+            m_EcospaceModelParams.EcospaceAreaOutputDir = Me.m_EcoSpaceData.EcospaceAreaOutputDir
+            m_EcospaceModelParams.EcospaceMapOutputDir = Me.m_EcoSpaceData.EcospaceMapOutputDir
+
             m_EcospaceModelParams.ResetStatusFlags()
             m_EcospaceModelParams.AllowValidation = True
 
@@ -9928,6 +9931,9 @@ Public Class cCore
         Me.m_EcoSpaceData.EffortDistThreshold = m_EcospaceModelParams.EffortDistThreshold
 
         Me.m_EcoSpaceData.bUseLocalMemory = m_EcospaceModelParams.UseLocalMemory
+
+        Me.m_EcoSpaceData.EcospaceAreaOutputDir = m_EcospaceModelParams.EcospaceAreaOutputDir
+        Me.m_EcoSpaceData.EcospaceMapOutputDir = m_EcospaceModelParams.EcospaceMapOutputDir
 
         Return True
 

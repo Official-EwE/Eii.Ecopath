@@ -708,6 +708,16 @@ Namespace Core
 
         EcospaceIBMMovePacketOnStanza
 
+        ''' <summary>
+        ''' User defined output directory for Ecospace Map output
+        ''' </summary>
+        EcospaceMapOutputDir
+
+        '' <summary>
+        ''' User defined output directory for Ecospace Area Averaged outputs
+        ''' </summary>
+        EcospaceAreaOutputDir
+
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time
         '''''''''''''''''''''
