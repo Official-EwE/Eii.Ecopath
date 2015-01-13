@@ -82,7 +82,7 @@ Public Class ucOptionsPluginDetails
         Try
             Dim strLink As String = e.Link.LinkData.ToString()
 
-            If cStringUtils.IsValidEmail(strLink) Then
+            If cStringUtils.IsEmail(strLink) Then
                 If Not cStringUtils.BeginsWith(strLink, "mailto:") Then
                     strLink = "mailto:" & strLink
                 End If

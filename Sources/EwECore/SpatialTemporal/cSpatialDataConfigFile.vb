@@ -35,7 +35,7 @@ Namespace SpatialData
             Me.m_strFileName = strFile
             Me.DatasetName = strName
             Me.Description = strDescription
-            Me.Source = strSource
+            Me.Station = strSource
             Me.Author = strAuthor
             Me.Contact = strContact
         End Sub
@@ -67,7 +67,7 @@ Namespace SpatialData
             End Set
         End Property
 
-        Public Property Source As String = ""
+        Public Property Station As String = ""
         Public Property Description As String = ""
         Public Property Author As String = ""
         Public Property Contact As String = ""
@@ -104,7 +104,7 @@ Namespace SpatialData
             Me.Author = ""
             Me.Contact = ""
             Me.Description = ""
-            Me.Source = ""
+            Me.Station = ""
 
             Me.FileName = strFile
 
@@ -128,7 +128,7 @@ Namespace SpatialData
                         Case "Name" : Me.DatasetName = xa.InnerText
                         Case "Author" : Me.Author = xa.InnerText
                         Case "Contact" : Me.Contact = xa.InnerText
-                        Case "Source" : Me.Source = xa.InnerText
+                        Case "Source", "Station" : Me.Station = xa.InnerText
                         Case "Description" : Me.Description = xa.InnerText
                     End Select
                 Next
@@ -340,12 +340,15 @@ Namespace SpatialData
             End If
             xaRoot.InnerText = Me.Contact
 
-            xaRoot = CType(xnRoot.Attributes.GetNamedItem("Source"), XmlAttribute)
+            xaRoot = CType(xnRoot.Attributes.GetNamedItem("Station"), XmlAttribute)
             If (xaRoot Is Nothing) Then
-                xaRoot = doc.CreateAttribute("Source")
+                xaRoot = doc.CreateAttribute("Station")
                 xnRoot.Attributes.Append(xaRoot)
             End If
-            xaRoot.InnerText = Me.Source
+            xaRoot.InnerText = Me.Station
+
+            ' Remove obsolete Source node
+            xnRoot.Attributes.RemoveNamedItem("Source")
 
             xaRoot = CType(xnRoot.Attributes.GetNamedItem("Description"), XmlAttribute)
             If (xaRoot Is Nothing) Then
