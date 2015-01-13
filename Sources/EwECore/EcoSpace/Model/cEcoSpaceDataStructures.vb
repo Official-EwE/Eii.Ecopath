@@ -707,6 +707,24 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public hasCapInitialized As Boolean
 
+    ''' <summary>
+    ''' User defined output directory for Ecospace output Maps
+    ''' </summary>
+    ''' <remarks>
+    ''' Not used by the Scientic Interface. 
+    ''' This is only used if UseCoreOutputDir = False and EcospaceMapOutputDir is not null.   
+    ''' </remarks>
+    Public EcospaceMapOutputDir As String
+
+    ''' <summary>
+    ''' User defined output directory for Ecospace Area Averaged outputs
+    ''' </summary>
+    ''' <remarks>
+    ''' Not used by the Scientic Interface. 
+    ''' This is only used if UseCoreOutputDir = False and EcospaceAreaOutputDir is not null.
+    ''' </remarks>
+    Public EcospaceAreaOutputDir As String
+
 #End Region
 
 #Region "Private Data"
@@ -1012,6 +1030,9 @@ Public Class cEcospaceDataStructures
             Me.UseSpinUpPlot = False
             Me.SpinUpYears = 10
             'xxxxxxxxxxxxxxxxxxxxxxxxx
+
+            Me.EcospaceAreaOutputDir = ""
+            Me.EcospaceMapOutputDir = ""
 
             Return True
         Catch ex As Exception

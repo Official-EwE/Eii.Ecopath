@@ -221,6 +221,20 @@ Public Class cEcospaceModelParameters
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            'Dim outputStr As Char()
+            meta = New cVariableMetaData(25)
+            val = New cValue("", eVarNameFlags.EcospaceAreaOutputDir, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(25)
+            val = New cValue("", eVarNameFlags.EcospaceMapOutputDir, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+
 
             'set status flags to default values
             ResetStatusFlags()
@@ -733,6 +747,50 @@ Public Class cEcospaceModelParameters
 
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.EcospaceUseLocalMemory, value)
+        End Set
+
+    End Property
+
+    ''' <summary>
+    ''' User defined output directory for Ecospace Area Average results
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' Not used by the Scientific Interface. 
+    ''' This allows an external application, console app or plugin, to specify custom output directories for Ecospace.
+    ''' </remarks>
+    Public Property EcospaceAreaOutputDir() As String
+
+        Get
+            Return CStr(GetVariable(eVarNameFlags.EcospaceAreaOutputDir))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.EcospaceAreaOutputDir, value)
+        End Set
+
+    End Property
+
+
+    ''' <summary>
+    ''' User defined output directory for Ecospace Map results
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' Not used by the Scientific Interface. 
+    ''' This allows an external application, console app or plugin, to specify custom output directories for Ecospace.
+    ''' </remarks>
+    ''' </remarks>
+    Public Property EcospaceMapOutputDir() As String
+
+        Get
+            Return CStr(GetVariable(eVarNameFlags.EcospaceMapOutputDir))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.EcospaceMapOutputDir, value)
         End Set
 
     End Property
