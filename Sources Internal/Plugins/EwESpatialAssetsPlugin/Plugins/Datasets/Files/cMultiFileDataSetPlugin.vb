@@ -530,11 +530,15 @@ Namespace SpatialData
                                                             CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("latmin").InnerText, GetType(Single))))
                                     End If
                                 End If
+
                                 Me.m_lFiles.Add(f)
                             Next
                     End Select
                 Next
                 Me.m_bCanSort = True
+
+                ' Correction
+                Me.IsSourceRelative = Me.IsSourceRelative And Not Path.IsPathRooted(Me.Source)
 
             Catch ex As Exception
                 Me.Clear()
