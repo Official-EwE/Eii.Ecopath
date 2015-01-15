@@ -78,6 +78,7 @@ Public Class frmRemarkUI
         Me.InitializeComponent()
         Me.UIContext = uic
         Me.Grid = Me.m_grid
+
     End Sub
 
 #End Region ' Constructor
@@ -88,6 +89,8 @@ Public Class frmRemarkUI
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
+
+        Me.QuickEditHandler.IsOutputGrid = True
 
         ' Populate sort box
         Me.AddSortOption(My.Resources.HEADER_SOURCE, ePropertySortOrderTypes.Source)
