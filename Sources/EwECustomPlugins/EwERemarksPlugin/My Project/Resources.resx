@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CAPTION" xml:space="preserve">
-    <value>Remarks collector</value>
+    <value>All remarks</value>
   </data>
   <data name="CAPTION_TOOLTIP" xml:space="preserve">
-    <value>Manage all remarks entered in a model from within a single form (reminiscent of EcoWriter)</value>
+    <value>Manage all remarks entered in a model from within a single view</value>
   </data>
   <data name="HEADER_PARAMETER" xml:space="preserve">
     <value>Parameter</value>
