@@ -63,6 +63,8 @@ Namespace Controls.EwEGrid
         Private m_bAttached As Boolean = False
         ''' <summary>Flag stating whether import/export controls can be shown.</summary>
         Private m_bShowImportExport As Boolean = True
+        ''' <summary>Flag stating whether the grid is used for showing outputs only.</summary>
+        Private m_bIsOutputGrid As Boolean = True
 
         ''' <summary>Set box original value.</summary>
         Private m_strValueOrg As String = ""
@@ -214,6 +216,16 @@ Namespace Controls.EwEGrid
         End Sub
 
         Public Property IsOutputGrid As Boolean
+            Get
+                Return Me.m_bIsOutputGrid
+            End Get
+            Set(value As Boolean)
+                If (Me.m_bIsOutputGrid <> value) Then
+                    Me.m_bIsOutputGrid = value
+                    Me.UpdateControls()
+                End If
+            End Set
+        End Property
 
         Public Property ShowImportExport As Boolean
             Get
@@ -318,7 +330,7 @@ Namespace Controls.EwEGrid
             If (Not Me.m_bAttached) Then Return
 
             Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
-            Dim bIsInputGrid As Boolean = False
+            Dim bIsInputGrid As Boolean = Not Me.m_bIsOutputGrid
             Dim bHasEditableCells As Boolean = False
             ' Flag stating that the selection contains a mix of variable names
             Dim bIsMixedSelection As Boolean = False
@@ -328,8 +340,6 @@ Namespace Controls.EwEGrid
             ' Flag stating that the selection contains different values
             Dim bIsMixedValue As Boolean = False
             Dim objValue As Object = Nothing
-
-            bIsInputGrid = Not Me.IsOutputGrid
 
             ' Iterate through cells
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
