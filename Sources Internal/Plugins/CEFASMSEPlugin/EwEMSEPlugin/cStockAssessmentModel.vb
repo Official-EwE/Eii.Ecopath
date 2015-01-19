@@ -387,7 +387,10 @@ Public Class cStockAssessmentModel
     End Sub
 
     Public Function getImplementationError(iFleet As Integer) As Single
+
+        'Return CSng(Math.Exp(Me.CVImpError(iFleet) * getNextRandNormal()))
         Return CSng(Math.Exp(Me.CVImpError(iFleet) * getNextRandNormal()))
+
     End Function
 
     Public WriteOnly Property TrialNumber As Integer

@@ -1310,7 +1310,7 @@ Public Class cMSE
                 'Only if this fleet is regulated
 
                 For it As Integer = StartT To EndT
-                    m_ecosim.EcosimData.FishRateGear(iflt, it) = MSEMaxEffort
+                    _simdata.FishRateGear(iflt, it) = MSEMaxEffort
                 Next it
 
             Next iflt
@@ -2694,9 +2694,10 @@ Public Class cMSE
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 For iFleet = 1 To m_core.nFleets
-                    MinEffortThisYear(iFleet - 1) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
+                    'If iFleet = 3 And iTime < 207 Then Stop
+                    MinEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
                     If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MinEffortThisYear(iFleet - 1) = 0
-                    MaxEffortThisYear(iFleet - 1) = m_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1) * (1 + m_effortlimits.Value(iFleet))
+                    MaxEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 + m_effortlimits.Value(iFleet))
                     If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MaxEffortThisYear(iFleet - 1) = 200
                 Next
 
@@ -2720,6 +2721,9 @@ Public Class cMSE
                             'If selective
                             'Calculate what selectivity would prevent any other stock going over quota
                             'Set selectivity variables
+                            If m_currentStrategy.Name = "All Mixfish  SelectiveFishing" And iFleet = 1 Then
+                                'Stop
+                            End If
 
                             'If iFleet = 3 Then Stop
 
@@ -2757,15 +2761,15 @@ Public Class cMSE
                             End If
 
                             'Limit the effort if it is greater than the max allowable 
-                            If Emax < m_ecosim.EcosimData.FishRateGear(iFleet, iTime) Then
-                                m_ecosim.EcosimData.FishRateGear(iFleet, iTime) = Emax
+                            If Emax < _simdata.FishRateGear(iFleet, iTime) Then
+                                _simdata.FishRateGear(iFleet, iTime) = Emax
                             End If
 
                             'Alters the discard parameters 
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
                                 If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, 0) <> cCore.NULL_VALUE Then
                                     'get the total catch at this effort
-                                    iCatch = CSng(m_ecosim.EcosimData.FishRateGear(iFleet, iTime) * QMult(iGrp) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
+                                    iCatch = CSng(_simdata.FishRateGear(iFleet, iTime) * QMult(iGrp) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
 
                                     If TargConsQuota(iGrp - 1, 1) <> cEffortLimits.NoHCR_F Then
                                         FleetTargQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, 0)
@@ -2863,6 +2867,17 @@ Public Class cMSE
 
             'Calculates what the F's are for each species given the effort
             m_ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
+
+            Dim percentagechangeeffort As Single
+            'This is a diagnostics test
+            If iTime > OriginalNTimesteps + 2 Then
+                For iFleet = 1 To m_core.nFleets
+                    percentagechangeeffort = Math.Abs((_simdata.FishRateGear(iFleet, iTime) - _simdata.FishRateGear(iFleet, iTime - 1)) / _simdata.FishRateGear(iFleet, iTime - 1))
+                    If percentagechangeeffort > 0.15 Then
+                        'Stop
+                    End If
+                Next
+            End If
 
         End If
 
