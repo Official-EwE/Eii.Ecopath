@@ -51,7 +51,9 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' -----------------------------------------------------------------------
     Public Overrides Sub StartWrite()
         Try
-            Me.CreateOutputDir()
+            If Not Me.CreateOutputDir() Then
+                ' ToDo: fail
+            End If
             Me.WriteGroupFileHeaders(eVarNameFlags.EcospaceMapBiomass)
             Me.WriteGroupFileHeaders(eVarNameFlags.EcospaceMapCatch)
             Me.WriteFleetFileHeaders(eVarNameFlags.EcospaceMapEffort)

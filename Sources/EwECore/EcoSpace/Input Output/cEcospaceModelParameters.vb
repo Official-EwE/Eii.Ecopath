@@ -112,24 +112,28 @@ Public Class cEcospaceModelParameters
             meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.nGridSolverThreads, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'space threads
             meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.nSpaceThreads, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'Number of effort distribution threads
             meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.nEffortDistThreads, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'stanza packets multiplier
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0.5, eVarNameFlags.PacketsMultiplier, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -193,19 +197,20 @@ Public Class cEcospaceModelParameters
             meta = New cVariableMetaData()
             val = New cValue(1, eVarNameFlags.EcospaceUseCoreOutputDir, eStatusFlags.Null, eValueTypes.Bool, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Save Annual
             meta = New cVariableMetaData()
             val = New cValue(1, eVarNameFlags.EcospaceUseAnnualOutput, eStatusFlags.Null, eValueTypes.Bool, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-
-            ' Save Annual
             meta = New cVariableMetaData()
             val = New cValue(1, eVarNameFlags.bUseEffortDistThreshold, eStatusFlags.Null, eValueTypes.Bool, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
@@ -215,26 +220,24 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-            ' 'bGridUseLocalOnly
             meta = New cVariableMetaData()
             val = New cValue(1, eVarNameFlags.EcospaceUseLocalMemory, eStatusFlags.Null, eValueTypes.Bool, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            'Dim outputStr As Char()
-            meta = New cVariableMetaData(25)
+            meta = New cVariableMetaData(255)
             val = New cValue("", eVarNameFlags.EcospaceAreaOutputDir, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.AffectsRunState = False
+            val.Stored = False
             m_values.Add(val.varName, val)
 
-            meta = New cVariableMetaData(25)
+            meta = New cVariableMetaData(255)
             val = New cValue("", eVarNameFlags.EcospaceMapOutputDir, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.AffectsRunState = False
+            val.Stored = False
             m_values.Add(val.varName, val)
-
-
 
             'set status flags to default values
             ResetStatusFlags()
