@@ -708,14 +708,10 @@ Namespace Core
 
         EcospaceIBMMovePacketOnStanza
 
-        ''' <summary>
-        ''' User defined output directory for Ecospace Map output
-        ''' </summary>
+        ''' <summary>User-defined output directory for Ecospace Map output.</summary>
         EcospaceMapOutputDir
 
-        '' <summary>
-        ''' User defined output directory for Ecospace Area Averaged outputs
-        ''' </summary>
+        ''' <summary>User-defined output directory for Ecospace Area Averaged outputs</summary>
         EcospaceAreaOutputDir
 
         ''''''''''''''''''''''''''''
@@ -731,22 +727,16 @@ Namespace Core
 
         EcosimCatchGroupGear
 
-        ''' <summary>
-        ''' Ecosim value by group over time
-        ''' </summary>
+        ''' <summary>Ecosim value by group over time.</summary>
         EcosimValueGroup
 
-        ''' <summary>
-        ''' Ecosim relative value by group, time
-        ''' </summary>
+        ''' <summary>Ecosim relative value by group, time.</summary>
         EcosimValueGroupRel
 
-        ''' <summary>
-        ''' Ecosim value by group fleet over time
-        ''' </summary>
+        ''' <summary>Ecosim value by group fleet over time.</summary>
         EcosimValueGroupFleet
 
-        ''' <summary> Fishing mortality by group fleet </summary>
+        ''' <summary>Fishing mortality by group fleet.</summary>
         EcosimFishingMortGroupGear
 
         EcosimTotalMort
@@ -768,7 +758,7 @@ Namespace Core
 
         EcosimEcoSystemStruct
 
-        ''' <summary>Is the catch for this group aggregated across all the fleet.</summary>
+        ''' <summary>Is the catch for this group aggregated across all the fleets.</summary>
         EcosimIsCatchAggregated
 
         ''' <summary>Ecopath ouput data over time</summary>

@@ -139,7 +139,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' Directory will be created on the default output path in the format "Ecopace {datatype} {y-m-d h-m-s}
     ''' i.e. "Ecospace ASC 11-07-11 16-40-50".</remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overridable Sub CreateOutputDir()
+    Protected Overridable Function CreateOutputDir() As Boolean
 
         If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
             ' Write to "Ecospace output dir\ext\"
@@ -158,9 +158,12 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
             Debug.Assert(False, Me.ToString & ".CreateTimeStampedDir() cannot create directory")
             cLog.Write("Ecospace output writer failed to create directory " & Me.OutputDirectory)
+            Return False
         End If
 
-    End Sub
+        Return True
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

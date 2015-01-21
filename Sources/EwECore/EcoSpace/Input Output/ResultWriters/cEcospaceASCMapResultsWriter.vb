@@ -43,7 +43,10 @@ Public Class cEcospaceASCMapResultsWriter
     ''' -----------------------------------------------------------------------
     Public Overrides Sub StartWrite()
         Try
-            Me.CreateOutputDir()
+            If Not Me.CreateOutputDir() Then
+                ' ToDo: fail
+            End If
+
             If Me.m_core.SaveWithFileHeader Then
                 Me.WriteRunInfoFile()
             End If

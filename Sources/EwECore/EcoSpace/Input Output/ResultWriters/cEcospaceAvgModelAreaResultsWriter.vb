@@ -130,7 +130,7 @@ Public Class cEcospaceAvgModelAreaResultsWriter
     ''' <summary>
     ''' Make sure output directory is defined and available.
     ''' </summary>
-    Protected Overrides Sub CreateOutputDir()
+    Protected Overrides Function CreateOutputDir() As Boolean
 
         If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
             Me.m_OutputPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
@@ -145,9 +145,12 @@ Public Class cEcospaceAvgModelAreaResultsWriter
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
             Debug.Assert(False, Me.ToString & ".CreateOutputDir() cannot create directory")
             cLog.Write("cEcospaceRegionResultWriter failed to create directory " & Me.OutputDirectory)
+            Return False
         End If
 
-    End Sub
+        Return True
+
+    End Function
 
 #Region " Write Results  "
 
