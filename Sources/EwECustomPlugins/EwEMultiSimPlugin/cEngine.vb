@@ -50,6 +50,7 @@ Friend Class cEngine
 
         Private m_ff As cForcingFunction = Nothing
         Private m_asData As Single() = Nothing
+        Private m_bChanged As Boolean = False
 
         Public Sub New(ff As cForcingFunction)
             Me.m_ff = ff
@@ -57,26 +58,34 @@ Friend Class cEngine
         End Sub
 
         Public Sub Restore()
-            Me.StartEdit()
-            Me.EndEdit()
+            Me.m_ff.LockUpdates()
+            Me.m_ff.ShapeData = Me.m_asData
+            Me.m_ff.UnlockUpdates(False)
         End Sub
 
+        ''' <summary>
+        ''' Restore shape data to its original state.
+        ''' </summary>
         Public Sub StartEdit()
             Me.m_ff.LockUpdates()
             For i As Integer = 0 To Me.m_ff.ShapeData.Length - 1
                 Me.m_ff.ShapeData(i) = Me.m_asData(i)
             Next
+            Me.m_bChanged = False
         End Sub
 
         Public Sub EndEdit()
-            Me.m_ff.UnlockUpdates(False)
+            Me.m_ff.UnlockUpdates(Me.m_bChanged)
         End Sub
 
-        Public ReadOnly Property FF As cForcingFunction
-            Get
-                Return Me.m_ff
-            End Get
-        End Property
+        Public Sub SetData(i As Integer, s As Single)
+            If (i < Me.m_ff.ShapeData.Length) Then
+                If (Me.m_ff.ShapeData(i) <> s) Then
+                    Me.m_ff.ShapeData(i) = s
+                    Me.m_bChanged = True
+                End If
+            End If
+        End Sub
 
     End Class
 
@@ -99,8 +108,6 @@ Friend Class cEngine
     Private m_dgtComplete As cEngine.RunCompletedDelegate = Nothing
     Private m_dgtDisableFile As DisableFileDelegate = Nothing
     Private m_bStopRun As Boolean = False
-
-    Private m_bCreateRunFolder As Boolean = False
 
     ' -- progress 
     Private m_iNumSteps As Integer
@@ -145,13 +152,6 @@ Friend Class cEngine
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property CreateUniqueRunFolder As Boolean
-        Get
-            Return Me.m_bCreateRunFolder
-        End Get
-        Set(value As Boolean)
-            Me.m_bCreateRunFolder = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -240,7 +240,7 @@ Friend Class cEngine
         Me.m_iStep = 1
         Me.m_iNumSteps = Me.m_astrFiles.Length
 
-        If Me.m_bCreateRunFolder Then
+        If Me.CreateUniqueRunFolder Then
             Me.m_strOutFolder = Path.Combine(strOutFolder, cFileUtils.ToValidFileName(cStringUtils.Localize("Run {0} {1}", strDate, strScope), False))
         Else
             Me.m_strOutFolder = strOutFolder
@@ -278,10 +278,9 @@ Friend Class cEngine
     ''' <param name="types">The FF types to include in the sample.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GenerateSample(ByVal types As eFunctionTypes) As Boolean
+    Public Function GenerateSample(ByVal types As eFunctionTypes, ByRef strFileSample As String) As Boolean
 
         Dim strOutFolder As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
-        Dim strFileSample As String = Path.Combine(strOutFolder, "multisim_sample.csv")
         Dim lShapes As New List(Of cForcingFunction)
         Dim sw As StreamWriter = Nothing
         Dim msg As cMessage = Nothing
@@ -294,6 +293,7 @@ Friend Class cEngine
         If Not cFileUtils.IsDirectoryAvailable(strOutFolder) Then Return False
 
         Try
+            strFileSample = Path.Combine(strOutFolder, "multisim_sample.csv")
             sw = New StreamWriter(strFileSample)
 
             For Each man As cBaseShapeManager In Me.m_lManagers
@@ -325,8 +325,8 @@ Friend Class cEngine
 
             msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXAMPLE_FAILED, strFileSample, ex.Message), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+            strFileSample = ""
             bSuccess = False
-
         End Try
 
         Me.m_core.Messages.SendMessage(msg)
@@ -407,7 +407,6 @@ Friend Class cEngine
         Dim month As Integer = 0
         Dim value As Single = 0.0!
         Dim lff As New List(Of cFFCache)
-        Dim ff As cForcingFunction = Nothing
         Dim iRepetitions As Integer = 0
 
         If Me.m_bReadMonthly Then iRepetitions = 1 Else iRepetitions = cCore.N_MONTHS
@@ -415,6 +414,7 @@ Friend Class cEngine
         If File.Exists(strFileName) Then
 
             ' Prevent 'our' FFs from updating prematurely while reading CSV file
+            ' This also resets the FFs to their original values before the MultiSim run to make sure this iteration starts afresh
             For Each ffc As cFFCache In m_FFCache.Values
                 ffc.StartEdit()
             Next
@@ -450,27 +450,18 @@ Friend Class cEngine
                     For i As Integer = 0 To Math.Min(values.Length, lff.Count) - 1
 
                         If lff(i) IsNot Nothing Then
-                            ' Get a FF from the FF manager
-                            ff = lff(i).FF
                             ' By default, do not force a value
                             value = 0.0
                             ' Is a value?
                             If Not String.IsNullOrWhiteSpace(values(i)) Then
                                 ' Try to convert this value and set it into the FF
-                                Try
-                                    ' Convert a value from string to a floating point number
-                                    value = Single.Parse(values(i))
-                                Catch ex As Exception
-                                    ' Alert that CSV is somehow malformed
+                                If Not Single.TryParse(values(i), value) Then
                                     Debug.Assert(False, "Value '" & values(i) & "' unreadable, a number was expected")
-                                End Try
+                                End If
                             End If
 
-                            ' Does still fit?
-                            If (month < ff.ShapeData.Length) Then
-                                ' Set value into FF for a given month
-                                ff.ShapeData(month) = value
-                            End If
+                            ' Set value into FF for a given month
+                            lff(i).SetData(month, value)
                         End If
                     Next
                 Next
@@ -482,9 +473,9 @@ Friend Class cEngine
                 ffc.EndEdit()
             Next
 
-            For Each man As cBaseShapeManager In Me.m_lManagers
-                man.Update()
-            Next
+            'For Each man As cBaseShapeManager In Me.m_lManagers
+            '    man.Update()
+            'Next
 
         End If
 
@@ -551,6 +542,8 @@ Friend Class cEngine
 
                 i += 1
 
+                'Threading.Thread.Sleep(10000)
+
             End While
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -561,9 +554,9 @@ Friend Class cEngine
             ffc.Restore()
         Next
 
-        For Each man As cBaseShapeManager In Me.m_lManagers
-            man.Update()
-        Next man
+        'For Each man As cBaseShapeManager In Me.m_lManagers
+        '    man.Update()
+        'Next man
 
         Me.m_core.DiscardChanges()
         GC.Collect()
