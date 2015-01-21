@@ -1271,7 +1271,7 @@ Public Class cFishingRateShape
             'this shape is the combined fleets type so update all the fleets types with the new value
             If isCombinedFleets Then
                 For iFlt As Integer = 1 To m_data.nGear
-                    m_data.FishRateGear(iFlt, it) = m_data.FishRateGear(m_iEcoSimIndex, it) 'dont worry about overwritting the fleet we just update
+                    m_data.FishRateGear(iFlt, it) = m_data.FishRateGear(m_iEcoSimIndex, it) 'dont worry about overwriting the fleet we just updated
                 Next
             End If
 
@@ -1304,7 +1304,7 @@ Public Class cFishingRateShape
             Next igrp
         Next it
 
-        'tell the manager that a shape has changed it's data
+        'tell the manager that a shape has changed its data
         ShapeChanged()
 
         Return True

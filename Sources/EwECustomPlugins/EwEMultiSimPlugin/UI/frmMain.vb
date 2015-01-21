@@ -195,7 +195,13 @@ Public Class frmMain
         Handles m_btnGenerateSample.Click
 
         Try
-            Me.m_engine.GenerateSample(Me.SelectedApplications)
+            Dim strFile As String = ""
+            Dim cmd As cBrowserCommand = Nothing
+
+            If (Me.m_engine.GenerateSample(Me.SelectedApplications, strFile)) Then
+                cmd = DirectCast(Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                cmd.Invoke(strFile)
+            End If
         Catch ex As Exception
 
         End Try
