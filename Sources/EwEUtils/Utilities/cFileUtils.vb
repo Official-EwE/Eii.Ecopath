@@ -392,28 +392,15 @@ Namespace Utilities
         ''' <param name="strDirectory">The directory to check.</param>
         ''' <param name="bCreate">Optional flag, stating whether the directory 
         ''' should be created if it does not exist yet.</param>
-        ''' <param name="bClear">Optional flag, stating whether any content of
-        ''' the directory should be cleared out.</param>
         ''' <returns>True if the directory is available.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function IsDirectoryAvailable(ByVal strDirectory As String, _
-                                                    Optional ByVal bCreate As Boolean = False, _
-                                                    Optional ByVal bClear As Boolean = False) As Boolean
+                                                    Optional ByVal bCreate As Boolean = False) As Boolean
 
             ' Test if already exists as a file
             If File.Exists(strDirectory) Then Return False
 
             Dim bExists As Boolean = Directory.Exists(strDirectory)
-
-            If bExists And bClear Then
-                Try
-                    Directory.Delete(strDirectory, True)
-                    bCreate = True
-                    bExists = False
-                Catch ex As Exception
-                    ' Ouch
-                End Try
-            End If
 
             If Not bExists Then
                 Try
