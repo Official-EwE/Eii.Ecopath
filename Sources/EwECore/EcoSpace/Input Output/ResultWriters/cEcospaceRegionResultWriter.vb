@@ -34,6 +34,7 @@ Imports EwEUtils.Utilities
 ''' to write Ecospace output by region to csv files. 
 ''' </summary>
 ''' ---------------------------------------------------------------------------
+<Obsolete("Use cEcospaceAvgModelAreaResultsWriter instead")> _
 Public Class cEcospaceRegionResultWriter
     Inherits cEcospaceBaseResultsWriter
 

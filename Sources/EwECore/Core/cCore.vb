@@ -8660,7 +8660,6 @@ Public Class cCore
                         ' Create ecospace result writers, if desired
                         Me.m_EcospaceResultsWriters.Clear()
                         If Me.Autosave(eAutosaveTypes.Ecospace) Then
-                            Me.m_EcospaceResultsWriters.Add(New cEcospaceRegionResultWriter())
                             Me.m_EcospaceResultsWriters.Add(New cEcospaceAvgModelAreaResultsWriter())
                         End If
                         If Me.Autosave(eAutosaveTypes.EcospaceMaps) Then
