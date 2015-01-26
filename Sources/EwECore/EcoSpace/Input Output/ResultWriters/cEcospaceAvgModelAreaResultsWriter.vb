@@ -31,38 +31,35 @@ Imports EwEUtils.Utilities
 ''' <summary>
 ''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
 ''' and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
-''' to write Ecospace output by region to csv files. 
+''' to write Ecospace area averaged results to csv files. This class provides 
+''' the framework for writting the file. The actual data is supplied by an implementation of <see cref="cResultsDataSourceBase">cResultsDataSourceBase</see> 
+''' that supplies the data in a generic format.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cEcospaceAvgModelAreaResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
-    'ToDo 12-Dec-2014 This still need to implement the Catch data
-    'ToDo 12-Dec-2014 It would be possible to merge this code with the cEcospaceRegionResultsWriter
-    'a couple of different way.
-    '1. Write a data source for both types of data that provided the annual average and time step data and wrap that in one writer
-    '2. Merge the critical code of both class into one AreaAverage writer
-
 #Region " Private classes "
 
     ''' <summary>
-    ''' Local helper class for remembering bits of a landing record.
+    ''' Types of result objects
     ''' </summary>
-    Private Class cCatch
+    ''' <remarks></remarks>
+    Private Enum eDataSourceTypes
+        Biomass
+        [Catch]
+        RegionBiomass
+        RegionCatch
+    End Enum
 
-        Public Sub New(f As cFleetInput, g As cCoreGroupBase)
-            Me.FleetName = f.Name
-            Me.FleetIndex = f.Index
-            Me.GroupName = g.Name
-            Me.GroupIndex = g.Index
-        End Sub
-
-        Public Property FleetName As String
-        Public Property FleetIndex As Integer
-        Public Property GroupName As String
-        Public Property GroupIndex As Integer
-
-    End Class
+    ''' <summary>
+    ''' Averaging/summary time peroids
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Enum eAverageType
+        TimeStep
+        Annual
+    End Enum
 
 #End Region ' Private classes
 
@@ -152,13 +149,47 @@ Public Class cEcospaceAvgModelAreaResultsWriter
 
     End Function
 
+    ''' <summary>
+    ''' Creates a new cResultsDataSourceBase object
+    ''' </summary>
+    ''' <param name="ResultType"></param>
+    ''' <param name="RegionIndex"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function DataSourceFactory(ResultType As eDataSourceTypes, Optional ByVal RegionIndex As Integer = 0) As cResultsDataSourceBase
+        Dim dataSource As cResultsDataSourceBase
+        Select Case ResultType
+            Case eDataSourceTypes.Biomass
+                dataSource = New cBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+            Case eDataSourceTypes.Catch
+                dataSource = New cCatchResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+            Case eDataSourceTypes.RegionBiomass
+                dataSource = New cRegionBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+            Case eDataSourceTypes.RegionCatch
+                dataSource = New cRegionCatchResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+        End Select
+        dataSource.Init(RegionIndex)
+        Return dataSource
+    End Function
+
 #Region " Write Results  "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Save results by file per region.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
+
+    Private Function getDataSources() As List(Of cResultsDataSourceBase)
+        Dim lstDataSources As New List(Of cResultsDataSourceBase)
+
+        lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.Biomass))
+        lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.Catch))
+
+        For irgn As Integer = 1 To Me.m_core.nRegions
+            lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.RegionBiomass, irgn))
+            lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.RegionCatch, irgn))
+        Next
+        Return lstDataSources
+    End Function
+
+
+
     Private Sub WriteResult()
 
         Dim sw As StreamWriter = Nothing
@@ -167,199 +198,128 @@ Public Class cEcospaceAvgModelAreaResultsWriter
         Dim strDescriptor As String = ""
         Dim sValue As Single = 0
 
-        ' For all data (0 = biomass, 1 = catch))
-        For iData As Integer = 0 To 1
-            ' Define file name and data descriptor
-            Select Case iData
-                Case 0
-                    strFile = cFileUtils.ToValidFileName("Ecospace_Average_Biomass.csv", False)
-                    strDescriptor = "Average biomass across modeled area"
-                Case 1
-                    strFile = cFileUtils.ToValidFileName("Ecospace_Annual_Average_Biomass.csv", False)
-                    strDescriptor = "Annual average biomass across modeled area"
-                Case 2
-                    strFile = cFileUtils.ToValidFileName("Ecospace_Average_Catch.csv", False)
-                    strDescriptor = "Average catch across modeled area"
-                Case 3
-                    strFile = cFileUtils.ToValidFileName("Ecospace_Annual_Average_Biomass.csv", False)
-                    strDescriptor = "Annual average catch across modeled area"
-            End Select
+        Dim lstDataSources As List(Of cResultsDataSourceBase) = Me.getDataSources()
 
-            Try
+        For Each ds As cResultsDataSourceBase In lstDataSources
 
-                ' Start writing
-                sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
-                If Me.m_core.SaveWithFileHeader Then
-                    sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-                    sw.WriteLine("Data," & cStringUtils.ToCSVField(strDescriptor))
-                    sw.WriteLine("Modeled area km2," & cStringUtils.ToCSVField(Me.m_core.m_EcoSpaceData.nWaterCells * Me.m_core.EcospaceBasemap.CellLength() ^ 2))
-                    sw.WriteLine("Number of cells," & cStringUtils.ToCSVField(Me.m_core.m_EcoSpaceData.nWaterCells))
-                    sw.WriteLine()
-                End If
+            Dim eAvgs As Array
+            eAvgs = System.Enum.GetValues(GetType(eAverageType))
 
-                Select Case iData
-                    Case 0
-                        Me.WriteBiomassData(sw, False)
-                    Case 1
-                        Me.WriteBiomassData(sw, True)
-                    Case 2
-                        'ToDo
-                        '  Me.WriteCatchData(sw, r, False)
-                    Case 3
-                        'ToDo
-                        '   Me.WriteCatchData(sw, r, True)
+            For Each AvgType As eAverageType In eAvgs
+                Dim fn As String
+                Select Case AvgType
+                    Case eAverageType.TimeStep
+                        fn = "Ecospace_Average_"
+                    Case eAverageType.Annual
+                        fn = "Ecospace_Annual_Average_"
                 End Select
 
-                ' Clean up
-                sw.Flush()
-                sw.Close()
-                sw.Dispose()
+                strFile = cFileUtils.ToValidFileName(fn + ds.FilenameIdentifier + ".csv", False)
 
-            Catch ex As Exception
-                cLog.Write(ex, "Failed to write Ecospace average biomass to file for data " + strDescriptor)
-            End Try
+                Try
 
-        Next iData
+                    ' Start writing
+                    sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
+                    If Me.m_core.SaveWithFileHeader Then
+                        sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
+                        sw.WriteLine("Data," & cStringUtils.ToCSVField(ds.DataDescriptor))
+                        sw.WriteLine(cStringUtils.ToCSVField(ds.AreaDescriptor) + "," & cStringUtils.ToCSVField(ds.nWaterCells * Me.m_core.EcospaceBasemap.CellLength() ^ 2))
+                        sw.WriteLine("Number of cells," & cStringUtils.ToCSVField(ds.nWaterCells))
+                        sw.WriteLine()
+                    End If
+
+                    Me.WriteData(sw, ds, AvgType)
+
+                    ' Clean up
+                    sw.Flush()
+                    sw.Close()
+                    sw.Dispose()
+
+                Catch ex As Exception
+                    cLog.Write(ex, "Failed to write Ecospace average biomass to file for data " + strDescriptor)
+                End Try
+
+            Next
+        Next
+
 
     End Sub
 
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write biomass data block for a specific region.
+    ''' Write data in the datasource to the stream
     ''' </summary>
     ''' <param name="sw">The streamwriter to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteBiomassData(sw As StreamWriter, bAnnual As Boolean)
-
-        Dim g As cCoreGroupBase = Nothing
+    Private Sub WriteData(sw As StreamWriter, dataSource As cResultsDataSourceBase, AvgType As eAverageType)
         Dim nYrs As Integer = 0
         Dim spaceData As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+
         nYrs = Me.m_core.nEcospaceTimeSteps
 
-
         ' Write data header
-        If (bAnnual) Then
+        If AvgType = eAverageType.Annual Then
             sw.Write("Year")
         Else
             sw.Write("TimeStep")
         End If
 
-        For iGroup As Integer = 1 To Me.m_core.nGroups
-            g = Me.m_core.EcoPathGroupInputs(iGroup)
-            sw.Write("," & cStringUtils.ToCSVField(g.Name))
+        For iGroup As Integer = 1 To dataSource.nResults
+            sw.Write("," & cStringUtils.ToCSVField(dataSource.FieldName(iGroup)))
         Next iGroup
         sw.WriteLine()
 
-        ' Write data block
-        If bAnnual Then
-            'ANNUAL Data
-            'Number of timesteps per year
-            Dim nTsYr As Integer = CInt(1.0 / spaceData.TimeStep)
+        Dim nTsYr As Integer = CInt(1.0 / spaceData.TimeStep)
+        Dim value() As Single = New Single(dataSource.nResults) {}
+        Dim bSave As Boolean
+        Dim TSLabel As String, Year As Integer
 
-            Dim sumB(Me.m_core.nGroups) As Single
-            Dim iCumTime As Integer
-            For iYr As Integer = 1 To Me.m_core.nEcospaceYears
-                'Sum the biomass for the current year
-                For its As Integer = 1 To nTsYr
-                    iCumTime += 1
-                    For igrp As Integer = 1 To Me.m_core.nGroups
-                        sumB(igrp) += spaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, igrp, iCumTime)
-                    Next
+        'Loop over all the time steps
+        'If in Annual mode then sum and average the at the end of the year
+        For iTime As Integer = 1 To Me.m_core.nEcospaceTimeSteps
+            For igrp As Integer = 1 To dataSource.nResults
 
-                Next its
+                If AvgType = eAverageType.Annual Then
+                    value(igrp) += dataSource.getResult(igrp, iTime)
+                    If ((iTime Mod Me.m_core.m_EcoSpaceData.nTimeStepsPerYear) = 0) Then
+                        'End of the year
+                        'Average the results and
+                        'Save to file
+                        value(igrp) /= Me.m_core.m_EcoSpaceData.nTimeStepsPerYear
+                        bSave = True
+                    End If
+                Else
+                    'Save every time step
+                    value(igrp) = dataSource.getResult(igrp, iTime)
+                    bSave = True
+                End If
 
-                sw.Write(iYr)
-                For igrp As Integer = 1 To Me.m_core.nGroups
+            Next igrp
+
+            If bSave Then
+                'Grab the label based on the Average Type
+                If AvgType = eAverageType.Annual Then
+                    Year += 1
+                    TSLabel = CStr(Year)
+                Else
+                    TSLabel = CStr(iTime)
+                End If
+
+                sw.Write(TSLabel)
+                For igrp As Integer = 1 To dataSource.nResults
                     sw.Write(",")
-                    sw.Write(cStringUtils.FormatNumber(sumB(igrp) / nTsYr))
-                    sumB(igrp) = 0
-                Next
-                sw.WriteLine()
-
-            Next iYr
-
-        Else 'Monthly
-
-            'Same time step as Ecospace (Monthly by default)
-            For iTime As Integer = 1 To Me.m_core.nEcospaceTimeSteps
-                sw.Write(iTime)
-                For igrp As Integer = 1 To Me.m_core.nGroups
-                    sw.Write(",")
-                    sw.Write(cStringUtils.FormatNumber(spaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, igrp, iTime)))
+                    sw.Write(cStringUtils.FormatNumber(value(igrp)))
+                    bSave = False
+                    value(igrp) = 0
                 Next igrp
+
                 sw.WriteLine()
-            Next iTime
+            End If
 
-        End If
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Write catch data block for a specific region.
-    ''' </summary>
-    ''' <param name="sw">The streamwriter to write to.</param>
-    ''' <param name="r">The region to write for.</param>
-    ''' -----------------------------------------------------------------------
-    Private Sub WriteCatchData(sw As StreamWriter, r As cEcospaceRegionOutput, bAnnual As Boolean)
-
-        Debug.Assert(False, "Oppss " + Me.ToString + ".WriteCatchData() not implemented yet.")
-        'Dim fleet As cFleetInput = Nothing
-        'Dim group As cCoreGroupBase = Nothing
-        'Dim lCatches As New List(Of cCatch)
-        'Dim [catch] As cCatch = Nothing
-        'Dim n As Integer = 0
-
-        '' Gather all catches
-        'For iFleet As Integer = 1 To Me.m_core.nFleets
-        '    fleet = Me.m_core.FleetInputs(iFleet)
-        '    For iGroup As Integer = 1 To Me.m_core.nGroups
-        '        group = Me.m_core.EcoPathGroupInputs(iGroup)
-        '        If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) > 0 Then
-        '            ' Remember landing
-        '            lCatches.Add(New cCatch(fleet, group))
-        '        End If
-        '    Next iGroup
-        'Next iFleet
-
-        '' Write data header
-        'Dim sb1 As New StringBuilder()
-        'Dim sb2 As New StringBuilder()
-        'sb1.Append("Fleet")
-        'If (bAnnual) Then
-        '    sb2.Append("Year")
-        '    n = Me.m_core.nEcospaceYears
-        'Else
-        '    sb2.Append("Timestep")
-        '    n = Me.m_core.nEcospaceTimeSteps
-        'End If
-        'For iLanding As Integer = 0 To lCatches.Count - 1
-        '    [catch] = lCatches(iLanding)
-        '    sb1.Append("," & cStringUtils.ToCSVField([catch].FleetName))
-        '    sb2.Append("," & cStringUtils.ToCSVField([catch].GroupName))
-        'Next
-        'sw.WriteLine(sb1.ToString)
-        'sw.WriteLine(sb2.ToString)
-        'sb1.Clear()
-        'sb2.Clear()
-
-        '' Write data block
-        'For iTime As Integer = 1 To n
-        '    sw.Write(iTime)
-        '    For iLanding As Integer = 0 To lCatches.Count - 1
-        '        [catch] = lCatches(iLanding)
-        '        sw.Write(",")
-        '        If (bAnnual) Then
-        '            sw.Write(cStringUtils.FormatNumber(r.CatchFleetGroupYear([catch].FleetIndex, [catch].GroupIndex, iTime)))
-        '        Else
-        '            sw.Write(cStringUtils.FormatNumber(r.CatchFleetGroupTime([catch].FleetIndex, [catch].GroupIndex, iTime)))
-        '        End If
-        '    Next iLanding
-        '    sw.WriteLine()
-        'Next iTime
+        Next iTime
 
     End Sub
-
 
 #End Region ' Internals
 

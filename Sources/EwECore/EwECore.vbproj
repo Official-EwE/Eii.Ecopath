@@ -176,6 +176,7 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\EcospaceResultsWriterDataSources.vb" />
     <Compile Include="HelperClasses\Linear Programming\cLPSolver.vb" />
     <Compile Include="HelperClasses\Threading\cThreadWaitBase.vb" />
     <Compile Include="HelperClasses\Threading\IThreadedProcess.vb" />
