@@ -442,21 +442,21 @@ Public Class dlgDefineMapResponseAssignments
 
     End Function
 
-    Private Function CanEditMinMax() As Boolean
+    'Private Function CanEditMinMax() As Boolean
 
-        If (Me.m_shape Is Nothing) Then Return False
+    '    If (Me.m_shape Is Nothing) Then Return False
 
-        ' ToDo: the shape itself should somehow be able to report this
-        If ((Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal) Or _
-            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder) Or _
-            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder) Or _
-            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid)) Then
-            Return False
-        End If
+    '    ' ToDo: the shape itself should somehow be able to report this
+    '    If ((Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal) Or _
+    '        (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder) Or _
+    '        (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder) Or _
+    '        (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid)) Then
+    '        Return False
+    '    End If
 
-        Return True
+    '    Return True
 
-    End Function
+    'End Function
 
     Private Function CanEditMeanSD() As Boolean
 
@@ -546,10 +546,6 @@ Public Class dlgDefineMapResponseAssignments
             Dim XminWin As Single
 
             Me.GetPlotMinMax(Xmin, Xmax, XminWin, XmaxWin)
-
-            '' this is what the core will use to find the x value
-            'Xmin = Me.m_shape.ResponseLeftLimit
-            'Xmax = Me.m_shape.ResponseRightLimit
 
             Dim Xrange As Single = Xmax - Xmin
             Dim fmt As New cCoreInterfaceFormatter()
@@ -642,16 +638,16 @@ Public Class dlgDefineMapResponseAssignments
         Debug.Assert(Me.ShowMinMax())
 
         'Not all shapes use the Min and Mix data range
-        If Me.CanEditMinMax() Then
-            Try
-                Me.m_shape.LockUpdates()
-                Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
-                Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
-                Me.m_shape.UnlockUpdates(True)
-            Catch ex As Exception
+        ' If Me.CanEditMinMax() Then
+        Try
+            Me.m_shape.LockUpdates()
+            Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
+            Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
+            Me.m_shape.UnlockUpdates(True)
+        Catch ex As Exception
 
-            End Try
-        End If ' If Me.CanEditMinMax() Then
+        End Try
+        '  End If ' If Me.CanEditMinMax() Then
 
         Me.UpdatePlots()
 
