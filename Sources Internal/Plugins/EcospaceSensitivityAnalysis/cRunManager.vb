@@ -345,17 +345,17 @@ Public Class cRunManager
                     Me.CreateBoundsFiles(pair)
 
                     Me.SwapFiles(pair.MapLayer.Layer, Me.m_lowerFile, pair.File)
-                    'Me.SwapFiles(Me.m_lowerFile, pair.File)
 
                     Me.m_RunSpace.Run()
                     If Me.m_bStop Then Exit For
                     Me.IterationCompleted(pair.MapLayer.Layer.Name, Me.RunParameters.LowerBound)
 
                     Me.SwapFiles(pair.MapLayer.Layer, Me.m_upperFile, pair.File)
-                    ' Me.SwapFiles(Me.m_lowerFile, pair.File)
                     Me.m_RunSpace.Run()
                     If Me.m_bStop Then Exit For
                     Me.IterationCompleted(pair.MapLayer.Layer.Name, Me.RunParameters.UpperBound)
+
+                    Me.SwapFiles(pair.MapLayer.Layer, pair.File, "")
 
                     Me.CleanUpFiles(pair.File)
 

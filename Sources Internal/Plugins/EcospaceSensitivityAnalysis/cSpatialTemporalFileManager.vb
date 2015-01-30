@@ -18,7 +18,7 @@
 
 #Const VER_OLD = 1
 #Const VER_NEW = 2
-#Const SpatialTemp_Framework_Version = VER_NEW
+#Const SpatialTemp_Framework_Version = VER_OLD
 
 Option Explicit On
 Option Strict On
