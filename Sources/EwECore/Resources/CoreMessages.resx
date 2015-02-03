@@ -1211,7 +1211,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=data set name</comment>
   </data>
   <data name="SPATIALTEMPORAL_LOAD_ERROR_DETAIL" xml:space="preserve">
-    <value>Unable to load required plug-in '{0}'</value>
+    <value>Unable to load plug-in '{0}'</value>
     <comment>{0}=plug-in type name</comment>
   </data>
   <data name="SPATIALTEMPORAL_LOAD_ERROR_GENERIC" xml:space="preserve">
