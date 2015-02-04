@@ -39,6 +39,7 @@ Public Class cMSEPluginPoint
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimBeginTimestepPlugin
+    Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IMessageFilterPlugin
     Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcosimPlugin
@@ -274,6 +275,16 @@ Public Class cMSEPluginPoint
 
         End Try
 
+    End Sub
+
+
+    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) _
+        Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+        Try
+            Me.MSE.onEcosimEndTimeStep(BiomassAtTimestep, iTime)
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick

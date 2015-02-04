@@ -35,6 +35,15 @@ Imports Troschuetz.Random
 
 Public Class cMSE
 
+#Region "Internal definitions"
+
+    Private Enum eCatchTypes
+        Landings
+        DiscardSurvivals
+        DiscardMortalities
+    End Enum
+#End Region
+
 #Region " Internal vars "
 
     Private m_core As cCore = Nothing
@@ -114,6 +123,11 @@ Public Class cMSE
     Private m_runstate As eRunStates = eRunStates.Idle
 
     Const MIN_DIET_PROP As Single = 0.000001
+
+    ''' <summary>
+    ''' Landings and discards by Fleet, Group and eCatchTypes
+    ''' </summary>
+    Private LandingsDiscards(,,) As Single
 
 #Region "Threading variables"
     'Private m_WaitObject As System.Threading.ManualResetEvent
@@ -1410,6 +1424,8 @@ Public Class cMSE
                 FleetCatchTable.Columns.Add("GroupNumber", GetType(Integer))
                 FleetCatchTable.Columns.Add("GroupName", GetType(String))
                 FleetCatchTable.Columns.Add("CatchAtLastTimeStep", GetType(Single))
+                FleetCatchTable.Columns.Add("DiscardSurvivals", GetType(Single))
+                FleetCatchTable.Columns.Add("DiscardMortalities", GetType(Single))
 
                 Dim ResultsTable As New DataTable
                 ResultsTable.Columns.Add("ModelID", GetType(Integer))
@@ -1456,6 +1472,9 @@ Public Class cMSE
                             'Get a list of all fleets that fish the groups that have HCRs
                             'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
                             Me.initFishedByHCR(curStrategy)
+
+                            'Clear out the catch results from the last HCR
+                            Me.initCatchResults()
 
                             If Me.RunEcosim() Then
                                 'Save the Ecosim results
@@ -1553,14 +1572,24 @@ Public Class cMSE
         'swFleet.WriteLine("Model,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
         For iRow = 0 To FleetCatchTable.Rows.Count - 1
             Dim RowData As Data.DataRow = FleetCatchTable.Rows(iRow)
-            swFleet.WriteLine("{0},{1},{2},{3},{4},{5},{6}", _
+            swFleet.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8}", _
                                 cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")), _
                                 cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")), _
                                 cStringUtils.FormatNumber(RowData.Field(Of Integer)("FleetNumber")), _
                                 cStringUtils.ToCSVField(RowData.Field(Of String)("FleetName")), _
                                 cStringUtils.FormatNumber(RowData.Field(Of Integer)("GroupNumber")), _
                                 cStringUtils.ToCSVField(RowData.Field(Of String)("GroupName")), _
-                                cStringUtils.FormatNumber(RowData.Field(Of Single)("CatchAtLastTimeStep")))
+                                cStringUtils.FormatNumber(RowData.Field(Of Single)("CatchAtLastTimeStep")), _
+                                cStringUtils.FormatNumber(RowData.Field(Of Single)("DiscardSurvivals")), _
+                                cStringUtils.FormatNumber(RowData.Field(Of Single)("DiscardMortalities")))
+            'swFleet.WriteLine("{0},{1},{2},{3},{4},{5},{6}", _
+            '                    cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")), _
+            '                    cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")), _
+            '                    cStringUtils.FormatNumber(RowData.Field(Of Integer)("FleetNumber")), _
+            '                    cStringUtils.ToCSVField(RowData.Field(Of String)("FleetName")), _
+            '                    cStringUtils.FormatNumber(RowData.Field(Of Integer)("GroupNumber")), _
+            '                    cStringUtils.ToCSVField(RowData.Field(Of String)("GroupName")), _
+            '                    cStringUtils.FormatNumber(RowData.Field(Of Single)("CatchAtLastTimeStep")))
         Next
 
         'Save the GroupResultsTable to CSV
@@ -1620,6 +1649,13 @@ Public Class cMSE
                 End If
             Next HCRGroup
         Next iFleet
+
+    End Sub
+
+    Private Sub initCatchResults()
+
+        Dim nTypes As Integer = [Enum].GetNames(GetType(eCatchTypes)).Length
+        Me.LandingsDiscards = New Single(m_core.nFleets, m_core.nGroups, nTypes) {}
 
     End Sub
 
@@ -1761,8 +1797,6 @@ Public Class cMSE
         Dim MaxBiomass As Single
         Dim MinBiomass As Single
 
-
-
         For Each iGrp In BiomassLimits.lstBiomassLimits
             MaxBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, OriginalNTimesteps + 1)
             MinBiomass = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp.mGroup.Index, OriginalNTimesteps + 1)
@@ -1841,9 +1875,16 @@ Public Class cMSE
 
             For iFleet As Integer = 1 To m_core.nFleets
                 For iGrp As Integer = 1 To m_core.nLivingGroups
+                    ' Dim landings As Single = Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings)
                     FleetCatchTable.Rows.Add(iModel + NumberIterationsAlreadyInFleets, m_currentStrategy.Name, _
-                                             iFleet, m_core.FleetInputs(iFleet).Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, _
-                                            Me._simdata.ResultsSumCatchByGroupGear(iGrp, iFleet, OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear))
+                                            iFleet, m_core.FleetInputs(iFleet).Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, _
+                                            Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings), _
+                                            Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.DiscardSurvivals), _
+                                            Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.DiscardMortalities))
+
+                    'FleetCatchTable.Rows.Add(iModel + NumberIterationsAlreadyInFleets, m_currentStrategy.Name, _
+                    '                         iFleet, m_core.FleetInputs(iFleet).Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, _
+                    '                        Me._simdata.ResultsSumCatchByGroupGear(iGrp, iFleet, OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear))
                 Next
             Next
 
@@ -1863,8 +1904,18 @@ Public Class cMSE
                                            m_core.EcoPathGroupOutputs(iGrp).Name, "BiomassMin", BiomassProjected.Min)
                 ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
                                            m_core.EcoPathGroupOutputs(iGrp).Name, "BiomassEnd", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, Me._simdata.NTimes))
+
+                'ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                '                           m_core.EcoPathGroupOutputs(iGrp).Name, "Catch", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGrp, Me._simdata.NTimes))
+
                 ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
-                                           m_core.EcoPathGroupOutputs(iGrp).Name, "Catch", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGrp, Me._simdata.NTimes))
+                                          m_core.EcoPathGroupOutputs(iGrp).Name, "Landings", Me.LandingsDiscards(0, iGrp, eCatchTypes.Landings))
+
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                                          m_core.EcoPathGroupOutputs(iGrp).Name, "DiscardMortalities", Me.LandingsDiscards(0, iGrp, eCatchTypes.DiscardMortalities))
+
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                                          m_core.EcoPathGroupOutputs(iGrp).Name, "DiscardSurvivals", Me.LandingsDiscards(0, iGrp, eCatchTypes.DiscardSurvivals))
             Next
 
             For iFleet As Integer = 1 To m_core.nFleets
@@ -1952,7 +2003,8 @@ Public Class cMSE
         'Create the csv writer for writing out individual fleets catches of each group
         strmFleet = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, "Fleet.csv"), False)
         If Me.m_core.SaveWithFileHeader Then strmFleet.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-        strmFleet.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
+        strmFleet.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Landings,DiscardSurvivals,DiscardMortalities")
+        'strmFleet.WriteLine("Iteration,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
         msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, "Fleet.csv"), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
         ''Create the csv writer for writing out individual fleet efforts
@@ -2449,6 +2501,76 @@ Public Class cMSE
 
     End Sub
 
+    Private Sub CalCatchDiscards(ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer)
+
+        Debug.Assert(iTime > (Me.OriginalNTimesteps + (Me.NYearsProject - 1) * EcosimData.NumStepsPerYear) And iTime <= Me.OriginalNTimesteps + Me.NYearsProject * EcosimData.NumStepsPerYear, _
+                     "Time step for Catch and Discards averaging out of bounds")
+
+        sumCatchDiscards(BiomassAtTimestep, iTime)
+
+        'Average on the last time step
+        If iTime = Me.OriginalNTimesteps + (NYearsProject * Me.EcosimData.NumStepsPerYear) Then
+            Me.averageCatchDiscards(iTime)
+        End If
+
+    End Sub
+
+    Private Sub sumCatchDiscards(ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer)
+        Dim CatchFleetGrp As Single
+        Dim DenDepCatch As Single
+
+        For igrp As Integer = 1 To Me.m_core.nGroups
+            'Density dependant catchability
+            DenDepCatch = m_ecosim.EcosimData.QmQo(igrp) / (1 + (m_ecosim.EcosimData.QmQo(igrp) - 1) * BiomassAtTimestep(igrp) / m_ecosim.EcosimData.StartBiomass(igrp))
+
+            For iflt As Integer = 1 To Me.m_core.nFleets
+                If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
+                    CatchFleetGrp = CSng(_simdata.FishRateGear(iflt, iTime) * DenDepCatch * m_ecosim.EcosimData.FishMGear(iflt, igrp) * BiomassAtTimestep(igrp))
+
+                    'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
+
+                    Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) += CatchFleetGrp * m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
+                    Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+                    Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
+
+                    'Sum across fleets into the zero index
+                    Me.LandingsDiscards(0, igrp, eCatchTypes.Landings) += Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings)
+                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardMortalities) += Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardMortalities)
+                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardSurvivals) += Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvivals)
+
+                    ' Dim tmpCatch As Single = Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardsMort) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvived)
+                    ' Debug.Assert(Math.Abs(CatchFleetGrp - tmpCatch) < 0.00001)
+
+                End If 'If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
+            Next iflt
+        Next igrp
+    End Sub
+
+    Private Sub averageCatchDiscards(ByVal iTime As Integer)
+        Dim nLastTimeStep As Integer = Me.OriginalNTimesteps + (NYearsProject * Me.EcosimData.NumStepsPerYear)
+        'If this is the last timestep average the values over the year
+        If iTime = nLastTimeStep Then
+
+            Dim n As Integer = Me.EcosimData.NumStepsPerYear
+            For igrp As Integer = 1 To Me.m_core.nGroups
+                For iflt As Integer = 1 To Me.m_core.nFleets
+                    If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
+
+                        Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) /= n
+                        Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardMortalities) /= n
+                        Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvivals) /= n
+
+                    End If 'If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
+                Next iflt
+
+                Me.LandingsDiscards(0, igrp, eCatchTypes.Landings) /= n
+                Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardMortalities) /= n
+                Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardSurvivals) /= n
+
+            Next igrp
+        End If 'iTime = (NYearsProject * Me.EcosimData.NumStepsPerYear)
+    End Sub
+
 #End Region ' Private modeling code
 
 #Region " Distributions and sampling code "
@@ -2671,7 +2793,6 @@ Public Class cMSE
         Dim FleetTargQuota As Double
         Dim FleetQuota As Double
 
-
         If ChangeEffortFlag = True And iTime > OriginalNTimesteps Then 'Flag is only set to true when the button on the form is clicked
             'this is so that its only executed when ecosim is run from mseform
 
@@ -2694,7 +2815,11 @@ Public Class cMSE
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 For iFleet = 1 To m_core.nFleets
-                    'If iFleet = 3 And iTime < 207 Then Stop
+                    If _simdata.FishRateGear(iFleet, iTime - 1) = 0 Then
+                        System.Console.WriteLine("CEFAS MSE WARNING: Effort for the last timestep of fleet " _
+                                                 + Me.EcopathData.FleetName(iFleet) + " = zero.")
+                    End If
+
                     MinEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
                     If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MinEffortThisYear(iFleet - 1) = 0
                     MaxEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 + m_effortlimits.Value(iFleet))
@@ -2879,6 +3004,15 @@ Public Class cMSE
                 Next
             End If
 
+        End If
+
+    End Sub
+
+    Public Sub onEcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
+        'Number of time step up to the last year
+        Dim nTSToLastYear As Integer = Me.OriginalNTimesteps + (Me.NYearsProject - 1) * EcosimData.NumStepsPerYear
+        If ChangeEffortFlag = True And iTime > nTSToLastYear Then
+            Me.CalCatchDiscards(BiomassAtTimestep, iTime)
         End If
 
     End Sub
