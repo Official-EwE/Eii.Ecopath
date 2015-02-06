@@ -65,13 +65,26 @@ Namespace Ecosim
             Me.m_chkUseVarPQ = New System.Windows.Forms.CheckBox()
             Me.cmbTempLoading = New System.Windows.Forms.ComboBox()
             Me.m_lblTempLoading = New System.Windows.Forms.Label()
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plDescription = New System.Windows.Forms.Panel()
+            Me.m_plInit = New System.Windows.Forms.Panel()
+            Me.m_plRuntime = New System.Windows.Forms.Panel()
+            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_nudMinFeedingRateAdjustment = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.Label1 = New System.Windows.Forms.Label()
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_plDescription.SuspendLayout()
+            Me.m_plInit.SuspendLayout()
+            Me.m_plRuntime.SuspendLayout()
+            CType(Me.m_nudMinFeedingRateAdjustment, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_nudNutBaseFreeProp
             '
             Me.m_nudNutBaseFreeProp.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
+            Me.m_nudNutBaseFreeProp.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudNutBaseFreeProp, "m_nudNutBaseFreeProp")
             Me.m_nudNutBaseFreeProp.Maximum = New Decimal(New Integer() {999, 0, 0, 196608})
             Me.m_nudNutBaseFreeProp.Minimum = New Decimal(New Integer() {1, 0, 0, 65536})
@@ -80,6 +93,7 @@ Namespace Ecosim
             '
             'm_nudNumberYears
             '
+            Me.m_nudNumberYears.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudNumberYears, "m_nudNumberYears")
             Me.m_nudNumberYears.Name = "m_nudNumberYears"
             '
@@ -131,17 +145,17 @@ Namespace Ecosim
             '
             'm_hdrInitialization
             '
-            resources.ApplyResources(Me.m_hdrInitialization, "m_hdrInitialization")
-            Me.m_hdrInitialization.CanCollapseParent = False
+            Me.m_hdrInitialization.CanCollapseParent = True
             Me.m_hdrInitialization.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrInitialization, "m_hdrInitialization")
             Me.m_hdrInitialization.IsCollapsed = False
             Me.m_hdrInitialization.Name = "m_hdrInitialization"
             '
             'm_hdrScenario
             '
+            Me.m_hdrScenario.CanCollapseParent = True
+            Me.m_hdrScenario.CollapsedParentHeight = 134
             resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
-            Me.m_hdrScenario.CanCollapseParent = False
-            Me.m_hdrScenario.CollapsedParentHeight = 0
             Me.m_hdrScenario.IsCollapsed = False
             Me.m_hdrScenario.Name = "m_hdrScenario"
             '
@@ -203,38 +217,91 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblTempLoading, "m_lblTempLoading")
             Me.m_lblTempLoading.Name = "m_lblTempLoading"
             '
+            'TableLayoutPanel1
+            '
+            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plDescription, 0, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plInit, 0, 1)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plRuntime, 0, 2)
+            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            '
+            'm_plDescription
+            '
+            Me.m_plDescription.Controls.Add(Me.m_hdrScenario)
+            Me.m_plDescription.Controls.Add(Me.m_lbScenarioName)
+            Me.m_plDescription.Controls.Add(Me.m_tbName)
+            Me.m_plDescription.Controls.Add(Me.m_lblDescription)
+            Me.m_plDescription.Controls.Add(Me.m_tbContact)
+            Me.m_plDescription.Controls.Add(Me.m_tbDescription)
+            Me.m_plDescription.Controls.Add(Me.m_lbContact)
+            Me.m_plDescription.Controls.Add(Me.m_lbAuthor)
+            Me.m_plDescription.Controls.Add(Me.m_tbAuthor)
+            resources.ApplyResources(Me.m_plDescription, "m_plDescription")
+            Me.m_plDescription.Name = "m_plDescription"
+            '
+            'm_plInit
+            '
+            Me.m_plInit.Controls.Add(Me.m_hdrInitialization)
+            Me.m_plInit.Controls.Add(Me.m_lblTempLoading)
+            Me.m_plInit.Controls.Add(Me.m_lblNumberYears)
+            Me.m_plInit.Controls.Add(Me.cmbTempLoading)
+            Me.m_plInit.Controls.Add(Me.m_lblNutBaseFreeProp)
+            Me.m_plInit.Controls.Add(Me.m_nudNutBaseFreeProp)
+            Me.m_plInit.Controls.Add(Me.m_lblNutForcing)
+            Me.m_plInit.Controls.Add(Me.m_nudNumberYears)
+            Me.m_plInit.Controls.Add(Me.m_lblSalinityForcing)
+            Me.m_plInit.Controls.Add(Me.m_cmbSalinityForcing)
+            Me.m_plInit.Controls.Add(Me.m_chkConTracing)
+            Me.m_plInit.Controls.Add(Me.m_cmbNutForcing)
+            Me.m_plInit.Controls.Add(Me.m_chkUseVarPQ)
+            Me.m_plInit.Controls.Add(Me.m_chkPredictEffort)
+            resources.ApplyResources(Me.m_plInit, "m_plInit")
+            Me.m_plInit.Name = "m_plInit"
+            '
+            'm_plRuntime
+            '
+            Me.m_plRuntime.Controls.Add(Me.CEwEHeaderLabel1)
+            Me.m_plRuntime.Controls.Add(Me.m_nudMinFeedingRateAdjustment)
+            Me.m_plRuntime.Controls.Add(Me.Label1)
+            resources.ApplyResources(Me.m_plRuntime, "m_plRuntime")
+            Me.m_plRuntime.Name = "m_plRuntime"
+            '
+            'CEwEHeaderLabel1
+            '
+            Me.CEwEHeaderLabel1.CanCollapseParent = False
+            Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
+            Me.CEwEHeaderLabel1.IsCollapsed = False
+            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+            '
+            'm_nudMinFeedingRateAdjustment
+            '
+            Me.m_nudMinFeedingRateAdjustment.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+            resources.ApplyResources(Me.m_nudMinFeedingRateAdjustment, "m_nudMinFeedingRateAdjustment")
+            Me.m_nudMinFeedingRateAdjustment.Name = "m_nudMinFeedingRateAdjustment"
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
             'frmEcosimParameters
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_lblTempLoading)
-            Me.Controls.Add(Me.cmbTempLoading)
-            Me.Controls.Add(Me.m_nudNutBaseFreeProp)
-            Me.Controls.Add(Me.m_tbContact)
-            Me.Controls.Add(Me.m_nudNumberYears)
-            Me.Controls.Add(Me.m_tbAuthor)
-            Me.Controls.Add(Me.m_hdrScenario)
-            Me.Controls.Add(Me.m_cmbSalinityForcing)
-            Me.Controls.Add(Me.m_lbContact)
-            Me.Controls.Add(Me.m_cmbNutForcing)
-            Me.Controls.Add(Me.m_hdrInitialization)
-            Me.Controls.Add(Me.m_chkPredictEffort)
-            Me.Controls.Add(Me.m_lbAuthor)
-            Me.Controls.Add(Me.m_chkUseVarPQ)
-            Me.Controls.Add(Me.m_chkConTracing)
-            Me.Controls.Add(Me.m_tbName)
-            Me.Controls.Add(Me.m_lbScenarioName)
-            Me.Controls.Add(Me.m_lblSalinityForcing)
-            Me.Controls.Add(Me.m_tbDescription)
-            Me.Controls.Add(Me.m_lblNutForcing)
-            Me.Controls.Add(Me.m_lblDescription)
-            Me.Controls.Add(Me.m_lblNutBaseFreeProp)
-            Me.Controls.Add(Me.m_lblNumberYears)
+            Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Name = "frmEcosimParameters"
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.TableLayoutPanel1.ResumeLayout(False)
+            Me.m_plDescription.ResumeLayout(False)
+            Me.m_plDescription.PerformLayout()
+            Me.m_plInit.ResumeLayout(False)
+            Me.m_plInit.PerformLayout()
+            Me.m_plRuntime.ResumeLayout(False)
+            Me.m_plRuntime.PerformLayout()
+            CType(Me.m_nudMinFeedingRateAdjustment, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
@@ -260,6 +327,13 @@ Namespace Ecosim
         Private WithEvents m_hdrInitialization As cEwEHeaderLabel
         Private WithEvents m_nudNutBaseFreeProp As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudNumberYears As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_plDescription As System.Windows.Forms.Panel
+        Private WithEvents m_plInit As System.Windows.Forms.Panel
+        Private WithEvents m_plRuntime As System.Windows.Forms.Panel
+        Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_nudMinFeedingRateAdjustment As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents Label1 As System.Windows.Forms.Label
 
     End Class
 End Namespace

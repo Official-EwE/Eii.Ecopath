@@ -110,13 +110,13 @@ Public Class cEcosimDatastructures
     Public AbortRun As Boolean
     Public EvolveIsOn As Boolean
     Public BiomassOn As Boolean
-
     Public ActivePair As Integer
+    Public ForagingTimeLowerLimit As Single = 0.01!
 
-    'In the original code
-    'CperFlag is set to true when the EcoSim main form is loaded it is never set to false 
-    'this means it has no effect as EcoSim cannot be run without loading the form
-    Public CperFlag As Boolean
+    ''In the original code
+    ''CperFlag is set to true when the EcoSim main form is loaded it is never set to false 
+    ''this means it has no effect as EcoSim cannot be run without loading the form
+    'Public CperFlag As Boolean
 
     ''' <summary>Duration of simulation (years).</summary>
     Public NumYears As Integer
@@ -1395,7 +1395,7 @@ Public Class cEcosimDatastructures
             d.EvolveIsOn = EvolveIsOn
             d.BiomassOn = BiomassOn
             d.ActivePair = ActivePair
-            d.CperFlag = CperFlag
+            'd.CperFlag = CperFlag
             d.NumYears = NumYears
             d.NumStepsPerYear = NumStepsPerYear
             d.StepSize = StepSize

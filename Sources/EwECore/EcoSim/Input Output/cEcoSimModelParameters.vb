@@ -91,6 +91,11 @@ Public Class cEcoSimModelParameters
             val = New cValue(New Single, eVarNameFlags.SystemRecovery, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SystemRecovery))
             m_values.Add(val.varName, val)
 
+            'ForagingTimeLowerLimit
+            meta = New cVariableMetaData(0.01, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.ForagingTimeLowerLimit, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SystemRecovery))
+            m_values.Add(val.varName, val)
+
             'EquilScaleMax
 
             'boolean
@@ -262,11 +267,11 @@ Public Class cEcoSimModelParameters
     Public Property NumberYears() As Integer
 
         Get
-            Return CType(getVariable(eVarNameFlags.EcoSimNYears), Integer)
+            Return CInt(GetVariable(eVarNameFlags.EcoSimNYears))
         End Get
 
         Set(ByVal value As Integer)
-            setVariable(eVarNameFlags.EcoSimNYears, value)
+            SetVariable(eVarNameFlags.EcoSimNYears, value)
         End Set
 
     End Property
@@ -274,11 +279,11 @@ Public Class cEcoSimModelParameters
     Public Property BiomassOn() As Boolean
 
         Get
-            Return CType(getVariable(eVarNameFlags.BiomassOn), Boolean)
+            Return CBool(GetVariable(eVarNameFlags.BiomassOn))
         End Get
 
         Set(ByVal value As Boolean)
-            setVariable(eVarNameFlags.BiomassOn, value)
+            SetVariable(eVarNameFlags.BiomassOn, value)
         End Set
 
     End Property
@@ -286,11 +291,11 @@ Public Class cEcoSimModelParameters
     Public Property Discount() As Single
 
         Get
-            Return CType(getVariable(eVarNameFlags.Discount), Single)
+            Return CSng(GetVariable(eVarNameFlags.Discount))
         End Get
 
         Set(ByVal value As Single)
-            setVariable(eVarNameFlags.Discount, value)
+            SetVariable(eVarNameFlags.Discount, value)
         End Set
 
     End Property
@@ -298,11 +303,11 @@ Public Class cEcoSimModelParameters
     Public Property EquilibriumStepSize() As Single
 
         Get
-            Return CType(getVariable(eVarNameFlags.EquilibriumStepSize), Single)
+            Return CSng(GetVariable(eVarNameFlags.EquilibriumStepSize))
         End Get
 
         Set(ByVal value As Single)
-            setVariable(eVarNameFlags.EquilibriumStepSize, value)
+            SetVariable(eVarNameFlags.EquilibriumStepSize, value)
         End Set
 
     End Property
@@ -310,11 +315,11 @@ Public Class cEcoSimModelParameters
     Public Property EquilMaxFishingRate() As Single
 
         Get
-            Return CType(getVariable(eVarNameFlags.EquilMaxFishingRate), Single)
+            Return CSng(GetVariable(eVarNameFlags.EquilMaxFishingRate))
         End Get
 
         Set(ByVal value As Single)
-            setVariable(eVarNameFlags.EquilMaxFishingRate, value)
+            SetVariable(eVarNameFlags.EquilMaxFishingRate, value)
         End Set
 
     End Property
@@ -322,11 +327,11 @@ Public Class cEcoSimModelParameters
     Public Property NudgeChecked() As Boolean
 
         Get
-            Return CType(getVariable(eVarNameFlags.NudgeChecked), Boolean)
+            Return CBool(GetVariable(eVarNameFlags.NudgeChecked))
         End Get
 
         Set(ByVal value As Boolean)
-            setVariable(eVarNameFlags.NudgeChecked, value)
+            SetVariable(eVarNameFlags.NudgeChecked, value)
         End Set
 
     End Property
@@ -334,11 +339,11 @@ Public Class cEcoSimModelParameters
     'Public Property NumStepAvg() As Single
 
     '    Get
-    '        Return CType(getVariable(eVarNameFlags.NumStepAvg), Single)
+    '        Return CSng(GetVariable(eVarNameFlags.NumStepAvg))
     '    End Get
 
     '    Set(ByVal value As Single)
-    '        setVariable(eVarNameFlags.NumStepAvg, value)
+    '        SetVariable(eVarNameFlags.NumStepAvg, value)
     '    End Set
 
     'End Property
@@ -346,11 +351,11 @@ Public Class cEcoSimModelParameters
     Public Property NutBaseFreeProp() As Single
 
         Get
-            Return CType(getVariable(eVarNameFlags.NutBaseFreeProp), Single)
+            Return CSng(GetVariable(eVarNameFlags.NutBaseFreeProp))
         End Get
 
         Set(ByVal value As Single)
-            setVariable(eVarNameFlags.NutBaseFreeProp, value)
+            SetVariable(eVarNameFlags.NutBaseFreeProp, value)
         End Set
 
     End Property
@@ -358,11 +363,11 @@ Public Class cEcoSimModelParameters
     Public Property NutForceFunctionNumber() As Integer
 
         Get
-            Return CType(getVariable(eVarNameFlags.NutForceFunctionNumber), Integer)
+            Return CInt(GetVariable(eVarNameFlags.NutForceFunctionNumber))
         End Get
 
         Set(ByVal value As Integer)
-            setVariable(eVarNameFlags.NutForceFunctionNumber, value)
+            SetVariable(eVarNameFlags.NutForceFunctionNumber, value)
         End Set
 
     End Property
@@ -370,7 +375,7 @@ Public Class cEcoSimModelParameters
     Public Property SalinityForceFunctionNumber() As Integer
 
         Get
-            Return CType(GetVariable(eVarNameFlags.SalinityForceFunctionNumber), Integer)
+            Return CInt(GetVariable(eVarNameFlags.SalinityForceFunctionNumber))
         End Get
 
         Set(ByVal value As Integer)
@@ -382,7 +387,7 @@ Public Class cEcoSimModelParameters
     Public Property TemperatureForceFunctionNumber() As Integer
 
         Get
-            Return CType(GetVariable(eVarNameFlags.TemperatureForceFunctionNumber), Integer)
+            Return CInt(GetVariable(eVarNameFlags.TemperatureForceFunctionNumber))
         End Get
 
         Set(ByVal value As Integer)
@@ -394,7 +399,7 @@ Public Class cEcoSimModelParameters
     Public Property NutPBMax() As Single
 
         Get
-            Return CType(GetVariable(eVarNameFlags.NutPBMax), Single)
+            Return CSng(GetVariable(eVarNameFlags.NutPBMax))
         End Get
 
         Set(ByVal value As Single)
@@ -406,7 +411,7 @@ Public Class cEcoSimModelParameters
     Public Property StepSize() As Single
 
         Get
-            Return CType(GetVariable(eVarNameFlags.StepSize), Single)
+            Return CSng(GetVariable(eVarNameFlags.StepSize))
         End Get
 
         Set(ByVal value As Single)
@@ -418,11 +423,11 @@ Public Class cEcoSimModelParameters
     Public Property SystemRecovery() As Single
 
         Get
-            Return CType(getVariable(eVarNameFlags.SystemRecovery), Single)
+            Return CSng(GetVariable(eVarNameFlags.SystemRecovery))
         End Get
 
         Set(ByVal value As Single)
-            setVariable(eVarNameFlags.SystemRecovery, value)
+            SetVariable(eVarNameFlags.SystemRecovery, value)
         End Set
 
     End Property
@@ -430,13 +435,29 @@ Public Class cEcoSimModelParameters
     Public Property UseVarPQ() As Boolean
 
         Get
-            Return CType(getVariable(eVarNameFlags.UseVarPQ), Boolean)
+            Return CBool(GetVariable(eVarNameFlags.UseVarPQ))
         End Get
 
         Set(ByVal value As Boolean)
-            setVariable(eVarNameFlags.UseVarPQ, value)
+            SetVariable(eVarNameFlags.UseVarPQ, value)
         End Set
 
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Compatibility flag. EwE up to version 6.4 limited the foraging time to 0.1, 
+    ''' but this turned some ecosystems volaltile. The limit has been changed to
+    ''' a min of 0.01. 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ForagingTimeLowerLimit As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.ForagingTimeLowerLimit))
+        End Get
+        Set(value As Single)
+            SetVariable(eVarNameFlags.ForagingTimeLowerLimit, value)
+        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -494,7 +515,7 @@ Public Class cEcoSimModelParameters
     Public Property ContaminantTracing() As Boolean
 
         Get
-            Return CType(GetVariable(eVarNameFlags.ConSimOnEcoSim), Boolean)
+            Return CBool(GetVariable(eVarNameFlags.ConSimOnEcoSim))
         End Get
 
         Set(ByVal value As Boolean)
@@ -506,7 +527,7 @@ Public Class cEcoSimModelParameters
     Public Property PredictEffort() As Boolean
 
         Get
-            Return CType(GetVariable(eVarNameFlags.PredictEffort), Boolean)
+            Return CBool(GetVariable(eVarNameFlags.PredictEffort))
         End Get
 
         Set(ByVal value As Boolean)
@@ -518,7 +539,7 @@ Public Class cEcoSimModelParameters
     'Public Property RegFeedBack() As Boolean
 
     '    Get
-    '        Return CType(GetVariable(eVarNameFlags.RegFeedBack), Boolean)
+    '        Return CBool(GetVariable(eVarNameFlags.RegFeedBack))
     '    End Get
 
     '    Set(ByVal value As Boolean)

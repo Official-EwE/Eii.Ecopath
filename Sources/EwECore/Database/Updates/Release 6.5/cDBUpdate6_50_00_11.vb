@@ -21,16 +21,15 @@ Imports EwEUtils.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.50.0.10:</para>
+''' <para>Database update 6.50.0.11:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Changed shape function type to long.</description></item>
-''' <item><description>Added taxon exploitation status.</description></item>
+''' <item><description>Add foraging time lower limit flag for Ecosim.</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_50_00_10
+Friend Class cDBUpdate6_50_00_11
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -38,7 +37,7 @@ Friend Class cDBUpdate6_50_00_10
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.50001!
+            Return 6.500011!
         End Get
     End Property
 
@@ -47,14 +46,23 @@ Friend Class cDBUpdate6_50_00_10
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Changed shape fn type to long, added taxon exploitation status"
+            Return "Lower foraging time limit for Ecosim can be altered"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return db.Execute("ALTER TABLE EcosimShapeTime ALTER COLUMN FunctionType LONG") And _
-               db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN ExploitationStatus LONG")
+        ' All updated models receive the former default of 0.1
+        Dim bSuccess As Boolean = db.Execute("ALTER TABLE EcosimScenario ADD COLUMN ForagingTimeLowerLimit SINGLE")
+        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcosimScenario")
+        Dim dt As DataTable = writer.GetDataTable()
+        For Each row As DataRow In dt.Rows
+            row.BeginEdit()
+            row("ForagingTimeLowerLimit") = 0.1!
+            row.EndEdit()
+        Next
+        Me.LogProgress("Update EcosimScenario foragingtimelowerlimit", bSuccess)
+        Return bSuccess
 
     End Function
 

@@ -3632,6 +3632,8 @@ Namespace DataSources
                 'VC090403: the var P/Q was being set to true by default, It shouldn't be, this should be done in interface only
                 ecosimDS.UseVarPQ = False
 
+                ecosimDS.ForagingTimeLowerLimit = CSng(Me.m_db.ReadSafe(reader, "ForagingTimeLowerLimit", 0.01))
+
             Catch ex As Exception
                 Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False

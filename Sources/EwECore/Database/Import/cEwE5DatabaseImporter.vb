@@ -1635,6 +1635,9 @@ Namespace Database
                 'drow("UseVarPQ") = Me.FixValue(reader, "UseVarPQ")
                 drow("LastSaved") = Me.ExtractLastSavedJulianDate(CStr(Me.FixValue(reader, "remarks", "")))
 
+                ' Feb 15: make sure to retain old EwE5 defaults
+                drow("ForagingTimeLowerLimit") = 0.1
+
                 nMaxForcePoints = Math.Max(nMaxForcePoints, CInt(drow("TotalTime")) * 12)
 
                 ' Nutrient forcing shape will be resolved when shapes are loaded
