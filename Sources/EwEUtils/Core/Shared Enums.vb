@@ -334,12 +334,24 @@ Namespace Core
         SalinitySpreadLeft
         SalinitySpreadRight
 
-        'jb Temerature values added Nov-10
+        'jb Temperature values added Nov-10
         TemperatureForceFunctionNumber
         TemperatureOpt
         ' SalinitySpread
         TemperatureSpreadLeft
         TemperatureSpreadRight
+
+        'js Foraging time adjustment added Feb-15
+        ''' <summary>
+        ''' Foraging time adjustment cannot drop below 0.1 as was the case
+        ''' in EwE all the way up to release 6.4. In later versions of EwE
+        ''' the foraging time adjustment was allowed to drop lower.
+        ''' </summary>
+        ''' <comment>
+        ''' VC: Arrow lake model, big increase in prey, top predator foraging 
+        ''' time can't go below 0.1, so changed bount to 0.01 
+        ''' </comment>
+        ForagingTimeLowerLimit
 
         ''' <summary>Contaminant tracing on/off</summary>
         ConSimOnEcoSim

@@ -772,7 +772,7 @@ Public Class cEIIDataSource
     ''' <param name="iDBID">Database ID of the scenario to load.</param>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Function LoadScenario(ByVal iDBID As Integer) As Boolean _
+    Function LoadEcosimScenario(ByVal iDBID As Integer) As Boolean _
             Implements IEcosimDatasource.LoadEcosimScenario
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -839,7 +839,6 @@ Public Class cEIIDataSource
         For i = 1 To ecosimDS.nGear
             ecosimDS.FleetDBID(i) = i
         Next
-
 
         'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 

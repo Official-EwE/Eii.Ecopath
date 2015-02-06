@@ -8062,6 +8062,7 @@ Public Class cCore
             m_EcoSimRun.StepSize = m_EcoSim.m_Data.StepSize
             m_EcoSimRun.SystemRecovery = m_EcoSim.m_Data.SystemRecovery
             m_EcoSimRun.UseVarPQ = m_EcoSim.m_Data.UseVarPQ
+            m_EcoSimRun.ForagingTimeLowerLimit = m_EcoSim.m_Data.ForagingTimeLowerLimit
 
             m_EcoSimRun.SalinityForceFunctionNumber = m_EcoSim.m_Data.EnvResponseForceNo(1)
             m_EcoSimRun.TemperatureForceFunctionNumber = m_EcoSim.m_Data.EnvResponseForceNo(2)
@@ -8101,6 +8102,7 @@ Public Class cCore
             m_EcoSim.m_Data.StepSize = m_EcoSimRun.StepSize
             m_EcoSim.m_Data.SystemRecovery = m_EcoSimRun.SystemRecovery
             m_EcoSim.m_Data.UseVarPQ = m_EcoSimRun.UseVarPQ
+            m_EcoSim.m_Data.ForagingTimeLowerLimit = m_EcoSimRun.ForagingTimeLowerLimit
 
             Me.m_tracerData.EcoSimConSimOn = m_EcoSimRun.ContaminantTracing
 

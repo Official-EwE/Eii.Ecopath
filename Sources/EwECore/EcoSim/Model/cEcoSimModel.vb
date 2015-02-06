@@ -1458,7 +1458,7 @@ Namespace Ecosim
                     If CBlast(i) > 0 And (m_Data.NoIntegrate(i) = i Or m_Data.NoIntegrate(i) < 0) Then
                         '20150126, Arrow lake model, big increase in prey, top predator foraging time can't go below 0.1, 
                         'so changed bount to 0.01 
-                        m_Data.Ftime(i) = CSng(0.01 + 0.99 * m_Data.Ftime(i) * (1 - m_Data.FtimeAdjust(i) + m_Data.FtimeAdjust(i) * Qopt(i) / Me.CBlast(i)))
+                        m_Data.Ftime(i) = CSng(Me.m_Data.ForagingTimeLowerLimit + (1 - Me.m_Data.ForagingTimeLowerLimit) * m_Data.Ftime(i) * (1 - m_Data.FtimeAdjust(i) + m_Data.FtimeAdjust(i) * Qopt(i) / Me.CBlast(i)))
                     End If
                     If m_Data.Ftime(i) > m_Data.FtimeMax(i) Then m_Data.Ftime(i) = m_Data.FtimeMax(i)
                 Next
