@@ -785,7 +785,6 @@ Public Class cEcospaceModelParameters
     ''' Not used by the Scientific Interface. 
     ''' This allows an external application, console app or plugin, to specify custom output directories for Ecospace.
     ''' </remarks>
-    ''' </remarks>
     Public Property EcospaceMapOutputDir() As String
 
         Get
