@@ -1078,6 +1078,10 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="strExpression">The string to convert.</param>
         ''' <returns>A string in proper title case.</returns>
+        ''' <remarks>This version fixes some issues with <see cref="TextInfo.ToTitleCase"/>.
+        ''' Note that substrings are split by ". " (left to right reading order) or 
+        ''' " ." (l2r reading order). There is no support (yet) for custom
+        ''' sentence seaprators.</remarks>
         ''' -------------------------------------------------------------------
         Public Shared Function ToTitleCase(ByVal strExpression As String) As String
 

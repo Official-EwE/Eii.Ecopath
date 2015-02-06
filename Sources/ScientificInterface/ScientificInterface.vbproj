@@ -228,6 +228,7 @@
     <Compile Include="Ecospace\Output\Map rendering\cMapDrawerFleet.vb" />
     <Compile Include="Ecospace\Output\Map rendering\cMapDrawerGroup.vb" />
     <Compile Include="Ecospace\Output\Map rendering\cRunEcospacePlotTypeFormatter.vb" />
+    <Compile Include="Other\cSelectionMonitorFormatter.vb" />
     <Compile Include="Other\cEwEIcon.vb" />
     <Compile Include="Other\cStyleGuideUpdater.vb" />
     <Compile Include="Controls\cEwEStatusBar.designer.vb">

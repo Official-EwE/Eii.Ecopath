@@ -165,7 +165,7 @@
     <value>m_tsRemarks</value>
   </data>
   <data name="&gt;&gt;m_tsRemarks.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9585.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11754.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsRemarks.Parent" xml:space="preserve">
     <value>$this</value>
@@ -235,6 +235,6 @@
     <value>frmRemarkPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.3.9585.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.5.11754.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

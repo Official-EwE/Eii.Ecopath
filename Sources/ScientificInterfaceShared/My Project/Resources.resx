@@ -3205,4 +3205,10 @@
   <data name="GENERAL_LABEL_YEAR" xml:space="preserve">
     <value>Year</value>
   </data>
+  <data name="GENERIC_LABEL_SPLIT" xml:space="preserve">
+    <value>{0} - {1}</value>
+  </data>
+  <data name="VARIABLE_FORAGINGTIMELOWERLIMIT" xml:space="preserve">
+    <value>Foraging lower limit|||In EwE version 6.4 and prior, Ecosim limits the foraging time to 0.1 of a time step. This limit can now be lowered to 0.01</value>
+  </data>
 </root>

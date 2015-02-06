@@ -271,8 +271,10 @@ Public Class frmRemarkPanel
     ''' -----------------------------------------------------------------------
     Private Sub UpdateContents()
 
+        Dim fmt As New cSelectionMonitorFormatter()
         Dim props() As cProperty = Me.m_mon.Selection
-        Dim strSelection As String = Me.m_mon.ToString(True)
+        Dim strSelection As String = fmt.GetDescriptor(Me.m_mon, eDescriptorTypes.Name)
+        Dim strDescription As String = fmt.GetDescriptor(Me.m_mon, eDescriptorTypes.Description)
         Dim strRemark As String = ""
         Dim strRemarkFinal As String = ""
         Dim vd As New cVarnameTypeFormatter()
@@ -303,6 +305,7 @@ Public Class frmRemarkPanel
 
         ' Update control contents
         Me.m_lblVarName.Text = strSelection
+        Me.m_lblVarName.ToolTipText = strDescription
         Me.m_tbxRemark.Text = strRemarkFinal
 
     End Sub
