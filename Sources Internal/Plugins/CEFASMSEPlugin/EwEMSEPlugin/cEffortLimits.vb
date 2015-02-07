@@ -103,6 +103,7 @@ Public Class cEffortLimits
                         iFleet = cStringUtils.ConvertToInteger(EffortLimitsCSV(0))
                         If (1 <= iFleet) And (iFleet <= Me.nFleets) Then
                             Me.Value(iFleet) = cStringUtils.ConvertToSingle(EffortLimitsCSV(2))
+                            If Me.Value(iFleet) > 0.9 Then Me.Value(iFleet) = 0.9
                         End If
                     End If
                 End While

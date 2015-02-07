@@ -54,6 +54,7 @@ Public Class cMSE
     Private m_monitor As cMSEStateMonitor = Nothing
     Private m_effortlimits As cEffortLimits = Nothing
     Private m_diets As cDiets = Nothing
+    Private m_implementation_error As Single
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'For the Stock Assessment Model
@@ -1369,6 +1370,8 @@ Public Class cMSE
             'so the model can be restored at the end of the run
             Me.SaveOriginalParameters()
 
+            m_implementation_error = 0
+
             'Set the TechnologyCreep(nfleets) to one for all fleets
             'No technology creep for us
             Me.initTechnologyCreep()
@@ -1788,6 +1791,8 @@ Public Class cMSE
 
         Dim GoodDynamics As Boolean = True
 
+        Dim TempCalcedFleetEndValue As Single
+
         Dim BiomassProjected(NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Double
 
         nSuccessfullyProjectedModels = 0
@@ -1918,9 +1923,14 @@ Public Class cMSE
                                           m_core.EcoPathGroupOutputs(iGrp).Name, "DiscardSurvivals", Me.LandingsDiscards(0, iGrp, eCatchTypes.DiscardSurvivals))
             Next
 
+            'Save the market value for each fleet of what was landed
             For iFleet As Integer = 1 To m_core.nFleets
+                TempCalcedFleetEndValue = 0
+                For iGrp As Integer = 1 To m_core.nGroups
+                    TempCalcedFleetEndValue += Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings) * EcopathData.Market(iFleet, iGrp)
+                Next
                 ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iFleet, _
-                                      m_core.FleetInputs(iFleet).Name, "TotalEndValue", Me._simdata.ResultsSumValueByGear(iFleet, m_ecosim.EcosimData.NTimes))
+                                      m_core.FleetInputs(iFleet).Name, "TotalEndValue", TempCalcedFleetEndValue)
             Next
 
         End If
@@ -2534,9 +2544,9 @@ Public Class cMSE
                     Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
 
                     'Sum across fleets into the zero index
-                    Me.LandingsDiscards(0, igrp, eCatchTypes.Landings) += Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings)
-                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardMortalities) += Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardMortalities)
-                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardSurvivals) += Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvivals)
+                    Me.LandingsDiscards(0, igrp, eCatchTypes.Landings) += CatchFleetGrp * m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
+                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
 
                     ' Dim tmpCatch As Single = Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardsMort) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvived)
                     ' Debug.Assert(Math.Abs(CatchFleetGrp - tmpCatch) < 0.00001)
@@ -2968,7 +2978,6 @@ Public Class cMSE
 
             End If
 
-
             For iFleet = 1 To m_core.nFleets
                 If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
                     'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
@@ -2993,16 +3002,16 @@ Public Class cMSE
             'Calculates what the F's are for each species given the effort
             m_ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
 
-            Dim percentagechangeeffort As Single
-            'This is a diagnostics test
-            If iTime > OriginalNTimesteps + 2 Then
-                For iFleet = 1 To m_core.nFleets
-                    percentagechangeeffort = Math.Abs((_simdata.FishRateGear(iFleet, iTime) - _simdata.FishRateGear(iFleet, iTime - 1)) / _simdata.FishRateGear(iFleet, iTime - 1))
-                    If percentagechangeeffort > 0.15 Then
-                        'Stop
-                    End If
-                Next
-            End If
+            'Dim percentagechangeeffort As Single
+            ''This is a diagnostics test
+            'If iTime > OriginalNTimesteps + 2 Then
+            '    For iFleet = 1 To m_core.nFleets
+            '        percentagechangeeffort = Math.Abs((_simdata.FishRateGear(iFleet, iTime) - _simdata.FishRateGear(iFleet, iTime - 1)) / _simdata.FishRateGear(iFleet, iTime - 1))
+            '        If percentagechangeeffort > 0.15 Then
+            '            'Stop
+            '        End If
+            '    Next
+            'End If
 
         End If
 
