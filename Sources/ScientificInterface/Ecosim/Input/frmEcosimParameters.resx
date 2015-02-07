@@ -126,7 +126,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_nudNutBaseFreeProp.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.Name" xml:space="preserve">
     <value>m_nudNutBaseFreeProp</value>
@@ -147,7 +147,7 @@
     <value>86, 20</value>
   </data>
   <data name="m_nudNumberYears.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.Name" xml:space="preserve">
     <value>m_nudNumberYears</value>
@@ -168,7 +168,7 @@
     <value>163, 21</value>
   </data>
   <data name="m_cmbSalinityForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_cmbSalinityForcing.Name" xml:space="preserve">
     <value>m_cmbSalinityForcing</value>
@@ -213,7 +213,7 @@
     <value>125, 17</value>
   </data>
   <data name="m_chkPredictEffort.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_chkPredictEffort.Text" xml:space="preserve">
     <value>&amp;Fleet/effort dynamics</value>
@@ -271,7 +271,7 @@
     <value>156, 13</value>
   </data>
   <data name="m_lblSalinityForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_lblSalinityForcing.Text" xml:space="preserve">
     <value>&amp;Salinity loading forcing function:</value>
@@ -298,7 +298,7 @@
     <value>160, 13</value>
   </data>
   <data name="m_lblNutForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lblNutForcing.Text" xml:space="preserve">
     <value>&amp;Nutrient loading forcing function:</value>
@@ -325,7 +325,7 @@
     <value>160, 13</value>
   </data>
   <data name="m_lblNutBaseFreeProp.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lblNutBaseFreeProp.Text" xml:space="preserve">
     <value>&amp;Base proportion of free nutrients:</value>
@@ -352,7 +352,7 @@
     <value>145, 13</value>
   </data>
   <data name="m_lblNumberYears.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lblNumberYears.Text" xml:space="preserve">
     <value>Duration of &amp;simulation (years):</value>
@@ -379,10 +379,10 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrInitialization.Size" type="System.Drawing.Size, System.Drawing">
-    <value>791, 18</value>
+    <value>501, 18</value>
   </data>
   <data name="m_hdrInitialization.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="m_hdrInitialization.Text" xml:space="preserve">
     <value>Initialization</value>
@@ -412,7 +412,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrScenario.Size" type="System.Drawing.Size, System.Drawing">
-    <value>791, 18</value>
+    <value>501, 18</value>
   </data>
   <data name="m_hdrScenario.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -448,10 +448,10 @@
     <value>True</value>
   </data>
   <data name="m_tbContact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>593, 33</value>
+    <value>303, 33</value>
   </data>
   <data name="m_tbContact.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="m_tbContact.Text" xml:space="preserve">
     <value>1
@@ -479,10 +479,10 @@
     <value>60</value>
   </data>
   <data name="m_tbAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>593, 20</value>
+    <value>303, 20</value>
   </data>
   <data name="m_tbAuthor.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_tbAuthor.Name" xml:space="preserve">
     <value>m_tbAuthor</value>
@@ -512,7 +512,7 @@
     <value>47, 13</value>
   </data>
   <data name="m_lbContact.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>7</value>
   </data>
   <data name="m_lbContact.Text" xml:space="preserve">
     <value>&amp;Contact:</value>
@@ -545,7 +545,7 @@
     <value>41, 13</value>
   </data>
   <data name="m_lbAuthor.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>5</value>
   </data>
   <data name="m_lbAuthor.Text" xml:space="preserve">
     <value>&amp;Author:</value>
@@ -569,10 +569,10 @@
     <value>195, 21</value>
   </data>
   <data name="m_tbName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>593, 20</value>
+    <value>303, 20</value>
   </data>
   <data name="m_tbName.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_tbName.Name" xml:space="preserve">
     <value>m_tbName</value>
@@ -587,7 +587,7 @@
     <value>2</value>
   </data>
   <data name="m_tbDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_tbDescription.Location" type="System.Drawing.Point, System.Drawing">
     <value>195, 46</value>
@@ -596,10 +596,10 @@
     <value>True</value>
   </data>
   <data name="m_tbDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>593, 41</value>
+    <value>303, 41</value>
   </data>
   <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_tbDescription.Name" xml:space="preserve">
     <value>m_tbDescription</value>
@@ -626,7 +626,7 @@
     <value>63, 13</value>
   </data>
   <data name="m_lblDescription.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lblDescription.Text" xml:space="preserve">
     <value>D&amp;escription:</value>
@@ -653,7 +653,7 @@
     <value>38, 13</value>
   </data>
   <data name="m_lbScenarioName.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lbScenarioName.Text" xml:space="preserve">
     <value>&amp;Name:</value>
@@ -707,7 +707,7 @@
     <value>163, 21</value>
   </data>
   <data name="cmbTempLoading.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;cmbTempLoading.Name" xml:space="preserve">
     <value>cmbTempLoading</value>
@@ -731,7 +731,7 @@
     <value>183, 13</value>
   </data>
   <data name="m_lblTempLoading.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>9</value>
   </data>
   <data name="m_lblTempLoading.Text" xml:space="preserve">
     <value>&amp;Temperature loading forcing function:</value>
@@ -758,7 +758,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_plDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>791, 155</value>
+    <value>501, 155</value>
   </data>
   <data name="m_plDescription.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -782,7 +782,7 @@
     <value>3, 164</value>
   </data>
   <data name="m_plInit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>791, 220</value>
+    <value>501, 220</value>
   </data>
   <data name="m_plInit.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -799,6 +799,96 @@
   <data name="&gt;&gt;m_plInit.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
+    <value>CEwEHeaderLabel1</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11754.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
+    <value>m_plRuntime</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_nudMinFeedingRateAdjustment.Name" xml:space="preserve">
+    <value>m_nudMinFeedingRateAdjustment</value>
+  </data>
+  <data name="&gt;&gt;m_nudMinFeedingRateAdjustment.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11754.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudMinFeedingRateAdjustment.Parent" xml:space="preserve">
+    <value>m_plRuntime</value>
+  </data>
+  <data name="&gt;&gt;m_nudMinFeedingRateAdjustment.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>m_plRuntime</value>
+  </data>
+  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_plRuntime.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_plRuntime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 390</value>
+  </data>
+  <data name="m_plRuntime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>501, 44</value>
+  </data>
+  <data name="m_plRuntime.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_plRuntime.Name" xml:space="preserve">
+    <value>m_plRuntime</value>
+  </data>
+  <data name="&gt;&gt;m_plRuntime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_plRuntime.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;m_plRuntime.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="TableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>507, 437</value>
+  </data>
+  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plDescription" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plInit" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plRuntime" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
   <data name="CEwEHeaderLabel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -806,7 +896,7 @@
     <value>0, 0</value>
   </data>
   <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>791, 18</value>
+    <value>501, 18</value>
   </data>
   <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -836,7 +926,7 @@
     <value>86, 20</value>
   </data>
   <data name="m_nudMinFeedingRateAdjustment.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_nudMinFeedingRateAdjustment.Name" xml:space="preserve">
     <value>m_nudMinFeedingRateAdjustment</value>
@@ -863,7 +953,7 @@
     <value>93, 13</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
     <value>&amp;Min. foraging time:</value>
@@ -880,60 +970,6 @@
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_plRuntime.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_plRuntime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 390</value>
-  </data>
-  <data name="m_plRuntime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>791, 128</value>
-  </data>
-  <data name="m_plRuntime.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_plRuntime.Name" xml:space="preserve">
-    <value>m_plRuntime</value>
-  </data>
-  <data name="&gt;&gt;m_plRuntime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plRuntime.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_plRuntime.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="TableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>797, 521</value>
-  </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plDescription" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plInit" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plRuntime" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -943,8 +979,11 @@
   <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>797, 521</value>
+    <value>507, 437</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
