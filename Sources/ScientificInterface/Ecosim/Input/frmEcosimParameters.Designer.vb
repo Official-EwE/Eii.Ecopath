@@ -154,7 +154,7 @@ Namespace Ecosim
             'm_hdrScenario
             '
             Me.m_hdrScenario.CanCollapseParent = True
-            Me.m_hdrScenario.CollapsedParentHeight = 134
+            Me.m_hdrScenario.CollapsedParentHeight = 93
             resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
             Me.m_hdrScenario.IsCollapsed = False
             Me.m_hdrScenario.Name = "m_hdrScenario"
