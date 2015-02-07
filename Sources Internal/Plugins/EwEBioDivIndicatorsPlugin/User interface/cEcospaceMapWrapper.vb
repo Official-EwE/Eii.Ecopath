@@ -55,9 +55,9 @@ Public Class cEcospaceMapWrapper
     Private m_layerData As cDisplayLayer = Nothing
 
     ''' <summary>Current indicator group to display in the graph.</summary>
-    Private m_groupCurrent As cIndicatorSettings.cIndicatorInfoGroup = Nothing
+    Private m_groupCurrent As cIndicatorInfoGroup = Nothing
     ''' <summary>Current indicator to display in the graph.</summary>
-    Private m_indCurrent As cIndicatorSettings.cIndicatorInfo = Nothing
+    Private m_indCurrent As cIndicatorInfo = Nothing
 
     Private m_picbox As PictureBox = Nothing
     Private m_drawers As New List(Of cEcospaceMapDrawer)
@@ -107,13 +107,13 @@ Public Class cEcospaceMapWrapper
 
 #End Region ' Attach + detach
 
-    Public Sub RefreshContent(indSingle As cIndicatorSettings.cIndicatorInfo, indGroup As cIndicatorSettings.cIndicatorInfoGroup)
+    Public Sub RefreshContent(indSingle As cIndicatorInfo, indGroup As cIndicatorInfoGroup)
 
         If (Me.m_uic Is Nothing) Then Return
 
         Me.m_indCurrent = indSingle
 
-        Dim lInfo As New List(Of cIndicatorSettings.cIndicatorInfo)
+        Dim lInfo As New List(Of cIndicatorInfo)
 
         If (Me.m_indCurrent Is Nothing) Then
             ' Group mode
@@ -135,7 +135,7 @@ Public Class cEcospaceMapWrapper
         If (lInfo.Count > 0) Then
             Me.m_drawers.Clear()
             For Each info In lInfo
-                Dim drawer As New cEcospaceMapDrawer(Me.m_uic.Core, Me.m_uic.StyleGuide)
+                Dim drawer As New cEcospaceMapDrawer(Me.m_uic.Core, Me.m_uic.StyleGuide, info)
                 drawer.Colors = Me.m_colors
                 Me.m_drawers.Add(drawer)
             Next
@@ -170,34 +170,24 @@ Public Class cEcospaceMapWrapper
         Dim iInRow As Integer = bm.InRow
         Dim iInCol As Integer = bm.InCol
         Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-        Dim info As cIndicatorSettings.cIndicatorInfo = Nothing
-        Dim settings As cIndicatorSettings = Me.m_settings
+        Dim info As cIndicatorInfo = Nothing
         Dim ind As cEcospaceIndicators = Nothing
+        Dim settings As cIndicatorSettings = Me.m_settings
 
-        Dim lInfo As New List(Of cIndicatorSettings.cIndicatorInfo)
+        Dim n As Integer = Me.m_drawers.Count
 
-        If (Me.m_indCurrent Is Nothing) Then
-            ' Group mode
-            For i As Integer = 0 To Me.m_groupCurrent.NumIndicators - 1
-                lInfo.Add(Me.m_groupCurrent.Indicator(i))
-            Next
-        Else
-            ' Indicator mode
-            lInfo.Add(Me.m_indCurrent)
-        End If
-
-        If lInfo.Count > 0 Then
+        If (n > 0) Then
 
             ' Ugh!
-            Dim asData(iInRow, iInCol, lInfo.Count) As Single
+            Dim asData(iInRow, iInCol, n) As Single
             Dim sValue As Single = 0
-            Dim asScaler(lInfo.Count) As Single
-            Dim astrLabels(lInfo.Count) As String
-            Dim astrDescriptions(lInfo.Count) As String
+            Dim asScaler(n) As Single
+            Dim astrLabels(n) As String
+            Dim astrDescriptions(n) As String
 
             ' Populate result array from computed indicators
-            For i As Integer = 0 To lInfo.Count - 1
-                info = lInfo(i)
+            For i As Integer = 0 To Me.m_drawers.Count - 1
+                info = Me.m_drawers(i).Indicator
 
                 For Each pt As Point In Me.m_dtIndicators.Keys
                     ind = Me.m_dtIndicators(pt)
@@ -217,7 +207,7 @@ Public Class cEcospaceMapWrapper
             Dim rectList As New List(Of Rectangle)
             Dim mapArgs As New cMapDrawerArgs(cMapDrawerBase.eMapType.RelBiomass, asScaler, 0)
 
-            cMapDrawerBase.CalcMapAreas(Me.m_picbox.ClientRectangle, lInfo.Count, iInRow, iInCol, _
+            cMapDrawerBase.CalcMapAreas(Me.m_picbox.ClientRectangle, n, iInRow, iInCol, _
                                         iNumPlotsHorz, iNumPlotsVert, originList, rectList)
 
             Using g As Graphics = Graphics.FromImage(Me.m_bmp)
@@ -226,7 +216,7 @@ Public Class cEcospaceMapWrapper
                 End Using
             End Using
 
-            For i As Integer = 0 To lInfo.Count - 1
+            For i As Integer = 0 To n - 1
                 Dim drawer As cEcospaceMapDrawer = Me.m_drawers(i)
 
                 'init the drawer to the latest values

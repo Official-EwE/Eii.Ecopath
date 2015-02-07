@@ -38,11 +38,11 @@ Public Class frmMain
 
 #Region " Variables "
 
-    Private m_ecosimWrapper As cEcosimGraphWrapper = Nothing
-    Private m_ecospaceWrapper As cEcospaceMapWrapper = Nothing
-    Private m_mcWrapper As cMCGraphWrapper = Nothing
+    Private m_ecosimgraph As cEcosimGraphWrapper = Nothing
+    Private m_ecospacemap As cEcospaceMapWrapper = Nothing
+    Private m_mcgraph As cMCGraphWrapper = Nothing
 
-    Private m_ppt As cEwEBioDiversityIndicatorsPlugin = Nothing
+    Private m_plugin As cEwEBioDiversityIndicatorsPlugin = Nothing
 
     Private m_settings As cIndicatorSettings = Nothing
     Private m_bInUpdate As Boolean = False
@@ -56,14 +56,14 @@ Public Class frmMain
         MyBase.New()
         Me.UIContext = uic
 
-        Me.m_ppt = pluginpoint
+        Me.m_plugin = pluginpoint
         Me.m_settings = pluginpoint.m_settings
 
         Me.InitializeComponent()
 
-        Me.m_ecosimWrapper = New cEcosimGraphWrapper()
-        Me.m_ecospaceWrapper = New cEcospaceMapWrapper()
-        Me.m_mcWrapper = New cMCGraphWrapper()
+        Me.m_ecosimgraph = New cEcosimGraphWrapper()
+        Me.m_ecospacemap = New cEcospaceMapWrapper()
+        Me.m_mcgraph = New cMCGraphWrapper()
 
     End Sub
 
@@ -102,19 +102,19 @@ Public Class frmMain
         End Try
 
         Try
-            Me.m_ecosimWrapper.Attach(Me.UIContext, Me.m_graphSim, Me.m_settings, Me.m_ppt.m_lIndEcosim)
+            Me.m_ecosimgraph.Attach(Me.UIContext, Me.m_graphSim, Me.m_settings, Me.m_plugin.m_lIndEcosim)
         Catch ex As Exception
             Debug.Assert(False, "Zed graph handler not able to attach")
         End Try
 
         Try
-            Me.m_ecospaceWrapper.Attach(Me.UIContext, Me.m_ppt.m_dtIndEcospace, Me.m_settings, Me.m_pbEcospaceMap, Me.m_ppt.m_indEcopath, Me.m_legend.Colors)
+            Me.m_ecospacemap.Attach(Me.UIContext, Me.m_plugin.m_dtIndEcospace, Me.m_settings, Me.m_pbEcospaceMap, Me.m_plugin.m_indEcopath, Me.m_legend.Colors)
         Catch ex As Exception
             Debug.Assert(False, "Map stuff not able to attach")
         End Try
 
         Try
-            Me.m_mcWrapper.Attach(Me.UIContext, Me.m_graphMC, Me.m_settings, Me.m_ppt.m_lIndMC)
+            Me.m_mcgraph.Attach(Me.UIContext, Me.m_graphMC, Me.m_settings, Me.m_plugin.m_lIndMC)
         Catch ex As Exception
             Debug.Assert(False, "Zed graph handler not able to attach")
         End Try
@@ -124,7 +124,7 @@ Public Class frmMain
             Me.m_tvIndicators.Nodes.Clear()
             For i As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
                 ' Get indicator group from settings
-                Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(i)
+                Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(i)
                 ' Create treenode for this group
                 Dim tnGrp As TreeNode = Me.m_tvIndicators.Nodes.Add(grp.Name)
                 ' Make sure the group is attached to its node
@@ -134,7 +134,7 @@ Public Class frmMain
 
                 For j As Integer = 0 To grp.NumIndicators - 1
                     ' Get indicator from group
-                    Dim ind As cIndicatorSettings.cIndicatorInfo = grp.Indicator(j)
+                    Dim ind As cIndicatorInfo = grp.Indicator(j)
                     ' Create treenode for indicator
                     Dim tnInd As TreeNode = tnGrp.Nodes.Add(ind.Name)
                     ' Make sure the indicator is attached to its node
@@ -169,7 +169,7 @@ Public Class frmMain
         Else
             Me.m_rbCustom.Checked = True
         End If
-        Me.m_tbxDefaultLocation.Text = Me.m_ppt.DefaultFolder
+        Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
         Me.m_tbxOutputFolder.Text = My.Settings.CustomFolder
 
         Me.Icon = My.Resources.BioDiversityPluginIcon
@@ -196,8 +196,8 @@ Public Class frmMain
 
         ' Cleanup 
         Me.m_grid.Detach()
-        Me.m_ecosimWrapper.Detach()
-        Me.m_ecospaceWrapper.Detach()
+        Me.m_ecosimgraph.Detach()
+        Me.m_ecospacemap.Detach()
 
         ' Stop listening to any messages
         Me.CoreComponents = Nothing
@@ -225,7 +225,7 @@ Public Class frmMain
         If (msg.Type = eMessageType.GlobalSettingsChanged) Then
             ' #Yes: Update default location because systemwide settings may have changed
             Me.m_bInUpdate = True
-            Me.m_tbxDefaultLocation.Text = Me.m_ppt.DefaultFolder
+            Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
             Me.m_cbAutoSaveCSV.Checked = My.Settings.AutoSaveCSV
             Me.m_bInUpdate = False
         End If
@@ -307,7 +307,7 @@ Public Class frmMain
         cApplicationStatusNotifier.StartProgress(Me.UIContext.Core)
         Try
             ' Save selected component (path, sim, space or ...) to CSV
-            Me.m_ppt.SaveToCSVManual(Me.SelectedTabComponent())
+            Me.m_plugin.SaveToCSVManual(Me.SelectedTabComponent())
         Catch ex As Exception
 
         End Try
@@ -341,7 +341,7 @@ Public Class frmMain
         ' - This should be handled by the plugin itself based on settings changes
         If (Not My.Settings.RunWithEcopath) Then
             ' #Yes: clear results
-            Me.m_ppt.ClearEcopathIndicators()
+            Me.m_plugin.ClearEcopathIndicators()
         End If
 
     End Sub
@@ -359,7 +359,7 @@ Public Class frmMain
         ' - This should be handled by the plugin itself based on settings changes
         If (Not My.Settings.RunWithEcosim) Then
             ' #Yes: clear results
-            Me.m_ppt.ClearEcosimIndicators()
+            Me.m_plugin.ClearEcosimIndicators()
         End If
 
     End Sub
@@ -377,7 +377,7 @@ Public Class frmMain
         ' - This should be handled by the plugin itself based on settings changes
         If (Not My.Settings.RunWithEcospace) Then
             ' #Yes: clear results
-            Me.m_ppt.ClearEcospaceIndicators()
+            Me.m_plugin.ClearEcospaceIndicators()
         End If
 
     End Sub
@@ -395,7 +395,7 @@ Public Class frmMain
         ' - This should be handled by the plugin itself based on settings changes
         If (Not My.Settings.RunWithMC) Then
             ' #Yes: clear results
-            Me.m_ppt.ClearMCIndicators()
+            Me.m_plugin.ClearMCIndicators()
         End If
 
     End Sub
@@ -485,16 +485,16 @@ Public Class frmMain
 
         ' Optimization: only update the component that was changed
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecopath) Then
-            Me.m_grid.RefreshContent(Me.m_ppt.m_indEcopath)
+            Me.m_grid.RefreshContent(Me.m_plugin.m_indEcopath)
         End If
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecosim) Then
-            Me.m_ecosimWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
+            Me.m_ecosimgraph.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
         End If
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecospace) Then
-            Me.m_ecospaceWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
+            Me.m_ecospacemap.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
         End If
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.MonteCarlo) Then
-            Me.m_mcWrapper.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
+            Me.m_mcgraph.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
         End If
 
         ' Update state specific controls as a precaution
@@ -512,16 +512,16 @@ Public Class frmMain
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetSelectedIndicatorGroup() As cIndicatorSettings.cIndicatorInfoGroup
+    Private Function GetSelectedIndicatorGroup() As cIndicatorInfoGroup
 
         Dim nd As TreeNode = Me.m_tvIndicators.SelectedNode
         If (nd Is Nothing) Then Return Nothing
 
-        If TypeOf nd.Tag Is cIndicatorSettings.cIndicatorInfo Then
+        If TypeOf nd.Tag Is cIndicatorInfo Then
             nd = nd.Parent
         End If
 
-        Return DirectCast(nd.Tag, cIndicatorSettings.cIndicatorInfoGroup)
+        Return DirectCast(nd.Tag, cIndicatorInfoGroup)
 
     End Function
 
@@ -531,13 +531,13 @@ Public Class frmMain
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetSelectedIndicator() As cIndicatorSettings.cIndicatorInfo
+    Private Function GetSelectedIndicator() As cIndicatorInfo
 
         Dim nd As TreeNode = Me.m_tvIndicators.SelectedNode
         If (nd Is Nothing) Then Return Nothing
 
-        If TypeOf nd.Tag Is cIndicatorSettings.cIndicatorInfo Then
-            Return DirectCast(nd.Tag, cIndicatorSettings.cIndicatorInfo)
+        If TypeOf nd.Tag Is cIndicatorInfo Then
+            Return DirectCast(nd.Tag, cIndicatorInfo)
         End If
 
         Return Nothing

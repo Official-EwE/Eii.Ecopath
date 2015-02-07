@@ -32,8 +32,9 @@ Imports ScientificInterfaceShared.Style
 Public Class cEcospaceMapDrawer
     Inherits cMapDrawerBase
 
-    Public Sub New(core As cCore, sg As cStyleGuide)
+    Public Sub New(core As cCore, sg As cStyleGuide, ind As cIndicatorInfo)
         MyBase.New(core, sg)
+        Me.Indicator = ind
     End Sub
 
     ''' <summary>The labels to use for each plot.</summary>
@@ -41,6 +42,8 @@ Public Class cEcospaceMapDrawer
     ''' <summary>Descriptions to use for each plot.</summary>
     ''' <remarks>Can be used in tooltips.</remarks>
     Public Property Descriptions As String()
+
+    Public Property Indicator As cIndicatorInfo
 
     Public Overrides Sub DrawMap(ByVal iItem As Integer, ByVal rcPos As Rectangle, ByVal Args As cMapDrawerArgs)
 

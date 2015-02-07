@@ -43,9 +43,9 @@ Public Class cEcosimGraphWrapper
     Private m_lind As List(Of cEcosimIndicators) = Nothing
 
     ''' <summary>Current indicator group to display in the graph.</summary>
-    Private m_groupCurrent As cIndicatorSettings.cIndicatorInfoGroup = Nothing
+    Private m_groupCurrent As cIndicatorInfoGroup = Nothing
     ''' <summary>Current indicator to display in the graph.</summary>
-    Private m_indCurrent As cIndicatorSettings.cIndicatorInfo = Nothing
+    Private m_indCurrent As cIndicatorInfo = Nothing
 
 #End Region ' Private variables
 
@@ -84,10 +84,10 @@ Public Class cEcosimGraphWrapper
 
 #Region " Refreshing "
 
-    Public Sub RefreshContent(indSingle As cIndicatorSettings.cIndicatorInfo, indGroup As cIndicatorSettings.cIndicatorInfoGroup)
+    Public Sub RefreshContent(indSingle As cIndicatorInfo, indGroup As cIndicatorInfoGroup)
 
-        Dim lInfo As New List(Of cIndicatorSettings.cIndicatorInfo)
-        Dim info As cIndicatorSettings.cIndicatorInfo = Nothing
+        Dim lInfo As New List(Of cIndicatorInfo)
+        Dim info As cIndicatorInfo = Nothing
         Dim gp As GraphPane = Nothing
         Dim strLabelPane As String = ""
         Dim strLabelTime As String = SharedResources.UNIT_TIME_YEAR
@@ -143,7 +143,7 @@ Public Class cEcosimGraphWrapper
                 ' Prepare for determining axis range
                 sXMin = Single.MaxValue : sXMax = Single.MinValue
                 ' Prepare structures for creating point list for indicator
-                info = DirectCast(gp.Tag, cIndicatorSettings.cIndicatorInfo)
+                info = DirectCast(gp.Tag, cIndicatorInfo)
 
                 ppl = New PointPairList()
                 Try
@@ -201,7 +201,7 @@ Public Class cEcosimGraphWrapper
         ' In turn, the curveinfo has an extra field that is populated in RefreshContent, which contains the indicatorinfo for the curve
 
         Dim crv As cCurveInfo = DirectCast(curve.Tag, cCurveInfo)
-        Dim ind As cIndicatorSettings.cIndicatorInfo = DirectCast(crv.Tag, cIndicatorSettings.cIndicatorInfo)
+        Dim ind As cIndicatorInfo = DirectCast(crv.Tag, cIndicatorInfo)
         Dim sb As New StringBuilder()
 
         ' Tooltip should show the indicator description, if available, instead of repeating the pane title

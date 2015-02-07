@@ -94,8 +94,8 @@ Public Class gridEcopath
         If (Me.m_settings Is Nothing) Then Return
         If (Me.m_indicators Is Nothing) Then Return
 
-        Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Nothing
-        Dim ind As cIndicatorSettings.cIndicatorInfo = Nothing
+        Dim grp As cIndicatorInfoGroup = Nothing
+        Dim ind As cIndicatorInfo = Nothing
         Dim hgcGrp As EwEHierarchyGridCell = Nothing
         Dim cellValue As EwECell = Nothing
         Dim iRow As Integer = 0

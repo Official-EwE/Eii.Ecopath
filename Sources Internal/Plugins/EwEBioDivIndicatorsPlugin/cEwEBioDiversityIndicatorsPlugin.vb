@@ -868,9 +868,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
         ' Write a line for each indicator
         For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-            Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
-                Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
+                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
                 sw.WriteLine("{0},{1}", cStringUtils.ToCSVField(info.Name), cStringUtils.FormatSingle(info.GetValue(Me.m_indEcopath)))
             Next
         Next
@@ -893,9 +893,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Write header line
         sb.Append(SharedResources.HEADER_TIME)
         For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-            Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
-                Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
+                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
                 sb.Append(",")
                 sb.Append(cStringUtils.ToCSVField(info.Name))
             Next
@@ -911,9 +911,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             sb.Length = 0
             sb.Append(ind.Time)
             For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-                Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
                 For iInfo As Integer = 0 To grp.NumIndicators - 1
-                    Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
+                    Dim info As cIndicatorInfo = grp.Indicator(iInfo)
                     sb.Append(",")
                     sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
                 Next iInfo
@@ -943,9 +943,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         sb.Append(",")
         sb.Append(SharedResources.HEADER_TIME)
         For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-            Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
-                Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
+                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
                 sb.Append(",")
                 sb.Append(cStringUtils.ToCSVField(info.Name))
             Next
@@ -965,9 +965,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
                 sb.Append(",")
                 sb.Append(ind.Time)
                 For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-                    Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                    Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
                     For iInfo As Integer = 0 To grp.NumIndicators - 1
-                        Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
+                        Dim info As cIndicatorInfo = grp.Indicator(iInfo)
                         sb.Append(",")
                         sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
                     Next iInfo
@@ -994,9 +994,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Dim astrFields As New List(Of String)
 
         For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-            Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
-                Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
+                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
                 astrFields.Add(info.Name)
             Next
         Next
@@ -1006,9 +1006,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
             If (ind.IsComputed) Then
                 For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-                    Dim grp As cIndicatorSettings.cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                    Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
                     For iInfo As Integer = 0 To grp.NumIndicators - 1
-                        Dim info As cIndicatorSettings.cIndicatorInfo = grp.Indicator(iInfo)
+                        Dim info As cIndicatorInfo = grp.Indicator(iInfo)
                         exp.Value(ind.Location.Y, ind.Location.X, info.Name) = info.GetValue(ind)
                     Next iInfo
                 Next iGrp
