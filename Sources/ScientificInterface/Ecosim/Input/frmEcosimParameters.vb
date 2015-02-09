@@ -78,7 +78,7 @@ Namespace Ecosim
             Me.m_fpTempForceNumber = New cPropertyFormatProvider(Me.UIContext, Me.cmbTempLoading, ecosimModelParams, eVarNameFlags.TemperatureForceFunctionNumber)
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
             Me.m_fpUseVarPQ = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseVarPQ, ecosimModelParams, eVarNameFlags.UseVarPQ)
-            Me.m_fpForagingTimeLowerLimit = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMinFeedingRateAdjustment, ecosimModelParams, eVarNameFlags.ForagingTimeLowerLimit)
+            Me.m_fpForagingTimeLowerLimit = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxMinFeedingRateAdjustment, ecosimModelParams, eVarNameFlags.ForagingTimeLowerLimit)
             Me.m_propConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
             AddHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
 

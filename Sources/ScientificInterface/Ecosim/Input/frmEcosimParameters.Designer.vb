@@ -68,17 +68,13 @@ Namespace Ecosim
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plDescription = New System.Windows.Forms.Panel()
             Me.m_plInit = New System.Windows.Forms.Panel()
-            Me.m_plRuntime = New System.Windows.Forms.Panel()
-            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_nudMinFeedingRateAdjustment = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_tbxMinFeedingRateAdjustment = New System.Windows.Forms.TextBox()
             Me.Label1 = New System.Windows.Forms.Label()
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_plDescription.SuspendLayout()
             Me.m_plInit.SuspendLayout()
-            Me.m_plRuntime.SuspendLayout()
-            CType(Me.m_nudMinFeedingRateAdjustment, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_nudNutBaseFreeProp
@@ -154,7 +150,7 @@ Namespace Ecosim
             'm_hdrScenario
             '
             Me.m_hdrScenario.CanCollapseParent = True
-            Me.m_hdrScenario.CollapsedParentHeight = 93
+            Me.m_hdrScenario.CollapsedParentHeight = 92
             resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
             Me.m_hdrScenario.IsCollapsed = False
             Me.m_hdrScenario.Name = "m_hdrScenario"
@@ -222,7 +218,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
             Me.TableLayoutPanel1.Controls.Add(Me.m_plDescription, 0, 0)
             Me.TableLayoutPanel1.Controls.Add(Me.m_plInit, 0, 1)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plRuntime, 0, 2)
             Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
             '
             'm_plDescription
@@ -241,8 +236,10 @@ Namespace Ecosim
             '
             'm_plInit
             '
+            Me.m_plInit.Controls.Add(Me.m_tbxMinFeedingRateAdjustment)
             Me.m_plInit.Controls.Add(Me.m_hdrInitialization)
             Me.m_plInit.Controls.Add(Me.m_lblTempLoading)
+            Me.m_plInit.Controls.Add(Me.Label1)
             Me.m_plInit.Controls.Add(Me.m_lblNumberYears)
             Me.m_plInit.Controls.Add(Me.cmbTempLoading)
             Me.m_plInit.Controls.Add(Me.m_lblNutBaseFreeProp)
@@ -258,27 +255,10 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_plInit, "m_plInit")
             Me.m_plInit.Name = "m_plInit"
             '
-            'm_plRuntime
+            'm_tbxMinFeedingRateAdjustment
             '
-            Me.m_plRuntime.Controls.Add(Me.CEwEHeaderLabel1)
-            Me.m_plRuntime.Controls.Add(Me.m_nudMinFeedingRateAdjustment)
-            Me.m_plRuntime.Controls.Add(Me.Label1)
-            resources.ApplyResources(Me.m_plRuntime, "m_plRuntime")
-            Me.m_plRuntime.Name = "m_plRuntime"
-            '
-            'CEwEHeaderLabel1
-            '
-            Me.CEwEHeaderLabel1.CanCollapseParent = False
-            Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
-            Me.CEwEHeaderLabel1.IsCollapsed = False
-            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-            '
-            'm_nudMinFeedingRateAdjustment
-            '
-            Me.m_nudMinFeedingRateAdjustment.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            resources.ApplyResources(Me.m_nudMinFeedingRateAdjustment, "m_nudMinFeedingRateAdjustment")
-            Me.m_nudMinFeedingRateAdjustment.Name = "m_nudMinFeedingRateAdjustment"
+            resources.ApplyResources(Me.m_tbxMinFeedingRateAdjustment, "m_tbxMinFeedingRateAdjustment")
+            Me.m_tbxMinFeedingRateAdjustment.Name = "m_tbxMinFeedingRateAdjustment"
             '
             'Label1
             '
@@ -298,9 +278,6 @@ Namespace Ecosim
             Me.m_plDescription.PerformLayout()
             Me.m_plInit.ResumeLayout(False)
             Me.m_plInit.PerformLayout()
-            Me.m_plRuntime.ResumeLayout(False)
-            Me.m_plRuntime.PerformLayout()
-            CType(Me.m_nudMinFeedingRateAdjustment, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
@@ -330,10 +307,8 @@ Namespace Ecosim
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_plDescription As System.Windows.Forms.Panel
         Private WithEvents m_plInit As System.Windows.Forms.Panel
-        Private WithEvents m_plRuntime As System.Windows.Forms.Panel
-        Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Private WithEvents m_nudMinFeedingRateAdjustment As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents Label1 As System.Windows.Forms.Label
+        Friend WithEvents m_tbxMinFeedingRateAdjustment As System.Windows.Forms.TextBox
 
     End Class
 End Namespace
