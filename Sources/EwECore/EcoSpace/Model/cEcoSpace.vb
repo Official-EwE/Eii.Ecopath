@@ -3202,7 +3202,7 @@ Public Class cEcoSpace
                             End If
                             Enomig(i, j + 1, ip) = e(i, j + 1, ip)
                             dNomig(i, j, ip) = d(i, j, ip)
-                        Next
+                        Next ip
 
                         'EwE5
                         ' nvar2 = nvar + 2 * npairs
@@ -6882,6 +6882,8 @@ exitline:
             Next ir
         Next ig
 
+        Me.SetMovementParameters()
+
         'All the map changes have been computed
         Me.m_Data.isCapacityChanged = False
         'this will clear the individual isGroupHabCapChanged() flags
@@ -6898,7 +6900,6 @@ exitline:
 
                 'If capacity has not initialized then clear out the max and total values
                 If Not Me.m_Data.hasCapInitialized Then
-
                     m_Data.MaxHabCap(igrp) = 0.0F
                 End If
 
