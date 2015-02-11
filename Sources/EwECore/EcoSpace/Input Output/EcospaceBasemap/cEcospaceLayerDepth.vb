@@ -110,4 +110,16 @@ Public Class cEcospaceLayerDepth
         End Get
     End Property
 
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer) As Object
+        Get
+            Return MyBase.Cell(iRow, iCol)
+        End Get
+        Set(value As Object)
+            Dim d As Double = CDbl(value)
+            ' Any bit of water should be water in the Integer depth layer scheme
+            If (d > 0) And (d < 1) Then d = 1.0!
+            MyBase.Cell(iRow, iCol) = d
+        End Set
+    End Property
+
 End Class
