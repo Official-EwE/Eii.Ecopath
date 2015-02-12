@@ -60,7 +60,7 @@ Public Class cGridSolver
     Private M As Integer
     Private NomCols As Integer
     Private Tol As Single
-    Private Depth(,) As Integer
+    Private Depth(,) As Single
 
     Private iFrstGrp As Integer
     Private iLastGrp As Integer
@@ -101,7 +101,7 @@ Public Class cGridSolver
     Private dloc(,) As Single
     Private eloc(,) As Single
 
-    Private DepthLoc(,) As Integer
+    Private DepthLoc(,) As Single
 
     Private iStartRowLoc() As Integer
     Private iEndRowLoc() As Integer
@@ -129,7 +129,7 @@ Public Class cGridSolver
     ''' <remarks>This needs a bunch more data</remarks>
     ''' SolveGrid(ip, AMm, F, m_Data.Bcell, m_Data.Inrow, m_Data.InCol, Tol, jord, m_Data.W)
     ''' SolveGridRow(ip, AMm, F, m_Data.Bcell, m_Data.Inrow, m_Data.InCol, Tol, jord, m_Data.W)
-    Public Function Init(ByRef AMm(,,) As Single, ByRef F(,,) As Single, ByRef BCell(,,) As Single, ByRef Inrow As Integer, ByRef InCol As Integer, ByRef Tol1 As Single, ByRef jord1() As Integer, ByRef W1 As Single, ByRef Bcw1(,,) As Single, ByRef C1(,,) As Single, ByRef d1(,,) As Single, ByRef e1(,,) As Single, ByRef Depth1(,) As Integer, ByVal BPIntegrate() As Boolean, ByRef iStartRow1() As Integer, ByRef iEndRow1() As Integer, ByVal timeStep1 As Single, ByVal maxIter1 As Integer, ByRef jStartCol1() As Integer, ByRef jEndCol1() As Integer, ByRef isMigratory1() As Boolean, ByRef threadGroups1(,) As Integer, ByVal bUseExact As Boolean) As Boolean
+    Public Function Init(ByRef AMm(,,) As Single, ByRef F(,,) As Single, ByRef BCell(,,) As Single, ByRef Inrow As Integer, ByRef InCol As Integer, ByRef Tol1 As Single, ByRef jord1() As Integer, ByRef W1 As Single, ByRef Bcw1(,,) As Single, ByRef C1(,,) As Single, ByRef d1(,,) As Single, ByRef e1(,,) As Single, ByRef Depth1(,) As Single, ByVal BPIntegrate() As Boolean, ByRef iStartRow1() As Integer, ByRef iEndRow1() As Integer, ByVal timeStep1 As Single, ByVal maxIter1 As Integer, ByRef jStartCol1() As Integer, ByRef jEndCol1() As Integer, ByRef isMigratory1() As Boolean, ByRef threadGroups1(,) As Integer, ByVal bUseExact As Boolean) As Boolean
         Me.Aloc = AMm
         Me.Floc = F
         Me.X = BCell
@@ -574,7 +574,7 @@ exitline:
             jStartColLoc = New Integer(M) {}
             jEndColLoc = New Integer(M) {}
 
-            DepthLoc = New Integer(M + 1, NomCols + 1) {}
+            DepthLoc = New Single(M + 1, NomCols + 1) {}
 
             'ReDim iStartRowLoc(NomCols)
             'ReDim iEndRowLoc(NomCols)

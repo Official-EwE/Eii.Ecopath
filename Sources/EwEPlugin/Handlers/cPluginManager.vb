@@ -1411,7 +1411,7 @@ Public Class cPluginManager
     End Function
 
     Public Function EcospaceCalculateCostOfSailing(ByVal EcospaceDataStructures As Object, _
-                                                   ByVal Depth(,) As Integer, _
+                                                   ByVal Depth(,) As Single, _
                                                    ByVal Port(,,) As Boolean, _
                                                    ByVal Sail(,,) As Single) As Boolean
 

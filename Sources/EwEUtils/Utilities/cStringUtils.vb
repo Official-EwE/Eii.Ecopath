@@ -1286,7 +1286,7 @@ Namespace Utilities
         ''' Rows without any values will be left empty and are only marked by a semi-colon.</remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Function ArrayToString(ByVal data As Array, _
-                                             Optional ByVal dataDepth As Integer(,) = Nothing, _
+                                             Optional ByVal dataDepth As Single(,) = Nothing, _
                                              Optional ByVal bWaterOnly As Boolean = True, _
                                              Optional ByVal valueFilter As Object = Nothing, _
                                              Optional ByVal valueSet As Object = Nothing) As String
@@ -1370,7 +1370,7 @@ Namespace Utilities
         ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function StringToArray(ByVal strData As String, ByVal data As Array, _
-                                             Optional ByVal land As Integer(,) = Nothing, _
+                                             Optional ByVal land As Single(,) = Nothing, _
                                              Optional ByVal bWaterOnly As Boolean = True, _
                                              Optional ByVal valueFilter As Object = Nothing, _
                                              Optional ByVal valueSet As Object = Nothing) As Boolean
@@ -1470,7 +1470,7 @@ Namespace Utilities
                                              ByVal filterIndex As eFilterIndexTypes, _
                                              ByVal InRow As Integer, _
                                              ByVal InCol As Integer, _
-                                             Optional ByVal dataDepth As Integer(,) = Nothing, _
+                                             Optional ByVal dataDepth As Single(,) = Nothing, _
                                              Optional ByVal bWaterOnly As Boolean = True, _
                                              Optional ByVal valueSet As Object = Nothing) As String
 
@@ -1567,7 +1567,7 @@ Namespace Utilities
                                             ByVal data As Array, _
                                             ByVal InRow As Integer, _
                                             ByVal InCol As Integer, _
-                                            Optional ByVal land As Integer(,) = Nothing, _
+                                            Optional ByVal land As Single(,) = Nothing, _
                                             Optional ByVal bWaterOnly As Boolean = True, _
                                             Optional ByVal valueGet As Object = Nothing,
                                             Optional ByVal sMax As Single = Single.MaxValue) As Boolean

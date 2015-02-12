@@ -16,12 +16,19 @@
 ' ===============================================================================
 '
 
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+#Region " Imports "
+
+Option Strict On
+Imports EwECore
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Controls.Map.Layers
 
     Public Class ucLayerEditorDepth
+
+        Private m_fpDepth As cEwEFormatProvider = Nothing
 
 #Region " Construction / destruction "
 
@@ -51,9 +58,10 @@ Namespace Controls.Map.Layers
             MyBase.Initialize(editor)
 
             Debug.Assert(TypeOf editor Is cLayerEditorDepth, "Depth editor expected")
-            Me.m_nudDepth.DecimalPlaces = 0
-            Me.m_nudDepth.Maximum = Convert.ToDecimal(Me.Editor.CellValueMax)
-            Me.m_nudDepth.Minimum = Math.Max(1, Convert.ToDecimal(Me.Editor.CellValueMin))
+
+            Dim meta As New cVariableMetaData(0.1, 10000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            Me.m_fpDepth = New cEwEFormatProvider(Me.UIContext, Me.m_nudDepth, GetType(Single), meta)
+            AddHandler Me.m_fpDepth.OnValueChanged, AddressOf OnValueChanged
 
             Me.m_cbProtectCoastline.Checked = DirectCast(editor, cLayerEditorDepth).ProtectCoastLine
 
@@ -66,22 +74,30 @@ Namespace Controls.Map.Layers
 
         End Sub
 
+        Public Overrides Sub Detach()
+
+            RemoveHandler Me.m_fpDepth.OnValueChanged, AddressOf OnValueChanged
+            Me.m_fpDepth.Release()
+            MyBase.Detach()
+
+        End Sub
+
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
             MyBase.UpdateContent(editor)
 
-            Dim iVal As Integer
+            Dim val As Single
 
             ' Sanity check
             If (Me.m_nudDepth Is Nothing) Then Return
             If (Me.UIContext Is Nothing) Then Return
 
             ' Set control value
-            iVal = CInt(Me.Editor.CellValue)
-            If (iVal = 0) Then
+            val = CSng(Me.Editor.CellValue)
+            If (val = 0) Then
                 Me.m_rbLand.Checked = True
             Else
                 Me.m_rbWater.Checked = True
-                Me.m_nudDepth.Value = iVal
+                Me.m_fpDepth.Value = val
             End If
             ' Respond
             Me.UpdatePreview(Me.m_pbPreviewWater, CSng(Me.m_nudDepth.Value))
@@ -105,7 +121,6 @@ Namespace Controls.Map.Layers
             Me.UpdateContent(Me.Editor)
         End Sub
 
-
         Private Sub OnLandWaterSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbWater.CheckedChanged, m_rbLand.CheckedChanged
             Me.UpdateValue()
@@ -116,8 +131,7 @@ Namespace Controls.Map.Layers
             Me.m_rbWater.Checked = True
         End Sub
 
-        Private Sub OnValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_nudDepth.ValueChanged
+        Private Sub OnValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
             If (Me.UIContext Is Nothing) Then Return
             Me.m_rbWater.Checked = True
             Me.UpdateValue()
@@ -163,7 +177,7 @@ Namespace Controls.Map.Layers
             If (Me.UIContext Is Nothing) Then Return
 
             If Me.m_rbWater.Checked Then
-                Me.Editor.CellValue = Me.m_nudDepth.Value
+                Me.Editor.CellValue = Me.m_fpDepth.Value
                 Me.m_cbProtectCoastline.Enabled = True
             Else
                 Me.Editor.CellValue = 0

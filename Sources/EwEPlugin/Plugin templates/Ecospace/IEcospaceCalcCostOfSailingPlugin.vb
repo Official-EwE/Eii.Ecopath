@@ -43,7 +43,7 @@ Public Interface IEcospaceCalcCostOfSailingPlugin
     ''' happens, Ecospace will not attempt to calculate cost of sailing.</remarks>
     ''' -----------------------------------------------------------------------
     Function CalculateCostOfSailing(ByVal EcospaceData As Object, _
-                                    ByVal Depth(,) As Integer, _
+                                    ByVal Depth(,) As Single, _
                                     ByVal Port(,,) As Boolean, _
                                     ByVal Sail(,,) As Single) As Boolean
 

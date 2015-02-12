@@ -81,7 +81,7 @@ Namespace Database
         Private m_iNextAuxID As Integer = 1
 
         ''' <summary>Dict of Ecospace depth profiles per scenario ID.</summary>
-        Private m_dicDepthMaps As New Dictionary(Of Integer, Integer(,))
+        Private m_dicDepthMaps As New Dictionary(Of Integer, Single(,))
 
         ' == Databases ==
 
@@ -3105,7 +3105,7 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim nScenarioID As Integer = 1
             Dim iEcosimScenarioID As Integer = -1
-            Dim depthmap As Integer(,) = Nothing
+            Dim depthmap As Single(,) = Nothing
 
             ' Clear table(s)
             Me.m_dbEwE6.Execute("DELETE * FROM EcospaceScenario")
@@ -3684,7 +3684,7 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim strScenario As String = ""
             Dim iScenarioID As Integer = 1
-            Dim astrDepth() As String = Nothing : Dim dataDepth(,) As Integer
+            Dim astrDepth() As String = Nothing : Dim dataDepth(,) As Single
             Dim astrHabType() As String = Nothing : Dim dataHabitat(,) As Integer
             Dim astrRegion() As String = Nothing : Dim dataRegion(,) As Integer
             Dim astrMPA() As String = Nothing : Dim dataMPA(,) As Integer

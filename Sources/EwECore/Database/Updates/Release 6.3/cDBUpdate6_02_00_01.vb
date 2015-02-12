@@ -157,7 +157,7 @@ Friend Class cDBUpdate6_02_00_01
         Dim lImportanceLayerID As New List(Of Long)
 
         ' Data
-        Dim dataDepth As Integer(,) = Nothing
+        Dim dataDepth As Single(,) = Nothing
         Dim dataRelPP As Single(,) = Nothing
         Dim dataRelCin As Single(,) = Nothing
         Dim dataDepthA As Single(,) = Nothing : Dim dataXVel As Single(,) = Nothing : Dim dataYVel As Single(,) = Nothing
