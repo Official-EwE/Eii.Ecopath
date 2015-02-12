@@ -218,7 +218,7 @@ Public Class cEcospaceDataStructures
 
     Public Blast(,,) As Single
     ''' <summary>Actual depth map as used by Ecospace, computed from <see cref="DepthInput"/> and <see cref="Excluded"/>.</summary>
-    Public Depth(,) As Integer
+    Public Depth(,) As Single
     Public DepthA(,) As Single
     Public DepthX(,) As Integer
     Public DepthY(,) As Single
@@ -231,7 +231,7 @@ Public Class cEcospaceDataStructures
     Public DiscardsMap(,,) As Single
 
     ''' <summary>User-entered depth map</summary>
-    Public DepthInput(,) As Integer
+    Public DepthInput(,) As Single
     ''' <summary>Is a cell included in modeling by Row, Col.</summary>
     Public Excluded(,) As Boolean
 

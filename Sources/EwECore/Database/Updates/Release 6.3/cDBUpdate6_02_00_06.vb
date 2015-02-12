@@ -65,7 +65,7 @@ Friend Class cDBUpdate6_02_00_06
         Dim info As cRegionInfo = Nothing
         Dim readerScenario As IDataReader = db.GetReader("SELECT ScenarioID, InRow, InCol, DepthMap FROM EcospaceScenario")
         Dim readerRegions As IDataReader = Nothing
-        Dim aiDepth(,) As Integer = Nothing
+        Dim aiDepth(,) As Single = Nothing
         Dim aiRegions(,) As Integer = Nothing
         Dim aiRegion(,) As Integer = Nothing
         Dim InRow, InCol As Integer

@@ -4594,7 +4594,7 @@ exitline:
                                                 diagAdjust = 0.4142 'sqrt(2)-1
                                             End If
                                             'If MigGrad(ii, jj, ihab, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) <> 0 And m_Data.PrefHab(migIndex(ihab), m_Data.HabType(i, j)) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1)) Then
-                                            If MigGrad(ii, jj, ihab, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) <> 0 And m_Data.HabCap(i, j, migIndex(ihab)) > 0.1) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1) Then
+                                            If MigGrad(ii, jj, ihab, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) > 0 And m_Data.HabCap(i, j, migIndex(ihab)) > 0.1) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1) Then
                                                 smallestDist = MigGrad(ii, jj, ihab, imonth) + diagAdjust
                                                 pathFound = True
                                             End If

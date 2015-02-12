@@ -27,7 +27,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace depth data.
 ''' </summary>
 Public Class cEcospaceLayerDepth
-    Inherits cEcospaceLayerInteger
+    Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer, ByVal meta As cVariableMetaData)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerDepth, iIndex)
@@ -108,18 +108,6 @@ Public Class cEcospaceLayerDepth
         Get
             Return True
         End Get
-    End Property
-
-    Public Overrides Property Cell(iRow As Integer, iCol As Integer) As Object
-        Get
-            Return MyBase.Cell(iRow, iCol)
-        End Get
-        Set(value As Object)
-            Dim d As Double = CDbl(value)
-            ' Any bit of water should be water in the Integer depth layer scheme
-            If (d > 0) And (d < 1) Then d = 1.0!
-            MyBase.Cell(iRow, iCol) = d
-        End Set
     End Property
 
 End Class

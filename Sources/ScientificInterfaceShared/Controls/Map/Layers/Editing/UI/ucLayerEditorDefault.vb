@@ -108,7 +108,7 @@ Namespace Controls.Map.Layers
             Me.EditLayer(eLayerEditTypes.EditVisuals)
         End Sub
 
-        Private Sub m_plLegend_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
+        Private Sub OnPaintLegend(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
             Handles m_plLegend.Paint
 
             If (Me.Layer IsNot Nothing) Then

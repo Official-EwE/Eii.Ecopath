@@ -39,7 +39,7 @@ Namespace Controls
     Public Class cEwEFormatProvider
         Implements IUIElement
 
-#Region " Private helper classes "
+#Region " Helper classes "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -105,7 +105,7 @@ Namespace Controls
         ''' Interface for wrapping standard Windows control by an EwEFormatProvider.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Interface IControlWrapper
+        Public Interface IControlWrapper
             Inherits IUIElement
 
             ''' -----------------------------------------------------------------------
@@ -1609,6 +1609,12 @@ Namespace Controls
         End Function
 
 #End Region ' Internals
+
+        Public ReadOnly Property Wrapper As IControlWrapper
+            Get
+                Return Me.m_ctrlWrapper
+            End Get
+        End Property
 
     End Class
 
