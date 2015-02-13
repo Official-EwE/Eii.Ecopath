@@ -3760,6 +3760,8 @@ Namespace DataSources
                 drow("LastSaved") = cDateUtils.DateToJulian()
                 drow("LastSavedVersion") = cAssemblyUtils.GetVersion().ToString
 
+                drow("ForagingTimeLowerLimit") = ecosimDS.ForagingTimeLowerLimit
+
                 ' Save changes
                 Me.m_db.ReleaseWriter(writer)
 

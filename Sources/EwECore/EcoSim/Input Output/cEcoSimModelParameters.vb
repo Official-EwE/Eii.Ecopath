@@ -92,7 +92,7 @@ Public Class cEcoSimModelParameters
             m_values.Add(val.varName, val)
 
             'ForagingTimeLowerLimit
-            meta = New cVariableMetaData(0.01, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            meta = New cVariableMetaData(0.00001, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.ForagingTimeLowerLimit, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SystemRecovery))
             m_values.Add(val.varName, val)
 
