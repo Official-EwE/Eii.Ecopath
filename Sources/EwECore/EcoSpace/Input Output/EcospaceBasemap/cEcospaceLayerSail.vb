@@ -49,15 +49,15 @@ Public Class cEcospaceLayerSail
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
             If Me.ValidateCellPosition(iRow, iCol) Then
-                Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-                Return data(Me.Index, iRow, iCol)
+                Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
+                Return data(Me.Index)(iRow, iCol)
             End If
             Return cCore.NULL_VALUE
         End Get
         Set(ByVal value As Object)
-            Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
+            Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
             If Me.ValidateCellPosition(iRow, iCol) Then
-                data(Me.Index, iRow, iCol) = CSng(value)
+                data(Me.Index)(iRow, iCol) = CSng(value)
             End If
         End Set
     End Property

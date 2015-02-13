@@ -814,7 +814,7 @@ Public Class cMPARandomSearch
             'Else
             'iC = 0
 
-            Dim data(,,) As Single = Me.m_SpaceData.ImportanceLayerMap
+            Dim data()(,) As Single = Me.m_SpaceData.ImportanceLayerMap
             Dim weight As Double
             Dim LayerSum(Me.m_SpaceData.nImportanceLayers) As Double
 
@@ -824,9 +824,9 @@ Public Class cMPARandomSearch
                 Dim Count As Integer = 0
                 For i As Integer = 1 To inRow
                     For j As Integer = 1 To inCol
-                        If data(iL, i, j) > 0 Then
+                        If data(iL)(i, j) > 0 Then
                             Count += 1
-                            LayerSum(iL) += data(iL, i, j)
+                            LayerSum(iL) += data(iL)(i, j)
                         End If
                     Next j
                 Next i
@@ -842,7 +842,7 @@ Public Class cMPARandomSearch
                 weight = Me.m_SpaceData.ImportanceLayerWeight(iL)
                 For i As Integer = 1 To inRow
                     For j As Integer = 1 To inCol
-                        CellWeight(i, j) += weight * data(iL, i, j) / LayerSum(iL)
+                        CellWeight(i, j) += weight * data(iL)(i, j) / LayerSum(iL)
                         If CellWeight(i, j) < minCellWeight And CellWeight(i, j) > 0 Then minCellWeight = CellWeight(i, j)
                     Next j
                 Next i
@@ -904,7 +904,7 @@ Public Class cMPARandomSearch
                 For j As Integer = 1 To m_SpaceData.InCol
                     Cnt = Cnt + 1
                     'Make a copy of the data
-                    ArrayVal(Cnt) = m_SpaceData.ImportanceLayerMap(iL, i, j)
+                    ArrayVal(Cnt) = m_SpaceData.ImportanceLayerMap(iL)(i, j)
                 Next j
             Next i
             'now we have all the layer values in ArrayVal, so sort them:
@@ -921,14 +921,14 @@ Public Class cMPARandomSearch
     End Sub
 
     Private Sub calcImportanceLayersCoverageInRun()
-        Dim Data(,,) As Single = Me.m_SpaceData.ImportanceLayerMap
+
         ReDim LayerSumInMPA(Me.m_SpaceData.nImportanceLayers)
 
         For iL As Integer = 1 To Me.m_SpaceData.nImportanceLayers
             For iR As Integer = 1 To m_SpaceData.InRow
                 For iC As Integer = 1 To m_SpaceData.InCol
                     If m_SpaceData.MPA(iR, iC) = m_data.iMPAtoUse Then 'this is a protected cell, so check what 
-                        LayerSumInMPA(iL) += Data(iL, iR, iC)
+                        LayerSumInMPA(iL) += Me.m_SpaceData.ImportanceLayerMap(iL)(iR, iC)
                     End If
                 Next iC
             Next iR

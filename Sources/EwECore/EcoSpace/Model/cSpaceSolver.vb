@@ -462,11 +462,11 @@ Public Class cSpaceSolver
                 EatEff(iGrp) = 1
                 VulPred(iGrp) = 1
 
-                If m_Data.HabCap(i, j, iGrp) < 0.1 Then
+                If m_Data.HabCap(iGrp)(i, j) < 0.1 Then
                     VulPred(iGrp) = m_Data.RelVulBad(iGrp)
                 End If
 
-                EatEff(iGrp) = m_Data.HabCap(i, j, iGrp) 'm_Data.EatEffBad(iGrp)
+                EatEff(iGrp) = m_Data.HabCap(iGrp)(i, j) 'm_Data.EatEffBad(iGrp)
 
             Next iGrp
 
@@ -566,7 +566,7 @@ Public Class cSpaceSolver
                         'rate and growth rate averages over space by age in that update routine
                         'IFDweight is used to predict proportion of biomass of ieco stanza that will be on cell i,j
                         'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
-                        If m_Data.Depth(i, j) > 0 And m_Data.HabCap(i, j, ieco) > 0.1 Then
+                        If m_Data.Depth(i, j) > 0 And m_Data.HabCap(ieco)(i, j) > 0.1 Then
                             PopWt = m_Data.Bcell(i, j, nvar2 + isc)
                             TotLossThread(ieco) = TotLossThread(ieco) + loss(ieco) * PopWt
                             TotEatenByThread(ieco) = TotEatenByThread(ieco) + Eatenby(ieco) * PopWt
@@ -1015,7 +1015,7 @@ Public Class cSpaceSolver
                 Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt) += m_Data.EffortSpace(iFlt, iRow, iCol)
                 'SailingEffort: at this point SailingEffort is  sum of [fishing effort] * [effort of fishing each cell (Sail(iFlt, iRow, iCol))] /  SailScale(ifleet)
                 'Effort of fishing all the cells
-                Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
+                Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt)(iRow, iCol) / m_Data.SailScale(iFlt))
 
                 'sum values into All Fleets 0 index 
                 Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0) += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt)

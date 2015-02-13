@@ -42,13 +42,13 @@ Public Class cEcospaceLayerHabitatCapacity
 
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
-            Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-            If Me.ValidateCellPosition(iRow, iCol) Then Return data(iRow, iCol, Me.Index)
+            Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
+            If Me.ValidateCellPosition(iRow, iCol) Then Return data(Me.Index)(iRow, iCol)
             Return 0
         End Get
         Set(ByVal value As Object)
-            Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-            If Me.ValidateCellPosition(iRow, iCol) Then data(iRow, iCol, Me.Index) = CSng(value)
+            Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
+            If Me.ValidateCellPosition(iRow, iCol) Then data(Me.Index)(iRow, iCol) = CSng(value)
         End Set
     End Property
 

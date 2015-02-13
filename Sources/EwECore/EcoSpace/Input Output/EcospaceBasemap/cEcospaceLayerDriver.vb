@@ -81,7 +81,7 @@ Public Class cEcospaceLayerDriver
         Get
             Try
                 If Me.ValidateCellPosition(iRow, iCol) Then
-                    Return DirectCast(Me.Data, Single(,,))(Me.Index, iRow, iCol)
+                    Return DirectCast(Me.Data, Single()(,))(Me.Index)(iRow, iCol)
                 End If
             Catch ex As Exception
 
@@ -92,7 +92,7 @@ Public Class cEcospaceLayerDriver
         Set(ByVal value As Object)
             If Me.ValidateCellValue(value) Then
                 If Me.ValidateCellPosition(iRow, iCol) Then
-                    DirectCast(Me.Data, Single(,,))(Me.Index, iRow, iCol) = CSng(value)
+                    DirectCast(Me.Data, Single()(,))(Me.Index)(iRow, iCol) = CSng(value)
                 End If
             End If
         End Set
