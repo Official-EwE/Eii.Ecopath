@@ -251,7 +251,7 @@ Public Class cEnviroInputMap
         If Me.m_source.VarName = eVarNameFlags.LayerDepth Then
             Return Me.m_spaceData.Depth(irow, icol)
         Else
-            Return Me.m_spaceData.EnvironmentalLayerMap(Me.m_iLayerIndex, irow, icol)
+            Return Me.m_spaceData.EnvironmentalLayerMap(Me.m_iLayerIndex)(irow, icol)
         End If
     End Function
 

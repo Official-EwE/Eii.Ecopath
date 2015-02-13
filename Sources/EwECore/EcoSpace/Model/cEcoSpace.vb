@@ -2090,7 +2090,7 @@ Public Class cEcoSpace
             For iflt As Integer = 1 To Me.m_Data.nFleets
                 For i = 0 To m_Data.InRow + 1
                     For j = 0 To m_Data.InCol + 1
-                        If m_Data.Sail(iflt, i, j) = 0 Then m_Data.Sail(iflt, i, j) = 0.000001
+                        If m_Data.Sail(iflt)(i, j) = 0 Then m_Data.Sail(iflt)(i, j) = 0.000001
                     Next
                 Next
             Next iflt
@@ -2104,14 +2104,14 @@ Public Class cEcoSpace
                         'If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0
 
                         If m_Data.IsAdvected(ip) Then
-                            m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip)
+                            m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(ip)(i, j) * m_SimData.StartBiomass(ip)
                         Else
                             m_Data.Bcell(i, j, ip) = 0
                         End If
 
                         If m_Data.Depth(i, j) > 0 Then
 
-                            m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip)
+                            m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(ip)(i, j) * m_SimData.StartBiomass(ip)
                             'sumb(ip) += m_Data.Bcell(i, j, ip)
 
                             If m_Data.IsMigratory(ip) Then
@@ -2131,7 +2131,7 @@ Public Class cEcoSpace
                             'Debug.Assert(False, "EcoSpace Contaminant Tracer not Initialized properly.")
                             'jb in EwE5 Ccell() is initialized using ConcTr()
                             'in EwE5 CInitialize() was called right before this setting ConcTr() to Czero()
-                            m_Data.Ccell(i, j, ip) = m_Data.HabCap(i, j, ip) * Me.m_tracerData.Czero(ip) 'm_Data.Bcell(i, j, ip) / Basebiomass(ip) * Me.m_tracerData.Czero(ip)
+                            m_Data.Ccell(i, j, ip) = m_Data.HabCap(ip)(i, j) * Me.m_tracerData.Czero(ip) 'm_Data.Bcell(i, j, ip) / Basebiomass(ip) * Me.m_tracerData.Czero(ip)
                             m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
                         End If
 
@@ -2166,9 +2166,9 @@ Public Class cEcoSpace
                         For j = 0 To m_Data.InCol + 1
                             If m_Data.Depth(i, j) > 0 Then
 
-                                m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
+                                m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(ieco)(i, j) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
                                 If m_Data.NewMultiStanza Then
-                                    m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
+                                    m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(ieco)(i, j) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
                                 End If
 
                             Else 'm_Data.Depth(i, j) > 0
@@ -2696,7 +2696,7 @@ Public Class cEcoSpace
                     'm_data.ThabArea total usable area of the map
                     m_Data.ThabArea = m_Data.ThabArea + 1
                     For ihab As Integer = 1 To Me.m_Data.NoHabitats
-                        Me.m_Data.HabArea(ihab) += m_Data.PHabType(i, j, ihab)
+                        Me.m_Data.HabArea(ihab) += m_Data.PHabType(ihab)(i, j)
                     Next ihab
                 End If 'm_Data.Depth(i, j) > 0
             Next j
@@ -3022,7 +3022,7 @@ Public Class cEcoSpace
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     If m_Data.Depth(i, j) > 0 Then 'Water
-                        Factor = Factor + m_Data.Sail(GearNo, i, j)
+                        Factor = Factor + m_Data.Sail(GearNo)(i, j)
                         Count = Count + 1
                     End If
                 Next
@@ -3057,7 +3057,7 @@ Public Class cEcoSpace
             sumCost = 0
 
             For Each cell As cRowCol In Me.m_Data.FleetSailCells(iFlt)
-                sumCost += m_Data.Sail(iFlt, cell.Row, cell.Col)
+                sumCost += m_Data.Sail(iFlt)(cell.Row, cell.Col)
                 Count = Count + 1
             Next cell
 
@@ -3099,7 +3099,7 @@ Public Class cEcoSpace
                             'Yes habitat restricted so sum the proportion of habitat types in this cell
                             For ihab As Integer = 1 To Me.m_Data.NoHabitats
                                 If m_Data.GearHab(ig, ihab) Then
-                                    PFished += Me.m_Data.PHabType(i, j, ihab)
+                                    PFished += Me.m_Data.PHabType(ihab)(i, j)
                                 End If
                             Next
                         Else
@@ -3111,25 +3111,25 @@ Public Class cEcoSpace
                         'Debug.Assert(PFished <= 1.0, "Proportion of habitat in a cell not set correctly. It should sum to one for all habitat types.")
 
                         'set the Proportion of area fished by this fleet for all the habitats in the cell
-                        Me.m_Data.PAreaFished(i, j, ig) = PFished
+                        Me.m_Data.PAreaFished(ig)(i, j) = PFished
                         'constrain percentage of area fished to 1.0
-                        If Me.m_Data.PAreaFished(i, j, ig) > 1.0 Then Me.m_Data.PAreaFished(i, j, ig) = 1.0
+                        If Me.m_Data.PAreaFished(ig)(i, j) > 1.0 Then Me.m_Data.PAreaFished(ig)(i, j) = 1.0
 
                         'sum the weighted total effort
                         If ResetTotEffort Then
 
                             If Not Me.m_Data.bUseEffortDistThreshold Then
                                 'Fishing is only restricted by the Habitat types
-                                m_Data.TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
+                                m_Data.TotEffort(ig) += Me.m_Data.PAreaFished(ig)(i, j)
 
                             Else ' Me.m_Data.bUseEffortDistThreshold  = True
                                 'Fishing is also restricted by sailing cost < effort distribution threshold
-                                If Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold Then
-                                    m_Data.TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
+                                If Me.m_Data.Sail(ig)(i, j) < Me.m_Data.EffortDistThreshold Then
+                                    m_Data.TotEffort(ig) += Me.m_Data.PAreaFished(ig)(i, j)
                                 Else
                                     'Sailing cost > effort distribution threshold
                                     'So this fleet is not fishing in this cell
-                                    Me.m_Data.PAreaFished(i, j, ig) = 0
+                                    Me.m_Data.PAreaFished(ig)(i, j) = 0
                                 End If 'Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold
 
                             End If 'Me.m_Data.bUseEffortDistThreshold
@@ -3167,11 +3167,11 @@ Public Class cEcoSpace
                         For ip = 1 To m_Data.NGroups
                             If j > 0 And j < m_Data.InCol Then
 
-                                If m_Data.HabCap(i, j + 1, ip) > m_Data.HabCap(i, j, ip) Then
+                                If m_Data.HabCap(ip)(i, j + 1) > m_Data.HabCap(ip)(i, j) Then
                                     d(i, j, ip) = m_Data.Mrate(ip)
-                                    e(i, j + 1, ip) = m_Data.Mrate(ip) * m_Data.HabCap(i, j, ip) / m_Data.HabCap(i, j + 1, ip)
+                                    e(i, j + 1, ip) = m_Data.Mrate(ip) * m_Data.HabCap(ip)(i, j) / m_Data.HabCap(ip)(i, j + 1)
                                 Else
-                                    d(i, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(i, j + 1, ip) / m_Data.HabCap(i, j, ip)
+                                    d(i, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(ip)(i, j + 1) / m_Data.HabCap(ip)(i, j)
                                     e(i, j + 1, ip) = m_Data.Mrate(ip)
                                 End If
 
@@ -3224,11 +3224,11 @@ Public Class cEcoSpace
                         For ip = 1 To m_Data.NGroups
                             If i > 0 And i < m_Data.InRow Then
 
-                                If m_Data.HabCap(i + 1, j, ip) > m_Data.HabCap(i, j, ip) Then
+                                If m_Data.HabCap(ip)(i + 1, j) > m_Data.HabCap(ip)(i, j) Then
                                     Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i) '* RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
-                                    C(i, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(i, j, ip) / m_Data.HabCap(i + 1, j, ip) * m_Data.Width(i) 'RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
+                                    C(i, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(ip)(i, j) / m_Data.HabCap(ip)(i + 1, j) * m_Data.Width(i) 'RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
                                 Else
-                                    Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(i + 1, j, ip) / m_Data.HabCap(i, j, ip) * m_Data.Width(i)
+                                    Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(ip)(i + 1, j) / m_Data.HabCap(ip)(i, j) * m_Data.Width(i)
                                     C(i, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i) '* RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
                                 End If
                                 'C(i, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
@@ -3326,7 +3326,7 @@ Public Class cEcoSpace
 
         'If there is any preferred habitat in this cell then don't move out
         For ihab As Integer = 1 To Me.m_Data.NoHabitats
-            If m_Data.PrefHab(ip, ihab) > 0 And m_Data.PHabType(i, j, ihab) > 0 Then
+            If m_Data.PrefHab(ip, ihab) > 0 And m_Data.PHabType(ihab)(i, j) > 0 Then
                 'There is some preferred habitat in this cell 
                 'so return one
                 Return 1.0F
@@ -3706,14 +3706,14 @@ exitline:
                 For ig As Integer = 1 To Me.m_Data.nFleets
                     Dim bFished As Boolean = False
                     ' Is this is a fished water cell?
-                    If (Me.m_Data.Depth(i, j) > 0) And (Me.m_Data.PAreaFished(i, j, ig) > 0 Or Me.m_Data.GearHab(ig, 0)) Then
+                    If (Me.m_Data.Depth(i, j) > 0) And (Me.m_Data.PAreaFished(ig)(i, j) > 0 Or Me.m_Data.GearHab(ig, 0)) Then
                         'Ok it is potentialy fished 
                         'Is this cell in an MPA
                         bFished = (Me.m_Data.MPA(i, j) = 0 Or Me.m_Data.MPAfishery(ig, Me.m_Data.MPA(i, j)) Or Me.m_Data.MPAmonth(Me.m_Data.MonthNow, Me.m_Data.MPA(i, j)))
                         If bFished Then
                             'If it is still fished check it against the EffortDistThreshold
                             'Include the fishing effort threshold 
-                            If Me.m_Data.bUseEffortDistThreshold And Me.m_Data.Sail(ig, i, j) >= Me.m_Data.EffortDistThreshold Then
+                            If Me.m_Data.bUseEffortDistThreshold And Me.m_Data.Sail(ig)(i, j) >= Me.m_Data.EffortDistThreshold Then
                                 bFished = False
                             End If
                         End If
@@ -3804,7 +3804,7 @@ exitline:
                                 Next
 
                                 'VC Sail() above: to avoid dividing with zero
-                                Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+                                Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt)(i, j) / m_Data.SailScale(iFlt))
                                 'jb 9-May-2014 change re Carls email
                                 'What this represents is attractiveness equal to exp(effpower*(I/C-1)), where I/C is profitability, -1 is subtracted to scale to exp(0)=1 for I/C=1.  
                                 'Effpower represents (as before) an effort concentration factor, low values implying less variation in valt with changes in I/C.
@@ -3814,7 +3814,7 @@ exitline:
                                 ' Valt = Exp((Valt / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt)) - 1.0) * m_Data.EffPower(iFlt))
 
 
-                                Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
+                                Attract(i, j) = Valt * Me.m_Data.PAreaFished(iFlt)(i, j) 'may want to modify this by dividing by a site cost factor for cell i,j
                                 'sum of attractivness by zone
                                 TotAttractZone(Me.m_Data.EffZones(i, j)) += Attract(i, j)
 
@@ -4072,14 +4072,14 @@ exitline:
                             'discards will have a value of zero so they will not be included in the total value
                             Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(iRow, iCol, isp) * m_SimData.relQ(iFlt, isp) * m_SimData.PropLandedTime(iFlt, isp)
                         Next
-                        Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
+                        Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt)(iRow, iCol) / m_Data.SailScale(iFlt))
 
                         'What this represents is attractiveness equal to exp(effpower*(I/C-1)), where I/C is profitability, -1 is subtracted to scale to exp(0)=1 for I/C=1.  
                         'Effpower represents (as before) an effort concentration factor, low values implying less variation in valt with changes in I/C.
                         'If you run this, should be nearly 2x faster than old code, and will concentrate effort a bit more in best fishing areas.  
                         'I can also modify it further to force the attract’s to result in any observed effort map that we might enter, essentially by replacing the cost C with a simpler empirical cost scaler.
                         'Valt = Exp((Valt / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)) - 1.0) * m_Data.EffPower(iFlt))
-                        Attract(iRow, iCol) = Valt * Me.m_Data.PAreaFished(iRow, iCol, iFlt)  'may want to modify this by dividing by a site cost factor for cell i,j
+                        Attract(iRow, iCol) = Valt * Me.m_Data.PAreaFished(iFlt)(iRow, iCol)  'may want to modify this by dividing by a site cost factor for cell i,j
                         'TotAttract += Attract(iRow, iCol)
                         'Total attractiveness by zone
                         TotAttractZone(Me.m_Data.EffZones(iRow, iCol)) += Attract(iRow, iCol)
@@ -4407,7 +4407,7 @@ exitline:
                     If Me.m_Data.IsFished(iflt, irow, jcol) Then
                         For igrp As Integer = 1 To m_Data.NGroups
                             'Fishing Mort Rate in a cell by group
-                            m_Data.Ftot(igrp, irow, jcol) += m_Data.EffortSpace(iflt, irow, jcol) * m_SimData.relQ(iflt, igrp) / Me.m_Data.PAreaFished(irow, jcol, iflt)
+                            m_Data.Ftot(igrp, irow, jcol) += m_Data.EffortSpace(iflt, irow, jcol) * m_SimData.relQ(iflt, igrp) / Me.m_Data.PAreaFished(iflt)(irow, jcol)
                         Next igrp
                     End If ' m_Data.Depth(i, j) > 0
 
@@ -4474,7 +4474,7 @@ exitline:
 
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
-                    If m_Data.Depth(i, j) > 0 And (m_Data.GearHab(ig, 0) Or (Me.m_Data.PAreaFished(i, j, ig) > 0)) Then
+                    If m_Data.Depth(i, j) > 0 And (m_Data.GearHab(ig, 0) Or (Me.m_Data.PAreaFished(ig)(i, j) > 0)) Then
                         'This cell is water and it is fished by this gear
                         Valt = 0
                         CatLoc(i, j) = 0
@@ -4485,9 +4485,9 @@ exitline:
                             Valt = Valt + m_EPdata.Market(ig, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(ig, isp)
                         Next
 
-                        If m_Data.Sail(ig, i, j) = 0 Then m_Data.Sail(ig, i, j) = 0.000001
+                        If m_Data.Sail(ig)(i, j) = 0 Then m_Data.Sail(ig)(i, j) = 0.000001
                         'VC Sail() above: to avoid dividing with zero
-                        Valt = (Valt ^ m_Data.EffPower(ig)) / (EffortCost + SailCost * m_Data.Sail(ig, i, j) / m_Data.SailScale(ig))
+                        Valt = (Valt ^ m_Data.EffPower(ig)) / (EffortCost + SailCost * m_Data.Sail(ig)(i, j) / m_Data.SailScale(ig))
                         Attract(i, j) = Valt
                         TotAttract = TotAttract + Valt
                     End If
@@ -4497,7 +4497,7 @@ exitline:
             WtCat = 0.0000000001 '****
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
-                    If m_Data.Depth(i, j) > 0 And (m_Data.GearHab(ig, 0) Or (Me.m_Data.PAreaFished(i, j, ig) > 0)) Then
+                    If m_Data.Depth(i, j) > 0 And (m_Data.GearHab(ig, 0) Or (Me.m_Data.PAreaFished(ig)(i, j) > 0)) Then
                         'This cell is water and it is fished by this gear
                         WtCat = WtCat + Attract(i, j) / TotAttract * CatLoc(i, j) '***
                     End If
@@ -4593,8 +4593,8 @@ exitline:
                                             Else
                                                 diagAdjust = 0.4142 'sqrt(2)-1
                                             End If
-                                            'If MigGrad(ii, jj, ihab, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) <> 0 And m_Data.PrefHab(migIndex(ihab), m_Data.HabType(i, j)) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1)) Then
-                                            If MigGrad(ii, jj, ihab, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) > 0 And m_Data.HabCap(i, j, migIndex(ihab)) > 0.1) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1) Then
+
+                                            If MigGrad(ii, jj, ihab, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) > 0 And m_Data.HabCap(migIndex(ihab))(i, j) > 0.1) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1) Then
                                                 smallestDist = MigGrad(ii, jj, ihab, imonth) + diagAdjust
                                                 pathFound = True
                                             End If
@@ -4603,7 +4603,7 @@ exitline:
                                     If pathFound Then MigGrad(i, j, ihab, imonth) = smallestDist + 1
                                 End If
 
-                                If m_Data.Depth(i, j) = 0 Or m_Data.HabCap(i, j, migIndex(ihab)) < 0.1 Then
+                                If m_Data.Depth(i, j) = 0 Or m_Data.HabCap(migIndex(ihab))(i, j) < 0.1 Then
                                     MigGrad(i, j, ihab, imonth) = 2000
                                 End If
 
@@ -5074,7 +5074,7 @@ exitline:
             MeanBP(ii) = 0
             For ir = 1 To m_Data.InRow
                 For ic = 1 To m_Data.InCol
-                    MeanBP(ii) = MeanBP(ii) + m_Data.HabCap(ir, ic, i) * m_Data.HabCap(ir, ic, j)
+                    MeanBP(ii) = MeanBP(ii) + m_Data.HabCap(i)(ir, ic) * m_Data.HabCap(j)(ir, ic)
                 Next
             Next
             MeanBP(ii) = (MeanBP(ii) * m_SimData.StartBiomass(i) * m_SimData.pred(j) / (m_Data.TotHabCap(i) * m_Data.TotHabCap(j))) * m_Data.ThabArea
@@ -6401,7 +6401,7 @@ exitline:
                         m_Data.PredCell(i, j, ieco) = 0
                         'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
                         'this could be proportional
-                        If m_Data.HabCap(i, j, ieco) > 0.1 And m_Data.Depth(i, j) > 0 Then
+                        If m_Data.HabCap(j)(i, j) > 0.1 And m_Data.Depth(i, j) > 0 Then
                             Nused = Nused + 1
                             iList(Nused) = i : Jlist(Nused) = j
                             If ist = 1 Then m_Stanza.iNursery(isp, Nused) = i : m_Stanza.jNursery(isp, Nused) = j
@@ -6542,7 +6542,7 @@ exitline:
 
     Function HabIsOk(ByVal ieco As Integer, ByVal i As Integer, ByVal j As Integer) As Boolean
         'If Depth(i, j) > 0 And (PrefHab(ieco, HabType(i, j)) = True Or PrefHab(ieco, 0) = True) Then
-        If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, ieco) > 0.5 Then
+        If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(ieco)(i, j) > 0.5 Then
             HabIsOk = True
         Else
             HabIsOk = False
@@ -6569,7 +6569,7 @@ exitline:
         For i = 1 To inRow
             For j = 1 To inCol
                 For iFleet = iStart To iEnd
-                    m_Data.Port(iFleet, i, j) = False
+                    m_Data.Port(iFleet)(i, j) = False
                 Next iFleet
             Next
         Next
@@ -6597,7 +6597,7 @@ exitline:
                         For l = j - 1 To j + 1 Step 2
                             If k > 0 And k <= inRow And l > 0 And l <= inCol And Me.EcoSpaceData.Depth(k, l) > 0 Then
                                 For iFleet = iStart To iEnd
-                                    m_Data.Port(iFleet, i, j) = True
+                                    m_Data.Port(iFleet)(i, j) = True
                                 Next iFleet
                             End If
                         Next
@@ -6639,11 +6639,11 @@ exitline:
         Ports = 0
         For iRow = 1 To m_Data.InRow
             For iCol = 1 To m_Data.InCol
-                Me.m_Data.Port(0, iRow, iCol) = False
+                Me.m_Data.Port(0)(iRow, iCol) = False
                 For iFleet = 1 To Me.m_Data.nFleets
-                    If Me.m_Data.Port(iFleet, iRow, iCol) = True Then
+                    If Me.m_Data.Port(iFleet)(iRow, iCol) = True Then
                         Ports += 1
-                        Me.m_Data.Port(0, iRow, iCol) = True
+                        Me.m_Data.Port(0)(iRow, iCol) = True
                         Exit For
                     End If
                 Next
@@ -6655,7 +6655,7 @@ exitline:
 
         For iRow = 1 To m_Data.InRow
             For iCol = 1 To m_Data.InCol
-                If Me.m_Data.Port(0, iRow, iCol) = True Then
+                If Me.m_Data.Port(0)(iRow, iCol) = True Then
                     Ports += 1
                     'PortX(Ports) = i
                     'PortY(Ports) = j
@@ -6692,7 +6692,7 @@ exitline:
 
             For iFleet = 0 To Me.m_Data.nFleets
                 ' Is this fleet based in a this port?
-                If Me.m_Data.Port(iFleet, iRowPortY, iColPortX) Then
+                If Me.m_Data.Port(iFleet)(iRowPortY, iColPortX) Then
 
                     For iRow = 1 To m_Data.InRow
                         For iCol = 1 To m_Data.InCol
@@ -6715,7 +6715,7 @@ exitline:
             For iRow = 1 To m_Data.InRow
                 For iCol = 1 To m_Data.InCol
                     If minD(iFleet, iRow, iCol) < Single.MaxValue Then Disti = minD(iFleet, iRow, iCol) Else Disti = 0.0!
-                    Me.m_Data.Sail(iFleet, iRow, iCol) = Disti
+                    Me.m_Data.Sail(iFleet)(iRow, iCol) = Disti
                 Next iCol
             Next iRow
         Next iFleet
@@ -6811,7 +6811,7 @@ exitline:
 
                                     'If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
                                     '[capacity of cell] = sumof([habitat preference] * [percentage of habitat in cell])
-                                    Me.m_Data.HabCap(i, j, K) += Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
+                                    Me.m_Data.HabCap(K)(i, j) += Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(ihab)(i, j)
                                     'Else
                                     '    Me.m_Data.HabCap(i, j, K) *= Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
                                     'End If
@@ -6821,7 +6821,7 @@ exitline:
                             Else
 
                                 'Group uses All Habitats at 100% (PrefHab(K, 0) = 1.0)
-                                Me.m_Data.HabCap(i, j, K) = 1.0
+                                Me.m_Data.HabCap(K)(i, j) = 1.0
 
                             End If 'Me.m_Data.PrefHab(K, 0) = 0.0
                         End If 'm_Data.Depth(i, j) > 0.0
@@ -6876,7 +6876,7 @@ exitline:
                 For ic As Integer = 1 To Me.m_Data.InCol
                     If Me.m_Data.Depth(ir, ic) > 0 Then
                         'Debug.Assert(Me.m_Data.HabCap(ir, ic, ig) > 0, "Habcap = 0")
-                        If Me.m_Data.HabCap(ir, ic, ig) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, ig) = MIN_HABCAP
+                        If Me.m_Data.HabCap(ig)(ir, ic) < MIN_HABCAP Then Me.m_Data.HabCap(ig)(ir, ic) = MIN_HABCAP
                     End If 'Me.m_Data.Depth(ir, ic) 
                 Next ic
             Next ir
@@ -6908,7 +6908,7 @@ exitline:
                 For irow As Integer = 1 To Me.m_Data.InRow
                     For icol As Integer = 1 To Me.m_Data.InCol
 
-                        Me.m_Data.HabCap(irow, icol, igrp) = 0.0F
+                        Me.m_Data.HabCap(igrp)(irow, icol) = 0.0F
 
                     Next icol
                 Next irow
@@ -7026,8 +7026,8 @@ exitline:
                     For i = 0 To Me.m_Data.InRow + 1
                         For j = 0 To Me.m_Data.InCol + 1
                             If Me.m_Data.Depth(i, j) > 0 Then
-                                If Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
-                                    Me.m_Data.HabCap(i, j, k) = HabCapMin
+                                If Me.m_Data.HabCap(k)(i, j) <= HabCapMin Then
+                                    Me.m_Data.HabCap(k)(i, j) = HabCapMin
                                     DistMin(i, j) = MaxDist
                                     NumBad = NumBad + 1
                                 Else
@@ -7043,7 +7043,7 @@ exitline:
                         For iter = 1 To Maxiter
                             For i = 1 To Me.m_Data.InRow
                                 For j = 1 To Me.m_Data.InCol
-                                    If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
+                                    If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(k)(i, j) <= HabCapMin Then
                                         'check the four faces of this cell to find min distance from it toward good cell
                                         Dmin = MaxDist
 
@@ -7076,9 +7076,9 @@ exitline:
                         'apply exponential decrease to habcap based on the minimum travel distance
                         For i = 1 To Me.m_Data.InRow
                             For j = 1 To Me.m_Data.InCol
-                                If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
-                                    Me.m_Data.HabCap(i, j, k) = HabCapMin * Exp(-DistFac * DistMin(i, j))
-                                    If Me.m_Data.HabCap(i, j, k) < MIN_HABCAP Then Me.m_Data.HabCap(i, j, k) = MIN_HABCAP
+                                If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(k)(i, j) <= HabCapMin Then
+                                    Me.m_Data.HabCap(k)(i, j) = HabCapMin * Exp(-DistFac * DistMin(i, j))
+                                    If Me.m_Data.HabCap(k)(i, j) < MIN_HABCAP Then Me.m_Data.HabCap(k)(i, j) = MIN_HABCAP
                                 End If
                             Next j
                         Next i
@@ -7124,7 +7124,7 @@ exitline:
                         'This is done first so the values are just copied in
                         'All others capacity inputs act as a multiplier on this base line 
                         If Me.m_Data.Depth(irow, icol) > 0 Then
-                            Me.m_Data.HabCap(irow, icol, igrp) = Me.m_Data.HabCapInput(irow, icol, igrp)
+                            Me.m_Data.HabCap(igrp)(irow, icol) = Me.m_Data.HabCapInput(igrp)(irow, icol)
                         End If
 
                         'get max for rescaling to 0-1 range
@@ -7220,7 +7220,7 @@ exitline:
                     For ir = 1 To Me.m_Data.InRow
                         For ic = 1 To Me.m_Data.InCol
                             If Me.m_Data.Depth(ir, ic) > 0 Then
-                                m_Data.MaxHabCap(iGrp) = Math.Max(Me.m_Data.HabCap(ir, ic, iGrp), m_Data.MaxHabCap(iGrp))
+                                m_Data.MaxHabCap(iGrp) = Math.Max(Me.m_Data.HabCap(iGrp)(ir, ic), m_Data.MaxHabCap(iGrp))
                             End If
                         Next
                     Next
@@ -7232,13 +7232,13 @@ exitline:
                     For ic = 1 To Me.m_Data.InCol
                         If Me.m_Data.Depth(ir, ic) > 0 Then
                             'normalized capacity
-                            Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / Me.m_Data.MaxHabCap(iGrp)
+                            Me.m_Data.HabCap(iGrp)(ir, ic) = Me.m_Data.HabCap(iGrp)(ir, ic) / Me.m_Data.MaxHabCap(iGrp)
                             'Greater than min Capacity
-                            If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP '0.000001F
+                            If Me.m_Data.HabCap(iGrp)(ir, ic) < MIN_HABCAP Then Me.m_Data.HabCap(iGrp)(ir, ic) = MIN_HABCAP '0.000001F
 
                             'sum of capacity
-                            Me.m_Data.TotHabCap(iGrp) += Me.m_Data.HabCap(ir, ic, iGrp)
-                            tempmax = Math.Max(Me.m_Data.HabCap(ir, ic, iGrp), tempmax)
+                            Me.m_Data.TotHabCap(iGrp) += Me.m_Data.HabCap(iGrp)(ir, ic)
+                            tempmax = Math.Max(Me.m_Data.HabCap(iGrp)(ir, ic), tempmax)
                         End If 'Me.m_Data.Depth(ir, ic) > 0 
                     Next ic
                 Next ir
@@ -7258,14 +7258,14 @@ exitline:
 
                 If Not bMultiStanza Then
                     For ic = 0 To Me.m_Data.InCol + 1
-                        Me.m_Data.HabCap(0, ic, iGrp) = Me.m_Data.HabCap(1, ic, iGrp)
+                        Me.m_Data.HabCap(iGrp)(0, ic) = Me.m_Data.HabCap(iGrp)(1, ic)
 
-                        Me.m_Data.HabCap(Me.m_Data.InRow + 1, ic, iGrp) = Me.m_Data.HabCap(Me.m_Data.InRow, ic, iGrp)
+                        Me.m_Data.HabCap(iGrp)(Me.m_Data.InRow + 1, ic) = Me.m_Data.HabCap(iGrp)(Me.m_Data.InRow, ic)
                     Next ic
 
                     For ir = 0 To Me.m_Data.InRow + 1
-                        Me.m_Data.HabCap(ir, 0, iGrp) = Me.m_Data.HabCap(ir, 1, iGrp)
-                        Me.m_Data.HabCap(ir, Me.m_Data.InCol + 1, iGrp) = Me.m_Data.HabCap(ir, Me.m_Data.InCol, iGrp)
+                        Me.m_Data.HabCap(iGrp)(ir, 0) = Me.m_Data.HabCap(iGrp)(ir, 1)
+                        Me.m_Data.HabCap(iGrp)(ir, Me.m_Data.InCol + 1) = Me.m_Data.HabCap(iGrp)(ir, Me.m_Data.InCol)
                     Next ir
                 End If
             End If ' Me.m_Data.isGroupHabCapChanged(iGrp)
@@ -7287,7 +7287,7 @@ exitline:
                 For ic As Integer = 1 To Me.m_Data.InCol
                     TProp = 0
                     For ihab = 1 To Me.m_Data.NoHabitats
-                        TProp += Me.m_Data.PHabType(ir, ic, ihab)
+                        TProp += Me.m_Data.PHabType(ihab)(ir, ic)
                     Next
 
                     'Does the total proportion of habitats exceed 100%
@@ -7295,7 +7295,7 @@ exitline:
                     If TProp > 1 Then
                         'Yes normalize this cell 
                         For ihab = 1 To Me.m_Data.NoHabitats
-                            Me.m_Data.PHabType(ir, ic, ihab) = Me.m_Data.PHabType(ir, ic, ihab) / TProp
+                            Me.m_Data.PHabType(ihab)(ir, ic) = Me.m_Data.PHabType(ihab)(ir, ic) / TProp
                         Next
                         bChanged = True
                     End If
@@ -7373,7 +7373,7 @@ exitline:
                                         'For debugging
                                         'dumpCapacity(map, igrp, irow, icol)
 
-                                        Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
+                                        Me.m_Data.HabCap(igrp)(irow, icol) *= map.ResponseFunction(igrp, irow, icol)
 
                                     End If
                                 Next icol
@@ -7396,7 +7396,7 @@ exitline:
             If row = 134 And col = 126 Then
                 Dim cellValue As Single = map.Layer.Cell(row, col)
                 Dim response As Single = map.ResponseFunction(igrp, row, col)
-                Dim cap As Single = Me.m_Data.HabCap(row, col, igrp)
+                Dim cap As Single = Me.m_Data.HabCap(igrp)(row, col)
 
                 System.Console.WriteLine("SST," + cellValue.ToString + ",Response," + response.ToString + ",Cap," + cap.ToString + ",NewCap," + (cap * response).ToString)
 
@@ -7418,7 +7418,7 @@ exitline:
                 For ii As Integer = i - 1 To i + 1
                     For jj As Integer = j - 1 To j + 1
                         If Not (ii = 0 Or jj = 0 Or ii = Me.m_Data.InRow + 1 Or jj = Me.m_Data.InCol + 1) Then
-                            t += Me.m_Data.HabCap(ii, jj, k)
+                            t += Me.m_Data.HabCap(k)(ii, jj)
                             n += 1
                         End If
                     Next jj
@@ -7429,7 +7429,7 @@ exitline:
 
         For i = 1 To Me.m_Data.InRow
             For j = 1 To Me.m_Data.InCol
-                Me.m_Data.HabCap(i, j, k) = cnew(i, j)
+                Me.m_Data.HabCap(k)(i, j) = cnew(i, j)
             Next
         Next
 
@@ -7668,7 +7668,7 @@ exitline:
 
     End Sub
 
-     Private Sub SetVtot(ByVal XvTot(,) As Single, ByVal YvTot(,) As Single, ByVal Corio As Single, ByVal Hstress As Single)
+    Private Sub SetVtot(ByVal XvTot(,) As Single, ByVal YvTot(,) As Single, ByVal Corio As Single, ByVal Hstress As Single)
         'sets total pressure in x and y directions for all cells
         Dim i As Integer, j As Integer
         For i = 0 To Me.m_Data.InRow + 1

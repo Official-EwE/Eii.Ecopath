@@ -3600,8 +3600,8 @@ Namespace Database
                             Next
                         Next
 
-                        drow("SailCostMap") = cStringUtils.ArrayToString(dataSailCost, Me.m_dicDepthMaps(iScenarioID), True)
-                        drow("PortMap") = cStringUtils.ArrayToString(dataPort)
+                        drow("SailCostMap") = cStringUtils.ArrayToString(dataSailCost, nRows, nCols, Me.m_dicDepthMaps(iScenarioID), True)
+                        drow("PortMap") = cStringUtils.ArrayToString(dataPort, nRows, nCols)
 
                         writer.AddRow(drow)
                         writer.Commit()
@@ -3768,13 +3768,13 @@ Namespace Database
 
                 drow = dt.Rows.Find(iScenarioID)
                 drow.BeginEdit()
-                drow("DepthMap") = cStringUtils.ArrayToString(dataDepth)
-                drow("RelPPMap") = cStringUtils.ArrayToString(dataRelPP, dataDepth)
-                drow("RelCinMap") = cStringUtils.ArrayToString(dataRelCin, dataDepth)
+                drow("DepthMap") = cStringUtils.ArrayToString(dataDepth, nRows, nCols)
+                drow("RelPPMap") = cStringUtils.ArrayToString(dataRelPP, nRows, nCols, dataDepth)
+                drow("RelCinMap") = cStringUtils.ArrayToString(dataRelCin, nRows, nCols, dataDepth)
                 drow("XVelMap") = ""
                 drow("YVelMap") = ""
                 drow("DepthAMap") = ""
-                drow("RegionMap") = cStringUtils.ArrayToString(dataRegion, dataDepth)
+                drow("RegionMap") = cStringUtils.ArrayToString(dataRegion, nRows, nCols, dataDepth)
                 drow("NumRegions") = iNumRegions
                 drow.EndEdit()
 
@@ -3793,7 +3793,7 @@ Namespace Database
                     keys(1) = iKey
                     drow = dtSub.Rows.Find(keys)
                     drow.BeginEdit()
-                    drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, dataDepth, True, iCell, 1.0!)
+                    drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, nRows, nCols, dataDepth, True, iCell, 1.0!)
                     drow.EndEdit()
                 End While
                 dtSub = Nothing
@@ -3810,7 +3810,7 @@ Namespace Database
                     keys(1) = iKey
                     drow = dtSub.Rows.Find(keys)
                     drow.BeginEdit()
-                    drow("MPAMap") = cStringUtils.ArrayToString(dataMPA, dataDepth, True, iCell)
+                    drow("MPAMap") = cStringUtils.ArrayToString(dataMPA, nRows, nCols, dataDepth, True, iCell)
                     drow.EndEdit()
                 End While
                 dtSub = Nothing

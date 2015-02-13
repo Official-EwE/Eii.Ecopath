@@ -228,7 +228,7 @@ Public Class cIBMSolver
                     dAllow = Dmove + 0.0001
                     i = Math.Truncate(m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(m_Stanza.jPacket(isp, iaa, ip))
 
-                    If m_Data.HabCap(i, j, ieco) > 0.1 And m_Data.Depth(i, j) > 0 Then
+                    If m_Data.HabCap(ieco)(i, j) > 0.1 And m_Data.Depth(i, j) > 0 Then
                         Nmoves = m_Stanza.IBMMovesPerMonth(ieco)
                     Else
                         Dmove = m_Stanza.IBMdistmove(isp, ia) '* RelMoveBad(ieco)
@@ -243,7 +243,7 @@ Public Class cIBMSolver
                         cc = d(i, j, ieco) 'east move
                         dd = e(i, j, ieco) 'west move
 
-                        If m_Data.HabCap(i, j, ieco) > 0.1 And m_Data.Depth(i, j) > 0 Then
+                        If m_Data.HabCap(ieco)(i, j) > 0.1 And m_Data.Depth(i, j) > 0 Then
                             If imm > m_Stanza.IBMMovesPerMonth(ieco) Then Exit For
                             If m_Data.IsMigratory(ieco) = False Then
                                 'this changes movement if it's inside the box s.t. it can't get out in one move
@@ -433,12 +433,12 @@ Public Class cIBMSolver
                     m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Me.m_rand.NextDouble()
 
                     'Now randomly move some of the packets again if this is a low quality habitat
-                    If Me.m_rand.NextDouble() > Me.m_Data.HabCap(m_Stanza.iNursery(isp, iNurse), m_Stanza.jNursery(isp, iNurse), ieco) Then
+                    If Me.m_rand.NextDouble() > Me.m_Data.HabCap(ieco)(m_Stanza.iNursery(isp, iNurse), m_Stanza.jNursery(isp, iNurse)) Then
                         'If Me.m_rand.NextDouble() > Me.m_Data.HabCap(i, j, ieco) Then
                         'try up to 10 alternative locations
                         For icheck As Integer = 1 To 10
                             iNurse = 1 + Me.m_rand.NextDouble() * (m_Stanza.Nnursery(isp) - 1)
-                            If Me.m_rand.NextDouble() < Me.m_Data.HabCap(m_Stanza.iNursery(isp, iNurse), m_Stanza.jNursery(isp, iNurse), ieco) Then
+                            If Me.m_rand.NextDouble() < Me.m_Data.HabCap(ieco)(m_Stanza.iNursery(isp, iNurse), m_Stanza.jNursery(isp, iNurse)) Then
                                 m_Stanza.iPacket(isp, ia1, ip) = m_Stanza.iNursery(isp, iNurse) + Me.m_rand.NextDouble()
                                 m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Me.m_rand.NextDouble()
                                 Exit For
@@ -483,7 +483,7 @@ Public Class cIBMSolver
 
     Function HabIsOk(ieco As Integer, i As Integer, j As Integer) As Boolean
         'If Depth(i, j) > 0 And (PrefHab(ieco, HabType(i, j)) = True Or PrefHab(ieco, 0) = True) Then
-        If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, ieco) > 0.5 Then
+        If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(ieco)(i, j) > 0.5 Then
             HabIsOk = True
         Else
             HabIsOk = False

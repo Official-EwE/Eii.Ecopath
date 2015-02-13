@@ -65,10 +65,10 @@ Friend Class cDBUpdate6_02_00_06
         Dim info As cRegionInfo = Nothing
         Dim readerScenario As IDataReader = db.GetReader("SELECT ScenarioID, InRow, InCol, DepthMap FROM EcospaceScenario")
         Dim readerRegions As IDataReader = Nothing
-        Dim aiDepth(,) As Single = Nothing
-        Dim aiRegions(,) As Integer = Nothing
-        Dim aiRegion(,) As Integer = Nothing
-        Dim InRow, InCol As Integer
+        Dim depth(,) As Single = Nothing
+        Dim regions(,) As Integer = Nothing
+        Dim region(,) As Integer = Nothing
+        Dim nRows, nCols As Integer
         Dim lRegions As New List(Of cRegionInfo)
         Dim bSuccess As Boolean = True
 
@@ -81,16 +81,16 @@ Friend Class cDBUpdate6_02_00_06
 
             ' Read scenario bits
             info.iScenarioID = CInt(readerScenario("ScenarioID"))
-            InRow = CInt(readerScenario("InRow"))
-            InCol = CInt(readerScenario("InCol"))
+            nRows = CInt(readerScenario("InRow"))
+            nCols = CInt(readerScenario("InCol"))
 
             ' Allocate memory
-            ReDim aiDepth(InRow, InCol)
-            ReDim aiRegions(InRow, InCol)
-            ReDim aiRegion(InRow, InCol)
+            ReDim depth(nRows, nCols)
+            ReDim regions(nRows, nCols)
+            ReDim region(nRows, nCols)
 
             ' Read depth map
-            cStringUtils.StringToArray(CStr(readerScenario("DepthMap")), aiDepth)
+            cStringUtils.StringToArray(CStr(readerScenario("DepthMap")), depth, nRows, nCols)
 
             ' Read region maps and merge 'em
             readerRegions = db.GetReader(String.Format("SELECT * FROM EcospaceScenarioRegion WHERE (ScenarioID={0}) ORDER BY Sequence", info.iScenarioID))
@@ -100,14 +100,14 @@ Friend Class cDBUpdate6_02_00_06
                 info.iNumRegions += 1
 
                 ' Read region map
-                Array.Clear(aiRegion, 0, aiRegion.Length)
-                cStringUtils.StringToArray(CStr(readerRegions("RegionMap")), aiRegion)
+                Array.Clear(region, 0, region.Length)
+                cStringUtils.StringToArray(CStr(readerRegions("RegionMap")), region, nRows, nCols)
 
                 ' Merge region map into final
-                For iRow As Integer = 1 To InRow
-                    For iCol As Integer = 1 To InCol
-                        If (aiRegion(iRow, iCol) > 0) Then
-                            aiRegions(iRow, iCol) = info.iNumRegions
+                For iRow As Integer = 1 To nRows
+                    For iCol As Integer = 1 To nCols
+                        If (region(iRow, iCol) > 0) Then
+                            regions(iRow, iCol) = info.iNumRegions
                         End If
                     Next iCol
                 Next iRow
@@ -115,14 +115,14 @@ Friend Class cDBUpdate6_02_00_06
             End While
 
             ' Preserve map
-            info.strMap = cStringUtils.ArrayToString(aiRegions, aiDepth)
+            info.strMap = cStringUtils.ArrayToString(regions, nRows, nCols, depth)
 
             ' Clean up
             db.ReleaseReader(readerRegions)
             readerRegions = Nothing
-            aiDepth = Nothing
-            aiRegions = Nothing
-            aiRegion = Nothing
+            depth = Nothing
+            regions = Nothing
+            region = Nothing
 
         End While
 

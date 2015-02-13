@@ -1286,6 +1286,8 @@ Namespace Utilities
         ''' Rows without any values will be left empty and are only marked by a semi-colon.</remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Function ArrayToString(ByVal data As Array, _
+                                             ByVal InRow As Integer, _
+                                             ByVal InCol As Integer, _
                                              Optional ByVal dataDepth As Single(,) = Nothing, _
                                              Optional ByVal bWaterOnly As Boolean = True, _
                                              Optional ByVal valueFilter As Object = Nothing, _
@@ -1302,7 +1304,7 @@ Namespace Utilities
             Dim tData As Type = data.GetType().GetElementType
 
             ' For all rows
-            For i As Integer = 1 To data.GetUpperBound(0) - 1
+            For i As Integer = 1 To InRow
 
                 ' Start of new rowg
                 bHasRowValues = False
@@ -1310,7 +1312,7 @@ Namespace Utilities
                 bUseCell = False
 
                 ' For all cols
-                For j As Integer = 1 To data.GetUpperBound(1) - 1
+                For j As Integer = 1 To InCol
 
                     ' Append separator after last value
                     If bUseCell Then sbRow.Append(","c)
@@ -1362,6 +1364,8 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="strData">The string containing the map.</param>
         ''' <param name="data">The 2-dimensional array to populate.</param>
+        ''' <param name="InRow">Number of rows in the map.</param>
+        ''' <param name="InCol">Number of columns in the map.</param>
         ''' <param name="land">Optional land layer to use.</param>
         ''' <param name="bWaterOnly">States whether only water cells (true) or land cells (false) should be written.</param>
         ''' <param name="valueFilter">Optional value to filter map values by. If specified, only map values equalling this
@@ -1370,6 +1374,7 @@ Namespace Utilities
         ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function StringToArray(ByVal strData As String, ByVal data As Array, _
+                                             ByVal InRow As Integer, ByVal InCol As Integer, _
                                              Optional ByVal land As Single(,) = Nothing, _
                                              Optional ByVal bWaterOnly As Boolean = True, _
                                              Optional ByVal valueFilter As Object = Nothing, _
@@ -1386,14 +1391,14 @@ Namespace Utilities
             Dim tData As Type = data.GetType().GetElementType
 
             ' For all rows
-            For i As Integer = 1 To data.GetUpperBound(0) - 1
+            For i As Integer = 1 To InRow
                 ' Still row data left?
                 If (i < astrLines.Length) Then
 
                     ' #Yes: split row into values
                     astrValues = astrLines(i - 1).Split(","c)
                     ' For all cols
-                    For j As Integer = 1 To data.GetUpperBound(1) - 1
+                    For j As Integer = 1 To InCol
                         ' Ignore land filter?
                         If (land Is Nothing) Then
                             ' #Yes: use cell
@@ -1465,6 +1470,7 @@ Namespace Utilities
         ''' in the output string without having to revert to run-length encoding.
         ''' Rows without any values will be left empty and are only marked by a semi-colon.</remarks>
         ''' -----------------------------------------------------------------------
+        <Obsolete("2-dimensional string/map conversion method should be used instead")> _
         Public Shared Function ArrayToString(ByVal data As Array, _
                                              ByVal iFilter As Integer, _
                                              ByVal filterIndex As eFilterIndexTypes, _
@@ -1561,6 +1567,7 @@ Namespace Utilities
         ''' filter value will be copied to the data array.</param>
         ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
+        <Obsolete("2-dimensional string/map conversion method should be used instead")> _
         Public Shared Function StringToArray(ByVal strData As String, _
                                             ByVal iFilter As Integer, _
                                             ByVal filterIndex As eFilterIndexTypes, _

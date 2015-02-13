@@ -2053,13 +2053,13 @@ Public Class cEIIXMLDataSource
         Try
             drow = dtScenario.DefaultView.ToTable.Rows(0)
 
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthMap", "")), ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelPPMap", "")), ecospaceDS.RelPP, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelCinMap", "")), ecospaceDS.RelCin, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "XVelMap", "")), ecospaceDS.Xvel, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "YVelMap", "")), ecospaceDS.Yvel, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RegionMap", "")), ecospaceDS.Region)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthMap", "")), ecospaceDS.DepthInput, ecospaceDS.InRow, ecospaceDS.InCol)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelPPMap", "")), ecospaceDS.RelPP, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelCinMap", "")), ecospaceDS.RelCin, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "XVelMap", "")), ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "YVelMap", "")), ecospaceDS.Yvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol)
 
         Catch ex As Exception
             bSucces = False
@@ -2095,8 +2095,8 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.HabitatText(i) = CStr(drow("HabitatName"))
                 strMap = CStr(Me.ReadSafe(drow, "HabitatMap", ""))
                 ' Read only water cells with values for this habitat index
-                cStringUtils.StringToArray(strMap, i, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.PHabType, _
-                                           ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+
+                cStringUtils.StringToArray(strMap, ecospaceDS.PHabType(i), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                 i += 1
             Catch ex As Exception
                 Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace habitat for habitat {1}", ex.Message, i))
@@ -2156,7 +2156,7 @@ Public Class cEIIXMLDataSource
                     ecospaceDS.MPAmonth(iMonth + 1, iMPA) = (strMPAMonth.Substring(iMonth, 1) = "1")
                 Next iMonth
                 strMPAMap = CStr(Me.ReadSafe(drow, "MPAMap", ""))
-                bSucces = bSucces And cStringUtils.StringToArray(strMPAMap, ecospaceDS.MPA, ecospaceDS.DepthInput, True, iMPA)
+                bSucces = bSucces And cStringUtils.StringToArray(strMPAMap, ecospaceDS.MPA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, iMPA)
                 iMPA += 1
 
             Catch ex As Exception
@@ -2184,7 +2184,7 @@ Public Class cEIIXMLDataSource
         For iGroup = 1 To Me.m_core.nGroups
             For iRow As Integer = 0 To ecospaceDS.InRow
                 For iCol As Integer = 0 To ecospaceDS.InCol
-                    ecospaceDS.HabCapInput(iRow, iCol, iGroup) = 1.0
+                    ecospaceDS.HabCapInput(iGroup)(iRow, iCol) = 1.0
                 Next iCol
             Next iRow
         Next iGroup
@@ -2224,8 +2224,7 @@ Public Class cEIIXMLDataSource
                 Next
 
                 strMap = CStr(Me.ReadSafe(drow, "CapacityMap", ""))
-                cStringUtils.StringToArray(strMap, iGroup, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.HabCapInput, _
-                                           ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+                cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
             Catch ex As Exception
                 Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))
@@ -2300,15 +2299,11 @@ Public Class cEIIXMLDataSource
 
                 ' Read port map for a given fleet and land cells only
                 strMap = CStr(Me.ReadSafe(drow, "PortMap", ""))
-                bSucces = bSucces And cStringUtils.StringToArray(strMap, _
-                                                                 iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
-                                                                 ecospaceDS.Port, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, False)
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.Port(iFleet), ecospaceDS.InRow, ecospaceDS.InCol)
 
                 ' Read sailing cost map for a given fleet and water cells only
                 strMap = CStr(Me.ReadSafe(drow, "SailCostMap", ""))
-                bSucces = bSucces And cStringUtils.StringToArray(strMap, _
-                                                                 iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
-                                                                 ecospaceDS.Sail, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.Sail(iFleet), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                 iFleet += 1
 
             Catch ex As Exception
@@ -2404,8 +2399,8 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.ImportanceLayerWeight(iLayer) = CSng(drow("Weight"))
 
                 Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
-                bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.ImportanceLayerMap, _
-                                                                 ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.ImportanceLayerMap(iLayer), _
+                                                                 ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
             Catch ex As Exception
                 bSucces = False
@@ -2435,7 +2430,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.EnvironmentalLayerDescription(iLayer) = CStr(drow("LayerDescription"))
 
                 Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
-                bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.EnvironmentalLayerMap, _
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.EnvironmentalLayerMap(iLayer), _
                                                                  ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
             Catch ex As Exception

@@ -348,12 +348,14 @@ Public Class cMatrixCalc
         '         pivots in count, which is used to find the sign of the determinant.
         '===================================================================
 
-        Dim ErrCode As Integer, row As Integer, col As Integer, pvt As Integer, max As Single, R As Integer
+        Dim row As Integer, col As Integer, pvt As Integer, max As Single, R As Integer
         Dim CCC As Integer, bestrow As Integer, bestcol As Integer
         Dim rownorm() As Single
         Dim seps As Single, oldmax As Single, rp As Integer, cp As Integer
         Dim count As Integer
         Dim Temp As Single
+
+        'Dim ErrCode As Integer
         'On Local Error GoTo sluerr: ErrCode = 0
 
         Try

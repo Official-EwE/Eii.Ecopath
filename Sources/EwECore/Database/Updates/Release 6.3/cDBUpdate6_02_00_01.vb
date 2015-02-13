@@ -162,12 +162,12 @@ Friend Class cDBUpdate6_02_00_01
         Dim dataRelCin As Single(,) = Nothing
         Dim dataDepthA As Single(,) = Nothing : Dim dataXVel As Single(,) = Nothing : Dim dataYVel As Single(,) = Nothing
         Dim dataMPA As Integer(,) = Nothing
-        Dim dataHabitat As Integer(,,) = Nothing
+        Dim dataHabitat As Single()(,) = Nothing
         Dim dataRegion As Integer(,) = Nothing
-        Dim dataPort As Integer(,,) = Nothing
-        Dim dataSailingCost As Single(,,) = Nothing
-        Dim dataHabCap As Single(,,) = Nothing
-        Dim dataImportance As Single(,,) = Nothing
+        Dim dataPort As Single()(,) = Nothing
+        Dim dataSailingCost As Single()(,) = Nothing
+        Dim dataHabCap As Single()(,) = Nothing
+        Dim dataImportance As Single()(,) = Nothing
 
         Dim i As Integer, iID As Integer
         Dim iRow As Integer, iCol As Integer
@@ -216,13 +216,14 @@ Friend Class cDBUpdate6_02_00_01
         ReDim dataXVel(InRow, InCol)
         ReDim dataYVel(InRow, InCol)
         ReDim dataDepthA(InRow, InCol)
-        ReDim dataHabitat(InRow, InCol, lHabitatID.Count)
         ReDim dataMPA(InRow, InCol)
         ReDim dataRegion(InRow, InCol)
-        ReDim dataPort(lFleetID.Count, InRow, InCol)
-        ReDim dataSailingCost(lFleetID.Count, InRow, InCol)
-        ReDim dataHabCap(InRow, InCol, lGroupID.Count)
-        ReDim dataImportance(InRow, InCol, lImportanceLayerID.Count)
+
+        Allocate(dataHabitat, lHabitatID.Count, InRow, InCol)
+        Allocate(dataPort, lFleetID.Count, InRow, InCol)
+        Allocate(dataSailingCost, lFleetID.Count, InRow, InCol)
+        Allocate(dataHabCap, lGroupID.Count, InRow, InCol)
+        Allocate(dataImportance, lImportanceLayerID.Count, InRow, InCol)
 
         ' Read basemap data
         reader = db.GetReader("SELECT * FROM EcospaceScenarioBasemap WHERE ScenarioID=" & iScenarioID)
@@ -241,7 +242,7 @@ Friend Class cDBUpdate6_02_00_01
             ' Exclude 'all' habitat map
             i = lHabitatID.IndexOf(CInt(reader("HabitatID")))
             If (i > 0) Then
-                dataHabitat(iRow, iCol, i) = 1
+                dataHabitat(i)(iRow, iCol) = 1
             End If
 
             i = lMPAID.IndexOf(CInt(reader("MPAID")))
@@ -266,8 +267,8 @@ Friend Class cDBUpdate6_02_00_01
                 iCol = CInt(reader("InCol"))
 
                 If (iRow <= InRow) And (iCol <= InCol) Then
-                    dataPort(i, iRow, iCol) = CInt(IIF(CInt(reader("PortID")) > 0, 1, 0))
-                    dataSailingCost(i, iRow, iCol) = CSng(db.ReadSafe(reader, "SailCost", 0.0!))
+                    dataPort(i)(iRow, iCol) = CInt(IIF(CInt(reader("PortID")) > 0, 1, 0))
+                    dataSailingCost(i)(iRow, iCol) = CSng(db.ReadSafe(reader, "SailCost", 0.0!))
                 End If
 
             End While
@@ -283,7 +284,7 @@ Friend Class cDBUpdate6_02_00_01
                 iRow = CInt(reader("InRow"))
                 iCol = CInt(reader("InCol"))
                 If (iRow <= InRow) And (iCol <= InCol) Then
-                    dataHabCap(iRow, iCol, i) = CSng(reader("Capacity"))
+                    dataHabCap(i)(iRow, iCol) = CSng(reader("Capacity"))
                 End If
 
             End While
@@ -301,7 +302,7 @@ Friend Class cDBUpdate6_02_00_01
                     iRow = CInt(reader("InRow"))
                     iCol = CInt(reader("InCol"))
                     If (iRow <= InRow) And (iCol <= InCol) Then
-                        dataImportance(iRow, iCol, i) = CSng(reader("Weight"))
+                        dataImportance(i)(iRow, iCol) = CSng(reader("Weight"))
                     End If
 
                 End While
@@ -321,12 +322,12 @@ Friend Class cDBUpdate6_02_00_01
         dt = writer.GetDataTable
         drow = dt.Rows.Find(iScenarioID)
         drow.BeginEdit()
-        drow("DepthMap") = cStringUtils.ArrayToString(dataDepth)
-        drow("RelPPMap") = cStringUtils.ArrayToString(dataRelPP, dataDepth)
-        drow("RelCinMap") = cStringUtils.ArrayToString(dataRelCin, dataDepth)
-        drow("XVelMap") = cStringUtils.ArrayToString(dataXVel, dataDepth)
-        drow("YVelMap") = cStringUtils.ArrayToString(dataYVel, dataDepth)
-        drow("DepthAMap") = cStringUtils.ArrayToString(dataDepthA, dataDepth)
+        drow("DepthMap") = cStringUtils.ArrayToString(dataDepth, InRow, InCol)
+        drow("RelPPMap") = cStringUtils.ArrayToString(dataRelPP, InRow, InCol, dataDepth)
+        drow("RelCinMap") = cStringUtils.ArrayToString(dataRelCin, InRow, InCol, dataDepth)
+        drow("XVelMap") = cStringUtils.ArrayToString(dataXVel, InRow, InCol, dataDepth)
+        drow("YVelMap") = cStringUtils.ArrayToString(dataYVel, InRow, InCol, dataDepth)
+        drow("DepthAMap") = cStringUtils.ArrayToString(dataDepthA, InRow, InCol, dataDepth)
         drow.EndEdit()
         db.ReleaseWriter(writer)
         writer = Nothing
@@ -339,7 +340,7 @@ Friend Class cDBUpdate6_02_00_01
             drow = dt.Rows.Find(key)
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
-                drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, i, cStringUtils.eFilterIndexTypes.LastIndex, InRow, InCol, dataDepth, True)
+                drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat(i), InRow, InCol, dataDepth, True)
                 drow.EndEdit()
             End If
         Next
@@ -354,7 +355,7 @@ Friend Class cDBUpdate6_02_00_01
             drow = dt.Rows.Find(key)
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
-                drow("MPAMap") = cStringUtils.ArrayToString(dataMPA, dataDepth, True, i)
+                drow("MPAMap") = cStringUtils.ArrayToString(dataMPA, InRow, InCol, dataDepth, True, i)
                 drow.EndEdit()
             End If
         Next
@@ -369,7 +370,7 @@ Friend Class cDBUpdate6_02_00_01
             drow = dt.Rows.Find(key)
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
-                drow("RegionMap") = cStringUtils.ArrayToString(dataRegion, dataDepth, True, i)
+                drow("RegionMap") = cStringUtils.ArrayToString(dataRegion, InRow, InCol, dataDepth, True, i)
                 drow.EndEdit()
             End If
         Next
@@ -384,9 +385,7 @@ Friend Class cDBUpdate6_02_00_01
             drow = dt.Rows.Find(key)
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
-                ' Save ports on land only
-                drow("CapacityMap") = cStringUtils.ArrayToString(dataHabCap, i, cStringUtils.eFilterIndexTypes.LastIndex, _
-                                                                 InRow, InCol, dataDepth)
+                drow("CapacityMap") = cStringUtils.ArrayToString(dataHabCap(i), InRow, InCol, dataDepth)
                 drow.EndEdit()
             End If
         Next
@@ -402,9 +401,9 @@ Friend Class cDBUpdate6_02_00_01
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
                 ' Save ports on land only
-                drow("PortMap") = cStringUtils.ArrayToString(dataPort, i, cStringUtils.eFilterIndexTypes.FirstIndex, InRow, InCol)
+                drow("PortMap") = cStringUtils.ArrayToString(dataPort(i), InRow, InCol)
                 ' Save sailing cost on water only
-                drow("SailCostMap") = cStringUtils.ArrayToString(dataSailingCost, i, cStringUtils.eFilterIndexTypes.FirstIndex, InRow, InCol, dataDepth)
+                drow("SailCostMap") = cStringUtils.ArrayToString(dataSailingCost(i), InRow, InCol, dataDepth)
                 drow.EndEdit()
             End If
         Next
@@ -419,7 +418,7 @@ Friend Class cDBUpdate6_02_00_01
             drow = dt.Rows.Find(lImportanceLayerID(i))
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
-                drow("LayerMap") = cStringUtils.ArrayToString(dataImportance, i, cStringUtils.eFilterIndexTypes.LastIndex, InRow, InCol, dataDepth)
+                drow("LayerMap") = cStringUtils.ArrayToString(dataImportance(i), InRow, InCol, dataDepth)
                 drow.EndEdit()
             End If
         Next
@@ -429,5 +428,15 @@ Friend Class cDBUpdate6_02_00_01
         Return True
 
     End Function
+
+    Private Sub Allocate(ByRef maps As Single()(,), i As Integer, nRows As Integer, nCols As Integer)
+
+        ReDim maps(i)
+        For n As Integer = 0 To i
+            Dim map(nRows, nCols) As Single
+            maps(n) = map
+        Next
+
+    End Sub
 
 End Class

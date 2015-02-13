@@ -1136,7 +1136,7 @@ Public Class cEIIDataSource
         For irow As Integer = 1 To ecospaceDS.InRow
             For icol As Integer = 1 To ecospaceDS.InCol
                 For igrp As Integer = 1 To ecospaceDS.NGroups
-                    ecospaceDS.HabCapInput(irow, icol, igrp) = 1
+                    ecospaceDS.HabCapInput(igrp)(irow, icol) = 1
                 Next
             Next
         Next

@@ -1412,8 +1412,8 @@ Public Class cPluginManager
 
     Public Function EcospaceCalculateCostOfSailing(ByVal EcospaceDataStructures As Object, _
                                                    ByVal Depth(,) As Single, _
-                                                   ByVal Port(,,) As Boolean, _
-                                                   ByVal Sail(,,) As Single) As Boolean
+                                                   ByVal Port()(,) As Boolean, _
+                                                   ByVal Sail()(,) As Single) As Boolean
 
         ' Invoke IEcospacePostFishingEffortModTimestepPlugin.EcospacePostFishingEffortModTimestep(EcospaceDataStructures, iTimeStep)
         Return Me.TryInvokeMethod(GetType(IEcospaceCalcCostOfSailingPlugin), _

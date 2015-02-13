@@ -125,15 +125,15 @@ Public Class cEcospaceDataStructures
     Public PrefHab(,) As Single
 
     ''' <summary>The proportion of habitat type in a map cell.</summary>
-    ''' <remarks>Indexed Row,Col,Habitat</remarks>
-    Public PHabType(,,) As Single
-
-
+    ''' <remarks>Sparse array (Habitat)(Row,Col)</remarks>
+    Public PHabType()(,) As Single
 
     ''' <summary>The proportion of map cell that is fished by a fleet.</summary>
-    ''' <remarks>Sum of habitat areas fished by a fleet. Computed in cEcoSpace.SetEffortParameters() Indexed Row,Col,Gear</remarks>
-    Public PAreaFished(,,) As Single
-
+    ''' <remarks>
+    ''' Computed in cEcoSpace.SetEffortParameters()
+    ''' Spares Indexed (Gear)(Row,Col)
+    ''' </remarks>
+    Public PAreaFished()(,) As Single
     ''' <summary>Does this Fishing fleet use this habitat type </summary>
     ''' <remarks>Indexed Fleet,Habitat</remarks>
     Public GearHab(,) As Boolean
@@ -247,7 +247,10 @@ Public Class cEcospaceDataStructures
     Public Xvel(,) As Single, Yvel(,) As Single
     Public Xvloc(,) As Single, Yvloc(,) As Single
     Public UpVel(,) As Single
-    Public Xv(,,) As Single, Yv(,,) As Single 'SM, 3d arrays for time varying current velocities.
+    'SM, 3d arrays for time varying current velocities by month.
+    Public Xv(,,) As Single
+    Public Yv(,,) As Single
+
     Public flow(,) As Single
 
     Public Region(,) As Integer
@@ -264,8 +267,11 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Sailing cost (fleet x row x col)
     ''' </summary>
-    Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
-    Public Port(,,) As Boolean
+    Public Sail()(,) As Single
+    'Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
+    'Public Port(,,) As Boolean
+
+    Public Port()(,) As Boolean
 
     Public EffPower() As Single
 
@@ -282,8 +288,8 @@ Public Class cEcospaceDataStructures
     Public ImportanceLayerName() As String
     Public ImportanceLayerDescription() As String
     Public ImportanceLayerWeight() As Single
-    ''' <summary>Importance layer data (layer, row, col)</summary>
-    Public ImportanceLayerMap(,,) As Single
+    ''' <summary>Importance layer data (layer)(row, col)</summary>
+    Public ImportanceLayerMap()(,) As Single
 
     ''' <summary>Number of environmental layers</summary>
     Public nEnvironmentalDriverLayers As Integer
@@ -293,8 +299,8 @@ Public Class cEcospaceDataStructures
     Public EnvironmentalLayerName() As String
     ''' <summary>Environmental layer descriptions</summary>
     Public EnvironmentalLayerDescription() As String
-    ''' <summary>Environmental layer data (layer, row, col)</summary>
-    Public EnvironmentalLayerMap(,,) As Single
+    ''' <summary>Environmental layer data (layer)(row, col)</summary>
+    Public EnvironmentalLayerMap()(,) As Single
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Summary data
@@ -531,12 +537,13 @@ Public Class cEcospaceDataStructures
     ''' Habitat Capacity by Row,Col,Group
     ''' </summary>
     ''' <remarks>Habitat capacity is the normalized Capacity of all inputs (maps and response functions)  <see cref="cEcoSpace.SetHabCap">Ecospace.SetHabCap</see> </remarks>
-    Public HabCap(,,) As Single
-
+    Public HabCap()(,) As Single
+    'Public HabCap(,,) As Single
     ''' <summary>
     ''' User defined input habitat capacity.
     ''' </summary>
-    Public HabCapInput(,,) As Single
+    Public HabCapInput()(,) As Single
+    'Public HabCapInput(,,) As Single
 
     ''' <summary> Sum of Capacity across the map cells by group </summary>
     Public TotHabCap() As Single
@@ -853,7 +860,6 @@ Public Class cEcospaceDataStructures
 
         Try
 
-
             Depth = Nothing
             DepthA = Nothing
             DepthX = Nothing
@@ -912,46 +918,9 @@ Public Class cEcospaceDataStructures
             HabTime = Nothing
             HabAreaProportion = Nothing
             HabArea = Nothing
-
             PHabType = Nothing
-
             FleetSailCells = Nothing
 
-            'DepthOrig = Nothing
-            'HabTypeorig = Nothing 'for use with habitat change
-            'MPAorig = Nothing     'for use with habitat change
-            'RelPPorig = Nothing      'for use with habitat change
-            'RelCinorig = Nothing     'for use with habitat change
-
-            'AMm = Nothing
-            'Bcell = Nothing
-            'Bcw = Nothing
-            'Blast = Nothing
-            'C = Nothing
-            'd = Nothing
-
-            'E = Nothing
-            'BcwNomig = Nothing
-            'CNomig = Nothing
-            'dNomig = Nothing
-            'Enomig = Nothing
-            'F = Nothing
-
-            ' HabType = Nothing
-
-
-            'SumStart = Nothing
-
-            'ReDimFleets()
-            'redimForReferenceData()
-            'redimGroupDBID()
-            'RedimHabitatVariables()
-            'ReDimMapDims()
-            '  ReDimMapVars()
-            'RedimMigratoryVariables()
-            ' ReDimRegionVars()
-            'RedimMPAVariables()
-            'redimTimeStepResults(0)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
         End Try
@@ -1160,7 +1129,7 @@ Public Class cEcospaceDataStructures
                 ReDim HabAreaProportion(NoHabitats)
                 ReDim HabitatDBID(NoHabitats)
 
-                ReDim PHabType(Me.InRow, Me.InCol, NoHabitats)
+                allocate(Me.PHabType, Me.NoHabitats, Me.InRow, Me.InCol)
 
                 ' JS 15oct07: fix for bug 289 - By default, GearHab and PrefHab are True for 'All' habitat
                 For iGroup As Integer = 0 To NGroups
@@ -1186,8 +1155,7 @@ Public Class cEcospaceDataStructures
             ReDim HabTime(NoHabChanges)
             ReDim HabChange(3, NoHabChanges)
 
-            Me.allocate(PHabType, InRow, InCol, NoHabitats)
-            '  ReDim PHabType(InRow, InCol, NoHabitats)
+            Me.allocate(PHabType, NoHabitats, InRow, InCol)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RedimHabitatVariables() Error: " & ex.Message)
@@ -1387,7 +1355,7 @@ Public Class cEcospaceDataStructures
             For ir As Integer = 1 To Me.InRow
                 For ic As Integer = 1 To Me.InCol
                     If Depth(ir, ic) > 0 Then
-                        If Me.Sail(iflt, ir, ic) < Me.EffortDistThreshold Then
+                        If Me.Sail(iflt)(ir, ic) < Me.EffortDistThreshold Then
                             Me.FleetSailCells(iflt).Add(New cRowCol(ir, ic))
                         End If 'Me.Sail(iflt, ir, ic) < Me.FleetSailThreshold 
                     End If 'Depth(ir, ic) > 0
@@ -1447,6 +1415,85 @@ Public Class cEcospaceDataStructures
         ReDim array(d1, d2, d3)
 
     End Sub
+
+    ''' <summary>
+    ''' Allocate memory for an array with 3 dimensions
+    ''' </summary>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
+    Friend Sub allocate(ByRef array()(,) As Single, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer)
+        Dim bCleared As Boolean = True
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) Then
+
+                For i As Integer = 0 To d1
+                    If array(i).Length = (d2 + 1) * (d3 + 1) Then
+                        System.Array.Clear(array(i), 0, array(i).Length)
+                    Else
+                        bCleared = False
+                        Exit For
+                    End If
+                Next
+
+                'If we managed to clear the array then Return
+                'If NOT the allocate a new array
+                If bCleared Then
+                    Return
+                End If
+
+            End If
+        End If
+
+        Erase array
+        array = Nothing
+
+        array = New Single(d1)(,) {}
+        For i As Integer = 0 To d1
+            array(i) = New Single(d2, d3) {}
+        Next
+        GC.Collect()
+
+    End Sub
+
+    ''' <summary>
+    ''' Allocate memory for an array with 3 dimensions
+    ''' </summary>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
+    Friend Sub allocate(ByRef array()(,) As Boolean, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer)
+        Dim bCleared As Boolean = True
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) Then
+
+                For i As Integer = 0 To d1
+                    If array(i).Length = (d2 + 1) * (d3 + 1) Then
+                        System.Array.Clear(array(i), 0, array(i).Length)
+                    Else
+                        bCleared = False
+                        Exit For
+                    End If
+                Next
+
+                'If we managed to clear the array then Return
+                'If NOT the allocate a new array
+                If bCleared Then
+                    Return
+                End If
+
+            End If
+        End If
+
+        Erase array
+        array = Nothing
+
+        array = New Boolean(d1)(,) {}
+        For i As Integer = 0 To d1
+            array(i) = New Boolean(d2, d3) {}
+        Next
+        GC.Collect()
+
+    End Sub
+
 
 
     ''' <summary>
@@ -1559,23 +1606,27 @@ Public Class cEcospaceDataStructures
             'force the garbage collection
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
-            'For Nereus EcoOcean there are more fleets then groups
-            'so dimension the fleets first
-            Me.allocate(Port, nFleets, InRow, InCol)
-            Me.allocate(PAreaFished, InRow, InCol, nFleets)
-            Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
-
             Me.allocate(Bcell, InRow + 1, InCol + 1, nvartot)
             Me.allocate(Blast, InRow + 1, InCol + 1, nvartot)
 
-            Me.allocate(Me.HabCapInput, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(CatchMap, InRow, InCol, nvartot)
-            Me.allocate(DiscardsMap, InRow, InCol, nvartot)
-            Me.allocate(Me.HabCap, InRow + 1, InCol + 1, NGroups)
-            Me.allocate(PHabType, InRow, InCol, NoHabitats)
+            Me.allocate(CatchMap, InRow, InCol, NGroups)
+            Me.allocate(DiscardsMap, InRow, InCol, NGroups)
+
+
+            'For Nereus EcoOcean there are more fleets then groups
+            'so dimension the fleets first
+            Me.allocate(Port, nFleets, InRow, InCol)
+            Me.allocate(PAreaFished, nFleets, InRow, InCol)
+            Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
+
+            Me.allocate(Me.HabCapInput, NGroups, InRow + 1, InCol + 1)
+            Me.allocate(Me.HabCap, NGroups, InRow + 1, InCol + 1)
+
+            Me.allocate(PHabType, NoHabitats, InRow, InCol)
 
             Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
             Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
+            For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
             Me.allocate(DepthInput, InRow + 1, InCol + 1)
             Me.allocate(Excluded, InRow + 1, InCol + 1)
@@ -1602,11 +1653,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(TLc, InRow, InCol)
             Me.allocate(KemptonsQ, InRow, InCol)
 
-            For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
-
-            'Boolean maps
-            ReDim ImportanceLayerMap(Me.nImportanceLayers, InRow + 1, InCol + 1)
-            ReDim EnvironmentalLayerMap(Me.nEnvironmentalDriverLayers, InRow + 1, InCol + 1)
+            Me.allocate(ImportanceLayerMap, Me.nImportanceLayers, InRow + 1, InCol + 1)
+            Me.allocate(EnvironmentalLayerMap, Me.nEnvironmentalDriverLayers, InRow + 1, InCol + 1)
 
             ReDim MPAfishery(nFleets, 1)
             ReDim MPAmonth(12, 1)
@@ -1638,11 +1686,11 @@ Public Class cEcospaceDataStructures
                     RelPP(i, j) = 1
                     RelCin(i, j) = 1
                     For k = 1 To nFleets
-                        Sail(k, i, j) = 1
+                        Sail(k)(i, j) = 1
                     Next
 
                     'Use all habitats
-                    PHabType(i, j, 0) = 1.0F
+                    PHabType(0)(i, j) = 1.0F
 
                     'Default Areas=1
                     Me.EffZones(i, j) = 1

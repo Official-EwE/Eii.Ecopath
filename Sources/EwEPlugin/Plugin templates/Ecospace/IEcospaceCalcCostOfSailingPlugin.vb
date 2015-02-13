@@ -44,7 +44,7 @@ Public Interface IEcospaceCalcCostOfSailingPlugin
     ''' -----------------------------------------------------------------------
     Function CalculateCostOfSailing(ByVal EcospaceData As Object, _
                                     ByVal Depth(,) As Single, _
-                                    ByVal Port(,,) As Boolean, _
-                                    ByVal Sail(,,) As Single) As Boolean
+                                    ByVal Port(,)(,) As Boolean, _
+                                    ByVal Sail()(,) As Single) As Boolean
 
 End Interface
