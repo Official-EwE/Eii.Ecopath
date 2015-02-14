@@ -69,9 +69,9 @@ Public Class cKeyRunComparisonPluginPoint
     ''' <summary>The core that this plug-in can use</summary>
     Private m_core As cCore
 
-    Private m_EcoPath As cEcoPathModel
-    Private m_EcoSim As cEcoSimModel
-    Private m_EcoSpace As cEcoSpace
+    Private m_EcoPathModel As cEcoPathModel
+    Private m_EcoSimModel As cEcoSimModel
+    Private m_EcoSpaceModel As cEcoSpace
     Private m_EcoPathData As cEcopathDataStructures
     Private m_EcoSimData As cEcosimDatastructures
     Private m_EcoSpaceData As cEcospaceDataStructures
@@ -79,20 +79,11 @@ Public Class cKeyRunComparisonPluginPoint
     Private m_uic As cUIContext = Nothing
     Private m_MainForm As frmKeyRunMain = Nothing
 
+    Private m_CompareManager As cCompareManager
+
 #End Region
 
 #Region "Public Methods"
-
-    Public Sub DoSomething(ByVal Value As Single)
-
-        MsgBox("Hi from DoSomething(). Your value = " + Value.ToString, MsgBoxStyle.Information)
-        System.Console.WriteLine(Value.ToString)
-
-    End Sub
-
-    Public Sub OpenModel(ByVal filename As String)
-        Me.m_core.LoadModel(filename)
-    End Sub
 
 #End Region
 
@@ -123,11 +114,13 @@ Public Class cKeyRunComparisonPluginPoint
     Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         Try
 
-            m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
-            m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
-            m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
+            m_EcoPathModel = TryCast(EcopathAsObject, cEcoPathModel)
+            m_EcoSimModel = TryCast(EcoSimAsObject, cEcoSimModel)
+            m_EcoSpaceModel = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing), _
+            Me.m_CompareManager = New cCompareManager(Me.Core, Me.m_EcoPathModel.EcopathData, Me.m_EcoSimModel.EcosimData, Me.m_EcoSpaceModel.EcoSpaceData)
+
+            Debug.Assert((m_EcoPathModel IsNot Nothing) And (m_EcoSimModel IsNot Nothing) And (m_EcoSpaceModel IsNot Nothing), _
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
         Catch ex As Exception
@@ -143,12 +136,6 @@ Public Class cKeyRunComparisonPluginPoint
     ''' <returns>True if the plug-in point executed successfully.</returns>
     Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
         Try
-
-            'Cast the datasource 
-            Dim ModelDataBase As EwECore.DataSources.cDBDataSource
-            ModelDataBase = DirectCast(dataSource, EwECore.DataSources.cDBDataSource)
-
-            System.Console.WriteLine(Me.ToString + ".LoadModel() " + ModelDataBase.FileName)
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".LoadModel() Exception " + ex.Message)
@@ -180,11 +167,11 @@ Public Class cKeyRunComparisonPluginPoint
             'A user has closed the database
             'Clear out the old data so that we are 
             'not holding on to data that belongs to a closed model
-            Me.m_EcoPath = Nothing
+            Me.m_EcoPathModel = Nothing
             Me.m_EcoPathData = Nothing
-            Me.m_EcoSim = Nothing
+            Me.m_EcoSimModel = Nothing
             Me.m_EcoSimData = Nothing
-            Me.m_EcoSpace = Nothing
+            Me.m_EcoSpaceModel = Nothing
             Me.m_EcoSpaceData = Nothing
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".CloseModel() Exception " + ex.Message)
@@ -338,7 +325,7 @@ Public Class cKeyRunComparisonPluginPoint
 
                 ' Create the EwE form-derived user interface for this plug-in
                 Me.m_MainForm = New frmKeyRunMain()
-                Me.m_MainForm.Init(Me)
+                Me.m_MainForm.Init(Me.m_CompareManager)
                 ' Pass on the UI context to the form
                 Me.m_MainForm.UIContext = m_uic
 

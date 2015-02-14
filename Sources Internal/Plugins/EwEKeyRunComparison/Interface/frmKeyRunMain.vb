@@ -24,7 +24,7 @@ Imports System.Windows.Forms
 ''' </summary>
 Public Class frmKeyRunMain
 
-    Private m_plugin As cKeyRunComparisonPluginPoint
+    Private m_CompManager As cCompareManager
 
     Public Sub New()
 
@@ -44,8 +44,8 @@ Public Class frmKeyRunMain
 
     End Sub
 
-    Public Sub Init(ByVal PluginPoint As cKeyRunComparisonPluginPoint)
-        m_plugin = PluginPoint
+    Public Sub Init(ByVal ComparisonManager As cCompareManager)
+        m_CompManager = ComparisonManager
     End Sub
 
     Private Sub m_btTest_Click(sender As Object, e As System.EventArgs) Handles m_btTest.Click
