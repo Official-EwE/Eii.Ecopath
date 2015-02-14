@@ -212,7 +212,7 @@ Module EcosimDetailsMainModule
                         Dim predator As cEcoPathGroupInput = core.EcoPathGroupInputs(iPred)
                         Dim prey As cEcoPathGroupInput = core.EcoPathGroupInputs(iPrey)
                         Dim application As eForcingFunctionApplication
-                        Dim shapetest As cForcingFunction
+                        Dim shapetest As cForcingFunction = Nothing
 
                         For iApplication As Integer = 1 To interaction.nAppliedShapes
 

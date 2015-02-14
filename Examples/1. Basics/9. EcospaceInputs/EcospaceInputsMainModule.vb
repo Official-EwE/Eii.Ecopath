@@ -112,8 +112,10 @@ Module EcospaceInputs
         'Initialize biomass to habitats/capacity
         core.EcospaceModelParameters.AdjustSpace = True
 
-        'Populate the Capacity map base on both the Input Capacity maps and the Habitat maps
-        core.EcospaceModelParameters.CapacityCalculationType = EwEUtils.Core.eEcospaceCapacityCalType.CapacityAndHabitat
+        'Populate the Capacity map base on Capacity maps
+        For i As Integer = 1 To core.nGroups
+            core.EcospaceGroups(i).CapacityCalculationType = EwEUtils.Core.eEcospaceCapacityCalType.EnvResponses
+        Next
 
     End Sub
 
@@ -138,7 +140,7 @@ Module EcospaceInputs
 
     Private Sub setHabitatForagingResponse()
         Dim DatabaseID As Integer
-        Dim Layer As cEcospaceLayerDriver
+        Dim Layer As cEcospaceLayerDriver = Nothing
 
         'Habitat base foraging response is used to update the capacity map for each group.
         'During initialization the biomass in the cells is distributed by the capacity map
