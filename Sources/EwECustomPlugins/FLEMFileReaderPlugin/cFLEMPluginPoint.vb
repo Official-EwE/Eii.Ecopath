@@ -214,8 +214,7 @@ Public Class cFLEMPluginPoint
             For i = 1 To SpaceData.InRow
                 For j = 1 To SpaceData.InCol
                     For ig As Integer = 1 To 4
-                        SpaceData.HabCap(i, j, ig) = 0.8 * SpaceData.HabCap(i, j, ig) + 0.2 * SpaceData.Bcell(i, j, Me.HabCapModGroup) / Bscale
-                        If SpaceData.HabCap(i, j, ig) > 1 Then SpaceData.HabCap(i, j, ig) = 1
+                        SpaceData.HabCap(ig)(i, j) = Math.Min(1, 0.8 * SpaceData.HabCap(ig)(i, j) + 0.2 * SpaceData.Bcell(i, j, Me.HabCapModGroup) / Bscale)
                     Next
                 Next
             Next
