@@ -33,8 +33,8 @@ Module PerturbateEcopathMainModule
         Dim iAttempt As Integer
         Dim FoundBalancedModel As Boolean
         'Original Ecopath B and PB
-        Dim orgB() As Single
-        Dim orgPB() As Single
+        Dim orgB() As Single = Nothing
+        Dim orgPB() As Single = Nothing
 
         'Init the objects needed Core and .NET Random
         Core = New cCore() ' new instance of cCore
