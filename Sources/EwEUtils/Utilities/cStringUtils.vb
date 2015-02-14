@@ -82,7 +82,8 @@ Namespace Utilities
         ''' segments will not be subdivided by delimiting characters.</param>
         ''' <returns>An array of strings.</returns>
         ''' <remarks>
-        ''' REgEx splitting is too slow. Replaced by a self-written, much faster method
+        ''' <para>REgEx splitting is too slow. Replaced by a self-written, much faster method.</para>
+        ''' <para>Support for "" to indicate " is needed!</para>
         ''' </remarks>
         ''' ---------------------------------------------------------------------------
         Public Shared Function SplitQualified(ByVal strExpression As String, _
@@ -104,6 +105,7 @@ Namespace Utilities
             ' Execute
             Return rxExpression.Split(strExpression)
 #Else
+            ' ToDo: add support for double delimiters to denote the delimiter character as a valid symbol
             Dim lstr As New List(Of String)
             Dim i, j As Integer
             Dim chrs() As Char = New Char() {cDelimiter, cQualifier}
