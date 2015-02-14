@@ -116,11 +116,12 @@ Public Class cHabitatCapacityPluginPoint
         Dim lyrTemp As cEcospaceLayerDriver = Me.getLayerByName("Temperature")
 
         'Get the following environmental preference functions:
-        Dim EnvDepth As cEnviroResponseFunction
-        Dim EnvTemp As cEnviroResponseFunction
-        Dim EnvSand As cEnviroResponseFunction
-        Dim EnvSal As cEnviroResponseFunction
-        Dim EnvO2 As cEnviroResponseFunction
+        Dim EnvDepth As cEnviroResponseFunction = Nothing
+        Dim EnvTemp As cEnviroResponseFunction = Nothing
+        Dim EnvSand As cEnviroResponseFunction = Nothing
+        Dim EnvSal As cEnviroResponseFunction = Nothing
+        Dim EnvO2 As cEnviroResponseFunction = Nothing
+
         If KeyGrp = 4 Then
             EnvDepth = Me.getEnviroResponseFunction(2) ' No 2 "Depth whiting"
             EnvTemp = Me.getEnviroResponseFunction(6) '= No 6 "Temp warm"

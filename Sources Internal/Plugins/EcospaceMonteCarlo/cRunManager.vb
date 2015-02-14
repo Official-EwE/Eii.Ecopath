@@ -68,7 +68,8 @@ Public Class cRunManager
     Public Sub isConfigured()
         Me.m_isConfig = True
 
-        Dim msg As String
+        Dim msg As String = ""
+
         If Not Directory.Exists(Path.GetDirectoryName(Me.RunParameters.OutputFileName)) Then
             Me.m_isConfig = False
             msg = "No output file defined"
