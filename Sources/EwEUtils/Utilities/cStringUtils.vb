@@ -105,11 +105,11 @@ Namespace Utilities
             ' Execute
             Return rxExpression.Split(strExpression)
 #Else
-            ' ToDo: add support for double delimiters to denote the delimiter character as a valid symbol
             Dim lstr As New List(Of String)
             Dim i, j As Integer
             Dim chrs() As Char = New Char() {cDelimiter, cQualifier}
-            Dim bQuoted As Boolean = False
+
+            ' ToDo: add support for double delimiters to denote the delimiter character as a valid symbol
 
             j = strExpression.IndexOfAny(chrs)
             While j > -1
