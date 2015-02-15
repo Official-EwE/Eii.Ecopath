@@ -103,6 +103,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
+    <Reference Include="SourceLibrary">
+      <HintPath>..\..\..\..\Sources\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
