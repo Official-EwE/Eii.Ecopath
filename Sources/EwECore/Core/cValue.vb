@@ -49,7 +49,7 @@ Namespace ValueWrapper
         BoolArray 'array of boolean 
         IntArray 'array of integers
 
-        Histogram
+        'Histogram
     End Enum
 
 #End Region
@@ -66,7 +66,6 @@ Namespace ValueWrapper
     ''' </remarks>
     Public Class cValue
         Implements IDisposable
-
 
         Private m_value As Object
         Protected m_orgvalue As Object
@@ -131,7 +130,9 @@ Namespace ValueWrapper
                 ByVal Status As eStatusFlags, _
                 ByVal VarType As eValueTypes, _
                 ByVal MetaData As cVariableMetaData)
-            Me.New(Value, VarName, Status, VarType, Nothing, Nothing)
+            ' JS 15Feb15: Metadata was not passed along which seems like a bug to me
+            'Me.New(Value, VarName, Status, VarType, Nothing, Nothing)
+            Me.New(Value, VarName, Status, VarType, MetaData, Nothing)
         End Sub
 
         ''' <summary>
@@ -150,18 +151,23 @@ Namespace ValueWrapper
                 ByRef MetaData As cVariableMetaData, _
                 ByRef Validator As cValidatorDefault)
 
-            m_value = Value
-            m_varType = VarType
-            m_varName = VarName
-            m_status = Status
-            m_metadata = MetaData
+            Me.m_value = Value
+            Me.m_varType = VarType
+            Me.m_varName = VarName
+            Me.m_status = Status
+            Me.m_metadata = MetaData
 
             ' Set the validator and its properties
-            m_bValidate = (Validator IsNot Nothing)
-            m_validator = Validator
+            Me.m_bValidate = (Validator IsNot Nothing)
+            Me.m_validator = Validator
 
-            m_bStored = True
-            m_bAffectsRunState = True
+            Me.m_bStored = True
+            Me.m_bAffectsRunState = True
+
+            If (Me.m_metadata IsNot Nothing) Then
+                Me.Metadata.VarType = Me.varType
+            End If
+
         End Sub
 
         ''' <summary>

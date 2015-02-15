@@ -17,6 +17,7 @@
 '
 
 Option Strict On
+Imports EwECore.ValueWrapper
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -41,6 +42,9 @@ Public Class cVariableMetaData
     ' -- Variables for string values --
     ''' <summary>Allowed length of string values.</summary>
     Private m_iLength As Integer = 0
+
+    ' -- Helper variable --
+    Private m_vartype As eValueTypes
 
 #Region " Constructors "
 
@@ -85,7 +89,7 @@ Public Class cVariableMetaData
     ''' -----------------------------------------------------------------------
     Sub New(ByVal sMin As Single, ByVal sMax As Single, _
             ByVal operatorMin As cOperatorBase, ByVal operatorMax As cOperatorBase, _
-            Optional ByVal sValueDefault As Single = 0)
+            Optional ByVal sValueDefault As Single = 0.0!)
         Me.m_min = sMin
         Me.m_max = sMax
         Me.m_operatorMin = operatorMin
@@ -102,13 +106,10 @@ Public Class cVariableMetaData
     ''' Get/set the minimum value operator.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Property MinOperator() As cOperatorBase
+    Public ReadOnly Property MinOperator() As cOperatorBase
         Get
             Return Me.m_operatorMin
         End Get
-        Set(ByVal value As cOperatorBase)
-            Me.m_operatorMin = value
-        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -116,13 +117,10 @@ Public Class cVariableMetaData
     ''' Get/set the maximum value operator.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Property MaxOperator() As cOperatorBase
+    Public ReadOnly Property MaxOperator() As cOperatorBase
         Get
             Return Me.m_operatorMax
         End Get
-        Set(ByVal value As cOperatorBase)
-            Me.m_operatorMax = value
-        End Set
     End Property
 
 #End Region ' Operators
@@ -137,13 +135,10 @@ Public Class cVariableMetaData
     ''' Get/set the minimum value for a variable.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Min() As Single
+    Public ReadOnly Property Min() As Single
         Get
             Return Me.m_min
         End Get
-        Friend Set(ByVal value As Single)
-            Me.m_min = value
-        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -151,13 +146,10 @@ Public Class cVariableMetaData
     ''' Get/set the maximum value for a variable.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Max() As Single
+    Public ReadOnly Property Max() As Single
         Get
             Return Me.m_max
         End Get
-        Friend Set(ByVal value As Single)
-            Me.m_max = value
-        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -165,13 +157,10 @@ Public Class cVariableMetaData
     ''' Get/set the default value for a variable.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property NullValue() As Object
+    Public ReadOnly Property NullValue() As Object
         Get
             Return Me.m_nullvalue
         End Get
-        Friend Set(ByVal value As Object)
-            Me.m_nullvalue = value
-        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -179,12 +168,24 @@ Public Class cVariableMetaData
     ''' Get/set the maximum allowed string length for variables.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Length() As Integer
+    Public ReadOnly Property Length() As Integer
         Get
             Return Me.m_iLength
         End Get
-        Friend Set(ByVal value As Integer)
-            Me.m_iLength = value
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eValueTypes">value type</see> of the variable 
+    ''' that this metadata represents.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property VarType As eValueTypes
+        Get
+            Return Me.m_vartype
+        End Get
+        Friend Set(value As eValueTypes)
+            Me.m_vartype = value
         End Set
     End Property
 
