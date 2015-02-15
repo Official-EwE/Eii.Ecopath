@@ -695,6 +695,7 @@
     <Compile Include="Style\Type formatters\cEcosimResultTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cFFApplicationTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cIUCNConservationTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cMetadataTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cMonetaryTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cOccurrenceTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cClimateTypeFormatter.vb" />

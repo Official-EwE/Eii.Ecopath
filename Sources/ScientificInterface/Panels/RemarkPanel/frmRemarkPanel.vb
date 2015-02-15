@@ -24,6 +24,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.modExtensions
+Imports System.Text
 
 #End Region ' Imports
 
@@ -271,13 +272,14 @@ Public Class frmRemarkPanel
     ''' -----------------------------------------------------------------------
     Private Sub UpdateContents()
 
-        Dim fmt As New cSelectionMonitorFormatter()
+        Dim fmtSel As New cSelectionMonitorFormatter()
+        Dim fmtMeta As New cMetadataTypeFormatter()
         Dim props() As cProperty = Me.m_mon.Selection
-        Dim strSelection As String = fmt.GetDescriptor(Me.m_mon, eDescriptorTypes.Name)
-        Dim strDescription As String = fmt.GetDescriptor(Me.m_mon, eDescriptorTypes.Description)
+        Dim strSelection As String = fmtSel.GetDescriptor(Me.m_mon, eDescriptorTypes.Name)
+        Dim strDescription As String = fmtSel.GetDescriptor(Me.m_mon, eDescriptorTypes.Description)
+        Dim strMeta As String = Nothing
         Dim strRemark As String = ""
         Dim strRemarkFinal As String = ""
-        Dim vd As New cVarnameTypeFormatter()
 
         If (props IsNot Nothing) Then
 
@@ -285,6 +287,9 @@ Public Class frmRemarkPanel
             For iProp As Integer = 0 To props.Length - 1
                 ' Get remark text for this property
                 strRemark = props(iProp).GetRemark().Trim
+
+                strMeta = fmtMeta.GetDescriptor(props(iProp).GetVariableMetadata())
+
                 ' Is valid remark text?
                 If (Not String.IsNullOrWhiteSpace(strRemark)) Then
                     ' No remark picked yet?
@@ -303,9 +308,16 @@ Public Class frmRemarkPanel
             Next
         End If
 
+        Dim sbTooltip As New StringBuilder()
+        sbTooltip.Append(strDescription.Trim())
+        If (Not String.IsNullOrWhiteSpace(strMeta)) Then
+            If (sbTooltip.Length > 0) Then sbTooltip.AppendLine()
+            sbTooltip.Append(strMeta)
+        End If
+
         ' Update control contents
         Me.m_lblVarName.Text = strSelection
-        Me.m_lblVarName.ToolTipText = strDescription
+        'Me.m_lblVarName.ToolTipText = sbTooltip.ToString()
         Me.m_tbxRemark.Text = strRemarkFinal
 
     End Sub
