@@ -22,6 +22,7 @@ Option Strict On
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -40,6 +41,19 @@ Namespace SpatialData
         Implements ICoreInterface
 
 #Region " Private helper classes "
+
+        Private Class cAdapterComparer
+            Implements IComparer(Of cSpatialDataAdapter)
+
+            Public Function Compare(x As cSpatialDataAdapter, y As cSpatialDataAdapter) As Integer _
+                Implements System.Collections.Generic.IComparer(Of cSpatialDataAdapter).Compare
+
+                If (x.VarName = y.VarName) Then Return 0
+                Return CInt(cSystemUtils.IIF(x.VarName < y.VarName, -1, 1))
+
+            End Function
+
+        End Class
 
         Private Class cDatasetComparer
             Implements IComparer(Of ISpatialDataSet)
@@ -141,7 +155,7 @@ Namespace SpatialData
                             conn.Converter = cv
                             conn.Scale = cfg.Scale
                             conn.ScaleType = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
-                         End If
+                        End If
                     Next j
                 Next i
             Next adt
@@ -277,7 +291,9 @@ Namespace SpatialData
 
         Public ReadOnly Property Adapters() As cSpatialDataAdapter()
             Get
-                Return Me.m_data.DataAdapters.ToArray
+                Dim adt() As cSpatialDataAdapter = Me.m_data.DataAdapters.ToArray
+                Array.Sort(adt, New cAdapterComparer())
+                Return adt
             End Get
         End Property
 
