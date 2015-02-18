@@ -166,7 +166,16 @@ Namespace ValueWrapper
 
             ' Complement metadata
             If (Me.m_metadata Is Nothing) Then
-                Me.m_metadata = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+                Select Case Me.m_varType
+                    Case eValueTypes.Bool, eValueTypes.BoolArray
+                        Me.m_metadata = New cVariableMetaData()
+                    Case eValueTypes.Int, eValueTypes.IntArray
+                        Me.m_metadata = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+                    Case eValueTypes.Sng, eValueTypes.SingleArray
+                        Me.m_metadata = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+                    Case eValueTypes.Str
+                        Me.m_metadata = New cVariableMetaData(32)
+                End Select
             End If
 
             Me.Metadata.Attach(Me)
