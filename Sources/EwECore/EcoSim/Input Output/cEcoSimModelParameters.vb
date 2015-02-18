@@ -35,7 +35,7 @@ Imports EwEUtils.Core
 Public Class cEcoSimModelParameters
     Inherits cCoreInputOutputBase
 
-#Region "Constructor"
+#Region " Constructor "
 
     Public Sub New(ByRef m_core As cCore)
         MyBase.New(m_core)
@@ -121,7 +121,6 @@ Public Class cEcoSimModelParameters
             val = New cValue(New Integer, eVarNameFlags.NutForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NutForceFunctionNumber))
             m_values.Add(val.varName, val)
 
-            ''integers
             'SalinityForceFunctionNumber
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.SalinityForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.SalinityForceFunctionNumber))
