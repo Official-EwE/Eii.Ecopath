@@ -399,8 +399,6 @@ Namespace Core
         UnitCurrencyCustomText
         ''' <summary>Unit enumerated value for monetary values.</summary>
         UnitMonetary
-        ''' <summary>Unit text for monetary values.</summary>
-        UnitMonetaryCustomText
         ''' <summary>Author of an EwE component.</summary>
         Author
         ''' <summary>Contact info of an EwE component.</summary>
