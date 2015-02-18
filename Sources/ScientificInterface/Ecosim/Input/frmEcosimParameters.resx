@@ -132,7 +132,7 @@
     <value>m_nudNutBaseFreeProp</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11792.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.Parent" xml:space="preserve">
     <value>m_plInit</value>
@@ -153,7 +153,7 @@
     <value>m_nudNumberYears</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11792.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.Parent" xml:space="preserve">
     <value>m_plInit</value>
@@ -162,13 +162,13 @@
     <value>9</value>
   </data>
   <data name="m_cmbSalinityForcing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 126</value>
+    <value>195, 125</value>
   </data>
   <data name="m_cmbSalinityForcing.Size" type="System.Drawing.Size, System.Drawing">
     <value>163, 21</value>
   </data>
   <data name="m_cmbSalinityForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;m_cmbSalinityForcing.Name" xml:space="preserve">
     <value>m_cmbSalinityForcing</value>
@@ -189,7 +189,7 @@
     <value>163, 21</value>
   </data>
   <data name="m_cmbNutForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_cmbNutForcing.Name" xml:space="preserve">
     <value>m_cmbNutForcing</value>
@@ -207,13 +207,13 @@
     <value>True</value>
   </data>
   <data name="m_chkPredictEffort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 180</value>
+    <value>3, 179</value>
   </data>
   <data name="m_chkPredictEffort.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 17</value>
   </data>
   <data name="m_chkPredictEffort.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="m_chkPredictEffort.Text" xml:space="preserve">
     <value>&amp;Fleet/effort dynamics</value>
@@ -240,7 +240,7 @@
     <value>120, 17</value>
   </data>
   <data name="m_chkConTracing.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="m_chkConTracing.Text" xml:space="preserve">
     <value>&amp;Contaminant tracing</value>
@@ -265,13 +265,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSalinityForcing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 130</value>
+    <value>3, 128</value>
   </data>
   <data name="m_lblSalinityForcing.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 13</value>
   </data>
   <data name="m_lblSalinityForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="m_lblSalinityForcing.Text" xml:space="preserve">
     <value>&amp;Salinity loading forcing function:</value>
@@ -292,13 +292,13 @@
     <value>True</value>
   </data>
   <data name="m_lblNutForcing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 102</value>
+    <value>3, 101</value>
   </data>
   <data name="m_lblNutForcing.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 13</value>
   </data>
   <data name="m_lblNutForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_lblNutForcing.Text" xml:space="preserve">
     <value>&amp;Nutrient loading forcing function:</value>
@@ -394,7 +394,7 @@
     <value>m_hdrInitialization</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11792.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.Parent" xml:space="preserve">
     <value>m_plInit</value>
@@ -427,7 +427,7 @@
     <value>m_hdrScenario</value>
   </data>
   <data name="&gt;&gt;m_hdrScenario.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11792.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrScenario.Parent" xml:space="preserve">
     <value>m_plDescription</value>
@@ -677,7 +677,7 @@
     <value>108, 17</value>
   </data>
   <data name="m_chkUseVarPQ.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="m_chkUseVarPQ.Text" xml:space="preserve">
     <value>&amp;Use variable P/Q</value>
@@ -695,13 +695,13 @@
     <value>14</value>
   </data>
   <data name="cmbTempLoading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 153</value>
+    <value>195, 152</value>
   </data>
   <data name="cmbTempLoading.Size" type="System.Drawing.Size, System.Drawing">
     <value>163, 21</value>
   </data>
   <data name="cmbTempLoading.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;cmbTempLoading.Name" xml:space="preserve">
     <value>cmbTempLoading</value>
@@ -719,13 +719,13 @@
     <value>True</value>
   </data>
   <data name="m_lblTempLoading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 156</value>
+    <value>3, 155</value>
   </data>
   <data name="m_lblTempLoading.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 13</value>
   </data>
   <data name="m_lblTempLoading.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_lblTempLoading.Text" xml:space="preserve">
     <value>&amp;Temperature loading forcing function:</value>
@@ -776,7 +776,7 @@
     <value>86, 20</value>
   </data>
   <data name="m_tbxMinFeedingRateAdjustment.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_tbxMinFeedingRateAdjustment.Name" xml:space="preserve">
     <value>m_tbxMinFeedingRateAdjustment</value>
@@ -800,13 +800,13 @@
     <value>3, 75</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 13</value>
+    <value>114, 13</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>5</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
-    <value>&amp;Min. foraging time:</value>
+    <value>&amp;Minimum foraging time:</value>
   </data>
   <data name="&gt;&gt;Label1.Name" xml:space="preserve">
     <value>Label1</value>
@@ -896,6 +896,6 @@
     <value>frmEcosimParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11792.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
