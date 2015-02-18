@@ -164,9 +164,12 @@ Namespace ValueWrapper
             Me.m_bStored = True
             Me.m_bAffectsRunState = True
 
-            If (Me.m_metadata IsNot Nothing) Then
-                Me.Metadata.VarType = Me.varType
+            ' Complement metadata
+            If (Me.m_metadata Is Nothing) Then
+                Me.m_metadata = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             End If
+
+            Me.Metadata.Attach(Me)
 
         End Sub
 
@@ -535,7 +538,13 @@ Namespace ValueWrapper
             varType = theValueType
             m_varName = VarName
 
+            ' Complement metadata
             m_metadata = MetaData
+            If (Me.m_metadata Is Nothing) Then
+                Me.m_metadata = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            End If
+            Me.Metadata.Attach(Me)
+
             m_validator = Validator
 
             m_CounterDelegate = CounterDelegate
@@ -558,7 +567,8 @@ Namespace ValueWrapper
         ''' <param name="CounterType">Type of core counter to use for dimensioning the array</param>
         ''' <param name="CounterDelegate">Delegate supplied by the core use to retrieve the size of the data</param>
         ''' <remarks></remarks>
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes, ByRef CounterDelegate As CoreCounterDelegate)
+        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, _
+                ByVal CounterType As eCoreCounterTypes, ByRef CounterDelegate As CoreCounterDelegate)
             Me.New(theValueType, VarName, Status, CounterType, CounterDelegate, Nothing, Nothing)
         End Sub
 
