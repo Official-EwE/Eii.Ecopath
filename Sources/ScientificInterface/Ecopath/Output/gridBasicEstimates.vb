@@ -74,60 +74,52 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim source As cCoreInputOutputBase = Nothing
+            Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
+            Dim group As cEcoPathGroupOutput = Nothing
+            Dim cell As EwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim aiStanzaGroupIndex(core.nGroups) As Integer 'Hold the stanza group index
-            Dim iStanzaGroupIndexPrev As Integer = -1
+            Dim iStanzaPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
-
-            For i As Integer = 1 To Me.Core.nGroups : aiStanzaGroupIndex(i) = -1 : Next
-
-            'Tag stanza group
-            For iStanzaGroup As Integer = 0 To core.nStanzas - 1
-                sg = core.StanzaGroups(iStanzaGroup)
-
-                For iStanza As Integer = 1 To sg.nLifeStages
-                    source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
-                    aiStanzaGroupIndex(source.Index) = iStanzaGroup
-                Next
-            Next
 
             'Remove existing rows
             Me.RowsCount = 1
 
-            'Create rows for all groups
-            For groupIndex As Integer = 1 To core.nGroups
-                source = core.EcoPathGroupOutputs(groupIndex)
+            ' Create rows for all groups
+            For i As Integer = 0 To groups.Count - 1
 
-                If aiStanzaGroupIndex(source.Index) = -1 Then 'If group is non-stanza Then display group info
+                ' Get corresponding Ecopath output group 
+                group = Me.Core.EcoPathGroupOutputs(groups(i).Index)
+
+                If Not group.isMultiStanza Then
+
                     iRow = Me.AddRow
-                    FillInRows(iRow, source)
-                Else 'Group is stanza
-                    sg = core.StanzaGroups(aiStanzaGroupIndex(source.Index))
-                    If aiStanzaGroupIndex(source.Index) <> iStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
+                    FillInRows(iRow, group)
+
+                Else
+                    ' Group is stanza
+                    sg = Core.StanzaGroups(group.iStanza)
+                    If group.iStanza <> iStanzaPrev Then
 
                         ' Complete row with dummy cells
                         iRow = Me.AddRow()
-                        For i As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
+                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
 
                         hgcStanza = New EwEHierarchyGridCell()
-                        dtStanzaCells.Add(sg, hgcStanza)
                         Me(iRow, eColumnTypes.Index) = hgcStanza
                         Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
 
-                        iStanzaGroupIndexPrev = aiStanzaGroupIndex(source.Index)
+                        iStanzaPrev = group.iStanza
                         iRow = Me.AddRow
                     Else
-                        hgcStanza = dtStanzaCells(sg)
                         iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
+
                     'Display group info
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, source, True)
+                    FillInRows(iRow, group, True)
                 End If
-            Next groupIndex
+            Next i
 
         End Sub
 
