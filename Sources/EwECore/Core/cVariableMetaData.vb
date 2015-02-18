@@ -38,12 +38,13 @@ Public Class cVariableMetaData
     Private m_operatorMax As cOperatorBase = Nothing
     ''' <summary>Default value for variable when a value is missing or in error.</summary>
     Private m_nullvalue As Object = Nothing
+    ''' <summary>Length of array items</summary>
+    Private m_iArrayLength As Integer = cCore.NULL_VALUE
 
     ' -- Variables for string values --
     ''' <summary>Allowed length of string values.</summary>
-    Private m_iLength As Integer = 0
+    Private m_iStringLength As Integer = 0
 
-    ' -- Helper variable --
     Private m_vartype As eValueTypes
 
 #Region " Constructors "
@@ -69,7 +70,7 @@ Public Class cVariableMetaData
     ''' <remarks>Strings do not have min or max values.</remarks>
     ''' -----------------------------------------------------------------------
     Sub New(ByVal iLength As Integer, Optional ByVal strValueDefault As String = "")
-        Me.m_iLength = iLength
+        Me.m_iStringLength = iLength
         Me.m_nullvalue = strValueDefault
     End Sub
 
@@ -100,6 +101,23 @@ Public Class cVariableMetaData
 #End Region ' Constructors
 
 #Region " Operators "
+
+    Friend Sub Attach(ByVal value As cValue)
+
+        Me.m_vartype = value.varType
+
+        Select Case Me.m_vartype
+            Case eValueTypes.Bool, eValueTypes.Int, eValueTypes.Sng
+                Debug.Assert(value.Length = 0, "Variable malformed")
+            Case eValueTypes.BoolArray, eValueTypes.IntArray, eValueTypes.SingleArray
+                Me.m_iArrayLength = value.Length
+            Case eValueTypes.Str
+                ' NOP
+            Case Else
+                Throw New NotImplementedException()
+        End Select
+
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -170,7 +188,7 @@ Public Class cVariableMetaData
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Length() As Integer
         Get
-            Return Me.m_iLength
+            Return Me.m_iStringLength
         End Get
     End Property
 
@@ -180,13 +198,22 @@ Public Class cVariableMetaData
     ''' that this metadata represents.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property VarType As eValueTypes
+    Public ReadOnly Property VarType As eValueTypes
         Get
             Return Me.m_vartype
         End Get
-        Friend Set(value As eValueTypes)
-            Me.m_vartype = value
-        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the maximum allowed index for the variable, or 0 if the variable
+    ''' is not an array.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property ArrayLength As Integer
+        Get
+            Return Me.m_iArrayLength
+        End Get
     End Property
 
 #End Region ' Properties
