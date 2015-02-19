@@ -22,6 +22,7 @@ Option Strict On
 Imports System.Collections.Generic
 Imports System.Drawing
 Imports System.IO
+Imports System.Text
 Imports System.Xml
 Imports DotSpatial.Data
 Imports EwECore
@@ -794,6 +795,27 @@ Namespace SpatialData
         End Function
 
 #End Region ' Import & export
+
+#Region " Summary "
+
+        Public Overrides ReadOnly Property Summary As String
+            Get
+                Dim sb As New StringBuilder()
+
+                sb.Append("id:" & Me.GetType().ToString())
+                For i As Integer = 0 To Me.m_lFiles.Count - 1
+                    Dim f As cTemporalFile = Me.m_lFiles(i)
+                    sb.Append(",")
+                    sb.Append("t" & i & ":" & cStringUtils.FormatDate(f.Date))
+                    sb.Append("f" & i & ":" & Path.GetFileName(f.FileName))
+                Next
+                Return sb.ToString()
+
+            End Get
+
+        End Property
+
+#End Region ' Summary
 
     End Class
 
