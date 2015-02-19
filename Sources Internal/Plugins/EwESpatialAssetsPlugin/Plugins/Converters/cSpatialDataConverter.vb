@@ -315,38 +315,6 @@ Namespace SpatialData
 
 #End Region ' Utilities
 
-        Public ReadOnly Property Summary As String _
-            Implements EwEUtils.Core.ISummarizable.Summary
-            Get
-
-                Dim sb As New StringBuilder()
-                Dim strKey As String = ""
-                Dim strVal As String = ""
-
-                sb.Append("id:" & Me.GetType().ToString())
-                sb.Append(",")
-                sb.Append("n:" & Me.AttributeName)
-                sb.Append(",")
-                sb.Append("f:" & Me.AttributeFilter)
-                sb.Append(",")
-                sb.Append("m:")
-
-                Dim lKeys As New List(Of String)
-                For Each strKey In Me.AttributeValueMappings.Keys
-                    lKeys.Add(strKey)
-                Next
-                lKeys.Sort()
-
-                For i As Integer = 0 To lKeys.Count - 1
-                    If (i > 0) Then sb.Append("&")
-                    strKey = lKeys(i)
-                    strVal = cStringUtils.FormatNumber(Me.AttributeValueMappings(strKey))
-                    sb.Append(strKey & "=" & strVal)
-                Next
-                Return sb.ToString()
-
-            End Get
-        End Property
     End Class
 
 End Namespace

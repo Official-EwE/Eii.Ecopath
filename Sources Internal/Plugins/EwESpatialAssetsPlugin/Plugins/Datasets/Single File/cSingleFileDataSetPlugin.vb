@@ -549,24 +549,6 @@ Namespace SpatialData
 
 #End Region ' Import & export
 
-#Region " Summary "
-
-        Public Overrides ReadOnly Property Summary As String
-            Get
-                Dim sb As New StringBuilder()
-                sb.Append("id:" & Me.GetType().ToString())
-                sb.Append(",")
-                sb.Append("ts:" & cStringUtils.FormatDate(Me.TimeStart))
-                sb.Append(",")
-                sb.Append("te:" & cStringUtils.FormatDate(Me.TimeEnd))
-                sb.Append(",")
-                sb.Append("f:" & Path.GetFileName(Me.SourceFileName)) ' Do not return full path
-                Return sb.ToString()
-            End Get
-        End Property
-
-#End Region ' Summary
-
     End Class
 
 End Namespace

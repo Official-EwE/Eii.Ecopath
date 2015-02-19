@@ -674,13 +674,6 @@ Namespace SpatialData
 
 #End Region ' Plug-in implementation
 
-#Region " Summary "
-
-        Public MustOverride ReadOnly Property Summary As String _
-             Implements EwEUtils.Core.ISummarizable.Summary
-
-#End Region ' Summary
-
     End Class
 
 End Namespace
