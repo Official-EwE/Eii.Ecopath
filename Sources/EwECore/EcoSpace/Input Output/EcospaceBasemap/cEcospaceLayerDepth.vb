@@ -44,7 +44,7 @@ Public Class cEcospaceLayerDepth
     ''' -----------------------------------------------------------------------
     Public Function IsWaterCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
         If Not Me.ValidateCellPosition(iRow, iCol) Then Return False
-        Return CInt(Me.Cell(iRow, iCol)) > 0
+        Return CSng(Me.Cell(iRow, iCol)) > 0
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -57,7 +57,7 @@ Public Class cEcospaceLayerDepth
     ''' -----------------------------------------------------------------------
     Public Function IsLandCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
         If Not Me.ValidateCellPosition(iRow, iCol) Then Return False
-        Return CInt(Me.Cell(iRow, iCol)) <= 0
+        Return CSng(Me.Cell(iRow, iCol)) <= 0
     End Function
 
     ''' -----------------------------------------------------------------------
