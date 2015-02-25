@@ -63,7 +63,7 @@ Public Class cSelectionMonitorFormatter
                         Dim strVarN As String = vd.GetDescriptor(var, eDescriptorTypes.Name)
                         Dim strVarD As String = vd.GetDescriptor(var, eDescriptorTypes.Description)
 
-                        If (strVarN <> strVarD) Then strDescription = strVarD
+                        strDescription = strVarD
 
                         ' Format message
                         If Not Object.ReferenceEquals(props(0).SourceSec, Nothing) Then
