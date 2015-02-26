@@ -89,6 +89,23 @@ Namespace Controls
             core.Messages.SendMessage(pmsg, True)
 
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Send a status message to the UI. This only passes through if the core
+        ''' is not <see cref="cCoreStateMonitor.IsBusy">busy</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Shared Sub UpdateStatus(ByVal core As cCore, ByVal strText As String)
+
+            If (core Is Nothing) Then Return
+            If (core.Messages Is Nothing) Then Return
+            If (core.StateMonitor.IsBusy) Then Return
+
+            Dim pmsg As New cProgressMessage(eProgressState.Running, 0, 0, strText, eMessageType.Progress)
+            core.Messages.SendMessage(pmsg, True)
+
+        End Sub
     End Class
 
 End Namespace ' Controls
