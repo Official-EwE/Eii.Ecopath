@@ -354,6 +354,10 @@ Public Class cTimeSeriesDataset
         ' Nope
     End Sub
 
+    ''' <summary>
+    ''' Get a time series from the dataset.
+    ''' </summary>
+    ''' <param name="index">Zero-based index of the time series to access.</param>
     Default Public Property Item(ByVal index As Integer) As cTimeSeries Implements System.Collections.Generic.IList(Of cTimeSeries).Item
         Get
             Return Me.m_lTimeSeries.Item(index)

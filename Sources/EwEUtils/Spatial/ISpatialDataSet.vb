@@ -36,6 +36,7 @@ Namespace SpatialData
     ''' -----------------------------------------------------------------------
     Public Interface ISpatialDataSet
         Inherits IExternalDataSource
+        Inherits ISummarizable
 
 #Region " Information "
 

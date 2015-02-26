@@ -49,7 +49,7 @@ Public Class cBugReporter
                                      Optional ByVal pm As cPluginManager = Nothing) As String
 
         Dim an As AssemblyName = Nothing
-        Dim ub As New UrlBuilder("mailto:" & strMailTo)
+        Dim ub As New cUriBuilder("mailto:" & strMailTo)
         Dim sbBody As New System.Text.StringBuilder
         Dim strURL As String = ""
 

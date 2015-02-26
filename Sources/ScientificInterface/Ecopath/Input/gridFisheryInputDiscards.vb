@@ -77,11 +77,15 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim source As cCoreInputOutputBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
+            Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
+            Dim group As cCoreGroupBase = Nothing
+            Dim fleet As cFleetInput = Nothing
+            Dim cell As EwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim intStanzaGroupIndex(Core.nGroups) As Integer 'Hold the stanza group index
+            Dim iStanzaPrev As Integer = -1
+            Dim hgcStanza As EwEHierarchyGridCell = Nothing
 
             Dim prop As cProperty = Nothing
 
@@ -97,56 +101,48 @@ Namespace Ecopath.Input
             Dim propSumAll As cFormulaProperty = Nothing
             Dim propSumCol As cFormulaProperty = Nothing
 
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
-
-            For i As Integer = 1 To Core.nGroups : intStanzaGroupIndex(i) = -1 : Next
-
-            'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To Core.nStanzas - 1
-                sg = Core.StanzaGroups(stanzaGroupIndex)
-
-                For iStanza As Integer = 1 To sg.nLifeStages
-                    source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
-                    intStanzaGroupIndex(source.Index) = stanzaGroupIndex
-                Next
-            Next
-
             'Remove existing rows
             Me.RowsCount = 1
 
             ' Done?
             If Core.nFleets = 0 Then Return
 
-            'Create rows for all groups
-            For rowIndex As Integer = 1 To Core.nGroups
+            ' Create rows for all groups
+            For i As Integer = 0 To groups.Count - 1
 
                 ' Clear the arrayList for the new row
                 alSumRow.Clear()
                 ' Get the Ecopath input for this specific group
-                source = Core.EcoPathGroupInputs(rowIndex)
+                group = groups(i)
 
-                If intStanzaGroupIndex(source.Index) = -1 Then 'If group is non-stanza Then display group info
-                    iRow = Me.AddRow
-                    FillInRows(iRow, source, alSumRow, alSumAll)
-                Else 'Group is stanza
-                    sg = Core.StanzaGroups(intStanzaGroupIndex(source.Index))
-                    If Not dtStanzaCells.ContainsKey(sg) Then
-                        hgcStanza = New EwEHierarchyGridCell()
-                        dtStanzaCells.Add(sg, hgcStanza)
+                If Not group.isMultiStanza Then
+
+                    iRow = Me.AddRow()
+                    FillInRows(iRow, group, alSumRow, alSumAll)
+
+                Else
+
+                    sg = Core.StanzaGroups(group.iStanza)
+
+                    ' Create hierarchy cell if entering a new stanza config
+                    If group.iStanza <> iStanzaPrev Then
+                        ' Fill row with dummy cells. We'll do something fancy here one day
                         iRow = Me.AddRow()
+                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+
+                        hgcStanza = New EwEHierarchyGridCell()
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-                        ' Complete row with dummy cells
-                        For i As Integer = 2 To Core.nFleets + 2 : Me(iRow, i) = New EwERowHeaderCell() : Next
-                        iRow = Me.AddRow
+
+                        iStanzaPrev = group.iStanza
+                        iRow = Me.AddRow()
                     Else
-                        hgcStanza = dtStanzaCells(sg)
                         iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
-                    'Display group info
+
+                    ' Display group info
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, source, alSumRow, alSumAll, True)
+                    FillInRows(iRow, group, alSumRow, alSumAll, True)
                 End If
 
                 ' Set the property to the last cell of the row, which is the sum of the row
@@ -160,12 +156,12 @@ Namespace Ecopath.Input
             Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
             Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
             For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.FleetInputs(fleetIndex)
+                fleet = Core.FleetInputs(fleetIndex)
                 alSumCol.Clear()
 
                 For rowIndex As Integer = 1 To Core.nGroups
                     sourceSec = Core.EcoPathGroupInputs(rowIndex)
-                    prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.Discards, sourceSec)
+                    prop = Me.PropertyManager.GetProperty(fleet, eVarNameFlags.Discards, sourceSec)
                     alSumCol.Add(prop)
                 Next
                 opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())

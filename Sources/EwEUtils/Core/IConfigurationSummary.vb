@@ -15,11 +15,9 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 
 #End Region ' Imports
 
@@ -27,27 +25,19 @@ Namespace Core
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Interface for adding items that can be configured with a visual interface
-    ''' throughout the EwE application.
+    ''' Interface for adding items that can summarize their configuration into a 
+    ''' string for computing model validation checksums.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Interface IConfigurable
+    Public Interface ISummarizable
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Returns whether an item has been configured.
+        ''' Summarizes the unique content of an object that allows computation of a 
+        ''' checksum over this object.
         ''' </summary>
-        ''' <returns>True if an item has been configured.</returns>
         ''' -----------------------------------------------------------------------
-        Function IsConfigured() As Boolean
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns the windows control though which the item can be configured.
-        ''' </summary>
-        ''' <returns>The windows control though which the item can be configured.</returns>
-        ''' -----------------------------------------------------------------------
-        Function GetConfigUI() As Control
+        ReadOnly Property Summary As String
 
     End Interface
 

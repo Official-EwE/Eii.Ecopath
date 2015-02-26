@@ -501,7 +501,7 @@ Namespace SpatialData
                 Return "SpatialDataConnectionManager"
             End Get
             Set(value As String)
-
+                ' NOP
             End Set
         End Property
 

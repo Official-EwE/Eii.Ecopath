@@ -88,7 +88,7 @@ Public Class cWebLinks
 
         Dim pm As cPluginManager = Me.m_core.PluginManager
         Dim aAssemblyNames As AssemblyName() = cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.EwECore)
-        Dim ub As New UrlBuilder(cStart)
+        Dim ub As New cUriBuilder(cStart)
 
         For Each an As AssemblyName In aAssemblyNames
             ' Keep ewe component list really short; it's the plug-ins we're interested in

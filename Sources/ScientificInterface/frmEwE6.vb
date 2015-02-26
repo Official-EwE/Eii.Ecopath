@@ -4589,6 +4589,8 @@ Public Class frmEwE6
             If String.IsNullOrWhiteSpace(My.Settings.Author) Then
                 My.Settings.Author = EwEUtils.SystemUtilities.cSystemUtils.GetUserName()
             End If
+            Me.Core.DefaultAuthor = My.Settings.Author
+            Me.Core.DefaultContact = My.Settings.Contact
 
             Me.Core.SaveWithFileHeader = My.Settings.AutosaveHeaders
             cAutosaveSettingsHelper.LoadFromSettings(My.Settings.AutosaveResults, Me.Core)

@@ -75,13 +75,14 @@ Namespace Ecosim
             'Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
             Me(0, eColumnTypes.QBMaxQBO) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
             Me(0, eColumnTypes.SwitchPower) = New EwEColumnHeaderCell(SharedResources.HEADER_SWITCHINGPOWER_VALRANGE)
-            Me(0, eColumnTypes.SalinityOpt) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OPTSALINITY)
-            Me(0, eColumnTypes.SalinitySpreadLeft) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_SALSPREADLEFT)
-            Me(0, eColumnTypes.SalinitySpreadRight) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_SALSPREADRIGHT)
 
-            Me(0, eColumnTypes.TempOpt) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OPTTEMP)
-            Me(0, eColumnTypes.TempSpreadLeft) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_TEMPSPREADLEFT)
-            Me(0, eColumnTypes.TempSpreadRight) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_TEMPSPREADRIGHT)
+            Me(0, eColumnTypes.SalinityOpt) = New EwEColumnHeaderCell(eVarNameFlags.SalinityOpt)
+            Me(0, eColumnTypes.SalinitySpreadLeft) = New EwEColumnHeaderCell(eVarNameFlags.SalinitySpreadLeft)
+            Me(0, eColumnTypes.SalinitySpreadRight) = New EwEColumnHeaderCell(eVarNameFlags.SalinitySpreadRight)
+
+            Me(0, eColumnTypes.TempOpt) = New EwEColumnHeaderCell(eVarNameFlags.TemperatureOpt)
+            Me(0, eColumnTypes.TempSpreadLeft) = New EwEColumnHeaderCell(eVarNameFlags.TemperatureSpreadLeft)
+            Me(0, eColumnTypes.TempSpreadRight) = New EwEColumnHeaderCell(eVarNameFlags.TemperatureSpreadRight)
 
             Me.FixedColumns = 2
 

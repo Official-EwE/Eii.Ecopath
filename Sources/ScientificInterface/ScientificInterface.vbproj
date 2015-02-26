@@ -1983,6 +1983,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEKeyRunComparison\EwEKeyRunComparison.vbproj">
+      <Project>{BE09A143-5EC5-4255-8024-C74622E1A5CE}</Project>
+      <Name>EwEKeyRunComparison</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{C1081265-6A9D-4087-8BB5-E907D86FD719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>

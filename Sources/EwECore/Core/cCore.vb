@@ -500,6 +500,7 @@ Public Class cCore
 
     ''' <summary>
     ''' Max number of groups in a single stanza configuration over all stanza groups.
+    ''' <seealso cref="nStanzas"/>
     ''' </summary>
     ''' <remarks>
     ''' See <see cref="eCoreCounterTypes.nMaxStanza"/>.
@@ -511,7 +512,8 @@ Public Class cCore
     End Property
 
     ''' <summary>
-    ''' Number of stanza configurations.
+    ''' Number of stanza configurations. 
+    ''' <seealso cref="nMaxStanza"/>
     ''' </summary>
     ''' <remarks>
     ''' See <see cref="eCoreCounterTypes.nStanzas"/>.

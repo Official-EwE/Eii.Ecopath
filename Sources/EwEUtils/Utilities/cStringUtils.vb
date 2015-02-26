@@ -54,21 +54,53 @@ Namespace Utilities
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
-        ''' Split function that supports text qualifiers.
+        ''' Split function that supports text qualifiers. Code adapted from Larry Steinly,
+        ''' http://www.codeproject.com/Articles/15361/Split-Function-that-Supports-Text-Qualifiers.
         ''' </summary>
         ''' <param name="strExpression">String to split.</param>
         ''' <param name="strDelimiter">Delimiting character to split by.</param>
         ''' <param name="strQualifier">String qualifier, such as single or double quotes. Qualified string
         ''' segments will not be subdivided by delimiting characters.</param>
         ''' <returns>An array of strings.</returns>
-        ''' <remarks>
-        ''' Provided for backward compatibility reasons.
-        ''' </remarks>
         ''' ---------------------------------------------------------------------------
         Public Shared Function SplitQualified(ByVal strExpression As String, _
                                               ByVal strDelimiter As String, _
                                               Optional ByVal strQualifier As String = """") As String()
-            Return cStringUtils.SplitQualified(strExpression, strDelimiter(0), strQualifier(0))
+
+            ' Ensure defaults. A whitespace delimiter is allowed!
+            If String.IsNullOrEmpty(strDelimiter) Then strDelimiter = ","
+            If String.IsNullOrWhiteSpace(strQualifier) Then strQualifier = """"
+
+            Dim bQualifier As Boolean = False
+            Dim iStart As Integer = 0
+            Dim lValues As New List(Of String)
+            Dim iQL As Integer = strQualifier.Length
+            Dim iDL As Integer = strDelimiter.Length
+            Dim strVal As String = ""
+
+            For iChar As Integer = 0 To strExpression.Length - 1
+                If String.Compare(strExpression.Substring(iChar, iQL), strQualifier, True) = 0 Then
+                    bQualifier = Not bQualifier
+                ElseIf Not bQualifier And String.Compare(strExpression.Substring(iChar, strDelimiter.Length), strDelimiter, True) = 0 Then
+                    ' Crop leading and trainling delimiter
+                    strVal = strExpression.Substring(iStart, iChar - iStart)
+                    If strVal.StartsWith(strQualifier) Then strVal = strVal.Substring(iQL)
+                    If strVal.EndsWith(strQualifier) Then strVal = strVal.Substring(0, strVal.Length - iQL)
+                    lValues.Add(strVal)
+                    iStart = iChar + 1
+                End If
+            Next
+
+            If (iStart < strExpression.Length) Then
+                ' Crop leading and trainling delimiter
+                strVal = strExpression.Substring(iStart)
+                If strVal.StartsWith(strQualifier) Then strVal = strVal.Substring(iQL)
+                If strVal.EndsWith(strQualifier) Then strVal = strVal.Substring(0, strVal.Length - iQL)
+                lValues.Add(strVal)
+            End If
+
+            Return lValues.ToArray()
+
         End Function
 
 
@@ -89,42 +121,7 @@ Namespace Utilities
         Public Shared Function SplitQualified(ByVal strExpression As String, _
                                               ByVal cDelimiter As Char, _
                                               Optional ByVal cQualifier As Char = """"c) As String()
-
-#If 0 Then
-            ' Original code by Larry Steinle (http://www.codeproject.com/script/Articles/list_articles.asp?userid=2146039),
-            ' obtained from "Split Function that Supports Text Qualifiers", http://www.codeproject.com/useritems/TextQualifyingSplit.asp
-
-            Dim rxExpression As Regex = Nothing
-            Dim strPattern As String = ""
-            Dim rxo As RegexOptions = RegexOptions.Compiled Or RegexOptions.Multiline
-
-            ' Build reg ex pattern
-            strPattern = String.Format("[{0}](?=(?:[^{1}]*[{1}][^{1}]*[{1}])*(?![^{1}]*[{1}]))", Regex.Escape(cDelimiter), Regex.Escape(cQualifier))
-            ' Build reg expression
-            rxExpression = New Regex(strPattern, rxo)
-            ' Execute
-            Return rxExpression.Split(strExpression)
-#Else
-            Dim lstr As New List(Of String)
-            Dim i, j As Integer
-            Dim chrs() As Char = New Char() {cDelimiter, cQualifier}
-
-            ' ToDo: add support for double delimiters to denote the delimiter character as a valid symbol
-
-            j = strExpression.IndexOfAny(chrs)
-            While j > -1
-                If (strExpression(j) = cQualifier) Then
-                    j = strExpression.IndexOf(cQualifier, j + 1)
-                    If (j > -1) Then j = strExpression.IndexOfAny(chrs, j + 1)
-                Else
-                    lstr.Add(strExpression.Substring(i, j - i))
-                    i = j + 1
-                    j = strExpression.IndexOfAny(chrs, i)
-                End If
-            End While
-            lstr.Add(strExpression.Substring(i).Replace(cQualifier, ""))
-            Return lstr.ToArray
-#End If
+            Return cStringUtils.SplitQualified(strExpression, CStr(cDelimiter), CStr(cQualifier))
         End Function
 
         ''' -------------------------------------------------------------------
@@ -879,7 +876,7 @@ Namespace Utilities
         End Function
 
         ''' <summary>Default string split delimiters, in order of decreasing relevance.</summary>
-        Public Shared c_DELIMITERS As Char() = New Char() {Convert.ToChar(Keys.Tab), ";"c, Convert.ToChar(Keys.Space)}
+        Public Shared c_DELIMITERS As Char() = New Char() {Convert.ToChar(Keys.Tab), ";"c, Convert.ToChar(Keys.Space), ","c}
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -938,7 +935,7 @@ Namespace Utilities
         ''' <remarks>The time stamp is formatted as 'year-month-day hour-minute-second'.</remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Function Now() As String
-            Return Date.Now.ToString("y-MM-dd HH-mm-ss")
+            Return cStringUtils.FormatDate(Date.Now, "yyyy-MM-dd HH-mm-ss")
         End Function
 
         ''' -----------------------------------------------------------------------

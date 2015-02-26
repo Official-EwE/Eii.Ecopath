@@ -19,9 +19,10 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Collections.Generic
 Imports System.Drawing
 Imports System.Xml
-Imports System.Collections.Generic
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -33,6 +34,7 @@ Namespace SpatialData
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public Interface ISpatialDataConverter
+        Inherits ISummarizable
 
         ''' -------------------------------------------------------------------
         ''' <summary>

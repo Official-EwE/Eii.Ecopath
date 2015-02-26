@@ -80,8 +80,7 @@ Public Class cEcospaceLayerBoolean
     ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
-            Dim d As Boolean(,) = DirectCast(Me.Data, Boolean(,))
-            If Me.ValidateCellPosition(iRow, iCol) Then Return d(iRow, iCol) Else Return cCore.NULL_VALUE
+            Return DirectCast(Me.Data, Boolean(,))(iRow, iCol)
         End Get
         Set(ByVal value As Object)
             Dim d As Boolean(,) = DirectCast(Me.Data, Boolean(,))

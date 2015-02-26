@@ -29,8 +29,6 @@ Namespace SpatialData
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
     Public Class cSpatialDataStructures
 
         Private m_pathDS As cEcopathDataStructures
@@ -119,7 +117,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Storage structire of data connections by varname.
+        ''' Storage structure of data connections by varname.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private m_data As New Dictionary(Of eVarNameFlags, cAdapaterConfiguration(,))

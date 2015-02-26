@@ -129,6 +129,7 @@
     <Compile Include="Commands\cCommandHandler.vb" />
     <Compile Include="Commands\cControlHandler.vb" />
     <Compile Include="Core\IConfigurable.vb" />
+    <Compile Include="Core\IConfigurationSummary.vb" />
     <Compile Include="Core\IEcospaceImportExport.vb" />
     <Compile Include="Core\IFeedbackMessage.vb" />
     <Compile Include="Core\IEcospaceResultsWriter.vb" />
@@ -181,6 +182,7 @@
     <Compile Include="Utilities\cDrawingUtils.vb" />
     <Compile Include="Utilities\cFuzzySearch.vb" />
     <Compile Include="Logging\cLog.vb" />
+    <Compile Include="Utilities\cEncryptionUtilities.vb" />
     <Compile Include="Utilities\cNumberUtils.vb" />
     <Compile Include="Utilities\cRegistryUtils.vb" />
     <Compile Include="Utilities\cResourceUtils.vb" />
@@ -189,7 +191,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\cStringUtils.vb" />
-    <Compile Include="Utilities\UriBuilder.vb" />
+    <Compile Include="Utilities\cUriBuilder.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
