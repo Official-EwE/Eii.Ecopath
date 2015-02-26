@@ -181,6 +181,7 @@
     <Compile Include="HelperClasses\Linear Programming\cLPSolver.vb" />
     <Compile Include="HelperClasses\Threading\cThreadWaitBase.vb" />
     <Compile Include="HelperClasses\Threading\IThreadedProcess.vb" />
+    <Compile Include="MPAOptimization\Model\cMPAOptBaseClass.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchFGroup.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchParameters.vb" />
     <Compile Include="Contaminant Tracer\Model\cContaminantTracer.vb" />

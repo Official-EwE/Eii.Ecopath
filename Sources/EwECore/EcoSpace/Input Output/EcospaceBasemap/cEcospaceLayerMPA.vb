@@ -29,10 +29,27 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerMPA
     Inherits cEcospaceLayerInteger
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerMPA, 1)
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
+        MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerMPA, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerMPA
     End Sub
+
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+        Get
+            Dim d As Integer()(,) = DirectCast(Me.Data, Integer()(,))
+            If Me.ValidateCellPosition(iRow, iCol) Then Return d(Me.Index)(iRow, iCol) Else Return CInt(cCore.NULL_VALUE)
+        End Get
+        Set(ByVal value As Object)
+            Dim d As Integer()(,) = DirectCast(Me.Data, Integer()(,))
+            Dim s As Integer = Convert.ToInt16(value)
+            If Me.ValidateCellValue(value) Then
+                If Me.ValidateCellPosition(iRow, iCol) Then
+                    d(Me.Index)(iRow, iCol) = s
+                    Me.Invalidate()
+                End If
+            End If
+        End Set
+    End Property
 
     Protected Overrides Function DefaultName() As String
         Return My.Resources.CoreDefaults.CORE_DEFAULT_MPA

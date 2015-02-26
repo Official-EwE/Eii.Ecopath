@@ -19,11 +19,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Threading
 Imports EwECore.EcoSeed
+Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -34,7 +33,6 @@ Public Class cMPAOptManager
     Implements ICoreInterface
     Implements SearchObjectives.ISearchObjective
 
-
 #Region "Enums"
 
     ''' ---------------------------------------------------------------------------
@@ -43,6 +41,8 @@ Public Class cMPAOptManager
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eRunStates As Integer
+        ''' <summary>Search is not active.</summary>
+        Idle
         ''' <summary>Search is initializing.</summary>
         Initializing
         ''' <summary>Search is in progress.</summary>
@@ -93,7 +93,10 @@ Public Class cMPAOptManager
 
     Private m_parameters As cMPAOptParameters
 
-    Private m_orgMPAConfig(,) As Integer
+    ''' <summary>
+    ''' Original MPA configuration (row x col x mpa)
+    ''' </summary>
+    Private m_orgMPAConfig()(,) As Integer
 
     ''' <summary>directory for the output data</summary>
     Private m_dataDir As String = ""
@@ -235,7 +238,6 @@ Public Class cMPAOptManager
 
     End Sub
 
-
     Private Sub OnRunStateChanged(ByVal RunState As eRunStates)
 
         Try
@@ -267,7 +269,7 @@ Public Class cMPAOptManager
     End Sub
 
     Private Sub OnSendMessage(ByVal Message As EwECore.cMessage)
-
+        Debug.Assert(False)
     End Sub
 
 #End Region
@@ -311,9 +313,14 @@ Public Class cMPAOptManager
 
             Me.SetWait()
 
-            'keep a copy of the original MPA configuration
-            ReDim m_orgMPAConfig(Me.m_core.m_EcoSpaceData.InRow + 1, Me.m_core.m_EcoSpaceData.InCol + 1)
-            Array.Copy(Me.m_core.m_EcoSpaceData.MPA, Me.m_orgMPAConfig, Me.m_core.m_EcoSpaceData.MPA.Length)
+            ' Keep a copy of the original MPA configuration
+            Dim map(,) As Integer
+            Me.m_orgMPAConfig = New Integer(Me.m_core.nMPAs)(,) {}
+            For i As Integer = 1 To Me.m_core.nMPAs
+                ReDim map(Me.m_core.EcospaceBasemap.InRow + 1, Me.m_core.EcospaceBasemap.InCol + 1)
+                Me.m_orgMPAConfig(i) = map
+                Array.Copy(Me.m_core.m_EcoSpaceData.MPA(i), Me.m_orgMPAConfig(i), Me.m_core.m_EcoSpaceData.MPA(i).Length)
+            Next
 
             Me.m_core.m_SearchData.SearchMode = eSearchModes.SpatialOpt
 
@@ -323,7 +330,7 @@ Public Class cMPAOptManager
         Catch ex As Exception
             cLog.Write(ex)
             Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
-            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MPAOPT_ERROR, ex.Message), _
+            Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MPAOPT_ERROR, ex.Message), _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
                                                         eMessageImportance.Critical))
             Me.ReleaseWait()
@@ -337,6 +344,20 @@ Public Class cMPAOptManager
     Public Sub YearTimeStep(ByRef iYear As Integer, ByVal Biomass() As Single)
         m_MPASearch.YearTimeStep(iYear, Biomass)
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the run state of the current active <see cref="IMPASearchModel">MPA search</see>, if any.
+    ''' </summary>
+    ''' <returns>The run state of the current active <see cref="IMPASearchModel">MPA search</see>, if any.</returns>
+    ''' <remarks>If no search is defined yet, the state <see cref="eRunStates.Idle"/> is returned.</remarks>
+    ''' -----------------------------------------------------------------------
+    Public Function RunState() As eRunStates
+
+        If (Me.m_MPASearch Is Nothing) Then Return eRunStates.Idle
+        Return (Me.m_MPASearch.RunState)
+
+    End Function
 
     Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
         Dim result As Boolean = True
@@ -498,7 +519,7 @@ Public Class cMPAOptManager
         End Get
     End Property
 
-    Public ReadOnly Property OrgMPA() As Integer(,)
+    Public ReadOnly Property OrgMPA() As Integer()(,)
         Get
             Return Me.m_orgMPAConfig
         End Get
@@ -700,6 +721,8 @@ Public Interface IMPASearchModel
     ''' <param name="strHeader">Header information to report when auto-saving.</param>
     Sub ConfigureAutosave(ByVal bAutosave As Boolean, ByVal strOutputPath As String, ByVal strHeader As String)
 
+    Function RunState() As cMPAOptManager.eRunStates
+
 End Interface
 
 #End Region
@@ -774,9 +797,14 @@ Public Class cObjectiveResult
                     Cells.Clear()
                     For ir As Integer = 1 To SpaceData.InRow
                         For ic As Integer = 1 To SpaceData.InCol
-                            If SpaceData.MPA(ir, ic) <> 0 Then
-                                Cells.Add(New cMPACell(ir, ic, SpaceData.MPA(ir, ic)))
-                            End If
+                            'If SpaceData.MPA(ir, ic) <> 0 Then
+                            '    Cells.Add(New cMPACell(ir, ic, SpaceData.MPA(ir, ic)))
+                            'End If
+                            For impa As Integer = 1 To SpaceData.MPAno
+                                If SpaceData.MPA(impa)(ir, ic) <> 0 Then
+                                    Cells.Add(New cMPACell(ir, ic, impa))
+                                End If
+                            Next
                         Next
                     Next
 
@@ -801,7 +829,8 @@ Public Class cObjectiveResult
         Dim nMPACells As Integer
         For ir As Integer = 1 To SpaceData.InRow
             For ic As Integer = 1 To SpaceData.InCol
-                If SpaceData.MPA(ir, ic) = MPAData.iMPAtoUse Then
+                'If SpaceData.MPA(ir, ic) = MPAData.iMPAtoUse Then
+                If SpaceData.MPA(MPAData.iMPAtoUse)(ir, ic) = MPAData.iMPAtoUse Then
                     nMPACells += 1
                 End If
             Next

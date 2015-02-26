@@ -148,15 +148,23 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-            Dim mpa As cEcospaceLayerMPA = bm.LayerMPA
             Dim regions As cEcospaceLayerRegion = bm.LayerRegion
             Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
+            Dim ll As cEcospaceLayer() = bm.Layers(eVarNameFlags.LayerMPA)
 
             parms.nRegions = Me.UIContext.Core.nMPAs
 
             For iRow As Integer = 1 To bm.InRow
                 For iCol As Integer = 1 To bm.InCol
-                    regions.Cell(iRow, iCol) = mpa.Cell(iRow, iCol)
+                    regions.Cell(iRow, iCol) = 0
+                    For Each l As cEcospaceLayer In ll
+                        ' Take into account that we may have MPA fraction of cells in the future. 
+                        ' Perhaps the largest fraction should be allocated? Now the last MPA wins
+                        Dim iMPA As Single = CSng(l.Cell(iRow, iCol))
+                        If iMPA > 0 Then
+                            regions.Cell(iRow, iCol) = l.Index
+                        End If
+                    Next l
                 Next iCol
             Next iRow
 
@@ -173,7 +181,6 @@ Namespace Ecospace
 
             Dim core As cCore = Me.UIContext.Core
             Dim bm As cEcospaceBasemap = core.EcospaceBasemap
-            Dim mpa As cEcospaceLayerMPA = bm.LayerMPA
             Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
             Dim regions As cEcospaceLayerRegion = bm.LayerRegion
             Dim sValMax As Single = 0

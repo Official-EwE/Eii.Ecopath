@@ -4596,7 +4596,8 @@ Public Class frmEwE6
             Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
             man.IsIndexingAllowed = My.Settings.AutoIndexDatasets
             man.ConfigFiles = My.Settings.SpatialTempConfigurations
-            man.Load(My.Settings.SpatialTemporalConfigFile)
+            ' Wait for Ecospace
+            'man.Load(My.Settings.SpatialTemporalConfigFile)
 
         Catch ex As Exception
 

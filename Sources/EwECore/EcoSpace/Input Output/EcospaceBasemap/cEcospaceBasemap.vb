@@ -218,6 +218,8 @@ Public Class cEcospaceBasemap
             meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             Me.m_dictLayers(eVarNameFlags.LayerDepth) = New cEcospaceLayer() {New cEcospaceLayerDepth(theCore, Me, 1, meta)}
 
+            ' Habitats
+            llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NoHabitats - 1
                 llayers.Add(New cEcospaceLayerHabitat(theCore, Me, i))
             Next
@@ -252,7 +254,11 @@ Public Class cEcospaceBasemap
             Me.m_dictLayers(eVarNameFlags.LayerBiomassRelativeForcing) = llayers.ToArray
 
             ' MPA layer
-            Me.m_dictLayers(eVarNameFlags.LayerMPA) = New cEcospaceLayer() {New cEcospaceLayerMPA(theCore, Me)}
+            llayers.Clear()
+            For i As Integer = 1 To ecospaceDS.MPAno
+                llayers.Add(New cEcospaceLayerMPA(theCore, Me, i))
+            Next
+            Me.m_dictLayers(eVarNameFlags.LayerMPA) = llayers.ToArray
 
             ' Region layer
             Me.m_dictLayers(eVarNameFlags.LayerRegion) = New cEcospaceLayer() {New cEcospaceLayerRegion(theCore, Me)}
@@ -658,13 +664,12 @@ Public Class cEcospaceBasemap
     ''' </summary>
     ''' <remarks>
     ''' This layer provides access to the one and only array that holds all
-    ''' MPAs in Ecospace. At the moment (Nov '08), MPAs cannot overlap
-    ''' and are stored in one two-dimensional array.
+    ''' MPAs in Ecospace.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerMPA() As cEcospaceLayerMPA
+    Public ReadOnly Property LayerMPA(iMPA As Integer) As cEcospaceLayerMPA
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMPA)(0), cEcospaceLayerMPA)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMPA)(iMPA - 1), cEcospaceLayerMPA)
         End Get
     End Property
 

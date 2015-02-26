@@ -42,6 +42,7 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMPAOptimizations))
             Me.m_btnRun = New System.Windows.Forms.Button()
             Me.m_btnStop = New System.Windows.Forms.Button()
@@ -107,10 +108,11 @@ Namespace Ecospace
             Me.m_tlbLayers = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plLayers = New System.Windows.Forms.Panel()
             Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_scContent = New System.Windows.Forms.SplitContainer()
-            Me.m_pbDuke = New System.Windows.Forms.PictureBox()
+            Me.m_tabSponsors = New System.Windows.Forms.TabPage()
+            Me.m_tlpSponsors = New System.Windows.Forms.TableLayoutPanel()
             Me.m_pbLenfest = New System.Windows.Forms.PictureBox()
-            Me.m_bntReset = New System.Windows.Forms.Button()
+            Me.m_pbDuke = New System.Windows.Forms.PictureBox()
+            Me.m_scContent = New System.Windows.Forms.SplitContainer()
             Me.m_tsMap.SuspendLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudStep, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -136,12 +138,14 @@ Namespace Ecospace
             Me.m_scMap.Panel2.SuspendLayout()
             Me.m_scMap.SuspendLayout()
             Me.m_tlbLayers.SuspendLayout()
+            Me.m_tabSponsors.SuspendLayout()
+            Me.m_tlpSponsors.SuspendLayout()
+            CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbDuke, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
             Me.m_scContent.Panel2.SuspendLayout()
             Me.m_scContent.SuspendLayout()
-            CType(Me.m_pbDuke, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -234,17 +238,20 @@ Namespace Ecospace
             'm_nudIterations
             '
             resources.ApplyResources(Me.m_nudIterations, "m_nudIterations")
+            Me.m_nudIterations.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudIterations.Name = "m_nudIterations"
             '
             'm_nudStep
             '
             resources.ApplyResources(Me.m_nudStep, "m_nudStep")
+            Me.m_nudStep.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudStep.Name = "m_nudStep"
             Me.m_nudStep.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
             'm_nudEndYear
             '
             resources.ApplyResources(Me.m_nudEndYear, "m_nudEndYear")
+            Me.m_nudEndYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudEndYear.Name = "m_nudEndYear"
             '
             'm_lblStartYear
@@ -255,6 +262,7 @@ Namespace Ecospace
             'm_nudStartYear
             '
             resources.ApplyResources(Me.m_nudStartYear, "m_nudStartYear")
+            Me.m_nudStartYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudStartYear.Name = "m_nudStartYear"
             '
             'm_tcResults
@@ -300,9 +308,11 @@ Namespace Ecospace
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridProgress.CustomSort = False
+            Me.m_gridProgress.DataName = "grid content"
             Me.m_gridProgress.FixedColumnWidths = False
             Me.m_gridProgress.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridProgress.GridToolTipActive = True
+            Me.m_gridProgress.IsLayoutSuspended = False
             Me.m_gridProgress.Name = "m_gridProgress"
             Me.m_gridProgress.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -380,6 +390,7 @@ Namespace Ecospace
             '
             'm_nudBestPercentile
             '
+            Me.m_nudBestPercentile.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudBestPercentile, "m_nudBestPercentile")
             Me.m_nudBestPercentile.Name = "m_nudBestPercentile"
             Me.m_nudBestPercentile.Value = New Decimal(New Integer() {10, 0, 0, 0})
@@ -398,9 +409,11 @@ Namespace Ecospace
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridResults.CustomSort = False
+            Me.m_gridResults.DataName = "grid content"
             Me.m_gridResults.FixedColumnWidths = False
             Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridResults.GridToolTipActive = True
+            Me.m_gridResults.IsLayoutSuspended = False
             Me.m_gridResults.Name = "m_gridResults"
             Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -465,11 +478,13 @@ Namespace Ecospace
             'm_nudMinArea
             '
             resources.ApplyResources(Me.m_nudMinArea, "m_nudMinArea")
+            Me.m_nudMinArea.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudMinArea.Name = "m_nudMinArea"
             '
             'm_nudMaxArea
             '
             resources.ApplyResources(Me.m_nudMaxArea, "m_nudMaxArea")
+            Me.m_nudMaxArea.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudMaxArea.Name = "m_nudMaxArea"
             '
             'm_lblStep
@@ -480,6 +495,7 @@ Namespace Ecospace
             'm_nudBaseYear
             '
             resources.ApplyResources(Me.m_nudBaseYear, "m_nudBaseYear")
+            Me.m_nudBaseYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudBaseYear.Name = "m_nudBaseYear"
             '
             'm_lblBaseYear
@@ -500,11 +516,13 @@ Namespace Ecospace
             'm_nudDiscRate
             '
             resources.ApplyResources(Me.m_nudDiscRate, "m_nudDiscRate")
+            Me.m_nudDiscRate.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudDiscRate.Name = "m_nudDiscRate"
             '
             'm_nudGenDiscRate
             '
             resources.ApplyResources(Me.m_nudGenDiscRate, "m_nudGenDiscRate")
+            Me.m_nudGenDiscRate.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudGenDiscRate.Name = "m_nudGenDiscRate"
             '
             'm_lblGenDiscRate
@@ -522,6 +540,7 @@ Namespace Ecospace
             '
             Me.m_tcConfiguration.Controls.Add(Me.m_tabParameters)
             Me.m_tcConfiguration.Controls.Add(Me.m_tabMap)
+            Me.m_tcConfiguration.Controls.Add(Me.m_tabSponsors)
             resources.ApplyResources(Me.m_tcConfiguration, "m_tcConfiguration")
             Me.m_tcConfiguration.Multiline = True
             Me.m_tcConfiguration.Name = "m_tcConfiguration"
@@ -556,10 +575,12 @@ Namespace Ecospace
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridObjectives.CustomSort = False
+            Me.m_gridObjectives.DataName = "grid content"
             resources.ApplyResources(Me.m_gridObjectives, "m_gridObjectives")
             Me.m_gridObjectives.FixedColumnWidths = False
             Me.m_gridObjectives.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridObjectives.GridToolTipActive = True
+            Me.m_gridObjectives.IsLayoutSuspended = False
             Me.m_gridObjectives.Manager = Nothing
             Me.m_gridObjectives.Name = "m_gridObjectives"
             Me.m_gridObjectives.ShowMaxPortUtil = False
@@ -588,10 +609,12 @@ Namespace Ecospace
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridFleet.CustomSort = False
+            Me.m_gridFleet.DataName = "grid content"
             resources.ApplyResources(Me.m_gridFleet, "m_gridFleet")
             Me.m_gridFleet.FixedColumnWidths = False
             Me.m_gridFleet.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridFleet.GridToolTipActive = True
+            Me.m_gridFleet.IsLayoutSuspended = False
             Me.m_gridFleet.IsMaximizeByFleetValue = False
             Me.m_gridFleet.Manager = Nothing
             Me.m_gridFleet.Name = "m_gridFleet"
@@ -619,10 +642,12 @@ Namespace Ecospace
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridGroup.CustomSort = False
+            Me.m_gridGroup.DataName = "grid content"
             resources.ApplyResources(Me.m_gridGroup, "m_gridGroup")
             Me.m_gridGroup.FixedColumnWidths = False
             Me.m_gridGroup.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridGroup.GridToolTipActive = True
+            Me.m_gridGroup.IsLayoutSuspended = False
             Me.m_gridGroup.Manager = Nothing
             Me.m_gridGroup.Name = "m_gridGroup"
             Me.m_gridGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -669,7 +694,6 @@ Namespace Ecospace
             'm_ucZoomBar
             '
             resources.ApplyResources(Me.m_ucZoomBar, "m_ucZoomBar")
-            Me.m_ucZoomBar.MinimumSize = New System.Drawing.Size(100, 25)
             Me.m_ucZoomBar.Name = "m_ucZoomBar"
             Me.m_ucZoomBar.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
             Me.m_ucZoomBar.UIContext = Nothing
@@ -703,6 +727,38 @@ Namespace Ecospace
             Me.m_hdrLayers.IsCollapsed = False
             Me.m_hdrLayers.Name = "m_hdrLayers"
             '
+            'm_tabSponsors
+            '
+            Me.m_tabSponsors.Controls.Add(Me.m_tlpSponsors)
+            resources.ApplyResources(Me.m_tabSponsors, "m_tabSponsors")
+            Me.m_tabSponsors.Name = "m_tabSponsors"
+            Me.m_tabSponsors.UseVisualStyleBackColor = True
+            '
+            'm_tlpSponsors
+            '
+            resources.ApplyResources(Me.m_tlpSponsors, "m_tlpSponsors")
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbLenfest, 1, 1)
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbDuke, 3, 1)
+            Me.m_tlpSponsors.Name = "m_tlpSponsors"
+            '
+            'm_pbLenfest
+            '
+            Me.m_pbLenfest.BackColor = System.Drawing.Color.White
+            Me.m_pbLenfest.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.logo_LENFEST
+            resources.ApplyResources(Me.m_pbLenfest, "m_pbLenfest")
+            Me.m_pbLenfest.Cursor = System.Windows.Forms.Cursors.Hand
+            Me.m_pbLenfest.Name = "m_pbLenfest"
+            Me.m_pbLenfest.TabStop = False
+            '
+            'm_pbDuke
+            '
+            Me.m_pbDuke.BackColor = System.Drawing.Color.White
+            Me.m_pbDuke.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.logo_mgel
+            resources.ApplyResources(Me.m_pbDuke, "m_pbDuke")
+            Me.m_pbDuke.Cursor = System.Windows.Forms.Cursors.Hand
+            Me.m_pbDuke.Name = "m_pbDuke"
+            Me.m_pbDuke.TabStop = False
+            '
             'm_scContent
             '
             resources.ApplyResources(Me.m_scContent, "m_scContent")
@@ -717,42 +773,18 @@ Namespace Ecospace
             Me.m_scContent.Panel2.Controls.Add(Me.m_hdrOutput)
             Me.m_scContent.Panel2.Controls.Add(Me.m_tcResults)
             '
-            'm_pbDuke
-            '
-            resources.ApplyResources(Me.m_pbDuke, "m_pbDuke")
-            Me.m_pbDuke.BackColor = System.Drawing.Color.White
-            Me.m_pbDuke.Name = "m_pbDuke"
-            Me.m_pbDuke.TabStop = False
-            '
-            'm_pbLenfest
-            '
-            resources.ApplyResources(Me.m_pbLenfest, "m_pbLenfest")
-            Me.m_pbLenfest.BackColor = System.Drawing.Color.White
-            Me.m_pbLenfest.Image = Global.ScientificInterface.My.Resources.Resources.logo_LENFEST
-            Me.m_pbLenfest.Name = "m_pbLenfest"
-            Me.m_pbLenfest.TabStop = False
-            '
-            'm_bntReset
-            '
-            resources.ApplyResources(Me.m_bntReset, "m_bntReset")
-            Me.m_bntReset.Name = "m_bntReset"
-            Me.m_bntReset.UseVisualStyleBackColor = True
-            '
             'frmMPAOptimizations
             '
             Me.AcceptButton = Me.m_btnRun
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnStop
-            Me.Controls.Add(Me.m_bntReset)
             Me.Controls.Add(Me.m_btnRun)
             Me.Controls.Add(Me.m_btnStop)
             Me.Controls.Add(Me.m_scContent)
             Me.Controls.Add(Me.m_rbRandom)
             Me.Controls.Add(Me.m_lblSearchType)
             Me.Controls.Add(Me.m_rbEcoseed)
-            Me.Controls.Add(Me.m_pbLenfest)
-            Me.Controls.Add(Me.m_pbDuke)
             Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcospaceLoaded
             Me.DoubleBuffered = True
             Me.Name = "frmMPAOptimizations"
@@ -788,12 +820,14 @@ Namespace Ecospace
             CType(Me.m_scMap, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMap.ResumeLayout(False)
             Me.m_tlbLayers.ResumeLayout(False)
+            Me.m_tabSponsors.ResumeLayout(False)
+            Me.m_tlpSponsors.ResumeLayout(False)
+            CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbDuke, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.Panel1.ResumeLayout(False)
             Me.m_scContent.Panel2.ResumeLayout(False)
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.ResumeLayout(False)
-            CType(Me.m_pbDuke, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -850,9 +884,6 @@ Namespace Ecospace
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
         Private WithEvents m_lblDiscRate As System.Windows.Forms.Label
         Private WithEvents m_lblGenDiscRate As System.Windows.Forms.Label
-        Private WithEvents m_pbDuke As System.Windows.Forms.PictureBox
-        Private WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
-        Private WithEvents m_bntReset As System.Windows.Forms.Button
         Private WithEvents m_tlpMap As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_ucZoomBar As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
         Private WithEvents m_nudStartYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
@@ -866,5 +897,9 @@ Namespace Ecospace
         Private WithEvents m_nudDiscRate As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudGenDiscRate As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_cbAutoSave As System.Windows.Forms.CheckBox
+        Private WithEvents m_tabSponsors As System.Windows.Forms.TabPage
+        Private WithEvents m_tlpSponsors As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbDuke As System.Windows.Forms.PictureBox
     End Class
 End Namespace

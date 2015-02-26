@@ -39,12 +39,12 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMPAs))
-            Me.m_grid = New ScientificInterface.Ecospace.gridEditMPA
-            Me.m_btnAddMPA = New System.Windows.Forms.Button
-            Me.m_btnRemoveMPA = New System.Windows.Forms.Button
-            Me.OK_Button = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.m_btnKeep = New System.Windows.Forms.Button
+            Me.m_grid = New ScientificInterface.Ecospace.gridEditMPA()
+            Me.m_btnAddMPA = New System.Windows.Forms.Button()
+            Me.m_btnRemoveMPA = New System.Windows.Forms.Button()
+            Me.OK_Button = New System.Windows.Forms.Button()
+            Me.Cancel_Button = New System.Windows.Forms.Button()
+            Me.m_btnKeep = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_grid
@@ -59,19 +59,21 @@ Namespace Ecospace
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
             'm_btnAddMPA

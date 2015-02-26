@@ -252,6 +252,11 @@ Public Enum eStatusFlags
     ''' </summary>
     Null = 256
 
+    ''' <summary>
+    ''' Variable is being stored in the EwE database system.
+    ''' </summary>
+    Stored = 512
+
 End Enum
 
 #End Region

@@ -255,7 +255,7 @@ Public Class frmRemarkPanel
         Dim bHasSelection As Boolean = False
 
         For Each p As cProperty In Me.m_mon.Selection
-            If Not String.IsNullOrEmpty(p.ID) Then bHasSelection = True
+            If Not String.IsNullOrEmpty(p.ID) Then bHasSelection = bHasSelection Or p.IsStored
         Next
 
         Me.m_btnApply.Visible = bHasEcopath

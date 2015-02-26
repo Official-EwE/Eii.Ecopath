@@ -192,6 +192,21 @@
     <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityCalcType.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\frmEcospaceFishery.Designer.vb">
+      <DependentUpon>frmEcospaceFishery.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\frmEcospaceFishery.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\frmMPAs.Designer.vb">
+      <DependentUpon>frmMPAs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\frmMPAs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridMPAs.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="frmEwE6.Designer.vb">
       <DependentUpon>frmEwE6.vb</DependentUpon>
     </Compile>
@@ -875,6 +890,12 @@
     <EmbeddedResource Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.resx">
       <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\frmEcospaceFishery.resx">
+      <DependentUpon>frmEcospaceFishery.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\frmMPAs.resx">
+      <DependentUpon>frmMPAs.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmEwE6.resx">
       <DependentUpon>frmEwE6.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1097,6 +1118,7 @@
   <ItemGroup>
     <None Include="Resources\Ecopath6_joepie.ico" />
     <None Include="Resources\ecopath5_30.ico" />
+    <Content Include="Resources\logo_mgel.png" />
     <Content Include="Resources\logo_sm.png" />
     <None Include="Resources\Warning.png" />
     <None Include="Resources\license.rtf" />
@@ -1792,7 +1814,6 @@
     <Content Include="Resources\logo_FIMR.jpg" />
     <None Include="Resources\Importance.png" />
     <Content Include="Resources\logo_LENFEST.jpg" />
-    <None Include="Resources\logo_MGEL.gif" />
     <None Include="Resources\logo_PEW.jpg" />
     <Content Include="Resources\logo_SAUP.jpg" />
     <None Include="Resources\Seed.PNG" />

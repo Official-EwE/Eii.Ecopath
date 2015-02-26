@@ -7430,9 +7430,6 @@ Location: {1}</value>
   <data name="MPAOPT_AXISLABEL_BESTITERATIONS" xml:space="preserve">
     <value>Best iterations</value>
   </data>
-  <data name="ECOSPACE_DEFHABITATS_ALLHABITATS" xml:space="preserve">
-    <value>All habitats (e.g., pelagic)</value>
-  </data>
   <data name="FLOWDIAGRAM_LABEL_BIOMASS" xml:space="preserve">
     <value>B: {0}</value>
     <comment>{0}=biomass value</comment>
@@ -7522,8 +7519,8 @@ Location: {1}</value>
   <data name="PROMPT_ADVECTION_INBALANCED" xml:space="preserve">
     <value>Inflows and outflows do not balance; it is recommend not using this velocity field for simulations if ecospace shows strange behavior. Do you wish to revert the advection data to the previous state?</value>
   </data>
-  <data name="ECOSPACE_HEADER_FLEETHABUSE" xml:space="preserve">
-    <value>Fleet \ habitat use:</value>
+  <data name="HEADER_FISH_EVERYWHERE" xml:space="preserve">
+    <value>Fish everywhere</value>
   </data>
   <data name="STATUS_MODEL_COMPACTING_TEMPFILE" xml:space="preserve">
     <value>Unable to create a temporary file while compacting database. Please check if you are low in disk space.</value>
@@ -12990,9 +12987,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="ECOSIM_SUITABILITY_PLOT_QPREY_BPRED" xml:space="preserve">
     <value>Q prey / B pred</value>
   </data>
-  <data name="Warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="CAPTION_SPATIALTEMPORAL_EXPORT" xml:space="preserve">
     <value>Exporting {0} data set(s)</value>
     <comment>{0}=dataset count</comment>
@@ -13047,6 +13041,17 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="ecopath_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ecopath_logo.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ECOSPACE_HEADER_AREAFISHING" xml:space="preserve">
+    <value>Fleet \ habitat + MPA usage</value>
+  </data>
+  <data name="HEADER_HABITAT_X" xml:space="preserve">
+    <value>Hab. '{0}'</value>
+    <comment>{0}=habitat name</comment>
+  </data>
+  <data name="HEADER_MPA_X" xml:space="preserve">
+    <value>MPA. '{0}'</value>
+    <comment>{0}=MPA name</comment>
+  </data>
   <data name="HEADER_SPATTEMP_NODRIVER" xml:space="preserve">
     <value>No external data</value>
   </data>
@@ -13071,5 +13076,8 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="PROMPT_SHELL_FAILURE" xml:space="preserve">
     <value>Failed to launch command. {0}</value>
     <comment>{0}=exception message</comment>
+  </data>
+  <data name="logo_mgel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\logo_mgel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

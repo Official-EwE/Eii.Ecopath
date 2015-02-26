@@ -71,6 +71,8 @@ Namespace Properties
         ''' <summary>To detect redundant disposal calls.</summary>
         Private m_bDisposed As Boolean = False
 
+        Private m_bStored As Boolean = True
+
 #If DEBUG Then
         Private Shared s_iNextID As Long = 0
         Protected m_iID As Long = 0
@@ -277,6 +279,7 @@ Namespace Properties
 
                 ' Get the core status
                 coreStatus = m_Source.GetStatus(Me.m_VarName, iIndex)
+
                 ' Hard-copy only the core status bits. All other flags are GUI flags and are preserved
                 guiStyle = DirectCast(CInt(coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or _
                                   CInt(Me.Style And (Not cStyleGuide.eStyleFlags.CoreStatusFlagsMask)), cStyleGuide.eStyleFlags)
@@ -299,7 +302,8 @@ Namespace Properties
             ' Get remarks
             Me.UpdateRemarksStyle(TriState.False)
 
-            ' Get references
+            ' Get stored status
+            Me.m_bStored = ((coreStatus And eStatusFlags.Stored) > 0)
 
             ' Anything changed?
             If (changeFlags <> 0) Then
@@ -622,6 +626,18 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Returns whether the value wrapped by the property is stored in the
+        ''' EwE database system.
+        ''' </summary>
+        ''' <returns>True if the value wrapped by the property is stored in the
+        ''' EwE database system.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function IsStored() As Boolean
+            Return Me.m_bStored
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the remarks for this property.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -632,7 +648,7 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Performs the actual getting/setting of the remarks for this property.
-        ''' Remarks are not stored in the property itself, but should be obtained from the Core.
+        ''' Remarks are not stored in the property itself, but are obtained from the Core.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overridable Property Remark() As String

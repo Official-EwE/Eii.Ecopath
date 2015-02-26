@@ -10664,11 +10664,12 @@ Public Class cCore
     ''' </summary>
     ''' <param name="strMPAName">Name of MPA to add.</param>
     ''' <param name="iMPA">Index of the new MPA.</param>
-    ''' <param name="abMPAMonths">Flags indicating when the MPA is OPEN for fishing.</param>
+    ''' <param name="MPAMonths">One-based series of flags that indicate when the 
+    ''' MPA is OPEN for fishing.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddEcospaceMPA(ByVal strMPAName As String, _
-                                   ByVal abMPAMonths() As Boolean, _
+                                   ByVal MPAMonths() As Boolean, _
                                    ByRef iMPA As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim obj As cCoreInputOutputBase = Nothing
@@ -10684,11 +10685,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        If ds.AppendEcospaceMPA(strMPAName, abMPAMonths, iDBID) Then
-            ' JS 20sep07: Release batch lock will reload the scenario already
-            '' This has effects throughout the Ecospace scenario - reload it
-            'bSucces = Me.LoadEcospaceScenario(Me.ActiveEcospaceScenarioIndex)
-            ' Broadcast update
+        If ds.AppendEcospaceMPA(strMPAName, MPAMonths, iDBID) Then
             Me.m_publisher.AddMessage(New cMessage(cStringUtils.Localize("Ecospace MPA {0} has been added", strMPAName), _
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else

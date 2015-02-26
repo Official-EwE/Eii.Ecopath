@@ -924,13 +924,13 @@ Public Class cEcoSpace
 
                 If itt > nEcospaceTimeSteps Then
                     'We have exceeded the number of time step bump out of the time loop.
-                    'This quarantees we don't come up one time step short due to rounding issues with m_Data.TimeStep
+                    'This quarantees we don't come up one time step long due to rounding issues with m_Data.TimeStep
                     itt = nEcospaceTimeSteps
                     Exit For
                 End If
 
                 'Set the isFished(fleet,row,col) array
-                Me.EvaluateFishing()
+                Me.setIsFished()
 
                 Dim SPSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
                 'Read any Spatial Temporal data into memory for this timestep
@@ -1301,6 +1301,7 @@ Public Class cEcoSpace
         m_Data.MonthNow = Math.Truncate(1.0F + (m_Data.TimeNow - Math.Truncate(m_Data.TimeNow)) * 12.0F)
         'YearNow will be truncated to the integer part of timenow
         m_Data.YearNow = 1 + Math.Truncate(m_Data.TimeNow)
+        If m_Data.YearNow > Math.Truncate(Me.m_Data.TotalTime) Then m_Data.YearNow = Math.Truncate(Me.m_Data.TotalTime)
 
     End Sub
 
@@ -3697,11 +3698,14 @@ exitline:
     ''' <summary>
     ''' Evaluate the <see cref="cEcospaceDataStructures.IsFished">fishing access map</see> for the current month.
     ''' </summary>
-    Sub EvaluateFishing()
+    Sub setIsFished()
+
+        'System.Console.WriteLine("----------------MPA Fished------------------------")
 
         ' For all cells
         For i As Integer = 1 To Me.m_Data.InRow
             For j As Integer = 1 To Me.m_Data.InCol
+
                 ' For all fleets
                 For ig As Integer = 1 To Me.m_Data.nFleets
                     Dim bFished As Boolean = False
@@ -3709,25 +3713,31 @@ exitline:
                     If (Me.m_Data.Depth(i, j) > 0) And (Me.m_Data.PAreaFished(ig)(i, j) > 0 Or Me.m_Data.GearHab(ig, 0)) Then
                         'Ok it is potentialy fished 
                         'Is this cell in an MPA
-                        bFished = (Me.m_Data.MPA(i, j) = 0 Or Me.m_Data.MPAfishery(ig, Me.m_Data.MPA(i, j)) Or Me.m_Data.MPAmonth(Me.m_Data.MonthNow, Me.m_Data.MPA(i, j)))
+                        bFished = True
+                        For impa As Integer = 1 To Me.m_Data.MPAno
+                            'If for any reason this cell is closed to fishing for this fleet by any of the MPA's
+                            'Set this cell to isFished = False for this fleet
+
+                            Dim iCellMPA As Integer = Me.m_Data.MPA(impa)(i, j)
+                            'does this cell have an MPA
+                            'Me.m_Data.MPAfishery(ig, iCellMPA) = True if this fleet can fish in the MPA
+                            'Me.m_Data.MPAmonth(Me.m_Data.MonthNow, iCellMPA) = True  if the MPA is open in this month
+                            If (iCellMPA <> 0) And (Not Me.m_Data.MPAfishery(ig, iCellMPA)) And (Not Me.m_Data.MPAmonth(Me.m_Data.MonthNow, iCellMPA)) Then
+                                'This cell contains an MPA that is fished by this fleet in this month
+                                'So it's closed to fishing for this fleet
+                                bFished = False
+                                Exit For
+                            End If
+                        Next
+
                         If bFished Then
                             'If it is still fished check it against the EffortDistThreshold
                             'Include the fishing effort threshold 
                             If Me.m_Data.bUseEffortDistThreshold And Me.m_Data.Sail(ig)(i, j) >= Me.m_Data.EffortDistThreshold Then
                                 bFished = False
                             End If
+                            'System.Console.WriteLine("Fished fleet=" + ig.ToString + " row=" + i.ToString + " col=" + j.ToString)
                         End If
-
-                        '' Check if there are MPA restrictions for this fleet
-                        'For im As Integer = 1 To Me.m_Data.MPAno
-                        '    ' Is an MPA active in this cell?
-                        '    If (Me.m_Data.MPA(i, j, im)) Then
-                        '        ' Is an MPA restriction active for this fleet?
-                        '        If Not Me.m_Data.MPAfishery(ig, im) And Not Me.m_Data.MPAmonth(Me.m_Data.MonthNow, im) Then
-                        '            bFished = False
-                        '        End If
-                        '    End If
-                        'Next
 
                     End If
                     Me.m_Data.IsFished(ig, i, j) = bFished
@@ -3736,8 +3746,6 @@ exitline:
         Next i
 
     End Sub
-
-
 
     Sub PredictEffortDistributionThreaded(ByVal obParam As Object)
         Dim i As Integer, j As Integer, TotAttract As Single

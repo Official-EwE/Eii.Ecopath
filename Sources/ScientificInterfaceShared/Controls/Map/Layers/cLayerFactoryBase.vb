@@ -182,7 +182,7 @@ Namespace Controls.Map
                         renderer.RenderMode = Definitions.eLayerRenderType.Always
 
                         editor = New cLayerEditorTwoState()
-                        layer = New cDisplayRasterLayer(uic, bmd.LayerMPA, renderer, editor, mpa, eVarNameFlags.Name, iMPA, 0)
+                        layer = New cDisplayRasterLayer(uic, bmd.LayerMPA(iMPA), renderer, editor, mpa, eVarNameFlags.Name, iMPA, 0)
 
                         lLayers.Add(layer)
 
