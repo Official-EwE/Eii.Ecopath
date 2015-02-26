@@ -150,7 +150,6 @@ Partial Class frmStartPanel
         Me.Controls.Add(Me.m_tlp)
         Me.HideOnClose = True
         Me.Name = "frmStartPanel"
-        Me.TabText = "Home"
         Me.m_tlp.ResumeLayout(False)
         Me.m_tlp.PerformLayout()
         Me.m_ts1.ResumeLayout(False)
@@ -158,6 +157,7 @@ Partial Class frmStartPanel
         Me.ResumeLayout(False)
 
     End Sub
+
     Private WithEvents m_browser As System.Windows.Forms.WebBrowser
     Private WithEvents m_ts1 As cEwEToolstrip
     Private WithEvents m_tsbnBack As System.Windows.Forms.ToolStripButton
@@ -172,6 +172,5 @@ Partial Class frmStartPanel
     Private WithEvents m_tsbnBugTracker As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnBetaFeedback As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnFacebook As System.Windows.Forms.ToolStripButton
-
 
 End Class

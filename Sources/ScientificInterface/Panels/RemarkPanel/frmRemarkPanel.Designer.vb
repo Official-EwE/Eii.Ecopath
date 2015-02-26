@@ -34,63 +34,140 @@ Partial Class frmRemarkPanel
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmRemarkPanel))
         Me.m_tsRemarks = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tsbnInfo = New System.Windows.Forms.ToolStripButton()
         Me.m_lblVarName = New System.Windows.Forms.ToolStripLabel()
-        Me.m_btnApply = New System.Windows.Forms.ToolStripButton()
         Me.m_tbxRemark = New System.Windows.Forms.TextBox()
+        Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_lblDomain = New System.Windows.Forms.Label()
+        Me.m_lblDescription = New System.Windows.Forms.Label()
+        Me.m_lblStatus = New System.Windows.Forms.Label()
+        Me.m_tlpRemarks = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_btnApply = New System.Windows.Forms.Button()
         Me.m_tsRemarks.SuspendLayout()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_scMain.Panel1.SuspendLayout()
+        Me.m_scMain.Panel2.SuspendLayout()
+        Me.m_scMain.SuspendLayout()
+        Me.m_tlpInfo.SuspendLayout()
+        Me.m_tlpRemarks.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_tsRemarks
         '
         Me.m_tsRemarks.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsRemarks.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_lblVarName, Me.m_btnApply})
+        Me.m_tsRemarks.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnInfo, Me.m_lblVarName})
         resources.ApplyResources(Me.m_tsRemarks, "m_tsRemarks")
         Me.m_tsRemarks.Name = "m_tsRemarks"
         Me.m_tsRemarks.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        '
+        'm_tsbnInfo
+        '
+        Me.m_tsbnInfo.CheckOnClick = True
+        Me.m_tsbnInfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnInfo, "m_tsbnInfo")
+        Me.m_tsbnInfo.Name = "m_tsbnInfo"
         '
         'm_lblVarName
         '
         Me.m_lblVarName.Name = "m_lblVarName"
         resources.ApplyResources(Me.m_lblVarName, "m_lblVarName")
         '
-        'm_btnApply
-        '
-        Me.m_btnApply.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_btnApply.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.m_btnApply, "m_btnApply")
-        Me.m_btnApply.Name = "m_btnApply"
-        '
         'm_tbxRemark
         '
         Me.m_tbxRemark.AcceptsReturn = True
-        Me.m_tbxRemark.AcceptsTab = True
         resources.ApplyResources(Me.m_tbxRemark, "m_tbxRemark")
         Me.m_tbxRemark.Name = "m_tbxRemark"
         '
-        'frmRemarkPanel
+        'm_scMain
+        '
+        resources.ApplyResources(Me.m_scMain, "m_scMain")
+        Me.m_scMain.Name = "m_scMain"
+        '
+        'm_scMain.Panel1
+        '
+        Me.m_scMain.Panel1.Controls.Add(Me.m_tlpInfo)
+        '
+        'm_scMain.Panel2
+        '
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tlpRemarks)
+        Me.m_scMain.TabStop = False
+        '
+        'm_tlpInfo
+        '
+        resources.ApplyResources(Me.m_tlpInfo, "m_tlpInfo")
+        Me.m_tlpInfo.Controls.Add(Me.m_lblDomain, 0, 0)
+        Me.m_tlpInfo.Controls.Add(Me.m_lblDescription, 0, 1)
+        Me.m_tlpInfo.Controls.Add(Me.m_lblStatus, 0, 2)
+        Me.m_tlpInfo.Name = "m_tlpInfo"
+        '
+        'm_lblDomain
+        '
+        resources.ApplyResources(Me.m_lblDomain, "m_lblDomain")
+        Me.m_lblDomain.Name = "m_lblDomain"
+        '
+        'm_lblDescription
+        '
+        resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
+        Me.m_lblDescription.Name = "m_lblDescription"
+        '
+        'm_lblStatus
+        '
+        resources.ApplyResources(Me.m_lblStatus, "m_lblStatus")
+        Me.m_lblStatus.Name = "m_lblStatus"
+        '
+        'm_tlpRemarks
+        '
+        resources.ApplyResources(Me.m_tlpRemarks, "m_tlpRemarks")
+        Me.m_tlpRemarks.Controls.Add(Me.m_tbxRemark, 0, 0)
+        Me.m_tlpRemarks.Controls.Add(Me.m_btnApply, 1, 0)
+        Me.m_tlpRemarks.Name = "m_tlpRemarks"
+        '
+        'm_btnApply
+        '
+        resources.ApplyResources(Me.m_btnApply, "m_btnApply")
+        Me.m_btnApply.Name = "m_btnApply"
+        Me.m_btnApply.UseVisualStyleBackColor = True
+        '
+        'frmInformationPanel
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CloseButtonVisible = False
-        Me.Controls.Add(Me.m_tbxRemark)
+        Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.m_tsRemarks)
         Me.DockAreas = CType((((WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) _
             Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) _
             Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom), WeifenLuo.WinFormsUI.Docking.DockAreas)
         Me.HideOnClose = True
-        Me.Name = "frmRemarkPanel"
+        Me.Name = "frmInformationPanel"
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.TabText = "Remarks"
+        Me.TabText = ""
         Me.m_tsRemarks.ResumeLayout(False)
         Me.m_tsRemarks.PerformLayout()
+        Me.m_scMain.Panel1.ResumeLayout(False)
+        Me.m_scMain.Panel2.ResumeLayout(False)
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_scMain.ResumeLayout(False)
+        Me.m_tlpInfo.ResumeLayout(False)
+        Me.m_tlpInfo.PerformLayout()
+        Me.m_tlpRemarks.ResumeLayout(False)
+        Me.m_tlpRemarks.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
     Private WithEvents m_tsRemarks As cEwEToolstrip
-    Private WithEvents m_lblVarName As System.Windows.Forms.ToolStripLabel
-    Private WithEvents m_btnApply As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tbxRemark As System.Windows.Forms.TextBox
+    Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents m_lblStatus As System.Windows.Forms.Label
+    Private WithEvents m_lblVarName As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+    Private WithEvents m_lblDomain As System.Windows.Forms.Label
+    Private WithEvents m_lblDescription As System.Windows.Forms.Label
+    Private WithEvents m_tsbnInfo As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tlpRemarks As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_btnApply As System.Windows.Forms.Button
 End Class

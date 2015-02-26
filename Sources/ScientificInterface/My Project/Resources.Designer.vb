@@ -2014,6 +2014,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Additional description: {0}.
+        '''</summary>
+        Public ReadOnly Property INFOPANEL_DESCRIPTION() As String
+            Get
+                Return ResourceManager.GetString("INFOPANEL_DESCRIPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Allowed values: {0}.
+        '''</summary>
+        Public ReadOnly Property INFOPANEL_DOMAIN() As String
+            Get
+                Return ResourceManager.GetString("INFOPANEL_DOMAIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to The number entered is not valid.
         '''</summary>
         Public ReadOnly Property INVALID_NUMBER_ENTERED() As String

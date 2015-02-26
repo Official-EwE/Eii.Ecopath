@@ -30,7 +30,7 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eAutosaveTypes"/>.
+    ''' Class for providing a textual description of <see cref="cStyleGuide.eStyleFlags"/>.
     ''' </summary>
     ''' <remarks>
     ''' <para>This class tries to obtain a string from the ScientificShared resources.
@@ -67,12 +67,6 @@ Namespace Style
 
                     For i As Integer = 0 To Math.Min(descriptor, iNumBits)
 
-                        ' Is first part?
-                        If (i = 0) Then
-                            ' #Yes: remember default
-                            strBit = strValue
-                        End If
-
                         If i < iNumBits Then
                             ' Has a part?
                             If Not String.IsNullOrEmpty(astrBits(i)) Then
@@ -85,10 +79,6 @@ Namespace Style
 
                     If Not String.IsNullOrWhiteSpace(strBit) Then
                         sb.AppendLine(strBit)
-#If DEBUG Then
-                    Else
-                        Debug.Assert(False, "Developer panic: style flag " & sf & " does not have a resource string in ScientificInterfaceShared")
-#End If
                     End If
                 End If
             Next

@@ -3217,4 +3217,16 @@
   <data name="VARIABLE_FORAGINGTIMELOWERLIMIT" xml:space="preserve">
     <value>Foraging lower limit|||In EwE version 6.4 and prior, Ecosim limits the foraging time to 0.1 of a time step. This limit can now be lowered to 0.01</value>
   </data>
+  <data name="METADATA_BOOLEAN" xml:space="preserve">
+    <value>yes/no</value>
+  </data>
+  <data name="METADATA_INTEGER" xml:space="preserve">
+    <value>n</value>
+  </data>
+  <data name="METADATA_SINGLE" xml:space="preserve">
+    <value>r</value>
+  </data>
+  <data name="METADATA_TEXT" xml:space="preserve">
+    <value>Max. {0} characters</value>
+  </data>
 </root>

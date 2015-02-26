@@ -323,9 +323,19 @@ Public Class cEwEStatusBar
         ' Store original text
         Me.m_strLastStatusText = strText
 
-        ' Obtain alternate text from selection monitor
-        If String.IsNullOrEmpty(strText) Then strText = New cSelectionMonitorFormatter().GetDescriptor(Me.m_selmon, eDescriptorTypes.Name)
+        '' Obtain alternate text from selection monitor
+        'If String.IsNullOrEmpty(strText) Then strText = New cSelectionMonitorFormatter().GetDescriptor(Me.m_selmon, eDescriptorTypes.Name)
 
+        ' Optimization
+        If (String.Compare(strText, Me.m_tsStatus.Text, True) = 0) And (sProgress = m_sLastProgress) Then
+            Return
+        End If
+
+        ' Now store progress
+        Me.m_sLastProgress = sProgress
+
+        ' Update
+        Me.m_tsStatus.Text = strText
         If sProgress = 0 Then
             Me.m_tsbProgress.Visible = False
             Me.m_tslStop.Visible = False
@@ -339,16 +349,6 @@ Public Class cEwEStatusBar
             Me.m_tsbProgress.Visible = True
             Me.m_tslStop.Visible = Me.m_uic.Core.CanStopRun
         End If
-
-        ' Optimization
-        If (String.Compare(strText, Me.m_tsStatus.Text, True) = 0) And (sProgress = m_sLastProgress) Then
-            Return
-        End If
-
-        ' Now store progress
-        Me.m_sLastProgress = sProgress
-        ' Update
-        Me.m_tsStatus.Text = strText
 
         ' Redraw status bar immediately
         '   This is a known performace killer (issue #937)

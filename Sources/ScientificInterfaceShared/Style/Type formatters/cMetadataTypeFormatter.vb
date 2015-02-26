@@ -23,6 +23,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports EwECore
 Imports EwEUtils.SystemUtilities
+Imports System.Text
 
 #End Region ' Imports
 
@@ -36,6 +37,12 @@ Namespace Style
     Public Class cMetadataTypeFormatter
         Implements ITypeFormatter
 
+        Private m_sg As cStyleGuide = Nothing
+
+        Public Sub New(sg As cStyleGuide)
+            Me.m_sg = sg
+        End Sub
+
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
@@ -47,37 +54,36 @@ Namespace Style
             Debug.Assert(value.GetType.IsAssignableFrom(Me.GetDescribedType()))
 
             Dim md As cVariableMetaData = DirectCast(value, cVariableMetaData)
-            Dim strDescr As String = ""
+            Dim sbDescr As New StringBuilder()
 
             Select Case md.VarType
                 Case ValueWrapper.eValueTypes.Bool, ValueWrapper.eValueTypes.BoolArray
-                    strDescr = "true or false"
+                    sbDescr.Append(My.Resources.METADATA_BOOLEAN)
 
                 Case ValueWrapper.eValueTypes.Int, ValueWrapper.eValueTypes.IntArray
-                    Dim bLowerLimit As Boolean = md.Min > Integer.MinValue
-                    Dim bUpperLimit As Boolean = md.Max < Integer.MaxValue
-                    Dim bDefault As Boolean = CInt(md.NullValue) <> cCore.NULL_VALUE
-                    strDescr = String.Format("integer, {0}{1},{2}{3}", _
-                                             cSystemUtils.IIF((TypeOf md.MinOperator Is cGreaterThan) Or Not bLowerLimit, "<", "["), _
-                                             cSystemUtils.IIF(bLowerLimit, md.Min, "inf"), _
-                                             cSystemUtils.IIF(bUpperLimit, md.Max, "inf"), _
-                                             cSystemUtils.IIF((TypeOf md.MaxOperator Is cLessThan) Or Not bUpperLimit, ">", "]"))
+                    If (md.Min > Integer.MinValue) Then
+                        sbDescr.Append(CStr(md.Min) & " " & CStr(cSystemUtils.IIF((TypeOf md.MinOperator Is cGreaterThan), "<", "≤")) & " ")
+                    End If
+                    sbDescr.Append(My.Resources.METADATA_INTEGER)
+                    If (md.Max < Integer.MaxValue) Then
+                        sbDescr.Append(" " & CStr(cSystemUtils.IIF((TypeOf md.MinOperator Is cLessThan), "<", "≤")) & " " & CStr(md.Max))
+                    End If
 
                 Case ValueWrapper.eValueTypes.Sng, ValueWrapper.eValueTypes.SingleArray
-                    Dim bLowerLimit As Boolean = md.Min > Single.MinValue
-                    Dim bUpperLimit As Boolean = md.Max < Single.MaxValue
-                    Dim bDefault As Boolean = CSng(md.NullValue) <> cCore.NULL_VALUE
-                    strDescr = String.Format("floating point, {0}{1},{2}{3}", _
-                                             cSystemUtils.IIF((TypeOf md.MinOperator Is cGreaterThan) Or Not bLowerLimit, "<", "["), _
-                                             cSystemUtils.IIF(bLowerLimit, md.Min, "inf"), _
-                                             cSystemUtils.IIF(bUpperLimit, md.Max, "inf"), _
-                                             cSystemUtils.IIF((TypeOf md.MaxOperator Is cLessThan) Or Not bUpperLimit, ">", "]"))
+                    If (md.Min > Single.MinValue) Then
+                        sbDescr.Append(CStr(md.Min) & " " & CStr(cSystemUtils.IIF((TypeOf md.MinOperator Is cGreaterThan), "<", "≤")) & " ")
+                    End If
+                    sbDescr.Append(My.Resources.METADATA_SINGLE)
+                    If (md.Max < Single.MaxValue) Then
+                        sbDescr.Append(" " & CStr(cSystemUtils.IIF((TypeOf md.MinOperator Is cLessThan), "<", "≤")) & " " & CStr(md.Max))
+                    End If
 
                 Case ValueWrapper.eValueTypes.Str
                     Dim iMax As Integer = Math.Min(CInt(2 ^ 16) - 1, md.Length)
-                    strDescr = String.Format("Text of max. {0} characters", iMax)
+                    sbDescr.Append(String.Format(My.Resources.METADATA_TEXT, iMax))
+
             End Select
-            Return strDescr
+            Return sbDescr.ToString()
 
         End Function
 
