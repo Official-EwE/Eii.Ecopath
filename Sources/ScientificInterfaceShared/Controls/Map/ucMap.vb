@@ -343,24 +343,22 @@ Namespace Controls.Map
                     strVal = l.Renderer.GetDisplayText(DirectCast(l, cDisplayRasterLayer).Value(ptCell.Y, ptCell.X))
                 End If
 
-                Dim sel As cPropertySelectionCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
+                Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(sLat)
+                Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(sLon)
+                Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells, My.Resources.UNIT_METER, My.Resources.UNIT_DECIMALDEGREE)
 
-                If (sel IsNot Nothing) Then
-                    Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(sLat)
-                    Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(sLon)
-                    Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells, My.Resources.UNIT_METER, My.Resources.UNIT_DECIMALDEGREE)
-
-                    If Not String.IsNullOrWhiteSpace(strVal) Then
-                        strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE, _
-                                                    strLon, strLat, strUnit, _
-                                                    ptCell.Y, ptCell.X, strVal)
-                    Else
-                        strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS, _
-                                                    strLon, strLat, strUnit, _
-                                                    ptCell.Y, ptCell.X)
-                    End If
-                    sel.Invoke(sel.Selection, strFeedback)
+                If Not String.IsNullOrWhiteSpace(strVal) Then
+                    strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE, _
+                                                strLon, strLat, strUnit, _
+                                                ptCell.Y, ptCell.X, strVal)
+                Else
+                    strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS, _
+                                                strLon, strLat, strUnit, _
+                                                ptCell.Y, ptCell.X)
                 End If
+
+                cApplicationStatusNotifier.UpdateStatus(Me.m_uic.Core, strFeedback)
+
             End If
 
         End Sub
@@ -391,10 +389,7 @@ Namespace Controls.Map
 
         Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
             MyBase.OnMouseLeave(e)
-            Dim sel As cPropertySelectionCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
-            If (sel IsNot Nothing) Then
-                sel.Invoke(sel.Selection, "")
-            End If
+            cApplicationStatusNotifier.UpdateStatus(Me.m_uic.Core, "")
         End Sub
 
         Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
