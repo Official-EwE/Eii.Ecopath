@@ -4343,6 +4343,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fish everywhere.
+        '''</summary>
+        Public ReadOnly Property HEADER_FISHING_ALL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FISHING_ALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fishing effort modifier.
         '''</summary>
         Public ReadOnly Property HEADER_FISHING_EFFORT_MODIFIER() As String
@@ -5212,6 +5221,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_MPA() As String
             Get
                 Return ResourceManager.GetString("HEADER_MPA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Closed for fishing.
+        '''</summary>
+        Public ReadOnly Property HEADER_MPA_CLOSED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MPA_CLOSED", resourceCulture)
             End Get
         End Property
         

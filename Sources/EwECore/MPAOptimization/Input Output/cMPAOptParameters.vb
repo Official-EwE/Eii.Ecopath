@@ -40,49 +40,59 @@ Public Class cMPAOptParameters
             'MPAOptSearchType stored as an integer
             meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eMPAOptimizationModels)).Length - 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MPAOptSearchType, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptSearchType))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'BoundaryWeight
             meta = New cVariableMetaData(0.0!, 10.0!, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.MPAOptBoundaryWeight, status, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptBoundaryWeight))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'MPAOptStepSize
             meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MPAOptStepSize, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptStepSize))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'MPAOptIterations
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MPAOptIterations, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptIterations))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'MPAOptMaxArea %
             meta = New cVariableMetaData(0, 100, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MPAOptMaxArea, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptMaxArea))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'MPAOptMinArea %
             meta = New cVariableMetaData(0, 100, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MPAOptMinArea, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptMinArea))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'MPATouse
             meta = New cVariableMetaData(0, 100, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.iMPAOptToUse, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.iMPAOptToUse))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'MPAbUseCellWeight
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.MPAbUseCellWeight, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAbUseCellWeight))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MPAOptStartYear, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptStartYear))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MPAOptEndYear, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptEndYear))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             Me.AllowValidation = True

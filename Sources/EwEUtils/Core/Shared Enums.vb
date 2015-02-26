@@ -505,9 +505,9 @@ Namespace Core
 
         ''' <summary>To document</summary>
         PreferredHabitat
-        ''' <summary>To document</summary>
+        ''' <summary>A habitat that a given fleet is allowed to fish in</summary>
         HabitatFishery
-        ''' <summary>To document</summary>
+        ''' <summary>A MPA that a given fleet is allowed to fish in</summary>
         MPAFishery
         ''' <summary>Which months of the year a MPA is open for fishing</summary>
         MPAMonth

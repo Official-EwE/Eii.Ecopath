@@ -103,7 +103,9 @@ Public Class cMPAOptOutput
         Dim nMPACells As Integer
         For ir As Integer = 1 To SpaceData.InRow
             For ic As Integer = 1 To SpaceData.InCol
-                If SpaceData.MPA(ir, ic) = mpaData.iMPAtoUse Then
+                'SpaceData.MPA(ir, ic) = mpaData.iMPAtoUse
+                'If SpaceData.MPA(ir, ic) = mpaData.iMPAtoUse Then
+                If SpaceData.MPA(mpaData.iMPAtoUse)(ir, ic) = mpaData.iMPAtoUse Then
                     nMPACells += 1
                 End If
             Next

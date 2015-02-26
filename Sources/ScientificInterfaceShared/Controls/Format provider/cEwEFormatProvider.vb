@@ -704,19 +704,24 @@ Namespace Controls
 
                 Dim bSucces As Boolean = True
 
+                ' Sanity checks
+                Debug.Assert(ctrl IsNot Nothing)
+                Debug.Assert(provider IsNot Nothing)
+
                 Try
                     ' Store ref to combo box
                     Me.m_cmb = DirectCast(ctrl, ComboBox)
-
-                    ' Add handlers
-                    AddHandler Me.m_cmb.SelectedIndexChanged, AddressOf OnComboBoxValueChanged
-                    AddHandler Me.m_cmb.TextChanged, AddressOf OnComboBoxValueChanged
-                    AddHandler Me.m_cmb.Format, AddressOf OnComboBoxFormat
 
                     ' Store refs
                     Me.m_provider = provider
                     Me.m_md = metadata
                     Me.m_formatter = formatter
+
+                    ' Add handlers
+                    AddHandler Me.m_cmb.SelectedIndexChanged, AddressOf OnComboBoxValueChanged
+                    AddHandler Me.m_cmb.TextChanged, AddressOf OnComboBoxValueChanged
+                    ' Beware: This will fire off the Format event as soon as the handler is created! Be ready...
+                    AddHandler Me.m_cmb.Format, AddressOf OnComboBoxFormat
 
                     ' Populate combo
                     If Not Object.ReferenceEquals(aItems, Nothing) Then
@@ -1333,6 +1338,10 @@ Namespace Controls
             Me.m_tValue = tValue
             ' Get wrapper
             Me.m_ctrlWrapper = cControlWrapperFactory.GetControlWrapper(uic, ctrl, Me, aItems, metadata, formatter)
+
+            ' Cannot be
+            Debug.Assert(Me.m_ctrlWrapper IsNot Nothing)
+
             ' Connect to style guide
             Me.UIContext = uic
             ' Respond to styleguide changes

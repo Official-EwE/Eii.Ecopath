@@ -3136,6 +3136,12 @@
   <data name="HEADER_RIGHT_LIMIT" xml:space="preserve">
     <value>Right limit</value>
   </data>
+  <data name="HEADER_FISHING_ALL" xml:space="preserve">
+    <value>Fish everywhere</value>
+  </data>
+  <data name="HEADER_MPA_CLOSED" xml:space="preserve">
+    <value>Closed for fishing</value>
+  </data>
   <data name="SCALE_LOG" xml:space="preserve">
     <value>(Log)</value>
   </data>

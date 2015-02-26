@@ -254,9 +254,13 @@ Public Class cEcospaceDataStructures
     Public flow(,) As Single
 
     Public Region(,) As Integer
-    Public MPA(,) As Integer
     Public RelPP(,) As Single
     Public RelCin(,) As Single
+
+    ''' <summary>
+    ''' Development-time 3-dimensional MPA array for implementing overlapping MPAs
+    ''' </summary>
+    Public MPA()(,) As Integer
 
     ''' <summary>
     ''' Base value for relative PP (relative PP at t=0). Set after PP has been read from the database.
@@ -551,7 +555,7 @@ Public Class cEcospaceDataStructures
     '''<summary>max capacity by group</summary>
     ''' <remarks>Used to check that the user has set capacities for all groups </remarks>
     Public MaxHabCap() As Single
- 
+
     Public Width() As Single
 
     Public SaveAnnual As Boolean = True
@@ -1075,6 +1079,7 @@ Public Class cEcospaceDataStructures
             ReDim MPAname(Me.MPAno)
             ReDim MPAmonth(12, Me.MPAno)
             ReDim MPAfishery(Me.nFleets, Me.MPAno)
+            Me.allocate(Me.MPA, Me.MPAno, InRow + 1, InCol + 1)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RedimMPAVariables() Error: " & ex.Message)
             Throw New System.Exception(Me.ToString & ".RedimMPAVariables() Error: " & ex.Message)
@@ -1565,6 +1570,31 @@ Public Class cEcospaceDataStructures
     End Sub
 
     ''' <summary>
+    ''' Allocate memory for an array with 3 dimensions
+    ''' </summary>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
+    Friend Sub allocate(ByRef array(,,) As Integer, ByVal d1 As Integer, ByVal d2 As Integer, d3 As Integer)
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) * (d2 + 1) * (d3 + 1) Then
+                System.Array.Clear(array, 0, array.Length)
+                Return
+            End If
+        End If
+
+        Erase array
+        array = Nothing
+
+        'GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
+        'Dim mgs As Single = CSng(d1 * d2 * d3 * 4 / 1048576)
+        'System.Console.WriteLine("Allocating=" & mgs.ToString & " Memory=" & (GC.GetTotalMemory(True) / 1048576).ToString)
+
+        GC.Collect()
+        ReDim array(d1, d2, d3)
+
+    End Sub
+
+    ''' <summary>
     ''' Allocate memory for an array of boolean values with 2 dimensions
     ''' </summary>
     ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
@@ -1585,6 +1615,46 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
+    ' == JS added to move overlapping MPA logic to sparse arrays ==
+
+    ''' <summary>
+    ''' Allocate memory for an array with 3 dimensions
+    ''' </summary>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
+    Friend Sub allocate(ByRef array()(,) As Integer, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer)
+        Dim bCleared As Boolean = True
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) Then
+
+                For i As Integer = 0 To d1
+                    If array(i).Length = (d2 + 1) * (d3 + 1) Then
+                        System.Array.Clear(array(i), 0, array(i).Length)
+                    Else
+                        bCleared = False
+                        Exit For
+                    End If
+                Next
+
+                'If we managed to clear the array then Return
+                'If NOT the allocate a new array
+                If bCleared Then
+                    Return
+                End If
+
+            End If
+        End If
+
+        Erase array
+        array = Nothing
+
+        array = New Integer(d1)(,) {}
+        For i As Integer = 0 To d1
+            array(i) = New Integer(d2, d3) {}
+        Next
+        GC.Collect()
+
+    End Sub
 
     Public Sub ReDimMapDims()
         'NvarTot = nvar + 2 * npairs
@@ -1643,7 +1713,6 @@ Public Class cEcospaceDataStructures
             Me.allocate(flow, InRow + 1, InCol + 1)
 
             Me.allocate(Region, InRow + 1, InCol + 1)
-            Me.allocate(MPA, InRow + 1, InCol + 1)
             Me.allocate(RelPP, InRow + 1, InCol + 1)
             Me.allocate(RelCin, InRow + 1, InCol + 1)
 

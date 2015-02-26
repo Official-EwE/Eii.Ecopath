@@ -66,13 +66,14 @@ Public Class cEcospaceMPA
     Public ReadOnly Property NumCells() As Integer 
         Get
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim l As cEcospaceLayerMPA = bm.LayerMPA
+            Dim l As cEcospaceLayerMPA = bm.LayerMPA(Me.Index)
             Dim iIndex As Integer = Me.Index
             Dim iNumCells As Integer = 0
 
             For iRow As Integer = 1 To bm.InRow
                 For iCol As Integer = 1 To bm.InCol
-                    If CInt(l.Cell(iRow, iCol)) = iIndex Then
+                    ' Only include modelled cells in this count
+                    If (CInt(l.Cell(iRow, iCol)) = iIndex) And (bm.IsModelledCell(iRow, iCol)) Then
                         iNumCells += 1
                     End If
                 Next

@@ -32,51 +32,15 @@ Namespace EcoSeed
     'this is happening in a temp way in at the start of run
 
     Public Class cEcoSeed
-        Implements IMPASearchModel
+        Inherits cMPAOptBaseClass
 
 #Region "Private data"
 
         Const N_MAX_RESULTS As Integer = 100
         Const RESULTS_TO_KEEP As Integer = N_MAX_RESULTS \ 2
 
-        Private m_EcoSpace As cEcoSpace
-        Friend m_SpaceData As cEcospaceDataStructures
-
-        Private m_data As cMPAOptDataStructures
-        Private m_search As cSearchDatastructures
-
-        Private m_bRunning As Boolean
-        Private m_esStartTime As Single
-        Private EcoSeedOn As Boolean
-
-        'results of each iterations
-        Private m_lstObjectiveResults As New List(Of cObjectiveResult)
-        ' Private m_BestObjective As cObjectiveResult
-
-        Private m_cellComputedCallback As cMPAOptManager.SearchIterationDelegate
-        Private m_StateCallback As cMPAOptManager.SearchRunStateDelegate
-        Private m_SendMessageDelegate As cMPAOptManager.SendMessageDelegate
-        Private m_nIters As Integer = 0
-
-        ' -- Autosave settings --
-
-        ''' <summary>Auto-save file name.</summary>
-        Private Const c_FILENAME As String = "MPA_Ecoseed_output.csv"
-        ''' <summary>Flag, stating whether autosave is enabled.</summary>
-        Private m_bAutosaveResults As Boolean = False
-        ''' <summary>Auto-save folder.</summary>
-        Private m_strOutputPath As String = ""
-        ''' <summary>Auto-save file header.</summary>
-        Private m_strHeader As String = ""
-
-#Region "Modeling data from EwE5"
-
-        Private BOrig(,,) As Single
-        Private FOrig(,,) As Single
-        Private WOrig(,,) As Single
         Private TestedSeed(,) As Boolean
 
-        Public TimesCalled As Long
         Private SeedLeft As Boolean
         Private MPARow() As Integer
         Private MPACol() As Integer
@@ -88,175 +52,17 @@ Namespace EcoSeed
         Private SailTot() As Single, SailMax() As Single
         'these next are to scale the value to a Von B type curve abmpa
         Private BOrigTot() As Single
-        '     Private ValScaler() As Single
-        '   Private Bseed(,,) As Single
-        Private Blastseed(,,) As Single
-        '  Private Fseed(,,) As Single
-        '  Private Wseed(,,) As Single
-
-        Public StoreBtimeForEcoSeed() As Single
-
         Private TotalSearchMax As Single
         Private SeedSumMax As Single
 
-        Private EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, BioDiversityBase As Single, areaBoundBase As Single
-        Private TotWeightedValueBase As Single
         Private SideStep As Integer
-
-#End Region
-
-#End Region
-
-#Region "Construction and Initialization"
-
-        Public Function Init(ByRef EcoSpaceModel As cEcoSpace, ByRef EcoSeedData As cMPAOptDataStructures) As Boolean Implements IMPASearchModel.Init
-
-            Try
-
-                m_EcoSpace = EcoSpaceModel
-
-                'set EcoSpace to use this MPA optimization model
-                m_EcoSpace.MPAOptimization = Me
-
-                m_SpaceData = m_EcoSpace.EcoSpaceData
-                m_data = EcoSeedData
-                m_data.SeedBlockSize2 = 1 'default is one cell per iteration
-
-                'the seed array can be needed before the model is run
-                ReDim m_data.MPASeed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1)
-
-            Catch ex As Exception
-                cLog.Write(ex)
-                Return False
-            End Try
-
-            Return True
-
-        End Function
-
-        Public Sub Connect(ByVal OnSearchInteration As cMPAOptManager.SearchIterationDelegate, _
-                           ByVal OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate, _
-                           ByVal OnSendMessage As cMPAOptManager.SendMessageDelegate) Implements IMPASearchModel.Connect
-            m_cellComputedCallback = OnSearchInteration
-            m_StateCallback = OnRunStateChanged
-            m_SendMessageDelegate = OnSendMessage
-        End Sub
 
 
 #End Region
 
 #Region "Public Properties and Methods"
 
-        Public Property EcoSeedData() As cMPAOptDataStructures Implements IMPASearchModel.MPAOptData
-            Get
-                Return m_data
-            End Get
-            Set(ByVal value As cMPAOptDataStructures)
-                m_data = value
-            End Set
-        End Property
-
-        Public ReadOnly Property EcospaceStartTime() As Single Implements IMPASearchModel.EcospaceStartTime
-            Get
-
-                If Not m_bRunning Then
-                    'this got called even though Ecoseed is not running this should NOT happen
-                    'Oh well return zero this should be the default start time for ecospace
-                    Return 0
-                End If
-
-                If TimesCalled > 1 Then
-                    'if Ecoseed has already run Ecospace 
-                    'then start the time loop at the start of the first summary time period
-                    'This should change to Ecoseed having its own start and end time instead of using the the summary time periods
-                    Return Me.m_data.EcoSpaceStartYear
-                Else
-                    'This is the first time Ecoseed will run Ecospace
-                    'Ecospace needs to run for the entire time period to set the base values
-                    Return 0
-                End If
-
-            End Get
-        End Property
-
-        Public ReadOnly Property isRunning() As Boolean Implements IMPASearchModel.isRunning
-            Get
-                Return Me.m_bRunning
-            End Get
-        End Property
-
-        Public Sub StopRun() Implements IMPASearchModel.StopRun
-            m_data.StopRun = True
-            Me.m_EcoSpace.StopRun() ' = True
-        End Sub
-
-        Public Sub clearMPAs() Implements IMPASearchModel.clearMPAs
-            For ir As Integer = 1 To m_SpaceData.InRow
-                For ic As Integer = 1 To m_SpaceData.InCol
-                    m_SpaceData.MPA(ir, ic) = 0
-                Next ic
-            Next ir
-        End Sub
-
-        Public Sub clearSeedCells() Implements IMPASearchModel.clearSeedCells
-            For ir As Integer = 1 To m_SpaceData.InRow
-                For ic As Integer = 1 To m_SpaceData.InCol
-                    m_data.MPASeed(ir, ic) = 0
-                Next ic
-            Next ir
-        End Sub
-
-        Public Function setAllCellsToMPA(ByVal iMPA As Integer) As Boolean Implements IMPASearchModel.setAllCellsToMPA
-
-            'make sure the MPA index supplied by the user is in bounds
-            If iMPA > 0 And iMPA <= m_SpaceData.MPAno Then
-                For ir As Integer = 1 To m_SpaceData.InRow
-                    For ic As Integer = 1 To m_SpaceData.InCol
-                        If (m_SpaceData.Depth(ir, ic) > 0) Then
-                            m_SpaceData.MPA(ir, ic) = iMPA
-                        End If
-                    Next ic
-                Next ir
-                Return True
-            Else
-                'invalid MPA index
-                Return False
-            End If
-
-        End Function
-
-        Public Function setAllCellsToSeed(ByVal iMPA As Integer) As Boolean Implements IMPASearchModel.setAllCellsToSeed
-
-            'make sure the MPA index supplied by the user is in bounds
-            If iMPA > 0 And iMPA <= m_SpaceData.MPAno Then
-                For ir As Integer = 1 To m_SpaceData.InRow
-                    For ic As Integer = 1 To m_SpaceData.InCol
-                        If (m_SpaceData.Depth(ir, ic) > 0) Then
-                            m_data.MPASeed(ir, ic) = iMPA
-                        End If
-                    Next ic
-                Next ir
-                Return True
-            Else
-                'invalid MPA index
-                Return False
-            End If
-        End Function
-
-        Public ReadOnly Property Results() As System.Collections.Generic.List(Of cObjectiveResult) Implements IMPASearchModel.Results
-            Get
-                Return m_lstObjectiveResults
-            End Get
-        End Property
-
-
-        Public ReadOnly Property nInterationCompleted() As Integer Implements IMPASearchModel.nInterationsCompleted
-            Get
-                Return m_nIters
-            End Get
-        End Property
-
-        Public ReadOnly Property OKtoRun() As Boolean Implements IMPASearchModel.OKtoRun
+        Public Overrides ReadOnly Property OKtoRun() As Boolean 'Implements IMPASearchModel.OKtoRun
             Get
                 '
                 ' Check seeds
@@ -273,9 +79,15 @@ Namespace EcoSeed
                 For ir As Integer = 1 To Me.m_SpaceData.InRow
                     For ic As Integer = 1 To Me.m_SpaceData.InCol
 
-                        If m_SpaceData.MPA(ir, ic) > 0 Then
-                            Return True
-                        End If
+                        'If m_SpaceData.MPA(ir, ic) > 0 Then
+                        '    Return True
+                        'End If
+
+                        For impa As Integer = 1 To Me.m_SpaceData.MPAno
+                            If m_SpaceData.MPA(impa)(ir, ic) > 0 Then
+                                Return True
+                            End If
+                        Next
                     Next ic
                 Next ir
 
@@ -284,13 +96,30 @@ Namespace EcoSeed
             End Get
         End Property
 
-        ''' <inheritdocs cref="IMPASearchModel.ConfigureAutosave"/>
-        Public Sub ConfigureAutosave(ByVal bAutosave As Boolean, ByVal strOutputPath As String, ByVal strHeader As String) _
-            Implements IMPASearchModel.ConfigureAutosave
-            Me.m_bAutosaveResults = bAutosave
-            Me.m_strOutputPath = strOutputPath
-            Me.m_strHeader = strHeader
+#End Region
+
+#Region "Construction and Initialization"
+
+        Public Sub New()
+            MyBase.New()
+            m_OutputFilename = "MPA_Ecoseed_output.csv"
         End Sub
+
+        'Public Overrides Function Init(ByRef EcoSpaceModel As cEcoSpace, ByRef EcoSeedData As cMPAOptDataStructures) As Boolean 'Implements IMPASearchModel.Init
+        '    MyBase.Init(EcoSpaceModel, EcoSeedData)
+        '    Try
+
+        '        'the seed array can be needed before the model is run
+        '        ReDim m_data.MPASeed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1)
+
+        '    Catch ex As Exception
+        '        cLog.Write(ex)
+        '        Return False
+        '    End Try
+
+        '    Return True
+
+        'End Function
 
 #End Region
 
@@ -313,7 +142,7 @@ Namespace EcoSeed
         End Sub
 
 
-        Public Sub Run() Implements IMPASearchModel.Run
+        Public Overrides Sub Run() 'Implements IMPASearchModel.Run
 
             Me.m_bRunning = True
             Me.setRunState(cMPAOptManager.eRunStates.Initializing)
@@ -347,7 +176,9 @@ Namespace EcoSeed
 
                 m_search = m_EcoSpace.SearchData
 
-                initForRun()
+                Me.initForRun()
+                Me.InitIsMPA()
+
                 m_data.SeedBlockSize2 = 1
 
                 'ToDo_jb SideStep EwE5 there is no explict cast of SideStep to int figure out if it is rounded or truncated
@@ -368,7 +199,7 @@ Namespace EcoSeed
                 If Me.m_bAutosaveResults And Not String.IsNullOrWhiteSpace(Me.m_strOutputPath) Then
                     If cFileUtils.IsDirectoryAvailable(Me.m_strOutputPath, True) Then
                         Try
-                            writer = New StreamWriter(Path.Combine(Me.m_strOutputPath, c_FILENAME))
+                            writer = New StreamWriter(Path.Combine(Me.m_strOutputPath, m_OutputFilename))
                         Catch ex As Exception
 
                         End Try
@@ -395,8 +226,6 @@ Namespace EcoSeed
                         ReDim TestedSeed(m_SpaceData.InRow, m_SpaceData.InCol)
                     End If
 
-                    TimesCalled = TimesCalled + 1
-
                     'Loop over all the Seed cells and find the one with the highest weighted value
                     Do While EcoSeedOn
                         If m_data.StopRun Then Exit Do
@@ -409,7 +238,7 @@ Namespace EcoSeed
 
                         If EcoSeedOn Then
 
-                            Output()
+                            fireOnIteration()
                             m_EcoSpace.Run()
                             If m_data.StopRun Then Exit Do
 
@@ -417,7 +246,7 @@ Namespace EcoSeed
                                 m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_search.Employ / EmployBase + _
                                 m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_search.manvalue / ManValueBase + _
                                 m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_search.ecovalue / EcoValueBase + _
-                                m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.KemptonQ / BioDiversityBase
+                                m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.KemptonQ / KemptonsBase
 
                             'Calculate boundary length/area ratio
                             AreaBordary = CalculateAreaOverBondaryLength()
@@ -427,8 +256,8 @@ Namespace EcoSeed
                             m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
                             m_data.objFuncSocialValue = m_search.Employ / EmployBase
                             m_data.objFuncEconomicValue = m_search.totval / TotValBase
-                            m_data.objFuncBiodiversity = m_search.KemptonQ / BioDiversityBase
-                            m_data.objFuncAreaBorder = AreaBordary / areaBoundBase
+                            m_data.objFuncBiodiversity = m_search.KemptonQ / KemptonsBase
+                            m_data.objFuncAreaBorder = AreaBordary / AreaBoundBase
                             m_data.objFuncTotal = (m_search.WeightedTotal + AreaBordary * m_data.BoundaryWeight) / Me.TotWeightedValueBase
 
                             If CurSum > SeedSumMax Then
@@ -439,6 +268,7 @@ Namespace EcoSeed
                                 SeedSumMax = CurSum
 
                                 If SeedSumMax > TotalSearchMax Then
+                                    TotalSearchMax = SeedSumMax
                                     'new highest score across all the model runs
                                     Me.setRunState(cMPAOptManager.eRunStates.NewBestResultFound)
                                 End If
@@ -471,14 +301,17 @@ Namespace EcoSeed
                         Me.setRunState(cMPAOptManager.eRunStates.NewCellSelected)
 
                         'set the MPA cell to the selected Seed cell
-                        m_SpaceData.MPA(m_data.bestrow, m_data.bestcol) = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
+                        'm_SpaceData.MPA(m_data.bestrow, m_data.bestcol) = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
+                        Dim iMPA As Integer = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
+                        m_SpaceData.MPA(iMPA)(m_data.bestrow, m_data.bestcol) = iMPA
                         m_data.MPASeed(m_data.bestrow, m_data.bestcol) = 0
 
                         SeedSumMax = Single.MinValue
                         m_data.bestrow = -1
                         m_data.bestcol = -1
 
-                        SetSeedCellsAdjacentToMPAs()
+                        Me.InitIsMPA()
+                        Me.SetSeedCellsAdjacentToMPAs()
 
                     Else
                         EcoSeedOn = False
@@ -486,8 +319,7 @@ Namespace EcoSeed
 
                 Loop ' Do While NotAllCellsAreMPAs
 
-                Output()
-
+                fireOnIteration()
                 m_EcoSpace.SearchData.SearchMode = eSearchModes.NotInSearch
                 cleanUp()
 
@@ -505,164 +337,7 @@ Namespace EcoSeed
 
         End Sub
 
-        ''' <summary>
-        ''' Public interfaced called by Ecospace at the start of each Year
-        ''' </summary>
-        ''' <param name="Biomass"></param>
-        ''' <param name="iYear"></param>
-        ''' <remarks>This is used by Ecoseed to control the length of the Ecospace run</remarks>
-        Public Sub YearTimeStep(ByRef iYear As Integer, ByVal Biomass() As Single) Implements IMPASearchModel.YearTimeStep
 
-            If Not Me.m_bRunning Then
-                'Ecoseed is not running so don't do anything
-                Exit Sub
-            End If
-
-            'jb for now 
-            If iYear = Me.m_data.EcoSpaceStartYear Then
-                KeepOrReloadCellValues(Biomass)
-            ElseIf iYear = Me.m_data.EcoSpaceEndYear Then
-                iYear = CInt(m_EcoSpace.EcoSpaceData.TotalTime)
-                m_EcoSpace.StopRun() ' = True
-            End If
-
-
-        End Sub
-
-
-        Private Sub Output()
-
-            Try
-                If Me.m_cellComputedCallback IsNot Nothing Then
-                    m_cellComputedCallback.Invoke()
-                End If
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
-        Private Sub dumpSearchValues(ByVal search As cSearchDatastructures)
-
-            'totval = m_search.totval
-            'Employ = m_search.Employ
-            'manvalue = m_search.manvalue
-            'ecovalue = m_search.ecovalue
-
-            System.Console.WriteLine("Total Value = " & search.totval / TotValBase & _
-                                        ", Employ Value = " & search.Employ / EmployBase & _
-                                        ", Mandated Value = " & search.manvalue / ManValueBase & _
-                                        ", Eco Value = " & search.ecovalue / EcoValueBase)
-        End Sub
-
-
-        Public Sub KeepOrReloadCellValues(ByVal biomass() As Single)
-            Dim i As Integer, j As Integer, ip As Integer
-            'these are not being kept properly ab02182000
-            'TimesCalled is reinitialized for each timestep
-
-            'ToDo_jb KeepOrReloadCellValues WchangeVar() is only in the ecospace threads 
-            'If this really needs to happen it needs to get copied out of the threads then copied back in?????
-            Try
-                If TimesCalled = 1 Then 'First time keep the original bcell values
-
-                    For i = 1 To m_SpaceData.InRow
-                        For j = 1 To m_SpaceData.InCol
-                            For ip = 1 To m_SpaceData.NGroups
-                                BOrig(i, j, ip) = m_SpaceData.Bcell(i, j, ip)
-                                FOrig(i, j, ip) = m_EcoSpace.FtimeCell(i, j, ip)
-                                Blastseed(i, j, ip) = m_SpaceData.Blast(i, j, ip)
-                            Next
-                        Next
-                    Next
-                    'Btime is needed when running Ecoseed
-                    For i = 1 To m_SpaceData.NGroups
-                        StoreBtimeForEcoSeed(i) = biomass(i)
-                    Next
-                End If
-
-                If TimesCalled >= 2 Then 'second time recalls the original bcell values for each timestep
-                    For i = 1 To m_SpaceData.InRow
-                        For j = 1 To m_SpaceData.InCol
-                            For ip = 1 To m_SpaceData.NGroups
-                                m_SpaceData.Blast(i, j, ip) = Blastseed(i, j, ip)
-                                m_SpaceData.Bcell(i, j, ip) = BOrig(i, j, ip)
-                                m_EcoSpace.FtimeCell(i, j, ip) = FOrig(i, j, ip)
-                            Next
-                        Next
-                    Next
-                    For i = 1 To m_SpaceData.NGroups
-                        biomass(i) = StoreBtimeForEcoSeed(i)
-                    Next
-                End If
-
-            Catch ex As Exception
-                cLog.Write(ex)
-                Debug.Assert(False, ex.StackTrace)
-                Throw New ApplicationException("EcoSeed.KeepOrReloadCellValues() error: " & ex.Message, ex)
-            End Try
-
-        End Sub
-
-
-        Private Sub setRunState(ByVal RunState As cMPAOptManager.eRunStates)
-
-            Try
-
-                If Me.m_StateCallback IsNot Nothing Then
-
-                    Me.m_StateCallback.Invoke(RunState)
-
-                End If
-
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-                cLog.Write(ex)
-            End Try
-
-
-        End Sub
-
-
-        Private Function CellsNotMPA() As Boolean
-
-            For i As Integer = 1 To m_SpaceData.InRow
-                For j As Integer = 1 To m_SpaceData.InCol
-                    If m_SpaceData.MPA(i, j) = 0 And m_SpaceData.Depth(i, j) > 0 Then
-                        Return True
-                    End If
-                Next
-            Next
-
-            Return False
-
-        End Function
-
-
-        Private Function CalculateAreaOverBondaryLength() As Single
-            Dim ir As Integer
-            Dim ic As Integer
-            Dim Area As Single
-            Dim Border As Integer
-            CalculateAreaOverBondaryLength = 0
-            For ir = 1 To m_SpaceData.InRow
-                For ic = 1 To m_SpaceData.InCol
-                    If m_SpaceData.MPA(ir, ic) > 0 Then
-                        Area = Area + 1
-                        If m_SpaceData.MPA(ir - 1, ic) = 0 And m_SpaceData.Depth(ir - 1, ic) > 0 Then Border = Border + 1 'cell above is not mpa
-                        If m_SpaceData.MPA(ir + 1, ic) = 0 And m_SpaceData.Depth(ir + 1, ic) > 0 Then Border = Border + 1 'cell below is not mpa
-                        If m_SpaceData.MPA(ir, ic - 1) = 0 And m_SpaceData.Depth(ir, ic - 1) > 0 Then Border = Border + 1 'cell left is not mpa
-                        If m_SpaceData.MPA(ir, ic + 1) = 0 And m_SpaceData.Depth(ir, ic + 1) > 0 Then Border = Border + 1 'cell right is not mpa
-                    End If
-                Next
-            Next
-            If Border > 0 Then
-                Return Area / Border
-            Else
-                'baserun no mpa, so return 1?
-                Return 0.25
-            End If
-        End Function
 
         ''' <summary>
         ''' Find the next set of MPA cells to evaluate
@@ -693,7 +368,7 @@ Namespace EcoSeed
                             For j = m_data.CurCol To m_data.CurCol + SideStep - 1
                                 If i >= 0 And i <= m_SpaceData.InRow And j >= 0 And j <= m_SpaceData.InCol Then
                                     'has to split the next in two as i or j may exceed dimensioning
-                                    If m_SpaceData.Depth(i, j) > 0 Then
+                                    If Me.m_SpaceData.Depth(ir, ic) > 0 Then
                                         TestedSeed(i, j) = True
 
                                         ' m_data.MPASeed(i, j) make sure MPASeed() is set to an MPA index for this row and col
@@ -702,7 +377,8 @@ Namespace EcoSeed
                                         'set the MPA's to use the MPASeed for this row col
                                         'MPASeed(row,col) was set in SetSeedCellsAdjacentToMPAs()
                                         'MPA() will need to be cleared at the end of this iteration
-                                        m_SpaceData.MPA(i, j) = m_data.MPASeed(ir, ic)
+                                        'm_SpaceData.MPA(i, j) = m_data.MPASeed(ir, ic)
+                                        m_SpaceData.MPA(m_data.MPASeed(ir, ic))(i, j) = m_data.MPASeed(ir, ic)
 
                                     End If ' If m_esData.Depth(i, j) > 0 Then
                                 End If ' If i >= 0 And i <= m_esData.Inrow And j >= 0 And j <= m_esData.InCol Then
@@ -817,8 +493,9 @@ Namespace EcoSeed
 
                     If ir <= m_SpaceData.InRow And ic <= m_SpaceData.InCol Then
 
-                        If m_SpaceData.Depth(ir, ic) > 0 And m_data.MPASeed(ir, ic) > 0 Then
-                            m_SpaceData.MPA(ir, ic) = 0
+                        If m_data.MPASeed(ir, ic) > 0 Then
+                            'm_SpaceData.MPA(ir, ic) = 0
+                            m_SpaceData.MPA(m_data.MPASeed(ir, ic))(ir, ic) = 0
                         End If
 
                     End If ' If ir <= m_esData.Inrow And ic <= m_esData.InCol Then
@@ -829,68 +506,63 @@ Namespace EcoSeed
         End Sub
 
         Private Sub SelectNewMPAcell() 'this occurs just before before start of new timestep
+            ' Dim ir As Integer, ic As Integer, i As Integer ', j As Integer
 
-            Dim ir As Integer, ic As Integer, i As Integer ', j As Integer
-            Dim fnum As Integer
-
-            'jb from EwE5 m_data.SeedBlockSize2 is hardwired at 9 at the start of each run
-            'so only Case 4, 9, 16, 25 can run I'm not sure what the other case is for
-            Select Case m_data.SeedBlockSize2
-                Case 1
-                    If SeedLeft = True Then
-                        fnum = m_SpaceData.MPA(m_data.CurRow, m_data.CurCol)
-                        m_data.MPASeed(m_data.CurRow, m_data.CurCol) = m_SpaceData.MPA(m_data.CurRow, m_data.CurCol)   '1
-                        m_SpaceData.MPA(m_data.CurRow, m_data.CurCol) = 0 ' fnum
-                    End If
-                Case 4, 9, 16, 25
-                    For ir = m_data.CurRow To m_data.CurRow + SideStep - 1
-                        For ic = m_data.CurCol To m_data.CurCol + SideStep - 1
-                            If ir <= m_SpaceData.InRow And ic <= m_SpaceData.InCol Then
-                                If m_SpaceData.Depth(ir, ic) > 0 And m_data.MPASeed(ir, ic) > 0 Then
-                                    m_SpaceData.MPA(ir, ic) = 0
-                                End If
-
-                                'm_data.MPASeed(IR, ic) = 1
-                            End If
-                        Next ic
-                    Next ir
-            End Select
-
-            MPARow(MPAstep) = m_data.bestrow
-            MPACol(MPAstep) = m_data.bestcol
-            MPAstep = MPAstep + 1
+            'MPARow(MPAstep) = m_data.bestrow
+            'MPACol(MPAstep) = m_data.bestcol
+            'MPAstep = MPAstep + 1
             'Count how many MPA cells we have now
-            i = 0
-            For ir = 1 To m_SpaceData.InRow
-                For ic = 1 To m_SpaceData.InCol
-                    If m_SpaceData.MPA(ir, ic) > 0 Then i = i + 1
-                Next
-            Next
-            MPAcount(MPAstep - 1) = i
-            ir = 0
+            'i = 0
+            'For ir = 1 To m_SpaceData.InRow
+            '    For ic = 1 To m_SpaceData.InCol
+            '        If Me.IsMPA(ir, ic) Then i = i + 1
+            '    Next
+            'Next
+            'MPAcount(MPAstep - 1) = i
 
-            If ir = m_SpaceData.nFleets Then 'NO MORE FISHING GOING ON
-                MPAstep = m_SpaceData.InRow * m_SpaceData.InCol + 1
-                'Ecoseed.StartEvaluateSeedCell
-            End If
-            If SeedLeft = False Then
-                'And TargetSumMax <= 0 Then 'VESSELS CANT MAKE ANY MONEY
-                'MsgBox "The Ecoseed routine can no longer add MPA cells:" _
-                '& Environment.NewLine  + "the rent(s) for all fishery(ies) are =< 0." _
-                '& Environment.NewLine  + "The Ecospace routine will now continue without Ecoseed.", vbInformation + vbOKOnly
-                EcoSeedOn = False
-                MPAstep = m_SpaceData.InRow * m_SpaceData.InCol + 1
-            End If
+            ' MPAstep = m_SpaceData.InRow * m_SpaceData.InCol + 1
 
+            EcoSeedOn = False
             'villy: this next section only allows 'adjacent' cells to become seed cells _
             '- time saver ordered by daniel AB02242000
             SetSeedCellsAdjacentToMPAs() 's
 
-            Erase TestedSeed
-            ReDim TestedSeed(m_SpaceData.InRow, m_SpaceData.InCol)
+            'Clear out the TestSeed() matrix
+            Me.TestedSeed = New Boolean(m_SpaceData.InRow, m_SpaceData.InCol) {}
 
         End Sub
 
+        Private Sub SetSeedCellsAdjacentToMPAs()
+            Dim iro As Integer
+            Dim ico As Integer
+            Dim iTemp As Integer
+
+            For iro = 1 To m_SpaceData.InRow
+                For ico = 1 To m_SpaceData.InCol
+                    If Me.IsMPA(iro, ico) And Me.m_SpaceData.Depth(iro, ico) > 0 Then
+                        'get the MPA index of the current row col
+                        'this index will be used to set the neighbouring cells
+                        'iTemp = m_SpaceData.MPA3D_TEMP(iro, ico, Me.m_data.iMPAtoUse)
+
+                        'find the first mpa in this cell
+                        For impa As Integer = 1 To Me.m_SpaceData.MPAno
+                            If m_SpaceData.MPA(impa)(iro, ico) > 0 Then
+                                iTemp = m_SpaceData.MPA(impa)(iro, ico)
+                                Exit For
+                            End If
+                        Next
+
+                        If Not Me.IsMPA(iro - 1, ico) And Me.m_SpaceData.Depth(iro - 1, ico) > 0 Then m_data.MPASeed(iro - 1, ico) = iTemp 'cell above is m_esdata.m_data.MPASeed
+                        If Not Me.IsMPA(iro + 1, ico) And Me.m_SpaceData.Depth(iro + 1, ico) > 0 Then m_data.MPASeed(iro + 1, ico) = iTemp 'cell below is m_esdata.m_data.MPASeed
+                        If Not Me.IsMPA(iro, ico - 1) And Me.m_SpaceData.Depth(iro, ico - 1) > 0 Then m_data.MPASeed(iro, ico - 1) = iTemp 'cell left is m_esdata.m_data.MPASeed
+                        If Not Me.IsMPA(iro, ico + 1) And Me.m_SpaceData.Depth(iro, ico + 1) > 0 Then m_data.MPASeed(iro, ico + 1) = iTemp 'cell right is m_esdata.m_data.MPASeed
+
+                    End If ' If m_esData.MPA(iro, ico) > 0 Then
+                Next ico
+            Next iro
+        End Sub
+
+#If USE_OLD_MPA Then
 
         Private Sub SetSeedCellsAdjacentToMPAs()
             Dim ir As Integer
@@ -957,219 +629,165 @@ Namespace EcoSeed
         End Sub
 
 
-        Private Sub getBaseValues()
 
-            m_search.redimForRun()
+        Private Sub SelectNewMPAcell_orgMPALayers() 'this occurs just before before start of new timestep
+            Dim ir As Integer, ic As Integer, i As Integer ', j As Integer
+            Dim fnum As Integer
 
-            'on the first call to ecospace ecoseed makes a copy of Biomass(), FTime()... See KeepOrReloadCellValues() at the user defined start time-step
-            'then on subsequient calls it starts ecospace at the user defined start time-step and copies the values from the original call back to ecospace
-            TimesCalled = 1
-            'Get economic values for the base year BaseYearCost and BaseYearEffort
-            Me.m_search.bBaseYearSet = False
-            m_EcoSpace.Run()
+            'jb from EwE5 m_data.SeedBlockSize2 is hardwired at 9 at the start of each run
+            'so only Case 4, 9, 16, 25 can run I'm not sure what the other case is for
+            Select Case m_data.SeedBlockSize2
+                Case 1
+                    If SeedLeft = True Then
+                        fnum = m_SpaceData.MPA3D_TEMP(m_data.CurRow, m_data.CurCol, Me.m_data.iMPAtoUse)
+                        m_data.MPASeed(m_data.CurRow, m_data.CurCol) = fnum
+                        m_SpaceData.MPA3D_TEMP(m_data.CurRow, m_data.CurCol, Me.m_data.iMPAtoUse) = 0 ' fnum
 
-            If Me.m_data.StopRun Then Exit Sub
+                        'fnum = m_SpaceData.MPA(m_data.CurRow, m_data.CurCol)
+                        'm_data.MPASeed(m_data.CurRow, m_data.CurCol) = m_SpaceData.MPA(m_data.CurRow, m_data.CurCol)   '1
+                        'm_SpaceData.MPA(m_data.CurRow, m_data.CurCol) = 0 ' fnum
+                    End If
+                Case 4, 9, 16, 25
+                    For ir = m_data.CurRow To m_data.CurRow + SideStep - 1
+                        For ic = m_data.CurCol To m_data.CurCol + SideStep - 1
+                            If ir <= m_SpaceData.InRow And ic <= m_SpaceData.InCol Then
+                                'If m_SpaceData.Depth(ir, ic) > 0 And m_data.MPASeed(ir, ic) > 0 Then
+                                '    m_SpaceData.MPA(ir, ic) = 0
+                                'End If
 
-            ''this will start ecospace at the user defined timestep and copy the values from the first call into this timestep
-            TimesCalled = 2
-            m_EcoSpace.Run()
+                                If Me.isCellModeled(ir, ic) And m_data.MPASeed(ir, ic) > 0 Then
+                                    Me.m_SpaceData.MPA3D_TEMP(ir, ic, Me.m_data.iMPAtoUse) = 0
+                                End If
 
-            'values were set in the search object by EcoSpace.Run()
-            EmployBase = m_search.Employ
-            TotValBase = m_search.totval
-            ManValueBase = m_search.manvalue
-            EcoValueBase = m_search.ecovalue
-            BioDiversityBase = m_search.KemptonQ
+                                'm_data.MPASeed(IR, ic) = 1
+                            End If
+                        Next ic
+                    Next ir
+            End Select
 
-            areaBoundBase = CalculateAreaOverBondaryLength()
+            MPARow(MPAstep) = m_data.bestrow
+            MPACol(MPAstep) = m_data.bestcol
+            MPAstep = MPAstep + 1
+            'Count how many MPA cells we have now
+            i = 0
+            For ir = 1 To m_SpaceData.InRow
+                For ic = 1 To m_SpaceData.InCol
+                    'If m_SpaceData.MPA(ir, ic) > 0 Then i = i + 1
+                    If Me.IsMPA(ir, ic) Then i = i + 1
+                    'If m_SpaceData.MPA3D_TEMP(ir, ic, Me.m_data.iMPAtoUse) > 0 Then i = i + 1
+                Next
+            Next
+            MPAcount(MPAstep - 1) = i
+            ir = 0
 
-            If TotValBase = 0 Then TotValBase = 1
-            If TotValBase < 0 Then TotValBase = -TotValBase
-            If EmployBase = 0 Then EmployBase = 1
-            If EmployBase < 0 Then EmployBase = -EmployBase
-            If ManValueBase = 0 Then ManValueBase = 1
-            If EcoValueBase = 0 Then EcoValueBase = 1
-            If BioDiversityBase = 0 Then BioDiversityBase = 1
+            If ir = m_SpaceData.nFleets Then 'NO MORE FISHING GOING ON
+                MPAstep = m_SpaceData.InRow * m_SpaceData.InCol + 1
+                'Ecoseed.StartEvaluateSeedCell
+            End If
+            If SeedLeft = False Then
+                'And TargetSumMax <= 0 Then 'VESSELS CANT MAKE ANY MONEY
+                'MsgBox "The Ecoseed routine can no longer add MPA cells:" _
+                '& Environment.NewLine  + "the rent(s) for all fishery(ies) are =< 0." _
+                '& Environment.NewLine  + "The Ecospace routine will now continue without Ecoseed.", vbInformation + vbOKOnly
+                EcoSeedOn = False
+                MPAstep = m_SpaceData.InRow * m_SpaceData.InCol + 1
+            End If
 
-            TotWeightedValueBase = 0 + m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * TotValBase + _
-                                    m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * EmployBase + _
-                                    m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ManValueBase + _
-                                    m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * EcoValueBase + _
-                                    m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * BioDiversityBase + _
-                                    m_data.BoundaryWeight * areaBoundBase
+            'villy: this next section only allows 'adjacent' cells to become seed cells _
+            '- time saver ordered by daniel AB02242000
+            SetSeedCellsAdjacentToMPAs() 's
 
-            '   System.Console.WriteLine("EcoSeed weighted base value = " & TotWeightedValueBase.ToString)
-
-        End Sub
-
-#End Region
-
-#Region "Saving Ouput CSV file and memory"
-
-        ''' <summary>
-        ''' Store the best row and col for this search interation
-        ''' </summary>
-        ''' <remarks>Right now this is writting the results file and memory</remarks>
-        Private Sub StoreObjectiveFunctionResults(ByVal writer As StreamWriter)
-
-            Try
-                Me.WriteOutputData(writer)
-                Me.m_lstObjectiveResults.Add(New cObjectiveResult(Me.m_data, Me.m_SpaceData))
-
-                ''Memory management for results
-                'If Me.m_lstObjectiveResults.Count >= N_MAX_RESULTS Then
-                '    'sorts in decending order (biggest objFuncTotal first)
-                '    Me.m_lstObjectiveResults.Sort()
-                '    'remove lowest results from the end of the list
-                '    Me.m_lstObjectiveResults.RemoveRange(RESULTS_TO_KEEP - 1, Me.m_lstObjectiveResults.Count - RESULTS_TO_KEEP)
-                'End If
-
-            Catch ex As Exception
-                Debug.Assert(False, "Ecoseed Error in StoreObjectiveFunctionResults(). " & ex.Message)
-                cLog.Write(ex)
-                'Just Blunder On????????????????????
-
-            End Try
+            Erase TestedSeed
+            ReDim TestedSeed(m_SpaceData.InRow, m_SpaceData.InCol)
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Write a Ecoseed file header to file.
-        ''' </summary>
-        ''' <param name="writer">The file to write the header to.</param>
-        ''' -------------------------------------------------------------------
-        Private Sub WriteOutputFileHeader(ByVal writer As StreamWriter)
 
-            If (writer Is Nothing) Then Return
 
-            'EwE5
-            'Write #fnum, "row", "col", "econ", "social", "mandated", "ecosystem", "Area/Border"
-            'Write #fnum, "", "", ValWeight(1), ValWeight(2), ValWeight(3), ValWeight(4), BoundaryWeight
-
-            writer.WriteLine("EcoSeed Optimization output")
-            writer.WriteLine(Me.m_strHeader)
-            writer.WriteLine("Objective weights for run")
-            writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
-            writer.WriteLine()
-            writer.WriteLine("{0},{1},{2},{3},{4},{5}", _
-                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue)), _
-                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment)), _
-                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb)), _
-                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological)), _
-                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity)), _
-                    cStringUtils.FormatNumber(Me.m_data.BoundaryWeight))
-            writer.WriteLine()
-            writer.WriteLine("Base Values")
-            writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
-            writer.WriteLine("{0},{1},{2},{3},{4},{5}", _
-                    cStringUtils.FormatNumber(TotValBase), _
-                    cStringUtils.FormatNumber(EmployBase), _
-                    cStringUtils.FormatNumber(ManValueBase), _
-                    cStringUtils.FormatNumber(EcoValueBase), _
-                    cStringUtils.FormatNumber(BioDiversityBase), _
-                    cStringUtils.FormatNumber(areaBoundBase))
-            writer.WriteLine()
-            writer.WriteLine("Data Format")
-            writer.WriteLine("Row,Col,Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
-
-            ' ToDo: send at end of autosave, include result
-            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSEED_RESULTS_SAVE_SUCCESS, Path.Combine(Me.m_strOutputPath, c_FILENAME)), _
-                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-            msg.Hyperlink = Me.m_strOutputPath
-            Me.SendMessage(msg)
-
-        End Sub
-
-        ''' <summary>
-        ''' Write the objective function values to file
-        ''' </summary>
-        Private Sub WriteOutputData(ByVal writer As StreamWriter)
-
-            If (writer Is Nothing) Then Return
-
-            'EwE5
-            'Write #fnum, bestrow, bestcol, ObjF(0), ObjF(1), ObjF(2), ObjF(3), ObjF(4)
-            writer.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7}", _
-                            cStringUtils.FormatNumber(Me.m_data.bestrow), _
-                            cStringUtils.FormatNumber(Me.m_data.bestcol), _
-                            cStringUtils.FormatNumber(Me.m_data.objFuncEconomicValue), _
-                            cStringUtils.FormatNumber(Me.m_data.objFuncSocialValue), _
-                            cStringUtils.FormatNumber(Me.m_data.objFuncMandatedValue), _
-                            cStringUtils.FormatNumber(Me.m_data.objFuncEcologicalValue), _
-                            cStringUtils.FormatNumber(Me.m_data.objFuncBiodiversity), _
-                            cStringUtils.FormatNumber(Me.m_data.objFuncAreaBorder))
-        End Sub
+#End If
 
 #End Region
 
 #Region "Memory Managment"
 
-        Private Sub cleanUp()
+        Private Overloads Sub cleanUp()
+            MyBase.cleanUp()
 
-            Erase BOrig
-            Erase FOrig
-            Erase WOrig
-            '  Erase Bseed
-            Erase Blastseed
-            '   Erase Fseed
-            '   Erase Wseed
-            '   Erase m_data.MPASeed
-            'Erase MPARow
-            'Erase MPACol
-            'Erase EffortMPA
-            'Erase MPAcount
+            Erase MPARow
+            Erase MPACol
+            Erase EffortMPA
+            Erase MPAcount
 
         End Sub
 
-        Private Sub RedimSeedVariables()
+        Private Overloads Sub RedimSeedVariables()
+            MyBase.RedimSeedVariables()
+
             Dim nvartot As Integer = m_SpaceData.NGroups + 2
 
-
-            'ReDim Blast(m_esdata.Inrow + 1, m_esdata.Incol + 1, NvarTot) As Single
-            '  ReDim Port(NumGear, m_esdata.Inrow + 1, m_esdata.Incol + 1)
-            ReDim BOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
-            ReDim FOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
-            ReDim WOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
-            '     ReDim Bseed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
-            ReDim Blastseed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
-            '   ReDim Fseed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
-            '    ReDim Wseed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
-            'ReDim m_data.MPASeed(m_esData.Inrow + 1, m_esData.InCol + 1)
-            'ReDim EffortYear(NumGear)
-            'ReDim EffortYearSeed(NumGear)
-            'ReDim ValGear(NumGear)
-            'ReDim SailTot(TotalTime * 12, NumGear), ValRatio(NumGear), SailMax(NumGear)
-            'ReDim ValratioSeed(NumGear), ValGearSeed(NumGear), SailTotSeed(NumGear)
-            'ReDim MPAVal(m_esData.Inrow + 1, m_esData.InCol + 1)
-            'ReDim MpaBioValStore(m_esData.Inrow + 1, m_esData.InCol + 1)
-            'ReDim MpaGearProfitsStore(m_esData.Inrow + 1, m_esData.InCol + 1)
-            'ReDim MPABio(m_esData.Inrow + 1, m_esData.InCol + 1)
-            'ReDim GearRent(NumGear, m_esData.Inrow + 1, m_esData.InCol + 1)
-            'ReDim bbTOT(NumGroups)
             ReDim MPAcount(m_SpaceData.InRow * m_SpaceData.InCol + 1)
             ReDim MPARow(m_SpaceData.InRow * m_SpaceData.InCol + 1)
             ReDim MPACol(m_SpaceData.InRow * m_SpaceData.InCol + 1)
-            'ReDim EffortMPA(m_SpaceData.nFleets, m_SpaceData.Inrow * m_SpaceData.InCol + 1)
-            ReDim StoreBtimeForEcoSeed(m_SpaceData.NGroups)
-            'ReDim MPAVal2a(m_esData.Inrow * m_esData.InCol + 1), MPAVal2b(m_esData.Inrow * m_esData.InCol + 1), MPABio2(m_esData.Inrow * m_esData.InCol + 1)
-            'ReDim GearRentStore(NumGear, m_esData.Inrow * m_esData.InCol + 1)
+
         End Sub
 #End Region
 
-#Region " Message handling "
+    End Class
 
-        Private Sub SendMessage(ByVal msg As cMessage)
+#Region "Dead code from EwE5"
+
+
+#If 0 Then
+
+        Public Sub KeepOrReloadCellValues(ByVal biomass() As Single)
+            Dim i As Integer, j As Integer, ip As Integer
+            'these are not being kept properly ab02182000
+            'TimesCalled is reinitialized for each timestep
+
+            'ToDo_jb KeepOrReloadCellValues WchangeVar() is only in the ecospace threads 
+            'If this really needs to happen it needs to get copied out of the threads then copied back in?????
             Try
-                If (Me.m_SendMessageDelegate IsNot Nothing) Then Me.m_SendMessageDelegate.Invoke(msg)
+                If TimesCalled = 1 Then 'First time keep the original bcell values
+
+                    For i = 1 To m_SpaceData.InRow
+                        For j = 1 To m_SpaceData.InCol
+                            For ip = 1 To m_SpaceData.NGroups
+                                BOrig(i, j, ip) = m_SpaceData.Bcell(i, j, ip)
+                                FOrig(i, j, ip) = m_EcoSpace.FtimeCell(i, j, ip)
+                                Blastseed(i, j, ip) = m_SpaceData.Blast(i, j, ip)
+                            Next
+                        Next
+                    Next
+                    'Btime is needed when running Ecoseed
+                    For i = 1 To m_SpaceData.NGroups
+                        StoreBtimeForEcoSeed(i) = biomass(i)
+                    Next
+                End If
+
+                If TimesCalled >= 2 Then 'second time recalls the original bcell values for each timestep
+                    For i = 1 To m_SpaceData.InRow
+                        For j = 1 To m_SpaceData.InCol
+                            For ip = 1 To m_SpaceData.NGroups
+                                m_SpaceData.Blast(i, j, ip) = Blastseed(i, j, ip)
+                                m_SpaceData.Bcell(i, j, ip) = BOrig(i, j, ip)
+                                m_EcoSpace.FtimeCell(i, j, ip) = FOrig(i, j, ip)
+                            Next
+                        Next
+                    Next
+                    For i = 1 To m_SpaceData.NGroups
+                        biomass(i) = StoreBtimeForEcoSeed(i)
+                    Next
+                End If
+
             Catch ex As Exception
                 cLog.Write(ex)
-                Debug.Assert(False, Me.ToString & ".setRunState() " & ex.Message)
+                Debug.Assert(False, ex.StackTrace)
+                Throw New ApplicationException("EcoSeed.KeepOrReloadCellValues() error: " & ex.Message, ex)
             End Try
+
         End Sub
+#End If
 
-#End Region ' Message handling
-
-    End Class
+#End Region
 
 End Namespace

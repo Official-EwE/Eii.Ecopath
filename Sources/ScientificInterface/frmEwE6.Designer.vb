@@ -764,7 +764,7 @@ Partial Public Class frmEwE6
         '
         Me.m_tslbReadOnly.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tslbReadOnly.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tslbReadOnly.Image = Global.ScientificInterface.My.Resources.Resources.Warning
+        Me.m_tslbReadOnly.Image = ScientificInterfaceShared.My.Resources.Warning
         Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
         '

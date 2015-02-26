@@ -2133,7 +2133,7 @@ Public Class cEIIXMLDataSource
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dtMPA As DataTable = Me.ReadTable("EcospaceScenarioMPA")
         Dim strMPAMonth As String = ""
-        Dim strMPAMap As String = ""
+        Dim strMap As String = ""
         Dim bSucces As Boolean = True
         Dim iMPA As Integer = 1
 
@@ -2155,8 +2155,8 @@ Public Class cEIIXMLDataSource
                     ' EcospaceDS.MPAmonth: False if closed, True if open
                     ecospaceDS.MPAmonth(iMonth + 1, iMPA) = (strMPAMonth.Substring(iMonth, 1) = "1")
                 Next iMonth
-                strMPAMap = CStr(Me.ReadSafe(drow, "MPAMap", ""))
-                bSucces = bSucces And cStringUtils.StringToArray(strMPAMap, ecospaceDS.MPA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, iMPA)
+                strMap = CStr(Me.ReadSafe(drow, "MPAMap", ""))
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, iMPA)
                 iMPA += 1
 
             Catch ex As Exception

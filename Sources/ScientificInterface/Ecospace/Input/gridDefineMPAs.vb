@@ -51,19 +51,6 @@ Namespace Ecospace
         Private Enum eColumnTypes
             MPAIndex = 0
             MPAName
-            MPAAll
-            MPAJan
-            MPAFeb
-            MPAMar
-            MPAApr
-            MPAMay
-            MPAJun
-            MPAJul
-            MPAAug
-            MPASep
-            MPAOct
-            MPANov
-            MPADec
             MPAStatus
         End Enum
 
@@ -85,8 +72,6 @@ Namespace Ecospace
 
             ''' <summary>Name for this MPA.</summary>
             Private m_strName As String = ""
-            ''' <summary>Months this MPA is closed.</summary>
-            Private m_bOpenMonths(cCore.N_MONTHS) As Boolean
             ''' <summary>The status of a MPA in the interface.</summary>
             Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
@@ -103,9 +88,6 @@ Namespace Ecospace
                 Me.m_iMPADBID = MPA.DBID
                 Me.m_iMPAIndex = MPA.Index
                 Me.m_strName = MPA.Name
-                For iMonth As Integer = 1 To cCore.N_MONTHS
-                    Me.m_bOpenMonths(iMonth) = MPA.MPAMonth(iMonth)
-                Next
                 Me.m_status = eItemStatusTypes.Original
             End Sub
 
@@ -117,9 +99,6 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal strName As String)
                 Me.m_strName = strName
-                For iMonth As Integer = 1 To cCore.N_MONTHS
-                    Me.m_bOpenMonths(iMonth) = False
-                Next
                 Me.m_status = eItemStatusTypes.Added
             End Sub
 
@@ -161,31 +140,6 @@ Namespace Ecospace
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get the months that an MPA is open for fishing.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public ReadOnly Property MPAMonths() As Boolean()
-                Get
-                    Return Me.m_bOpenMonths
-                End Get
-            End Property
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' Get/set open months in this administrative unit.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public Property IsOpen(ByVal iMonth As Integer) As Boolean
-                Get
-                    Return Me.m_bOpenMonths(iMonth)
-                End Get
-                Set(ByVal value As Boolean)
-                    Me.m_bOpenMonths(iMonth) = value
-                End Set
-            End Property
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
             ''' Get the <see cref="eItemStatusTypes">item status</see> for the MPA 
             ''' object.
             ''' </summary>
@@ -209,13 +163,8 @@ Namespace Ecospace
             ''' </returns>
             ''' -------------------------------------------------------------------
             Public Function IsChanged(ByVal mpa As cEcospaceMPA) As Boolean
-                Dim bChanged As Boolean = False
                 If Me.IsNew Then Return False
-                bChanged = (mpa.Name <> Me.m_strName)
-                For iMonth As Integer = 1 To cCore.N_MONTHS
-                    bChanged = bChanged Or (Me.m_bOpenMonths(iMonth) <> mpa.MPAMonth(iMonth))
-                Next
-                Return bChanged
+                Return (mpa.Name <> Me.m_strName)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -285,13 +234,6 @@ Namespace Ecospace
             Me(0, eColumnTypes.MPAIndex) = New EwEColumnHeaderCell()
             ' MPA name cell, editable this time
             Me(0, eColumnTypes.MPAName) = New EwEColumnHeaderCell(SharedResources.HEADER_MPA)
-            Me(0, eColumnTypes.MPAAll) = New EwEColumnHeaderCell("Closed")
-            'Define column header Jan - Dec
-            For iCol As Integer = eColumnTypes.MPAJan To eColumnTypes.MPADec
-                Dim d As New Date(1, (iCol - eColumnTypes.MPAJan) + 1, 1)
-                Me(0, iCol) = New EwEColumnHeaderCell(d.ToString("MMM"))
-            Next
-
             ' MPA index cell
             Me(0, eColumnTypes.MPAStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
@@ -335,13 +277,6 @@ Namespace Ecospace
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
             Me.AutoSizeColumnRange(1, Me.ColumnsCount - 1, 1, Me.RowsCount - 1)
-            'Me.Columns(eColumnTypes.MPAIndex).Width = 20
-            'Me.Columns(eColumnTypes.MPAName).Width = 80
-            'Me.Columns(eColumnTypes.MPAAll).Width = 60
-            'For col As eColumnTypes = eColumnTypes.MPAJan To eColumnTypes.MPADec
-            '    Me.Columns(col).Width = 40
-            'Next
-            'Me.Columns(eColumnTypes.MPAStatus).Width = 80
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -368,14 +303,6 @@ Namespace Ecospace
 
                 Me(iRow, eColumnTypes.MPAName) = New Cells.Real.Cell("", GetType(String))
                 Me(iRow, eColumnTypes.MPAName).Behaviors.Add(Me.EwEEditHandler)
-
-                Me(iRow, eColumnTypes.MPAAll) = New Cells.Real.CheckBox(False)
-                Me(iRow, eColumnTypes.MPAAll).Behaviors.Add(Me.EwEEditHandler)
-
-                For iMonth As Integer = 1 To cCore.N_MONTHS
-                    Me(iRow, eColumnTypes.MPAJan - 1 + iMonth) = New Cells.Real.CheckBox(False)
-                    Me(iRow, eColumnTypes.MPAJan - 1 + iMonth).Behaviors.Add(Me.EwEEditHandler)
-                Next iMonth
 
                 Me(iRow, eColumnTypes.MPAStatus) = New EwEStatusCell(eItemStatusTypes.Original)
             Next
@@ -427,65 +354,11 @@ Namespace Ecospace
             pos = New Position(iRow, eColumnTypes.MPAName)
             aCells(eColumnTypes.MPAName).SetValue(pos, CStr(mi.Name))
 
-            ' Set montly states
-            For iMonth As Integer = 1 To cCore.N_MONTHS
-                pos = New Position(iRow, eColumnTypes.MPAJan - 1 + iMonth)
-                ' Display a check when the MPA is NOT open for fishing
-                aCells(eColumnTypes.MPAJan - 1 + iMonth).SetValue(pos, Not mi.IsOpen(iMonth))
-                If mi.IsOpen(iMonth) Then iNumOpen += 1
-            Next
-
-            ' Display a check when the MPA is NOT open for fishing
-            aCells(eColumnTypes.MPAAll).SetValue(pos, (iNumOpen = 0))
-
             aCells(eColumnTypes.MPAStatus).SetValue(pos, mi.Status)
 
             Me.AllowUpdates = True
 
         End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Called Update local admin based on cell value changes.
-        ''' </summary>
-        ''' <returns>
-        ''' True if the value change is allowed, False to block the value change.
-        ''' </returns>
-        ''' <remarks>
-        ''' This method differs from OnCellValueEdited; during a cell value 
-        ''' change notification (at the end of an edit operation) it is unsafe
-        ''' to modify the value of the cell being edited. However, the end edit 
-        ''' event will not be triggered for particular specialized cells which
-        ''' makes this method mandatory. We once again apologize for the confusion; )
-        ''' </remarks>
-        ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
-
-            If Not Me.AllowUpdates Then Return True
-
-            Dim mi As cMPAInfo = DirectCast(Me.m_alMPAs(p.Row - 1), cMPAInfo)
-
-            Select Case DirectCast(p.Column, eColumnTypes)
-
-                Case eColumnTypes.MPAName
-                    ' JS: Handled in OnCellEdited()
-                    ' mi.Name = CStr(cell.GetValue(p))
-
-                Case eColumnTypes.MPAAll
-                    For i As Integer = 1 To cCore.N_MONTHS
-                        mi.IsOpen(i) = Not CBool(cell.GetValue(p))
-                    Next
-                    Me.UpdateRow(p.Row)
-
-                Case eColumnTypes.MPAJan To eColumnTypes.MPADec
-                    mi.IsOpen(p.Column + 1 - CInt(eColumnTypes.MPAJan)) = Not CBool(cell.GetValue(p))
-                    Me.UpdateRow(p.Row)
-
-            End Select
-
-            Return True
-
-        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -785,7 +658,12 @@ Namespace Ecospace
             Dim mpa As cEcospaceMPA = Nothing
             Dim iMPA As Integer = 0
             Dim iDeleteCount As Integer = 0
+            Dim MPAMonths(cCore.N_MONTHS) As Boolean
             Dim bSuccess As Boolean = True
+
+            For i As Integer = 1 To cCore.N_MONTHS
+                MPAMonths(i) = False
+            Next
 
             ' Validate content of the grid
             If Not Me.ValidateContent() Then Return False
@@ -840,7 +718,7 @@ Namespace Ecospace
                 For iMPA = 0 To Me.m_alMPAs.Count - 1
                     mi = DirectCast(Me.m_alMPAs(iMPA), cMPAInfo)
                     If (mi.IsNew()) Then
-                        bSuccess = bSuccess And Me.Core.AddEcospaceMPA(mi.Name, mi.MPAMonths, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddEcospaceMPA(mi.Name, MPAMonths, iDBID)
                     End If
                 Next
 
@@ -892,9 +770,6 @@ Namespace Ecospace
                         If mi.IsChanged(mpa) Then
                             ' #Yes: update MPA
                             mpa.Name = mi.Name
-                            For iMonth As Integer = 1 To cCore.N_MONTHS
-                                mpa.MPAMonth(iMonth) = mi.IsOpen(iMonth)
-                            Next
                         End If
                     End If
                 Next

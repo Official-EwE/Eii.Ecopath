@@ -8836,7 +8836,7 @@ Namespace DataSources
 
                     ' Read map
                     strMPAMap = CStr(Me.m_db.ReadSafe(reader, "MPAMap", ""))
-                    bSucces = bSucces And cStringUtils.StringToArray(strMPAMap, ecospaceDS.MPA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, iMPA)
+                    bSucces = bSucces And cStringUtils.StringToArray(strMPAMap, ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
                 End While
 
@@ -8896,7 +8896,7 @@ Namespace DataSources
                     End If
 
                     drow("MPAName") = ecospaceDS.MPAname(iMPA)
-                    drow("MPAMap") = cStringUtils.ArrayToString(ecospaceDS.MPA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, iMPA)
+                    drow("MPAMap") = cStringUtils.ArrayToString(ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, iMPA)
 
                     ' Create MPA month bit pattern
                     sbMPAMonth.Length = 0
@@ -8938,7 +8938,8 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="strMPAName"></param>
         ''' <param name="iMPAID"></param>
-        ''' <param name="bMPAMonths">Flags indicating when the MPA is OPEN for fishing.</param>
+        ''' <param name="bMPAMonths">One-based series of flags that indicate when the 
+        ''' MPA is OPEN for fishing.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Public Function AppendEcospaceMPA(ByVal strMPAName As String, _
@@ -8960,7 +8961,8 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="strMPAName"></param>
         ''' <param name="iScenarioID"></param>
-        ''' <param name="bMPAMonths">Flags indicating when the MPA is OPEN for fishing.</param>
+        ''' <param name="bMPAMonths">One-based series of flags that indicate when the 
+        ''' MPA is OPEN for fishing.</param>
         ''' <param name="iMPAID"></param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------

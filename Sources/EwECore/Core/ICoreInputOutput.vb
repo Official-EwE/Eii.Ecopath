@@ -20,6 +20,7 @@ Option Strict On
 Imports System.ComponentModel
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #Region " Definition of interfaces "
 
@@ -476,7 +477,8 @@ Public MustInherit Class cCoreInputOutputBase
     Public Overridable Function GetStatus(ByVal VarName As eVarNameFlags, _
                                           Optional ByVal iIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
         Try
-            Return m_values.Item(VarName).Status(iIndex)
+            Dim val As cValue = m_values.Item(VarName)
+            Return val.Status(iIndex) Or CType(cSystemUtils.IIF(val.Stored, eStatusFlags.Stored, 0), eStatusFlags)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".getVariable()Error " & ex.Message)
             Return Nothing

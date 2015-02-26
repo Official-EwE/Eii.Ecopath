@@ -750,17 +750,18 @@ Namespace Ecospace
 
                             ' Draw MPA
                             If Me.m_bShowMPA Then
-                                Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA.Cell(i, j))
-                                ' Is MPA cell?
-                                If iMPA > 0 Then
-                                    If Me.Core.EcospaceMPAs(iMPA).MPAMonth(iMonth) Then
-                                        brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
-                                    Else
-                                        brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                                For k As Integer = 1 To Me.Core.nMPAs - 1
+                                    Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA(k).Cell(i, j))
+                                    If iMPA > 0 Then
+                                        If Me.Core.EcospaceMPAs(iMPA).MPAMonth(iMonth) Then
+                                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
+                                        Else
+                                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                                        End If
+                                        g.FillRectangle(brCell, tmpRect)
+                                        brCell.Dispose()
                                     End If
-                                    g.FillRectangle(brCell, tmpRect)
-                                    brCell.Dispose()
-                                End If
+                                Next
                             End If
                         End If
                     Else
