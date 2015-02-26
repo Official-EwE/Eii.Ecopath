@@ -63,7 +63,8 @@ Public Class cEcospaceASCMapResultsWriter
 
         Try
 
-            Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch, eVarNameFlags.LayerHabitatCapacity}
+            'Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch, eVarNameFlags.LayerHabitatCapacity}
+            Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
             Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
             Dim strm As StreamWriter = Nothing
             Dim strFile As String = ""
