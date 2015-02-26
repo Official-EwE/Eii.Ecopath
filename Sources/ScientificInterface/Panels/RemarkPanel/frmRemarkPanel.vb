@@ -31,7 +31,7 @@ Imports System.Text
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Panel that provides details for a selected core value. From here, remarks
-''' and references can be manipulated.
+''' can be manipulated, and users can view metadata about their selected value
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class frmRemarkPanel
@@ -76,9 +76,11 @@ Public Class frmRemarkPanel
         AddHandler Me.m_mon.OnSelectionChanged, AddressOf OnSelectionChanged
 
         Me.Icon = Icon.FromHandle(SharedResources.CommentHS.GetHicon)
+        Me.m_tsbnInfo.Image = SharedResources.Info
+
+        Me.m_scMain.Panel1Collapsed = Not Me.m_tsbnInfo.Checked
 
         ' Init panel
-        Me.UpdateControls()
         Me.UpdateContents()
 
     End Sub
@@ -102,6 +104,23 @@ Public Class frmRemarkPanel
     Public Overrides Function PanelType() As frmEwEDockContent.ePanelType
         Return ePanelType.SystemPanel
     End Function
+
+    Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
+        MyBase.OnSizeChanged(e)
+
+        Dim rc As Rectangle = Me.ClientRectangle
+
+        If (rc.Width > 50 And rc.Height > 50) Then
+            If (rc.Width > rc.Height) Then
+                Me.m_scMain.Orientation = Orientation.Vertical
+                Me.m_scMain.SplitterDistance = 200
+            Else
+                Me.m_scMain.Orientation = Orientation.Horizontal
+                Me.m_scMain.SplitterDistance = 100
+            End If
+        End If
+
+    End Sub
 
 #End Region ' Form overrides
 
@@ -182,6 +201,17 @@ Public Class frmRemarkPanel
 
     End Sub
 
+    Private Sub OnToggleShowInfo(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnInfo.Click
+
+        Try
+            Me.m_scMain.Panel1Collapsed = Not Me.m_tsbnInfo.Checked
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
     ''' <summary>Update feedback loop prevention flag.</summary>
     Private m_bInUpdate As Boolean = False
 
@@ -201,7 +231,7 @@ Public Class frmRemarkPanel
                 If Not p.IsDisposed Then p.SetRemark(strRemark)
             Next p
         Catch ex As Exception
-            cLog.Write(ex, "frmRemarkPanel::Apply")
+            cLog.Write(ex, "frmInformationPanel::Apply")
         End Try
         Me.m_bInUpdate = False
 
@@ -255,7 +285,7 @@ Public Class frmRemarkPanel
         Dim bHasSelection As Boolean = False
 
         For Each p As cProperty In Me.m_mon.Selection
-            If Not String.IsNullOrEmpty(p.ID) Then bHasSelection = bHasSelection Or p.IsStored
+            If Not String.IsNullOrEmpty(p.ID) Then bHasSelection = True
         Next
 
         Me.m_btnApply.Visible = bHasEcopath
@@ -272,53 +302,133 @@ Public Class frmRemarkPanel
     ''' -----------------------------------------------------------------------
     Private Sub UpdateContents()
 
-        Dim fmtSel As New cSelectionMonitorFormatter()
-        Dim fmtMeta As New cMetadataTypeFormatter()
-        Dim props() As cProperty = Me.m_mon.Selection
-        Dim strSelection As String = fmtSel.GetDescriptor(Me.m_mon, eDescriptorTypes.Name)
-        Dim strDescription As String = fmtSel.GetDescriptor(Me.m_mon, eDescriptorTypes.Description)
-        Dim strMeta As String = Nothing
+        Dim strVarN As String = ""
+        Dim strName As String = My.Resources.SELECTION_NONE
+        Dim strDescription As String = ""
+        Dim strDomain As String = ""
+        Dim strStatus As String = ""
         Dim strRemark As String = ""
-        Dim strRemarkFinal As String = ""
+        Dim props() As cProperty = Me.m_mon.Selection
+        Dim prop As cProperty = Nothing
+        Dim vnf As New cVarnameTypeFormatter()
+        Dim mdf As New cMetadataTypeFormatter(Me.m_uic.StyleGuide)
+        Dim stf As New cStyleTypeFormatter()
+        Dim bEditable As Boolean = False
 
         If (props IsNot Nothing) Then
+            Select Case props.Length
 
-            ' Concat remark text of selected properties
-            For iProp As Integer = 0 To props.Length - 1
-                ' Get remark text for this property
-                strRemark = props(iProp).GetRemark().Trim
+                Case 0
+                    ' NOP
 
-                strMeta = fmtMeta.GetDescriptor(props(iProp).GetVariableMetadata())
+                Case 1
 
-                ' Is valid remark text?
-                If (Not String.IsNullOrWhiteSpace(strRemark)) Then
-                    ' No remark picked yet?
-                    If String.IsNullOrWhiteSpace(strRemarkFinal) Then
-                        ' #Yes: store remark
-                        strRemarkFinal = strRemark
-                    Else
-                        ' #No: does this remark differ from existing remark?
-                        If (String.Compare(strRemarkFinal, strRemark, False) <> 0) Then
-                            ' #Yes: clear final remark text, stop looking because the text is mixed
-                            strRemarkFinal = ""
-                            Exit For
+                    prop = props(0)
+
+                    ' Get selection text
+                    If (Not Object.ReferenceEquals(prop.Source, Nothing)) Then
+
+                        ' Get variable descriptor
+                        Dim var As eVarNameFlags = prop.VarName
+                        Dim fmt As New cCoreInterfaceFormatter()
+
+                        strVarN = vnf.GetDescriptor(var, eDescriptorTypes.Name)
+
+                        ' Format message
+                        If Not Object.ReferenceEquals(prop.SourceSec, Nothing) Then
+                            strName = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
+                                                    fmt.GetDescriptor(prop.Source), _
+                                                    strVarN, _
+                                                    fmt.GetDescriptor(prop.SourceSec))
+                        Else
+                            strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                                                    fmt.GetDescriptor(prop.Source), _
+                                                    strVarN)
                         End If
+
+                        strDescription = vnf.GetDescriptor(var, eDescriptorTypes.Description)
+                        strDomain = mdf.GetDescriptor(prop.GetVariableMetadata())
+                        strStatus = stf.GetDescriptor(prop.GetStyle())
+                        strRemark = prop.GetRemark()
+
+                        bEditable = ((prop.GetStyle() And cStyleGuide.eStyleFlags.NotEditable) = 0)
+                    Else
+                        strName = My.Resources.SELECTION_DERIVED
                     End If
-                End If
-            Next
+
+                Case Else
+                    Dim var As eVarNameFlags = eVarNameFlags.NotSet
+                    Dim bMixed As Boolean = False
+                    Dim strTmp As String = ""
+
+                    For Each prop In props
+                        If (var = eVarNameFlags.NotSet) Then
+                            var = prop.VarName
+                            strName = String.Format(My.Resources.SELECTION_SINGLEVAR, My.Resources.SELECTION_MULTIPLE, vnf.GetDescriptor(var))
+                            strDescription = vnf.GetDescriptor(var, eDescriptorTypes.Description)
+                            strDomain = mdf.GetDescriptor(prop.GetVariableMetadata())
+                            strStatus = stf.GetDescriptor(prop.GetStyle())
+                        Else
+                            bMixed = bMixed Or (var <> prop.VarName)
+                        End If
+
+                        strTmp = prop.GetRemark().Trim
+
+                        ' Is valid remark text?
+                        If (Not String.IsNullOrWhiteSpace(strTmp)) Then
+                            ' No remark picked yet?
+                            If String.IsNullOrWhiteSpace(strRemark) Then
+                                ' #Yes: store remark
+                                strRemark = strTmp
+                            Else
+                                ' #No: does this remark differ from existing remark?
+                                If (String.Compare(strRemark, strTmp, False) <> 0) Then
+                                    ' #Yes: clear final remark text, stop looking because the text is mixed
+                                    strRemark = ""
+                                    Exit For
+                                End If
+                            End If
+                        End If
+                    Next
+
+                    If bMixed Then
+                        strName = My.Resources.SELECTION_MULTIPLE
+                        strDescription = ""
+                        strDomain = ""
+                        strStatus = ""
+                    End If
+            End Select
         End If
 
-        Dim sbTooltip As New StringBuilder()
-        sbTooltip.Append(strDescription.Trim())
-        If (Not String.IsNullOrWhiteSpace(strMeta)) Then
-            If (sbTooltip.Length > 0) Then sbTooltip.AppendLine()
-            sbTooltip.Append(strMeta)
-        End If
+        ' No need to repeat things
+        If (String.Compare(strVarN, strDescription, True) = 0) Then strDescription = ""
 
         ' Update control contents
-        Me.m_lblVarName.Text = strSelection
-        'Me.m_lblVarName.ToolTipText = sbTooltip.ToString()
-        Me.m_tbxRemark.Text = strRemarkFinal
+        Me.m_lblVarName.Text = strName
+
+        If (String.IsNullOrWhiteSpace(strStatus)) Then
+            Me.m_lblStatus.Visible = False
+        Else
+            Me.m_lblStatus.Text = strStatus
+            Me.m_lblStatus.Visible = True
+        End If
+
+        If String.IsNullOrWhiteSpace(strDescription) Then
+            Me.m_lblDescription.Visible = False
+        Else
+            Me.m_lblDescription.Text = String.Format(My.Resources.INFOPANEL_DESCRIPTION, strDescription)
+            Me.m_lblDescription.Visible = True
+        End If
+
+        If (String.IsNullOrWhiteSpace(strDomain) Or (bEditable = False)) Then
+            Me.m_lblDomain.Visible = False
+
+        Else
+            Me.m_lblDomain.Text = String.Format(My.Resources.INFOPANEL_DOMAIN, strDomain)
+            Me.m_lblDomain.Visible = True
+        End If
+
+        Me.m_tbxRemark.Text = strRemark
 
     End Sub
 

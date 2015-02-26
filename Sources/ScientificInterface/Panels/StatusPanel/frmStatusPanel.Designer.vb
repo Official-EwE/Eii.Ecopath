@@ -65,7 +65,6 @@ Partial Class frmStatusPanel
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockBottom
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.TabText = "Status"
         Me.ResumeLayout(False)
 
     End Sub

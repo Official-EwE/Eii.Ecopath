@@ -13080,4 +13080,12 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="logo_mgel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\logo_mgel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="INFOPANEL_DESCRIPTION" xml:space="preserve">
+    <value>Additional description: {0}</value>
+    <comment>{0}=description text</comment>
+  </data>
+  <data name="INFOPANEL_DOMAIN" xml:space="preserve">
+    <value>Allowed values: {0}</value>
+    <comment>{0}=values text</comment>
+  </data>
 </root>
