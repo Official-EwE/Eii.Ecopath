@@ -64,7 +64,7 @@ Public MustInherit Class cEcospaceLayer
     ''' <summary>
     ''' Constructor for definining a layer that dynamically obtains its data.
     ''' </summary>
-    ''' <param name="theCore">The core to notify of changes.</param>
+    ''' <param name="core">The core to notify of changes.</param>
     ''' <param name="iDBID">Database ID to assign to the layer.</param>
     ''' <param name="manager">The manager providing data for this layer.</param>
     ''' <param name="vnData">The variable name identifying what data to obtain
@@ -72,7 +72,7 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="iIndex">Secundary index for obtaining the data.</param>
     ''' <param name="typeValue"><see cref="Type">Type</see> of layer values.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByVal theCore As cCore, _
+    Protected Sub New(ByVal core As cCore, _
                       ByVal iDBID As Integer, _
                       ByVal manager As IEcospaceLayerManager, _
                       ByVal strName As String, _
@@ -80,7 +80,7 @@ Public MustInherit Class cEcospaceLayer
                       ByVal iIndex As Integer, _
                       ByVal typeValue As Type)
 
-        Me.New(theCore, iDBID, strName, typeValue, Nothing)
+        Me.New(core, iDBID, strName, typeValue, Nothing)
 
         Debug.Assert(vnData <> eVarNameFlags.NotSet)
 
@@ -103,18 +103,18 @@ Public MustInherit Class cEcospaceLayer
     ''' <summary>
     ''' Constructor for defining a layer that is connected directly to its data.
     ''' </summary>
-    ''' <param name="theCore">The core to notify of changes.</param>
+    ''' <param name="core">The core to notify of changes.</param>
     ''' <param name="data">The data to link to this layer.</param>
     ''' <param name="typeValue"><see cref="Type">Type</see> of layer values.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByVal theCore As cCore, _
+    Protected Sub New(ByVal core As cCore, _
                       ByVal data As Object, _
                       ByVal strName As String, _
                       ByVal typeValue As Type, _
                       Optional ByVal meta As cVariableMetaData = Nothing, _
                       Optional ByVal vn As eVarNameFlags = Nothing)
 
-        Me.New(theCore, cCore.NULL_VALUE, strName, typeValue, meta)
+        Me.New(core, cCore.NULL_VALUE, strName, typeValue, meta)
 
         ' Sanity check
         Debug.Assert(data IsNot Nothing Or VarName <> eVarNameFlags.NotSet, "Layer created without any data!")
@@ -124,13 +124,13 @@ Public MustInherit Class cEcospaceLayer
 
     End Sub
 
-    Private Sub New(ByVal theCore As cCore, _
+    Private Sub New(ByVal core As cCore, _
                     ByVal iDBID As Integer, _
                     ByVal strName As String, _
                     ByVal typeValue As Type, _
                     ByVal meta As cVariableMetaData)
 
-        MyBase.New(theCore)
+        MyBase.New(core)
 
         Dim val As cValue = Nothing
 
@@ -184,7 +184,7 @@ Public MustInherit Class cEcospaceLayer
     Protected ReadOnly Property Data() As Object
         Get
             If (Me.m_data Is Nothing) Then
-                Return Me.m_manager.LayerData(Me.m_vnData)
+                Me.m_data = Me.m_manager.LayerData(Me.m_vnData)
             End If
             Return Me.m_data
         End Get

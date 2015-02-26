@@ -129,9 +129,8 @@ Public Class cCoreEnumNamesIndex
     Public Function GetVarName(ByVal strVarName As String) As eVarNameFlags
         If Me.m_dictVarNameToEnum.ContainsKey(strVarName) Then
             Return DirectCast(Me.m_dictVarNameToEnum(strVarName), eVarNameFlags)
-        Else
-            Return eVarNameFlags.NotSet
         End If
+        Return eVarNameFlags.NotSet
     End Function
 
     ''' -----------------------------------------------------------------------

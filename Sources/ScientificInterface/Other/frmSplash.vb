@@ -1,4 +1,6 @@
-﻿' ===============================================================================
+﻿Imports EwEUtils.Utilities
+
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -29,11 +31,7 @@ Friend Class frmSplash
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        'pictureBox1.Image = Bitmap.FromHicon(New Icon(OpenFileDialog.FileName, New Size(48, 48)).Handle)
-        Dim rc As Rectangle = Me.ClientRectangle()
-        Dim ico As New Icon(cEwEIcon.Current(), rc.Size)
-        Me.m_img = Bitmap.FromHicon(ico.Handle)
-        ico.Dispose()
+        Me.m_img = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current(), Me.ClientRectangle.Size)
 
         Me.CenterToScreen()
         Me.TopMost = True

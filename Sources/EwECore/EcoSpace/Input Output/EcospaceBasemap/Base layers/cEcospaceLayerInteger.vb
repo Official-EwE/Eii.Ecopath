@@ -92,8 +92,7 @@ Public Class cEcospaceLayerInteger
     ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
-            Dim d As Integer(,) = DirectCast(Me.Data, Integer(,))
-            If Me.ValidateCellPosition(iRow, iCol) Then Return d(iRow, iCol) Else Return cCore.NULL_VALUE
+            Return DirectCast(Me.Data, Integer(,))(iRow, iCol)
         End Get
         Set(ByVal value As Object)
             Dim d As Integer(,) = DirectCast(Me.Data, Integer(,))

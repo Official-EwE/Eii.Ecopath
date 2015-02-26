@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,214 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DETAIL_COMPARE_FAILED" xml:space="preserve">
+    <value>An error occurred comparing this model to the key run. {0}</value>
+    <comment>{0}=exception message</comment>
+  </data>
+  <data name="DETAIL_COMPUTE_FAILED" xml:space="preserve">
+    <value>Failed to calculate values for current model. {0}</value>
+    <comment>{0}=exception message</comment>
+  </data>
+  <data name="DETAIL_COMPUTE_HASH_FAILED" xml:space="preserve">
+    <value>Failed to compute hash values for some variables. {0}</value>
+    <comment>{0}=exception message</comment>
+  </data>
+  <data name="DETAIL_KEYRUN_READ_FAILED" xml:space="preserve">
+    <value>An error occurred reading the key run file. {0}</value>
+    <comment>{0}=exception message</comment>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Ecopath_keyrun" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ecopath_keyrun.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FILE_INDEX_KEYRUN" xml:space="preserve">
+    <value>EwE key run file|*.ewekeyrun</value>
+  </data>
+  <data name="PROMPT_KEYRUN_LOAD" xml:space="preserve">
+    <value>Select key run file to load</value>
+  </data>
+  <data name="PROMPT_KEYRUN_SAVE" xml:space="preserve">
+    <value>Select where to save the key run file for this model</value>
+  </data>
+  <data name="Star_HD" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Star_HD.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="STATUS_KEYRUN_SAVE_FAILED" xml:space="preserve">
+    <value>Failed to save key run file to {0}</value>
+    <comment>{0}=key run file location</comment>
+  </data>
+  <data name="STATUS_KEYRUN_SAVE_SUCCESS" xml:space="preserve">
+    <value>Key run file saved to {0}</value>
+    <comment>{0}=key run file location</comment>
+  </data>
+  <data name="STATUS_MATCH_FAILED" xml:space="preserve">
+    <value>The current model does not match the key run</value>
+  </data>
+  <data name="STATUS_MATCH_SUCCESS" xml:space="preserve">
+    <value>The current model matches the key run</value>
+  </data>
+  <data name="STATUS_MATCH_UNKNOWN" xml:space="preserve">
+    <value>The checksums for the current model have not been computed yet</value>
+  </data>
+  <data name="STATUS_KEYRUN_LOAD_FAILED" xml:space="preserve">
+    <value>Successfully loaded key run file {0}</value>
+    <comment>{0}=key run file location</comment>
+  </data>
+  <data name="STATUS_KEYRUN_LOAD_SUCCESS" xml:space="preserve">
+    <value>Failed to load key run file {0}</value>
+    <comment>{0}=key run file location</comment>
+  </data>
+  <data name="PROGRESS_HASHING" xml:space="preserve">
+    <value>Hashing {0}...</value>
+    <comment>{0}=IHashSummarizer name</comment>
+  </data>
+  <data name="MATCHSTATE_EQUAL" xml:space="preserve">
+    <value>Equal</value>
+  </data>
+  <data name="MATCHSTATE_MISSINGCURRENTMODEL" xml:space="preserve">
+    <value>Not computed</value>
+  </data>
+  <data name="MATCHSTATE_MISSINGKEYRUN" xml:space="preserve">
+    <value>Not in key run</value>
+  </data>
+  <data name="MATCHSTATE_NOTEQUAL" xml:space="preserve">
+    <value>Not equal</value>
+  </data>
+  <data name="HEADER_ALERT" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HEADER_COMPONENT" xml:space="preserve">
+    <value>Component</value>
+  </data>
+  <data name="HEADER_ITEM" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="HEADER_STATUS" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="COMPONENT_ECOPATHACTIVESCENARIOS" xml:space="preserve">
+    <value>Active scenarios</value>
+  </data>
+  <data name="COMPONENT_ECOPATHBASICESTIMATES" xml:space="preserve">
+    <value>Ecopath basic estimates</value>
+  </data>
+  <data name="COMPONENT_ECOPATHBASICINPUTS" xml:space="preserve">
+    <value>Ecopath basic inputs</value>
+  </data>
+  <data name="COMPONENT_ECOPATHDETRITUSFATE" xml:space="preserve">
+    <value>Ecopath detritus fate</value>
+  </data>
+  <data name="COMPONENT_ECOPATHDIETCOMPOSITION" xml:space="preserve">
+    <value>Ecopath diet composition</value>
+  </data>
+  <data name="COMPONENT_ECOPATHDISCARDFATE" xml:space="preserve">
+    <value>Ecopath discard fate</value>
+  </data>
+  <data name="COMPONENT_ECOPATHFLEETDEFINITION" xml:space="preserve">
+    <value>Ecopath definition of fleets</value>
+  </data>
+  <data name="COMPONENT_ECOPATHLANDINGSDISCARDS" xml:space="preserve">
+    <value>Ecopath landings and discards</value>
+  </data>
+  <data name="COMPONENT_ECOPATHMODELPARAMETERS" xml:space="preserve">
+    <value>Ecopath model parameters</value>
+  </data>
+  <data name="COMPONENT_ECOSIMAPPLIEDFORCINGFUNCTIONS" xml:space="preserve">
+    <value>Ecosim applied forcing functions</value>
+  </data>
+  <data name="COMPONENT_ECOSIMENVIRONMENTALFORCING" xml:space="preserve">
+    <value>Ecosim environmental forcing</value>
+  </data>
+  <data name="COMPONENT_ECOSIMFISHINGEFFORT" xml:space="preserve">
+    <value>Ecosim fishing effort</value>
+  </data>
+  <data name="COMPONENT_ECOSIMFISHINGMORTALITY" xml:space="preserve">
+    <value>Ecosim fishing mortality</value>
+  </data>
+  <data name="COMPONENT_ECOSIMFLEETSIZEDYNAMICS" xml:space="preserve">
+    <value>Ecosim fleet size dynamics</value>
+  </data>
+  <data name="COMPONENT_ECOSIMGROUPINFO" xml:space="preserve">
+    <value>Ecosim group parameters</value>
+  </data>
+  <data name="COMPONENT_ECOSIMMEDIATIONFUNCTIONS" xml:space="preserve">
+    <value>Ecosim applied mediation functions</value>
+  </data>
+  <data name="COMPONENT_ECOSIMPARAMETERS" xml:space="preserve">
+    <value>Ecosim scenario parameters</value>
+  </data>
+  <data name="COMPONENT_ECOSIMPRICEFUNCTIONS" xml:space="preserve">
+    <value>Ecosim applied price elasticity functions</value>
+  </data>
+  <data name="COMPONENT_ECOSIMVULNERABILITIES" xml:space="preserve">
+    <value>Ecosim vulnerabilities</value>
+  </data>
+  <data name="COMPONENT_ECOSPACEAPPLIEDENVIRONMENTALRESPONSE" xml:space="preserve">
+    <value>Ecospace applied environmental responses</value>
+  </data>
+  <data name="COMPONENT_ECOSPACEDISPERSAL" xml:space="preserve">
+    <value>Ecospace dispersal</value>
+  </data>
+  <data name="COMPONENT_ECOSPACEFISHERY" xml:space="preserve">
+    <value>Ecospace fishery</value>
+  </data>
+  <data name="COMPONENT_ECOSPACEFISHERYHABITAT" xml:space="preserve">
+    <value>Ecospace fishery in habitat</value>
+  </data>
+  <data name="COMPONENT_ECOSPACEGROUPCAPACITYMODEL" xml:space="preserve">
+    <value>Ecospace capacity calculation type</value>
+  </data>
+  <data name="COMPONENT_ECOSPACEHABITATFORAGING" xml:space="preserve">
+    <value>Ecospace habitat-based foraging</value>
+  </data>
+  <data name="COMPONENT_ECOSPACEMAPS" xml:space="preserve">
+    <value>Ecospace maps</value>
+  </data>
+  <data name="COMPONENT_ECOSPACEPARAMETERS" xml:space="preserve">
+    <value>Ecospace scenario parameters</value>
+  </data>
+  <data name="COMPONENT_STANZADEFINITIONS" xml:space="preserve">
+    <value>Multi-stanza definitions</value>
+  </data>
+  <data name="COMPONENT_STANZALIFESTAGES" xml:space="preserve">
+    <value>Multi-stanza life stages</value>
+  </data>
+  <data name="VARIABLE_ENVFORCING" xml:space="preserve">
+    <value>Environmental forcing</value>
+  </data>
+  <data name="VARIABLE_ENVRESPONSES" xml:space="preserve">
+    <value>Environmental responses</value>
+  </data>
+  <data name="VARIABLE_FISHINGEFFORT" xml:space="preserve">
+    <value>Fishing effort</value>
+  </data>
+  <data name="VARIABLE_FISHINGMORTALITY" xml:space="preserve">
+    <value>Fishing mortality</value>
+  </data>
+  <data name="VARIABLE_FORCING" xml:space="preserve">
+    <value>Forcing functions</value>
+  </data>
+  <data name="VARIABLE_MEDIATION" xml:space="preserve">
+    <value>Mediation</value>
+  </data>
+  <data name="VARIABLE_PRICEELASTICITY" xml:space="preserve">
+    <value>Price elasticity</value>
+  </data>
+  <data name="VARIABLE_SCENARIOS" xml:space="preserve">
+    <value>Loaded scenario(s)</value>
+  </data>
+  <data name="Check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Uncheck" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\uncheck.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="COMPONENT_ECOSPACEEXTERNALDATA" xml:space="preserve">
+    <value>Ecospace external data</value>
+  </data>
 </root>

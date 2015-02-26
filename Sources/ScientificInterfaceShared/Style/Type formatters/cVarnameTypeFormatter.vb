@@ -60,11 +60,11 @@ Namespace Style
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""
 
-            If (strDescr IsNot Nothing) Then
+            If (Not String.IsNullOrWhiteSpace(strDescr)) Then
                 astrBits = strDescr.Split("|"c)
                 iNumBits = astrBits.Length
             Else
-                Return cStringUtils.Localize(My.Resources.VARIABLE_UNNAMED, strVar)
+                Return strVar
             End If
 
             For i As Integer = 0 To descriptor

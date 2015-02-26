@@ -346,16 +346,16 @@
     <value>DC|Diet||Diet composition</value>
   </data>
   <data name="VARIABLE_PBINPUT" xml:space="preserve">
-    <value>PB|P/B||Production/biomass</value>
+    <value>PB|P/B|Production/biomass</value>
   </data>
   <data name="VARIABLE_QBINPUT" xml:space="preserve">
-    <value>QB|Q/B||Consumption/biomass</value>
+    <value>QB|Q/B|Consumption/biomass</value>
   </data>
   <data name="VARIABLE_TCATCHINPUT" xml:space="preserve">
     <value>Catch</value>
   </data>
   <data name="VARIABLE_EEINPUT" xml:space="preserve">
-    <value>EE|||Ecotrophic Efficiency</value>
+    <value>EE||Ecotrophic Efficiency</value>
   </data>
   <data name="ExportXMLHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ExportXMLHS.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -2130,7 +2130,7 @@
     <comment>{0}: sequential number</comment>
   </data>
   <data name="VARIABLE_LAYERDEPTH" xml:space="preserve">
-    <value>Depth map</value>
+    <value>Depth|||Depth map (bathymetry)</value>
   </data>
   <data name="VARIABLE_LAYERRELCIN" xml:space="preserve">
     <value>C(rel) map||Relative C map|Relative contaminants map</value>
@@ -2411,13 +2411,13 @@
     <value>..\resources\timeseries.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="VARIABLE_LAYERDRIVER" xml:space="preserve">
-    <value>Environmental driver map</value>
+    <value>Drivers||Environmental drivers|Environmental driver map</value>
   </data>
   <data name="VARIABLE_LAYERHABITATCAPACITYINPUT" xml:space="preserve">
     <value>HabCap map||Habitat capacity map</value>
   </data>
   <data name="VARIABLE_LAYERMPA" xml:space="preserve">
-    <value>MPA map|||Marine Protected Area map</value>
+    <value>MPA map||Marine Protected Area map</value>
   </data>
   <data name="HEADER_REFERENCE" xml:space="preserve">
     <value>Reference</value>
@@ -2546,10 +2546,6 @@
   <data name="VARIABLE_MSEBBASE" xml:space="preserve">
     <value>MSE base biomass </value>
   </data>
-  <data name="VARIABLE_UNNAMED" xml:space="preserve">
-    <value>Parameter '{0}'</value>
-    <comment>{0} = name of variable (Parameter sounds better than variable)</comment>
-  </data>
   <data name="VARIABLE_BIOACCUM" xml:space="preserve">
     <value>BA||Biomass accumulation</value>
   </data>
@@ -2560,7 +2556,7 @@
     <value>Detritus import</value>
   </data>
   <data name="VARIABLE_GS" xml:space="preserve">
-    <value>GS||Unassim. cons.|Unassimilated consumption</value>
+    <value>GS|Unassim. cons.|Unassimilated consumption</value>
   </data>
   <data name="VARIABLE_PREDMORT" xml:space="preserve">
     <value>M2||Pred. mort.|Predation mortality</value>
@@ -2569,16 +2565,16 @@
     <value>Other mortality</value>
   </data>
   <data name="VARIABLE_EEOUTPUT" xml:space="preserve">
-    <value>EE|||Ecotrophic Efficiency</value>
+    <value>EE||Ecotrophic Efficiency</value>
   </data>
   <data name="VARIABLE_GEINPUT" xml:space="preserve">
-    <value>GE|G/E||Production over consumption</value>
+    <value>GE|G/E|Production over consumption</value>
   </data>
   <data name="VARIABLE_GEOUTPUT" xml:space="preserve">
-    <value>GE|G/E||Production over consumption</value>
+    <value>GE|G/E|Production over consumption</value>
   </data>
   <data name="VARIABLE_QBOUTPUT" xml:space="preserve">
-    <value>QB|Q/B||Consumption/biomass</value>
+    <value>QB|Q/B|Consumption/biomass</value>
   </data>
   <data name="VARIABLE_DETRITUSFATE" xml:space="preserve">
     <value>Detritus fate</value>
@@ -2648,7 +2644,7 @@
     <value>TL||Trophic level</value>
   </data>
   <data name="VARIABLE_TTLX" xml:space="preserve">
-    <value>TTLX|||Trophic level</value>
+    <value>TTLX||Trophic level</value>
   </data>
   <data name="VARIABLE_VBK" xml:space="preserve">
     <value>K||von Bertalanffy curvature parameter</value>
@@ -2831,10 +2827,10 @@
     <value>..\resources\filterhs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="VARIABLE_LAYERPORT" xml:space="preserve">
-    <value>Ports</value>
+    <value>Ports||Ports map</value>
   </data>
   <data name="VARIABLE_LAYERSAIL" xml:space="preserve">
-    <value>Sailing cost</value>
+    <value>Sailing cost||Sailing cost map</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_ADVECTION" xml:space="preserve">
     <value>Advection</value>
@@ -2906,7 +2902,7 @@
     <value>Author</value>
   </data>
   <data name="VARIABLE_CONTACT" xml:space="preserve">
-    <value>Contact|||Contact information</value>
+    <value>Contact||Contact information</value>
   </data>
   <data name="VARIABLE_DESCRIPTION" xml:space="preserve">
     <value>Description</value>
@@ -2915,7 +2911,7 @@
     <value>BA rate||Biomass accumulation rate</value>
   </data>
   <data name="VARIABLE_CPUECOST" xml:space="preserve">
-    <value>CPUE|||Cost per unit of effort; costs that are a function of effort</value>
+    <value>CPUE||Cost per unit of effort|Cost per unit of effort; costs that are a function of effort</value>
   </data>
   <data name="VARIABLE_DBID" xml:space="preserve">
     <value>ID||Unique ID</value>
@@ -2936,7 +2932,7 @@
     <value>Nutrition forcing function</value>
   </data>
   <data name="VARIABLE_SAILCOST" xml:space="preserve">
-    <value>Sail cost</value>
+    <value>Sail cost||Cost of sailing map</value>
   </data>
   <data name="HEADER_HIGH" xml:space="preserve">
     <value>High</value>
@@ -2955,9 +2951,6 @@
   </data>
   <data name="HEADER_SWITCHINGPOWER" xml:space="preserve">
     <value>Switching power</value>
-  </data>
-  <data name="VARIABLE_PB" xml:space="preserve">
-    <value>PB|P/B||Production/biomass</value>
   </data>
   <data name="GENERIC_COLOUR_USAGE" xml:space="preserve">
     <value>Colour usage</value>
@@ -3091,10 +3084,10 @@
     <value>m</value>
   </data>
   <data name="VARIABLE_LAYERMIGRATION" xml:space="preserve">
-    <value>Migration</value>
+    <value>Migration||Migration map</value>
   </data>
   <data name="VARIABLE_LAYERREGION" xml:space="preserve">
-    <value>Region</value>
+    <value>Region||Map with statistical regions</value>
   </data>
   <data name="SHAPEFUNCTION_NORMAL" xml:space="preserve">
     <value>Normal</value>
@@ -3216,6 +3209,93 @@
   </data>
   <data name="VARIABLE_FORAGINGTIMELOWERLIMIT" xml:space="preserve">
     <value>Foraging lower limit|||In EwE version 6.4 and prior, Ecosim limits the foraging time to 0.1 of a time step. This limit can now be lowered to 0.01</value>
+  </data>
+  <data name="VARIABLE_ECOPATHFIRSTYEAR" xml:space="preserve">
+    <value>Year|||First year for the Ecopath model</value>
+  </data>
+  <data name="VARIABLE_NONMARKETVALUE" xml:space="preserve">
+    <value>Shadow price|||Shadow price or non-market value represents the value of a resource in the ecosystem, e.g., for non-exploitative uses</value>
+  </data>
+  <data name="VARIABLE_UNITCURRENCY" xml:space="preserve">
+    <value>Currency||Currency unit</value>
+  </data>
+  <data name="VARIABLE_UNITMONETARY" xml:space="preserve">
+    <value>Monetary||Monetary unit</value>
+  </data>
+  <data name="VARIABLE_UNITTIME" xml:space="preserve">
+    <value>t||Time unit</value>
+  </data>
+  <data name="VARIABLE_BABSPLIT" xml:space="preserve">
+    <value>BAB|BA/B||Relative biomass accumulation rate</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAREAOUTPUT" xml:space="preserve">
+    <value>B(a)|B area|Biomass in habitat area</value>
+  </data>
+  <data name="VARIABLE_DISCARDMORTALITY" xml:space="preserve">
+    <value>Discard Mort.||Discard mort. rate|Discard mortality rate</value>
+  </data>
+  <data name="VARIABLE_FIXEDFECUNDITY" xml:space="preserve">
+    <value>FixedFec|||Fixed fecundity</value>
+  </data>
+  <data name="VARIABLE_LAYERADVECTION" xml:space="preserve">
+    <value>Advection||Advection map</value>
+  </data>
+  <data name="VARIABLE_LAYEREXCLUSION" xml:space="preserve">
+    <value>Exclusion||Exclusion map|Map with cells to exclude from computations</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITAT" xml:space="preserve">
+    <value>Habitats||Habitat map</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITATCAPACITY" xml:space="preserve">
+    <value>HabCap (out)||Habitat capacity map (computed)</value>
+  </data>
+  <data name="VARIABLE_LAYERMLD" xml:space="preserve">
+    <value>MLD||Mixed layer depth map</value>
+  </data>
+  <data name="VARIABLE_LAYERUPWELLING" xml:space="preserve">
+    <value>Upwelling||Upwelling map</value>
+  </data>
+  <data name="VARIABLE_LAYERWIND" xml:space="preserve">
+    <value>Wind||Wind map</value>
+  </data>
+  <data name="VARIABLE_LEADINGBIOMASS" xml:space="preserve">
+    <value>Leading B||Leading biomass|Leading (entry) life stage for calculating biomasses</value>
+  </data>
+  <data name="VARIABLE_LEADINGCB" xml:space="preserve">
+    <value>Leading QB|Leading Q/B||Leading (entry) life stage for calculating consumption/biomass</value>
+  </data>
+  <data name="VARIABLE_OFFVESSELPRICE" xml:space="preserve">
+    <value>Price||Off-vessel price</value>
+  </data>
+  <data name="VARIABLE_PBOUTPUT" xml:space="preserve">
+    <value>PB|P/B|Production/biomass (computed)</value>
+  </data>
+  <data name="VARIABLE_RECPOWERSPLIT" xml:space="preserve">
+    <value>Rec. rate||Relative recruitment rate</value>
+  </data>
+  <data name="VARIABLE_WMATWINF" xml:space="preserve">
+    <value>WmatWinf|Wmat/Winf||Weight at maturity over weight at infancy</value>
+  </data>
+  <data name="VARIABLE_SALINITYOPT" xml:space="preserve">
+    <value>Sal opt||Optimum salinity</value>
+  </data>
+  <data name="VARIABLE_SALINITYSPREADLEFT" xml:space="preserve">
+    <value>Sal tol below||Salinity tolerance below optimum</value>
+  </data>
+  <data name="VARIABLE_SALINITYSPREADRIGHT" xml:space="preserve">
+    <value>Sal tol above||Salinity tolerance above optimum</value>
+  </data>
+  <data name="VARIABLE_SWITCHINGPOWER" xml:space="preserve">
+    <value>Switching power</value>
+  </data>
+  <data name="VARIABLE_TEMPERATUREOPT" xml:space="preserve">
+    <value>T opt||Optimum temperature</value>
+  </data>
+  <data name="VARIABLE_TEMPERATURESPREADLEFT" xml:space="preserve">
+    <value>T tol below||Temperature tolerance below optimum</value>
+  </data>
+  <data name="VARIABLE_TEMPERATURESPREADRIGHT" xml:space="preserve">
+    <value>Ttol above||Temperature tolerance above optimum</value>
   </data>
   <data name="METADATA_BOOLEAN" xml:space="preserve">
     <value>yes/no</value>

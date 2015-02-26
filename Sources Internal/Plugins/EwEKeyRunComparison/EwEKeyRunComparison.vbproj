@@ -79,26 +79,62 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
-    <Import Include="System.Linq" />
-    <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\cComponentFormatter.vb" />
+    <Compile Include="Interface\cAlertVisualizer.vb" />
+    <Compile Include="Interface\cMatchStateTypeFormatter.vb" />
+    <Compile Include="Interface\cVariableFormatter.vb" />
+    <Compile Include="Interface\gridKeyRunComparison.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="KeyRunCode\cCompareManager.vb" />
+    <Compile Include="KeyRunCode\cHashValues.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cCoreScenariosWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cEcosimEffortWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cEcosimMediationWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cEcosimMortalityWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cEcospaceCapacityWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cEcosimForcingFunctionWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cEcospaceHabitatWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cEcosimPriceElasticityWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cTimeSeriesWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cSpatialTemporalConfigurationWrapper.vb" />
+    <Compile Include="KeyRunCode\cStringConverters.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cCapacityCalcTypeWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cCoreIOWrapperBase.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cDetritusFateWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cDietCompWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcopathDiscardFateWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcopathFleetDefinitionWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcopathFleetWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcopathInputWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcopathModelWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcosimInputWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcosimParametersWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcosimVulnerabilitiesWrapper.vb" />
+    <Compile Include="KeyRunCode\Ecospace map wrappers\cEcospaceMapsWrapper.vb" />
+    <Compile Include="KeyRunCode\CoreManager Wrappers\cEcosimEnvForcingWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcospaceDispersalWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcospaceFisheryHabitatWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcospaceFisheryWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcospaceParametersWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cEcosimFleetSizeDynamicsWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cStanzaLifestageWrapper.vb" />
+    <Compile Include="KeyRunCode\ICoreInputOutput Wrappers\cStanzaWrapper.vb" />
+    <Compile Include="KeyRunCode\IHashSummarizer.vb" />
     <Compile Include="PluginPoint\cKeyRunComparisonPluginPoint.vb" />
     <Compile Include="Interface\frmKeyRunMain.Designer.vb">
       <DependentUpon>frmKeyRunMain.vb</DependentUpon>
@@ -121,6 +157,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Utility\cValueCollector.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Interface\frmKeyRunMain.resx">
@@ -134,6 +171,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Deployment\License\EwE.licenseheader">
+      <Link>EwE.licenseheader</Link>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -162,6 +202,13 @@
       <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Check.png" />
+    <Content Include="Resources\Ecopath_keyrun.ico" />
+    <Content Include="Resources\Uncheck.png" />
+    <None Include="Resources\Star_HD.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

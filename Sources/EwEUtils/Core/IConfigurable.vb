@@ -27,7 +27,8 @@ Namespace Core
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Interface for adding items that can be configured throughout the EwE application.
+    ''' Interface for adding items that can be configured with a visual interface
+    ''' throughout the EwE application.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Interface IConfigurable

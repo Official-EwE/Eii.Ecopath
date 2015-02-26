@@ -683,7 +683,7 @@ Public Class cMessageHistory
 
                     Case 0 To 9
                         strTmp = vs.Message
-                        If Not String.IsNullOrEmpty(strTmp) Then
+                        If (Not String.IsNullOrEmpty(strTmp)) And (String.Compare(vs.Message, msg.Message, True) <> 0) Then
                             sb.AppendLine()
                             sb.Append(strTmp)
                             iNumSubLines += 1

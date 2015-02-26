@@ -38,7 +38,7 @@ Namespace Utilities
     ''' obtained from "a useful UriBuilder class", http://www.codeproject.com/aspnet/UrlBuilder.asp
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Class UrlBuilder
+    Public Class cUriBuilder
         Inherits System.UriBuilder
 
         Private m_dtQuery As StringDictionary = Nothing
@@ -166,6 +166,12 @@ Namespace Utilities
         End Sub
 
 #End Region ' Private methods
+
+    End Class
+
+    <Obsolete("Use cUriBuilder instead")> _
+    Public Class UrlBuilder
+        Inherits cUriBuilder
 
     End Class
 

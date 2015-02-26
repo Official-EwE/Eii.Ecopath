@@ -243,9 +243,6 @@ Download and install a recent version of Ecopath 5 to update your database. Once
   <data name="PROMPT_ERROR_IMPORT_NOSELECTION" xml:space="preserve">
     <value>Please select a model to convert to EwE6.</value>
   </data>
-  <data name="ECOSIM_GROUPINFO_SALSPREADLEFT" xml:space="preserve">
-    <value>Salinity tolerance below optimum(&gt;0)</value>
-  </data>
   <data name="STATUSSTRIP_ECOSPACE_CONNECTIONS" xml:space="preserve">
     <value>{0} connection/s</value>
     <comment>{0}=connection count</comment>
@@ -5321,9 +5318,6 @@ Description: {1}</value>
   <data name="SEARCH_STATUS_COMPLETED" xml:space="preserve">
     <value>Search completed</value>
   </data>
-  <data name="ECOSIM_GROUPINFO_TEMPSPREADRIGHT" xml:space="preserve">
-    <value>Temperature tolerance above optimum(&gt;0)</value>
-  </data>
   <data name="STATUS_REMARKS_NOT_SUPPORTED" xml:space="preserve">
     <value>Remarks are not supported for this data</value>
   </data>
@@ -7144,9 +7138,6 @@ Description: {1}</value>
     <value>Enter new vulnerability setting for {0} as prey</value>
     <comment>{0}=group name</comment>
   </data>
-  <data name="ECOSIM_GROUPINFO_OPTSALINITY" xml:space="preserve">
-    <value>Optimum salinity (&gt;0)</value>
-  </data>
   <data name="FPS_FG_JOBS" xml:space="preserve">
     <value>Jobs / catch value</value>
   </data>
@@ -7630,9 +7621,6 @@ Location: {1}</value>
   </data>
   <data name="ECOSPACE_HEADER_LOGBREL" xml:space="preserve">
     <value>Biomass (log, relative)</value>
-  </data>
-  <data name="ECOSIM_GROUPINFO_OPTTEMP" xml:space="preserve">
-    <value>Optimum temperature(&gt;0)</value>
   </data>
   <data name="PEDIGREE_DEFAULT_SAME_SIM" xml:space="preserve">
     <value>Same species, similar system, high precision</value>
@@ -12782,9 +12770,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="PROMPT_FILETYPEDEPRECATED" xml:space="preserve">
     <value>This type of file is no longer supported in EwE6</value>
   </data>
-  <data name="ECOSIM_GROUPINFO_TEMPSPREADLEFT" xml:space="preserve">
-    <value>Temperature tolerance below optimum(&gt;0)</value>
-  </data>
   <data name="CAPTION_PRICEELASTICITY_GROUP" xml:space="preserve">
     <value>Apply price elasticity to all landings of {0}: {1}</value>
     <comment>{0}=prey name, {1}=predator name</comment>
@@ -12813,9 +12798,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="urf" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\urf.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ECOSIM_GROUPINFO_SALSPREADRIGHT" xml:space="preserve">
-    <value>Salinity tolerance above optimum(&gt;0)</value>
   </data>
   <data name="GENERIC_TEXT_OPTIONS" xml:space="preserve">
     <value>Options</value>

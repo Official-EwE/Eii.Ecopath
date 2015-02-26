@@ -578,8 +578,6 @@ Namespace Controls.EwEGrid
             Dim bIsDesigning As Boolean = (Me.DesignMode = True)
             Dim bIsLive As Boolean = bIsUIContent And Not bIsDesigning
 
-            Me.SuspendLayoutGrid()
-
             Try
                 ' Clear grid of any remaining data
                 Me.ClearData()
@@ -612,8 +610,6 @@ Namespace Controls.EwEGrid
             Catch ex As Exception
                 Debug.Assert(False, "Exception " & ex.Message & " in FinishStyle")
             End Try
-
-            Me.ResumeLayoutGrid()
 
         End Sub
 
@@ -1264,7 +1260,7 @@ Namespace Controls.EwEGrid
 
                     If Not String.IsNullOrEmpty(astrLines(iRowData)) Then
 
-                        Dim astrCols() As String = astrLines(iRowData).Split(CChar(cStringUtils.vbTab))
+                        Dim astrCols() As String = astrLines(iRowData).Split(cSplit)
                         Dim iColFrom As Integer = r.Start.Column
                         Dim iColTo As Integer = Math.Min(CInt(IIF(bRepeatCol, r.End.Column, r.Start.Column + astrCols.Length - 1)), Me.ColumnsCount - 1)
                         iColData = 0
@@ -1548,20 +1544,21 @@ Namespace Controls.EwEGrid
             Try
                 For iRow As Integer = 0 To Me.RowsCount - 1
                     For iCol As Integer = 0 To Me.ColumnsCount - 1
-                        cell = Me(iRow, iCol)
-
-                        If (cell IsNot Nothing) Then
-                            cellValue = cell.Value
-                            If (cellValue IsNot Nothing) Then
-                                If TypeOf (cellValue) Is String Then
-                                    sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
-                                Else
-                                    strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
-                                    sw.Write(strValue)
+                        If Me.Columns(iCol).Visible Then
+                            cell = Me(iRow, iCol)
+                            If (cell IsNot Nothing) Then
+                                cellValue = cell.Value
+                                If (cellValue IsNot Nothing) Then
+                                    If TypeOf (cellValue) Is String Then
+                                        sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
+                                    Else
+                                        strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
+                                        sw.Write(strValue)
+                                    End If
                                 End If
                             End If
+                            sw.Write(",")
                         End If
-                        sw.Write(",")
                     Next
                     sw.WriteLine()
                 Next

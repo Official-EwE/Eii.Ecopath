@@ -607,24 +607,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Optimum salinity (&gt;0).
-        '''</summary>
-        Public ReadOnly Property ECOSIM_GROUPINFO_OPTSALINITY() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_GROUPINFO_OPTSALINITY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Optimum temperature(&gt;0).
-        '''</summary>
-        Public ReadOnly Property ECOSIM_GROUPINFO_OPTTEMP() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_GROUPINFO_OPTTEMP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Fraction of other mortality sens. to changes in feeding time.
         '''</summary>
         Public ReadOnly Property ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME() As String
@@ -648,42 +630,6 @@ Namespace My.Resources
         Public ReadOnly Property ECOSIM_GROUPINFO_QBMAXQBO() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_GROUPINFO_QBMAXQBO", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Salinity tolerance below optimum(&gt;0).
-        '''</summary>
-        Public ReadOnly Property ECOSIM_GROUPINFO_SALSPREADLEFT() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_GROUPINFO_SALSPREADLEFT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Salinity tolerance above optimum(&gt;0).
-        '''</summary>
-        Public ReadOnly Property ECOSIM_GROUPINFO_SALSPREADRIGHT() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_GROUPINFO_SALSPREADRIGHT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Temperature tolerance below optimum(&gt;0).
-        '''</summary>
-        Public ReadOnly Property ECOSIM_GROUPINFO_TEMPSPREADLEFT() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_GROUPINFO_TEMPSPREADLEFT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Temperature tolerance above optimum(&gt;0).
-        '''</summary>
-        Public ReadOnly Property ECOSIM_GROUPINFO_TEMPSPREADRIGHT() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_GROUPINFO_TEMPSPREADRIGHT", resourceCulture)
             End Get
         End Property
         

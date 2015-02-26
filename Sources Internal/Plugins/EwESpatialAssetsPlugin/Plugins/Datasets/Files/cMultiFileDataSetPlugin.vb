@@ -796,6 +796,32 @@ Namespace SpatialData
 
 #End Region ' Import & export
 
+#Region " Summary "
+
+        Public Overrides ReadOnly Property Summary As String
+            Get
+                Dim sb As New StringBuilder()
+
+                sb.Append("id:" & Me.GetType().ToString())
+                For i As Integer = 0 To Me.m_lFiles.Count - 1
+                    Dim f As cTemporalFile = Me.m_lFiles(i)
+                    sb.Append(",")
+                    sb.Append("t" & i & ":" & cStringUtils.FormatDate(f.Date))
+                    sb.Append("f" & i & ":")
+                    If IO.File.Exists(f.FileName) Then
+                        sb.Append(Path.GetFileName(f.FileName))
+                    Else
+                        sb.Append("?")
+                    End If
+                Next
+                Return sb.ToString()
+
+            End Get
+
+        End Property
+
+#End Region ' Summary
+
     End Class
 
 End Namespace

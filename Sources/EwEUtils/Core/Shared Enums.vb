@@ -27,38 +27,38 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type identifying known core states.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eCoreExecutionState As Integer
-        ''' <summary>The core is initialized and ready for use.</summary>
+        ''' <summary>The core is initialized and ready for use</summary>
         Idle
-        ''' <summary>Ecopath model data has been loaded.</summary>
+        ''' <summary>Ecopath model data has been loaded</summary>
         EcopathLoaded
-        ''' <summary>Ecopath model data has been initialized.</summary>
+        ''' <summary>Ecopath model data has been initialized</summary>
         EcopathInitialized = EcopathLoaded
-        ''' <summary>Ecopath scenario is ready to run.</summary>
+        ''' <summary>Ecopath scenario is ready to run</summary>
         EcopathRunning
-        ''' <summary>Ecopath model run is completed.</summary>
+        ''' <summary>Ecopath model run is completed</summary>
         EcopathCompleted
-        ''' <summary>Ecopath PSD model run is completed.</summary>
+        ''' <summary>Ecopath PSD model run is completed</summary>
         PSDCompleted
-        ''' <summary>Ecotracer scenario data has been loaded.</summary>
+        ''' <summary>Ecotracer scenario data has been loaded</summary>
         EcotracerLoaded
-        ''' <summary>Ecosim scenario data has been loaded.</summary>
+        ''' <summary>Ecosim scenario data has been loaded</summary>
         EcosimLoaded
-        ''' <summary>Ecosim scenario has been initialized.</summary>
+        ''' <summary>Ecosim scenario has been initialized</summary>
         EcosimInitialized
-        ''' <summary>Ecosim scenario is running.</summary>
+        ''' <summary>Ecosim scenario is running</summary>
         EcosimRunning
-        ''' <summary>Ecosim scenario run is completed.</summary>
+        ''' <summary>Ecosim scenario run is completed</summary>
         EcosimCompleted
-        ''' <summary>Ecospace scenario data has been loaded.</summary>
+        ''' <summary>Ecospace scenario data has been loaded</summary>
         EcospaceLoaded
-        ''' <summary>Ecospace scenario has been initialized.</summary>
+        ''' <summary>Ecospace scenario has been initialized</summary>
         EcospaceInitialized = EcospaceLoaded
-        ''' <summary>Ecospace scenario is running.</summary>
+        ''' <summary>Ecospace scenario is running</summary>
         EcospaceRunning
-        ''' <summary>Ecospace scenario run is completed.</summary>
+        ''' <summary>Ecospace scenario run is completed</summary>
         EcospaceCompleted
 
     End Enum
@@ -71,235 +71,218 @@ Namespace Core
     ''' <summary>
     ''' Enumerated type used for exposing variables a.k.a. parameters provided by
     ''' the Core models.
-    ''' </summary>
+    '''</summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eVarNameFlags As Integer
 
-        ''' <summary>Variable name is not specified.</summary>
+        ''' <summary>Variable name is not specified</summary>
         NotSet
         ''' <summary>Production over Biomass (ratio)</summary>
         ''' <remarks>Also referred to as Mortality or Z.</remarks>
         PBInput
-        ''' <summary></summary>
+        ''' <summary>Production over Biomass (computed)</summary>
         PBOutput
-        ''' <summary></summary>
+        ''' <summary>Ecotrophic Efficiency</summary>
         EEInput
-        ''' <summary></summary>
+        ''' <summary>Ecotrophic Efficiency (computed)</summary>
         EEOutput
-        ''' <summary></summary>
+        ''' <summary>Consumption over Biomass</summary>
         QBInput
-        ''' <summary></summary>
+        ''' <summary>Consumption over Biomass (computed)</summary>
         QBOutput
-        ''' <summary></summary>
+        ''' <summary>Gross efficiency (P/Q)</summary>
         GEInput
-        ''' <summary></summary>
+        ''' <summary>Gross efficiency (P/Q, computed)</summary>
         GEOutput
 
-        ''' <summary>Generic item names.</summary>
+        ''' <summary>Generic item names</summary>
         Name
-        ''' <summary>Numerical position of an item in a list.</summary>
+        ''' <summary>Numerical position of an item in a list</summary>
         ''' <remarks>This value has replaced former EwE5 indices such as iGroup.</remarks>
         Index
-        ''' <summary>Area surface, as a fraction.</summary>
+        ''' <summary>Area surface, as a fraction</summary>
         Area
-        ''' <summary>Biomass, in ..</summary>
+        ''' <summary>Biomass</summary>
         Biomass
-        ''' <summary><see cref="eVarNameFlags.Biomass">Biomass</see> per <see cref="eVarNameFlags.Area">Area</see>.</summary>
+        ''' <summary><see cref="eVarNameFlags.Biomass">Biomass</see> per <see cref="eVarNameFlags.Area">Area</see></summary>
         BiomassAreaInput
-        ''' <summary><see cref="eVarNameFlags.Biomass">Biomass</see> per <see cref="eVarNameFlags.Area">Area</see>.</summary>
+        ''' <summary><see cref="eVarNameFlags.Biomass">Biomass</see> per <see cref="eVarNameFlags.Area">Area</see></summary>
         BiomassAreaOutput
-        ''' <summary></summary>
+        ''' <summary>Net. biomass accumulation</summary>
         BioAccum
-        ''' <summary></summary>
+        ''' <summary>Biomass accumulation rate per year</summary>
         BioAccumRatePerYear
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         GS
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         DetImp
-        ''' <summary></summary>
+        ''' <summary>Trophic Level</summary>
         TTLX
-        ''' <summary></summary>
+        ''' <summary>Immigration</summary>
         Immig
-        ''' <summary></summary>
+        ''' <summary>Net. Emigration</summary>
         Emig
-        ''' <summary></summary>
+        ''' <summary>Emigration rate</summary>
         EmigRate
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         BioAccumRate
-        ''' <summary></summary>
+        ''' <summary>Diet composition</summary>
         DietComp
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         ImpDiet
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         DetritusFate
         'Fleet definition table parameter names; Added by FG on Jan 26 2006
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         FixedCost
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         CPUECost
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         SailCost
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         EPower
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         PcapBase
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         CapDepreciate
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         CapBaseGrowth
         'Mortality - Coefficients parameter names; Added by FG on Jan 26 2006
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         MortCoPB
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         MortCoFishRate
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         MortCoPredMort
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         MortCoBioAcumRate
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         MortCoNetMig
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         MortCoOtherMort
         ''' <summary>[Fishing Mort] / [Total mort]</summary>
         FishMortTotMort
         ''' <summary>1- FishMortTotMort</summary>
         NatMortPerTotMort
-
-        'added by JB Jan-30-06 for EcoPath Outputs
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         Consumption
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         ImportedConsumption
-
-        'added by JB Feb-01-06 for EcoPath Outputs
-        ''' <summary></summary>
+        ''' <summary>Predation mortality</summary>
         PredMort
-
-        'added by JB Feb-07-2006
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         Landings
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         Discards
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         OffVesselPrice
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         NonMarketValue
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         DiscardFate
-
-        'added by JS for Ecopath statistics info Jan-29-09
-        ''' <summary>Sum of all consumption.</summary>
+        ''' <summary>Sum of all consumption</summary>
         EcopathStatsTotalConsumption
-        ''' <summary>Sum of all exports.</summary>
+        ''' <summary>Sum of all exports</summary>
         EcopathStatsTotalExports
-        ''' <summary>Sum of all respiratory flows.</summary>
+        ''' <summary>Sum of all respiratory flows</summary>
         EcopathStatsTotalRespFlow
-        ''' <summary>Sum of all flows into detritus.</summary>
+        ''' <summary>Sum of all flows into detritus</summary>
         EcopathStatsTotalFlowDetritus
-        ''' <summary>Total system throughput.</summary>
+        ''' <summary>Total system throughput</summary>
         EcopathStatsTotalThroughput
-        ''' <summary>Sum of all production.</summary>
+        ''' <summary>Sum of all production</summary>
         EcopathStatsTotalProduction
-        ''' <summary>Mean trophic level of the catch.</summary>
+        ''' <summary>Mean trophic level of the catch</summary>
         EcopathStatsMeanTrophicLevelCatch
-        ''' <summary>Gross efficiency (catch/net p.p.).</summary>
+        ''' <summary>Gross efficiency (catch/net p.p.)</summary>
         EcopathStatsGrossEfficiency
-        ''' <summary>Calculated total net primary production.</summary>
+        ''' <summary>Calculated total net primary production</summary>
         EcopathStatsTotalNetPP
-        ''' <summary>Total primary production/total respiration.</summary>
+        ''' <summary>Total primary production/total respiration</summary>
         EcopathStatsTotalPResp
-        ''' <summary>Net system production.</summary>
+        ''' <summary>Net system production</summary>
         EcopathStatsNetSystemProduction
-        ''' <summary>Total primary production/total biomass.</summary>
+        ''' <summary>Total primary production/total biomass</summary>
         EcopathStatsTotalPB
-        ''' <summary>Total biomass/total throughput.</summary>
+        ''' <summary>Total biomass/total throughput</summary>
         EcopathStatsTotalBT
-        ''' <summary>Total biomass (excluding detritus).</summary>
+        ''' <summary>Total biomass (excluding detritus)</summary>
         EcopathStatsTotalBNonDet
-        ''' <summary>Total catches.</summary>
+        ''' <summary>Total catches</summary>
         EcopathStatsTotalCatch
-        ''' <summary>Connectance Index.</summary>
+        ''' <summary>Connectance Index</summary>
         EcopathStatsConnectanceIndex
-        ''' <summary>System Omnivory Index.</summary>
+        ''' <summary>System Omnivory Index</summary>
         EcopathStatsOmnivIndex
-        ''' <summary>Total market value.</summary>
+        ''' <summary>Total market value</summary>
         EcopathStatsTotalMarketValue
-        ''' <summary>Total shadow value.</summary>
+        ''' <summary>Total shadow value</summary>
         EcopathStatsTotalShadowValue
-        ''' <summary>Total value.</summary>
+        ''' <summary>Total value</summary>
         EcopathStatsTotalValue
-        ''' <summary>Total fixed cost.</summary>
+        ''' <summary>Total fixed cost</summary>
         EcopathStatsTotalFixedCost
-        ''' <summary>Total variable cost.</summary>
+        ''' <summary>Total variable cost</summary>
         ''' <remarks>This variable may exist under a different name.</remarks>
         EcopathStatsTotalVarCost
-        ''' <summary>Total cost.</summary>
+        ''' <summary>Total cost</summary>
         EcopathStatsTotalCost
-        ''' <summary>Profit.</summary>
+        ''' <summary>Profit</summary>
         EcopathStatsProfit
-        ''' <summary>Pedigree.</summary>
+        ''' <summary>Pedigree</summary>
         EcopathStatsPedigree
-        ''' <summary>Measure of pedigree fit.</summary>
+        ''' <summary>Measure of pedigree fit</summary>
         EcopathStatsMeasureOfFit
-
-        'added by JB for EcoSim Group info Feb-14-06
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         MaxRelPB
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         MaxRelFeedingTime
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         FeedingTimeAdjRate
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         OtherMortFeedingTime
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         PredEffectFeedingTime
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         DenDepCatchability
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         QBMaxQBio
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         SwitchingPower
-        ' ''' <summary></summary>
-        'VulRate
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         VulMult
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         ForcingFunctNumber
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         MedFunctNumber
-        'IsPredPrey ' States if has an existing predator/prey relationship
-
-        'added by JB for EcoSim model parameters Feb-26-06
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         StepSize
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         Relaxation
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         Discount
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         EquilibriumStepSize
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         EquilMaxFishingRate
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         NumStepAvg
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         NutBaseFreeProp
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         NutForceFunctionNumber
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         NutPBMax
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         SystemRecovery
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         NudgeChecked
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         UseVarPQ
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         BiomassOn
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         EcoSimNYears
-
-        'js Fisheries regulations added Oct 3 '08
         ''' <summary>Maximum effort of a fleet</summary>
         MaxEffort
         ''' <summary>Quota type imposed on a fleet</summary>
@@ -308,116 +291,102 @@ Namespace Core
         QuotaShare
         ''' <summary>Proportion of discards that dies</summary>
         DiscardMortality
-
-        '' Target fishing mortality policy vars
-        '''' <summary>Quota for a species.</summary>
-        'QuotaSpecies
-        ''' <summary>BBase for target fishing mortality policy. Upper biomass boundary.</summary>
+        ''' <summary>BBase for target fishing mortality policy. Upper biomass boundary</summary>
         MSEBBase
-        ''' <summary>BLimit for target fishing mortality policy. Lower biomass boundary.</summary>
+        ''' <summary>BLimit for target fishing mortality policy. Lower biomass boundary</summary>
         MSEBLim
-        ''' <summary>Mortality/Fmsy for target fishing mortality policy.</summary>
+        ''' <summary>Mortality/Fmsy for target fishing mortality policy</summary>
         MSEFmax
         ''' <summary>Mortality when biomass at or below BLim(lower boundry)</summary>
         ''' <remarks>Added for MSEBatch command file.</remarks>
         MSEFmin
-
+        ''' <summary>To document</summary>
         MSEFmaxPM
-
+        ''' <summary>To document</summary>
         MSELowerLPEffort
+        ''' <summary>To document</summary>
         MSEUpperLPEffort
-
-        'jb Salinity values added Dec-07
+        ''' <summary>To document</summary>
         SalinityForceFunctionNumber
+        ''' <summary>To document</summary>
         SalinityOpt
-        ' SalinitySpread
+        ''' <summary>To document</summary>
         SalinitySpreadLeft
+        ''' <summary>To document</summary>
         SalinitySpreadRight
-
-        'jb Temperature values added Nov-10
+        ''' <summary>To document</summary>
         TemperatureForceFunctionNumber
+        ''' <summary>To document</summary>
         TemperatureOpt
-        ' SalinitySpread
+        ''' <summary>To document</summary>
         TemperatureSpreadLeft
+        ''' <summary>To document</summary>
         TemperatureSpreadRight
-
-        'js Foraging time adjustment added Feb-15
         ''' <summary>
         ''' Foraging time adjustment cannot drop below 0.1 as was the case
         ''' in EwE all the way up to release 6.4. In later versions of EwE
         ''' the foraging time adjustment was allowed to drop lower.
-        ''' </summary>
+        '''</summary>
         ''' <comment>
         ''' VC: Arrow lake model, big increase in prey, top predator foraging 
         ''' time can't go below 0.1, so changed bount to 0.01 
         ''' </comment>
         ForagingTimeLowerLimit
-
-        ''' <summary>Contaminant tracing on/off</summary>
+        ''' <summary>Contaminant tracing on/off for Ecosim</summary>
         ConSimOnEcoSim
+        ''' <summary>Contaminant tracing on/off for Ecospace</summary>
         ConSimOnEcoSpace
-
         ''' <summary>Predict Ecosim Fishing Effort</summary>
         PredictEffort
-
         ''' <summary>Start of summary time period in years</summary>
         EcosimSumStart
-
         ''' <summary>end of summary time period in years</summary>
         EcosimSumEnd
-
         ''' <summary>number of time steps to summarize ecosim data over</summary>
         EcosimSumNTimeSteps
-
-        ''' <summary>Database ID.</summary>
+        ''' <summary>Database ID</summary>
         DBID
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         CyclePath
-
-        'jb June-13-06 added for precentage of primary production
-        ''' <summary>Percentage of primary production.</summary>
+        ''' <summary>Percentage of primary production</summary>
         PP
-
-        'js 060630 added for storing generic EwE5 remarks
-        ''' <summary>Generic description.</summary>
+        ''' <summary>Generic description</summary>
         Description
-        ''' <summary>Number of digits to display.</summary>
+        ''' <summary>Number of digits to display</summary>
         NumDigits
-        ''' <summary>Group display digits.</summary>
+        ''' <summary>Group display digits</summary>
         GroupDigits
-        ''' <summary>Unit enumerated value for text-based values.</summary>
+        ''' <summary>Unit enumerated value for text-based values</summary>
         UnitTime
-        ''' <summary>Unit text for time-based values.</summary>
+        ''' <summary>Unit text for time-based values</summary>
         UnitTimeCustomText
-        ''' <summary>Unit enumerated value for area-based values.</summary>
+        ''' <summary>Unit enumerated value for area-based values</summary>
         UnitArea
-        ''' <summary>Unit text for area-based values.</summary>
+        ''' <summary>Unit text for area-based values</summary>
         UnitAreaCustomText
-        ''' <summary>Unit enumerated value for currency-based values.</summary>
+        ''' <summary>Unit enumerated value for currency-based values</summary>
         UnitCurrency
-        ''' <summary>Unit text for currency-based values.</summary>
+        ''' <summary>Unit text for currency-based values</summary>
         UnitCurrencyCustomText
-        ''' <summary>Unit enumerated value for monetary values.</summary>
+        ''' <summary>Unit enumerated value for monetary values</summary>
         UnitMonetary
-        ''' <summary>Author of an EwE component.</summary>
+        ''' <summary>Author of an EwE component</summary>
         Author
-        ''' <summary>Contact info of an EwE component.</summary>
+        ''' <summary>Contact info of an EwE component</summary>
         Contact
-        ''' <summary>Julian day an EwE component was last saved.</summary>
+        ''' <summary>Julian day an EwE component was last saved</summary>
         LastSaved
-
-        'js 060818 added for ecopath outputs
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         NetMigration
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         FlowToDet
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         NetEfficiency
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         OmnivoryIndex
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         Respiration
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         Assimilation
         ''' <summary>Resp / Assim</summary>
         RespAssim
@@ -431,11 +400,10 @@ Namespace Core
         Hlap
         ''' <summary>To document</summary>
         Plap
-        ''' <summary>Colour value to represent an exposed core I/O object.</summary>
+        ''' <summary>Colour value to represent an exposed core I/O object</summary>
         PoolColor
         ''' <summary>To document</summary>
         Alpha ' Borrowed from EwE5 EcoRanger
-
         ''' <summary>Recruitment power</summary>
         RecPowerSplit
         ''' <summary>Relative biomass accumulation rate (ratio)</summary>
@@ -446,15 +414,15 @@ Namespace Core
         HatchCode
         ''' <summary>Stanza use fixed fecundity</summary>
         FixedFecundity
+        ''' <summary>To document</summary>
         EggAtSpawn
-
         ''' <summary>Stanza parameter; used to indicate the group that leads 
         ''' <see cref="eVarNameFlags.Biomass">biomass</see> in a multi-stanza
-        ''' configuration.</summary>
+        ''' configuration</summary>
         LeadingBiomass
         ''' <summary>Stanza parameter; used to indicate the group that leads 
         ''' <see cref="eVarNameFlags.QBInput">QB</see> in a multi-stanza
-        ''' configuration.</summary>
+        ''' configuration</summary>
         LeadingCB
         ''' <summary>BaB * Bio</summary>
         Bat
@@ -462,27 +430,24 @@ Namespace Core
         StartAge
         ''' <summary>End age of a group in a stanza configuration (in months)</summary>
         EndAge
-        ''' <summary>A multiplier to change the number of packets for the IBM model.</summary>
+        ''' <summary>A multiplier to change the number of packets for the IBM model</summary>
         ''' <remarks>..but what about Dell? Acer? Toshiba? This is simply not fair!</remarks>
         PacketsMultiplier
-
-        ''' <summary>Full path of the current datasource/database </summary>
+        ''' <summary>Full path of the current datasource/database</summary>
         ModelFileName
-
-        ' ---------------------------------
-        ' Ecospace
-        ' ---------------------------------
+        ''' <summary>Number of rows in the Ecospace basemap</summary>
         InRow
+        ''' <summary>Number of columns in the Ecospace basemap</summary>
         InCol
-        ''' <summary>Length of a cell (km).</summary>
+        ''' <summary>Length of a cell (km)</summary>
         CellLength
-        ''' <summary>Size of a cell (in map units).</summary>
+        ''' <summary>Size of a cell (in map units)</summary>
         CellSize
-        ''' <summary>Latitude of spatial data.</summary>
+        ''' <summary>Latitude of spatial data</summary>
         Latitude
-        ''' <summary>Longitude of spatial data.</summary>
+        ''' <summary>Longitude of spatial data</summary>
         Longitude
-        ''' <summary>Basemap stepsize in number of steps per degree.</summary>
+        ''' <summary>Basemap stepsize in number of steps per degree</summary>
         BasemapStepSize
         ''' <summary>Relative catchability per fleet/gear type (multiplier)</summary>
         EffectivePower
@@ -502,7 +467,6 @@ Namespace Core
         MigrationConcRow
         ''' <summary>To document</summary>
         MigrationConcCol
-
         ''' <summary>To document</summary>
         PreferredHabitat
         ''' <summary>A habitat that a given fleet is allowed to fish in</summary>
@@ -515,12 +479,13 @@ Namespace Core
         LayerDepth
         ''' <summary>Ecospace cell habitat assignments</summary>
         LayerHabitat
-        ''' <summary>Ecospace cell habitat capacity, input.</summary>
+        ''' <summary>Ecospace cell habitat capacity, input</summary>
         LayerHabitatCapacityInput
-        ''' <summary>Ecospace cell habitat capacity, computed.</summary>
+        ''' <summary>Ecospace cell habitat capacity, computed</summary>
         LayerHabitatCapacity
         ''' <summary>Ecospace cell MPA assignments</summary>
         LayerMPA
+        ''' <summary>To document</summary>
         LayerMPAPM
         ''' <summary>Ecospace cell relative primary production</summary>
         LayerRelPP
@@ -532,142 +497,125 @@ Namespace Core
         LayerMigration
         ''' <summary>Ecospace cell advection assignments</summary>
         LayerAdvection
-        ''' <summary>Ecospace transport rate layer.</summary>
-        LayerTransportRate
-        ''' <summary>Ecospace MLD (mixed layer depths) layer.</summary>
+        ' ''' <summary>Ecospace transport rate layer</summary>
+        'LayerTransportRate
+        ''' <summary>Ecospace MLD (mixed layer depths) layer</summary>
         LayerMLD
-        ''' <summary>Ecospace wind layer.</summary>
+        ''' <summary>Ecospace wind layer</summary>
         LayerWind
-        ''' <summary>Ecospace upwelling layer.</summary>
+        ''' <summary>Ecospace upwelling layer</summary>
         LayerUpwelling
-        ''' <summary>Ecospace MPA importance.</summary>
+        ''' <summary>Ecospace MPA importance</summary>
         LayerImportance
-        ''' <summary>Ecospace external driver layer.</summary>
+        ''' <summary>Ecospace external driver layer</summary>
         LayerDriver
-        ''' <summary>Ecospace cell port assignments.</summary>
+        ''' <summary>Ecospace cell port assignments</summary>
         LayerPort
-        ''' <summary>Ecospace sailing cost.</summary>
+        ''' <summary>Ecospace sailing cost</summary>
         LayerSail
-        ''' <summary>Ecospace distribution envelope.</summary>
-        LayerDistribution
-
+        ' ''' <summary>Ecospace distribution envelope</summary>
+        'LayerDistribution
+        ''' <summary>To document</summary>
         LayerBiomassForcing
-
+        ''' <summary>To document</summary>
         LayerBiomassRelativeForcing
-
-        ''' <summary>Ecospace/MPA importance weight of the weight layer.</summary>
+        ''' <summary>Ecospace/MPA importance weight of the weight layer</summary>
         ImportanceWeight
-        ''' <summary>Proportion of total habitat area by Habitat type.</summary>
+        ''' <summary>Proportion of total habitat area by Habitat type</summary>
         HabAreaProportion
-        ''' <summary>Ecospace IBM packets layer.</summary>
-        LayerIBMPackets
-        ''' <summary>Ecospace excluded cells layer.</summary>
+        ' ''' <summary>Ecospace IBM packets layer</summary>
+        'LayerIBMPackets
+        ''' <summary>Ecospace excluded cells layer</summary>
         LayerExclusion
-        ''' <summary>Total Eff, Muiltiplier.</summary>
-        ''' <remarks>Summary taken from EwE5 code, not overly helpful I'm afraid...</remarks>
+        ''' <summary>Total Effort multiplier</summary>
         SEmult
         ''' <summary>
         ''' Ecospace: Habitat-adjusted biomass = True. Ecopath base biomass = False
-        ''' </summary>
+        '''</summary>
         AdjustSpace
-
-        ''' <summary>
-        ''' Conversion factor for fishing effort
-        ''' </summary>
+        ''' <summary>Conversion factor for fishing effort</summary>
         FleetEffortConversion
-
-        'jb outputs for ecospace
+        ''' <summary>To document</summary>
         EcospaceMapBiomass
+        ''' <summary>To document</summary>
         EcospaceMapCatch
+        ''' <summary>To document</summary>
         EcospaceMapSumEffort
+        ''' <summary>To document</summary>
         EcospaceMapEffort
-
-        'Ecospace Group output
+        ''' <summary>To document</summary>
         EcospaceGroupBiomassStart
+        ''' <summary>To document</summary>
         EcospaceGroupBiomassEnd
-
+        ''' <summary>To document</summary>
         EcospaceGroupCatchStart
+        ''' <summary>To document</summary>
         EcospaceGroupCatchEnd
-
+        ''' <summary>To document</summary>
         EcospaceGroupValueStart
+        ''' <summary>To document</summary>
         EcospaceGroupValueEnd
-
-        'Ecospace Fleet output
+        ''' <summary>To document</summary>
         EcospaceFleetCatchStart
+        ''' <summary>To document</summary>
         EcospaceFleetCatchEnd
-
+        ''' <summary>To document</summary>
         EcospaceFleetValueStart
+        ''' <summary>To document</summary>
         EcospaceFleetValueEnd
-
+        ''' <summary>To document</summary>
         EcospaceFleetCostStart
+        ''' <summary>To document</summary>
         EcospaceFleetCostEnd
-        ''' <summary>Ecospace [Effort End] / [Effort Start] </summary>
+        ''' <summary>Ecospace [Effort End] / [Effort Start]</summary>
         EcospaceFleetEffortES
-
-        ''' <summary>Ecospace Catch by Fleet Time </summary>
+        ''' <summary>Ecospace Catch by Fleet Time</summary>
         EcospaceFleetCatch
-        ''' <summary>Ecospace Value by Fleet Time </summary>
+        ''' <summary>Ecospace Value by Fleet Time</summary>
         EcospaceFleetValue
-
-        ''' <summary>Biomass of a group in a region for the start summary period </summary>
+        ''' <summary>Biomass of a group in a region for the start summary period</summary>
         EcospaceRegionBiomassStart
-
         ''' <summary>Biomass of a group in a region for the end summary period</summary>
         EcospaceRegionBiomassEnd
-
-        ''' <summary>Biomass of catch in a region for the start summary period </summary>
+        ''' <summary>Biomass of catch in a region for the start summary period</summary>
         EcospaceRegionCatchStart
-
         ''' <summary>Biomass of catch in a region for the end summary period</summary>
         EcospaceRegionCatchEnd
-
-        ''' <summary>Biomass of catch in a region by fleet, group, and time step.</summary>
+        ''' <summary>Biomass of catch in a region by fleet, group, and time step</summary>
         EcospaceRegionFleetGroupCatch
         ''' <summary>Biomass of catch in a region by fleet, group, and year</summary>
         EcospaceRegionFleetGroupCatchYear
-
-        ''' <summary>Time in Years of the Start summary time period </summary>
+        ''' <summary>Time in Years of the Start summary time period</summary>
         EcospaceSummaryTimeStart
-
-        ''' <summary> Time in Years of the End summary time period </summary>
+        ''' <summary>Time in Years of the End summary time period</summary>
         EcospaceSummaryTimeEnd
-
         ''' <summary>Number of time steps in the summary periods</summary>
         EcospaceNumberSummaryTimeSteps
-
-        ''' <summary> Ecospace output biomass averaged over all the cells for each timestep</summary>
+        ''' <summary>Ecospace output biomass averaged over all the cells for each timestep</summary>
         EcospaceBiomassOverTime
-
-        ''' <summary> Ecospace [computed biomass] / [base biomass] averaged over all the cells for each timestep </summary>
+        ''' <summary>Ecospace [computed biomass] / [base biomass] averaged over all the cells for each timestep</summary>
         EcospaceRelativeBiomassOverTime
-
-        ''' <summary> Ecospace Catch over time </summary>
+        ''' <summary>Ecospace Catch over time</summary>
         EcospaceGroupCatchOverTime
-
-
-        ''' <summary> Ecospace Value over time </summary>
+        ''' <summary>Ecospace Value over time</summary>
         EcospaceGroupValueOverTime
-
-        ''' <summary> Ecospace Biomass by region over time averaged over all the cells in a region for each timestep.
+        ''' <summary>Ecospace Biomass by region over time averaged over all the cells in a region for each timestep.
         ''' <seealso cref="EcospaceRegionBiomassYear"/></summary>
         EcospaceRegionBiomass
-        ''' <summary> Ecospace Biomass by region over time averaged over all the cells in a region, per year.
+        ''' <summary>Ecospace Biomass by region over time averaged over all the cells in a region, per year.
         ''' <seealso cref="EcospaceRegionBiomass"/></summary>
         EcospaceRegionBiomassYear
-
-        ''' <summary> Ecospace yearly average profit by fleet  </summary>
+        ''' <summary>Ecospace yearly average profit by fleet</summary>
         EcospaceFleetProfit
-
-        ''' <summary> Ecospace yearly average jobs [value of catch] * [jobs]  </summary>
+        ''' <summary>Ecospace yearly average jobs [value of catch] * [jobs]</summary>
         EcospaceFleetJobs
-
-        ''' <summary>Number of fish in a monthly stanza age group </summary>
+        ''' <summary>Number of fish in a monthly stanza age group</summary>
         StanzaNumberAtAge
-        ''' <summary>Weight of individual fish in a monthly stanza age group </summary>
+        ''' <summary>Weight of individual fish in a monthly stanza age group</summary>
         StanzaWeightAtAge
         ''' <summary>Biomass in a monthly stanza age group [StanzaNumberAtAge]*[StanzaWeightAtAge]</summary>
         StanzaBiomassAtAge
-        ''' <summary>Index to the Ecopath Groups in the Stanza Group </summary>
+        ''' <summary>Index to the Ecopath Groups in the Stanza Group</summary>
         StanzaGroup
         ''' <summary>Biomass for this a stanza iStanzaGroup</summary>
         StanzaBiomass
@@ -681,46 +629,47 @@ Namespace Core
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Ecospace multi thread vars
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+        ''' <summary>To document</summary>
         nGridSolverThreads
+        ''' <summary>To document</summary>
         nSpaceThreads
+        ''' <summary>To document</summary>
         nEffortDistThreads
-
+        ''' <summary>To document</summary>
         IFDPower
+        ''' <summary>To document</summary>
         UseIBM
+        ''' <summary>To document</summary>
         UseNewMultiStanza
-        ''' <summary>Flag stating whether to use exact calculations or iterations for Ecospace migratory species.</summary>
+        ''' <summary>Flag stating whether to use exact calculations or iterations for Ecospace migratory species</summary>
         UseExact
-        ''' <summary>Ecospace run time.</summary>
+        ''' <summary>Ecospace run time</summary>
         TotalTime
-        ''' <summary>Number of time steps per year.</summary>
+        ''' <summary>Number of time steps per year</summary>
         NumTimeStepsPerYear
-        ''' <summary>Ecospace Tolerance.</summary>
+        ''' <summary>Ecospace Tolerance</summary>
         Tolerance
-        ''' <summary>Ecospace successive over-relaxation.</summary>
+        ''' <summary>Ecospace successive over-relaxation</summary>
         SOR
-        ''' <summary>Ecospace maximum number of iterations.</summary>
+        ''' <summary>Ecospace maximum number of iterations</summary>
         MaxIterations
-
-        ''' <summary>How capacity is calculated in Ecospace.</summary>
+        ''' <summary>How capacity is calculated in Ecospace</summary>
         EcospaceCapCalType
-
-        ''' <summary>Use the default Ecospace output directory structure as defined by the core.</summary>
+        ''' <summary>Use the default Ecospace output directory structure as defined by the core</summary>
         EcospaceUseCoreOutputDir
-
-        ''' <summary>Save Ecospace out annually only.</summary>
+        ''' <summary>Save Ecospace out annually only</summary>
         EcospaceUseAnnualOutput
-
+        ''' <summary>To document</summary>
         bUseEffortDistThreshold
-
+        ''' <summary>To document</summary>
         EffortDistThreshold
-
+        ''' <summary>To document</summary>
         EcospaceUseLocalMemory
-
+        ''' <summary>To document</summary>
         EcospaceIBMMovePacketOnStanza
-
-        ''' <summary>User-defined output directory for Ecospace Map output.</summary>
+        ''' <summary>User-defined output directory for Ecospace Map output</summary>
         EcospaceMapOutputDir
-
         ''' <summary>User-defined output directory for Ecospace Area Averaged outputs</summary>
         EcospaceAreaOutputDir
 
@@ -731,348 +680,505 @@ Namespace Core
         EcosimBiomass
         ''' <summary>Ecosim relative biomass over time</summary>
         EcosimBiomassRel
+        ''' <summary>To document</summary>
         EcosimYield
         ''' <summary>[catch(t)]/[catch(0)]</summary>
         EcosimYieldRel
-
+        ''' <summary>To document</summary>
         EcosimCatchGroupGear
-
-        ''' <summary>Ecosim value by group over time.</summary>
+        ''' <summary>Ecosim value by group over time</summary>
         EcosimValueGroup
-
-        ''' <summary>Ecosim relative value by group, time.</summary>
+        ''' <summary>Ecosim relative value by group, time</summary>
         EcosimValueGroupRel
-
-        ''' <summary>Ecosim value by group fleet over time.</summary>
+        ''' <summary>Ecosim value by group fleet over time</summary>
         EcosimValueGroupFleet
-
-        ''' <summary>Fishing mortality by group fleet.</summary>
+        ''' <summary>Fishing mortality by group fleet</summary>
         EcosimFishingMortGroupGear
-
+        ''' <summary>To document</summary>
         EcosimTotalMort
+        ''' <summary>To document</summary>
         EcosimConsumpBiomass
+        ''' <summary>To document</summary>
         EcosimFeedingTime
+        ''' <summary>To document</summary>
         EcosimPredMort
+        ''' <summary>To document</summary>
         EcosimFishMort
+        ''' <summary>To document</summary>
         EcosimProdConsump
+        ''' <summary>To document</summary>
         EcosimAvgWeight
+        ''' <summary>To document</summary>
         EcosimAvgPrey
+        ''' <summary>To document</summary>
         EcosimAvgPred
-
         ''' <summary>[predation mortality]/[total mortality]</summary>
         EcosimMortVPred
         ''' <summary>[fishing mortality]/[total mortality]</summary>
         EcosimMortVFishing
+        ''' <summary>To document</summary>
         EcosimMortVPredPM
+        ''' <summary>To document</summary>
         EcosimMortVFishingPM
-
+        ''' <summary>To document</summary>
         EcosimEcoSystemStruct
-
-        ''' <summary>Is the catch for this group aggregated across all the fleets.</summary>
+        ''' <summary>Is the catch for this group aggregated across all the fleets</summary>
         EcosimIsCatchAggregated
-
         ''' <summary>Ecopath ouput data over time</summary>
         EcopathWeight
+        ''' <summary>To document</summary>
         EcopathNumber
+        ''' <summary>To document</summary>
         EcopathBiomass
+        ''' <summary>To document</summary>
         LorenzenMortality
-
         ''' <summary>Particle size distribution</summary>
         PSD
-
-        ''' <summary>Consumption by Pred of this Prey over time </summary>
+        ''' <summary>Consumption by Pred of this Prey over time</summary>
         EcosimPredConsumpTime
-
         ''' <summary>Consumption Rate by Pred of this Prey over time (consumpt(prey,pred)/b(prey)) over time</summary>
         EcosimPredRateTime
-
+        ''' <summary>To document</summary>
         EcosimElectivityTime
-
         ''' <summary>Percentage of a group this group consumes over time</summary>
         EcosimPreyPercentageTime
-
+        ''' <summary>To document</summary>
         IsPred
+        ''' <summary>To document</summary>
         IsPrey
-
-        ''' <summary> Network analysis variables</summary>
+        ''' <summary>Network analysis variables</summary>
         nTrophicLevels
+        ''' <summary>To document</summary>
         NetworkAbsFlow
+        ''' <summary>To document</summary>
         NetworkRelFlow
-
+        ''' <summary>To document</summary>
         MixedTrophicImpact
-
-        ''' <summary> Network Flow and Biomss </summary>
+        ''' <summary>Network Flow and Biomss</summary>
         PPImportFlow
+        ''' <summary>To document</summary>
         PPConsFlow
+        ''' <summary>To document</summary>
         PPExportFlow
+        ''' <summary>To document</summary>
         PPToDetFlow
+        ''' <summary>To document</summary>
         PPRespFlow
+        ''' <summary>To document</summary>
         PPThroughFlow
+        ''' <summary>To document</summary>
         DetImportFlow
+        ''' <summary>To document</summary>
         DetConsFlow
+        ''' <summary>To document</summary>
         DetExportFlow
+        ''' <summary>To document</summary>
         DetToDetFlow
+        ''' <summary>To document</summary>
         DetRespFlow
+        ''' <summary>To document</summary>
         DetThroughFlow
-
-        ''' <summary>Network Acendency </summary>
+        ''' <summary>Network Acendency</summary>
         AscendGroup
+        ''' <summary>To document</summary>
         AscendOverheadGroup
+        ''' <summary>To document</summary>
         AscendCapacityGroup
+        ''' <summary>To document</summary>
         AscendInfoGroup
+        ''' <summary>To document</summary>
         AscendThroughputGroup
-
+        ''' <summary>To document</summary>
         AscendImportTot
+        ''' <summary>To document</summary>
         AscendImportPer
+        ''' <summary>To document</summary>
         OverheadImportTot
+        ''' <summary>To document</summary>
         OverheadImportPer
+        ''' <summary>To document</summary>
         CapacityImportTot
+        ''' <summary>To document</summary>
         CapacityImportPer
-
+        ''' <summary>To document</summary>
         AscendFlowTot
+        ''' <summary>To document</summary>
         AscendFlowPer
+        ''' <summary>To document</summary>
         OverheadFlowTot
+        ''' <summary>To document</summary>
         OverheadFlowPer
+        ''' <summary>To document</summary>
         CapacityFlowTot
+        ''' <summary>To document</summary>
         CapacityFlowPer
-
+        ''' <summary>To document</summary>
         AscendExportTot
+        ''' <summary>To document</summary>
         AscendExportPer
+        ''' <summary>To document</summary>
         OverheadExportTot
+        ''' <summary>To document</summary>
         OverheadExportPer
+        ''' <summary>To document</summary>
         CapacityExportTot
+        ''' <summary>To document</summary>
         CapacityExportPer
-
+        ''' <summary>To document</summary>
         AscendRespTot
+        ''' <summary>To document</summary>
         AscendRespPer
+        ''' <summary>To document</summary>
         OverheadRespTot
+        ''' <summary>To document</summary>
         OverheadRespPer
+        ''' <summary>To document</summary>
         CapacityRespTot
+        ''' <summary>To document</summary>
         CapacityRespPer
 
         'Ecosim Group summary output
+        ''' <summary>To document</summary>
         EcosimGroupBiomassStart
+        ''' <summary>To document</summary>
         EcosimGroupBiomassEnd
 
+        ''' <summary>To document</summary>
         EcosimGroupCatchStart
+        ''' <summary>To document</summary>
         EcosimGroupCatchEnd
+        ''' <summary>To document</summary>
         EcosimGroupMaxMort
 
+        ''' <summary>To document</summary>
         EcosimGroupValueStart
+        ''' <summary>To document</summary>
         EcosimGroupValueEnd
 
         'Ecosim Fleet output
+        ''' <summary>To document</summary>
         EcosimFleetCatchStart
+        ''' <summary>To document</summary>
         EcosimFleetCatchEnd
 
+        ''' <summary>To document</summary>
         EcosimFleetValueStart
+        ''' <summary>To document</summary>
         EcosimFleetValueEnd
 
+        ''' <summary>To document</summary>
         EcosimFleetCostStart
+        ''' <summary>To document</summary>
         EcosimFleetCostEnd
+        ''' <summary>To document</summary>
         EcosimFleetEffort
+        ''' <summary>To document</summary>
         EcosimFleetJobs
+        ''' <summary>To document</summary>
         EcosimFleetProfit
+        ''' <summary>To document</summary>
         EcosimFleetValueTime
+        ''' <summary>To document</summary>
         EcosimFleetCatchTime
 
         ' Time series
 
-        ''' <summary>Type of a time series.</summary>
+        ''' <summary>Type of a time series</summary>
         TimeSeriesType
-        ''' <summary>Name of data set that a time series was imported from.</summary>
+        ''' <summary>Name of data set that a time series was imported from</summary>
         DataSet
-        ''' <summary>Weight of time for a time series.</summary>
+        ''' <summary>Weight of time for a time series</summary>
         WtType
-        ''' <summary>Index of a group or fleet that a time series applies to.</summary>
+        ''' <summary>Index of a group or fleet that a time series applies to</summary>
         DatPool
+        ''' <summary>To document</summary>
         GroupIndex = DatPool
+        ''' <summary>To document</summary>
         FleetIndex = DatPool
-        ''' <summary>The first year in a time series.</summary>
+        ''' <summary>The first year in a time series</summary>
         DatYear
-        ''' <summary>The number of years of a time series.</summary>
+        ''' <summary>The number of years of a time series</summary>
         nDatYears
-        ''' <summary>Value for a given year in a time series.</summary>
+        ''' <summary>Value for a given year in a time series</summary>
         DatVal
-        ''' <summary>Flag stating whether a time series is applied.</summary>
+        ''' <summary>Flag stating whether a time series is applied</summary>
         Applied
-        ''' <summary>Average zstat sumof(Log(observed/predicted))/nobs.</summary>
+        ''' <summary>Average zstat sumof(Log(observed/predicted))/nobs</summary>
         ''' <remarks>There, you've GOT to love that description.</remarks>
         DataQ
-        ''' <summary>Sum of squares fit of this data set to the predicted value.</summary>
+        ''' <summary>Sum of squares fit of this data set to the predicted value</summary>
         DataSS
-        ''' <summary>Future extension: time series can be associated with any variable.</summary>
+        ''' <summary>Future extension: time series can be associated with any variable</summary>
         CustomVariable
 
-        ''' <summary>Sum of squares fit of Ecospace predicted values to all reference data across all the groups and data.</summary>
+        ''' <summary>Sum of squares fit of Ecospace predicted values to all reference data across all the groups and data</summary>
         EcospaceSS
 
-        ''' <summary>Sum of squares fit of Ecospace predicted values to reference data for a region.</summary>
+        ''' <summary>Sum of squares fit of Ecospace predicted values to reference data for a region</summary>
         EcospaceRegionSS
 
-        ''' <summary>Sum of squares fit of Ecosim predicted values to all reference data across all the groups and data.</summary>
+        ''' <summary>Sum of squares fit of Ecosim predicted values to all reference data across all the groups and data</summary>
         EcosimSS
 
-        ''' <summary>Sum of squares fit of Ecosim predicted values to reference data by group.</summary>
+        ''' <summary>Sum of squares fit of Ecosim predicted values to reference data by group</summary>
         EcosimSSGroup
 
         ''' <summary>Monte Carlo variables</summary>
         ''' <remarks>variables used by ecosim monte carlo</remarks>
         mcB
+        ''' <summary>To document</summary>
         mcPB
+        ''' <summary>To document</summary>
         mcQB
+        ''' <summary>To document</summary>
         mcBA
+        ''' <summary>To document</summary>
         mcEE
+        ''' <summary>To document</summary>
         mcVU
 
+        ''' <summary>To document</summary>
         mcBbf
+        ''' <summary>To document</summary>
         mcPBbf
+        ''' <summary>To document</summary>
         mcQBbf
+        ''' <summary>To document</summary>
         mcBAbf
+        ''' <summary>To document</summary>
         mcEEbf
+        ''' <summary>To document</summary>
         mcVUbf
 
+        ''' <summary>To document</summary>
         mcBLower
+        ''' <summary>To document</summary>
         mcPBLower
+        ''' <summary>To document</summary>
         mcQBLower
+        ''' <summary>To document</summary>
         mcBALower
+        ''' <summary>To document</summary>
         mcEELower
+        ''' <summary>To document</summary>
         mcVULower
 
+        ''' <summary>To document</summary>
         mcBUpper
+        ''' <summary>To document</summary>
         mcPBUpper
+        ''' <summary>To document</summary>
         mcQBUpper
+        ''' <summary>To document</summary>
         mcBAUpper
+        ''' <summary>To document</summary>
         mcEEUpper
+        ''' <summary>To document</summary>
         mcVUUpper
 
+        ''' <summary>To document</summary>
         mcBcv
+        ''' <summary>To document</summary>
         mcPBcv
+        ''' <summary>To document</summary>
         mcQBcv
+        ''' <summary>To document</summary>
         mcBAcv
+        ''' <summary>To document</summary>
         mcEEcv
+        ''' <summary>To document</summary>
         mcVUcv
 
         'end monte carlo variables
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+        ''' <summary>To document</summary>
         BarrierAvoidanceWeight
 
-        ''' <summary>
-        ''' Fishing Policy Search varaibles
-        ''' </summary>
-        ''' 
-
+        ' Fishing Policy Search varaibles
+        ''' <summary>To document</summary>
         SearchBlock 'codeblock in EwE5
 
         ' Generic search parameters
+        ''' <summary>To document</summary>
         SearchDiscountRate
+        ''' <summary>To document</summary>
         SearchGenDiscRate
+        ''' <summary>To document</summary>
         SearchBaseYear
+        ''' <summary>To document</summary>
         SearchFishingMortalityPenalty
 
         'isEconomicAvailable
 
+        ''' <summary>To document</summary>
         FPSValueComponentType
-
+        ''' <summary>To document</summary>
         FPSGroupStrucRelWeight
 
+        ''' <summary>To document</summary>
         FPSFleetJobCatchValue
+        ''' <summary>To document</summary>
         FPSFleetTargetProfit
 
         'Model Parameters
+        ''' <summary>To document</summary>
         FPSNRuns 'number of runs
+        ''' <summary>To document</summary>
         FPSGroupMandRelBiom
+        ''' <summary>To document</summary>
         FPSMaxNumEval
+        ''' <summary>To document</summary>
         FPSMaxEffChange
+        ''' <summary>To document</summary>
         FPSInitOption
+        ''' <summary>To document</summary>
         FPSSearchOption
+        ''' <summary>To document</summary>
         FPSOptimizeApproach
+        ''' <summary>To document</summary>
         FPSOptimizeOptions
 
+        ''' <summary>To document</summary>
         FPSEconomicWeight
+        ''' <summary>To document</summary>
         FPSSocialWeight
+        ''' <summary>To document</summary>
         FPSMandatedRebuildingWeight
+        ''' <summary>To document</summary>
         FPSEcoSystemWeight
+        ''' <summary>To document</summary>
         FPSBiomassDiversityWeight
 
+        ''' <summary>To document</summary>
         FPSMaxPortUtil
+        ''' <summary>To document</summary>
         SearchPrevCostEarning
+        ''' <summary>To document</summary>
         FPSIncludeComp
         'UseEcospace and BatchRun have not been implemented yet
+        ''' <summary>To document</summary>
         FPSBatchRun
+        ''' <summary>To document</summary>
         FPSUseEcospace
+        ''' <summary>To document</summary>
         FPSFishingLimit
+        ''' <summary>To document</summary>
         FPSPredictionVariance
+        ''' <summary>To document</summary>
         FPSExistenceValue
+        ''' <summary>To document</summary>
         FPSUseEconomicPlugin
 
         ' Fit to time series
+        ''' <summary>To document</summary>
         F2TSVulnerabilitySearch
+        ''' <summary>To document</summary>
         F2TSAnomalySearch
+        ''' <summary>To document</summary>
         F2TSCatchAnomaly
+        ''' <summary>To document</summary>
         F2TSCatchAnomalySearchShapeNumber
+        ''' <summary>To document</summary>
         F2TSFirstYear
+        ''' <summary>To document</summary>
         F2TSLastYear
+        ''' <summary>To document</summary>
         F2TSNumSplinePoints
-        ''' <summary>Weights of applied TS in search algorithm.</summary>
+        ''' <summary>Weights of applied TS in search algorithm</summary>
         F2TSAppliedWeights
-        ''' <summary>Variance of Vulnerability.</summary>
+        ''' <summary>Variance of Vulnerability</summary>
         F2TSVulnerabilityVariance
 
-        ''' <summary>Variance of Primary Production.</summary>
+        ''' <summary>Variance of Primary Production</summary>
         F2TSPPVariance
 
-        ''' <summary>Number of data points for AIC  </summary>
+        ''' <summary>Number of data points for AIC</summary>
         F2TSNAICData
         ''' <summary>Use default V's instead of currect V's</summary>
         F2TSUseDefaultV
 
         ' Ecotracer
+        ''' <summary>To document</summary>
         CZero
+        ''' <summary>To document</summary>
         CInflow
+        ''' <summary>To document</summary>
         COutflow
+        ''' <summary>To document</summary>
         CDecay
+        ''' <summary>To document</summary>
         ConForceNumber
+        ''' <summary>To document</summary>
         CImmig
+        ''' <summary>To document</summary>
         CEnvironment
+        ''' <summary>To document</summary>
         CBEnvironment
+        ''' <summary>To document</summary>
         CExcretionRate
+        ''' <summary>To document</summary>
         Concentration
+        ''' <summary>To document</summary>
         ConcBio
+        ''' <summary>To document</summary>
         CSum
 
         'MPA Optimization EcoSeed RandomSearch
+        ''' <summary>To document</summary>
         MPAOptEconomicValue
+        ''' <summary>To document</summary>
         MPAOptSocialValue
+        ''' <summary>To document</summary>
         MPAOptMandatedValue
+        ''' <summary>To document</summary>
         MPAOptEcologicalValue
+        ''' <summary>To document</summary>
         MPAOptBiomassDiversityValue
+        ''' <summary>To document</summary>
         MPAOptBestRow
+        ''' <summary>To document</summary>
         MPAOptBestCol
+        ''' <summary>To document</summary>
         MPAOptCurRow
+        ''' <summary>To document</summary>
         MPAOptCurCol
 
+        ''' <summary>To document</summary>
         MPAOptBoundaryWeight
+        ''' <summary>To document</summary>
         MPAOptSearchType
 
+        ''' <summary>To document</summary>
         MPAOptStepSize
+        ''' <summary>To document</summary>
         MPAOptIterations
+        ''' <summary>To document</summary>
         MPAOptMaxArea
+        ''' <summary>To document</summary>
         MPAOptMinArea
+        ''' <summary>To document</summary>
         iMPAOptToUse
+        ''' <summary>To document</summary>
         MPAbUseCellWeight
 
+        ''' <summary>To document</summary>
         MPAOptStartYear
+        ''' <summary>To document</summary>
         MPAOptEndYear
 
+        ''' <summary>To document</summary>
         MPAOptPercentageClosed
+        ''' <summary>To document</summary>
         MPAOptTotalValue
+        ''' <summary>To document</summary>
         MPAOptAreaBoundary
 
         ''' <summary>Ecospace cell MPA seed assignments</summary>
         LayerMPASeed
+        ''' <summary>To document</summary>
         LayerMPASeedCurrent
+        ''' <summary>To document</summary>
         LayerMPASeedBest
         ''' <summary>Ecospace cell MPA Random assignments</summary>
         LayerMPARandom
@@ -1093,332 +1199,512 @@ Namespace Core
         ''' <summary>Number of trial that exceeded the upper biomass bounds for risk analysis</summary>
         MSEUpperRiskPercent
 
-        ''' <summary> Sum of all economic values for the current MSE output object (results)</summary>
+        ''' <summary>Sum of all economic values for the current MSE output object (results)</summary>
         MSEEconomicValue
-        ''' <summary> Sum of employment values for the current MSE output object (results)</summary>
+        ''' <summary>Sum of employment values for the current MSE output object (results)</summary>
         MSEEmployValue
         MSEMandatedValue
-        ''' <summary> Sum of biomass for the current MSE output object (results)</summary>
+        ''' <summary>Sum of biomass for the current MSE output object (results)</summary>
         MSEEcologicalValue
 
-        ''' <summary> Weighted sum of all mean values</summary>
+        ''' <summary>Weighted sum of all mean values</summary>
         MSEWeightedTotalValue
+        ''' <summary>To document</summary>
         MSEMeanEconomicValue
+        ''' <summary>To document</summary>
         MSEMeanEmployValue
+        ''' <summary>To document</summary>
         MSEMeanMandatedValue
+        ''' <summary>To document</summary>
         MSEMeanEcologicalValue
-
+        ''' <summary>To document</summary>
         MSEBestTotalValue
 
-        ''' <summary> Trial number for the current MSE output object (results)</summary>
+        ''' <summary>Trial number for the current MSE output object (results)</summary>
         MSETrialNumber
 
+        ''' <summary>To document</summary>
         MSEAssessMethod
         'MSEKalmanGain
+        ''' <summary>To document</summary>
         MSEForcastGain
+        ''' <summary>To document</summary>
         MSEAssessPower
+        ''' <summary>To document</summary>
         MSENTrials
+        ''' <summary>To document</summary>
         MSEUseEconomicPlugin
+        ''' <summary>To document</summary>
         RHalfB0Ratio
+        ''' <summary>To document</summary>
         MSEFixedF
+        ''' <summary>To document</summary>
         MSERecruitmentCV
-        ''' <summary>Total allowable catch </summary>
+        ''' <summary>Total allowable catch</summary>
         MSETAC
 
-        ''' <summary>Max Effort for the MSE </summary>
+        ''' <summary>Max Effort for the MSE</summary>
         MSEMaxEffort
-
+        ''' <summary>To document</summary>
         MSELPSolution
 
         'data by iteration
+        ''' <summary>To document</summary>
         MSEBiomass
+        ''' <summary>To document</summary>
         MSECatchByGroup
+        ''' <summary>To document</summary>
         MSECatchByFleet
+        ''' <summary>To document</summary>
         MSEValueByFleet
+        ''' <summary>To document</summary>
         MSEEffort
 
-        ''' <summary>True = Use predicted Effort False = user input Effort </summary>
+        ''' <summary>True = Use predicted Effort False = user input Effort</summary>
         MSEPredictEffort
-        ''' <summary>Biomass by group </summary>
+        ''' <summary>Biomass by group</summary>
         MSEFixedEscapement
 
         ''' <summary>Stop the current MSE run</summary>
         MSEStop
 
-        ''' <summary>Effort type the MSE is to use.</summary>
+        ''' <summary>Effort type the MSE is to use</summary>
         MSEEffortSource
 
-        ''' <summary>
-        ''' Regulatory type use be MSE
-        ''' </summary>
+        ''' <summary>Regulatory type to be used y MSE</summary>
         MSERegulatoryMode
 
+        ''' <summary>To document</summary>
         MSERefBioLower
+        ''' <summary>To document</summary>
         MSERefBioUpper
 
+        ''' <summary>To document</summary>
         MSERefBioEstLower
+        ''' <summary>To document</summary>
         MSERefBioEstUpper
-
+        ''' <summary>To document</summary>
         MSERefGroupCatchLower
+        ''' <summary>To document</summary>
         MSERefGroupCatchUpper
 
+        ''' <summary>To document</summary>
         MSERefFleetCatchLower
+        ''' <summary>To document</summary>
         MSERefFleetCatchUpper
 
+        ''' <summary>To document</summary>
         MSERefFleetEffortLower
+        ''' <summary>To document</summary>
         MSERefFleetEffortUpper
 
         'MSE Stats
+        ''' <summary>To document</summary>
         MSEBiomassHistogram
+        ''' <summary>To document</summary>
         MSEBiomassMeanValues
+        ''' <summary>To document</summary>
         MSEBiomassMin
+        ''' <summary>To document</summary>
         MSEBiomassMax
+        ''' <summary>To document</summary>
         MSEBiomassCV
+        ''' <summary>To document</summary>
         MSEBiomassSdt
+        ''' <summary>To document</summary>
         MSEBiomassBins
+        ''' <summary>To document</summary>
         MSEBiomassBinWidths
+        ''' <summary>To document</summary>
         MSEBiomassValues
+        ''' <summary>To document</summary>
         MSEBiomassAboveLimit
+        ''' <summary>To document</summary>
         MSEBiomassBelowLimit
 
+        ''' <summary>To document</summary>
         MSEBiomassAboveLimitPM
+        ''' <summary>To document</summary>
         MSEBiomassBelowLimitPM
+        ''' <summary>To document</summary>
         MSEBiomassCVPM
 
-
+        ''' <summary>To document</summary>
         MSEGroupCatchHistogram
+        ''' <summary>To document</summary>
         MSEGroupCatchMeanValues
+        ''' <summary>To document</summary>
         MSEGroupCatchMin
+        ''' <summary>To document</summary>
         MSEGroupCatchMax
+        ''' <summary>To document</summary>
         MSEGroupCatchCV
+        ''' <summary>To document</summary>
         MSEGroupCatchStd
+        ''' <summary>To document</summary>
         MSEGroupCatchBins
+        ''' <summary>To document</summary>
         MSEGroupCatchBinWidths
+        ''' <summary>To document</summary>
         MSEGroupCatchValues
+        ''' <summary>To document</summary>
         MSEGroupCatchAboveLimit
+        ''' <summary>To document</summary>
         MSEGroupCatchBelowLimit
 
+        ''' <summary>To document</summary>
         MSEFleetValueHistogram
+        ''' <summary>To document</summary>
         MSEFleetValueMeanValues
+        ''' <summary>To document</summary>
         MSEFleetValueMin
+        ''' <summary>To document</summary>
         MSEFleetValueMax
+        ''' <summary>To document</summary>
         MSEFleetValueCV
+        ''' <summary>To document</summary>
         MSEFleetValueStd
+        ''' <summary>To document</summary>
         MSEFleetValueBins
+        ''' <summary>To document</summary>
         MSEFleetValueBinWidths
+        ''' <summary>To document</summary>
         MSEFleetValueValues
+        ''' <summary>To document</summary>
         MSEFleetValueAboveLimit
+        ''' <summary>To document</summary>
         MSEFleetValueBelowLimit
 
+        ''' <summary>To document</summary>
         MSEEffortHistogram
+        ''' <summary>To document</summary>
         MSEEffortMeanValues
+        ''' <summary>To document</summary>
         MSEEffortMin
+        ''' <summary>To document</summary>
         MSEEffortMax
+        ''' <summary>To document</summary>
         MSEEffortCV
+        ''' <summary>To document</summary>
         MSEEffortStd
+        ''' <summary>To document</summary>
         MSEEffortBins
+        ''' <summary>To document</summary>
         MSEEffortBinWidths
+        ''' <summary>To document</summary>
         MSEEffortValues
+        ''' <summary>To document</summary>
         MSEEffortAboveLimit
+        ''' <summary>To document</summary>
         MSEEffortBelowLimit
 
+        ''' <summary>To document</summary>
         MSEBioEstHistogram
+        ''' <summary>To document</summary>
         MSEBioEstMeanValues
+        ''' <summary>To document</summary>
         MSEBioEstMin
+        ''' <summary>To document</summary>
         MSEBioEstMax
+        ''' <summary>To document</summary>
         MSEBioEstCV
+        ''' <summary>To document</summary>
         MSEBioEstStd
+        ''' <summary>To document</summary>
         MSEBioEstBins
+        ''' <summary>To document</summary>
         MSEBioEstBinWidths
+        ''' <summary>To document</summary>
         MSEBioEstValues
+        ''' <summary>To document</summary>
         MSEBioEstAboveLimit
+        ''' <summary>To document</summary>
         MSEBioEstBelowLimit
 
-
+        ''' <summary>To document</summary>
         MSEFStatHistogram
+        ''' <summary>To document</summary>
         MSEFStatMeanValues
+        ''' <summary>To document</summary>
         MSEFStatMin
+        ''' <summary>To document</summary>
         MSEFStatMax
+        ''' <summary>To document</summary>
         MSEFStatCV
+        ''' <summary>To document</summary>
         MSEFStatStd
+        ''' <summary>To document</summary>
         MSEFStatBins
+        ''' <summary>To document</summary>
         MSEFStatBinWidths
+        ''' <summary>To document</summary>
         MSEFStatValues
+        ''' <summary>To document</summary>
         MSEFStatAboveLimit
+        ''' <summary>To document</summary>
         MSEFStatBelowLimit
 
+        ''' <summary>To document</summary>
         MSEStartYear
+        ''' <summary>To document</summary>
         MSEResultsStartYear
+        ''' <summary>To document</summary>
         MSEResultsEndYear
 
         ' ToDo_JB: evaluate if we still need these
+        ''' <summary>To document</summary>
         MSYRunSilent
+        ''' <summary>To document</summary>
         MSYEvalValue
+        ''' <summary>To document</summary>
         MSYStartTime
+        ''' <summary>To document</summary>
         MSYEvaluateFleet
 
         'MSE Batch Variables
         'Target Fishing Mortality(hockey stick)
+        ''' <summary>To document</summary>
         MSETFMNIteration
+        ''' <summary>To document</summary>
         MSETFMBLimLower
+        ''' <summary>To document</summary>
         MSETFMBLimUpper
+        ''' <summary>To document</summary>
         MSETFMBLimValues
 
+        ''' <summary>To document</summary>
         MSETFMBBaseLower
+        ''' <summary>To document</summary>
         MSETFMBBaseUpper
+        ''' <summary>To document</summary>
         MSETFMBBaseValues
 
+        ''' <summary>To document</summary>
         MSETFMFOptLower
+        ''' <summary>To document</summary>
         MSETFMFOptUpper
+        ''' <summary>To document</summary>
         MSETFMFOptValues
 
         'TAC total allowable catch
+        ''' <summary>To document</summary>
         MSEBatchTACNIteration
+        ''' <summary>To document</summary>
         MSEBatchTACLower
+        ''' <summary>To document</summary>
         MSEBatchTACUpper
+        ''' <summary>To document</summary>
         MSEBatchTACValues
+        ''' <summary>To document</summary>
         MSEBatchTACManaged
 
         'F fishing mortality
+        ''' <summary>To document</summary>
         MSEBatchFNIteration
+        ''' <summary>To document</summary>
         MSEBatchFLower
+        ''' <summary>To document</summary>
         MSEBatchFUpper
+        ''' <summary>To document</summary>
         MSEBatchFValues
+        ''' <summary>To document</summary>
         MSEBatchFManaged
 
         'MSE Batch output types
+        ''' <summary>To document</summary>
         MSEBatchOutputBiomass
+        ''' <summary>To document</summary>
         MSEBatchOutputConBio
+        ''' <summary>To document</summary>
         MSEBatchOutputFeedingTime
+        ''' <summary>To document</summary>
         MSEBatchOutputPredRate
+        ''' <summary>To document</summary>
         MSEBatchOutputCatch
+        ''' <summary>To document</summary>
         MSEBatchOutputFishingMortRate
 
+        ''' <summary>To document</summary>
         MSEBatchOuputDir
+        ''' <summary>To document</summary>
         MSEBatchGroupRunType
 
         ''' <summary>
         ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 
         ''' Boolean is this group managed using the TFM
-        ''' </summary>
+        '''</summary>
         ''' <remarks></remarks>
         MSEBatchTFMManaged
 
         ''' <summary>
         ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 
-        ''' </summary>
+        '''</summary>
         MSEBatchIterCalcType
 
         ' Pedigree
+
+        ''' <summary>To document</summary>
         VariableName
+        ''' <summary>To document</summary>
         IndexValue
+        ''' <summary>To document</summary>
         ConfidenceInterval
+        ''' <summary>To document</summary>
         Pedigree
 
         'Varnames added for Game Server
 
-        ''' <summary>Game server loaded model.</summary>
+        ''' <summary>Game server loaded model</summary>
         GameModel
-        ''' <summary>Game server run state.</summary>
+        ''' <summary>Game server run state</summary>
         GameState
-        ''' <summary>Game client moderator state.</summary>
+        ''' <summary>Game client moderator state</summary>
         GameModeratorState
-        ''' <summary>Items the client is allowed to show.</summary>
+        ''' <summary>Items the client is allowed to show</summary>
         GameViewVisibleItems
-        ''' <summary>Items the client can request from the server.</summary>
+        ''' <summary>Items the client can request from the server</summary>
         GameViewAvailableItems
-        ''' <summary>Limits imposed on variables.</summary>
+        ''' <summary>Limits imposed on variables</summary>
         GameDataLimits
-        ''' <summary> User entered fishing rate modifiers/shapes for fleets</summary>
+        ''' <summary>User entered fishing rate modifiers/shapes for fleets</summary>
         GameFleetFishingRates
-        ''' <summary> User entered mortality/fishing rate modifiers/shapes for groups</summary>
+        ''' <summary>User entered mortality/fishing rate modifiers/shapes for groups</summary>
         GameGroupFishingMortRates
-        ''' <summary>Traffic lights the client can request from the server.</summary>
+        ''' <summary>Traffic lights the client can request from the server</summary>
         GameViewTrafficLights
         ''' <summary>Type of data available during a simulation (TimeStep or Progress)</summary>
         GameAvailableRunData
 
+        ''' <summary>To document</summary>
         GameSimulationTimeStep
-        ''' <summary>Game absolute biomass.</summary>
+        ''' <summary>Game absolute biomass</summary>
         GameBiomass
+        ''' <summary>To document</summary>
         GameBiomassPM
         ''' <summary>Game generic relative biomass over time (no specific source)</summary>
         GameBiomassRel
 
-        ''' <summary>Game biomass with Fishing regulation.</summary>
+        ''' <summary>Game biomass with Fishing regulation</summary>
         GameBiomassFishRegulation
+        ''' <summary>To document</summary>
         GameBiomassFishRegulationPM
 
+        ''' <summary>To document</summary>
         GameBiomassByRegion
+        ''' <summary>To document</summary>
         GameCatchRegionFleetGroup
+        ''' <summary>To document</summary>
         GameGroupValue
+        ''' <summary>To document</summary>
         GameGroupFleetValue
 
-        ''' <summary>Profit by Fleet.</summary>      
+        ''' <summary>Profit by Fleet</summary>      
         GameFleetProfitSummary
-        ''' <summary>Jobs(?) by Fleet.</summary>    
+        ''' <summary>Jobs(?) by Fleet</summary>    
         GameFleetJobsSummary
 
+        ''' <summary>To document</summary>
         GameFleetValue
+        ''' <summary>To document</summary>
         GameFleetCatch
+        ''' <summary>To document</summary>
         GameFleetCatchPM
+        ''' <summary>To document</summary>
         GameFleetValuePM
 
-        ''' <summary>For Ecosim Yield from Ecosim Plots Biomass * FishTime </summary>
+        ''' <summary>For Ecosim Yield from Ecosim Plots Biomass * FishTime</summary>
         GameGroupCatch
+        ''' <summary>To document</summary>
         GameGroupCatchPM
 
         'Economic data for the game
+        ''' <summary>To document</summary>
         GameEconomicCost
+        ''' <summary>To document</summary>
         GameEconomicCostPM
+        ''' <summary>To document</summary>
         GameEconomicCostByFleet
+        ''' <summary>To document</summary>
         GameEconomicCostByFleetPM
+        ''' <summary>To document</summary>
         GameEconomicProfit
+        ''' <summary>To document</summary>
         GameEconomicProfitByFleet
+        ''' <summary>To document</summary>
         GameEconomicProfitByFleetPM
+        ''' <summary>To document</summary>
         GameEconomicProfitPM
+        ''' <summary>To document</summary>
         GameEconomicJobsTotal
+        ''' <summary>To document</summary>
         GameEconomicJobsTotalPM
+        ''' <summary>To document</summary>
         GameEconomicJobsByFleet
+        ''' <summary>To document</summary>
         GameEconomicJobsByFleetPM
+        ''' <summary>To document</summary>
         GameEconomicProduction
+        ''' <summary>To document</summary>
         GameEconomicProductionPM
 
+        ''' <summary>To document</summary>
         GameEconomicTaxes
+        ''' <summary>To document</summary>
         GameEconomicTaxesPM
+        ''' <summary>To document</summary>
         GameEconomicTaxesByFleet
+        ''' <summary>To document</summary>
         GameEconomicTaxesByFleetPM
 
+        ''' <summary>To document</summary>
         GameEconomicSubsidies
+        ''' <summary>To document</summary>
         GameEconomicSubsidiesPM
+        ''' <summary>To document</summary>
         GameEconomicSubsidiesByFleet
+        ''' <summary>To document</summary>
         GameEconomicSubsidiesByFleetPM
 
         ''' <summary>Eco system structure 1/pb * b(t)</summary>    
         GameEcoSystemStruct
+        ''' <summary>To document</summary>
         GameEcoSystemStructPM
 
         ''' <summary>Game names added for the Game data because EwE6 uses Name for all names</summary>
         GameFleetName
+        ''' <summary>To document</summary>
         GameMPAName
+        ''' <summary>To document</summary>
         GameHabitatName
 
+        ''' <summary>To document</summary>
         GameFleetFishingRatesPM
-
+        ''' <summary>To document</summary>
         GameForceSalinity
+        ''' <summary>To document</summary>
         GameForceNutrient
+        ''' <summary>To document</summary>
         GameForceTemperature
+        ''' <summary>To document</summary>
         GameForcePrimaryProducer
 
+        ''' <summary>To document</summary>
         GameForceSalinityPM
+        ''' <summary>To document</summary>
         GameForceNutrientPM
+        ''' <summary>To document</summary>
         GameForceTemperaturePM
 
+        ''' <summary>To document</summary>
         GameForceSalinityName
+        ''' <summary>To document</summary>
         GameForceNutrientName
+        ''' <summary>To document</summary>
         GameForceTemperatureName
+        ''' <summary>To document</summary>
         GameForcePrimaryProducerName
 
+        ''' <summary>To document</summary>
         GameForcePrimaryProducerNumber
 
         ''' <summary>Game biomass for an interation</summary>
@@ -1427,139 +1713,201 @@ Namespace Core
         GameGroupCatchIteration
         ''' <summary>Game effort by fleet for an interation</summary>
         GameFleetEffortIteration
-        ''' <summary></summary>
+        ''' <summary>To document</summary>
         GameFleetValueIteration
 
         ''' <summary>Visualization settings for a 3D game environment</summary>
         Game3DVizSettings
 
+        ''' <summary>To document</summary>
         PSDEnabled
+        ''' <summary>To document</summary>
         PSDComputed
+        ''' <summary>To document</summary>
         VBK
+        ''' <summary>To document</summary>
         BiomassAvgSzWt
+        ''' <summary>To document</summary>
         BiomassSzWt
+        ''' <summary>To document</summary>
         AinLWInput
+        ''' <summary>To document</summary>
         AinLWOutput
+        ''' <summary>To document</summary>
         BinLWInput
+        ''' <summary>To document</summary>
         BinLWOutput
+        ''' <summary>To document</summary>
         LooInput
+        ''' <summary>To document</summary>
         LooOutput
+        ''' <summary>To document</summary>
         WinfInput
+        ''' <summary>To document</summary>
         WinfOutput
+        ''' <summary>To document</summary>
         t0Input
+        ''' <summary>To document</summary>
         t0Output
+        ''' <summary>To document</summary>
         TCatchInput
+        ''' <summary>To document</summary>
         TCatchOutput
+        ''' <summary>To document</summary>
         TmaxInput
+        ''' <summary>To document</summary>
         TmaxOutput
+        ''' <summary>To document</summary>
         PSDIncluded
+        ''' <summary>To document</summary>
         PSDMortalityType
+        ''' <summary>To document</summary>
         PSDFirstWeightClass
+        ''' <summary>To document</summary>
         PSDNumWeightClasses
+        ''' <summary>To document</summary>
         ClimateType
+        ''' <summary>To document</summary>
         NumPtsMovAvg
 
-        ' JS 11Jan10: added for NA variables that migrated to Ecosim
-        ''' <summary>Trophic level of catch.</summary>
+        ''' <summary>Trophic level of catch</summary>
         TLCatch
-        ''' <summary>Trophic level of groups.</summary>
+        ''' <summary>Trophic level of groups</summary>
         TL
-        ''' <summary>Fishing in-balance (FIB) index.</summary>
+        ''' <summary>Fishing in-balance (FIB) index</summary>
         FIB
+        ''' <summary>To document</summary>
         KemptonsQ
+        ''' <summary>To document</summary>
         TotalCatch
 
         'PM's for NA vars 
+        ''' <summary>To document</summary>
         TLCatchPM
+        ''' <summary>To document</summary>
         TLPM
+        ''' <summary>To document</summary>
         FIBPM
+        ''' <summary>To document</summary>
         KemptonsQPM
-
+        ''' <summary>To document</summary>
         EcopathFirstYear
+        ''' <summary>Southern extent of the EwE model</summary>
         South
+        ''' <summary>Northern extent of the EwE model</summary>
         North
+        ''' <summary>Western extent of the EwE model</summary>
         West
+        ''' <summary>Eastern extent of the EwE model</summary>
         East
+        ''' <summary>Alias or common name for the area represented in the model</summary>
         AreaName
 
-        ''' <summary>
-        ''' Is this model coupled to an external model Ecospace model
-        ''' </summary>
+        ''' <summary>Is this model coupled to an external model Ecospace model?</summary>
         IsEcospaceModelCoupled
 
-        ''' <summary>Group assigned to a given taxon.</summary>
+        ''' <summary>Group assigned to a given taxon</summary>
         TaxonGroup
-        ''' <summary>Stanza assigned to a given taxon.</summary>
+        ''' <summary>Stanza assigned to a given taxon</summary>
         TaxonStanza
-        ''' <summary>Taxon biomass proportion.</summary>
+        ''' <summary>Taxon biomass proportion</summary>
         TaxonProp
-        ''' <summary>Taxon catch proportion.</summary>
+        ''' <summary>Taxon catch proportion</summary>
         TaxonPropCatch
+        ''' <summary>Taxon phylum</summary>
         Phylum
+        ''' <summary>Taxon class</summary>
         [Class]
+        ''' <summary>Taxon order</summary>
         Order
+        ''' <summary>Taxon family</summary>
         Family
+        ''' <summary>Taxon genus</summary>
         Genus
+        ''' <summary>Taxon species</summary>
         Species
+        ''' <summary>Sea Around Us Project code for a species</summary>
         CodeSAUP
+        ''' <summary>Sea Life Base code for a species</summary>
         CodeSLB
+        ''' <summary>FishBase code for a species</summary>
         CodeFB
+        ''' <summary>FAO code for a species</summary>
         CodeFAO
+        ''' <summary>Life Science indentifier for a species (http://en.wikipedia.org/wiki/LSID)</summary>
         CodeLSID
+        ''' <summary>URL to the species information</summary>
         Source
+        ''' <summary>Search term for a species</summary>
         SourceKey
+        ''' <summary>Date that data was last actualized</summary>
         LastUpdated
+        ''' <summary>To document</summary>
         OrganismType
+        ''' <summary>To document</summary>
         EcologyType
+        ''' <summary>To document</summary>
         IUCNConservationStatus
+        ''' <summary>To document</summary>
         ExploitationStatus
+        ''' <summary>To document</summary>
         OccurrenceStatus
+        ''' <summary>To document</summary>
         TaxonMeanWeight
+        ''' <summary>To document</summary>
         TaxonMeanLength
+        ''' <summary>To document</summary>
         TaxonMaxLength
+        ''' <summary>To document</summary>
         TaxonMeanLifespan
+        ''' <summary>To document</summary>
         TaxonWinf
+        ''' <summary>To document</summary>
         TaxonvbgfK
+        ''' <summary>To document</summary>
         TaxonVulnerabilityIndex
+        ''' <summary>To document</summary>
         TaxonSearchFields
 
         ''' <summary>Taxa assigned to a given group</summary>
         GroupTaxa
 
+        ''' <summary>To document</summary>
         Coriolis
+        ''' <summary>To document</summary>
         XVelocity
+        ''' <summary>To document</summary>
         YVelocity
         SorWv
 
-        ''' <summary>States if a value is estimated by Ewe.</summary>
+        ''' <summary>States if a value is estimated by Ewe</summary>
         Estimated
         ''' <summary>1 - EE</summary>
-        ''' <remarks>JS Added 28Feb11</remarks>
         OtherMortInput
         ''' <summary>Helper flag to determine whether a group is fished</summary>
         IsFished
         ''' <summary>No. regions in Ecospace</summary>
-        ''' <remarks>JS 16Jan12: No. regions is now an input, no longer implicit.</remarks>
         EcospaceRegionNumber
 
-        ''' <summary>Group or fleet index targeted by MSY.</summary>
+        ''' <summary>Group or fleet index targeted by MSY</summary>
         MSYFSelection
         ''' <summary><see cref="eVarNameFlags.MSYFSelection"/> interpretation flag, 
-        ''' should be one of <see cref="eMSYFSelectionModeType">values</see>.</summary>
+        ''' should be one of <see cref="eMSYFSelectionModeType">values</see></summary>
         MSYFSelectionMode
-        ''' <summary>MSY assessment type.</summary>
+        ''' <summary>MSY assessment type</summary>
         MSYAssessment
-        ''' <summary>MSY equilibrium step size, as a fractio of 0 to <see cref="eVarNameFlags.MSYMaxFishingRate"/>.</summary>
+        ''' <summary>MSY equilibrium step size, as a fractio of 0 to <see cref="eVarNameFlags.MSYMaxFishingRate"/></summary>
         MSYEquilibriumStepSize
-        ''' <summary>MSY max F to vary to.</summary>
+        ''' <summary>MSY max F to vary to</summary>
         MSYMaxFishingRate
-        ''' <summary>Number of MSY trial years.</summary>
+        ''' <summary>Number of MSY trial years</summary>
         MSYNumTrialYears
-        ''' <summary>Number of MSY trial years.</summary>
+        ''' <summary>Number of MSY trial years</summary>
         MSYRunLengthMode
 
-        ' JS 04Jul14: progressively overcome Ecospace projection limitations
+        ''' <summary>To document</summary>
         AssumeSquareCells
+        ''' <summary>To document</summary>
         CoordinateSystem
 
     End Enum
@@ -1571,7 +1919,7 @@ Namespace Core
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type that indicates a class of data in the EwE core.
-    ''' </summary>
+    '''</summary>
     ''' <remarks>
     ''' These enums have fixed values since values may be used to identify 
     ''' items in the EwE6 database system.
@@ -1581,218 +1929,218 @@ Namespace Core
 
         ''' <summary>
         ''' Data type is not specified.
-        ''' </summary>
+        '''</summary>
         NotSet = 0
 
         ''' <summary>
         ''' Data belongs to the EwE model.
-        ''' </summary>
+        '''</summary>
         EwEModel = 1
 
         ''' <summary>
         ''' Data belongs to the Ecopath group inputs,
         ''' which are provided to perform a parameter estimation run. 
-        ''' </summary>
+        '''</summary>
         EcoPathGroupInput = 2
 
         ''' <summary>
         ''' Data belongs to the Ecopath group outputs,
         ''' which are produced by a parameter estimation run.
-        ''' </summary>
+        '''</summary>
         EcoPathGroupOutput = 3
 
         ''' <summary>
         ''' Data belongs to the Ecopath fleet inputs,
         ''' which are provided for a parameter estimation run.
-        ''' </summary>
+        '''</summary>
         FleetInput = 4
 
         ''' <summary>
         ''' Data belongs to an Ecosim scenario.
-        ''' </summary>
+        '''</summary>
         EcoSimScenario = 5
 
         ''' <summary>
         ''' Data belongs to the Ecosim model parameters,
         ''' which instruct how to run an Ecosim scenario.
-        ''' </summary>
+        '''</summary>
         EcoSimModelParameter = 6
 
         ''' <summary>
         ''' Data belongs to an Ecosim group input.
-        ''' </summary>
+        '''</summary>
         EcoSimGroupInput = 7
 
         ''' <summary>
         ''' Data belongs to a Time Forcing Function.
-        ''' </summary>
+        '''</summary>
         Forcing = 8
 
         ''' <summary>
         ''' Data belongs to an Egg Production Forcing Function.
-        ''' </summary>
+        '''</summary>
         EggProd = 9
 
         ''' <summary>
         ''' Data belongs to a Mediation Function.
-        ''' </summary>
+        '''</summary>
         Mediation = 10
 
         ''' <summary>
         ''' Data belongs to a Fishing Rate shape.
-        ''' </summary>
+        '''</summary>
         FishingEffort = 11
 
         ''' <summary>
         ''' Data belongs to a Fishing Mortality shape.
-        ''' </summary>
+        '''</summary>
         FishMort = 12
 
         ''' <summary>
         ''' Data belongs to an EwE multi-stanza configuration.
-        ''' </summary>
+        '''</summary>
         Stanza = 13 'jb June-14-06 added for Stanza data types
 
         ''' <summary>
         ''' Data belongs to an Ecospace scenario.
-        ''' </summary>
+        '''</summary>
         EcoSpaceScenario = 14
 
         ''' <summary>
         ''' Data belongs to an Ecospace habitat.
-        ''' </summary>
+        '''</summary>
         EcospaceHabitat = 15
 
         ' ''' <summary>
         ' ''' Data belongs to an Ecospace region.
-        ' ''' </summary>
+        ' '''</summary>
         'EcospaceRegion = 16
 
         ''' <summary>
         ''' Data belongs to an Ecospace group.
-        ''' </summary>
+        '''</summary>
         EcospaceGroup = 17
 
         ''' <summary>
         ''' Data belongs to an Ecospace fleet.
-        ''' </summary>
+        '''</summary>
         EcospaceFleet = 18
 
         ''' <summary>
         ''' Data belongs to an Ecospace MPA.
-        ''' </summary>
+        '''</summary>
         EcospaceMPA = 19
 
         ''' <summary>
         ''' Data belongs to the Ecospace model parameters,
         ''' which instruct how to run an Ecopace scenario.
-        ''' </summary>
+        '''</summary>
         EcospaceModelParameter = 20
 
         ''' <summary>
         ''' Data belongs to a cEcospaceModelBasemaps instance.
-        ''' </summary>
+        '''</summary>
         EcospaceBasemap = 21
 
         ''' <summary>
         ''' Data belongs to an ecospace importance layer instance.
-        ''' </summary>
+        '''</summary>
         ''' <remarks>The enum value </remarks>
         EcospaceLayerImportance = 22
 
         ''' <summary>
         ''' cPredPreyInteraction object
-        ''' </summary>
+        '''</summary>
         PredPreyInteraction = 23
 
         ''' <summary>
         ''' Time step results of the currently running Ecospace model
-        ''' </summary>
+        '''</summary>
         EcospaceTimestepResults = 24
 
         ''' <summary>
         ''' Data belongs to Ecospace calculated values for a single group.
-        ''' </summary>
+        '''</summary>
         EcospaceGroupOuput = 25
 
         ''' <summary>
         ''' Data belongs to Ecospace calculated values for a single fleet.
-        ''' </summary>
+        '''</summary>
         EcospaceFleetOuput = 26
 
         ''' <summary>
         ''' Data belongs to Ecospace calculated values for a single region.
-        ''' </summary>
+        '''</summary>
         EcospaceRegionResults = 27
 
         '''' <summary>
         '''' Data belongs to Network Analysis.
-        '''' </summary>
+        ''''</summary>
         'NetworkFlowOutput = 28
 
         ''' <summary>
         ''' Data belongs to a time series that applies to groups.
-        ''' </summary>
+        '''</summary>
         GroupTimeSeries = 29
 
         ''' <summary>
         ''' Data belongs to a time series that applies to fleets.
-        ''' </summary>
+        '''</summary>
         FleetTimeSeries = 30
 
         ''' <summary>
         ''' Data belongs to a Time Series data set.
-        ''' </summary>
+        '''</summary>
         TimeSeriesDataset = 31
 
         ''' <summary>
         ''' Data belongs to a Ecosim Monte Carlo model parameters.
-        ''' </summary>
+        '''</summary>
         MonteCarlo = 32
 
         ''' <summary>
         ''' Data belongs to values calculated by Ecosim for a single group.
-        ''' </summary>
+        '''</summary>
         EcoSimGroupOutput = 33
 
         ''' <summary>
         ''' Data belongs to values calculated by Ecosim for a single fleet.
-        ''' </summary>
+        '''</summary>
         EcosimFleetOutput = 34
 
         ''' <summary>
         ''' Data belongs to Ecosim Fit To Time Series model parameters.
-        ''' </summary>
+        '''</summary>
         FitToTimeSeries = 35
 
         ''' <summary>
         ''' Data belongs to an Ecotracer scenario.
-        ''' </summary>
+        '''</summary>
         EcotracerScenario = 36
 
         ''' <summary>
         ''' Data belongs to Ecotracer model parameters.
-        ''' </summary>
+        '''</summary>
         EcotracerModelParameters = 37
 
         ''' <summary>
         ''' Data belongs to an Ecotracer input group.
-        ''' </summary>
+        '''</summary>
         EcotracerGroupInput = 38
 
         ''' <summary>
         ''' Data belongs to an Ecotracer Ecosim results for a single group.
-        ''' </summary>
+        '''</summary>
         EcotracerSimOutput = 39
 
         ''' <summary>
         ''' Data belongs to an Ecotracer Ecospace results for a single group.
-        ''' </summary>
+        '''</summary>
         EcotracerSpaceOutput = 40
 
         ''' <summary>
         ''' Data belongs to a search objectives manager.
-        ''' </summary>
+        '''</summary>
         ''' <remarks>
         ''' Search Objectives form the base for the shared search interface 
         ''' ISearchObjective used by Fishing Policy, Ecoseed, MSE and possibly
@@ -1802,28 +2150,28 @@ Namespace Core
 
         ''' <summary>
         ''' Data belongs to search objectives generic parameters.
-        ''' </summary>
+        '''</summary>
         ''' <remarks>Don't panic.</remarks>
         SearchObjectiveParameters = 42
 
         ''' <summary>
         ''' Data belongs to search objectives parameters for a single fleet.
-        ''' </summary>
+        '''</summary>
         SearchObjectiveFleetInput = 43
 
         ''' <summary>
         ''' Data belongs to search objective weights.
-        ''' </summary>
+        '''</summary>
         SearchObjectiveWeights = 44
 
         ''' <summary>
         ''' Data belongs to search objectives parameters for a single group.
-        ''' </summary>
+        '''</summary>
         SearchObjectiveGroupInput = 45
 
-        ''' <summary> 
+        ''' <summary>
         ''' Data belongs to the Fishing Policy search manager.
-        ''' </summary>
+        '''</summary>
         ''' <remarks>
         ''' Note that the Fishing Policy manager may use the SearchObjectivexxxx data types as well.
         ''' </remarks>
@@ -1831,102 +2179,102 @@ Namespace Core
 
         ''' <summary>
         ''' Data belongs to fishing policy search generic parameters.
-        ''' </summary>
+        '''</summary>
         FishingPolicyParameters = 47
 
         ''' <summary>
         ''' Data belongs to fishing policy search search blocks settings.
-        ''' </summary>
+        '''</summary>
         FishingPolicySearchBlocks = 48
 
-        ''' <summary> 
+        ''' <summary>
         ''' Data belongs to the MPA optimizations/Ecoseed search manager.
-        ''' </summary>
+        '''</summary>
         MPAOptManager = 49
 
         ''' <summary>
         ''' Data belongs to the MPA optimizations/Ecoseed results.
-        ''' </summary>
+        '''</summary>
         MPAOptOuput = 50
 
-        ''' <summary> 
+        ''' <summary>
         ''' Data belongs to the MPA optimizations/Ecoseed generic parameters.
-        ''' </summary>
+        '''</summary>
         MPAOptParameters = 51
 
-        ''' <summary> 
+        ''' <summary>
         ''' Data belons to the Management Strategy Evaluator.
-        ''' </summary>
+        '''</summary>
         MSEManager = 52
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluator parameters for a single fleet.
-        ''' </summary>
+        '''</summary>
         MSEFleetInput = 53
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluator parameters for a single group.
-        ''' </summary>
+        '''</summary>
         MSEGroupInput = 54
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluator generic results.
-        ''' </summary>
+        '''</summary>
         MSEOutput = 55
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluator generic parameters.
-        ''' </summary>
+        '''</summary>
         MSEParameters = 56
 
         ''' <summary>
         ''' Data belongs to a single Pedigree level.
-        ''' </summary>
+        '''</summary>
         PedigreeLevel = 57
 
         ''' <summary>
         ''' Data belongs to the EwE game engine data.
-        ''' </summary>    
+        '''</summary>    
         GameData = 58
 
         '''' <summary>
         '''' Data belongs to the Ecosim fisheries regulation engine.
-        '''' </summary>    
+        ''''</summary>    
         'EcosimFisheriesRegulation = 59
 
         ''' <summary>
         ''' Data belongs to Ecopath statistics.
-        ''' </summary>
+        '''</summary>
         EcoPathStatistics = 60
 
         ''' <summary>
         ''' Data belongs to Ecosim statistics.
-        ''' </summary>
+        '''</summary>
         EcoSimStatistics = 61
 
         ''' <summary>
         ''' Data belongs to Ecospace statistics.
-        ''' </summary>
+        '''</summary>
         EcospaceStatistics = 62
 
         ''' <summary>
         ''' Data belongs to Particle Size Distribution generic parameters.
-        ''' </summary>
+        '''</summary>
         ParticleSizeDistribution = 63
 
         ''' <summary>
         ''' Data belongs to the Ecospace Depth layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerDepth = 64
 
         ''' <summary>
         ''' Data belongs to the Ecospace Marine Protected Areas layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerMPA = 65
 
         ''' <summary>
         ''' Data belongs to the Ecospace MPA seed layer.
-        ''' </summary>
+        '''</summary>
         ''' <remarks>
         ''' MPA seeds are used in the MPA optimizations/Ecoseed searches.
         ''' </remarks>
@@ -1934,125 +2282,125 @@ Namespace Core
 
         ''' <summary>
         ''' Data belongs to the Ecospace Habitat layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerHabitat = 67
 
         ''' <summary>
         ''' Data belongs to the Ecospace Regions layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerRegion = 68
 
         ''' <summary>
         ''' Data belongs to the Ecospace relative primary production layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerRelPP = 69
 
         ''' <summary>
         ''' Data belongs to the Ecospace relative contaminant layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerRelCin = 70
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluation results for a single group.
-        ''' </summary>
+        '''</summary>
         MSEGroupOutputs = 71
 
         ''' <summary>
         ''' Data belongs to the Ecospace layer representing the spread and quantities
         ''' of Individual Based Model packets.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerIBMPackets = 72
 
         ''' <summary>
         ''' Data belongs to the Ecospace layer representing fishing ports.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerPort = 73
 
         ''' <summary>
         ''' Data belongs to the Ecospace layer representing cost of sailing.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerSail = 74
 
         ''' <summary>
         ''' Data belongs to Ecosim input data for single group.
-        ''' </summary>
+        '''</summary>
         EcosimFleetInput = 75
 
         ''' <summary>
         ''' Data belongs to Ecosim results for single group.
-        ''' </summary>
+        '''</summary>
         EcosimOutput = 76
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluation results for a single fleet.
-        ''' </summary>
+        '''</summary>
         MSEFleetOutputs = 76
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluation biomass statistical results.
-        ''' </summary>
+        '''</summary>
         MSEBiomassStats = 77
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluation statistical results on catches by group.
-        ''' </summary>
+        '''</summary>
         MSECatchByGroupStats = 78
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluation statistical results on catches by fleet.
-        ''' </summary>
+        '''</summary>
         MSECatchByFleetStats = 79
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluation statistical results on fishing effort.
-        ''' </summary>
+        '''</summary>
         MSEEffortStats = 80
 
         ''' <summary>
         ''' Data belongs to the Ecospace Migration layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerMigration = 81
 
         ''' <summary>
         ''' Data belongs to the Ecospace Advection layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerAdvection = 82
 
         ''' <summary>
         ''' Data belongs to Auxillary data.
-        ''' </summary>
+        '''</summary>
         Auxillary = 83
 
         MSEBioEstStats = 84
 
         ''' <summary>
         ''' Data belongs to the Ecospace Distribution envelope layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerDistribution = 85
 
         ''' <summary>
         ''' Data belongs to the Ecospace wind layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerWind = 86
 
         ''' <summary>
         ''' Data belongs to the Ecospace transport rate layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerTransportRate = 87
 
         ''' <summary>
         ''' Data belongs to the Ecospace flow layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerFlow = 88
 
         ''' <summary>
         ''' Data belongs to the Ecospace mixed layer depth layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerMLD = 89
 
         ''' <summary>
         ''' Data belongs to the Ecospace upwelling layer.
-        ''' </summary>
+        '''</summary>
         EcospaceLayerUpwelling = 90
 
         EcospaceAdvectionManager = 91
@@ -2062,22 +2410,22 @@ Namespace Core
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluation statistical results total value.
-        ''' </summary>
+        '''</summary>
         MSEValueTotalStats = 94
 
         ''' <summary>
         ''' Data belongs to a taxonomy definition.
-        ''' </summary>
+        '''</summary>
         Taxon = 95
 
         ''' <summary>
         ''' Data belongs to landings mediation function (as opposed to a 'regular', Pred-Prey mediation function.
-        ''' </summary>
+        '''</summary>
         PriceMediation = 96
 
         ''' <summary>
         ''' Data belongs to a landings-mediated interaction.
-        ''' </summary>
+        '''</summary>
         LandingInteraction = 97
 
         EcospaceLayerHabitatCapacity = 98
@@ -2085,12 +2433,12 @@ Namespace Core
 
         ''' <summary>
         ''' Data belongs to a Capacity Mediation.
-        ''' </summary>
+        '''</summary>
         CapacityMediation = 99
 
         ''' <summary>
         ''' Data belongs to a IEnviroInputMap
-        ''' </summary>
+        '''</summary>
         EcospaceMapResponse = 100
 
         MSEBatchManager = 101
@@ -2114,7 +2462,7 @@ Namespace Core
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
-        ''' </summary>
+        '''</summary>
         External = -9999
 
     End Enum
@@ -2127,71 +2475,71 @@ Namespace Core
     ''' <summary>
     ''' Enumerated types indicating the EwE counters that define data structure
     ''' sizes in the various models.
-    ''' </summary>
+    '''</summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eCoreCounterTypes
 
-        ''' <summary>Unspecified counter.</summary>
+        ''' <summary>Unspecified counter</summary>
         NotSet = 0
-        ''' <summary>Number of groups across all models.</summary>
+        ''' <summary>Number of groups across all models</summary>
         nGroups
-        ''' <summary>Number of detritus groups across all models.</summary>
+        ''' <summary>Number of detritus groups across all models</summary>
         nDetritus
-        ''' <summary>Number of living groups across all models.</summary>
+        ''' <summary>Number of living groups across all models</summary>
         nLivingGroups
-        ''' <summary>Number of fishing fleets across all models.</summary>
+        ''' <summary>Number of fishing fleets across all models</summary>
         nFleets
-        ''' <summary>Max number of groups in a single stanza configuration over all stanza groups.</summary>
+        ''' <summary>Max number of groups in a single stanza configuration over all stanza groups</summary>
         nMaxStanza
-        ''' <summary>Max age for a stanza group.</summary>
+        ''' <summary>Max age for a stanza group</summary>
         ''' <remarks>Age2(iStanza, m_Stanza.Nstanza(iStanza))</remarks>
         nMaxStanzaAge
-        ''' <summary>Number of stanza configuratons.</summary>
+        ''' <summary>Number of stanza configuratons</summary>
         nStanzas
-        ''' <summary>Number of stanzas for a stanza group.</summary>
+        ''' <summary>Number of stanzas for a stanza group</summary>
         ''' <remarks>Nstanza(iStanza)</remarks>
         nStanzasForStanzaGroup
-        ''' <summary>Number of years to run an Ecosim model.</summary>
+        ''' <summary>Number of years to run an Ecosim model</summary>
         nEcosimYears
-        ''' <summary>Number of time steps in an Ecosim run.</summary>
+        ''' <summary>Number of time steps in an Ecosim run</summary>
         nEcosimTimeSteps
-        ''' <summary>Number of years to run an Ecospace model.</summary>
+        ''' <summary>Number of years to run an Ecospace model</summary>
         nEcospaceYears
-        ''' <summary>Number time steps in an Ecospace model.</summary>
+        ''' <summary>Number time steps in an Ecospace model</summary>
         nEcospaceTimeSteps
-        ''' <summary>Number of Ecospace habitats.</summary>
+        ''' <summary>Number of Ecospace habitats</summary>
         nHabitats
-        ''' <summary>Number of Ecospace regions.</summary>
+        ''' <summary>Number of Ecospace regions</summary>
         nRegions
-        ''' <summary>Number of months per year.</summary>
+        ''' <summary>Number of months per year</summary>
         ''' <remarks>Albeit quite obvious and constant, this value is added to facilitate automatic array resizing.</remarks>
         nMonths
-        ''' <summary>Number of Ecospace MPAs.</summary>
+        ''' <summary>Number of Ecospace MPAs</summary>
         nMPAs
         ''' <summary>Number of trophic levels from the Network analysis</summary>
         nTrophicLevels
-        ''' <summary>Number of available time series.</summary>
+        ''' <summary>Number of available time series</summary>
         nTimeSeries
-        ''' <summary>Number of applied time series.</summary>
+        ''' <summary>Number of applied time series</summary>
         nTimeSeriesApplied
-        ''' <summary>Max number of years over all time series.</summary>
+        ''' <summary>Max number of years over all time series</summary>
         nTimeSeriesYears
-        ''' <summary>Number of time series datasets.</summary>
+        ''' <summary>Number of time series datasets</summary>
         nTimeSeriesDatasets
-        ''' <summary>Number of importance layers.</summary>
+        ''' <summary>Number of importance layers</summary>
         nImportanceLayers
-        ''' <summary>Number of environmental driver layers.</summary>
+        ''' <summary>Number of environmental driver layers</summary>
         nEnvironmentalDriverLayers
-        ''' <summary>Number of years the game simulation can run for.</summary>
+        ''' <summary>Number of years the game simulation can run for</summary>
         nGameSimYears
-        ''' <summary>Number of timesteps the game simulation can run for.</summary>
+        ''' <summary>Number of timesteps the game simulation can run for</summary>
         nGameSimTimeSteps
-        ''' <summary>Number of timesteps per year.</summary>
+        ''' <summary>Number of timesteps per year</summary>
         nGameSimTimeStepsPerYear
 
-        ''' <summary>Number of rows in the Ecospace basemap.</summary>
+        ''' <summary>Number of rows in the Ecospace basemap</summary>
         nRows
-        ''' <summary>Number of columns in the Ecospace basemap.</summary>
+        ''' <summary>Number of columns in the Ecospace basemap</summary>
         nCols
 
         ''' <summary>Number of timesteps in the Ecopath Weight, Number and Biomass</summary>
@@ -2199,39 +2547,39 @@ Namespace Core
         ''' <summary>Number of weight classes in the particle size distribution</summary>
         nWeightClasses
 
-        ''' <summary>Number of forcing function that are for Salinity.</summary>
+        ''' <summary>Number of forcing function that are for Salinity</summary>
         ''' <remarks>At this time this is only used by the Decision Support Tool(game).</remarks>
         nSalinityForcingFunctions
 
-        ''' <summary>Number of forcing function that are for Salinity.</summary>
+        ''' <summary>Number of forcing function that are for Salinity</summary>
         ''' <remarks>At this time this is only used by the Decision Support Tool(game).</remarks>
         nNutrientForcingFunctions
-        ''' <summary>Number of forcing function that are for Salinity.</summary>
+        ''' <summary>Number of forcing function that are for Salinity</summary>
         ''' <remarks>At this time this is only used by the Decision Support Tool(game).</remarks>
         nTempForcingFunctions
 
-        ''' <summary> Number of forcing function that are for Primary Producer.</summary>
+        ''' <summary>Number of forcing function that are for Primary Producer</summary>
         ''' <remarks>At this time this is only used by the Decision Support Tool(game).</remarks>
         nPPForcingFunctions
 
-        ''' <summary>The number of iterations running in the game.</summary>
+        ''' <summary>The number of iterations running in the game</summary>
         nGameIterations
 
-        ''' <summary>The number of taxonomy groups.</summary>
+        ''' <summary>The number of taxonomy groups</summary>
         nTaxon
-        ''' <summary>The number of taxa assigned to a given group.</summary>
+        ''' <summary>The number of taxa assigned to a given group</summary>
         nTaxonForGroup
 
-        ''' <summary>The number of supported pedigree variables.</summary>
+        ''' <summary>The number of supported pedigree variables</summary>
         nPedigreeVariables
-        ''' <summary>The number of supported capacity maps.</summary>
+        ''' <summary>The number of supported capacity maps</summary>
         nCapacityMaps
 
-        ''' <summary>Number of Target Fishing Mort iterations.</summary>
+        ''' <summary>Number of Target Fishing Mort iterations</summary>
         nMSEBatchTFM
-        ''' <summary>Number of Fixed F iterations.</summary>
+        ''' <summary>Number of Fixed F iterations</summary>
         nMSEBATCHFixedF
-        ''' <summary>Number of TAC iterations.</summary>
+        ''' <summary>Number of TAC iterations</summary>
         nMSEBATCHTAC
 
     End Enum
@@ -2243,56 +2591,56 @@ Namespace Core
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated types providing currency types.
-    ''' </summary>
+    '''</summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eUnitCurrencyType As Integer
-        ''' <summary>Unit currency type not set.</summary>
+        ''' <summary>Unit currency type not set</summary>
         NotSet = 0
-        ''' <summary>Currency expressed in j/m².</summary>
+        ''' <summary>Currency expressed in j/m²</summary>
         Joules = 1
-        ''' <summary>Currency expressed in kcal/m².</summary>
+        ''' <summary>Currency expressed in kcal/m²</summary>
         Calorie = 2
-        ''' <summary>Currency expressed in g/m².</summary>
+        ''' <summary>Currency expressed in g/m²</summary>
         Carbon = 3
-        ''' <summary>Currency expressed in dry weight (g/m²).</summary>
+        ''' <summary>Currency expressed in dry weight (g/m²)</summary>
         DryWeight = 4
-        ''' <summary>Currency expressed in wet weight (t/km²).</summary>
+        ''' <summary>Currency expressed in wet weight (t/km²)</summary>
         WetWeight = 5
-        ''' <summary>Custom currency unit.</summary>
+        ''' <summary>Custom currency unit</summary>
         CustomEnergy = 6
-        ''' <summary>Currency expressed in mg n/m².</summary>
+        ''' <summary>Currency expressed in mg n/m²</summary>
         Nitrogen = 7
-        ''' <summary>Currency expressed in mg p/m².</summary>
+        ''' <summary>Currency expressed in mg p/m²</summary>
         Phosporous = 8
-        ''' <summary>Custom currency unit.</summary>
+        ''' <summary>Custom currency unit</summary>
         CustomNutrient = 9
     End Enum
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type listing time units.
-    ''' </summary>
+    '''</summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eUnitTimeType As Integer
-        ''' <summary>User has specified a custom time unit.</summary>
+        ''' <summary>User has specified a custom time unit</summary>
         Custom = 0
-        ''' <summary>Time expressed in years.</summary>
+        ''' <summary>Time expressed in years</summary>
         Year
-        ''' <summary>Time expressed in days.</summary>
+        ''' <summary>Time expressed in days</summary>
         Day
     End Enum
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated types providing area types.
-    ''' </summary>
+    '''</summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eUnitAreaType As Integer
-        ''' <summary>Custom area measure.</summary>
+        ''' <summary>Custom area measure</summary>
         Custom = 0
-        ''' <summary>Area expressed in square km.</summary>
+        ''' <summary>Area expressed in square km</summary>
         Km2
-        ''' <summary>Area expressed in square miles.</summary>
+        ''' <summary>Area expressed in square miles</summary>
         Mi2
     End Enum
 
@@ -2302,15 +2650,15 @@ Namespace Core
 
     'enum values are hard coded so that they can be stored in the database 
     Public Enum eQuotaTypes
-        ''' <summary>No Quota controls are used.</summary>
+        ''' <summary>No Quota controls are used</summary>
         NoControls
-        ''' <summary>Quota options apply to the weakest stock.</summary>
+        ''' <summary>Quota options apply to the weakest stock</summary>
         Weakest
-        ''' <summary>Quota options apply to the strongest stock plus discards.</summary>
+        ''' <summary>Quota options apply to the strongest stock plus discards</summary>
         HighestValue
-        ''' <summary>Quota options apply to selective fishing.</summary>
+        ''' <summary>Quota options apply to selective fishing</summary>
         Selective
-        ''' <summary>Quota options apply to effort.</summary>
+        ''' <summary>Quota options apply to effort</summary>
         Effort
 
         LinearProgramming
@@ -2324,53 +2672,53 @@ Namespace Core
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Supported types of data sources.
-    ''' </summary>
+    '''</summary>
     ''' -------------------------------------------------------------------
     Public Enum eDataSourceTypes
-        ''' <summary>No support.</summary>
+        ''' <summary>No support</summary>
         NotSet = 0
-        ''' <summary>Datasource capable of handling EII formatted data.</summary>
+        ''' <summary>Datasource capable of handling EII formatted data</summary>
         EII = 1
-        ''' <summary>Datasource capable of handling MDB formatted data.</summary>
+        ''' <summary>Datasource capable of handling MDB formatted data</summary>
         Access2003 = 2
-        ''' <summary>Datasource capable of handling ACCDB and MDB formatted data.</summary>
+        ''' <summary>Datasource capable of handling ACCDB and MDB formatted data</summary>
         Access2007 = 3
 #If DEBUG Then
-        ''' <summary>Datasource capable of connection to SQL Server-like databases.</summary>
+        ''' <summary>Datasource capable of connection to SQL Server-like databases</summary>
         SQLServer = 4
 #End If
-        ''' <summary>Datasource capable of handling EIIXML formatted data.</summary>
+        ''' <summary>Datasource capable of handling EIIXML formatted data</summary>
         EIIXML = 5
     End Enum
 
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type describing the result of datasource access attempts.
-    ''' </summary>
+    '''</summary>
     ''' -------------------------------------------------------------------
     Public Enum eDatasourceAccessType As Integer
-        ''' <summary>Database operation succesful.</summary>
+        ''' <summary>Database operation succesful</summary>
         Success = 0
-        ''' <summary>Database could not be saved in the indicated location.</summary>
+        ''' <summary>Database could not be saved in the indicated location</summary>
         Failed_CannotSave
-        ''' <summary>An unknown database type was requested.</summary>
+        ''' <summary>An unknown database type was requested</summary>
         Failed_UnknownType
         ''' <summary>System does not have the correct drivers installed to
-        ''' support the requested database type.</summary>
+        ''' support the requested database type</summary>
         Failed_OSUnsupported
-        ''' <summary>An unknown error has occurred.</summary>
+        ''' <summary>An unknown error has occurred</summary>
         Failed_Unknown
-        ''' <summary>No permissions to write to the database.</summary>
+        ''' <summary>No permissions to write to the database</summary>
         Failed_ReadOnly
-        ''' <summary>Cannot switch from one type of database to another.</summary>
+        ''' <summary>Cannot switch from one type of database to another</summary>
         Failed_TransferTypes
-        ''' <summary>Cannot perform requested operation on this type of file.</summary>
+        ''' <summary>Cannot perform requested operation on this type of file</summary>
         Failed_DeprecatedOperation
-        ''' <summary>File is not found.</summary>
+        ''' <summary>File is not found</summary>
         Failed_FileNotFound
-        ''' <summary>Deprecated, use <see cref="eDatasourceAccessType.Success">Sccess</see> instead.</summary>
+        ''' <summary>Deprecated, use <see cref="eDatasourceAccessType.Success">Sccess</see> instead</summary>
         Opened = Success
-        ''' <summary>Deprecated, use <see cref="eDatasourceAccessType.Success">Sccess</see> instead.</summary>
+        ''' <summary>Deprecated, use <see cref="eDatasourceAccessType.Success">Sccess</see> instead</summary>
         Created = Success
     End Enum
 
@@ -2381,7 +2729,7 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Search criteria result types
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eSearchCriteriaResultTypes As Integer
 
@@ -2399,46 +2747,46 @@ Namespace Core
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type, identifying sources of messages being broadcasted by the Core.
-    ''' </summary>
+    '''</summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eCoreComponentType
-        ''' <summary>The message source is not specified.</summary>
+        ''' <summary>The message source is not specified</summary>
         NotSet
-        ''' <summary>The message originated from the Ecopath module of EwE.</summary>
+        ''' <summary>The message originated from the Ecopath module of EwE</summary>
         EcoPath
-        ''' <summary>The message originated from the Ecosim module of EwE.</summary>
+        ''' <summary>The message originated from the Ecosim module of EwE</summary>
         EcoSim
-        ''' <summary>The message originated from the Ecospace module of EwE.</summary>
+        ''' <summary>The message originated from the Ecospace module of EwE</summary>
         EcoSpace
-        ''' <summary>The message originated from the Forcing shapes manager(s) in EwE.</summary>
+        ''' <summary>The message originated from the Forcing shapes manager(s) in EwE</summary>
         ShapesManager
-        ''' <summary>The message originated from a datasource.</summary>
+        ''' <summary>The message originated from a datasource</summary>
         DataSource
-        ''' <summary>The message originated from the core itself.</summary>
+        ''' <summary>The message originated from the core itself</summary>
         Core
-        ''' <summary>The message originated from a Plugin </summary>
+        ''' <summary>The message originated from a Plugin</summary>
         Plugin
-        ''' <summary>The message originated from the Monte Carlo routines in Ecosim.</summary>
+        ''' <summary>The message originated from the Monte Carlo routines in Ecosim</summary>
         EcoSimMonteCarlo
-        ''' <summary>The message originated from the Fit to Time Series routines in Ecosim.</summary>
+        ''' <summary>The message originated from the Fit to Time Series routines in Ecosim</summary>
         EcoSimFitToTimeSeries
-        ''' <summary>The message originated from a change in loaded Time Series.</summary>
+        ''' <summary>The message originated from a change in loaded Time Series</summary>
         TimeSeries
-        ''' <summary>The message originated from the pred/prey interaction.</summary>
+        ''' <summary>The message originated from the pred/prey interaction</summary>
         MediatedInteractionManager
-        ''' <summary>The message originated from Ecotracer.</summary>
+        ''' <summary>The message originated from Ecotracer</summary>
         Ecotracer
         ''' <summary>The message originated from an external source (such as the user interface)</summary>
         External
         ''' <summary>The message source is one of the Search Objective classes</summary>
         SearchObjective
-        ''' <summary>The message originated from Fishing Policy Search.</summary>
+        ''' <summary>The message originated from Fishing Policy Search</summary>
         FishingPolicySearch
-        ''' <summary>Management Strategy Evaluation  </summary>
+        ''' <summary>Management Strategy Evaluation</summary>
         MSE
-        ''' <summary> EcoSeed </summary>
+        ''' <summary>EcoSeed</summary>
         MPAOptimization
-        ''' <summary>The message originated from the MSY module of EwE.</summary>
+        ''' <summary>The message originated from the MSY module of EwE</summary>
         MSY
 
         MapResponseInteractionManager
@@ -2452,44 +2800,44 @@ Namespace Core
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type, identifying types of messages being broadcasted by the Core.
-    ''' </summary>
+    '''</summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eMessageType
-        ''' <summary>Message type has not been set.</summary>
+        ''' <summary>Message type has not been set</summary>
         NotSet = 0
-        ''' <summary>This message could be of any message type.</summary>
+        ''' <summary>This message could be of any message type</summary>
         Any
-        ''' <summary>Diet Comp out of range.</summary>
+        ''' <summary>Diet Comp out of range</summary>
         DietComp
-        ''' <summary>Diet Comp correct to 15 percent prompt.</summary>
+        ''' <summary>Diet Comp correct to 15 percent prompt</summary>
         DietComp_CorrectTo15Perc
-        ''' <summary>EE out of range.</summary>
+        ''' <summary>EE out of range</summary>
         EE
-        ''' <summary>Parameters could not be computed because of missing data in input parameters.</summary>
+        ''' <summary>Parameters could not be computed because of missing data in input parameters</summary>
         TooManyMissingParameters
-        ''' <summary>No Catch for a Fishing Fleet.</summary>
+        ''' <summary>No Catch for a Fishing Fleet</summary>
         NoCatchForFleet
-        ''' <summary>Error encountered during model run.</summary>
+        ''' <summary>Error encountered during model run</summary>
         ErrorEncountered
-        ''' <summary>Data validation message.</summary>
+        ''' <summary>Data validation message</summary>
         DataValidation
-        ''' <summary>Data from the source has been modified.</summary>
+        ''' <summary>Data from the source has been modified</summary>
         DataModified
-        ''' <summary>Data has been added to, or removed from, the source.</summary>
+        ''' <summary>Data has been added to, or removed from, the source</summary>
         DataAddedOrRemoved
-        ''' <summary>Data import related issue.</summary>
+        ''' <summary>Data import related issue</summary>
         DataImport
-        ''' <summary>Data export related issue.</summary>
+        ''' <summary>Data export related issue</summary>
         DataExport
 
         '''' <summary>Time step in Ecospace</summary>
         '''' <remarks>This was added for testing and is not used at this time</remarks>
         'EcospaceTimeStep
 
-        ''' <summary>Ecospace has completed a model run </summary>
+        ''' <summary>Ecospace has completed a model run</summary>
         EcospaceRunCompleted
 
-        ''' <summary>Sent by any message source when the State Monitor's state not met to run a method </summary>
+        ''' <summary>Sent by any message source when the State Monitor's state not met to run a method</summary>
         StateNotMet
 
         Progress
@@ -2503,20 +2851,20 @@ Namespace Core
         InvalidModel_QB0_Generic
         InvalidModel_B_Detritus
 
-        ''' <summary>MSE has completed a model run of some sort </summary>
+        ''' <summary>MSE has completed a model run of some sort</summary>
         MSERunCompleted
         Estimate_BA
         Estimate_Net_Migration
 
-        ''' <summary>MSE Batch has updated the iteration values </summary>
+        ''' <summary>MSE Batch has updated the iteration values</summary>
         ''' <remarks>
         ''' This was added to deal with a bug in the interface that caused the grid to assert 
         ''' when it refreshed in response to edits. This prevents that by only updating when the message is of this type.
         ''' </remarks>
         MSEBatch_IterationDataUpdated
-        ''' <summary>A GIS operation was performed.</summary>
+        ''' <summary>A GIS operation was performed</summary>
         GISOperation
-        ''' <summary>EwE-wide settings have changed.</summary>
+        ''' <summary>EwE-wide settings have changed</summary>
         GlobalSettingsChanged
 
     End Enum
@@ -2528,28 +2876,28 @@ Namespace Core
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Flag indicating the relative importance/severity of a message.
-    ''' </summary>
+    '''</summary>
     ''' <remarks>
     ''' Per 21 November 2014 importance values are ordered by severity.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Enum eMessageImportance
         ''' <summary>Maintenance messages typically indicate a synchronization event
-        ''' in the EwE application.</summary>
+        ''' in the EwE application</summary>
         Maintenance = 0
         ''' <summary>Progress messages typically indicate incremental status
-        ''' information about a lengthy operation.</summary>
+        ''' information about a lengthy operation</summary>
         Progress = 1
         ''' <summary>Information messages typically indicate an event that may be of
-        ''' interest to a human user of EwE.</summary>
+        ''' interest to a human user of EwE</summary>
         Information = 2
-        ''' <summary>Questions are used to poll the user for regular info.</summary>
+        ''' <summary>Questions are used to poll the user for regular info</summary>
         Question = 3
         ''' <summary>Warning messages indicating that the system has run in a problem
-        ''' and could not complete an operation.</summary>
+        ''' and could not complete an operation</summary>
         Warning = 4
         ''' <summary>Critical messages indicate the the system has run into an error
-        ''' that it could not recover from. This is the most severe type of message.</summary>
+        ''' that it could not recover from. This is the most severe type of message</summary>
         Critical = 5
     End Enum
 
@@ -2560,10 +2908,10 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type that defines possible replies to a <see cref="IFeedbackMessage"/>.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eMessageReply As Byte
-        ''' <summary>This reply indicates that the situation pertaining to the message has to be aborted.</summary>
+        ''' <summary>This reply indicates that the situation pertaining to the message has to be aborted</summary>
         CANCEL = 0
         ''' <summary><para>This reply indicates that the situation pertaining to the message is positively confirmed.</para>
         ''' <para>A YES reply is identical to an <see cref="eMessageReply.OK"/> reply.</para></summary>
@@ -2571,7 +2919,7 @@ Namespace Core
         ''' <summary><para>This reply indicates that the situation pertaining to the message is positively confirmed.</para>
         ''' <para>An OK reply is identical to a <see cref="eMessageReply.YES"/> reply.</para></summary>
         OK = YES
-        ''' <summary>This reply indicates that the situation pertaining to the message is negatively confirmed.</summary>
+        ''' <summary>This reply indicates that the situation pertaining to the message is negatively confirmed</summary>
         NO
     End Enum
 
@@ -2579,29 +2927,29 @@ Namespace Core
     ''' <summary>
     ''' Enumerated type that defines possible replie styles that a 
     ''' <see cref="IFeedbackMessage"/> can handle.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eMessageReplyStyle As Byte
         ''' <summary>
         ''' The reply expected by a message with this reply style is either 
         ''' <see cref="eMessageReply.OK"/> or <see cref="eMessageReply.CANCEL"/>.
-        ''' </summary>
+        '''</summary>
         OK_CANCEL
         ''' <summary>
         ''' The reply expected by a message with this reply style is either 
         ''' <see cref="eMessageReply.YES"/> or <see cref="eMessageReply.NO"/>.
-        ''' </summary>
+        '''</summary>
         YES_NO
         ''' <summary>
         ''' The reply expected by a message with this reply style must be 
         ''' <see cref="eMessageReply.YES"/>, <see cref="eMessageReply.NO"/> 
         ''' or <see cref="eMessageReply.CANCEL"/>.
-        ''' </summary>
+        '''</summary>
         YES_NO_CANCEL
         ''' <summary>
         ''' The reply expected by a message with this reply style can only be 
         ''' <see cref="eMessageReply.OK"/>.
-        ''' </summary>
+        '''</summary>
         OK
     End Enum
 
@@ -2612,18 +2960,18 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating supported forcing function application targets.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eForcingApplicationTypes As Integer
-        ''' <summary>No application specified.</summary>
+        ''' <summary>No application specified</summary>
         NotSet = 0
-        ''' <summary>Forcing FF applied to nutrient forcing.</summary>
+        ''' <summary>Forcing FF applied to nutrient forcing</summary>
         Nutrient = 1
-        ''' <summary>Forcing FF applied to salinity forcing.</summary>
+        ''' <summary>Forcing FF applied to salinity forcing</summary>
         Salinity = 2
-        ''' <summary>Forcing FF applied to temperature forcing.</summary>
+        ''' <summary>Forcing FF applied to temperature forcing</summary>
         Temperature = 3
-        ''' <summary>Forcing FF applied to primary production.</summary>
+        ''' <summary>Forcing FF applied to primary production</summary>
         PrimaryProducer = 4
     End Enum
 
@@ -2635,7 +2983,7 @@ Namespace Core
     ''' <summary>
     ''' Enumerator for forcing functions, describing the target of a Predator/Prey or 
     ''' Fleet/Group interaction forcing application.
-    ''' </summary>
+    '''</summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eForcingFunctionApplication As Integer
         NotSet = 0
@@ -2655,15 +3003,15 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating the IUCN Red List of Threatened Species conservation categories.
-    ''' </summary>
+    '''</summary>
     ''' <remarks>
     ''' http://www.eoearth.org/article/IUCN_Red_List_Criteria_for_Endangered
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Enum eIUCNConservationStatusTypes As Integer
-        ''' <summary>Conservation status has not been specified.</summary>
+        ''' <summary>Conservation status has not been specified</summary>
         NotSet = 0
-        ''' <summary>Not Evaluated (NE).</summary>
+        ''' <summary>Not Evaluated (NE)</summary>
         NotEvaluated
         ''' <summary>Data Deficient (DD)</summary>
         DataDeficient
@@ -2691,13 +3039,13 @@ Namespace Core
     ''' <summary>
     ''' Enumerated type stating supported taxonomy Habitat classifications, where 
     ''' taxa prefer to dwell. Not necessarily related to Ecospace habitats.
-    ''' </summary>
+    '''</summary>
     ''' <remarks>
     ''' As defined in FishBase (http://www.fishbase.org)
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Enum eEcologyTypes As Integer
-        ''' <summary>Ecology type has not been specified.</summary>
+        ''' <summary>Ecology type has not been specified</summary>
         NotSet = 0
         BathyDemersal
         BathyPelagic
@@ -2708,7 +3056,7 @@ Namespace Core
         PelagicNeritic
         PelagicOceanic
         ReefAssociated
-        ''' <summary>Taxon occurs on land.</summary>
+        ''' <summary>Taxon occurs on land</summary>
         ''' <remarks>To be specified further. Where on land? In a tree? A cave? A sub-urban dwelling made of clay?</remarks>
         LandBased
     End Enum
@@ -2720,13 +3068,13 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating supported taxonomy Occurrence classifications.
-    ''' </summary>
+    '''</summary>
     ''' <remarks>
     ''' As defined in FishBase (http://www.fishbase.org)
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Enum eOccurrenceStatusTypes As Integer
-        ''' <summary>Occurrence status has not been specified.</summary>
+        ''' <summary>Occurrence status has not been specified</summary>
         NotSet = 0
         Native
         Introduced
@@ -2741,10 +3089,10 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating supported taxonomy Organism classifications.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eOrganismTypes As Integer
-        ''' <summary>Organism type has not been specified.</summary>
+        ''' <summary>Organism type has not been specified</summary>
         NotSet = 0
         Bacteria
         Fungi
@@ -2755,7 +3103,7 @@ Namespace Core
         Birds
         Mammals
         Reptiles
-        ''' <summary>Organism type does not fit existing classifications.</summary>
+        ''' <summary>Organism type does not fit existing classifications</summary>
         Other
     End Enum
 
@@ -2767,36 +3115,36 @@ Namespace Core
     ''' <summary>
     ''' Enumerated type stating FAO classifications of commercial exploitation of
     ''' species.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eExploitationTypes As Integer
-        ''' <summary>Exploitation status is unknown.</summary>
+        ''' <summary>Exploitation status is unknown</summary>
         NotSet = 0
-        ''' <summary>Not being exploited.</summary>
+        ''' <summary>Not being exploited</summary>
         ''' <remarks>Wouldn't that be nice...?</remarks>
         NotExploited
         ''' <summary>
         ''' Undeveloped or new fishery. Believed to have a significant potential 
         ''' for expansion in total production.
-        ''' </summary>
+        '''</summary>
         UnderExploited
         ''' <summary>
         ''' Exploited with a low level of fishing effort. Believed to have some 
         ''' limited potential for expansion in total production.
-        ''' </summary>
+        '''</summary>
         ModeratelyExploited
         ''' <summary>The fishery is operating at or close to an optimal yield level, 
         ''' with no expected room for further expansion
-        ''' </summary>
+        '''</summary>
         FullyExploited
         ''' <summary>The fishery is being exploited at above a level that is believed 
         ''' to be sustainable in the long term, with no potential room for further 
         ''' expansion and a higher risk of stock depletion/collapse</summary>
         OverExploited
-        ''' <summary> Catches are well below historical levels, irrespective of the 
-        ''' amount of fishing effort exerted.</summary>
+        ''' <summary>Catches are well below historical levels, irrespective of the 
+        ''' amount of fishing effort exerted</summary>
         Depleted
-        ''' <summary>Catches are again increasing after having been depleted.</summary>
+        ''' <summary>Catches are again increasing after having been depleted</summary>
         Recovering
     End Enum
 
@@ -2807,40 +3155,40 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating possible automated update statuses.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eAutoUpdateTypes As Integer
-        ''' <summary>Checking for possible update.</summary>
+        ''' <summary>Checking for possible update</summary>
         Checking
-        ''' <summary>Downloading update.</summary>
+        ''' <summary>Downloading update</summary>
         Downloading
-        ''' <summary>Update done.</summary>
+        ''' <summary>Update done</summary>
         Done
     End Enum
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating possible automated update results.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eAutoUpdateResultTypes As Integer
-        ''' <summary>All good. Blue skies, happy children, money in the bank; the works - no need to leave the couch.</summary>
+        ''' <summary>All good. Blue skies, happy children, money in the bank; the works - no need to leave the couch</summary>
         Success_NoActionRequired = 0
-        ''' <summary>Indicated component is not part of the auto-update structure.</summary>
+        ''' <summary>Indicated component is not part of the auto-update structure</summary>
         Success_NoEwEComponent
-        ''' <summary>Component successfully updated.</summary>
+        ''' <summary>Component successfully updated</summary>
         Success_Updated
-        ''' <summary>A migration is available.</summary>
+        ''' <summary>A migration is available</summary>
         Info_CanMigrate
-        ''' <summary>An update is available.</summary>
+        ''' <summary>An update is available</summary>
         Info_CanUpdate
-        ''' <summary>Update webservice could not be connected.</summary>
+        ''' <summary>Update webservice could not be connected</summary>
         Error_Connection
-        ''' <summary>File failed to download.</summary>
+        ''' <summary>File failed to download</summary>
         Error_Download
-        ''' <summary>Failed to replace a plug-in on the system.</summary>
+        ''' <summary>Failed to replace a plug-in on the system</summary>
         Error_Replace
-        ''' <summary>A generic error occurred.</summary>
+        ''' <summary>A generic error occurred</summary>
         Error_Generic
     End Enum
 
@@ -2851,12 +3199,12 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating supported Ecospace habitat foraging capacity calculation methods.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eEcospaceCapacityCalType As Integer
-        ''' <summary>Only environmental responses and capacity input layers are used to calculate capacity. Habitats are ignored for this purpose.</summary>
+        ''' <summary>Only environmental responses and capacity input layers are used to calculate capacity. Habitats are ignored for this purpose</summary>
         EnvResponses = 0
-        ''' <summary>Only habitats are used to calculate capacity. Capacity inputs are ignored.</summary>
+        ''' <summary>Only habitats are used to calculate capacity. Capacity inputs are ignored</summary>
         Habitat = 1
     End Enum
 
@@ -2867,12 +3215,12 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating supported types of MSE Batch runs.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eMSEBatchIterCalcTypes As Integer
-        ''' <summary>To document.</summary>
+        ''' <summary>To document</summary>
         Percent
-        ''' <summary>To document.</summary>
+        ''' <summary>To document</summary>
         UpperLowerValues
     End Enum
 
@@ -2884,59 +3232,59 @@ Namespace Core
     ''' <summary>
     ''' Enumerated type stating how the MSY selects the groups that will have 
     ''' their F varied.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eMSYFSelectionModeType As Integer
         ''' <summary>All Groups that are fishing by this fleet will have there 
-        ''' F varied. F for all other groups will remain at Ecopath base F.</summary>
+        ''' F varied. F for all other groups will remain at Ecopath base F</summary>
         Fleets = 0
         ''' <summary>Only this group will have its F varied. F for all other 
-        ''' groups will remain at Ecopath base F.</summary>
+        ''' groups will remain at Ecopath base F</summary>
         Groups
     End Enum
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating the supported types of MSY assessments.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eMSYAssessmentTypes As Integer
-        ''' <summary>MSY assessment with frozen pools.</summary>
+        ''' <summary>MSY assessment with frozen pools</summary>
         StationarySystem = 0
-        ''' <summary>Full system assessment.</summary>
+        ''' <summary>Full system assessment</summary>
         FullCompensation
-        '''' <summary>Redundant flag to tie EwE5 interface and code implementation together.</summary>
+        '''' <summary>Redundant flag to tie EwE5 interface and code implementation together</summary>
         'FreezePools = StationarySystem
     End Enum
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating types of supported MSY runs.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eMSYRunTypes As Integer
         ''' <summary>MSY is running for a single Group or Fleet, in all supported
-        ''' <see cref="eMSYAssessmentTypes">assessment types</see>.</summary>
+        ''' <see cref="eMSYAssessmentTypes">assessment types</see></summary>
         SingleRunMSY
-        ''' <summary>MSY is running the FMSY. Looping over all the groups.</summary>
+        ''' <summary>MSY is running the FMSY. Looping over all the groups</summary>
         FMSY
     End Enum
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating how the MSY selects the groups that will have there F varied
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eMSYRunLengthModeTypes As Integer
-        ''' <summary>MSY is running to a fixed (relative) F.</summary>
+        ''' <summary>MSY is running to a fixed (relative) F</summary>
         FixedF
-        ''' <summary>MSY is running until all catches are depleted.</summary>
+        ''' <summary>MSY is running until all catches are depleted</summary>
         ToDepletion
     End Enum
 
     ''' <summary>
     ''' Run states of the MSE 
-    ''' </summary>
+    '''</summary>
     ''' <remarks>Passed out via the MSEProgressDelegate</remarks>
     Public Enum eMSYRunStates
         MSYRunStarted
@@ -2953,7 +3301,7 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Alternative enumerator to Microsoft.VisualBasic.TriState, added for Mono compatibility.
-    ''' </summary>
+    '''</summary>
     ''' <remarks>
     ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono and should not be used.
     ''' For full Mono compliance this definition of TriState should be used instead.
@@ -2972,28 +3320,28 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type stating aspects of EwE that can save automatically.
-    ''' </summary>
+    '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eAutosaveTypes As Integer
         ''' <summary>Hmm</summary>
         NotSet = 0
-        ''' <summary>Ecopath run results.</summary>
+        ''' <summary>Ecopath run results</summary>
         Ecopath
-        ''' <summary>Ecosim run results.</summary>
+        ''' <summary>Ecosim run results</summary>
         Ecosim
-        ''' <summary>Monte Carlo results.</summary>
+        ''' <summary>Monte Carlo results</summary>
         MonteCarlo
-        ''' <summary>MSE results.</summary>
+        ''' <summary>MSE results</summary>
         MSE
-        ''' <summary>MSY results.</summary>
+        ''' <summary>MSY results</summary>
         MSY
-        ''' <summary>Ecospace run result summary.</summary>
+        ''' <summary>Ecospace run result summary</summary>
         Ecospace
-        ''' <summary>Ecospace run result maps.</summary>
+        ''' <summary>Ecospace run result maps</summary>
         EcospaceMaps
-        ''' <summary>MPA optimizations.</summary>
+        ''' <summary>MPA optimizations</summary>
         MPAOpt
-        ''' <summary>Ecotracer run results.</summary>
+        ''' <summary>Ecotracer run results</summary>
         Ecotracer
     End Enum
 
@@ -3003,11 +3351,11 @@ Namespace Core
 
     ''' <summary>
     ''' Enumerated type stating supported levels of detail for the content of log files.
-    ''' </summary>
+    '''</summary>
     Public Enum eVerboseLevel As Integer
         ''' <summary>Log all generic errors</summary>
         Standard = 0
-        ''' <summary>Log details to track application flow in more detail.</summary>
+        ''' <summary>Log details to track application flow in more detail</summary>
         Detailed = 1
     End Enum
 
@@ -3017,19 +3365,19 @@ Namespace Core
 
     ''' <summary>
     ''' Enumerated type stating the temporal resolution of shapes.
-    ''' </summary>
+    '''</summary>
     Public Enum eShapeTimeResolutionType As Integer
-        ''' <summary>Shape data does not reflect time, such is the case for mediation shapes.</summary>
+        ''' <summary>Shape data does not reflect time, such is the case for mediation shapes</summary>
         NotApplicable = 0
-        ''' <summary>Shapes represent monthly data.</summary>
+        ''' <summary>Shapes represent monthly data</summary>
         Month = 1
-        ''' <summary>Shapes represent annual data.</summary>
+        ''' <summary>Shapes represent annual data</summary>
         Annual = 2
     End Enum
 
     ''' <summary>
     ''' The type of function used to create a shape.
-    ''' </summary>
+    '''</summary>
     Public Enum eShapeFunctionType As Long
         NotSet = 0
         Linear

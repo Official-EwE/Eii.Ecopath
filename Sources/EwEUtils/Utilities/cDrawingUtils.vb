@@ -77,6 +77,20 @@ Namespace Utilities
 
         End Function
 
+        Public Shared Function BitmapFromIcon(icon As Icon, Optional sz As Size = Nothing) As Bitmap
+
+            If (sz = Nothing) Then
+                sz = icon.Size
+            End If
+
+            Dim bmp As New Bitmap(sz.Width, sz.Height, Imaging.PixelFormat.Format32bppArgb)
+            Using g As Graphics = Graphics.FromImage(bmp)
+                g.DrawIcon(icon, 0, 0)
+            End Using
+            Return bmp
+
+        End Function
+
     End Class
 
 End Namespace

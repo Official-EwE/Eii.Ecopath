@@ -74,8 +74,8 @@ Public Class cEcospaceLayerSingle
     ''' <param name="core"></param>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef core As cCore, _
-                   ByRef data As Single(,), _
+    Public Sub New(ByVal core As cCore, _
+                   ByVal data As Single(,), _
                    ByVal strName As String, _
                    Optional ByVal meta As cVariableMetaData = Nothing, _
                    Optional ByVal vn As eVarNameFlags = eVarNameFlags.NotSet)
@@ -91,8 +91,7 @@ Public Class cEcospaceLayerSingle
     ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
-            Dim d As Single(,) = DirectCast(Me.Data, Single(,))
-            If Me.ValidateCellPosition(iRow, iCol) Then Return d(iRow, iCol) Else Return cCore.NULL_VALUE
+            Return DirectCast(Me.Data, Single(,))(iRow, iCol)
         End Get
         Set(ByVal value As Object)
             Dim d As Single(,) = DirectCast(Me.Data, Single(,))

@@ -12,57 +12,32 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
 #End Region
 
-''' <summary>
-''' Base code that can be used as a template to create a new plug-in.
-''' </summary>
-''' <remarks>
-''' <para>This plugin responds to:</para>
-''' <list type="bullet">
-''' <item><description>loading a model,</description>></item>
-''' <item><description>saving a model,</description>></item>
-''' <item><description>closing a model,</description>></item>
-''' <item><description>initialization of the Core,</description>></item>
-''' <item><description>initialization of Ecopath,</description>></item>
-''' <item><description>initialization of Ecosim,</description>></item>
-''' <item><description>initialization of Ecospace.</description>></item>
-''' </list>
-''' <para>In order to run and test this plugin it must be integrated within the EwE6 scientific interface. 
-''' To achieve this, add this project to the EwE6 solution, and reference this project from within the 
-''' ScientificInterface. This ensures that your plug-in will be built with EwE6, and will be loaded by the 
-''' EwE6 plug-in manager when you run EwE6.</para>
-''' </remarks>
-''' 
 Public Class cKeyRunComparisonPluginPoint
     Implements EwEPlugin.IPlugin
     Implements EwEPlugin.ICorePlugin
-    Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcopathRunInitializedPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcospaceInitializedPlugin
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
-
-    ' ToDo Add your own EwEPlugin interface implementations here
-    ' With the cursor at the end of the new Implements line press the enter key
-    ' and one or more empty place holder methods will be added to the bottom of the code
+    Implements EwEPlugin.IDataValidatedPlugin
 
 #Region " Local variables"
 
@@ -129,57 +104,12 @@ Public Class cKeyRunComparisonPluginPoint
 
     End Sub
 
-    ''' <summary>
-    ''' An Ecopath model has loaded.
-    ''' </summary>
-    ''' <param name="dataSource"></param>
-    ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-        Try
+    Public Sub DataValidated(varname As EwEUtils.Core.eVarNameFlags, dt As EwEUtils.Core.eDataTypes) _
+        Implements EwEPlugin.IDataValidatedPlugin.DataValidated
 
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString + ".LoadModel() Exception " + ex.Message)
-        End Try
+        Me.m_CompareManager.Invalidate()
 
-        Return True
-
-    End Function
-
-    ''' <summary>
-    ''' An Ecopath model has been saved.
-    ''' </summary>
-    ''' <param name="dataSource"></param>
-    ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
-        System.Console.WriteLine(Me.ToString + ".SaveModel()")
-
-        Return True
-    End Function
-
-    ''' <summary>
-    ''' An Ecopath model has been closed.
-    ''' </summary>
-    ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
-        System.Console.WriteLine(Me.ToString + ".CloseModel()")
-
-        Try
-            'A user has closed the database
-            'Clear out the old data so that we are 
-            'not holding on to data that belongs to a closed model
-            Me.m_EcoPathModel = Nothing
-            Me.m_EcoPathData = Nothing
-            Me.m_EcoSimModel = Nothing
-            Me.m_EcoSimData = Nothing
-            Me.m_EcoSpaceModel = Nothing
-            Me.m_EcoSpaceData = Nothing
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString + ".CloseModel() Exception " + ex.Message)
-            Return False
-        End Try
-
-        Return True
-    End Function
+    End Sub
 
     ''' <summary>
     ''' An Ecopath model is about to run.
@@ -193,6 +123,7 @@ Public Class cKeyRunComparisonPluginPoint
         Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathRunInitialized() Failed to get EcopathDataStructures.")
 
     End Sub
+
 
     Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         System.Console.WriteLine(Me.ToString + ".EcosimInitialized()")
@@ -282,8 +213,7 @@ Public Class cKeyRunComparisonPluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
-            ' Use an image from the pool of shared resources
-            Return ScientificInterfaceShared.My.Resources.fish
+            Return My.Resources.Star_HD
         End Get
     End Property
 
@@ -325,6 +255,7 @@ Public Class cKeyRunComparisonPluginPoint
 
                 ' Create the EwE form-derived user interface for this plug-in
                 Me.m_MainForm = New frmKeyRunMain()
+                Me.m_MainForm.UIContext = Me.m_uic
                 Me.m_MainForm.Init(Me.m_CompareManager)
                 ' Pass on the UI context to the form
                 Me.m_MainForm.UIContext = m_uic
@@ -334,12 +265,6 @@ Public Class cKeyRunComparisonPluginPoint
             ' Pass a reference to the new interface back to whomever invoked us
             form = Me.m_MainForm
 
-            ' Just to show what can be done: test where this function was invoked from
-            If TypeOf sender Is System.Windows.Forms.TreeNode Then
-                ' Plug-in was invoked from the EwE6 navigation panel
-            ElseIf TypeOf sender Is System.Windows.Forms.ToolStripMenuItem Then
-                ' Plug-in was invoked from the EwE6 main menu
-            End If
         Else
             Debug.Assert(False, "Plugin was not initialized properly.")
         End If
@@ -384,17 +309,17 @@ Public Class cKeyRunComparisonPluginPoint
 
 #End Region ' User Interface plug-in implementation
 
-#Region "IPlugin implementation"
+#Region " IPlugin implementation "
 
     Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Me"
+            Return "Joe Buszowksi, Jeroen Steenbeek. Ecopath International Initiative"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "you@someplace.com"
+            Return "ewedevteam@gmail.com"
         End Get
     End Property
 
@@ -411,7 +336,7 @@ Public Class cKeyRunComparisonPluginPoint
         End Get
     End Property
 
-#End Region
+#End Region ' IPlugin implementation
 
 End Class
 
