@@ -129,6 +129,7 @@ Namespace Ecospace
 
                 Next
 
+                ' ToDo: solve this with core status flags: Set_BadHab_Flags
                 Dim prop As cProperty = Me.PropertyManager.GetProperty(groupEcospace, eVarNameFlags.EcospaceCapCalType)
                 Me.m_lProps.Add(prop)
                 AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
@@ -143,6 +144,7 @@ Namespace Ecospace
             For Each prop As cProperty In Me.m_lProps
                 RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
             Next
+            Me.m_lProps.Clear()
             MyBase.ClearData()
         End Sub
 
