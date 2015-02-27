@@ -47,7 +47,6 @@ Namespace Controls.Map.Layers
         Public Overrides Sub Attach(uic As cUIContext, editor As cLayerEditor, layer As cDisplayRasterLayer)
             MyBase.Attach(uic, editor, layer)
             Me.m_fpName = New cEwEFormatProvider(uic, Me.m_tbxName, GetType(String))
-            Me.m_fpName.Value = layer.Name
             AddHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
         End Sub
 
@@ -72,6 +71,7 @@ Namespace Controls.Map.Layers
 
             If (Me.Layer IsNot Nothing) Then
                 Me.m_fpName.Enabled = Me.HasUniqueSource()
+                Me.m_fpName.Value = Layer.Name
 
                 Dim sMin As Single = cCore.NULL_VALUE
                 Dim sMax As Single = cCore.NULL_VALUE
