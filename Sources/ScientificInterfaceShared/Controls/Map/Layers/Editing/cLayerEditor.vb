@@ -283,6 +283,8 @@ Namespace Controls.Map.Layers
             Dim ptDraw As Point = Nothing
             Dim ptCell As Point = Nothing
 
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+
             ' Draw every step between the two draw points
             For iStep As Integer = 1 To iNumSteps
 
@@ -298,15 +300,18 @@ Namespace Controls.Map.Layers
                         If (Math.Sqrt(ptfCursor.X * ptfCursor.X + ptfCursor.Y * ptfCursor.Y) <= (Me.CursorSize / 2)) Then
 
                             ptCell = New Point(CInt(Math.Floor(dX + ptfCursor.X)), CInt(Math.Floor(dY + ptfCursor.Y)))
-                            Me.SetCellValue(ptCell, Me.CellValue, args, New Point(iX, iY))
 
-                            ptUpdateMin.X = Math.Min(ptCell.X, ptUpdateMin.X)
-                            ptUpdateMin.Y = Math.Min(ptCell.Y, ptUpdateMin.Y)
-                            ptUpdateMax.X = Math.Max(ptCell.X, ptUpdateMax.X)
-                            ptUpdateMax.Y = Math.Max(ptCell.Y, ptUpdateMax.Y)
+                            ' JS 26Feb15: This is the only spot to protect for invalid row/col access.
+                            '             Should this check not have been here ages ago?!
+                            If (bm.IsValidCellPosition(ptCell.Y, ptCell.X)) Then
+                                Me.SetCellValue(ptCell, Me.CellValue, args, New Point(iX, iY))
 
+                                ptUpdateMin.X = Math.Min(ptCell.X, ptUpdateMin.X)
+                                ptUpdateMin.Y = Math.Min(ptCell.Y, ptUpdateMin.Y)
+                                ptUpdateMax.X = Math.Max(ptCell.X, ptUpdateMax.X)
+                                ptUpdateMax.Y = Math.Max(ptCell.Y, ptUpdateMax.Y)
+                            End If
                         End If
-
                     Next iY
                 Next iX
 
@@ -401,7 +406,9 @@ Namespace Controls.Map.Layers
 
             For i = 1 To bm.InRow
                 For j = 1 To bm.InCol
-                    Me.Layer.Value(i, j) = cnew(i, j)
+                    If layerDepth.IsWaterCell(i, j) Then
+                        Me.Layer.Value(i, j) = cnew(i, j)
+                    End If
                 Next
             Next
             Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)

@@ -147,6 +147,16 @@ Namespace Controls.Map.Layers
             Me.UpdateContent(Me.Editor)
         End Sub
 
+        Private Sub OnSmooth(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnSmooth.Click
+            Me.Editor.Smooth()
+        End Sub
+
+        Private Sub OnFillLayer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnFill.Click
+            Me.Editor.Fill()
+        End Sub
+
 #End Region ' Events
 
 #Region " Internals "
@@ -186,6 +196,7 @@ Namespace Controls.Map.Layers
         End Sub
 
 #End Region ' Internals
+
 
     End Class
 

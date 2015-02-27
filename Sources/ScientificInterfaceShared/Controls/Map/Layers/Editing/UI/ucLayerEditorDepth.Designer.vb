@@ -35,6 +35,8 @@ Namespace Controls.Map.Layers
             Me.m_pbPreviewWater = New System.Windows.Forms.PictureBox()
             Me.m_pbPreviewLand = New System.Windows.Forms.PictureBox()
             Me.m_cbProtectCoastline = New System.Windows.Forms.CheckBox()
+            Me.m_btnFill = New System.Windows.Forms.Button()
+            Me.m_btnSmooth = New System.Windows.Forms.Button()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbPreviewWater, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbPreviewLand, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -66,6 +68,7 @@ Namespace Controls.Map.Layers
             '
             Me.m_nudDepth.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudDepth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudDepth.Location = New System.Drawing.Point(68, 153)
             Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudDepth.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -108,10 +111,35 @@ Namespace Controls.Map.Layers
             Me.m_cbProtectCoastline.Text = "Only edit water cells"
             Me.m_cbProtectCoastline.UseVisualStyleBackColor = True
             '
+            'm_btnFill
+            '
+            Me.m_btnFill.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnFill.Image = Global.ScientificInterfaceShared.My.Resources.Resources.Fill
+            Me.m_btnFill.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_btnFill.Location = New System.Drawing.Point(167, 200)
+            Me.m_btnFill.Name = "m_btnFill"
+            Me.m_btnFill.Size = New System.Drawing.Size(27, 23)
+            Me.m_btnFill.TabIndex = 8
+            Me.m_btnFill.UseVisualStyleBackColor = True
+            '
+            'm_btnSmooth
+            '
+            Me.m_btnSmooth.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnSmooth.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_btnSmooth.Location = New System.Drawing.Point(68, 200)
+            Me.m_btnSmooth.Name = "m_btnSmooth"
+            Me.m_btnSmooth.Size = New System.Drawing.Size(93, 23)
+            Me.m_btnSmooth.TabIndex = 7
+            Me.m_btnSmooth.Text = "Smooth"
+            Me.m_btnSmooth.UseVisualStyleBackColor = True
+            '
             'ucLayerEditorDepth
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_btnFill)
+            Me.Controls.Add(Me.m_btnSmooth)
             Me.Controls.Add(Me.m_rbWater)
             Me.Controls.Add(Me.m_pbPreviewWater)
             Me.Controls.Add(Me.m_pbPreviewLand)
@@ -119,13 +147,15 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_nudDepth)
             Me.Controls.Add(Me.m_cbProtectCoastline)
             Me.Name = "ucLayerEditorDepth"
-            Me.Size = New System.Drawing.Size(200, 201)
+            Me.Size = New System.Drawing.Size(200, 231)
             Me.Controls.SetChildIndex(Me.m_cbProtectCoastline, 0)
             Me.Controls.SetChildIndex(Me.m_nudDepth, 0)
             Me.Controls.SetChildIndex(Me.m_rbLand, 0)
             Me.Controls.SetChildIndex(Me.m_pbPreviewLand, 0)
             Me.Controls.SetChildIndex(Me.m_pbPreviewWater, 0)
             Me.Controls.SetChildIndex(Me.m_rbWater, 0)
+            Me.Controls.SetChildIndex(Me.m_btnSmooth, 0)
+            Me.Controls.SetChildIndex(Me.m_btnFill, 0)
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbPreviewWater, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbPreviewLand, System.ComponentModel.ISupportInitialize).EndInit()
@@ -139,6 +169,8 @@ Namespace Controls.Map.Layers
         Protected WithEvents m_pbPreviewLand As System.Windows.Forms.PictureBox
         Private WithEvents m_cbProtectCoastline As System.Windows.Forms.CheckBox
         Private WithEvents m_nudDepth As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_btnFill As System.Windows.Forms.Button
+        Private WithEvents m_btnSmooth As System.Windows.Forms.Button
 
     End Class
 
