@@ -373,7 +373,6 @@ Public Class cEcospaceBasemap
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property InRow() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.InRow))
         End Get
@@ -389,15 +388,12 @@ Public Class cEcospaceBasemap
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property InCol() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.InCol))
         End Get
-
         Friend Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.InCol, value)
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -535,7 +531,25 @@ Public Class cEcospaceBasemap
     ''' </returns>
     ''' -----------------------------------------------------------------------
     Public Function IsModelledCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
-        Return Me.LayerDepth.IsWaterCell(iRow, iCol) And Not Me.LayerExclusion.IsExcludedCell(iRow, iCol)
+        If Not IsValidCellPosition(iRow, iCol) Then Return False
+        Return Me.LayerDepth.IsWaterCell(iRow, iCol)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether an intended cell index falls within the map bounds.
+    ''' </summary>
+    ''' <param name="iRow">One-based row index to validate.</param>
+    ''' <param name="iCol">One-based column index to validate.</param>
+    ''' <returns>True if the intended cell index falls within the map bounds,
+    ''' False otherwise. No shades of grey here, let alone fifty of 'em. Ugh.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsValidCellPosition(ByVal iRow As Integer, iCol As Integer) As Boolean
+        If (iRow < 1) Then Return False
+        If (iCol < 1) Then Return False
+        If (iRow > Me.InRow) Then Return False
+        If (iCol > Me.InCol) Then Return False
+        Return True
     End Function
 
 #End Region ' Variables by dot (.) operator
