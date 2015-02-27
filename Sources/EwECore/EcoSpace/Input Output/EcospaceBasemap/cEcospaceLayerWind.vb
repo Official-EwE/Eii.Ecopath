@@ -73,7 +73,6 @@ Public Class cEcospaceLayerWind
 
 #Region " Private bits "
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get X velocity data.
@@ -81,15 +80,10 @@ Public Class cEcospaceLayerWind
     ''' -----------------------------------------------------------------------
     Public Overrides Property XVelocity(ByVal iRow As Integer, ByVal iCol As Integer) As Single
         Get
-            If Me.ValidateCellPosition(iRow, iCol) Then
-                Return DirectCast(Me.Data, Single()(,,))(0)(iRow, iCol, Me.m_iMonth)
-            End If
-            Return cCore.NULL_VALUE
+            Return DirectCast(Me.Data, Single()(,,))(0)(iRow, iCol, Me.m_iMonth)
         End Get
         Set(ByVal value As Single)
-            If Me.ValidateCellPosition(iRow, iCol) Then
-                DirectCast(Me.Data, Single()(,,))(0)(iRow, iCol, Me.m_iMonth) = value
-            End If
+            DirectCast(Me.Data, Single()(,,))(0)(iRow, iCol, Me.m_iMonth) = value
         End Set
     End Property
 
@@ -100,15 +94,10 @@ Public Class cEcospaceLayerWind
     ''' -----------------------------------------------------------------------
     Public Overrides Property YVelocity(ByVal iRow As Integer, ByVal iCol As Integer) As Single
         Get
-            If Me.ValidateCellPosition(iRow, iCol) Then
-                Return DirectCast(Me.Data, Single()(,,))(1)(iRow, iCol, Me.m_iMonth)
-            End If
-            Return cCore.NULL_VALUE
+            Return DirectCast(Me.Data, Single()(,,))(1)(iRow, iCol, Me.m_iMonth)
         End Get
         Set(ByVal value As Single)
-            If Me.ValidateCellPosition(iRow, iCol) Then
-                DirectCast(Me.Data, Single()(,,))(1)(iRow, iCol, Me.m_iMonth) = value
-            End If
+            DirectCast(Me.Data, Single()(,,))(1)(iRow, iCol, Me.m_iMonth) = value
         End Set
 
     End Property
